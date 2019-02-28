@@ -7,37 +7,22 @@ using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.ProjectSystem.Waiting;
 using Microsoft.VisualStudio.Shell.Interop;
-
+using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
 {
-    [Export(typeof(IImplicitlyActiveService))]
     [Export(typeof(IOperationWaitIndicator))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
-    internal partial class VisualStudioOperationWaitIndicator : AbstractMultiLifetimeComponent<VisualStudioOperationWaitIndicator.Instance>, IImplicitlyActiveService, IOperationWaitIndicator
+    internal partial class VisualStudioOperationWaitIndicator : IOperationWaitIndicator
     {
-        private readonly IProjectThreadingService _threadingService;
-        private readonly IVsService<SVsThreadedWaitDialogFactory, IVsThreadedWaitDialogFactory> _waitDialogFactoryService;
+        private readonly IVsUIService<SVsThreadedWaitDialogFactory, IVsThreadedWaitDialogFactory> _waitDialogFactoryService;
+        private readonly JoinableTaskContext _joinableTaskContext;
 
         [ImportingConstructor]
-        public VisualStudioOperationWaitIndicator(UnconfiguredProject unconfiguredProject,
-                                                  IProjectThreadingService threadingService,
-                                                  IVsService<SVsThreadedWaitDialogFactory, IVsThreadedWaitDialogFactory> waitDialogFactoryService)
-            : base(threadingService.JoinableTaskContext)
+        public VisualStudioOperationWaitIndicator(IVsUIService<SVsThreadedWaitDialogFactory, IVsThreadedWaitDialogFactory> waitDialogFactoryService, JoinableTaskContext joinableTaskContext)
         {
-            _threadingService = threadingService;
             _waitDialogFactoryService = waitDialogFactoryService;
+            _joinableTaskContext = joinableTaskContext;
         }
-
-        public Task ActivateAsync() => LoadAsync();
-        public Task DeactivateAsync() => UnloadAsync();
-
-        protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
-        {
-            return base.InitializeCoreAsync(cancellationToken);
-        }
-
-        protected override Instance CreateInstance() => new Instance(_threadingService, _waitDialogFactoryService);
 
         public void WaitForOperation(string title, string message, bool allowCancel, Action<CancellationToken> action)
         {
@@ -45,8 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
             Requires.NotNull(message, nameof(message));
             Requires.NotNull(action, nameof(action));
 
-            Instance instance = _threadingService.ExecuteSynchronously(() => WaitForLoadedAsync());
-            instance.WaitForOperation(title, message, allowCancel, action);
+            StaticWaitIndicator.WaitForOperation(_waitDialogFactoryService.Value, title, message, allowCancel, action);
         }
 
         public T WaitForOperation<T>(string title, string message, bool allowCancel, Func<CancellationToken, T> action)
@@ -55,8 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
             Requires.NotNull(message, nameof(message));
             Requires.NotNull(action, nameof(action));
 
-            Instance instance = _threadingService.ExecuteSynchronously(() => WaitForLoadedAsync());
-            return instance.WaitForOperation(title, message, allowCancel, action);
+            return StaticWaitIndicator.WaitForOperation(_waitDialogFactoryService.Value, title, message, allowCancel, action);
         }
 
         public void WaitForAsyncOperation(string title, string message, bool allowCancel, Func<CancellationToken, Task> asyncFunction)
@@ -65,8 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
             Requires.NotNull(message, nameof(message));
             Requires.NotNull(asyncFunction, nameof(asyncFunction));
 
-            Instance instance = _threadingService.ExecuteSynchronously(() => WaitForLoadedAsync());
-            instance.WaitForAsyncOperation(title, message, allowCancel, asyncFunction);
+            StaticWaitIndicator.WaitForAsyncOperation(_waitDialogFactoryService.Value, _joinableTaskContext, title, message, allowCancel, asyncFunction);
         }
 
         public T WaitForAsyncOperation<T>(string title, string message, bool allowCancel, Func<CancellationToken, Task<T>> asyncFunction)
@@ -75,8 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
             Requires.NotNull(message, nameof(message));
             Requires.NotNull(asyncFunction, nameof(asyncFunction));
 
-            Instance instance = _threadingService.ExecuteSynchronously(() => WaitForLoadedAsync());
-            return instance.WaitForAsyncOperation(title, message, allowCancel, asyncFunction);
+            return StaticWaitIndicator.WaitForAsyncOperation(_waitDialogFactoryService.Value, _joinableTaskContext, title, message, allowCancel, asyncFunction);
         }
 
         public WaitIndicatorResult WaitForOperationWithResult(string title, string message, bool allowCancel, Action<CancellationToken> action)
@@ -85,8 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
             Requires.NotNull(message, nameof(message));
             Requires.NotNull(action, nameof(action));
 
-            Instance instance = _threadingService.ExecuteSynchronously(() => WaitForLoadedAsync());
-            return instance.WaitForOperationWithResult(title, message, allowCancel, action);
+            return StaticWaitIndicator.WaitForOperationWithResult(_waitDialogFactoryService.Value, title, message, allowCancel, action);
         }
 
         public (WaitIndicatorResult, T) WaitForOperationWithResult<T>(string title, string message, bool allowCancel, Func<CancellationToken, T> function)
@@ -95,8 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
             Requires.NotNull(message, nameof(message));
             Requires.NotNull(function, nameof(function));
 
-            Instance instance = _threadingService.ExecuteSynchronously(() => WaitForLoadedAsync());
-            return instance.WaitForOperationWithResult(title, message, allowCancel, function);
+            return StaticWaitIndicator.WaitForOperationWithResult(_waitDialogFactoryService.Value, title, message, allowCancel, function);
         }
 
         public WaitIndicatorResult WaitForAsyncOperationWithResult(string title, string message, bool allowCancel, Func<CancellationToken, Task> asyncFunction)
@@ -105,8 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
             Requires.NotNull(message, nameof(message));
             Requires.NotNull(asyncFunction, nameof(asyncFunction));
 
-            Instance instance = _threadingService.ExecuteSynchronously(() => WaitForLoadedAsync());
-            return instance.WaitForAsyncOperationWithResult(title, message, allowCancel, asyncFunction);
+            return StaticWaitIndicator.WaitForAsyncOperationWithResult(_waitDialogFactoryService.Value, _joinableTaskContext, title, message, allowCancel, asyncFunction);
         }
 
         public (WaitIndicatorResult, T) WaitForAsyncOperationWithResult<T>(string title, string message, bool allowCancel, Func<CancellationToken, Task<T>> asyncFunction)
@@ -115,8 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
             Requires.NotNull(message, nameof(message));
             Requires.NotNull(asyncFunction, nameof(asyncFunction));
 
-            Instance instance = _threadingService.ExecuteSynchronously(() => WaitForLoadedAsync());
-            return instance.WaitForAsyncOperationWithResult(title, message, allowCancel, asyncFunction);
+            return StaticWaitIndicator.WaitForAsyncOperationWithResult(_waitDialogFactoryService.Value, _joinableTaskContext, title, message, allowCancel, asyncFunction);
         }
     }
 }

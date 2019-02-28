@@ -17,235 +17,102 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
 {
     public class VisualStudioOperationWaitIndicatorTests
     {
-        [Fact]
-        public static async Task Dispose()
-        {
-            var (waitIndicator, _) = CreateVisualStudioWaitIndicator();
-            await waitIndicator.ActivateAsync();
-            Assert.False(waitIndicator.IsDisposed);
-            waitIndicator.Dispose();
-            Assert.True(waitIndicator.IsDisposed);
-        }
-
-        [Fact]
-        public static async Task DisposeAsync()
-        {
-            var (waitIndicator, _) = CreateVisualStudioWaitIndicator();
-            await waitIndicator.ActivateAsync();
-            Assert.False(waitIndicator.IsDisposed);
-            await waitIndicator.DisposeAsync();
-            Assert.True(waitIndicator.IsDisposed);
-        }
-
-        [Fact]
-        public static async Task DisposeBlock()
-        {
-            var (waitIndicator, _) = CreateVisualStudioWaitIndicator();
-            await waitIndicator.ActivateAsync();
-            using (waitIndicator)
-            {
-                Assert.False(waitIndicator.IsDisposed);
-            }
-            Assert.True(waitIndicator.IsDisposed);
-        }
-
-        [Fact]
-        public static async Task DeactivateAsync()
-        {
-            var (waitIndicator, _) = CreateVisualStudioWaitIndicator();
-            await waitIndicator.ActivateAsync();
-            await waitIndicator.DeactivateAsync();
-            Assert.False(waitIndicator.IsDisposed);
-        }
-
-        [Fact]
-        public static async Task ActivateAsyncTwice()
-        {
-            var (waitIndicator, _) = CreateVisualStudioWaitIndicator();
-            await waitIndicator.ActivateAsync();
-            await waitIndicator.ActivateAsync();
-            Assert.False(waitIndicator.IsDisposed);
-        }
-
-        [Fact]
-        public static async Task DeactivateTwiceAsync()
-        {
-            var (waitIndicator, _) = CreateVisualStudioWaitIndicator();
-            await waitIndicator.DeactivateAsync();
-            await waitIndicator.DeactivateAsync();
-            Assert.False(waitIndicator.IsDisposed);
-        }
-
-        [Fact]
-        public static async Task LoadAsyncAndUnloadAsync()
-        {
-            var (waitIndicator, _) = CreateVisualStudioWaitIndicator();
-            await waitIndicator.LoadAsync();
-            await waitIndicator.UnloadAsync();
-            Assert.False(waitIndicator.IsDisposed);
-        }
-
-        [Fact]
-        public static async Task LoadAsyncTwice()
-        {
-            var (waitIndicator, _) = CreateVisualStudioWaitIndicator();
-            await waitIndicator.LoadAsync();
-            await waitIndicator.LoadAsync();
-            Assert.False(waitIndicator.IsDisposed);
-        }
-
-        [Fact]
-        public static async Task UnloadAsyncTwice()
-        {
-            var (waitIndicator, _) = CreateVisualStudioWaitIndicator();
-            await waitIndicator.UnloadAsync();
-            await waitIndicator.UnloadAsync();
-            Assert.False(waitIndicator.IsDisposed);
-        }
 
         [Theory]
         [InlineData("", null)]
         [InlineData(null, "")]
-        public static async Task WaitForOperation_ArgumentNullException(string title, string message)
+        public static void WaitForOperation_ArgumentNullException(string title, string message)
         {
             bool isCancelable = false;
             var (waitIndicator, cancel) = CreateVisualStudioWaitIndicator(title, message, isCancelable);
-            await waitIndicator.LoadAsync();
 
-            using (waitIndicator)
+            Assert.Throws<ArgumentNullException>(() =>
             {
-                Assert.Throws<ArgumentNullException>(() =>
+                waitIndicator.WaitForAsyncOperation(title, message, isCancelable, _ =>
                 {
-                    waitIndicator.WaitForAsyncOperation(title, message, isCancelable, _ =>
-                    {
-                        throw new Exception();
-                    });
+                    throw new Exception();
                 });
-
-                Assert.False(waitIndicator.IsDisposed);
-            }
+            });
         }
 
         [Fact]
-        public static async Task WaitForOperation_ArgumentNullException_Delegate()
+        public static void WaitForOperation_ArgumentNullException_Delegate()
         {
             var (waitIndicator, cancel) = CreateVisualStudioWaitIndicator();
-            await waitIndicator.LoadAsync();
 
-            using (waitIndicator)
+            Assert.Throws<ArgumentNullException>(() =>
             {
-                Assert.Throws<ArgumentNullException>(() =>
-                {
-                    waitIndicator.WaitForAsyncOperation("", "", false, null);
-                });
-
-                Assert.False(waitIndicator.IsDisposed);
-            }
+                waitIndicator.WaitForAsyncOperation("", "", false, null);
+            });
         }
 
         [Fact]
-        public static async Task WaitForOperation_Exception()
+        public static void WaitForOperation_Exception()
         {
             var (waitIndicator, cancel) = CreateVisualStudioWaitIndicator();
-            await waitIndicator.LoadAsync();
-
-            using (waitIndicator)
+            Assert.Throws<Exception>(() =>
             {
-                Assert.Throws<Exception>(() =>
+                waitIndicator.WaitForAsyncOperation("", "", false, _ =>
                 {
-                    waitIndicator.WaitForAsyncOperation("", "", false, _ =>
-                    {
-                        throw new Exception();
-                    });
+                    throw new Exception();
                 });
-
-                Assert.False(waitIndicator.IsDisposed);
-            }
+            });
         }
 
         [Fact]
-        public static async Task WaitForOperation_Wrapped_Exception()
+        public static void WaitForOperation_Wrapped_Exception()
         {
             var (waitIndicator, _) = CreateVisualStudioWaitIndicator();
-            await waitIndicator.LoadAsync();
-
-            using (waitIndicator)
-            {
-                Assert.Throws<Exception>(() =>
-                {
-                    waitIndicator.WaitForAsyncOperation("", "", false, async _ =>
-                    {
-                        await Task.FromException(new Exception());
-                    });
-                });
-
-                Assert.False(waitIndicator.IsDisposed);
-            }
-        }
-
-        [Fact]
-        public static async Task WaitForOperation_Wrapped_Canceled()
-        {
-            var (waitIndicator, _) = CreateVisualStudioWaitIndicator();
-            await waitIndicator.LoadAsync();
-
-            using (waitIndicator)
-            {
-                waitIndicator.WaitForOperation("", "", false, _ =>
-                {
-                    Task.FromException(new OperationCanceledException());
-                });
-
-                Assert.False(waitIndicator.IsDisposed);
-            }
-        }
-
-        [Fact]
-        public static async Task WaitForOperation_Wrapped_Canceled2Async()
-        {
-            var (waitIndicator, _) = CreateVisualStudioWaitIndicator();
-            await waitIndicator.LoadAsync();
-
-            using (waitIndicator)
+            Assert.Throws<Exception>(() =>
             {
                 waitIndicator.WaitForAsyncOperation("", "", false, async _ =>
                 {
-                    await Task.WhenAll(
-                        Task.Run(() => throw new OperationCanceledException()),
-                        Task.Run(() => throw new OperationCanceledException()));
+                    await Task.FromException(new Exception());
                 });
-
-                Assert.False(waitIndicator.IsDisposed);
-            }
+            });
         }
 
         [Fact]
-        public static async Task WaitForOperation_Wrapped_Canceled3Async()
+        public static void WaitForOperation_Wrapped_Canceled()
         {
             var (waitIndicator, _) = CreateVisualStudioWaitIndicator();
-            await waitIndicator.LoadAsync();
-
-            using (waitIndicator)
+            waitIndicator.WaitForOperation("", "", false, _ =>
             {
-                waitIndicator.WaitForOperation("", "", false, _ =>
-                {
-                    throw new AggregateException(new[] { new OperationCanceledException(), new OperationCanceledException() });
-                });
+                Task.FromException(new OperationCanceledException());
+            });
+        }
 
-                Assert.False(waitIndicator.IsDisposed);
-            }
+        [Fact]
+        public static void WaitForOperation_Wrapped_Canceled2Async()
+        {
+            var (waitIndicator, _) = CreateVisualStudioWaitIndicator();
+            waitIndicator.WaitForAsyncOperation("", "", false, async _ =>
+            {
+                await Task.WhenAll(
+                    Task.Run(() => throw new OperationCanceledException()),
+                    Task.Run(() => throw new OperationCanceledException()));
+            });
+        }
+
+        [Fact]
+        public static void WaitForOperation_Wrapped_Canceled3Async()
+        {
+            var (waitIndicator, _) = CreateVisualStudioWaitIndicator();
+            waitIndicator.WaitForOperation("", "", false, _ =>
+            {
+                throw new AggregateException(new[] { new OperationCanceledException(), new OperationCanceledException() });
+            });
         }
 
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public static async Task WaitForOperation(bool isCancelable)
+        public static void WaitForOperation(bool isCancelable)
         {
             bool wasCalled = false;
             string title = "Test01";
             string message = "Testing01";
             var (waitIndicator, _) = CreateVisualStudioWaitIndicator(title, message, isCancelable);
-            await waitIndicator.LoadAsync();
 
             waitIndicator.WaitForOperation(title, message, isCancelable, _ =>
             {
@@ -257,13 +124,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public static async Task WaitForOperationCanceled(bool isCancelable)
+        public static void WaitForOperationCanceled(bool isCancelable)
         {
             bool wasCalled = false;
             string title = "Test01";
             string message = "Testing01";
             var (waitIndicator, _) = CreateVisualStudioWaitIndicator(title, message, isCancelable);
-            await waitIndicator.LoadAsync();
 
             waitIndicator.WaitForOperation(title, message, isCancelable, _ =>
             {
@@ -277,10 +143,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         [Theory]
         [InlineData("", null)]
         [InlineData(null, "")]
-        public static async Task WaitForOperationWithResult_ArgumentNullException(string title, string message)
+        public static void WaitForOperationWithResult_ArgumentNullException(string title, string message)
         {
             var (waitIndicator, _) = CreateVisualStudioWaitIndicator(title, message);
-            await waitIndicator.LoadAsync();
 
             Assert.Throws<ArgumentNullException>(() =>
             {
@@ -289,34 +154,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
                     throw new Exception();
                 });
             });
-
-            Assert.False(waitIndicator.IsDisposed);
         }
 
         [Fact]
-        public static async Task WaitForOperationWithResult_ArgumentNullException_Delegate()
+        public static void WaitForOperationWithResult_ArgumentNullException_Delegate()
         {
             var (waitIndicator, _) = CreateVisualStudioWaitIndicator();
-            await waitIndicator.LoadAsync();
 
             Assert.Throws<ArgumentNullException>(() =>
             {
                 waitIndicator.WaitForOperationWithResult("", "", false, null);
             });
-
-            Assert.False(waitIndicator.IsDisposed);
         }
 
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public static async Task WaitForOperationWithResult(bool isCancelable)
+        public static void WaitForOperationWithResult(bool isCancelable)
         {
             bool wasCalled = false;
             string title = "Test02";
             string message = "Testing02";
             var (waitIndicator, _) = CreateVisualStudioWaitIndicator(title, message, isCancelable);
-            await waitIndicator.LoadAsync();
 
             waitIndicator.WaitForOperationWithResult(title, message, isCancelable, _ =>
             {
@@ -328,13 +187,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public static async Task WaitForOperationWithResultCanceled(bool isCancelable)
+        public static void WaitForOperationWithResultCanceled(bool isCancelable)
         {
             bool wasCalled = false;
             string title = "Test02";
             string message = "Testing02";
             var (waitIndicator, _) = CreateVisualStudioWaitIndicator(title, message, isCancelable);
-            await waitIndicator.LoadAsync();
 
             waitIndicator.WaitForOperationWithResult(title, message, isCancelable, _ =>
             {
@@ -347,13 +205,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public static async Task WaitForAsyncOperation(bool isCancelable)
+        public static void WaitForAsyncOperation(bool isCancelable)
         {
             bool wasCalled = false;
             string title = "Test03";
             string message = "Testing03";
             var (waitIndicator, _) = CreateVisualStudioWaitIndicator(title, message, isCancelable);
-            await waitIndicator.LoadAsync();
 
             waitIndicator.WaitForAsyncOperation(title, message, isCancelable, _ =>
             {
@@ -366,10 +223,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         [Theory]
         [InlineData("", null)]
         [InlineData(null, "")]
-        public static async Task WaitForAsyncOperation_ArgumentNullException(string title, string message)
+        public static void WaitForAsyncOperation_ArgumentNullException(string title, string message)
         {
             var (waitIndicator, _) = CreateVisualStudioWaitIndicator(title, message);
-            await waitIndicator.LoadAsync();
 
             Assert.Throws<ArgumentNullException>(() =>
             {
@@ -378,34 +234,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
                     throw new Exception();
                 });
             });
-
-            Assert.False(waitIndicator.IsDisposed);
         }
 
         [Fact]
-        public static async Task WaitForAsyncOperation_ArgumentNullException_Delegate()
+        public static void WaitForAsyncOperation_ArgumentNullException_Delegate()
         {
             var (waitIndicator, _) = CreateVisualStudioWaitIndicator();
-            await waitIndicator.LoadAsync();
 
             Assert.Throws<ArgumentNullException>(() =>
             {
                 waitIndicator.WaitForAsyncOperation("", "", false, null);
             });
-
-            Assert.False(waitIndicator.IsDisposed);
         }
 
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public static async Task WaitForAsyncOperationCanceled(bool isCancelable)
+        public static void WaitForAsyncOperationCanceled(bool isCancelable)
         {
             bool wasCalled = false;
             string title = "Test03";
             string message = "Testing03";
             var (waitIndicator, _) = CreateVisualStudioWaitIndicator(title, message, isCancelable);
-            await waitIndicator.LoadAsync();
 
             waitIndicator.WaitForAsyncOperation(title, message, isCancelable, _ =>
             {
@@ -418,13 +268,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public static async Task WaitForAsyncOperationWithResult(bool isCancelable)
+        public static void WaitForAsyncOperationWithResult(bool isCancelable)
         {
             bool wasCalled = false;
             string title = "Test04";
             string message = "Testing04";
             var (waitIndicator, _) = CreateVisualStudioWaitIndicator(title, message, isCancelable);
-            await waitIndicator.LoadAsync();
 
             var result = waitIndicator.WaitForAsyncOperationWithResult(title, message, isCancelable, _ =>
             {
@@ -439,10 +288,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         [Theory]
         [InlineData("", null)]
         [InlineData(null, "")]
-        public static async Task WaitForAsyncOperationWithResult_ArgumentNullException(string title, string message)
+        public static void WaitForAsyncOperationWithResult_ArgumentNullException(string title, string message)
         {
             var (waitIndicator, _) = CreateVisualStudioWaitIndicator(title, message);
-            await waitIndicator.LoadAsync();
 
             Assert.Throws<ArgumentNullException>(() =>
             {
@@ -451,34 +299,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
                     throw new Exception();
                 });
             });
-
-            Assert.False(waitIndicator.IsDisposed);
         }
 
         [Fact]
-        public static async Task WaitForAsyncOperationWithResult_ArgumentNullException_Delegate()
+        public static void WaitForAsyncOperationWithResult_ArgumentNullException_Delegate()
         {
             var (waitIndicator, _) = CreateVisualStudioWaitIndicator();
-            await waitIndicator.LoadAsync();
 
             Assert.Throws<ArgumentNullException>(() =>
             {
                 var result = waitIndicator.WaitForAsyncOperationWithResult("", "", false, null);
             });
-
-            Assert.False(waitIndicator.IsDisposed);
         }
 
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public static async Task WaitForAsyncOperationWithResultCanceled(bool isCancelable)
+        public static void WaitForAsyncOperationWithResultCanceled(bool isCancelable)
         {
             bool wasCalled = false;
             string title = "Test04";
             string message = "Testing04";
             var (waitIndicator, _) = CreateVisualStudioWaitIndicator(title, message, isCancelable);
-            await waitIndicator.LoadAsync();
 
             var result = waitIndicator.WaitForAsyncOperationWithResult(title, message, isCancelable, _ =>
             {
@@ -492,10 +334,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         [Theory]
         [InlineData("", null)]
         [InlineData(null, "")]
-        public static async Task WaitForOperationReturns_ArgumentNullException(string title, string message)
+        public static void WaitForOperationReturns_ArgumentNullException(string title, string message)
         {
             var (waitIndicator, _) = CreateVisualStudioWaitIndicator(title, message);
-            await waitIndicator.LoadAsync();
 
             Assert.Throws<ArgumentNullException>(() =>
             {
@@ -504,33 +345,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
                     return 42;
                 });
             });
-
-            Assert.False(waitIndicator.IsDisposed);
         }
 
         [Fact]
-        public static async Task WaitForOperationReturns_ArgumentNullException_Delegate()
+        public static void WaitForOperationReturns_ArgumentNullException_Delegate()
         {
             var (waitIndicator, _) = CreateVisualStudioWaitIndicator();
-            await waitIndicator.LoadAsync();
 
             Assert.Throws<ArgumentNullException>(() =>
             {
                 var result = waitIndicator.WaitForOperation("", "", false, (Func<CancellationToken, int>)null);
             });
-
-            Assert.False(waitIndicator.IsDisposed);
         }
 
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public static async Task WaitForOperationReturns(bool isCancelable)
+        public static void WaitForOperationReturns(bool isCancelable)
         {
             string title = "Test05";
             string message = "Testing05";
             var (waitIndicator, _) = CreateVisualStudioWaitIndicator(title, message, isCancelable);
-            await waitIndicator.LoadAsync();
 
             var result = waitIndicator.WaitForOperation(title, message, isCancelable, _ =>
             {
@@ -541,12 +376,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
 
         [Theory]
         [InlineData(true)]
-        public static async Task WaitForOperationReturnsCanceled(bool isCancelable)
+        public static void WaitForOperationReturnsCanceled(bool isCancelable)
         {
             string title = "Test05";
             string message = "Testing05";
             var (waitIndicator, _) = CreateVisualStudioWaitIndicator(title, message, isCancelable);
-            await waitIndicator.LoadAsync();
 
             var result = waitIndicator.WaitForOperation(title, message, isCancelable, _ =>
             {
@@ -563,10 +397,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         [Theory]
         [InlineData("", null)]
         [InlineData(null, "")]
-        public static async Task WaitForOperationWithResultReturns_ArgumentNullException(string title, string message)
+        public static void WaitForOperationWithResultReturns_ArgumentNullException(string title, string message)
         {
             var (waitIndicator, _) = CreateVisualStudioWaitIndicator(title, message);
-            await waitIndicator.LoadAsync();
 
             Assert.Throws<ArgumentNullException>(() =>
             {
@@ -575,34 +408,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
                     return 42;
                 });
             });
-
-            Assert.False(waitIndicator.IsDisposed);
         }
 
         [Fact]
-        public static async Task WaitForOperationWithResultReturns_ArgumentNullException_Delegate()
+        public static void WaitForOperationWithResultReturns_ArgumentNullException_Delegate()
         {
             var (waitIndicator, _) = CreateVisualStudioWaitIndicator();
-            await waitIndicator.LoadAsync();
 
             Assert.Throws<ArgumentNullException>(() =>
             {
                 var (canceled, result) = waitIndicator.WaitForOperationWithResult("", "", false, (Func<CancellationToken, int>)null);
             });
-
-            Assert.False(waitIndicator.IsDisposed);
         }
 
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public static async Task WaitForOperationWithResultReturns(bool isCancelable)
+        public static void WaitForOperationWithResultReturns(bool isCancelable)
         {
             string title = "Test06";
             string message = "Testing06";
             var (waitIndicator, _) = CreateVisualStudioWaitIndicator(title, message, isCancelable);
-            await waitIndicator.LoadAsync();
-
             var (canceled, result) = waitIndicator.WaitForOperationWithResult(title, message, isCancelable, _ =>
             {
                 return 42;
@@ -612,13 +438,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
 
         [Theory]
         [InlineData(true)]
-        public static async Task WaitForOperationWithResultReturnsCanceled(bool isCancelable)
+        public static void WaitForOperationWithResultReturnsCanceled(bool isCancelable)
         {
             string title = "Test06";
             string message = "Testing06";
             var (waitIndicator, _) = CreateVisualStudioWaitIndicator(title, message, isCancelable);
-            await waitIndicator.LoadAsync();
-
             var (canceled, result) = waitIndicator.WaitForOperationWithResult(title, message, isCancelable, _ =>
             {
                 if (isCancelable)
@@ -635,11 +459,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         [Theory]
         [InlineData("", null)]
         [InlineData(null, "")]
-        public static async Task WaitForAsyncOperationReturns_ArgumentNullException(string title, string message)
+        public static void WaitForAsyncOperationReturns_ArgumentNullException(string title, string message)
         {
             var (waitIndicator, _) = CreateVisualStudioWaitIndicator(title, message);
-            await waitIndicator.LoadAsync();
-
             Assert.Throws<ArgumentNullException>(() =>
             {
                 var result = waitIndicator.WaitForAsyncOperation(title, message, false, _ =>
@@ -647,34 +469,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
                     return Task.FromResult(42);
                 });
             });
-
-            Assert.False(waitIndicator.IsDisposed);
         }
 
         [Fact]
-        public static async Task WaitForAsyncOperationReturns_ArgumentNullException_Delegate()
+        public static void WaitForAsyncOperationReturns_ArgumentNullException_Delegate()
         {
             var (waitIndicator, _) = CreateVisualStudioWaitIndicator();
-            await waitIndicator.LoadAsync();
-
             Assert.Throws<ArgumentNullException>(() =>
             {
                 var result = waitIndicator.WaitForAsyncOperation("", "", false, (Func<CancellationToken, Task<int>>)null);
             });
-
-            Assert.False(waitIndicator.IsDisposed);
         }
 
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public static async Task WaitForAsyncOperationReturns(bool isCancelable)
+        public static void WaitForAsyncOperationReturns(bool isCancelable)
         {
             string title = "Test07";
             string message = "Testing07";
             var (waitIndicator, _) = CreateVisualStudioWaitIndicator(title, message, isCancelable);
-            await waitIndicator.LoadAsync();
-
             var result = waitIndicator.WaitForAsyncOperation(title, message, isCancelable, _ =>
             {
                 return Task.FromResult(42);
@@ -684,13 +498,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
 
         [Theory]
         [InlineData(true)]
-        public static async Task WaitForAsyncOperationReturnsCanceled(bool isCancelable)
+        public static void WaitForAsyncOperationReturnsCanceled(bool isCancelable)
         {
             string title = "Test07";
             string message = "Testing07";
             var (waitIndicator, _) = CreateVisualStudioWaitIndicator(title, message, isCancelable);
-            await waitIndicator.LoadAsync();
-
             object result = waitIndicator.WaitForAsyncOperation(title, message, isCancelable, _ =>
             {
                 if (isCancelable)
@@ -706,11 +518,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         [Theory]
         [InlineData("", null)]
         [InlineData(null, "")]
-        public static async Task WaitForAsyncOperationWithResultReturns_ArgumentNullException(string title, string message)
+        public static void WaitForAsyncOperationWithResultReturns_ArgumentNullException(string title, string message)
         {
             var (waitIndicator, _) = CreateVisualStudioWaitIndicator(title, message);
-            await waitIndicator.LoadAsync();
-
             Assert.Throws<ArgumentNullException>(() =>
             {
                 var (_, result) = waitIndicator.WaitForAsyncOperationWithResult(title, message, false, _ =>
@@ -718,34 +528,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
                     return Task.FromResult(42);
                 });
             });
-
-            Assert.False(waitIndicator.IsDisposed);
         }
 
         [Fact]
-        public static async Task WaitForAsyncOperationWithResultReturns_ArgumentNullException_Delegate()
+        public static void WaitForAsyncOperationWithResultReturns_ArgumentNullException_Delegate()
         {
             var (waitIndicator, _) = CreateVisualStudioWaitIndicator();
-            await waitIndicator.LoadAsync();
-
             Assert.Throws<ArgumentNullException>(() =>
             {
                 var (_, result) = waitIndicator.WaitForAsyncOperationWithResult("", "", false, (Func<CancellationToken, Task<int>>)null);
             });
-
-            Assert.False(waitIndicator.IsDisposed);
         }
 
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public static async Task WaitForAsyncOperationWithResultReturns(bool isCancelable)
+        public static void WaitForAsyncOperationWithResultReturns(bool isCancelable)
         {
             string title = "Test08";
             string message = "Testing08";
             var (waitIndicator, _) = CreateVisualStudioWaitIndicator(title, message, isCancelable);
-            await waitIndicator.LoadAsync();
-
             var (_, result) = waitIndicator.WaitForAsyncOperationWithResult(title, message, isCancelable, _ =>
             {
                 return Task.FromResult(42);
@@ -755,13 +557,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
 
         [Theory]
         [InlineData(true)]
-        public static async Task WaitForAsyncOperationWithResultReturnsCanceled(bool isCancelable)
+        public static void WaitForAsyncOperationWithResultReturnsCanceled(bool isCancelable)
         {
             string title = "Test08";
             string message = "Testing08";
             var (waitIndicator, _) = CreateVisualStudioWaitIndicator(title, message, isCancelable);
-            await waitIndicator.LoadAsync();
-
             var (canceled, result) = waitIndicator.WaitForAsyncOperationWithResult(title, message, isCancelable, _ =>
             {
                 if (isCancelable)
@@ -778,14 +578,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public static async Task WaitForOperation_Cancellation(bool isCancelable)
+        public static void WaitForOperation_Cancellation(bool isCancelable)
         {
             bool wasCalled = false;
             string title = "Test01";
             string message = "Testing01";
             var (waitIndicator, cancel) = CreateVisualStudioWaitIndicator(title, message, isCancelable);
-            await waitIndicator.LoadAsync();
-
             waitIndicator.WaitForOperation(title, message, isCancelable, token =>
             {
                 cancel();
@@ -798,12 +596,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         private static (VisualStudioOperationWaitIndicator, Action cancel) CreateVisualStudioWaitIndicator(string title = "", string message = "", bool isCancelable = false)
         {
             var threadingService = IProjectThreadingServiceFactory.Create();
-            var threadedWaitDialogFactoryServiceMock = new Mock<IVsService<SVsThreadedWaitDialogFactory, IVsThreadedWaitDialogFactory>>();
+            var threadedWaitDialogFactoryServiceMock = new Mock<IVsUIService<SVsThreadedWaitDialogFactory, IVsThreadedWaitDialogFactory>>();
             var (threadedWaitDialogFactory, cancel) = IVsThreadedWaitDialogFactoryFactory.Create(title, message, isCancelable);
-            threadedWaitDialogFactoryServiceMock.Setup(m => m.GetValueAsync(default)).ReturnsAsync(threadedWaitDialogFactory);
+            threadedWaitDialogFactoryServiceMock.Setup(m => m.Value).Returns(threadedWaitDialogFactory);
             var unconfiguredProject = UnconfiguredProjectFactory.Create();
 
-            var waitIndicator = new VisualStudioOperationWaitIndicator(unconfiguredProject, threadingService, threadedWaitDialogFactoryServiceMock.Object);
+            var waitIndicator = new VisualStudioOperationWaitIndicator(threadedWaitDialogFactoryServiceMock.Object, threadingService.JoinableTaskFactory.Context);
             return (waitIndicator, cancel);
         }
     }
