@@ -20,9 +20,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// <param name="solution">The solution in which to perform the rename.</param>
         /// <param name="symbol">The symbol to rename.</param>
         /// <param name="newName">The new name for the symbol.</param>
-        /// <param name="token">A token that can be used to cancel this operation.</param>
+        /// <param name="cancellationToken">A token that can be used to cancel this operation.</param>
         /// <returns>The new solution with the renamed symbol.</returns>
-        Task<Solution> RenameSymbolAsync(Solution solution, ISymbol symbol, string newName, CancellationToken token);
+        Task<Solution> RenameSymbolAsync(Solution solution, ISymbol symbol, string newName, CancellationToken cancellationToken);
 
         /// <summary>
         /// Try to apply the solution changes to the workspace.

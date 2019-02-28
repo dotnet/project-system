@@ -36,9 +36,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
         }
 
-        public Task<Solution> RenameSymbolAsync(Solution solution, ISymbol symbol, string newName, CancellationToken token)
+        public Task<Solution> RenameSymbolAsync(Solution solution, ISymbol symbol, string newName, CancellationToken cancellationToken)
         {
-            return RoslynRenamer.Renamer.RenameSymbolAsync(solution, symbol, newName, solution.Workspace.Options, token);
+            return RoslynRenamer.Renamer.RenameSymbolAsync(solution, symbol, newName, solution.Workspace.Options, cancellationToken);
         }
 
         public bool ApplyChangesToSolution(Workspace ws, Solution renamedSolution)
