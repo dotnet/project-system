@@ -81,6 +81,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             get;
         }
 
+        public ComposedPart FindComposedPart(Type type)
+        {
+            foreach (ComposedPart part in Configuration.Parts)
+            {
+                if (type == part.Definition.Type)
+                {
+                    return part;
+                }
+            }
+
+            return null;
+        }
+
+        public ComposablePartDefinition FindComposablePartDefinition(Type type)
+        {
+            foreach (ComposablePartDefinition part in Catalog.Parts)
+            {
+                if (type == part.Type)
+                {
+                    return part;
+                }
+            }
+
+            return null;
+        }
+
         private IDictionary<string, ISet<Type>> CollectContractsRequiringAppliesTo(ComposableCatalog catalog)
         {
             var contractsRequiringAppliesTo = new Dictionary<string, ISet<Type>>();
