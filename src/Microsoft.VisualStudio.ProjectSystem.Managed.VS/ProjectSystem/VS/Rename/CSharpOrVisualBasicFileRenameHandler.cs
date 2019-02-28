@@ -89,12 +89,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 return;
 
             // Check if there are any symbols that need to be renamed
-            (success, _) = await TryGetSymbolToRename(oldName, newFilePath, isCaseSensitive, project, default);
+            (success, _) = await TryGetSymbolToRenameAsync(oldName, newFilePath, isCaseSensitive, project, default);
             if (!success)
                 return;
 
             // Ask if the user wants to rename the symbol
-            bool userConfirmed = await CheckUserConfirmation(oldName);
+            bool userConfirmed = await CheckUserConfirmationAsync(oldName);
             if (!userConfirmed)
                 return;
 
@@ -163,11 +163,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                     ? StringComparison.Ordinal
                     : StringComparison.OrdinalIgnoreCase));
 
-        private static async Task<(bool success, ISymbol symbolToRename)> TryGetSymbolToRename(string oldName,
-                                                                                               string newFileName,
-                                                                                               bool isCaseSensitive,
-                                                                                               Project project,
-                                                                                               CancellationToken token)
+        private static async Task<(bool success, ISymbol symbolToRename)> TryGetSymbolToRenameAsync(string oldName,
+                                                                                                    string newFileName,
+                                                                                                    bool isCaseSensitive,
+                                                                                                    Project project,
+                                                                                                    CancellationToken token)
         {
             token.ThrowIfCancellationRequested();
 
@@ -215,7 +215,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             return false;
         }
 
-        private async Task<bool> CheckUserConfirmation(string oldFileName)
+        private async Task<bool> CheckUserConfirmationAsync(string oldFileName)
         {
             await _projectVsServices.ThreadingService.SwitchToUIThread();
             bool userNeedPrompt = _environmentOptions.GetOption("Environment", "ProjectsAndSolution", "PromptForRenameSymbol", false);
@@ -230,7 +230,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
         private async Task<Solution> GetRenamedSolutionAsync(string oldName, string newFileName, bool isCaseSensitive, Project project, CancellationToken token)
         {
-            (bool success, ISymbol symbolToRename) = await TryGetSymbolToRename(oldName, newFileName, isCaseSensitive, project, token);
+            (bool success, ISymbol symbolToRename) = await TryGetSymbolToRenameAsync(oldName, newFileName, isCaseSensitive, project, token);
             if (!success)
                 return null;
 
