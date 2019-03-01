@@ -138,6 +138,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                         OnPropertyChanged(nameof(SupportsWorkingDirectory));
                         OnPropertyChanged(nameof(SupportsLaunchUrl));
                         OnPropertyChanged(nameof(SupportsEnvironmentVariables));
+                        OnPropertyChanged(nameof(SupportNativeDebugging));
                         OnPropertyChanged(nameof(ActiveProviderUserControl));
                         OnPropertyChanged(nameof(DoesNotHaveErrors));
                     }
@@ -325,6 +326,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     SelectedDebugProfile.OtherSettings["nativeDebugging"] = value;
                     OnPropertyChanged(nameof(NativeCodeDebugging));
                 }
+            }
+        }
+
+        public bool SupportNativeDebugging
+        {
+            get
+            {
+                return ActiveProviderSupportsProperty(UIProfilePropertyName.NativeDebugging);
             }
         }
 

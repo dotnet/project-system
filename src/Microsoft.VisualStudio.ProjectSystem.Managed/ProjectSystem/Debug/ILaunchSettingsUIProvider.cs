@@ -11,6 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public const string LaunchUrl = "LaunchUrl";
         public const string EnvironmentVariables = "EnvironmentVariables";
         public const string WorkingDirectory = "WorkingDirectory";
+        public const string NativeDebugging = "NativeDebugging";
     }
 
     /// <summary>
