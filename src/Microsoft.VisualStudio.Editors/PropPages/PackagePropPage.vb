@@ -238,7 +238,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     datalist.Add(data)
                     data = New PropertyControlData(101, "PackageId", PackageId, ControlDataFlags.None, New Control() {PackageIdLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(102, "Version", PackageVersion, ControlDataFlags.None, New Control() {PackageVersionLabel})
+                    data = New PropertyControlData(102, "PackageVersion", PackageVersion, ControlDataFlags.None, New Control() {PackageVersionLabel})
                     datalist.Add(data)
                     data = New PropertyControlData(103, "Authors", Authors, ControlDataFlags.None, New Control() {AuthorsLabel})
                     datalist.Add(data)
