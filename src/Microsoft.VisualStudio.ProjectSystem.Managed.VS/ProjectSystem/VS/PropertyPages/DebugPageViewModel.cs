@@ -305,9 +305,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     return false;
                 }
 
-                if (SelectedDebugProfile.OtherSettings.Keys.Contains("nativeDebugging"))
+                if (SelectedDebugProfile.OtherSettings.ContainsKey("nativeDebugging"))
                 {
-                    return (bool) SelectedDebugProfile.OtherSettings["nativeDebugging"];
+                    return (bool)SelectedDebugProfile.OtherSettings["nativeDebugging"];
                 }
 
                 return false;
@@ -315,12 +315,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             set
             {
                 //Unlike other properties that have default values, nativeDebugging may not be set yet. Because false is the default behavior adding it has no affect
-                if (!SelectedDebugProfile.OtherSettings.ContainsKey("nativeDebugging"))
+                if (!SelectedDebugProfile.OtherSettings.TryGetValue("nativeDebugging", out object previousValue))
                 {
-                    SelectedDebugProfile.OtherSettings.Add("nativeDebugging", false);
+                    previousValue = false;
                 }
 
-                if (SelectedDebugProfile != null && (bool) SelectedDebugProfile.OtherSettings["nativeDebugging"] != value)
+                if ((bool)previousValue != value)
                 {
                     SelectedDebugProfile.OtherSettings["nativeDebugging"] = value;
                     OnPropertyChanged(nameof(NativeCodeDebugging));
