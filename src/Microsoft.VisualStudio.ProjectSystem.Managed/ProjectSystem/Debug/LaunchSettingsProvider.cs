@@ -624,7 +624,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 }
             }
 
-            return null;
+            return Task.CompletedTask;
         }
 
         /// <summary>

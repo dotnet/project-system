@@ -458,7 +458,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 // Set the ignore flag. It should be ignored.
                 provider.LastSettingsFileSyncTimeTest = DateTime.MinValue;
                 provider.SetIgnoreFileChanges(true);
-                Assert.Null(provider.LaunchSettingsFile_ChangedTest());
+                Assert.Equal(provider.LaunchSettingsFile_ChangedTest(), Task.CompletedTask);
                 Assert.Null(provider.CurrentSnapshot);
 
                 // Should run this time
@@ -482,7 +482,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 // Write new file, but set the timestamp to match
                 moqFS.WriteAllText(provider.LaunchSettingsFile, JsonStringWithWebSettings);
                 provider.LastSettingsFileSyncTimeTest = moqFS.LastFileWriteTime(provider.LaunchSettingsFile);
-                Assert.Null(provider.LaunchSettingsFile_ChangedTest());
+                Assert.Equal(provider.LaunchSettingsFile_ChangedTest(), Task.CompletedTask);
                 AssertEx.CollectionLength(provider.CurrentSnapshot.Profiles, 4);
 
                 moqFS.WriteAllText(provider.LaunchSettingsFile, JsonStringWithWebSettings);
