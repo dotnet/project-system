@@ -3,8 +3,12 @@
 using System;
 using System.Collections.Generic;
 
+using Microsoft.VisualStudio.Composition;
+using Microsoft.VisualStudio.ProjectSystem;
+
 namespace Microsoft.VisualStudio.Telemetry
 {
+    [ProjectSystemContract(ProjectSystemContractScope2.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface ITelemetryService
     {
         /// <summary>

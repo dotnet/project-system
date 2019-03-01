@@ -16,6 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     ///     Provides an implementation of <see cref="IConfiguredProjectActivationTracking"/> that is based on the results of <see cref="IActiveConfigurationGroupService"/>.
     /// </summary>
     [Export(typeof(IConfiguredProjectImplicitActivationTracking))]
+    [AppliesTo(ProjectCapability.DotNet)]
     internal class ConfiguredProjectImplicitActivationTracking : OnceInitializedOnceDisposed, IConfiguredProjectImplicitActivationTracking
     {
         private readonly ConfiguredProject _project;

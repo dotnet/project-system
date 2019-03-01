@@ -3,12 +3,14 @@
 using System;
 using System.Collections.Generic;
 
+using Microsoft.VisualStudio.Composition;
+
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     /// <summary>
     ///     Parses <see cref="BuildOptions"/> instances from string-based command-line arguments.
     /// </summary>
-    [ProjectSystemContract(ProjectSystemContractScope.ProjectService, ProjectSystemContractProvider.Private, Cardinality = Composition.ImportCardinality.ZeroOrMore)]
+    [ProjectSystemContract(ProjectSystemContractScope2.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ZeroOrMore)]
     internal interface ICommandLineParserService
     {
         /// <summary>

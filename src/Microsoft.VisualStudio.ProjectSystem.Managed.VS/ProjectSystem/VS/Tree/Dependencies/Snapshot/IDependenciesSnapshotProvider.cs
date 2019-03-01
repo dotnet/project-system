@@ -2,12 +2,14 @@
 
 using System;
 using System.Threading;
+using Microsoft.VisualStudio.Composition;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     /// <summary>
     /// Provides immutable dependencies snapshot for a given project.
     /// </summary>
+    [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface IDependenciesSnapshotProvider
     {
         /// <summary>

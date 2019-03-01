@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
 
@@ -8,6 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
     /// <summary>
     ///     Exposes a VS specific API related to <see cref="IVsContainedLanguage"/>
     /// </summary>
+    [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     public interface IVsContainedLanguageComponentsFactory
     {
         /// <summary>

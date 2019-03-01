@@ -4,6 +4,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
+using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
@@ -14,6 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     /// <typeparam name="T">
     ///     The type of the service to retrieve and return from <see cref="GetValueAsync"/>.
     /// </typeparam>
+    [ProjectSystemContract(ProjectSystemContractScope2.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface IVsService<T>
     {
         /// <summary>

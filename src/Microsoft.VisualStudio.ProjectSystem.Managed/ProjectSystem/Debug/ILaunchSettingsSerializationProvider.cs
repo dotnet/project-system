@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using Microsoft.VisualStudio.Composition;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
@@ -9,6 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     /// [ExportMetadata("JsonSection", "nameofjsonsection")]
     /// [ExportMetadata("SerializationProvider", typeof(objectToSerialize))]
     /// </summary>
+    [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ZeroOrMore)]
     public interface ILaunchSettingsSerializationProvider
     {
     }
