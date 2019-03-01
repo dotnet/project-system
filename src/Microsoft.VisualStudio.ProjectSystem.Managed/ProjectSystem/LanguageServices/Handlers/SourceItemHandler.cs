@@ -6,9 +6,8 @@ using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.ProjectSystem.Logging;
-using Microsoft.VisualStudio.ProjectSystem.Rename;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
@@ -17,25 +16,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     ///     to the compiler during design-time builds.
     /// </summary>
     [Export(typeof(IWorkspaceContextHandler))]
-    internal partial class SourceItemHandler : AbstractEvaluationCommandLineHandler, IProjectEvaluationHandler, IProjectUpdatedHandler, ICommandLineHandler
+    internal partial class SourceItemHandler : AbstractEvaluationCommandLineHandler, IProjectEvaluationHandler, ICommandLineHandler
     {
-        private readonly IFileRenameHandler[] _renameHandlers;
         private readonly UnconfiguredProject _project;
 
         [ImportingConstructor]
-        public SourceItemHandler(UnconfiguredProject project, [ImportMany]IFileRenameHandler[] renameHandlers)
+        public SourceItemHandler(UnconfiguredProject project)
             : base(project)
         {
-            _renameHandlers = renameHandlers;
             _project = project;
         }
 
         public string ProjectEvaluationRule
-        {
-            get { return Compile.SchemaName; }
-        }
-
-        public string ProjectUpdatedRule
         {
             get { return Compile.SchemaName; }
         }
@@ -90,19 +82,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         private IEnumerable<string> GetFilePaths(BuildOptions options)
         {
             return options.SourceFiles.Select(f => _project.MakeRelative(f.Path));
-        }
-
-        public async Task HandleUpdateAsync(IComparable version, IProjectChangeDescription projectChange, bool isActiveContext, IProjectLogger logger)
-        {
-            foreach (IFileRenameHandler hander in _renameHandlers)
-            {
-                foreach ((string oldFilePath, string newFilePath) in projectChange.Difference.RenamedItems)
-                {
-                    await hander.HandleRenameAsync(
-                        _project.MakeRooted(oldFilePath),
-                        _project.MakeRooted(newFilePath));
-                }
-            }
         }
     }
 }
