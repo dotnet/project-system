@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
     [Export(typeof(IOperationWaitIndicator))]
     internal partial class VisualStudioOperationWaitIndicator : IOperationWaitIndicator
     {
-        private readonly IVsUIService<SVsThreadedWaitDialogFactory, IVsThreadedWaitDialogFactory> _waitDialogFactoryService;
+        private readonly IVsUIService<IVsThreadedWaitDialogFactory> _waitDialogFactoryService;
         private readonly JoinableTaskContext _joinableTaskContext;
 
         [ImportingConstructor]
@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
             Requires.NotNull(message, nameof(message));
             Requires.NotNull(action, nameof(action));
 
-            StaticWaitIndicator.WaitForOperation(_waitDialogFactoryService.Value, title, message, allowCancel, action);
+            StaticWaitIndicator.WaitForOperation(_waitDialogFactoryService, title, message, allowCancel, action);
         }
 
         public T WaitForOperation<T>(string title, string message, bool allowCancel, Func<CancellationToken, T> action)
@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
             Requires.NotNull(message, nameof(message));
             Requires.NotNull(action, nameof(action));
 
-            return StaticWaitIndicator.WaitForOperation(_waitDialogFactoryService.Value, title, message, allowCancel, action);
+            return StaticWaitIndicator.WaitForOperation(_waitDialogFactoryService, title, message, allowCancel, action);
         }
 
         public void WaitForAsyncOperation(string title, string message, bool allowCancel, Func<CancellationToken, Task> asyncFunction)
@@ -48,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
             Requires.NotNull(message, nameof(message));
             Requires.NotNull(asyncFunction, nameof(asyncFunction));
 
-            StaticWaitIndicator.WaitForAsyncOperation(_waitDialogFactoryService.Value, _joinableTaskContext, title, message, allowCancel, asyncFunction);
+            StaticWaitIndicator.WaitForAsyncOperation(_waitDialogFactoryService, _joinableTaskContext, title, message, allowCancel, asyncFunction);
         }
 
         public T WaitForAsyncOperation<T>(string title, string message, bool allowCancel, Func<CancellationToken, Task<T>> asyncFunction)
@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
             Requires.NotNull(message, nameof(message));
             Requires.NotNull(asyncFunction, nameof(asyncFunction));
 
-            return StaticWaitIndicator.WaitForAsyncOperation(_waitDialogFactoryService.Value, _joinableTaskContext, title, message, allowCancel, asyncFunction);
+            return StaticWaitIndicator.WaitForAsyncOperation(_waitDialogFactoryService, _joinableTaskContext, title, message, allowCancel, asyncFunction);
         }
 
         public WaitIndicatorResult WaitForOperationWithResult(string title, string message, bool allowCancel, Action<CancellationToken> action)
@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
             Requires.NotNull(message, nameof(message));
             Requires.NotNull(action, nameof(action));
 
-            return StaticWaitIndicator.WaitForOperationWithResult(_waitDialogFactoryService.Value, title, message, allowCancel, action);
+            return StaticWaitIndicator.WaitForOperationWithResult(_waitDialogFactoryService, title, message, allowCancel, action);
         }
 
         public (WaitIndicatorResult, T) WaitForOperationWithResult<T>(string title, string message, bool allowCancel, Func<CancellationToken, T> function)
@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
             Requires.NotNull(message, nameof(message));
             Requires.NotNull(function, nameof(function));
 
-            return StaticWaitIndicator.WaitForOperationWithResult(_waitDialogFactoryService.Value, title, message, allowCancel, function);
+            return StaticWaitIndicator.WaitForOperationWithResult(_waitDialogFactoryService, title, message, allowCancel, function);
         }
 
         public WaitIndicatorResult WaitForAsyncOperationWithResult(string title, string message, bool allowCancel, Func<CancellationToken, Task> asyncFunction)
@@ -84,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
             Requires.NotNull(message, nameof(message));
             Requires.NotNull(asyncFunction, nameof(asyncFunction));
 
-            return StaticWaitIndicator.WaitForAsyncOperationWithResult(_waitDialogFactoryService.Value, _joinableTaskContext, title, message, allowCancel, asyncFunction);
+            return StaticWaitIndicator.WaitForAsyncOperationWithResult(_waitDialogFactoryService, _joinableTaskContext, title, message, allowCancel, asyncFunction);
         }
 
         public (WaitIndicatorResult, T) WaitForAsyncOperationWithResult<T>(string title, string message, bool allowCancel, Func<CancellationToken, Task<T>> asyncFunction)
@@ -93,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
             Requires.NotNull(message, nameof(message));
             Requires.NotNull(asyncFunction, nameof(asyncFunction));
 
-            return StaticWaitIndicator.WaitForAsyncOperationWithResult(_waitDialogFactoryService.Value, _joinableTaskContext, title, message, allowCancel, asyncFunction);
+            return StaticWaitIndicator.WaitForAsyncOperationWithResult(_waitDialogFactoryService, _joinableTaskContext, title, message, allowCancel, asyncFunction);
         }
     }
 }

@@ -56,6 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
 
         private static VisualStudioWaitContext Create(string title, string message, bool allowCancel)
         {
+            var ivsUIServiceMock = new Mock<IVsUIService<IVsThreadedWaitDialogFactory>>();
             var threadedWaitDialogFactoryMock = new Mock<IVsThreadedWaitDialogFactory>();
             var threadedWaitDialogMock = new Mock<IVsThreadedWaitDialog3>();
             threadedWaitDialogMock.Setup(m => m.StartWaitDialogWithCallback(
@@ -96,18 +97,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
                     ppIVsThreadedWaitDialog = threadedWaitDialog;
                 }))
                 .Returns(HResult.OK);
-            return new VisualStudioWaitContext(threadedWaitDialogFactoryMock.Object, title, message, allowCancel);
+            ivsUIServiceMock.Setup(m => m.Value).Returns(threadedWaitDialogFactoryMock.Object);
+            return new VisualStudioWaitContext(ivsUIServiceMock.Object, title, message, allowCancel);
         }
 
         private static VisualStudioWaitContext CreateWrongTypeImpl(string title, string message, bool allowCancel)
         {
+            var ivsUIServiceMock = new Mock<IVsUIService<IVsThreadedWaitDialogFactory>>();
             var threadedWaitDialogFactoryMock = new Mock<IVsThreadedWaitDialogFactory>();
             var threadedWaitDialog = new Mock<IVsThreadedWaitDialog2>().Object;
             threadedWaitDialogFactoryMock
                 .Setup(m => m.CreateInstance(out It.Ref<IVsThreadedWaitDialog2>.IsAny))
                 .Callback(new CreateInstanceCallback((out IVsThreadedWaitDialog2 ppIVsThreadedWaitDialog) => ppIVsThreadedWaitDialog = null))
                 .Returns(HResult.OK);
-            return new VisualStudioWaitContext(threadedWaitDialogFactoryMock.Object, title, message, allowCancel);
+            ivsUIServiceMock.Setup(m => m.Value).Returns(threadedWaitDialogFactoryMock.Object);
+            return new VisualStudioWaitContext(ivsUIServiceMock.Object, title, message, allowCancel);
         }
     }
 }

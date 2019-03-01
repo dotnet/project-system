@@ -17,12 +17,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
     {
         internal static class StaticWaitIndicator
         {
-            public static void WaitForOperation(IVsThreadedWaitDialogFactory waitDialogFactory, string title, string message, bool allowCancel, Action<CancellationToken> action)
+            public static void WaitForOperation(IVsUIService<IVsThreadedWaitDialogFactory> waitDialogFactory, string title, string message, bool allowCancel, Action<CancellationToken> action)
             {
                 _ = WaitForOperationWithResult(waitDialogFactory, title, message, allowCancel, action);
             }
 
-            public static T WaitForOperation<T>(IVsThreadedWaitDialogFactory waitDialogFactory, string title, string message, bool allowCancel, Func<CancellationToken, T> action)
+            public static T WaitForOperation<T>(IVsUIService<IVsThreadedWaitDialogFactory> waitDialogFactory, string title, string message, bool allowCancel, Func<CancellationToken, T> action)
             {
                 if (typeof(T) == typeof(Task))
                     throw new ArgumentException(nameof(T));
@@ -31,18 +31,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
                 return result;
             }
 
-            public static void WaitForAsyncOperation(IVsThreadedWaitDialogFactory waitDialogFactory, JoinableTaskContext joinableTaskContext, string title, string message, bool allowCancel, Func<CancellationToken, Task> asyncFunction)
+            public static void WaitForAsyncOperation(IVsUIService<IVsThreadedWaitDialogFactory> waitDialogFactory, JoinableTaskContext joinableTaskContext, string title, string message, bool allowCancel, Func<CancellationToken, Task> asyncFunction)
             {
                 _ = WaitForAsyncOperationWithResult(waitDialogFactory, joinableTaskContext, title, message, allowCancel, asyncFunction);
             }
 
-            public static T WaitForAsyncOperation<T>(IVsThreadedWaitDialogFactory waitDialogFactory, JoinableTaskContext joinableTaskContext, string title, string message, bool allowCancel, Func<CancellationToken, Task<T>> asyncFunction)
+            public static T WaitForAsyncOperation<T>(IVsUIService<IVsThreadedWaitDialogFactory> waitDialogFactory, JoinableTaskContext joinableTaskContext, string title, string message, bool allowCancel, Func<CancellationToken, Task<T>> asyncFunction)
             {
                 (_, T result) = WaitForAsyncOperationWithResult(waitDialogFactory, joinableTaskContext, title, message, allowCancel, asyncFunction);
                 return result;
             }
 
-            public static WaitIndicatorResult WaitForAsyncOperationWithResult(IVsThreadedWaitDialogFactory waitDialogFactory, JoinableTaskContext joinableTaskContext, string title, string message, bool allowCancel, Func<CancellationToken, Task> asyncFunction)
+            public static WaitIndicatorResult WaitForAsyncOperationWithResult(IVsUIService<IVsThreadedWaitDialogFactory> waitDialogFactory, JoinableTaskContext joinableTaskContext, string title, string message, bool allowCancel, Func<CancellationToken, Task> asyncFunction)
             {
                 (WaitIndicatorResult waitResult, _) = WaitForOperationImpl(waitDialogFactory, title, message, allowCancel, token =>
                 {
@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
                 return waitResult;
             }
 
-            public static WaitIndicatorResult WaitForOperationWithResult(IVsThreadedWaitDialogFactory waitDialogFactory, string title, string message, bool allowCancel, Action<CancellationToken> action)
+            public static WaitIndicatorResult WaitForOperationWithResult(IVsUIService<IVsThreadedWaitDialogFactory> waitDialogFactory, string title, string message, bool allowCancel, Action<CancellationToken> action)
             {
                 (WaitIndicatorResult waitResult, _) = WaitForOperationImpl(waitDialogFactory, title, message, allowCancel, token =>
                 {
@@ -64,17 +64,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
                 return waitResult;
             }
 
-            public static (WaitIndicatorResult, T) WaitForAsyncOperationWithResult<T>(IVsThreadedWaitDialogFactory waitDialogFactory, JoinableTaskContext joinableTaskContext, string title, string message, bool allowCancel, Func<CancellationToken, Task<T>> asyncFunction)
+            public static (WaitIndicatorResult, T) WaitForAsyncOperationWithResult<T>(IVsUIService<IVsThreadedWaitDialogFactory> waitDialogFactory, JoinableTaskContext joinableTaskContext, string title, string message, bool allowCancel, Func<CancellationToken, Task<T>> asyncFunction)
             {
                 return WaitForOperationImpl(waitDialogFactory, title, message, allowCancel, token => joinableTaskContext.Factory.Run(() => asyncFunction(token)));
             }
 
-            public static (WaitIndicatorResult, T) WaitForOperationWithResult<T>(IVsThreadedWaitDialogFactory waitDialogFactory, string title, string message, bool allowCancel, Func<CancellationToken, T> function)
+            public static (WaitIndicatorResult, T) WaitForOperationWithResult<T>(IVsUIService<IVsThreadedWaitDialogFactory> waitDialogFactory, string title, string message, bool allowCancel, Func<CancellationToken, T> function)
             {
                 return WaitForOperationImpl(waitDialogFactory, title, message, allowCancel, function);
             }
 
-            private static (WaitIndicatorResult, T) WaitForOperationImpl<T>(IVsThreadedWaitDialogFactory waitDialogFactory, string title, string message, bool allowCancel, Func<CancellationToken, T> function)
+            private static (WaitIndicatorResult, T) WaitForOperationImpl<T>(IVsUIService<IVsThreadedWaitDialogFactory> waitDialogFactory, string title, string message, bool allowCancel, Func<CancellationToken, T> function)
             {
                 using (IWaitContext waitContext = StartWait(waitDialogFactory, title, message, allowCancel))
                 {
@@ -95,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
                 }
             }
 
-            private static IWaitContext StartWait(IVsThreadedWaitDialogFactory waitDialogFactory, string title, string message, bool allowCancel)
+            private static IWaitContext StartWait(IVsUIService<IVsThreadedWaitDialogFactory> waitDialogFactory, string title, string message, bool allowCancel)
                 => new VisualStudioWaitContext(waitDialogFactory, title, message, allowCancel);
         }
     }

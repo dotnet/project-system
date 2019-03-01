@@ -1,6 +1,5 @@
-// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.Runtime.InteropServices;
 using System.Threading;
 
@@ -18,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly IVsThreadedWaitDialog3 _dialog;
 
-        public VisualStudioWaitContext(IVsThreadedWaitDialogFactory waitDialogFactory,
+        public VisualStudioWaitContext(IVsUIService<IVsThreadedWaitDialogFactory> waitDialogFactory,
                                        string title,
                                        string message,
                                        bool allowCancel)
@@ -33,9 +32,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
             _dialog = CreateDialog(title, waitDialogFactory);
         }
 
-        private IVsThreadedWaitDialog3 CreateDialog(string title, IVsThreadedWaitDialogFactory dialogFactory)
+        private IVsThreadedWaitDialog3 CreateDialog(string title, IVsUIService<IVsThreadedWaitDialogFactory> dialogFactory)
         {
-            Marshal.ThrowExceptionForHR(dialogFactory.CreateInstance(out IVsThreadedWaitDialog2 dialog2));
+            Marshal.ThrowExceptionForHR(dialogFactory.Value.CreateInstance(out IVsThreadedWaitDialog2 dialog2));
             Assumes.NotNull(dialog2);
 
             var dialog3 = (IVsThreadedWaitDialog3)dialog2;
