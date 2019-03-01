@@ -1,11 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!--Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.-->
-<Rule Name="Content" PageTemplate="generic" PropertyPagesHidden="true" xmlns="http://schemas.microsoft.com/build/2009/properties">
+<Rule Name="Content"
+      PageTemplate="generic"
+      PropertyPagesHidden="true"
+       xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
-    <DataSource HasConfigurationCondition="False" ItemType="Content" Persistence="ProjectFile" SourceOfDefaultValue="AfterContext" />
+    <DataSource HasConfigurationCondition="False"
+                ItemType="Content"
+                Persistence="ProjectFile"
+                SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
 
-  <DynamicEnumProperty Name="{}{ItemType}" EnumProvider="ItemTypes" />
+  <DynamicEnumProperty Name="{}{ItemType}"
+                       EnumProvider="ItemTypes" />
 
   <EnumProperty Name="CopyToOutputDirectory">
     <EnumValue Name="Never" />
@@ -13,39 +20,58 @@
     <EnumValue Name="PreserveNewest" />
   </EnumProperty>
 
-  <StringProperty Name="DependentUpon" Visible="false">
+  <StringProperty Name="DependentUpon"
+                  Visible="false">
     <StringProperty.Metadata>
-      <NameValuePair Name="DoNotCopyAcrossProjects" Value="true" />
+      <NameValuePair Name="DoNotCopyAcrossProjects"
+                     Value="true" />
     </StringProperty.Metadata>
   </StringProperty>
 
-  <StringProperty Name="FileNameAndExtension" ReadOnly="true">
+  <StringProperty Name="FileNameAndExtension"
+                  ReadOnly="true">
     <StringProperty.DataSource>
-      <DataSource ItemType="Content" PersistedName="FileNameAndExtension" Persistence="Intrinsic" SourceOfDefaultValue="AfterContext" />
+      <DataSource ItemType="Content"
+                  PersistedName="FileNameAndExtension"
+                  Persistence="Intrinsic"
+                  SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
 
-  <StringProperty Name="FullPath" ReadOnly="true">
+  <StringProperty Name="FullPath"
+                  ReadOnly="true">
     <StringProperty.DataSource>
-      <DataSource ItemType="Content" PersistedName="FullPath" Persistence="Intrinsic" SourceOfDefaultValue="AfterContext" />
+      <DataSource ItemType="Content"
+                  PersistedName="FullPath"
+                  Persistence="Intrinsic"
+                  SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
 
-  <StringProperty Name="Identity" ReadOnly="true" Visible="false">
+  <StringProperty Name="Identity"
+                  ReadOnly="true"
+                  Visible="false">
     <StringProperty.DataSource>
-      <DataSource ItemType="Content" PersistedName="Identity" Persistence="Intrinsic" SourceOfDefaultValue="AfterContext" />
+      <DataSource ItemType="Content"
+                  PersistedName="Identity"
+                  Persistence="Intrinsic"
+                  SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
 
-  <StringProperty Name="Link" Visible="false">
+  <StringProperty Name="Link"
+                  Visible="false">
     <StringProperty.DataSource>
-      <DataSource PersistenceStyle="Attribute" SourceOfDefaultValue="AfterContext" />
+      <DataSource PersistenceStyle="Attribute"
+                  SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
     <StringProperty.Metadata>
-      <NameValuePair Name="DoNotCopyAcrossProjects" Value="true" />
+      <NameValuePair Name="DoNotCopyAcrossProjects"
+                     Value="true" />
     </StringProperty.Metadata>
   </StringProperty>
 
-  <BoolProperty Name="Visible" Visible="false" />
+  <BoolProperty Name="Visible"
+                Visible="false" />
 
 </Rule>

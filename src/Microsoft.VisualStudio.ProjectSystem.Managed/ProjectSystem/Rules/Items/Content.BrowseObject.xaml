@@ -1,56 +1,101 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!--Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.-->
-<Rule Name="Content" Description="File Properties" DisplayName="File Properties" PageTemplate="generic" PropertyPagesHidden="true" xmlns="http://schemas.microsoft.com/build/2009/properties">
+<Rule Name="Content"
+      Description="File Properties"
+      DisplayName="File Properties"
+      PageTemplate="generic"
+      PropertyPagesHidden="true"
+       xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.Categories>
-    <Category Name="Advanced" DisplayName="Advanced" />
-    <Category Name="Misc" DisplayName="Misc" />
+    <Category Name="Advanced"
+              DisplayName="Advanced" />
+    <Category Name="Misc"
+              DisplayName="Misc" />
   </Rule.Categories>
 
   <Rule.DataSource>
-    <DataSource HasConfigurationCondition="False" ItemType="Content" Persistence="ProjectFile" SourceOfDefaultValue="AfterContext" />
+    <DataSource HasConfigurationCondition="False"
+                ItemType="Content"
+                Persistence="ProjectFile"
+                SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
 
-  <DynamicEnumProperty Name="{}{ItemType}" Category="Advanced" Description="How the file relates to the build and deployment processes." DisplayName="Build Action" EnumProvider="ItemTypes" />
+  <DynamicEnumProperty Name="{}{ItemType}"
+                       Category="Advanced"
+                       Description="How the file relates to the build and deployment processes."
+                       DisplayName="Build Action"
+                       EnumProvider="ItemTypes" />
 
-  <EnumProperty Name="CopyToOutputDirectory" Category="Advanced" Description="Specifies the source file will be copied to the output directory." DisplayName="Copy to Output Directory">
-    <EnumValue Name="Never" DisplayName="Do not copy" />
-    <EnumValue Name="Always" DisplayName="Copy always" />
-    <EnumValue Name="PreserveNewest" DisplayName="Copy if newer" />
+  <EnumProperty Name="CopyToOutputDirectory"
+                Category="Advanced"
+                Description="Specifies the source file will be copied to the output directory."
+                DisplayName="Copy to Output Directory">
+    <EnumValue Name="Never"
+               DisplayName="Do not copy" />
+    <EnumValue Name="Always"
+               DisplayName="Copy always" />
+    <EnumValue Name="PreserveNewest"
+               DisplayName="Copy if newer" />
   </EnumProperty>
 
-  <StringProperty Name="DependentUpon" Visible="false">
+  <StringProperty Name="DependentUpon"
+                  Visible="false">
     <StringProperty.Metadata>
-      <NameValuePair Name="DoNotCopyAcrossProjects" Value="true" />
+      <NameValuePair Name="DoNotCopyAcrossProjects"
+                     Value="true" />
     </StringProperty.Metadata>
   </StringProperty>
 
-  <StringProperty Name="FileNameAndExtension" Category="Misc" Description="Name of the file or folder." DisplayName="File Name" ReadOnly="true">
+  <StringProperty Name="FileNameAndExtension"
+                  Category="Misc"
+                  Description="Name of the file or folder."
+                  DisplayName="File Name"
+                  ReadOnly="true">
     <StringProperty.DataSource>
-      <DataSource ItemType="Content" PersistedName="FileNameAndExtension" Persistence="Intrinsic" SourceOfDefaultValue="AfterContext" />
+      <DataSource ItemType="Content"
+                  PersistedName="FileNameAndExtension"
+                  Persistence="Intrinsic"
+                  SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
 
-  <StringProperty Name="FullPath" Category="Misc" Description="Location of the file." DisplayName="Full Path" ReadOnly="true">
+  <StringProperty Name="FullPath"
+                  Category="Misc"
+                  Description="Location of the file."
+                  DisplayName="Full Path"
+                  ReadOnly="true">
     <StringProperty.DataSource>
-      <DataSource ItemType="Content" PersistedName="FullPath" Persistence="Intrinsic" SourceOfDefaultValue="AfterContext" />
+      <DataSource ItemType="Content"
+                  PersistedName="FullPath"
+                  Persistence="Intrinsic"
+                  SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
 
-  <StringProperty Name="Identity" ReadOnly="true" Visible="false">
+  <StringProperty Name="Identity"
+                  ReadOnly="true"
+                  Visible="false">
     <StringProperty.DataSource>
-      <DataSource ItemType="Content" PersistedName="Identity" Persistence="Intrinsic" SourceOfDefaultValue="AfterContext" />
+      <DataSource ItemType="Content"
+                  PersistedName="Identity"
+                  Persistence="Intrinsic"
+                  SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
 
-  <StringProperty Name="Link" Visible="false">
+  <StringProperty Name="Link"
+                  Visible="false">
     <StringProperty.DataSource>
-      <DataSource PersistenceStyle="Attribute" SourceOfDefaultValue="AfterContext" />
+      <DataSource PersistenceStyle="Attribute"
+                  SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
     <StringProperty.Metadata>
-      <NameValuePair Name="DoNotCopyAcrossProjects" Value="true" />
+      <NameValuePair Name="DoNotCopyAcrossProjects"
+                     Value="true" />
     </StringProperty.Metadata>
   </StringProperty>
 
-  <BoolProperty Name="Visible" Visible="false" />
+  <BoolProperty Name="Visible"
+                Visible="false" />
 
 </Rule>

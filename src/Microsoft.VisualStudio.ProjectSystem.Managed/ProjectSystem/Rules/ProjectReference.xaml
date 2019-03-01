@@ -1,81 +1,75 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
-<Rule
-    Name="ProjectReference"
-    DisplayName="Project Reference"
-    PageTemplate="generic"
-    Description="Reference Properties"
-    xmlns="http://schemas.microsoft.com/build/2009/properties">
-
+<Rule Name="ProjectReference"
+      Description="Reference Properties"
+      DisplayName="Project Reference"
+      PageTemplate="generic"
+       xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
-    <DataSource Persistence="ProjectFile"
+    <DataSource HasConfigurationCondition="False"
                 ItemType="ProjectReference"
-                HasConfigurationCondition="False"
+                Persistence="ProjectFile"
                 SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
 
-  <!-- Visible properties -->
-
   <StringListProperty Name="Aliases"
-                      DisplayName="Aliases"
                       Description="A comma-delimited list of aliases to this reference."
+                      DisplayName="Aliases"
                       Separator=",">
     <StringListProperty.DataSource>
-      <DataSource Persistence="ProjectFile"
+      <DataSource HasConfigurationCondition="False"
                   ItemType="ProjectReference"
-                  HasConfigurationCondition="False"
+                  Persistence="ProjectFile"
                   SourceOfDefaultValue="AfterContext" />
     </StringListProperty.DataSource>
   </StringListProperty>
 
   <BoolProperty Name="CopyLocal"
-                DisplayName="Copy Local"
-                Description="Indicates whether the reference will be copied to the output directory.">
+                Description="Indicates whether the reference will be copied to the output directory."
+                DisplayName="Copy Local">
     <BoolProperty.DataSource>
-      <DataSource Persistence="ProjectFile"
+      <DataSource HasConfigurationCondition="False"
                   ItemType="ProjectReference"
-                  HasConfigurationCondition="False"
                   PersistedName="Private"
+                  Persistence="ProjectFile"
                   SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
 
   <BoolProperty Name="CopyLocalSatelliteAssemblies"
-                DisplayName="Copy Local Satellite Assemblies"
-                Description="Indicates whether the satellite assemblies of the reference target should be copied into this project's output directory." />
+                Description="Indicates whether the satellite assemblies of the reference target should be copied into this project's output directory."
+                DisplayName="Copy Local Satellite Assemblies" />
 
   <StringProperty Name="Culture"
-                  ReadOnly="True"
+                  Description="The value of the culture field from the assembly metadata."
                   DisplayName="Culture"
-                  Description="The value of the culture field from the assembly metadata.">
-  </StringProperty>
+                  ReadOnly="True" />
 
   <StringProperty Name="Description"
-                  ReadOnly="True"
+                  Description="The value of the Title field from the assembly metadata."
                   DisplayName="Description"
-                  Description="The value of the Title field from the assembly metadata.">
-  </StringProperty>
+                  ReadOnly="True" />
 
   <BoolProperty Name="EmbedInteropTypes"
-                DisplayName="Embed Interop Types"
-                Description="Indicates whether types defined in this assembly will be embedded into the target assembly.">
+                Description="Indicates whether types defined in this assembly will be embedded into the target assembly."
+                DisplayName="Embed Interop Types">
     <BoolProperty.DataSource>
-      <DataSource Persistence="ProjectFile"
+      <DataSource HasConfigurationCondition="False"
                   ItemType="ProjectReference"
-                  HasConfigurationCondition="False"
+                  Persistence="ProjectFile"
                   SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
 
   <StringProperty Name="ExcludeAssets"
-                  Visible="True"
+                  Description="Assets to exclude from this reference"
                   DisplayName="Exclude Assets"
-                  Description="Assets to exclude from this reference" />
+                  Visible="True" />
 
   <StringProperty Name="Identity"
-                  ReadOnly="True"
+                  Description="Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence)."
                   DisplayName="Identity"
-                  Description="Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).">
+                  ReadOnly="True">
     <StringProperty.DataSource>
       <DataSource PersistedName="{}{Identity}"
                   SourceOfDefaultValue="AfterContext" />
@@ -83,38 +77,17 @@
   </StringProperty>
 
   <StringProperty Name="IncludeAssets"
-                  Visible="True"
+                  Description="Assets to include from this reference"
                   DisplayName="Include Assets"
-                  Description="Assets to include from this reference" />
+                  Visible="True" />
 
-  <BoolProperty Name="ReferenceOutputAssembly"
-                DisplayName="Reference Output Assembly"
-                Description="A value indicating whether the compiler should include a reference to the target project's primary output assembly." />
-
-  <StringProperty Name="PrivateAssets"
-                  Visible="True"
-                  DisplayName="Private Assets"
-                  Description="Assets that are private in this reference" />
-
-  <StringProperty Name="ResolvedPath"
-                  ReadOnly="True"
-                  DisplayName="Path"
-                  Description="Location of the file being referenced.">
-    <StringProperty.DataSource>
-      <DataSource PersistedName="Identity"
-                  SourceOfDefaultValue="AfterContext" />
-    </StringProperty.DataSource>
-  </StringProperty>
-
-  <StringProperty Name="Version"
-                  ReadOnly="True"
-                  DisplayName="Version"
-                  Description="Version of reference.">
-  </StringProperty>
-
-  <!-- Hidden properties -->
   <BoolProperty Name="LinkLibraryDependencies"
                 Visible="False" />
+
+  <StringProperty Name="PrivateAssets"
+                  Description="Assets that are private in this reference"
+                  DisplayName="Private Assets"
+                  Visible="True" />
 
   <StringProperty Name="Project"
                   Visible="False" />
@@ -122,10 +95,30 @@
   <StringProperty Name="ReferencedProjectIdentifier"
                   Visible="False" />
 
+  <BoolProperty Name="ReferenceOutputAssembly"
+                Description="A value indicating whether the compiler should include a reference to the target project's primary output assembly."
+                DisplayName="Reference Output Assembly" />
+
+  <StringProperty Name="ResolvedPath"
+                  Description="Location of the file being referenced."
+                  DisplayName="Path"
+                  ReadOnly="True">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="Identity"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
   <BoolProperty Name="UseLibraryDependencyInputs"
                 Visible="False" />
 
+  <StringProperty Name="Version"
+                  Description="Version of reference."
+                  DisplayName="Version"
+                  ReadOnly="True" />
+
   <BoolProperty Name="Visible"
-                Visible="False"
-                ReadOnly="True" />
+                ReadOnly="True"
+                Visible="False" />
+
 </Rule>
