@@ -1,73 +1,74 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
-<Rule
-    Name="DotNetCliToolReference"
-    DisplayName="Package"
-    PageTemplate="generic"
-    Description="Package"
-    xmlns="http://schemas.microsoft.com/build/2009/properties">
-
+<Rule Name="DotNetCliToolReference"
+      Description="Package"
+      DisplayName="Package"
+      PageTemplate="generic"
+      xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
-    <DataSource Persistence="ProjectFile" ItemType="DotNetCliToolReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    <DataSource HasConfigurationCondition="False"
+                ItemType="DotNetCliToolReference"
+                Persistence="ProjectFile"
+                SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
 
   <StringProperty Name="Description"
-                  ReadOnly="True"
-                  Visible="True"
+                  Description="Dependency description."
                   DisplayName="Description"
-                  Description="Dependency description." />
-
-  <StringProperty Name="Version"
                   ReadOnly="True"
-                  DisplayName="Version"
-                  Description="Version of dependency.">
-  </StringProperty>
-
-  <StringProperty Name="IncludeAssets"
-                  Visible="True"
-                  DisplayName="IncludeAssets"
-                  Description="Assets to include from this reference" />
+                  Visible="True" />
 
   <StringProperty Name="ExcludeAssets"
-                  Visible="True"
+                  Description="Assets to exclude from this reference"
                   DisplayName="ExcludeAssets"
-                  Description="Assets to exclude from this reference" />
-
-  <StringProperty Name="PrivateAssets"
-                  Visible="True"
-                  DisplayName="PrivateAssets"
-                  Description="Assets that are private in this reference" />
-
-  <StringProperty Name="Name"
-                  Visible="True"
-                  ReadOnly="True" />
-
-  <StringProperty Name="OriginalItemSpec"
-                  Visible="False"
-                  ReadOnly="True"
-                  Description="The evaluated item name of the original reference item whose resolution resulted in this resolved reference item." />
-
-  <StringProperty Name="Path"
-                  Visible="False"
-                  ReadOnly="True" />
-
-  <StringProperty Name="Type"
-                  Visible="False"
-                  ReadOnly="True" />
-
-  <StringProperty Name="RuntimeIdentifier"
-                  Visible="False"
-                  ReadOnly="True" />
-
-  <StringProperty Name="TargetFramework"
-                  Visible="False"
-                  ReadOnly="True" />
+                  Visible="True" />
 
   <StringProperty Name="FrameworkName"
-                  Visible="False"
-                  ReadOnly="True" />
+                  ReadOnly="True"
+                  Visible="False" />
 
   <StringProperty Name="FrameworkVersion"
-                  Visible="False"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="IncludeAssets"
+                  Description="Assets to include from this reference"
+                  DisplayName="IncludeAssets"
+                  Visible="True" />
+
+  <StringProperty Name="Name"
+                  ReadOnly="True"
+                  Visible="True" />
+
+  <StringProperty Name="OriginalItemSpec"
+                  Description="The evaluated item name of the original reference item whose resolution resulted in this resolved reference item."
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="Path"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="PrivateAssets"
+                  Description="Assets that are private in this reference"
+                  DisplayName="PrivateAssets"
+                  Visible="True" />
+
+  <StringProperty Name="RuntimeIdentifier"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="TargetFramework"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="Type"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="Version"
+                  Description="Version of dependency."
+                  DisplayName="Version"
                   ReadOnly="True" />
+
 </Rule>

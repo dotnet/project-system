@@ -6,7 +6,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.VisualBasic
 {
     public class VisualBasicSyntaxFactsServiceTests
     {
-        private static readonly ISyntaxFactsService s_service = new VisualBasicSyntaxFactsService(null);
+        private static readonly ISyntaxFactsService s_service = new VisualBasicSyntaxFactsService();
 
         [Fact]
         public void TestIsValidIdentifier()

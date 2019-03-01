@@ -1,29 +1,77 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
-<Rule
-    Name="ResolvedSdkReference"
-    DisplayName="Resolved SDK Reference"
-    PageTemplate="generic"
-    Description="SDK Reference Properties"
-    xmlns="http://schemas.microsoft.com/build/2009/properties">
+<Rule Name="ResolvedSdkReference"
+      Description="SDK Reference Properties"
+      DisplayName="Resolved SDK Reference"
+      PageTemplate="generic"
+      xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
-    <DataSource Persistence="ResolvedReference" ItemType="SDKReference" HasConfigurationCondition="False"
-                SourceType="TargetResults" MSBuildTarget="CollectResolvedSDKReferencesDesignTime" SourceOfDefaultValue="AfterContext" />
+    <DataSource HasConfigurationCondition="False"
+                ItemType="SDKReference"
+                MSBuildTarget="CollectResolvedSDKReferencesDesignTime"
+                Persistence="ResolvedReference"
+                SourceOfDefaultValue="AfterContext"
+                SourceType="TargetResults" />
   </Rule.DataSource>
-  <StringProperty Name="AppXLocation" DisplayName="App Package Location" ReadOnly="True" />
-  <!-- This property should be the same as the one for the ResolvedReference item -->
-  <StringProperty Name="OriginalItemSpec" Visible="false" ReadOnly="True" />
-  <StringProperty Name="SDKRootFolder" DisplayName="SDK Root" ReadOnly="True" />
-  <StringProperty Name="FrameworkIdentity" DisplayName="FrameworkIdentity" ReadOnly="True" />
-  <StringProperty Name="DisplayName" Visible="False" ReadOnly="True" />
-  <StringProperty Name="Name" DisplayName="Name" ReadOnly="True"/>
-  <StringProperty Name="Version" DisplayName="Version" ReadOnly="True"/>
-  <StringProperty Name="SDKPackageItemSpec" Visible="False" ReadOnly="True"/>
-  <BoolProperty Name="CopyPayload" DisplayName="Copy Payload" ReadOnly="True" />
-  <StringProperty Name="CopyPayloadToSubDirectory" DisplayName="Copy Payload to Subdirectory" ReadOnly="True" />
-  <BoolProperty Name="ExpandContent" DisplayName="Expand Content" ReadOnly="True" />
-  <BoolProperty Name="ExpandReferenceAssemblies" DisplayName="Expand Reference Assemblies" ReadOnly="True" />
-  <BoolProperty Name="CopyLocalExpandedReferenceAssemblies" DisplayName="Copy Local Expanded Reference Assemblies" ReadOnly="True" />
-  <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
-  <BoolProperty Name="Visible" Visible="False" ReadOnly="True" />
+
+  <StringProperty Name="AppXLocation"
+                  DisplayName="App Package Location"
+                  ReadOnly="True" />
+
+  <BoolProperty Name="CopyLocalExpandedReferenceAssemblies"
+                DisplayName="Copy Local Expanded Reference Assemblies"
+                ReadOnly="True" />
+
+  <BoolProperty Name="CopyPayload"
+                DisplayName="Copy Payload"
+                ReadOnly="True" />
+
+  <StringProperty Name="CopyPayloadToSubDirectory"
+                  DisplayName="Copy Payload to Subdirectory"
+                  ReadOnly="True" />
+
+  <StringProperty Name="DisplayName"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <BoolProperty Name="ExpandContent"
+                DisplayName="Expand Content"
+                ReadOnly="True" />
+
+  <BoolProperty Name="ExpandReferenceAssemblies"
+                DisplayName="Expand Reference Assemblies"
+                ReadOnly="True" />
+
+  <StringProperty Name="FrameworkIdentity"
+                  DisplayName="FrameworkIdentity"
+                  ReadOnly="True" />
+
+  <StringProperty Name="IsImplicitlyDefined"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="Name"
+                  DisplayName="Name"
+                  ReadOnly="True" />
+
+  <StringProperty Name="OriginalItemSpec"
+                  ReadOnly="True"
+                  Visible="false" />
+
+  <StringProperty Name="SDKPackageItemSpec"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="SDKRootFolder"
+                  DisplayName="SDK Root"
+                  ReadOnly="True" />
+
+  <StringProperty Name="Version"
+                  DisplayName="Version"
+                  ReadOnly="True" />
+
+  <BoolProperty Name="Visible"
+                ReadOnly="True"
+                Visible="False" />
+
 </Rule>

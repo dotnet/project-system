@@ -1,27 +1,37 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
-<Rule
-    Name="AppDesigner"
-    PageTemplate="generic"
-    xmlns="http://schemas.microsoft.com/build/2009/properties">
-
+<Rule Name="AppDesigner"
+      PageTemplate="generic"
+      xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
-    <DataSource Persistence="ProjectFile" Label="Configuration" SourceOfDefaultValue="AfterContext" />
+    <DataSource Label="Configuration"
+                Persistence="ProjectFile"
+                SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
 
-  <StringProperty Name="FolderName" Visible="false" Default="Properties">
-    <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFile" Label="Configuration" HasConfigurationCondition="false"
-                  PersistedName="AppDesignerFolder" SourceOfDefaultValue="AfterContext" />
-    </StringProperty.DataSource>
-  </StringProperty>
-
-
-  <BoolProperty  Name="ContentsVisibleOnlyInShowAllFiles" Visible="false" Default="false" ReadOnly="true">
+  <BoolProperty Name="ContentsVisibleOnlyInShowAllFiles"
+                Default="false"
+                ReadOnly="true"
+                Visible="false">
     <BoolProperty.DataSource>
-      <DataSource Persistence="ProjectFile" Label="Configuration" HasConfigurationCondition="false"
-                  PersistedName="AppDesignerFolderContentsVisibleOnlyInShowAllFiles" SourceOfDefaultValue="AfterContext" />
+      <DataSource HasConfigurationCondition="false"
+                  Label="Configuration"
+                  PersistedName="AppDesignerFolderContentsVisibleOnlyInShowAllFiles"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
+
+  <StringProperty Name="FolderName"
+                  Default="Properties"
+                  Visible="false">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="false"
+                  Label="Configuration"
+                  PersistedName="AppDesignerFolder"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
 
 </Rule>

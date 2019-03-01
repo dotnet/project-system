@@ -1,20 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
-<Rule
-    Name="ResolvedCompilationReference"
-    PageTemplate="generic"
-    xmlns="http://schemas.microsoft.com/build/2009/properties">
+<Rule Name="ResolvedCompilationReference"
+      PageTemplate="generic"
+      xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
-    <DataSource Persistence="ResolvedReference" ItemType="ReferencePathWithRefAssemblies" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext"
-                SourceType="TargetResults" MSBuildTarget="CollectResolvedCompilationReferencesDesignTime"/>
+    <DataSource HasConfigurationCondition="False"
+                ItemType="ReferencePathWithRefAssemblies"
+                MSBuildTarget="CollectResolvedCompilationReferencesDesignTime"
+                Persistence="ResolvedReference"
+                SourceOfDefaultValue="AfterContext"
+                SourceType="TargetResults" />
   </Rule.DataSource>
 
-  <StringProperty Name="ResolvedPath" ReadOnly="True">
+  <StringProperty Name="CopyUpToDateMarker"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="OriginalPath"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="ResolvedPath"
+                  ReadOnly="True">
     <StringProperty.DataSource>
-      <DataSource PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
+      <DataSource PersistedName="Identity"
+                  SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
 
-  <StringProperty Name="OriginalPath" ReadOnly="True" Visible="False"/>
-  <StringProperty Name="CopyUpToDateMarker" ReadOnly="True" Visible="False"/>
 </Rule>

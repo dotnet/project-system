@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.VisualBasic
     internal class VisualBasicProjectTypeGuidProvider : IItemTypeGuidProvider
     {
         [ImportingConstructor]
-        public VisualBasicProjectTypeGuidProvider(UnconfiguredProject project)
+        public VisualBasicProjectTypeGuidProvider()
         {
         }
 
