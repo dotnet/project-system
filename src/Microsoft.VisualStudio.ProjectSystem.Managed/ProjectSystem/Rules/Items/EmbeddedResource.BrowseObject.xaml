@@ -5,7 +5,7 @@
       DisplayName="Embedded Resource"
       PageTemplate="generic"
       PropertyPagesHidden="true"
-       xmlns="http://schemas.microsoft.com/build/2009/properties">
+      xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.Categories>
     <Category Name="Advanced"
               DisplayName="Advanced" />

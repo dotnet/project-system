@@ -2,7 +2,7 @@
 <!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 <Rule Name="ResolvedCompilationReference"
       PageTemplate="generic"
-       xmlns="http://schemas.microsoft.com/build/2009/properties">
+      xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
     <DataSource HasConfigurationCondition="False"
                 ItemType="ReferencePathWithRefAssemblies"

@@ -4,7 +4,7 @@
       Description="Projects that must be built as part of the containing project, but without an actual build dependency"
       DisplayName="General"
       PageTemplate="generic"
-       xmlns="http://schemas.microsoft.com/build/2009/properties">
+      xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
     <DataSource HasConfigurationCondition="False"
                 ItemType="SubProject"

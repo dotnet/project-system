@@ -3,7 +3,7 @@
 <Rule Name="DebuggerGeneralProperties"
       Description="General Debugger options"
       DisplayName="Debugger General Properties"
-       xmlns="http://schemas.microsoft.com/build/2009/properties">
+      xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
     <DataSource Persistence="UserFile"
                 SourceOfDefaultValue="AfterContext" />

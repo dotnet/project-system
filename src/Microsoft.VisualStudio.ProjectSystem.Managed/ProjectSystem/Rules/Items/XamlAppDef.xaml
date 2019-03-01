@@ -3,7 +3,7 @@
 <Rule Name="XamlAppDef"
       PageTemplate="generic"
       PropertyPagesHidden="True"
-       xmlns="http://schemas.microsoft.com/build/2009/properties">
+      xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
     <DataSource HasConfigurationCondition="False"
                 ItemType="XamlAppDef"

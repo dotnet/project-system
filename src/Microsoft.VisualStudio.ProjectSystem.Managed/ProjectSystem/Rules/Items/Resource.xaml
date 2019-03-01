@@ -3,7 +3,7 @@
 <Rule Name="Resource"
       PageTemplate="generic"
       PropertyPagesHidden="true"
-       xmlns="http://schemas.microsoft.com/build/2009/properties">
+      xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
     <DataSource HasConfigurationCondition="False"
                 ItemType="Resource"

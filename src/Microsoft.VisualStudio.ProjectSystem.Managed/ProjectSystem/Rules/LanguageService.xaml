@@ -3,7 +3,7 @@
 <Rule Name="LanguageService"
       DisplayName="LanguageService"
       PageTemplate="generic"
-       xmlns="http://schemas.microsoft.com/build/2009/properties">
+      xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
     <DataSource Persistence="ProjectFile"
                 SourceOfDefaultValue="AfterContext" />
