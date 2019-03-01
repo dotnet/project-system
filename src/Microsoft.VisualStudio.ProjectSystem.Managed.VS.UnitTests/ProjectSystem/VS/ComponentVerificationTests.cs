@@ -180,6 +180,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                             // Do we import from a child scope but export to a parent scope? ie Importing ConfiguredProject, but exporting to an UnconfiguredProject service would be invalid
                             if (exportContractMetadata.Scope < importContractMetadata.Scope)
                             {
+                                // BUG: https://github.com/dotnet/project-system/issues/4626
+                                if (importDefinition.ContractName == "Microsoft.VisualStudio.ProjectSystem.IProjectServiceAccessor")
+                                    continue; 
+
                                 Assert.False(true, $"{definition.Type.FullName} exports to the {exportContractMetadata.Scope.Value} scope, but it imports {importDefinition.ContractName} from {importContractMetadata.Scope} scope, which is a child of the preceeding scope.");
                             }
                         }
@@ -230,7 +234,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 return true;
             }
 
-            return interfaceNames.Contains(contractName);
+            return !interfaceNames.Contains(contractName);
         }
 
         private string GetContractName(ImportDefinition import)
