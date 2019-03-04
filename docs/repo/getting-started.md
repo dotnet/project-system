@@ -28,9 +28,10 @@ To get started:
 
 The last command prevents an accidental push to this repository without going through a pull request.
 
-After running above, `git remote -v` should something like the following:
+After running above, `git remote -v` should show something similar to the following:
 ```
 \project-system> git remote -v 
+
 origin  https://github.com/davkean/project-system (fetch)
 origin  https://github.com/davkean/project-system (push)
 upstream        https://github.com/dotnet/project-system (fetch)
@@ -41,7 +42,7 @@ upstream        no_push (push)
 
 ### Command-line
 
-From within a [Visual Studio Developer Prompt](https://msdn.microsoft.com/en-us/library/ms229859(v=vs.150).aspx), from the repo root, run:
+From within a [Visual Studio Developer Prompt](https://msdn.microsoft.com/en-us/library/ms229859(v=vs.160).aspx), from the repo root, run:
 
 ```
 project-system> build.cmd
