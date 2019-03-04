@@ -2,7 +2,7 @@
 
 using System.Threading;
 using System.Threading.Tasks;
-
+using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
@@ -13,6 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     /// between different views. 
     /// View is responsible for building nodes hierarchy based on given dependencies snapshot.
     /// </summary>
+    [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface IDependenciesTreeViewProvider
     {
         /// <summary>

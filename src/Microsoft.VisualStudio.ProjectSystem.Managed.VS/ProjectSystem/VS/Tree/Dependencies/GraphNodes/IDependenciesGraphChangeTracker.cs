@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-
+using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.GraphModel;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
@@ -9,6 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
     /// <summary>
     /// Keeps registered graph contexts up to date with project dependency changes.
     /// </summary>
+    [ProjectSystemContract(ProjectSystemContractScope2.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface IDependenciesGraphChangeTracker : IDisposable
     {
         /// <summary>

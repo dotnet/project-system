@@ -4,6 +4,7 @@ using System;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
 
+using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 
@@ -29,6 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
     ///     When the host is disposed, it will call <see cref="ReleaseSubscriptions"/>.
     /// </para>
     /// </remarks>
+    [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ZeroOrMore)]
     internal interface IDependencyCrossTargetSubscriber
     {
         /// <summary>

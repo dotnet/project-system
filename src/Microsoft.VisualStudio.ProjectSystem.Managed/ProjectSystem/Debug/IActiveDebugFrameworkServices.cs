@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.Composition;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
@@ -9,6 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     /// Wrapper around the active debug framework to provide a single implementation of what is considered the active framework. If there is
     /// only one framework
     /// </summary>
+    [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     public interface IActiveDebugFrameworkServices
     {
         /// <summary>

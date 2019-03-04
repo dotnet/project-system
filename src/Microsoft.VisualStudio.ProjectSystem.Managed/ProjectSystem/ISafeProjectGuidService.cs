@@ -2,7 +2,7 @@
 
 using System;
 using System.Threading.Tasks;
-
+using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 
 #pragma warning disable RS0030 // This is the one place where IProjectGuidService is allowed to be referenced
@@ -19,6 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     ///     solution in reaction to a clash with another project. <see cref="ISafeProjectGuidService"/> will wait until
     ///     it is safe to retrieve the project GUID before returning it.
     /// </remarks>
+    [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface ISafeProjectGuidService
     {
         /// <summary>

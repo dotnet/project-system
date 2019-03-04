@@ -2,9 +2,11 @@
 
 using System;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.Composition;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 {
+    [ProjectSystemContract(ProjectSystemContractScope2.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface IHttpClient
     {
         Task<string> GetStringAsync(Uri uri);

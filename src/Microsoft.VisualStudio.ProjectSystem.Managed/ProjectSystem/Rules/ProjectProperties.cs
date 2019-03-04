@@ -2,7 +2,7 @@
 
 using System.ComponentModel.Composition;
 using System.Diagnostics.CodeAnalysis;
-
+using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -12,6 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     /// </summary>
     [Export]
     [ExcludeFromCodeCoverage]
+    [ProjectSystemContract(ProjectSystemContractScope.ConfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal partial class ProjectProperties : StronglyTypedPropertyAccess
     {
         /// <summary>

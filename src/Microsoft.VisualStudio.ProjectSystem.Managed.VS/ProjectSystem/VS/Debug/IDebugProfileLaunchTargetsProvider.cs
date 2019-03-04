@@ -2,7 +2,7 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
+using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
@@ -13,6 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     /// of the imports is important in that this determines the order which profiles will be tested
     /// for support 
     /// </summary>
+    [ProjectSystemContract(ProjectSystemContractScope.ConfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ZeroOrMore)]
     public interface IDebugProfileLaunchTargetsProvider
     {
         /// <summary>
