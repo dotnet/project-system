@@ -17,7 +17,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [Theory]
         [ClassData(typeof(ComposedPartTestData))]
         public void ImportsMustFilterBasedOnCapabilities(Type type)
-        {   // Imports should respect/filter the capabilities of the exports they receive
+        {   
+            // Imports should respect/filter the capabilities of the exports they receive
 
             var part = ComponentComposition.Instance.FindComposedPart(type);
 
@@ -73,7 +74,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [Theory]
         [ClassData(typeof(ComposablePartDefinitionTestData))]
         public void ExportsFromSamePartMustApplyToSameCapabilities(Type type)
-        {   // Exports coming from a single part must apply to the same capabilities
+        {   
+            // Exports coming from a single part must apply to the same capabilities
 
             var definition = ComponentComposition.Instance.FindComposablePartDefinition(type);
 
@@ -96,7 +98,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [Theory]
         [ClassData(typeof(ComposablePartDefinitionTestData))]
         public void ExportsMustBeMarkedWithApplyToIfRequired(Type type)
-        {   // If a contract requires AppliesTo to be specified, then an export must specify it
+        {   
+            // If a contract requires AppliesTo to be specified, then an export must specify it
 
             var definition = ComponentComposition.Instance.FindComposablePartDefinition(type);
 
@@ -137,7 +140,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [Theory]
         [ClassData(typeof(ComposablePartDefinitionTestData))]
         public void ImportsMustRespectContractImportCardinality(Type type)
-        {   // Imports must respect import cardinality specified via [ProjectSystemContract]
+        {   
+            // Imports must respect import cardinality specified via [ProjectSystemContract]
 
             var contracts = ComponentComposition.Instance.Contracts;
             var definition = ComponentComposition.Instance.FindComposablePartDefinition(type);
@@ -158,7 +162,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [Theory]
         [ClassData(typeof(ComposablePartDefinitionTestData))]
         public void ImportsMustMatchExportScope(Type type)
-        {   // Imports cannot import something from a child scope, if the part comes from parent scope
+        {   
+            // Imports cannot import something from a child scope, if the part comes from parent scope
 
             var definition = ComponentComposition.Instance.FindComposablePartDefinition(type);
 
@@ -194,7 +199,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [Theory]
         [ClassData(typeof(ComposablePartDefinitionTestData))]
         public void ImportsMustImportContractsMarkedWithProjectSystemContract(Type type)
-        {  // Imports must import interfaces that are marked with [ProjectSystemContract]
+        {  
+            // Imports must import interfaces that are marked with [ProjectSystemContract]
 
             var definition = ComponentComposition.Instance.FindComposablePartDefinition(type);
 
@@ -211,7 +217,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [Theory]
         [ClassData(typeof(ComposablePartDefinitionTestData))]
         public void ExportsMustExportContractsMarkedWithProjectSystemContract(Type type)
-        {   // Exports must export interfaces that are marked with [ProjectSystemContract]
+        {   
+            // Exports must export interfaces that are marked with [ProjectSystemContract]
 
             var definition = ComponentComposition.Instance.FindComposablePartDefinition(type);
 
