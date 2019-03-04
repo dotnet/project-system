@@ -11,21 +11,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices.CSharp
         {
             new CSharpCodeDomProvider();
         }
-
-        [Fact]
-        public void UnconfiguredProject_CanGetSet()
-        {
-            var project = UnconfiguredProjectFactory.Create();
-            var provider = CreateInstance();
-
-            provider.Project = project;
-
-            Assert.Same(project, provider.Project);
-        }
-
-        private static CSharpCodeDomProvider CreateInstance()
-        {
-            return new CSharpCodeDomProvider();
-        }
     }
 }
