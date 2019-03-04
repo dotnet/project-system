@@ -1,7 +1,7 @@
 # Getting Started
 
 #### Prerequisites
-- [Visual Studio 2017](https://www.visualstudio.com/downloads/)
+- [Visual Studio 2019 RC](https://visualstudio.microsoft.com/downloads/) or [Visual Studio 2019 Preview 4](https://visualstudio.microsoft.com/vs/preview/)
 - GitHub account
 - Basic Git experience: https://try.github.io/
 
@@ -50,7 +50,7 @@ project-system> build.cmd
 This builds, runs tests and deploys to an experimental instance of Visual Studio.
 
 ### Visual Studio
-From within [Visual Studio 2017](https://www.visualstudio.com/downloads/), open _ProjectSystem.sln_.
+From within [Visual Studio 2019](https://visualstudio.microsoft.com/downloads/), open _ProjectSystem.sln_.
 
 Inside Visual Studio, you can build, run tests and deploy.
 
