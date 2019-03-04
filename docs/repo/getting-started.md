@@ -42,7 +42,7 @@ upstream        no_push (push)
 
 ### Command-line
 
-From within a [Visual Studio Developer Prompt](https://msdn.microsoft.com/en-us/library/ms229859(v=vs.160).aspx), from the repo root, run:
+From within a [Visual Studio Developer Prompt](https://docs.microsoft.com/en-us/dotnet/framework/tools/developer-command-prompt-for-vs), from the repo root, run:
 
 ```
 project-system> build.cmd
