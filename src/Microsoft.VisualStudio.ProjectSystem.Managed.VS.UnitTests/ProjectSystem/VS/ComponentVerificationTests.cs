@@ -21,19 +21,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             var part = ComponentComposition.Instance.FindComposedPart(type);
 
-            foreach (KeyValuePair<ImportDefinitionBinding, IReadOnlyList<ExportDefinitionBinding>> binding in part.SatisfyingExports)
+            foreach ((ImportDefinitionBinding import, IReadOnlyList<ExportDefinitionBinding> exports) in part.SatisfyingExports)
             {
-                ImportDefinitionBinding importBinding = binding.Key;
-                var importingProperty = importBinding.ImportingMember as PropertyInfo;
+                var importingProperty = import.ImportingMember as PropertyInfo;
                 if (importingProperty == null)  // We don't verify ImportingConstructor, only check properties.
                     return;
 
                 Type memberType = importingProperty.PropertyType;
 
                 // ImportMany, we want to use OrderPrecedenceImportCollection
-                if (importBinding.ImportDefinition.Cardinality == ImportCardinality.ZeroOrMore)
+                if (import.ImportDefinition.Cardinality == ImportCardinality.ZeroOrMore)
                 {
-                    if (binding.Value.Any(b => !string.IsNullOrEmpty(GetAppliesToMetadata(b.ExportDefinition))))
+                    if (exports.Any(b => !string.IsNullOrEmpty(GetAppliesToMetadata(b.ExportDefinition))))
                     {
                         if (!IsSubclassOfGenericType(typeof(OrderPrecedenceImportCollection<,>), memberType))
                         {
@@ -45,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 }
 
                 // Single import
-                ExportDefinitionBinding exportBinding = binding.Value.SingleOrDefault();
+                ExportDefinitionBinding exportBinding = exports.SingleOrDefault();
                 if (exportBinding != null)
                 {
                     string appliesTo = GetAppliesToMetadata(exportBinding.ExportDefinition);
