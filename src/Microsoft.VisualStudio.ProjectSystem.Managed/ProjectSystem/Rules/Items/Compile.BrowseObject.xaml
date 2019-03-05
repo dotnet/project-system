@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<!--Copyright, Microsoft Corporation, All rights reserved.-->
+<!--Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.-->
 <Rule Name="Compile"
       Description="File Properties"
       DisplayName="File Properties"
@@ -27,6 +27,9 @@
                        DisplayName="Build Action"
                        EnumProvider="ItemTypes" />
 
+  <BoolProperty Name="AutoGen"
+                Visible="false" />
+
   <EnumProperty Name="CopyToOutputDirectory"
                 Category="Advanced"
                 Description="Specifies the source file will be copied to the output directory."
@@ -39,10 +42,27 @@
                DisplayName="Copy if newer" />
   </EnumProperty>
 
+  <StringProperty Name="CustomTool"
+                  Visible="false">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  ItemType="Compile"
+                  PersistedName="Generator"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
   <StringProperty Name="CustomToolNamespace"
                   Category="Advanced"
                   Description="The namespace into which the output of the custom tool is placed."
                   DisplayName="Custom Tool Namespace" />
+
+  <StringProperty Name="DependentUpon"
+                  Visible="false" />
+
+  <BoolProperty Name="DesignTime"
+                Visible="false" />
 
   <StringProperty Name="Extension"
                   ReadOnly="true"
@@ -97,6 +117,17 @@
     </StringProperty.DataSource>
   </StringProperty>
 
+  <StringProperty Name="LastGenOutput"
+                  Visible="false" />
+
+  <StringProperty Name="Link"
+                  Visible="false">
+    <StringProperty.DataSource>
+      <DataSource PersistenceStyle="Attribute"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
   <EnumProperty Name="SubType"
                 Visible="false">
     <EnumValue Name="Designer" />
@@ -116,5 +147,8 @@
                   SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
+
+  <BoolProperty Name="Visible"
+                Visible="false" />
 
 </Rule>
