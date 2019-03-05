@@ -24,6 +24,17 @@
     <EnumValue Name="PreserveNewest" />
   </EnumProperty>
 
+  <StringProperty Name="CustomTool"
+                  Visible="false">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  ItemType="Compile"
+                  PersistedName="Generator"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
   <StringProperty Name="CustomToolNamespace" />
 
   <StringProperty Name="DependentUpon"
@@ -36,16 +47,6 @@
 
   <BoolProperty Name="DesignTime"
                 Visible="false" />
-
-  <BoolProperty Name="ExcludedFromBuild">
-    <BoolProperty.DataSource>
-      <DataSource HasConfigurationCondition="true"
-                  ItemType="Compile"
-                  Label="Configuration"
-                  Persistence="ProjectFile"
-                  SourceOfDefaultValue="AfterContext" />
-    </BoolProperty.DataSource>
-  </BoolProperty>
 
   <StringProperty Name="FullPath"
                   ReadOnly="true"
