@@ -41,6 +41,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
         [Theory]
         [MemberData(nameof(GetAllItemRules))]
+        public void RuleNameMatchesFileName(string ruleName, string fullPath)
+        {
+            XmlDocument rule = LoadXamlRule(fullPath);
+
+            // If a rule is split between File and BrowseObject we need to trim the BrowseObject part off
+            if (ruleName.IndexOf('.') > -1)
+            {
+                ruleName = ruleName.Substring(0, ruleName.IndexOf('.'));
+            }
+
+            Assert.Equal(ruleName, rule.DocumentElement.Attributes["Name"].Value);
+        }
+
+        [Theory]
+        [MemberData(nameof(GetAllItemRules))]
         public void ItemTypesMustMatchFileNameRoot(string ruleName, string fullPath)
         {
             // If a rule is split between File and BrowseObject we need to trim the BrowseObject part off
