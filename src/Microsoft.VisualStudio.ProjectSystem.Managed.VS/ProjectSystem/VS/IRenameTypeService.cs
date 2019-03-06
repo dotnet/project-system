@@ -16,20 +16,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// <summary>
         /// Determine if any types need to be renamed in the given file.
         /// </summary>
-        /// <param name="oldName">The old name for the type.</param>
-        /// <param name="newName">The new name for the type.</param>
-        /// <param name="filePath">The path to the file that contains the type.</param>
+        /// <param name="oldFilePath">The old file path which contains types to be renamed.</param>
+        /// <param name="newFilePath">The new file path which contains types to be renamed.</param>
+        /// <param name="projectPath">The path to the project file which contains types to be renamed.</param>
         /// <returns>True if there exists types that should be renamed, false if there do not.</returns>
-        Task<bool> AnyTypeToRenameAsync(string oldName, string newName, string filePath);
+        Task<bool> AnyTypeToRenameAsync(string oldFilePath, string newFilePath, string projectPath);
 
         /// <summary>
         ///  Rename the type in the given solution.
         /// </summary>
-        /// <param name="oldName">The old name for the type.</param>
-        /// <param name="newName">The new name for the type.</param>
-        /// <param name="filePath">The path to the file that contains the type.</param>
+        /// <param name="oldFilePath">The old file path which contains types to be renamed.</param>
+        /// <param name="newFilePath">The new file path which contains types to be renamed.</param>
+        /// <param name="projectPath">The path to the project file which contains types to be renamed.</param>
         /// <param name="cancellationToken">A token that can be used to cancel this operation.</param>
         /// <returns>True if the changes could be applied, false if they could not.</returns>
-        Task<bool> RenameTypeAsync(string oldName, string newName, string filePath, CancellationToken cancellationToken);
+        Task<bool> RenameTypeAsync(string oldFilePath, string newFilePath, string projectPath, CancellationToken cancellationToken);
     }
 }

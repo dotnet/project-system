@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -40,24 +41,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
         }
 
-        public async Task<bool> AnyTypeToRenameAsync(string oldName, string newName, string filePath)
+        public async Task<bool> AnyTypeToRenameAsync(string oldFilePath, string newFilePath, string projectPath)
         {
-            if (!TryGetProjectAtPath(filePath, out Project project))
+            string oldName = Path.GetFileNameWithoutExtension(oldFilePath);
+            string newName = Path.GetFileNameWithoutExtension(newFilePath);
+
+            if (!TryGetProjectAtPath(projectPath, out Project project))
                 return false;
 
             if (!await CanHandleRenameAsync(oldName, newName, project))
                 return false;
 
-            (bool success, _) = await TryGetSymbolToRenameAsync(oldName, filePath, project, default);
+            (bool success, _) = await TryGetSymbolToRenameAsync(oldName, newFilePath, project, default);
             return success;
         }
 
-        public async Task<bool> RenameTypeAsync(string oldName, string newName, string filePath, CancellationToken cancellationToken)
+        public async Task<bool> RenameTypeAsync(string oldFilePath, string newFilePath, string projectPath, CancellationToken cancellationToken)
         {
-            if (!TryGetProjectAtPath(filePath, out Project project))
-                return false;
+            string oldName = Path.GetFileNameWithoutExtension(oldFilePath);
+            string newName = Path.GetFileNameWithoutExtension(newFilePath);
 
-            (bool success, ISymbol symbol) = await TryGetSymbolToRenameAsync(oldName, filePath, project, cancellationToken);
+            if (!TryGetProjectAtPath(projectPath, out Project project))
+                return false; ;
+
+            (bool success, ISymbol symbol) = await TryGetSymbolToRenameAsync(oldName, newFilePath, project, cancellationToken);
             if (!success)
                 return false;
 

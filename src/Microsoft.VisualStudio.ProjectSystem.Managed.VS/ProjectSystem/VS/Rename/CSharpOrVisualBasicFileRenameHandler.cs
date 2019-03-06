@@ -32,11 +32,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
         [ImportingConstructor]
         public CSharpOrVisualBasicFileRenameHandler(IUnconfiguredProjectVsServices projectVsServices,
-                                                      IUnconfiguredProjectTasksService unconfiguredProjectTasksService,
-                                                      IEnvironmentOptions environmentOptions,
-                                                      IUserNotificationServices userNotificationServices,
-                                                      IRenameTypeService roslynServices,
-                                                      IOperationWaitIndicator waitService)
+                                                    IUnconfiguredProjectTasksService unconfiguredProjectTasksService,
+                                                    IEnvironmentOptions environmentOptions,
+                                                    IUserNotificationServices userNotificationServices,
+                                                    IRenameTypeService roslynServices,
+                                                    IOperationWaitIndicator waitService)
         {
             _projectVsServices = projectVsServices;
             _unconfiguredProjectTasksService = unconfiguredProjectTasksService;
@@ -53,11 +53,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 return;
 
             // Check if there are any symbols that need to be renamed
-            string oldName = Path.GetFileNameWithoutExtension(oldFilePath);
-            string newName = Path.GetFileNameWithoutExtension(newFilePath);
-            if (!await _roslyn.AnyTypeToRenameAsync(oldName, newName, newFilePath))
+            string projectPath = _projectVsServices.Project.FullPath;
+            if (!await _roslyn.AnyTypeToRenameAsync(oldFilePath, newFilePath, projectPath))
                 return;
 
+            string oldName = Path.GetFileNameWithoutExtension(oldFilePath);
+            string newName = Path.GetFileNameWithoutExtension(newFilePath);
 
             // Ask if the user wants to rename the symbol
             bool userConfirmed = await CheckUserConfirmationAsync(oldName);
@@ -77,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                     () =>
                     {
                         // Perform the rename operation
-                        return _roslyn.RenameTypeAsync(oldName, newName, newFilePath, token);
+                        return _roslyn.RenameTypeAsync(oldFilePath, newFilePath, projectPath, token);
                     }));
 
 
