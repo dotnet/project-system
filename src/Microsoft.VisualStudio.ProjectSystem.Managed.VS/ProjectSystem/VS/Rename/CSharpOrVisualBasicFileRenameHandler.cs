@@ -9,16 +9,11 @@
 // </summary>
 //--------------------------------------------------------------------------------------------
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 
-using Microsoft.CodeAnalysis;
-using Microsoft.VisualStudio.LanguageServices;
 using Microsoft.VisualStudio.ProjectSystem.Rename;
 using Microsoft.VisualStudio.ProjectSystem.Waiting;
 
@@ -30,27 +25,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
     {
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly IUnconfiguredProjectTasksService _unconfiguredProjectTasksService;
-        private readonly Workspace _workspace;
         private readonly IEnvironmentOptions _environmentOptions;
         private readonly IUserNotificationServices _userNotificationServices;
-        private readonly IRoslynServices _roslynServices;
+        private readonly IRoslynServices _roslyn;
         private readonly IOperationWaitIndicator _waitService;
 
         [ImportingConstructor]
         public CSharpOrVisualBasicFileRenameHandler(IUnconfiguredProjectVsServices projectVsServices,
-                                                    IUnconfiguredProjectTasksService unconfiguredProjectTasksService,
-                                                    VisualStudioWorkspace workspace,
-                                                    IEnvironmentOptions environmentOptions,
-                                                    IUserNotificationServices userNotificationServices,
-                                                    IRoslynServices roslynServices,
-                                                    IOperationWaitIndicator waitService)
-            : this(projectVsServices, unconfiguredProjectTasksService, workspace as Workspace, environmentOptions, userNotificationServices, roslynServices, waitService)
-        {
-        }
-
-        internal CSharpOrVisualBasicFileRenameHandler(IUnconfiguredProjectVsServices projectVsServices,
                                                       IUnconfiguredProjectTasksService unconfiguredProjectTasksService,
-                                                      Workspace workspace,
                                                       IEnvironmentOptions environmentOptions,
                                                       IUserNotificationServices userNotificationServices,
                                                       IRoslynServices roslynServices,
@@ -58,10 +40,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         {
             _projectVsServices = projectVsServices;
             _unconfiguredProjectTasksService = unconfiguredProjectTasksService;
-            _workspace = workspace;
             _environmentOptions = environmentOptions;
             _userNotificationServices = userNotificationServices;
-            _roslynServices = roslynServices;
+            _roslyn = roslynServices;
             _waitService = waitService;
         }
 
@@ -69,29 +50,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         {
             // Do not offer to rename types if the user changes the file extensions
             if (!oldFilePath.EndsWith(Path.GetExtension(newFilePath), StringComparison.OrdinalIgnoreCase))
-            {
-                return;
-            }
-
-            Project project = GetCurrentProject();
-            if (project is null)
-                return;
-
-            // see if the current project Roslyn compilations and if the language in that compilation is case-sensitive
-            (bool success, bool isCaseSensitive) = await TryDetermineIfCompilationIsCaseSensitiveAsync(project);
-            if (!success)
-                return;
-
-            // Check that the new name is a valid identifier in the current programming language
-            string oldName = Path.GetFileNameWithoutExtension(oldFilePath);
-            string newName = Path.GetFileNameWithoutExtension(newFilePath);
-            if (!CanHandleRename(oldName, newName, isCaseSensitive))
                 return;
 
             // Check if there are any symbols that need to be renamed
-            (success, _) = await TryGetSymbolToRenameAsync(oldName, newFilePath, isCaseSensitive, project, default);
-            if (!success)
+            string oldName = Path.GetFileNameWithoutExtension(oldFilePath);
+            string newName = Path.GetFileNameWithoutExtension(newFilePath);
+            if (!await _roslyn.AnyTypeToRenameAsync(oldName, newName, newFilePath))
                 return;
+
 
             // Ask if the user wants to rename the symbol
             bool userConfirmed = await CheckUserConfirmationAsync(oldName);
@@ -108,15 +74,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 token =>
                     // Do not let the project close until this completes
                     _unconfiguredProjectTasksService.LoadedProjectAsync(
-                    async () =>
+                    () =>
                     {
                         // Perform the rename operation
-                        Solution renamedSolution = await GetRenamedSolutionAsync(oldName, newFilePath, isCaseSensitive, GetCurrentProject(), token);
-                        if (renamedSolution == null)
-                            return false;
-
-                        // Try and apply the changes to the current solution
-                        return _roslynServices.ApplyChangesToSolution(renamedSolution.Workspace, renamedSolution);
+                        return _roslyn.RenameTypeAsync(oldName, newName, newFilePath, token);
                     }));
 
 
@@ -127,92 +88,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 _userNotificationServices.ShowWarning(failureMessage);
             }
 
-            Project GetCurrentProject()
-            {
-                foreach (Project proj in _workspace.CurrentSolution.Projects)
-                {
-                    if (StringComparers.Paths.Equals(proj.FilePath, _projectVsServices.Project.FullPath))
-                    {
-                        return proj;
-                    }
-                }
-
-                return null;
-            }
-        }
-
-        private static async Task<(bool success, bool isCaseSensitive)> TryDetermineIfCompilationIsCaseSensitiveAsync(Project project)
-        {
-            Compilation compilation = await project.GetCompilationAsync();
-            if (compilation is null)
-            {
-                // this project does not support compilations
-                return (false, false);
-            }
-
-            return (true, compilation.IsCaseSensitive);
-        }
-
-        private bool CanHandleRename(string oldName, string newName, bool isCaseSensitive)
-            => _roslynServices.IsValidIdentifier(oldName) &&
-               _roslynServices.IsValidIdentifier(newName) &&
-              (!string.Equals(
-                  oldName,
-                  newName,
-                  isCaseSensitive
-                    ? StringComparison.Ordinal
-                    : StringComparison.OrdinalIgnoreCase));
-
-        private static async Task<(bool success, ISymbol symbolToRename)> TryGetSymbolToRenameAsync(string oldName,
-                                                                                                    string newFileName,
-                                                                                                    bool isCaseSensitive,
-                                                                                                    Project project,
-                                                                                                    CancellationToken token)
-        {
-            token.ThrowIfCancellationRequested();
-
-            if (project is null)
-                return (false, null);
-
-            Document newDocument = GetDocument(project, newFileName);
-            if (newDocument is null)
-                return (false, null);
-
-            SyntaxNode root = await GetRootNode(newDocument, token);
-            if (root is null)
-                return (false, null);
-
-            SemanticModel semanticModel = await newDocument.GetSemanticModelAsync(token);
-            if (semanticModel is null)
-                return (false, null);
-
-            IEnumerable<SyntaxNode> declarations = root.DescendantNodes().Where(n => HasMatchingSyntaxNode(semanticModel, n, oldName, isCaseSensitive, token));
-            SyntaxNode declaration = declarations.FirstOrDefault();
-            if (declaration is null)
-                return (false, null);
-
-            return (true, semanticModel.GetDeclaredSymbol(declaration, token));
-        }
-
-        private static Document GetDocument(Project project, string filePath) =>
-            (from d in project.Documents where StringComparers.Paths.Equals(d.FilePath, filePath) select d).FirstOrDefault();
-
-        private static Task<SyntaxNode> GetRootNode(Document newDocument, CancellationToken token) => newDocument.GetSyntaxRootAsync(token);
-
-        private static bool HasMatchingSyntaxNode(SemanticModel model, SyntaxNode syntaxNode, string name, bool isCaseSensitive, CancellationToken token)
-        {
-            if (model.GetDeclaredSymbol(syntaxNode, token) is INamedTypeSymbol symbol &&
-                (symbol.TypeKind == TypeKind.Class
-                 || symbol.TypeKind == TypeKind.Interface
-                 || symbol.TypeKind == TypeKind.Delegate
-                 || symbol.TypeKind == TypeKind.Enum
-                 || symbol.TypeKind == TypeKind.Struct
-                 || symbol.TypeKind == TypeKind.Module))
-            {
-                return string.Compare(symbol.Name, name, !isCaseSensitive) == 0;
-            }
-
-            return false;
         }
 
         private async Task<bool> CheckUserConfirmationAsync(string oldFileName)
@@ -226,18 +101,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             }
 
             return true;
-        }
-
-        private async Task<Solution> GetRenamedSolutionAsync(string oldName, string newFileName, bool isCaseSensitive, Project project, CancellationToken token)
-        {
-            (bool success, ISymbol symbolToRename) = await TryGetSymbolToRenameAsync(oldName, newFileName, isCaseSensitive, project, token);
-            if (!success)
-                return null;
-
-            string newName = Path.GetFileNameWithoutExtension(newFileName);
-
-            Solution renamedSolution = await _roslynServices.RenameSymbolAsync(project.Solution, symbolToRename, newName, token);
-            return renamedSolution;
         }
     }
 }

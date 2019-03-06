@@ -6,7 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.CodeAnalysis;
-using Microsoft.VisualStudio.ProjectSystem.LanguageServices.CSharp;
 using Microsoft.VisualStudio.ProjectSystem.Waiting;
 
 using Moq;
@@ -30,12 +29,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.CSharp
         public async Task Rename_Symbol_Should_TriggerUserConfirmationAsync(string sourceCode, string oldFilePath, string newFilePath)
         {
             var userNotificationServices = IUserNotificationServicesFactory.Create();
-            var roslynServices = IRoslynServicesFactory.Implement(new CSharpSyntaxFactsService());
+            var roslynServices = IRoslynServicesFactory.Create();
 
             await RenameAsync(sourceCode, oldFilePath, newFilePath, userNotificationServices, roslynServices, LanguageNames.CSharp);
 
             Mock.Get(userNotificationServices).Verify(h => h.Confirm(It.IsAny<string>()), Times.Once);
-            Mock.Get(roslynServices).Verify(h => h.RenameSymbolAsync(It.IsAny<Solution>(), It.IsAny<ISymbol>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
+            Mock.Get(roslynServices).Verify(h => h.RenameTypeAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
         }
 
         [Theory]
@@ -53,13 +52,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.CSharp
         public async Task Rename_Symbol_Should_Not_HappenAsync(string sourceCode, string oldFilePath, string newFilePath)
         {
             var userNotificationServices = IUserNotificationServicesFactory.Create();
-            var roslynServices = IRoslynServicesFactory.Implement(new CSharpSyntaxFactsService());
+            var roslynServices = IRoslynServicesFactory.Create(existsSymbolToRename: false);
 
             await RenameAsync(sourceCode, oldFilePath, newFilePath, userNotificationServices, roslynServices, LanguageNames.CSharp).TimeoutAfter(TimeSpan.FromSeconds(1));
 
             Mock.Get(userNotificationServices).Verify(h => h.Confirm(It.IsAny<string>()), Times.Never);
-            Mock.Get(roslynServices).Verify(h => h.RenameSymbolAsync(It.IsAny<Solution>(), It.IsAny<ISymbol>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
-            Mock.Get(roslynServices).Verify(h => h.ApplyChangesToSolution(It.IsAny<Workspace>(), It.IsAny<Solution>()), Times.Never);
+            Mock.Get(roslynServices).Verify(h => h.RenameTypeAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
         }
 
         internal async Task RenameAsync(string sourceCode,
@@ -83,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.CSharp
                 var unconfiguredProjectTasksService = IUnconfiguredProjectTasksServiceFactory.Create();
                 var operationWaitIndicator = (new Mock<IOperationWaitIndicator>()).Object;
                 var renamer = new CSharpOrVisualBasicFileRenameHandler(projectServices, unconfiguredProjectTasksService,
-                                                                       ws, environmentOptionsFactory,
+                                                                       environmentOptionsFactory,
                                                                        userNotificationServices, roslynServices, operationWaitIndicator);
                 await renamer.HandleRenameAsync(oldFilePath, newFilePath)
                              .TimeoutAfter(TimeSpan.FromSeconds(1));
