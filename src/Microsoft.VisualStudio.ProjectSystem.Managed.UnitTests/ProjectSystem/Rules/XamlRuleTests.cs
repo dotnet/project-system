@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
+using System.Xml.Linq;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Rules
@@ -9,21 +10,73 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
     public class XamlRuleTests
     {
         [Theory]
-        [MemberData(nameof(GetBrowseObjectItemRules))]
-        public void InvisiblePropertiesShouldntBeLocalized(string ruleName, string fullPath)
+        [MemberData(nameof(GetFileItemRules))]
+        public void FileRulesShouldMatchNone(string ruleName, string fullPath)
+        {
+            // Special case for Folder rule which hasn't been split yet, but is in the Items folder
+            if (ruleName.Equals("Folder", StringComparison.Ordinal))
+            {
+                return;
+            }
+            // No need to check None against None
+            if (ruleName.Equals("None", StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            string noneFile = Path.Combine(fullPath, "..", "None.xaml");
+            var settings = new XmlReaderSettings { XmlResolver = null };
+            using (var noneStream = File.OpenRead(noneFile))
+            using (var ruleStream = File.OpenRead(fullPath))
+            using (var noneReader = XmlReader.Create(noneStream, settings))
+            using (var ruleReader = XmlReader.Create(ruleStream, settings))
+            {
+                var none = XDocument.Load(noneReader);
+                var rule = XDocument.Load(ruleReader);
+
+            }
+        }
+
+        [Theory]
+        [MemberData(nameof(GetAllRules))]
+        public void NonVisiblePropertiesShouldntBeLocalized(string ruleName, string fullPath)
         {
             XmlDocument rule = LoadXamlRule(fullPath);
 
-            // TODO:
+            foreach (XmlNode node in rule.DocumentElement.ChildNodes)
+            {
+                if (node is XmlElement element && element.HasAttribute("Visible") && element.Attributes["Visible"].Value.Equals("false", StringComparison.OrdinalIgnoreCase))
+                {
+                    Assert.False(element.HasAttribute("DisplayName"));
+                    Assert.False(element.HasAttribute("Description"));
+                    Assert.False(element.HasAttribute("Category"));
+                }
+            }
         }
 
         [Theory]
         [MemberData(nameof(GetFileItemRules))]
         public void FileRulesShouldntBeLocalized(string ruleName, string fullPath)
         {
+            // Special case for Folder rule which hasn't been split yet, but is in the Items folder
+            if (ruleName.Equals("Folder", StringComparison.Ordinal))
+            {
+                return;
+            }
+
             XmlDocument rule = LoadXamlRule(fullPath);
-            
-            // TODO:
+
+            foreach (XmlNode node in rule.DocumentElement.ChildNodes)
+            {
+                if (node is XmlElement element)
+                {
+                    // No need to define categories if they're not going to be used
+                    Assert.False(element.Name.Equals("Rule.Categories", StringComparison.OrdinalIgnoreCase));
+                    Assert.False(element.HasAttribute("DisplayName"));
+                    Assert.False(element.HasAttribute("Description"));
+                    Assert.False(element.HasAttribute("Category"));
+                }
+            }
         }
 
 
@@ -88,7 +141,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             XmlDocument rule = LoadXamlRule(fullPath);
             foreach (XmlNode node in rule.DocumentElement.ChildNodes)
             {
-                Assert.False(node.Name.Equals("StringProperty", StringComparison.Ordinal) && node.Attributes["Name"].Value.Equals("Identity", StringComparison.OrdinalIgnoreCase));
+                // special case - Folder's Identity property is used by dependencies node
+                if (!ruleName.Equals("Folder", StringComparison.Ordinal))
+                {
+                    Assert.False(node.Name.Equals("StringProperty", StringComparison.Ordinal) && node.Attributes["Name"].Value.Equals("Identity", StringComparison.OrdinalIgnoreCase));
+                }
                 Assert.False(node.Name.Equals("StringProperty", StringComparison.Ordinal) && node.Attributes["Name"].Value.Equals("FileNameAndExtension", StringComparison.OrdinalIgnoreCase));
                 Assert.False(node.Name.Equals("StringProperty", StringComparison.Ordinal) && node.Attributes["Name"].Value.Equals("URL", StringComparison.OrdinalIgnoreCase));
                 Assert.False(node.Name.Equals("StringProperty", StringComparison.Ordinal) && node.Attributes["Name"].Value.Equals("Extension", StringComparison.OrdinalIgnoreCase));
@@ -97,33 +154,42 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
         public static IEnumerable<object[]> GetBrowseObjectItemRules()
         {
-            return GetItemRules(false, true);
+            return GetRules("Items", false, true);
         }
 
         public static IEnumerable<object[]> GetFileItemRules()
         {
-            return GetItemRules(true, false);
+            return GetRules("Items", true, false);
         }
 
         public static IEnumerable<object[]> GetAllItemRules()
         {
-            return GetItemRules(true, true);
+            return GetRules("Items", true, true);
         }
 
-        public static IEnumerable<object[]> GetItemRules(bool file, bool browseObject)
+        public static IEnumerable<object[]> GetAllRules()
         {
-            // Not all rules are embedded as manifests so we have to run these using the file system.
-            // Instead of hardcoding knowledge of unit test paths and build locations, we just look for the artifacts folder and start from there
+            return GetRules("", true, true);
+        }
+
+        public static IEnumerable<object[]> GetRules(string suffix, bool file, bool browseObject)
+        {
+            // Not all rules are embedded as manifests so we have to read the xaml files from the file system.
+            // Instead of hardcoding knowledge of unit test paths and build locations, we just traverse up to the artifacts folder and start from there
             string artifactsPath = typeof(XamlRuleTests).Assembly.Location;
             while (!Path.GetFileName(artifactsPath).Equals("artifacts", StringComparisons.Paths))
             {
                 artifactsPath = Path.GetDirectoryName(artifactsPath);
             }
+
             string rulesPath = Path.Combine(artifactsPath, "..", "src", "Microsoft.VisualStudio.ProjectSystem.Managed", "ProjectSystem", "Rules");
             Assert.True(Directory.Exists(rulesPath), "Couldn't find XAML rules folder: " + rulesPath);
 
-            string itemsPath = Path.Combine(rulesPath, "Items");
-            foreach (var fileName in Directory.EnumerateFiles(itemsPath, "*.xaml"))
+            if (!string.IsNullOrEmpty(suffix))
+            {
+                rulesPath = Path.Combine(rulesPath, suffix);
+            }
+            foreach (var fileName in Directory.EnumerateFiles(rulesPath, "*.xaml"))
             {
                 if (fileName.EndsWith(".BrowseObject.xaml", StringComparisons.Paths) && !browseObject)
                 {
@@ -136,7 +202,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
                     continue;
                 }
 
-                // we return the rule name separately mainly to get a readable display in Test Explorer so failures can be diagnosed
+                // we return the rule name separately mainly to get a readable display in Test Explorer so failures can be diagnosed more easily
                 yield return new object[] { Path.GetFileNameWithoutExtension(fileName), fileName };
             }
         }
