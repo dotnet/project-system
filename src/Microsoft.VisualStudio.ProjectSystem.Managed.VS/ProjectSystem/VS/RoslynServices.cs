@@ -15,13 +15,13 @@ using RoslynRenamer = Microsoft.CodeAnalysis.Rename;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
-    [Export(typeof(IRoslynServices))]
-    internal class RoslynServices : IRoslynServices
+    [Export(typeof(IRenameTypeService))]
+    internal class RenameTypeService : IRenameTypeService
     {
         private readonly VisualStudioWorkspace _workspace;
 
         [ImportingConstructor]
-        public RoslynServices(
+        public RenameTypeService(
             UnconfiguredProject project,
             VisualStudioWorkspace visualStudioWorkspace)
         {

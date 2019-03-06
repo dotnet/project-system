@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     /// An abstraction over roslyn services.
     /// </summary>
     [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
-    internal interface IRoslynServices
+    internal interface IRenameTypeService
     {
         /// <summary>
         /// Determine if any types need to be renamed in the given file.

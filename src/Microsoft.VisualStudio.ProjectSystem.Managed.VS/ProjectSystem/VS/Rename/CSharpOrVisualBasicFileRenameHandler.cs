@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         private readonly IUnconfiguredProjectTasksService _unconfiguredProjectTasksService;
         private readonly IEnvironmentOptions _environmentOptions;
         private readonly IUserNotificationServices _userNotificationServices;
-        private readonly IRoslynServices _roslyn;
+        private readonly IRenameTypeService _roslyn;
         private readonly IOperationWaitIndicator _waitService;
 
         [ImportingConstructor]
@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                                                       IUnconfiguredProjectTasksService unconfiguredProjectTasksService,
                                                       IEnvironmentOptions environmentOptions,
                                                       IUserNotificationServices userNotificationServices,
-                                                      IRoslynServices roslynServices,
+                                                      IRenameTypeService roslynServices,
                                                       IOperationWaitIndicator waitService)
         {
             _projectVsServices = projectVsServices;

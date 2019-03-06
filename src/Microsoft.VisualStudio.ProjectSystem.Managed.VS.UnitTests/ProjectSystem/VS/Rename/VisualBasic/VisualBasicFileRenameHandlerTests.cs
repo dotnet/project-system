@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.VisualBasic
         {
 
             var userNotificationServices = IUserNotificationServicesFactory.Create();
-            var roslynServices = IRoslynServicesFactory.Create(existsSymbolToRename: false);
+            var roslynServices = IRenameTypeServiceFactory.Create(existsSymbolToRename: false);
 
             await RenameAsync(sourceCode, oldFilePath, newFilePath, userNotificationServices, roslynServices, LanguageNames.VisualBasic);
 
@@ -117,7 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.VisualBasic
         public async Task Rename_Symbol_Should_TriggerUserConfirmationAsync(string oldFilePath, string newFilePath, string sourceCode)
         {
             var userNotificationServices = IUserNotificationServicesFactory.Create();
-            var roslynServices = IRoslynServicesFactory.Create();
+            var roslynServices = IRenameTypeServiceFactory.Create();
 
             await RenameAsync(sourceCode, oldFilePath, newFilePath, userNotificationServices, roslynServices, LanguageNames.VisualBasic);
 
@@ -129,7 +129,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.VisualBasic
                      string oldFilePath,
                      string newFilePath,
                      IUserNotificationServices userNotificationServices,
-                     IRoslynServices roslynServices,
+                     IRenameTypeService roslynServices,
                      string language)
         {
             using (var ws = new AdhocWorkspace())

@@ -4,11 +4,11 @@ using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
-    internal static class IRoslynServicesFactory
+    internal static class IRenameTypeServiceFactory
     {
-        public static IRoslynServices Create(bool existsSymbolToRename = true)
+        public static IRenameTypeService Create(bool existsSymbolToRename = true)
         {
-            var mock = new Mock<IRoslynServices>();
+            var mock = new Mock<IRenameTypeService>();
             mock.Setup(h => h.AnyTypeToRenameAsync(It.IsAny<string>(),
                                                    It.IsAny<string>(),
                                                    It.IsAny<string>()))
