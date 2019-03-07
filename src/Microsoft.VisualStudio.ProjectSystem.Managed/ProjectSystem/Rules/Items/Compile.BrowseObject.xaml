@@ -16,7 +16,6 @@
   <Rule.DataSource>
     <DataSource HasConfigurationCondition="false"
                 ItemType="Compile"
-                Label="Configuration"
                 Persistence="ProjectFile"
                 SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>

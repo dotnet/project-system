@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml;
-using System.Xml.Linq;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Rules
@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         [MemberData(nameof(GetFileItemRules))]
         public void FileRulesShouldMatchNone(string ruleName, string fullPath)
         {
-            // Special case for Folder rule which hasn't been split yet, but is in the Items folder
+            // Special case for Folder rule which hasn't been split yet, but is in the Items folder. But also its completely different.
             if (ruleName.Equals("Folder", StringComparison.Ordinal))
             {
                 return;
@@ -25,16 +25,41 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             }
 
             string noneFile = Path.Combine(fullPath, "..", "None.xaml");
-            var settings = new XmlReaderSettings { XmlResolver = null };
-            using (var noneStream = File.OpenRead(noneFile))
-            using (var ruleStream = File.OpenRead(fullPath))
-            using (var noneReader = XmlReader.Create(noneStream, settings))
-            using (var ruleReader = XmlReader.Create(ruleStream, settings))
-            {
-                var none = XDocument.Load(noneReader);
-                var rule = XDocument.Load(ruleReader);
 
+            XmlDocument none = LoadXamlRule(noneFile);
+            XmlDocument rule = LoadXamlRule(fullPath);
+
+            // First fix up the Name as we know they'll differ.
+            rule.DocumentElement.Attributes["Name"].Value = "None";
+
+            AssertXmlEqual(none, rule);
+        }
+
+        [Theory]
+        [MemberData(nameof(GetBrowseObjectItemRules))]
+        public void BrowseObjectRulesShouldMatchNone(string ruleName, string fullPath)
+        {
+            // Special case for Folder rule which hasn't been split yet, but is in the Items folder. But also its completely different.
+            if (ruleName.Equals("Folder", StringComparison.Ordinal))
+            {
+                return;
             }
+            // No need to check None against None
+            if (ruleName.Equals("None", StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            string noneFile = Path.Combine(fullPath, "..", "None.BrowseObject.xaml");
+
+            XmlDocument none = LoadXamlRule(noneFile);
+            XmlDocument rule = LoadXamlRule(fullPath);
+
+            // First fix up the Name and DisplayName as we know they'll differ.
+            rule.DocumentElement.Attributes["Name"].Value = "None";
+            rule.DocumentElement.Attributes["DisplayName"].Value = "General";
+
+            AssertXmlEqual(none, rule);
         }
 
         [Theory]
@@ -218,6 +243,47 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             }
 
             return rule;
+        }
+
+        private void AssertXmlEqual(XmlDocument left, XmlDocument right)
+        {
+            AssertXmlEqual(left.DocumentElement, right.DocumentElement);
+        }
+
+        private void AssertXmlEqual(XmlElement left, XmlElement right)
+        {
+            Assert.Equal(left.Name, right.Name, ignoreCase: true);
+
+            var leftAttributes = left.Attributes.OfType<XmlAttribute>().OrderBy(a => a.Name).ToArray();
+            var rightAttributes = right.Attributes.OfType<XmlAttribute>().OrderBy(a => a.Name).ToArray();
+            Assert.Equal(leftAttributes.Length, rightAttributes.Length);
+
+            for (int i = 0; i < leftAttributes.Length; i++)
+            {
+                AssertAttributesEqual(leftAttributes[i], rightAttributes[i]);
+            }
+
+            var leftChildNodes = left.ChildNodes.OfType<XmlElement>().OrderBy(a => a.Name).ToArray();
+            var rightChildNodes = right.ChildNodes.OfType<XmlElement>().OrderBy(a => a.Name).ToArray();
+            Assert.Equal(leftChildNodes.Length, rightChildNodes.Length);
+
+            for (int i = 0; i < leftChildNodes.Length; i++)
+            {
+                AssertXmlEqual(leftChildNodes[i], rightChildNodes[i]);
+            }
+        }
+
+        private void AssertAttributesEqual(XmlAttribute left, XmlAttribute right)
+        {
+            Assert.Equal(left.Name, right.Name, ignoreCase: true);
+
+            // ignore ItemType as we know they'll be different
+            if (left.Name.Equals("ItemType", StringComparison.OrdinalIgnoreCase))
+            {
+                return;
+            }
+
+            Assert.Equal(left.Value, right.Value, ignoreCase: true);
         }
     }
 }
