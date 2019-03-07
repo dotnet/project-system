@@ -30,12 +30,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             private ExportLifetimeContext<IApplyChangesToWorkspaceContext> _applyChangesToWorkspaceContext;
 
             public WorkspaceProjectContextHostInstance(ConfiguredProject project,
-                                                IProjectThreadingService threadingService,
-                                                IUnconfiguredProjectTasksService tasksService,
-                                                IProjectSubscriptionService projectSubscriptionService,
-                                                IWorkspaceProjectContextProvider workspaceProjectContextProvider,
-                                                IActiveEditorContextTracker activeWorkspaceProjectContextTracker,
-                                                ExportFactory<IApplyChangesToWorkspaceContext> applyChangesToWorkspaceContextFactory)
+                                                       IProjectThreadingService threadingService,
+                                                       IUnconfiguredProjectTasksService tasksService,
+                                                       IProjectSubscriptionService projectSubscriptionService,
+                                                       IWorkspaceProjectContextProvider workspaceProjectContextProvider,
+                                                       IActiveEditorContextTracker activeWorkspaceProjectContextTracker,
+                                                       ExportFactory<IApplyChangesToWorkspaceContext> applyChangesToWorkspaceContextFactory)
                 : base(threadingService.JoinableTaskContext)
             {
                 _project = project;

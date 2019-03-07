@@ -255,12 +255,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             applyChangesToWorkspaceContext = applyChangesToWorkspaceContext ?? IApplyChangesToWorkspaceContextFactory.Create();
 
             return new WorkspaceProjectContextHostInstance(project,
-                                                    threadingService,
-                                                    tasksService,
-                                                    projectSubscriptionService,
-                                                    workspaceProjectContextProvider,
-                                                    activeWorkspaceProjectContextTracker,
-                                                    ExportFactoryFactory.ImplementCreateValueWithAutoDispose(() => applyChangesToWorkspaceContext));
+                                                           threadingService,
+                                                           tasksService,
+                                                           projectSubscriptionService,
+                                                           workspaceProjectContextProvider,
+                                                           activeWorkspaceProjectContextTracker,
+                                                           ExportFactoryFactory.ImplementCreateValueWithAutoDispose(() => applyChangesToWorkspaceContext));
         }
     }
 }

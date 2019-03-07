@@ -28,12 +28,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         [ImportingConstructor]
         public WorkspaceProjectContextHost(ConfiguredProject project,
-                                    IProjectThreadingService threadingService,
-                                    IUnconfiguredProjectTasksService tasksService,
-                                    IProjectSubscriptionService projectSubscriptionService,
-                                    IWorkspaceProjectContextProvider workspaceProjectContextProvider,
-                                    IActiveEditorContextTracker activeWorkspaceProjectContextTracker,
-                                    ExportFactory<IApplyChangesToWorkspaceContext> applyChangesToWorkspaceContextFactory)
+                                           IProjectThreadingService threadingService,
+                                           IUnconfiguredProjectTasksService tasksService,
+                                           IProjectSubscriptionService projectSubscriptionService,
+                                           IWorkspaceProjectContextProvider workspaceProjectContextProvider,
+                                           IActiveEditorContextTracker activeWorkspaceProjectContextTracker,
+                                           ExportFactory<IApplyChangesToWorkspaceContext> applyChangesToWorkspaceContextFactory)
             : base(threadingService.JoinableTaskContext)
         {
             _project = project;
