@@ -17,9 +17,6 @@ charset = utf-8-bom
 [*.xaml]
 indent_size = 4
 
-[src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/*.xaml]
-indent_size = 2
-
 [*.ps1]
 indent_size = 2
 
