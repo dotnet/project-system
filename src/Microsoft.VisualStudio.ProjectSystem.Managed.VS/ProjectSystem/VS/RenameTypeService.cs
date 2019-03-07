@@ -11,8 +11,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.LanguageServices;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
-
-using RoslynRenamer = Microsoft.CodeAnalysis.Rename;
+using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
@@ -52,8 +51,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             if (!await CanHandleRenameAsync(oldName, newName, project))
                 return false;
 
-            (bool success, _) = await TryGetSymbolToRenameAsync(oldName, newFilePath, project, default);
-            return success;
+            (bool success, ISymbol symbol) = await TryGetSymbolToRenameAsync(oldName, newFilePath, project);
+            return success && symbol != null;
         }
 
         public async Task<bool> RenameTypeAsync(string oldFilePath, string newFilePath, string projectPath, CancellationToken cancellationToken)
@@ -62,14 +61,44 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             string newName = Path.GetFileNameWithoutExtension(newFilePath);
 
             if (!TryGetProjectAtPath(projectPath, out Project project))
-                return false; ;
+                return false;
 
-            (bool success, ISymbol symbol) = await TryGetSymbolToRenameAsync(oldName, newFilePath, project, cancellationToken);
+            if (!TryGetCodeModel(newFilePath, project, out EnvDTE.FileCodeModel codeModel))
+                return false;
+
+            (bool success, bool isCaseSensitive) = await TryDetermineIfCompilationIsCaseSensitiveAsync(project);
             if (!success)
                 return false;
 
-            Solution renamedSolution = await RoslynRenamer.Renamer.RenameSymbolAsync(project.Solution, symbol, newName, project.Solution.Workspace.Options, cancellationToken);
-            return _workspace.TryApplyChanges(renamedSolution);
+            if (!TryGetCodeElementToRename(oldName, codeModel.CodeElements, isCaseSensitive, out EnvDTE80.CodeElement2 codeElementToRename))
+                return false;
+
+            codeElementToRename.RenameSymbol(newName);
+            return true;
+        }
+
+        private bool TryGetCodeModel(string newFilePath, Project project, out EnvDTE.FileCodeModel codeModel)
+        {
+            codeModel = null;
+            Document newDocument = GetDocument(project, newFilePath);
+            if (newDocument is null)
+                return false;
+
+            IVsHierarchy hierarchy = _workspace.GetHierarchy(project.Id);
+            if (hierarchy is null)
+                return false;
+
+            if (ErrorHandler.Failed(hierarchy.GetProperty(VSConstants.VSITEMID_ROOT, (int)__VSHPROPID.VSHPROPID_ExtObject, out object value)))
+                return false;
+
+            var dteProject = (EnvDTE.Project)value;
+
+            EnvDTE.ProjectItem projectItemForDocument = dteProject.ProjectItems
+                .OfType<EnvDTE.ProjectItem>()
+                .FirstOrDefault(p => StringComparer.InvariantCultureIgnoreCase.Compare(p.Name, newDocument.Name) == 0);
+
+            codeModel = projectItemForDocument.FileCodeModel;
+            return true;
         }
 
         private bool TryGetProjectAtPath(string fullPath, out Project project)
@@ -121,13 +150,44 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return (true, compilation.IsCaseSensitive);
         }
 
-        private static async Task<(bool success, ISymbol symbolToRename)> TryGetSymbolToRenameAsync(string oldName,
-                                                                                                    string newFileName,
-                                                                                                    Project project,
-                                                                                                    CancellationToken token)
+        private static bool  TryGetCodeElementToRename(string oldName,
+                                                       EnvDTE.CodeElements elements,
+                                                       bool isCaseSensitive,
+                                                       out EnvDTE80.CodeElement2 codeElementToRename)
         {
-            token.ThrowIfCancellationRequested();
+            foreach (EnvDTE.CodeElement element in elements)
+            {
+                if (element.Kind == EnvDTE.vsCMElement.vsCMElementNamespace)
+                {
+                    if (TryGetCodeElementToRename(oldName, element.Children, isCaseSensitive, out codeElementToRename))
+                    {
+                        return true;
+                    }
+                }
 
+                if (element.Kind == EnvDTE.vsCMElement.vsCMElementStruct ||
+                    element.Kind == EnvDTE.vsCMElement.vsCMElementClass ||
+                    element.Kind == EnvDTE.vsCMElement.vsCMElementModule ||
+                    element.Kind == EnvDTE.vsCMElement.vsCMElementInterface ||
+                    element.Kind == EnvDTE.vsCMElement.vsCMElementEnum)
+                {
+                    string elementName = element.Name;
+                    if(string.Equals(oldName, elementName, isCaseSensitive ? StringComparison.Ordinal: StringComparison.OrdinalIgnoreCase))
+                    {
+                        codeElementToRename = element as EnvDTE80.CodeElement2;
+                        return true;
+                    }
+                }
+            }
+
+            codeElementToRename = null;
+            return false;
+        }
+
+        private static async Task<(bool success, ISymbol symbolToRename)> TryGetSymbolToRenameAsync(string oldName,
+            string newFileName,
+            Project project)
+        {
             if (project is null)
                 return (false, null);
 
@@ -135,29 +195,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             if (newDocument is null)
                 return (false, null);
 
-            SyntaxNode root = await GetRootNode(newDocument, token);
+            SyntaxNode root = await GetRootNode(newDocument);
             if (root is null)
                 return (false, null);
 
-            SemanticModel semanticModel = await newDocument.GetSemanticModelAsync(token);
+            SemanticModel semanticModel = await newDocument.GetSemanticModelAsync();
             if (semanticModel is null)
                 return (false, null);
 
-            IEnumerable<SyntaxNode> declarations = root.DescendantNodes().Where(n => HasMatchingSyntaxNode(semanticModel, n, oldName, semanticModel.Compilation.IsCaseSensitive, token));
+            IEnumerable<SyntaxNode> declarations = root.DescendantNodes().Where(n => HasMatchingSyntaxNode(semanticModel, n, oldName, semanticModel.Compilation.IsCaseSensitive));
             SyntaxNode declaration = declarations.FirstOrDefault();
             if (declaration is null)
                 return (false, null);
 
-            return (true, semanticModel.GetDeclaredSymbol(declaration, token));
+            return (true, semanticModel.GetDeclaredSymbol(declaration));
 
         }
 
         private static Document GetDocument(Project project, string filePath)
             => (from d in project.Documents where StringComparers.Paths.Equals(d.FilePath, filePath) select d).FirstOrDefault();
 
-        private static Task<SyntaxNode> GetRootNode(Document newDocument, CancellationToken token) => newDocument.GetSyntaxRootAsync(token);
+        private static Task<SyntaxNode> GetRootNode(Document newDocument, CancellationToken token = default) => newDocument.GetSyntaxRootAsync(token);
 
-        private static bool HasMatchingSyntaxNode(SemanticModel model, SyntaxNode syntaxNode, string name, bool isCaseSensitive, CancellationToken token)
+        private static bool HasMatchingSyntaxNode(SemanticModel model, SyntaxNode syntaxNode, string name, bool isCaseSensitive, CancellationToken token = default)
         {
             if (model.GetDeclaredSymbol(syntaxNode, token) is INamedTypeSymbol symbol &&
                 (symbol.TypeKind == TypeKind.Class
