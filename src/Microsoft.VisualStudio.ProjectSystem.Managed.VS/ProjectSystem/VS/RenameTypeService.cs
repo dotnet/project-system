@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -81,30 +81,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             foreach (EnvDTE.CodeElement element in elements)
             {
-                if (element.Kind == EnvDTE.vsCMElement.vsCMElementNamespace)
+                // Return the code element if it is a type with the same name
+                if ((element.Kind == EnvDTE.vsCMElement.vsCMElementStruct ||
+                     element.Kind == EnvDTE.vsCMElement.vsCMElementClass ||
+                     element.Kind == EnvDTE.vsCMElement.vsCMElementModule ||
+                     element.Kind == EnvDTE.vsCMElement.vsCMElementInterface ||
+                     element.Kind == EnvDTE.vsCMElement.vsCMElementEnum) &&
+                     SyntaxFactsService.StringComparer.Equals(oldName, element.Name) &&
+                     element is EnvDTE80.CodeElement2 element2)
                 {
-                    if (TryGetCodeElementToRename(oldName, element.Children, out codeElementToRename))
-                    {
-                        return true;
-                    }
+                    codeElementToRename = element2;
+                    return true;
                 }
 
-                if (element.Kind == EnvDTE.vsCMElement.vsCMElementStruct ||
-                    element.Kind == EnvDTE.vsCMElement.vsCMElementClass ||
-                    element.Kind == EnvDTE.vsCMElement.vsCMElementModule ||
-                    element.Kind == EnvDTE.vsCMElement.vsCMElementInterface ||
-                    element.Kind == EnvDTE.vsCMElement.vsCMElementEnum)
+                // If no matching names were found recurse into namespace-like and type-like definitions
+                else if ((element.Kind == EnvDTE.vsCMElement.vsCMElementNamespace ||
+                          element.Kind == EnvDTE.vsCMElement.vsCMElementClass ||
+                          element.Kind == EnvDTE.vsCMElement.vsCMElementModule ||
+                          element.Kind == EnvDTE.vsCMElement.vsCMElementInterface) &&
+                          TryGetCodeElementToRename(oldName, element.Children, out codeElementToRename))
                 {
-                    string elementName = element.Name;
-                    if (SyntaxFactsService.StringComparer.Equals(oldName, elementName) &&
-                        element is EnvDTE80.CodeElement2 element2)
-                    {
-                        codeElementToRename = element2;
-                        return true;
-                    }
+                    return true;
                 }
             }
 
+            // No elements were found with a matching name
             codeElementToRename = null;
             return false;
         }
