@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                AreNotSameIdentifierName(oldName, newName);
 
         private bool IsValidIdentifier(string identifierName)
-            => SyntaxFactsService.IsValidIdentifier(identifierName)e;
+            => SyntaxFactsService.IsValidIdentifier(identifierName);
 
         private bool AreNotSameIdentifierName(string oldName, string newName)
             => !AreSameIdentifierName(oldName, newName);
@@ -137,13 +137,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             // NOTE: It is safe to grab the first project we encounter which
             // contains the given file. Roslyn will handle the case where the
             // file is included in multiple projects (linked-files or multi-TFM)
-            document = null;
-            DocumentId id = _workspace.CurrentSolution.GetDocumentIdsWithFilePath(filePath).FirstOrDefault();
+            Solution solution = _workspace.CurrentSolution;
+            DocumentId id = solution.GetDocumentIdsWithFilePath(filePath).FirstOrDefault();
             if (id is null)
+            {
+                document = null;
                 return false;
+            }
 
-            document = _workspace.CurrentSolution.GetDocument(id);
-            return true;
+            document = solution.GetDocument(id);
+            return document != null;
         }
 
         private bool HasMatchingSyntaxNode(SemanticModel model, SyntaxNode syntaxNode, string name, CancellationToken cancellationToken = default)
