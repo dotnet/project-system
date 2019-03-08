@@ -49,14 +49,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             string oldName = Path.GetFileNameWithoutExtension(oldFilePath);
             string newName = Path.GetFileNameWithoutExtension(newFilePath);
 
-            // NOTE: It is safe to grab the first project we encounter which
-            // contains the given file. Roslyn will handle the case where the
-            // file is included in multiple projects (linked-files or multi-TFM)
-            DocumentId documentId = _workspace.CurrentSolution.GetDocumentIdsWithFilePath(newFilePath).FirstOrDefault();
-            if (documentId is null)
+            if (!TryGetDocument(newFilePath, out Document document))
                 return false;
 
-            EnvDTE.FileCodeModel codeModel = _workspace.GetFileCodeModel(documentId);
+            EnvDTE.FileCodeModel codeModel = _workspace.GetFileCodeModel(document.Id);
 
             if (!TryGetCodeElementToRename(oldName, codeModel.CodeElements, out EnvDTE80.CodeElement2 codeElementToRename))
                 return false;
