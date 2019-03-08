@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [ImportMany]
         protected OrderPrecedenceImportCollection<ISyntaxFactsService> SyntaxFactsServicesImpl { get; }
 
-        private ISyntaxFactsService SyntaxFactsService => SyntaxFactsServicesImpl.FirstOrDefault()?.Value;
+        private ISyntaxFactsService SyntaxFactsService => SyntaxFactsServicesImpl.First().Value;
 
         public async Task<bool> AnyTypeToRenameAsync(string oldFilePath, string newFilePath, string projectPath)
         {
@@ -71,13 +71,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                AreNotSameIdentifierName(oldName, newName);
 
         private bool IsValidIdentifier(string identifierName)
-            => SyntaxFactsService?.IsValidIdentifier(identifierName) ?? false;
+            => SyntaxFactsService.IsValidIdentifier(identifierName)e;
 
         private bool AreNotSameIdentifierName(string oldName, string newName)
-            => (SyntaxFactsService?.StringComparer.Compare(oldName, newName) != 0) == true;
+            => !AreSameIdentifierName(oldName, newName);
 
         private bool AreSameIdentifierName(string oldName, string newName)
-            => (SyntaxFactsService?.StringComparer.Compare(oldName, newName) == 0) == true;
+            => SyntaxFactsService.StringComparer.Equals(oldName, newName);
 
         private bool TryGetCodeElementToRename(string oldName,
                                                EnvDTE.CodeElements elements,
