@@ -103,6 +103,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private bool TryGetProjectAtPath(string fullPath, out Project project)
         {
+            // NOTE: It is safe to grab the first project we encounter which
+            // contains the given file. Roslyn will handle the case where the
+            // file is included in multiple projects (linked-files or multi-TFM)
             foreach (Project proj in _workspace.CurrentSolution.Projects)
             {
                 if (StringComparers.Paths.Equals(proj.FilePath, fullPath))
