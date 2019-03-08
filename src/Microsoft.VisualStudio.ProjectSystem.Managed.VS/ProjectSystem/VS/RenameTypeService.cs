@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -55,22 +55,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return success && symbol != null;
         }
 
-        public async Task<bool> RenameTypeAsync(string oldFilePath, string newFilePath, string projectPath, CancellationToken cancellationToken)
+        public bool RenameType(string oldFilePath, string newFilePath, string projectPath, CancellationToken cancellationToken)
         {
             string oldName = Path.GetFileNameWithoutExtension(oldFilePath);
             string newName = Path.GetFileNameWithoutExtension(newFilePath);
 
-            if (!TryGetProjectAtPath(projectPath, out Project project))
+            DocumentId documentId = _workspace.CurrentSolution.GetDocumentIdsWithFilePath(newFilePath).FirstOrDefault();
+            if (documentId is null)
                 return false;
 
-            if (!TryGetCodeModel(newFilePath, project, out EnvDTE.FileCodeModel codeModel))
-                return false;
+            EnvDTE.FileCodeModel codeModel = _workspace.GetFileCodeModel(documentId);
 
-            (bool success, bool isCaseSensitive) = await TryDetermineIfCompilationIsCaseSensitiveAsync(project);
-            if (!success)
-                return false;
-
-            if (!TryGetCodeElementToRename(oldName, codeModel.CodeElements, isCaseSensitive, out EnvDTE80.CodeElement2 codeElementToRename))
+            if (!TryGetCodeElementToRename(oldName, codeModel.CodeElements, out EnvDTE80.CodeElement2 codeElementToRename))
                 return false;
 
             codeElementToRename.RenameSymbol(newName);

@@ -30,6 +30,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// <param name="projectPath">The path to the project file which contains types to be renamed.</param>
         /// <param name="cancellationToken">A token that can be used to cancel this operation.</param>
         /// <returns>True if the changes could be applied, false if they could not.</returns>
-        Task<bool> RenameTypeAsync(string oldFilePath, string newFilePath, string projectPath, CancellationToken cancellationToken);
+        bool RenameType(string oldFilePath, string newFilePath, string projectPath, CancellationToken cancellationToken);
     }
 }

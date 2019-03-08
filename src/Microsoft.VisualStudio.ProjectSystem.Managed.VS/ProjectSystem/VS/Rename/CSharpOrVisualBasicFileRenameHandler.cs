@@ -78,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                     () =>
                     {
                         // Perform the rename operation
-                        return _roslyn.RenameTypeAsync(oldFilePath, newFilePath, projectPath, token);
+                        return Task.FromResult(_roslyn.RenameType(oldFilePath, newFilePath, projectPath, token));
                     }));
 
 
