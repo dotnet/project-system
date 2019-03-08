@@ -136,7 +136,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return semanticModel.GetDeclaredSymbol(declaration);
         }
 
-        private bool  TryGetDocument(string filePath, out Document document)
+        private bool TryGetDocument(string filePath, out Document document)
         {
             // NOTE: It is safe to grab the first project we encounter which
             // contains the given file. Roslyn will handle the case where the
