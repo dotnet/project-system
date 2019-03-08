@@ -274,6 +274,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             '
             resources.ApplyResources(Me.LicenseFileNameTextBox, "LicenseFileNameTextBox")
             Me.LicenseFileNameTextBox.Name = "LicenseFileNameTextBox"
+            Me.LicenseFileNameTextBox.ReadOnly = True
             '
             'LicenseBrowseButton
             '
