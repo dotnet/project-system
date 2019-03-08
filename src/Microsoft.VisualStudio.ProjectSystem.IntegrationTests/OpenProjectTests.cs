@@ -11,7 +11,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     [TestClass]
-    public class CreateProjectTests : TestBase
+    public class CreateProjectTests : IntegrationTestBase
     {
         [TestMethod]
         public void CreateProject_CreateAndBuild()
