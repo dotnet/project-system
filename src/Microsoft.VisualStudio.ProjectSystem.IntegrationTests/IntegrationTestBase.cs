@@ -7,9 +7,9 @@ using Microsoft.Test.Apex.VisualStudio;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
-    public abstract class TestBase : VisualStudioHostTest
+    public abstract class IntegrationTestBase : VisualStudioHostTest
     {
-        protected TestBase()
+        protected IntegrationTestBase()
         {
             // TestCleanup will fire up another instance of Visual Studio to reset 
             // the AutoloadExternalChanges if it thinks the default changed even if

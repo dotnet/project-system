@@ -16,13 +16,13 @@ namespace Microsoft.VisualStudio.LifetimeActions
     [Export(typeof(ITestLifetimeAction))]
     internal class ShutdownVisualStudioAfterLastTestLifetimeAction : ITestLifetimeAction
     {
-        private static TestBase? _lastTest;
+        private static IntegrationTestBase? _lastTest;
 
         public void OnTestLifeTimeAction(ApexTest testClass, Type classType, TestLifeTimeAction action)
         {
             if (action == TestLifeTimeAction.PostTestCleanup)
             {
-                _lastTest = testClass as TestBase;
+                _lastTest = testClass as IntegrationTestBase;
             }
         }
 
