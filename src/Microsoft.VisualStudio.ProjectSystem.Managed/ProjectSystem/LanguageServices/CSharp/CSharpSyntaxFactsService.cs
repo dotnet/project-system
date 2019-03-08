@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.ComponentModel.Composition;
 
 using Microsoft.CodeAnalysis.CSharp;
@@ -20,5 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.CSharp
         {
             return SyntaxFacts.IsValidIdentifier(identifierName);
         }
+
+        public StringComparer StringComparer { get; } = StringComparer.Ordinal;
     }
 }
