@@ -7,3 +7,4 @@ static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResourc
 static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.NewBtnHelpText.get -> string
 static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.OKBtnHelpText.get -> string
 static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.chkLaunchBrowserHelpText.get -> string
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.chkNativeCodeDebuggingText.get -> string

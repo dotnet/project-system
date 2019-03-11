@@ -246,4 +246,7 @@
   <data name="OKBtnHelpText" xml:space="preserve">
     <value>Create the profile and return to the debug property page with the new profile selected</value>
   </data>
+  <data name="chkNativeCodeDebuggingText" xml:space="preserve">
+    <value>Enable native code debugging</value>
+  </data>
 </root>
