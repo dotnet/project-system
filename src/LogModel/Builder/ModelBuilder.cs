@@ -305,6 +305,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
             projectInfo.EndProject(args.Timestamp, args.Succeeded);
             AddMessage(projectInfo, args);
 
+            if (projectInfo.ExecutedTargets == null)
+            {
+                return;
+            }
+
             foreach (var target in projectInfo.TargetsToBuild)
             {
                 var executedTargets = projectInfo.ExecutedTargets.Where(targetInfo =>

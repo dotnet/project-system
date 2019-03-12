@@ -109,13 +109,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
 
             if (values == null)
             {
-                var value = ParameterProperties.SingleOrDefault(property => property.Key == name);
-                if (string.IsNullOrEmpty(value.Key))
+                var value = ParameterProperties?.SingleOrDefault(property => property.Key == name);
+                if (string.IsNullOrEmpty(value?.Key))
                 {
                     return Enumerable.Empty<string>();
                 }
 
-                return new[] { value.Value };
+                return new[] { value.Value.Value };
             }
 
             return values;
