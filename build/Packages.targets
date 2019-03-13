@@ -91,7 +91,7 @@
     <PackageReference Update="Microsoft.Test.Apex.VisualStudio" Version="16.0.28117-pre" />
 
     <!-- CPS -->
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK" Version="16.0.201-pre-g7d366164d0" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK" Version="16.1.39-pre-gd9225dddee" />
     <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers" Version="16.0.201-pre-g7d366164d0" />
 
     <!-- Roslyn -->
