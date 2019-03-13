@@ -253,6 +253,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             activeWorkspaceProjectContextTracker = activeWorkspaceProjectContextTracker ?? IActiveEditorContextTrackerFactory.Create();
             workspaceProjectContextProvider = workspaceProjectContextProvider ?? IWorkspaceProjectContextProviderFactory.ImplementCreateProjectContextAsync(IWorkspaceProjectContextAccessorFactory.Create());
             applyChangesToWorkspaceContext = applyChangesToWorkspaceContext ?? IApplyChangesToWorkspaceContextFactory.Create();
+            IDataProgressTrackerService dataProgressTrackerService = IDataProgressTrackerServiceFactory.Create();
 
             return new WorkspaceProjectContextHostInstance(project,
                                                            threadingService,
@@ -260,7 +261,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                                            projectSubscriptionService,
                                                            workspaceProjectContextProvider,
                                                            activeWorkspaceProjectContextTracker,
-                                                           ExportFactoryFactory.ImplementCreateValueWithAutoDispose(() => applyChangesToWorkspaceContext));
+                                                           ExportFactoryFactory.ImplementCreateValueWithAutoDispose(() => applyChangesToWorkspaceContext),
+                                                           dataProgressTrackerService);
         }
     }
 }
