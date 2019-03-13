@@ -99,6 +99,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// <exception cref="OperationCanceledException">
         ///     The result is awaited and <paramref name="cancellationToken"/> is cancelled.
         /// </exception>
-        Task ApplyProjectUpdatedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool isActiveContext, CancellationToken cancellationToken);
+        void ApplyProjectUpdated(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool isActiveContext, CancellationToken cancellationToken);
     }
 }

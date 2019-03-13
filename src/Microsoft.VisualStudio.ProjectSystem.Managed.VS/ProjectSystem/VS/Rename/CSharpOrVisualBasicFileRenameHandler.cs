@@ -46,6 +46,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             _waitService = waitService;
         }
 
+        public void HandleRename(string oldFilePath, string newFilePath)
+            => _projectVsServices.ThreadingService.RunAndForget(
+                ()=> HandleRenameAsync(oldFilePath, newFilePath), _projectVsServices.Project);
+
+
         public async Task HandleRenameAsync(string oldFilePath, string newFilePath)
         {
             // Do not offer to rename types if the user changes the file extensions

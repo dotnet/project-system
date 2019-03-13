@@ -147,7 +147,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 finally
                 {
                     context.EndBatch();
-                    await _applyChangesToWorkspaceContext.Value.ApplyProjectUpdatedAsync(update, isActiveContext, cancellationToken); ;
+                    _applyChangesToWorkspaceContext.Value.ApplyProjectUpdated(update, isActiveContext, cancellationToken); ;
                 }
             }
 

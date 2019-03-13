@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.ProjectSystem.Logging;
 using Microsoft.VisualStudio.ProjectSystem.Rename;
@@ -28,13 +27,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             get { return Compile.SchemaName; }
         }
 
-        public async Task HandleUpdateAsync(IComparable version, IProjectChangeDescription projectChange, bool isActiveContext, IProjectLogger logger)
+        public void HandleUpdate(IComparable version, IProjectChangeDescription projectChange, bool isActiveContext, IProjectLogger logger)
         {
             foreach (IFileRenameHandler hander in _renameHandlers)
             {
                 foreach ((string oldFilePath, string newFilePath) in projectChange.Difference.RenamedItems)
                 {
-                    await hander.HandleRenameAsync(
+                    hander.HandleRename(
                         _project.MakeRooted(oldFilePath),
                         _project.MakeRooted(newFilePath));
                 }

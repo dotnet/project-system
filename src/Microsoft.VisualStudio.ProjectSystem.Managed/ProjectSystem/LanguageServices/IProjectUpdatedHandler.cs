@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
@@ -48,6 +47,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     </para>
         ///     <paramref name="logger"/> is <see langword="null"/>.
         /// </exception>
-        Task HandleUpdateAsync(IComparable version, IProjectChangeDescription projectChange, bool isActiveContext, IProjectLogger logger);
+        void HandleUpdate(IComparable version, IProjectChangeDescription projectChange, bool isActiveContext, IProjectLogger logger);
     }
 }
