@@ -129,13 +129,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 var capabilitiesSnapshot = sources.Item1[0] as IProjectVersionedValue<IProjectCapabilitiesSnapshot>;
                 using (ProjectCapabilitiesContext.CreateIsolatedContext(_projectVsServices.Project, capabilitiesSnapshot.Value))
                 {
-                    NominateProject(sources.Item1.RemoveAt(0));
+                    NominateProject(sources.Item1.RemoveAt(0).Cast<IProjectVersionedValue<IProjectSubscriptionUpdate>>());
                 }
             }
 
-            private void NominateProject(ImmutableList<IProjectValueVersions> sources)
+            private void NominateProject(IEnumerable<IProjectVersionedValue<IProjectSubscriptionUpdate>> updates)
             {
-                IVsProjectRestoreInfo projectRestoreInfo = ProjectRestoreInfoBuilder.Build(sources, _projectVsServices.Project);
+                IVsProjectRestoreInfo projectRestoreInfo = ProjectRestoreInfoBuilder.Build(updates, _projectVsServices.Project);
 
                 if (projectRestoreInfo != null)
                 {

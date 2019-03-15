@@ -16,15 +16,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         private const string DefiningProjectDirectoryProperty = "DefiningProjectDirectory";
         private const string ProjectFileFullPathProperty = "ProjectFileFullPath";
 
-        internal static IVsProjectRestoreInfo Build(IEnumerable<IProjectValueVersions> updates,
-            UnconfiguredProject project)
-        {
-            Requires.NotNull(updates, nameof(updates));
-            Requires.NotNull(project, nameof(project));
-
-            return Build(updates.Cast<IProjectVersionedValue<IProjectSubscriptionUpdate>>(), project);
-        }
-
         internal static IVsProjectRestoreInfo Build(IEnumerable<IProjectVersionedValue<IProjectSubscriptionUpdate>> updates,
             UnconfiguredProject project)
         {
