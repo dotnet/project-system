@@ -4,7 +4,7 @@ using Microsoft.Test.Apex.VisualStudio;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
-    public class NuGetApexVerifier : VisualStudioMarshallableProxyVerifier
+    public sealed class NuGetApexVerifier : VisualStudioMarshallableProxyVerifier
     {
         /// <summary>
         /// Gets the Nuget Package Manager test service

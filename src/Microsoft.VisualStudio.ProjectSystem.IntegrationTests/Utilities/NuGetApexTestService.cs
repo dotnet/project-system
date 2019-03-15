@@ -17,7 +17,7 @@ using NuGet.VisualStudio;
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     [Export(typeof(NuGetApexTestService))]
-    public class NuGetApexTestService : VisualStudioTestService<NuGetApexVerifier>
+    public sealed class NuGetApexTestService : VisualStudioTestService<NuGetApexVerifier>
     {
         public NuGetApexTestService()
         {
