@@ -19,10 +19,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     [Export(typeof(NuGetApexTestService))]
     public sealed class NuGetApexTestService : VisualStudioTestService<NuGetApexVerifier>
     {
-        public NuGetApexTestService()
-        {
-        }
-
         /// <summary>
         /// Gets the NuGet IVsPackageInstallerServices
         /// </summary>
