@@ -75,34 +75,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// </summary>
         /// <param name="projectName">Project name</param>
         /// <param name="packageName">NuGet package name</param>
-        public void InstallPackage(string projectName, string packageName)
-        {
-            InstallPackage(projectName, packageName, null);
-        }
-
-        /// <summary>
-        /// Installs the specified NuGet package into the specified project
-        /// </summary>
-        /// <param name="projectName">Project name</param>
-        /// <param name="packageName">NuGet package name</param>
         /// <param name="packageVersion">NuGet package version</param>
-        public void InstallPackage(string projectName, string packageName, string packageVersion)
-        {
-            Logger.WriteMessage("Now installing NuGet package [{0} {1}] into project [{2}]", packageName, packageVersion, packageName);
-
-            InstallPackage(null, projectName, packageName, packageVersion);
-        }
-
-        /// <summary>
-        /// Installs the specified NuGet package into the specified project
-        /// </summary>
         /// <param name="source">Project source</param>
-        /// <param name="projectName">Project name</param>
-        /// <param name="packageName">NuGet package name</param>
-        /// <param name="packageVersion">NuGet package version</param>
-        public void InstallPackage(string source, string projectName, string packageName, string packageVersion)
+        public void InstallPackage(string projectName, string packageName, string packageVersion = null, string source = null)
         {
-            Logger.WriteMessage("Now installing NuGet package [{0} {1} {2}] into project [{3}]", source, packageName, packageVersion, projectName);
+            Logger.WriteMessage(
+                source == null 
+                    ? "Now installing NuGet package [{1} {2}] into project [{3}]"
+                    : "Now installing NuGet package [{0} {1} {2}] into project [{3}]",
+                source, packageName, packageVersion, projectName);
 
             var project = Dte.Solution.Projects.Item(projectName);
 
@@ -136,22 +117,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         /// <summary>
-        /// Uninstalls only the specified NuGet package from the project.
-        /// </summary>
-        /// <param name="projectName">Project name</param>
-        /// <param name="packageName">NuGet package name</param>
-        public void UninstallPackage(string projectName, string packageName)
-        {
-            UninstallPackage(projectName, packageName, false);
-        }
-
-        /// <summary>
         /// Uninstalls the specified NuGet package from the project
         /// </summary>
         /// <param name="projectName">Project name</param>
         /// <param name="packageName">NuGet package name</param>
         /// <param name="removeDependencies">Whether to uninstall any package dependencies</param>
-        public void UninstallPackage(string projectName, string packageName, bool removeDependencies)
+        public void UninstallPackage(string projectName, string packageName, bool removeDependencies = false)
         {
             Logger.WriteMessage("Now uninstalling NuGet package [{0}] from project [{1}]", packageName, projectName);
 
