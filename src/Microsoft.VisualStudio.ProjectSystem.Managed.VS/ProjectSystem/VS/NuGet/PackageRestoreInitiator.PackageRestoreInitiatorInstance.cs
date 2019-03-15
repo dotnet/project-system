@@ -135,7 +135,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
             private void NominateProject(IEnumerable<IProjectVersionedValue<IProjectSubscriptionUpdate>> updates)
             {
-                IVsProjectRestoreInfo projectRestoreInfo = ProjectRestoreInfoBuilder.Build(updates, _projectVsServices.Project);
+                IVsProjectRestoreInfo projectRestoreInfo = ProjectRestoreInfoBuilder.Build(updates);
 
                 if (projectRestoreInfo != null)
                 {
