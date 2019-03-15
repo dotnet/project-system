@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
-    internal sealed class NuGetUIThreadHelper
+    public sealed class NuGetUIThreadHelper
     {
         /// <summary>
         /// Initially it will be null and will be initialized to CPS JTF when there is CPS

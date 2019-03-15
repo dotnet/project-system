@@ -26,27 +26,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// <summary>
         /// Gets the NuGet IVsPackageInstallerServices
         /// </summary>
-        protected internal IVsPackageInstallerServices InstallerServices => VisualStudioObjectProviders.GetComponentModelService<IVsPackageInstallerServices>();
+        public IVsPackageInstallerServices InstallerServices => VisualStudioObjectProviders.GetComponentModelService<IVsPackageInstallerServices>();
 
         /// <summary>
         /// Gets the NuGet IVsPackageInstaller
         /// </summary>
-        protected internal IVsPackageInstaller PackageInstaller => VisualStudioObjectProviders.GetComponentModelService<IVsPackageInstaller>();
+        public IVsPackageInstaller PackageInstaller => VisualStudioObjectProviders.GetComponentModelService<IVsPackageInstaller>();
 
         /// <summary>
         /// Gets the NuGet IVsSolutionRestoreStatusProvider
         /// </summary>
-        protected internal IVsSolutionRestoreStatusProvider SolutionRestoreStatusProvider
+        public IVsSolutionRestoreStatusProvider SolutionRestoreStatusProvider
             => VisualStudioObjectProviders.GetComponentModelService<IVsSolutionRestoreStatusProvider>();
 
-        protected internal DTE Dte => VisualStudioObjectProviders.DTE;
+        public DTE Dte => VisualStudioObjectProviders.DTE;
 
         /// <summary>
         /// Gets the NuGet IVsPackageUninstaller
         /// </summary>
-        protected internal IVsPackageUninstaller PackageUninstaller => VisualStudioObjectProviders.GetComponentModelService<IVsPackageUninstaller>();
+        public IVsPackageUninstaller PackageUninstaller => VisualStudioObjectProviders.GetComponentModelService<IVsPackageUninstaller>();
 
-        protected internal IVsUIShell UIShell => VisualStudioObjectProviders.GetService<SVsUIShell, IVsUIShell>();
+        public IVsUIShell UIShell => VisualStudioObjectProviders.GetService<SVsUIShell, IVsUIShell>();
 
         /// <summary>
         /// Wait for all nominations and auto restore to complete.
