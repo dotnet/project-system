@@ -37,10 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// </summary>
         public static void SetJoinableTaskFactoryFromService(IProjectServiceAccessor projectServiceAccessor)
         {
-            if (projectServiceAccessor == null)
-            {
-                throw new ArgumentNullException(nameof(projectServiceAccessor));
-            }
+            Requires.NotNull(projectServiceAccessor, nameof(projectServiceAccessor));
 
             if (_joinableTaskFactory == null)
             {
@@ -64,15 +61,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// </summary>
         public static void SetCustomJoinableTaskFactory(Thread mainThread, SynchronizationContext synchronizationContext)
         {
-            if (mainThread == null)
-            {
-                throw new ArgumentNullException(nameof(mainThread));
-            }
-
-            if (synchronizationContext == null)
-            {
-                throw new ArgumentNullException(nameof(synchronizationContext));
-            }
+            Requires.NotNull(mainThread, nameof(mainThread));
+            Requires.NotNull(synchronizationContext, nameof(synchronizationContext));
 
             // This method is not thread-safe and does not have it to be
             // This is really just a test-hook to be used by test standalone UI and only 1 thread will call into this
