@@ -6,16 +6,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
     internal class TargetFrameworkInfo : IVsTargetFrameworkInfo
     {
-        public TargetFrameworkInfo(string targetFrameworkMoniker, IVsReferenceItems packageReferences, IVsReferenceItems projectReferences, IVsProjectProperties properties)
+        public TargetFrameworkInfo(string targetFrameworkMoniker, IVsReferenceItems projectReferences, IVsReferenceItems packageReferences, IVsProjectProperties properties)
         {
             Requires.NotNullOrEmpty(targetFrameworkMoniker, nameof(targetFrameworkMoniker));
-            Requires.NotNull(packageReferences, nameof(packageReferences));
             Requires.NotNull(projectReferences, nameof(projectReferences));
+            Requires.NotNull(packageReferences, nameof(packageReferences));
             Requires.NotNull(properties, nameof(properties));
 
             TargetFrameworkMoniker = targetFrameworkMoniker;
-            PackageReferences = packageReferences;
             ProjectReferences = projectReferences;
+            PackageReferences = packageReferences;
             Properties = properties;
         }
 
