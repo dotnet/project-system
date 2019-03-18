@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     IProjectChangeDescription projectReferencesChanges = update.Value.ProjectChanges[ProjectReference.SchemaName];
                     IProjectChangeDescription packageReferencesChanges = update.Value.ProjectChanges[PackageReference.SchemaName];
 
-                    targetFrameworks.Add(targetFramework, new TargetFrameworkInfo(
+                    targetFrameworks = targetFrameworks.Add(targetFramework, new TargetFrameworkInfo(
                         targetFramework,
                         GetProjectReferences(projectReferencesChanges.After.Items),
                         GetReferences(packageReferencesChanges.After.Items),
@@ -64,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 {
                     if (!toolReferences.ContainsKey(item.Key))
                     {
-                        toolReferences.Add(item.Key, GetReferenceItem(item));
+                        toolReferences = toolReferences.Add(item.Key, GetReferenceItem(item));
                     }
                 }
             }
