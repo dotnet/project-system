@@ -26,8 +26,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
             string msbuildProjectExtensionsPath = null;
             string originalTargetFrameworks = null;
-            var targetFrameworks = new TargetFrameworks();
-            var toolReferences = new ReferenceItems();
+            var targetFrameworks = ImmutableDictionary.Create<string, IVsTargetFrameworkInfo>();
+            var toolReferences = ImmutableDictionary.Create<string, IVsReferenceItem>();
 
             foreach (IProjectVersionedValue<IProjectSubscriptionUpdate> update in updates)
             {
@@ -46,12 +46,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     continue;
                 }
 
-                if (!targetFrameworks.Contains(targetFramework))
+                if (!targetFrameworks.ContainsKey(targetFramework))
                 {
                     IProjectChangeDescription projectReferencesChanges = update.Value.ProjectChanges[ProjectReference.SchemaName];
                     IProjectChangeDescription packageReferencesChanges = update.Value.ProjectChanges[PackageReference.SchemaName];
 
-                    targetFrameworks.Add(new TargetFrameworkInfo(
+                    targetFrameworks.Add(targetFramework, new TargetFrameworkInfo(
                         targetFramework,
                         GetProjectReferences(projectReferencesChanges.After.Items),
                         GetReferences(packageReferencesChanges.After.Items),
@@ -62,9 +62,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 IProjectChangeDescription toolReferencesChanges = update.Value.ProjectChanges[DotNetCliToolReference.SchemaName];
                 foreach (KeyValuePair<string, IImmutableDictionary<string, string>> item in toolReferencesChanges.After.Items)
                 {
-                    if (!toolReferences.Contains(item.Key))
+                    if (!toolReferences.ContainsKey(item.Key))
                     {
-                        toolReferences.Add(GetReferenceItem(item));
+                        toolReferences.Add(item.Key, GetReferenceItem(item));
                     }
                 }
             }
@@ -82,8 +82,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     // https://github.com/dotnet/project-system/issues/3466for for details.
                     msbuildProjectExtensionsPath,
                     originalTargetFrameworks,
-                    targetFrameworks,
-                    toolReferences
+                    new TargetFrameworks(targetFrameworks.Values),
+                    new ReferenceItems(toolReferences.Values)
                 )
                 : null;
         }
@@ -107,17 +107,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
         private static IVsReferenceItems GetProjectReferences(IImmutableDictionary<string, IImmutableDictionary<string, string>> projectReferenceItems)
         {
-            IVsReferenceItems referenceItems = GetReferences(projectReferenceItems);
+            // NuGet expects each "<ProjectReference />" to have metadata item "ProjectFileFullPath" that represents
+            // the full path of the project reference, just use the built-in "FullPath" metadata for that.
+            IImmutableDictionary<string, IImmutableDictionary<string, string>> replacementProjectReferenceItems = projectReferenceItems;
 
-            // compute project file full path property for each reference
-            foreach (ReferenceItem item in referenceItems)
+            foreach ((string itemName, IImmutableDictionary<string, string> metadata) in projectReferenceItems)
             {
-                IVsReferenceProperty fullPathProperty = item.Properties.Item(ProjectReference.FullPathProperty);
-
-                ((ReferenceProperties)item.Properties).Add(new ReferenceProperty(ProjectFileFullPathProperty, fullPathProperty?.Value ?? string.Empty));
+                if (metadata.TryGetValue(ProjectReference.FullPathProperty, out string fullPath))
+                {
+                    IImmutableDictionary<string, string> replacementMetadata = metadata.SetItem(ProjectFileFullPathProperty, fullPath);
+                    replacementProjectReferenceItems = replacementProjectReferenceItems.SetItem(itemName, replacementMetadata);
+                }
             }
 
-            return referenceItems;
+            return GetReferences(replacementProjectReferenceItems);
         }
     }
 }
