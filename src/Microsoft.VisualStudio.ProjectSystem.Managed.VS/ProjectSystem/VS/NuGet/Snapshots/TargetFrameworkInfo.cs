@@ -14,12 +14,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             Properties = properties;
         }
 
-        public string TargetFrameworkMoniker { get; set; }
+        public string TargetFrameworkMoniker { get; }
 
-        public IVsReferenceItems PackageReferences { get; set; }
+        public IVsReferenceItems PackageReferences { get; }
 
-        public IVsReferenceItems ProjectReferences { get; set; }
+        public IVsReferenceItems ProjectReferences { get; }
 
-        public IVsProjectProperties Properties { get; set; }
+        public IVsProjectProperties Properties { get; }
     }
 }

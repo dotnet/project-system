@@ -12,8 +12,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             Properties = properties;
         }
 
-        public string Name { get; set; }
+        public string Name { get; }
 
-        public IVsReferenceProperties Properties { get; set; }
+        public IVsReferenceProperties Properties { get; }
     }
 }

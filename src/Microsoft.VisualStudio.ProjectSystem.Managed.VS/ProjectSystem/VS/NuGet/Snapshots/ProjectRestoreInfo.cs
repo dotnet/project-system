@@ -14,12 +14,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             ToolReferences = toolReferences;
         }
 
-        public string BaseIntermediatePath { get; set; }
+        public string BaseIntermediatePath { get; }
 
-        public string OriginalTargetFrameworks { get; set; }
+        public string OriginalTargetFrameworks { get; }
 
-        public IVsTargetFrameworks TargetFrameworks { get; set; }
+        public IVsTargetFrameworks TargetFrameworks { get; }
 
-        public IVsReferenceItems ToolReferences { get; set; }
+        public IVsReferenceItems ToolReferences { get; }
     }
 }
