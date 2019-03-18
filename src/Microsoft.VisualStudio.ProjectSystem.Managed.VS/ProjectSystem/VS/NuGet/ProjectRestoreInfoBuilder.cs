@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             }
 
             // return nominate restore information if any target framework entries are found
-            return targetFrameworks.Any()
+            return targetFrameworks.Count > 0
                 ? new ProjectRestoreInfo(
                     // NOTE: We pass MSBuildProjectExtensionsPath as BaseIntermediatePath instead of using
                     // BaseIntermediateOutputPath. This is because NuGet switched from using BaseIntermediateOutputPath
