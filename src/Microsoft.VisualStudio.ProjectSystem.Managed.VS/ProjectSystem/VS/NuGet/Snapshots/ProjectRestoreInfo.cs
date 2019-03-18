@@ -8,6 +8,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
     {
         public ProjectRestoreInfo(string baseIntermediatePath, string originalTargetFrameworks, IVsTargetFrameworks targetFrameworks, IVsReferenceItems toolReferences)
         {
+            Requires.NotNullOrEmpty(baseIntermediatePath, nameof(baseIntermediatePath));
+            Requires.NotNull(originalTargetFrameworks, nameof(originalTargetFrameworks));
+            Requires.NotNull(targetFrameworks, nameof(targetFrameworks));
+            Requires.NotNull(toolReferences, nameof(toolReferences));
+
             BaseIntermediatePath = baseIntermediatePath;
             OriginalTargetFrameworks = originalTargetFrameworks;
             TargetFrameworks = targetFrameworks;

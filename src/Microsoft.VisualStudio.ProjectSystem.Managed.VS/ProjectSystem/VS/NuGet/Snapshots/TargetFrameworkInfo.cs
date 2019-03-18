@@ -8,6 +8,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
     {
         public TargetFrameworkInfo(string targetFrameworkMoniker, IVsReferenceItems packageReferences, IVsReferenceItems projectReferences, IVsProjectProperties properties)
         {
+            Requires.NotNullOrEmpty(targetFrameworkMoniker, nameof(targetFrameworkMoniker));
+            Requires.NotNull(packageReferences, nameof(packageReferences));
+            Requires.NotNull(projectReferences, nameof(projectReferences));
+            Requires.NotNull(properties, nameof(properties));
+
             TargetFrameworkMoniker = targetFrameworkMoniker;
             PackageReferences = packageReferences;
             ProjectReferences = projectReferences;

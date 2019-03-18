@@ -8,6 +8,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
     {
         public ReferenceProperty(string name, string value)
         {
+            Requires.NotNullOrEmpty(name, nameof(name));
+            Requires.NotNull(value, nameof(value));
+
             Name = name;
             Value = value;
         }

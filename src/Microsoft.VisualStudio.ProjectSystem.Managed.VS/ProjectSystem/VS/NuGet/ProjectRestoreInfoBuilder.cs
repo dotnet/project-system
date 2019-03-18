@@ -114,7 +114,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             {
                 IVsReferenceProperty fullPathProperty = item.Properties.Item(ProjectReference.FullPathProperty);
 
-                ((ReferenceProperties)item.Properties).Add(new ReferenceProperty(ProjectFileFullPathProperty, fullPathProperty?.Value));
+                ((ReferenceProperties)item.Properties).Add(new ReferenceProperty(ProjectFileFullPathProperty, fullPathProperty?.Value ?? string.Empty));
             }
 
             return referenceItems;
