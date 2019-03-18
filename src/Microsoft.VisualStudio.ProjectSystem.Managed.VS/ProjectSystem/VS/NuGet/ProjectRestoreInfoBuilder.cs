@@ -51,13 +51,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     IProjectChangeDescription projectReferencesChanges = update.Value.ProjectChanges[ProjectReference.SchemaName];
                     IProjectChangeDescription packageReferencesChanges = update.Value.ProjectChanges[PackageReference.SchemaName];
 
-                    targetFrameworks.Add(new TargetFrameworkInfo
-                    {
-                        TargetFrameworkMoniker = targetFramework,
-                        ProjectReferences = GetProjectReferences(projectReferencesChanges.After.Items),
-                        PackageReferences = GetReferences(packageReferencesChanges.After.Items),
-                        Properties = GetProperties(nugetRestoreChanges.After.Properties)
-                    });
+                    targetFrameworks.Add(new TargetFrameworkInfo(
+                        targetFramework,
+                        GetProjectReferences(projectReferencesChanges.After.Items),
+                        GetReferences(packageReferencesChanges.After.Items),
+                        GetProperties(nugetRestoreChanges.After.Properties)
+                    ));
                 }
 
                 IProjectChangeDescription toolReferencesChanges = update.Value.ProjectChanges[DotNetCliToolReference.SchemaName];
@@ -72,8 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
             // return nominate restore information if any target framework entries are found
             return targetFrameworks.Any()
-                ? new ProjectRestoreInfo
-                {
+                ? new ProjectRestoreInfo(
                     // NOTE: We pass MSBuildProjectExtensionsPath as BaseIntermediatePath instead of using
                     // BaseIntermediateOutputPath. This is because NuGet switched from using BaseIntermediateOutputPath
                     // to MSBuildProjectExtensionsPath, since the value of BaseIntermediateOutputPath is often set too
@@ -82,34 +80,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     // MSBuildProjectExtensionsPath property, we opted to leave the interface the same but change the
                     // meaning of its BaseIntermediatePath property. See
                     // https://github.com/dotnet/project-system/issues/3466for for details.
-                    BaseIntermediatePath = msbuildProjectExtensionsPath,
-                    OriginalTargetFrameworks = originalTargetFrameworks,
-                    TargetFrameworks = targetFrameworks,
-                    ToolReferences = toolReferences
-                }
+                    msbuildProjectExtensionsPath,
+                    originalTargetFrameworks,
+                    targetFrameworks,
+                    toolReferences
+                )
                 : null;
         }
 
         private static IVsProjectProperties GetProperties(IImmutableDictionary<string, string> items)
         {
-            return new ProjectProperties(items.Select(v => new ProjectProperty
-            {
-                Name = v.Key,
-                Value = v.Value
-            }));
+            return new ProjectProperties(items.Select(v => new ProjectProperty(v.Key, v.Value)));
         }
 
         private static IVsReferenceItem GetReferenceItem(KeyValuePair<string, IImmutableDictionary<string, string>> item)
         {
-            return new ReferenceItem
-            {
-                Name = item.Key,
-                Properties = new ReferenceProperties(item.Value.Select(v => new ReferenceProperty
-                {
-                    Name = v.Key,
-                    Value = v.Value
-                }))
-            };
+            return new ReferenceItem(item.Key,
+                new ReferenceProperties(item.Value.Select(v => new ReferenceProperty(v.Key, v.Value)))
+            );
         }
 
         private static IVsReferenceItems GetReferences(IImmutableDictionary<string, IImmutableDictionary<string, string>> items)
@@ -126,11 +114,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             {
                 IVsReferenceProperty fullPathProperty = item.Properties.Item(ProjectReference.FullPathProperty);
 
-                ((ReferenceProperties)item.Properties).Add(new ReferenceProperty
-                {
-                    Name = ProjectFileFullPathProperty,
-                    Value = fullPathProperty?.Value
-                });
+                ((ReferenceProperties)item.Properties).Add(new ReferenceProperty(ProjectFileFullPathProperty, fullPathProperty?.Value));
             }
 
             return referenceItems;

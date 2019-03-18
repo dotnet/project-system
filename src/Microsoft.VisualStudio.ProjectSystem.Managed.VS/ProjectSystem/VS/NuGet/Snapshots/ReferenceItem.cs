@@ -6,6 +6,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
     internal class ReferenceItem : IVsReferenceItem
     {
+        public ReferenceItem(string name, IVsReferenceProperties properties)
+        {
+            Name = name;
+            Properties = properties;
+        }
+
         public string Name { get; set; }
 
         public IVsReferenceProperties Properties { get; set; }
