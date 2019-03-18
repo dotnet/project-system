@@ -8,8 +8,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
     internal class ProjectProperties : VsItemList<IVsProjectProperty>, IVsProjectProperties
     {
-        public ProjectProperties() : base() { }
-
         public ProjectProperties(IEnumerable<IVsProjectProperty> collection) : base(collection) { }
 
         protected override string GetKeyForItem(IVsProjectProperty value) => value.Name;
