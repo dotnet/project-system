@@ -95,7 +95,8 @@
                           SingleFileGenerators;
                           DeclaredSourceItems;
                           UserSourceItems;
-                          SupportAvailableItemName;" />
+                          SupportAvailableItemName;
+                          DataSourceWindow;" />
 
     <!-- Reference Manager capabilities -->
     <ProjectCapability Include="ReferenceManagerAssemblies" />
