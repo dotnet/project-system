@@ -37,6 +37,9 @@
   <BoolProperty Name="DesignTime"
                 Visible="false" />
 
+  <BoolProperty Name="DesignTimeSharedInput"
+                Visible="false" />
+
   <BoolProperty Name="ExcludedFromBuild">
     <BoolProperty.DataSource>
       <DataSource HasConfigurationCondition="true"
