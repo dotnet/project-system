@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
     {
         private static readonly TimeSpan s_compilationWaitTime = TimeSpan.FromMilliseconds(500);
 
-        protected readonly IUnconfiguredProjectCommonServices _unconfiguredProjectServices;
+        protected readonly IUnconfiguredProjectCommonServices UnconfiguredProjectServices;
         private readonly IActiveWorkspaceProjectContextHost _activeWorkspaceProjectContextHost;
         private readonly IActiveConfiguredProjectSubscriptionService _projectSubscriptionService;
         private readonly IFileSystem _fileSystem;
@@ -43,8 +43,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         private readonly SequentialTaskExecutor _sequentialTaskQueue = new SequentialTaskExecutor();
 
         // protected for unit test purposes
-        protected ITempPECompiler _compiler;
-        protected Lazy<VSBuildManager> _buildManager;
+        protected ITempPECompiler Compiler;
+        protected Lazy<VSBuildManager> BuildManager;
 
         [ImportingConstructor]
         public TempPEBuildManager(IProjectThreadingService threadingService,
@@ -59,11 +59,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                                   IProjectFaultHandlerService projectFaultHandlerService)
              : base(threadingService.JoinableTaskContext)
         {
-            _unconfiguredProjectServices = unconfiguredProjectServices;
+            UnconfiguredProjectServices = unconfiguredProjectServices;
             _activeWorkspaceProjectContextHost = activeWorkspaceProjectContextHost;
             _projectSubscriptionService = projectSubscriptionService;
-            _buildManager = new Lazy<VSBuildManager>(() => (VSBuildManager)projectEvents.BuildManagerEvents);
-            _compiler = compiler;
+            BuildManager = new Lazy<VSBuildManager>(() => (VSBuildManager)projectEvents.BuildManagerEvents);
+            Compiler = compiler;
             _fileSystem = fileSystem;
             _fileChangeService = fileChangeService;
             _telemetryService = telemetryService;
@@ -83,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         private async Task FireTempPEDirtyAsync(string moniker, bool shouldCompile)
         {
             // Not using use the ThreadingService property because unit tests
-            await _unconfiguredProjectServices.ThreadingService.SwitchToUIThread();
+            await UnconfiguredProjectServices.ThreadingService.SwitchToUIThread();
 
             if (shouldCompile)
             {
@@ -95,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                     _projectFaultHandlerService.Forget(scheduler.ScheduleAsyncTask(token => CompileTempPEAsync(files, outputFileName, token)).Task, UnconfiguredProject);
                 }
             }
-            _buildManager.Value.OnDesignTimeOutputDirty(moniker);
+            BuildManager.Value.OnDesignTimeOutputDirty(moniker);
         }
 
         public async Task<string> GetTempPEDescriptionXmlAsync(string moniker)
@@ -104,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             await InitializeAsync();
 
-            await _unconfiguredProjectServices.ThreadingService.SwitchToUIThread();
+            await UnconfiguredProjectServices.ThreadingService.SwitchToUIThread();
 
             DesignTimeInputsItem inputs = AppliedValue.Value;
 
@@ -175,7 +175,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             _telemetryService.PostProperty(TelemetryEventName.TempPECompilation, TelemetryPropertyName.TempPECompilationOutputFileName, outputFileName);
             bool result = await _activeWorkspaceProjectContextHost.OpenContextForWriteAsync(accessor =>
             {
-                return _compiler.CompileAsync(accessor.Context, outputFileName, filesToCompile, token);
+                return Compiler.CompileAsync(accessor.Context, outputFileName, filesToCompile, token);
             });
 
             // if the compilation failed or was cancelled we should clean up any old TempPE outputs lest a designer gets the wrong types, plus its what legacy did
@@ -209,7 +209,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         protected override async Task ApplyAsync(DesignTimeInputsDelta value)
         {
             // Not using use the ThreadingService property because unit tests
-            _unconfiguredProjectServices.ThreadingService.VerifyOnUIThread();
+            UnconfiguredProjectServices.ThreadingService.VerifyOnUIThread();
 
             DesignTimeInputsItem previousValue = AppliedValue.Value;
 
@@ -353,7 +353,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             }
             foreach (string item in removedDesignTimeInputs)
             {
-                _buildManager.Value.OnDesignTimeOutputDeleted(item);
+                BuildManager.Value.OnDesignTimeOutputDeleted(item);
             }
 
             bool TryGetValueIfUnused<T>(string item, ImmutableDictionary<string, T>.Builder source, ImmutableHashSet<string>.Builder otherSources, out T result)
@@ -366,7 +366,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         protected virtual ITaskDelayScheduler CreateTaskScheduler()
         {
-            return new TaskDelayScheduler(s_compilationWaitTime, _unconfiguredProjectServices.ThreadingService, DisposalToken);
+            return new TaskDelayScheduler(s_compilationWaitTime, UnconfiguredProjectServices.ThreadingService, DisposalToken);
         }
 
         private async Task NotifySourceFileDirtyAsync(string projectRelativeSourceFileName)
@@ -598,7 +598,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             // Note file change service is free-threaded
             IVsAsyncFileChangeEx fileChangeService = await _fileChangeService.GetValueAsync();
 
-            foreach (var cookie in value.Cookies.Values)
+            foreach (uint cookie in value.Cookies.Values)
             {
                 await fileChangeService.UnadviseFileChangeAsync(cookie);
             }
@@ -608,7 +608,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         {
             for (int i = 0; i < cChanges; i++)
             {
-                string file = _unconfiguredProjectServices.Project.MakeRelative(rgpszFile[i]);
+                string file = UnconfiguredProjectServices.Project.MakeRelative(rgpszFile[i]);
 
                 ThreadingService.ExecuteSynchronously(() => NotifySourceFileDirtyAsync(file));
             }

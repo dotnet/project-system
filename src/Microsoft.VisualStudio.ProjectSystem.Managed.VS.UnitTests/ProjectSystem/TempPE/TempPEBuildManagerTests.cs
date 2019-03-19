@@ -1140,7 +1140,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                       Telemetry.ITelemetryServiceFactory.Create(),
                       IProjectFaultHandlerServiceFactory.Create())
             {
-                _buildManager = new Lazy<VSBuildManager>(() => new TestBuildManager(this));
+                BuildManager = new Lazy<VSBuildManager>(() => new TestBuildManager(this));
 
                 AppliedValue = new ProjectVersionedValue<DesignTimeInputsItem>(new DesignTimeInputsItem() { OutputPath = "TempPE" }, ImmutableDictionary<NamedIdentity, IComparable>.Empty);
             }
