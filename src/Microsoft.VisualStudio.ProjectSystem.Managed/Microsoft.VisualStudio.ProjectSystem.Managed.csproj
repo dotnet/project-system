@@ -15,17 +15,11 @@
   </PropertyGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.VS" />
-    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.CSharp" />
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.CSharp.VS" />
-    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.VisualBasic" />
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS" />
-    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.FSharp" />
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.FSharp.VS" />
-    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.CSharp.UnitTests" />
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.CSharp.VS.UnitTests" />
-    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.VisualBasic.UnitTests" />
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.UnitTests" />
-    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.FSharp.UnitTests" />
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.FSharp.VS.UnitTests" />
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests" />
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests" />
@@ -35,13 +29,13 @@
     <Compile Update="ProjectSystem\Rules\AnalyzerReference.xaml.cs">
       <DependentUpon>AnalyzerReference.xaml</DependentUpon>
     </Compile>
-    <Compile Update="ProjectSystem\Rules\AdditionalFiles.cs">
+    <Compile Update="ProjectSystem\Rules\Items\AdditionalFiles.cs">
       <DependentUpon>AdditionalFiles.xaml</DependentUpon>
     </Compile>
-    <Compile Update="ProjectSystem\Rules\ApplicationDefinition.cs">
+    <Compile Update="ProjectSystem\Rules\Items\ApplicationDefinition.cs">
       <DependentUpon>ApplicationDefinition.xaml</DependentUpon>
     </Compile>
-    <Compile Update="ProjectSystem\Rules\Page.cs">
+    <Compile Update="ProjectSystem\Rules\Items\Page.cs">
       <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
     <Compile Update="ProjectSystem\Rules\ProjectDebugger.xaml.cs">
@@ -71,7 +65,7 @@
     <Compile Update="ProjectSystem\Rules\AppDesigner.xaml.cs">
       <DependentUpon>AppDesigner.xaml</DependentUpon>
     </Compile>
-    <Compile Update="ProjectSystem\Rules\Compile.cs">
+    <Compile Update="ProjectSystem\Rules\Items\Compile.cs">
       <DependentUpon>Compile.xaml</DependentUpon>
     </Compile>
     <Compile Update="ProjectSystem\Rules\AssemblyReference.cs">
@@ -80,7 +74,7 @@
     <Compile Update="ProjectSystem\Rules\COMReference.cs">
       <DependentUpon>COMReference.xaml</DependentUpon>
     </Compile>
-    <Compile Update="ProjectSystem\Rules\Content.cs">
+    <Compile Update="ProjectSystem\Rules\Items\Content.cs">
       <DependentUpon>Content.xaml</DependentUpon>
     </Compile>
     <Compile Update="ProjectSystem\Rules\DebuggerGeneral.cs">
@@ -89,7 +83,7 @@
     <Compile Update="ProjectSystem\Rules\DotNetCliToolReference.cs">
       <DependentUpon>DotNetCliToolReference.xaml</DependentUpon>
     </Compile>
-    <Compile Update="ProjectSystem\Rules\EmbeddedResource.cs">
+    <Compile Update="ProjectSystem\Rules\Items\EmbeddedResource.cs">
       <DependentUpon>EmbeddedResource.xaml</DependentUpon>
     </Compile>
     <Compile Update="ProjectSystem\Rules\UpToDateCheckInput.cs">
@@ -104,7 +98,7 @@
     <Compile Update="ProjectSystem\Rules\CopyUpToDateMarker.cs">
       <DependentUpon>CopyUpToDateMarker.xaml</DependentUpon>
     </Compile>
-    <Compile Update="ProjectSystem\Rules\Folder.cs">
+    <Compile Update="ProjectSystem\Rules\Items\Folder.cs">
       <DependentUpon>Folder.xaml</DependentUpon>
     </Compile>
     <Compile Update="ProjectSystem\Rules\SourceControl.cs">
@@ -137,7 +131,7 @@
     <Compile Update="ProjectSystem\Rules\ConfiguredBrowseObject.cs">
       <DependentUpon>GeneralConfiguredBrowseObject.xaml</DependentUpon>
     </Compile>
-    <Compile Update="ProjectSystem\Rules\None.cs">
+    <Compile Update="ProjectSystem\Rules\Items\None.cs">
       <DependentUpon>None.xaml</DependentUpon>
     </Compile>
     <Compile Update="ProjectSystem\Rules\NuGetRestore.cs">
@@ -146,13 +140,13 @@
     <Compile Update="ProjectSystem\Rules\LanguageService.cs">
       <DependentUpon>LanguageService.xaml</DependentUpon>
     </Compile>
-    <Compile Update="ProjectSystem\Rules\XamlAppDef.cs">
+    <Compile Update="ProjectSystem\Rules\Items\XamlAppDef.cs">
       <DependentUpon>XamlAppDef.xaml</DependentUpon>
     </Compile>
     <Compile Update="ProjectSystem\Rules\VisualBasic.NamespaceImport.cs">
       <DependentUpon>VisualBasic.NamespaceImport.xaml</DependentUpon>
     </Compile>
-    <Compile Update="ProjectSystem\Rules\Resource.cs">
+    <Compile Update="ProjectSystem\Rules\Items\Resource.cs">
       <DependentUpon>Resource.xaml</DependentUpon>
     </Compile>
     <Compile Update="Resources.Designer.cs">
@@ -162,7 +156,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <XamlPropertyRule Include="ProjectSystem\Rules\Compile.xaml">
+    <XamlPropertyRule Include="ProjectSystem\Rules\Items\Compile.xaml">
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
@@ -175,22 +169,22 @@
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
-    <XamlPropertyRule Include="ProjectSystem\Rules\Content.xaml">
+    <XamlPropertyRule Include="ProjectSystem\Rules\Items\Content.xaml">
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
-    <XamlPropertyRule Include="ProjectSystem\Rules\ApplicationDefinition.xaml">
+    <XamlPropertyRule Include="ProjectSystem\Rules\Items\ApplicationDefinition.xaml">
       <XlfInput>false</XlfInput>
       <SubType>Designer</SubType>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
     </XamlPropertyRule>
-    <XamlPropertyRule Include="ProjectSystem\Rules\Page.xaml">
+    <XamlPropertyRule Include="ProjectSystem\Rules\Items\Page.xaml">
       <XlfInput>false</XlfInput>
       <SubType>Designer</SubType>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
     </XamlPropertyRule>
-    <XamlPropertyRule Include="ProjectSystem\Rules\EmbeddedResource.xaml">
+    <XamlPropertyRule Include="ProjectSystem\Rules\Items\EmbeddedResource.xaml">
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
@@ -215,7 +209,7 @@
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
-    <XamlPropertyRule Include="ProjectSystem\Rules\Folder.xaml">
+    <XamlPropertyRule Include="ProjectSystem\Rules\Items\Folder.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
@@ -251,7 +245,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
     </XamlPropertyRule>
-    <XamlPropertyRule Include="ProjectSystem\Rules\None.xaml">
+    <XamlPropertyRule Include="ProjectSystem\Rules\Items\None.xaml">
       <XlfInput>false</XlfInput>
       <SubType>Designer</SubType>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
@@ -286,7 +280,7 @@
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
-    <XamlPropertyRule Include="ProjectSystem\Rules\Resource.xaml">
+    <XamlPropertyRule Include="ProjectSystem\Rules\Items\Resource.xaml">
       <XlfInput>false</XlfInput>
       <SubType>Designer</SubType>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
@@ -334,25 +328,25 @@
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
-    <XamlPropertyRule Include="ProjectSystem\Rules\AdditionalFiles.xaml">
+    <XamlPropertyRule Include="ProjectSystem\Rules\Items\AdditionalFiles.xaml">
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
-    <XamlPropertyRule Include="ProjectSystem\Rules\XamlAppDef.xaml">
+    <XamlPropertyRule Include="ProjectSystem\Rules\Items\XamlAppDef.xaml">
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
-    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\AdditionalFiles.BrowseObject.xaml" />
-    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\ApplicationDefinition.BrowseObject.xaml" />
-    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Compile.BrowseObject.xaml" />
-    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Content.BrowseObject.xaml" />
-    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\EmbeddedResource.BrowseObject.xaml" />
-    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\None.BrowseObject.xaml" />
-    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Page.BrowseObject.xaml" />
-    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Resource.BrowseObject.xaml" />
-    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\XamlAppDef.BrowseObject.xaml" />
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\AdditionalFiles.BrowseObject.xaml" />
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\ApplicationDefinition.BrowseObject.xaml" />
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\Compile.BrowseObject.xaml" />
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\Content.BrowseObject.xaml" />
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\EmbeddedResource.BrowseObject.xaml" />
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\None.BrowseObject.xaml" />
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\Page.BrowseObject.xaml" />
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\Resource.BrowseObject.xaml" />
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\XamlAppDef.BrowseObject.xaml" />
     <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\ProjectItemsSchema.xaml" />
     <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\CSharp.ProjectItemsSchema.xaml" />
     <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\VisualBasic.ProjectItemsSchema.xaml" />

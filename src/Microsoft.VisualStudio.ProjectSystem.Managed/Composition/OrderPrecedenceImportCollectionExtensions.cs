@@ -102,9 +102,9 @@ namespace Microsoft.VisualStudio.Composition
             return builder.MoveToImmutable();
         }
 
-        public static Dictionary<TKey, TImport> ToValueDictionary<TKey, TImport>(this OrderPrecedenceImportCollection<TImport> imports, Func<TImport, TKey> keySelector)
+        public static Dictionary<TKey, TImport> ToValueDictionary<TKey, TImport>(this OrderPrecedenceImportCollection<TImport> imports, Func<TImport, TKey> keySelector, IEqualityComparer<TKey> comparer = default)
         {
-            var dictionary = new Dictionary<TKey, TImport>();
+            var dictionary = new Dictionary<TKey, TImport>(comparer);
 
             foreach (Lazy<TImport> import in imports)
             {

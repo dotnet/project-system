@@ -9,7 +9,7 @@
       </trans-unit>
       <trans-unit id="lblReportCompilerErrors.Text">
         <source>&amp;Internal compiler error reporting:</source>
-        <target state="translated">Berichterstellung für &amp;interne Compilerfehler:</target>
+        <target state="translated">&amp;Interner Compilerfehler:</target>
         <note />
       </trans-unit>
       <trans-unit id="lblDebugInfo.Text">
@@ -19,7 +19,7 @@
       </trans-unit>
       <trans-unit id="lblFileAlignment.Text">
         <source>&amp;File alignment:</source>
-        <target state="translated">Da&amp;teianordnung:</target>
+        <target state="translated">&amp;Dateiausrichtung:</target>
         <note />
       </trans-unit>
       <trans-unit id="cboFileAlignment.Items">
@@ -49,7 +49,7 @@
       </trans-unit>
       <trans-unit id="lblDLLBase.Text">
         <source>Library &amp;base address:</source>
-        <target state="translated">&amp;Basisadresse der Bibliothek:</target>
+        <target state="translated">Bibliotheks&amp;basisadresse:</target>
         <note />
       </trans-unit>
       <trans-unit id="outputLabel.Text">
@@ -69,22 +69,22 @@
       </trans-unit>
       <trans-unit id="CSharpLanguageVersion.Default">
         <source>C# latest supported minor version (default)</source>
-        <target state="new">C# latest supported minor version (default)</target>
+        <target state="translated">Aktuellste unterstützte Nebenversion von C# (default)</target>
         <note />
       </trans-unit>
       <trans-unit id="CSharpLanguageVersion.LatestMajor">
         <source>C# latest supported major version (latestmajor)</source>
-        <target state="new">C# latest supported major version (latestmajor)</target>
+        <target state="translated">Aktuellste unterstützte Hauptversion von C# (latestmajor)</target>
         <note />
       </trans-unit>
       <trans-unit id="CSharpLanguageVersion.Latest">
         <source>C# latest supported minor version (latest)</source>
-        <target state="new">C# latest supported minor version (latest)</target>
+        <target state="translated">Aktuellste unterstützte Nebenversion von C# (latest)</target>
         <note />
       </trans-unit>
       <trans-unit id="CSharpLanguageVersion.Preview">
         <source>unsupported preview of next C# version (preview)</source>
-        <target state="new">unsupported preview of next C# version (preview)</target>
+        <target state="translated">Nicht unterstützte Vorschauversion der nächsten C#-Version (preview)</target>
         <note />
       </trans-unit>
     </body>

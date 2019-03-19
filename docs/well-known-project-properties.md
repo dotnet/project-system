@@ -180,7 +180,7 @@ Specifies whether the contents of the _Application Designer_ folder are only vis
 | C#            | empty ('')         |
 | Visual Basic  | empty ('')         |
 
-Specifies a unique key of a project within a Visual Studio solution. In the new [C# and Visual Basic project system](http://github.com/dotnet/roslyn-project-system), this is now optional.
+Specifies a unique key of a project within a Visual Studio solution. In the new [C#, F# and Visual Basic project system](http://github.com/dotnet/project-system), this is now optional.
 
 ##### __Example__
 ``` XML

@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-
+using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
@@ -20,46 +20,49 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     ///         tracked via <see cref="IActiveWorkspaceProjectContextHost"/>.
     ///     </para>
     /// </remarks>
+    [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface IActiveEditorContextTracker
     {
         /// <summary>
         ///     Returns a value indicating whether the specified <see cref="IWorkspaceProjectContext"/> is the active one for the editor.
         /// </summary>
         /// <exception cref="ArgumentNullException">
-        ///     <paramref name="context"/> is <see langword="null" />
+        ///     <paramref name="contextId"/> is <see langword="null" />
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        ///     <paramref name="contextId"/> is an empty string ("").
         /// </exception>
         /// <exception cref="InvalidOperationException">
-        ///     <paramref name="context"/> has not been registered or has already been unregistered.
+        ///     <paramref name="contextId"/> has not been registered or has already been unregistered.
         /// </exception>
-        bool IsActiveEditorContext(IWorkspaceProjectContext context);
+        bool IsActiveEditorContext(string contextId);
 
         /// <summary>
         ///     Registers the <see cref="IWorkspaceProjectContext"/> with the tracker.
         /// </summary>
         /// <exception cref="ArgumentNullException">
-        ///     <paramref name="context"/> is <see langword="null" />.
-        ///     <para>
-        ///         -or-
-        ///     </para>
         ///     <paramref name="contextId"/> is <see langword="null" />.
         /// </exception>
         /// <exception cref="ArgumentException">
         ///     <paramref name="contextId"/> is an empty string ("").
         /// </exception>
         /// <exception cref="InvalidOperationException">
-        ///     <paramref name="context"/> has already been been registered.
+        ///     <paramref name="contextId"/> has already been been registered.
         /// </exception>
-        void RegisterContext(IWorkspaceProjectContext context, string contextId);
+        void RegisterContext(string contextId);
 
         /// <summary>
         ///     Unregisters the <see cref="IWorkspaceProjectContext"/> with the tracker.
         /// </summary>
         /// <exception cref="ArgumentNullException">
-        ///     <paramref name="context"/> is <see langword="null" />
+        ///     <paramref name="contextId"/> is <see langword="null" />
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        ///     <paramref name="contextId"/> is an empty string ("").
         /// </exception>
         /// <exception cref="InvalidOperationException">
-        ///     <paramref name="context"/> has not been registered or has already been unregistered.
+        ///     <paramref name="contextId"/> has not been registered or has already been unregistered.
         /// </exception>
-        void UnregisterContext(IWorkspaceProjectContext context);
+        void UnregisterContext(string contextId);
     }
 }

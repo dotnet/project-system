@@ -2,12 +2,14 @@
 
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.Composition;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
     ///     Provides properties for retrieving options for the project system.
     /// </summary>
+    [ProjectSystemContract(ProjectSystemContractScope2.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface IProjectSystemOptions
     {
         /// <summary>

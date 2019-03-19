@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 
@@ -16,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 {
     [Export(typeof(IDependencyCrossTargetSubscriber))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
-    internal sealed class DependencyRulesSubscriber : OnceInitializedOnceDisposed, IDependencyCrossTargetSubscriber
+    internal sealed class DependencyRulesSubscriber : OnceInitializedOnceDisposedUnderLockAsync, IDependencyCrossTargetSubscriber
     {
         public const string DependencyRulesSubscriberContract = "DependencyRulesSubscriberContract";
 
@@ -37,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             IUnconfiguredProjectCommonServices commonServices,
             IUnconfiguredProjectTasksService tasksService,
             IDependencyTreeTelemetryService treeTelemetryService)
-            : base(synchronousDisposal: true)
+            : base(commonServices.ThreadingService.JoinableTaskContext)
         {
             _handlers = new OrderPrecedenceImportCollection<IDependenciesRuleHandler>(
                 projectCapabilityCheckProvider: commonServices.Project);
@@ -49,11 +50,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         public event EventHandler<DependencySubscriptionChangedEventArgs> DependenciesChanged;
 
-        public void InitializeSubscriber(ICrossTargetSubscriptionsHost host, IProjectSubscriptionService subscriptionService)
+        public async Task InitializeSubscriberAsync(ICrossTargetSubscriptionsHost host, IProjectSubscriptionService subscriptionService)
         {
             _host = host;
 
-            EnsureInitialized();
+            await InitializeAsync();
 
             IReadOnlyCollection<string> watchedEvaluationRules = GetWatchedRules(RuleHandlerType.Evaluation);
             IReadOnlyCollection<string> watchedDesignTimeBuildRules = GetWatchedRules(RuleHandlerType.DesignTimeBuild);
@@ -184,12 +185,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 return;
             }
 
-            await _tasksService.LoadedProjectAsync(async () =>
+            // Ensure updates don't overlap and that we aren't disposed during the update without cleaning up properly
+            await ExecuteUnderLockAsync(async token =>
             {
-                using (ProjectCapabilitiesContext.CreateIsolatedContext(configuredProject, capabilities))
+                // Ensure the project doesn't unload during the update
+                await _tasksService.LoadedProjectAsync(async () =>
                 {
-                    await HandleAsync(projectUpdate, catalogSnapshot, handlerType);
-                }
+                    // TODO pass _tasksService.UnloadCancellationToken into handler to reduce redundant work on unload
+
+                    // Ensure the project's capabilities don't change during the update
+                    using (ProjectCapabilitiesContext.CreateIsolatedContext(configuredProject, capabilities))
+                    {
+                        await HandleAsync(projectUpdate, catalogSnapshot, handlerType);
+                    }
+                });
             });
         }
 
@@ -256,16 +265,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             _treeTelemetryService.ObserveTargetFrameworkRules(targetFrameworkToUpdate, projectUpdate.ProjectChanges.Keys);
         }
 
-        protected override void Initialize()
+        protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
+            return Task.CompletedTask;
         }
 
-        protected override void Dispose(bool disposing)
+        protected override Task DisposeCoreUnderLockAsync(bool initialized)
         {
-            if (disposing)
-            {
-                ReleaseSubscriptions();
-            }
+            ReleaseSubscriptions();
+
+            return Task.CompletedTask;
         }
     }
 }

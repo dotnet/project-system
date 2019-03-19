@@ -315,6 +315,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 LicenseFileNameTextBox.Text = ""
             ElseIf Not setLicenseExpression AndAlso Not PackageLicenseExpression.Text = "" Then
                 PackageLicenseExpression.Text = ""
+                SetDirty(PackageLicenseExpression)
             End If
         End Sub
 
@@ -404,9 +405,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         Async Function(access)
                             Await access.CheckoutAsync(_unconfiguredProject.FullPath)
                             Dim projectXML = Await access.GetProjectXmlAsync(_unconfiguredProject.FullPath)
-                            Dim foundItem = projectXML.ItemGroups.SelectMany(Function(x) x.Items).FirstOrDefault(Function(x) x.Include = oldInclude)
-                            If foundItem IsNot Nothing Then
-                                foundItem.Include = newInclude
+                            If Not String.IsNullOrEmpty(oldInclude) Then
+                                Dim foundItem = projectXML.ItemGroups.SelectMany(Function(x) x.Items).FirstOrDefault(Function(x) x.Include = oldInclude)
+                                If foundItem IsNot Nothing Then
+                                    foundItem.Include = newInclude
+                                End If
                             Else
                                 'We couldn't find one to change so we should add it 
                                 projectXML.AddItem("None", newInclude, {New KeyValuePair(Of String, String)("Pack", "True"), New KeyValuePair(Of String, String)("PackagePath", "")})

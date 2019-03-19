@@ -6,17 +6,21 @@ using System.Runtime.InteropServices;
 using System.Threading;
 
 using Microsoft.VisualStudio.ComponentModelHost;
+using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.VS;
+using Microsoft.VisualStudio.ProjectSystem.VS.FSharp;
 using Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands;
+using Microsoft.VisualStudio.ProjectSystem.VS.Xproj;
 using Microsoft.VisualStudio.Shell;
-
+using Microsoft.VisualStudio.Shell.Interop;
 using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.Packaging
 {
     [Guid(PackageGuid)]
     [PackageRegistration(AllowsBackgroundLoading = true, RegisterUsing = RegistrationMethod.CodeBase, UseManagedResourcesOnly = true)]
+    [ProvideProjectFactory(typeof(MigrateXprojProjectFactory), null, "#27", "xproj", "xproj", null)]
     [ProvideAutoLoad(ActivationContextGuid, PackageAutoLoadFlags.BackgroundLoad)]
     [ProvideUIContextRule(ActivationContextGuid, "Load Managed Project Package",
         "dotnetcore",
@@ -28,7 +32,7 @@ namespace Microsoft.VisualStudio.Packaging
     internal partial class ManagedProjectSystemPackage : AsyncPackage
     {
         public const string ActivationContextGuid = "E7DF1626-44DD-4E8C-A8A0-92EAB6DDC16E";
-        public const string PackageGuid = "A4F9D880-9492-4072-8BF3-2B5EEEDC9E68";
+        public const string PackageGuid = "860A27C0-B665-47F3-BC12-637E16A1050A";
 
 
         public const string DefaultCapabilities = ProjectCapability.AppDesigner + "; " +
@@ -41,6 +45,8 @@ namespace Microsoft.VisualStudio.Packaging
                                                   ProjectCapability.DotNet;
 
         private IDotNetCoreProjectCompatibilityDetector _dotNetCoreCompatibilityDetector;
+        private IVsRegisterProjectSelector _projectSelectorService;
+        private uint _projectSelectorCookie = VSConstants.VSCOOKIE_NIL;
 
         public ManagedProjectSystemPackage()
         {
@@ -49,6 +55,12 @@ namespace Microsoft.VisualStudio.Packaging
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+#pragma warning disable RS0030 // Do not used banned APIs
+            _projectSelectorService = await this.GetServiceAsync<SVsRegisterProjectTypes, IVsRegisterProjectSelector>();
+#pragma warning restore RS0030 // Do not used banned APIs
+            Guid selectorGuid = typeof(FSharpProjectSelector).GUID;
+            _projectSelectorService.RegisterProjectSelector(ref selectorGuid, new FSharpProjectSelector(), out _projectSelectorCookie);
 
             var componentModel = (IComponentModel)(await GetServiceAsync(typeof(SComponentModel)));
             Lazy<DebugFrameworksDynamicMenuCommand> debugFrameworksCmd = componentModel.DefaultExportProvider.GetExport<DebugFrameworksDynamicMenuCommand>();
@@ -64,9 +76,24 @@ namespace Microsoft.VisualStudio.Packaging
             _dotNetCoreCompatibilityDetector = projectServiceAccessor.Value.GetProjectService().Services.ExportProvider.GetExport<IDotNetCoreProjectCompatibilityDetector>().Value;
             await _dotNetCoreCompatibilityDetector.InitializeAsync();
 
+            IVsProjectFactory factory = new MigrateXprojProjectFactory(new ProcessRunner(), new Win32FileSystem(), ServiceProvider.GlobalProvider, new GlobalJsonRemover.GlobalJsonSetup());
+            factory.SetSite(new ServiceProviderToOleServiceProviderAdapter(ServiceProvider.GlobalProvider));
+            RegisterProjectFactory(factory);
+
 #if DEBUG
             DebuggerTraceListener.RegisterTraceListener();
 #endif
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && _projectSelectorCookie != VSConstants.VSCOOKIE_NIL)
+            {
+                _projectSelectorService?.UnregisterProjectSelector(_projectSelectorCookie);
+                _projectSelectorCookie = VSConstants.VSCOOKIE_NIL;
+            }
+
+            base.Dispose(disposing);
         }
     }
 }

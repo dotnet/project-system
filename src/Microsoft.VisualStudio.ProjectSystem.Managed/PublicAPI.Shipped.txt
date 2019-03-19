@@ -85,7 +85,3 @@ Microsoft.VisualStudio.ProjectSystem.Debug.IWritablePersistOption.DoNotPersist.s
 Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName
 Microsoft.VisualStudio.ProjectSystem.Properties.IInterceptingPropertyValueProviderMetadata
 Microsoft.VisualStudio.ProjectSystem.Properties.IInterceptingPropertyValueProviderMetadata.PropertyName.get -> string
-Microsoft.VisualStudio.Threading.Tasks.CancellationSeries
-Microsoft.VisualStudio.Threading.Tasks.CancellationSeries.CancellationSeries(System.Threading.CancellationToken token = default(System.Threading.CancellationToken)) -> void
-Microsoft.VisualStudio.Threading.Tasks.CancellationSeries.CreateNext(System.Threading.CancellationToken token = default(System.Threading.CancellationToken)) -> System.Threading.CancellationToken
-Microsoft.VisualStudio.Threading.Tasks.CancellationSeries.Dispose() -> void

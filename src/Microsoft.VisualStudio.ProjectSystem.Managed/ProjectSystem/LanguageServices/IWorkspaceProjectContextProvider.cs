@@ -2,12 +2,14 @@
 
 using System;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.Composition;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     /// <summary>
     ///     Provides methods for creating and releasing <see cref="IWorkspaceProjectContextAccessor"/> instances.
     /// </summary>
+    [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface IWorkspaceProjectContextProvider
     {
         /// <summary>

@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
     [AppliesTo(ProjectCapability.DotNet)]
     internal class VsContainedLanguageComponentsFactory : IVsContainedLanguageComponentsFactory
     {
-        private readonly IVsService<SAsyncServiceProvider, IOleAsyncServiceProvider> _serviceProvider;
+        private readonly IVsService<IOleAsyncServiceProvider> _serviceProvider;
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly IActiveWorkspaceProjectContextHost _projectContextHost;
         private readonly AsyncLazy<IVsContainedLanguageFactory> _containedLanguageFactory;

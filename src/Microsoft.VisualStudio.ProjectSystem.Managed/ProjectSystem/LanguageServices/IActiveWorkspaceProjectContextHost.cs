@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
@@ -20,6 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     ///         NOTE: This is distinct from the "active" context for the editor which is tracked via <see cref="IActiveEditorContextTracker"/>.
     ///     </para>
     /// </remarks>
+    [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface IActiveWorkspaceProjectContextHost : IWorkspaceProjectContextHost
     {
     }

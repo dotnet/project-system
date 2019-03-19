@@ -161,12 +161,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     OnActiveConfiguredProjectEvaluatedAsync);
 
                 // Each of the host's subscribers are initialized.
-                foreach (IDependencyCrossTargetSubscriber subscriber in Subscribers)
-                {
-                    subscriber.InitializeSubscriber(this, _activeConfiguredProjectSubscriptionService);
-                }
-
-                return Task.CompletedTask;
+                return Task.WhenAll(
+                    Subscribers.Select(
+                        subscriber => subscriber.InitializeSubscriberAsync(this, _activeConfiguredProjectSubscriptionService)));
             }
 
             async Task OnActiveConfiguredProjectEvaluatedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
@@ -295,7 +292,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     catalogs,
                     activeTargetFramework,
                     _snapshotFilters.ToImmutableValueArray(),
-                    _subTreeProviders.ToValueDictionary(p => p.ProviderType),
+                    _subTreeProviders.ToValueDictionary(p => p.ProviderType, StringComparers.DependencyProviderTypes),
                     projectItemSpecs),
                 token);
 
@@ -375,7 +372,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         private async Task UpdateProjectContextAndSubscriptionsAsync()
         {
             // Prevent concurrent project context updates.
-            AggregateCrossTargetProjectContext newProjectContext 
+            AggregateCrossTargetProjectContext newProjectContext
                 = await _contextUpdateGate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, TryUpdateCurrentAggregateProjectContextAsync);
 
             if (newProjectContext != null)

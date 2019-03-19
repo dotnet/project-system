@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     /// <see cref="IDotNetCoreProjectCompatibilityDetector"/>
     /// </summary>
     [Export(typeof(IDotNetCoreProjectCompatibilityDetector))]
-    internal sealed class DotNetCoreProjectCompatibilityDetector : IDotNetCoreProjectCompatibilityDetector, IVsSolutionEvents, IVsSolutionLoadEvents, IDisposable
+    internal sealed partial class DotNetCoreProjectCompatibilityDetector : IDotNetCoreProjectCompatibilityDetector, IVsSolutionEvents, IVsSolutionLoadEvents, IDisposable
     {
         private const string SupportedLearnMoreFwlink = "https://go.microsoft.com/fwlink/?linkid=868064";
         private const string UnsupportedLearnMoreFwlink = "https://go.microsoft.com/fwlink/?linkid=866797";
@@ -36,15 +36,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private const string VersionDataFilename = "DotNetVersionCompatibility.json";
         private const int CacheFileValidHours = 24;
 
-        [Guid("9B164E40-C3A2-4363-9BC5-EB4039DEF653")]
-        internal class SVsSettingsPersistenceManager { }
-
-        private enum CompatibilityLevel
-        {
-            Recommended = 0,
-            Supported = 1,
-            NotSupported = 2
-        }
+        private readonly Lazy<IProjectServiceAccessor> _projectServiceAccessor;
+        private readonly Lazy<IDialogServices> _dialogServices;
+        private readonly Lazy<IProjectThreadingService> _threadHandling;
+        private readonly Lazy<IVsShellUtilitiesHelper> _shellUtilitiesHelper;
+        private readonly Lazy<IFileSystem> _fileSystem;
+        private readonly Lazy<IHttpClient> _httpClient;
+        private readonly IVsService<ISettingsManager> _settingsManagerService;
+        private readonly IVsService<IVsUIShell> _vsUIShellService;
+        private readonly IVsService<IVsSolution> _vsSolutionService;
+        private readonly IVsService<IVsAppId> _vsAppIdService;
+        private readonly IVsService<IVsShell> _vsShellService;
+        private RemoteCacheFile _versionDataCacheFile;
+        private Version _ourVSVersion;
+        private uint _solutionCookie = VSConstants.VSCOOKIE_NIL;
+        private bool _solutionOpened;
+        private CompatibilityLevel _compatibilityLevelWarnedForThisSolution = CompatibilityLevel.Recommended;
+        private DateTime _timeCurVersionDataLastUpdatedUtc = DateTime.MinValue; // Tracks how often we meed to look for new data
+        private VersionCompatibilityData _curVersionCompatibilityData;
+        private IVsSolution _vsSolution;
 
         [ImportingConstructor]
         public DotNetCoreProjectCompatibilityDetector(Lazy<IProjectServiceAccessor> projectAccessor,
@@ -68,30 +78,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _vsAppIdService = vsAppIdService;
             _vsShellService = vsShellService;
         }
-
-        private readonly Lazy<IProjectServiceAccessor> _projectServiceAccessor;
-        private readonly Lazy<IDialogServices> _dialogServices;
-        private readonly Lazy<IProjectThreadingService> _threadHandling;
-        private readonly Lazy<IVsShellUtilitiesHelper> _shellUtilitiesHelper;
-        private readonly Lazy<IFileSystem> _fileSystem;
-        private readonly Lazy<IHttpClient> _httpClient;
-        private readonly IVsService<SVsSettingsPersistenceManager, ISettingsManager> _settingsManagerService;
-        private readonly IVsService<SVsUIShell, IVsUIShell> _vsUIShellService;
-        private readonly IVsService<SVsSolution, IVsSolution> _vsSolutionService;
-        private readonly IVsService<SVsAppId, IVsAppId> _vsAppIdService;
-        private readonly IVsService<SVsShell, IVsShell> _vsShellService;
-
-        private RemoteCacheFile _versionDataCacheFile;
-        private Version _ourVSVersion;
-
-        private uint _solutionCookie = VSConstants.VSCOOKIE_NIL;
-        private bool _solutionOpened;
-        private CompatibilityLevel _compatibilityLevelWarnedForThisSolution = CompatibilityLevel.Recommended;
-
-        // Tracks how often we meed to look for new data
-        private DateTime _timeCurVersionDataLastUpdatedUtc = DateTime.MinValue;
-        private VersionCompatibilityData _curVersionCompatibilityData;
-        private IVsSolution _vsSolution;
 
         public async Task InitializeAsync()
         {

@@ -2,7 +2,6 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.IO;
 using System.Linq;
 
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
@@ -13,23 +12,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
     internal static class ProjectRestoreInfoBuilder
     {
-        private const string DefiningProjectDirectoryProperty = "DefiningProjectDirectory";
         private const string ProjectFileFullPathProperty = "ProjectFileFullPath";
 
-        internal static IVsProjectRestoreInfo Build(IEnumerable<IProjectValueVersions> updates,
-            UnconfiguredProject project)
+        internal static IVsProjectRestoreInfo Build(IEnumerable<IProjectVersionedValue<IProjectSubscriptionUpdate>> updates)
         {
             Requires.NotNull(updates, nameof(updates));
-            Requires.NotNull(project, nameof(project));
-
-            return Build(updates.Cast<IProjectVersionedValue<IProjectSubscriptionUpdate>>(), project);
-        }
-
-        internal static IVsProjectRestoreInfo Build(IEnumerable<IProjectVersionedValue<IProjectSubscriptionUpdate>> updates,
-            UnconfiguredProject project)
-        {
-            Requires.NotNull(updates, nameof(updates));
-            Requires.NotNull(project, nameof(project));
 
             // if none of the underlying subscriptions have any changes
             if (!updates.Any(u => u.Value.ProjectChanges.Any(c => c.Value.Difference.AnyChanges)))
@@ -67,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     targetFrameworks.Add(new TargetFrameworkInfo
                     {
                         TargetFrameworkMoniker = targetFramework,
-                        ProjectReferences = GetProjectReferences(projectReferencesChanges.After.Items, project),
+                        ProjectReferences = GetProjectReferences(projectReferencesChanges.After.Items),
                         PackageReferences = GetReferences(packageReferencesChanges.After.Items),
                         Properties = GetProperties(nugetRestoreChanges.After.Properties)
                     });
@@ -130,34 +117,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             return new ReferenceItems(items.Select(p => GetReferenceItem(p)));
         }
 
-        private static IVsReferenceItems GetProjectReferences(
-            IImmutableDictionary<string, IImmutableDictionary<string, string>> projectReferenceItems,
-            UnconfiguredProject project)
+        private static IVsReferenceItems GetProjectReferences(IImmutableDictionary<string, IImmutableDictionary<string, string>> projectReferenceItems)
         {
             IVsReferenceItems referenceItems = GetReferences(projectReferenceItems);
 
             // compute project file full path property for each reference
             foreach (ReferenceItem item in referenceItems)
             {
-                IVsReferenceProperty definingProjectDirectory = item.Properties.Item(DefiningProjectDirectoryProperty);
-                string projectFileFullPath = definingProjectDirectory != null
-                    ? MakeRooted(definingProjectDirectory.Value, item.Name)
-                    : project.MakeRooted(item.Name);
+                IVsReferenceProperty fullPathProperty = item.Properties.Item(ProjectReference.FullPathProperty);
 
                 ((ReferenceProperties)item.Properties).Add(new ReferenceProperty
                 {
                     Name = ProjectFileFullPathProperty,
-                    Value = projectFileFullPath
+                    Value = fullPathProperty?.Value
                 });
             }
 
             return referenceItems;
-        }
-
-        private static string MakeRooted(string basePath, string path)
-        {
-            basePath = basePath.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
-            return PathHelper.MakeRooted(basePath + Path.DirectorySeparatorChar, path);
         }
     }
 }

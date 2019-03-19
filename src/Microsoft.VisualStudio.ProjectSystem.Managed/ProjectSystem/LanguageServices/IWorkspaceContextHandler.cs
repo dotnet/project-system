@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-
+using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
@@ -9,6 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     /// <summary>
     ///     Represents a marker interface for types that apply changes to <see cref="IWorkspaceProjectContext"/> instances.
     /// </summary>
+    [ProjectSystemContract(ProjectSystemContractScope.ConfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ZeroOrMore)]
     internal interface IWorkspaceContextHandler
     {
         /// <summary>

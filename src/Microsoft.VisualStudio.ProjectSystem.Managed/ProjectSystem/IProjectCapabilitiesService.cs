@@ -2,11 +2,14 @@
 
 using System;
 
+using Microsoft.VisualStudio.Composition;
+
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
     ///     Provides methods for querying and testing the current project's capabilities.
     /// </summary>
+    [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface IProjectCapabilitiesService
     {   // This interface introduced just so that we can mock checks for capabilities, 
         // to avoid static state and call context data that we cannot influence

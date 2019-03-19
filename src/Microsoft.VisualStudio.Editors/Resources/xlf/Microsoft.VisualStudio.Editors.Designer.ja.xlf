@@ -2770,17 +2770,17 @@ app.config ファイルでの新しい値は '{1}' です
       </trans-unit>
       <trans-unit id="RSE_Type_WMF">
         <source>Windows Metafile</source>
-        <target state="new">Windows Metafile</target>
+        <target state="translated">Windows メタファイル</target>
         <note />
       </trans-unit>
       <trans-unit id="RSE_Type_EMF">
         <source>Extended Metafile</source>
-        <target state="new">Extended Metafile</target>
+        <target state="translated">拡張メタファイル</target>
         <note />
       </trans-unit>
       <trans-unit id="RSE_Filter_License">
         <source>License Files</source>
-        <target state="new">License Files</target>
+        <target state="translated">ライセンス ファイル</target>
         <note># File dialog filters
 #
 # E.g., for icons, the actual filter created would look like "Icons (*.ico)".  These resources

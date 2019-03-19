@@ -231,4 +231,22 @@
   <data name="ProfileName" xml:space="preserve">
     <value>Profile name:</value>
   </data>
+  <data name="CancelBtnHelpText" xml:space="preserve">
+    <value>Return to the debug property page with no changes</value>
+  </data>
+  <data name="chkLaunchBrowserHelpText" xml:space="preserve">
+    <value>Checking enables a textbox to specify an absolute or relative URl</value>
+  </data>
+  <data name="DeleteBtnHelpText" xml:space="preserve">
+    <value>Delete the current profile and change to the next available profile</value>
+  </data>
+  <data name="NewBtnHelpText" xml:space="preserve">
+    <value>Open the new profile dialog</value>
+  </data>
+  <data name="OKBtnHelpText" xml:space="preserve">
+    <value>Create the profile and return to the debug property page with the new profile selected</value>
+  </data>
+  <data name="chkNativeCodeDebuggingText" xml:space="preserve">
+    <value>Enable native code debugging</value>
+  </data>
 </root>

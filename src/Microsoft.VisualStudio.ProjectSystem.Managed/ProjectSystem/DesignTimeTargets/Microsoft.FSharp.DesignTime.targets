@@ -41,19 +41,4 @@
 
   </Target>
 
-
-<!-- Saved
-  <Target Name="CompileDesignTime"
-          Returns="@(_CompilerCommandLineArgs)"
-          DependsOnTargets="_CheckCompileDesignTimePrerequisite;Compile"
-          Condition="'$(IsCrossTargetingBuild)' != 'true'"
-          >
-
-    <ItemGroup>
-      <_CompilerCommandLineArgs Include="@(FscCommandLineArgs)"/>
-    </ItemGroup>
-
-  </Target>
--->
-
 </Project>
