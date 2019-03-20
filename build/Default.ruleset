@@ -50,6 +50,7 @@
     <Rule Id="CA2007" Action="None" />
     <Rule Id="CA2211" Action="None" />
     <Rule Id="CA2213" Action="None" /> <!-- https://github.com/dotnet/roslyn-analyzers/issues/1796 -->
+    <Rule Id="CA2215" Action="None" /> <!-- https://github.com/dotnet/roslyn-analyzers/issues/1796 -->
     <Rule Id="CA2218" Action="None" />
     <Rule Id="CA2222" Action="None" />
     <Rule Id="CA2224" Action="None" />
