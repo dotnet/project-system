@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.CSharp
             await RenameAsync(sourceCode, oldFilePath, newFilePath, userNotificationServices, roslynServices, LanguageNames.CSharp);
 
             Mock.Get(userNotificationServices).Verify(h => h.Confirm(It.IsAny<string>()), Times.Once);
-            Mock.Get(roslynServices).Verify(h => h.RenameType(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
+            Mock.Get(roslynServices).Verify(h => h.RenameType(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
         }
 
         [Theory]
@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.CSharp
             await RenameAsync(sourceCode, oldFilePath, newFilePath, userNotificationServices, roslynServices, LanguageNames.CSharp).TimeoutAfter(TimeSpan.FromSeconds(1));
 
             Mock.Get(userNotificationServices).Verify(h => h.Confirm(It.IsAny<string>()), Times.Never);
-            Mock.Get(roslynServices).Verify(h => h.RenameType(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
+            Mock.Get(roslynServices).Verify(h => h.RenameType(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
         }
 
         internal async Task RenameAsync(string sourceCode,

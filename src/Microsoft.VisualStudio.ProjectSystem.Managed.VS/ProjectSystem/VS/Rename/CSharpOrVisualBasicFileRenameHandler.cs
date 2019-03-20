@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 //--------------------------------------------------------------------------------------------
 // <summary>
 // CSharpOrVisualBasicFileRenameHandler
@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
             // Check if there are any symbols that need to be renamed
             string projectPath = _projectVsServices.Project.FullPath;
-            if (!await _renameTypeService.AnyTypeToRenameAsync(oldFilePath, newFilePath, projectPath))
+            if (!await _renameTypeService.AnyTypeToRenameAsync(oldFilePath, newFilePath))
                 return;
 
             string oldName = Path.GetFileNameWithoutExtension(oldFilePath);
@@ -83,8 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                     () =>
                     {
                         // Perform the rename operation
-                        return Task.FromResult(_renameTypeService.RenameType(oldFilePath, newFilePath, projectPath, token));
-                    }));
+                 return Task.FromResult(_renameTypeService.RenameType(oldFilePath, newFilePath, default));
 
 
             // Notify the user if the rename could not be performed

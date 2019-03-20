@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private ISyntaxFactsService SyntaxFactsService => SyntaxFactsServicesImpl.First().Value;
 
-        public async Task<bool> AnyTypeToRenameAsync(string oldFilePath, string newFilePath, string projectPath)
+        public async Task<bool> AnyTypeToRenameAsync(string oldFilePath, string newFilePath)
         {
             string oldName = Path.GetFileNameWithoutExtension(oldFilePath);
             string newName = Path.GetFileNameWithoutExtension(newFilePath);
@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return symbol != null;
         }
 
-        public bool RenameType(string oldFilePath, string newFilePath, string projectPath, CancellationToken cancellationToken)
+        public bool RenameType(string oldFilePath, string newFilePath, CancellationToken cancellationToken)
         {
             string oldName = Path.GetFileNameWithoutExtension(oldFilePath);
             string newName = Path.GetFileNameWithoutExtension(newFilePath);

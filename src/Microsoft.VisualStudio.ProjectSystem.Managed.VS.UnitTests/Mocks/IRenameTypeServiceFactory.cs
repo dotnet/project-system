@@ -10,7 +10,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             var mock = new Mock<IRenameTypeService>();
             mock.Setup(h => h.AnyTypeToRenameAsync(It.IsAny<string>(),
-                                                   It.IsAny<string>(),
                                                    It.IsAny<string>()))
                                                    .ReturnsAsync(existsSymbolToRename);
             return mock.Object;

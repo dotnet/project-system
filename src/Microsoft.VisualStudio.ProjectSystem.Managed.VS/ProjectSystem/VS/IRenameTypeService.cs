@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,18 +18,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// </summary>
         /// <param name="oldFilePath">The old file path which contains types to be renamed.</param>
         /// <param name="newFilePath">The new file path which contains types to be renamed.</param>
-        /// <param name="projectPath">The path to the project file which contains types to be renamed.</param>
         /// <returns>True if there exists types that should be renamed, false if there do not.</returns>
-        Task<bool> AnyTypeToRenameAsync(string oldFilePath, string newFilePath, string projectPath);
+        Task<bool> AnyTypeToRenameAsync(string oldFilePath, string newFilePath);
 
         /// <summary>
         ///  Rename the type in the given solution.
         /// </summary>
         /// <param name="oldFilePath">The old file path which contains types to be renamed.</param>
         /// <param name="newFilePath">The new file path which contains types to be renamed.</param>
-        /// <param name="projectPath">The path to the project file which contains types to be renamed.</param>
         /// <param name="cancellationToken">A token that can be used to cancel this operation.</param>
         /// <returns>True if the changes could be applied, false if they could not.</returns>
-        bool RenameType(string oldFilePath, string newFilePath, string projectPath, CancellationToken cancellationToken);
+        bool RenameType(string oldFilePath, string newFilePath, CancellationToken cancellationToken);
     }
 }
