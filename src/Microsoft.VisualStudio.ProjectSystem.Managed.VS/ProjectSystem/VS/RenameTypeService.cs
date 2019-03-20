@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -110,11 +110,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return false;
         }
 
-        private async Task<ISymbol> TryGetSymbolToRenameAsync(string oldName,
-                                                              string newFileName,
+        private async Task<ISymbol> TryGetSymbolToRenameAsync(string name,
+                                                              string filePath,
                                                               CancellationToken cancellationToken = default)
         {
-            if (!TryGetDocument(newFileName, out Document newDocument))
+            if (!TryGetDocument(filePath, out Document newDocument))
                 return null;
 
             SyntaxNode root = await newDocument.GetSyntaxRootAsync(cancellationToken);
@@ -125,7 +125,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             if (semanticModel is null)
                 return null;
 
-            IEnumerable<SyntaxNode> declarations = root.DescendantNodes().Where(n => HasMatchingSyntaxNode(semanticModel, n, oldName, cancellationToken));
+            IEnumerable<SyntaxNode> declarations = root.DescendantNodes().Where(n => HasMatchingSyntaxNode(semanticModel, n, name, cancellationToken));
             SyntaxNode declaration = declarations.FirstOrDefault();
             if (declaration is null)
                 return null;
