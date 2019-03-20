@@ -40,7 +40,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         private readonly IVsService<SVsFileChangeEx, IVsAsyncFileChangeEx> _fileChangeService;
         private readonly ITelemetryService _telemetryService;
         private readonly IProjectFaultHandlerService _projectFaultHandlerService;
-        private readonly SequentialTaskExecutor _sequentialTaskQueue = new SequentialTaskExecutor();
 
         // protected for unit test purposes
         protected ITempPECompiler Compiler;
@@ -412,7 +411,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         {
             if (initialized)
             {
-                _sequentialTaskQueue?.Dispose();
+                DisposeTaskSchedulers();
                 await UnregisterFileWatchersAsync();
             }
             await base.DisposeCoreAsync(initialized);
@@ -601,6 +600,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             foreach (uint cookie in value.Cookies.Values)
             {
                 await fileChangeService.UnadviseFileChangeAsync(cookie);
+            }
+        }
+
+        private void DisposeTaskSchedulers()
+        {
+            DesignTimeInputsItem value = AppliedValue?.Value;
+
+            if (value == null) return;
+
+            foreach (ITaskDelayScheduler scheduler in value.TaskSchedulers.Values)
+            {
+                scheduler.Dispose();
             }
         }
 
