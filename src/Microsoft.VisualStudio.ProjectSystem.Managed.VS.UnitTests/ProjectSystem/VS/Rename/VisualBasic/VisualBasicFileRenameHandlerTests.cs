@@ -71,12 +71,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.VisualBasic
         public async Task Rename_Symbol_Should_Not_HappenAsync(string oldFilePath, string newFilePath, string sourceCode)
         {
 
-            var userNotificationServices = IUserNotificationServicesFactory.Create();
             var roslynServices = IRenameTypeServiceFactory.Create(existsSymbolToRename: false);
 
-            await RenameAsync(sourceCode, oldFilePath, newFilePath, userNotificationServices, roslynServices, LanguageNames.VisualBasic);
+            await RenameAsync(sourceCode, oldFilePath, newFilePath, roslynServices, LanguageNames.VisualBasic);
 
-            Mock.Get(userNotificationServices).Verify(h => h.Confirm(It.IsAny<string>()), Times.Never);
             Mock.Get(roslynServices).Verify(h => h.RenameType(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
         }
 
@@ -116,21 +114,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.VisualBasic
             End Namespace")]
         public async Task Rename_Symbol_Should_TriggerUserConfirmationAsync(string oldFilePath, string newFilePath, string sourceCode)
         {
-            var userNotificationServices = IUserNotificationServicesFactory.Create();
             var roslynServices = IRenameTypeServiceFactory.Create();
-
-            await RenameAsync(sourceCode, oldFilePath, newFilePath, userNotificationServices, roslynServices, LanguageNames.VisualBasic);
-
-            Mock.Get(userNotificationServices).Verify(h => h.Confirm(It.IsAny<string>()), Times.Once);
+            await RenameAsync(sourceCode, oldFilePath, newFilePath, roslynServices, LanguageNames.VisualBasic);
             Mock.Get(roslynServices).Verify(h => h.RenameType(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
         }
 
         internal async Task RenameAsync(string sourceCode,
-                     string oldFilePath,
-                     string newFilePath,
-                     IUserNotificationServices userNotificationServices,
-                     IRenameTypeService roslynServices,
-                     string language)
+            string oldFilePath,
+            string newFilePath,
+            IRenameTypeService roslynServices,
+            string language)
         {
             using (var ws = new AdhocWorkspace())
             {
@@ -140,13 +133,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.VisualBasic
 
                 var environmentOptionsFactory = IEnvironmentOptionsFactory.Implement((string category, string page, string property, bool defaultValue) => true);
                 var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: $@"C:\project1.{ProjectFileExtension}");
+                var userNotificationServices = IUserNotificationServicesFactory.Create();
                 var projectServices = IUnconfiguredProjectVsServicesFactory.Implement(
                     threadingServiceCreator: () => IProjectThreadingServiceFactory.Create(),
                     unconfiguredProjectCreator: () => unconfiguredProject);
                 var unconfiguredProjectTasksService = IUnconfiguredProjectTasksServiceFactory.Create();
                 var operationWaitIndicator = (new Mock<IOperationWaitIndicator>()).Object;
                 var renamer = new CSharpOrVisualBasicFileRenameHandler(projectServices, unconfiguredProjectTasksService,
-                                                                       environmentOptionsFactory,
                                                                        userNotificationServices, roslynServices, operationWaitIndicator);
                 await renamer.HandleRenameAsync(oldFilePath, newFilePath)
                              .TimeoutAfter(TimeSpan.FromSeconds(1));

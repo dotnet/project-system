@@ -25,7 +25,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
     {
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly IUnconfiguredProjectTasksService _unconfiguredProjectTasksService;
-        private readonly IEnvironmentOptions _environmentOptions;
         private readonly IUserNotificationServices _userNotificationServices;
         private readonly IRenameTypeService _renameTypeService;
         private readonly IOperationWaitIndicator _waitService;
@@ -33,14 +32,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         [ImportingConstructor]
         public CSharpOrVisualBasicFileRenameHandler(IUnconfiguredProjectVsServices projectVsServices,
                                                     IUnconfiguredProjectTasksService unconfiguredProjectTasksService,
-                                                    IEnvironmentOptions environmentOptions,
                                                     IUserNotificationServices userNotificationServices,
                                                     IRenameTypeService renameTypeService,
                                                     IOperationWaitIndicator waitService)
         {
             _projectVsServices = projectVsServices;
             _unconfiguredProjectTasksService = unconfiguredProjectTasksService;
-            _environmentOptions = environmentOptions;
             _userNotificationServices = userNotificationServices;
             _renameTypeService = renameTypeService;
             _waitService = waitService;
