@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,6 +20,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// <param name="newFilePath">The new file path which contains types to be renamed.</param>
         /// <returns>True if there exists types that should be renamed, false if there do not.</returns>
         Task<bool> AnyTypeToRenameAsync(string oldFilePath, string newFilePath);
+
+        /// <summary>
+        /// Determine if a filename and a type are currently the same
+        /// </summary>
+        /// <param name="filePath">The path to the file that we expect to contain the type.</param>
+        /// <returns>True if there is a type contained in the file that matches the file name, otherwise false.</returns>
+        Task<bool> DoesFileNameMatchTypeAsync(string filePath);
+
+        /// <summary>
+        /// Queues a type to be renamed once dataflow finishes processing it.
+        /// </summary>
+        /// <param name="filePath">file that containts a type we want to rename.</param>
+        void QueueFileWithTypeToBeRenamed(string filePath);
 
         /// <summary>
         ///  Rename the type in the given solution.

@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -32,8 +32,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private ISyntaxFactsService SyntaxFactsService => SyntaxFactsServicesImpl.First().Value;
 
+        public async Task<bool> DoesFileNameMatchTypeAsync(string filePath)
+        {
+            string name = Path.GetFileNameWithoutExtension(filePath);
+            ISymbol symbol = await TryGetSymbolToRenameAsync(name, filePath);
+            return symbol != null;
+        }
+
+        private string _expectedFilePath = null;
+        private static readonly object s_filePathLock = new object();
+
+        public void QueueFileWithTypeToBeRenamed(string filePath)
+        {
+            lock (s_filePathLock)
+            {
+                _expectedFilePath = filePath;
+            }
+        }
+
         public async Task<bool> AnyTypeToRenameAsync(string oldFilePath, string newFilePath)
         {
+            string expectedFilePath = _expectedFilePath;
+            if (expectedFilePath != oldFilePath)
+                return false;
+
             string oldName = Path.GetFileNameWithoutExtension(oldFilePath);
             string newName = Path.GetFileNameWithoutExtension(newFilePath);
 
@@ -46,6 +68,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public bool RenameType(string oldFilePath, string newFilePath, CancellationToken cancellationToken)
         {
+            string expectedFilePath = _expectedFilePath;
+            if (expectedFilePath != oldFilePath)
+                return false;
+
             string oldName = Path.GetFileNameWithoutExtension(oldFilePath);
             string newName = Path.GetFileNameWithoutExtension(newFilePath);
 

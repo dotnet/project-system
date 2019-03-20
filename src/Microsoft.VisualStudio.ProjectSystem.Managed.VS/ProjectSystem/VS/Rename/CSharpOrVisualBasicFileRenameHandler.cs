@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 //--------------------------------------------------------------------------------------------
 // <summary>
 // CSharpOrVisualBasicFileRenameHandler
@@ -48,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
         public void HandleRename(string oldFilePath, string newFilePath)
             => _projectVsServices.ThreadingService.RunAndForget(
-                ()=> HandleRenameAsync(oldFilePath, newFilePath), _projectVsServices.Project);
+                () => HandleRenameAsync(oldFilePath, newFilePath), _projectVsServices.Project);
 
 
         public async Task HandleRenameAsync(string oldFilePath, string newFilePath)
@@ -65,25 +65,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             string oldName = Path.GetFileNameWithoutExtension(oldFilePath);
             string newName = Path.GetFileNameWithoutExtension(newFilePath);
 
-            // Ask if the user wants to rename the symbol
-            bool userConfirmed = await CheckUserConfirmationAsync(oldName);
-            if (!userConfirmed)
-                return;
-
             // Try and apply the changes to the current solution
             await _projectVsServices.ThreadingService.SwitchToUIThread();
 
-            bool renamedSolutionApplied = _waitService.WaitForAsyncOperation(
-                title: VSResources.Rename,
-                message: string.Format(CultureInfo.CurrentCulture, VSResources.Renaming_type_from_0_to_1, oldName, newName),
-                allowCancel: true,
-                token =>
-                    // Do not let the project close until this completes
-                    _unconfiguredProjectTasksService.LoadedProjectAsync(
-                    () =>
-                    {
-                        // Perform the rename operation
+            // Do not let the project close until this completes
+            bool renamedSolutionApplied = await _unconfiguredProjectTasksService.LoadedProjectAsync(
+             () =>
+             {
+                 // Perform the rename operation
                  return Task.FromResult(_renameTypeService.RenameType(oldFilePath, newFilePath, default));
+             });
 
 
             // Notify the user if the rename could not be performed
@@ -92,19 +83,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 string failureMessage = string.Format(CultureInfo.CurrentCulture, VSResources.RenameSymbolFailed, oldName);
                 _userNotificationServices.ShowWarning(failureMessage);
             }
-        }
-
-        private async Task<bool> CheckUserConfirmationAsync(string oldFileName)
-        {
-            await _projectVsServices.ThreadingService.SwitchToUIThread();
-            bool userNeedPrompt = _environmentOptions.GetOption("Environment", "ProjectsAndSolution", "PromptForRenameSymbol", false);
-            if (userNeedPrompt)
-            {
-                string renamePromptMessage = string.Format(CultureInfo.CurrentCulture, VSResources.RenameSymbolPrompt, oldFileName);
-                return _userNotificationServices.Confirm(renamePromptMessage);
-            }
-
-            return true;
         }
     }
 }
