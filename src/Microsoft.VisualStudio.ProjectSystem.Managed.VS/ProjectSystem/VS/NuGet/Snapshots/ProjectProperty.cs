@@ -4,6 +4,9 @@ using NuGet.SolutionRestoreManager;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
+    /// <summary>
+    ///     Represents a single key/value for a <see cref="IVsTargetFrameworkInfo"/>.
+    /// </summary>
     internal class ProjectProperty : IVsProjectProperty
     {
         public ProjectProperty(string name, string value)

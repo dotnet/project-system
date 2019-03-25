@@ -6,6 +6,9 @@ using NuGet.SolutionRestoreManager;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
+    /// <summary>
+    ///     Immutable collection of <see cref="IVsTargetFrameworkInfo"/> objects.
+    /// </summary>
     internal class TargetFrameworks : ImmutablePropertyCollection<IVsTargetFrameworkInfo>, IVsTargetFrameworks
     {
         public TargetFrameworks(IEnumerable<IVsTargetFrameworkInfo> items)

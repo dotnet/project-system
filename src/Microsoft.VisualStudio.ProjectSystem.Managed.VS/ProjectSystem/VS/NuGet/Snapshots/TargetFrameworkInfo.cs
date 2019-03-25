@@ -6,6 +6,9 @@ using NuGet.SolutionRestoreManager;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
+    /// <summary>
+    ///     Represents the restore data for a single target framework in <see cref="UnconfiguredProject"/>.
+    /// </summary>
     internal class TargetFrameworkInfo : IVsTargetFrameworkInfo
     {
         public TargetFrameworkInfo(string targetFrameworkMoniker, IEnumerable<IVsReferenceItem> projectReferences, IEnumerable<IVsReferenceItem> packageReferences, IEnumerable<IVsProjectProperty> properties)

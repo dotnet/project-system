@@ -4,6 +4,9 @@ using NuGet.SolutionRestoreManager;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
+    /// <summary>
+    ///     Represents a single key/value for a <see cref="IVsReferenceItem"/>.
+    /// </summary>
     internal class ReferenceProperty : IVsReferenceProperty
     {
         public ReferenceProperty(string name, string value)

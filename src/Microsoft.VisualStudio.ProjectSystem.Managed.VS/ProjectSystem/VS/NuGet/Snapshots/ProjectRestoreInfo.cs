@@ -4,6 +4,10 @@ using NuGet.SolutionRestoreManager;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
+    /// <summary>
+    ///     Concrete implementation of <see cref="IVsProjectRestoreInfo"/> that will be passed to 
+    ///     <see cref="IVsSolutionRestoreService.NominateProjectAsync(string, IVsProjectRestoreInfo, System.Threading.CancellationToken)"/>.
+    /// </summary>
     internal class ProjectRestoreInfo : IVsProjectRestoreInfo
     {
         public ProjectRestoreInfo(string baseIntermediatePath, string originalTargetFrameworks, IVsTargetFrameworks targetFrameworks, IVsReferenceItems toolReferences)
