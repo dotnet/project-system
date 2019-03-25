@@ -1,5 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System.Collections.Generic;
+
 using NuGet.SolutionRestoreManager;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
@@ -10,25 +12,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
     /// </summary>
     internal class ProjectRestoreInfo : IVsProjectRestoreInfo
     {
-        public ProjectRestoreInfo(string baseIntermediatePath, string originalTargetFrameworks, IVsTargetFrameworks targetFrameworks, IVsReferenceItems toolReferences)
+        public ProjectRestoreInfo(string msbuildProjectExtensionsPath, string originalTargetFrameworks, IEnumerable<IVsTargetFrameworkInfo> targetFrameworks, IEnumerable<IVsReferenceItem> toolReferences)
         {
-            Requires.NotNullOrEmpty(baseIntermediatePath, nameof(baseIntermediatePath));
+            Requires.NotNullOrEmpty(msbuildProjectExtensionsPath, nameof(msbuildProjectExtensionsPath));
             Requires.NotNull(originalTargetFrameworks, nameof(originalTargetFrameworks));
             Requires.NotNull(targetFrameworks, nameof(targetFrameworks));
             Requires.NotNull(toolReferences, nameof(toolReferences));
 
-            BaseIntermediatePath = baseIntermediatePath;
+            MSBuildProjectExtensionsPath = msbuildProjectExtensionsPath;
             OriginalTargetFrameworks = originalTargetFrameworks;
-            TargetFrameworks = targetFrameworks;
-            ToolReferences = toolReferences;
+            TargetFrameworks = new TargetFrameworks(targetFrameworks);
+            ToolReferences = new ReferenceItems(toolReferences);
         }
 
-        public string BaseIntermediatePath { get; }
+        public string MSBuildProjectExtensionsPath { get; }
 
         public string OriginalTargetFrameworks { get; }
 
         public IVsTargetFrameworks TargetFrameworks { get; }
 
         public IVsReferenceItems ToolReferences { get; }
+
+        // We "rename" BaseIntermediatePath to avoid confusion for our usage, 
+        // because it actually represents "MSBuildProjectExtensionsPath"
+        string IVsProjectRestoreInfo.BaseIntermediatePath
+        {
+            get { return MSBuildProjectExtensionsPath; }
+        }
     }
 }
