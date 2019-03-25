@@ -26,8 +26,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
             string msbuildProjectExtensionsPath = null;
             string originalTargetFrameworks = null;
-            var targetFrameworks = ImmutableDictionary.Create<string, IVsTargetFrameworkInfo>();
-            var toolReferences = ImmutableDictionary.Create<string, IVsReferenceItem>();
+            var targetFrameworks = ImmutableDictionary.Create<string, IVsTargetFrameworkInfo>(StringComparers.ItemNames);
+            var toolReferences = ImmutableDictionary.Create<string, IVsReferenceItem>(StringComparers.ItemNames);
 
             foreach (IProjectVersionedValue<IProjectSubscriptionUpdate> update in updates)
             {

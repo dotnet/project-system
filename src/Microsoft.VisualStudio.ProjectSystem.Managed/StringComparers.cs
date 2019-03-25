@@ -20,6 +20,7 @@ namespace Microsoft.VisualStudio
         public static IEqualityComparer<string> RuleNames => StringComparer.OrdinalIgnoreCase;
         public static IEqualityComparer<string> ConfigurationDimensionNames => StringComparer.Ordinal;
         public static IEqualityComparer<string> DependencyProviderTypes => StringComparer.OrdinalIgnoreCase;
+        public static IEqualityComparer<string> ItemNames => StringComparer.OrdinalIgnoreCase;
         public static IEqualityComparer<string> ItemTypes => StringComparer.OrdinalIgnoreCase;
     }
 
@@ -38,6 +39,7 @@ namespace Microsoft.VisualStudio
         public static StringComparison RuleNames => StringComparison.OrdinalIgnoreCase;
         public static StringComparison ConfigurationDimensionNames => StringComparison.Ordinal;
         public static StringComparison DependencyProviderTypes => StringComparison.OrdinalIgnoreCase;
+        public static StringComparison ItemNames => StringComparison.OrdinalIgnoreCase;
         public static StringComparison ItemTypes => StringComparison.OrdinalIgnoreCase;
     }
 }
