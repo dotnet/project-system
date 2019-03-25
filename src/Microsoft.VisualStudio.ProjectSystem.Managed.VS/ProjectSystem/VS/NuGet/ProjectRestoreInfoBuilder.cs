@@ -53,9 +53,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
                     targetFrameworks = targetFrameworks.Add(targetFramework, new TargetFrameworkInfo(
                         targetFramework,
-                        GetReferences(projectReferencesChanges.After.Items),
-                        GetReferences(packageReferencesChanges.After.Items),
-                        GetProperties(nugetRestoreChanges.After.Properties)
+                        RestoreBuilder.ToReferenceItems(projectReferencesChanges.After.Items),
+                        RestoreBuilder.ToReferenceItems(packageReferencesChanges.After.Items),
+                        RestoreBuilder.ToProjectProperties(nugetRestoreChanges.After.Properties)
                     ));
                 }
 
@@ -64,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 {
                     if (!toolReferences.ContainsKey(item.Key))
                     {
-                        toolReferences = toolReferences.Add(item.Key, GetReferenceItem(item));
+                        toolReferences = toolReferences.Add(item.Key, RestoreBuilder.ToReferenceItem(item.Key, item.Value));
                     }
                 }
             }
@@ -86,23 +86,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     toolReferences.Values
                 )
                 : null;
-        }
-
-        private static IEnumerable<IVsProjectProperty> GetProperties(IImmutableDictionary<string, string> items)
-        {
-            return items.Select(v => new ProjectProperty(v.Key, v.Value));
-        }
-
-        private static IVsReferenceItem GetReferenceItem(KeyValuePair<string, IImmutableDictionary<string, string>> item)
-        {
-            return new ReferenceItem(item.Key,
-                item.Value.Select(v => new ReferenceProperty(v.Key, v.Value))
-            );
-        }
-
-        private static IEnumerable<IVsReferenceItem> GetReferences(IImmutableDictionary<string, IImmutableDictionary<string, string>> items)
-        {
-            return items.Select(p => GetReferenceItem(p));
         }
     }
 }
