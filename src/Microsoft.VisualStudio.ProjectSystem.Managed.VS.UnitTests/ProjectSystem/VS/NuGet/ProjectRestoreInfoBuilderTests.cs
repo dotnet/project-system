@@ -523,7 +523,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     ""..\\TestLib\\TestLib.csproj"": {
                         ""DefiningProjectDirectory"": ""C:\\Test\\Projects\\TestProj"",
                         ""DefiningProjectFullPath"": ""C:\\Test\\Projects\\TestProj\\TestProj.csproj"",
-                        ""FullPath"": ""C:\\Test\\Projects\\TestLib\\TestLib.csproj"",
+                        ""ProjectFileFullPath"": ""C:\\Test\\Projects\\TestLib\\TestLib.csproj"",
                     }
                 }
             }
