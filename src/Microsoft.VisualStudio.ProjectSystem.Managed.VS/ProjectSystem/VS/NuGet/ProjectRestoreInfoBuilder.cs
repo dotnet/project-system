@@ -82,30 +82,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     // https://github.com/dotnet/project-system/issues/3466for for details.
                     msbuildProjectExtensionsPath,
                     originalTargetFrameworks,
-                    new TargetFrameworks(targetFrameworks.Values),
-                    new ReferenceItems(toolReferences.Values)
+                    targetFrameworks.Values,
+                    toolReferences.Values
                 )
                 : null;
         }
 
-        private static IVsProjectProperties GetProperties(IImmutableDictionary<string, string> items)
+        private static IEnumerable<IVsProjectProperty> GetProperties(IImmutableDictionary<string, string> items)
         {
-            return new ProjectProperties(items.Select(v => new ProjectProperty(v.Key, v.Value)));
+            return items.Select(v => new ProjectProperty(v.Key, v.Value));
         }
 
         private static IVsReferenceItem GetReferenceItem(KeyValuePair<string, IImmutableDictionary<string, string>> item)
         {
             return new ReferenceItem(item.Key,
-                new ReferenceProperties(item.Value.Select(v => new ReferenceProperty(v.Key, v.Value)))
+                item.Value.Select(v => new ReferenceProperty(v.Key, v.Value))
             );
         }
 
-        private static IVsReferenceItems GetReferences(IImmutableDictionary<string, IImmutableDictionary<string, string>> items)
+        private static IEnumerable<IVsReferenceItem> GetReferences(IImmutableDictionary<string, IImmutableDictionary<string, string>> items)
         {
-            return new ReferenceItems(items.Select(p => GetReferenceItem(p)));
+            return items.Select(p => GetReferenceItem(p));
         }
 
-        private static IVsReferenceItems GetProjectReferences(IImmutableDictionary<string, IImmutableDictionary<string, string>> projectReferenceItems)
+        private static IEnumerable<IVsReferenceItem> GetProjectReferences(IImmutableDictionary<string, IImmutableDictionary<string, string>> projectReferenceItems)
         {
             // NuGet expects each "<ProjectReference />" to have metadata item "ProjectFileFullPath" that represents
             // the full path of the project reference, just use the built-in "FullPath" metadata for that.
