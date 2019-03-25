@@ -12,8 +12,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
     internal static class ProjectRestoreInfoBuilder
     {
-        private const string ProjectFileFullPathProperty = "ProjectFileFullPath";
-
         internal static IVsProjectRestoreInfo Build(IEnumerable<IProjectVersionedValue<IProjectSubscriptionUpdate>> updates)
         {
             Requires.NotNull(updates, nameof(updates));
