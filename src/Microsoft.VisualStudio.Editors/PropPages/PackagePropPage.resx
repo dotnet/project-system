@@ -705,6 +705,9 @@
   <data name="&gt;&gt;LicenseLineLabel.ZOrder" xml:space="preserve">
     <value>17</value>
   </data>
+  <data name="LicenseUrlWarning.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
   <data name="LicenseUrlWarning.Location" type="System.Drawing.Point, System.Drawing">
     <value>1154, 373</value>
   </data>
@@ -712,7 +715,7 @@
     <value>True</value>
   </data>
   <data name="LicenseUrlWarning.Size" type="System.Drawing.Size, System.Drawing">
-    <value>854, 26</value>
+    <value>3, 26</value>
   </data>
   <data name="LicenseUrlWarning.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -1339,7 +1342,7 @@
     <value>NoControl</value>
   </data>
   <data name="PackageReleaseNotesLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 708</value>
+    <value>0, 707</value>
   </data>
   <data name="PackageReleaseNotesLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 5, 0, 5</value>
@@ -1381,7 +1384,7 @@
     <value>Both</value>
   </data>
   <data name="PackageReleaseNotes.Size" type="System.Drawing.Size, System.Drawing">
-    <value>854, 79</value>
+    <value>854, 76</value>
   </data>
   <data name="PackageReleaseNotes.TabIndex" type="System.Int32, mscorlib">
     <value>17</value>
@@ -1408,7 +1411,7 @@
     <value>NoControl</value>
   </data>
   <data name="NeutralLanguageLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 772</value>
+    <value>0, 769</value>
   </data>
   <data name="NeutralLanguageLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 5, 0, 5</value>
@@ -1438,7 +1441,7 @@
     <value>Package Assembly Neutral Language</value>
   </data>
   <data name="NeutralLanguageComboBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>290, 768</value>
+    <value>290, 765</value>
   </data>
   <data name="NeutralLanguageComboBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 5, 4, 5</value>
@@ -1471,7 +1474,7 @@
     <value>NoControl</value>
   </data>
   <data name="AssemblyVersionLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 816</value>
+    <value>0, 806</value>
   </data>
   <data name="AssemblyVersionLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 5, 0, 5</value>
@@ -1496,6 +1499,12 @@
   </data>
   <data name="&gt;&gt;AssemblyVersionLabel.ZOrder" xml:space="preserve">
     <value>37</value>
+  </data>
+  <data name="AssemblyVersionLayoutPanel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="AssemblyVersionLayoutPanel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="AssemblyVersionLayoutPanel.ColumnCount" type="System.Int32, mscorlib">
     <value>4</value>
@@ -1609,16 +1618,16 @@
     <value>3</value>
   </data>
   <data name="AssemblyVersionLayoutPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>290, 806</value>
+    <value>286, 798</value>
   </data>
   <data name="AssemblyVersionLayoutPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 5, 4, 5</value>
+    <value>0, 0, 0, 0</value>
   </data>
   <data name="AssemblyVersionLayoutPanel.RowCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
   <data name="AssemblyVersionLayoutPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>345, 40</value>
+    <value>344, 36</value>
   </data>
   <data name="AssemblyVersionLayoutPanel.TabIndex" type="System.Int32, mscorlib">
     <value>19</value>
@@ -1638,9 +1647,6 @@
   <data name="AssemblyVersionLayoutPanel.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="AssemblyVersionRevisionTextBox" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="AssemblyVersionBuildTextBox" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="AssemblyVersionMinorTextBox" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="AssemblyVersionMajorTextBox" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,25,Percent,25,Percent,25,Percent,25" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
-  <data name="AssemblyFileVersionLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Left</value>
-  </data>
   <data name="AssemblyFileVersionLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -1648,7 +1654,7 @@
     <value>NoControl</value>
   </data>
   <data name="AssemblyFileVersionLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 865</value>
+    <value>0, 839</value>
   </data>
   <data name="AssemblyFileVersionLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 5, 0, 5</value>
@@ -1674,8 +1680,8 @@
   <data name="&gt;&gt;AssemblyFileVersionLabel.ZOrder" xml:space="preserve">
     <value>39</value>
   </data>
-  <data name="FileVersionLayoutPanel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Left</value>
+  <data name="FileVersionLayoutPanel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="FileVersionLayoutPanel.ColumnCount" type="System.Int32, mscorlib">
     <value>4</value>
@@ -1789,16 +1795,16 @@
     <value>3</value>
   </data>
   <data name="FileVersionLayoutPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>290, 856</value>
+    <value>286, 834</value>
   </data>
   <data name="FileVersionLayoutPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 5, 4, 5</value>
+    <value>0, 0, 0, 0</value>
   </data>
   <data name="FileVersionLayoutPanel.RowCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
   <data name="FileVersionLayoutPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>345, 38</value>
+    <value>344, 36</value>
   </data>
   <data name="FileVersionLayoutPanel.TabIndex" type="System.Int32, mscorlib">
     <value>20</value>
@@ -1819,16 +1825,16 @@
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="FileVersionRevisionTextBox" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="FileVersionBuildTextBox" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="FileVersionMinorTextBox" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="FileVersionMajorTextBox" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,25,Percent,25,Percent,25,Percent,25" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="TableLayoutPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 5</value>
+    <value>0, 0</value>
   </data>
   <data name="TableLayoutPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 5, 4, 5</value>
   </data>
   <data name="TableLayoutPanel.RowCount" type="System.Int32, mscorlib">
-    <value>22</value>
+    <value>21</value>
   </data>
   <data name="TableLayoutPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>2011, 917</value>
+    <value>1160, 870</value>
   </data>
   <data name="TableLayoutPanel.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1846,7 +1852,7 @@
     <value>0</value>
   </data>
   <data name="TableLayoutPanel.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="GeneratePackageOnBuild" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PackageRequireLicenseAcceptance" Row="1" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="PackageIdLabel" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PackageId" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageVersionLabel" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PackageVersion" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="AuthorsLabel" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="Authors" Row="4" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="AssemblyCompanyLabel" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="AssemblyCompany" Row="5" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="ProductLabel" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="Product" Row="6" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="DescriptionLabel" Row="7" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="Description" Row="7" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="CopyrightLabel" Row="8" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="Copyright" Row="8" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageLicenseLabel" Row="9" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="LicenseLineLabel" Row="9" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="LicenseUrlWarning" Row="9" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="ExpressionLabel" Row="10" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="ExpressionLayoutPanel" Row="10" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="FileLabel" Row="11" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="LicenseFileLayoutPanel" Row="11" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageProjectUrlLabel" Row="12" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PackageProjectUrl" Row="12" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageIconUrlLabel" Row="13" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PackageIconUrl" Row="13" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="RepositoryUrlLabel" Row="14" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="RepositoryUrl" Row="14" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="RepositoryTypeLabel" Row="15" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="RepositoryType" Row="15" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageTagsLabel" Row="16" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PackageTags" Row="16" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageReleaseNotesLabel" Row="17" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PackageReleaseNotes" Row="17" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="NeutralLanguageLabel" Row="18" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="NeutralLanguageComboBox" Row="18" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="AssemblyVersionLabel" Row="19" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="AssemblyVersionLayoutPanel" Row="19" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="AssemblyFileVersionLabel" Row="20" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="FileVersionLayoutPanel" Row="20" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="GeneratePackageOnBuild" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PackageRequireLicenseAcceptance" Row="1" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="PackageIdLabel" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PackageId" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageVersionLabel" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PackageVersion" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="AuthorsLabel" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="Authors" Row="4" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="AssemblyCompanyLabel" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="AssemblyCompany" Row="5" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="ProductLabel" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="Product" Row="6" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="DescriptionLabel" Row="7" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="Description" Row="7" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="CopyrightLabel" Row="8" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="Copyright" Row="8" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageLicenseLabel" Row="9" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="LicenseLineLabel" Row="9" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="LicenseUrlWarning" Row="9" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="ExpressionLabel" Row="10" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="ExpressionLayoutPanel" Row="10" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="FileLabel" Row="11" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="LicenseFileLayoutPanel" Row="11" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageProjectUrlLabel" Row="12" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PackageProjectUrl" Row="12" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageIconUrlLabel" Row="13" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PackageIconUrl" Row="13" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="RepositoryUrlLabel" Row="14" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="RepositoryUrl" Row="14" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="RepositoryTypeLabel" Row="15" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="RepositoryType" Row="15" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageTagsLabel" Row="16" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PackageTags" Row="16" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageReleaseNotesLabel" Row="17" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PackageReleaseNotes" Row="17" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="NeutralLanguageLabel" Row="18" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="NeutralLanguageComboBox" Row="18" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="AssemblyVersionLabel" Row="19" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="AssemblyVersionLayoutPanel" Row="19" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="AssemblyFileVersionLabel" Row="20" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="FileVersionLayoutPanel" Row="20" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,AutoSize,0,Absolute,9" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="LicenseLayoutPanel.ColumnCount" type="System.Int32, mscorlib">
     <value>6</value>
@@ -1914,11 +1920,14 @@
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>9, 20</value>
   </data>
+  <data name="$this.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
   <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 5, 4, 5</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1220, 1130</value>
+    <value>1164, 875</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>PackagePropPage</value>
