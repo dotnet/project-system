@@ -66,9 +66,17 @@
                   DisplayName="Exclude Assets"
                   Visible="True" />
 
-  <StringProperty Name="FullPath"
-                  Visible="False" />
-  
+  <StringProperty Name="ProjectFileFullPath"
+                  Visible="False"
+                  ReadOnly="True">
+    <StringProperty.DataSource>
+      <DataSource ItemType="ProjectReference"
+                  PersistedName="FullPath"
+                  Persistence="Intrinsic"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
   <StringProperty Name="Identity"
                   Description="Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence)."
                   DisplayName="Identity"
