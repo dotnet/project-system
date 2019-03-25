@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
     ///     Contains builder methods for creating <see cref="IVsProjectProperty"/> and 
     ///     <see cref="IVsReferenceItems"/> instances.
     /// </summary>
-    internal class RestoreBuilder
+    internal static class RestoreBuilder
     {
         /// <summary>
         ///     Converts an immutable dictionary of properties into an <see cref="IEnumerable{T}"/> of 
