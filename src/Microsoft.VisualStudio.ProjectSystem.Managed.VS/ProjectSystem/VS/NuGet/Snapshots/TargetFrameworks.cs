@@ -6,11 +6,12 @@ using NuGet.SolutionRestoreManager;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
-    internal class TargetFrameworks : VsItemList<IVsTargetFrameworkInfo>, IVsTargetFrameworks
+    internal class TargetFrameworks : ImmutablePropertyCollection<IVsTargetFrameworkInfo>, IVsTargetFrameworks
     {
-        public TargetFrameworks() : base() { }
-
-        public TargetFrameworks(IEnumerable<IVsTargetFrameworkInfo> collection) : base(collection) { }
+        public TargetFrameworks(IEnumerable<IVsTargetFrameworkInfo> items)
+            : base(items)
+        {
+        }
 
         protected override string GetKeyForItem(IVsTargetFrameworkInfo value) => value.TargetFrameworkMoniker;
     }

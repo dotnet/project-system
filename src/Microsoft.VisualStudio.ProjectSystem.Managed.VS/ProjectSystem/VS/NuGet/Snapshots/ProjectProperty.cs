@@ -6,8 +6,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
     internal class ProjectProperty : IVsProjectProperty
     {
-        public string Name { get; set; }
+        public ProjectProperty(string name, string value)
+        {
+            Requires.NotNullOrEmpty(name, nameof(name));
+            Requires.NotNull(value, nameof(value));
 
-        public string Value { get; set; }
+            Name = name;
+            Value = value;
+        }
+
+        public string Name { get; }
+
+        public string Value { get; }
     }
 }
