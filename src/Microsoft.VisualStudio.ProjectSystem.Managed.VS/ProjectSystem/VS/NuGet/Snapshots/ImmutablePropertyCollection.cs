@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             Requires.NotNull(items, nameof(items));
 
             _items = ImmutableList.CreateRange(items);
-            _itemsByName = _items.ToImmutableDictionary(i => GetKeyForItem(i));
+            _itemsByName = _items.ToImmutableDictionary(i => GetKeyForItem(i), StringComparers.ItemNames);
         }
 
         public int Count

@@ -4,6 +4,9 @@ using NuGet.SolutionRestoreManager;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
+    /// <summary>
+    ///     Represents a single package, tool or project reference.
+    /// </summary>
     internal class ReferenceItem : IVsReferenceItem
     {
         public ReferenceItem(string name, IVsReferenceProperties properties)

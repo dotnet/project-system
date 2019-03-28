@@ -6,6 +6,9 @@ using NuGet.SolutionRestoreManager;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
+    /// <summary>
+    ///     Immutable collection of <see cref="IVsProjectProperty"/> objects.
+    /// </summary>
     internal class ProjectProperties : ImmutablePropertyCollection<IVsProjectProperty>, IVsProjectProperties
     {
         public ProjectProperties(IEnumerable<IVsProjectProperty> items)
