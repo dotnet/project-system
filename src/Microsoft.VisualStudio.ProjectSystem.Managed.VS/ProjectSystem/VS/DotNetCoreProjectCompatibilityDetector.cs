@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
 
@@ -103,6 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 isFullyLoadedBool)
             {
                 _solutionOpened = true;
+                _threadHandling.Value.RunAndForget(() => CheckCompatibilityAsync(), unconfiguredProject: null);
             }
         }
 
@@ -163,44 +163,45 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return VSConstants.S_OK;
         }
 
+        private async Task CheckCompatibilityAsync()
+        {
+            // Run on the background
+            await TaskScheduler.Default;
+
+            VersionCompatibilityData compatDataToUse = GetVersionCompatibilityData();
+            CompatibilityLevel finalCompatLevel = CompatibilityLevel.Recommended;
+            IProjectService projectService = _projectServiceAccessor.Value.GetProjectService();
+            IEnumerable<UnconfiguredProject> projects = projectService.LoadedUnconfiguredProjects;
+            foreach (UnconfiguredProject project in projects)
+            {
+                // Track the most severe compatibility level
+                CompatibilityLevel compatLevel = await GetProjectCompatibilityAsync(project, compatDataToUse);
+                if (compatLevel != CompatibilityLevel.Recommended && compatLevel > finalCompatLevel)
+                {
+                    finalCompatLevel = compatLevel;
+                }
+            }
+
+            if (finalCompatLevel != CompatibilityLevel.Recommended)
+            {
+
+                // Warn the user.
+                await WarnUserOfIncompatibleProjectAsync(finalCompatLevel, compatDataToUse);
+            }
+
+            // Used so we know when to process newly added projects
+            _solutionOpened = true;
+        }
+
+
         /// <summary>
-        /// Fired when the solution load process is fully complete, including all background loading 
-        /// of projects. This event always fires after the initial opening of a solution 
+        /// Fired when the solution load process is fully complete, including all background loading
+        /// of projects. This event always fires after the initial opening of a solution
         /// </summary>
         public int OnAfterBackgroundSolutionLoadComplete()
         {
             // Schedule this to run on idle
-            _threadHandling.Value.JoinableTaskFactory.RunAsync(async () =>
-            {
-                // Run on the background
-                await TaskScheduler.Default;
-
-                VersionCompatibilityData compatDataToUse = GetVersionCompatibilityData();
-
-                CompatibilityLevel finalCompatLevel = CompatibilityLevel.Recommended;
-                IProjectService projectService = _projectServiceAccessor.Value.GetProjectService();
-                IEnumerable<UnconfiguredProject> projects = projectService.LoadedUnconfiguredProjects;
-                foreach (UnconfiguredProject project in projects)
-                {
-                    // Track the most severe compatibility level
-                    CompatibilityLevel compatLevel = await GetProjectCompatibilityAsync(project, compatDataToUse);
-                    if (compatLevel != CompatibilityLevel.Recommended && compatLevel > finalCompatLevel)
-                    {
-                        finalCompatLevel = compatLevel;
-                    }
-                }
-
-                if (finalCompatLevel != CompatibilityLevel.Recommended)
-                {
-
-                    // Warn the user.
-                    await WarnUserOfIncompatibleProjectAsync(finalCompatLevel, compatDataToUse);
-                }
-
-                // Used so we know when to process newly added projects
-                _solutionOpened = true;
-            });
-
+            _threadHandling.Value.JoinableTaskFactory.RunAsync(() => CheckCompatibilityAsync());
             return VSConstants.S_OK;
         }
 
