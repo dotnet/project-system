@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
 
@@ -63,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                                                       IVsService<SVsUIShell, IVsUIShell> vsUIShellService,
                                                       IVsService<SVsSettingsPersistenceManager, ISettingsManager> settingsManagerService,
                                                       IVsService<SVsSolution, IVsSolution> vsSolutionService,
-                                                      IVsService<SVsAppId, IVsAppId> vsAppIdService,
+                                                      IVsService<IVsAppId> vsAppIdService,
                                                       IVsService<SVsShell, IVsShell> vsShellService)
         {
             _projectServiceAccessor = projectAccessor;
