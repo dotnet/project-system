@@ -15,6 +15,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.UI;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Settings;
+using Microsoft.VisualStudio.Setup.Configuration;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 
@@ -228,6 +229,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     if (settingsManager != null)
                     {
                         suppressPrompt = settingsManager.GetValueOrDefault(SuppressDotNewCoreWarningKey, defaultValue: false);
+                    }
+
+                    // If this is a pre-release version do not show the prompt for version compatibility
+                    var vsSetupConfig = new SetupConfiguration();
+                    ISetupInstance setupInstance = vsSetupConfig.GetInstanceForCurrentProcess();
+                    if (setupInstance is ISetupInstanceCatalog setupInstanceCatalog)
+                    {
+                        suppressPrompt |= setupInstanceCatalog.IsPrerelease();
                     }
 
                     if (!suppressPrompt)
