@@ -118,8 +118,6 @@
     <!-- Capabilities for WPF and WinForms -->
     <ProjectCapability Include="WPF" Condition="'$(UseWPF)' == 'true'" />
     <ProjectCapability Include="WindowsForms" Condition="'$(UseWindowsForms)' == 'true'" />
-    <!-- XBAP is not supported in .NET Core -->
-    <ProjectCapability Include="XBAP" Condition="'$(HostInBrowser)' == 'true' And '$(TargetFrameworkIdentifier)' == '.NETFramework'" />
   </ItemGroup>
   
   <!-- Common Project System rules that override rules defined in msbuild. These are exact copy of the rules defined in msbuild. -->
