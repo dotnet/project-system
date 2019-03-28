@@ -102,7 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 isFullyLoadedBool)
             {
                 _solutionOpened = true;
-                await CheckCompatibilityAsync();
+                _threadHandling.Value.RunAndForget(() => CheckCompatibilityAsync(), unconfiguredProject: null);
             }
         }
 
