@@ -15,6 +15,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.CSharp
         public static readonly ProjectDesignerPageMetadata Package = new ProjectDesignerPageMetadata(new Guid("{21b78be8-3957-4caa-bf2f-e626107da58e}"), pageOrder: 3, hasConfigurationCondition: false);
         public static readonly ProjectDesignerPageMetadata Debug = new ProjectDesignerPageMetadata(new Guid("{0273C280-1882-4ED0-9308-52914672E3AA}"), pageOrder: 4, hasConfigurationCondition: false);
         public static readonly ProjectDesignerPageMetadata ReferencePaths = new ProjectDesignerPageMetadata(new Guid("{031911C8-6148-4e25-B1B1-44BCA9A0C45C}"), pageOrder: 5, hasConfigurationCondition: false);
-        public static readonly ProjectDesignerPageMetadata Signing = new ProjectDesignerPageMetadata(new Guid("{F8D6553F-F752-4DBF-ACB6-F291B744A792}"), pageOrder: 6, hasConfigurationCondition: false);
+        public static readonly ProjectDesignerPageMetadata Security = new ProjectDesignerPageMetadata(new Guid("{DF8F7042-0BB1-47D1-8E6D-DEB3D07698BD}"), pageOrder: 6, hasConfigurationCondition: false);
+        public static readonly ProjectDesignerPageMetadata Signing = new ProjectDesignerPageMetadata(new Guid("{F8D6553F-F752-4DBF-ACB6-F291B744A792}"), pageOrder: 7, hasConfigurationCondition: false);
+        public static readonly ProjectDesignerPageMetadata XBAPSecurity = new ProjectDesignerPageMetadata(new Guid("{00A2C8FE-3844-41BE-9637-167454A7F1A7}"), pageOrder: 6, hasConfigurationCondition: false);
+        public static readonly ProjectDesignerPageMetadata XBAPSigning = new ProjectDesignerPageMetadata(new Guid("{E4B54061-084D-4484-9D21-ECAE95A78A56}"), pageOrder: 7, hasConfigurationCondition: false);
     }
 }

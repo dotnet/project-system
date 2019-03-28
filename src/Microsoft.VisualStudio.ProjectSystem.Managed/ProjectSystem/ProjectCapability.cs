@@ -37,5 +37,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public const string DotNetLanguageService = DotNet + " & " + LanguageService;
         public const string SortByDisplayOrder = ProjectCapabilities.SortByDisplayOrder;
         public const string DotNet = ".NET";
+        public const string WPF = "WPF";
     }
 }

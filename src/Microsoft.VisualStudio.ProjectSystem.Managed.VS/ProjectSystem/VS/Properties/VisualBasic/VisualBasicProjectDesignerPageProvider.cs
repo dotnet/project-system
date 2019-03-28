@@ -26,7 +26,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic
         public Task<IReadOnlyCollection<IPageMetadata>> GetPagesAsync()
         {
             var builder = PooledArray<IPageMetadata>.GetInstance();
-            builder.Add(VisualBasicProjectDesignerPage.Application);
+            if (_capabilities.Contains(ProjectCapability.WPF))
+            {
+                builder.Add(VisualBasicProjectDesignerPage.WPFApplication);
+            }
+            else
+            {
+                builder.Add(VisualBasicProjectDesignerPage.Application);
+            }
             builder.Add(VisualBasicProjectDesignerPage.Compile);
 
             if (_capabilities.Contains(ProjectCapability.Pack))
