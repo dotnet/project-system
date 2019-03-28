@@ -80,8 +80,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     // https://github.com/dotnet/project-system/issues/3466for for details.
                     msbuildProjectExtensionsPath,
                     originalTargetFrameworks,
-                    targetFrameworks.Values,
-                    toolReferences.Values
+                    new TargetFrameworks(targetFrameworks.Values),
+                    new ReferenceItems(toolReferences.Values)
                 )
                 : null;
         }

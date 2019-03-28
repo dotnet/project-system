@@ -1,7 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System.Collections.Generic;
-
 using NuGet.SolutionRestoreManager;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
@@ -12,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
     /// </summary>
     internal class ProjectRestoreInfo : IVsProjectRestoreInfo
     {
-        public ProjectRestoreInfo(string msbuildProjectExtensionsPath, string originalTargetFrameworks, IEnumerable<IVsTargetFrameworkInfo> targetFrameworks, IEnumerable<IVsReferenceItem> toolReferences)
+        public ProjectRestoreInfo(string msbuildProjectExtensionsPath, string originalTargetFrameworks, IVsTargetFrameworks targetFrameworks, IVsReferenceItems toolReferences)
         {
             Requires.NotNullOrEmpty(msbuildProjectExtensionsPath, nameof(msbuildProjectExtensionsPath));
             Requires.NotNull(originalTargetFrameworks, nameof(originalTargetFrameworks));
@@ -21,8 +19,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
             MSBuildProjectExtensionsPath = msbuildProjectExtensionsPath;
             OriginalTargetFrameworks = originalTargetFrameworks;
-            TargetFrameworks = new TargetFrameworks(targetFrameworks);
-            ToolReferences = new ReferenceItems(toolReferences);
+            TargetFrameworks = targetFrameworks;
+            ToolReferences = toolReferences;
         }
 
         public string MSBuildProjectExtensionsPath { get; }
