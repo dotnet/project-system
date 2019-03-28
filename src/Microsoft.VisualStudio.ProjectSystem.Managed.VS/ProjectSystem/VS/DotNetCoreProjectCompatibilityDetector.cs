@@ -32,6 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private const string SupportedLearnMoreFwlink = "https://go.microsoft.com/fwlink/?linkid=868064";
         private const string UnsupportedLearnMoreFwlink = "https://go.microsoft.com/fwlink/?linkid=866797";
         private const string SuppressDotNewCoreWarningKey = @"ManagedProjectSystem\SuppressDotNewCoreWarning";
+        private const string UsePreviewSdkKey = @"ManagedProjectSystem\UsePreviewSdk";
         private const string VersionCompatibilityDownloadFwlink = "https://go.microsoft.com/fwlink/?linkid=866798";
         private const string VersionDataFilename = "DotNetVersionCompatibility.json";
         private const int CacheFileValidHours = 24;
@@ -96,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _vsSolution = await _vsSolutionService.GetValueAsync();
             Verify.HResult(_vsSolution.AdviseSolutionEvents(this, out _solutionCookie));
 
-            // Check to see if a solution is already open. If so we set _solutionOpened to true so that subsequent projects added to 
+            // Check to see if a solution is already open. If so we set _solutionOpened to true so that subsequent projects added to
             // this solution are processed.
             if (ErrorHandler.Succeeded(_vsSolution.GetProperty((int)__VSPROPID4.VSPROPID_IsSolutionFullyLoaded, out object isFullyLoaded)) &&
                 isFullyLoaded is bool isFullyLoadedBool &&
@@ -138,7 +139,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
                         VersionCompatibilityData compatData = GetVersionCompatibilityData();
 
-                        // We need to check if this project has been newly created. Our projects will implement IProjectCreationState -we can 
+                        // We need to check if this project has been newly created. Our projects will implement IProjectCreationState -we can
                         // skip any that don't
                         IProjectCreationState projectCreationState = project.Services.ExportProvider.GetExportedValueOrDefault<IProjectCreationState>();
                         if (projectCreationState != null && !projectCreationState.WasNewlyCreated)
@@ -211,7 +212,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             // Warn the user.
             await _threadHandling.Value.SwitchToUIThread();
 
-            // Check if already warned - this could happen in the off chance two projects are added very quickly since the detection work is 
+            // Check if already warned - this could happen in the off chance two projects are added very quickly since the detection work is
             // scheduled on idle.
             if (_compatibilityLevelWarnedForThisSolution < compatLevel)
             {
@@ -229,6 +230,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     if (settingsManager != null)
                     {
                         suppressPrompt = settingsManager.GetValueOrDefault(SuppressDotNewCoreWarningKey, defaultValue: false);
+
+                        // Do not warn users about pre-release versions if they have checked "Use Preview SDKs"
+                        suppressPrompt |= settingsManager.GetValueOrDefault(UsePreviewSdkKey, defaultValue: false);
                     }
 
                     // If this is a pre-release version do not show the prompt for version compatibility
@@ -362,7 +366,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private VersionCompatibilityData GetVersionCompatibilityData()
         {
             // Do we need to update our cached data? Note that since the download could take a long time like tens of seconds we don't really want to
-            // start showing messages to the user well after their project is opened and they are interacting with it. Thus we start a task to update the 
+            // start showing messages to the user well after their project is opened and they are interacting with it. Thus we start a task to update the
             // file, so that the next time we come here, we have updated data.
             if (_curVersionCompatibilityData != null && _timeCurVersionDataLastUpdatedUtc.AddHours(CacheFileValidHours) > DateTime.UtcNow)
             {
