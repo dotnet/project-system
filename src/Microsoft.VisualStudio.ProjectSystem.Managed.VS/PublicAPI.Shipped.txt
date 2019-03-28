@@ -105,7 +105,6 @@ Microsoft.VisualStudio.ProjectSystem.VS.Interop.IVsAppId.Initialize() -> int
 Microsoft.VisualStudio.ProjectSystem.VS.Interop.IVsAppId.SetGuidProperty(int propid, ref System.Guid rguid) -> int
 Microsoft.VisualStudio.ProjectSystem.VS.Interop.IVsAppId.SetProperty(int propid, object var) -> int
 Microsoft.VisualStudio.ProjectSystem.VS.Interop.IVsAppId.SetSite(Microsoft.VisualStudio.OLE.Interop.IServiceProvider pSP) -> int
-Microsoft.VisualStudio.ProjectSystem.VS.Interop.SVsAppId
 Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
 Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.AboutBoxTheme = -8565 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
 Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID.AddinsAllowed = -8556 -> Microsoft.VisualStudio.ProjectSystem.VS.Interop.VSAPropID
