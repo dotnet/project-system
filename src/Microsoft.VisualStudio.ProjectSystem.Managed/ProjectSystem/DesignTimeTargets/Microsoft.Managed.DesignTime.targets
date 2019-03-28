@@ -190,6 +190,10 @@
       <Context>BrowseObject</Context>
     </PropertyPageSchema>
 
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)PotentialEditorConfigFiles.xaml">
+      <Context>File</Context>
+    </PropertyPageSchema>
+    
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)SpecialFolder.xaml">
       <Context>File;ProjectSubscriptionService</Context>
     </PropertyPageSchema>
@@ -340,6 +344,7 @@
   <!-- List of external files that trigger design-time builds when they are modified -->
   <ItemGroup>
     <AdditionalDesignTimeBuildInput Include="$(ProjectAssetsFile)" />   <!-- NuGet assets file -->
+    <AdditionalDesignTimeBuildInput Include="@(PotentialEditorConfigFiles)" /> <!-- Places .editorconfig files may appear -->
   </ItemGroup>
 
   <!--
