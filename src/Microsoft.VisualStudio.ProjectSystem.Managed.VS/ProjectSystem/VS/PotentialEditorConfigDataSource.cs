@@ -5,16 +5,18 @@ using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     [Export(typeof(IFileWatchProviderDataSource))]
+    [AppliesTo(ProjectCapability.DotNetLanguageService)]
     internal class PotentialEditorConfigDataSource : ProjectValueDataSourceBase<IFileWatchProvider>, IFileWatchProviderDataSource
     {
         private readonly ConfiguredProject _project;
 
         private int _version;
-        private IDisposable _projectRuleSourceLink;
+        private DisposableBag _disposables;
 
         /// <summary>
         /// The block that receives updates from the active tree provider.
@@ -28,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         [ImportingConstructor]
         public PotentialEditorConfigDataSource(ConfiguredProject project)
-            : base(project.Services)
+            : base(project.Services, synchronousDisposal: true)
         {
             _project = project;
         }
@@ -37,7 +39,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public override IComparable DataSourceVersion => _version;
 
-        public override IReceivableSourceBlock<IProjectVersionedValue<IFileWatchProvider>> SourceBlock => _publicBlock;
+        public override IReceivableSourceBlock<IProjectVersionedValue<IFileWatchProvider>> SourceBlock
+        {
+            get
+            {
+                EnsureInitialized();
+
+                return _publicBlock;
+            }
+        }
 
         public FileChangeKinds ChangeKinds => FileChangeKinds.Added | FileChangeKinds.Removed;
 
@@ -45,7 +55,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             base.Initialize();
 
-            _projectRuleSourceLink = _project.Services.ProjectSubscription.ProjectRuleSource.SourceBlock.LinkToAsyncAction(ProcessProjectChanged, ruleNames: PotentialEditorConfigFiles.SchemaName);
+            IDisposable projectRuleSourceLink = _project.Services.ProjectSubscription.ProjectRuleSource.SourceBlock.LinkToAsyncAction(ProcessProjectChanged, ruleNames: PotentialEditorConfigFiles.SchemaName);
+
+            IDisposable join = JoinUpstreamDataSources(_project.Services.ProjectSubscription.ProjectRuleSource);
+
+            _disposables = new DisposableBag();
+            _disposables.AddDisposable(projectRuleSourceLink);
+            _disposables.AddDisposable(join);
 
             _broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<IFileWatchProvider>>(nameFormat: nameof(PotentialEditorConfigDataSource) + "Broadcast {1}");
             _publicBlock = _broadcastBlock.SafePublicize();
@@ -81,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             if (IsInitialized)
             {
-                _projectRuleSourceLink.Dispose();
+                _disposables.Dispose();
             }
 
             base.Dispose(disposing);
