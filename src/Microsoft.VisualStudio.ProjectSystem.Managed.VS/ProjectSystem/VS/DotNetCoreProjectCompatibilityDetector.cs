@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                                                       IVsService<SVsUIShell, IVsUIShell> vsUIShellService,
                                                       IVsService<SVsSettingsPersistenceManager, ISettingsManager> settingsManagerService,
                                                       IVsService<SVsSolution, IVsSolution> vsSolutionService,
-                                                      IVsService<IVsAppId> vsAppIdService,
+                                                      IVsService<SVsAppId, IVsAppId> vsAppIdService,
                                                       IVsService<SVsShell, IVsShell> vsShellService)
         {
             _projectServiceAccessor = projectAccessor;
