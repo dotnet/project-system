@@ -8,7 +8,14 @@ using IOleServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Interop
 {
     [Guid("1EAA526A-0898-11d3-B868-00C04F79F802"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IVsAppId
+#pragma warning disable IDE1006 // Naming Styles
+    internal interface SVsAppId
+#pragma warning restore IDE1006 // Naming Styles
+    {
+    }
+
+    [Guid("1EAA526A-0898-11d3-B868-00C04F79F802"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    internal interface IVsAppId
     {
         [PreserveSig]
         int SetSite(IOleServiceProvider pSP);
@@ -43,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Interop
         ExternalPackage = 0x0020
     };
 
-    public enum VSAPropID
+    internal enum VSAPropID
     {
         NIL = -1,
         LAST = -8500,  // !!!! NOTE !!!! THIS MUST BE THE SAME AS THE FIRST PROP DEFINED
@@ -241,7 +248,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Interop
         VSAPROPID_BranchName                            = -8649,     // VT_BSTR. The branch name of the build.
     };
 
-    public enum VSASKUEdition
+    internal enum VSASKUEdition
     {
         None = 0,
         Standard = 1000,
@@ -261,7 +268,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Interop
         SQL = 9192,
     };
 
-    public enum VSASubSKUEdition
+    internal enum VSASubSKUEdition
     {
         None = 0x0,
         VC = 0x1,
