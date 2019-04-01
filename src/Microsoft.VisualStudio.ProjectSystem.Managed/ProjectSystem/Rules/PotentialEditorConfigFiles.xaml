@@ -9,5 +9,4 @@
                 Persistence="ProjectFile"
                 SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
-
 </Rule>

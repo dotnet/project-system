@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+using System.IO;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
@@ -11,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     [Export(typeof(IFileWatchProviderDataSource))]
     [AppliesTo(ProjectCapability.DotNetLanguageService)]
-    internal class PotentialEditorConfigDataSource : ProjectValueDataSourceBase<IFileWatchProvider>, IFileWatchProviderDataSource
+    internal class PotentialEditorConfigDataSource : ProjectValueDataSourceBase<FileWatchProvider>, IFileWatchProviderDataSource
     {
         private readonly ConfiguredProject _project;
 
@@ -21,12 +22,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// <summary>
         /// The block that receives updates from the active tree provider.
         /// </summary>
-        private IBroadcastBlock<IProjectVersionedValue<IFileWatchProvider>> _broadcastBlock;
+        private IBroadcastBlock<IProjectVersionedValue<FileWatchProvider>> _broadcastBlock;
 
         /// <summary>
         /// The public facade for the broadcast block.
         /// </summary>
-        private IReceivableSourceBlock<IProjectVersionedValue<IFileWatchProvider>> _publicBlock;
+        private IReceivableSourceBlock<IProjectVersionedValue<FileWatchProvider>> _publicBlock;
 
         [ImportingConstructor]
         public PotentialEditorConfigDataSource(ConfiguredProject project)
@@ -39,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public override IComparable DataSourceVersion => _version;
 
-        public override IReceivableSourceBlock<IProjectVersionedValue<IFileWatchProvider>> SourceBlock
+        public override IReceivableSourceBlock<IProjectVersionedValue<FileWatchProvider>> SourceBlock
         {
             get
             {
@@ -48,8 +49,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 return _publicBlock;
             }
         }
-
-        public FileChangeKinds ChangeKinds => FileChangeKinds.Added | FileChangeKinds.Removed;
 
         protected override void Initialize()
         {
@@ -63,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _disposables.AddDisposable(projectRuleSourceLink);
             _disposables.AddDisposable(join);
 
-            _broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<IFileWatchProvider>>(nameFormat: nameof(PotentialEditorConfigDataSource) + "Broadcast {1}");
+            _broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<FileWatchProvider>>(nameFormat: nameof(PotentialEditorConfigDataSource) + "Broadcast {1}");
             _publicBlock = _broadcastBlock.SafePublicize();
         }
 
@@ -71,26 +70,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             if (projectSnapshot.Value.CurrentState.TryGetValue(PotentialEditorConfigFiles.SchemaName, out IProjectRuleSnapshot ruleSnapshot))
             {
-                var fileWatchProvider = new PotentialEditorConfigFileWatchProvider(this, ruleSnapshot.Items.Keys);
+                var builder = ImmutableList.CreateBuilder<string>();
+                foreach (var item in ruleSnapshot.Items)
+                {
+                    IImmutableDictionary<string, string> metadata = item.Value;
+                    string fileFullPath = metadata.TryGetValue("DefiningProjectDirectory", out string definingProjectDirectory)
+                        ? MakeRooted(definingProjectDirectory, item.Key)
+                        : _project.UnconfiguredProject.MakeRooted(item.Key);
+
+                    builder.Add(fileFullPath);
+                }
+
+                IEnumerable<string> paths = builder.ToImmutable();
+                var fileWatchProvider = new FileWatchProvider(this, builder.ToImmutable(), FileChangeKinds.Added | FileChangeKinds.Removed);
                 _version++;
                 ImmutableDictionary<NamedIdentity, IComparable> dataSources = ImmutableDictionary<NamedIdentity, IComparable>.Empty.Add(DataSourceKey, DataSourceVersion);
 
-                await _broadcastBlock.SendAsync(new ProjectVersionedValue<IFileWatchProvider>(fileWatchProvider, dataSources));
+                await _broadcastBlock.SendAsync(new ProjectVersionedValue<FileWatchProvider>(fileWatchProvider, dataSources));
             }
         }
 
-        private class PotentialEditorConfigFileWatchProvider : IFileWatchProvider
+        private static string MakeRooted(string basePath, string path)
         {
-            public PotentialEditorConfigFileWatchProvider(
-                IFileWatchProviderDataSource dataSource,
-                IEnumerable<string> filePathsToWatch)
-            {
-                DataSource = dataSource;
-                FilePathsToWatch = filePathsToWatch;
-            }
-
-            public IFileWatchProviderDataSource DataSource { get; }
-            public IEnumerable<string> FilePathsToWatch { get; }
+            basePath = basePath.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+            return PathHelper.MakeRooted(basePath + Path.DirectorySeparatorChar, path);
         }
 
         protected override void Dispose(bool disposing)
