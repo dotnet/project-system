@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         public static readonly ImageMoniker RegularIcon = KnownMonikers.Library;
 
-        public string Caption => VSResources.FrameworkAssembliesNodeName;
+        public string Caption => Resources.FrameworkAssembliesNodeName;
         public string FilePath => null;
         public string SchemaName => null;
         public string SchemaItemType => null;

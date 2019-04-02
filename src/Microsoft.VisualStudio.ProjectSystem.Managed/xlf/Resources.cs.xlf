@@ -42,6 +42,56 @@
         <target state="translated">Zadaná hodnota určená k přejmenování {0} neexistovala ve vlastnosti {1}.</target>
         <note>{0} will be a specific property value such as "Debug", {1} will be an MsBuild property name such as "Configurations". Neither of those values will be localized.</note>
       </trans-unit>
+      <trans-unit id="AnalyzersNodeName">
+        <source>Analyzers</source>
+        <target state="new">Analyzers</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AssembliesNodeName">
+        <source>Assemblies</source>
+        <target state="new">Assemblies</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ComNodeName">
+        <source>COM</source>
+        <target state="new">COM</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DependenciesLoadingPostfix">
+        <source> (Loading...)</source>
+        <target state="new"> (Loading...)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DependenciesNodeErrorsSuffix">
+        <source>(Errors - see Error List)</source>
+        <target state="new">(Errors - see Error List)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DependenciesNodeName">
+        <source>Dependencies</source>
+        <target state="new">Dependencies</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FrameworkAssembliesNodeName">
+        <source>Framework Assemblies</source>
+        <target state="new">Framework Assemblies</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NuGetPackagesNodeName">
+        <source>NuGet</source>
+        <target state="new">NuGet</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ProjectsNodeName">
+        <source>Projects</source>
+        <target state="new">Projects</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SdkNodeName">
+        <source>SDK</source>
+        <target state="new">SDK</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

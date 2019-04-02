@@ -143,4 +143,34 @@
     <value>The specified value to rename '{0}' was not present in the property '{1}'</value>
     <comment>{0} will be a specific property value such as "Debug", {1} will be an MsBuild property name such as "Configurations". Neither of those values will be localized.</comment>
   </data>
+  <data name="AnalyzersNodeName" xml:space="preserve">
+    <value>Analyzers</value>
+  </data>
+  <data name="AssembliesNodeName" xml:space="preserve">
+    <value>Assemblies</value>
+  </data>
+  <data name="ComNodeName" xml:space="preserve">
+    <value>COM</value>
+  </data>
+  <data name="DependenciesLoadingPostfix" xml:space="preserve">
+    <value> (Loading...)</value>
+  </data>
+  <data name="DependenciesNodeErrorsSuffix" xml:space="preserve">
+    <value>(Errors - see Error List)</value>
+  </data>
+  <data name="DependenciesNodeName" xml:space="preserve">
+    <value>Dependencies</value>
+  </data>
+  <data name="FrameworkAssembliesNodeName" xml:space="preserve">
+    <value>Framework Assemblies</value>
+  </data>
+  <data name="NuGetPackagesNodeName" xml:space="preserve">
+    <value>NuGet</value>
+  </data>
+  <data name="ProjectsNodeName" xml:space="preserve">
+    <value>Projects</value>
+  </data>
+  <data name="SdkNodeName" xml:space="preserve">
+    <value>SDK</value>
+  </data>
 </root>

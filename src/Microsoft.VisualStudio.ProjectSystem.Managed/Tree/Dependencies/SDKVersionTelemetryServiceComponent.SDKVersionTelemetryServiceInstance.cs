@@ -13,14 +13,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     {
         internal class SDKVersionTelemetryServiceInstance : OnceInitializedOnceDisposedAsync, IMultiLifetimeInstance
         {
-            private readonly IUnconfiguredProjectVsServices _projectVsServices;
+            private readonly IUnconfiguredProjectCommonServices _projectVsServices;
             private readonly ISafeProjectGuidService _projectGuidService;
             private readonly ITelemetryService _telemetryService;
             private readonly IUnconfiguredProjectTasksService _unconfiguredProjectTasksService;
 
             [ImportingConstructor]
             public SDKVersionTelemetryServiceInstance(
-                IUnconfiguredProjectVsServices projectVsServices,
+                IUnconfiguredProjectCommonServices projectVsServices,
                 ISafeProjectGuidService projectGuidService,
                 ITelemetryService telemetryService,
                 IUnconfiguredProjectTasksService unconfiguredProjectTasksService)

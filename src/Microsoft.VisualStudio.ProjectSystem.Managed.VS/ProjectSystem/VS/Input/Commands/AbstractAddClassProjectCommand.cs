@@ -4,6 +4,7 @@ using System;
 using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.ProjectSystem.Input;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
