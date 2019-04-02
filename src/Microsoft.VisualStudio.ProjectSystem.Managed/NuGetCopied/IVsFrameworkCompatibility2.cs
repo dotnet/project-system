@@ -13,7 +13,7 @@ namespace NuGetCopied.VisualStudio
     /// </summary>
     [ComImport]
     [Guid("61C038E9-0308-482B-8602-279E42A3BB1E")]
-    public interface IVsFrameworkCompatibility2 : IVsFrameworkCompatibility
+    internal interface IVsFrameworkCompatibility2 : IVsFrameworkCompatibility
     {
         /// <summary>
         /// Selects the framework from <paramref name="frameworks"/> that is nearest

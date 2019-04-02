@@ -17,6 +17,7 @@
     <!-- Not a VS assembly, but still needs a couple VS imaging types -->
     <PackageReference Include="Microsoft.VisualStudio.Imaging.Interop.14.0.DesignTime" Version="14.3.25407" Pack="false" />
     <PackageReference Include="Microsoft.VisualStudio.ImageCatalog" Version="15.0.26606" />
+    <PackageReference Include="NuGet.Frameworks" Version="4.9.1" />
   </ItemGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.VS" />

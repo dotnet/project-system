@@ -92,6 +92,17 @@
         <target state="new">SDK</target>
         <note />
       </trans-unit>
+      <trans-unit id="CouldNotGetShortFrameworkName">
+        <source>The framework name '{0}' cannot be converted to a short framework name.</source>
+        <target state="new">The framework name '{0}' cannot be converted to a short framework name.</target>
+        <note>Arguments in order:
+The string representation of the user's input framework name.</note>
+      </trans-unit>
+      <trans-unit id="InvalidNetStandardFramework">
+        <source>The specified framework name '{0}' must be .NETStandard.</source>
+        <target state="new">The specified framework name '{0}' must be .NETStandard.</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -13,7 +13,7 @@ namespace NuGetCopied.VisualStudio
     /// </summary>
     [ComImport]
     [Guid("3B742C14-3DCB-463D-9198-F0C004BF65DD")]
-    public interface IVsFrameworkCompatibility
+    internal interface IVsFrameworkCompatibility
     {
         /// <summary>
         /// Gets all .NETStandard frameworks currently supported, in ascending order by version.

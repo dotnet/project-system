@@ -88,6 +88,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The framework name &apos;{0}&apos; cannot be converted to a short framework name..
+        /// </summary>
+        internal static string CouldNotGetShortFrameworkName {
+            get {
+                return ResourceManager.GetString("CouldNotGetShortFrameworkName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to  (Loading...).
         /// </summary>
         internal static string DependenciesLoadingPostfix {
@@ -138,6 +147,15 @@ namespace Microsoft.VisualStudio {
         internal static string FrameworkAssembliesNodeName {
             get {
                 return ResourceManager.GetString("FrameworkAssembliesNodeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The specified framework name &apos;{0}&apos; must be .NETStandard..
+        /// </summary>
+        internal static string InvalidNetStandardFramework {
+            get {
+                return ResourceManager.GetString("InvalidNetStandardFramework", resourceCulture);
             }
         }
         

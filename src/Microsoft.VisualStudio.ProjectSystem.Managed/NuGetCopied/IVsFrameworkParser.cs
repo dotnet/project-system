@@ -13,7 +13,7 @@ namespace NuGetCopied.VisualStudio
     /// </summary>
     [ComImport]
     [Guid("E6335CF1-70FE-416A-BA4B-4E92D90934A1")]
-    public interface IVsFrameworkParser
+    internal interface IVsFrameworkParser
     {
         /// <summary>
         /// Parses a short framework name (e.g. "net45") or a full framework name

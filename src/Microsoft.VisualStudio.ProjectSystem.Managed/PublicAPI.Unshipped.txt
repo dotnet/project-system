@@ -38,15 +38,6 @@ Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSu
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSubTreeProvider.CreateRootDependencyNode() -> Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSubTreeProvider.DependenciesChanged -> System.EventHandler<Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependenciesChangedEventArgs>
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSubTreeProvider.ProviderType.get -> string
-NuGetCopied.VisualStudio.IVsFrameworkCompatibility
-NuGetCopied.VisualStudio.IVsFrameworkCompatibility.GetFrameworksSupportingNetStandard(System.Runtime.Versioning.FrameworkName frameworkName) -> System.Collections.Generic.IEnumerable<System.Runtime.Versioning.FrameworkName>
-NuGetCopied.VisualStudio.IVsFrameworkCompatibility.GetNearest(System.Runtime.Versioning.FrameworkName targetFramework, System.Collections.Generic.IEnumerable<System.Runtime.Versioning.FrameworkName> frameworks) -> System.Runtime.Versioning.FrameworkName
-NuGetCopied.VisualStudio.IVsFrameworkCompatibility.GetNetStandardFrameworks() -> System.Collections.Generic.IEnumerable<System.Runtime.Versioning.FrameworkName>
-NuGetCopied.VisualStudio.IVsFrameworkCompatibility2
-NuGetCopied.VisualStudio.IVsFrameworkCompatibility2.GetNearest(System.Runtime.Versioning.FrameworkName targetFramework, System.Collections.Generic.IEnumerable<System.Runtime.Versioning.FrameworkName> fallbackTargetFrameworks, System.Collections.Generic.IEnumerable<System.Runtime.Versioning.FrameworkName> frameworks) -> System.Runtime.Versioning.FrameworkName
-NuGetCopied.VisualStudio.IVsFrameworkParser
-NuGetCopied.VisualStudio.IVsFrameworkParser.GetShortFrameworkName(System.Runtime.Versioning.FrameworkName frameworkName) -> string
-NuGetCopied.VisualStudio.IVsFrameworkParser.ParseFrameworkName(string shortOrFullName) -> System.Runtime.Versioning.FrameworkName
 const Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName.NativeDebugging = "NativeDebugging" -> string
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ApplicationPrivate.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ApplicationWarning.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker

@@ -173,4 +173,12 @@
   <data name="SdkNodeName" xml:space="preserve">
     <value>SDK</value>
   </data>
+  <data name="CouldNotGetShortFrameworkName" xml:space="preserve">
+    <value>The framework name '{0}' cannot be converted to a short framework name.</value>
+    <comment>Arguments in order:
+The string representation of the user's input framework name.</comment>
+  </data>
+  <data name="InvalidNetStandardFramework" xml:space="preserve">
+    <value>The specified framework name '{0}' must be .NETStandard.</value>
+  </data>
 </root>
