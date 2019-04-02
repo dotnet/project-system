@@ -118,6 +118,7 @@
     <!-- Capabilities for WPF and WinForms -->
     <ProjectCapability Include="WPF" Condition="'$(UseWPF)' == 'true'" />
     <ProjectCapability Include="WindowsForms" Condition="'$(UseWindowsForms)' == 'true'" />
+    <ProjectCapability Include="DataSourceWindow" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework' Or '$(_TargetFrameworkVersionWithoutV)' >= '3.0'"/>
   </ItemGroup>
   
   <!-- Common Project System rules that override rules defined in msbuild. These are exact copy of the rules defined in msbuild. -->
