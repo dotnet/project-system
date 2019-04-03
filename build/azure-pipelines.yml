@@ -27,7 +27,7 @@ jobs:
         _configuration: Release
   timeoutInMinutes: 20
   steps:
-    - script: CIBuild.cmd -configuration $(_configuration) -prepareMachine -sign
+    - script: $(Build.SourcesDirectory)\build\CIBuild.cmd -configuration $(_configuration) -prepareMachine -sign
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\log'
@@ -74,7 +74,7 @@ jobs:
     _configuration: Debug
   timeoutInMinutes: 20
   steps:
-    - script: CIBuild.cmd -configuration $(_configuration) -prepareMachine
+    - script: $(Build.SourcesDirectory)\build\CIBuild.cmd -configuration $(_configuration) -prepareMachine
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\log'
