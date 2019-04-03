@@ -98,6 +98,32 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <param name="asyncAction">
         ///      The async delegate to invoke. It is invoked asynchronously with respect to the caller.
         /// </param>
+        /// <param name="faultSeverity">
+        ///     Suggests to the user how severe the fault is if the delegate throws.
+        /// </param>
+        /// <param name="options">
+        ///     Influences the environment in which the delegate is executed. (NOTE: ForkOptions.CancelOnUnload is not a valid option here)
+        /// </param>
+        public static void RunAndForget(this IProjectThreadingService threadingService, Func<Task> asyncAction, ProjectFaultSeverity faultSeverity = ProjectFaultSeverity.Recoverable, ForkOptions options = ForkOptions.Default)
+        {
+            Requires.NotNull(threadingService, nameof(threadingService));
+
+            // If you do not pass in a project it is not legal to ask the threading service to prevent unloading
+            options &= ~ForkOptions.CancelOnUnload;
+
+            threadingService.Fork(asyncAction, factory: null, unconfiguredProject: null, watsonReportSettings: s_defaultReportSettings, faultSeverity: faultSeverity, options: options);
+        }
+
+        /// <summary>
+        ///      Executes the specified delegate in a safe fire-and-forget manner, prevent the project from 
+        ///      closing until it has completed.
+        /// </summary>
+        /// <param name="threadingService">
+        ///     The <see cref="IProjectThreadingService"/> that handles the fork.
+        /// </param>
+        /// <param name="asyncAction">
+        ///      The async delegate to invoke. It is invoked asynchronously with respect to the caller.
+        /// </param>
         /// <param name="unconfiguredProject">
         ///     The unconfigured project which the delegate operates on, if applicable. Can be <see langword="null"/>.
         /// </param>
