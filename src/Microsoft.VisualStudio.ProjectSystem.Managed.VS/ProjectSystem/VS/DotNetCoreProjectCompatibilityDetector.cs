@@ -103,7 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             {
                 _solutionOpened = true;
                 // do not block package initialization on this
-                _ = CheckCompatibilityAsync();
+                _threadHandling.Value.RunAndForget(() => CheckCompatibilityAsync());
             }
         }
 
