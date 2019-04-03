@@ -44,9 +44,5 @@
   <ItemGroup Condition="'$(IsTestProject)' == 'true'" >
     <PackageReference Include="Moq" />
     <PackageReference Include="xunit.analyzers" />
-
-    <!-- TODO: Some tests need this. Seems wrong. -->
-    <PackageReference Include="Microsoft.VisualStudio.Shell.15.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Text.UI" />
   </ItemGroup>
 </Project>
