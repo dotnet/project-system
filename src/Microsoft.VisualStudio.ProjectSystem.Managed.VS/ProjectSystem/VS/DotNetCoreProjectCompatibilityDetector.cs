@@ -102,7 +102,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 isFullyLoadedBool)
             {
                 _solutionOpened = true;
-                _threadHandling.Value.RunAndForget(() => CheckCompatibilityAsync(), unconfiguredProject: null);
+                // do not block package initialization on this
+                _ = CheckCompatibilityAsync();
             }
         }
 
