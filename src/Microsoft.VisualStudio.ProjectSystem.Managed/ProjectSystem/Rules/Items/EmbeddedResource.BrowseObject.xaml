@@ -127,6 +127,15 @@
     </StringProperty.DataSource>
   </StringProperty>
 
+  <EnumProperty Name="SubType"
+                Visible="false">
+    <EnumValue Name="Designer" />
+    <EnumValue Name="Component" />
+    <EnumValue Name="Control" />
+    <EnumValue Name="Form" />
+    <EnumValue Name="Code" />
+  </EnumProperty>
+
   <StringProperty Name="URL"
                   ReadOnly="true"
                   Visible="false">

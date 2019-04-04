@@ -223,7 +223,6 @@
                   Visible="False" />
 
   <StringProperty Name="PackageId"
-                  DisplayName="Package Id"
                   Visible="False">
     <StringProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
