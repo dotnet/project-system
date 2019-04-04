@@ -1,18 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using System;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
+
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
-    [Export(typeof(IFileWatchProviderDataSource))]
+    [Export(typeof(IFileWatchDataSource))]
     [AppliesTo(ProjectCapability.DotNetLanguageService)]
-    internal class PotentialEditorConfigDataSource : ProjectValueDataSourceBase<FileWatchProvider>, IFileWatchProviderDataSource
+    internal class PotentialEditorConfigDataSource : ProjectValueDataSourceBase<FileWatchData>, IFileWatchDataSource
     {
         private readonly ConfiguredProject _project;
 
@@ -22,12 +24,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// <summary>
         /// The block that receives updates from the active tree provider.
         /// </summary>
-        private IBroadcastBlock<IProjectVersionedValue<FileWatchProvider>> _broadcastBlock;
+        private IBroadcastBlock<IProjectVersionedValue<FileWatchData>> _broadcastBlock;
 
         /// <summary>
         /// The public facade for the broadcast block.
         /// </summary>
-        private IReceivableSourceBlock<IProjectVersionedValue<FileWatchProvider>> _publicBlock;
+        private IReceivableSourceBlock<IProjectVersionedValue<FileWatchData>> _publicBlock;
 
         [ImportingConstructor]
         public PotentialEditorConfigDataSource(ConfiguredProject project)
@@ -40,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public override IComparable DataSourceVersion => _version;
 
-        public override IReceivableSourceBlock<IProjectVersionedValue<FileWatchProvider>> SourceBlock
+        public override IReceivableSourceBlock<IProjectVersionedValue<FileWatchData>> SourceBlock
         {
             get
             {
@@ -62,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _disposables.AddDisposable(projectRuleSourceLink);
             _disposables.AddDisposable(join);
 
-            _broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<FileWatchProvider>>(nameFormat: nameof(PotentialEditorConfigDataSource) + "Broadcast {1}");
+            _broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<FileWatchData>>(nameFormat: nameof(PotentialEditorConfigDataSource) + "Broadcast {1}");
             _publicBlock = _broadcastBlock.SafePublicize();
         }
 
@@ -81,12 +83,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     builder.Add(fileFullPath);
                 }
 
-                IEnumerable<string> paths = builder.ToImmutable();
-                var fileWatchProvider = new FileWatchProvider(this, builder.ToImmutable(), FileChangeKinds.Added | FileChangeKinds.Removed);
+                var fileWatchProvider = new FileWatchData(this, builder.ToImmutable(), FileWatchChangeKinds.Added | FileWatchChangeKinds.Removed);
                 _version++;
                 ImmutableDictionary<NamedIdentity, IComparable> dataSources = ImmutableDictionary<NamedIdentity, IComparable>.Empty.Add(DataSourceKey, DataSourceVersion);
 
-                await _broadcastBlock.SendAsync(new ProjectVersionedValue<FileWatchProvider>(fileWatchProvider, dataSources));
+                await _broadcastBlock.SendAsync(new ProjectVersionedValue<FileWatchData>(fileWatchProvider, dataSources));
             }
         }
 
