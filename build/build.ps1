@@ -237,8 +237,8 @@ function GenerateDependentAssemblyVersionFile() {
 $vsAssemblyName,$visualStudioVersion.0
 $projectSystemAssemblyName,$projectSystemVersion.0
 "@
-  & mkdir $devDivInsertionFiles
-  $csv >> $dependentAssemblyVersionsCsv
+  & mkdir -force $devDivInsertionFiles > $null
+  $csv > $dependentAssemblyVersionsCsv
 }
 
 # Ensure project system is installed to the correct hive
@@ -397,11 +397,9 @@ try {
   }
 
   Build
-  
-  if ($pack) {
-    GenerateDependentAssemblyVersionFile
-  }
-  
+
+  GenerateDependentAssemblyVersionFile
+ 
   if($integrationTest){
     RunIntegrationTests
   }
