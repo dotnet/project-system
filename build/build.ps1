@@ -397,11 +397,9 @@ try {
   }
 
   Build
-  
-  if ($pack) {
-    GenerateDependentAssemblyVersionFile
-  }
-  
+
+  GenerateDependentAssemblyVersionFile
+ 
   if($integrationTest){
     RunIntegrationTests
   }
