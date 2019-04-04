@@ -311,6 +311,25 @@ In order to debug this project, add an executable project to this solution which
         <target state="translated">ОК</target>
         <note />
       </trans-unit>
+      <trans-unit id="Restore_PropertyWithInconsistentValues">
+        <source>The project's value of the '{0}' property is inconsistent between target frameworks. This property must be identical for NuGet restore to function correctly.
+
+The value '{1}' from the '{2}' configuration will be used, other target frameworks may fail to pick NuGet assets.</source>
+        <target state="new">The project's value of the '{0}' property is inconsistent between target frameworks. This property must be identical for NuGet restore to function correctly.
+
+The value '{1}' from the '{2}' configuration will be used, other target frameworks may fail to pick NuGet assets.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Restore_DuplicateToolReferenceItems">
+        <source>The metadata on 'DotNetCliToolReference' item '{0}' is inconsistent between target frameworks. Only the first one will be restored.</source>
+        <target state="new">The metadata on 'DotNetCliToolReference' item '{0}' is inconsistent between target frameworks. Only the first one will be restored.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Restore_EmptyTargetFrameworkMoniker">
+        <source>The project's value of the 'TargetFrameworkMoniker' property in the '{0}' configuration is empty. This configuration will not contribute to NuGet restore, which may result in restore and build errors.</source>
+        <target state="new">The project's value of the 'TargetFrameworkMoniker' property in the '{0}' configuration is empty. This configuration will not contribute to NuGet restore, which may result in restore and build errors.</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -1,57 +1,42 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.ComponentModel.Composition;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Threading.Tasks.Dataflow;
 
 using Microsoft.Internal.Performance;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
-using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
+using Microsoft.VisualStudio.Threading;
 
 using NuGet.SolutionRestoreManager;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
-    using TIdentityDictionary = IImmutableDictionary<NamedIdentity, IComparable>;
-
     internal partial class PackageRestoreInitiator
     {
         internal class PackageRestoreInitiatorInstance : OnceInitializedOnceDisposedAsync, IMultiLifetimeInstance
         {
-            private readonly IUnconfiguredProjectVsServices _projectVsServices;
+            private readonly UnconfiguredProject _project;
+            private readonly IPackageRestoreUnconfiguredDataSource _dataSource;
+            private readonly IProjectAsynchronousTasksService _projectAsynchronousTasksService;
             private readonly IVsSolutionRestoreService _solutionRestoreService;
-            private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
             private readonly IProjectLogger _logger;
-            private IDisposable _configurationsSubscription;
-            private DisposableBag _designTimeBuildSubscriptionLink;
 
-            private static readonly ImmutableHashSet<string> s_designTimeBuildWatchedRules = Empty.OrdinalIgnoreCaseStringSet
-                .Add(NuGetRestore.SchemaName)
-                .Add(ProjectReference.SchemaName)
-                .Add(PackageReference.SchemaName)
-                .Add(DotNetCliToolReference.SchemaName);
+            private IDisposable _subscription;
 
-            // Remove the ConfiguredProjectIdentity key because it is unique to each configured project - so it won't match across projects by design.
-            // Remove the ConfiguredProjectVersion key because each ConfiguredProject manages it's own version and generally they don't match. 
-            private static readonly ImmutableArray<NamedIdentity> s_keysToDrop = ImmutableArray.Create(ProjectDataSources.ConfiguredProjectIdentity, ProjectDataSources.ConfiguredProjectVersion);
-
-            [ImportingConstructor]
             public PackageRestoreInitiatorInstance(
-                IUnconfiguredProjectVsServices projectVsServices,
+                UnconfiguredProject project,
+                IPackageRestoreUnconfiguredDataSource dataSource,
+                IProjectThreadingService threadingService,
+                IProjectAsynchronousTasksService projectAsynchronousTasksService,
                 IVsSolutionRestoreService solutionRestoreService,
-                IActiveConfigurationGroupService activeConfigurationGroupService,
                 IProjectLogger logger)
-                : base(projectVsServices.ThreadingService.JoinableTaskContext)
+                : base(threadingService.JoinableTaskContext)
             {
-                _projectVsServices = projectVsServices;
+                _project = project;
+                _dataSource = dataSource;
+                _projectAsynchronousTasksService = projectAsynchronousTasksService;
                 _solutionRestoreService = solutionRestoreService;
-                _activeConfigurationGroupService = activeConfigurationGroupService;
                 _logger = logger;
             }
 
@@ -62,186 +47,49 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
             protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
             {
-                _configurationsSubscription = _activeConfigurationGroupService.ActiveConfiguredProjectGroupSource.SourceBlock.LinkToAction(OnActiveConfigurationsChanged);
+                _subscription = _dataSource.SourceBlock.LinkToAsyncAction(OnRestoreInfoChangedAsync);
 
                 return Task.CompletedTask;
             }
 
             protected override Task DisposeCoreAsync(bool initialized)
             {
-                _designTimeBuildSubscriptionLink?.Dispose();
-                _configurationsSubscription?.Dispose();
+                _subscription?.Dispose();
+
                 return Task.CompletedTask;
             }
 
-            private void OnActiveConfigurationsChanged(IProjectVersionedValue<IConfigurationGroup<ConfiguredProject>> e)
+            internal async Task OnRestoreInfoChangedAsync(IProjectVersionedValue<IVsProjectRestoreInfo> e)
             {
-                if (IsDisposing || IsDisposed)
+                // No configs
+                if (e.Value == null)
                     return;
 
-                // Clean up past subscriptions
-                _designTimeBuildSubscriptionLink?.Dispose();
-
-                if (e.Value.Count > 0)
+                JoinableTask joinableTask = JoinableFactory.RunAsync(() =>
                 {
-                    StandardRuleDataflowLinkOptions sourceLinkOptions = DataflowOption.WithRuleNames(s_designTimeBuildWatchedRules);
-
-                    var disposableBag = new DisposableBag(CancellationToken.None);
-                    // We are taking source blocks from multiple configured projects and creating a SyncLink to combine the sources.
-                    // The SyncLink will only publish data when the versions of the sources match. There is a problem with that.
-                    // The sources have some version components that will make this impossible to match across TFMs. We introduce a 
-                    // intermediate block here that will remove those version components so that the synclink can actually sync versions. 
-                    IEnumerable<ProjectDataSources.SourceBlockAndLink<IProjectValueVersions>> sourceBlocks = e.Value.Select(
-                        cp =>
-                        {
-                            IReceivableSourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> sourceBlock = cp.Services.ProjectSubscription.JointRuleSource.SourceBlock;
-                            IPropagatorBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>, IProjectVersionedValue<IProjectSubscriptionUpdate>> versionDropper = CreateVersionDropperBlock();
-                            disposableBag.AddDisposable(sourceBlock.LinkTo(versionDropper, sourceLinkOptions));
-                            return versionDropper.SyncLinkOptions<IProjectValueVersions>(sourceLinkOptions);
-                        });
-
-                    Action<Tuple<ImmutableList<IProjectValueVersions>, TIdentityDictionary>> action = ProjectPropertyChanged;
-                    ITargetBlock<Tuple<ImmutableList<IProjectValueVersions>, TIdentityDictionary>> target = DataflowBlockSlim.CreateActionBlock(action);
-
-                    DataflowLinkOptions targetLinkOptions = DataflowOption.PropagateCompletion;
-
-                    ImmutableList<ProjectDataSources.SourceBlockAndLink<IProjectValueVersions>> sourceBlocksAndCapabilitiesOptions = sourceBlocks.ToImmutableList()
-                        .Insert(0, _projectVsServices.Project.Capabilities.SourceBlock.SyncLinkOptions<IProjectValueVersions>());
-
-                    disposableBag.AddDisposable(ProjectDataSources.SyncLinkTo(sourceBlocksAndCapabilitiesOptions, target, targetLinkOptions));
-
-                    _designTimeBuildSubscriptionLink = disposableBag;
-                }
-            }
-
-            private static IPropagatorBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>, IProjectVersionedValue<IProjectSubscriptionUpdate>> CreateVersionDropperBlock()
-            {
-                IPropagatorBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>, IProjectVersionedValue<IProjectSubscriptionUpdate>> transformBlock = DataflowBlockSlim.CreateTransformBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>, IProjectVersionedValue<IProjectSubscriptionUpdate>>(data =>
-                {
-                    return new ProjectVersionedValue<IProjectSubscriptionUpdate>(data.Value, data.DataSourceVersions.RemoveRange(s_keysToDrop));
+                    return NominateProjectRestoreAsync(e.Value, _projectAsynchronousTasksService.UnloadCancellationToken);
                 });
 
-                return transformBlock;
+                _projectAsynchronousTasksService.RegisterAsyncTask(joinableTask,
+                                                                   ProjectCriticalOperation.Build | ProjectCriticalOperation.Unload | ProjectCriticalOperation.Rename,
+                                                                   registerFaultHandler: true);
+
+                // Prevent overlap until Restore completes
+                await joinableTask;
             }
 
-            private void ProjectPropertyChanged(Tuple<ImmutableList<IProjectValueVersions>, TIdentityDictionary> sources)
+            private async Task NominateProjectRestoreAsync(IVsProjectRestoreInfo restoreInfo, CancellationToken cancellationToken)
             {
-                var capabilitiesSnapshot = sources.Item1[0] as IProjectVersionedValue<IProjectCapabilitiesSnapshot>;
-                using (ProjectCapabilitiesContext.CreateIsolatedContext(_projectVsServices.Project, capabilitiesSnapshot.Value))
-                {
-                    NominateProject(sources.Item1.RemoveAt(0).Cast<IProjectVersionedValue<IProjectSubscriptionUpdate>>());
-                }
+                RestoreLogger.BeginNominateRestore(_logger, _project.FullPath, restoreInfo);
+
+                // Nominate NuGet with the restore data. This will complete when we're guaranteed 
+                // that the  assets files *at least* contains the changes that we pushed to it.
+                await _solutionRestoreService.NominateProjectAsync(_project.FullPath, restoreInfo, cancellationToken);
+
+                CodeMarkers.Instance.CodeMarker(CodeMarkerTimerId.PerfPackageRestoreEnd);
+
+                RestoreLogger.EndNominateRestore(_logger, _project.FullPath);
             }
-
-            private void NominateProject(IEnumerable<IProjectVersionedValue<IProjectSubscriptionUpdate>> updates)
-            {
-                IVsProjectRestoreInfo projectRestoreInfo = ProjectRestoreInfoBuilder.Build(updates);
-
-                if (projectRestoreInfo != null)
-                {
-                    _projectVsServices.Project.Services.ProjectAsynchronousTasks
-                        .RegisterAsyncTask(JoinableFactory.RunAsync(async () =>
-                        {
-                            LogProjectRestoreInfo(_projectVsServices.Project.FullPath, projectRestoreInfo);
-
-                            await _solutionRestoreService
-                                   .NominateProjectAsync(_projectVsServices.Project.FullPath, projectRestoreInfo,
-                                        _projectVsServices.Project.Services.ProjectAsynchronousTasks.UnloadCancellationToken);
-
-                            CodeMarkers.Instance.CodeMarker(CodeMarkerTimerId.PerfPackageRestoreEnd);
-
-                            CompleteLogProjectRestoreInfo(_projectVsServices.Project.FullPath);
-                        }),
-                        ProjectCriticalOperation.Build | ProjectCriticalOperation.Unload | ProjectCriticalOperation.Rename,
-                        registerFaultHandler: true);
-                }
-            }
-
-            #region ProjectRestoreInfo Logging
-
-            private void LogProjectRestoreInfo(string fullPath, IVsProjectRestoreInfo projectRestoreInfo)
-            {
-                if (_logger.IsEnabled)
-                {
-                    using (IProjectLoggerBatch logger = _logger.BeginBatch())
-                    {
-                        logger.WriteLine();
-                        logger.WriteLine("------------------------------------------");
-                        logger.WriteLine($"BEGIN Nominate Restore for {fullPath}");
-                        logger.IndentLevel++;
-
-                        logger.WriteLine($"BaseIntermediatePath:     {projectRestoreInfo.BaseIntermediatePath}");
-                        logger.WriteLine($"OriginalTargetFrameworks: {projectRestoreInfo.OriginalTargetFrameworks}");
-                        LogTargetFrameworks(logger, projectRestoreInfo.TargetFrameworks as TargetFrameworks);
-                        LogReferenceItems(logger, "Tool References", projectRestoreInfo.ToolReferences as ReferenceItems);
-
-                        logger.IndentLevel--;
-                        logger.WriteLine();
-                    }
-                }
-            }
-
-            private void CompleteLogProjectRestoreInfo(string fullPath)
-            {
-                if (_logger.IsEnabled)
-                {
-                    using (IProjectLoggerBatch logger = _logger.BeginBatch())
-                    {
-                        logger.WriteLine();
-                        logger.WriteLine("------------------------------------------");
-                        logger.WriteLine($"COMPLETED Nominate Restore for {fullPath}");
-                        logger.WriteLine();
-                    }
-                }
-            }
-
-            private static void LogTargetFrameworks(IProjectLoggerBatch logger, TargetFrameworks targetFrameworks)
-            {
-                logger.WriteLine($"Target Frameworks ({targetFrameworks.Count})");
-                logger.IndentLevel++;
-
-                foreach (IVsTargetFrameworkInfo tf in targetFrameworks)
-                {
-                    LogTargetFramework(logger, tf as TargetFrameworkInfo);
-                }
-                logger.IndentLevel--;
-            }
-
-            private static void LogTargetFramework(IProjectLoggerBatch logger, TargetFrameworkInfo targetFrameworkInfo)
-            {
-                logger.WriteLine(targetFrameworkInfo.TargetFrameworkMoniker);
-                logger.IndentLevel++;
-
-                LogReferenceItems(logger, "Project References", targetFrameworkInfo.ProjectReferences as ReferenceItems);
-                LogReferenceItems(logger, "Package References", targetFrameworkInfo.PackageReferences as ReferenceItems);
-                LogProperties(logger, "Target Framework Properties", targetFrameworkInfo.Properties as ProjectProperties);
-
-                logger.IndentLevel--;
-            }
-
-            private static void LogProperties(IProjectLoggerBatch logger, string heading, ProjectProperties projectProperties)
-            {
-                IEnumerable<string> properties = projectProperties.Cast<ProjectProperty>()
-                        .Select(prop => $"{prop.Name}:{prop.Value}");
-                logger.WriteLine($"{heading} -- ({string.Join(" | ", properties)})");
-            }
-
-            private static void LogReferenceItems(IProjectLoggerBatch logger, string heading, ReferenceItems references)
-            {
-                logger.WriteLine(heading);
-                logger.IndentLevel++;
-
-                foreach (IVsReferenceItem reference in references)
-                {
-                    IEnumerable<string> properties = reference.Properties.Cast<ReferenceProperty>()
-                        .Select(prop => $"{prop.Name}:{prop.Value}");
-                    logger.WriteLine($"{reference.Name} -- ({string.Join(" | ", properties)})");
-                }
-
-                logger.IndentLevel--;
-            }
-
-            #endregion
         }
     }
 }
