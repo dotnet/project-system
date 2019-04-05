@@ -44,8 +44,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             var disposables = new DisposableBag();
 
             var packageRestoreConfiguredSource = new UnwrapCollectionChainedProjectValueDataSource<IReadOnlyCollection<ConfiguredProject>, ProjectRestoreUpdate>(
-                _project.Services, c => c.Select(p => p.Services.ExportProvider.GetExportedValue<IPackageRestoreConfiguredDataSource>()),
-                includeSourceVersions: false);  // TODO: Drop ConfiguredProjectIdentity/ConfiguredProjectVersion
+                _project.Services, 
+                projects => projects.Select(project => GetProjectRestoreDataSource(project)),
+                includeSourceVersions: false);
 
             disposables.AddDisposable(packageRestoreConfiguredSource);
 
@@ -197,6 +198,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             }
 
             return true;
+        }
+
+        private IProjectValueDataSource<ProjectRestoreUpdate> GetProjectRestoreDataSource(ConfiguredProject project)
+        {
+            // Get the individual configuration's view of the restore data
+            IPackageRestoreConfiguredDataSource dataSource = project.Services.ExportProvider.GetExportedValue<IPackageRestoreConfiguredDataSource>();
+
+            // Wrap it in a data source that will drop project version and identity versions so as they will never agree
+            // on these versions as they are unique to each configuration. They'll be consistent by all other versions.
+            return new DropConfiguredProjectVersionDataSource<ProjectRestoreUpdate>(_project.Services, dataSource);
         }
     }
 }
