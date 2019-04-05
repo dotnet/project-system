@@ -15,7 +15,7 @@ pr:
 - dev16.1.x
 
 jobs:
-- job: Visual Studio
+- job: Visual_Studio
   pool: dotnet-external-vs2019-preview
   strategy:
     maxParallel: 2
