@@ -51,6 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             // Transform the changes from evaluation/design-time build -> restore data
             DisposableValue<ISourceBlock<RestoreUpdate>> transformBlock = source.SourceBlock
                                                                                 .TransformWithNoDelta(update => update.Derive(u => CreateRestoreUpdate(u.ProjectConfiguration, u.CurrentState)),
+                                                                                                      suppressVersionOnlyUpdates: false,    // We need to coordinate these at the unconfigured-level
                                                                                                       ruleNames: s_rules);
 
             // Set the link up so that we publish changes to target block

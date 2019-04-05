@@ -312,7 +312,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     </para>
         ///     <paramref name="transform"/> is <see langword="null"/>.
         /// </exception>
-        public static DisposableValue<ISourceBlock<TOut>> TransformWithNoDelta<TOut>(this ISourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> source, Func<IProjectVersionedValue<IProjectSubscriptionUpdate>, TOut> transform, bool suppressVersionOnlyUpdates = true, IEnumerable<string> ruleNames = null)
+        public static DisposableValue<ISourceBlock<TOut>> TransformWithNoDelta<TOut>(this ISourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> source, Func<IProjectVersionedValue<IProjectSubscriptionUpdate>, TOut> transform, bool suppressVersionOnlyUpdates, IEnumerable<string> ruleNames = null)
         {
             Requires.NotNull(source, nameof(source));
             Requires.NotNull(transform, nameof(transform));
