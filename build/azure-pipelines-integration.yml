@@ -26,7 +26,7 @@ jobs:
         _configuration: Release
   timeoutInMinutes: 20
   steps:
-    - script: $(Build.SourcesDirectory)\build\IntegrationCIBuild.cmd -configuration $(_configuration) -prepareMachine -sign
+    - script: $(Build.SourcesDirectory)\build\IntegrationCIBuild.cmd -configuration $(_configuration) -prepareMachine
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\log'
