@@ -304,14 +304,37 @@ function RunIntegrationTests {
   $LogFileArgs = "trx;LogFileName=Microsoft.VisualStudio.ProjectSystem.IntegrationTests.trx"
   $TestAssembly = Join-Path (Join-Path $ArtifactsDir $configuration) "bin\IntegrationTests\Microsoft.VisualStudio.ProjectSystem.IntegrationTests.dll"
   # create runsettings file
+  $ScreenshotCollectorVersion = GetVersion("MicrosoftDevDivValidationLoggingScreenshotCollectorVersion")
+  $pathToScreenShotCollector = Join-Path $NuGetPackageRoot "Microsoft.DevDiv.Validation.Logging.ScreenshotCollector\$ScreenshotCollectorVersion\lib\net461"
+  
+  $MediaRecorderVersion = GetVersion("MicrosoftDevDivValidationMediaRecorderVersion")
+  $pathToMediaRecorder = Join-Path $NuGetPackageRoot "Microsoft.DevDiv.Validation.MediaRecorder\$MediaRecorderVersion\lib\net461"
+  
   $runSettings = Join-Path $IntegrationTestTempDir "integration.runsettings"
   if (!(Test-Path $runSettings)) {
     $runSettingsContents = @"
 <?xml version="1.0" encoding="utf-8"?>  
 <RunSettings>  
-  <TestRunParameters>  
+  <TestRunParameters>
     <Parameter name="VsRootSuffix" value="$rootsuffix" />
   </TestRunParameters>
+  <RunConfiguration>
+    <MaxCpuCount>1</MaxCpuCount>
+    <!-- Path to Test Adapters -->
+    <TestAdaptersPaths>$pathToScreenShotCollector;$pathToMediaRecorder</TestAdaptersPaths>
+  </RunConfiguration>
+  
+  <!-- Configurations for DataCollectors -->
+  <DataCollectionRunSettings>
+    <DataCollectors>
+      <DataCollector friendlyName="Screen and Voice Recorder" uri="datacollector://Microsoft/DevDiv/VideoRecorder/2.0" assemblyQualifiedName="Microsoft.DevDiv.Validation.MediaRecorder.Collector, Microsoft.DevDiv.Validation.MediaRecorder.Collector.VideoRecorderDataCollector, Version=15.0.0.0, Culture=neutral, PublicKeyToken=null" enabled="true"/>
+      <DataCollector friendlyName="Screenshot Collector" uri="datacollector://Microsoft/DevDiv/Validation/Logging/Screenshot/v1" assemblyQualifiedName="Microsoft.DevDiv.Validation.Logging.ScreenshotCollector, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <Configuration>
+          <Triggers>OnTestCaseFail</Triggers>
+        </Configuration>
+      </DataCollector>
+    </DataCollectors>
+  </DataCollectionRunSettings>
 </RunSettings>
 "@
     $runSettingsContents >> $runSettings
