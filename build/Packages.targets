@@ -26,6 +26,8 @@
     <PackageReference Update="Microsoft.DiaSymReader.Pdb2Pdb" Version="$(MicrosoftDiaSymReaderPdb2PdbVersion)" />
     <PackageReference Update="OpenCover" Version="$(OpenCoverVersion)" />
     <PackageReference Update="Codecov" Version="$(CodecovVersion)" />
+    <PackageReference Update="Microsoft.DevDiv.Validation.MediaRecorder" Version="$(MicrosoftDevDivValidationMediaRecorderVersion)" />
+    <PackageReference Update="Microsoft.DevDiv.Validation.Logging.ScreenshotCollector" Version="$(MicrosoftDevDivValidationLoggingScreenshotCollectorVersion)" />
 
     <!-- VS SDK -->
     <PackageReference Update="Microsoft.VSSDK.BuildTools" Version="15.8.3252" />

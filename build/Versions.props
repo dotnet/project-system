@@ -24,6 +24,8 @@
     <RoslynAnalyzersPackagesVersion>2.6.3-beta1.19059.2</RoslynAnalyzersPackagesVersion>
     <OpenCoverVersion>4.6.519</OpenCoverVersion>
     <CodecovVersion>1.1.0</CodecovVersion>
+    <MicrosoftDevDivValidationMediaRecorderVersion>15.0.199</MicrosoftDevDivValidationMediaRecorderVersion>
+    <MicrosoftDevDivValidationLoggingScreenshotCollectorVersion>1.1.86</MicrosoftDevDivValidationLoggingScreenshotCollectorVersion>
 
     <!--
       TODO:
