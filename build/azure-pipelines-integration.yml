@@ -1,0 +1,68 @@
+# Branches that trigger a build on commit
+trigger:
+- master
+- dev15.0.x
+- dev15.9.x
+- dev16.0.x
+- dev16.1.x
+
+# Branches that trigger builds on PR
+pr:
+- master
+- dev15.0.x
+- dev15.9.x
+- dev16.0.x
+- dev16.1.x
+
+jobs:
+- job: Windows
+  pool:
+    name: NetCoreInternal-Int-Pool
+    queue: buildpool.windows.10.amd64.vs2019.bt
+  strategy:
+    maxParallel: 2
+    matrix:
+      Debug:
+        _configuration: Debug
+      Release:
+        _configuration: Release
+  timeoutInMinutes: 20
+  steps:
+    - script: $(Build.SourcesDirectory)\build\IntegrationCIBuild.cmd -configuration $(_configuration) -prepareMachine -sign
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\log'
+        ArtifactName: '$(_configuration) unit test logs'
+        publishLocation: Container
+      continueOnError: true
+      condition: failed()
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\bin'
+        ArtifactName: '$(_configuration) bin folder'
+        publishLocation: Container
+      continueOnError: true
+      condition: failed()
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\VSSetup'
+        ArtifactName: '$(_configuration) VSSetup folder'
+        publishLocation: Container
+      continueOnError: true
+      condition: failed()
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\TestResults'
+        ArtifactName: '$(_configuration) Test Result Logs'
+        publishLocation: Container
+      continueOnError: true
+      condition: failed()
+    - task: PublishTestResults@2
+      inputs:
+        testRunner: 'xUnit'
+        testResultsFiles: '**/*.xml' 
+        searchFolder: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\TestResults'
+        configuration: '$(_configuration)'
+        publishRunAttachments: true
+      continueOnError: true
+      condition: always()
