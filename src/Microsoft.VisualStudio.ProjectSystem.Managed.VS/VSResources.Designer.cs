@@ -532,7 +532,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The project&apos;s value of the &apos;TargetFrameworkMoniker&apos; property in the &apos;{0}&apos; configuration is empty. This configuration will not contribute to NuGet restore, which may result in restore and build errors..
+        ///   Looks up a localized string similar to The value of the &apos;TargetFrameworkMoniker&apos; property in the &apos;{0}&apos; configuration is empty. This configuration will not contribute to NuGet restore, which may result in restore and build errors..
         /// </summary>
         internal static string Restore_EmptyTargetFrameworkMoniker {
             get {
@@ -541,9 +541,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The project&apos;s value of the &apos;{0}&apos; property is inconsistent between target frameworks. This property must be identical for NuGet restore to function correctly.
-        ///
-        ///The value &apos;{1}&apos; from the &apos;{2}&apos; configuration will be used, other target frameworks may fail to pick NuGet assets..
+        ///   Looks up a localized string similar to The value of the &apos;{0}&apos; property is inconsistent between target frameworks. This property must be identical for NuGet restore to function correctly. The value &apos;{1}&apos; from the &apos;{2}&apos; configuration will be used, other target frameworks may fail to pick NuGet assets..
         /// </summary>
         internal static string Restore_PropertyWithInconsistentValues {
             get {
