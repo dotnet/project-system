@@ -25,11 +25,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
             protected override IDisposable LinkExternalInput(ITargetBlock<IProjectVersionedValue<T>> targetBlock)
             {
-                JoinUpstreamDataSources(_dataSource);
-
                 DisposableValue<ISourceBlock<IProjectVersionedValue<T>>> block = _dataSource.SourceBlock.Transform(DropConfiguredProjectVersion);
 
                 block.Value.LinkTo(targetBlock, DataflowOption.PropagateCompletion);
+
+                JoinUpstreamDataSources(_dataSource);
 
                 return block;
             }
