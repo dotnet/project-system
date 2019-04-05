@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             var packageRestoreConfiguredSource = new UnwrapCollectionChainedProjectValueDataSource<IReadOnlyCollection<ConfiguredProject>, ProjectRestoreUpdate>(
                 _project.Services, 
                 projects => projects.Select(project => GetProjectRestoreDataSource(project)),
-                includeSourceVersions: false);
+                includeSourceVersions: true);
 
             disposables.AddDisposable(packageRestoreConfiguredSource);
 
