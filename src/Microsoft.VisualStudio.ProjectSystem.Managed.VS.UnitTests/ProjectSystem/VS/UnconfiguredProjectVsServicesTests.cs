@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 
+using System;
 using Microsoft.VisualStudio.Shell.Interop;
 
 using Xunit;
@@ -42,17 +43,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var vsServices = CreateInstance(commonServices);
 
             Assert.Same(project, vsServices.Project);
-        }
-
-        [Fact]
-        public void Constructor_ValueAsCommonServices_SetsProjectTreeToCommonServicesProjectTree()
-        {
-            var projectTree = IPhysicalProjectTreeFactory.Create();
-            var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(projectTree: projectTree);
-
-            var vsServices = CreateInstance(commonServices);
-
-            Assert.Same(projectTree, vsServices.ProjectTree);
         }
 
         [Fact]
@@ -104,7 +94,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private static UnconfiguredProjectVsServices CreateInstance(IUnconfiguredProjectCommonServices commonServices)
         {
-            return new UnconfiguredProjectVsServices(commonServices);
+            var projectTree = new Lazy<IPhysicalProjectTree>(() => IPhysicalProjectTreeFactory.Create());
+            return new UnconfiguredProjectVsServices(commonServices, projectTree);
         }
     }
 }

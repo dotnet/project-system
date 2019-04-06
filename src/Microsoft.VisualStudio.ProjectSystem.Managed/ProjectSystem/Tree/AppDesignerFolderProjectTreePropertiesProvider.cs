@@ -24,7 +24,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree
         private readonly IProjectDesignerService _designerService;
 
         [ImportingConstructor]
-        public AppDesignerFolderProjectTreePropertiesProvider([Import(typeof(ProjectImageProviderAggregator))]IProjectImageProvider imageProvider, IProjectDesignerService designerService)
+        public AppDesignerFolderProjectTreePropertiesProvider(
+            [Import(typeof(ProjectImageProviderAggregator))]IProjectImageProvider imageProvider,
+            [Import(AllowDefault = true)] IProjectDesignerService designerService)
             : base(imageProvider)
         {
             _designerService = designerService;
@@ -32,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree
 
         public override bool IsSupported
         {
-            get { return _designerService.SupportsProjectDesigner; }
+            get { return _designerService == null || _designerService.SupportsProjectDesigner; }
         }
 
         public override ProjectTreeFlags FolderFlags

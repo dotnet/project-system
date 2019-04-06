@@ -38,12 +38,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [ImportingConstructor]
         public DependencyTreeTelemetryService(
             UnconfiguredProject project,
-            ITelemetryService telemetryService,
+            [Import(AllowDefault = true)] ITelemetryService telemetryService,
             ISafeProjectGuidService safeProjectGuidService)
         {
             _project = project;
             _telemetryService = telemetryService;
             _safeProjectGuidService = safeProjectGuidService;
+
+            if (telemetryService == null)
+            {
+                _stopTelemetry = true;
+            }
         }
 
         /// <summary>

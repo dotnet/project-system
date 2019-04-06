@@ -23,10 +23,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 mock.Setup(s => s.Project)
                     .Returns(project);
 
-            if (projectTree != null)
-                mock.Setup(s => s.ProjectTree)
-                    .Returns(projectTree);
-
             if (threadingService != null)
                 mock.Setup(s => s.ThreadingService)
                     .Returns(threadingService);
