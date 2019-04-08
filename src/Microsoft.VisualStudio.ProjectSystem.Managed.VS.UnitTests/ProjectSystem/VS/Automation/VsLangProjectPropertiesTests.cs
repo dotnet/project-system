@@ -77,7 +77,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                                 innerVSProjectMock.Object,
                                 threadingService: Mock.Of<IProjectThreadingService>(),
                                 projectProperties: Mock.Of<ActiveConfiguredProject<ProjectProperties>>(),
-                                project: unconfiguredProjectMock.Object);
+                                project: unconfiguredProjectMock.Object,
+                                buildManager: Mock.Of<BuildManager>());
 
             vsproject.SetImportsImpl(importsImpl);
             vsproject.SetVSProjectEventsImpl(vsProjectEventsImpl);
@@ -199,7 +200,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             var vsproject = CreateInstance(
                 Mock.Of<VSLangProj.VSProject>(),
                 threadingService: Mock.Of<IProjectThreadingService>(),
-                projectProperties: Mock.Of<ActiveConfiguredProject<ProjectProperties>>());
+                projectProperties: Mock.Of<ActiveConfiguredProject<ProjectProperties>>(),
+                buildManager: Mock.Of<BuildManager>());
             Assert.Null(vsproject.ExtenderCATID);
         }
 
@@ -207,14 +209,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             VSLangProj.VSProject vsproject = null,
             IProjectThreadingService threadingService = null,
             ActiveConfiguredProject<ProjectProperties> projectProperties = null,
-            UnconfiguredProject project = null)
+            UnconfiguredProject project = null,
+            BuildManager buildManager = null)
         {
             if (project == null)
             {
                 project = UnconfiguredProjectFactory.Create();
             }
 
-            return new VSProject(vsproject, threadingService, projectProperties, project);
+            return new VSProject(vsproject, threadingService, projectProperties, project, buildManager);
         }
 
         internal class VSProjectTestImpl : VSProject
@@ -223,8 +226,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                 VSLangProj.VSProject vsProject,
                 IProjectThreadingService threadingService,
                 ActiveConfiguredProject<ProjectProperties> projectProperties,
-                UnconfiguredProject project)
-                : base(vsProject, threadingService, projectProperties, project)
+                UnconfiguredProject project,
+                BuildManager buildManager)
+                : base(vsProject, threadingService, projectProperties, project, buildManager)
             {
             }
 
