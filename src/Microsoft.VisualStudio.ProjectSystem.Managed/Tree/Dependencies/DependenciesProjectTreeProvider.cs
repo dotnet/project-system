@@ -53,6 +53,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <summary>Latest updated snapshot of all rules schema catalogs.</summary>
         private IImmutableDictionary<string, IPropertyPagesCatalog> _namedCatalogs;
 
+        private IDisposable _snapshotEventListener;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DependenciesProjectTreeProvider"/> class.
         /// </summary>
@@ -87,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Task OnUnconfiguredProjectUnloading(object sender, EventArgs args)
             {
                 UnconfiguredProject.ProjectUnloading -= OnUnconfiguredProjectUnloading;
-                _dependenciesSnapshotProvider.SnapshotChanged -= OnDependenciesSnapshotChanged;
+                _snapshotEventListener?.Dispose();
 
                 return Task.CompletedTask;
             }
@@ -346,10 +348,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                 },
                                 initialTreeCancellationToken);
 
-                            // Workaround: when the tree provider is loaded late, it can miss the latest change event.
-                            OnDependenciesSnapshotChanged(this, new SnapshotChangedEventArgs(_dependenciesSnapshotProvider.CurrentSnapshot, CancellationToken.None));
-
-                            _dependenciesSnapshotProvider.SnapshotChanged += OnDependenciesSnapshotChanged;
+                            var actionBlock = DataflowBlockSlim.CreateActionBlock<SnapshotChangedEventArgs>(e => OnDependenciesSnapshotChanged(_dependenciesSnapshotProvider, e));
+                            _snapshotEventListener = _dependenciesSnapshotProvider.SnapshotChangedSource.LinkTo(actionBlock, new DataflowLinkOptions() { PropagateCompletion = true });
                         }
 
                     },

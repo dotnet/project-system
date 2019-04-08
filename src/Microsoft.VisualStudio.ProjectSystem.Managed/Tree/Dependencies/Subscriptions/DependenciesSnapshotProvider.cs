@@ -7,7 +7,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-
+using System.Threading.Tasks.Dataflow;
 using Microsoft.Build.Execution;
 using Microsoft.VisualStudio.Build;
 using Microsoft.VisualStudio.Composition;
@@ -54,6 +54,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         private ImmutableArray<IDependencyCrossTargetSubscriber> _subscribers;
         private DependenciesSnapshot _currentSnapshot;
         private int _isInitialized;
+
+        private readonly IBroadcastBlock<SnapshotChangedEventArgs> _snapshotChangedSource;
 
         /// <summary>
         ///     Current <see cref="AggregateCrossTargetProjectContext"/>, which is an immutable map of
@@ -113,6 +115,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 commonServices.ThreadingService,
                 tasksService.UnloadCancellationToken);
 
+            _snapshotChangedSource = DataflowBlockSlim.CreateBroadcastBlock<SnapshotChangedEventArgs>();
+
             aggregateSnapshotProvider.RegisterSnapshotProvider(this);
         }
 
@@ -141,6 +145,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 return _subscribers;
             }
         }
+
+        IReceivableSourceBlock<SnapshotChangedEventArgs> IDependenciesSnapshotProvider.SnapshotChangedSource => _snapshotChangedSource;
 
 #pragma warning disable RS0030 // symbol ProjectAutoLoad is banned
         [ProjectAutoLoad(ProjectLoadCheckpoint.ProjectFactoryCompleted)]
@@ -539,7 +545,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     // Always publish the latest snapshot
                     IDependenciesSnapshot snapshot = _currentSnapshot;
 
-                    SnapshotChanged?.Invoke(this, new SnapshotChangedEventArgs(snapshot, ct));
+                    var events = new SnapshotChangedEventArgs(snapshot, ct);
+                    _snapshotChangedSource.Post(events);
+                    SnapshotChanged?.Invoke(this, events);
 
                     return Task.CompletedTask;
                 }, token);
