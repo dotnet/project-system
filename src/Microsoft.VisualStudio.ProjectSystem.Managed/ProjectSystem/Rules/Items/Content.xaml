@@ -47,6 +47,9 @@
   <BoolProperty Name="DesignTime"
                 Visible="false" />
 
+  <BoolProperty Name="DesignTimeSharedInput"
+                Visible="false" />
+
   <StringProperty Name="FullPath"
                   ReadOnly="true"
                   Visible="false">
