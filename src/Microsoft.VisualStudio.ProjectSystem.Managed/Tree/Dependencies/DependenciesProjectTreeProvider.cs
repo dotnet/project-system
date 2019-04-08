@@ -337,8 +337,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                             // The handler will cancel this token before submitting its update.
                             CancellationToken initialTreeCancellationToken = _treeUpdateCancellationSeries.CreateNext();
 
-                            _dependenciesSnapshotProvider.SnapshotChanged += OnDependenciesSnapshotChanged;
-
                             _ = SubmitTreeUpdateAsync(
                                 delegate
                                 {
@@ -347,6 +345,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                     return Task.FromResult(new TreeUpdateResult(dependenciesNode));
                                 },
                                 initialTreeCancellationToken);
+
+                            // Workaround: when the tree provider is loaded late, it can miss the latest change event.
+                            OnDependenciesSnapshotChanged(this, new SnapshotChangedEventArgs(_dependenciesSnapshotProvider.CurrentSnapshot, CancellationToken.None));
+
+                            _dependenciesSnapshotProvider.SnapshotChanged += OnDependenciesSnapshotChanged;
                         }
 
                     },
