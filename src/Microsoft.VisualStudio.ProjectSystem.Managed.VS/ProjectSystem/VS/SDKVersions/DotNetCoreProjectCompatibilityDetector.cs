@@ -41,6 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private readonly Lazy<IVsShellUtilitiesHelper> _shellUtilitiesHelper;
         private readonly Lazy<IFileSystem> _fileSystem;
         private readonly Lazy<IHttpClient> _httpClient;
+        private readonly Lazy<IPreviewSDKService> _previewSDKService;
         private readonly IVsService<ISettingsManager> _settingsManagerService;
         private readonly IVsService<IVsUIShell> _vsUIShellService;
         private readonly IVsService<IVsSolution> _vsSolutionService;
@@ -63,6 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                                                       Lazy<IProjectThreadingService> threadHandling,
                                                       Lazy<IVsShellUtilitiesHelper> vsShellUtilitiesHelper,
                                                       Lazy<IFileSystem> fileSystem, Lazy<IHttpClient> httpClient,
+                                                      Lazy<IPreviewSDKService> previewSDKService,
                                                       IVsService<SVsUIShell, IVsUIShell> vsUIShellService,
                                                       IVsService<SVsSettingsPersistenceManager, ISettingsManager> settingsManagerService,
                                                       IVsService<SVsSolution, IVsSolution> vsSolutionService,
@@ -75,6 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _shellUtilitiesHelper = vsShellUtilitiesHelper;
             _fileSystem = fileSystem;
             _httpClient = httpClient;
+            _previewSDKService = previewSDKService;
             _vsUIShellService = vsUIShellService;
             _settingsManagerService = settingsManagerService;
             _vsSolutionService = vsSolutionService;
@@ -156,7 +159,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                         // skip any that don't
                         if (IsNewlyCreated(project))
                         {
-                            CompatibilityLevel compatLevel = await GetProjectCompatibilityAsync(project, compatData);
+                            bool isPreviewSDKInUse = await _previewSDKService.Value.IsPreviewSDKInUseAsync();
+                            CompatibilityLevel compatLevel = await GetProjectCompatibilityAsync(project, compatData, isPreviewSDKInUse);
                             if (compatLevel != CompatibilityLevel.Recommended)
                             {
                                 await WarnUserOfIncompatibleProjectAsync(compatLevel, compatData);
@@ -193,10 +197,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             CompatibilityLevel finalCompatLevel = CompatibilityLevel.Recommended;
             IProjectService projectService = _projectServiceAccessor.Value.GetProjectService();
             IEnumerable<UnconfiguredProject> projects = projectService.LoadedUnconfiguredProjects;
+            bool isPreviewSDKInUse = await _previewSDKService.Value.IsPreviewSDKInUseAsync();
             foreach (UnconfiguredProject project in projects)
             {
                 // Track the most severe compatibility level
-                CompatibilityLevel compatLevel = await GetProjectCompatibilityAsync(project, compatDataToUse);
+                CompatibilityLevel compatLevel = await GetProjectCompatibilityAsync(project, compatDataToUse, isPreviewSDKInUse);
                 if (compatLevel != CompatibilityLevel.Recommended && compatLevel > finalCompatLevel)
                 {
                     finalCompatLevel = compatLevel;
@@ -280,7 +285,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
         }
 
-        private static async Task<CompatibilityLevel> GetProjectCompatibilityAsync(UnconfiguredProject project, VersionCompatibilityData compatData)
+        private static async Task<CompatibilityLevel> GetProjectCompatibilityAsync(UnconfiguredProject project, VersionCompatibilityData compatData, bool isPreviewSDKInUse)
         {
             if (project.Capabilities.AppliesTo($"{ProjectCapability.DotNet} & {ProjectCapability.PackageReferences}"))
             {
@@ -291,7 +296,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     var fw = new FrameworkName(tfm);
                     if (fw.Identifier.Equals(".NETCoreApp", StringComparison.OrdinalIgnoreCase))
                     {
-                        return GetCompatibilityLevelFromVersion(fw.Version, compatData);
+                        return GetCompatibilityLevelFromVersion(fw.Version, compatData, isPreviewSDKInUse);
                     }
                     else if (fw.Identifier.Equals(".NETFramework", StringComparison.OrdinalIgnoreCase))
                     {
@@ -316,7 +321,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
                                     if (Version.TryParse(verString, out Version aspnetVersion))
                                     {
-                                        return GetCompatibilityLevelFromVersion(aspnetVersion, compatData);
+                                        return GetCompatibilityLevelFromVersion(aspnetVersion, compatData, isPreviewSDKInUse);
                                     }
                                 }
                             }
@@ -331,7 +336,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// <summary>
         /// Compares the passed in version to the compatibility data to determine the compat level
         /// </summary>
-        private static CompatibilityLevel GetCompatibilityLevelFromVersion(Version version, VersionCompatibilityData compatData)
+        private static CompatibilityLevel GetCompatibilityLevelFromVersion(Version version, VersionCompatibilityData compatData, bool isPreviewSDKInUse)
         {
             // Only compare major, minor. The presence of build with change the comparison. ie: 2.0 != 2.0.0
             if (version.Build != -1)
@@ -347,13 +352,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 return CompatibilityLevel.Recommended;
             }
 
-            return GetCompatibilityLevelFromPreview(version, compatData.SupportedPreviewVersion, compatData.SupportedVersion, compatData.UnsupportedVersion);
+            return GetCompatibilityLevelFromPreview(version, compatData.SupportedPreviewVersion, compatData.SupportedVersion, compatData.UnsupportedVersion, isPreviewSDKInUse);
         }
 
-        private static CompatibilityLevel GetCompatibilityLevelFromPreview(Version version, Version supportedPreviewVersion, Version supportedVersion, Version unsupportedVersion)
+        private static CompatibilityLevel GetCompatibilityLevelFromPreview(Version version, Version supportedPreviewVersion, Version supportedVersion, Version unsupportedVersion, bool isPreviewSDKInUse)
         {
             // version is less than the supported preview version and the user wants to use preview SDKs
-            if (supportedPreviewVersion is object && IsPreview() && version <= supportedPreviewVersion)
+            if (supportedPreviewVersion is object && isPreviewSDKInUse && version <= supportedPreviewVersion)
             {
                 return CompatibilityLevel.Recommended;
             }
@@ -391,8 +396,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             // unsupported version is not recommended
             return CompatibilityLevel.NotSupported;
         }
-
-        private static bool IsPreview() => throw new NotImplementedException();
 
         /// <summary>
         /// Pings the server to download version compatibility information and stores this in a cached file in the users app data. If the cached file is
