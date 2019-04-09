@@ -103,7 +103,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             {
                 _solutionOpened = true;
                 // do not block package initialization on this
-                _threadHandling.Value.RunAndForget(() => CheckCompatibilityAsync(), unconfiguredProject: null);
+                _threadHandling.Value.RunAndForget(async () =>
+                {
+                    // First make sure that the cache file exists
+                    if (_versionDataCacheFile.ReadCacheFile() is null)
+                    {
+                        await _versionDataCacheFile.TryToUpdateCacheFileAsync();
+                    }
+
+                    // check if the project is compatible
+                    await CheckCompatibilityAsync();
+                }, unconfiguredProject: null);
             }
         }
 
