@@ -145,7 +145,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 UnconfiguredProject project = pHierarchy.AsUnconfiguredProject();
                 if (project != null)
                 {
-                    _threadHandling.Value.JoinableTaskFactory.RunAsync(async () =>
+                    _threadHandling.Value.RunAndForget(async () =>
                     {
                         // Run on the background
                         await TaskScheduler.Default;
@@ -162,7 +162,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                                 await WarnUserOfIncompatibleProjectAsync(compatLevel, compatData);
                             }
                         }
-                    });
+                    }, unconfiguredProject: null);
                 }
             }
 
@@ -222,7 +222,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public int OnAfterBackgroundSolutionLoadComplete()
         {
             // Schedule this to run on idle
-            _threadHandling.Value.JoinableTaskFactory.RunAsync(() => CheckCompatibilityAsync());
+            _threadHandling.Value.RunAndForget(() => CheckCompatibilityAsync(), unconfiguredProject: null);
             return VSConstants.S_OK;
         }
 
