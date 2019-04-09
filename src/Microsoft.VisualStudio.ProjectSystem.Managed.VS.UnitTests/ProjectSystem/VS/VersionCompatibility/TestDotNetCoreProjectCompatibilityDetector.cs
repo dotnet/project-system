@@ -20,13 +20,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.VersionCompatibility
                                                           Lazy<IVsShellUtilitiesHelper> vsShellUtilitiesHelper,
                                                           Lazy<IFileSystem> fileSystem,
                                                           Lazy<IHttpClient> httpClient,
+                                                          Lazy<IPreviewSDKService> previewSDKService,
                                                           IVsService<SVsUIShell, IVsUIShell> vsUIShellService,
                                                           IVsService<SVsSettingsPersistenceManager, ISettingsManager> settingsManagerService,
                                                           IVsService<SVsSolution, IVsSolution> vsSolutionService,
                                                           IVsService<SVsAppId, IVsAppId> vsAppIdService,
                                                           IVsService<SVsShell, IVsShell> vsShellService,
                                                           bool hasNewProjects = false) :
-            base(projectAccessor, dialogServices, threadHandling, vsShellUtilitiesHelper, fileSystem, httpClient, vsUIShellService, settingsManagerService, vsSolutionService, vsAppIdService, vsShellService)
+            base(projectAccessor, dialogServices, threadHandling, vsShellUtilitiesHelper, fileSystem, httpClient, previewSDKService, vsUIShellService, settingsManagerService, vsSolutionService, vsAppIdService, vsShellService)
         {
             _hasNewProjects = hasNewProjects;
         }
