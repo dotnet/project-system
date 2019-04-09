@@ -128,7 +128,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.VersionCompatibility
                                                                                           string versionDataString = null,
                                                                                           Version vsVersion = null,
                                                                                           bool isSolutionOpen = false,
-                                                                                          bool hasNewProjects = false, 
+                                                                                          bool hasNewProjects = false,
+                                                                                          bool usingPreviewSDK = false,
                                                                                           string targetFrameworkMoniker = ".NETCoreApp,Version=v3.0")
         {
             dialogServices = IDialogServicesFactory.Create();
@@ -148,13 +149,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.VersionCompatibility
             var vsSolutionService = IVsServiceFactory.Create<SVsSolution, IVsSolution>(IVsSolutionFactory.CreateWithAdviseUnadviseSolutionEvents(1, isFullyLoaded: isSolutionOpen));
             var vsAppIdService = IVsServiceFactory.Create<SVsAppId, IVsAppId>(Mock.Of<IVsAppId>());
             var vsShellService = IVsServiceFactory.Create<SVsShell, IVsShell>(Mock.Of<IVsShell>());
-
+            var previewSDKService = new Lazy<IPreviewSDKService>(() => IPreviewSDKServiceFactory.Create(usingPreviewSDK));
+            
             var compatibilityDetector = new TestDotNetCoreProjectCompatibilityDetector(projectAccessor,
                                                                                        lazyDialogServices,
                                                                                        threadHandling,
                                                                                        vsShellUtilitiesHelper,
                                                                                        fileSystem,
                                                                                        httpClient,
+                                                                                       previewSDKService,
                                                                                        vsUIShellService,
                                                                                        settingsManagerService,
                                                                                        vsSolutionService,
