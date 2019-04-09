@@ -64,5 +64,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.VersionCompatibility
             Assert.NotNull(compatibilityData.OpenUnsupportedMessage);
             Assert.Equal(expectedSupportedMessage, compatibilityData.OpenSupportedMessage);
         }
+
+        [Fact]
+        public void DataCorrectlySerializes_PreviewVersion()
+        {
+            string expectedSupportedMessage = "A newer version of Visual Studio is recommended for projects targetting .NET Core projects later then 2.2.";
+            string versionDataString = $@" {{
+  ""vsVersions"": {{
+    ""16.1"": {{
+      ""openSupportedPreviewMessage"": ""{expectedSupportedMessage}"",
+      ""supportedPreviewVersion"": ""3.0"",
+    }}
+  }}
+}}";
+            var data = VersionCompatibilityData.DeserializeVersionData(versionDataString);
+            Assert.NotNull(data);
+            Assert.True(data.TryGetValue(new Version("16.1"), out var compatibilityData));
+            Assert.Null(compatibilityData.SupportedVersion);
+            Assert.Null(compatibilityData.UnsupportedVersion);
+            Assert.Null(compatibilityData.OpenSupportedMessage);
+            Assert.Null(compatibilityData.OpenUnsupportedMessage);
+            Assert.NotNull(compatibilityData.SupportedPreviewVersion);
+            Assert.Equal(expectedSupportedMessage, compatibilityData.OpenSupportedPreviewMessage);
+        }
     }
 }
