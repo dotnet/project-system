@@ -41,24 +41,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private readonly Lazy<IVsShellUtilitiesHelper> _shellUtilitiesHelper;
         private readonly Lazy<IFileSystem> _fileSystem;
         private readonly Lazy<IHttpClient> _httpClient;
+        private readonly Lazy<IProjectCreationInfoService> _projectCreationInfoService;
         private readonly IVsService<ISettingsManager> _settingsManagerService;
         private readonly IVsService<IVsUIShell> _vsUIShellService;
         private readonly IVsService<IVsSolution> _vsSolutionService;
         private readonly IVsService<IVsAppId> _vsAppIdService;
         private readonly IVsService<IVsShell> _vsShellService;
         private RemoteCacheFile _versionDataCacheFile;
-        private Version _ourVSVersion;
         private uint _solutionCookie = VSConstants.VSCOOKIE_NIL;
-        private bool _solutionOpened;
-        private CompatibilityLevel _compatibilityLevelWarnedForThisSolution = CompatibilityLevel.Recommended;
         private DateTime _timeCurVersionDataLastUpdatedUtc = DateTime.MinValue; // Tracks how often we meed to look for new data
-        private VersionCompatibilityData _curVersionCompatibilityData;
         private IVsSolution _vsSolution;
+
+        // These are internal for unit testing
+        internal bool SolutionOpen { get; private set; }
+        internal Version VisualStudioVersion { get; private set; }
+        internal CompatibilityLevel CompatibilityLevelWarnedForCurrentSolution { get; set; } = CompatibilityLevel.Recommended;
+        internal VersionCompatibilityData CurrrentVersionCompatibilityData { get; private set; }
 
         [ImportingConstructor]
         public DotNetCoreProjectCompatibilityDetector(Lazy<IProjectServiceAccessor> projectAccessor,
-                                                      Lazy<IDialogServices> dialogServices, Lazy<IProjectThreadingService> threadHandling, Lazy<IVsShellUtilitiesHelper> vsShellUtilitiesHelper,
+                                                      Lazy<IDialogServices> dialogServices,
+                                                      Lazy<IProjectThreadingService> threadHandling,
+                                                      Lazy<IVsShellUtilitiesHelper> vsShellUtilitiesHelper,
                                                       Lazy<IFileSystem> fileSystem, Lazy<IHttpClient> httpClient,
+                                                      Lazy<IProjectCreationInfoService> projectCreationInfoService,
                                                       IVsService<SVsUIShell, IVsUIShell> vsUIShellService,
                                                       IVsService<SVsSettingsPersistenceManager, ISettingsManager> settingsManagerService,
                                                       IVsService<SVsSolution, IVsSolution> vsSolutionService,
@@ -71,6 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _shellUtilitiesHelper = vsShellUtilitiesHelper;
             _fileSystem = fileSystem;
             _httpClient = httpClient;
+            _projectCreationInfoService = projectCreationInfoService;
             _vsUIShellService = vsUIShellService;
             _settingsManagerService = settingsManagerService;
             _vsSolutionService = vsSolutionService;
@@ -90,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                                                             TimeSpan.FromHours(CacheFileValidHours), _fileSystem.Value, _httpClient);
             }
 
-            _ourVSVersion = await _shellUtilitiesHelper.Value.GetVSVersionAsync(_vsAppIdService);
+            VisualStudioVersion = await _shellUtilitiesHelper.Value.GetVSVersionAsync(_vsAppIdService);
 
             _vsSolution = await _vsSolutionService.GetValueAsync();
             Verify.HResult(_vsSolution.AdviseSolutionEvents(this, out _solutionCookie));
@@ -101,7 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 isFullyLoaded is bool isFullyLoadedBool &&
                 isFullyLoadedBool)
             {
-                _solutionOpened = true;
+                SolutionOpen = true;
                 // do not block package initialization on this
                 _threadHandling.Value.RunAndForget(async () =>
                 {
@@ -136,7 +143,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             // Only check this project if the solution is opened and we haven't already warned at the maximum level. Note that fAdded
             // is true for both add and a reload of an unloaded project
-            if (_solutionOpened && fAdded == 1 && _compatibilityLevelWarnedForThisSolution != CompatibilityLevel.NotSupported)
+            if (SolutionOpen && fAdded == 1 && CompatibilityLevelWarnedForCurrentSolution != CompatibilityLevel.NotSupported)
             {
                 UnconfiguredProject project = pHierarchy.AsUnconfiguredProject();
                 if (project != null)
@@ -150,8 +157,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
                         // We need to check if this project has been newly created. Our projects will implement IProjectCreationState -we can 
                         // skip any that don't
-                        IProjectCreationState projectCreationState = project.Services.ExportProvider.GetExportedValueOrDefault<IProjectCreationState>();
-                        if (projectCreationState != null && !projectCreationState.WasNewlyCreated)
+                        if (_projectCreationInfoService.Value.IsNewlyCreated(project))
                         {
                             CompatibilityLevel compatLevel = await GetProjectCompatibilityAsync(project, compatData);
                             if (compatLevel != CompatibilityLevel.Recommended)
@@ -169,8 +175,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public int OnAfterCloseSolution(object pUnkReserved)
         {
             // Clear state flags
-            _compatibilityLevelWarnedForThisSolution = CompatibilityLevel.Recommended;
-            _solutionOpened = false;
+            CompatibilityLevelWarnedForCurrentSolution = CompatibilityLevel.Recommended;
+            SolutionOpen = false;
             return VSConstants.S_OK;
         }
 
@@ -201,7 +207,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
 
             // Used so we know when to process newly added projects
-            _solutionOpened = true;
+            SolutionOpen = true;
         }
 
 
@@ -218,15 +224,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private async Task WarnUserOfIncompatibleProjectAsync(CompatibilityLevel compatLevel, VersionCompatibilityData compatData)
         {
-            // Warn the user.
-            await _threadHandling.Value.SwitchToUIThread();
+            if (!_threadHandling.Value.IsOnMainThread)
+            {
+                await _threadHandling.Value.SwitchToUIThread();
+            }
 
             // Check if already warned - this could happen in the off chance two projects are added very quickly since the detection work is 
             // scheduled on idle.
-            if (_compatibilityLevelWarnedForThisSolution < compatLevel)
+            if (CompatibilityLevelWarnedForCurrentSolution < compatLevel)
             {
                 // Only want to warn once per solution
-                _compatibilityLevelWarnedForThisSolution = compatLevel;
+                CompatibilityLevelWarnedForCurrentSolution = compatLevel;
 
                 IVsUIShell uiShell = await _vsUIShellService.GetValueAsync();
                 uiShell.GetAppName(out string caption);
@@ -366,9 +374,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             // Do we need to update our cached data? Note that since the download could take a long time like tens of seconds we don't really want to
             // start showing messages to the user well after their project is opened and they are interacting with it. Thus we start a task to update the 
             // file, so that the next time we come here, we have updated data.
-            if (_curVersionCompatibilityData != null && _timeCurVersionDataLastUpdatedUtc.AddHours(CacheFileValidHours) > DateTime.UtcNow)
+            if (CurrrentVersionCompatibilityData != null && _timeCurVersionDataLastUpdatedUtc.AddHours(CacheFileValidHours) > DateTime.UtcNow)
             {
-                return _curVersionCompatibilityData;
+                return CurrrentVersionCompatibilityData;
             }
 
             try
@@ -389,7 +397,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 if (versionCompatData != null)
                 {
                     // First try to match exactly on our VS version and if that fails, match on just major, minor
-                    if (versionCompatData.TryGetValue(_ourVSVersion, out VersionCompatibilityData compatData) || versionCompatData.TryGetValue(new Version(_ourVSVersion.Major, _ourVSVersion.Minor), out compatData))
+                    if (versionCompatData.TryGetValue(VisualStudioVersion, out VersionCompatibilityData compatData) || versionCompatData.TryGetValue(new Version(VisualStudioVersion.Major, VisualStudioVersion.Minor), out compatData))
                     {
                         // Now fix up missing data
                         if (string.IsNullOrEmpty(compatData.OpenSupportedMessage))
@@ -411,7 +419,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             }
 
-            if (_curVersionCompatibilityData == null)
+            if (CurrrentVersionCompatibilityData == null)
             {
                 // Something failed or no remote file,  use the compatibility data we shipped with which does not have any warnings
                 UpdateInMemoryCachedData(new VersionCompatibilityData()
@@ -421,12 +429,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 });
             }
 
-            return _curVersionCompatibilityData;
+            return CurrrentVersionCompatibilityData;
         }
 
         private void UpdateInMemoryCachedData(VersionCompatibilityData newData)
         {
-            _curVersionCompatibilityData = newData;
+            CurrrentVersionCompatibilityData = newData;
             _timeCurVersionDataLastUpdatedUtc = DateTime.UtcNow;
         }
 

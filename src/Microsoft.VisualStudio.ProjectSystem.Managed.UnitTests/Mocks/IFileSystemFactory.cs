@@ -23,11 +23,13 @@ namespace Microsoft.VisualStudio.IO
             return mock.Object;
         }
 
-        public static IFileSystem Create(Func<string, bool> existsFunc, Func<string, FileStream> createFunc = null)
+        public static IFileSystem Create(Func<string, bool> existsFunc, Func<string, FileStream> createFunc = null,
+                                         Func<string, string> readAllTextFunc = null)
         {
             var mock = new Mock<IFileSystem>();
 
             mock.Setup(f => f.FileExists(It.IsAny<string>())).Returns(existsFunc);
+            mock.Setup(f => f.ReadAllText(It.IsAny<string>())).Returns(readAllTextFunc);
 
             if (createFunc != null)
             {
