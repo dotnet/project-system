@@ -339,34 +339,60 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 version = new Version(version.Major, version.Minor);
             }
 
-            if (compatData.SupportedVersion != null)
+            if (compatData.SupportedPreviewVersion is null &&
+                compatData.SupportedVersion is null &&
+                compatData.UnsupportedVersion is null)
             {
-                if (version < compatData.SupportedVersion)
-                {
-                    return CompatibilityLevel.Recommended;
-                }
-                else if (version == compatData.SupportedVersion || (compatData.UnsupportedVersion != null && version < compatData.UnsupportedVersion))
-                {
-                    return CompatibilityLevel.Supported;
-                }
-
-                return CompatibilityLevel.NotSupported;
+                // no restrictions
+                return CompatibilityLevel.Recommended;
             }
 
-            // Only has an unsupported version
-            if (compatData.UnsupportedVersion != null)
-            {
-                if (version < compatData.UnsupportedVersion)
-                {
-                    return CompatibilityLevel.Recommended;
-                }
-
-                return CompatibilityLevel.NotSupported;
-            }
-
-            // No restrictions
-            return CompatibilityLevel.Recommended;
+            return GetCompatibilityLevelFromPreview(version, compatData.SupportedPreviewVersion, compatData.SupportedVersion, compatData.UnsupportedVersion);
         }
+
+        private static CompatibilityLevel GetCompatibilityLevelFromPreview(Version version, Version supportedPreviewVersion, Version supportedVersion, Version unsupportedVersion)
+        {
+            // version is less than the supported preview version and the user wants to use preview SDKs
+            if (supportedPreviewVersion is object && IsPreview() && version <= supportedPreviewVersion)
+            {
+                return CompatibilityLevel.Recommended;
+            }
+
+            return GetCompatibilityLevelFromSupportedn(version, supportedVersion, unsupportedVersion);
+        }
+
+        private static CompatibilityLevel GetCompatibilityLevelFromSupportedn(Version version, Version supportedVersion, Version unsupportedVersion)
+        {
+            // a supported version exists and the version is less than the supported version
+            if (supportedVersion is object && version < supportedVersion)
+            {
+                return CompatibilityLevel.Recommended;
+            }
+
+            // ther version is not unsupported and exactly matches the supported version
+            if (supportedVersion is object && unsupportedVersion is object &&
+                version == supportedVersion && version < unsupportedVersion)
+            {
+                return CompatibilityLevel.Supported;
+            }
+
+            // supported version is null or not recommended check unsupported version
+            return GetCompatibilityLevelForUnsupported(version, unsupportedVersion);
+        }
+
+        private static CompatibilityLevel GetCompatibilityLevelForUnsupported(Version version, Version unsupportedVersion)
+        {
+            // unsupportedVersion cannot be null if we've made it here
+            if (version < unsupportedVersion)
+            {
+                return CompatibilityLevel.Recommended;
+            }
+
+            // unsupported version is not recommended
+            return CompatibilityLevel.NotSupported;
+        }
+
+        private static bool IsPreview() => throw new NotImplementedException();
 
         /// <summary>
         /// Pings the server to download version compatibility information and stores this in a cached file in the users app data. If the cached file is
