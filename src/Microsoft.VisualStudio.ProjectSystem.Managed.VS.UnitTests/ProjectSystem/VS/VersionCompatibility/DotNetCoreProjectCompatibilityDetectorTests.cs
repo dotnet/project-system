@@ -62,9 +62,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.VersionCompatibility
         [Fact]
         public async Task OnAfterOpenProject_NewProject_DoNotShowWarning()
         {
-            var compatibilityDetector = CreateCompatibilityDetector(out var dialogServices, isSolutionOpen: true, hasNewProjects: true, targetFrameworkMoniker: ".NETCoreApp,Version=v2.0");
+            const string targetFrameworkMoniker = ".NETCoreApp,Version=v2.0";
+            var compatibilityDetector = CreateCompatibilityDetector(out var dialogServices, isSolutionOpen: true, hasNewProjects: true, targetFrameworkMoniker: targetFrameworkMoniker);
             await compatibilityDetector.InitializeAsync();
-            var ivsHierarchy = IVsHierarchyFactory.ImplementAsUnconfiguredProject(UnconfiguredProjectFactory.Create());
+            var ivsHierarchy = CreateIVSHierarchy(targetFrameworkMoniker);
             compatibilityDetector.CompatibilityLevelWarnedForCurrentSolution = DotNetCoreProjectCompatibilityDetector.CompatibilityLevel.Supported;
             compatibilityDetector.OnAfterOpenProject(ivsHierarchy, fAdded: 1);
             Mock.Get(dialogServices).Verify(x => x.DontShowAgainMessageBox(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>()), Times.Never);
@@ -75,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.VersionCompatibility
         {
             var compatibilityDetector = CreateCompatibilityDetector(out var dialogServices, isSolutionOpen: true, hasNewProjects: true);
             await compatibilityDetector.InitializeAsync();
-            var ivsHierarchy = IVsHierarchyFactory.ImplementAsUnconfiguredProject(UnconfiguredProjectFactory.Create());
+            var ivsHierarchy = CreateIVSHierarchy();
             compatibilityDetector.CompatibilityLevelWarnedForCurrentSolution = DotNetCoreProjectCompatibilityDetector.CompatibilityLevel.Supported;
             compatibilityDetector.OnAfterOpenProject(ivsHierarchy, fAdded: 1);
             Mock.Get(dialogServices).Verify(x => x.DontShowAgainMessageBox(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
@@ -84,9 +85,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.VersionCompatibility
         [Fact]
         public async Task OnAfterOpenProject_NewProject_Unsupported_ShowWarning()
         {
-            var compatibilityDetector = CreateCompatibilityDetector(out var dialogServices, isSolutionOpen: true, hasNewProjects: true, versionDataString: defaultUnSupportedVersionDataString, targetFrameworkMoniker: ".NETCoreApp,Version=v3.1");
+            const string targetFrameworkMoniker = ".NETCoreApp,Version=v3.1";
+            var compatibilityDetector = CreateCompatibilityDetector(out var dialogServices, isSolutionOpen: true, hasNewProjects: true, versionDataString: defaultUnSupportedVersionDataString);
             await compatibilityDetector.InitializeAsync();
-            var ivsHierarchy = IVsHierarchyFactory.ImplementAsUnconfiguredProject(UnconfiguredProjectFactory.Create());
+            var ivsHierarchy = CreateIVSHierarchy(targetFrameworkMoniker);
             compatibilityDetector.CompatibilityLevelWarnedForCurrentSolution = DotNetCoreProjectCompatibilityDetector.CompatibilityLevel.Supported;
             compatibilityDetector.OnAfterOpenProject(ivsHierarchy, fAdded: 1);
             Mock.Get(dialogServices).Verify(x => x.DontShowAgainMessageBox(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
@@ -160,6 +162,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.VersionCompatibility
                                                                                        vsShellService,
                                                                                        hasNewProjects);
             return compatibilityDetector;
+        }
+
+        private static IVsHierarchy CreateIVSHierarchy(string targetFrameworkMoniker = ".NETCoreApp,Version=v3.0")
+        {
+            var projectProperties = IProjectPropertiesFactory.CreateWithPropertyAndValue("TargetFrameworkMoniker", targetFrameworkMoniker);
+            var propertiesProvider = IProjectPropertiesProviderFactory.Create(commonProps: projectProperties);
+            var project = ConfiguredProjectFactory.Create(services: ConfiguredProjectServicesFactory.Create(projectPropertiesProvider: propertiesProvider));
+            var scope = IProjectCapabilitiesScopeFactory.Create(new[] { ProjectCapability.DotNet, ProjectCapability.PackageReferences });
+            var ivsHierarchy = IVsHierarchyFactory.ImplementAsUnconfiguredProject(UnconfiguredProjectFactory.Create(scope: scope, configuredProject: project));
+            return ivsHierarchy;
         }
 
         private const string defaultVersionDataString = @" {
