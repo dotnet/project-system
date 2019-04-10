@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -377,10 +377,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 return CompatibilityLevel.Recommended;
             }
 
-            return GetCompatibilityLevelFromSupportedn(version, supportedVersion, unsupportedVersion);
+            return GetCompatibilityLevelFromSupported(version, supportedVersion, unsupportedVersion);
         }
 
-        private static CompatibilityLevel GetCompatibilityLevelFromSupportedn(Version version, Version supportedVersion, Version unsupportedVersion)
+        private static CompatibilityLevel GetCompatibilityLevelFromSupported(Version version, Version supportedVersion, Version unsupportedVersion)
         {
             // A supported version exists and the version is less than the supported version
             if (supportedVersion is object && version < supportedVersion)
