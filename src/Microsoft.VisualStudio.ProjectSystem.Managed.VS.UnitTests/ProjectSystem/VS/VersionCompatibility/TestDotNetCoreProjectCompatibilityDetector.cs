@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.VS.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.UI;
@@ -13,6 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.VersionCompatibility
     internal class TestDotNetCoreProjectCompatibilityDetector : DotNetCoreProjectCompatibilityDetector
     {
         private readonly bool _hasNewProjects;
+        private readonly bool _usingPreviewSDK;
 
         public TestDotNetCoreProjectCompatibilityDetector(Lazy<IProjectServiceAccessor> projectAccessor,
                                                           Lazy<IDialogServices> dialogServices,
@@ -20,18 +22,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.VersionCompatibility
                                                           Lazy<IVsShellUtilitiesHelper> vsShellUtilitiesHelper,
                                                           Lazy<IFileSystem> fileSystem,
                                                           Lazy<IHttpClient> httpClient,
-                                                          Lazy<IPreviewSDKService> previewSDKService,
                                                           IVsService<SVsUIShell, IVsUIShell> vsUIShellService,
                                                           IVsService<SVsSettingsPersistenceManager, ISettingsManager> settingsManagerService,
                                                           IVsService<SVsSolution, IVsSolution> vsSolutionService,
                                                           IVsService<SVsAppId, IVsAppId> vsAppIdService,
                                                           IVsService<SVsShell, IVsShell> vsShellService,
-                                                          bool hasNewProjects = false) :
-            base(projectAccessor, dialogServices, threadHandling, vsShellUtilitiesHelper, fileSystem, httpClient, previewSDKService, vsUIShellService, settingsManagerService, vsSolutionService, vsAppIdService, vsShellService)
+                                                          bool hasNewProjects = false,
+                                                          bool usingPreviewSDK = false) :
+            base(projectAccessor, dialogServices, threadHandling, vsShellUtilitiesHelper, fileSystem, httpClient, vsUIShellService, settingsManagerService, vsSolutionService, vsAppIdService, vsShellService)
         {
             _hasNewProjects = hasNewProjects;
+            _usingPreviewSDK = usingPreviewSDK;
         }
 
+        protected override Task<bool> IsPreviewSDKInUseAsync() => Task.FromResult(_usingPreviewSDK);
         protected override bool IsNewlyCreated(UnconfiguredProject project) => _hasNewProjects;
+
     }
 }

@@ -15,6 +15,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.UI;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Settings;
+using Microsoft.VisualStudio.Setup.Configuration;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 
@@ -31,6 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private const string SupportedLearnMoreFwlink = "https://go.microsoft.com/fwlink/?linkid=868064";
         private const string UnsupportedLearnMoreFwlink = "https://go.microsoft.com/fwlink/?linkid=866797";
         private const string SuppressDotNewCoreWarningKey = @"ManagedProjectSystem\SuppressDotNewCoreWarning";
+        private const string UsePreviewSdkSettingKey = @"ManagedProjectSystem\UsePreviewSdk";
         private const string VersionCompatibilityDownloadFwlink = "https://go.microsoft.com/fwlink/?linkid=866798";
         private const string VersionDataFilename = "DotNetVersionCompatibility.json";
         private const int CacheFileValidHours = 24;
@@ -41,7 +43,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private readonly Lazy<IVsShellUtilitiesHelper> _shellUtilitiesHelper;
         private readonly Lazy<IFileSystem> _fileSystem;
         private readonly Lazy<IHttpClient> _httpClient;
-        private readonly Lazy<IPreviewSDKService> _previewSDKService;
         private readonly IVsService<ISettingsManager> _settingsManagerService;
         private readonly IVsService<IVsUIShell> _vsUIShellService;
         private readonly IVsService<IVsSolution> _vsSolutionService;
@@ -64,7 +65,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                                                       Lazy<IProjectThreadingService> threadHandling,
                                                       Lazy<IVsShellUtilitiesHelper> vsShellUtilitiesHelper,
                                                       Lazy<IFileSystem> fileSystem, Lazy<IHttpClient> httpClient,
-                                                      Lazy<IPreviewSDKService> previewSDKService,
                                                       IVsService<SVsUIShell, IVsUIShell> vsUIShellService,
                                                       IVsService<SVsSettingsPersistenceManager, ISettingsManager> settingsManagerService,
                                                       IVsService<SVsSolution, IVsSolution> vsSolutionService,
@@ -77,7 +77,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _shellUtilitiesHelper = vsShellUtilitiesHelper;
             _fileSystem = fileSystem;
             _httpClient = httpClient;
-            _previewSDKService = previewSDKService;
             _vsUIShellService = vsUIShellService;
             _settingsManagerService = settingsManagerService;
             _vsSolutionService = vsSolutionService;
@@ -159,7 +158,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                         // skip any that don't
                         if (IsNewlyCreated(project))
                         {
-                            bool isPreviewSDKInUse = await _previewSDKService.Value.IsPreviewSDKInUseAsync();
+                            bool isPreviewSDKInUse = await IsPreviewSDKInUseAsync();
                             CompatibilityLevel compatLevel = await GetProjectCompatibilityAsync(project, compatData, isPreviewSDKInUse);
                             if (compatLevel != CompatibilityLevel.Recommended)
                             {
@@ -171,6 +170,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
 
             return VSConstants.S_OK;
+        }
+
+        // This method is overridden in test code
+        protected virtual async Task<bool> IsPreviewSDKInUseAsync()
+        {
+            var vsSetupConfig = new SetupConfiguration();
+            ISetupInstance setupInstance = vsSetupConfig.GetInstanceForCurrentProcess();
+            if (setupInstance is ISetupInstanceCatalog setupInstanceCatalog &&
+                setupInstanceCatalog.IsPrerelease())
+            {
+                return true;
+            }
+
+            var settings = await _settingsManagerService?.GetValueAsync();
+            return settings.GetValueOrDefault<bool>(UsePreviewSdkSettingKey);
         }
 
         // This method is overridden in test code
@@ -197,7 +211,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             CompatibilityLevel finalCompatLevel = CompatibilityLevel.Recommended;
             IProjectService projectService = _projectServiceAccessor.Value.GetProjectService();
             IEnumerable<UnconfiguredProject> projects = projectService.LoadedUnconfiguredProjects;
-            bool isPreviewSDKInUse = await _previewSDKService.Value.IsPreviewSDKInUseAsync();
+            bool isPreviewSDKInUse = await IsPreviewSDKInUseAsync();
             foreach (UnconfiguredProject project in projects)
             {
                 // Track the most severe compatibility level

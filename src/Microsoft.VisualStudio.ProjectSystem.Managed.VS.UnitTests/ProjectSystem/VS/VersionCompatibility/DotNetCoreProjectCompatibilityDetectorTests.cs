@@ -183,7 +183,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.VersionCompatibility
             var vsSolutionService = IVsServiceFactory.Create<SVsSolution, IVsSolution>(IVsSolutionFactory.CreateWithAdviseUnadviseSolutionEvents(1, isFullyLoaded: isSolutionOpen));
             var vsAppIdService = IVsServiceFactory.Create<SVsAppId, IVsAppId>(Mock.Of<IVsAppId>());
             var vsShellService = IVsServiceFactory.Create<SVsShell, IVsShell>(Mock.Of<IVsShell>());
-            var previewSDKService = new Lazy<IPreviewSDKService>(() => IPreviewSDKServiceFactory.Create(usingPreviewSDK));
             
             var compatibilityDetector = new TestDotNetCoreProjectCompatibilityDetector(projectAccessor,
                                                                                        lazyDialogServices,
@@ -191,13 +190,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.VersionCompatibility
                                                                                        vsShellUtilitiesHelper,
                                                                                        fileSystem,
                                                                                        httpClient,
-                                                                                       previewSDKService,
                                                                                        vsUIShellService,
                                                                                        settingsManagerService,
                                                                                        vsSolutionService,
                                                                                        vsAppIdService,
                                                                                        vsShellService,
-                                                                                       hasNewProjects);
+                                                                                       hasNewProjects,
+                                                                                       usingPreviewSDK);
             return compatibilityDetector;
         }
 
