@@ -34,7 +34,8 @@
      <ProjectCapability Include="
                           VB;
                           Managed;
-                          ClassDesigner;" />
+                          ClassDesigner;
+                          PreventAutomaticMyApplication;" />
   </ItemGroup>
 
   <!-- Targets -->
