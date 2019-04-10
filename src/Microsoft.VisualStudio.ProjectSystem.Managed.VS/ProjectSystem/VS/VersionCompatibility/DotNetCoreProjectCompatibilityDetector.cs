@@ -162,7 +162,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                             CompatibilityLevel compatLevel = await GetProjectCompatibilityAsync(project, compatData, isPreviewSDKInUse);
                             if (compatLevel != CompatibilityLevel.Recommended)
                             {
-                                await WarnUserOfIncompatibleProjectAsync(compatLevel, compatData);
+                                await WarnUserOfIncompatibleProjectAsync(compatLevel, compatData, isPreviewSDKInUse);
                             }
                         }
                     }, unconfiguredProject: null);
@@ -226,7 +226,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             {
 
                 // Warn the user.
-                await WarnUserOfIncompatibleProjectAsync(finalCompatLevel, compatDataToUse);
+                await WarnUserOfIncompatibleProjectAsync(finalCompatLevel, compatDataToUse, isPreviewSDKInUse);
             }
 
             // Used so we know when to process newly added projects
@@ -245,7 +245,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return VSConstants.S_OK;
         }
 
-        private async Task WarnUserOfIncompatibleProjectAsync(CompatibilityLevel compatLevel, VersionCompatibilityData compatData)
+        private async Task WarnUserOfIncompatibleProjectAsync(CompatibilityLevel compatLevel, VersionCompatibilityData compatData, bool isPreviewSDKInUse)
         {
             if (!_threadHandling.Value.IsOnMainThread)
             {
@@ -274,7 +274,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
                     if (!suppressPrompt)
                     {
-                        string msg = string.Format(compatData.OpenSupportedMessage, compatData.SupportedVersion.Major, compatData.SupportedVersion.Minor);
+                        string msg;
+                        if (compatData.OpenSupportedPreviewMessage is object && isPreviewSDKInUse)
+                        {
+                            msg = string.Format(compatData.OpenSupportedPreviewMessage, compatData.SupportedVersion.Major, compatData.SupportedVersion.Minor);
+                        }
+                        else
+                        {
+                            msg = string.Format(compatData.OpenSupportedMessage, compatData.SupportedVersion.Major, compatData.SupportedVersion.Minor);
+                        }
+
                         suppressPrompt = _dialogServices.Value.DontShowAgainMessageBox(caption, msg, VSResources.DontShowAgain, false, VSResources.LearnMore, SupportedLearnMoreFwlink);
                         if (suppressPrompt && settingsManager != null)
                         {
