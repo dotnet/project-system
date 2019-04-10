@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -362,7 +362,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 compatData.SupportedVersion is null &&
                 compatData.UnsupportedVersion is null)
             {
-                // no restrictions
+                // No restrictions
                 return CompatibilityLevel.Recommended;
             }
 
@@ -371,7 +371,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private static CompatibilityLevel GetCompatibilityLevelFromPreview(Version version, Version supportedPreviewVersion, Version supportedVersion, Version unsupportedVersion, bool isPreviewSDKInUse)
         {
-            // version is less than the supported preview version and the user wants to use preview SDKs
+            // Version is less than the supported preview version and the user wants to use preview SDKs
             if (supportedPreviewVersion is object && isPreviewSDKInUse && version <= supportedPreviewVersion)
             {
                 return CompatibilityLevel.Recommended;
@@ -382,32 +382,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private static CompatibilityLevel GetCompatibilityLevelFromSupportedn(Version version, Version supportedVersion, Version unsupportedVersion)
         {
-            // a supported version exists and the version is less than the supported version
+            // A supported version exists and the version is less than the supported version
             if (supportedVersion is object && version < supportedVersion)
             {
                 return CompatibilityLevel.Recommended;
             }
 
-            // ther version is not unsupported and exactly matches the supported version
+            // The version is not unsupported and exactly matches the supported version
             if (supportedVersion is object && unsupportedVersion is object &&
                 version == supportedVersion && version < unsupportedVersion)
             {
                 return CompatibilityLevel.Supported;
             }
 
-            // supported version is null or not recommended check unsupported version
+            // Supported version is null or not recommended check unsupported version
             return GetCompatibilityLevelForUnsupported(version, unsupportedVersion);
         }
 
         private static CompatibilityLevel GetCompatibilityLevelForUnsupported(Version version, Version unsupportedVersion)
         {
-            // unsupportedVersion cannot be null if we've made it here
+            // UnsupportedVersion cannot be null if we've made it here
             if (version < unsupportedVersion)
             {
                 return CompatibilityLevel.Recommended;
             }
 
-            // unsupported version is not recommended
+            // Unsupported version is not recommended
             return CompatibilityLevel.NotSupported;
         }
 
