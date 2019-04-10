@@ -146,20 +146,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.VersionCompatibility
             var vsSolutionService = IVsServiceFactory.Create<SVsSolution, IVsSolution>(IVsSolutionFactory.CreateWithAdviseUnadviseSolutionEvents(1, isFullyLoaded: isSolutionOpen));
             var vsAppIdService = IVsServiceFactory.Create<SVsAppId, IVsAppId>(Mock.Of<IVsAppId>());
             var vsShellService = IVsServiceFactory.Create<SVsShell, IVsShell>(Mock.Of<IVsShell>());
-            var projectCreationInfoService = new Lazy<IProjectCreationInfoService>(() => IProjectCreationInfoServiceFactory.Create(hasNewProjects));
 
-            var compatibilityDetector = new DotNetCoreProjectCompatibilityDetector(projectAccessor,
-                                                                                   lazyDialogServices,
-                                                                                   threadHandling,
-                                                                                   vsShellUtilitiesHelper,
-                                                                                   fileSystem,
-                                                                                   httpClient,
-                                                                                   projectCreationInfoService,
-                                                                                   vsUIShellService,
-                                                                                   settingsManagerService,
-                                                                                   vsSolutionService,
-                                                                                   vsAppIdService,
-                                                                                   vsShellService);
+            var compatibilityDetector = new TestDotNetCoreProjectCompatibilityDetector(projectAccessor,
+                                                                                       lazyDialogServices,
+                                                                                       threadHandling,
+                                                                                       vsShellUtilitiesHelper,
+                                                                                       fileSystem,
+                                                                                       httpClient,
+                                                                                       vsUIShellService,
+                                                                                       settingsManagerService,
+                                                                                       vsSolutionService,
+                                                                                       vsAppIdService,
+                                                                                       vsShellService,
+                                                                                       hasNewProjects);
             return compatibilityDetector;
         }
 

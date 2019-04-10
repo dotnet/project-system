@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     /// <see cref="IDotNetCoreProjectCompatibilityDetector"/>
     /// </summary>
     [Export(typeof(IDotNetCoreProjectCompatibilityDetector))]
-    internal sealed partial class DotNetCoreProjectCompatibilityDetector : IDotNetCoreProjectCompatibilityDetector, IVsSolutionEvents, IVsSolutionLoadEvents, IDisposable
+    internal partial class DotNetCoreProjectCompatibilityDetector : IDotNetCoreProjectCompatibilityDetector, IVsSolutionEvents, IVsSolutionLoadEvents, IDisposable
     {
         private const string SupportedLearnMoreFwlink = "https://go.microsoft.com/fwlink/?linkid=868064";
         private const string UnsupportedLearnMoreFwlink = "https://go.microsoft.com/fwlink/?linkid=866797";
@@ -41,7 +41,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private readonly Lazy<IVsShellUtilitiesHelper> _shellUtilitiesHelper;
         private readonly Lazy<IFileSystem> _fileSystem;
         private readonly Lazy<IHttpClient> _httpClient;
-        private readonly Lazy<IProjectCreationInfoService> _projectCreationInfoService;
         private readonly IVsService<ISettingsManager> _settingsManagerService;
         private readonly IVsService<IVsUIShell> _vsUIShellService;
         private readonly IVsService<IVsSolution> _vsSolutionService;
@@ -64,7 +63,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                                                       Lazy<IProjectThreadingService> threadHandling,
                                                       Lazy<IVsShellUtilitiesHelper> vsShellUtilitiesHelper,
                                                       Lazy<IFileSystem> fileSystem, Lazy<IHttpClient> httpClient,
-                                                      Lazy<IProjectCreationInfoService> projectCreationInfoService,
                                                       IVsService<SVsUIShell, IVsUIShell> vsUIShellService,
                                                       IVsService<SVsSettingsPersistenceManager, ISettingsManager> settingsManagerService,
                                                       IVsService<SVsSolution, IVsSolution> vsSolutionService,
@@ -77,7 +75,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _shellUtilitiesHelper = vsShellUtilitiesHelper;
             _fileSystem = fileSystem;
             _httpClient = httpClient;
-            _projectCreationInfoService = projectCreationInfoService;
             _vsUIShellService = vsUIShellService;
             _settingsManagerService = settingsManagerService;
             _vsSolutionService = vsSolutionService;
@@ -157,7 +154,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
                         // We need to check if this project has been newly created. Our projects will implement IProjectCreationState -we can 
                         // skip any that don't
-                        if (_projectCreationInfoService.Value.IsNewlyCreated(project))
+                        if (IsNewlyCreated(project))
                         {
                             CompatibilityLevel compatLevel = await GetProjectCompatibilityAsync(project, compatData);
                             if (compatLevel != CompatibilityLevel.Recommended)
@@ -170,6 +167,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
 
             return VSConstants.S_OK;
+        }
+
+        // This method is overridden in test code
+        protected virtual bool IsNewlyCreated(UnconfiguredProject project)
+        {
+            IProjectCreationState projectCreationState = project.Services.ExportProvider.GetExportedValueOrDefault<IProjectCreationState>();
+            return projectCreationState?.WasNewlyCreated ?? false;
         }
 
         public int OnAfterCloseSolution(object pUnkReserved)
