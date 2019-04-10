@@ -2211,17 +2211,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 If (Flags And ControlDataFlags.PersistedInProjectUserFile) <> 0 Then
                     '.user file
                     Return New String() {m_PropPage.DTEProject.FullName & PERUSER_EXTENSION}
-
-                ElseIf (Flags And ControlDataFlags.PersistedInVBMyAppFile) <> 0 Then
-                    Try
-                        Dim MyAppProperties As MyApplication.MyApplicationPropertiesBase =
-                            DirectCast(m_PropPage.m_ObjectsPropertyDescriptorsArray(0)("MyApplication").GetValue(m_PropPage.m_ExtendedObjects(0)), MyApplication.MyApplicationPropertiesBase)
-                        Debug.Assert(MyAppProperties IsNot Nothing)
-                        If MyAppProperties IsNot Nothing Then
-                            Return MyAppProperties.FilesToCheckOut(True)
-                        End If
-                    Catch ex As Exception When Common.ReportWithoutCrash(ex, "Unable to retrieve MyApplicationProperties to figure out set of files to check out", NameOf(PropertyControlData))
-                    End Try
                 ElseIf (Flags And ControlDataFlags.PersistedInAppManifestFile) <> 0 Then
                     Dim AppManifest As String = GetSpecialFile(__PSFFILEID2.PSFFILEID_AppManifest, True)
                     If AppManifest <> "" Then

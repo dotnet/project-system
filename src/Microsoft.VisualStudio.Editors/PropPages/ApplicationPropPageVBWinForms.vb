@@ -1,4 +1,4 @@
-﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel
 Imports System.Windows.Forms
@@ -146,7 +146,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                     Dim data As PropertyControlData = New PropertyControlData(VBProjPropId.VBPROJPROPID_MyApplication, Const_MyApplication, Nothing, AddressOf MyApplicationSet, AddressOf MyApplicationGet, ControlDataFlags.UserHandledEvents)
                     datalist.Add(data)
-                    data = New PropertyControlData(MyAppDISPIDs.CustomSubMain, Const_CustomSubMain, UseApplicationFrameworkCheckBox, AddressOf CustomSubMainSet, AddressOf CustomSubMainGet, ControlDataFlags.UserPersisted Or ControlDataFlags.UserHandledEvents Or ControlDataFlags.PersistedInVBMyAppFile)
+                    data = New MyApplicationPersistedPropertyControlData(MyAppDISPIDs.CustomSubMain, Const_CustomSubMain, UseApplicationFrameworkCheckBox, AddressOf CustomSubMainSet, AddressOf CustomSubMainGet, ControlDataFlags.UserPersisted Or ControlDataFlags.UserHandledEvents, AddressOf MyApplicationGet)
                     datalist.Add(data)
                     data = New PropertyControlData(VsProjPropId.VBPROJPROPID_RootNamespace, Const_RootNamespace, RootNamespaceTextBox, New Control() {RootNamespaceLabel}) With {
                         .DisplayPropertyName = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Property_RootNamespace
@@ -154,7 +154,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     datalist.Add(data)
                     data = New PropertyControlData(VsProjPropId110.VBPROJPROPID_OutputTypeEx, Const_OutputTypeEx, Nothing, AddressOf OutputTypeSet, AddressOf OutputTypeGet, ControlDataFlags.None, ControlsThatDependOnOutputTypeProperty)
                     datalist.Add(data)
-                    data = New PropertyControlData(MyAppDISPIDs.MainForm, Const_MainFormNoRootNS, MainFormTextboxNoRootNS, AddressOf MainFormNoRootNSSet, Nothing, ControlDataFlags.UserPersisted Or ControlDataFlags.PersistedInVBMyAppFile)
+                    data = New MyApplicationPersistedPropertyControlData(MyAppDISPIDs.MainForm, Const_MainFormNoRootNS, MainFormTextboxNoRootNS, AddressOf MainFormNoRootNSSet, Nothing, ControlDataFlags.UserPersisted, AddressOf MyApplicationGet)
                     datalist.Add(data)
                     data = New PropertyControlData(VsProjPropId.VBPROJPROPID_StartupObject, Const_StartupObject, StartupObjectComboBox, AddressOf StartupObjectSet, AddressOf StartupObjectGet, ControlDataFlags.UserHandledEvents, ControlsThatDependOnStartupObjectProperty) With {
                         .DisplayPropertyName = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Property_StartupObject
@@ -170,17 +170,17 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     datalist.Add(data)
                     data = New PropertyControlData(VBProjPropId.VBPROJPROPID_MyType, Const_MyType, Nothing, AddressOf MyTypeSet, AddressOf MyTypeGet)
                     datalist.Add(data)
-                    data = New PropertyControlData(MyAppDISPIDs.EnableVisualStyles, Const_EnableVisualStyles, EnableXPThemesCheckBox, ControlDataFlags.UserPersisted Or ControlDataFlags.PersistedInVBMyAppFile)
+                    data = New MyApplicationPersistedPropertyControlData(MyAppDISPIDs.EnableVisualStyles, Const_EnableVisualStyles, EnableXPThemesCheckBox, ControlDataFlags.UserPersisted, AddressOf MyApplicationGet)
                     datalist.Add(data)
-                    data = New PropertyControlData(MyAppDISPIDs.AuthenticationMode, Const_AuthenticationMode, AuthenticationModeComboBox, ControlDataFlags.UserPersisted Or ControlDataFlags.PersistedInVBMyAppFile)
+                    data = New MyApplicationPersistedPropertyControlData(MyAppDISPIDs.AuthenticationMode, Const_AuthenticationMode, AuthenticationModeComboBox, ControlDataFlags.UserPersisted, AddressOf MyApplicationGet)
                     datalist.Add(data)
-                    data = New PropertyControlData(MyAppDISPIDs.SingleInstance, Const_SingleInstance, SingleInstanceCheckBox, ControlDataFlags.UserPersisted Or ControlDataFlags.PersistedInVBMyAppFile)
+                    data = New MyApplicationPersistedPropertyControlData(MyAppDISPIDs.SingleInstance, Const_SingleInstance, SingleInstanceCheckBox, ControlDataFlags.UserPersisted, AddressOf MyApplicationGet)
                     datalist.Add(data)
-                    data = New PropertyControlData(MyAppDISPIDs.ShutdownMode, Const_ShutdownMode, ShutdownModeComboBox, ControlDataFlags.UserPersisted Or ControlDataFlags.PersistedInVBMyAppFile, New Control() {ShutdownModeLabel})
+                    data = New MyApplicationPersistedPropertyControlData(MyAppDISPIDs.ShutdownMode, Const_ShutdownMode, ShutdownModeComboBox, ControlDataFlags.UserPersisted, New Control() {ShutdownModeLabel}, AddressOf MyApplicationGet)
                     datalist.Add(data)
-                    data = New PropertyControlData(MyAppDISPIDs.SplashScreen, Const_SplashScreenNoRootNS, SplashScreenComboBox, ControlDataFlags.UserPersisted Or ControlDataFlags.PersistedInVBMyAppFile, New Control() {SplashScreenLabel})
+                    data = New MyApplicationPersistedPropertyControlData(MyAppDISPIDs.SplashScreen, Const_SplashScreenNoRootNS, SplashScreenComboBox, ControlDataFlags.UserPersisted, New Control() {SplashScreenLabel}, AddressOf MyApplicationGet)
                     datalist.Add(data)
-                    data = New PropertyControlData(MyAppDISPIDs.SaveMySettingsOnExit, Const_SaveMySettingsOnExit, SaveMySettingsCheckbox, ControlDataFlags.UserPersisted Or ControlDataFlags.PersistedInVBMyAppFile)
+                    data = New MyApplicationPersistedPropertyControlData(MyAppDISPIDs.SaveMySettingsOnExit, Const_SaveMySettingsOnExit, SaveMySettingsCheckbox, ControlDataFlags.UserPersisted, AddressOf MyApplicationGet)
                     datalist.Add(data)
                     data = New PropertyControlData(VsProjPropId90.VBPROJPROPID_ApplicationManifest, "ApplicationManifest", Nothing, ControlDataFlags.Hidden)
                     datalist.Add(data)
