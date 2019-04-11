@@ -95,6 +95,40 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.VersionCompatibility
         }
 
         [Fact]
+        public async Task OnAfterOpenProject_NewProject_PreviewOn_ShowWarning()
+        {
+            const string targetFrameworkMoniker = ".NETCoreApp,Version=v3.1";
+            var compatibilityDetector = CreateCompatibilityDetector(out var dialogServices, isSolutionOpen: true, hasNewProjects: true, usingPreviewSDK: true, versionDataString: defaultsupportedPreviewVersionDataString);
+            await compatibilityDetector.InitializeAsync();
+            var ivsHierarchy = CreateIVSHierarchy(targetFrameworkMoniker);
+            compatibilityDetector.CompatibilityLevelWarnedForCurrentSolution = DotNetCoreProjectCompatibilityDetector.CompatibilityLevel.Supported;
+            compatibilityDetector.OnAfterOpenProject(ivsHierarchy, fAdded: 1);
+            Mock.Get(dialogServices).Verify(x => x.DontShowAgainMessageBox(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task OnAfterOpenProject_NewProject_PreviewOn_DoNotShowWarning()
+        {
+            const string targetFrameworkMoniker = ".NETCoreApp,Version=v3.0";
+            var compatibilityDetector = CreateCompatibilityDetector(out var dialogServices, isSolutionOpen: true, hasNewProjects: true, usingPreviewSDK: true, versionDataString: defaultsupportedPreviewVersionDataString);
+            await compatibilityDetector.InitializeAsync();
+            var ivsHierarchy = CreateIVSHierarchy(targetFrameworkMoniker);
+            compatibilityDetector.OnAfterOpenProject(ivsHierarchy, fAdded: 1);
+            Mock.Get(dialogServices).Verify(x => x.DontShowAgainMessageBox(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>()), Times.Never);
+        }
+
+        [Fact]
+        public async Task OnAfterOpenProject_NewProject_PreviewOff_ShowWarning()
+        {
+            const string targetFrameworkMoniker = ".NETCoreApp,Version=v3.0";
+            var compatibilityDetector = CreateCompatibilityDetector(out var dialogServices, isSolutionOpen: true, hasNewProjects: true, usingPreviewSDK:false, versionDataString: defaultsupportedPreviewVersionDataString);
+            await compatibilityDetector.InitializeAsync();
+            var ivsHierarchy = CreateIVSHierarchy(targetFrameworkMoniker);
+            compatibilityDetector.OnAfterOpenProject(ivsHierarchy, fAdded: 1);
+            Mock.Get(dialogServices).Verify(x => x.DontShowAgainMessageBox(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+        }
+
+        [Fact]
         public async Task OnAfterBackgroundSolutionLoadComplete_DoNotShowWarning()
         {
             var compatibilityDetector = CreateCompatibilityDetector(out var dialogServices, isSolutionOpen: true);
@@ -128,7 +162,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.VersionCompatibility
                                                                                           string versionDataString = null,
                                                                                           Version vsVersion = null,
                                                                                           bool isSolutionOpen = false,
-                                                                                          bool hasNewProjects = false, 
+                                                                                          bool hasNewProjects = false,
+                                                                                          bool usingPreviewSDK = false,
                                                                                           string targetFrameworkMoniker = ".NETCoreApp,Version=v3.0")
         {
             dialogServices = IDialogServicesFactory.Create();
@@ -148,7 +183,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.VersionCompatibility
             var vsSolutionService = IVsServiceFactory.Create<SVsSolution, IVsSolution>(IVsSolutionFactory.CreateWithAdviseUnadviseSolutionEvents(1, isFullyLoaded: isSolutionOpen));
             var vsAppIdService = IVsServiceFactory.Create<SVsAppId, IVsAppId>(Mock.Of<IVsAppId>());
             var vsShellService = IVsServiceFactory.Create<SVsShell, IVsShell>(Mock.Of<IVsShell>());
-
+            
             var compatibilityDetector = new TestDotNetCoreProjectCompatibilityDetector(projectAccessor,
                                                                                        lazyDialogServices,
                                                                                        threadHandling,
@@ -160,7 +195,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.VersionCompatibility
                                                                                        vsSolutionService,
                                                                                        vsAppIdService,
                                                                                        vsShellService,
-                                                                                       hasNewProjects);
+                                                                                       hasNewProjects,
+                                                                                       usingPreviewSDK);
             return compatibilityDetector;
         }
 
@@ -191,6 +227,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.VersionCompatibility
   ""vsVersions"": {
     ""16.1"": {
       ""unsupportedVersion"": ""3.1"",
+      ""unsupportedVersionsInstalledMessage"": """",
+    }
+  }
+}";
+
+        private const string defaultsupportedPreviewVersionDataString = @" {
+  ""vsVersions"": {
+    ""16.1"": {
+      ""supportedPreviewVersion"": ""3.0"",
+      ""openSupportedPreviewMessage"": """",
+      ""unsupportedVersion"": ""3.0"",
       ""unsupportedVersionsInstalledMessage"": """",
     }
   }

@@ -15,6 +15,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.UI;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Settings;
+using Microsoft.VisualStudio.Setup.Configuration;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 
@@ -31,6 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private const string SupportedLearnMoreFwlink = "https://go.microsoft.com/fwlink/?linkid=868064";
         private const string UnsupportedLearnMoreFwlink = "https://go.microsoft.com/fwlink/?linkid=866797";
         private const string SuppressDotNewCoreWarningKey = @"ManagedProjectSystem\SuppressDotNewCoreWarning";
+        private const string UsePreviewSdkSettingKey = @"ManagedProjectSystem\UsePreviewSdk";
         private const string VersionCompatibilityDownloadFwlink = "https://go.microsoft.com/fwlink/?linkid=866798";
         private const string VersionDataFilename = "DotNetVersionCompatibility.json";
         private const int CacheFileValidHours = 24;
@@ -156,10 +158,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                         // skip any that don't
                         if (IsNewlyCreated(project))
                         {
-                            CompatibilityLevel compatLevel = await GetProjectCompatibilityAsync(project, compatData);
+                            bool isPreviewSDKInUse = await IsPreviewSDKInUseAsync();
+                            CompatibilityLevel compatLevel = await GetProjectCompatibilityAsync(project, compatData, isPreviewSDKInUse);
                             if (compatLevel != CompatibilityLevel.Recommended)
                             {
-                                await WarnUserOfIncompatibleProjectAsync(compatLevel, compatData);
+                                await WarnUserOfIncompatibleProjectAsync(compatLevel, compatData, isPreviewSDKInUse);
                             }
                         }
                     }, unconfiguredProject: null);
@@ -167,6 +170,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
 
             return VSConstants.S_OK;
+        }
+
+        // This method is overridden in test code
+        protected virtual async Task<bool> IsPreviewSDKInUseAsync()
+        {
+            var vsSetupConfig = new SetupConfiguration();
+            ISetupInstance setupInstance = vsSetupConfig.GetInstanceForCurrentProcess();
+            if (setupInstance is ISetupInstanceCatalog setupInstanceCatalog &&
+                setupInstanceCatalog.IsPrerelease())
+            {
+                return true;
+            }
+
+            var settings = await _settingsManagerService?.GetValueAsync();
+            return settings.GetValueOrDefault<bool>(UsePreviewSdkSettingKey);
         }
 
         // This method is overridden in test code
@@ -193,10 +211,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             CompatibilityLevel finalCompatLevel = CompatibilityLevel.Recommended;
             IProjectService projectService = _projectServiceAccessor.Value.GetProjectService();
             IEnumerable<UnconfiguredProject> projects = projectService.LoadedUnconfiguredProjects;
+            bool isPreviewSDKInUse = await IsPreviewSDKInUseAsync();
             foreach (UnconfiguredProject project in projects)
             {
                 // Track the most severe compatibility level
-                CompatibilityLevel compatLevel = await GetProjectCompatibilityAsync(project, compatDataToUse);
+                CompatibilityLevel compatLevel = await GetProjectCompatibilityAsync(project, compatDataToUse, isPreviewSDKInUse);
                 if (compatLevel != CompatibilityLevel.Recommended && compatLevel > finalCompatLevel)
                 {
                     finalCompatLevel = compatLevel;
@@ -207,7 +226,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             {
 
                 // Warn the user.
-                await WarnUserOfIncompatibleProjectAsync(finalCompatLevel, compatDataToUse);
+                await WarnUserOfIncompatibleProjectAsync(finalCompatLevel, compatDataToUse, isPreviewSDKInUse);
             }
 
             // Used so we know when to process newly added projects
@@ -226,7 +245,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return VSConstants.S_OK;
         }
 
-        private async Task WarnUserOfIncompatibleProjectAsync(CompatibilityLevel compatLevel, VersionCompatibilityData compatData)
+        private async Task WarnUserOfIncompatibleProjectAsync(CompatibilityLevel compatLevel, VersionCompatibilityData compatData, bool isPreviewSDKInUse)
         {
             if (!_threadHandling.Value.IsOnMainThread)
             {
@@ -253,9 +272,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                         suppressPrompt = settingsManager.GetValueOrDefault(SuppressDotNewCoreWarningKey, defaultValue: false);
                     }
 
+                    if (compatData.OpenSupportedPreviewMessage is null && isPreviewSDKInUse)
+                    {
+                        // There is no message to show the user in this case so we return
+                        return;
+                    }
+
                     if (!suppressPrompt)
                     {
-                        string msg = string.Format(compatData.OpenSupportedMessage, compatData.SupportedVersion.Major, compatData.SupportedVersion.Minor);
+                        string msg;
+                        if (compatData.OpenSupportedPreviewMessage is object && isPreviewSDKInUse)
+                        {
+                            msg = string.Format(compatData.OpenSupportedPreviewMessage, compatData.SupportedVersion.Major, compatData.SupportedVersion.Minor);
+                        }
+                        else
+                        {
+                            msg = string.Format(compatData.OpenSupportedMessage, compatData.SupportedVersion.Major, compatData.SupportedVersion.Minor);
+                        }
+
                         suppressPrompt = _dialogServices.Value.DontShowAgainMessageBox(caption, msg, VSResources.DontShowAgain, false, VSResources.LearnMore, SupportedLearnMoreFwlink);
                         if (suppressPrompt && settingsManager != null)
                         {
@@ -280,7 +314,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
         }
 
-        private static async Task<CompatibilityLevel> GetProjectCompatibilityAsync(UnconfiguredProject project, VersionCompatibilityData compatData)
+        private static async Task<CompatibilityLevel> GetProjectCompatibilityAsync(UnconfiguredProject project, VersionCompatibilityData compatData, bool isPreviewSDKInUse)
         {
             if (project.Capabilities.AppliesTo($"{ProjectCapability.DotNet} & {ProjectCapability.PackageReferences}"))
             {
@@ -291,7 +325,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     var fw = new FrameworkName(tfm);
                     if (fw.Identifier.Equals(".NETCoreApp", StringComparison.OrdinalIgnoreCase))
                     {
-                        return GetCompatibilityLevelFromVersion(fw.Version, compatData);
+                        return GetCompatibilityLevelFromVersion(fw.Version, compatData, isPreviewSDKInUse);
                     }
                     else if (fw.Identifier.Equals(".NETFramework", StringComparison.OrdinalIgnoreCase))
                     {
@@ -316,7 +350,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
                                     if (Version.TryParse(verString, out Version aspnetVersion))
                                     {
-                                        return GetCompatibilityLevelFromVersion(aspnetVersion, compatData);
+                                        return GetCompatibilityLevelFromVersion(aspnetVersion, compatData, isPreviewSDKInUse);
                                     }
                                 }
                             }
@@ -331,7 +365,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// <summary>
         /// Compares the passed in version to the compatibility data to determine the compat level
         /// </summary>
-        private static CompatibilityLevel GetCompatibilityLevelFromVersion(Version version, VersionCompatibilityData compatData)
+        private static CompatibilityLevel GetCompatibilityLevelFromVersion(Version version, VersionCompatibilityData compatData, bool isPreviewSDKInUse)
         {
             // Only compare major, minor. The presence of build with change the comparison. ie: 2.0 != 2.0.0
             if (version.Build != -1)
@@ -339,33 +373,57 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 version = new Version(version.Major, version.Minor);
             }
 
-            if (compatData.SupportedVersion != null)
+            if (compatData.SupportedPreviewVersion is null &&
+                compatData.SupportedVersion is null &&
+                compatData.UnsupportedVersion is null)
             {
-                if (version < compatData.SupportedVersion)
-                {
-                    return CompatibilityLevel.Recommended;
-                }
-                else if (version == compatData.SupportedVersion || (compatData.UnsupportedVersion != null && version < compatData.UnsupportedVersion))
-                {
-                    return CompatibilityLevel.Supported;
-                }
-
-                return CompatibilityLevel.NotSupported;
+                // No restrictions
+                return CompatibilityLevel.Recommended;
             }
 
-            // Only has an unsupported version
-            if (compatData.UnsupportedVersion != null)
-            {
-                if (version < compatData.UnsupportedVersion)
-                {
-                    return CompatibilityLevel.Recommended;
-                }
+            return GetCompatibilityLevelFromPreview(version, compatData.SupportedPreviewVersion, compatData.SupportedVersion, compatData.UnsupportedVersion, isPreviewSDKInUse);
+        }
 
-                return CompatibilityLevel.NotSupported;
+        private static CompatibilityLevel GetCompatibilityLevelFromPreview(Version version, Version supportedPreviewVersion, Version supportedVersion, Version unsupportedVersion, bool isPreviewSDKInUse)
+        {
+            // Version is less than the supported preview version and the user wants to use preview SDKs
+            if (supportedPreviewVersion is object && isPreviewSDKInUse && version <= supportedPreviewVersion)
+            {
+                return CompatibilityLevel.Recommended;
             }
 
-            // No restrictions
-            return CompatibilityLevel.Recommended;
+            return GetCompatibilityLevelFromSupported(version, supportedVersion, unsupportedVersion);
+        }
+
+        private static CompatibilityLevel GetCompatibilityLevelFromSupported(Version version, Version supportedVersion, Version unsupportedVersion)
+        {
+            // A supported version exists and the version is less than the supported version
+            if (supportedVersion is object && version < supportedVersion)
+            {
+                return CompatibilityLevel.Recommended;
+            }
+
+            // The version is not unsupported and exactly matches the supported version
+            if (supportedVersion is object && unsupportedVersion is object &&
+                version == supportedVersion && version < unsupportedVersion)
+            {
+                return CompatibilityLevel.Supported;
+            }
+
+            // Supported version is null or not recommended check unsupported version
+            return GetCompatibilityLevelForUnsupported(version, unsupportedVersion);
+        }
+
+        private static CompatibilityLevel GetCompatibilityLevelForUnsupported(Version version, Version unsupportedVersion)
+        {
+            // UnsupportedVersion cannot be null if we've made it here
+            if (version < unsupportedVersion)
+            {
+                return CompatibilityLevel.Recommended;
+            }
+
+            // Unsupported version is not recommended
+            return CompatibilityLevel.NotSupported;
         }
 
         /// <summary>
