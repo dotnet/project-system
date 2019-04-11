@@ -33,7 +33,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Dim cookie = GetProjectFileCookie(projectHierarchy)
 
             ' Because GetOrAdd always creates a new value, even if using a factory, we just create an object and only
-            ' initialize it later, relying on the face that MyApplicationProperties will not initialize itself twice
+            ' initialize it later, relying on the fact that MyApplicationProperties will not initialize itself twice
 #Disable Warning CA2000 ' Dispose objects before losing scope
             Dim properties = ImmutableInterlocked.GetOrAdd(_managerInstances, cookie, New MyApplicationProperties())
 #Enable Warning CA2000 ' Dispose objects before losing scope
