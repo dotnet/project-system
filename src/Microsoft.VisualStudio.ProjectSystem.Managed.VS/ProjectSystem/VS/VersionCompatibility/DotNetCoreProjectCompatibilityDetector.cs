@@ -272,6 +272,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                         suppressPrompt = settingsManager.GetValueOrDefault(SuppressDotNewCoreWarningKey, defaultValue: false);
                     }
 
+                    if (compatData.OpenSupportedPreviewMessage is null && isPreviewSDKInUse)
+                    {
+                        // There is no message to show the user in this case so we return
+                        return;
+                    }
+
                     if (!suppressPrompt)
                     {
                         string msg;
