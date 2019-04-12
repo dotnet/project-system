@@ -26,4 +26,4 @@ jobs:
         PathtoPublish: '$(Build.SourcesDirectory)\artifacts\log\$(_configuration)'
         ArtifactName: '$(_os) $(_configuration)'
       continueOnError: true
-condition: not(succeeded())
+      condition: not(succeeded())
