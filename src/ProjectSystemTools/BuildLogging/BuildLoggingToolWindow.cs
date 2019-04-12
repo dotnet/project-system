@@ -21,7 +21,7 @@ using DialogResult = System.Windows.Forms.DialogResult;
 namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 {
     [Guid(BuildLoggingToolWindowGuidString)]
-    internal sealed class BuildLoggingToolWindow : TableToolWindow 
+    internal sealed class BuildLoggingToolWindow : TableToolWindow
     {
         public const string BuildLogging = "BuildLogging";
         public const string BuildLoggingToolWindowGuidString = "391238ea-dad7-488c-94d1-e2b6b5172bf3";
@@ -234,7 +234,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 
             var guid = VSConstants.LOGVIEWID_Primary;
             _openDocument.OpenDocumentViaProject(logPath, ref guid, out _, out _, out _, out var frame);
-            frame.Show();
+            frame?.Show();
         }
 
         private static void ShowExceptionMessageDialog(Exception e, string title)
