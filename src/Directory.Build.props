@@ -3,7 +3,7 @@
   <Import Project="Sdk.props" Sdk="Microsoft.DotNet.Arcade.Sdk" />
 
   <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>net472</TargetFramework>
     <LangVersion>Latest</LangVersion>
     <NoWarn>$(NoWarn);NU5125</NoWarn>
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
