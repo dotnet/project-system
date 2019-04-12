@@ -1,0 +1,30 @@
+# PR trigger
+pr:
+- master
+
+jobs:
+- job: Windows
+  pool:
+    vmImage: 'vs2017-win2016'
+  variables:
+    _os: Windows
+  strategy:
+    maxParallel: 2
+    matrix:
+      Debug:
+        _configuration: Debug
+      Release:
+        _configuration: Release
+  pool: dotnet-external-temp
+  timeoutInMinutes: 20
+
+  steps:
+    - script: $(Build.SourcesDirectory)\eng\common\cibuild.cmd -configuration $(_configuration) -prepareMachine
+      displayName: Build and Test
+    - task: PublishBuildArtifacts@1
+      displayName: Publish Logs
+      inputs:
+        PathtoPublish: '$(Build.SourcesDirectory)\artifacts\log\$(_configuration)'
+        ArtifactName: '$(_os) $(_configuration)'
+      continueOnError: true
+condition: not(succeeded())
