@@ -1,20 +1,14 @@
 <!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 <Project>
-  <PropertyGroup Condition="'$(OutDirName)' == ''">
-    <OutDirName Condition="'$(OutDirName)' == ''">Dlls</OutDirName>
-  </PropertyGroup>
-
-  <Import Project="..\Directory.Build.props"/>
-  <Import Project="$(RepoToolsetDir)Settings.props" Condition="'$(RepoToolsetDir)' != ''" />
-
-  <PropertyGroup Condition="'$(Language)' == 'C#'">
-    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
-  </PropertyGroup>
+  <Import Project="Sdk.props" Sdk="Microsoft.DotNet.Arcade.Sdk" />
 
   <PropertyGroup>
-    <UseCommonOutputDirectory Condition="'$(UseCommonOutputDirectory)' == ''">true</UseCommonOutputDirectory>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>Latest</LangVersion>
+    <NoWarn>$(NoWarn);NU5125</NoWarn>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
 
-    <!-- Prevent vsix manifests from being copied to the shared output directory, makes build more deterministic -->
-    <CopyVsixManifestToOutput>false</CopyVsixManifestToOutput>
+    <VSSDKTargetPlatformRegRootSuffix Condition="'$(RootSuffix)' != ''">$(RootSuffix)</VSSDKTargetPlatformRegRootSuffix>
+    <VSSDKTargetPlatformRegRootSuffix Condition="'$(VSSDKTargetPlatformRegRootSuffix)' == ''">Exp</VSSDKTargetPlatformRegRootSuffix>
   </PropertyGroup>
 </Project>

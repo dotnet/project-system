@@ -26,7 +26,7 @@ if /I "%1" == "/rootsuffix" set PropRootSuffix=/p:RootSuffix=%2&&shift&&shift&& 
 call :Usage && exit /b 1
 :DoneParsing
 
-powershell -ExecutionPolicy ByPass %Root%build\Build.ps1 -configuration %BuildConfiguration% -restore -build:%OptBuild% -rebuild:%OptRebuild% -deploy:%OptDeploy% -integrationTest:%OptIntegrationTest% -log:%OptLog% %PropRootSuffix%
+powershell -ExecutionPolicy ByPass %Root%eng\common\Build.ps1 -configuration %BuildConfiguration% -restore -build:%OptBuild% -rebuild:%OptRebuild% -deploy:%OptDeploy% -integrationTest:%OptIntegrationTest% -binaryLog:%OptLog% %PropRootSuffix%
 exit /b %ERRORLEVEL%
 
 :Usage
