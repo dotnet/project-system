@@ -34,20 +34,50 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         }
 
         [Fact]
-        public async Task OnRestoreInfoChangedAsync_PushesRestoreInfoToSolutionRestoreService()
+        public async Task OnRestoreInfoChangedAsync_PushesRestoreInfoToRestoreService()
         {
-            var restoreInfo = IVsProjectRestoreInfoFactory.Create();
-
             IVsProjectRestoreInfo result = null;
             var solutionRestoreService = IVsSolutionRestoreServiceFactory.ImplementNominateProjectAsync((projectFile, info, cancellationToken) => { result = info; });
 
             var instance = await CreateInitializedInstance(solutionRestoreService: solutionRestoreService);
 
+            var restoreInfo = IVsProjectRestoreInfoFactory.Create();
             var value = IProjectVersionedValueFactory.Create(restoreInfo);
 
             await instance.OnRestoreInfoChangedAsync(value);
 
             Assert.Same(restoreInfo, result);
+        }
+
+        [Fact]
+        public async Task OnRestoreInfoChangedAsync_NullAsValue_DoesNotPushToRestoreService()
+        {
+            int callCount = 0;
+            var solutionRestoreService = IVsSolutionRestoreServiceFactory.ImplementNominateProjectAsync((projectFile, info, cancellationToken) => { callCount++; });
+
+            var instance = await CreateInitializedInstance(solutionRestoreService: solutionRestoreService);
+
+            var value = IProjectVersionedValueFactory.Create<IVsProjectRestoreInfo>(null);
+
+            await instance.OnRestoreInfoChangedAsync(value);
+
+            Assert.Equal(0, callCount);
+        }
+
+        [Fact]
+        public async Task OnRestoreInfoChangedAsync_UnchangedValueAsValue_DoesNotPushToRestoreService()
+        {
+            int callCount = 0;
+            var solutionRestoreService = IVsSolutionRestoreServiceFactory.ImplementNominateProjectAsync((projectFile, info, cancellationToken) => { callCount++; });
+
+            var instance = await CreateInitializedInstance(solutionRestoreService: solutionRestoreService);
+
+            var restoreInfo = IVsProjectRestoreInfoFactory.Create();
+            var value = IProjectVersionedValueFactory.Create<IVsProjectRestoreInfo>(restoreInfo);
+
+            await instance.OnRestoreInfoChangedAsync(value);
+
+            Assert.Equal(1, callCount); // Should have only been called once
         }
 
         private async Task<PackageRestoreInitiatorInstance> CreateInitializedInstance(UnconfiguredProject project = null, IPackageRestoreUnconfiguredDataSource dataSource = null, IVsSolutionRestoreService solutionRestoreService = null)

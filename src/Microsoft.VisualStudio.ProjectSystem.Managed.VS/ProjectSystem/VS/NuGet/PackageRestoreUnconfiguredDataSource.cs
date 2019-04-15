@@ -172,7 +172,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             // they must have the same metadata, which avoids from having to condition 
             // them so that they only appear in one TFM.
             if (existingReferences.TryGetValue(reference.Name, out IVsReferenceItem existingReference) && 
-                !ReferenceItemEqualityComparer.Instance.Equals(existingReference, reference))
+                !RestoreComparer.ReferenceItems.Equals(existingReference, reference))
             {
                 ReportDataSourceUserFault(
                     new Exception(string.Format(CultureInfo.CurrentCulture, VSResources.Restore_DuplicateToolReferenceItems, existingReference.Name)),

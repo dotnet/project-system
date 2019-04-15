@@ -23,6 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             private readonly IProjectLogger _logger;
 
             private IDisposable _subscription;
+            private IVsProjectRestoreInfo _latestValue;
 
             public PackageRestoreInitiatorInstance(
                 UnconfiguredProject project,
@@ -61,9 +62,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
             internal async Task OnRestoreInfoChangedAsync(IProjectVersionedValue<IVsProjectRestoreInfo> e)
             {
-                // No configs
+                // Restore service always does work regardless of whether the value we pass them to actually
+                // contains changes, only nominate if there are any.
+                if (RestoreComparer.RestoreInfos.Equals(_latestValue, e.Value))
+                    return;
+
+                // No configurations - likely during project close
                 if (e.Value == null)
                     return;
+
+                _latestValue = e.Value;
 
                 JoinableTask joinableTask = JoinableFactory.RunAsync(() =>
                 {
