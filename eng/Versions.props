@@ -3,16 +3,13 @@
   <PropertyGroup>
     <VersionPrefix>1.0.0</VersionPrefix>
     <PreReleaseVersionLabel>beta1</PreReleaseVersionLabel>
-    
     <!-- Opt-in repo features -->
     <UsingToolVSSDK>true</UsingToolVSSDK>
     <UsingToolNuGetRepack>true</UsingToolNuGetRepack>
     <UsingToolSymbolUploader>true</UsingToolSymbolUploader>
     <UsingToolNetFrameworkReferenceAssemblies>true</UsingToolNetFrameworkReferenceAssemblies>
-    
     <!-- MSBuild -->
     <MicrosoftBuildVersion>15.6.85</MicrosoftBuildVersion>
-    
     <!-- VS SDK -->
     <MicrosoftVisualStudioComponentModelHostVersion>15.4.27004</MicrosoftVisualStudioComponentModelHostVersion>
     <MicrosoftVisualStudioCoreUtilityVersion>15.4.27004</MicrosoftVisualStudioCoreUtilityVersion>
@@ -27,15 +24,13 @@
     <MicrosoftVisualStudioShellInterop90Version>9.0.30729</MicrosoftVisualStudioShellInterop90Version>
     <MicrosoftVisualStudioTextManagerInterop100Version>10.0.30319</MicrosoftVisualStudioTextManagerInterop100Version>
     <MicrosoftVisualStudioUtilitiesVersion>15.4.27004</MicrosoftVisualStudioUtilitiesVersion>
-    
     <!-- Libs -->
     <SystemCompositionVersion>1.1.0</SystemCompositionVersion>
   </PropertyGroup>
-  
   <PropertyGroup>
     <RestoreSources>
       $(RestoreSources);
       https://dotnet.myget.org/F/roslyn-tools/api/v3/index.json
     </RestoreSources>
-</PropertyGroup>
+  </PropertyGroup>
 </Project>
