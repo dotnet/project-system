@@ -6,8 +6,8 @@
     <TargetFramework>net472</TargetFramework>
     <LangVersion>Latest</LangVersion>
     <NoWarn>$(NoWarn);NU5125</NoWarn>
+    <Copyright>$(CopyrightMicrosoft)</Copyright>
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
-
     <VSSDKTargetPlatformRegRootSuffix Condition="'$(RootSuffix)' != ''">$(RootSuffix)</VSSDKTargetPlatformRegRootSuffix>
     <VSSDKTargetPlatformRegRootSuffix Condition="'$(VSSDKTargetPlatformRegRootSuffix)' == ''">Exp</VSSDKTargetPlatformRegRootSuffix>
   </PropertyGroup>
