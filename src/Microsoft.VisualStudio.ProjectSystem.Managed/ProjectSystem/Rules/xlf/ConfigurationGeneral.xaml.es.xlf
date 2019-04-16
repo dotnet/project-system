@@ -87,24 +87,9 @@
         <target state="translated">¿Debe el compilador optimizar los resultados?</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|PackageAction|Description">
-        <source>The MSBuild target to use when packaging a project.</source>
-        <target state="translated">Versión de destino de MSBuild que se usará al empaquetar un proyecto.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|DefaultContentType|Description">
-        <source>The default content type name to use when adding files.</source>
-        <target state="translated">Nombre del tipo de contenido predeterminado que se usará al agregar archivos.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="EnumValue|TargetRuntime.AppHost|DisplayName">
         <source>Windows app</source>
         <target state="translated">Aplicación de Windows</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|SuppressOutOfDateMessageOnBuild|Description">
-        <source>True to just build out-of-date projects without ever prompting the user to confirm.</source>
-        <target state="translated">True para compilar simplemente proyectos no actualizados sin pedir confirmación al usuario.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OutputType.Exe|DisplayName">

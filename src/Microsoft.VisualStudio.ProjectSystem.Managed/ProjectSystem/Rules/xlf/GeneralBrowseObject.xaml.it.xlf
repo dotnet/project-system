@@ -47,11 +47,6 @@
         <target state="translated">Cartella di progetto</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|PackageId|DisplayName">
-        <source>Package Id</source>
-        <target state="translated">ID pacchetto</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|FileName|Description">
         <source>Name of the project file.</source>
         <target state="translated">Nome del file di progetto.</target>

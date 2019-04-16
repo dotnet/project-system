@@ -12,6 +12,7 @@ set OptDeploy=$true
 set OptTest=$true
 set OptIntegrationTest=$false
 set OptLog=$false
+set OptPack=$true
 
 :ParseArguments
 if "%1" == "" goto :DoneParsing
@@ -21,7 +22,7 @@ if /I "%1" == "/rebuild" set OptBuild=$false&&set OptRebuild=$true&&shift&& goto
 if /I "%1" == "/debug" set BuildConfiguration=Debug&&shift&& goto :ParseArguments
 if /I "%1" == "/release" set BuildConfiguration=Release&&shift&& goto :ParseArguments
 if /I "%1" == "/skiptests" set OptTest=$false&&shift&& goto :ParseArguments
-if /I "%1" == "/restore-only" set OptBuild=$false&&set OptDeploy=$false&&set OptTest=$false&&shift&& goto :ParseArguments
+if /I "%1" == "/restore-only" set OptBuild=$false&&set OptDeploy=$false&&set OptTest=$false&&set OptPack=$false&&shift&& goto :ParseArguments
 if /I "%1" == "/no-deploy-extension" set OptDeploy=$false&&shift&& goto :ParseArguments
 if /I "%1" == "/diagnostic" set OptLog=$true&&shift&& goto :ParseArguments
 if /I "%1" == "/integrationtests" set OptIntegrationTest=$true&&shift&& goto :ParseArguments
@@ -29,7 +30,7 @@ if /I "%1" == "/rootsuffix" set PropRootSuffix=/p:RootSuffix=%2&&shift&&shift&& 
 call :Usage && exit /b 1
 :DoneParsing
 
-powershell -ExecutionPolicy ByPass -Command "& """%Root%build\Build.ps1""" -configuration %BuildConfiguration% -restore -build:%OptBuild% -rebuild:%OptRebuild% -deploy:%OptDeploy% -test:%OptTest% -integrationTest:%OptIntegrationTest% -log:%OptLog% %PropRootSuffix%"
+powershell -ExecutionPolicy ByPass -Command "& """%Root%build\Build.ps1""" -configuration %BuildConfiguration% -restore -pack:%OptPack% -build:%OptBuild% -rebuild:%OptRebuild% -deploy:%OptDeploy% -test:%OptTest% -integrationTest:%OptIntegrationTest% -log:%OptLog% %PropRootSuffix%"
 exit /b %ERRORLEVEL%
 
 :Usage
