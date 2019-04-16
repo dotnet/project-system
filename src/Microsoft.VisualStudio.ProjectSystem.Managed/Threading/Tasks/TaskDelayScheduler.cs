@@ -31,7 +31,18 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         }
 
         /// <inheritdoc />
+        public JoinableTask RunAsyncTask(Func<CancellationToken, Task> operation, CancellationToken token = default)
+        {
+            return ScheduleAsyncTaskInternal(operation, immediate: true, token);
+        }
+
+        /// <inheritdoc />
         public JoinableTask ScheduleAsyncTask(Func<CancellationToken, Task> operation, CancellationToken token = default)
+        {
+            return ScheduleAsyncTaskInternal(operation, immediate: false, token);
+        }
+
+        private JoinableTask ScheduleAsyncTaskInternal(Func<CancellationToken, Task> operation, bool immediate, CancellationToken token)
         {
             CancellationToken nextToken = _cancellationSeries.CreateNext(token);
 
@@ -43,19 +54,24 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                     return;
                 }
 
-                try
+                if (!immediate)
                 {
-                    await Task.Delay(_taskDelayTime, nextToken);
-                }
-                catch (OperationCanceledException)
-                {
-                    return;
+                    try
+                    {
+                        await Task.Delay(_taskDelayTime, nextToken);
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        return;
+                    }
+
+                    if (nextToken.IsCancellationRequested)
+                    {
+                        return;
+                    }
                 }
 
-                if (!nextToken.IsCancellationRequested)
-                {
-                    await operation(nextToken);
-                }
+                await operation(nextToken);
             });
         }
 
