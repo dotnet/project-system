@@ -115,7 +115,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 commonServices.ThreadingService,
                 tasksService.UnloadCancellationToken);
 
-            _snapshotChangedSource = DataflowBlockSlim.CreateBroadcastBlock<SnapshotChangedEventArgs>();
+            _snapshotChangedSource = DataflowBlockSlim.CreateBroadcastBlock<SnapshotChangedEventArgs>("DependenciesSnapshot {1}", skipIntermediateInputData: true);
 
             aggregateSnapshotProvider.RegisterSnapshotProvider(this);
         }

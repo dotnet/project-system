@@ -348,7 +348,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                 },
                                 initialTreeCancellationToken);
 
-                            var actionBlock = DataflowBlockSlim.CreateActionBlock<SnapshotChangedEventArgs>(e => OnDependenciesSnapshotChanged(_dependenciesSnapshotProvider, e));
+                            var actionBlock = DataflowBlockSlim.CreateActionBlock<SnapshotChangedEventArgs>(
+                                e => OnDependenciesSnapshotChanged(_dependenciesSnapshotProvider, e),
+                                "DependenciesProjectTreeProviderSource {1}",
+                                skipIntermediateInputData: true);
                             _snapshotEventListener = _dependenciesSnapshotProvider.SnapshotChangedSource.LinkTo(actionBlock, new DataflowLinkOptions() { PropagateCompletion = true });
                         }
 
