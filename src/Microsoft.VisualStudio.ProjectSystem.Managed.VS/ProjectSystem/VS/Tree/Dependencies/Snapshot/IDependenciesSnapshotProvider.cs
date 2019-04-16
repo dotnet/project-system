@@ -2,6 +2,7 @@
 
 using System;
 using System.Threading;
+using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.Composition;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
@@ -19,6 +20,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// Never null.
         /// </remarks>
         IDependenciesSnapshot CurrentSnapshot { get; }
+
+        /// <summary>
+        /// Dataflow to monitor the project snapshot changes.
+        /// </summary>
+        IReceivableSourceBlock<SnapshotChangedEventArgs> SnapshotChangedSource { get; }
 
         /// <summary>
         /// Raised when the project's full path changes (i.e. due to being renamed).
