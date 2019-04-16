@@ -80,6 +80,11 @@
           <ButtonText>Build Log Message List</ButtonText>
         </Strings>
       </Button>
+      <Button guid="CommandSetGuid" id="LogRoslynWorkspaceStructureCommandId" type="Button">
+        <Strings>
+          <ButtonText>Log Roslyn Workplace Structure...</ButtonText>
+        </Strings>
+      </Button>
     </Buttons>
     <Combos>
       <Combo guid="CommandSetGuid" id="BuildTypeComboCommandId" defaultWidth="150" type="DropDownCombo" idCommandList="BuildTypeComboGetListCommandId">
@@ -114,6 +119,9 @@
     <CommandPlacement guid="CommandSetGuid" id="MessageListCommandId" priority="0x0100">
       <Parent guid="guidSHLMainMenu" id="IDG_VS_WNDO_OTRWNDWS1" />
     </CommandPlacement>
+    <CommandPlacement guid="CommandSetGuid" id="LogRoslynWorkspaceStructureCommandId" priority="0x0200">
+      <Parent guid="guidSHLMainMenu" id="IDG_VS_TOOLS_EXT_TOOLS" />
+    </CommandPlacement>
     <CommandPlacement guid="guidVSStd2K" id="cmdidErrorListShowErrors" priority="0x0100">
       <Parent guid="UIGuid" id="MessageListToolbarGroupId"/>
     </CommandPlacement>
@@ -136,6 +144,7 @@
       <IDSymbol name="BuildTypeComboCommandId" value="0x0106"/>
       <IDSymbol name="BuildTypeComboGetListCommandId" value="0x0107"/>
       <IDSymbol name="MessageListCommandId" value="0x010b" />
+      <IDSymbol name="LogRoslynWorkspaceStructureCommandId" value="0x0200"/>
     </GuidSymbol>
     <GuidSymbol name="UIGuid" value="{629080DF-2A44-40E5-9AF4-371D4B727D16}">
       <IDSymbol name="BuildLoggingToolbarMenuId" value="0x0100" />

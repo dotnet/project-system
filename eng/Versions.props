@@ -10,6 +10,8 @@
     <UsingToolNetFrameworkReferenceAssemblies>true</UsingToolNetFrameworkReferenceAssemblies>
     <!-- MSBuild -->
     <MicrosoftBuildVersion>15.6.85</MicrosoftBuildVersion>
+    <!-- Roslyn -->
+    <MicrosoftVisualStudioLanguageServicesVersion>2.0.0</MicrosoftVisualStudioLanguageServicesVersion>
     <!-- VS SDK -->
     <MicrosoftVisualStudioComponentModelHostVersion>15.4.27004</MicrosoftVisualStudioComponentModelHostVersion>
     <MicrosoftVisualStudioCoreUtilityVersion>15.4.27004</MicrosoftVisualStudioCoreUtilityVersion>
