@@ -100,7 +100,7 @@
     <!-- Reference Manager capabilities -->
     <ProjectCapability Include="ReferenceManagerAssemblies" />
     <ProjectCapability Include="ReferenceManagerBrowse" />
-    <ProjectCapability Include="ReferenceManagerCOM" Condition="'$(TargetFrameworkIdentifier)' == '.NETCoreApp' And '$(_TargetFrameworkVersionWithoutV)' >= '3.0'"/>
+    <ProjectCapability Include="ReferenceManagerCOM" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework' Or ('$(TargetFrameworkIdentifier)' == '.NETCoreApp' And '$(_TargetFrameworkVersionWithoutV)' >= '3.0')"/>
     <ProjectCapability Include="ReferenceManagerProjects" />
     <ProjectCapability Include="ReferenceManagerSharedProjects" />
     <ProjectCapability Include="ReferenceManagerWinRT" />
