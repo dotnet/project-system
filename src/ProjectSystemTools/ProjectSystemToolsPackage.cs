@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools
     [PackageRegistration(AllowsBackgroundLoading = true, UseManagedResourcesOnly = true)]
     [InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)]
     [Guid(PackageGuidString)]
-    [ProvideMenuResource("Menus.ctmenu", 1)]
+    [ProvideMenuResource("Menus.ctmenu", 2)]
     [ProvideToolWindow(typeof(BuildLoggingToolWindow), Style = VsDockStyle.Tabbed, Window = ToolWindowGuids.Outputwindow)]
     [ProvideToolWindow(typeof(MessageListToolWindow), Style = VsDockStyle.Tabbed, Window = ToolWindowGuids.Outputwindow)]
     [ProvideEditorExtension(typeof(BinaryLogEditorFactory), ".binlog", 0x50, NameResourceID = 113)]
@@ -41,6 +41,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools
         public const int BuildTypeComboCommandId = 0x0106;
         public const int BuildTypeComboGetListCommandId = 0x0107;
         public const int MessageListCommandId = 0x010b;
+
+        public const int LogRoslynWorkspaceStructureCommandId = 0x0200;
 
         public static readonly Guid UIGuid = new Guid("629080DF-2A44-40E5-9AF4-371D4B727D16");
 
@@ -93,6 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools
             var mcs = GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
             mcs?.AddCommand(new MenuCommand(ShowBuildLoggingToolWindow, new CommandID(CommandSetGuid, BuildLoggingCommandId)));
             mcs?.AddCommand(new MenuCommand(ShowMessageListToolWindow, new CommandID(CommandSetGuid, MessageListCommandId)));
+            mcs?.AddCommand(new MenuCommand(LogRoslynWorkspaceStructure, new CommandID(CommandSetGuid, LogRoslynWorkspaceStructureCommandId)));
 
             RegisterEditorFactory(new BinaryLogEditorFactory());
 
@@ -134,5 +137,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools
             var windowFrame = (IVsWindowFrame)window.Frame;
             ErrorHandler.ThrowOnFailure(windowFrame.Show());
         }
+
+        private void LogRoslynWorkspaceStructure(object sender, EventArgs e)
+        {
+            RoslynLogging.RoslynWorkspaceStructureLogger.ShowSaveDialogAndLog(ServiceProvider);
+        }
+
     }
 }

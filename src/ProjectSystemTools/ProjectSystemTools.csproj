@@ -11,6 +11,11 @@
     <ExtensionInstallationRoot>CommonExtensions</ExtensionInstallationRoot>
     <ExtensionInstallationFolder>Microsoft\ProjectSystemTools</ExtensionInstallationFolder>
     <UseCodebase>true</UseCodebase>
+
+    <!-- Disable warnings if there is a mismach of Embed Interop types. The Roslyn packages references some shell
+         binaries without it, but Microsoft.VisualStudio.SDK.EmbedInteropTypes turns it on. Silencing the warning will
+         mean we won't embed the things already not being embedded, but that's harmless. -->
+    <NoWarn>1762</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Build" Version="$(MicrosoftBuildVersion)" />
@@ -20,6 +25,7 @@
     <PackageReference Include="Microsoft.VisualStudio.CoreUtility" Version="$(MicrosoftVisualStudioCoreUtilityVersion)" />
     <PackageReference Include="Microsoft.VisualStudio.ImageCatalog" Version="$(MicrosoftVisualStudioImageCatalogVersion)" />
     <PackageReference Include="Microsoft.VisualStudio.Editor" Version="$(MicrosoftVisualStudioEditorVersion)" />
+    <PackageReference Include="Microsoft.VisualStudio.LanguageServices" Version="$(MicrosoftVisualStudioLanguageServicesVersion)" />
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.SDK" Version="$(MicrosoftVisualStudioProjectSystemSDKVersion)" />
     <PackageReference Include="Microsoft.VisualStudio.Shell.15.0" Version="$(MicrosoftVisualStudioShell150Version)" />
     <PackageReference Include="Microsoft.VisualStudio.Shell.Framework" Version="$(MicrosoftVisualStudioShellFrameworkVersion)" />
@@ -30,6 +36,7 @@
     <PackageReference Include="Microsoft.VisualStudio.TextManager.Interop.10.0" Version="$(MicrosoftVisualStudioTextManagerInterop100Version)" />
     <PackageReference Include="Microsoft.VisualStudio.Utilities" Version="$(MicrosoftVisualStudioUtilitiesVersion)" />
     <PackageReference Include="System.Composition" Version="$(SystemCompositionVersion)" />
+    <PackageReference Include="VSLangProj" Version="7.0.3301" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />
@@ -45,7 +52,14 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>BinaryLogEditorResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="BuildLogging\BuildLoggingResources.resx" GenerateSource="true" />
+    <EmbeddedResource Include="BuildLogging\BuildLoggingResources.resx" GenerateSource="true">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RoslynLogging\RoslynLoggingResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>RoslynLoggingResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="TableControl\TableControlResources.resx" GenerateSource="true" />
     <EmbeddedResource Include="VSPackage.resx">
       <MergeWithCTO>true</MergeWithCTO>
@@ -99,6 +113,11 @@
     </Compile>
     <Compile Update="BinaryLogEditor\LogViewControl.xaml.cs">
       <DependentUpon>LogViewControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="RoslynLogging\RoslynLoggingResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>RoslynLoggingResources.resx</DependentUpon>
     </Compile>
     <Compile Update="VSPackage.Designer.cs">
       <DesignTime>True</DesignTime>

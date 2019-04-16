@@ -17,6 +17,11 @@
         <target state="new">Build Logging</target>
         <note />
       </trans-unit>
+      <trans-unit id="LogRoslynWorkspaceStructureCommandId|ButtonText">
+        <source>Log Roslyn Workplace Structure...</source>
+        <target state="new">Log Roslyn Workplace Structure...</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StartLoggingCommandId|ButtonText">
         <source>Start logging</source>
         <target state="new">Start logging</target>
