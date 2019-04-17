@@ -30,15 +30,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     [AppliesTo(ProjectCapability.LaunchProfiles)]
     internal class LaunchSettingsProvider : OnceInitializedOnceDisposed, ILaunchSettingsProvider2
     {
+        private readonly UnconfiguredProject _project;
         private readonly ActiveConfiguredProject<AppDesignerFolderSpecialFileProvider> _appDesignerSpecialFileProvider;
+        private readonly IProjectFaultHandlerService _projectFaultHandler;
         private readonly AsyncLazy<string> _launchSettingsFilePath;
 
         [ImportingConstructor]
         public LaunchSettingsProvider(UnconfiguredProject project, IUnconfiguredProjectServices projectServices,
                                       IFileSystem fileSystem, IUnconfiguredProjectCommonServices commonProjectServices,
                                       IActiveConfiguredProjectSubscriptionService projectSubscriptionService,
-                                      ActiveConfiguredProject<AppDesignerFolderSpecialFileProvider> appDesignerSpecialFileProvider)
+                                      ActiveConfiguredProject<AppDesignerFolderSpecialFileProvider> appDesignerSpecialFileProvider,
+                                      IProjectFaultHandlerService projectFaultHandler)
         {
+            _project = project;
             ProjectServices = projectServices;
             FileManager = fileSystem;
             CommonProjectServices = commonProjectServices;
@@ -48,6 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             ProjectSubscriptionService = projectSubscriptionService;
             _appDesignerSpecialFileProvider = appDesignerSpecialFileProvider;
+            _projectFaultHandler = projectFaultHandler;
             _launchSettingsFilePath = new AsyncLazy<string>(GetLaunchSettingsFilePathNoCacheAsync, commonProjectServices.ThreadingService.JoinableTaskFactory);
         }
 
@@ -591,7 +596,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         private void LaunchSettingsFile_Changed(object sender, FileSystemEventArgs e)
         {
-            HandleLaunchSettingsFileChangedAsync().Forget();
+            _projectFaultHandler.Forget(HandleLaunchSettingsFileChangedAsync(), _project);
         }
 
         protected Task HandleLaunchSettingsFileChangedAsync()
@@ -619,7 +624,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 }
             }
 
-            return null;
+            return Task.CompletedTask;
         }
 
         /// <summary>

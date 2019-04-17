@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 
+using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.IO;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -15,6 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     ///     This interface provides a simple facade over the <see cref="IFileSystem"/>, <see cref="IFolderManager"/>, 
     ///     <see cref="IProjectTreeService"/> and <see cref="IProjectItemProvider"/> interfaces.
     /// </remarks>
+    [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface IPhysicalProjectTreeStorage
     {
         /// <summary>

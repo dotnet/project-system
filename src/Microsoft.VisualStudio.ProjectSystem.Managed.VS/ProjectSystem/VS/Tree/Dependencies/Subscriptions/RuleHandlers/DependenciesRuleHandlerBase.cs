@@ -81,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 foreach (string removedItem in projectChange.Difference.RemovedItems)
                 {
                     string dependencyId = resolved
-                        ? projectChange.Before.GetProjectItemProperties(removedItem).GetStringProperty(ResolvedAssemblyReference.OriginalItemSpecProperty)
+                        ? projectChange.Before.GetProjectItemProperties(removedItem).GetStringProperty(ResolvedAssemblyReference.OriginalItemSpecProperty) ?? removedItem
                         : removedItem;
 
                     if (shouldProcess(dependencyId))

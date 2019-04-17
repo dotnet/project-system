@@ -47,11 +47,6 @@
         <target state="translated">プロジェクト フォルダー</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|PackageId|DisplayName">
-        <source>Package Id</source>
-        <target state="translated">パッケージ ID</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|FileName|Description">
         <source>Name of the project file.</source>
         <target state="translated">プロジェクト ファイルの名前。</target>

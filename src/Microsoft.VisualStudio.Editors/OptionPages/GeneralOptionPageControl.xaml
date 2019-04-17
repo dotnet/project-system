@@ -14,9 +14,6 @@
                     </StackPanel>
                 </StackPanel>
             </GroupBox>
-            <StackPanel Orientation="Horizontal">
-                <CheckBox x:Name="UsePreviewSdk" x:Uid="General_UsePreviewSdk" Content="{x:Static r:GeneralOptionPageResources.General_UsePreviewSdk}" Margin="13, 10" />
-            </StackPanel>
         </StackPanel>
     </ScrollViewer>
 </local:OptionPageControl>

@@ -192,6 +192,36 @@
         <target state="translated">Název profilu:</target>
         <note />
       </trans-unit>
+      <trans-unit id="DeleteBtnHelpText">
+        <source>Delete the current profile and change to the next available profile</source>
+        <target state="new">Delete the current profile and change to the next available profile</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NewBtnHelpText">
+        <source>Open the new profile dialog</source>
+        <target state="new">Open the new profile dialog</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CancelBtnHelpText">
+        <source>Return to the debug property page with no changes</source>
+        <target state="new">Return to the debug property page with no changes</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="OKBtnHelpText">
+        <source>Create the profile and return to the debug property page with the new profile selected</source>
+        <target state="new">Create the profile and return to the debug property page with the new profile selected</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="chkLaunchBrowserHelpText">
+        <source>Checking enables a textbox to specify an absolute or relative URl</source>
+        <target state="new">Checking enables a textbox to specify an absolute or relative URl</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="chkNativeCodeDebuggingText">
+        <source>Enable native code debugging</source>
+        <target state="new">Enable native code debugging</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

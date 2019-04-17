@@ -1,11 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System.Collections.Generic;
-
-using Microsoft.VisualStudio.Imaging.Interop;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
-
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     internal static class TestDependencyExtensions
     {
@@ -22,16 +17,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Xunit.Assert.Equal(actual.FullPath, expected.FullPath);
             Xunit.Assert.Equal(actual.SchemaName, expected.SchemaName);
             Xunit.Assert.Equal(actual.SchemaItemType, expected.SchemaItemType);
-            Xunit.Assert.Equal(actual.Version, expected.Version);
             Xunit.Assert.Equal(actual.Resolved, expected.Resolved);
             Xunit.Assert.Equal(actual.TopLevel, expected.TopLevel);
             Xunit.Assert.Equal(actual.Implicit, expected.Implicit);
             Xunit.Assert.Equal(actual.Visible, expected.Visible);
             Xunit.Assert.Equal(actual.Priority, expected.Priority);
-            Xunit.Assert.Equal(actual.Icon, expected.Icon, EqualityComparer<ImageMoniker>.Default);
-            Xunit.Assert.Equal(actual.ExpandedIcon, expected.ExpandedIcon, EqualityComparer<ImageMoniker>.Default);
-            Xunit.Assert.Equal(actual.UnresolvedIcon, expected.UnresolvedIcon, EqualityComparer<ImageMoniker>.Default);
-            Xunit.Assert.Equal(actual.UnresolvedExpandedIcon, expected.UnresolvedExpandedIcon, EqualityComparer<ImageMoniker>.Default);
+            Xunit.Assert.Equal(actual.IconSet, expected.IconSet);
             Xunit.Assert.Equal(actual.Properties, expected.Properties);
             Xunit.Assert.Equal(actual.DependencyIDs, expected.DependencyIDs);
             Xunit.Assert.Equal(actual.Flags, expected.Flags);

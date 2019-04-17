@@ -2,6 +2,12 @@
 
 Imports System.ComponentModel
 Imports System.Windows.Forms
+Imports Microsoft.VisualStudio.Editors.Common
+Imports System.IO
+Imports Microsoft.VisualStudio.Shell.Interop
+Imports Microsoft.VisualStudio.ProjectSystem.Properties
+Imports Microsoft.VisualStudio.Shell
+Imports Microsoft.VisualStudio.ProjectSystem
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
@@ -10,6 +16,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private ReadOnly _fileVersionTextBoxes As TextBox()
         Private ReadOnly _assemblyVersionTextBoxes As TextBox()
+        Private _licenseUrlDetected As Boolean = False
+        Private _newLicensePropertyDetectedAtInit As Boolean = False
+        Private _unconfiguredProject As UnconfiguredProject
+        Private _configuredProject As ConfiguredProject
+        Private _projectSourceItemProvider As IProjectSourceItemProvider
+        Private _allItems As IEnumerable(Of IProjectItem)
 
         'After 65535, the project system doesn't complain, and in theory any value is allowed as
         '  the string version of this, but after this value the numeric version of the file version
@@ -26,11 +38,35 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Override this to implement custom processing.
         ''' IMPORTANT NOTE: this method can be called multiple times on the same page.  In particular,
         '''   it is called on every SetObjects call, which means that when the user changes the
-        '''   selected configuration, it is called again. 
+        '''   selected configuration, it is called again.
         ''' </remarks>
         Protected Overrides Sub PreInitPage()
             MyBase.PreInitPage()
         End Sub
+
+        Protected Overrides Sub PostInitPage()
+            MyBase.PostInitPage()
+            InitializeLicensing()
+        End Sub
+
+        Private Shared Function GetUnconfiguredProject(hierarchy As IVsHierarchy) As UnconfiguredProject
+            Dim context = DirectCast(hierarchy, IVsBrowseObjectContext)
+            If context IsNot Nothing Then
+                Dim dteProject = DirectCast(GetDTEProject(hierarchy), EnvDTE.Project)
+                If (dteProject IsNot Nothing) Then
+                    context = DirectCast(dteProject.Object, IVsBrowseObjectContext)
+                End If
+            End If
+            Return context?.UnconfiguredProject
+        End Function
+
+        Private Shared Function GetDTEProject(hierarchy As IVsHierarchy) As EnvDTE.Project
+            Dim extObject As Object = Nothing
+            If ErrorHandler.Succeeded(hierarchy.GetProperty(VSConstants.VSITEMID.Root, __VSHPROPID.VSHPROPID_ExtObject, <Out>DirectCast(extObject, Object)</Out>)) Then
+                Return DirectCast(extObject, EnvDTE.Project)
+            End If
+            Return Nothing
+        End Function
 
         Public Sub New()
             MyBase.New()
@@ -51,6 +87,34 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         ''' <summary>
+        ''' This checks the properties for licenses to determine the initial state of the licensing section.
+        ''' Currently, If both are set, it will default to just enabling the <see cref="PackageLicenseExpression" />.
+        ''' In the future, it might be a good idea to have a warning and only output one value, but the nuget error after packing is helpful.
+        ''' <see cref="TryGetNonCommonPropertyValue" /> will get the property if it is set even if it is empty, but because the empty properties 
+        ''' are ignored elsewhere, they are ignored here.
+        ''' </summary>
+        Private Sub InitializeLicensing()
+            GetProjectsAndProvider()
+            Dim PackageLicenseFileSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor("PackageLicenseFile")), String)
+            If (PackageLicenseFileSet IsNot Nothing AndAlso PackageLicenseFileSet IsNot "") Then
+                _newLicensePropertyDetectedAtInit = True
+                Dim projectItems = DTEProject.ProjectItems
+                LicenseFileNameTextBox.Text = LicenseTryGetExistingLicenseItemPath(PackageLicenseFileSet)
+                SetLicenseRadioButtons(False)
+            End If
+            Dim PackageLicenseExpressionSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor("PackageLicenseExpression")), String)
+            If (PackageLicenseExpressionSet IsNot Nothing AndAlso PackageLicenseExpressionSet IsNot "") Then
+                _newLicensePropertyDetectedAtInit = True
+                SetLicenseRadioButtons(True)
+            End If
+            Dim PackageLicenseUrlSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor("PackageLicenseUrl")), String)
+            If (PackageLicenseUrlSet IsNot Nothing AndAlso PackageLicenseUrlSet IsNot "") Then
+                SetLicenseUrlWarningActive(True)
+                _licenseUrlDetected = True
+            End If
+        End Sub
+
+        ''' <summary>
         ''' Property get for file or assembly version.
         ''' </summary>
         Private Function VersionGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
@@ -59,14 +123,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If (control Is FileVersionLayoutPanel) Then
                 ValidateAssemblyFileVersion(Version)
             Else
-                Debug.Assert(control Is AssemblyVersionLayoutPanel)
                 ValidateAssemblyVersion(Version)
             End If
 
             value = Version
             Return True
         End Function
-
 
         ''' <summary>
         ''' Property set for either file or assembly version.
@@ -92,7 +154,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If (control Is FileVersionLayoutPanel) Then
                 Textboxes = _fileVersionTextBoxes
             Else
-                Debug.Assert(control Is AssemblyVersionLayoutPanel)
                 Textboxes = _assemblyVersionTextBoxes
             End If
             For index As Integer = 0 To 3
@@ -100,7 +161,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Next
             Return True
         End Function
-
 
         ''' <summary>
         ''' Validates the version numbers entered into the package version textbox from the user.
@@ -186,7 +246,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     datalist.Add(data)
                     data = New PropertyControlData(105, "Copyright", Copyright, ControlDataFlags.None, New Control() {CopyrightLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(107, "PackageLicenseUrl", PackageLicenseUrl, ControlDataFlags.None, New Control() {PackageLicenseUrlLabel})
+                    data = New PropertyControlData(106, "PackageLicenseExpression", PackageLicenseExpression, ControlDataFlags.None, New Control() {ExpressionLabel})
+                    datalist.Add(data)
+                    data = New PropertyControlData(107, "PackageLicenseFile", Nothing, ControlDataFlags.None)
                     datalist.Add(data)
                     data = New PropertyControlData(108, "PackageProjectUrl", PackageProjectUrl, ControlDataFlags.None, New Control() {PackageProjectUrlLabel})
                     datalist.Add(data)
@@ -230,7 +292,196 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         Private Sub NeutralLanguageComboBox_DropDown(sender As Object, e As EventArgs) Handles NeutralLanguageComboBox.DropDown
             PopulateNeutralLanguageComboBox(NeutralLanguageComboBox)
-            Common.SetComboBoxDropdownWidth(NeutralLanguageComboBox)
+            SetComboBoxDropdownWidth(NeutralLanguageComboBox)
+        End Sub
+
+        ''' <summary>
+        '''  Set the radio button selection and update both textboxes
+        ''' </summary>
+        ''' <param name="setLicenseExpression">Sets the radio button for LicensesExpression, if false sets to LicenseFile</param>
+        Private Sub SetLicenseRadioButtons(setLicenseExpression As Boolean)
+            If (Not _newLicensePropertyDetectedAtInit) Then
+                LicenseTypeFirstSelected()
+                _newLicensePropertyDetectedAtInit = False
+            End If
+            LicenseFileRadioButton.Checked = Not setLicenseExpression
+            LicenseExpressionRadioButton.Checked = setLicenseExpression
+            PackageLicenseExpression.Enabled = setLicenseExpression
+            LicenseFileNameTextBox.Enabled = Not setLicenseExpression
+            LicenseBrowseButton.Enabled = Not setLicenseExpression
+            If setLicenseExpression AndAlso Not LicenseFileNameTextBox.Text = "" Then
+                LicenseRemoveLicenseItem(LicenseFileNameTextBox.Text)
+                SetCommonPropertyValue(GetPropertyDescriptor("PackageLicenseFile"), "")
+                LicenseFileNameTextBox.Text = ""
+            ElseIf Not setLicenseExpression AndAlso Not PackageLicenseExpression.Text = "" Then
+                PackageLicenseExpression.Text = ""
+                SetDirty(PackageLicenseExpression)
+            End If
+        End Sub
+
+
+        Private Sub SetLicenseUrlWarningActive(setActive As Boolean)
+            LicenseLineLabel.Visible = Not setActive
+            LicenseUrlWarning.Visible = setActive
+            LicenseUrlWarning.Enabled = setActive
+            If setActive Then
+                TableLayoutPanel.SetColumn(LicenseUrlWarning, 1)
+                TableLayoutPanel.SetColumn(LicenseLineLabel, 2)
+            Else
+                TableLayoutPanel.SetColumn(LicenseUrlWarning, 2)
+                TableLayoutPanel.SetColumn(LicenseLineLabel, 1)
+                SetCommonPropertyValue(GetPropertyDescriptor("PackageLicenseUrl"), "")
+            End If
+        End Sub
+
+        Private Sub LicenseTypeFirstSelected()
+            'When the project has neither of the new license properties AND it has the license URL property and a new license type is selected
+            If (_licenseUrlDetected) Then
+                SetLicenseUrlWarningActive(False)
+                _licenseUrlDetected = False
+            End If
+        End Sub
+
+        Private Sub LicenseExpressionRadioButton_CheckedChanged(sender As Object, e As EventArgs) Handles LicenseExpressionRadioButton.CheckedChanged
+            If (LicenseExpressionRadioButton.Checked) Then
+                SetLicenseRadioButtons(True)
+            End If
+        End Sub
+
+        Private Sub LicenseFileRadioButton_CheckChanged(sender As Object, e As EventArgs) Handles LicenseFileRadioButton.CheckedChanged
+            If (LicenseFileRadioButton.Checked) Then
+                SetLicenseRadioButtons(False)
+            End If
+        End Sub
+
+        Private Sub PackageLicenseExpression_Changed(sender As Object, e As EventArgs) Handles PackageLicenseExpression.TextChanged
+            If (PackageLicenseExpression.Text IsNot "" And Not PackageLicenseExpression.Enabled) Then
+                'The license expression is not selected, and the text was changed while it was disabled
+                'This means there was probably an undo which populated the textbox with text, so give it back control
+                'I don't believe that undo will work with the license file text box because it is not user populated
+                SetLicenseRadioButtons(True)
+            End If
+        End Sub
+
+        'These GotFocus methods are for when the property page is first entered and neither have a value
+        'It would make sense to selected the corresponding radio button when the text box recieves focus
+        Private Sub PackageLicenseExpression_GotFocus(sender As Object, e As EventArgs) Handles PackageLicenseExpression.GotFocus
+            SetLicenseRadioButtons(True)
+        End Sub
+
+        Private Sub LicenseFileNameTextBox_GotFocus(sender As Object, e As EventArgs) Handles LicenseFileNameTextBox.GotFocus
+            SetLicenseRadioButtons(False)
+        End Sub
+
+        Private Sub LicenseBrowseButton_GotFocus(sender As Object, e As EventArgs) Handles LicenseBrowseButton.GotFocus
+            SetLicenseRadioButtons(False)
+        End Sub
+
+        Private Sub GetProjectsAndProvider()
+            _unconfiguredProject = GetUnconfiguredProject(ProjectHierarchy)
+            _configuredProject = ThreadHelper.JoinableTaskFactory.Run(Function()
+                                                                          Return _unconfiguredProject.GetSuggestedConfiguredProjectAsync
+                                                                      End Function)
+            _projectSourceItemProvider = _configuredProject.Services.ExportProvider.GetExportedValue(Of IProjectSourceItemProvider)()
+            _allItems = ThreadHelper.JoinableTaskFactory.Run(Function()
+                                                                 Return _projectSourceItemProvider.GetItemsAsync()
+                                                             End Function)
+        End Sub
+
+        Protected Overrides Sub OnExternalPropertyChanged(data As PropertyControlData, source As PropertyChangeSource)
+            MyBase.OnExternalPropertyChanged(data, source)
+            If String.Equals(data.PropertyName, "PackageLicenseFile") Then
+                Dim PackageLicenseFileSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor("PackageLicenseFile")), String)
+                LicenseFileNameTextBox.Text = LicenseTryGetExistingLicenseItemPath(PackageLicenseFileSet)
+            End If
+        End Sub
+
+        Private Sub AddOrChangeLicenseItem(oldInclude As String, newInclude As String)
+            Dim projectLock = _configuredProject.Services.ExportProvider.GetExportedValue(Of IProjectLockService)()
+#Disable Warning RS0030 ' Do not used banned APIs. The project lock is needed here - there is no IVT for ProjectAccessor
+            ThreadHelper.JoinableTaskFactory.Run(
+                Async Function()
+                    Await projectLock.WriteLockAsync(
+                        Async Function(access)
+                            Await access.CheckoutAsync(_unconfiguredProject.FullPath)
+                            Dim projectXML = Await access.GetProjectXmlAsync(_unconfiguredProject.FullPath)
+                            If Not String.IsNullOrEmpty(oldInclude) Then
+                                Dim foundItem = projectXML.ItemGroups.SelectMany(Function(x) x.Items).FirstOrDefault(Function(x) x.Include = oldInclude)
+                                If foundItem IsNot Nothing Then
+                                    foundItem.Include = newInclude
+                                End If
+                            Else
+                                'We couldn't find one to change so we should add it 
+                                projectXML.AddItem("None", newInclude, {New KeyValuePair(Of String, String)("Pack", "True"), New KeyValuePair(Of String, String)("PackagePath", "")})
+                            End If
+                            Await access.ReleaseAsync()
+                        End Function)
+                End Function)
+#Enable Warning RS0030 ' Do not used banned APIs
+        End Sub
+
+        Private Sub LicenseRemoveLicenseItem(include As String)
+            Dim projectLock = _configuredProject.Services.ExportProvider.GetExportedValue(Of IProjectLockService)()
+#Disable Warning RS0030 ' Do not used banned APIs. The project lock is needed here - there is no IVT for ProjectAccessor
+            ThreadHelper.JoinableTaskFactory.Run(
+                Async Function()
+                    Await projectLock.WriteLockAsync(
+                        Async Function(access)
+                            Await access.CheckoutAsync(_unconfiguredProject.FullPath)
+                            Await _projectSourceItemProvider.RemoveAsync("None", include)
+                            Await access.ReleaseAsync()
+                        End Function)
+                End Function)
+#Enable Warning RS0030
+        End Sub
+
+        Private Sub AddLicenseItemToProject(fileName As String)
+            If _unconfiguredProject Is Nothing OrElse _configuredProject Is Nothing Then
+                GetProjectsAndProvider()
+            End If
+            Dim correctDirectory = Path.GetDirectoryName(_unconfiguredProject.FullPath)
+            Dim relativePath As String = GetRelativePath(correctDirectory + "\", Path.GetFullPath(fileName))
+            AddOrChangeLicenseItem(LicenseFileNameTextBox.Text, relativePath)
+            LicenseFileNameTextBox.Text = relativePath
+            'The TextBox needs to have the relative path, so the property isn't linked to the TextBox. It must be set manually.
+            'Also, if the user has changed the directory on their PackageLicenseFile, we should keep it there.
+            Dim PackageLicenseFileSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor("PackageLicenseFile")), String)
+            If PackageLicenseFileSet IsNot Nothing AndAlso PackageLicenseFileSet IsNot "" Then
+                Dim currentPackageLicenseFileDirectory = Path.GetDirectoryName(PackageLicenseFileSet)
+                Dim potentialFullString = Path.Combine(currentPackageLicenseFileDirectory, Path.GetFileName(fileName))
+                SetCommonPropertyValue(GetPropertyDescriptor("PackageLicenseFile"), potentialFullString)
+            Else
+                SetCommonPropertyValue(GetPropertyDescriptor("PackageLicenseFile"), Path.GetFileName(fileName))
+            End If
+        End Sub
+
+        'I want to be able to, given a license file name, try to find an item that matches the file name to populate the textbox
+        Private Function LicenseTryGetExistingLicenseItemPath(packageLicenseFile As String) As String
+            GetProjectsAndProvider()
+            For Each item As IProjectItem In _allItems
+                'PackageLicenseFile can have a package path as a prefix, so we need to just look at file name
+                If Path.GetFileName(packageLicenseFile) = Path.GetFileName(item.EvaluatedIncludeAsRelativePath) Then
+                    Return item.EvaluatedIncludeAsRelativePath
+                End If
+            Next
+            Return Nothing
+        End Function
+
+        Private Sub LicenseBrowseButton_Click(sender As Object, e As EventArgs) Handles LicenseBrowseButton.Click
+            Dim fileName = ""
+            Dim initialDirectory = Path.GetFullPath(DTEProject.FullName)
+            Dim fileNames As ArrayList = GetFilesViaBrowse(ServiceProvider, Handle, initialDirectory, My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AddExistingFilesTitle,
+                    CombineDialogFilters(
+                        My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Filter_License + " (*.txt, *.md)|*.txt;*.md",
+                        GetAllFilesDialogFilter()
+                        ),
+                        0, False, fileName)
+            If fileNames IsNot Nothing AndAlso fileNames.Count = 1 Then
+                fileName = DirectCast(fileNames(0), String)
+                If File.Exists(fileName) Then
+                    AddLicenseItemToProject(fileName)
+                End If
+            End If
         End Sub
 
         Protected Overrides Function GetF1HelpKeyword() As String

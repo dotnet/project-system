@@ -4,7 +4,6 @@ using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
-using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
@@ -19,14 +18,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     /// </remarks>
     internal class WorkspaceProjectContextHostInitiator
     {
+        private readonly UnconfiguredProject _project;
         private readonly IUnconfiguredProjectTasksService _tasksService;
         private readonly IActiveWorkspaceProjectContextHost _activeWorkspaceProjectContextHost;
+        private readonly IProjectFaultHandlerService _projectFaultHandler;
 
         [ImportingConstructor]
-        public WorkspaceProjectContextHostInitiator(IUnconfiguredProjectTasksService tasksService, IActiveWorkspaceProjectContextHost activeWorkspaceProjectContextHost)
+        public WorkspaceProjectContextHostInitiator(UnconfiguredProject project, IUnconfiguredProjectTasksService tasksService, IActiveWorkspaceProjectContextHost activeWorkspaceProjectContextHost, IProjectFaultHandlerService projectFaultHandler)
         {
+            _project = project;
             _tasksService = tasksService;
             _activeWorkspaceProjectContextHost = activeWorkspaceProjectContextHost;
+            _projectFaultHandler = projectFaultHandler;
         }
 
 #pragma warning disable RS0030 // Do not used banned APIs
@@ -37,8 +40,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             // While we want make sure it's loaded before PrioritizedProjectLoadedInHost, 
             // we don't want to block project factory completion on its load, so fire and forget
-            _tasksService.PrioritizedProjectLoadedInHostAsync(() => _activeWorkspaceProjectContextHost.PublishAsync())
-                         .Forget();
+            Task result = _tasksService.PrioritizedProjectLoadedInHostAsync(() => _activeWorkspaceProjectContextHost.PublishAsync());
+
+            _projectFaultHandler.Forget(result, _project, ProjectFaultSeverity.LimitedFunctionality);
 
             return Task.CompletedTask;
         }

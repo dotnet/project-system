@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="ComReference"
+      Description="COM Reference Properties"
+      DisplayName="COM Reference"
+      PageTemplate="generic"
+      xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource HasConfigurationCondition="False"
+                ItemType="COMReference"
+                Persistence="ProjectFile"
+                SourceOfDefaultValue="AfterContext" />
+  </Rule.DataSource>
+
+  <StringProperty Name="Guid"
+                  Description="The GUID of the COM server."
+                  DisplayName="CLSID" />
+
+  <StringProperty Name="IsImplicitlyDefined"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <BoolProperty Name="Isolated" />
+
+  <StringProperty Name="Lcid"
+                  Description="The LCID of the COM server."
+                  DisplayName="Locale" />
+
+  <IntProperty Name="VersionMajor" />
+
+  <IntProperty Name="VersionMinor" />
+
+  <BoolProperty Name="Visible"
+                ReadOnly="True"
+                Visible="False" />
+
+  <StringProperty Name="WrapperTool" />
+
+</Rule>

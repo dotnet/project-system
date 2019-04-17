@@ -27,11 +27,6 @@
         <target state="translated">Paket &amp;sürümü:</target>
         <note />
       </trans-unit>
-      <trans-unit id="PackageLicenseUrlLabel.Text">
-        <source>&amp;License URL:</source>
-        <target state="translated">&amp;Lisans URL'si:</target>
-        <note />
-      </trans-unit>
       <trans-unit id="PackageTagsLabel.Text">
         <source>&amp;Tags:</source>
         <target state="translated">&amp;Etiketler:</target>
@@ -135,6 +130,131 @@
       <trans-unit id="AssemblyFileVersionLabel.Text">
         <source>Assembly &amp;file version:</source>
         <target state="translated">Derleme &amp;dosyası sürümü:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackageLicenseLabel.Text">
+        <source>&amp;Licensing:</source>
+        <target state="translated">&amp;Lisanslama:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ExpressionLabel.Text">
+        <source>&amp;Expression:</source>
+        <target state="translated">&amp;İfade:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="OrLabel.Text">
+        <source>&amp;OR</source>
+        <target state="translated">&amp;VEYA</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FileLabel.Text">
+        <source>&amp;File:</source>
+        <target state="translated">&amp;Dosya:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="LicenseBrowseButton.Text">
+        <source>Browse...</source>
+        <target state="translated">Gözat...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Copyright.AccessibleName">
+        <source>Package Copyright</source>
+        <target state="translated">Paket Telif Hakkı</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Description.AccessibleName">
+        <source>Package Description</source>
+        <target state="translated">Paket Açıklaması</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackageIconUrl.AccessibleName">
+        <source>Package Icon URL</source>
+        <target state="translated">Paket Simge URL’si</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackageProjectUrl.AccessibleName">
+        <source>Package Project URL</source>
+        <target state="translated">Paket Proje URL’si</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackageVersion.AccessibleName">
+        <source>Package Version</source>
+        <target state="translated">Paket Sürümü</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RepositoryUrl.AccessibleName">
+        <source>Package Repository URL</source>
+        <target state="translated">Paket Depo URL'si</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RepositoryType.AccessibleName">
+        <source>Package Repository Type</source>
+        <target state="translated">Paket Deposu Türü</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackageReleaseNotes.AccessibleName">
+        <source>Package Release Notes</source>
+        <target state="translated">Paket Sürüm Notları</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NeutralLanguageComboBox.AccessibleName">
+        <source>Package Assembly Neutral Language</source>
+        <target state="translated">Paket Bütünleştirilmiş Kodu Dilden Bağımsız</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackageId.AccessibleName">
+        <source>Package ID</source>
+        <target state="translated">Paket Kimliği</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Authors.AccessibleName">
+        <source>Package Authors</source>
+        <target state="translated">Paket Yazarları</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AssemblyCompany.AccessibleName">
+        <source>Package Company</source>
+        <target state="translated">Paket Şirketi</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Product.AccessibleName">
+        <source>Package Product</source>
+        <target state="translated">Paket Ürün</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="LicenseBrowseButton.AccessibleName">
+        <source>Package License File Browse</source>
+        <target state="translated">Paket Lisans Dosyasına Gözat</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="LicenseFileNameTextBox.AccessibleName">
+        <source>Package License File Path</source>
+        <target state="translated">Paket Lisans Dosyası Yolu</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackageLicenseExpression.AccessibleName">
+        <source>Package License Expression</source>
+        <target state="translated">Paket Lisans İfadesi</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackageTags.AccessibleName">
+        <source>Package Tags</source>
+        <target state="translated">Paket Etiketleri</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="LicenseExpressionRadioButton.AccessibleName">
+        <source>Package License Expression Radio Button</source>
+        <target state="translated">Paket Lisans İfadesi Radyo Düğmesi</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="LicenseFileRadioButton.AccessibleName">
+        <source>Package License File Radio Button</source>
+        <target state="translated">Paket Lisans Dosyası Radyo Düğmesi</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="LicenseUrlWarning.Text">
+        <source>PackageLicenseURL property was detected, but it has been deprecated. Please change to either an Expression or File.</source>
+        <target state="translated">PackageLicenseURL özelliği algılandı ancak kullanım dışı bırakıldı. Lütfen bir İfade veya Dosya olarak değiştirin.</target>
         <note />
       </trans-unit>
     </body>

@@ -1,7 +1,7 @@
 # Getting Started
 
 #### Prerequisites
-- [Visual Studio 2017](https://www.visualstudio.com/downloads/)
+- [Visual Studio 2019 RC](https://visualstudio.microsoft.com/downloads/) or [Visual Studio 2019 Preview 4](https://visualstudio.microsoft.com/vs/preview/)
 - GitHub account
 - Basic Git experience: https://try.github.io/
 
@@ -28,9 +28,10 @@ To get started:
 
 The last command prevents an accidental push to this repository without going through a pull request.
 
-After running above, `git remote -v` should something like the following:
+After running above, `git remote -v` should show something similar to the following:
 ```
 \project-system> git remote -v 
+
 origin  https://github.com/davkean/project-system (fetch)
 origin  https://github.com/davkean/project-system (push)
 upstream        https://github.com/dotnet/project-system (fetch)
@@ -41,7 +42,7 @@ upstream        no_push (push)
 
 ### Command-line
 
-From within a [Visual Studio Developer Prompt](https://msdn.microsoft.com/en-us/library/ms229859(v=vs.150).aspx), from the repo root, run:
+From within a [Visual Studio Developer Prompt](https://docs.microsoft.com/en-us/dotnet/framework/tools/developer-command-prompt-for-vs), from the repo root, run:
 
 ```
 project-system> build.cmd
@@ -50,7 +51,7 @@ project-system> build.cmd
 This builds, runs tests and deploys to an experimental instance of Visual Studio.
 
 ### Visual Studio
-From within [Visual Studio 2017](https://www.visualstudio.com/downloads/), open _ProjectSystem.sln_.
+From within [Visual Studio 2019](https://visualstudio.microsoft.com/downloads/), open _ProjectSystem.sln_.
 
 Inside Visual Studio, you can build, run tests and deploy.
 

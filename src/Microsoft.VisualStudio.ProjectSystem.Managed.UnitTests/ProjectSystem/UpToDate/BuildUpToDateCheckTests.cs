@@ -82,15 +82,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _fileSystem.AddFolder(_msBuildProjectDirectory);
             _fileSystem.AddFolder(_outputPath);
 
+            var threadingService = IProjectThreadingServiceFactory.Create();
+
             _buildUpToDateCheck = new BuildUpToDateCheck(
                 projectSystemOptions.Object,
                 configuredProject.Object,
                 projectAsynchronousTasksService.Object,
                 IProjectItemSchemaServiceFactory.Create(),
                 ITelemetryServiceFactory.Create(telemetryParameters => _telemetryEvents.Add(telemetryParameters)),
+                threadingService,
                 _fileSystem);
-
-            _buildUpToDateCheck.Load();
         }
 
         public void Dispose() => _buildUpToDateCheck.Dispose();
@@ -100,6 +101,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             Dictionary<string, IProjectRuleSnapshotModel> sourceSnapshot = null,
             bool expectUpToDate = true)
         {
+            await _buildUpToDateCheck.LoadAsync();
+
             // Run one change event to set things up.
             BroadcastChange(projectSnapshot, sourceSnapshot);
 
@@ -145,7 +148,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 identity: ProjectDataSources.ConfiguredProjectVersion,
                 version: _projectVersion);
 
-            _buildUpToDateCheck.OnChanged(value);
+            _buildUpToDateCheck.OnChangedAsync(value);
 
             return;
 
@@ -680,7 +683,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     $"Checking PreserveNewest file '{sourcePath}':",
                     $"    Source {sourceTime.ToLocalTime()}: '{sourcePath}'.",
                     $"    Destination {destinationTime.ToLocalTime()}: '{destinationPath}'.",
-                    "PreserveNewest destination is newer than source, not up to date."
+                    "PreserveNewest source is newer than destination, not up to date."
                 },
                 "CopyToOutputDirectory");
         }

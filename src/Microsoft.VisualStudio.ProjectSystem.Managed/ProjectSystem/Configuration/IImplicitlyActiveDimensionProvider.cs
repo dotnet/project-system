@@ -2,12 +2,14 @@
 
 using System;
 using System.Collections.Generic;
+using Microsoft.VisualStudio.Composition;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 {
     /// <summary>
     ///     Provides the implicitly active dimensions from a list of dimension names. 
     /// </summary>
+    [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface IImplicitlyActiveDimensionProvider
     {
         /// <summary>

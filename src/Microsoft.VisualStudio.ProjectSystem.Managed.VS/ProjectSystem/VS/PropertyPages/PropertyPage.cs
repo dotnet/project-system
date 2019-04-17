@@ -297,7 +297,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             if (_site is System.IServiceProvider sp)
             {
+#pragma warning disable RS0030 // Do not used banned APIs
                 _debugger = sp.GetService<IVsDebugger, IVsDebugger>();
+#pragma warning restore RS0030 // Do not used banned APIs
                 if (_debugger != null)
                 {
                     _debugger.AdviseDebuggerEvents(this, out _debuggerCookie);

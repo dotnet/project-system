@@ -7,7 +7,7 @@ using System.Linq;
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.TreeView
 {
     internal class TestProjectTree : IProjectTree
     {

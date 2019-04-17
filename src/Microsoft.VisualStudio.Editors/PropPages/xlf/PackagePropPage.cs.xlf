@@ -27,11 +27,6 @@
         <target state="translated">&amp;Verze balíčku:</target>
         <note />
       </trans-unit>
-      <trans-unit id="PackageLicenseUrlLabel.Text">
-        <source>&amp;License URL:</source>
-        <target state="translated">Adresa UR&amp;L licence:</target>
-        <note />
-      </trans-unit>
       <trans-unit id="PackageTagsLabel.Text">
         <source>&amp;Tags:</source>
         <target state="translated">&amp;Značky:</target>
@@ -135,6 +130,131 @@
       <trans-unit id="AssemblyFileVersionLabel.Text">
         <source>Assembly &amp;file version:</source>
         <target state="translated">Verze &amp;souboru sestavení:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackageLicenseLabel.Text">
+        <source>&amp;Licensing:</source>
+        <target state="translated">&amp;Licencování:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ExpressionLabel.Text">
+        <source>&amp;Expression:</source>
+        <target state="translated">&amp;Výraz:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="OrLabel.Text">
+        <source>&amp;OR</source>
+        <target state="translated">&amp;OR</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FileLabel.Text">
+        <source>&amp;File:</source>
+        <target state="translated">&amp;Soubor:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="LicenseBrowseButton.Text">
+        <source>Browse...</source>
+        <target state="translated">Procházet...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Copyright.AccessibleName">
+        <source>Package Copyright</source>
+        <target state="translated">Autorská práva na balíček</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Description.AccessibleName">
+        <source>Package Description</source>
+        <target state="translated">Popis balíčku</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackageIconUrl.AccessibleName">
+        <source>Package Icon URL</source>
+        <target state="translated">URL ikony balíčku</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackageProjectUrl.AccessibleName">
+        <source>Package Project URL</source>
+        <target state="translated">URL projektu balíčku</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackageVersion.AccessibleName">
+        <source>Package Version</source>
+        <target state="translated">Verze balíčku</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RepositoryUrl.AccessibleName">
+        <source>Package Repository URL</source>
+        <target state="translated">Adresa URL úložiště balíčku</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RepositoryType.AccessibleName">
+        <source>Package Repository Type</source>
+        <target state="translated">Typ úložiště balíčku</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackageReleaseNotes.AccessibleName">
+        <source>Package Release Notes</source>
+        <target state="translated">Zpráva k vydání verze balíčku</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NeutralLanguageComboBox.AccessibleName">
+        <source>Package Assembly Neutral Language</source>
+        <target state="translated">Neutrální jazyk sestavení balíčku</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackageId.AccessibleName">
+        <source>Package ID</source>
+        <target state="translated">ID balíčku</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Authors.AccessibleName">
+        <source>Package Authors</source>
+        <target state="translated">Autoři balíčku</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AssemblyCompany.AccessibleName">
+        <source>Package Company</source>
+        <target state="translated">Společnost balíčku</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Product.AccessibleName">
+        <source>Package Product</source>
+        <target state="translated">Produkt balíčku</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="LicenseBrowseButton.AccessibleName">
+        <source>Package License File Browse</source>
+        <target state="translated">Vyhledat soubor s licencí na balíček</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="LicenseFileNameTextBox.AccessibleName">
+        <source>Package License File Path</source>
+        <target state="translated">Cesta k souboru licence na balíček</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackageLicenseExpression.AccessibleName">
+        <source>Package License Expression</source>
+        <target state="translated">Výraz licence na balíček</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackageTags.AccessibleName">
+        <source>Package Tags</source>
+        <target state="translated">Značky balíčku</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="LicenseExpressionRadioButton.AccessibleName">
+        <source>Package License Expression Radio Button</source>
+        <target state="translated">Přepínač výrazu licence na balíček</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="LicenseFileRadioButton.AccessibleName">
+        <source>Package License File Radio Button</source>
+        <target state="translated">Přepínač souboru licence na balíček</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="LicenseUrlWarning.Text">
+        <source>PackageLicenseURL property was detected, but it has been deprecated. Please change to either an Expression or File.</source>
+        <target state="translated">Zjistila se vlastnost PackageLicenseURL, ale ta se už nepoužívá. Použijte prosím výraz nebo soubor.</target>
         <note />
       </trans-unit>
     </body>

@@ -27,14 +27,9 @@
         <target state="translated">&amp;amp:Version de package :</target>
         <note />
       </trans-unit>
-      <trans-unit id="PackageLicenseUrlLabel.Text">
-        <source>&amp;License URL:</source>
-        <target state="translated">URL de &amp;licence :</target>
-        <note />
-      </trans-unit>
       <trans-unit id="PackageTagsLabel.Text">
         <source>&amp;Tags:</source>
-        <target state="translated">É&amp;tiquettes :</target>
+        <target state="translated">B&amp;alises :</target>
         <note />
       </trans-unit>
       <trans-unit id="RepositoryUrlLabel.Text">
@@ -135,6 +130,131 @@
       <trans-unit id="AssemblyFileVersionLabel.Text">
         <source>Assembly &amp;file version:</source>
         <target state="translated">Version du &amp;fichier d'assembly :</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackageLicenseLabel.Text">
+        <source>&amp;Licensing:</source>
+        <target state="translated">&amp;Licences :</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ExpressionLabel.Text">
+        <source>&amp;Expression:</source>
+        <target state="translated">&amp;Expression :</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="OrLabel.Text">
+        <source>&amp;OR</source>
+        <target state="translated">&amp;OR</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FileLabel.Text">
+        <source>&amp;File:</source>
+        <target state="translated">&amp;Fichier :</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="LicenseBrowseButton.Text">
+        <source>Browse...</source>
+        <target state="translated">Parcourir</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Copyright.AccessibleName">
+        <source>Package Copyright</source>
+        <target state="translated">Copyright du package</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Description.AccessibleName">
+        <source>Package Description</source>
+        <target state="translated">Description du package</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackageIconUrl.AccessibleName">
+        <source>Package Icon URL</source>
+        <target state="translated">URL d'icône du package</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackageProjectUrl.AccessibleName">
+        <source>Package Project URL</source>
+        <target state="translated">URL de projet du package</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackageVersion.AccessibleName">
+        <source>Package Version</source>
+        <target state="translated">Version du package</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RepositoryUrl.AccessibleName">
+        <source>Package Repository URL</source>
+        <target state="translated">URL de dépôt du package</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RepositoryType.AccessibleName">
+        <source>Package Repository Type</source>
+        <target state="translated">Type de dépôt du package</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackageReleaseNotes.AccessibleName">
+        <source>Package Release Notes</source>
+        <target state="translated">Notes de publication du package</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NeutralLanguageComboBox.AccessibleName">
+        <source>Package Assembly Neutral Language</source>
+        <target state="translated">Langage neutre de l'assembly du package</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackageId.AccessibleName">
+        <source>Package ID</source>
+        <target state="translated">ID de package</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Authors.AccessibleName">
+        <source>Package Authors</source>
+        <target state="translated">Auteurs du package</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AssemblyCompany.AccessibleName">
+        <source>Package Company</source>
+        <target state="translated">Entreprise du package</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Product.AccessibleName">
+        <source>Package Product</source>
+        <target state="translated">Produit du package</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="LicenseBrowseButton.AccessibleName">
+        <source>Package License File Browse</source>
+        <target state="translated">Navigation dans les fichiers de licence de package</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="LicenseFileNameTextBox.AccessibleName">
+        <source>Package License File Path</source>
+        <target state="translated">Chemin du fichier de licence du package</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackageLicenseExpression.AccessibleName">
+        <source>Package License Expression</source>
+        <target state="translated">Expression de licence de package</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackageTags.AccessibleName">
+        <source>Package Tags</source>
+        <target state="translated">Étiquettes du package</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="LicenseExpressionRadioButton.AccessibleName">
+        <source>Package License Expression Radio Button</source>
+        <target state="translated">Case d'option de l'expression de licence du package</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="LicenseFileRadioButton.AccessibleName">
+        <source>Package License File Radio Button</source>
+        <target state="translated">Case d'option du fichier de licence du package</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="LicenseUrlWarning.Text">
+        <source>PackageLicenseURL property was detected, but it has been deprecated. Please change to either an Expression or File.</source>
+        <target state="translated">La propriété PackageLicenseURL a été détectée, mais elle est dépréciée. Remplacez-la par une expression ou un fichier.</target>
         <note />
       </trans-unit>
     </body>

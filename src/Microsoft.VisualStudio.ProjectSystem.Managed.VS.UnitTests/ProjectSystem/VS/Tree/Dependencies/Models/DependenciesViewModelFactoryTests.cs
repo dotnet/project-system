@@ -58,17 +58,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public void CreateRootViewModel()
         {
             var project = UnconfiguredProjectFactory.Create();
-            var dependency = IDependencyFactory.FromJson(@"
-{
-    ""ProviderType"": ""MyProvider1"",
-    ""Id"": ""ZzzDependencyRoot"",
-    ""Name"":""ZzzDependencyRoot"",
-    ""Caption"":""ZzzDependencyRoot""
-}", icon: KnownMonikers.AboutBox);
+
+            var dependencyModel = new TestDependencyModel
+            {
+                ProviderType = "MyProvider1",
+                Id = "ZzzDependencyRoot",
+                Name = "ZzzDependencyRoot",
+                Caption = "ZzzDependencyRoot",
+                Icon = KnownMonikers.AboutBox
+            };
 
             var subTreeProvider1 = IProjectDependenciesSubTreeProviderFactory.Implement(
                 providerType: "MyProvider1",
-                createRootDependencyNode: dependency);
+                createRootDependencyNode: dependencyModel);
             var subTreeProvider2 = IProjectDependenciesSubTreeProviderFactory.Implement(
                 providerType: "MyProvider2");
 
@@ -79,6 +81,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.NotNull(result);
             Assert.Equal("ZzzDependencyRoot", result.Caption);
             Assert.Equal(KnownMonikers.AboutBox, result.Icon);
+        }
+
+        [Fact]
+        public void CreateRootViewModelReturnsNullForUnknownProviderType()
+        {
+            var project = UnconfiguredProjectFactory.Create();
+
+            var subTreeProvider1 = IProjectDependenciesSubTreeProviderFactory.Implement(providerType: "MyProvider1");
+
+            var factory = new TestableDependenciesViewModelFactory(project, new[] { subTreeProvider1 });
+
+            var result = factory.CreateRootViewModel("UnknownProviderType", hasUnresolvedDependency: false);
+
+            Assert.Null(result);
         }
 
         [Fact]
@@ -109,6 +125,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             public string AppliesTo => ProjectCapabilities.AlwaysApplicable;
 
             public int OrderPrecedence => -500;
+
+            public bool SuppressLowerPriority { get; }
         }
     }
 }

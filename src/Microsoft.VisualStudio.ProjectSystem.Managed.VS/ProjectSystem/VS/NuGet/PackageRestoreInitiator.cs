@@ -16,28 +16,40 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
     [AppliesTo(ProjectCapability.PackageReferences)]
     internal partial class PackageRestoreInitiator : AbstractMultiLifetimeComponent<PackageRestoreInitiator.PackageRestoreInitiatorInstance>, IProjectDynamicLoadComponent
     {
-        private readonly IUnconfiguredProjectVsServices _projectVsServices;
+        private readonly UnconfiguredProject _project;
+        private readonly IPackageRestoreUnconfiguredDataSource _dataSource;
+        private readonly IProjectThreadingService _threadingService;
+        private readonly IProjectAsynchronousTasksService _projectAsynchronousTasksService;
         private readonly IVsSolutionRestoreService _solutionRestoreService;
-        private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
         private readonly IProjectLogger _logger;
 
         [ImportingConstructor]
         public PackageRestoreInitiator(
-            IUnconfiguredProjectVsServices projectVsServices,
+            UnconfiguredProject project,
+            IPackageRestoreUnconfiguredDataSource dataSource,
+            IProjectThreadingService threadingService,
+            [Import(ExportContractNames.Scopes.UnconfiguredProject)]IProjectAsynchronousTasksService projectAsynchronousTasksService,
             IVsSolutionRestoreService solutionRestoreService,
-            IActiveConfigurationGroupService activeConfigurationGroupService,
             IProjectLogger logger)
-            : base(projectVsServices.ThreadingService.JoinableTaskContext)
+            : base(threadingService.JoinableTaskContext)
         {
-            _projectVsServices = projectVsServices;
+            _project = project;
+            _dataSource = dataSource;
+            _threadingService = threadingService;
+            _projectAsynchronousTasksService = projectAsynchronousTasksService;
             _solutionRestoreService = solutionRestoreService;
-            _activeConfigurationGroupService = activeConfigurationGroupService;
             _logger = logger;
         }
 
         protected override PackageRestoreInitiatorInstance CreateInstance()
         {
-            return new PackageRestoreInitiatorInstance(_projectVsServices, _solutionRestoreService, _activeConfigurationGroupService, _logger);
+            return new PackageRestoreInitiatorInstance(
+                _project,
+                _dataSource,
+                _threadingService,
+                _projectAsynchronousTasksService,
+                _solutionRestoreService,
+                _logger);
         }
     }
 }

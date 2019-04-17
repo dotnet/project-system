@@ -9,7 +9,6 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Threading.Tasks.Dataflow;
 
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Build;
@@ -21,8 +20,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 {
     [AppliesTo(ProjectCapability.DotNet + "+ !" + ProjectCapabilities.SharedAssetsProject)]
     [Export(typeof(IBuildUpToDateCheckProvider))]
+    [Export(ExportContractNames.Scopes.ConfiguredProject, typeof(IProjectDynamicLoadComponent))]
     [ExportMetadata("BeforeDrainCriticalTasks", true)]
-    internal sealed class BuildUpToDateCheck : OnceInitializedOnceDisposed, IBuildUpToDateCheckProvider
+    internal sealed class BuildUpToDateCheck : OnceInitializedOnceDisposedUnderLockAsync, IBuildUpToDateCheckProvider, IProjectDynamicLoadComponent
     {
         private const string CopyToOutputDirectory = "CopyToOutputDirectory";
         private const string PreserveNewest = "PreserveNewest";
@@ -89,7 +89,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             [Import(ExportContractNames.Scopes.ConfiguredProject)] IProjectAsynchronousTasksService tasksService,
             IProjectItemSchemaService projectItemSchemaService,
             ITelemetryService telemetryService,
+            IProjectThreadingService threadingService,
             IFileSystem fileSystem)
+            : base(threadingService.JoinableTaskContext)
         {
             _projectSystemOptions = projectSystemOptions;
             _configuredProject = configuredProject;
@@ -99,26 +101,58 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _fileSystem = fileSystem;
         }
 
-        /// <summary>
-        /// Called on project load.
-        /// </summary>
-#pragma warning disable RS0030 // symbol ConfiguredProjectAutoLoad is banned
-        [ConfiguredProjectAutoLoad]
-#pragma warning restore RS0030 // symbol ConfiguredProjectAutoLoad is banned
-        [AppliesTo(ProjectCapability.DotNet + "+ !" + ProjectCapabilities.SharedAssetsProject)]
-        internal void Load()
+        public Task LoadAsync()
         {
-            EnsureInitialized();
+            return InitializeAsync();
         }
 
-        protected override void Initialize()
+        public Task UnloadAsync()
+        {
+            return ExecuteUnderLockAsync(_ =>
+            {
+                _link?.Dispose();
+                _link = null;
+
+                _lastCheckTimeUtc = DateTime.MinValue;
+                _isDisabled = true;
+                _itemsChangedSinceLastCheck = true;
+                _msBuildProjectFullPath = null;
+                _msBuildProjectDirectory = null;
+                _markerFile = null;
+                _outputRelativeOrFullPath = null;
+                _newestImportInput = null;
+
+                _itemTypes.Clear();
+                _items.Clear();
+                _customInputs.Clear();
+                _customOutputs.Clear();
+                _builtOutputs.Clear();
+                _copiedOutputFiles.Clear();
+                _analyzerReferences.Clear();
+                _compilationReferences.Clear();
+                _copyReferenceInputs.Clear();
+
+                return Task.CompletedTask;
+            });
+        }
+
+        protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
             _link = ProjectDataSources.SyncLinkTo(
                 _configuredProject.Services.ProjectSubscription.JointRuleSource.SourceBlock.SyncLinkOptions(DataflowOption.WithRuleNames(ProjectPropertiesSchemas)),
                 _configuredProject.Services.ProjectSubscription.SourceItemsRuleSource.SourceBlock.SyncLinkOptions(),
                 _projectItemSchemaService.SourceBlock.SyncLinkOptions(),
-                target: new ActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectItemSchema>>>(e => OnChanged(e)),
+                target: DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectItemSchema>>>(OnChangedAsync),
                 linkOptions: DataflowOption.PropagateCompletion);
+
+            return Task.CompletedTask;
+        }
+
+        protected override Task DisposeCoreUnderLockAsync(bool initialized)
+        {
+            _link?.Dispose();
+
+            return Task.CompletedTask;
         }
 
         private void OnProjectChanged(IProjectSubscriptionUpdate e)
@@ -260,16 +294,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
         }
 
-        internal void OnChanged(IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectItemSchema>> e)
+        internal Task OnChangedAsync(IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectItemSchema>> e)
         {
-            OnProjectChanged(e.Value.Item1);
-            OnSourceItemChanged(e.Value.Item2, e.Value.Item3);
-            _lastVersionSeen = e.DataSourceVersions[ProjectDataSources.ConfiguredProjectVersion];
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            _link?.Dispose();
+            return ExecuteUnderLockAsync(
+                token =>
+                {
+                    OnProjectChanged(e.Value.Item1);
+                    OnSourceItemChanged(e.Value.Item2, e.Value.Item3);
+                    _lastVersionSeen = e.DataSourceVersions[ProjectDataSources.ConfiguredProjectVersion];
+                    return Task.CompletedTask;
+                });
         }
 
         private DateTime? GetTimestampUtc(string path, IDictionary<string, DateTime> timestampCache)
@@ -501,6 +535,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         return Fail(logger, "Outputs", "Input '{0}' has been modified since the last up-to-date check, not up to date.", input, time.Value);
                     }
                 }
+
+                logger.Info("No inputs are newer than earliest output '{0}' ({1}).", outputPath, outputTime.Value);
             }
             else if (outputPath != null)
             {
@@ -656,50 +692,57 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 if (outputItemTime < itemTime)
                 {
-                    return Fail(logger, "CopyToOutputDirectory", "PreserveNewest destination is newer than source, not up to date.");
+                    return Fail(logger, "CopyToOutputDirectory", "PreserveNewest source is newer than destination, not up to date.");
                 }
             }
 
             return true;
         }
 
-        public async Task<bool> IsUpToDateAsync(BuildAction buildAction, TextWriter logWriter, CancellationToken cancellationToken = default)
+        public Task<bool> IsUpToDateAsync(BuildAction buildAction, TextWriter logWriter, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            var sw = Stopwatch.StartNew();
+            return ExecuteUnderLockAsync(IsUpToDateInternalAsync, cancellationToken);
 
-            EnsureInitialized();
-
-            LogLevel requestedLogLevel = await _projectSystemOptions.GetFastUpToDateLoggingLevelAsync(cancellationToken);
-            var logger = new BuildUpToDateCheckLogger(logWriter, requestedLogLevel, _configuredProject.UnconfiguredProject.FullPath);
-
-            try
+            async Task<bool> IsUpToDateInternalAsync(CancellationToken token)
             {
-                if (!CheckGlobalConditions(buildAction, logger))
+                token.ThrowIfCancellationRequested();
+
+                var sw = Stopwatch.StartNew();
+
+                await InitializeAsync(token);
+
+                LogLevel requestedLogLevel = await _projectSystemOptions.GetFastUpToDateLoggingLevelAsync(token);
+                var logger = new BuildUpToDateCheckLogger(logWriter, requestedLogLevel, _configuredProject.UnconfiguredProject.FullPath);
+
+                try
                 {
-                    return false;
+                    if (!CheckGlobalConditions(buildAction, logger))
+                    {
+                        return false;
+                    }
+
+                    // Short-lived cache of timestamp by path
+                    var timestampCache = new Dictionary<string, DateTime>(StringComparers.Paths);
+
+                    if (!CheckOutputs(logger, timestampCache) ||
+                        !CheckMarkers(logger, timestampCache) ||
+                        !CheckCopyToOutputDirectoryFiles(logger, timestampCache) ||
+                        !CheckCopiedOutputFiles(logger, timestampCache))
+                    {
+                        return false;
+                    }
+
+                    _telemetryService.PostEvent(TelemetryEventName.UpToDateCheckSuccess);
+                    logger.Info("Project is up to date.");
+                    return true;
                 }
-
-                // Short-lived cache of timestamp by path
-                var timestampCache = new Dictionary<string, DateTime>(StringComparers.Paths);
-
-                if (!CheckOutputs(logger, timestampCache) ||
-                    !CheckMarkers(logger, timestampCache) ||
-                    !CheckCopyToOutputDirectoryFiles(logger, timestampCache) ||
-                    !CheckCopiedOutputFiles(logger, timestampCache))
+                finally
                 {
-                    return false;
+                    _lastCheckTimeUtc = DateTime.UtcNow;
+                    logger.Verbose("Up to date check completed in {0:#,##0.#} ms", sw.Elapsed.TotalMilliseconds);
                 }
-
-                _telemetryService.PostEvent(TelemetryEventName.UpToDateCheckSuccess);
-                logger.Info("Project is up to date.");
-                return true;
-            }
-            finally
-            {
-                _lastCheckTimeUtc = DateTime.UtcNow;
-                logger.Verbose("Up to date check completed in {0:#,##0.#} ms", sw.Elapsed.TotalMilliseconds);
             }
         }
 

@@ -87,24 +87,9 @@
         <target state="translated">Czy kompilator powinien optymalizować dane wyjściowe?</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|PackageAction|Description">
-        <source>The MSBuild target to use when packaging a project.</source>
-        <target state="translated">Element docelowy programu MSBuild używany podczas pakowania projektu.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|DefaultContentType|Description">
-        <source>The default content type name to use when adding files.</source>
-        <target state="translated">Domyślna nazwa typu zawartości używana podczas dodawania plików.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="EnumValue|TargetRuntime.AppHost|DisplayName">
         <source>Windows app</source>
         <target state="translated">Aplikacja systemu Windows</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|SuppressOutOfDateMessageOnBuild|Description">
-        <source>True to just build out-of-date projects without ever prompting the user to confirm.</source>
-        <target state="translated">Wartość True pozwala kompilować przestarzałe projekty bez monitowania użytkownika o potwierdzenie.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OutputType.Exe|DisplayName">

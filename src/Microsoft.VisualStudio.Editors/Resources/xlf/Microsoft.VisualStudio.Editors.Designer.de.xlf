@@ -1629,7 +1629,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_Type_JPEG">
         <source>JPEG File Interchange Format</source>
-        <target state="new">JPEG File Interchange Format</target>
+        <target state="translated">JPEG-Dateiaustauschformat</target>
         <note>Friendly Image types</note>
       </trans-unit>
       <trans-unit id="RSE_Type_MEMBMP">
@@ -1639,12 +1639,12 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_Type_PNG">
         <source>Portable Network Graphics</source>
-        <target state="new">Portable Network Graphics</target>
+        <target state="translated">Portable Network Graphics</target>
         <note>Friendly Image types</note>
       </trans-unit>
       <trans-unit id="RSE_Type_TIFF">
         <source>Tag Image File Format</source>
-        <target state="new">Tag Image File Format</target>
+        <target state="translated">Bilddateiformat des Tags</target>
         <note>Friendly Image types</note>
       </trans-unit>
       <trans-unit id="RSE_Type_Icon">
@@ -1733,7 +1733,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_FilterSave_PNG">
         <source>Portable Network Graphics</source>
-        <target state="new">Portable Network Graphics</target>
+        <target state="translated">Portable Network Graphics</target>
         <note># File dialog filters
 #
 # E.g., for icons, the actual filter created would look like "Icons (*.ico)".  These resources
@@ -1751,7 +1751,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_FilterSave_JPEG">
         <source>JPEG File Interchange Format</source>
-        <target state="new">JPEG File Interchange Format</target>
+        <target state="translated">JPEG-Dateiaustauschformat</target>
         <note># File dialog filters
 #
 # E.g., for icons, the actual filter created would look like "Icons (*.ico)".  These resources
@@ -1760,7 +1760,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_FilterSave_TIFF">
         <source>Tag Image File Format</source>
-        <target state="new">Tag Image File Format</target>
+        <target state="translated">Bilddateiformat für Tags</target>
         <note># File dialog filters
 #
 # E.g., for icons, the actual filter created would look like "Icons (*.ico)".  These resources
@@ -2770,13 +2770,22 @@ Möchten Sie den Wert in der SETTINGS-Datei aktualisieren?</target>
       </trans-unit>
       <trans-unit id="RSE_Type_WMF">
         <source>Windows Metafile</source>
-        <target state="new">Windows Metafile</target>
+        <target state="translated">Windows-Metadatei</target>
         <note />
       </trans-unit>
       <trans-unit id="RSE_Type_EMF">
         <source>Extended Metafile</source>
-        <target state="new">Extended Metafile</target>
+        <target state="translated">Erweiterte Metadatei</target>
         <note />
+      </trans-unit>
+      <trans-unit id="RSE_Filter_License">
+        <source>License Files</source>
+        <target state="translated">Lizenzdateien</target>
+        <note># File dialog filters
+#
+# E.g., for icons, the actual filter created would look like "Icons (*.ico)".  These resources
+#  represent the first part of that filter
+#</note>
       </trans-unit>
     </body>
   </file>

@@ -1,5 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using Microsoft.VisualStudio.Composition;
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>
@@ -11,6 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     /// <typeparam name="TInterface">
     ///     The type of the service to return from <see cref="IVsService{T}.GetValueAsync"/>
     /// </typeparam>
+    [ProjectSystemContract(ProjectSystemContractScope2.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface IVsUIService<TService, TInterface> : IVsUIService<TInterface>
     {
     }

@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
     /// <para>Consuming code is responsible for managing overlapping asynchronous operations.</para>
     /// <para>This class has a lock-free implementation to minimise latency and contention.</para>
     /// </remarks>
-    public sealed class CancellationSeries : IDisposable
+    internal sealed class CancellationSeries : IDisposable
     {
         private CancellationTokenSource _cts = new CancellationTokenSource();
 

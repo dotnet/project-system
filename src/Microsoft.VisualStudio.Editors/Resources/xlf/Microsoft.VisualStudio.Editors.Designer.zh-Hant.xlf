@@ -2770,13 +2770,22 @@ app.config 檔的新值是 '{1}'
       </trans-unit>
       <trans-unit id="RSE_Type_WMF">
         <source>Windows Metafile</source>
-        <target state="new">Windows Metafile</target>
+        <target state="translated">Windows 中繼檔</target>
         <note />
       </trans-unit>
       <trans-unit id="RSE_Type_EMF">
         <source>Extended Metafile</source>
-        <target state="new">Extended Metafile</target>
+        <target state="translated">延伸的中繼檔</target>
         <note />
+      </trans-unit>
+      <trans-unit id="RSE_Filter_License">
+        <source>License Files</source>
+        <target state="translated">授權檔案</target>
+        <note># File dialog filters
+#
+# E.g., for icons, the actual filter created would look like "Icons (*.ico)".  These resources
+#  represent the first part of that filter
+#</note>
       </trans-unit>
     </body>
   </file>

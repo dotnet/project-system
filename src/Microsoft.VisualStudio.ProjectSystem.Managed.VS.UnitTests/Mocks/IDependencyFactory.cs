@@ -3,7 +3,6 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
-using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
@@ -16,11 +15,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal static class IDependencyFactory
     {
-        public static IDependency Create()
-        {
-            return Mock.Of<IDependency>();
-        }
-
         public static Mock<IDependency> Implement(string providerType = null,
                                             string id = null,
                                             string originalItemSpec = null,
@@ -40,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                                             bool? setPropertiesImplicit = null,
                                             IDependency setPropertiesReturn = null,
                                             bool? equals = null,
-                                            IImmutableList<string> setPropertiesDependencyIDs = null,
+                                            ImmutableArray<string> setPropertiesDependencyIDs = default,
                                             string setPropertiesSchemaName = null,
                                             ITargetFramework targetFramework = null,
                                             DependencyIconSet iconSet = null,
@@ -91,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             if (dependencyIDs != null)
             {
-                mock.Setup(x => x.DependencyIDs).Returns(ImmutableList<string>.Empty.AddRange(dependencyIDs));
+                mock.Setup(x => x.DependencyIDs).Returns(ImmutableArray.CreateRange(dependencyIDs));
             }
 
             if (resolved.HasValue)
@@ -125,7 +119,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
 
             if (setPropertiesCaption != null
-                || setPropertiesDependencyIDs != null
+                || !setPropertiesDependencyIDs.IsDefault
                 || setPropertiesResolved != null
                 || setPropertiesFlags != null
                 || setPropertiesImplicit != null
@@ -153,10 +147,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public static IDependency FromJson(
             string jsonString,
             ProjectTreeFlags? flags = null,
-            ImageMoniker? icon = null,
-            ImageMoniker? expandedIcon = null,
-            ImageMoniker? unresolvedIcon = null,
-            ImageMoniker? unresolvedExpandedIcon = null,
+            DependencyIconSet iconSet = null,
             Dictionary<string, string> properties = null,
             IEnumerable<string> dependenciesIds = null,
             ITargetFramework targetFramework = null)
@@ -174,24 +165,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 data.Flags = data.Flags.Union(flags.Value);
             }
 
-            if (icon.HasValue)
+            if (iconSet != null)
             {
-                data.Icon = icon.Value;
-            }
-
-            if (expandedIcon.HasValue)
-            {
-                data.ExpandedIcon = expandedIcon.Value;
-            }
-
-            if (unresolvedIcon.HasValue)
-            {
-                data.UnresolvedIcon = unresolvedIcon.Value;
-            }
-
-            if (unresolvedExpandedIcon.HasValue)
-            {
-                data.UnresolvedExpandedIcon = unresolvedExpandedIcon.Value;
+                data.IconSet = iconSet;
             }
 
             if (properties != null)
@@ -201,7 +177,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             if (dependenciesIds != null)
             {
-                data.DependencyIDs = ImmutableList<string>.Empty.AddRange(dependenciesIds);
+                data.DependencyIDs = ImmutableArray.CreateRange(dependenciesIds);
             }
 
             if (targetFramework != null)

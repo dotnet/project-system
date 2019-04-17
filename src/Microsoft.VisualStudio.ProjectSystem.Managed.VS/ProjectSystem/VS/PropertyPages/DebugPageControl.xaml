@@ -47,6 +47,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Label
                 Grid.Row="0"
@@ -95,6 +96,7 @@
                     Margin="6,8,1,8"
                     VerticalContentAlignment="Center"
                     VerticalAlignment="Center"
+                    AutomationProperties.HelpText="{x:Static Member=local:PropertyPageResources.NewBtnHelpText}"
                     Content="{x:Static Member=local:PropertyPageResources.NewBtn}"
                     IsEnabled="{Binding Path=NewProfileEnabled, Mode=OneWay}"
                     Command="{Binding Path=NewProfileCommand}">
@@ -107,6 +109,7 @@
                     Margin="6,8,1,8"
                     VerticalContentAlignment="Center"
                     VerticalAlignment="Center"
+                    AutomationProperties.HelpText="{x:Static Member=local:PropertyPageResources.DeleteBtnHelpText}"
                     Content="{x:Static Member=local:PropertyPageResources.DeleteBtn}"
                     IsEnabled="{Binding Path=DeleteProfileEnabled, Mode=OneWay}"
                     Command="{Binding Path=DeleteProfileCommand}">
@@ -250,6 +253,7 @@
                 IsEnabled="{Binding Path=IsProfileSelected, Mode=OneWay}"
                 Visibility="{Binding Path=SupportsLaunchUrl, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
                 VerticalContentAlignment="Center"
+                AutomationProperties.HelpText="{x:Static Member=local:PropertyPageResources.chkLaunchBrowserHelpText}"
                 Content="{x:Static Member=local:PropertyPageResources.LaunchURL}"/>
             <local:WatermarkTextBox 
                 Grid.Row="6"
@@ -392,8 +396,20 @@
                     </Button.IsEnabled>
                 </Button>
             </StackPanel>
+            <CheckBox 
+                Grid.Row="8"
+                Grid.Column="0"
+                x:Uid="chkNativeCodeDebugging"
+                x:Name="chkNativeCodeDebugging"
+                Visibility="{Binding SupportNativeDebugging, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
+                IsChecked="{Binding NativeCodeDebugging, Mode=TwoWay}"
+                Margin="9,7,3,7"
+                VerticalAlignment="Center"
+                IsEnabled="{Binding Path=IsProfileSelected, Mode=OneWay}"
+                VerticalContentAlignment="Center"
+                Content="{x:Static Member=local:PropertyPageResources.chkNativeCodeDebuggingText}"/>
             <!-- Where the custom control is placed for the active provider -->
-            <ContentPresenter Grid.Row="8" Grid.Column="0"  Grid.ColumnSpan="3" Content="{Binding ActiveProviderUserControl, Mode=OneWay}" />
+            <ContentPresenter Grid.Row="9" Grid.Column="0"  Grid.ColumnSpan="3" Content="{Binding ActiveProviderUserControl, Mode=OneWay}" />
         </Grid>
     </Grid>
 </local:PropertyPageControl>

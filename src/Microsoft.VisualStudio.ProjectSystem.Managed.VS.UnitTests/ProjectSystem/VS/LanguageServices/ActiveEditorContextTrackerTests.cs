@@ -2,8 +2,6 @@
 
 using System;
 
-using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
-using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.Shell;
 
 using Xunit;
@@ -13,37 +11,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
     public class ActiveEditorContextTrackerTests
     {
         [Fact]
-        public void IsActiveEditorContext_NullAsContext_ThrowsArgumentNull()
+        public void IsActiveEditorContext_NullAsContextId_ThrowsArgumentNull()
         {
             var instance = CreateInstance();
-
-            Assert.Throws<ArgumentNullException>("context", () =>
-            {
-                instance.IsActiveEditorContext((IWorkspaceProjectContext)null);
-            });
-        }
-
-        [Fact]
-        public void RegisterContext_NullAsContext_ThrowsArgumentNull()
-        {
-            var instance = CreateInstance();
-
-            Assert.Throws<ArgumentNullException>("context", () =>
-            {
-                instance.RegisterContext((IWorkspaceProjectContext)null, "ContextId");
-            });
-        }
-
-        [Fact]
-        public void RegisterContext_NullAsContextId_ThrowsArgumentNull()
-        {
-            var instance = CreateInstance();
-
-            var context = IWorkspaceProjectContextMockFactory.Create();
 
             Assert.Throws<ArgumentNullException>("contextId", () =>
             {
-                instance.RegisterContext(context, (string)null);
+                instance.IsActiveEditorContext((string)null);
             });
         }
 
@@ -52,22 +26,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             var instance = CreateInstance();
 
-            var context = IWorkspaceProjectContextMockFactory.Create();
-
             Assert.Throws<ArgumentException>("contextId", () =>
             {
-                instance.RegisterContext(context, string.Empty);
+                instance.RegisterContext(string.Empty);
             });
         }
 
         [Fact]
-        public void UnregisterContext_NullAsContext_ThrowsArgumentNull()
+        public void UnregisterContext_NullAsContextId_ThrowsArgumentNull()
         {
             var instance = CreateInstance();
 
-            Assert.Throws<ArgumentNullException>("context", () =>
+            Assert.Throws<ArgumentNullException>("contextId", () =>
             {
-                instance.UnregisterContext((IWorkspaceProjectContext)null);
+                instance.UnregisterContext((string)null);
+            });
+        }
+
+
+        [Fact]
+        public void UnregisterContext_EmptyAsContextId_ThrowsArgument()
+        {
+            var instance = CreateInstance();
+
+            Assert.Throws<ArgumentException>("contextId", () =>
+            {
+                instance.UnregisterContext(string.Empty);
             });
         }
 
@@ -86,73 +70,64 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         }
 
         [Fact]
-        public void IsActiveEditorContext_UnregisteredContextAsContext_ThrowsInvalidOperation()
+        public void IsActiveEditorContext_NotRegisteredContextAsContextId_ThrowsInvalidOperation()
         {
             var instance = CreateInstance();
 
-            var context = IWorkspaceProjectContextMockFactory.Create();
-
             Assert.Throws<InvalidOperationException>(() =>
             {
-                instance.IsActiveEditorContext(context);
+                instance.IsActiveEditorContext("NotRegistered");
             });
         }
 
         [Fact]
-        public void RegisteredContext_AlreadyRegisteredContextAsContext_ThrowsInvalidOperation()
+        public void RegisteredContext_AlreadyRegisteredContextAsContextId_ThrowsInvalidOperation()
         {
             var instance = CreateInstance();
 
-            var context = IWorkspaceProjectContextMockFactory.Create();
-
-            instance.RegisterContext(context, "ContextId");
+            instance.RegisterContext("ContextId");
 
             Assert.Throws<InvalidOperationException>(() =>
             {
-                instance.RegisterContext(context, "ContextId");
+                instance.RegisterContext("ContextId");
             });
         }
 
         [Fact]
-        public void UnregisteredContext_UnregisteredContextAsContext_ThrowsInvalidOperation()
+        public void UnregisteredContext_NotRegisteredContextAsContextId_ThrowsInvalidOperation()
         {
             var instance = CreateInstance();
 
-            var context = IWorkspaceProjectContextMockFactory.Create();
-
             Assert.Throws<InvalidOperationException>(() =>
             {
-                instance.UnregisterContext(context);
+                instance.UnregisterContext("NotRegistered");
             });
         }
 
         [Fact]
-        public void UnregisterContext_RegisteredContextAsContext_CanUnregister()
+        public void UnregisterContext_RegisteredContextAsContextId_CanUnregister()
         {
             var instance = CreateInstance();
 
-            var context = IWorkspaceProjectContextMockFactory.Create();
+            instance.RegisterContext("ContextId");
 
-            instance.RegisterContext(context, "ContextId");
-
-            instance.UnregisterContext(context);
+            instance.UnregisterContext("ContextId");
 
             // Should be unregistered
-            Assert.Throws<InvalidOperationException>(() => instance.IsActiveEditorContext(context));
+            Assert.Throws<InvalidOperationException>(() => instance.IsActiveEditorContext("ContextId"));
         }
 
         [Theory]
         [InlineData("AnotherContextId")]
         [InlineData("contextId")]           // Case-sensitive
-        public void IsActiveEditorContext_WhenActiveIntellisenseProjectContextNotSet_UsesActiveHostContextId(string contextId)
+        public void IsActiveEditorContext_WhenActiveIntellisenseProjectContextIdNotSet_UsesFirstRegisteredContext(string contextId)
         {
-            var activeWorkspaceProjectContextHost = IActiveWorkspaceProjectContextHostFactory.ImplementContextId(contextId);
-            var instance = CreateInstance(activeWorkspaceProjectContextHost);
+            var instance = CreateInstance();
 
-            var context = IWorkspaceProjectContextMockFactory.Create();
-            instance.RegisterContext(context, contextId);
+            instance.RegisterContext("ContextId");
+            instance.RegisterContext(contextId);
 
-            var result = instance.IsActiveEditorContext(context);
+            var result = instance.IsActiveEditorContext("ContextId");
 
             Assert.True(result);
         }
@@ -160,13 +135,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         [Theory]
         [InlineData("AnotherContextId")]
         [InlineData("contextId")]           // Case-sensitive
-        public void IsActiveEditorContext_WhenActiveIntellisenseProjectContextSetToNull_UsesActiveHostContextId(string contextId)
+        public void IsActiveEditorContext_WhenActiveIntellisenseProjectContextIdSetToNull_UsesFirstRegisteredContext(string contextId)
         {
-            var activeWorkspaceProjectContextHost = IActiveWorkspaceProjectContextHostFactory.ImplementContextId(contextId);
-            var instance = CreateInstance(activeWorkspaceProjectContextHost);
+            var instance = CreateInstance();
 
-            var context = IWorkspaceProjectContextMockFactory.Create();
-            instance.RegisterContext(context, contextId);
+            instance.RegisterContext("FirstContextId");
+            instance.RegisterContext(contextId);
 
             // Set it the value first
             instance.ActiveIntellisenseProjectContext = contextId;
@@ -174,7 +148,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             // Now explicitly set to null
             instance.ActiveIntellisenseProjectContext = null;
 
-            var result = instance.IsActiveEditorContext(context);
+            var result = instance.IsActiveEditorContext("FirstContextId");
 
             Assert.True(result);
         }
@@ -183,31 +157,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         [InlineData("")]
         [InlineData("AnotherContextId")]
         [InlineData("contextId")]           // Case-sensitive
-        public void IsActiveEditorContext_WhenActiveIntellisenseProjectContextDoesNotMatch_ReturnsFalse(string activeIntellisenseProjectContext)
+        public void IsActiveEditorContext_WhenActiveIntellisenseProjectContextIdDoesNotMatch_ReturnsFalse(string activeIntellisenseProjectContextId)
         {
             var instance = CreateInstance();
 
-            var context = IWorkspaceProjectContextMockFactory.Create();
-            instance.RegisterContext(context, "ContextId");
+            instance.RegisterContext("ContextId");
 
-            instance.ActiveIntellisenseProjectContext = activeIntellisenseProjectContext;
+            instance.ActiveIntellisenseProjectContext = activeIntellisenseProjectContextId;
 
-            var result = instance.IsActiveEditorContext(context);
+            var result = instance.IsActiveEditorContext("ContextId");
 
             Assert.False(result);
         }
 
         [Fact]
-        public void IsActiveEditorContext_WhenActiveIntellisenseProjectContextMatches_ReturnsTrue()
+        public void IsActiveEditorContext_WhenActiveIntellisenseProjectContextIdMatches_ReturnsTrue()
         {
             var instance = CreateInstance();
 
-            var context = IWorkspaceProjectContextMockFactory.Create();
-            instance.RegisterContext(context, "ContextId");
+            instance.RegisterContext("ContextId");
 
             instance.ActiveIntellisenseProjectContext = "ContextId";
 
-            var result = instance.IsActiveEditorContext(context);
+            var result = instance.IsActiveEditorContext("ContextId");
 
             Assert.True(result);
         }
@@ -215,43 +187,41 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         [Theory]
         [InlineData("")]
         [InlineData("ContextId")]
-        public void GetProjectName_ReturnsActiveIntellisenseProjectContext(string activeIntellisenseProjectContext)
+        public void GetProjectName_ReturnsActiveIntellisenseProjectContextId(string activeIntellisenseProjectContextId)
         {
             var instance = CreateInstance();
 
-            instance.ActiveIntellisenseProjectContext = activeIntellisenseProjectContext;
+            instance.ActiveIntellisenseProjectContext = activeIntellisenseProjectContextId;
 
             instance.GetProjectName(HierarchyId.Root, out string result);
 
-            Assert.Equal(activeIntellisenseProjectContext, result);
+            Assert.Equal(activeIntellisenseProjectContextId, result);
         }
 
         [Theory]
         [InlineData("AnotherContextId")]
         [InlineData("contextId")]
-        public void GetProjectName_WhenActiveIntellisenseProjectContextNotSet_ReturnsActiveHostContextId(string contextId)
+        public void GetProjectName_WhenActiveIntellisenseProjectContextIdNotSet_ReturnsFirstRegisteredContext(string contextId)
         {
-            var activeWorkspaceProjectContextHost = IActiveWorkspaceProjectContextHostFactory.ImplementContextId(contextId);
-            var instance = CreateInstance(activeWorkspaceProjectContextHost);
+            var instance = CreateInstance();
 
-            var context = IWorkspaceProjectContextMockFactory.Create();
-            instance.RegisterContext(context, contextId);
+            instance.RegisterContext("FirstContextId");
+            instance.RegisterContext(contextId);
 
             instance.GetProjectName(HierarchyId.Root, out string result);
 
-            Assert.Equal(contextId, result);
+            Assert.Equal("FirstContextId", result);
         }
 
         [Theory]
         [InlineData("AnotherContextId")]
         [InlineData("contextId")]
-        public void GetProjectName_WhenActiveIntellisenseProjectContextSetToNull_ReturnsActiveHostContextId(string contextId)
+        public void GetProjectName_WhenActiveIntellisenseProjectContextIdSetToNull_ReturnsFirstRegisteredContext(string contextId)
         {
-            var activeWorkspaceProjectContextHost = IActiveWorkspaceProjectContextHostFactory.ImplementContextId(contextId);
-            var instance = CreateInstance(activeWorkspaceProjectContextHost);
+            var instance = CreateInstance();
 
-            var context = IWorkspaceProjectContextMockFactory.Create();
-            instance.RegisterContext(context, contextId);
+            instance.RegisterContext("FirstContextId");
+            instance.RegisterContext(contextId);
 
             // Set it the value first
             instance.ActiveIntellisenseProjectContext = contextId;
@@ -261,19 +231,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
             instance.GetProjectName(HierarchyId.Root, out string result);
 
-            Assert.Equal(contextId, result);
+            Assert.Equal("FirstContextId", result);
         }
 
         private static ActiveEditorContextTracker CreateInstance()
         {
-            return CreateInstance(activeWorkspaceProjectContextHost: null);
-        }
-
-        private static ActiveEditorContextTracker CreateInstance(IActiveWorkspaceProjectContextHost activeWorkspaceProjectContextHost)
-        {
-            IProjectThreadingService threadingService = IProjectThreadingServiceFactory.Create();
-
-            return new ActiveEditorContextTracker(threadingService, activeWorkspaceProjectContextHost);
+            return new ActiveEditorContextTracker((UnconfiguredProject)null);
         }
     }
 }

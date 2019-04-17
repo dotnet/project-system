@@ -4,17 +4,17 @@
     <body>
       <trans-unit id="lblLanguageVersion.Text">
         <source>&amp;Language version:</source>
-        <target state="translated">Версия &amp;языка:</target>
+        <target state="translated">&amp;Версия языка:</target>
         <note />
       </trans-unit>
       <trans-unit id="lblReportCompilerErrors.Text">
         <source>&amp;Internal compiler error reporting:</source>
-        <target state="translated">&amp;Отчеты о внутренней ошибке компилятора:</target>
+        <target state="translated">&amp;Отчет об ошибках внутреннего компилятора:</target>
         <note />
       </trans-unit>
       <trans-unit id="lblDebugInfo.Text">
         <source>D&amp;ebugging information:</source>
-        <target state="translated">&amp;Сведения об отладке:</target>
+        <target state="translated">Св&amp;едения об отладке:</target>
         <note />
       </trans-unit>
       <trans-unit id="lblFileAlignment.Text">
@@ -49,7 +49,7 @@
       </trans-unit>
       <trans-unit id="lblDLLBase.Text">
         <source>Library &amp;base address:</source>
-        <target state="translated">Базовый адрес &amp;библиотеки:</target>
+        <target state="translated">Базовый а&amp;дрес библиотеки:</target>
         <note />
       </trans-unit>
       <trans-unit id="outputLabel.Text">
@@ -64,17 +64,27 @@
       </trans-unit>
       <trans-unit id="chkOverflow.Text">
         <source>Chec&amp;k for arithmetic overflow/underflow</source>
-        <target state="translated">&amp;Проверять арифметические переполнения и потери точности</target>
+        <target state="translated">Проверять ариф&amp;метическое переполнение/потерю значимости</target>
         <note />
       </trans-unit>
-      <trans-unit id="CSharpLanguageVerison.Default">
-        <source>C# latest major version (default)</source>
-        <target state="translated">Последний основной номер версии C# (по умолчанию)</target>
+      <trans-unit id="CSharpLanguageVersion.Default">
+        <source>C# latest supported minor version (default)</source>
+        <target state="translated">Последняя поддерживаемая вспомогательная версия C# (по умолчанию)</target>
         <note />
       </trans-unit>
-      <trans-unit id="CSharpLanguageVerison.Latest">
-        <source>C# latest minor version (latest)</source>
-        <target state="translated">Последний дополнительный номер версии C#</target>
+      <trans-unit id="CSharpLanguageVersion.LatestMajor">
+        <source>C# latest supported major version (latestmajor)</source>
+        <target state="translated">Последняя поддерживаемая основная версия C# (по умолчанию)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CSharpLanguageVersion.Latest">
+        <source>C# latest supported minor version (latest)</source>
+        <target state="translated">Последняя поддерживаемая вспомогательная версия C# (последняя)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CSharpLanguageVersion.Preview">
+        <source>unsupported preview of next C# version (preview)</source>
+        <target state="translated">неподдерживаемая предварительная версия для следующей версии C# (предварительная версия)</target>
         <note />
       </trans-unit>
     </body>

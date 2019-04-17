@@ -4,22 +4,22 @@
     <body>
       <trans-unit id="lblLanguageVersion.Text">
         <source>&amp;Language version:</source>
-        <target state="translated">Versão do &amp;idioma:</target>
+        <target state="translated">&amp;Versão do idioma:</target>
         <note />
       </trans-unit>
       <trans-unit id="lblReportCompilerErrors.Text">
         <source>&amp;Internal compiler error reporting:</source>
-        <target state="translated">Relatório de erros do compilador &amp;interno:</target>
+        <target state="translated">&amp;Relatório de erros do compilador interno:</target>
         <note />
       </trans-unit>
       <trans-unit id="lblDebugInfo.Text">
         <source>D&amp;ebugging information:</source>
-        <target state="translated">Informações de d&amp;epuração:</target>
+        <target state="translated">Informações sobre d&amp;epuração:</target>
         <note />
       </trans-unit>
       <trans-unit id="lblFileAlignment.Text">
         <source>&amp;File alignment:</source>
-        <target state="translated">Alinhamento de &amp;arquivo:</target>
+        <target state="translated">&amp;Alinhamento do arquivo:</target>
         <note />
       </trans-unit>
       <trans-unit id="cboFileAlignment.Items">
@@ -49,7 +49,7 @@
       </trans-unit>
       <trans-unit id="lblDLLBase.Text">
         <source>Library &amp;base address:</source>
-        <target state="translated">Endereço &amp;básico da biblioteca:</target>
+        <target state="translated">Biblioteca &amp;endereço básico:</target>
         <note />
       </trans-unit>
       <trans-unit id="outputLabel.Text">
@@ -64,17 +64,27 @@
       </trans-unit>
       <trans-unit id="chkOverflow.Text">
         <source>Chec&amp;k for arithmetic overflow/underflow</source>
-        <target state="translated">&amp;Verificar estouro/estouro negativo aritmético</target>
+        <target state="translated">Verifiqu&amp;e se há estouro aritmético/estouro negativo</target>
         <note />
       </trans-unit>
-      <trans-unit id="CSharpLanguageVerison.Default">
-        <source>C# latest major version (default)</source>
-        <target state="translated">Versão principal mais recente do C# (padrão)</target>
+      <trans-unit id="CSharpLanguageVersion.Default">
+        <source>C# latest supported minor version (default)</source>
+        <target state="translated">Versão secundária de C# mais recente com suporte (padrão)</target>
         <note />
       </trans-unit>
-      <trans-unit id="CSharpLanguageVerison.Latest">
-        <source>C# latest minor version (latest)</source>
-        <target state="translated">Versão secundária mais recente do C# (mais recente)</target>
+      <trans-unit id="CSharpLanguageVersion.LatestMajor">
+        <source>C# latest supported major version (latestmajor)</source>
+        <target state="translated">Versões principais de C# com suporte mais recentes (latestmajor)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CSharpLanguageVersion.Latest">
+        <source>C# latest supported minor version (latest)</source>
+        <target state="translated">Versão secundária de C# mais recente com suporte (mais recente)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CSharpLanguageVersion.Preview">
+        <source>unsupported preview of next C# version (preview)</source>
+        <target state="translated">visualização sem suporte da próxima versão de C# (visualização)</target>
         <note />
       </trans-unit>
     </body>

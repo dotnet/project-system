@@ -35,7 +35,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal("myPath", model.Name);
             Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
             Assert.Equal("myOriginalItemSpec", model.Id);
-            Assert.Equal("myVersion", model.Version);
             Assert.Equal("myPath (myVersion)", model.Caption);
             Assert.Equal(ResolvedPackageReference.SchemaName, model.SchemaName);
             Assert.Equal(PackageReference.PrimaryDataSourceItemType, model.SchemaItemType);
@@ -81,7 +80,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal("myPath", model.Name);
             Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
             Assert.Equal("myOriginalItemSpec", model.Id);
-            Assert.Equal("myVersion", model.Version);
             Assert.Equal("myPath (myVersion)", model.Caption);
             Assert.Equal(PackageReference.SchemaName, model.SchemaName);
             Assert.Equal(PackageReference.PrimaryDataSourceItemType, model.SchemaItemType);
@@ -127,7 +125,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal("myPath", model.Name);
             Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
             Assert.Equal("myOriginalItemSpec", model.Id);
-            Assert.Equal("", model.Version);
             Assert.Equal("myPath", model.Caption);
             Assert.Equal(ResolvedPackageReference.SchemaName, model.SchemaName);
             Assert.Equal(PackageReference.PrimaryDataSourceItemType, model.SchemaItemType);

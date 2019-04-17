@@ -1,147 +1,176 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
-<Rule
-    Name="NuGetRestore"
-    PageTemplate="generic"
-    xmlns="http://schemas.microsoft.com/build/2009/properties">
-    
-    <Rule.DataSource>
-        <DataSource Persistence="ProjectFile" Label="Configuration" SourceOfDefaultValue="AfterContext" />
-    </Rule.DataSource>
+<Rule Name="NuGetRestore"
+      PageTemplate="generic"
+      xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Label="Configuration"
+                Persistence="ProjectFile"
+                SourceOfDefaultValue="AfterContext" />
+  </Rule.DataSource>
 
-    <StringProperty Name="TargetFrameworkIdentifier" DisplayName="Target Framework Identifier">
-        <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworkIdentifier" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
-        </StringProperty.DataSource>
-    </StringProperty>
-    <StringProperty Name="TargetFrameworks" DisplayName="Target Frameworks">
-        <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworks" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
-        </StringProperty.DataSource>
-    </StringProperty>
-    <StringProperty Name="TargetFramework" DisplayName="Target Framework">
-        <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFile" PersistedName="TargetFramework" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
-        </StringProperty.DataSource>
-    </StringProperty>
-    <StringProperty Name="TargetFrameworkProfile" DisplayName="Target Framework Profile">
-        <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworkProfile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
-        </StringProperty.DataSource>
-    </StringProperty>
-    <StringProperty Name="TargetFrameworkVersion" DisplayName="Target Framework Version">
-        <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworkVersion" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
-        </StringProperty.DataSource>
-    </StringProperty>    
-    <StringProperty Name="TargetFrameworkMoniker" DisplayName="Target Framework Moniker">
-        <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFileWithInterceptionViaSnapshot" PersistedName="TargetFrameworkMoniker" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
-        </StringProperty.DataSource>
-    </StringProperty>
+  <StringProperty Name="AssetTargetFallback"
+                  ReadOnly="True"
+                  Visible="False" />
 
-    <StringProperty Name="MSBuildProjectDirectory" 
-                    Visible="False" 
-                    ReadOnly="True" />
+  <StringProperty Name="DotnetCliToolTargetFramework"
+                  ReadOnly="True"
+                  Visible="False" />
 
-    <StringProperty Name="MSBuildProjectExtensionsPath" 
-                    Visible="False" 
-                    ReadOnly="True" />
+  <StringProperty Name="EmitAssetsLogMessages"
+                  ReadOnly="True"
+                  Visible="False" />
 
-    <StringProperty Name="MSBuildProjectFile" 
-                    Visible="False" 
-                    ReadOnly="True" />
+  <StringProperty Name="MSBuildProjectDirectory"
+                  ReadOnly="True"
+                  Visible="False" />
 
-    <StringProperty Name="PackageTargetFallback" 
-                    Visible="False" 
-                    ReadOnly="True" />
+  <StringProperty Name="MSBuildProjectExtensionsPath"
+                  ReadOnly="True"
+                  Visible="False" />
 
-    <StringProperty Name="AssetTargetFallback" 
-                    Visible="False" 
-                    ReadOnly="True" />
+  <StringProperty Name="MSBuildProjectFile"
+                  ReadOnly="True"
+                  Visible="False" />
 
-    <StringProperty Name="RuntimeIdentifier" 
-                    Visible="False" 
-                    ReadOnly="True" />
+  <StringProperty Name="NoWarn"
+                  ReadOnly="True"
+                  Visible="False" />
 
-    <StringProperty Name="RuntimeIdentifiers" 
-                    Visible="False" 
-                    ReadOnly="True" />
+  <StringProperty Name="NuGetLockFilePath"
+                  ReadOnly="True"
+                  Visible="False" />
 
-    <StringProperty Name="PackageId" 
-                    Visible="False" 
-                    ReadOnly="True" />
+  <StringProperty Name="PackageId"
+                  ReadOnly="True"
+                  Visible="False" />
 
-    <StringProperty Name="PackageVersion" 
-                    Visible="False" 
-                    ReadOnly="True" />
+  <StringProperty Name="PackageTargetFallback"
+                  ReadOnly="True"
+                  Visible="False" />
 
-    <StringProperty Name="Version" 
-                    Visible="False" 
-                    ReadOnly="True" />
+  <StringProperty Name="PackageVersion"
+                  ReadOnly="True"
+                  Visible="False" />
 
-    <StringProperty Name="VersionPrefix" 
-                    Visible="False" 
-                    ReadOnly="True" />
+  <StringProperty Name="RestoreAdditionalProjectFallbackFolders"
+                  ReadOnly="True"
+                  Visible="False" />
 
-    <StringProperty Name="VersionSuffix" 
-                    Visible="False" 
-                    ReadOnly="True" />
+  <StringProperty Name="RestoreAdditionalProjectFallbackFoldersExcludes"
+                  ReadOnly="True"
+                  Visible="False" />
 
-    <StringProperty Name="EmitAssetsLogMessages" 
-                    Visible="False" 
-                    ReadOnly="True" />
+  <StringProperty Name="RestoreAdditionalProjectSources"
+                  ReadOnly="True"
+                  Visible="False" />
 
-    <StringProperty Name="RestoreSources" 
-                    Visible="False" 
-                    ReadOnly="True" />
+  <StringProperty Name="RestoreFallbackFolders"
+                  ReadOnly="True"
+                  Visible="False" />
 
-    <StringProperty Name="RestoreFallbackFolders" 
-                    Visible="False" 
-                    ReadOnly="True" />
+  <StringProperty Name="RestoreLockedMode"
+                  ReadOnly="True"
+                  Visible="False" />
 
-    <StringProperty Name="RestorePackagesPath" 
-                    Visible="False" 
-                    ReadOnly="True" />
+  <StringProperty Name="RestorePackagesPath"
+                  ReadOnly="True"
+                  Visible="False" />
 
-    <StringProperty Name="RestoreAdditionalProjectSources" 
-                    Visible="False" 
-                    ReadOnly="True" />
+  <StringProperty Name="RestorePackagesWithLockFile"
+                  ReadOnly="True"
+                  Visible="False" />
 
-    <StringProperty Name="RestoreAdditionalProjectFallbackFolders" 
-                    Visible="False" 
-                    ReadOnly="True" />
-                    
-    <StringProperty Name="RestoreAdditionalProjectFallbackFoldersExcludes" 
-                    Visible="False" 
-                    ReadOnly="True" />
-                    
-    <StringProperty Name="DotnetCliToolTargetFramework" 
-                    Visible="False" 
-                    ReadOnly="True" />
-                    
-    <StringProperty Name="TreatWarningsAsErrors" 
-                    Visible="False" 
-                    ReadOnly="True" />
+  <StringProperty Name="RestoreSources"
+                  ReadOnly="True"
+                  Visible="False" />
 
-    <StringProperty Name="WarningsAsErrors" 
-                    Visible="False" 
-                    ReadOnly="True" />
+  <StringProperty Name="RuntimeIdentifier"
+                  ReadOnly="True"
+                  Visible="False" />
 
-    <StringProperty Name="NoWarn" 
-                    Visible="False" 
-                    ReadOnly="True" />
+  <StringProperty Name="RuntimeIdentifiers"
+                  ReadOnly="True"
+                  Visible="False" />
 
-    <StringProperty Name="RestorePackagesWithLockFile"
-                    Visible="False"
-                    ReadOnly="True" />
+  <StringProperty Name="TargetFramework"
+                  DisplayName="Target Framework">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  PersistedName="TargetFramework"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
 
-    <StringProperty Name="RestoreLockedMode"
-                    Visible="False"
-                    ReadOnly="True" />
+  <StringProperty Name="TargetFrameworkIdentifier"
+                  DisplayName="Target Framework Identifier">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  PersistedName="TargetFrameworkIdentifier"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
 
-    <StringProperty Name="NuGetLockFilePath"
-                    Visible="False"
-                    ReadOnly="True" />
+  <StringProperty Name="TargetFrameworkMoniker"
+                  DisplayName="Target Framework Moniker">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  PersistedName="TargetFrameworkMoniker"
+                  Persistence="ProjectFileWithInterceptionViaSnapshot"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <StringProperty Name="TargetFrameworkProfile"
+                  DisplayName="Target Framework Profile">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  PersistedName="TargetFrameworkProfile"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <StringProperty Name="TargetFrameworks"
+                  DisplayName="Target Frameworks">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  PersistedName="TargetFrameworks"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <StringProperty Name="TargetFrameworkVersion"
+                  DisplayName="Target Framework Version">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  PersistedName="TargetFrameworkVersion"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <StringProperty Name="TreatWarningsAsErrors"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="Version"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="VersionPrefix"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="VersionSuffix"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="WarningsAsErrors"
+                  ReadOnly="True"
+                  Visible="False" />
 
 </Rule>

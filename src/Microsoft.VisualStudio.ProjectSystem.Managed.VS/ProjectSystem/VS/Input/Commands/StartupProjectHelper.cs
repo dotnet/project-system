@@ -4,6 +4,8 @@ using System;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 
+using EnvDTE;
+
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.ProjectSystem.VS.Extensibility;
 using Microsoft.VisualStudio.Shell;
@@ -18,40 +20,43 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     [Export(typeof(IStartupProjectHelper))]
     internal class StartupProjectHelper : IStartupProjectHelper
     {
-        [ImportingConstructor]
-        public StartupProjectHelper([Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider, IProjectExportProvider projectExportProvider)
-        {
-            ServiceProvider = serviceProvider;
-            ProjectExportProvider = projectExportProvider;
-        }
+        private readonly IVsUIService<DTE> _dte;
+        private readonly IVsUIService<IVsSolution> _solution;
+        private readonly IProjectExportProvider _projectExportProvider;
 
-        private IProjectExportProvider ProjectExportProvider { get; }
-        private IServiceProvider ServiceProvider { get; }
+        [ImportingConstructor]
+        public StartupProjectHelper(IVsUIService<SDTE, DTE> dte,
+                                    IVsUIService<SVsSolution, IVsSolution> solution,
+                                    IProjectExportProvider projectExportProvider)
+        {
+            _dte = dte;
+            _solution = solution;
+            _projectExportProvider = projectExportProvider;
+        }
 
         /// <summary>
         /// Returns the export T of the startup projects if those projects support the specified capabilities
         /// </summary>
         public ImmutableArray<T> GetExportFromDotNetStartupProjects<T>(string capabilityMatch) where T : class
         {
-            EnvDTE.DTE dte = ServiceProvider.GetService<EnvDTE.DTE, EnvDTE.DTE>();
-            if (dte != null)
+            if (_dte.Value.Solution.SolutionBuild.StartupProjects is Array startupProjects && startupProjects.Length > 0)
             {
-                if (dte.Solution.SolutionBuild.StartupProjects is Array startupProjects && startupProjects.Length > 0)
+                IVsSolution solution = _solution.Value;
+
+                var results = PooledArray<T>.GetInstance();
+                foreach (string projectName in startupProjects)
                 {
-                    IVsSolution sln = ServiceProvider.GetService<IVsSolution, SVsSolution>();
-                    var results = PooledArray<T>.GetInstance();
-                    foreach (string projectName in startupProjects)
+                    solution.GetProjectOfUniqueName(projectName, out IVsHierarchy hier);
+                    if (hier != null && hier.IsCapabilityMatch(capabilityMatch))
                     {
-                        sln.GetProjectOfUniqueName(projectName, out IVsHierarchy hier);
-                        if (hier != null && hier.IsCapabilityMatch(capabilityMatch))
-                        {
-                            string projectPath = hier.GetProjectFilePath();
-                            results.Add(ProjectExportProvider.GetExport<T>(projectPath));
-                        }
+                        string projectPath = hier.GetProjectFilePath();
+                        results.Add(_projectExportProvider.GetExport<T>(projectPath));
                     }
-                    return results.ToImmutableAndFree();
                 }
+
+                return results.ToImmutableAndFree();
             }
+
             return ImmutableArray<T>.Empty;
         }
     }

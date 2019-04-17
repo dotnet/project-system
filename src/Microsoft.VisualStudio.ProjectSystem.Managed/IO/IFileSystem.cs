@@ -4,12 +4,15 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Microsoft.VisualStudio.Composition;
+using Microsoft.VisualStudio.ProjectSystem;
 
 namespace Microsoft.VisualStudio.IO
 {
     /// <summary>
     ///     Provides static methods for the creation, copying, deletion, moving of files and directories.
     /// </summary>
+    [ProjectSystemContract(ProjectSystemContractScope2.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface IFileSystem
     {
         Stream Create(string path);

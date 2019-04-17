@@ -9,7 +9,7 @@
       </trans-unit>
       <trans-unit id="lblReportCompilerErrors.Text">
         <source>&amp;Internal compiler error reporting:</source>
-        <target state="translated">報告內部編譯器錯誤(&amp;I):</target>
+        <target state="translated">內部編譯器錯誤報告(&amp;I):</target>
         <note />
       </trans-unit>
       <trans-unit id="lblDebugInfo.Text">
@@ -19,7 +19,7 @@
       </trans-unit>
       <trans-unit id="lblFileAlignment.Text">
         <source>&amp;File alignment:</source>
-        <target state="translated">檔案記憶體對齊(&amp;F):</target>
+        <target state="translated">檔案對齊(&amp;F):</target>
         <note />
       </trans-unit>
       <trans-unit id="cboFileAlignment.Items">
@@ -49,7 +49,7 @@
       </trans-unit>
       <trans-unit id="lblDLLBase.Text">
         <source>Library &amp;base address:</source>
-        <target state="translated">程式庫基底位址(&amp;B):</target>
+        <target state="translated">程式庫基底位址 (Base Address)(&amp;B):</target>
         <note />
       </trans-unit>
       <trans-unit id="outputLabel.Text">
@@ -67,14 +67,24 @@
         <target state="translated">檢查算術溢位/反向溢位(&amp;K)</target>
         <note />
       </trans-unit>
-      <trans-unit id="CSharpLanguageVerison.Default">
-        <source>C# latest major version (default)</source>
-        <target state="translated">C# 最新主要版本 (預設)</target>
+      <trans-unit id="CSharpLanguageVersion.Default">
+        <source>C# latest supported minor version (default)</source>
+        <target state="translated">c# 支援的最新次要版本 (預設)</target>
         <note />
       </trans-unit>
-      <trans-unit id="CSharpLanguageVerison.Latest">
-        <source>C# latest minor version (latest)</source>
-        <target state="translated">C# 最新次要版本 (最新)</target>
+      <trans-unit id="CSharpLanguageVersion.LatestMajor">
+        <source>C# latest supported major version (latestmajor)</source>
+        <target state="translated">C# 支援的最新主要版本 (latestmajor)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CSharpLanguageVersion.Latest">
+        <source>C# latest supported minor version (latest)</source>
+        <target state="translated">C# 支援的最新次要版本 (最新)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CSharpLanguageVersion.Preview">
+        <source>unsupported preview of next C# version (preview)</source>
+        <target state="translated">不受支援的下一個 C# 版本預覽 (預覽)</target>
         <note />
       </trans-unit>
     </body>

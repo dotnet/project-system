@@ -33,18 +33,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         private readonly TimeSpan _dependenciesUpdateThrottleInterval = TimeSpan.FromMilliseconds(250);
 
-        private readonly SemaphoreSlim _gate = new SemaphoreSlim(initialCount: 1);
+        private readonly SemaphoreSlim _contextUpdateGate = new SemaphoreSlim(initialCount: 1);
         private readonly object _snapshotLock = new object();
         private readonly object _subscribersLock = new object();
         private readonly object _linksLock = new object();
         private readonly List<IDisposable> _evaluationSubscriptionLinks = new List<IDisposable>();
 
-        private readonly IAggregateDependenciesSnapshotProvider _aggregateSnapshotProvider;
         private readonly ITargetFrameworkProvider _targetFrameworkProvider;
         private readonly IUnconfiguredProjectCommonServices _commonServices;
         private readonly ITaskDelayScheduler _dependenciesUpdateScheduler;
         private readonly Lazy<IAggregateCrossTargetProjectContextProvider> _contextProvider;
-        private readonly IProjectAsynchronousTasksService _tasksService;
+        private readonly IUnconfiguredProjectTasksService _tasksService;
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
         private readonly IActiveProjectConfigurationRefreshService _activeProjectConfigurationRefreshService;
 
@@ -75,7 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         public DependenciesSnapshotProvider(
             IUnconfiguredProjectCommonServices commonServices,
             Lazy<IAggregateCrossTargetProjectContextProvider> contextProvider,
-            [Import(ExportContractNames.Scopes.UnconfiguredProject)] IProjectAsynchronousTasksService tasksService,
+            IUnconfiguredProjectTasksService tasksService,
             IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
             IActiveProjectConfigurationRefreshService activeProjectConfigurationRefreshService,
             ITargetFrameworkProvider targetFrameworkProvider,
@@ -95,7 +94,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
             _activeProjectConfigurationRefreshService = activeProjectConfigurationRefreshService;
             _targetFrameworkProvider = targetFrameworkProvider;
-            _aggregateSnapshotProvider = aggregateSnapshotProvider;
 
             _currentSnapshot = DependenciesSnapshot.CreateEmpty(_commonServices.Project.FullPath);
 
@@ -114,6 +112,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 _dependenciesUpdateThrottleInterval,
                 commonServices.ThreadingService,
                 tasksService.UnloadCancellationToken);
+
+            aggregateSnapshotProvider.RegisterSnapshotProvider(this);
         }
 
         public IDependenciesSnapshot CurrentSnapshot => _currentSnapshot;
@@ -151,7 +151,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             // The project factory is completing.
 
             // Subscribe to project data. Ensure the project doesn't unload during subscription.
-            return _tasksService.LoadedProjectAsync(AddInitialSubscriptionsAsync).Task;
+            return _tasksService.LoadedProjectAsync(AddInitialSubscriptionsAsync);
 
             Task AddInitialSubscriptionsAsync()
             {
@@ -161,12 +161,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     OnActiveConfiguredProjectEvaluatedAsync);
 
                 // Each of the host's subscribers are initialized.
-                foreach (IDependencyCrossTargetSubscriber subscriber in Subscribers)
-                {
-                    subscriber.InitializeSubscriber(this, _activeConfiguredProjectSubscriptionService);
-                }
-
-                return Task.CompletedTask;
+                return Task.WhenAll(
+                    Subscribers.Select(
+                        subscriber => subscriber.InitializeSubscriberAsync(this, _activeConfiguredProjectSubscriptionService)));
             }
 
             async Task OnActiveConfiguredProjectEvaluatedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
@@ -202,8 +199,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             _commonServices.Project.ProjectUnloading += OnUnconfiguredProjectUnloadingAsync;
             _commonServices.Project.ProjectRenamed += OnUnconfiguredProjectRenamedAsync;
 
-            _aggregateSnapshotProvider.RegisterSnapshotProvider(this);
-
             foreach (Lazy<IProjectDependenciesSubTreeProvider, IOrderPrecedenceMetadataView> provider in _subTreeProviders)
             {
                 provider.Value.DependenciesChanged += OnSubtreeProviderDependenciesChanged;
@@ -217,7 +212,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             _dependenciesUpdateScheduler.Dispose();
 
-            _gate.Dispose();
+            _contextUpdateGate.Dispose();
 
             if (initialized)
             {
@@ -297,7 +292,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     catalogs,
                     activeTargetFramework,
                     _snapshotFilters.ToImmutableValueArray(),
-                    _subTreeProviders.ToValueDictionary(p => p.ProviderType),
+                    _subTreeProviders.ToValueDictionary(p => p.ProviderType, StringComparers.DependencyProviderTypes),
                     projectItemSpecs),
                 token);
 
@@ -376,8 +371,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         /// </summary>
         private async Task UpdateProjectContextAndSubscriptionsAsync()
         {
-            // Ensure that only single thread is attempting to create a project context.
-            AggregateCrossTargetProjectContext newProjectContext = await ExecuteWithinLockAsync(TryUpdateCurrentAggregateProjectContextAsync);
+            // Prevent concurrent project context updates.
+            AggregateCrossTargetProjectContext newProjectContext
+                = await _contextUpdateGate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, TryUpdateCurrentAggregateProjectContextAsync);
 
             if (newProjectContext != null)
             {
@@ -530,7 +526,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 _currentSnapshot = updatedSnapshot;
             }
 
-            // avoid unnecessary tree updates
+            // Conflate rapid snapshot updates by debouncing events over a short window.
+            // This reduces the frequency of tree updates with minimal perceived latency.
             _dependenciesUpdateScheduler.ScheduleAsyncTask(
                 ct =>
                 {
@@ -539,12 +536,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         return Task.FromCanceled(ct);
                     }
 
+                    // Always publish the latest snapshot
                     IDependenciesSnapshot snapshot = _currentSnapshot;
 
-                    if (snapshot != null)
-                    {
-                        SnapshotChanged?.Invoke(this, new SnapshotChangedEventArgs(snapshot, ct));
-                    }
+                    SnapshotChanged?.Invoke(this, new SnapshotChangedEventArgs(snapshot, ct));
 
                     return Task.CompletedTask;
                 }, token);
@@ -554,7 +549,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         {
             Requires.NotNull(newProjectContext, nameof(newProjectContext));
 
-            JoinableTask joinableTask = _tasksService.LoadedProjectAsync(() =>
+            return _tasksService.LoadedProjectAsync(() =>
             {
                 lock (_linksLock)
                 {
@@ -573,8 +568,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
                 return Task.CompletedTask;
             });
-
-            return joinableTask.Task;
         }
 
         private void SubscribeToConfiguredProjectEvaluation(
@@ -603,11 +596,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
                 _evaluationSubscriptionLinks.Clear();
             }
-        }
-
-        private Task<T> ExecuteWithinLockAsync<T>(Func<Task<T>> task)
-        {
-            return _gate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, task);
         }
     }
 }

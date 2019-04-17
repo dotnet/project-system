@@ -1,159 +1,271 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!--Copyright, Microsoft Corporation, All rights reserved.-->
-<Rule
-  Name="ConfiguredBrowseObject"
-  DisplayName="General"
-  PageTemplate="generic"
-  Description="General"
-  OverrideMode= "Replace"
-  PropertyPagesHidden="true"
-  xmlns="http://schemas.microsoft.com/build/2009/properties">
-
+<Rule Name="ConfiguredBrowseObject"
+      Description="General"
+      DisplayName="General"
+      OverrideMode="Replace"
+      PageTemplate="generic"
+      PropertyPagesHidden="true"
+      xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.Categories>
-    <Category Name="General" DisplayName="General" Description="General" />
+    <Category Name="General"
+              Description="General"
+              DisplayName="General" />
   </Rule.Categories>
 
   <Rule.DataSource>
-    <DataSource Persistence="ProjectFile" HasConfigurationCondition="True" SourceOfDefaultValue="AfterContext"/>
+    <DataSource HasConfigurationCondition="True"
+                Persistence="ProjectFile"
+                SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
 
-  <!-- Build Page Properties -->
-  <StringProperty Name="DefineConstants" Visible="False">
-    <StringProperty.DataSource>
-      <!-- We mark BeforeContext to avoid picking up implicit framework defines to avoid #2720. -->
-      <DataSource Persistence="ProjectFile" HasConfigurationCondition="True" SourceOfDefaultValue="BeforeContext"/>
-    </StringProperty.DataSource>
-  </StringProperty>
-  
-  <EnumProperty Name="PlatformTarget" Visible="False"/>
-  
-  <StringProperty Name="IntermediatePath" Visible="false">
-    <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="IntermediateOutputPath" HasConfigurationCondition="True" SourceOfDefaultValue="AfterContext" />
-    </StringProperty.DataSource>
-  </StringProperty>
-  <BoolProperty Name="NullableReferenceTypes" Visible="False">
+  <BoolProperty Name="AllowUnsafeBlocks"
+                Default="False"
+                Visible="False" />
+
+  <StringProperty Name="BaseAddress"
+                  Visible="False" />
+
+  <BoolProperty Name="CheckForOverflowUnderflow"
+                Visible="False">
     <BoolProperty.DataSource>
-      <DataSource Persistence="ProjectFile" SourceOfDefaultValue="AfterContext" HasConfigurationCondition="False" />
+      <DataSource HasConfigurationCondition="True"
+                  PersistedName="CheckForOverflowUnderflow"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
-  <BoolProperty Name="RunCodeAnalysis" Visible="False" />
-  <BoolProperty Name="Prefer32Bit" Visible="False"/>
-  <BoolProperty Name="AllowUnsafeBlocks"  Default="False"  Visible="False"/>
-  <BoolProperty Name="Optimize" Visible="False"/>
-  <StringProperty Name="NoWarn" Visible="False"/>
-  <BoolProperty Name="TreatWarningsAsErrors"  Default="False" Visible="False"/>
-  <StringProperty Name="TreatSpecificWarningsAsErrors" Visible="False">
+
+  <StringProperty Name="CodeAnalysisRuleSet"
+                  Visible="False" />
+
+  <EnumProperty Name="DebugInfo"
+                Visible="False">
+    <EnumProperty.DataSource>
+      <DataSource PersistedName="DebugType"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </EnumProperty.DataSource>
+  </EnumProperty>
+
+  <StringProperty Name="DebugSymbols"
+                  Visible="False" />
+
+  <StringProperty Name="DefineConstants"
+                  Visible="False">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="WarningsAsErrors" />
+      <DataSource HasConfigurationCondition="True"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="BeforeContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="OutputPath" Visible="False">
+
+  <BoolProperty Name="DefineDebug"
+                Visible="False" />
+
+  <BoolProperty Name="DefineTrace"
+                Visible="False" />
+
+  <StringProperty Name="DocumentationFile"
+                  Visible="False" />
+
+  <EnumProperty Name="ErrorReport"
+                Visible="False" />
+
+  <EnumProperty Name="FileAlignment"
+                Visible="False" />
+
+  <StringProperty Name="FullPath"
+                  DisplayName="Project Folder"
+                  ReadOnly="True">
     <StringProperty.DataSource>
-      <!-- We mark BeforeContext to avoid picking up implicit output appending to avoid #2177. -->
-      <DataSource Persistence="ProjectFile" HasConfigurationCondition="True" SourceOfDefaultValue="BeforeContext"/>
+      <DataSource PersistedName="ProjectDir"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="DocumentationFile" Visible="False"/>
-  <EnumProperty Name="GenerateSerializationAssemblies" Visible="False">
-    <EnumValue Name="Auto" IsDefault="True" />
+
+  <EnumProperty Name="GenerateSerializationAssemblies"
+                Visible="False">
+    <EnumValue Name="Auto"
+               IsDefault="True" />
     <EnumValue Name="On" />
     <EnumValue Name="Off" />
   </EnumProperty>
-  <!-- ** removed for RTM: needs translation
-  <BoolProperty Name="RegisterForComInterop" Default="False" DisplayName="Register for COM Interop" Visible="False"/>
-    -->
-    
-  <!-- Advanced Build Page Properties -->
-  <EnumProperty Name="LanguageVersion" Visible="False">
-    <EnumProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="LangVersion" SourceOfDefaultValue="AfterContext" HasConfigurationCondition="False" />
-    </EnumProperty.DataSource>
-  </EnumProperty>
-  <StringProperty Name="LangVersion" Visible="False" >
+
+  <StringProperty Name="IntermediatePath"
+                  Visible="false">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFile" SourceOfDefaultValue="AfterContext" HasConfigurationCondition="False" />
+      <DataSource HasConfigurationCondition="True"
+                  PersistedName="IntermediateOutputPath"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <EnumProperty Name="ErrorReport" Visible="False"/>
-  <EnumProperty Name="DebugInfo" Visible="False">
+
+  <EnumProperty Name="LanguageVersion"
+                Visible="False">
     <EnumProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="DebugType" SourceOfDefaultValue="AfterContext"/>
+      <DataSource HasConfigurationCondition="False"
+                  PersistedName="LangVersion"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
     </EnumProperty.DataSource>
   </EnumProperty>
-  <BoolProperty Name="CheckForOverflowUnderflow" Visible="False">
+
+  <StringProperty Name="LangVersion"
+                  Visible="False">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <StringProperty Name="NoWarn"
+                  Visible="False" />
+
+  <BoolProperty Name="NullableReferenceTypes"
+                Visible="False">
     <BoolProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="CheckForOverflowUnderflow" HasConfigurationCondition="True" SourceOfDefaultValue="AfterContext"/>
+      <DataSource HasConfigurationCondition="False"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
-  <StringProperty Name="DebugSymbols" Visible="False"/>
-  <EnumProperty Name="FileAlignment" Visible="False"/>
-  <StringProperty Name="BaseAddress" Visible="False"/>
-  <StringProperty Name="FullPath" DisplayName="Project Folder" ReadOnly="True">
-    <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="ProjectDir" SourceOfDefaultValue="AfterContext" />
-    </StringProperty.DataSource>
-  </StringProperty>
-  <DynamicEnumProperty Name="WarningLevel" EnumProvider="WarningLevelEnumProvider" Visible="False">
+
+  <BoolProperty Name="Optimize"
+                Visible="False" />
+
+  <EnumProperty Name="OptionCompare"
+                Visible="False">
+    <EnumProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  PersistedName="OptionCompare"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </EnumProperty.DataSource>
+    <EnumValue Name="Binary"
+               DisplayName="Binary"
+               IsDefault="True" />
+    <EnumValue Name="Text"
+               DisplayName="Text" />
+  </EnumProperty>
+
+  <EnumProperty Name="OptionExplicit"
+                Visible="False">
+    <EnumProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  PersistedName="OptionExplicit"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </EnumProperty.DataSource>
+    <EnumValue Name="Off"
+               DisplayName="Off" />
+    <EnumValue Name="On"
+               DisplayName="On"
+               IsDefault="True" />
+  </EnumProperty>
+
+  <EnumProperty Name="OptionInfer"
+                Visible="False">
+    <EnumProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  PersistedName="OptionInfer"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </EnumProperty.DataSource>
+    <EnumValue Name="Off"
+               DisplayName="Off" />
+    <EnumValue Name="On"
+               DisplayName="On"
+               IsDefault="True" />
+  </EnumProperty>
+
+  <DynamicEnumProperty Name="OptionStrict"
+                       EnumProvider="OptionStrictEnumProvider"
+                       Visible="False">
     <DynamicEnumProperty.DataSource>
-      <DataSource Persistence="ProjectFile" HasConfigurationCondition="True" SourceOfDefaultValue="AfterContext" />
-    </DynamicEnumProperty.DataSource>
-  </DynamicEnumProperty>
-  
-  <!-- VB Compile Page Properties-->
-  <EnumProperty Name="OptionExplicit" Visible="False">
-    <EnumProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="OptionExplicit" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
-    </EnumProperty.DataSource>
-    <EnumValue Name="Off" DisplayName="Off" />
-    <EnumValue Name="On" DisplayName="On" IsDefault="True" />
-  </EnumProperty>
-  <EnumProperty Name="OptionCompare" Visible="False">
-    <EnumProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="OptionCompare" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
-    </EnumProperty.DataSource>
-    <EnumValue Name="Binary" DisplayName="Binary" IsDefault="True" />
-    <EnumValue Name="Text" DisplayName="Text" />
-  </EnumProperty>
-  <EnumProperty Name="OptionInfer" Visible="False">
-    <EnumProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="OptionInfer" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
-    </EnumProperty.DataSource>
-    <EnumValue Name="Off" DisplayName="Off" />
-    <EnumValue Name="On" DisplayName="On" IsDefault="True" />
-  </EnumProperty>
-  <DynamicEnumProperty Name="OptionStrict" EnumProvider="OptionStrictEnumProvider" Visible="False">
-    <DynamicEnumProperty.DataSource>
-      <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+      <DataSource HasConfigurationCondition="False"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
     </DynamicEnumProperty.DataSource>
   </DynamicEnumProperty>
 
-  <!-- VB Advanced Compile Options-->
-  <BoolProperty Name="RemoveIntegerChecks" Visible="False" />
-  <BoolProperty Name="DefineDebug" Visible="False" />
-  <BoolProperty Name="DefineTrace" Visible="False" />
+  <StringProperty Name="OutputPath"
+                  Visible="False">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="True"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="BeforeContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
 
-  <!-- VB Compile Build Event Page-->
-  <StringProperty Name="PreBuildEvent" Visible="False">
+  <EnumProperty Name="PlatformTarget"
+                Visible="False" />
+
+  <StringProperty Name="PostBuildEvent"
+                  Visible="False">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+      <DataSource HasConfigurationCondition="False"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="PostBuildEvent" Visible="False">
+
+  <StringProperty Name="PreBuildEvent"
+                  Visible="False">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+      <DataSource HasConfigurationCondition="False"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <EnumProperty Name="RunPostBuildEvent" Visible="False">
+
+  <BoolProperty Name="Prefer32Bit"
+                Visible="False" />
+
+  <BoolProperty Name="RemoveIntegerChecks"
+                Visible="False" />
+
+  <BoolProperty Name="RunCodeAnalysis"
+                Visible="False" />
+
+  <EnumProperty Name="RunPostBuildEvent"
+                Visible="False">
     <EnumProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="RunPostBuildEvent" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+      <DataSource HasConfigurationCondition="False"
+                  PersistedName="RunPostBuildEvent"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
     </EnumProperty.DataSource>
     <EnumValue Name="Always" />
-    <EnumValue Name="OnBuildSuccess" IsDefault="True" />
+    <EnumValue Name="OnBuildSuccess"
+               IsDefault="True" />
     <EnumValue Name="OnOutputUpdated" />
   </EnumProperty>
 
-  <StringProperty Name="CodeAnalysisRuleSet" Visible="False"/>
+  <StringProperty Name="TreatSpecificWarningsAsErrors"
+                  Visible="False">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="WarningsAsErrors"
+                  Persistence="ProjectFile" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <BoolProperty Name="TreatWarningsAsErrors"
+                Default="False"
+                Visible="False" />
+
+  <DynamicEnumProperty Name="WarningLevel"
+                       EnumProvider="WarningLevelEnumProvider"
+                       Visible="False">
+    <DynamicEnumProperty.DataSource>
+      <DataSource HasConfigurationCondition="True"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </DynamicEnumProperty.DataSource>
+  </DynamicEnumProperty>
 
   <!-- F# specific properties-->
   <BoolProperty Name="Tailcalls" Visible="False" />

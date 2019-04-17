@@ -6,11 +6,11 @@ using System.Collections.Immutable;
 
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     public class DependencyTests
     {
@@ -60,7 +60,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             Assert.Equal(mockModel.ProviderType, dependency.ProviderType);
             Assert.Equal(string.Empty, dependency.Name);
-            Assert.Equal(string.Empty, dependency.Version);
             Assert.Equal(string.Empty, dependency.Caption);
             Assert.Equal(string.Empty, dependency.OriginalItemSpec);
             Assert.Equal(string.Empty, dependency.Path);
@@ -106,7 +105,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             Assert.Equal(mockModel.ProviderType, dependency.ProviderType);
             Assert.Equal(mockModel.Name, dependency.Name);
-            Assert.Equal(mockModel.Version, dependency.Version);
             Assert.Equal(mockModel.Caption, dependency.Caption);
             Assert.Equal(mockModel.OriginalItemSpec, dependency.OriginalItemSpec);
             Assert.Equal(mockModel.Path, dependency.Path);
@@ -212,7 +210,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 caption: "newcaption",
                 resolved: true,
                 flags: DependencyTreeFlags.BaseReferenceFlags,
-                dependencyIDs: ImmutableList<string>.Empty.Add("aaa"));
+                dependencyIDs: ImmutableArray.Create("aaa"));
 
             Assert.Equal("newcaption", newDependency.Caption);
             Assert.True(newDependency.Resolved);
@@ -243,7 +241,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal("newcaption", newDependency.Caption);
 
             Assert.Equal(expectedId, newDependency.Id);
-            Assert.True(newDependency.DependencyIDs.Count == 1);
+            Assert.Single(newDependency.DependencyIDs);
             Assert.Equal(expectedDependencyId, newDependency.DependencyIDs[0]);
         }
 
@@ -314,16 +312,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void WhenCreatingADependencyFromAnotherDependency_ExistingIconSetInstanceIsReused()
         {
-            var mockModel = IDependencyModelFactory.Implement(
-                providerType: "providerType",
-                id: "someId");
+            var projectPath = @"C:\Foo\Project.csproj";
 
-            var dependency = new Dependency(mockModel, ITargetFrameworkFactory.Implement("tfm1"), @"C:\Foo\Project.csproj")
-                .SetProperties(iconSet: new DependencyIconSet(KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference));
+            var dependencyModel = new TestableDependencyModel(
+                    projectPath,
+                    "ItemSpec", 
+                    iconSet: new DependencyIconSet(KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference));
 
-            var newDependency = new Dependency(dependency, ITargetFrameworkFactory.Implement("tfm2"), @"C:\Foo\Project.csproj");
+            var dependency = new Dependency(dependencyModel, ITargetFrameworkFactory.Implement("tfm2"), projectPath);
 
-            Assert.Same(dependency.IconSet, newDependency.IconSet);
+            Assert.Same(dependencyModel.IconSet, dependency.IconSet);
+        }
+
+        private sealed class TestableDependencyModel : DependencyModel
+        {
+            public override string ProviderType => "someProvider";
+
+            public override DependencyIconSet IconSet { get; }
+
+            public TestableDependencyModel(string path, string originalItemSpec, DependencyIconSet iconSet)
+                : base(path, originalItemSpec, ProjectTreeFlags.Empty, isResolved: false, isImplicit: false, properties: null)
+            {
+                IconSet = iconSet;
+            }
         }
 
         [Fact]

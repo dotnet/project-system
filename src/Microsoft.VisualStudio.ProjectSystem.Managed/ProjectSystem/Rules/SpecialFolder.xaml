@@ -1,24 +1,42 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!--Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.-->
-<Rule
-	Name="SpecialFolder"
-	DisplayName="General"
-	PageTemplate="generic"
-	Description="Special folders"
-	xmlns="http://schemas.microsoft.com/build/2009/properties">
-	<Rule.DataSource>
-		<DataSource Persistence="ProjectInstance" HasConfigurationCondition="False" ItemType="SpecialFolder" SourceOfDefaultValue="AfterContext" />
-	</Rule.DataSource>
+<Rule Name="SpecialFolder"
+      Description="Special folders"
+      DisplayName="General"
+      PageTemplate="generic"
+      xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource HasConfigurationCondition="False"
+                ItemType="SpecialFolder"
+                Persistence="ProjectInstance"
+                SourceOfDefaultValue="AfterContext" />
+  </Rule.DataSource>
 
-	<StringProperty Name="Identity" Visible="false" ReadOnly="true" />
-	<StringProperty Name="FullPath" DisplayName="Full Path" ReadOnly="true" Category="Misc" />
-    <StringProperty Name="FileNameAndExtension" DisplayName="Folder Name" ReadOnly="true" Category="Misc">
-        <StringProperty.DataSource>
-            <DataSource Persistence="ProjectInstance" ItemType="SpecialFolder" PersistedName="FileNameAndExtension" SourceOfDefaultValue="AfterContext" />
-        </StringProperty.DataSource>
-    </StringProperty>
-    <EnumProperty Name="DisableAddItem" Visible="False">
-        <EnumValue Name="Recursive" />
-        <EnumValue Name="TopDirectoryOnly" />
-    </EnumProperty>
+  <EnumProperty Name="DisableAddItem"
+                Visible="False">
+    <EnumValue Name="Recursive" />
+    <EnumValue Name="TopDirectoryOnly" />
+  </EnumProperty>
+
+  <StringProperty Name="FileNameAndExtension"
+                  Category="Misc"
+                  DisplayName="Folder Name"
+                  ReadOnly="true">
+    <StringProperty.DataSource>
+      <DataSource ItemType="SpecialFolder"
+                  PersistedName="FileNameAndExtension"
+                  Persistence="ProjectInstance"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <StringProperty Name="FullPath"
+                  Category="Misc"
+                  DisplayName="Full Path"
+                  ReadOnly="true" />
+
+  <StringProperty Name="Identity"
+                  ReadOnly="true"
+                  Visible="false" />
+
 </Rule>

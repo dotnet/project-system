@@ -331,6 +331,8 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Debug.Assert(Not String.IsNullOrEmpty(throwingComponentName))
             Debug.Assert(Not String.IsNullOrEmpty(exceptionEventDescription))
 
+            If IsCheckoutCanceledException(ex) Then Return True
+
             ' Follow naming convention for entity name: A string to identify the entity in the feature. E.g. open-project, build-project, fix-error.
             throwingComponentName = Regex.Replace(throwingComponentName, "([A-Z])", "-$1").TrimPrefix("-").ToLower() + "-fault"
 
@@ -341,6 +343,10 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
             Debug.Fail(exceptionEventDescription & vbCrLf & $"Exception: {ex.ToString}")
             Return True
+        End Function
+
+        Public Function IsIOException(ex As Exception) As Boolean
+            Return TypeOf ex Is IOException OrElse TypeOf ex Is UnauthorizedAccessException
         End Function
 
         ''' <summary>
@@ -1736,8 +1742,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         Public Class TelemetryLogger
 
             Private Const InputXmlFormEventName As String = "vs/projectsystem/editors/inputxmlform"
-            Private Const UsePreviewSdkEventName As String = "vs/projectsystem/options/usepreviewsdk"
-
             Public Enum InputXmlFormEvent
                 FormOpened
                 FromFileButtonClicked
@@ -1753,13 +1757,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
             Public Shared Sub LogInputXmlFormException(ex As Exception)
                 TelemetryService.DefaultSession.PostFault(InputXmlFormEventName, "Exception encountered during Xml Schema Inference", ex)
-            End Sub
-
-            Public Shared Sub LogUsePreviewSdkEvent(usePreviewSdk As Boolean, isPreview As Boolean)
-                Dim userTask = New UserTaskEvent(UsePreviewSdkEventName, TelemetryResult.Success)
-                userTask.Properties("vs.projectsystem.options.usepreviewsdk") = usePreviewSdk
-                userTask.Properties("vs.projectsystem.options.ispreview") = isPreview
-                TelemetryService.DefaultSession.PostEvent(userTask)
             End Sub
 
         End Class

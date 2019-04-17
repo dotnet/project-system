@@ -87,24 +87,9 @@
         <target state="translated">컴파일러가 출력을 최적화해야 합니까?</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|PackageAction|Description">
-        <source>The MSBuild target to use when packaging a project.</source>
-        <target state="translated">프로젝트를 패키지할 때 사용할 MSBuild 대상입니다.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|DefaultContentType|Description">
-        <source>The default content type name to use when adding files.</source>
-        <target state="translated">파일을 추가할 때 사용할 기본 콘텐츠 형식 이름입니다.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="EnumValue|TargetRuntime.AppHost|DisplayName">
         <source>Windows app</source>
         <target state="translated">Windows 앱</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|SuppressOutOfDateMessageOnBuild|Description">
-        <source>True to just build out-of-date projects without ever prompting the user to confirm.</source>
-        <target state="translated">사용자에게 확인 메시지를 표시하지도 않고 오래된 프로젝트를 빌드하는 경우에만 True로 설정합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OutputType.Exe|DisplayName">

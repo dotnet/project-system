@@ -52,8 +52,12 @@
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Button x:Uid="OKButton" Grid.Row="0"  Grid.Column="0" Margin="5" MinWidth="50" Padding="10,2" IsDefault="True" Click="OKButton_Click" Content="{x:Static Member=local:PropertyPageResources.OKBtn}" />
-            <Button x:Uid="CancelButton" Grid.Row="0"  Grid.Column="1" Margin="5" MinWidth="50" Padding="10,2" IsCancel="True" Content="{x:Static Member=local:PropertyPageResources.CancelBtn}" />
+            <Button x:Uid="OKButton" Grid.Row="0"  Grid.Column="0" Margin="5" MinWidth="50" Padding="10,2" IsDefault="True" Click="OKButton_Click" 
+                    Content="{x:Static Member=local:PropertyPageResources.OKBtn}" 
+                    AutomationProperties.HelpText="{x:Static Member=local:PropertyPageResources.OKBtnHelpText}"/>
+            <Button x:Uid="CancelButton" Grid.Row="0"  Grid.Column="1" Margin="5" MinWidth="50" Padding="10,2" IsCancel="True" 
+                    Content="{x:Static Member=local:PropertyPageResources.CancelBtn}" 
+                    AutomationProperties.HelpText="{x:Static Member=local:PropertyPageResources.CancelBtnHelpText}"/>
         </Grid>
     </Grid>
 </ui:DialogWindow>

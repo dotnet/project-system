@@ -32,11 +32,6 @@
         <target state="translated">Controlli aggiornamenti</target>
         <note />
       </trans-unit>
-      <trans-unit id="General_UsePreviewSdk">
-        <source>Use previews of the .NET Core SDK</source>
-        <target state="translated">Usa anteprime di .NET Core SDK</target>
-        <note />
-      </trans-unit>
     </body>
   </file>
 </xliff>

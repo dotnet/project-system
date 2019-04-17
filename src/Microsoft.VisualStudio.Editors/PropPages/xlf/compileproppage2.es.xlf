@@ -44,7 +44,7 @@
       </trans-unit>
       <trans-unit id="OptionStrictLabel.Text">
         <source>Option &amp;strict:</source>
-        <target state="new">Option &amp;strict:</target>
+        <target state="translated">Opción &amp;strict:</target>
         <note />
       </trans-unit>
       <trans-unit id="OptionCompareLabel.Text">

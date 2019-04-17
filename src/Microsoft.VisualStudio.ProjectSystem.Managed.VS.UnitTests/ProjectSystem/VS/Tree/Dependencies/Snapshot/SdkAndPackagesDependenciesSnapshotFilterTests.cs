@@ -3,13 +3,12 @@
 using System.Collections.Immutable;
 
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.RuleHandlers;
 
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     public sealed class SdkAndPackagesDependenciesSnapshotFilterTests : DependenciesSnapshotFilterTestsBase
     {
@@ -29,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void BeforeAddOrUpdate_WhenSdk_ShouldFindMatchingPackageAndSetProperties()
         {
-            var dependencyIDs = ImmutableList.Create("id1", "id2");
+            var dependencyIDs = ImmutableArray.Create("id1", "id2");
 
             var targetFramework = new TargetFramework("tfm");
 
@@ -59,7 +58,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var filter = new SdkAndPackagesDependenciesSnapshotFilter();
 
             filter.BeforeAddOrUpdate(
-                null,
                 targetFramework,
                 sdkDependency,
                 null,
@@ -110,7 +108,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var filter = new SdkAndPackagesDependenciesSnapshotFilter();
 
             filter.BeforeAddOrUpdate(
-                null,
                 targetFramework,
                 sdkDependency,
                 null,
@@ -127,7 +124,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void BeforeAddOrUpdate_WhenPackage_ShouldFindMatchingSdkAndSetProperties()
         {
-            var dependencyIDs = ImmutableList.Create("id1", "id2");
+            var dependencyIDs = ImmutableArray.Create("id1", "id2");
 
             var targetFramework = new TargetFramework("tfm");
 
@@ -158,7 +155,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var filter = new SdkAndPackagesDependenciesSnapshotFilter();
 
             filter.BeforeAddOrUpdate(
-                null,
                 targetFramework,
                 packageDependency,
                 null,
@@ -209,7 +205,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var filter = new SdkAndPackagesDependenciesSnapshotFilter();
 
             filter.BeforeRemove(
-                projectPath: null,
                 targetFramework: targetFramework,
                 dependency: packageDependency,
                 context);
@@ -227,7 +222,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             afterSdkDependency.AssertEqualTo(
                 afterSdkDependency.ToUnresolved(
                     SdkReference.SchemaName,
-                    dependencyIDs: ImmutableList<string>.Empty));
+                    dependencyIDs: ImmutableArray<string>.Empty));
         }
     }
 }

@@ -1,7 +1,10 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+#pragma warning disable RS0030 // Do not used banned APIs (wrapping IAsyncServiceProvider/SAsyncServiceProvider)
+
 using System;
 using System.ComponentModel.Composition;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.Shell.Interop;
@@ -20,10 +23,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private readonly AsyncLazy<T> _value;
 
         [ImportingConstructor]
-        public VsService([Import(typeof(SAsyncServiceProvider))]IAsyncServiceProvider serviceProvider, IProjectThreadingService threadingService)
+        public VsService([Import(typeof(SAsyncServiceProvider))]IAsyncServiceProvider serviceProvider, JoinableTaskContext joinableTaskContext)
         {
             Requires.NotNull(serviceProvider, nameof(serviceProvider));
-            Requires.NotNull(threadingService, nameof(threadingService));
+            Requires.NotNull(joinableTaskContext, nameof(joinableTaskContext));
 
             _value = new AsyncLazy<T>(async () =>
             {
@@ -33,16 +36,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
                 // We explicitly switch to the UI thread to avoid doing a QueryInterface 
                 // via blocking RPC for STA objects when we cast explicitly to the type
-                await threadingService.SwitchToUIThread();
+                await joinableTaskContext.Factory.SwitchToMainThreadAsync();
 
                 return (T)iunknown;
 
-            }, threadingService.JoinableTaskFactory);
+            }, joinableTaskContext.Factory);
         }
 
-        public Task<T> GetValueAsync()
+        public Task<T> GetValueAsync(CancellationToken cancellationToken = default)
         {
-            return _value.GetValueAsync();
+            return _value.GetValueAsync(cancellationToken);
         }
 
         protected virtual Type ServiceType

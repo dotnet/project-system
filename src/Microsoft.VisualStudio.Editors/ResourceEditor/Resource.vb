@@ -1378,6 +1378,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Function TryGetValue() As Object
             Try
                 Return GetValue()
+            Catch ex As Exception When IsIOException(ex)
+                ' I/O failures are expected when the linked file from the RESX is missing on disk
+
             Catch ex As Exception When ReportWithoutCrash(ex, NameOf(TryGetValue), NameOf(Resource)) 'We ignore OOM - the resource may simply be big.  We're okay dealing with that.
                 Return Nothing
             End Try

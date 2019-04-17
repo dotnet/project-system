@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Threading;
-
+using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
@@ -12,6 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     /// Contract responsible for providing data about project dependencies of a specific type,
     /// for example assemblies, projects, packages etc.
     /// </summary>
+    [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ZeroOrMore)]
     public interface IProjectDependenciesSubTreeProvider
     {
         /// <summary>

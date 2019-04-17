@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             LaunchSettingsProvider = launchSettingsProvider;
         }
 
-        private readonly IVsService<SVsShellDebugger, IVsDebugger4> _vsDebuggerService;
+        private readonly IVsService<IVsDebugger4> _vsDebuggerService;
 
         /// <summary>
         /// Import the LaunchTargetProviders which know how to run profiles
@@ -88,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         /// <summary>
-        /// TODO: This is a placeholder until issue https://github.com/dotnet/roslyn-project-system/issues/423 is addressed. 
+        /// TODO: This is a placeholder until issue https://github.com/dotnet/project-system/issues/423 is addressed. 
         /// This information should come from the targets file.
         /// </summary>
         public static bool IsDotNetCoreFramework(string targetFramework)

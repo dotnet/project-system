@@ -1,11 +1,13 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.OperationProgress;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
@@ -24,26 +26,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             private readonly IWorkspaceProjectContextProvider _workspaceProjectContextProvider;
             private readonly IActiveEditorContextTracker _activeWorkspaceProjectContextTracker;
             private readonly ExportFactory<IApplyChangesToWorkspaceContext> _applyChangesToWorkspaceContextFactory;
+            private readonly IDataProgressTrackerService _dataProgressTrackerService;
 
-            private DisposableBag _subscriptions;
+            private IDataProgressTrackerServiceRegistration _evaluationProgressRegistration;
+            private IDataProgressTrackerServiceRegistration _projectBuildProgressRegistration;
+            private DisposableBag _disposables;
             private IWorkspaceProjectContextAccessor _contextAccessor;
             private ExportLifetimeContext<IApplyChangesToWorkspaceContext> _applyChangesToWorkspaceContext;
 
             public WorkspaceProjectContextHostInstance(ConfiguredProject project,
-                                                IProjectThreadingService threadingService,
-                                                IUnconfiguredProjectTasksService tasksService,
-                                                IProjectSubscriptionService projectSubscriptionService,
-                                                IWorkspaceProjectContextProvider workspaceProjectContextProvider,
-                                                IActiveEditorContextTracker activeWorkspaceProjectContextTracker,
-                                                ExportFactory<IApplyChangesToWorkspaceContext> applyChangesToWorkspaceContextFactory)
+                                                       IProjectThreadingService threadingService,
+                                                       IUnconfiguredProjectTasksService tasksService,
+                                                       IProjectSubscriptionService projectSubscriptionService,
+                                                       IWorkspaceProjectContextProvider workspaceProjectContextProvider,
+                                                       IActiveEditorContextTracker activeWorkspaceProjectContextTracker,
+                                                       ExportFactory<IApplyChangesToWorkspaceContext> applyChangesToWorkspaceContextFactory,
+                                                       IDataProgressTrackerService dataProgressTrackerService)
                 : base(threadingService.JoinableTaskContext)
             {
                 _project = project;
                 _projectSubscriptionService = projectSubscriptionService;
                 _tasksService = tasksService;
                 _workspaceProjectContextProvider = workspaceProjectContextProvider;
-                _applyChangesToWorkspaceContextFactory = applyChangesToWorkspaceContextFactory;
                 _activeWorkspaceProjectContextTracker = activeWorkspaceProjectContextTracker;
+                _applyChangesToWorkspaceContextFactory = applyChangesToWorkspaceContextFactory;
+                _dataProgressTrackerService = dataProgressTrackerService;
             }
 
             public Task InitializeAsync()
@@ -58,31 +65,42 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 if (_contextAccessor == null)
                     return;
 
-                _activeWorkspaceProjectContextTracker.RegisterContext(_contextAccessor.Context, _contextAccessor.ContextId);
+                _activeWorkspaceProjectContextTracker.RegisterContext(_contextAccessor.ContextId);
+
+                _disposables = new DisposableBag(CancellationToken.None);
 
                 _applyChangesToWorkspaceContext = _applyChangesToWorkspaceContextFactory.CreateExport();
                 _applyChangesToWorkspaceContext.Value.Initialize(_contextAccessor.Context);
+                _disposables.AddDisposable(_applyChangesToWorkspaceContext);
 
-                _subscriptions = new DisposableBag(CancellationToken.None);
-                _subscriptions.AddDisposable(_projectSubscriptionService.ProjectRuleSource.SourceBlock.LinkToAsyncAction(
+                // We avoid suppressing version updates, so that progress tracker doesn't
+                // think we're still "in progress" in the case of an empty change
+                _disposables.AddDisposable(_projectSubscriptionService.ProjectRuleSource.SourceBlock.LinkToAsyncAction(
                         target: e => OnProjectChangedAsync(e, evaluation: true),
+                        suppressVersionOnlyUpdates: false,
                         ruleNames: _applyChangesToWorkspaceContext.Value.GetProjectEvaluationRules()));
 
-                _subscriptions.AddDisposable(_projectSubscriptionService.ProjectBuildRuleSource.SourceBlock.LinkToAsyncAction(
+                _disposables.AddDisposable(_projectSubscriptionService.ProjectBuildRuleSource.SourceBlock.LinkToAsyncAction(
                         target: e => OnProjectChangedAsync(e, evaluation: false),
+                        suppressVersionOnlyUpdates: false,
                         ruleNames: _applyChangesToWorkspaceContext.Value.GetProjectBuildRules()));
+
+                _evaluationProgressRegistration = _dataProgressTrackerService.RegisterForIntelliSense(_project, nameof(WorkspaceProjectContextHostInstance) + ".Evaluation");
+                _disposables.AddDisposable(_evaluationProgressRegistration);
+
+                _projectBuildProgressRegistration = _dataProgressTrackerService.RegisterForIntelliSense(_project, nameof(WorkspaceProjectContextHostInstance) + ".ProjectBuild");
+                _disposables.AddDisposable(_projectBuildProgressRegistration);
             }
 
             protected override async Task DisposeCoreUnderLockAsync(bool initialized)
             {
                 if (initialized)
                 {
-                    _subscriptions?.Dispose();
-                    _applyChangesToWorkspaceContext?.Dispose();
+                    _disposables?.Dispose();
 
                     if (_contextAccessor != null)
                     {
-                        _activeWorkspaceProjectContextTracker.UnregisterContext(_contextAccessor.Context);
+                        _activeWorkspaceProjectContextTracker.UnregisterContext(_contextAccessor.ContextId);
 
                         await _workspaceProjectContextProvider.ReleaseProjectContextAsync(_contextAccessor);
                     }
@@ -133,7 +151,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                 try
                 {
-                    bool isActiveContext = _activeWorkspaceProjectContextTracker.IsActiveEditorContext(context);
+                    bool isActiveContext = _activeWorkspaceProjectContextTracker.IsActiveEditorContext(_contextAccessor.ContextId);
 
                     if (evaluation)
                     {
@@ -147,6 +165,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 finally
                 {
                     context.EndBatch();
+                }
+
+                NotifyOutputDataCalculated(update.DataSourceVersions, evaluation);
+            }
+
+            private void NotifyOutputDataCalculated(IImmutableDictionary<NamedIdentity, IComparable> dataSourceVersions, bool evaluation)
+            {
+                // Notify operation progress that we've now processed these versions of our input, if they are
+                // up-to-date with the latest version that produced, then we no longer considered "in progress".
+                if (evaluation)
+                {
+                    _evaluationProgressRegistration.NotifyOutputDataCalculated(dataSourceVersions);
+                }
+                else
+                {
+                    _projectBuildProgressRegistration.NotifyOutputDataCalculated(dataSourceVersions);
                 }
             }
 

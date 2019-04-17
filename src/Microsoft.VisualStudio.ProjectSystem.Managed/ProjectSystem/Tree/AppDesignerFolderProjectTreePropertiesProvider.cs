@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree
             // Retrieves the <AppDesignerFolder> and <AppDesignerFolderContentsVisibleOnlyInShowAllFiles> properties from the project file
             //
             // TODO: Read these default values from the rules themselves
-            // See: https://github.com/dotnet/roslyn-project-system/issues/209
+            // See: https://github.com/dotnet/project-system/issues/209
             string folderName = ruleSnapshots.GetPropertyOrDefault(AppDesigner.SchemaName, AppDesigner.FolderNameProperty, "Properties");
             string contextsVisibleOnlyInShowAllFiles = ruleSnapshots.GetPropertyOrDefault(AppDesigner.SchemaName, AppDesigner.ContentsVisibleOnlyInShowAllFilesProperty, "false");
 
@@ -80,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree
 
         protected override bool AreContentsVisibleOnlyInShowAllFiles(IImmutableDictionary<string, string> projectTreeSettings)
         {
-            return StringComparers.PropertyValues.Equals(projectTreeSettings[AppDesigner.ContentsVisibleOnlyInShowAllFilesProperty], "true");
+            return StringComparers.PropertyLiteralValues.Equals(projectTreeSettings[AppDesigner.ContentsVisibleOnlyInShowAllFilesProperty], "true");
         }
     }
 }

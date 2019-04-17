@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class PropertyPageResources {
@@ -115,6 +115,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Return to the debug property page with no changes.
+        /// </summary>
+        public static string CancelBtnHelpText {
+            get {
+                return ResourceManager.GetString("CancelBtnHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Checking enables a textbox to specify an absolute or relative URl.
+        /// </summary>
+        public static string chkLaunchBrowserHelpText {
+            get {
+                return ResourceManager.GetString("chkLaunchBrowserHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable native code debugging.
+        /// </summary>
+        public static string chkNativeCodeDebuggingText {
+            get {
+                return ResourceManager.GetString("chkNativeCodeDebuggingText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Debug.
         /// </summary>
         public static string DebugPropertyPageTitle {
@@ -129,6 +156,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         public static string DeleteBtn {
             get {
                 return ResourceManager.GetString("DeleteBtn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete the current profile and change to the next available profile.
+        /// </summary>
+        public static string DeleteBtnHelpText {
+            get {
+                return ResourceManager.GetString("DeleteBtnHelpText", resourceCulture);
             }
         }
         
@@ -259,6 +295,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open the new profile dialog.
+        /// </summary>
+        public static string NewBtnHelpText {
+            get {
+                return ResourceManager.GetString("NewBtnHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New profile.
         /// </summary>
         public static string NewProfileCaption {
@@ -282,6 +327,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         public static string OKBtn {
             get {
                 return ResourceManager.GetString("OKBtn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create the profile and return to the debug property page with the new profile selected.
+        /// </summary>
+        public static string OKBtnHelpText {
+            get {
+                return ResourceManager.GetString("OKBtnHelpText", resourceCulture);
             }
         }
         

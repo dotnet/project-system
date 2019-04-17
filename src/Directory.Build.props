@@ -55,10 +55,6 @@
     <None Include="$(MSBuildThisFileDirectory)Common\Test\App.config" CopyToOutputDirectory="PreserveNewest" Condition="'$(IsUnitTestProject)' == 'true'" />
     <None Include="$(MSBuildThisFileDirectory)Common\Integration\App.config" CopyToOutputDirectory="PreserveNewest" Condition="'$(IsIntegrationTestProject)' == 'true'" />
   </ItemGroup>
-
-  <ItemGroup>
-    <AdditionalFiles Include="$(MSBuildThisFileDirectory)\BannedSymbols.txt" />
-  </ItemGroup>
   
   <ItemGroup>
     <SuppressFromVsix Include="Microsoft.VSDesigner.dll"/>

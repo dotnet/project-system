@@ -25,9 +25,16 @@
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests" />
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.CSharp.VS.UnitTests" />
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.UnitTests" />
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.FSharp.VS.UnitTests" />
     <InternalsVisibleTo Include="DynamicProxyGenAssembly2" Key="$(MoqPublicKey)" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="ProjectSystem\VS\LanguageServices\CSharp\CSharpCodeDomProvider.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="ProjectSystem\VS\LanguageServices\VisualBasic\VisualBasicCodeDomProvider.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="ProjectSystem\VS\PropertyPages\DebugPageControl.xaml.cs">
       <DependentUpon>DebugPageControl.xaml</DependentUpon>
     </Compile>
