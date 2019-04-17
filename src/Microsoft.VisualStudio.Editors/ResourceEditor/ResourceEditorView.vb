@@ -21,9 +21,9 @@ Imports Microsoft.VisualStudio.Editors.Common.DTEUtils
 Imports Microsoft.VisualStudio.Editors.DesignerFramework
 Imports Microsoft.VisualStudio.Editors.Interop
 Imports Microsoft.VisualStudio.Imaging
-Imports Microsoft.VisualStudio.PlatformUI
 Imports Microsoft.VisualStudio.Shell.Design
 Imports Microsoft.VisualStudio.Shell.Interop
+Imports Microsoft.VisualStudio.Utilities
 Imports Microsoft.Win32
 
 Imports VB = Microsoft.VisualBasic
@@ -597,7 +597,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks></remarks>
         Private Sub InitializeUI()
             AllowDrop = True
-            StringTable.RowHeadersWidth = DpiHelper.LogicalToDeviceUnitsX(35)
+            StringTable.RowHeadersWidth = DpiAwareness.LogicalToDeviceUnits(Handle, 35)
+
         End Sub
 
 
