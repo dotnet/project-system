@@ -125,6 +125,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             public string AppliesTo => ProjectCapabilities.AlwaysApplicable;
 
             public int OrderPrecedence => -500;
+
+            public bool SuppressLowerPriority { get; }
         }
     }
 }

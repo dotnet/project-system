@@ -13,6 +13,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
         private class ProjectThreadingService : IProjectThreadingService
         {
+            private readonly bool _verifyOnUIThread;
+
+            public ProjectThreadingService(bool verifyOnUIThread = true) => _verifyOnUIThread = verifyOnUIThread;
+
             public JoinableTaskContextNode JoinableTaskContext { get; } = new JoinableTaskContextNode(new JoinableTaskContext());
 
             public JoinableTaskFactory JoinableTaskFactory
@@ -22,7 +26,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             public bool IsOnMainThread
             {
-                get { return JoinableTaskContext.IsOnMainThread; }
+                get
+                {
+                    if (!_verifyOnUIThread)
+                        return true;
+
+                    return JoinableTaskContext.IsOnMainThread;
+                }
             }
 
             public void ExecuteSynchronously(Func<Task> asyncAction)
@@ -37,6 +47,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             public void VerifyOnUIThread()
             {
+                if (!_verifyOnUIThread)
+                    return;
+
                 if (!IsOnMainThread)
                     throw new InvalidOperationException();
             }
@@ -54,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                       ProjectFaultSeverity faultSeverity = ProjectFaultSeverity.Recoverable,
                       ForkOptions options = ForkOptions.Default)
             {
-                Task.Run(asyncAction).Wait();
+                JoinableTaskFactory.Run(asyncAction);
             }
         }
     }
