@@ -3,7 +3,6 @@
 using System;
 using System.Text;
 using System.Threading.Tasks;
-
 using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -16,10 +15,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         public static UnconfiguredProject Create(object hostObject = null, string filePath = null,
-            IProjectConfigurationsService projectConfigurationsService = null, ConfiguredProject configuredProject = null, Encoding projectEncoding = null,
-            IProjectCapabilitiesScope scope = null)
+                                                 IProjectConfigurationsService projectConfigurationsService = null,
+                                                 ConfiguredProject configuredProject = null, Encoding projectEncoding = null,
+                                                 IProjectCapabilitiesScope scope = null)
         {
             var service = IProjectServiceFactory.Create();
+
 
             var unconfiguredProjectServices = new Mock<UnconfiguredProjectServices>();
             unconfiguredProjectServices.Setup(u => u.HostObject)
@@ -27,6 +28,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             unconfiguredProjectServices.Setup(u => u.ProjectConfigurationsService)
                                        .Returns(projectConfigurationsService);
+
+            var activeConfiguredProjectProvider = IActiveConfiguredProjectProviderFactory.Create(getActiveConfiguredProject: () => configuredProject);
+            unconfiguredProjectServices.Setup(u => u.ActiveConfiguredProjectProvider)
+                                       .Returns(activeConfiguredProjectProvider);
 
             var project = new Mock<UnconfiguredProject>();
             project.Setup(u => u.ProjectService)

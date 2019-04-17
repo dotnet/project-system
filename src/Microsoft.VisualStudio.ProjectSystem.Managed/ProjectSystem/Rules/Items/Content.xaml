@@ -14,11 +14,27 @@
   <DynamicEnumProperty Name="{}{ItemType}"
                        EnumProvider="ItemTypes" />
 
+  <BoolProperty Name="AutoGen"
+                Visible="false" />
+
   <EnumProperty Name="CopyToOutputDirectory">
     <EnumValue Name="Never" />
     <EnumValue Name="Always" />
     <EnumValue Name="PreserveNewest" />
   </EnumProperty>
+
+  <StringProperty Name="CustomTool"
+                  Visible="false">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  ItemType="Content"
+                  PersistedName="Generator"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <StringProperty Name="CustomToolNamespace" />
 
   <StringProperty Name="DependentUpon"
                   Visible="false">
@@ -28,18 +44,15 @@
     </StringProperty.Metadata>
   </StringProperty>
 
-  <StringProperty Name="FileNameAndExtension"
-                  ReadOnly="true">
-    <StringProperty.DataSource>
-      <DataSource ItemType="Content"
-                  PersistedName="FileNameAndExtension"
-                  Persistence="Intrinsic"
-                  SourceOfDefaultValue="AfterContext" />
-    </StringProperty.DataSource>
-  </StringProperty>
+  <BoolProperty Name="DesignTime"
+                Visible="false" />
+
+  <BoolProperty Name="DesignTimeSharedInput"
+                Visible="false" />
 
   <StringProperty Name="FullPath"
-                  ReadOnly="true">
+                  ReadOnly="true"
+                  Visible="false">
     <StringProperty.DataSource>
       <DataSource ItemType="Content"
                   PersistedName="FullPath"
@@ -48,16 +61,10 @@
     </StringProperty.DataSource>
   </StringProperty>
 
-  <StringProperty Name="Identity"
-                  ReadOnly="true"
-                  Visible="false">
-    <StringProperty.DataSource>
-      <DataSource ItemType="Content"
-                  PersistedName="Identity"
-                  Persistence="Intrinsic"
-                  SourceOfDefaultValue="AfterContext" />
-    </StringProperty.DataSource>
-  </StringProperty>
+  <StringProperty Name="Generator" />
+
+  <StringProperty Name="LastGenOutput"
+                  Visible="false" />
 
   <StringProperty Name="Link"
                   Visible="false">
@@ -70,6 +77,9 @@
                      Value="true" />
     </StringProperty.Metadata>
   </StringProperty>
+
+  <StringProperty Name="SubType"
+                  Visible="false" />
 
   <BoolProperty Name="Visible"
                 Visible="false" />

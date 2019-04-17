@@ -56,7 +56,6 @@
                   Visible="false" />
 
   <StringProperty Name="DefaultContentType"
-                  Description="The default content type name to use when adding files."
                   Visible="false" />
 
   <StringProperty Name="DefaultPlatform"
@@ -134,7 +133,6 @@
   </EnumProperty>
 
   <StringProperty Name="PackageAction"
-                  Description="The MSBuild target to use when packaging a project."
                   Visible="false" />
 
   <StringProperty Name="Platform"
@@ -196,7 +194,6 @@
   </BoolProperty>
 
   <BoolProperty Name="SuppressOutOfDateMessageOnBuild"
-                Description="True to just build out-of-date projects without ever prompting the user to confirm."
                 Visible="false" />
 
   <StringProperty Name="TargetFramework"

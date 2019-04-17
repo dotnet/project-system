@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
     /// <summary>
     ///     Abstract immutable collection that supports lookup by index and name.
     /// </summary>
-    internal abstract class ImmutablePropertyCollection<T> : IEnumerable where T : class
+    internal abstract class ImmutablePropertyCollection<T> : IEnumerable<T> where T : class
     {
         private readonly IImmutableList<T> _items;
         private readonly IImmutableDictionary<string, T> _itemsByName;
@@ -27,7 +27,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         {
             get { return _items.Count; }
         }
-        public IEnumerator GetEnumerator()
+        public IEnumerator<T> GetEnumerator()
+        {
+            return _items.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return _items.GetEnumerator();
         }

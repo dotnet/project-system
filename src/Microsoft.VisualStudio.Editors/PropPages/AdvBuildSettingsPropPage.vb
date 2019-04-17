@@ -3,10 +3,12 @@
 Imports System.ComponentModel
 Imports System.Globalization
 Imports System.Reflection
+Imports System.Runtime.Versioning
 Imports System.Windows.Forms
 
 Imports Microsoft.VisualStudio.PlatformUI
-
+Imports Microsoft.VisualStudio.Shell.Interop
+Imports Microsoft.VisualStudio.Editors.Common
 Imports VSLangProj80
 
 Imports VBStrings = Microsoft.VisualBasic.Strings
@@ -62,6 +64,32 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Property
 
         ''' <summary>
+        ''' Populates the cboLanguageVersion 
+        ''' 829715
+        ''' </summary>
+        Private Sub PopulateLanguageVersions()
+            cboLanguageVersion.Items.Clear()
+
+            cboLanguageVersion.Items.AddRange(CSharpLanguageVersionUtilities.GetAllLanguageVersions())
+            cboLanguageVersion.SelectedIndex = 0
+
+            Dim propertyValue As Object = Nothing
+            ProjectHierarchy.GetProperty(VSITEMID.ROOT, __VSHPROPID4.VSHPROPID_TargetFrameworkMoniker, propertyValue)
+
+            If propertyValue Is Nothing Then
+                Return
+            End If
+
+            Dim frameworkName As New FrameworkName(DirectCast(propertyValue, String))
+
+            If Not IsTargetingDotNetCore(ProjectHierarchy) OrElse (IsTargetingDotNetCore(ProjectHierarchy) AndAlso frameworkName.Version.Major < 3) Then
+                cboLanguageVersion.Items.Remove(CSharpLanguageVersion.Preview)
+                cboLanguageVersion.Items.Remove(CSharpLanguageVersion.Version8_0)
+            End If
+        End Sub
+
+
+        ''' <summary>
         ''' Customizable processing done before the class has populated controls in the ControlData array
         ''' </summary>
         ''' <remarks>
@@ -72,12 +100,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </remarks>
         Protected Overrides Sub PreInitPage()
             MyBase.PreInitPage()
-
-            cboLanguageVersion.Items.Clear()
-
-            cboLanguageVersion.Items.AddRange(CSharpLanguageVersionUtilities.GetAllLanguageVersions())
-            cboLanguageVersion.SelectedIndex = 0
-
+            PopulateLanguageVersions()
         End Sub
 
         ''' <summary>

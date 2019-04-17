@@ -32,11 +32,6 @@
         <target state="translated">Güncellik Denetimleri</target>
         <note />
       </trans-unit>
-      <trans-unit id="General_UsePreviewSdk">
-        <source>Use previews of the .NET Core SDK</source>
-        <target state="translated">.NET Core SDK'nın önizleme sürümlerini kullan</target>
-        <note />
-      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -59,7 +59,6 @@
     <PackageReference Include="Microsoft.VisualStudio.Shell.15.0" />
     <PackageReference Include="Microsoft.VisualStudio.Shell.Framework" />
     <PackageReference Include="Microsoft.VisualStudio.Telemetry" />
-    <PackageReference Include="Microsoft.VisualStudio.Utilities" />
     <PackageReference Include="Microsoft.VisualStudio.VSHelp" />
     <PackageReference Include="Microsoft.VisualStudio.XmlEditor" />
     <PackageReference Include="Microsoft.VisualStudio.WCFReference.Interop" />

@@ -47,11 +47,6 @@
         <target state="translated">项目文件夹</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|PackageId|DisplayName">
-        <source>Package Id</source>
-        <target state="translated">包 ID</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|FileName|Description">
         <source>Name of the project file.</source>
         <target state="translated">项目文件的名称。</target>

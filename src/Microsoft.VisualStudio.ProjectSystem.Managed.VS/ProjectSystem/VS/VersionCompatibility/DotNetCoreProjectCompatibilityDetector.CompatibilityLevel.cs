@@ -2,9 +2,9 @@
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
-    internal sealed partial class DotNetCoreProjectCompatibilityDetector
+    internal partial class DotNetCoreProjectCompatibilityDetector
     {
-        private enum CompatibilityLevel
+        internal enum CompatibilityLevel
         {
             Recommended = 0,
             Supported = 1,

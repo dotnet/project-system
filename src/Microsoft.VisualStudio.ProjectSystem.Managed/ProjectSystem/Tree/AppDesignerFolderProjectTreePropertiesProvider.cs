@@ -80,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree
 
         protected override bool AreContentsVisibleOnlyInShowAllFiles(IImmutableDictionary<string, string> projectTreeSettings)
         {
-            return StringComparers.PropertyValues.Equals(projectTreeSettings[AppDesigner.ContentsVisibleOnlyInShowAllFilesProperty], "true");
+            return StringComparers.PropertyLiteralValues.Equals(projectTreeSettings[AppDesigner.ContentsVisibleOnlyInShowAllFilesProperty], "true");
         }
     }
 }
