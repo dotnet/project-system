@@ -175,16 +175,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         // This method is overridden in test code
         protected virtual async Task<bool> IsPreviewSDKInUseAsync()
         {
-            var vsSetupConfig = new SetupConfiguration();
-            ISetupInstance setupInstance = vsSetupConfig.GetInstanceForCurrentProcess();
-            if (setupInstance is ISetupInstanceCatalog setupInstanceCatalog &&
-                setupInstanceCatalog.IsPrerelease())
+            ISetupInstanceCatalog setupInstanceCatalog = await TryGetSetupInstanceAsync();
+            if (setupInstanceCatalog?.IsPrerelease() == true)
             {
                 return true;
             }
 
-            var settings = await _settingsManagerService?.GetValueAsync();
+            ISettingsManager settings = await _settingsManagerService?.GetValueAsync();
             return settings.GetValueOrDefault<bool>(UsePreviewSdkSettingKey);
+        }
+
+        private async Task<ISetupInstanceCatalog> TryGetSetupInstanceAsync()
+        {
+            await _threadHandling.Value.SwitchToUIThread();
+            var vsSetupConfig = new SetupConfiguration();
+            ISetupInstance setupInstance = vsSetupConfig.GetInstanceForCurrentProcess();
+            if (setupInstance is ISetupInstanceCatalog setupInstanceCatalog)
+            {
+                return setupInstanceCatalog;
+            }
+
+            return null;
         }
 
         // This method is overridden in test code
