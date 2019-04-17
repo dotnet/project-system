@@ -261,14 +261,11 @@ Microsoft.VisualStudio.Editors.MyApplication.MyApplicationProperties.SingleInsta
 Microsoft.VisualStudio.Editors.MyApplication.MyApplicationProperties.SplashScreen() -> String
 Microsoft.VisualStudio.Editors.MyApplication.MyApplicationProperties.SplashScreen(value As String) -> Void
 Microsoft.VisualStudio.Editors.OptionPages.GeneralOptions
-Microsoft.VisualStudio.Editors.OptionPages.GeneralOptions.CanChangeUsePreviewSdk() -> Boolean
 Microsoft.VisualStudio.Editors.OptionPages.GeneralOptions.FastUpToDateCheckEnabled() -> Boolean
 Microsoft.VisualStudio.Editors.OptionPages.GeneralOptions.FastUpToDateCheckEnabled(Value As Boolean) -> Void
 Microsoft.VisualStudio.Editors.OptionPages.GeneralOptions.FastUpToDateLogLevel() -> LogLevel
 Microsoft.VisualStudio.Editors.OptionPages.GeneralOptions.FastUpToDateLogLevel(Value As LogLevel) -> Void
 Microsoft.VisualStudio.Editors.OptionPages.GeneralOptions.New(serviceProvider As System.IServiceProvider) -> Void
-Microsoft.VisualStudio.Editors.OptionPages.GeneralOptions.UsePreviewSdk() -> Boolean
-Microsoft.VisualStudio.Editors.OptionPages.GeneralOptions.UsePreviewSdk(Value As Boolean) -> Void
 Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
 Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.ChangeSelection(ConfigIndex As Integer, PlatformIndex As Integer, FireNotifications As Boolean) -> Void (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
 Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.ChangeSelection(ConfigName As String, ConfigSelectionType As Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.SelectionTypes, PlatformName As String, PlatformSelectionType As Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.SelectionTypes, PreferExactMatch As Boolean, FireNotifications As Boolean) -> Void (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
@@ -1071,7 +1068,6 @@ Shared My.Resources.GeneralOptionPageResources.General_FastUpToDateCheck_LogLeve
 Shared My.Resources.GeneralOptionPageResources.General_FastUpToDateCheck_LogLevel_None() -> String
 Shared My.Resources.GeneralOptionPageResources.General_FastUpToDateCheck_LogLevel_Verbose() -> String
 Shared My.Resources.GeneralOptionPageResources.General_FastUpToDateCheck_Title() -> String
-Shared My.Resources.GeneralOptionPageResources.General_UsePreviewSdk() -> String
 Shared My.Resources.GeneralOptionPageResources.ResourceManager() -> System.Resources.ResourceManager
 Shared ReadOnly Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.PropPageBackColor -> System.Drawing.Color (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
 XamlGeneratedNamespace.GeneratedInternalTypeHelper

@@ -41,7 +41,6 @@
                   Visible="True" />
 
   <StringProperty Name="OriginalItemSpec"
-                  Description="The evaluated item name of the original reference item whose resolution resulted in this resolved reference item."
                   ReadOnly="True"
                   Visible="False" />
 

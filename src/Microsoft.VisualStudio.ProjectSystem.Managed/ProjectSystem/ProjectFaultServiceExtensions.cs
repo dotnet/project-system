@@ -111,6 +111,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             Requires.NotNull(threadingService, nameof(threadingService));
 
+            // If you do not pass in a project it is not legal to ask the threading service to cancel this operation on project unloading
+            if (unconfiguredProject is null)
+            {
+                options &= ~ForkOptions.CancelOnUnload;
+            }
+
             threadingService.Fork(asyncAction, factory: null, unconfiguredProject: unconfiguredProject, watsonReportSettings: s_defaultReportSettings, faultSeverity: faultSeverity, options: options);
         }
 
@@ -136,6 +142,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public static void RunAndForget(this IProjectThreadingService threadingService, Func<Task> asyncAction, ConfiguredProject configuredProject, ProjectFaultSeverity faultSeverity = ProjectFaultSeverity.Recoverable, ForkOptions options = ForkOptions.Default)
         {
             Requires.NotNull(threadingService, nameof(threadingService));
+
+            // If you do not pass in a project it is not legal to ask the threading service to cancel this operation on project unloading
+            if (configuredProject is null)
+            {
+                options &= ~ForkOptions.CancelOnUnload;
+            }
 
             threadingService.Fork(asyncAction, factory: null, configuredProject: configuredProject, watsonReportSettings: s_defaultReportSettings, faultSeverity: faultSeverity, options: options);
         }
