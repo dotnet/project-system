@@ -3,9 +3,9 @@
 using System;
 using System.Runtime.Versioning;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
+namespace Microsoft.VisualStudio.ProjectSystem
 {
-    internal interface ITargetFramework : IEquatable<ITargetFramework>,
+    public interface ITargetFramework : IEquatable<ITargetFramework>,
                                           IEquatable<string>
     {
         /// <summary>

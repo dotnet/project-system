@@ -1,3 +1,11 @@
+Microsoft.VisualStudio.ProjectSystem.ITargetFramework
+Microsoft.VisualStudio.ProjectSystem.ITargetFramework.FrameworkName.get -> System.Runtime.Versioning.FrameworkName
+Microsoft.VisualStudio.ProjectSystem.ITargetFramework.FriendlyName.get -> string
+Microsoft.VisualStudio.ProjectSystem.ITargetFramework.FullName.get -> string
+Microsoft.VisualStudio.ProjectSystem.ITargetFramework.ShortName.get -> string
+Microsoft.VisualStudio.ProjectSystem.ITargetFrameworkProvider
+Microsoft.VisualStudio.ProjectSystem.ITargetFrameworkProvider.GetNearestFramework(Microsoft.VisualStudio.ProjectSystem.ITargetFramework targetFramework, System.Collections.Generic.IEnumerable<Microsoft.VisualStudio.ProjectSystem.ITargetFramework> otherFrameworks) -> Microsoft.VisualStudio.ProjectSystem.ITargetFramework
+Microsoft.VisualStudio.ProjectSystem.ITargetFrameworkProvider.GetTargetFramework(string shortOrFullName) -> Microsoft.VisualStudio.ProjectSystem.ITargetFramework
 Microsoft.VisualStudio.ProjectSystem.VS.Extensibility.IProjectExportProvider
 Microsoft.VisualStudio.ProjectSystem.VS.Extensibility.IProjectExportProvider.GetExport<T>(string projectFilePath) -> T
 Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers

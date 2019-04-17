@@ -3,10 +3,10 @@
 using System.Collections.Generic;
 using Microsoft.VisualStudio.Composition;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
+namespace Microsoft.VisualStudio.ProjectSystem
 {
-    [ProjectSystemContract(ProjectSystemContractScope2.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
-    internal interface ITargetFrameworkProvider
+    [ProjectSystemContract(ProjectSystemContractScope2.Global, ProjectSystemContractProvider.Host, Cardinality = ImportCardinality.ExactlyOne)]
+    public interface ITargetFrameworkProvider
     {
         /// <summary>
         /// Parses full tfm or short framework name and returns a corresponding <see cref="ITargetFramework"/>

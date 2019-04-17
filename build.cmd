@@ -29,7 +29,7 @@ if /I "%1" == "/rootsuffix" set PropRootSuffix=/p:RootSuffix=%2&&shift&&shift&& 
 call :Usage && exit /b 1
 :DoneParsing
 
-powershell -ExecutionPolicy ByPass -Command "& """%Root%build\Build.ps1""" -configuration %BuildConfiguration% -restore -build:%OptBuild% -rebuild:%OptRebuild% -deploy:%OptDeploy% -test:%OptTest% -integrationTest:%OptIntegrationTest% -log:%OptLog% %PropRootSuffix%"
+powershell -ExecutionPolicy ByPass -Command "& """%Root%build\Build.ps1""" -configuration %BuildConfiguration% -restore -build:%OptBuild% -rebuild:%OptRebuild% -deploy:%OptDeploy% -test:%OptTest% -integrationTest:%OptIntegrationTest% -log:%OptLog% %PropRootSuffix%" -pack
 exit /b %ERRORLEVEL%
 
 :Usage

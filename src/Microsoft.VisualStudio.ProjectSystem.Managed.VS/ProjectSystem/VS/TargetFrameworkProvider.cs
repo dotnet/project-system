@@ -6,10 +6,9 @@ using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Runtime.Versioning;
+using NuGet.VisualStudio;
 
-using NuGetCopied.VisualStudio;
-
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
+namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     [Export(typeof(ITargetFrameworkProvider))]
     internal sealed class TargetFrameworkProvider : ITargetFrameworkProvider
