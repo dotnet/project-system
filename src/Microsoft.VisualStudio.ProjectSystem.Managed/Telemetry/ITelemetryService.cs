@@ -12,31 +12,6 @@ namespace Microsoft.VisualStudio.Telemetry
     internal interface ITelemetryService
     {
         /// <summary>
-        ///     Posts a fault with the specified event name and exception, returning 
-        ///     <see langword="true" /> to that it can be used as an exception filter.
-        /// </summary>
-        /// <param name="eventName">
-        ///     The name of the event.
-        /// </param>
-        /// <param name="exceptionObject">
-        ///     The exception of the event.
-        /// </param>
-        /// <returns>
-        ///     Always returns <see langword="true" />.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        ///     <paramref name="eventName"/> is <see langword="null"/>.
-        ///     <para>
-        ///         -or-
-        ///     </para>
-        ///     <paramref name="exceptionObject"/> is <see langword="null"/>.
-        /// </exception>
-        /// <exception cref="ArgumentException">
-        ///     <paramref name="eventName"/> is an empty string ("").
-        /// </exception>
-        bool PostFault(string eventName, Exception exceptionObject);
-
-        /// <summary>
         ///     Posts an event with the specified event name.
         /// </summary>
         /// <param name="eventName">
