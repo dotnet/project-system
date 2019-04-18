@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private string _outputRelativeOrFullPath;
         private string _newestImportInput;
 
-        private DateTime _lastCheckTimeUtc = DateTime.MinValue;
+        internal DateTime LastCheckTimeUtc { get; private set; } = DateTime.MinValue;
 
         private readonly HashSet<string> _itemTypes = new HashSet<string>(StringComparers.ItemTypes);
         private readonly Dictionary<string, HashSet<(string path, string link, CopyToOutputDirectoryType copyType)>> _items = new Dictionary<string, HashSet<(string, string, CopyToOutputDirectoryType)>>(StringComparers.ItemTypes);
@@ -113,7 +113,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 _link?.Dispose();
                 _link = null;
 
-                _lastCheckTimeUtc = DateTime.MinValue;
+                LastCheckTimeUtc = DateTime.MinValue;
                 _isDisabled = true;
                 _itemsChangedSinceLastCheck = true;
                 _msBuildProjectFullPath = null;
@@ -530,9 +530,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         return Fail(logger, "Outputs", "Input '{0}' is newer ({1}) than earliest output '{2}' ({3}), not up to date.", input, time.Value, outputPath, outputTime.Value);
                     }
 
-                    if (time > _lastCheckTimeUtc)
+                    if (time > LastCheckTimeUtc)
                     {
-                        return Fail(logger, "Outputs", "Input '{0}' has been modified since the last up-to-date check, not up to date.", input, time.Value);
+                        return Fail(logger, "Outputs", "Input '{0}' ({1}) has been modified since the last up-to-date check ({2}), not up to date.", input, time.Value, LastCheckTimeUtc);
                     }
                 }
 
@@ -740,7 +740,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
                 finally
                 {
-                    _lastCheckTimeUtc = DateTime.UtcNow;
+                    LastCheckTimeUtc = DateTime.UtcNow;
                     logger.Verbose("Up to date check completed in {0:#,##0.#} ms", sw.Elapsed.TotalMilliseconds);
                 }
             }
