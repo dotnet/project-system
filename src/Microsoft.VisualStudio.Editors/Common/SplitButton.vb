@@ -6,6 +6,7 @@ Imports System.Windows.Forms
 Imports System.Windows.Forms.VisualStyles
 
 Imports Microsoft.VisualStudio.PlatformUI
+Imports Microsoft.VisualStudio.Utilities
 
 Namespace Microsoft.VisualStudio.Editors.Common
 
@@ -29,7 +30,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             MyBase.New()
 
             AccessibleRole = AccessibleRole.SplitButton
-            _pushButtonWidth = DpiHelper.LogicalToDeviceUnitsX(_pushButtonWidth)
+            _pushButtonWidth = DpiAwareness.LogicalToDeviceUnits(Handle, _pushButtonWidth)
         End Sub
 
         Protected Overrides Sub OnPaint(pevent As PaintEventArgs)
@@ -42,8 +43,8 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
             ButtonRenderer.DrawButton(g, bounds, State)
 
-            Dim singlePixelWidth = DpiHelper.LogicalToDeviceUnitsX(1)
-            Dim dividerLineVerticalPadding = DpiHelper.LogicalToDeviceUnitsY(4)
+            Dim singlePixelWidth = DpiAwareness.LogicalToDeviceUnits(Handle, 1)
+            Dim dividerLineVerticalPadding = DpiAwareness.LogicalToDeviceUnits(Handle, 4)
 
             _dropDownRectangle = New Rectangle(
                 x:=bounds.Right - _pushButtonWidth - singlePixelWidth,
@@ -108,8 +109,8 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
             If Focused Then
                 bounds.Inflate(
-                    width:=DpiHelper.LogicalToDeviceUnitsX(-4),
-                    height:=DpiHelper.LogicalToDeviceUnitsY(-4))
+                    width:=DpiAwareness.LogicalToDeviceUnits(Handle, -4),
+                    height:=DpiAwareness.LogicalToDeviceUnits(Handle, -4))
 
                 ControlPaint.DrawFocusRectangle(g, bounds)
             End If
