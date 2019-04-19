@@ -87,7 +87,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor
                 }
 
                 var allEvaluations = CollectEvaluations(_documentData.Log.Evaluations
-                    .SelectMany(e => e.EvaluatedProjects).Select(p => p.EvaluationProfile).SelectMany(p => p.Passes)
+                    .SelectMany(e => e.EvaluatedProjects)
+                    .Select(p => p.EvaluationProfile)
+                    .Where(p => p != null)
+                    .SelectMany(p => p.Passes)
                     .SelectMany(p => p.Locations)).ToList();
                 var totalEvaluationTime = allEvaluations.Aggregate(TimeSpan.Zero, (current, e) => current + e.Time.ExclusiveTime);
                 var groupedEvaluations =
