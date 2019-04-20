@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
 
@@ -175,8 +176,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         // This method is overridden in test code
         protected virtual async Task<bool> IsPreviewSDKInUseAsync()
         {
-            ISetupInstanceCatalog setupInstanceCatalog = await TryGetSetupInstanceAsync();
-            if (setupInstanceCatalog?.IsPrerelease() == true)
+            if (await IsPrereleaseAsync())
             {
                 return true;
             }
@@ -185,17 +185,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return settings.GetValueOrDefault<bool>(UsePreviewSdkSettingKey);
         }
 
-        private async Task<ISetupInstanceCatalog> TryGetSetupInstanceAsync()
+        private Task<bool> IsPrereleaseAsync()
         {
-            await _threadHandling.Value.SwitchToUIThread();
             var vsSetupConfig = new SetupConfiguration();
-            ISetupInstance setupInstance = vsSetupConfig.GetInstanceForCurrentProcess();
-            if (setupInstance is ISetupInstanceCatalog setupInstanceCatalog)
+            if (vsSetupConfig.GetInstanceForCurrentProcess() is ISetupInstanceCatalog setupInstanceCatalog)
             {
-                return setupInstanceCatalog;
+                return TryQueryCOMObject(setupInstanceCatalog);
             }
 
-            return null;
+            return TaskResult.False;
+        }
+
+        private async Task<bool> TryQueryCOMObject(ISetupInstanceCatalog setupInstanceCatalog)
+        {
+            try
+            {
+                await _threadHandling.Value.SwitchToUIThread();
+                return setupInstanceCatalog.IsPrerelease();
+            }
+            catch (Exception)
+            {
+                // COM object may not be queryable yet.
+                return false;
+            }
         }
 
         // This method is overridden in test code
