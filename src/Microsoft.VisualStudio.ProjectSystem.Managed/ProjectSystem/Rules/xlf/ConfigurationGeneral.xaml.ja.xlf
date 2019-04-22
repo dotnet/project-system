@@ -87,24 +87,9 @@
         <target state="translated">コンパイラが出力を最適化するかどうかを示します。</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|PackageAction|Description">
-        <source>The MSBuild target to use when packaging a project.</source>
-        <target state="translated">プロジェクトをパッケージ化するときに使用する MSBuild ターゲットです。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|DefaultContentType|Description">
-        <source>The default content type name to use when adding files.</source>
-        <target state="translated">ファイルを追加するときに使用する既定のコンテンツ タイプ名です。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="EnumValue|TargetRuntime.AppHost|DisplayName">
         <source>Windows app</source>
         <target state="translated">Windows アプリ</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|SuppressOutOfDateMessageOnBuild|Description">
-        <source>True to just build out-of-date projects without ever prompting the user to confirm.</source>
-        <target state="translated">プロジェクトが最新ではないことをユーザーに確認せずにプロジェクトをビルドする場合は True を指定します。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OutputType.Exe|DisplayName">

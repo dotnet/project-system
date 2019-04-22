@@ -91,7 +91,6 @@ namespace Microsoft.VisualStudio.Threading.Tasks
             }
         }
 
-
         [Fact]
         public async Task Dispose_SkipsPendingTasks()
         {

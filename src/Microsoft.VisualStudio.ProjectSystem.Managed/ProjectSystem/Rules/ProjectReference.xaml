@@ -94,6 +94,17 @@
 
   <StringProperty Name="Project"
                   Visible="False" />
+  
+  <StringProperty Name="ProjectFileFullPath"
+                  Visible="False"
+                  ReadOnly="True">
+    <StringProperty.DataSource>
+      <DataSource ItemType="ProjectReference"
+                  PersistedName="FullPath"
+                  Persistence="Intrinsic"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
 
   <StringProperty Name="ReferencedProjectIdentifier"
                   Visible="False" />

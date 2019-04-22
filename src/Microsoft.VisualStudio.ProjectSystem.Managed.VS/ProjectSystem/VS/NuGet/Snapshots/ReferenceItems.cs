@@ -6,11 +6,15 @@ using NuGet.SolutionRestoreManager;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
-    internal class ReferenceItems : VsItemList<IVsReferenceItem>, IVsReferenceItems
+    /// <summary>
+    ///     Immutable collection of <see cref="IVsReferenceItem"/> objects.
+    /// </summary>
+    internal class ReferenceItems : ImmutablePropertyCollection<IVsReferenceItem>, IVsReferenceItems
     {
-        public ReferenceItems() : base() { }
-
-        public ReferenceItems(IEnumerable<IVsReferenceItem> collection) : base(collection) { }
+        public ReferenceItems(IEnumerable<IVsReferenceItem> items) 
+            : base(items)
+        {
+        }
 
         protected override string GetKeyForItem(IVsReferenceItem value) => value.Name;
     }

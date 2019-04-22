@@ -44,6 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             _threadingService = threadingService;
             _projectProperties = projectProperties;
             _buildManager = buildManager;
+
             ImportsImpl = new OrderPrecedenceImportCollection<Imports>(projectCapabilityCheckProvider: project);
             VSProjectEventsImpl = new OrderPrecedenceImportCollection<VSProjectEvents>(projectCapabilityCheckProvider: project);
         }

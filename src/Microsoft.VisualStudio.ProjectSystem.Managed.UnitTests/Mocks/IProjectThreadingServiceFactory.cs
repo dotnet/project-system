@@ -8,9 +8,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static partial class IProjectThreadingServiceFactory
     {
-        public static IProjectThreadingService Create()
+        public static IProjectThreadingService Create(bool verifyOnUIThread = true)
         {
-            return new ProjectThreadingService();
+            return new ProjectThreadingService(verifyOnUIThread);
         }
 
         public static IProjectThreadingService ImplementVerifyOnUIThread(Action action)

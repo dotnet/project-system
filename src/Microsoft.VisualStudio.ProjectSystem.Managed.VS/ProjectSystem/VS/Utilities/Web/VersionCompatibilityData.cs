@@ -30,6 +30,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
     /// </summary>
     internal class VersionCompatibilityData
     {
+        [JsonProperty(PropertyName = "supportedPreviewVersion")]
+        public Version SupportedPreviewVersion { get; set; }
+
+        [JsonProperty(PropertyName = "openSupportedPreviewMessage")]
+        public string OpenSupportedPreviewMessage { get; set; }
+
         [JsonProperty(PropertyName = "supportedVersion")]
         public Version SupportedVersion { get; set; }
 

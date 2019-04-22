@@ -13,9 +13,6 @@ namespace Microsoft.VisualStudio.Telemetry
         {
             var mock = new Mock<ITelemetryService>();
 
-            mock.Setup(s => s.PostFault(It.IsAny<string>(), It.IsAny<Exception>()))
-                .Returns(true);
-
             return mock.Object;
         }
 

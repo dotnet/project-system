@@ -7,7 +7,6 @@
   <Rule.DataSource>
     <DataSource HasConfigurationCondition="false"
                 ItemType="Compile"
-                Label="Configuration"
                 Persistence="ProjectFile"
                 SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
@@ -23,6 +22,17 @@
     <EnumValue Name="Always" />
     <EnumValue Name="PreserveNewest" />
   </EnumProperty>
+
+  <StringProperty Name="CustomTool"
+                  Visible="false">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  ItemType="Compile"
+                  PersistedName="Generator"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
 
   <StringProperty Name="CustomToolNamespace" />
 

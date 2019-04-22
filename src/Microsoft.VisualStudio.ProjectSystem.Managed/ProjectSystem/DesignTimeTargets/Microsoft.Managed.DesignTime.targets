@@ -115,6 +115,11 @@
 
     <!-- All Microsoft.NET.Sdk Exe projects, except WPF and WinForms exes, can be published to app service -->
     <ProjectCapability Include="AppServicePublish" Condition="'$(OutputType)' == 'Exe'" />
+
+    <!-- Capabilities for WPF and WinForms -->
+    <ProjectCapability Include="WPF" Condition="'$(UseWPF)' == 'true'" />
+    <ProjectCapability Include="WindowsForms" Condition="'$(UseWindowsForms)' == 'true'" />
+    <ProjectCapability Include="DataSourceWindow" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework' Or ('$(TargetFrameworkIdentifier)' == '.NETCoreApp' And '$(_TargetFrameworkVersionWithoutV)' >= '3.0')"/>
   </ItemGroup>
   
   <!-- Common Project System rules that override rules defined in msbuild. These are exact copy of the rules defined in msbuild. -->
