@@ -65,7 +65,7 @@
     <PropertyGroup Condition="'$(_RunOnCore)' != 'true'">
       <_XUnitConsoleExe>xunit.console.exe</_XUnitConsoleExe>
       <_XUnitConsoleExe Condition="'$(_TestArchitecture)' == 'x86'">xunit.console.x86.exe</_XUnitConsoleExe>
-      <_XUnitRunnerCommand>$(NuGetPackageRoot)xunit.runner.console\$(XUnitVersion)\tools\net452\$(_XUnitConsoleExe)</_XUnitRunnerCommand>
+      <_XUnitRunnerCommand>$(NuGetPackageRoot)xunit.runner.console\$(XUnitVersion)\tools\net472\$(_XUnitConsoleExe)</_XUnitRunnerCommand>
       <_XUnitRunnerCommandArgs>"$(TargetPath)" -noshadow -xml "$(_TestResultsXmlPath)" -html "$(_TestResultsHtmlPath)" $(XUnitRunnerAdditionalArguments)</_XUnitRunnerCommandArgs>
       <_TestRunnerCommand>"$(_XUnitRunnerCommand)" $(_XUnitRunnerCommandArgs)</_TestRunnerCommand>
       <_TestResultsDisplayPath>$(_TestResultsHtmlPath)</_TestResultsDisplayPath>

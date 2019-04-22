@@ -97,8 +97,8 @@
     <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers" Version="16.1.163-pre" />
 
     <!-- Roslyn -->
-    <PackageReference Update="Microsoft.VisualStudio.LanguageServices" Version="2.11.0-beta2-63529-05" />
-    <PackageReference Update="Microsoft.CodeAnalysis" Version="2.11.0-beta2-63529-05" />
+    <PackageReference Update="Microsoft.VisualStudio.LanguageServices" Version="3.0.0" />
+    <PackageReference Update="Microsoft.CodeAnalysis" Version="3.0.0" />
     <PackageReference Update="Microsoft.VisualStudio.IntegrationTest.Utilities" Version="2.6.0-beta1-62113-02" />
 
     <!-- Analyzers -->
