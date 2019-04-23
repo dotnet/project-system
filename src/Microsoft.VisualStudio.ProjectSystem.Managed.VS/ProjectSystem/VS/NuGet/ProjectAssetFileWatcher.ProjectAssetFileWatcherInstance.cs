@@ -6,14 +6,12 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.Threading.Tasks;
 
 using Task = System.Threading.Tasks.Task;
@@ -97,9 +95,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         /// <summary>
         /// Initialize the watcher.
         /// </summary>
-        protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
+        protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
-            await _projectTasksService.LoadedProjectAsync(() =>
+            return _projectTasksService.LoadedProjectAsync(() =>
             {
                 // The tree source to get changes to the tree so that we can identify when the assets file changes.
                 ProjectDataSources.SourceBlockAndLink<IProjectVersionedValue<IProjectTreeSnapshot>> treeSource = _fileSystemTreeProvider.Tree.SyncLinkOptions();
