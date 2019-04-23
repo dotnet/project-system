@@ -68,8 +68,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         /// </summary>
         internal async Task DataFlow_ChangedAsync(IProjectVersionedValue<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>> dataFlowUpdate)
         {
-            await InitializeAsync();
-
             IProjectTreeSnapshot treeSnapshot = dataFlowUpdate.Value.Item1;
             IProjectTree newTree = treeSnapshot.Tree;
             if (newTree == null)
