@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
     /// <summary>
     ///     Watches for writes to the project.assets.json, triggering a evaluation if it changes.
     /// </summary>
-    [Export(ExportContractNames.Scopes.ConfiguredProject, typeof(IProjectDynamicLoadComponent))]
+    [Export(ExportContractNames.Scopes.UnconfiguredProject, typeof(IProjectDynamicLoadComponent))]
     [AppliesTo(ProjectCapability.PackageReferences)]
     internal class ProjectAssetFileWatcher : AbstractMultiLifetimeComponent<ProjectAssetFileWatcherInstance>, IProjectDynamicLoadComponent
     {
