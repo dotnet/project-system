@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -102,9 +101,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         /// </summary>
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
-            // Explicitly get back to the thread pool for the rest of this method so we don't tie up the UI thread;
-            await TaskScheduler.Default;
-
             await _projectTasksService.LoadedProjectAsync(() =>
             {
                 // The tree source to get changes to the tree so that we can identify when the assets file changes.
