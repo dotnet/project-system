@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
     /// </summary>
     [Export(ExportContractNames.Scopes.UnconfiguredProject, typeof(IProjectDynamicLoadComponent))]
     [AppliesTo(ProjectCapability.PackageReferences)]
-    internal class ProjectAssetFileWatcher : AbstractMultiLifetimeComponent<ProjectAssetFileWatcherInstance>, IProjectDynamicLoadComponent
+    internal partial class ProjectAssetFileWatcher : AbstractMultiLifetimeComponent<ProjectAssetFileWatcher.ProjectAssetFileWatcherInstance>, IProjectDynamicLoadComponent
     {
         private readonly IVsService<IVsAsyncFileChangeEx> _fileChangeService;
         private readonly IUnconfiguredProjectCommonServices _projectServices;
