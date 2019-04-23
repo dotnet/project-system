@@ -149,6 +149,9 @@
     <Compile Update="ProjectSystem\Rules\Items\Resource.cs">
       <DependentUpon>Resource.xaml</DependentUpon>
     </Compile>
+    <Compile Update="ProjectSystem\Rules\PotentialEditorConfigFiles.cs">
+      <DependentUpon>PotentialEditorConfigFiles.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -334,6 +337,11 @@
       <SubType>Designer</SubType>
     </XamlPropertyRule>
     <XamlPropertyRule Include="ProjectSystem\Rules\Items\XamlAppDef.xaml">
+      <XlfInput>false</XlfInput>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\PotentialEditorConfigFiles.xaml">
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>

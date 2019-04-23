@@ -23,14 +23,14 @@
     <SuppressOutOfDateMessageOnBuild Condition="'$(SuppressOutOfDateMessageOnBuild)' == ''">true</SuppressOutOfDateMessageOnBuild>
   </PropertyGroup>
 
-  
+
   <!--
     Rule files that don't need localization go in the neutral directory to save duplicating files into each language
   -->
   <PropertyGroup Condition="'$(ManagedXamlNeutralResourcesDirectory)' == ''">
     <ManagedXamlNeutralResourcesDirectory>$(MSBuildThisFileDirectory)</ManagedXamlNeutralResourcesDirectory>
   </PropertyGroup>
-  
+
   <!--
     Locate the approriate localized xaml resources based on the language ID or name.
 
@@ -59,7 +59,7 @@
     <ManagedXamlResourcesDirectory Condition="!HasTrailingSlash('$(ManagedXamlResourcesDirectory)')">$(ManagedXamlResourcesDirectory)\</ManagedXamlResourcesDirectory>
     <DebuggerFlavor Condition = "'$(DebuggerFlavor)' == ''">ProjectDebugger</DebuggerFlavor>
   </PropertyGroup>
-  
+
   <!-- Project Capabilities -->
 
   <!-- Capabilities shared between shared projects & binary-producing projects.  -->
@@ -68,7 +68,7 @@
   </ItemGroup>
 
   <!-- Capabilities for binary producing projects -->
-  
+
   <ItemGroup Condition="'$(DefineCommonManagedCapabilities)' == 'true'">
     <ProjectCapability Include="UseFileGlobs"/>
     <ProjectCapability Include="DynamicDependentFile"/>
@@ -107,7 +107,7 @@
 
     <!-- Settings page capability -->
     <ProjectCapability Include="AppSettings" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'"/>
-  
+
     <!-- Publish capability enables the Publish command for the Project -->
     <ProjectCapability Include="Publish"/>
     <ProjectCapability Include="FolderPublish"/>
@@ -120,7 +120,7 @@
     <ProjectCapability Include="WindowsForms" Condition="'$(UseWindowsForms)' == 'true'" />
     <ProjectCapability Include="DataSourceWindow" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework' Or ('$(TargetFrameworkIdentifier)' == '.NETCoreApp' And '$(_TargetFrameworkVersionWithoutV)' >= '3.0')"/>
   </ItemGroup>
-  
+
   <!-- Common Project System rules that override rules defined in msbuild. These are exact copy of the rules defined in msbuild. -->
   <ItemGroup Condition="'$(DefineCommonManagedItemSchemas)' == 'true'">
 
@@ -128,7 +128,7 @@
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ProjectItemsSchema.xaml">
       <Context>Project</Context>
     </PropertyPageSchema>
-    
+
     <!-- Files/Folders -->
     <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)AdditionalFiles.xaml">
       <Context>File</Context>
@@ -149,7 +149,7 @@
     <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)Compile.xaml;">
       <Context>File</Context>
     </PropertyPageSchema>
-    
+
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)Compile.BrowseObject.xaml;">
       <Context>BrowseObject</Context>
     </PropertyPageSchema>
@@ -222,21 +222,21 @@
     <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)LanguageService.xaml">
       <Context>ProjectSubscriptionService</Context>
     </PropertyPageSchema>
-      
+
     <!-- NuGet Restore Properties -->
     <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)NuGetRestore.xaml">
       <Context>ProjectSubscriptionService</Context>
     </PropertyPageSchema>
-    
+
     <!-- Up-to-date check -->
     <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)ResolvedCompilationReference.xaml">
       <Context>ProjectSubscriptionService</Context>
     </PropertyPageSchema>
-        
+
     <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)CopyUpToDateMarker.xaml">
       <Context>ProjectSubscriptionService</Context>
     </PropertyPageSchema>
-    
+
     <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)UpToDateCheckInput.xaml">
       <Context>ProjectSubscriptionService</Context>
     </PropertyPageSchema>
@@ -252,7 +252,7 @@
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ConfigurationGeneral.xaml">
       <Context>Project;ProjectSubscriptionService</Context>
     </PropertyPageSchema>
-    
+
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)DebuggerGeneral.xaml">
       <Context>Project</Context>
     </PropertyPageSchema>
@@ -272,7 +272,7 @@
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)SourceControl.xaml">
       <Context>Invisible</Context>
     </PropertyPageSchema>
-    
+
   </ItemGroup>
 
   <ItemGroup Condition="'$(DefineCommonManagedReferenceSchemas)' == 'true'">
@@ -335,6 +335,12 @@
       <Context>ProjectSubscriptionService;BrowseObject</Context>
     </PropertyPageSchema>
 
+    <!-- .editorconfig files -->
+
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)PotentialEditorConfigFiles.xaml">
+      <Context>ProjectSubscriptionService</Context>
+    </PropertyPageSchema>
+
   </ItemGroup>
 
   <!-- List of external files that trigger design-time builds when they are modified -->
@@ -376,10 +382,10 @@
 
   <!-- This target collects all Analyzers in the project. -->
   <Target Name="CollectAnalyzersDesignTime" DependsOnTargets="CompileDesignTime" Returns="@(Analyzer)" />
-  
+
   <!-- This target collects all the resolved references that are used to actually compile. -->
   <Target Name="CollectResolvedCompilationReferencesDesignTime" DependsOnTargets="CompileDesignTime" Returns="@(ReferencePathWithRefAssemblies)" />
-  
+
   <!-- This target collects all the extra inputs for the up to date check. -->
   <Target Name="CollectUpToDateCheckInputDesignTime" DependsOnTargets="CompileDesignTime" Returns="@(UpToDateCheckInput)">
     <ItemGroup>
@@ -406,7 +412,7 @@
       <!-- Symbols, bin and obj -->
       <UpToDateCheckBuilt Condition="'$(_DebugSymbolsProduced)'=='true'" Include="@(_DebugSymbolsIntermediatePath)"/>
       <UpToDateCheckBuilt Condition="'$(_DebugSymbolsProduced)'=='true' and '$(SkipCopyingSymbolsToOutputDirectory)' != 'true' and '$(CopyOutputSymbolsToOutputDirectory)' != 'false'" Include="@(_DebugSymbolsOutputPath)"/>
-      
+
       <!-- app.config -->
       <UpToDateCheckBuilt Condition=" '@(AppConfigWithTargetPath)' != '' " Include="@(AppConfigWithTargetPath->'$(OutDir)%(TargetPath)')" Original="@(AppConfigWithTargetPath)"/>
     </ItemGroup>
