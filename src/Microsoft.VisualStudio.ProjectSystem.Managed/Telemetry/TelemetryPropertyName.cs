@@ -57,6 +57,11 @@ namespace Microsoft.VisualStudio.Telemetry
         /// </summary>
         public static readonly string SDKVersionNETCoreSdkVersion = BuildPropertyName(TelemetryEventName.SDKVersion, "NETCoreSdkVersion");
 
+        /// <summary>
+        ///     Indicates the output filename of the TempPE compilation
+        /// </summary>
+        public static readonly string TempPECompilationOutputFileName = BuildPropertyName(TelemetryEventName.TempPECompilation, "OutputFileName");
+
         private static string BuildPropertyName(string eventName, string propertyName)
         {
             // Property names use the event names, but with slashes replaced by periods.

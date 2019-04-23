@@ -77,6 +77,8 @@
   <StringProperty Name="IntDir"
                   Visible="false" />
 
+  <StringProperty Name="IntermediateOutputPath" />
+
   <StringProperty Name="LanguageServiceId"
                   ReadOnly="True"
                   Visible="False" />

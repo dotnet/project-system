@@ -1,7 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
-
 namespace Microsoft.VisualStudio.Telemetry
 {
     /// <summary>
@@ -43,6 +41,11 @@ namespace Microsoft.VisualStudio.Telemetry
         ///     Indicates that .NET Core SDK version.
         /// </summary>
         public static readonly string SDKVersion = BuildEventName("SDKVersion");
+
+        /// <summary>
+        ///     Indicates that a compilation of a TempPE output is being performed
+        /// </summary>
+        public static readonly string TempPECompilation = BuildEventName("TempPECompilation");
 
         private static string BuildEventName(string eventName)
         {
