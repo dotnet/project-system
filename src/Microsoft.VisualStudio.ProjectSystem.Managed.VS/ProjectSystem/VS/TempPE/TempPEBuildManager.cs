@@ -26,8 +26,9 @@ using InputTuple = System.Tuple<Microsoft.VisualStudio.ProjectSystem.IProjectSub
 namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 {
     [Export(typeof(ITempPEBuildManager))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
-    internal partial class TempPEBuildManager : UnconfiguredProjectHostBridge<IProjectVersionedValue<InputTuple>, TempPEBuildManager.DesignTimeInputsDelta, IProjectVersionedValue<TempPEBuildManager.DesignTimeInputsItem>>, ITempPEBuildManager
+    [Export(ExportContractNames.Scopes.UnconfiguredProject, typeof(IProjectDynamicLoadComponent))]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageServiceWindowsForms)]
+    internal partial class TempPEBuildManager : UnconfiguredProjectHostBridge<IProjectVersionedValue<InputTuple>, TempPEBuildManager.DesignTimeInputsDelta, IProjectVersionedValue<TempPEBuildManager.DesignTimeInputsItem>>, ITempPEBuildManager, IProjectDynamicLoadComponent
     {
         private static readonly TimeSpan s_compilationWaitTime = TimeSpan.FromMilliseconds(500);
 
@@ -36,11 +37,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         private readonly IActiveConfiguredProjectSubscriptionService _projectSubscriptionService;
         private readonly IFileSystem _fileSystem;
         private readonly IProjectFaultHandlerService _projectFaultHandlerService;
-
+        private readonly VSBuildManager _buildManager;
         private readonly ITempPECompiler _compiler;
-
-        [Import]
-        private Lazy<VSBuildManager> BuildManager { get; set; }
 
         [ImportingConstructor]
         public TempPEBuildManager(IProjectThreadingService threadingService,
@@ -49,7 +47,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                                   IActiveConfiguredProjectSubscriptionService projectSubscriptionService,
                                   ITempPECompiler compiler,
                                   IFileSystem fileSystem,
-                                  IProjectFaultHandlerService projectFaultHandlerService)
+                                  IProjectFaultHandlerService projectFaultHandlerService,
+                                  VSBuildManager buildManager)
              : base(threadingService.JoinableTaskContext)
         {
             _unconfiguredProjectServices = unconfiguredProjectServices;
@@ -58,26 +57,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             _compiler = compiler;
             _fileSystem = fileSystem;
             _projectFaultHandlerService = projectFaultHandlerService;
+            _buildManager = buildManager;
         }
 
         public string[] GetTempPEMonikers()
         {
-            return ThreadingService.ExecuteSynchronously(async () =>
-            {
-                // Because this class gets called on the UI thread we need to make sure that our initialization is run in the right JTF collection
-                // so that anything on the UI thread that initialization requires will not deadlock
-                JoinableTask initializeTask = JoinableFactory.RunAsync(() =>
-                {
-                    return InitializeAsync();
-                });
+            Initialize();
 
-                using (JoinableCollection.Join())
-                {
-                    await InitializeAsync();
-                }
-
-                return AppliedValue.Value.Inputs.ToArray();
-            });
+            return AppliedValue.Value.Inputs.ToArray();
         }
 
         /// <summary>
@@ -90,15 +77,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             if (shouldCompile)
             {
-                DesignTimeInputsItem inputs = AppliedValue.Value;
-                if (inputs.TaskSchedulers.TryGetValue(moniker, out ITaskDelayScheduler scheduler))
-                {
-                    HashSet<string> files = GetFilesToCompile(moniker, inputs.SharedInputs);
-                    string outputFileName = GetOutputFileName(inputs.OutputPath, moniker);
-                    _projectFaultHandlerService.Forget(scheduler.ScheduleAsyncTask(token => CompileTempPEAsync(files, outputFileName, token)).Task, UnconfiguredProject);
-                }
+                await ScheduleCompilationAsync(moniker, AppliedValue.Value, waitForCompletion: false, forceCompilation: true);
             }
-            BuildManager.Value.OnDesignTimeOutputDirty(moniker);
+            _buildManager.OnDesignTimeOutputDirty(moniker);
         }
 
         public async Task<string> GetTempPEDescriptionXmlAsync(string moniker)
@@ -115,18 +96,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 throw new ArgumentException("Moniker supplied must be one of the DesignTime source files", nameof(moniker));
 
             string outputPath = inputs.OutputPath;
-
-            HashSet<string> files = GetFilesToCompile(moniker, inputs.SharedInputs);
             string outputFileName = GetOutputFileName(outputPath, moniker);
-            if (CompilationNeeded(files, outputFileName))
-            {
-                if (inputs.TaskSchedulers.TryGetValue(moniker, out ITaskDelayScheduler scheduler))
-                {
-                    // For parity with legacy we don't care about the compilation result: Legacy only errors here if it runs out of memory queuing the compilation
-                    // Additionally for parity, we compile here on the UI thread and block (whilst still preventing simultaneous work)
-                    await scheduler.RunAsyncTask(token => CompileTempPEAsync(files, outputFileName, token));
-                }
-            }
+
+            // For parity with legacy we don't care about the compilation result: Legacy only errors here if it runs out of memory queuing the compilation
+            // Additionally for parity, we compile here on the UI thread and block (whilst still preventing simultaneous work)
+            await ScheduleCompilationAsync(moniker, inputs, waitForCompletion: true, forceCompilation: false);
 
             // VSTypeResolutionService is the only consumer, and it only uses the codebase element so it's fine to default most of these (VC++ does the same)
             return $@"<root>
@@ -172,6 +146,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             // All monikers are project relative paths by defintion (anything else is a link, and linked files can't be TempPE inputs), meaning 
             // the only invalid filename characters possible are path separators so we just replace them
             return Path.Combine(outputPath, moniker.Replace('\\', '.') + ".dll");
+        }
+
+        private async Task ScheduleCompilationAsync(string moniker, DesignTimeInputsItem inputs, bool waitForCompletion, bool forceCompilation)
+        {
+            HashSet<string> files = GetFilesToCompile(moniker, inputs.SharedInputs);
+            string outputFileName = GetOutputFileName(inputs.OutputPath, moniker);
+
+            if (forceCompilation || CompilationNeeded(files, outputFileName))
+            {
+                if (inputs.TaskSchedulers.TryGetValue(moniker, out ITaskDelayScheduler scheduler))
+                {
+                    if (waitForCompletion)
+                    {
+                        await scheduler.RunAsyncTask(token => CompileTempPEAsync(files, outputFileName, token)).Task;
+                    }
+                    else
+                    {
+                        _projectFaultHandlerService.Forget(scheduler.ScheduleAsyncTask(token => CompileTempPEAsync(files, outputFileName, token)).Task, UnconfiguredProject);
+                    }
+                }
+            }
         }
 
         protected virtual async Task CompileTempPEAsync(HashSet<string> filesToCompile, string outputFileName, CancellationToken token)
@@ -350,7 +345,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             foreach (string item in removedDesignTimeInputs)
             {
-                BuildManager.Value.OnDesignTimeOutputDeleted(item);
+                _buildManager.OnDesignTimeOutputDeleted(item);
             }
 
             bool TryGetValueIfUnused<T>(string item, ImmutableDictionary<string, T>.Builder source, ImmutableHashSet<string>.Builder otherSources, out T result)
@@ -366,6 +361,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             return new TaskDelayScheduler(s_compilationWaitTime, _unconfiguredProjectServices.ThreadingService, DisposalToken);
         }
 
+        public Task LoadAsync()
+        {
+            return InitializeAsync();
+        }
+
+        public Task UnloadAsync()
+        {
+            return DisposeAsync();
+        }
+
         protected override async Task DisposeCoreAsync(bool initialized)
         {
             if (initialized)
@@ -378,10 +383,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         /// <summary>
         /// InitializeInnerCoreAsync is responsible for setting an initial AppliedValue. This value will be used by any UI thread calls that may happen
         /// before the first data flow blocks have been processed. If this method doesn't set a value then the system will block until the first blocks
-        /// have been applied, which is what we want as callers to this need to get the right initial value.
+        /// have been applied.
         /// </summary>
         protected override Task InitializeInnerCoreAsync(CancellationToken cancellationToken)
         {
+            AppliedValue = new ProjectVersionedValue<DesignTimeInputsItem>(new DesignTimeInputsItem(), ImmutableDictionary.Create<NamedIdentity, IComparable>());
+
             return Task.CompletedTask;
         }
 
