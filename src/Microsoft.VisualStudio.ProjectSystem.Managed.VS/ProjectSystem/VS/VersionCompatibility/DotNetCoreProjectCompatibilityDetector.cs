@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
 
@@ -30,13 +29,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     [Export(typeof(IDotNetCoreProjectCompatibilityDetector))]
     internal partial class DotNetCoreProjectCompatibilityDetector : IDotNetCoreProjectCompatibilityDetector, IVsSolutionEvents, IVsSolutionLoadEvents, IDisposable
     {
-        private const string SupportedLearnMoreFwlink = "https://go.microsoft.com/fwlink/?linkid=868064";
-        private const string UnsupportedLearnMoreFwlink = "https://go.microsoft.com/fwlink/?linkid=866797";
-        private const string SuppressDotNewCoreWarningKey = @"ManagedProjectSystem\SuppressDotNewCoreWarning";
-        private const string UsePreviewSdkSettingKey = @"ManagedProjectSystem\UsePreviewSdk";
-        private const string VersionCompatibilityDownloadFwlink = "https://go.microsoft.com/fwlink/?linkid=866798";
-        private const string VersionDataFilename = "DotNetVersionCompatibility.json";
-        private const int CacheFileValidHours = 24;
+        private const string s_supportedLearnMoreFwlink = "https://go.microsoft.com/fwlink/?linkid=868064";
+        private const string s_unsupportedLearnMoreFwlink = "https://go.microsoft.com/fwlink/?linkid=866797";
+        private const string s_suppressDotNewCoreWarningKey = @"ManagedProjectSystem\SuppressDotNewCoreWarning";
+        private const string s_usePreviewSdkSettingKey = @"ManagedProjectSystem\UsePreviewSdk";
+        private const string s_versionCompatibilityDownloadFwlink = "https://go.microsoft.com/fwlink/?linkid=866798";
+        private const string s_versionDataFilename = "DotNetVersionCompatibility.json";
+        private const int s_cacheFileValidHours = 24;
 
         private readonly Lazy<IProjectServiceAccessor> _projectServiceAccessor;
         private readonly Lazy<IDialogServices> _dialogServices;
@@ -93,8 +92,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             string appDataFolder = await _shellUtilitiesHelper.Value.GetLocalAppDataFolderAsync(_vsShellService);
             if (appDataFolder != null)
             {
-                _versionDataCacheFile = new RemoteCacheFile(Path.Combine(appDataFolder, VersionDataFilename), VersionCompatibilityDownloadFwlink,
-                                                            TimeSpan.FromHours(CacheFileValidHours), _fileSystem.Value, _httpClient);
+                _versionDataCacheFile = new RemoteCacheFile(Path.Combine(appDataFolder, s_versionDataFilename), s_versionCompatibilityDownloadFwlink,
+                                                            TimeSpan.FromHours(s_cacheFileValidHours), _fileSystem.Value, _httpClient);
             }
 
             VisualStudioVersion = await _shellUtilitiesHelper.Value.GetVSVersionAsync(_vsAppIdService);
@@ -182,7 +181,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
 
             ISettingsManager settings = await _settingsManagerService?.GetValueAsync();
-            return settings.GetValueOrDefault<bool>(UsePreviewSdkSettingKey);
+            return settings.GetValueOrDefault<bool>(s_usePreviewSdkSettingKey);
         }
 
         private Task<bool> IsPrereleaseAsync()
@@ -292,7 +291,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     bool suppressPrompt = false;
                     if (settingsManager != null)
                     {
-                        suppressPrompt = settingsManager.GetValueOrDefault(SuppressDotNewCoreWarningKey, defaultValue: false);
+                        suppressPrompt = settingsManager.GetValueOrDefault(s_suppressDotNewCoreWarningKey, defaultValue: false);
                     }
 
                     if (compatData.OpenSupportedPreviewMessage is null && isPreviewSDKInUse)
@@ -313,10 +312,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                             msg = string.Format(compatData.OpenSupportedMessage, compatData.SupportedVersion.Major, compatData.SupportedVersion.Minor);
                         }
 
-                        suppressPrompt = _dialogServices.Value.DontShowAgainMessageBox(caption, msg, VSResources.DontShowAgain, false, VSResources.LearnMore, SupportedLearnMoreFwlink);
+                        suppressPrompt = _dialogServices.Value.DontShowAgainMessageBox(caption, msg, VSResources.DontShowAgain, false, VSResources.LearnMore, s_supportedLearnMoreFwlink);
                         if (suppressPrompt && settingsManager != null)
                         {
-                            await settingsManager.SetValueAsync(SuppressDotNewCoreWarningKey, suppressPrompt, isMachineLocal: true);
+                            await settingsManager.SetValueAsync(s_suppressDotNewCoreWarningKey, suppressPrompt, isMachineLocal: true);
                         }
                     }
                 }
@@ -332,7 +331,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                         msg = string.Format(compatData.OpenUnsupportedMessage, compatData.SupportedVersion.Major, compatData.SupportedVersion.Minor);
                     }
 
-                    _dialogServices.Value.DontShowAgainMessageBox(caption, msg, null, false, VSResources.LearnMore, UnsupportedLearnMoreFwlink);
+                    _dialogServices.Value.DontShowAgainMessageBox(caption, msg, null, false, VSResources.LearnMore, s_unsupportedLearnMoreFwlink);
                 }
             }
         }
@@ -459,7 +458,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             // Do we need to update our cached data? Note that since the download could take a long time like tens of seconds we don't really want to
             // start showing messages to the user well after their project is opened and they are interacting with it. Thus we start a task to update the 
             // file, so that the next time we come here, we have updated data.
-            if (CurrrentVersionCompatibilityData != null && _timeCurVersionDataLastUpdatedUtc.AddHours(CacheFileValidHours) > DateTime.UtcNow)
+            if (CurrrentVersionCompatibilityData != null && _timeCurVersionDataLastUpdatedUtc.AddHours(s_cacheFileValidHours) > DateTime.UtcNow)
             {
                 return CurrrentVersionCompatibilityData;
             }
