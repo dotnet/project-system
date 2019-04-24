@@ -184,29 +184,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return settings.GetValueOrDefault<bool>(s_usePreviewSdkSettingKey);
         }
 
-        private Task<bool> IsPrereleaseAsync()
+        private async Task<bool> IsPrereleaseAsync()
         {
-            var vsSetupConfig = new SetupConfiguration();
-            if (vsSetupConfig.GetInstanceForCurrentProcess() is ISetupInstanceCatalog setupInstanceCatalog)
-            {
-                return TryQueryCOMObject(setupInstanceCatalog);
-            }
-
-            return TaskResult.False;
-        }
-
-        private async Task<bool> TryQueryCOMObject(ISetupInstanceCatalog setupInstanceCatalog)
-        {
-            try
-            {
-                await _threadHandling.Value.SwitchToUIThread();
-                return setupInstanceCatalog.IsPrerelease();
-            }
-            catch (Exception)
-            {
-                // COM object may not be queryable yet.
-                return false;
-            }
+            await _threadHandling.Value.SwitchToUIThread();
+            ISetupConfiguration setupConfiguration = new SetupConfiguration();
+            ISetupInstance setupInstance = setupConfiguration.GetInstanceForCurrentProcess();
+            // NOTE: this explicit cast is necessary for the subsequent COM QI to succeed. 
+            var setupInstanceCatalog = (ISetupInstanceCatalog)setupInstance;
+            return setupInstanceCatalog.IsPrerelease();
         }
 
         // This method is overridden in test code
