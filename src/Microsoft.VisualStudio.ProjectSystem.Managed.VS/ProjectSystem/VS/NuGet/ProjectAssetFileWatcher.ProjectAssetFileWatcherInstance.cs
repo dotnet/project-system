@@ -294,22 +294,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 // the kind of change since we are interested in all changes.
                 _taskDelayScheduler.ScheduleAsyncTask(HandleFileChangedAsync);
 
-                return VSConstants.S_OK;
+                return HResult.OK;
             }
 
             public int DirectoryChanged(string pszDirectory)
             {
-                return VSConstants.E_NOTIMPL;
+                return HResult.NotImplemented;
             }
 
             public int DirectoryChangedEx(string pszDirectory, string pszFile)
             {
-                return VSConstants.E_NOTIMPL;
+                return HResult.NotImplemented;
             }
 
             public int DirectoryChangedEx2(string pszDirectory, uint cChanges, string[] rgpszFile, uint[] rggrfChange)
             {
-                return VSConstants.E_NOTIMPL;
+                return HResult.NotImplemented;
             }
         }
     }

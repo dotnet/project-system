@@ -170,7 +170,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 }
             }
 
-            return VSConstants.S_OK;
+            return HResult.OK;
         }
 
         // This method is overridden in test code
@@ -222,7 +222,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             // Clear state flags
             CompatibilityLevelWarnedForCurrentSolution = CompatibilityLevel.Recommended;
             SolutionOpen = false;
-            return VSConstants.S_OK;
+            return HResult.OK;
         }
 
         private async Task CheckCompatibilityAsync()
@@ -265,7 +265,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             // Schedule this to run on idle
             _threadHandling.Value.RunAndForget(() => CheckCompatibilityAsync(), unconfiguredProject: null);
-            return VSConstants.S_OK;
+            return HResult.OK;
         }
 
         private async Task WarnUserOfIncompatibleProjectAsync(CompatibilityLevel compatLevel, VersionCompatibilityData compatData, bool isPreviewSDKInUse)
@@ -550,42 +550,42 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// </summary>
         public int OnAfterOpenSolution(object pUnkReserved, int fNewSolution)
         {
-            return VSConstants.S_OK;
+            return HResult.OK;
         }
 
         public int OnQueryCloseProject(IVsHierarchy pHierarchy, int fRemoving, ref int pfCancel)
         {
-            return VSConstants.S_OK;
+            return HResult.OK;
         }
 
         public int OnBeforeCloseProject(IVsHierarchy pHierarchy, int fRemoved)
         {
-            return VSConstants.S_OK;
+            return HResult.OK;
         }
 
         public int OnAfterLoadProject(IVsHierarchy pStubHierarchy, IVsHierarchy pRealHierarchy)
         {
-            return VSConstants.S_OK;
+            return HResult.OK;
         }
 
         public int OnQueryUnloadProject(IVsHierarchy pRealHierarchy, ref int pfCancel)
         {
-            return VSConstants.S_OK;
+            return HResult.OK;
         }
 
         public int OnBeforeUnloadProject(IVsHierarchy pRealHierarchy, IVsHierarchy pStubHierarchy)
         {
-            return VSConstants.S_OK;
+            return HResult.OK;
         }
 
         public int OnQueryCloseSolution(object pUnkReserved, ref int pfCancel)
         {
-            return VSConstants.S_OK;
+            return HResult.OK;
         }
 
         public int OnBeforeCloseSolution(object pUnkReserved)
         {
-            return VSConstants.S_OK;
+            return HResult.OK;
         }
 
         /// <summary>
@@ -593,28 +593,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// </summary>
         public int OnAfterLoadProjectBatch(bool fIsBackgroundIdleBatch)
         {
-            return VSConstants.S_OK;
+            return HResult.OK;
         }
 
         public int OnBeforeBackgroundSolutionLoadBegins()
         {
-            return VSConstants.S_OK;
+            return HResult.OK;
         }
 
         public int OnBeforeLoadProjectBatch(bool fIsBackgroundIdleBatch)
         {
-            return VSConstants.S_OK;
+            return HResult.OK;
         }
 
         public int OnBeforeOpenSolution(string pszSolutionFilename)
         {
-            return VSConstants.S_OK;
+            return HResult.OK;
         }
 
         public int OnQueryBackgroundLoadProjectBatch(out bool pfShouldDelayLoadToNextIdle)
         {
             pfShouldDelayLoadToNextIdle = false;
-            return VSConstants.S_OK;
+            return HResult.OK;
         }
 
         #endregion

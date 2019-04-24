@@ -797,7 +797,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
             await SaveLaunchSettings();
 
-            return VSConstants.S_OK;
+            return HResult.OK;
         }
 
 

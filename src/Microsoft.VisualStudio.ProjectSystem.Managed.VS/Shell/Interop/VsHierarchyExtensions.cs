@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
                 return HResult.OK;
             }
 
-            if (hr == VSConstants.DISP_E_MEMBERNOTFOUND)
+            if (hr == HResult.MemberNotFound)
             {
                 result = defaultValue;
                 return HResult.OK;
