@@ -67,12 +67,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         public async Task<int> Apply()
         {
-            int result = VSConstants.S_OK;
+            HResult result = HResult.OK;
 
             if (IsDirty)
             {
                 result = await OnApply();
-                if (result == VSConstants.S_OK)
+                if (result.IsOK)
                 {
                     IsDirty = false;
                 }
