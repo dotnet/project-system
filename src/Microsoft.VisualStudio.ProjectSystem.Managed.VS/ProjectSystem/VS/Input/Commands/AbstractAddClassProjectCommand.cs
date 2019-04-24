@@ -39,27 +39,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             }
         }
 
-        protected override async Task<bool> TryHandleCommandAsync(IProjectTree node, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut)
+        protected override Task<bool> TryHandleCommandAsync(IProjectTree node, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut)
         {
-            if (!_projectTree.NodeCanHaveAdditions(node))
-            {
-                return false;
-            }
-
-            __VSADDITEMFLAGS uiFlags = __VSADDITEMFLAGS.VSADDITEM_AddNewItems | __VSADDITEMFLAGS.VSADDITEM_SuggestTemplateName | __VSADDITEMFLAGS.VSADDITEM_AllowHiddenTreeView;
-
-            string strBrowseLocations = _projectTree.TreeProvider.GetAddNewItemDirectory(node);
-
-            string strFilter = string.Empty;
-            await _projectVsServices.ThreadingService.SwitchToUIThread();
-
-            Guid addItemTemplateGuid = Guid.Empty;  // Let the dialog ask the hierarchy itself
-            HResult res = _addItemDialog.Value.AddProjectItemDlg(node.GetHierarchyId(), ref addItemTemplateGuid, _projectVsServices.VsProject, (uint)uiFlags,
-                DirName, VSResources.ClassTemplateName, ref strBrowseLocations, ref strFilter, out _);
-
-            // Return true here regardless of whether or not the user clicked OK or they clicked Cancel. This ensures that some other
-            // handler isn't called after we run.
-            return res == VSConstants.S_OK || res == VSConstants.OLE_E_PROMPTSAVECANCELLED;
+            return AbstractAddItemCommandHandler.ShowAddProjectItemDialog(node, DirName, VSResources.ClassTemplateName, _projectTree, _projectVsServices, _addItemDialog);
         }
     }
 }
