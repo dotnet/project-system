@@ -16,7 +16,6 @@ using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Automation;
 using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Telemetry;
 using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.Threading.Tasks;
 
@@ -32,43 +31,53 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
     {
         private static readonly TimeSpan s_compilationWaitTime = TimeSpan.FromMilliseconds(500);
 
-        protected readonly IUnconfiguredProjectCommonServices UnconfiguredProjectServices;
+        private readonly IUnconfiguredProjectCommonServices _unconfiguredProjectServices;
         private readonly IActiveWorkspaceProjectContextHost _activeWorkspaceProjectContextHost;
         private readonly IActiveConfiguredProjectSubscriptionService _projectSubscriptionService;
         private readonly IFileSystem _fileSystem;
-        private readonly ITelemetryService _telemetryService;
         private readonly IProjectFaultHandlerService _projectFaultHandlerService;
 
         private readonly ITempPECompiler _compiler;
-        private readonly Lazy<VSBuildManager> _buildManager;
+
+        [Import]
+        private Lazy<VSBuildManager> BuildManager { get; set; }
 
         [ImportingConstructor]
         public TempPEBuildManager(IProjectThreadingService threadingService,
                                   IUnconfiguredProjectCommonServices unconfiguredProjectServices,
                                   IActiveWorkspaceProjectContextHost activeWorkspaceProjectContextHost,
                                   IActiveConfiguredProjectSubscriptionService projectSubscriptionService,
-                                  VSLangProj.VSProjectEvents projectEvents,
                                   ITempPECompiler compiler,
                                   IFileSystem fileSystem,
-                                  ITelemetryService telemetryService,
                                   IProjectFaultHandlerService projectFaultHandlerService)
              : base(threadingService.JoinableTaskContext)
         {
-            UnconfiguredProjectServices = unconfiguredProjectServices;
+            _unconfiguredProjectServices = unconfiguredProjectServices;
             _activeWorkspaceProjectContextHost = activeWorkspaceProjectContextHost;
             _projectSubscriptionService = projectSubscriptionService;
-            _buildManager = new Lazy<VSBuildManager>(() => (VSBuildManager)projectEvents.BuildManagerEvents);
             _compiler = compiler;
             _fileSystem = fileSystem;
-            _telemetryService = telemetryService;
             _projectFaultHandlerService = projectFaultHandlerService;
         }
 
         public string[] GetTempPEMonikers()
         {
-            Initialize();
+            return ThreadingService.ExecuteSynchronously(async () =>
+            {
+                // Because this class gets called on the UI thread we need to make sure that our initialization is run in the right JTF collection
+                // so that anything on the UI thread that initialization requires will not deadlock
+                JoinableTask initializeTask = JoinableFactory.RunAsync(() =>
+                {
+                    return InitializeAsync();
+                });
 
-            return AppliedValue.Value.Inputs.ToArray();
+                using (JoinableCollection.Join())
+                {
+                    await InitializeAsync();
+                }
+
+                return AppliedValue.Value.Inputs.ToArray();
+            });
         }
 
         /// <summary>
@@ -77,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         private async Task FireTempPEDirtyAsync(string moniker, bool shouldCompile)
         {
             // Not using use the ThreadingService property because unit tests
-            await UnconfiguredProjectServices.ThreadingService.SwitchToUIThread();
+            await _unconfiguredProjectServices.ThreadingService.SwitchToUIThread();
 
             if (shouldCompile)
             {
@@ -89,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                     _projectFaultHandlerService.Forget(scheduler.ScheduleAsyncTask(token => CompileTempPEAsync(files, outputFileName, token)).Task, UnconfiguredProject);
                 }
             }
-            _buildManager.Value.OnDesignTimeOutputDirty(moniker);
+            BuildManager.Value.OnDesignTimeOutputDirty(moniker);
         }
 
         public async Task<string> GetTempPEDescriptionXmlAsync(string moniker)
@@ -98,7 +107,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             await InitializeAsync();
 
-            await UnconfiguredProjectServices.ThreadingService.SwitchToUIThread();
+            await _unconfiguredProjectServices.ThreadingService.SwitchToUIThread();
 
             DesignTimeInputsItem inputs = AppliedValue.Value;
 
@@ -160,14 +169,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         private static string GetOutputFileName(string outputPath, string moniker)
         {
-            // All monikers are project relative paths by defintion (anything else is a link), meaning the only invalid
-            // filename characters possible are path separators so we just replace them
+            // All monikers are project relative paths by defintion (anything else is a link, and linked files can't be TempPE inputs), meaning 
+            // the only invalid filename characters possible are path separators so we just replace them
             return Path.Combine(outputPath, moniker.Replace('\\', '.') + ".dll");
         }
 
         protected virtual async Task CompileTempPEAsync(HashSet<string> filesToCompile, string outputFileName, CancellationToken token)
         {
-            _telemetryService.PostProperty(TelemetryEventName.TempPECompilation, TelemetryPropertyName.TempPECompilationOutputFileName, outputFileName);
             bool result = await _activeWorkspaceProjectContextHost.OpenContextForWriteAsync(accessor =>
             {
                 return _compiler.CompileAsync(accessor.Context, outputFileName, filesToCompile, token);
@@ -189,10 +197,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         protected virtual HashSet<string> GetFilesToCompile(string moniker, ImmutableHashSet<string> sharedInputs)
         {
-            // This is a HashSet because we allow files to be both inputs and shared inputs, and we don't want to compile the same file twice
+            // This is a HashSet because we allow files to be both inputs and shared inputs, and we don't want to compile the same file twice,
             // plus Roslyn needs to call Contains on this quite a lot in order to ensure its only compiling the right files so we want that to be fast.
+            // When it comes to compiling the files there is no difference between shared and normal design time inputs, we just track differently because
+            // shared are included in every DLL.
             var files = new HashSet<string>(sharedInputs.Count + 1, StringComparers.Paths);
-            // All monikers are project relative paths by defintion (anything else is a link) so we can convert them to full paths using MakeRooted
+            // All monikers are project relative paths by defintion (anything else is a link, and linked files can't be TempPE inputs) so we can convert
+            // them to full paths using MakeRooted.
             files.AddRange(sharedInputs.Select(UnconfiguredProject.MakeRooted));
             files.Add(UnconfiguredProject.MakeRooted(moniker));
             return files;
@@ -204,9 +215,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         protected override async Task ApplyAsync(DesignTimeInputsDelta value)
         {
             // Not using use the ThreadingService property because unit tests
-            await UnconfiguredProjectServices.ThreadingService.SwitchToUIThread();
+            await _unconfiguredProjectServices.ThreadingService.SwitchToUIThread();
 
-            DesignTimeInputsItem previousValue = AppliedValue.Value;
+            DesignTimeInputsItem previousValue = AppliedValue?.Value ?? new DesignTimeInputsItem();
 
             // Calculate the new value
             ImmutableHashSet<string> newDesignTimeInputs;
@@ -339,7 +350,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             foreach (string item in removedDesignTimeInputs)
             {
-                _buildManager.Value.OnDesignTimeOutputDeleted(item);
+                BuildManager.Value.OnDesignTimeOutputDeleted(item);
             }
 
             bool TryGetValueIfUnused<T>(string item, ImmutableDictionary<string, T>.Builder source, ImmutableHashSet<string>.Builder otherSources, out T result)
@@ -352,7 +363,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         protected virtual ITaskDelayScheduler CreateTaskScheduler()
         {
-            return new TaskDelayScheduler(s_compilationWaitTime, UnconfiguredProjectServices.ThreadingService, DisposalToken);
+            return new TaskDelayScheduler(s_compilationWaitTime, _unconfiguredProjectServices.ThreadingService, DisposalToken);
         }
 
         protected override async Task DisposeCoreAsync(bool initialized)
@@ -366,13 +377,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         /// <summary>
         /// InitializeInnerCoreAsync is responsible for setting an initial AppliedValue. This value will be used by any UI thread calls that may happen
-        /// before the first data flow blocks have been processed. If this method doesn't return a value then the system will block until the first blocks
-        /// have been applied but since we are initialized on the UI thread, that blocks for us, so we must return an initial state.
+        /// before the first data flow blocks have been processed. If this method doesn't set a value then the system will block until the first blocks
+        /// have been applied, which is what we want as callers to this need to get the right initial value.
         /// </summary>
         protected override Task InitializeInnerCoreAsync(CancellationToken cancellationToken)
         {
-            AppliedValue = new ProjectVersionedValue<DesignTimeInputsItem>(new DesignTimeInputsItem(), ImmutableDictionary.Create<NamedIdentity, IComparable>());
-
             return Task.CompletedTask;
         }
 
@@ -381,6 +390,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         /// </summary>
         protected override IDisposable LinkExternalInput(ITargetBlock<IProjectVersionedValue<InputTuple>> targetBlock)
         {
+            JoinUpstreamDataSources(_projectSubscriptionService.SourceItemsRuleSource, _projectSubscriptionService.ProjectRuleSource);
+
             return ProjectDataSources.SyncLinkTo(
                 _projectSubscriptionService.SourceItemsRuleSource.SourceBlock.SyncLinkOptions(
                     linkOptions: new StandardRuleDataflowLinkOptions
@@ -493,7 +504,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                     return (false, false);
                 }
 
-                return (StringComparers.PropertyValues.Equals(designTimeString, bool.TrueString), StringComparers.PropertyValues.Equals(designTimeSharedString, bool.TrueString));
+                return (StringComparers.PropertyLiteralValues.Equals(designTimeString, bool.TrueString), StringComparers.PropertyLiteralValues.Equals(designTimeSharedString, bool.TrueString));
             }
 
             void PreprocessAddItem(string item)
