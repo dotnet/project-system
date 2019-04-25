@@ -7,67 +7,32 @@ using Microsoft.VisualStudio.Shell.Interop;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
     [ExportCommandGroup(CommandGroup.WPF)]
-    [AppliesTo(ProjectCapability.WPF)]
+    [AppliesTo(ProjectCapability.DotNet)]
     internal partial class WPFAddItemCommandHandler : AbstractAddItemCommandHandler
     {
         private static readonly Guid s_wpfPackage = new Guid("{b3bae735-386c-4030-8329-ef48eeda4036}");
 
-        // from VS: src\vsproject\cool\coolpkg\resource.h
-        protected enum LegacyCSharpStrings : uint
+        protected override Dictionary<long, List<TemplateDetails>> GetTemplateDetails() => new Dictionary<long, List<TemplateDetails>>
         {
-            IDS_TEMPLATE_DIRLOCALITEMS = 2339,
-        }
+           // Command Id                                Capability                      ExtraCapability         DirNamePackageGuid          DirNameResourceId                                           TemplateName    TemplateNameResourceId
+           //                                                                                                                                                                   PackageGuid
+            { WPFCommandId.AddWPFWindow,                ProjectCapability.CSharp,       ProjectCapability.WPF,  LegacyCSharpPackageGuid,    LegacyCSharpStringResourceIds.IDS_TEMPLATE_DIRLOCALITEMS,   s_wpfPackage,   WPFTemplateNames.WPFWindow              },
+            { WPFCommandId.WPFWindow,                   ProjectCapability.CSharp,       ProjectCapability.WPF,  LegacyCSharpPackageGuid,    LegacyCSharpStringResourceIds.IDS_TEMPLATE_DIRLOCALITEMS,   s_wpfPackage,   WPFTemplateNames.WPFWindow              },
+            { WPFCommandId.AddWPFPage,                  ProjectCapability.CSharp,       ProjectCapability.WPF,  LegacyCSharpPackageGuid,    LegacyCSharpStringResourceIds.IDS_TEMPLATE_DIRLOCALITEMS,   s_wpfPackage,   WPFTemplateNames.WPFPage                },
+            { WPFCommandId.WPFPage,                     ProjectCapability.CSharp,       ProjectCapability.WPF,  LegacyCSharpPackageGuid,    LegacyCSharpStringResourceIds.IDS_TEMPLATE_DIRLOCALITEMS,   s_wpfPackage,   WPFTemplateNames.WPFPage                },
+            { WPFCommandId.AddWPFUserControl,           ProjectCapability.CSharp,       ProjectCapability.WPF,  LegacyCSharpPackageGuid,    LegacyCSharpStringResourceIds.IDS_TEMPLATE_DIRLOCALITEMS,   s_wpfPackage,   WPFTemplateNames.WPFUserControl         },
+            { WPFCommandId.WPFUserControl,              ProjectCapability.CSharp,       ProjectCapability.WPF,  LegacyCSharpPackageGuid,    LegacyCSharpStringResourceIds.IDS_TEMPLATE_DIRLOCALITEMS,   s_wpfPackage,   WPFTemplateNames.WPFUserControl         },
+            { WPFCommandId.AddWPFResourceDictionary,    ProjectCapability.CSharp,       ProjectCapability.WPF,  LegacyCSharpPackageGuid,    LegacyCSharpStringResourceIds.IDS_TEMPLATE_DIRLOCALITEMS,   s_wpfPackage,   WPFTemplateNames.WPFResourceDictionary  },
+            { WPFCommandId.WPFResourceDictionary,       ProjectCapability.CSharp,       ProjectCapability.WPF,  LegacyCSharpPackageGuid,    LegacyCSharpStringResourceIds.IDS_TEMPLATE_DIRLOCALITEMS,   s_wpfPackage,   WPFTemplateNames.WPFResourceDictionary  },
 
-        // from VS: src\vsproject\vb\vbprj\vbprjstr.h
-        protected enum LegacyVBStrings : uint
-        {
-            IDS_VSDIR_CLIENTPROJECTITEMS = 3081,
-        }
-
-        // from VS: src\vsproject\fidalgo\WPF\Flavor\WPFFlavor\Guids.cs
-        private enum CommandIds : long
-        {
-            AddWPFWindow = 0x100,
-            AddWPFPage = 0x200,
-            AddWPFUserControl = 0x300,
-            AddWPFResourceDictionary = 0x400,
-            WPFWindow = 0x600,
-            WPFPage = 0x700,
-            WPFUserControl = 0x800,
-            WPFResourceDictionary = 0x900,
-        }
-
-        // from VS: src\vsproject\fidalgo\WPF\Flavor\WPFFlavor\WPFProject.cs
-        private enum TemplateNames : uint
-        {
-            WPFPage = 4658,
-            WPFResourceDictionary = 4662,
-            WPFUserControl = 4664,
-            WPFWindow = 4666,
-        }
-
-        protected override Dictionary<long, CommandDetails> GetCSharpCommands() => new Dictionary<long, CommandDetails>
-        {
-            { (long)CommandIds.AddWPFWindow, new CommandDetails(LegacyCSharpPackageGuid, (uint)LegacyCSharpStrings.IDS_TEMPLATE_DIRLOCALITEMS, s_wpfPackage, (uint)TemplateNames.WPFWindow) },
-            { (long)CommandIds.WPFWindow, new CommandDetails(LegacyCSharpPackageGuid, (uint)LegacyCSharpStrings.IDS_TEMPLATE_DIRLOCALITEMS, s_wpfPackage, (uint)TemplateNames.WPFWindow) },
-            { (long)CommandIds.AddWPFPage, new CommandDetails(LegacyCSharpPackageGuid, (uint)LegacyCSharpStrings.IDS_TEMPLATE_DIRLOCALITEMS, s_wpfPackage, (uint)TemplateNames.WPFPage) },
-            { (long)CommandIds.WPFPage, new CommandDetails(LegacyCSharpPackageGuid, (uint)LegacyCSharpStrings.IDS_TEMPLATE_DIRLOCALITEMS, s_wpfPackage, (uint)TemplateNames.WPFPage) },
-            { (long)CommandIds.AddWPFUserControl, new CommandDetails(LegacyCSharpPackageGuid, (uint)LegacyCSharpStrings.IDS_TEMPLATE_DIRLOCALITEMS, s_wpfPackage, (uint)TemplateNames.WPFUserControl) },
-            { (long)CommandIds.WPFUserControl, new CommandDetails(LegacyCSharpPackageGuid, (uint)LegacyCSharpStrings.IDS_TEMPLATE_DIRLOCALITEMS, s_wpfPackage, (uint)TemplateNames.WPFUserControl) },
-            { (long)CommandIds.AddWPFResourceDictionary, new CommandDetails(LegacyCSharpPackageGuid, (uint)LegacyCSharpStrings.IDS_TEMPLATE_DIRLOCALITEMS, s_wpfPackage, (uint)TemplateNames.WPFResourceDictionary) },
-            { (long)CommandIds.WPFResourceDictionary, new CommandDetails(LegacyCSharpPackageGuid, (uint)LegacyCSharpStrings.IDS_TEMPLATE_DIRLOCALITEMS, s_wpfPackage, (uint)TemplateNames.WPFResourceDictionary) },
-        };
-
-        protected override Dictionary<long, CommandDetails> GetVBCommands() => new Dictionary<long, CommandDetails>
-        {
-            { (long)CommandIds.AddWPFWindow, new CommandDetails(LegacyVBPackageGuid, (uint)LegacyVBStrings.IDS_VSDIR_CLIENTPROJECTITEMS, s_wpfPackage, (uint)TemplateNames.WPFWindow) },
-            { (long)CommandIds.WPFWindow, new CommandDetails(LegacyVBPackageGuid, (uint)LegacyVBStrings.IDS_VSDIR_CLIENTPROJECTITEMS, s_wpfPackage, (uint)TemplateNames.WPFWindow) },
-            { (long)CommandIds.AddWPFPage, new CommandDetails(LegacyVBPackageGuid, (uint)LegacyVBStrings.IDS_VSDIR_CLIENTPROJECTITEMS, s_wpfPackage, (uint)TemplateNames.WPFPage) },
-            { (long)CommandIds.WPFPage, new CommandDetails(LegacyVBPackageGuid, (uint)LegacyVBStrings.IDS_VSDIR_CLIENTPROJECTITEMS, s_wpfPackage, (uint)TemplateNames.WPFPage) },
-            { (long)CommandIds.AddWPFUserControl, new CommandDetails(LegacyVBPackageGuid, (uint)LegacyVBStrings.IDS_VSDIR_CLIENTPROJECTITEMS, s_wpfPackage, (uint)TemplateNames.WPFUserControl) },
-            { (long)CommandIds.WPFUserControl, new CommandDetails(LegacyVBPackageGuid, (uint)LegacyVBStrings.IDS_VSDIR_CLIENTPROJECTITEMS, s_wpfPackage, (uint)TemplateNames.WPFUserControl) },
-            { (long)CommandIds.AddWPFResourceDictionary, new CommandDetails(LegacyVBPackageGuid, (uint)LegacyVBStrings.IDS_VSDIR_CLIENTPROJECTITEMS, s_wpfPackage, (uint)TemplateNames.WPFResourceDictionary) },
-            { (long)CommandIds.WPFResourceDictionary, new CommandDetails(LegacyVBPackageGuid, (uint)LegacyVBStrings.IDS_VSDIR_CLIENTPROJECTITEMS, s_wpfPackage, (uint)TemplateNames.WPFResourceDictionary) },
+            { WPFCommandId.AddWPFWindow,                ProjectCapability.VisualBasic,  ProjectCapability.WPF,  LegacyVBPackageGuid,        LegacyVBStringResourceIds.IDS_VSDIR_CLIENTPROJECTITEMS,     s_wpfPackage,   WPFTemplateNames.WPFWindow              },
+            { WPFCommandId.WPFWindow,                   ProjectCapability.VisualBasic,  ProjectCapability.WPF,  LegacyVBPackageGuid,        LegacyVBStringResourceIds.IDS_VSDIR_CLIENTPROJECTITEMS,     s_wpfPackage,   WPFTemplateNames.WPFWindow              },
+            { WPFCommandId.AddWPFPage,                  ProjectCapability.VisualBasic,  ProjectCapability.WPF,  LegacyVBPackageGuid,        LegacyVBStringResourceIds.IDS_VSDIR_CLIENTPROJECTITEMS,     s_wpfPackage,   WPFTemplateNames.WPFPage                },
+            { WPFCommandId.WPFPage,                     ProjectCapability.VisualBasic,  ProjectCapability.WPF,  LegacyVBPackageGuid,        LegacyVBStringResourceIds.IDS_VSDIR_CLIENTPROJECTITEMS,     s_wpfPackage,   WPFTemplateNames.WPFPage                },
+            { WPFCommandId.AddWPFUserControl,           ProjectCapability.VisualBasic,  ProjectCapability.WPF,  LegacyVBPackageGuid,        LegacyVBStringResourceIds.IDS_VSDIR_CLIENTPROJECTITEMS,     s_wpfPackage,   WPFTemplateNames.WPFUserControl         },
+            { WPFCommandId.WPFUserControl,              ProjectCapability.VisualBasic,  ProjectCapability.WPF,  LegacyVBPackageGuid,        LegacyVBStringResourceIds.IDS_VSDIR_CLIENTPROJECTITEMS,     s_wpfPackage,   WPFTemplateNames.WPFUserControl         },
+            { WPFCommandId.AddWPFResourceDictionary,    ProjectCapability.VisualBasic,  ProjectCapability.WPF,  LegacyVBPackageGuid,        LegacyVBStringResourceIds.IDS_VSDIR_CLIENTPROJECTITEMS,     s_wpfPackage,   WPFTemplateNames.WPFResourceDictionary  },
+            { WPFCommandId.WPFResourceDictionary,       ProjectCapability.VisualBasic,  ProjectCapability.WPF,  LegacyVBPackageGuid,        LegacyVBStringResourceIds.IDS_VSDIR_CLIENTPROJECTITEMS,     s_wpfPackage,   WPFTemplateNames.WPFResourceDictionary  },
         };
 
         [ImportingConstructor]

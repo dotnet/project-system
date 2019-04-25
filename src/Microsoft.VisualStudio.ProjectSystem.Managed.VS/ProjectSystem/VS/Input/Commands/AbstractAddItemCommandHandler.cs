@@ -23,9 +23,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         private readonly IPhysicalProjectTree _projectTree;
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly IVsUIService<IVsAddProjectItemDlg> _addItemDialog;
-        private readonly IVsService<SVsShell, IVsShell> _vsShell;
-        private readonly Lazy<Dictionary<long, CommandDetails>> _cSharpCommandMap;
-        private readonly Lazy<Dictionary<long, CommandDetails>> _vbCommandMap;
+        private readonly IVsService<IVsShell> _vsShell;
+        private readonly Lazy<Dictionary<long, List<TemplateDetails>>> _commandMap;
 
         [ImportingConstructor]
         public AbstractAddItemCommandHandler(IPhysicalProjectTree projectTree, IUnconfiguredProjectVsServices projectVsServices, IVsUIService<IVsAddProjectItemDlg> addItemDialog, IVsService<SVsShell, IVsShell> vsShell)
@@ -35,18 +34,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             _addItemDialog = addItemDialog;
             _vsShell = vsShell;
 
-            _cSharpCommandMap = new Lazy<Dictionary<long, CommandDetails>>(() => GetCSharpCommands());
-            _vbCommandMap = new Lazy<Dictionary<long, CommandDetails>>(() => GetVBCommands());
+            _commandMap = new Lazy<Dictionary<long, List<TemplateDetails>>>(() => GetTemplateDetails());
         }
 
-        protected abstract Dictionary<long, CommandDetails> GetCSharpCommands();
-        protected abstract Dictionary<long, CommandDetails> GetVBCommands();
+        protected abstract Dictionary<long, List<TemplateDetails>> GetTemplateDetails();
 
         public Task<CommandStatusResult> GetCommandStatusAsync(IImmutableSet<IProjectTree> nodes, long commandId, bool focused, string commandText, CommandStatus progressiveStatus)
         {
             Requires.NotNull(nodes, nameof(nodes));
 
-            if (TryGetCommandDetails(commandId, out _))
+            if (nodes.Count == 1 && _projectTree.NodeCanHaveAdditions(nodes.First()) && TryGetCommandDetails(commandId, out _))
             {
                 return GetCommandStatusResult.Handled(commandText, CommandStatus.Enabled);
             }
@@ -60,72 +57,66 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
             if (nodes.Count == 1)
             {
-                if (TryGetCommandDetails(commandId, out CommandDetails result))
+                if (TryGetCommandDetails(commandId, out TemplateDetails result))
                 {
                     IProjectTree node = nodes.First();
+
+                    if (!_projectTree.NodeCanHaveAdditions(node))
+                    {
+                        return false;
+                    }
+
+                    __VSADDITEMFLAGS uiFlags = __VSADDITEMFLAGS.VSADDITEM_AddNewItems |
+                                               __VSADDITEMFLAGS.VSADDITEM_SuggestTemplateName |
+                                               __VSADDITEMFLAGS.VSADDITEM_AllowHiddenTreeView;
+
+                    string strBrowseLocations = _projectTree.TreeProvider.GetAddNewItemDirectory(node);
+                    string strFilter = string.Empty;
+                    Guid addItemTemplateGuid = Guid.Empty;  // Let the dialog ask the hierarchy itself
+
+                    await _projectVsServices.ThreadingService.SwitchToUIThread();
 
                     // Get the strings from the legacy package
                     IVsShell vsShell = await _vsShell.GetValueAsync();
                     ErrorHandler.ThrowOnFailure(vsShell.LoadPackageString(ref result.DirNamePackageGuid, result.DirNameResourceId, out string dirName));
                     ErrorHandler.ThrowOnFailure(vsShell.LoadPackageString(ref result.TemplateNamePackageGuid, result.TemplateNameResourceId, out string templateName));
 
-                    return await ShowAddProjectItemDialog(node, dirName, templateName, _projectTree, _projectVsServices, _addItemDialog);
+                    HResult res = _addItemDialog.Value.AddProjectItemDlg(node.GetHierarchyId(),
+                                                                        ref addItemTemplateGuid,
+                                                                        _projectVsServices.VsProject,
+                                                                        (uint)uiFlags,
+                                                                        dirName,
+                                                                        templateName,
+                                                                        ref strBrowseLocations,
+                                                                        ref strFilter,
+                                                                        out _);
+
+                    // Return true here regardless of whether or not the user clicked OK or they clicked Cancel. This ensures that some other
+                    // handler isn't called after we run.
+                    return res == HResult.OK || res == HResult.Ole.PromptSaveCancelled;
                 }
             }
 
             return false;
         }
 
-        private bool TryGetCommandDetails(long commandId, out CommandDetails result)
+        private bool TryGetCommandDetails(long commandId, out TemplateDetails result)
         {
             IProjectCapabilitiesScope capabilities = _projectVsServices.ActiveConfiguredProject.Capabilities;
 
-            if (_cSharpCommandMap.Value.TryGetValue(commandId, out result) && capabilities.AppliesTo(ProjectCapability.CSharp))
+            if (_commandMap.Value.TryGetValue(commandId, out List<TemplateDetails> templates))
             {
-                return true;
+                foreach (TemplateDetails template in templates)
+                {
+                    if (capabilities.AppliesTo(template.CapabilityCheck))
+                    {
+                        result = template;
+                        return true;
+                    }
+                }
             }
-            else if (_vbCommandMap.Value.TryGetValue(commandId, out result) && capabilities.AppliesTo(ProjectCapability.VisualBasic))
-            {
-                return true;
-            }
+            result = null;
             return false;
-        }
-
-        internal static async Task<bool> ShowAddProjectItemDialog(IProjectTree node, string dirName, string templateName, IPhysicalProjectTree projectTree, IUnconfiguredProjectVsServices projectVsServcies, IVsUIService<IVsAddProjectItemDlg> addItemDialog)
-        {
-            Requires.NotNull(node, nameof(node));
-            Requires.NotNull(projectTree, nameof(projectTree));
-            Requires.NotNull(projectVsServcies, nameof(projectVsServcies));
-            Requires.NotNull(addItemDialog, nameof(addItemDialog));
-
-            if (!projectTree.NodeCanHaveAdditions(node))
-            {
-                return false;
-            }
-
-            __VSADDITEMFLAGS uiFlags = __VSADDITEMFLAGS.VSADDITEM_AddNewItems |
-                                       __VSADDITEMFLAGS.VSADDITEM_SuggestTemplateName |
-                                       __VSADDITEMFLAGS.VSADDITEM_AllowHiddenTreeView;
-
-            string strBrowseLocations = projectTree.TreeProvider.GetAddNewItemDirectory(node);
-            string strFilter = string.Empty;
-            Guid addItemTemplateGuid = Guid.Empty;  // Let the dialog ask the hierarchy itself
-
-            await projectVsServcies.ThreadingService.SwitchToUIThread();
-
-            HResult res = addItemDialog.Value.AddProjectItemDlg(node.GetHierarchyId(),
-                                                                ref addItemTemplateGuid,
-                                                                projectVsServcies.VsProject,
-                                                                (uint)uiFlags,
-                                                                dirName,
-                                                                templateName,
-                                                                ref strBrowseLocations,
-                                                                ref strFilter,
-                                                                out _);
-
-            // Return true here regardless of whether or not the user clicked OK or they clicked Cancel. This ensures that some other
-            // handler isn't called after we run.
-            return res == VSConstants.S_OK || res == VSConstants.OLE_E_PROMPTSAVECANCELLED;
         }
     }
 }

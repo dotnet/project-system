@@ -7,11 +7,6 @@
         <target state="translated">{0} — import pochodzi z pliku docelowego. Nie można usunąć importu.</target>
         <note />
       </trans-unit>
-      <trans-unit id="ClassTemplateName">
-        <source>Class</source>
-        <target state="translated">Klasa</target>
-        <note />
-      </trans-unit>
       <trans-unit id="ProjectModificationsPrompt">
         <source>The project '{0}' has been modified outside the environment.
 
