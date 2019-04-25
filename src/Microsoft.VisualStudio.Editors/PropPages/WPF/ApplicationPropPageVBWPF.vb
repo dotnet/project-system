@@ -929,10 +929,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                 Return False
             End Function
 
-            Public Overrides Function GetHashCode() As Integer
-                Throw New NotImplementedException()
-            End Function
-
         End Class
 
         <Serializable()>
@@ -961,10 +957,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                 End If
 
                 Return False
-            End Function
-
-            Public Overrides Function GetHashCode() As Integer
-                Throw New NotImplementedException()
             End Function
 
         End Class
