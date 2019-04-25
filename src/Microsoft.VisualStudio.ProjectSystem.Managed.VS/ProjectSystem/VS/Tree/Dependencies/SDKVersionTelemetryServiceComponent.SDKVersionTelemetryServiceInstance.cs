@@ -2,7 +2,6 @@
 
 using System;
 using System.ComponentModel.Composition;
-using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.Telemetry;
@@ -11,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     internal partial class SDKVersionTelemetryServiceComponent
     {
-        internal class SDKVersionTelemetryServiceInstance : OnceInitializedOnceDisposedAsync, IMultiLifetimeInstance
+        internal class SDKVersionTelemetryServiceInstance : OnceInitializedOnceDisposed, IMultiLifetimeInstance
         {
             private readonly IUnconfiguredProjectVsServices _projectVsServices;
             private readonly ISafeProjectGuidService _projectGuidService;
@@ -24,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 ISafeProjectGuidService projectGuidService,
                 ITelemetryService telemetryService,
                 IUnconfiguredProjectTasksService unconfiguredProjectTasksService)
-                : base(projectVsServices.ThreadingService.JoinableTaskContext)
+                : base(synchronousDisposal: true)
             {
                 _projectVsServices = projectVsServices;
                 _projectGuidService = projectGuidService;
@@ -32,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 _unconfiguredProjectTasksService = unconfiguredProjectTasksService;
             }
 
-            protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
+            protected override void Initialize()
             {
                 // Do not block initialization on reporting the sdk version. It is possible to deadlock.
                 _projectVsServices.ThreadingService.RunAndForget(async () =>
@@ -57,11 +56,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     });
                 },
                 unconfiguredProject: _projectVsServices.Project);
-
-                return Task.CompletedTask;
             }
 
-            protected override Task DisposeCoreAsync(bool initialized) => Task.CompletedTask;
+            protected override void Dispose(bool disposing)
+            {   
+            }
 
             private async Task<string> GetProjectIdAsync()
             {
@@ -71,7 +70,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             public Task InitializeAsync()
             {
-                return InitializeAsync(CancellationToken.None);
+                EnsureInitialized();
+
+                return Task.CompletedTask;
             }
         }
     }

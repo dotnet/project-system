@@ -12,9 +12,11 @@ using Xunit;
 
 using Task = System.Threading.Tasks.Task;
 
+using static Microsoft.VisualStudio.ProjectSystem.VS.NuGet.ProjectAssetFileWatcher;
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
-    public class ProjectAssetFileWatcherTests
+    public class ProjectAssetFileWatcherInstanceTests
     {
         private const string ProjectCurrentStateJson = @"{
     ""CurrentState"": {
@@ -43,11 +45,11 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
             
             var tasksService = IUnconfiguredProjectTasksServiceFactory.ImplementLoadedProjectAsync<ConfiguredProject>(t => t());
 
-            using (var watcher = new ProjectAssetFileWatcher(IVsServiceFactory.Create<SVsFileChangeEx, Shell.IVsAsyncFileChangeEx>(fileChangeService), IProjectTreeProviderFactory.Create(), IUnconfiguredProjectCommonServicesFactory.Create(threadingService: IProjectThreadingServiceFactory.Create()), tasksService, IActiveConfiguredProjectSubscriptionServiceFactory.Create()))
+            using (var watcher = new ProjectAssetFileWatcherInstance(IVsServiceFactory.Create<SVsFileChangeEx, Shell.IVsAsyncFileChangeEx>(fileChangeService), IProjectTreeProviderFactory.Create(), IUnconfiguredProjectCommonServicesFactory.Create(threadingService: IProjectThreadingServiceFactory.Create()), tasksService, IActiveConfiguredProjectSubscriptionServiceFactory.Create()))
             {
                 var tree = ProjectTreeParser.Parse(inputTree);
                 var projectUpdate = IProjectSubscriptionUpdateFactory.FromJson(ProjectCurrentStateJson);
-                watcher.Load();
+                await watcher.InitializeAsync();
                 await watcher.DataFlow_ChangedAsync(IProjectVersionedValueFactory.Create(Tuple.Create(IProjectTreeSnapshotFactory.Create(tree), projectUpdate)));
 
                 // If fileToWatch is null then we expect to not register any filewatcher.
@@ -94,14 +96,14 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
             
             var tasksService = IUnconfiguredProjectTasksServiceFactory.ImplementLoadedProjectAsync<ConfiguredProject>(t => t());
 
-            using (var watcher = new ProjectAssetFileWatcher(
+            using (var watcher = new ProjectAssetFileWatcherInstance(
                 IVsServiceFactory.Create<SVsFileChangeEx, IVsAsyncFileChangeEx>(fileChangeService), 
                 IProjectTreeProviderFactory.Create(), 
                 IUnconfiguredProjectCommonServicesFactory.Create(threadingService: IProjectThreadingServiceFactory.Create()),
                 tasksService,
                 IActiveConfiguredProjectSubscriptionServiceFactory.Create()))
             {
-                watcher.Load();
+                await watcher.InitializeAsync();
                 var projectUpdate = IProjectSubscriptionUpdateFactory.FromJson(ProjectCurrentStateJson);
 
                 var firstTree = ProjectTreeParser.Parse(inputTree);
@@ -126,7 +128,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
             
             var tasksService = IUnconfiguredProjectTasksServiceFactory.ImplementLoadedProjectAsync<ConfiguredProject>(t => t());
 
-            using (var watcher = new ProjectAssetFileWatcher(
+            using (var watcher = new ProjectAssetFileWatcherInstance(
                 IVsServiceFactory.Create<SVsFileChangeEx, IVsAsyncFileChangeEx>(fileChangeService),
                 IProjectTreeProviderFactory.Create(),
                 IUnconfiguredProjectCommonServicesFactory.Create(threadingService: IProjectThreadingServiceFactory.Create()),
@@ -144,7 +146,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
     }
 }");
 
-                watcher.Load();
+                await watcher.InitializeAsync();
                 await watcher.DataFlow_ChangedAsync(IProjectVersionedValueFactory.Create(Tuple.Create(IProjectTreeSnapshotFactory.Create(tree), projectUpdate)));
 
                 var fileChangeServiceMock = Mock.Get(fileChangeService);

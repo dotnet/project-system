@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint
             var sink = pUnkSink as TSinkType;
             if (null == sink)
             {
-                Marshal.ThrowExceptionForHR(VSConstants.E_NOINTERFACE);
+                Marshal.ThrowExceptionForHR(HResult.NoInterface);
             }
 
             _sinks.Add(_nextCookie, sink);
