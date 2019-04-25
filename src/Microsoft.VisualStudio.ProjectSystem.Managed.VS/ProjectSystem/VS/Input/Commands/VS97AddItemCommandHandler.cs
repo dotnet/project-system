@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Input;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -18,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         };
 
         [ImportingConstructor]
-        public VS97AddItemCommandHandler(IPhysicalProjectTree projectTree, IUnconfiguredProjectVsServices projectVsServices, IVsUIService<IVsAddProjectItemDlg> addItemDialog, IVsService<SVsShell, IVsShell> vsShell)
+        public VS97AddItemCommandHandler(IPhysicalProjectTree projectTree, IUnconfiguredProjectVsServices projectVsServices, IVsUIService<IVsAddProjectItemDlg> addItemDialog, IVsUIService<SVsShell, IVsShell> vsShell)
             : base(projectTree, projectVsServices, addItemDialog, vsShell)
         {
         }

@@ -216,7 +216,7 @@ Root (flags: {ProjectRoot})
             result = "TemplateName";
             vsShellMock.Setup(x => x.LoadPackageString(ref It.Ref<Guid>.IsAny, (uint)TestAddItemCommand.ResourceIds.TemplateName, out result)).Returns(0);
             
-            var vsShellService = IVsServiceFactory.Create<SVsShell, IVsShell>(vsShellMock.Object);
+            var vsShellService = IVsUIServiceFactory.Create<SVsShell, IVsShell>(vsShellMock.Object);
 
             return new TestAddItemCommand(projectTree, projectVsServices, addItemDialogService, vsShellService);
         }
@@ -232,7 +232,7 @@ Root (flags: {ProjectRoot})
                 TemplateName = 2014
             }
 
-            public TestAddItemCommand(IPhysicalProjectTree projectTree, IUnconfiguredProjectVsServices projectVsServices, IVsUIService<IVsAddProjectItemDlg> addItemDialog, IVsService<SVsShell, IVsShell> vsShell)
+            public TestAddItemCommand(IPhysicalProjectTree projectTree, IUnconfiguredProjectVsServices projectVsServices, IVsUIService<IVsAddProjectItemDlg> addItemDialog, IVsUIService<SVsShell, IVsShell> vsShell)
                 : base(projectTree, projectVsServices, addItemDialog, vsShell)
             {
             }

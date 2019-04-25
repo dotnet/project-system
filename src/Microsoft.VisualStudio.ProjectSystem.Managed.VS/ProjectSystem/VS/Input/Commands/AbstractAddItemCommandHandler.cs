@@ -23,11 +23,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         private readonly IPhysicalProjectTree _projectTree;
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly IVsUIService<IVsAddProjectItemDlg> _addItemDialog;
-        private readonly IVsService<IVsShell> _vsShell;
+        private readonly IVsUIService<IVsShell> _vsShell;
         private readonly Lazy<Dictionary<long, List<TemplateDetails>>> _commandMap;
 
         [ImportingConstructor]
-        public AbstractAddItemCommandHandler(IPhysicalProjectTree projectTree, IUnconfiguredProjectVsServices projectVsServices, IVsUIService<IVsAddProjectItemDlg> addItemDialog, IVsService<SVsShell, IVsShell> vsShell)
+        public AbstractAddItemCommandHandler(IPhysicalProjectTree projectTree, IUnconfiguredProjectVsServices projectVsServices, IVsUIService<IVsAddProjectItemDlg> addItemDialog, IVsUIService<SVsShell, IVsShell> vsShell)
         {
             _projectTree = projectTree;
             _projectVsServices = projectVsServices;
@@ -77,9 +77,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                     await _projectVsServices.ThreadingService.SwitchToUIThread();
 
                     // Get the strings from the legacy package
-                    IVsShell vsShell = await _vsShell.GetValueAsync();
-                    ErrorHandler.ThrowOnFailure(vsShell.LoadPackageString(ref result.DirNamePackageGuid, result.DirNameResourceId, out string dirName));
-                    ErrorHandler.ThrowOnFailure(vsShell.LoadPackageString(ref result.TemplateNamePackageGuid, result.TemplateNameResourceId, out string templateName));
+                    ErrorHandler.ThrowOnFailure(_vsShell.Value.LoadPackageString(ref result.DirNamePackageGuid, result.DirNameResourceId, out string dirName));
+                    ErrorHandler.ThrowOnFailure(_vsShell.Value.LoadPackageString(ref result.TemplateNamePackageGuid, result.TemplateNameResourceId, out string templateName));
 
                     HResult res = _addItemDialog.Value.AddProjectItemDlg(node.GetHierarchyId(),
                                                                         ref addItemTemplateGuid,
