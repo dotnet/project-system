@@ -21,19 +21,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         {
             Requires.NotNull(update, nameof(update));
 
-            IImmutableDictionary<string, string> properties = update[NuGetRestore.SchemaName].Properties;
+            IImmutableDictionary<string, string> properties = update.GetSnapshotOrEmpty(NuGetRestore.SchemaName).Properties;
+            IProjectRuleSnapshot projectReferences = update.GetSnapshotOrEmpty(ProjectReference.SchemaName);
+            IProjectRuleSnapshot packageReferences = update.GetSnapshotOrEmpty(PackageReference.SchemaName);
+            IProjectRuleSnapshot toolReferences = update.GetSnapshotOrEmpty(DotNetCliToolReference.SchemaName);
 
             IVsTargetFrameworkInfo frameworkInfo = new TargetFrameworkInfo(
-                properties[NuGetRestore.TargetFrameworkMonikerProperty],
-                ToReferenceItems(update[ProjectReference.SchemaName].Items),
-                ToReferenceItems(update[PackageReference.SchemaName].Items),
+                properties.GetPropertyOrEmpty(NuGetRestore.TargetFrameworkMonikerProperty),
+                ToReferenceItems(projectReferences.Items),
+                ToReferenceItems(packageReferences.Items),
                 ToProjectProperties(properties));
 
             return new ProjectRestoreInfo(
-                properties[NuGetRestore.MSBuildProjectExtensionsPathProperty],
-                properties[NuGetRestore.TargetFrameworksProperty],
+                properties.GetPropertyOrEmpty(NuGetRestore.MSBuildProjectExtensionsPathProperty),
+                properties.GetPropertyOrEmpty(NuGetRestore.TargetFrameworksProperty),
                 new TargetFrameworks(new[] { frameworkInfo }),
-                ToReferenceItems(update[DotNetCliToolReference.SchemaName].Items));
+                ToReferenceItems(toolReferences.Items));
         }
 
         private static IVsProjectProperties ToProjectProperties(IImmutableDictionary<string, string> properties)
