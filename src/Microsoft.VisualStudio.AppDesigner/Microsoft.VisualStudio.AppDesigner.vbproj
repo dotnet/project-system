@@ -3,7 +3,7 @@
   <Import Project="..\VisualStudioDesigner.props"/>
   <PropertyGroup>
     <!-- TODO: Function doesn't return a value on all code paths (https://github.com/dotnet/project-system/issues/2592) -->
-    <NoWarn>$(NoWarn);42353</NoWarn>
+    <NoWarn>$(NoWarn);42353;NU5125</NoWarn>
     <StrongNameKeyId>Microsoft</StrongNameKeyId>
     <TargetFramework>net46</TargetFramework>
     <!-- Nuget -->
