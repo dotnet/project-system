@@ -294,6 +294,16 @@
       <Context>ProjectSubscriptionService;BrowseObject</Context>
     </PropertyPageSchema>
 
+    <!-- Framework references -->
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)CollectedFrameworkReference.xaml">
+      <Context>ProjectSubscriptionService</Context>
+    </PropertyPageSchema>
+
+    <!-- Package downloads -->
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)CollectedPackageDownload.xaml">
+      <Context>ProjectSubscriptionService</Context>
+    </PropertyPageSchema>
+    
     <!-- Project references -->
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ProjectReference.xaml">
       <Context>Project;BrowseObject</Context>

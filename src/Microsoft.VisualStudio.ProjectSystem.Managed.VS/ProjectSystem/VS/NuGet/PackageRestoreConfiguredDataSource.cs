@@ -23,10 +23,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
     internal partial class PackageRestoreConfiguredDataSource : ChainedProjectValueDataSourceBase<ProjectRestoreUpdate>, IPackageRestoreConfiguredDataSource
     {
         private static readonly ImmutableHashSet<string> s_rules = Empty.OrdinalIgnoreCaseStringSet
-                                                                        .Add(NuGetRestore.SchemaName)               // Evaluation
-                                                                        .Add(ProjectReference.SchemaName)           // Evaluation
-                                                                        .Add(PackageReference.SchemaName)           // Project Build
-                                                                        .Add(DotNetCliToolReference.SchemaName);    // Evaluation
+                                                                        .Add(NuGetRestore.SchemaName)                       // Evaluation
+                                                                        .Add(ProjectReference.SchemaName)                   // Evaluation
+                                                                        .Add(DotNetCliToolReference.SchemaName)             // Evaluation
+                                                                        .Add(CollectedFrameworkReference.SchemaName)        // Project Build
+                                                                        .Add(CollectedPackageDownload.SchemaName)           // Project Build                                                                        
+                                                                        .Add(PackageReference.SchemaName);                  // Project Build
+                                                                        
 
         private readonly UnconfiguredProject _project;
         private readonly IProjectSubscriptionService _projectSubscriptionService;
@@ -66,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
         private ProjectRestoreUpdate CreateRestoreUpdate(ProjectConfiguration projectConfiguration, IImmutableDictionary<string, IProjectRuleSnapshot> update)
         {
-            IVsProjectRestoreInfo restoreInfo = RestoreBuilder.ToProjectRestoreInfo(update);
+            IVsProjectRestoreInfo2 restoreInfo = RestoreBuilder.ToProjectRestoreInfo(update);
 
             return new ProjectRestoreUpdate(projectConfiguration, restoreInfo);
         }

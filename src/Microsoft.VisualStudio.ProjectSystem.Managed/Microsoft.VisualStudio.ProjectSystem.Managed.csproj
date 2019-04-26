@@ -38,8 +38,14 @@
     <Compile Update="ProjectSystem\Rules\Items\Page.cs">
       <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
+    <Compile Update="ProjectSystem\Rules\CollectedFrameworkReference.cs">
+      <DependentUpon>CollectedFrameworkReference.xaml</DependentUpon>
+    </Compile>
     <Compile Update="ProjectSystem\Rules\ProjectDebugger.xaml.cs">
       <DependentUpon>ProjectDebugger.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\CollectedPackageDownload.cs">
+      <DependentUpon>CollectedPackageDownload.xaml</DependentUpon>
     </Compile>
     <Compile Update="ProjectSystem\Rules\ResolvedAnalyzerReference.xaml.cs">
       <DependentUpon>ResolvedAnalyzerReference.xaml</DependentUpon>
@@ -188,6 +194,16 @@
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
     </XamlPropertyRule>
     <XamlPropertyRule Include="ProjectSystem\Rules\Items\EmbeddedResource.xaml">
+      <XlfInput>false</XlfInput>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\CollectedFrameworkReference.xaml">
+      <XlfInput>false</XlfInput>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\CollectedPackageDownload.xaml">
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>

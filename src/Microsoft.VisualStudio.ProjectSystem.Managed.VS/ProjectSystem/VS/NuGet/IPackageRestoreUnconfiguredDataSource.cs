@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
     ///     instances.
     /// </summary>
     [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
-    internal interface IPackageRestoreUnconfiguredDataSource : IProjectValueDataSource<IVsProjectRestoreInfo>
+    internal interface IPackageRestoreUnconfiguredDataSource : IProjectValueDataSource<IVsProjectRestoreInfo2>
     {
     }
 }

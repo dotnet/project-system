@@ -9,13 +9,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
     /// <summary>
     ///     Immutable collection of <see cref="IVsTargetFrameworkInfo"/> objects.
     /// </summary>
-    internal class TargetFrameworks : ImmutablePropertyCollection<IVsTargetFrameworkInfo>, IVsTargetFrameworks
+    internal class TargetFrameworks : ImmutablePropertyCollection<IVsTargetFrameworkInfo2>, IVsTargetFrameworks2
     {
-        public TargetFrameworks(IEnumerable<IVsTargetFrameworkInfo> items)
+        public TargetFrameworks(IEnumerable<IVsTargetFrameworkInfo2> items)
             : base(items)
         {
         }
 
-        protected override string GetKeyForItem(IVsTargetFrameworkInfo value) => value.TargetFrameworkMoniker;
+        protected override string GetKeyForItem(IVsTargetFrameworkInfo2 value) => value.TargetFrameworkMoniker;
     }
 }

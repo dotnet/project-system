@@ -8,9 +8,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
     internal static partial class RestoreComparer
     {
-        private class ProjectRestoreInfoEqualityComparer : EqualityComparer<IVsProjectRestoreInfo>
+        private class ProjectRestoreInfoEqualityComparer : EqualityComparer<IVsProjectRestoreInfo2>
         {
-            public override bool Equals(IVsProjectRestoreInfo x, IVsProjectRestoreInfo y)
+            public override bool Equals(IVsProjectRestoreInfo2 x, IVsProjectRestoreInfo2 y)
             {
                 if (x is null || y is null)
                     return x == y;
@@ -21,8 +21,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 if (!StringComparers.PropertyValues.Equals(x.OriginalTargetFrameworks, y.OriginalTargetFrameworks))
                     return false;
 
-                IEnumerable<IVsTargetFrameworkInfo> xTargetFrameworks = x.TargetFrameworks.Cast<IVsTargetFrameworkInfo>();
-                IEnumerable<IVsTargetFrameworkInfo> yTargetFrameworks = y.TargetFrameworks.Cast<IVsTargetFrameworkInfo>();
+                IEnumerable<IVsTargetFrameworkInfo2> xTargetFrameworks = x.TargetFrameworks.Cast<IVsTargetFrameworkInfo2>();
+                IEnumerable<IVsTargetFrameworkInfo2> yTargetFrameworks = y.TargetFrameworks.Cast<IVsTargetFrameworkInfo2>();
 
                 if (!xTargetFrameworks.SequenceEqual(yTargetFrameworks, TargetFrameworks))
                     return false;
@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 return xToolReferences.SequenceEqual(yToolReferences, ReferenceItems);
             }
 
-            public override int GetHashCode(IVsProjectRestoreInfo obj)
+            public override int GetHashCode(IVsProjectRestoreInfo2 obj)
             {
                 return obj.GetHashCode();
             }

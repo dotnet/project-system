@@ -278,7 +278,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             Assert.Equal(value, property.Value);
         }
 
-        private static void AssertNoItems(IVsProjectRestoreInfo result)
+        private static void AssertNoItems(IVsProjectRestoreInfo2 result)
         {
             Assert.Empty(result.ToolReferences);
             Assert.Equal(1, result.TargetFrameworks.Count);
