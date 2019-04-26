@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         {
             public ImmutableHashSet<string> Inputs { get; set; } = ImmutableHashSet.Create(StringComparers.Paths);
             public ImmutableHashSet<string> SharedInputs { get; set; } = ImmutableHashSet.Create(StringComparers.Paths);
-            public string OutputPath { get; internal set; }
+            public string OutputPath { get; set; }
             public ImmutableDictionary<string, uint> Cookies { get; set; } = ImmutableDictionary<string, uint>.Empty;
             public ImmutableDictionary<string, ITaskDelayScheduler> TaskSchedulers { get; set; } = ImmutableDictionary<string, ITaskDelayScheduler>.Empty;
         }
