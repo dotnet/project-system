@@ -930,7 +930,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             End Function
 
             Public Overrides Function GetHashCode() As Integer
-                Throw New NotImplementedException()
+                Return -1937169414 + EqualityComparer(Of String).Default.GetHashCode(Value.ToLowerInvariant)
             End Function
 
         End Class
@@ -964,7 +964,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             End Function
 
             Public Overrides Function GetHashCode() As Integer
-                Throw New NotImplementedException()
+                Dim hashCode = 870297925
+                hashCode = hashCode * -1521134295 + MyBase.GetHashCode()
+                hashCode = hashCode * -1521134295 + IsEquivalentToSubMain.GetHashCode()
+                Return hashCode
             End Function
 
         End Class
