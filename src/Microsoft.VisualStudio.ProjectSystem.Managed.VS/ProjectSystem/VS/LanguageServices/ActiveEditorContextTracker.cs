@@ -4,7 +4,6 @@ using System;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.TextManager.Interop;

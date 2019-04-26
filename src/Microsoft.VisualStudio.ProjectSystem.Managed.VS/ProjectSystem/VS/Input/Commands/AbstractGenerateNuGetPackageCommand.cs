@@ -106,29 +106,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         #region IVsUpdateSolutionEvents members
         public int UpdateSolution_Begin(ref int pfCancelUpdate)
         {
-            return VSConstants.S_OK;
+            return HResult.OK;
         }
 
         public int UpdateSolution_Done(int fSucceeded, int fModified, int fCancelCommand)
         {
             _generatePackageOnBuildPropertyProvider.OverrideGeneratePackageOnBuild(false);
-            return VSConstants.S_OK;
+            return HResult.OK;
         }
 
         public int UpdateSolution_Cancel()
         {
             _generatePackageOnBuildPropertyProvider.OverrideGeneratePackageOnBuild(false);
-            return VSConstants.S_OK;
+            return HResult.OK;
         }
 
         public int UpdateSolution_StartUpdate(ref int pfCancelUpdate)
         {
-            return VSConstants.S_OK;
+            return HResult.OK;
         }
 
         public int OnActiveProjectCfgChange(IVsHierarchy pIVsHierarchy)
         {
-            return VSConstants.S_OK;
+            return HResult.OK;
         }
         #endregion
 

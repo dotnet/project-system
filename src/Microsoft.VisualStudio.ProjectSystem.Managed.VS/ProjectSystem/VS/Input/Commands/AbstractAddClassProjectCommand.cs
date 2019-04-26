@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
             // Return true here regardless of whether or not the user clicked OK or they clicked Cancel. This ensures that some other
             // handler isn't called after we run.
-            return res == VSConstants.S_OK || res == VSConstants.OLE_E_PROMPTSAVECANCELLED;
+            return res == HResult.OK || res == HResult.Ole.PromptSaveCancelled;
         }
     }
 }
