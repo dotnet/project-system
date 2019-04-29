@@ -930,7 +930,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             End Function
 
             Public Overrides Function GetHashCode() As Integer
-                Return -1937169414 + EqualityComparer(Of String).Default.GetHashCode(Value.ToLowerInvariant)
+                Return -1937169414 + StringComparer.OrdinalIgnoreCase.GetHashCode(Value)
             End Function
 
         End Class
