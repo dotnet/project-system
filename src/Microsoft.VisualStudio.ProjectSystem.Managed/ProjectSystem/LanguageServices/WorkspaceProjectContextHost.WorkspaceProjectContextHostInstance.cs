@@ -73,6 +73,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 _applyChangesToWorkspaceContext.Value.Initialize(_contextAccessor.Context);
                 _disposables.AddDisposable(_applyChangesToWorkspaceContext);
 
+                _evaluationProgressRegistration = _dataProgressTrackerService.RegisterForIntelliSense(_project, nameof(WorkspaceProjectContextHostInstance) + ".Evaluation");
+                _disposables.AddDisposable(_evaluationProgressRegistration);
+
+                _projectBuildProgressRegistration = _dataProgressTrackerService.RegisterForIntelliSense(_project, nameof(WorkspaceProjectContextHostInstance) + ".ProjectBuild");
+                _disposables.AddDisposable(_projectBuildProgressRegistration);
+
                 // We avoid suppressing version updates, so that progress tracker doesn't
                 // think we're still "in progress" in the case of an empty change
                 _disposables.AddDisposable(_projectSubscriptionService.ProjectRuleSource.SourceBlock.LinkToAsyncAction(
@@ -84,12 +90,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                         target: e => OnProjectChangedAsync(e, evaluation: false),
                         suppressVersionOnlyUpdates: false,
                         ruleNames: _applyChangesToWorkspaceContext.Value.GetProjectBuildRules()));
-
-                _evaluationProgressRegistration = _dataProgressTrackerService.RegisterForIntelliSense(_project, nameof(WorkspaceProjectContextHostInstance) + ".Evaluation");
-                _disposables.AddDisposable(_evaluationProgressRegistration);
-
-                _projectBuildProgressRegistration = _dataProgressTrackerService.RegisterForIntelliSense(_project, nameof(WorkspaceProjectContextHostInstance) + ".ProjectBuild");
-                _disposables.AddDisposable(_projectBuildProgressRegistration);
             }
 
             protected override async Task DisposeCoreUnderLockAsync(bool initialized)
