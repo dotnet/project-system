@@ -63,6 +63,9 @@
   <BoolProperty Name="DesignTime"
                 Visible="false" />
 
+  <BoolProperty Name="DesignTimeSharedInput"
+                Visible="false" />
+
   <StringProperty Name="Extension"
                   ReadOnly="true"
                   Visible="False">

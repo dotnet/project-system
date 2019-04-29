@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
     {
         public ProjectRestoreInfo(string msbuildProjectExtensionsPath, string originalTargetFrameworks, IVsTargetFrameworks targetFrameworks, IVsReferenceItems toolReferences)
         {
-            Requires.NotNullOrEmpty(msbuildProjectExtensionsPath, nameof(msbuildProjectExtensionsPath));
+            Requires.NotNull(msbuildProjectExtensionsPath, nameof(msbuildProjectExtensionsPath));
             Requires.NotNull(originalTargetFrameworks, nameof(originalTargetFrameworks));
             Requires.NotNull(targetFrameworks, nameof(targetFrameworks));
             Requires.NotNull(toolReferences, nameof(toolReferences));

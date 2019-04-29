@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Microsoft.VisualStudio.Telemetry;
 
 using Moq;
 using Moq.Protected;
@@ -226,13 +225,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     }
 }");
 
-            var telemetryService = ITelemetryServiceFactory.Create();
+            var projectFaultService = IProjectFaultHandlerServiceFactory.Create();
             project = project ?? UnconfiguredProjectFactory.Create();
             threadingService = threadingService ?? IProjectThreadingServiceFactory.Create();
             workspaceProjectContextFactory = workspaceProjectContextFactory ?? IWorkspaceProjectContextFactoryFactory.Create();
             projectGuidService = projectGuidService ?? ISafeProjectGuidServiceFactory.ImplementGetProjectGuidAsync(Guid.NewGuid());
 
-            var mock = new Mock<WorkspaceProjectContextProvider>(project, threadingService, projectGuidService, telemetryService, workspaceProjectContextFactory.AsLazy());
+            var mock = new Mock<WorkspaceProjectContextProvider>(project, threadingService, projectGuidService, projectFaultService, workspaceProjectContextFactory.AsLazy());
             mock.Protected().Setup<Task<IProjectRuleSnapshot>>("GetLatestSnapshotAsync", ItExpr.IsAny<ConfiguredProject>())
                             .ReturnsAsync(projectRuleSnapshot);
 

@@ -81,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             }
 
             pcResolvedAssemblyPaths = ResolveReferences(prgAssemblySpecs, assemblyNames, prgResolvedAssemblyPaths);
-            return VSConstants.S_OK;
+            return HResult.OK;
         }
 
         private uint ResolveReferences(string[] originalNames, AssemblyName[] assemblyName, [In, Out]VsResolvedAssemblyPath[] assemblyPaths)

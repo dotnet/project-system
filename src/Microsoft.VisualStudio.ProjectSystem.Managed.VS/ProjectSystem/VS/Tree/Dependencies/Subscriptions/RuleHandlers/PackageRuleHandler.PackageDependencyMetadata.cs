@@ -186,7 +186,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             {
                 if (Properties.TryGetValue(ProjectItemMetadata.Dependencies, out string dependencies) && !string.IsNullOrWhiteSpace(dependencies))
                 {
-                    var dependenciesItemSpecs = new HashSet<string>(StringComparers.PropertyValues);
+                    var dependenciesItemSpecs = new HashSet<string>(StringComparers.ItemNames);
                     var dependencyIds = new LazyStringSplit(dependencies, ';');
 
                     // store only unique dependency IDs

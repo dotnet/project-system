@@ -11,21 +11,6 @@ namespace Microsoft.VisualStudio.Telemetry
     [Export(typeof(ITelemetryService))]
     internal class VsTelemetryService : ITelemetryService
     {
-        public bool PostFault(string eventName, Exception exceptionObject)
-        {
-            Requires.NotNullOrEmpty(eventName, nameof(eventName));
-            Requires.NotNull(exceptionObject, nameof(exceptionObject));
-
-            var faultEvent = new FaultEvent(eventName,
-                                            description: null,
-                                            exceptionObject);
-
-            PostTelemetryEvent(faultEvent);
-
-            return true;
-        }
-
-
         public void PostEvent(string eventName)
         {
             Requires.NotNullOrEmpty(eventName, nameof(eventName));

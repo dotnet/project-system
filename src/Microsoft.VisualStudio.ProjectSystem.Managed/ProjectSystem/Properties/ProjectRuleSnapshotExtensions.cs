@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         {
             string value = snapshots.GetPropertyOrDefault(ruleName, propertyName, defaultValue ? "true" : "false");
 
-            return StringComparers.PropertyValues.Equals(value, "true");
+            return StringComparers.PropertyLiteralValues.Equals(value, "true");
         }
     }
 }

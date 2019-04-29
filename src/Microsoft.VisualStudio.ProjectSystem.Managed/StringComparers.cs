@@ -16,7 +16,8 @@ namespace Microsoft.VisualStudio
         public static IEqualityComparer<string> WorkspaceProjectContextIds => StringComparer.Ordinal;
         public static IEqualityComparer<string> Paths => StringComparer.OrdinalIgnoreCase;
         public static IEqualityComparer<string> PropertyNames => StringComparer.OrdinalIgnoreCase;
-        public static IEqualityComparer<string> PropertyValues => StringComparer.OrdinalIgnoreCase;
+        public static IEqualityComparer<string> PropertyLiteralValues => StringComparer.OrdinalIgnoreCase;
+        public static IEqualityComparer<string> PropertyValues => StringComparer.Ordinal;
         public static IEqualityComparer<string> RuleNames => StringComparer.OrdinalIgnoreCase;
         public static IEqualityComparer<string> ConfigurationDimensionNames => StringComparer.Ordinal;
         public static IEqualityComparer<string> DependencyProviderTypes => StringComparer.OrdinalIgnoreCase;
@@ -35,7 +36,8 @@ namespace Microsoft.VisualStudio
         public static StringComparison WorkspaceProjectContextIds => StringComparison.Ordinal;
         public static StringComparison Paths => StringComparison.OrdinalIgnoreCase;
         public static StringComparison PropertyNames => StringComparison.OrdinalIgnoreCase;
-        public static StringComparison PropertyValues => StringComparison.OrdinalIgnoreCase;
+        public static StringComparison PropertyLiteralValues => StringComparison.OrdinalIgnoreCase;
+        public static StringComparison PropertyValues => StringComparison.Ordinal;
         public static StringComparison RuleNames => StringComparison.OrdinalIgnoreCase;
         public static StringComparison ConfigurationDimensionNames => StringComparison.Ordinal;
         public static StringComparison DependencyProviderTypes => StringComparison.OrdinalIgnoreCase;

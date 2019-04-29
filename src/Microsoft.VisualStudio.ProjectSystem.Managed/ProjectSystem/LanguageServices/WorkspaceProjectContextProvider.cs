@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Microsoft.VisualStudio.Telemetry;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
@@ -20,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     {
         private readonly UnconfiguredProject _project;
         private readonly IProjectThreadingService _threadingService;
-        private readonly ITelemetryService _telemetryService;
+        private readonly IProjectFaultHandlerService _faultHandlerService;
         private readonly ISafeProjectGuidService _projectGuidService;
         private readonly Lazy<IWorkspaceProjectContextFactory> _workspaceProjectContextFactory;
 
@@ -28,12 +27,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         public WorkspaceProjectContextProvider(UnconfiguredProject project,
                                                IProjectThreadingService threadingService,
                                                ISafeProjectGuidService projectGuidService,
-                                               ITelemetryService telemetryService,
+                                               IProjectFaultHandlerService faultHandlerService,
                                                Lazy<IWorkspaceProjectContextFactory> workspaceProjectContextFactory)        // From Roslyn, so lazy
         {
             _project = project;
             _threadingService = threadingService;
-            _telemetryService = telemetryService;
+            _faultHandlerService = faultHandlerService;
             _workspaceProjectContextFactory = workspaceProjectContextFactory;
             _projectGuidService = projectGuidService;
         }
@@ -66,8 +65,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             {
                 accessor.Context.Dispose();
             }
-            catch (Exception ex) when (_telemetryService.PostFault(TelemetryEventName.LanguageServiceInitFault, ex))
+            catch (Exception ex)
             {
+                await _faultHandlerService.ReportFaultAsync(ex, _project, ProjectFaultSeverity.Recoverable);
             }
         }
 
@@ -91,8 +91,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                 return context;
             }
-            catch (Exception ex) when (_telemetryService.PostFault(TelemetryEventName.LanguageServiceInitFault, ex))
+            catch (Exception ex)
             {
+                await _faultHandlerService.ReportFaultAsync(ex, _project, ProjectFaultSeverity.LimitedFunctionality);
             }
 
             return null;

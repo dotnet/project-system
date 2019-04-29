@@ -106,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             var actualOutputType = (IEnumValue)await configuration.OutputType.GetValueAsync();
 
-            return StringComparers.PropertyValues.Equals(actualOutputType.Name, outputType);
+            return StringComparers.PropertyLiteralValues.Equals(actualOutputType.Name, outputType);
         }
 
         public Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsForDebugLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile activeProfile)
