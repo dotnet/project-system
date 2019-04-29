@@ -8,6 +8,7 @@ Imports Microsoft.VisualStudio.Editors.Common
 Imports Microsoft.VisualStudio.Editors.DesignerFramework
 Imports Microsoft.VisualStudio.PlatformUI
 Imports Microsoft.VisualStudio.Shell.Interop
+Imports Microsoft.VisualStudio.Utilities
 
 Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
@@ -446,14 +447,18 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Dim assemblyImage As Bitmap = GetManifestBitmapTransparent("assembly.bmp", Color.FromArgb(255, 0, 255))
                 Dim namespaceImage As Bitmap = GetManifestBitmapTransparent("namespace.bmp", Color.FromArgb(255, 0, 255))
                 Dim objectImage As Bitmap = GetManifestBitmapTransparent("object.bmp", Color.FromArgb(255, 0, 255))
+                'Scale the images for per monitor DPI
+                Handle.LogicalToDeviceUnits(assemblyImage.Width)
+                Handle.LogicalToDeviceUnits(assemblyImage.Height)
+                Handle.LogicalToDeviceUnits(namespaceImage.Width)
+                Handle.LogicalToDeviceUnits(namespaceImage.Height)
+                Handle.LogicalToDeviceUnits(objectImage.Width)
+                Handle.LogicalToDeviceUnits(objectImage.Height)
 
                 Dim treeViewIcons As ImageList = New ImageList()
                 treeViewIcons.Images.Add(assemblyImage)
                 treeViewIcons.Images.Add(namespaceImage)
                 treeViewIcons.Images.Add(objectImage)
-
-                'Scale the imagelist for High DPI
-                DpiHelper.LogicalToDeviceUnits(treeViewIcons)
 
                 ImageList = treeViewIcons
 

@@ -6,7 +6,9 @@ Imports System.Windows.Forms
 
 Imports Microsoft.VisualStudio.Editors.Common
 Imports Microsoft.VisualStudio.PlatformUI
+Imports Microsoft.VisualStudio.Utilities
 Imports Microsoft.Win32
+Imports Microsoft.VisualStudio.Imaging
 
 Imports VSLangProj80
 
@@ -33,23 +35,26 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'This call is required by the Windows Form Designer.
             InitializeComponent()
 
-            ' Scale buttons
-            MoveUp.Size = DpiHelper.LogicalToDeviceUnits(MoveUp.Size)
-            MoveDown.Size = DpiHelper.LogicalToDeviceUnits(MoveDown.Size)
-            RemoveFolder.Size = DpiHelper.LogicalToDeviceUnits(RemoveFolder.Size)
+            'Scale buttons
+            MoveUp.Size = DpiAwareness.LogicalToDeviceSize(Handle, MoveUp.Size)
+            MoveDown.Size = DpiAwareness.LogicalToDeviceSize(Handle, MoveDown.Size)
+            RemoveFolder.Size = DpiAwareness.LogicalToDeviceSize(Handle, RemoveFolder.Size)
 
             'Add any initialization after the InitializeComponent() call
             MinimumSize = Size
 
-            ' Recalculate all images for the button from the default image we put in the resource file
+            'Recalculate all images for the button from the default image we put in the resource file
             _moveUpImageOriginal = MoveUp.Image
             _moveDownImageOriginal = MoveDown.Image
             _removeFolderImageOriginal = RemoveFolder.Image
 
-            ' Rescale images
-            DpiHelper.LogicalToDeviceUnits(_moveUpImageOriginal)
-            DpiHelper.LogicalToDeviceUnits(_moveDownImageOriginal)
-            DpiHelper.LogicalToDeviceUnits(_removeFolderImageOriginal)
+            'Rescale the images for high DPI
+            Handle.LogicalToDeviceUnits(_moveUpImageOriginal.Width)
+            Handle.LogicalToDeviceUnits(_moveUpImageOriginal.Height)
+            Handle.LogicalToDeviceUnits(_moveDownImageOriginal.Width)
+            Handle.LogicalToDeviceUnits(_moveDownImageOriginal.Height)
+            Handle.LogicalToDeviceUnits(_removeFolderImageOriginal.Width)
+            Handle.LogicalToDeviceUnits(_removeFolderImageOriginal.Height)
 
             GenerateButtonImages()
             UpdateButtonImages()
