@@ -42,6 +42,16 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return mock.Object;
         }
 
+        public static IProjectSubscriptionUpdate CreateEmpty()
+        {
+            return FromJson(@"
+{
+    ""CurrentState"": {
+    }
+}
+");
+        }
+
         public static IProjectSubscriptionUpdate FromJson(string jsonString)
         {
             var model = new IProjectSubscriptionUpdateModel();
