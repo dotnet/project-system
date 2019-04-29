@@ -95,7 +95,8 @@
                           SingleFileGenerators;
                           DeclaredSourceItems;
                           UserSourceItems;
-                          SupportAvailableItemName;" />
+                          SupportAvailableItemName;
+                          PersistDesignTimeDataOutOfProject;" />
 
     <!-- Reference Manager capabilities -->
     <ProjectCapability Include="ReferenceManagerAssemblies" />

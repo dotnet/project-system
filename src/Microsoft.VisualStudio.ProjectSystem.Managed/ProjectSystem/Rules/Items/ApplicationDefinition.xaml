@@ -79,7 +79,14 @@
   </StringProperty>
 
   <StringProperty Name="SubType"
-                  Visible="false" />
+                  Visible="false">
+    <StringProperty.DataSource>
+      <DataSource Persistence="DesignTimeItemPropertiesStorage"
+                  ItemType="ApplicationDefinition"
+                  PersistedName="SubType"
+                  HasConfigurationCondition="false"/>
+    </StringProperty.DataSource>
+  </StringProperty>
 
   <BoolProperty Name="Visible"
                 Visible="false" />
