@@ -32,11 +32,11 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         Private Function TrackInternal(projectHierarchy As IVsHierarchy) As MyApplicationProperties
             Dim cookie = GetProjectFileCookie(projectHierarchy)
 
-            ' Because GetOrAdd always creates a new value, even if using a factory, we just create an object and only
-            ' initialize it later, relying on the fact that MyApplicationProperties will not initialize itself twice
 #Disable Warning CA2000 ' Dispose objects before losing scope
-            Dim properties = ImmutableInterlocked.GetOrAdd(_managerInstances, cookie, New MyApplicationProperties())
+            Dim properties = ImmutableInterlocked.GetOrAdd(_managerInstances, cookie, Function() New MyApplicationProperties())
 #Enable Warning CA2000 ' Dispose objects before losing scope
+            ' There is a chance that GetOrAdd will call the valueFactory function when its not needed
+            ' and since MyApplicationProperties won't init itself twice, we can just Init it here when we're sure
             properties.Init(projectHierarchy)
             Return properties
         End Function
