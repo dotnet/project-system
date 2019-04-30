@@ -219,6 +219,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             _dependenciesUpdateScheduler.Dispose();
 
             _contextUpdateGate.Dispose();
+            _snapshotChangedSource.Complete();
 
             if (initialized)
             {
