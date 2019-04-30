@@ -202,11 +202,11 @@ Root (flags: {ProjectRoot})
 
         internal AbstractAddItemCommandHandler CreateInstance(IPhysicalProjectTree projectTree = null, IUnconfiguredProjectVsServices projectVsServices = null, IProjectTreeProvider provider = null, IVsAddProjectItemDlg addItemDialog = null, string capability = null)
         {
+            var configuredProject = ConfiguredProjectFactory.Create(IProjectCapabilitiesScopeFactory.Create(new string[] { capability ?? TestAddItemCommand.Capability }));
             projectTree = projectTree ?? IPhysicalProjectTreeFactory.Create(provider);
             projectVsServices = projectVsServices ?? 
                 IUnconfiguredProjectVsServicesFactory.Implement(
-                    threadingServiceCreator: () => IProjectThreadingServiceFactory.Create(),
-                    configuredProjectCreator: () => ConfiguredProjectFactory.Create(IProjectCapabilitiesScopeFactory.Create(new string[] { capability ?? TestAddItemCommand.Capability }))
+                    threadingServiceCreator: () => IProjectThreadingServiceFactory.Create()                    
                 );
             var addItemDialogService = IVsUIServiceFactory.Create<SVsAddProjectItemDlg, IVsAddProjectItemDlg>(addItemDialog);
 
@@ -218,7 +218,7 @@ Root (flags: {ProjectRoot})
             
             var vsShellService = IVsUIServiceFactory.Create<SVsShell, IVsShell>(vsShellMock.Object);
 
-            return new TestAddItemCommand(projectTree, projectVsServices, addItemDialogService, vsShellService);
+            return new TestAddItemCommand(configuredProject, projectTree, projectVsServices, addItemDialogService, vsShellService);
         }
 
         private class TestAddItemCommand : AbstractAddItemCommandHandler
@@ -232,8 +232,8 @@ Root (flags: {ProjectRoot})
                 TemplateName = 2014
             }
 
-            public TestAddItemCommand(IPhysicalProjectTree projectTree, IUnconfiguredProjectVsServices projectVsServices, IVsUIService<IVsAddProjectItemDlg> addItemDialog, IVsUIService<SVsShell, IVsShell> vsShell)
-                : base(projectTree, projectVsServices, addItemDialog, vsShell)
+            public TestAddItemCommand(ConfiguredProject configuredProject, IPhysicalProjectTree projectTree, IUnconfiguredProjectVsServices projectVsServices, IVsUIService<IVsAddProjectItemDlg> addItemDialog, IVsUIService<SVsShell, IVsShell> vsShell)
+                : base(configuredProject, projectTree, projectVsServices, addItemDialog, vsShell)
             {
             }
 

@@ -26,8 +26,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         };
 
         [ImportingConstructor]
-        public VS2kAddItemCommandHandler(IPhysicalProjectTree projectTree, IUnconfiguredProjectVsServices projectVsServices, IVsUIService<IVsAddProjectItemDlg> addItemDialog, IVsUIService<SVsShell, IVsShell> vsShell)
-            : base(projectTree, projectVsServices, addItemDialog, vsShell)
+        public VS2kAddItemCommandHandler(ConfiguredProject configuredProject, IPhysicalProjectTree projectTree, IUnconfiguredProjectVsServices projectVsServices, IVsUIService<IVsAddProjectItemDlg> addItemDialog, IVsUIService<SVsShell, IVsShell> vsShell)
+            : base(configuredProject, projectTree, projectVsServices, addItemDialog, vsShell)
         {
         }
     }

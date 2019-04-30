@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     {
         protected static readonly Guid LegacyCSharpPackageGuid = new Guid("{FAE04EC1-301F-11d3-BF4B-00C04F79EFBC}");
         protected static readonly Guid LegacyVBPackageGuid = new Guid("{164B10B9-B200-11d0-8C61-00A0C91E29D5}");
-
+        private readonly ConfiguredProject _configuredProject;
         private readonly IPhysicalProjectTree _projectTree;
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly IVsUIService<IVsAddProjectItemDlg> _addItemDialog;
@@ -27,8 +27,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         private readonly Lazy<Dictionary<long, List<TemplateDetails>>> _commandMap;
 
         [ImportingConstructor]
-        public AbstractAddItemCommandHandler(IPhysicalProjectTree projectTree, IUnconfiguredProjectVsServices projectVsServices, IVsUIService<IVsAddProjectItemDlg> addItemDialog, IVsUIService<SVsShell, IVsShell> vsShell)
+        public AbstractAddItemCommandHandler(ConfiguredProject configuredProject, IPhysicalProjectTree projectTree, IUnconfiguredProjectVsServices projectVsServices, IVsUIService<IVsAddProjectItemDlg> addItemDialog, IVsUIService<SVsShell, IVsShell> vsShell)
         {
+            _configuredProject = configuredProject;
             _projectTree = projectTree;
             _projectVsServices = projectVsServices;
             _addItemDialog = addItemDialog;
@@ -101,7 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
         private bool TryGetCommandDetails(long commandId, out TemplateDetails result)
         {
-            IProjectCapabilitiesScope capabilities = _projectVsServices.ActiveConfiguredProject.Capabilities;
+            IProjectCapabilitiesScope capabilities = _configuredProject.Capabilities;
 
             if (_commandMap.Value.TryGetValue(commandId, out List<TemplateDetails> templates))
             {

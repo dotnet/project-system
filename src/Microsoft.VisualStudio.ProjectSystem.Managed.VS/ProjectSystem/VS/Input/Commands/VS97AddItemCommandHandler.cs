@@ -20,8 +20,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         };
 
         [ImportingConstructor]
-        public VS97AddItemCommandHandler(IPhysicalProjectTree projectTree, IUnconfiguredProjectVsServices projectVsServices, IVsUIService<IVsAddProjectItemDlg> addItemDialog, IVsUIService<SVsShell, IVsShell> vsShell)
-            : base(projectTree, projectVsServices, addItemDialog, vsShell)
+        public VS97AddItemCommandHandler(ConfiguredProject configuredProject, IPhysicalProjectTree projectTree, IUnconfiguredProjectVsServices projectVsServices, IVsUIService<IVsAddProjectItemDlg> addItemDialog, IVsUIService<SVsShell, IVsShell> vsShell)
+            : base(configuredProject, projectTree, projectVsServices, addItemDialog, vsShell)
         {
         }
     }
