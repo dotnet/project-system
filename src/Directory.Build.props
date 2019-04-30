@@ -49,6 +49,8 @@
 
     <!-- Prevent vsix manifests from being copied to the shared output directory, makes build more deterministic -->
     <CopyVsixManifestToOutput>false</CopyVsixManifestToOutput>
+    
+    <NoWarn>$(NoWarn);NU5125</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
