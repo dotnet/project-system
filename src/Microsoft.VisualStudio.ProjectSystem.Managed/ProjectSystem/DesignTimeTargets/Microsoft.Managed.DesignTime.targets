@@ -274,6 +274,10 @@
       <Context>Invisible</Context>
     </PropertyPageSchema>
 
+    <!-- .editorconfig files -->
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)PotentialEditorConfigFiles.xaml">
+      <Context>ProjectSubscriptionService</Context>
+    </PropertyPageSchema>
   </ItemGroup>
 
   <ItemGroup Condition="'$(DefineCommonManagedReferenceSchemas)' == 'true'">
@@ -335,13 +339,6 @@
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ResolvedAnalyzerReference.xaml">
       <Context>ProjectSubscriptionService;BrowseObject</Context>
     </PropertyPageSchema>
-
-    <!-- .editorconfig files -->
-
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)PotentialEditorConfigFiles.xaml">
-      <Context>ProjectSubscriptionService</Context>
-    </PropertyPageSchema>
-
   </ItemGroup>
 
   <!-- List of external files that trigger design-time builds when they are modified -->
