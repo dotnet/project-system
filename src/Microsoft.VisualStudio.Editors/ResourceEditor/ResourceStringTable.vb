@@ -8,7 +8,7 @@ Imports System.Security.Permissions
 Imports System.Windows.Forms
 
 Imports Microsoft.VisualStudio.Editors.Common
-Imports Microsoft.VisualStudio.PlatformUI
+Imports Microsoft.VisualStudio.Utilities
 
 Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
@@ -217,7 +217,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ' ==== Name Column
 
             Dim ColumnWidth As Integer
-            ColumnWidth = DpiHelper.LogicalToDeviceUnitsX(ColumnMinScrollingWidth_Name)
+            ColumnWidth = DpiAwareness.LogicalToDeviceUnits(Handle, ColumnMinScrollingWidth_Name)
             Dim NameColumn As New DataGridViewTextBoxColumn
             With NameColumn
                 .AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
@@ -233,7 +233,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             ' ==== Type Column
 
-            ColumnWidth = DpiHelper.LogicalToDeviceUnitsX(ColumnMinScrollingWidth_Type)
+            ColumnWidth = DpiAwareness.LogicalToDeviceUnits(Handle, ColumnMinScrollingWidth_Type)
             Dim TypeColumn As New DataGridViewTextBoxColumn
             With TypeColumn
                 .AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
@@ -253,7 +253,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             '... By specifying DataGridViewTextBoxColumn here, we're indicating that user-added rows
             '      (i.e., through the "new row" at the bottom of the DataGridView) will be of type
             '      ResourceStringTextBoxCell.
-            ColumnWidth = DpiHelper.LogicalToDeviceUnitsX(ColumnMinScrollingWidth_Value)
+            ColumnWidth = DpiAwareness.LogicalToDeviceUnits(Handle, ColumnMinScrollingWidth_Value)
             Dim ValueColumn As New DataGridViewTextBoxColumn
             With ValueColumn
                 .AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
@@ -268,7 +268,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Columns.Add(ValueColumn)
 
             ' ==== Comment Column
-            ColumnWidth = DpiHelper.LogicalToDeviceUnitsX(ColumnMinScrollingWidth_Comment)
+            ColumnWidth = DpiAwareness.LogicalToDeviceUnits(Handle, ColumnMinScrollingWidth_Comment)
             Dim CommentColumn As New DataGridViewTextBoxColumn
             With CommentColumn
                 .AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
@@ -366,7 +366,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             'The error glyphs don't show up if the row height is below the glyph size.  We don't want that
             '  to happen, so restrict the minimum height.
             Dim NewRow As New DataGridViewRow With {
-                .MinimumHeight = Math.Max(DpiHelper.LogicalToDeviceUnitsY(RowMinimumHeight), Font.Height + DpiHelper.LogicalToDeviceUnitsY(ROW_BORDER_HEIGHT))
+                .MinimumHeight = Math.Max(DpiAwareness.LogicalToDeviceUnits(Handle, RowMinimumHeight), Font.Height + DpiAwareness.LogicalToDeviceUnits(Handle, ROW_BORDER_HEIGHT))
             }
 
             'Build up the new row (with blank values) cell by cell
@@ -1166,7 +1166,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             '  show up at all.
             'See CreateNewResourceRow().  Currently you can't create a row for OnNewRowNeeded, there's
             '  supposed to be a template row to be able to use for this later in m3, if needed.
-            e.Row.MinimumHeight = Math.Max(DpiHelper.LogicalToDeviceUnitsY(RowMinimumHeight), Font.Height + DpiHelper.LogicalToDeviceUnitsY(ROW_BORDER_HEIGHT))
+            e.Row.MinimumHeight = Math.Max(DpiAwareness.LogicalToDeviceUnits(Handle, RowMinimumHeight), Font.Height + DpiAwareness.LogicalToDeviceUnits(Handle, ROW_BORDER_HEIGHT))
 
             If ResourceFile Is Nothing Then
                 Debug.Fail("No resource file")

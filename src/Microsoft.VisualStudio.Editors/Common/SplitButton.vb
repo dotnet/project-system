@@ -5,7 +5,7 @@ Imports System.Drawing
 Imports System.Windows.Forms
 Imports System.Windows.Forms.VisualStyles
 
-Imports Microsoft.VisualStudio.PlatformUI
+Imports Microsoft.VisualStudio.Utilities
 
 Namespace Microsoft.VisualStudio.Editors.Common
 
@@ -29,7 +29,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             MyBase.New()
 
             AccessibleRole = AccessibleRole.SplitButton
-            _pushButtonWidth = DpiHelper.LogicalToDeviceUnitsX(_pushButtonWidth)
+            _pushButtonWidth = DpiAwareness.LogicalToDeviceUnits(Handle, _pushButtonWidth)
         End Sub
 
         Protected Overrides Sub OnPaint(pevent As PaintEventArgs)
@@ -42,8 +42,8 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
             ButtonRenderer.DrawButton(g, bounds, State)
 
-            Dim singlePixelWidth = DpiHelper.LogicalToDeviceUnitsX(1)
-            Dim dividerLineVerticalPadding = DpiHelper.LogicalToDeviceUnitsY(4)
+            Dim singlePixelWidth = DpiAwareness.LogicalToDeviceUnits(Handle, 1)
+            Dim dividerLineVerticalPadding = DpiAwareness.LogicalToDeviceUnits(Handle, 4)
 
             _dropDownRectangle = New Rectangle(
                 x:=bounds.Right - _pushButtonWidth - singlePixelWidth,
@@ -108,8 +108,8 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
             If Focused Then
                 bounds.Inflate(
-                    width:=DpiHelper.LogicalToDeviceUnitsX(-4),
-                    height:=DpiHelper.LogicalToDeviceUnitsY(-4))
+                    width:=DpiAwareness.LogicalToDeviceUnits(Handle, -4),
+                    height:=DpiAwareness.LogicalToDeviceUnits(Handle, -4))
 
                 ControlPaint.DrawFocusRectangle(g, bounds)
             End If
@@ -243,16 +243,16 @@ Namespace Microsoft.VisualStudio.Editors.Common
             End Set
         End Property
 
-        Private Shared Sub PaintArrow(g As Graphics, dropDownRect As Rectangle)
+        Private Sub PaintArrow(g As Graphics, dropDownRect As Rectangle)
             Dim middle = New Point(Convert.ToInt32(dropDownRect.Left + dropDownRect.Width / 2), Convert.ToInt32(dropDownRect.Top + dropDownRect.Height / 2))
 
             ' if the width is odd - favor pushing it over one pixel right.
             middle.X += (dropDownRect.Width Mod 2)
 
-            Dim leftOffset = DpiHelper.LogicalToDeviceUnitsX(3)
-            Dim rightOffset = DpiHelper.LogicalToDeviceUnitsX(3)
-            Dim topOffset = DpiHelper.LogicalToDeviceUnitsY(1)
-            Dim bottomOffset = DpiHelper.LogicalToDeviceUnitsY(2)
+            Dim leftOffset = DpiAwareness.LogicalToDeviceUnits(Handle, 3)
+            Dim rightOffset = DpiAwareness.LogicalToDeviceUnits(Handle, 3)
+            Dim topOffset = DpiAwareness.LogicalToDeviceUnits(Handle, 1)
+            Dim bottomOffset = DpiAwareness.LogicalToDeviceUnits(Handle, 2)
 
             Dim arrow = New Point(2) {
                 New Point(
