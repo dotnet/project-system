@@ -37,8 +37,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         private readonly IActiveConfiguredProjectSubscriptionService _projectSubscriptionService;
         private readonly IFileSystem _fileSystem;
         private readonly IProjectFaultHandlerService _projectFaultHandlerService;
-        private readonly VSBuildManager _buildManager;
         private readonly ITempPECompiler _compiler;
+
+        // This field is protected to enable easier unit testing
+        protected VSBuildManager BuildManager;
 
         [ImportingConstructor]
         public TempPEBuildManager(IProjectThreadingService threadingService,
@@ -57,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             _compiler = compiler;
             _fileSystem = fileSystem;
             _projectFaultHandlerService = projectFaultHandlerService;
-            _buildManager = buildManager;
+            BuildManager = buildManager;
         }
 
         public string[] GetTempPEMonikers()
@@ -79,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             {
                 await ScheduleCompilationAsync(moniker, AppliedValue.Value, waitForCompletion: false, forceCompilation: true);
             }
-            _buildManager.OnDesignTimeOutputDirty(moniker);
+            BuildManager.OnDesignTimeOutputDirty(moniker);
         }
 
         public async Task<string> GetTempPEDescriptionXmlAsync(string moniker)
@@ -246,7 +248,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                     {
                         removedDesignTimeInputs.Add(item);
                         // We only unsubscribe from file changes if there is no other reason to care about this file
-                        if (TryGetValueIfUnused(item, cookies, designTimeSharedInputs, out uint cookie))
+                        if (TryGetValueIfUnused(item, cookies, designTimeSharedInputs, out _))
                         {
                             cookies.Remove(item);
                         }
@@ -275,7 +277,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                     if (designTimeSharedInputs.Remove(item))
                     {
                         hasRemovedDesignTimeSharedInputs = true;
-                        if (TryGetValueIfUnused(item, cookies, designTimeInputs, out uint cookie))
+                        if (TryGetValueIfUnused(item, cookies, designTimeInputs, out _))
                         {
                             cookies.Remove(item);
                         }
@@ -345,7 +347,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             foreach (string item in removedDesignTimeInputs)
             {
-                _buildManager.OnDesignTimeOutputDeleted(item);
+                BuildManager.OnDesignTimeOutputDeleted(item);
             }
 
             bool TryGetValueIfUnused<T>(string item, ImmutableDictionary<string, T>.Builder source, ImmutableHashSet<string>.Builder otherSources, out T result)
@@ -373,10 +375,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         protected override async Task DisposeCoreAsync(bool initialized)
         {
-            if (initialized)
-            {
-                DisposeTaskSchedulers();
-            }
+            DisposeTaskSchedulers();
             await base.DisposeCoreAsync(initialized);
         }
 
