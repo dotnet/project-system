@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
     /// </summary>
     internal class ProjectRestoreUpdate
     {
-        public ProjectRestoreUpdate(ProjectConfiguration projectConfiguration, IVsProjectRestoreInfo restoreInfo)
+        public ProjectRestoreUpdate(ProjectConfiguration projectConfiguration, IVsProjectRestoreInfo2 restoreInfo)
         {
             Requires.NotNull(projectConfiguration, nameof(projectConfiguration));
             Requires.NotNull(restoreInfo, nameof(restoreInfo));
@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         /// <summary>
         ///     Gets the restore information produced in this update.
         /// </summary>
-        public IVsProjectRestoreInfo RestoreInfo
+        public IVsProjectRestoreInfo2 RestoreInfo
         {
             get;
         }

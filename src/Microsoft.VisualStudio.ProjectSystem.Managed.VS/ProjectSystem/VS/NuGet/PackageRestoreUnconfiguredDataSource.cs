@@ -11,13 +11,13 @@ using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
 using NuGet.SolutionRestoreManager;
 
-using RestoreInfo = Microsoft.VisualStudio.ProjectSystem.IProjectVersionedValue<NuGet.SolutionRestoreManager.IVsProjectRestoreInfo>;
+using RestoreInfo = Microsoft.VisualStudio.ProjectSystem.IProjectVersionedValue<NuGet.SolutionRestoreManager.IVsProjectRestoreInfo2>;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
     [Export(typeof(IPackageRestoreUnconfiguredDataSource))]
     [AppliesTo(ProjectCapability.PackageReferences)]
-    internal partial class PackageRestoreUnconfiguredDataSource : ChainedProjectValueDataSourceBase<IVsProjectRestoreInfo>, IPackageRestoreUnconfiguredDataSource
+    internal partial class PackageRestoreUnconfiguredDataSource : ChainedProjectValueDataSourceBase<IVsProjectRestoreInfo2>, IPackageRestoreUnconfiguredDataSource
     {
         private readonly UnconfiguredProject _project;
         private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         protected override IDisposable LinkExternalInput(ITargetBlock<RestoreInfo> targetBlock)
         {
             // At a high-level, we want to combine all implicitly active configurations (ie the active config of each TFM) restore data
-            // (via ProjectRestoreUpdate) and combine it into a single IVsProjectRestoreInfo instance and publish that. When a change is 
+            // (via ProjectRestoreUpdate) and combine it into a single IVsProjectRestoreInfo2 instance and publish that. When a change is 
             // made to a configuration, such as adding a PackageReference, we should react to it and push a new version of our output. If the 
             // active configuration changes, we should react to it, and publish data from the new set of implicitly active configurations.
             var disposables = new DisposableBag();
@@ -68,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             return disposables;
         }
 
-        private IVsProjectRestoreInfo MergeRestoreData(IReadOnlyCollection<ProjectRestoreUpdate> updates)
+        private IVsProjectRestoreInfo2 MergeRestoreData(IReadOnlyCollection<ProjectRestoreUpdate> updates)
         {
             // We have no active configuration
             if (updates.Count == 0)
@@ -80,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             string msbuildProjectExtensionsPath = ResolveMSBuildProjectExtensionsPathConflicts(updates);
             string originalTargetFrameworks = ResolveOriginalTargetFrameworksConflicts(updates);
             IVsReferenceItems toolReferences = ResolveToolReferenceConflicts(updates);
-            IVsTargetFrameworks targetFrameworks = GetAllTargetFrameworks(updates);
+            IVsTargetFrameworks2 targetFrameworks = GetAllTargetFrameworks(updates);
 
             return new ProjectRestoreInfo(
                 msbuildProjectExtensionsPath,
@@ -103,7 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             return ResolvePropertyConflicts(updates, u => u.OriginalTargetFrameworks, NuGetRestore.TargetFrameworksProperty);
         }
 
-        private string ResolvePropertyConflicts(IEnumerable<ProjectRestoreUpdate> updates, Func<IVsProjectRestoreInfo, string> propertyGetter, string propertyName)
+        private string ResolvePropertyConflicts(IEnumerable<ProjectRestoreUpdate> updates, Func<IVsProjectRestoreInfo2, string> propertyGetter, string propertyName)
         {
             // Always use the first TFM listed in project to provide consistent behavior
             ProjectRestoreUpdate update = updates.First();
@@ -147,15 +147,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
             return new ReferenceItems(references.Values);
         }
-        private IVsTargetFrameworks GetAllTargetFrameworks(IEnumerable<ProjectRestoreUpdate> updates)
+        private IVsTargetFrameworks2 GetAllTargetFrameworks(IEnumerable<ProjectRestoreUpdate> updates)
         {
-            var frameworks = new List<IVsTargetFrameworkInfo>();
+            var frameworks = new List<IVsTargetFrameworkInfo2>();
 
             foreach (ProjectRestoreUpdate update in updates)
             {
                 Assumes.True(update.RestoreInfo.TargetFrameworks.Count == 1);
 
-                IVsTargetFrameworkInfo framework = update.RestoreInfo.TargetFrameworks.Item(0);
+                IVsTargetFrameworkInfo2 framework = update.RestoreInfo.TargetFrameworks.Item(0);
 
                 if (ValidateTargetFramework(update.ProjectConfiguration, framework))
                 {
@@ -185,7 +185,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             return true;
         }
 
-        private bool ValidateTargetFramework(ProjectConfiguration projectConfiguration, IVsTargetFrameworkInfo framework)
+        private bool ValidateTargetFramework(ProjectConfiguration projectConfiguration, IVsTargetFrameworkInfo2 framework)
         {
             if (framework.TargetFrameworkMoniker.Length == 0)
             {

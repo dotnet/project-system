@@ -5,12 +5,12 @@ using NuGet.SolutionRestoreManager;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
     /// <summary>
-    ///     Concrete implementation of <see cref="IVsProjectRestoreInfo"/> that will be passed to 
-    ///     <see cref="IVsSolutionRestoreService.NominateProjectAsync(string, IVsProjectRestoreInfo, System.Threading.CancellationToken)"/>.
+    ///     Concrete implementation of <see cref="IVsProjectRestoreInfo2"/> that will be passed to 
+    ///     <see cref="IVsSolutionRestoreService3.NominateProjectAsync(string, IVsProjectRestoreInfo2, System.Threading.CancellationToken)"/>.
     /// </summary>
-    internal class ProjectRestoreInfo : IVsProjectRestoreInfo
+    internal class ProjectRestoreInfo : IVsProjectRestoreInfo2
     {
-        public ProjectRestoreInfo(string msbuildProjectExtensionsPath, string originalTargetFrameworks, IVsTargetFrameworks targetFrameworks, IVsReferenceItems toolReferences)
+        public ProjectRestoreInfo(string msbuildProjectExtensionsPath, string originalTargetFrameworks, IVsTargetFrameworks2 targetFrameworks, IVsReferenceItems toolReferences)
         {
             Requires.NotNull(msbuildProjectExtensionsPath, nameof(msbuildProjectExtensionsPath));
             Requires.NotNull(originalTargetFrameworks, nameof(originalTargetFrameworks));
@@ -27,13 +27,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
         public string OriginalTargetFrameworks { get; }
 
-        public IVsTargetFrameworks TargetFrameworks { get; }
+        public IVsTargetFrameworks2 TargetFrameworks { get; }
 
         public IVsReferenceItems ToolReferences { get; }
 
         // We "rename" BaseIntermediatePath to avoid confusion for our usage, 
         // because it actually represents "MSBuildProjectExtensionsPath"
-        string IVsProjectRestoreInfo.BaseIntermediatePath
+        string IVsProjectRestoreInfo2.BaseIntermediatePath
         {
             get { return MSBuildProjectExtensionsPath; }
         }

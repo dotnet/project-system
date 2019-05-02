@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         private readonly IPackageRestoreUnconfiguredDataSource _dataSource;
         private readonly IProjectThreadingService _threadingService;
         private readonly IProjectAsynchronousTasksService _projectAsynchronousTasksService;
-        private readonly IVsSolutionRestoreService _solutionRestoreService;
+        private readonly IVsSolutionRestoreService3 _solutionRestoreService;
         private readonly IProjectLogger _logger;
 
         [ImportingConstructor]
@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             IPackageRestoreUnconfiguredDataSource dataSource,
             IProjectThreadingService threadingService,
             [Import(ExportContractNames.Scopes.UnconfiguredProject)]IProjectAsynchronousTasksService projectAsynchronousTasksService,
-            IVsSolutionRestoreService solutionRestoreService,
+            IVsSolutionRestoreService3 solutionRestoreService,
             IProjectLogger logger)
             : base(threadingService.JoinableTaskContext)
         {

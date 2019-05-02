@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
     internal static class RestoreLogger
     {
-        public static void BeginNominateRestore(IProjectLogger logger, string fullPath, IVsProjectRestoreInfo projectRestoreInfo)
+        public static void BeginNominateRestore(IProjectLogger logger, string fullPath, IVsProjectRestoreInfo2 projectRestoreInfo)
         {
             if (logger.IsEnabled)
             {
@@ -45,23 +45,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             }
         }
 
-        private static void LogTargetFrameworks(IProjectLoggerBatch logger, IVsTargetFrameworks targetFrameworks)
+        private static void LogTargetFrameworks(IProjectLoggerBatch logger, IVsTargetFrameworks2 targetFrameworks)
         {
             logger.WriteLine($"Target Frameworks ({targetFrameworks.Count})");
             logger.IndentLevel++;
 
-            foreach (IVsTargetFrameworkInfo tf in targetFrameworks)
+            foreach (IVsTargetFrameworkInfo2 tf in targetFrameworks)
             {
                 LogTargetFramework(logger, tf);
             }
+
             logger.IndentLevel--;
         }
 
-        private static void LogTargetFramework(IProjectLoggerBatch logger, IVsTargetFrameworkInfo targetFrameworkInfo)
+        private static void LogTargetFramework(IProjectLoggerBatch logger, IVsTargetFrameworkInfo2 targetFrameworkInfo)
         {
             logger.WriteLine(targetFrameworkInfo.TargetFrameworkMoniker);
             logger.IndentLevel++;
 
+            LogReferenceItems(logger, "Framework References", targetFrameworkInfo.FrameworkReferences);
+            LogReferenceItems(logger, "Package Downloads", targetFrameworkInfo.PackageDownloads);
             LogReferenceItems(logger, "Project References", targetFrameworkInfo.ProjectReferences);
             LogReferenceItems(logger, "Package References", targetFrameworkInfo.PackageReferences);
             LogProperties(logger, "Target Framework Properties", targetFrameworkInfo.Properties);

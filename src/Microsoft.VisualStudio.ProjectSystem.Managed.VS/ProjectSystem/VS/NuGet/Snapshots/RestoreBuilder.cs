@@ -17,17 +17,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         /// <summary>
         ///     Converts an immutable dictionary of rule snapshot data into an <see cref="IVsProjectRestoreInfo"/> instance.
         /// </summary>
-        public static IVsProjectRestoreInfo ToProjectRestoreInfo(IImmutableDictionary<string, IProjectRuleSnapshot> update)
+        public static IVsProjectRestoreInfo2 ToProjectRestoreInfo(IImmutableDictionary<string, IProjectRuleSnapshot> update)
         {
             Requires.NotNull(update, nameof(update));
 
             IImmutableDictionary<string, string> properties = update.GetSnapshotOrEmpty(NuGetRestore.SchemaName).Properties;
+            IProjectRuleSnapshot frameworkReferences = update.GetSnapshotOrEmpty(CollectedFrameworkReference.SchemaName);
+            IProjectRuleSnapshot packageDownloads = update.GetSnapshotOrEmpty(CollectedPackageDownload.SchemaName);
             IProjectRuleSnapshot projectReferences = update.GetSnapshotOrEmpty(ProjectReference.SchemaName);
             IProjectRuleSnapshot packageReferences = update.GetSnapshotOrEmpty(PackageReference.SchemaName);
             IProjectRuleSnapshot toolReferences = update.GetSnapshotOrEmpty(DotNetCliToolReference.SchemaName);
 
-            IVsTargetFrameworkInfo frameworkInfo = new TargetFrameworkInfo(
+            IVsTargetFrameworkInfo2 frameworkInfo = new TargetFrameworkInfo(
                 properties.GetPropertyOrEmpty(NuGetRestore.TargetFrameworkMonikerProperty),
+                ToReferenceItems(frameworkReferences.Items),
+                ToReferenceItems(packageDownloads.Items),
                 ToReferenceItems(projectReferences.Items),
                 ToReferenceItems(packageReferences.Items),
                 ToProjectProperties(properties));

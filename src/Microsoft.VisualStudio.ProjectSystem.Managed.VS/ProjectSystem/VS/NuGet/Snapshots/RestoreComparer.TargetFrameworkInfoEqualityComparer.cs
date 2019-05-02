@@ -8,9 +8,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
     internal static partial class RestoreComparer
     {
-        private class TargetFrameworkInfoEqualityComparer : EqualityComparer<IVsTargetFrameworkInfo>
+        private class TargetFrameworkInfoEqualityComparer : EqualityComparer<IVsTargetFrameworkInfo2>
         {
-            public override bool Equals(IVsTargetFrameworkInfo x, IVsTargetFrameworkInfo y)
+            public override bool Equals(IVsTargetFrameworkInfo2 x, IVsTargetFrameworkInfo2 y)
             {
                 if (x is null || y is null)
                     return x == y;
@@ -22,6 +22,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 IEnumerable<IVsProjectProperty> yProperties = y.Properties.Cast<IVsProjectProperty>();
 
                 if (!xProperties.SequenceEqual(yProperties, ProjectProperties))
+                    return false;
+
+                IEnumerable<IVsReferenceItem> xFrameworkReferences = x.FrameworkReferences.Cast<IVsReferenceItem>();
+                IEnumerable<IVsReferenceItem> yFrameworkReferences = y.FrameworkReferences.Cast<IVsReferenceItem>();
+
+                if (!xFrameworkReferences.SequenceEqual(yFrameworkReferences, ReferenceItems))
+                    return false;
+
+                IEnumerable<IVsReferenceItem> xPackageDownloads = x.PackageDownloads.Cast<IVsReferenceItem>();
+                IEnumerable<IVsReferenceItem> yPackageDownloads = y.PackageDownloads.Cast<IVsReferenceItem>();
+
+                if (!xPackageDownloads.SequenceEqual(yPackageDownloads, ReferenceItems))
                     return false;
 
                 IEnumerable<IVsReferenceItem> xProjectReferences = x.ProjectReferences.Cast<IVsReferenceItem>();
@@ -36,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 return xPackageReferences.SequenceEqual(yPackageReferences, ReferenceItems);
             }
 
-            public override int GetHashCode(IVsTargetFrameworkInfo obj)
+            public override int GetHashCode(IVsTargetFrameworkInfo2 obj)
             {
                 return obj.TargetFrameworkMoniker.GetHashCode();
             }

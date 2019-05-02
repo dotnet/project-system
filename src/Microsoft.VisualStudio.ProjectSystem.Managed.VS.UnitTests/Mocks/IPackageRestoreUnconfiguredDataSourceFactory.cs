@@ -12,21 +12,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
     {
         public static IPackageRestoreUnconfiguredDataSource Create()
         {
-            var sourceBlock = Mock.Of<IReceivableSourceBlock<IProjectVersionedValue<IVsProjectRestoreInfo>>>();
+            var sourceBlock = Mock.Of<IReceivableSourceBlock<IProjectVersionedValue<IVsProjectRestoreInfo2>>>();
 
-            // Moq gets really confused with mocking IProjectValueDataSource<IVsProjectRestoreInfo>.SourceBlock
+            // Moq gets really confused with mocking IProjectValueDataSource<IVsProjectRestoreInfo2>.SourceBlock
             // because of the generic/non-generic version of it. Avoid it.
             return new PackageRestoreUnconfiguredDataSource(sourceBlock);
         }
 
         private class PackageRestoreUnconfiguredDataSource : IPackageRestoreUnconfiguredDataSource
         {
-            public PackageRestoreUnconfiguredDataSource(IReceivableSourceBlock<IProjectVersionedValue<IVsProjectRestoreInfo>> sourceBlock)
+            public PackageRestoreUnconfiguredDataSource(IReceivableSourceBlock<IProjectVersionedValue<IVsProjectRestoreInfo2>> sourceBlock)
             {
                 SourceBlock = sourceBlock;
             }
 
-            public IReceivableSourceBlock<IProjectVersionedValue<IVsProjectRestoreInfo>> SourceBlock { get; }
+            public IReceivableSourceBlock<IProjectVersionedValue<IVsProjectRestoreInfo2>> SourceBlock { get; }
 
             public NamedIdentity DataSourceKey { get; }
 

@@ -19,18 +19,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             private readonly UnconfiguredProject _project;
             private readonly IPackageRestoreUnconfiguredDataSource _dataSource;
             private readonly IProjectAsynchronousTasksService _projectAsynchronousTasksService;
-            private readonly IVsSolutionRestoreService _solutionRestoreService;
+            private readonly IVsSolutionRestoreService3 _solutionRestoreService;
             private readonly IProjectLogger _logger;
 
             private IDisposable _subscription;
-            private IVsProjectRestoreInfo _latestValue;
+            private IVsProjectRestoreInfo2 _latestValue;
 
             public PackageRestoreInitiatorInstance(
                 UnconfiguredProject project,
                 IPackageRestoreUnconfiguredDataSource dataSource,
                 IProjectThreadingService threadingService,
                 IProjectAsynchronousTasksService projectAsynchronousTasksService,
-                IVsSolutionRestoreService solutionRestoreService,
+                IVsSolutionRestoreService3 solutionRestoreService,
                 IProjectLogger logger)
                 : base(threadingService.JoinableTaskContext)
             {
@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 return Task.CompletedTask;
             }
 
-            internal async Task OnRestoreInfoChangedAsync(IProjectVersionedValue<IVsProjectRestoreInfo> e)
+            internal async Task OnRestoreInfoChangedAsync(IProjectVersionedValue<IVsProjectRestoreInfo2> e)
             {
                 // Restore service always does work regardless of whether the value we pass them to actually
                 // contains changes, only nominate if there are any.
@@ -86,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 await joinableTask;
             }
 
-            private async Task NominateProjectRestoreAsync(IVsProjectRestoreInfo restoreInfo, CancellationToken cancellationToken)
+            private async Task NominateProjectRestoreAsync(IVsProjectRestoreInfo2 restoreInfo, CancellationToken cancellationToken)
             {
                 RestoreLogger.BeginNominateRestore(_logger, _project.FullPath, restoreInfo);
 

@@ -36,12 +36,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         [Fact]
         public async Task OnRestoreInfoChangedAsync_PushesRestoreInfoToRestoreService()
         {
-            IVsProjectRestoreInfo result = null;
+            IVsProjectRestoreInfo2 result = null;
             var solutionRestoreService = IVsSolutionRestoreServiceFactory.ImplementNominateProjectAsync((projectFile, info, cancellationToken) => { result = info; });
 
             var instance = await CreateInitializedInstance(solutionRestoreService: solutionRestoreService);
 
-            var restoreInfo = IVsProjectRestoreInfoFactory.Create();
+            var restoreInfo = IVsProjectRestoreInfo2Factory.Create();
             var value = IProjectVersionedValueFactory.Create(restoreInfo);
 
             await instance.OnRestoreInfoChangedAsync(value);
@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
             var instance = await CreateInitializedInstance(solutionRestoreService: solutionRestoreService);
 
-            var value = IProjectVersionedValueFactory.Create<IVsProjectRestoreInfo>(null);
+            var value = IProjectVersionedValueFactory.Create<IVsProjectRestoreInfo2>(null);
 
             await instance.OnRestoreInfoChangedAsync(value);
 
@@ -72,15 +72,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
             var instance = await CreateInitializedInstance(solutionRestoreService: solutionRestoreService);
 
-            var restoreInfo = IVsProjectRestoreInfoFactory.Create();
-            var value = IProjectVersionedValueFactory.Create<IVsProjectRestoreInfo>(restoreInfo);
+            var restoreInfo = IVsProjectRestoreInfo2Factory.Create();
+            var value = IProjectVersionedValueFactory.Create<IVsProjectRestoreInfo2>(restoreInfo);
 
             await instance.OnRestoreInfoChangedAsync(value);
 
             Assert.Equal(1, callCount); // Should have only been called once
         }
 
-        private async Task<PackageRestoreInitiatorInstance> CreateInitializedInstance(UnconfiguredProject project = null, IPackageRestoreUnconfiguredDataSource dataSource = null, IVsSolutionRestoreService solutionRestoreService = null)
+        private async Task<PackageRestoreInitiatorInstance> CreateInitializedInstance(UnconfiguredProject project = null, IPackageRestoreUnconfiguredDataSource dataSource = null, IVsSolutionRestoreService3 solutionRestoreService = null)
         {
             var instance = CreateInstance(project, dataSource, solutionRestoreService);
 
@@ -89,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             return instance;
         }
 
-        private PackageRestoreInitiatorInstance CreateInstance(UnconfiguredProject project = null, IPackageRestoreUnconfiguredDataSource dataSource = null, IVsSolutionRestoreService solutionRestoreService = null)
+        private PackageRestoreInitiatorInstance CreateInstance(UnconfiguredProject project = null, IPackageRestoreUnconfiguredDataSource dataSource = null, IVsSolutionRestoreService3 solutionRestoreService = null)
         {
             project = project ?? UnconfiguredProjectFactory.Create();
             dataSource = dataSource ?? IPackageRestoreUnconfiguredDataSourceFactory.Create();
