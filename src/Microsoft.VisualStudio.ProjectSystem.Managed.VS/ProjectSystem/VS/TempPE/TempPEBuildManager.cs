@@ -248,7 +248,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                     {
                         removedDesignTimeInputs.Add(item);
                         // We only unsubscribe from file changes if there is no other reason to care about this file
-                        if (TryGetValueIfUnused(item, cookies, designTimeSharedInputs, out uint cookie))
+                        if (TryGetValueIfUnused(item, cookies, designTimeSharedInputs, out _))
                         {
                             cookies.Remove(item);
                         }
@@ -277,7 +277,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                     if (designTimeSharedInputs.Remove(item))
                     {
                         hasRemovedDesignTimeSharedInputs = true;
-                        if (TryGetValueIfUnused(item, cookies, designTimeInputs, out uint cookie))
+                        if (TryGetValueIfUnused(item, cookies, designTimeInputs, out _))
                         {
                             cookies.Remove(item);
                         }
@@ -375,10 +375,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         protected override async Task DisposeCoreAsync(bool initialized)
         {
-            if (initialized)
-            {
-                DisposeTaskSchedulers();
-            }
+            DisposeTaskSchedulers();
             await base.DisposeCoreAsync(initialized);
         }
 
