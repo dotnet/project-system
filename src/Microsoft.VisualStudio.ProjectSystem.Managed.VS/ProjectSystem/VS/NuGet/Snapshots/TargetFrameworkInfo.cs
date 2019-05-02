@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System.Diagnostics;
 using NuGet.SolutionRestoreManager;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
@@ -7,6 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
     /// <summary>
     ///     Represents the restore data for a single target framework in <see cref="UnconfiguredProject"/>.
     /// </summary>
+    [DebuggerDisplay("TargetFrameworkMoniker = {TargetFrameworkMoniker}")]
     internal class TargetFrameworkInfo : IVsTargetFrameworkInfo, IVsTargetFrameworkInfo2
     {
         public TargetFrameworkInfo(string targetFrameworkMoniker, IVsReferenceItems frameworkReferences, IVsReferenceItems packageDownloads, IVsReferenceItems projectReferences, IVsReferenceItems packageReferences, IVsProjectProperties properties)

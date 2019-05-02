@@ -4,12 +4,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
     /// <summary>
     ///     Abstract immutable collection that supports lookup by index and name.
     /// </summary>
+    [DebuggerDisplay("Count = {Count}")]
     internal abstract class ImmutablePropertyCollection<T> : IEnumerable<T> where T : class
     {
         private readonly IImmutableList<T> _items;
