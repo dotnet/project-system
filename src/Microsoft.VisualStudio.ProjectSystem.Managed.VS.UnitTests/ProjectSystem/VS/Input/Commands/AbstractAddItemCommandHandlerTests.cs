@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
 
@@ -204,9 +203,9 @@ Root (flags: {ProjectRoot})
         {
             var configuredProject = ConfiguredProjectFactory.Create(IProjectCapabilitiesScopeFactory.Create(new string[] { capability ?? TestAddItemCommand.Capability }));
             projectTree = projectTree ?? IPhysicalProjectTreeFactory.Create(provider);
-            projectVsServices = projectVsServices ?? 
+            projectVsServices = projectVsServices ??
                 IUnconfiguredProjectVsServicesFactory.Implement(
-                    threadingServiceCreator: () => IProjectThreadingServiceFactory.Create()                    
+                    threadingServiceCreator: () => IProjectThreadingServiceFactory.Create()
                 );
             var addItemDialogService = IVsUIServiceFactory.Create<SVsAddProjectItemDlg, IVsAddProjectItemDlg>(addItemDialog);
 
@@ -215,7 +214,7 @@ Root (flags: {ProjectRoot})
             vsShellMock.Setup(x => x.LoadPackageString(ref It.Ref<Guid>.IsAny, (uint)TestAddItemCommand.ResourceIds.DirName, out result)).Returns(0);
             result = "TemplateName";
             vsShellMock.Setup(x => x.LoadPackageString(ref It.Ref<Guid>.IsAny, (uint)TestAddItemCommand.ResourceIds.TemplateName, out result)).Returns(0);
-            
+
             var vsShellService = IVsUIServiceFactory.Create<SVsShell, IVsShell>(vsShellMock.Object);
 
             return new TestAddItemCommand(configuredProject, projectTree, projectVsServices, addItemDialogService, vsShellService);
@@ -237,10 +236,8 @@ Root (flags: {ProjectRoot})
             {
             }
 
-            protected override Dictionary<long, List<TemplateDetails>> GetTemplateDetails() => new Dictionary<long, List<TemplateDetails>>
-            {
-                { CommandId, Capability, Guid.Empty, ResourceIds.DirName, ResourceIds.TemplateName }
-            };
+            protected override ImmutableDictionary<long, ImmutableArray<TemplateDetails>> GetTemplateDetails() => ImmutableDictionary<long, ImmutableArray<TemplateDetails>>.Empty
+                .CreateTemplateDetails(CommandId, Capability, Guid.Empty, ResourceIds.DirName, ResourceIds.TemplateName);
         }
     }
 }

@@ -6,18 +6,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     {
         internal class TemplateDetails
         {
-            public string CapabilityCheck;
-            public Guid DirNamePackageGuid;
-            public uint DirNameResourceId;
-            public Guid TemplateNamePackageGuid;
-            public uint TemplateNameResourceId;
+            public string AppliesTo { get; }
+            public uint DirNameResourceId { get; }
+            public Guid DirNamePackageGuid { get; }
+            public uint TemplateNameResourceId { get; }
+            public Guid TemplateNamePackageGuid { get; }
 
             /// <summary>
             /// Initializes a new instance of CommandDetails allowing for each string to come from different packages
             /// </summary>
-            public TemplateDetails(string capabilityCheck, Guid dirNamePackageGuid, uint dirName, Guid templateNamePackageGuid, uint templateName)
+            public TemplateDetails(string appliesTo, Guid dirNamePackageGuid, uint dirName, Guid templateNamePackageGuid, uint templateName)
             {
-                CapabilityCheck = capabilityCheck;
+                AppliesTo = appliesTo;
                 DirNamePackageGuid = dirNamePackageGuid;
                 DirNameResourceId = dirName;
                 TemplateNamePackageGuid = templateNamePackageGuid;

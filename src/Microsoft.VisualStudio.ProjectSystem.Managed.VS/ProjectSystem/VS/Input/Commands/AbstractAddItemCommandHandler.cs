@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
@@ -24,7 +23,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly IVsUIService<IVsAddProjectItemDlg> _addItemDialog;
         private readonly IVsUIService<IVsShell> _vsShell;
-        private readonly Lazy<Dictionary<long, List<TemplateDetails>>> _commandMap;
 
         [ImportingConstructor]
         public AbstractAddItemCommandHandler(ConfiguredProject configuredProject, IPhysicalProjectTree projectTree, IUnconfiguredProjectVsServices projectVsServices, IVsUIService<IVsAddProjectItemDlg> addItemDialog, IVsUIService<SVsShell, IVsShell> vsShell)
@@ -34,17 +32,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             _projectVsServices = projectVsServices;
             _addItemDialog = addItemDialog;
             _vsShell = vsShell;
-
-            _commandMap = new Lazy<Dictionary<long, List<TemplateDetails>>>(() => GetTemplateDetails());
         }
 
-        protected abstract Dictionary<long, List<TemplateDetails>> GetTemplateDetails();
+        /// <summary>
+        /// Gets the list of potential templates that could apply to this handler. Implementors should cache the results of this method.
+        /// </summary>
+        protected abstract ImmutableDictionary<long, ImmutableArray<TemplateDetails>> GetTemplateDetails();
 
         public Task<CommandStatusResult> GetCommandStatusAsync(IImmutableSet<IProjectTree> nodes, long commandId, bool focused, string commandText, CommandStatus progressiveStatus)
         {
             Requires.NotNull(nodes, nameof(nodes));
 
-            if (nodes.Count == 1 && _projectTree.NodeCanHaveAdditions(nodes.First()) && TryGetCommandDetails(commandId, out _))
+            if (nodes.Count == 1 && _projectTree.NodeCanHaveAdditions(nodes.First()) && TryGetTemplateDetails(commandId, out _))
             {
                 return GetCommandStatusResult.Handled(commandText, CommandStatus.Enabled);
             }
@@ -56,59 +55,66 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         {
             Requires.NotNull(nodes, nameof(nodes));
 
-            if (nodes.Count == 1)
+            // We only support single node selections
+            if (nodes.Count != 1)
             {
-                if (TryGetCommandDetails(commandId, out TemplateDetails result))
-                {
-                    IProjectTree node = nodes.First();
+                return false;
+            }
 
-                    if (!_projectTree.NodeCanHaveAdditions(node))
-                    {
-                        return false;
-                    }
+            IProjectTree node = nodes.First();
 
-                    __VSADDITEMFLAGS uiFlags = __VSADDITEMFLAGS.VSADDITEM_AddNewItems |
-                                               __VSADDITEMFLAGS.VSADDITEM_SuggestTemplateName |
-                                               __VSADDITEMFLAGS.VSADDITEM_AllowHiddenTreeView;
+            // We only support nodes that can actually have things added to it
+            if (!_projectTree.NodeCanHaveAdditions(node))
+            {
+                return false;
+            }
 
-                    string strBrowseLocations = _projectTree.TreeProvider.GetAddNewItemDirectory(node);
-                    string strFilter = string.Empty;
-                    Guid addItemTemplateGuid = Guid.Empty;  // Let the dialog ask the hierarchy itself
+            if (TryGetTemplateDetails(commandId, out TemplateDetails result))
+            {
+                __VSADDITEMFLAGS uiFlags = __VSADDITEMFLAGS.VSADDITEM_AddNewItems |
+                                           __VSADDITEMFLAGS.VSADDITEM_SuggestTemplateName |
+                                           __VSADDITEMFLAGS.VSADDITEM_AllowHiddenTreeView;
 
-                    await _projectVsServices.ThreadingService.SwitchToUIThread();
+                string strBrowseLocations = _projectTree.TreeProvider.GetAddNewItemDirectory(node);
 
-                    // Get the strings from the legacy package
-                    ErrorHandler.ThrowOnFailure(_vsShell.Value.LoadPackageString(ref result.DirNamePackageGuid, result.DirNameResourceId, out string dirName));
-                    ErrorHandler.ThrowOnFailure(_vsShell.Value.LoadPackageString(ref result.TemplateNamePackageGuid, result.TemplateNameResourceId, out string templateName));
+                await _projectVsServices.ThreadingService.SwitchToUIThread();
 
-                    HResult res = _addItemDialog.Value.AddProjectItemDlg(node.GetHierarchyId(),
-                                                                        ref addItemTemplateGuid,
-                                                                        _projectVsServices.VsProject,
-                                                                        (uint)uiFlags,
-                                                                        dirName,
-                                                                        templateName,
-                                                                        ref strBrowseLocations,
-                                                                        ref strFilter,
-                                                                        out _);
+                // Look up the resources from each package to get the strings to pass to the Add Item dialog.
+                // These strings must match what is used in the template exactly, including localized versions. Rather than relying on
+                // our localizations being the same as the VS repository localizations we just load the right strings using the same
+                // resource IDs as the templates themselves use.
+                string dirName = _vsShell.Value.LoadPackageString(result.DirNamePackageGuid, result.DirNameResourceId);
+                string templateName = _vsShell.Value.LoadPackageString(result.TemplateNamePackageGuid, result.TemplateNameResourceId);
 
-                    // Return true here regardless of whether or not the user clicked OK or they clicked Cancel. This ensures that some other
-                    // handler isn't called after we run.
-                    return res == HResult.OK || res == HResult.Ole.PromptSaveCancelled;
-                }
+                string strFilter = string.Empty;
+                Guid addItemTemplateGuid = Guid.Empty;  // Let the dialog ask the hierarchy itself
+                HResult res = _addItemDialog.Value.AddProjectItemDlg(node.GetHierarchyId(),
+                                                                    ref addItemTemplateGuid,
+                                                                    _projectVsServices.VsProject,
+                                                                    (uint)uiFlags,
+                                                                    dirName,
+                                                                    templateName,
+                                                                    ref strBrowseLocations,
+                                                                    ref strFilter,
+                                                                    out _);
+
+                // Return true here regardless of whether or not the user clicked OK or they clicked Cancel. This ensures that some other
+                // handler isn't called after we run.
+                return res == HResult.OK || res == HResult.Ole.PromptSaveCancelled;
             }
 
             return false;
         }
 
-        private bool TryGetCommandDetails(long commandId, out TemplateDetails result)
+        private bool TryGetTemplateDetails(long commandId, out TemplateDetails result)
         {
             IProjectCapabilitiesScope capabilities = _configuredProject.Capabilities;
 
-            if (_commandMap.Value.TryGetValue(commandId, out List<TemplateDetails> templates))
+            if (GetTemplateDetails().TryGetValue(commandId, out ImmutableArray<TemplateDetails> templates))
             {
                 foreach (TemplateDetails template in templates)
                 {
-                    if (capabilities.AppliesTo(template.CapabilityCheck))
+                    if (capabilities.AppliesTo(template.AppliesTo))
                     {
                         result = template;
                         return true;
