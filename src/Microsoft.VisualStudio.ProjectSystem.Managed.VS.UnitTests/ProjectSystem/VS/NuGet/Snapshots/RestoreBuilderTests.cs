@@ -31,6 +31,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         },
         ""DotNetCliToolReference"": {
             ""Items"" : {}
+        },
+        ""CollectedFrameworkReference"": {
+            ""Items"" : {}
+        },
+        ""CollectedPackageDownload"": {
+            ""Items"" : {}
         }
     }
 }
@@ -260,6 +266,78 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             AssertContainsProperty("MetadataName", "MetadataValue", reference3.Properties);
         }
 
+        [Fact]
+        public void ToProjectRestoreInfo_SetsFrameworkReferences()
+        {
+            var update = IProjectSubscriptionUpdateFactory.FromJson(@"
+{
+    ""CurrentState"": {
+        ""CollectedFrameworkReference"": {
+            ""Items"" : {
+                ""WindowsForms"" : {
+                },
+                ""WPF"" : {
+                    ""PrivateAssets"" : ""all"",
+                }
+            }
+        }
+    }
+}");
+            var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
+
+            Assert.Equal(1, result.TargetFrameworks.Count);
+
+            var references = result.TargetFrameworks.Item(0).FrameworkReferences;
+
+            Assert.Equal(2, references.Count);
+
+            var reference1 = references.Item("WindowsForms");
+            Assert.Equal("WindowsForms", reference1.Name);
+            Assert.Empty(reference1.Properties);
+
+            var reference2 = references.Item("WPF");
+            Assert.Equal("WPF", reference2.Name);
+
+            AssertContainsProperty("PrivateAssets", "all", reference2.Properties);
+        }
+
+        [Fact]
+        public void ToProjectRestoreInfo_SetsPackageDownloads()
+        {
+            var update = IProjectSubscriptionUpdateFactory.FromJson(@"
+{
+    ""CurrentState"": {
+        ""CollectedPackageDownload"": {
+            ""Items"" : {
+                ""NuGet.Common"" : {
+                    ""Version"" : ""[4.0.0];[5.0.0]"",
+                },
+                ""NuGet.Frameworks"" : {
+                    ""Version"" : ""[4.9.4]"",
+                }
+            }
+        }
+    }
+}");
+            var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
+
+            Assert.Equal(1, result.TargetFrameworks.Count);
+
+            var downloads = result.TargetFrameworks.Item(0).PackageDownloads;
+
+            Assert.Equal(2, downloads.Count);
+
+            var download1 = downloads.Item("NuGet.Common");
+            Assert.Equal("NuGet.Common", download1.Name);
+
+            AssertContainsProperty("Version", "[4.0.0];[5.0.0]", download1.Properties);
+
+            var download2 = downloads.Item("NuGet.Frameworks");
+            Assert.Equal("NuGet.Frameworks", download2.Name);
+
+            AssertContainsProperty("Version", "[4.9.4]", download2.Properties);
+        }
+
         private static void AssertContainsProperty(string name, string value, IVsProjectProperties properties)
         {
             var property = properties.Item(name);
@@ -285,6 +363,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
             var targetFramework = result.TargetFrameworks.Item(0);
 
+            Assert.Empty(targetFramework.FrameworkReferences);
+            Assert.Empty(targetFramework.PackageDownloads);
             Assert.Empty(targetFramework.PackageReferences);
             Assert.Empty(targetFramework.ProjectReferences);
         }
