@@ -25,16 +25,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var fileSystem = new IFileSystemMock();
             fileSystem.AddFile("Resource1.Designer.cs", new DateTime(2018, 6, 1));
 
-            var mgr = new TestTempPEBuildManager(fileSystem);
-
-            var files = new HashSet<string>
+            using (var mgr = new TestTempPEBuildManager(fileSystem))
             {
-                "Resource1.Designer.cs"
-            };
 
-            bool result = mgr.CompilationNeeded(files, "Resource1.Designer.cs.dll");
+                var files = new HashSet<string>
+                {
+                    "Resource1.Designer.cs"
+                };
 
-            Assert.True(result);
+                bool result = mgr.CompilationNeeded(files, "Resource1.Designer.cs.dll");
+
+                Assert.True(result);
+            }
         }
 
         [Fact]
@@ -44,16 +46,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             fileSystem.AddFile("Resource1.Designer.cs", new DateTime(2018, 6, 1));
             fileSystem.AddFile("Resource1.Designer.cs.dll", new DateTime(2018, 1, 1));
 
-            var mgr = new TestTempPEBuildManager(fileSystem);
-
-            var files = new HashSet<string>
+            using (var mgr = new TestTempPEBuildManager(fileSystem))
             {
-                "Resource1.Designer.cs"
-            };
 
-            bool result = mgr.CompilationNeeded(files, "Resource1.Designer.cs.dll");
+                var files = new HashSet<string>
+                {
+                    "Resource1.Designer.cs"
+                };
 
-            Assert.True(result);
+                bool result = mgr.CompilationNeeded(files, "Resource1.Designer.cs.dll");
+
+                Assert.True(result);
+            }
         }
 
         [Fact]
@@ -63,23 +67,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             fileSystem.AddFile("Resource1.Designer.cs", new DateTime(2018, 6, 1));
             fileSystem.AddFile("Resource1.Designer.cs.dll", new DateTime(2018, 12, 1));
 
-            var mgr = new TestTempPEBuildManager(fileSystem);
-
-            var files = new HashSet<string>
+            using (var mgr = new TestTempPEBuildManager(fileSystem))
             {
-                "Resource1.Designer.cs"
-            };
 
-            bool result = mgr.CompilationNeeded(files, "Resource1.Designer.cs.dll");
+                var files = new HashSet<string>
+                {
+                    "Resource1.Designer.cs"
+                };
 
-            Assert.False(result);
+                bool result = mgr.CompilationNeeded(files, "Resource1.Designer.cs.dll");
+
+                Assert.False(result);
+            }
         }
 
         [Fact]
         public async Task Process_OutputPath_ComputedCorrectly()
         {
-            var mgr = new TestTempPEBuildManager();
-
             var compileUpdate = IProjectSubscriptionUpdateFactory.FromJson(@"{
    ""ProjectChanges"": {
         ""Compile"": { }
@@ -101,18 +105,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
     }
 }");
-            var result = await mgr.TestProcessAsync(compileUpdate, configUpdate);
 
-            Assert.Equal(@"C:\Code\MyProject\MyOutput\TempPE", result.OutputPath);
+            using (var mgr = new TestTempPEBuildManager())
+            {
+                var result = await mgr.TestProcessAsync(compileUpdate, configUpdate);
+
+                Assert.Equal(@"C:\Code\MyProject\MyOutput\TempPE", result.OutputPath);
+            }
         }
 
         [Fact]
         public async Task Process_NoDesignTimeInput_ReturnsEmptyCollections()
         {
-            // Initial state is an empty object
-            var mgr = new TestTempPEBuildManager();
-
-            // Apply our update
             var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
    ""ProjectChanges"": {
         ""Compile"": {
@@ -129,23 +133,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     }
 }");
 
-            var result = await mgr.TestProcessAsync(update);
+            using (var mgr = new TestTempPEBuildManager())
+            {
+                var result = await mgr.TestProcessAsync(update);
 
-            // Should have empty collections
-            Assert.Empty(result.Inputs);
-            Assert.Empty(result.SharedInputs);
-            Assert.Empty(mgr.DirtyItems);
-            Assert.Empty(mgr.DeletedItems);
-            Assert.Empty(mgr.CompiledItems);
+                // Should have empty collections
+                Assert.Empty(result.Inputs);
+                Assert.Empty(result.SharedInputs);
+                Assert.Empty(mgr.DirtyItems);
+                Assert.Empty(mgr.DeletedItems);
+                Assert.Empty(mgr.CompiledItems);
+            }
         }
 
         [Fact]
         public async Task Process_OneSharedDesignTimeInput_ReturnsOneSharedInput()
         {
-            // Initial state is an empty object
-            var mgr = new TestTempPEBuildManager();
-
-            // Apply our update
             var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
     ""ProjectChanges"": {
         ""Compile"": {
@@ -162,24 +165,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
     }
 }");
-            var result = await mgr.TestProcessAsync(update);
 
-            Assert.Empty(result.Inputs);
-            Assert.Single(result.SharedInputs);
-            Assert.Equal("Settings.Designer.cs", result.SharedInputs.First());
-            Assert.Empty(mgr.DirtyItems);
-            Assert.Empty(mgr.DeletedItems);
-            Assert.Empty(mgr.CompiledItems);
+            using (var mgr = new TestTempPEBuildManager())
+            {
+                var result = await mgr.TestProcessAsync(update);
+
+                Assert.Empty(result.Inputs);
+                Assert.Single(result.SharedInputs);
+                Assert.Equal("Settings.Designer.cs", result.SharedInputs.First());
+                Assert.Empty(mgr.DirtyItems);
+                Assert.Empty(mgr.DeletedItems);
+                Assert.Empty(mgr.CompiledItems);
+            }
         }
 
 
         [Fact]
         public async Task Process_OneFileBothDesignTimeInputs_WatchesOneFile()
         {
-            // Initial state is an empty object
-            var mgr = new TestTempPEBuildManager();
-
-            // Apply our update
             var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
     ""ProjectChanges"": {
         ""Compile"": {
@@ -197,30 +200,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
     }
 }");
-            var result = await mgr.TestProcessAsync(update);
 
-            Assert.Single(result.Inputs);
-            Assert.Equal("Settings.Designer.cs", result.Inputs.First());
-            Assert.Single(result.SharedInputs);
-            Assert.Equal("Settings.Designer.cs", result.SharedInputs.First());
-            Assert.Single(mgr.DirtyItems);
-            Assert.Equal("Settings.Designer.cs", mgr.DirtyItems.First());
-            Assert.Empty(mgr.DeletedItems);
-            Assert.Single(mgr.CompiledItems);
-            Assert.Equal("TempPE\\Settings.Designer.cs.dll", mgr.CompiledItems.First());
+            using (var mgr = new TestTempPEBuildManager())
+            {
+                var result = await mgr.TestProcessAsync(update);
+
+                Assert.Single(result.Inputs);
+                Assert.Equal("Settings.Designer.cs", result.Inputs.First());
+                Assert.Single(result.SharedInputs);
+                Assert.Equal("Settings.Designer.cs", result.SharedInputs.First());
+                Assert.Single(mgr.DirtyItems);
+                Assert.Equal("Settings.Designer.cs", mgr.DirtyItems.First());
+                Assert.Empty(mgr.DeletedItems);
+                Assert.Single(mgr.CompiledItems);
+                Assert.Equal("TempPE\\Settings.Designer.cs.dll", mgr.CompiledItems.First());
+            }
         }
 
 
         [Fact]
         public async Task Process_BothDesignTimeInputsToSharedOnly_WatchesOneFile()
         {
-            // Initial state is an empty object
-            var mgr = new TestTempPEBuildManager();
+            using (var mgr = new TestTempPEBuildManager())
+            {
+                await mgr.SetInputs(new[] { "Settings.Designer.cs" }, new[] { "Settings.Designer.cs" });
 
-            await mgr.SetInputs(new[] { "Settings.Designer.cs" }, new[] { "Settings.Designer.cs" });
-
-            // Apply our update
-            var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
+                // Apply our update
+                var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
     ""ProjectChanges"": {
         ""Compile"": {
             ""Difference"": { 
@@ -244,27 +250,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
     }
 }");
-            var result = await mgr.TestProcessAsync(update);
+                var result = await mgr.TestProcessAsync(update);
 
-            Assert.Empty(result.Inputs);
-            Assert.Single(result.SharedInputs);
-            Assert.Equal("Settings.Designer.cs", result.SharedInputs.First());
-            Assert.Empty(mgr.DirtyItems);
-            Assert.Single(mgr.DeletedItems);
-            Assert.Equal("Settings.Designer.cs", mgr.DeletedItems.First());
-            Assert.Empty(mgr.CompiledItems);
+                Assert.Empty(result.Inputs);
+                Assert.Single(result.SharedInputs);
+                Assert.Equal("Settings.Designer.cs", result.SharedInputs.First());
+                Assert.Empty(mgr.DirtyItems);
+                Assert.Single(mgr.DeletedItems);
+                Assert.Equal("Settings.Designer.cs", mgr.DeletedItems.First());
+                Assert.Empty(mgr.CompiledItems);
+            }
         }
 
         [Fact]
         public async Task Process_BothDesignTimeInputsToNormalOnly_WatchesOneFile()
         {
-            // Initial state is an empty object
-            var mgr = new TestTempPEBuildManager();
+            using (var mgr = new TestTempPEBuildManager())
+            {
+                await mgr.SetInputs(new[] { "Settings.Designer.cs" }, new[] { "Settings.Designer.cs" });
 
-            await mgr.SetInputs(new[] { "Settings.Designer.cs" }, new[] { "Settings.Designer.cs" });
-
-            // Apply our update
-            var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
+                // Apply our update
+                var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
     ""ProjectChanges"": {
         ""Compile"": {
             ""Difference"": { 
@@ -288,25 +294,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
     }
 }");
-            var result = await mgr.TestProcessAsync(update);
+                var result = await mgr.TestProcessAsync(update);
 
-            Assert.Single(result.Inputs);
-            Assert.Equal("Settings.Designer.cs", result.Inputs.First());
-            Assert.Empty(result.SharedInputs);
-            Assert.Single(mgr.DirtyItems);
-            Assert.Equal("Settings.Designer.cs", mgr.DirtyItems.First());
-            Assert.Empty(mgr.DeletedItems);
-            Assert.Empty(mgr.CompiledItems);
+                Assert.Single(result.Inputs);
+                Assert.Equal("Settings.Designer.cs", result.Inputs.First());
+                Assert.Empty(result.SharedInputs);
+                Assert.Single(mgr.DirtyItems);
+                Assert.Equal("Settings.Designer.cs", mgr.DirtyItems.First());
+                Assert.Empty(mgr.DeletedItems);
+                Assert.Empty(mgr.CompiledItems);
+            }
         }
 
         [Fact]
         public async Task Process_InitialProjectLoad_ShouldntCompile()
         {
-            // Initial state is an empty object
-            var mgr = new TestTempPEBuildManager();
-
-            // Apply our update
-            var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
+            using (var mgr = new TestTempPEBuildManager())
+            {
+                // Apply our update
+                var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
     ""ProjectChanges"": {
         ""Compile"": {
             ""Difference"": { 
@@ -327,23 +333,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     }
 }");
 
-            var configUpdate = IProjectSubscriptionUpdateFactory.FromJson(@"{
+                var configUpdate = IProjectSubscriptionUpdateFactory.FromJson(@"{
    ""ProjectChanges"": {
         ""ConfigurationGeneral"": {
         }
     }
 }");
 
-            var result = await mgr.TestProcessAsync(update, configUpdate, null);
+                var result = await mgr.TestProcessAsync(update, configUpdate, null);
 
-            // One file should have been added
-            Assert.Single(result.Inputs);
-            Assert.Equal("Resources1.Designer.cs", result.Inputs.First());
-            Assert.Empty(result.SharedInputs);
-            Assert.Single(mgr.DirtyItems);
-            Assert.Equal("Resources1.Designer.cs", mgr.DirtyItems.First());
-            Assert.Empty(mgr.DeletedItems);
-            Assert.Empty(mgr.CompiledItems);
+                // One file should have been added
+                Assert.Single(result.Inputs);
+                Assert.Equal("Resources1.Designer.cs", result.Inputs.First());
+                Assert.Empty(result.SharedInputs);
+                Assert.Single(mgr.DirtyItems);
+                Assert.Equal("Resources1.Designer.cs", mgr.DirtyItems.First());
+                Assert.Empty(mgr.DeletedItems);
+                Assert.Empty(mgr.CompiledItems);
+            }
         }
 
 
@@ -351,15 +358,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public async Task Process_AddSharedDesignTimeInput_DirtiesAllPEsWithoutCompiling()
         {
             // Initial state is two design time inputs
-            var mgr = new TestTempPEBuildManager();
-
-            await mgr.SetInputs(new[] {
+            using (var mgr = new TestTempPEBuildManager())
+            {
+                await mgr.SetInputs(new[] {
                                                 "Resources1.Designer.cs",
                                                 "Resources2.Designer.cs"
                                                 }, null);
 
-            // Apply our update
-            var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
+                // Apply our update
+                var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
     ""ProjectChanges"": {
         ""Compile"": {
             ""Difference"": { 
@@ -377,28 +384,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
     }
 }");
-            var result = await mgr.TestProcessAsync(update);
+                var result = await mgr.TestProcessAsync(update);
 
-            Assert.Equal(2, result.Inputs.Count);
-            Assert.Contains("Resources1.Designer.cs", result.Inputs);
-            Assert.Contains("Resources2.Designer.cs", result.Inputs);
-            Assert.Single(result.SharedInputs);
-            Assert.Equal("Settings.Designer.cs", result.SharedInputs.First());
-            Assert.Equal(2, mgr.DirtyItems.Count);
-            Assert.Contains("Resources1.Designer.cs", mgr.DirtyItems);
-            Assert.Contains("Resources2.Designer.cs", mgr.DirtyItems);
-            Assert.Empty(mgr.DeletedItems);
-            Assert.Empty(mgr.CompiledItems);
+                Assert.Equal(2, result.Inputs.Count);
+                Assert.Contains("Resources1.Designer.cs", result.Inputs);
+                Assert.Contains("Resources2.Designer.cs", result.Inputs);
+                Assert.Single(result.SharedInputs);
+                Assert.Equal("Settings.Designer.cs", result.SharedInputs.First());
+                Assert.Equal(2, mgr.DirtyItems.Count);
+                Assert.Contains("Resources1.Designer.cs", mgr.DirtyItems);
+                Assert.Contains("Resources2.Designer.cs", mgr.DirtyItems);
+                Assert.Empty(mgr.DeletedItems);
+                Assert.Empty(mgr.CompiledItems);
+            }
         }
 
         [Fact]
         public async Task Process_OneDesignTimeInput_ReturnsOneInput()
         {
             // Initial state is an empty object
-            var mgr = new TestTempPEBuildManager();
-
-            // Apply our update
-            var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
+            using (var mgr = new TestTempPEBuildManager())
+            {
+                // Apply our update
+                var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
     ""ProjectChanges"": {
         ""Compile"": {
             ""Difference"": { 
@@ -419,17 +427,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     }
 }");
 
-            var result = await mgr.TestProcessAsync(update);
+                var result = await mgr.TestProcessAsync(update);
 
-            // One file should have been added
-            Assert.Single(result.Inputs);
-            Assert.Equal("Resources1.Designer.cs", result.Inputs.First());
-            Assert.Empty(result.SharedInputs);
-            Assert.Single(mgr.DirtyItems);
-            Assert.Equal("Resources1.Designer.cs", mgr.DirtyItems.First());
-            Assert.Empty(mgr.DeletedItems);
-            Assert.Single(mgr.CompiledItems);
-            Assert.Contains("TempPE\\Resources1.Designer.cs.dll", mgr.CompiledItems);
+                // One file should have been added
+                Assert.Single(result.Inputs);
+                Assert.Equal("Resources1.Designer.cs", result.Inputs.First());
+                Assert.Empty(result.SharedInputs);
+                Assert.Single(mgr.DirtyItems);
+                Assert.Equal("Resources1.Designer.cs", mgr.DirtyItems.First());
+                Assert.Empty(mgr.DeletedItems);
+                Assert.Single(mgr.CompiledItems);
+                Assert.Contains("TempPE\\Resources1.Designer.cs.dll", mgr.CompiledItems);
+            }
         }
 
 
@@ -437,11 +446,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public async Task Process_RenamedDesignTimeInput_ReturnsOneInput()
         {
             // Initial state is a single design time input
-            var mgr = new TestTempPEBuildManager();
+            using (var mgr = new TestTempPEBuildManager())
+            {
+                await mgr.SetInputs(new[] { "Resources1.Designer.cs" }, null);
 
-            await mgr.SetInputs(new[] { "Resources1.Designer.cs" }, null);
-
-            var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
+                var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
     ""ProjectChanges"": {
         ""Compile"": {
             ""Difference"": { 
@@ -467,30 +476,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     }
 }");
 
-            var result = await mgr.TestProcessAsync(update);
+                var result = await mgr.TestProcessAsync(update);
 
-            // One file should have been added
-            Assert.Single(result.Inputs);
-            Assert.Equal("Resources3.Designer.cs", result.Inputs.First());
-            Assert.Empty(result.SharedInputs);
-            Assert.Single(mgr.DirtyItems);
-            Assert.Equal("Resources3.Designer.cs", mgr.DirtyItems.First());
-            Assert.Single(mgr.DeletedItems);
-            Assert.Equal("Resources1.Designer.cs", mgr.DeletedItems.First());
-            Assert.Single(mgr.CompiledItems);
-            Assert.Contains("TempPE\\Resources3.Designer.cs.dll", mgr.CompiledItems);
+                // One file should have been added
+                Assert.Single(result.Inputs);
+                Assert.Equal("Resources3.Designer.cs", result.Inputs.First());
+                Assert.Empty(result.SharedInputs);
+                Assert.Single(mgr.DirtyItems);
+                Assert.Equal("Resources3.Designer.cs", mgr.DirtyItems.First());
+                Assert.Single(mgr.DeletedItems);
+                Assert.Equal("Resources1.Designer.cs", mgr.DeletedItems.First());
+                Assert.Single(mgr.CompiledItems);
+                Assert.Contains("TempPE\\Resources3.Designer.cs.dll", mgr.CompiledItems);
+            }
         }
 
         [Fact]
         public async Task Process_RenamedSharedDesignTimeInput_ReturnsOneInput()
         {
             // Initial state is a single design time input
-            var mgr = new TestTempPEBuildManager();
+            using ( var mgr = new TestTempPEBuildManager())
+            {
+                await mgr.SetInputs(new[] { "Resources1.Designer.cs" }, new[] { "Settings.Designer.cs" });
 
-            await mgr.SetInputs(new[] { "Resources1.Designer.cs" }, new[] { "Settings.Designer.cs" });
-
-            // Apply our update
-            var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
+                // Apply our update
+                var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
     ""ProjectChanges"": {
         ""Compile"": {
             ""Difference"": { 
@@ -516,17 +526,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     }
 }");
 
-            var result = await mgr.TestProcessAsync(update);
+                var result = await mgr.TestProcessAsync(update);
 
-            // One file should have been added
-            Assert.Single(result.Inputs);
-            Assert.Equal("Resources1.Designer.cs", result.Inputs.First());
-            Assert.Single(result.SharedInputs);
-            Assert.Equal("Settings_New.Designer.cs", result.SharedInputs.First());
-            Assert.Single(mgr.DirtyItems);
-            Assert.Equal("Resources1.Designer.cs", mgr.DirtyItems.First());
-            Assert.Empty(mgr.DeletedItems);
-            Assert.Empty(mgr.CompiledItems);
+                // One file should have been added
+                Assert.Single(result.Inputs);
+                Assert.Equal("Resources1.Designer.cs", result.Inputs.First());
+                Assert.Single(result.SharedInputs);
+                Assert.Equal("Settings_New.Designer.cs", result.SharedInputs.First());
+                Assert.Single(mgr.DirtyItems);
+                Assert.Equal("Resources1.Designer.cs", mgr.DirtyItems.First());
+                Assert.Empty(mgr.DeletedItems);
+                Assert.Empty(mgr.CompiledItems);
+            }
         }
 
 
@@ -534,10 +545,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public async Task Process_DesignInputChangedToTrue_ReturnsOneInput()
         {
             // Initial state is an empty object
-            var mgr = new TestTempPEBuildManager();
-
-            // Apply our update
-            var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
+            using (var mgr = new TestTempPEBuildManager())
+            {
+                // Apply our update
+                var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
     ""ProjectChanges"": {
         ""Compile"": {
             ""Difference"": { 
@@ -561,29 +572,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
     }
 }");
-            var result = await mgr.TestProcessAsync(update);
+                var result = await mgr.TestProcessAsync(update);
 
-            // One file should have been added
-            Assert.Single(result.Inputs);
-            Assert.Equal("Resources1.Designer.cs", result.Inputs.First());
-            Assert.Empty(result.SharedInputs);
-            Assert.Single(mgr.DirtyItems);
-            Assert.Equal("Resources1.Designer.cs", mgr.DirtyItems.First());
-            Assert.Empty(mgr.DeletedItems);
-            Assert.Single(mgr.CompiledItems);
-            Assert.Contains("TempPE\\Resources1.Designer.cs.dll", mgr.CompiledItems);
+                // One file should have been added
+                Assert.Single(result.Inputs);
+                Assert.Equal("Resources1.Designer.cs", result.Inputs.First());
+                Assert.Empty(result.SharedInputs);
+                Assert.Single(mgr.DirtyItems);
+                Assert.Equal("Resources1.Designer.cs", mgr.DirtyItems.First());
+                Assert.Empty(mgr.DeletedItems);
+                Assert.Single(mgr.CompiledItems);
+                Assert.Contains("TempPE\\Resources1.Designer.cs.dll", mgr.CompiledItems);
+            }
         }
 
         [Fact]
         public async Task Process_DesignInputChangedToFalse_ReturnsOneInput()
         {
             // Initial state is a single design time input
-            var mgr = new TestTempPEBuildManager();
+            using (var mgr = new TestTempPEBuildManager())
+            {
+                await mgr.SetInputs(new[] { "Resources1.Designer.cs" }, null);
 
-            await mgr.SetInputs(new[] { "Resources1.Designer.cs" }, null);
-
-            // Apply our update
-            var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
+                // Apply our update
+                var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
     ""ProjectChanges"": {
         ""Compile"": {
             ""Difference"": { 
@@ -608,27 +620,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     }
 }");
 
-            var result = await mgr.TestProcessAsync(update);
+                var result = await mgr.TestProcessAsync(update);
 
-            // One file should have been added
-            Assert.Empty(result.Inputs);
-            Assert.Empty(result.SharedInputs);
-            Assert.Empty(mgr.DirtyItems);
-            Assert.Single(mgr.DeletedItems);
-            Assert.Equal("Resources1.Designer.cs", mgr.DeletedItems.First());
-            Assert.Empty(mgr.CompiledItems);
+                // One file should have been added
+                Assert.Empty(result.Inputs);
+                Assert.Empty(result.SharedInputs);
+                Assert.Empty(mgr.DirtyItems);
+                Assert.Single(mgr.DeletedItems);
+                Assert.Equal("Resources1.Designer.cs", mgr.DeletedItems.First());
+                Assert.Empty(mgr.CompiledItems);
+            }
         }
 
         [Fact]
         public async Task Process_SharedDesignInputChangedToTrue_DirtiesAllPEsWithoutCompiling()
         {
             // Initial state is a single design time input
-            var mgr = new TestTempPEBuildManager();
+            using (var mgr = new TestTempPEBuildManager())
+            {
+                await mgr.SetInputs(new[] { "Resources1.Designer.cs" }, null);
 
-            await mgr.SetInputs(new[] { "Resources1.Designer.cs" }, null);
-
-            // Apply our update
-            var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
+                // Apply our update
+                var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
     ""ProjectChanges"": {
         ""Compile"": {
             ""Difference"": { 
@@ -652,29 +665,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
     }
 }");
-            var result = await mgr.TestProcessAsync(update);
+                var result = await mgr.TestProcessAsync(update);
 
-            // One file should have been added
-            Assert.Single(result.Inputs);
-            Assert.Equal("Resources1.Designer.cs", result.Inputs.First());
-            Assert.Single(result.SharedInputs);
-            Assert.Equal("Settings.Designer.cs", result.SharedInputs.First());
-            Assert.Single(mgr.DirtyItems);
-            Assert.Equal("Resources1.Designer.cs", mgr.DirtyItems.First());
-            Assert.Empty(mgr.DeletedItems);
-            Assert.Empty(mgr.CompiledItems);
+                // One file should have been added
+                Assert.Single(result.Inputs);
+                Assert.Equal("Resources1.Designer.cs", result.Inputs.First());
+                Assert.Single(result.SharedInputs);
+                Assert.Equal("Settings.Designer.cs", result.SharedInputs.First());
+                Assert.Single(mgr.DirtyItems);
+                Assert.Equal("Resources1.Designer.cs", mgr.DirtyItems.First());
+                Assert.Empty(mgr.DeletedItems);
+                Assert.Empty(mgr.CompiledItems);
+            }
         }
 
         [Fact]
         public async Task Process_SharedDesignInputChangedToFalse_DirtiesAllPEsWithoutCompiling()
         {
             // Initial state is a single design time input and a single shared input
-            var mgr = new TestTempPEBuildManager();
+            using (var mgr = new TestTempPEBuildManager())
+            {
+                await mgr.SetInputs(new[] { "Resources1.Designer.cs" }, new[] { "Settings.Designer.cs" });
 
-            await mgr.SetInputs(new[] { "Resources1.Designer.cs" }, new[] { "Settings.Designer.cs" });
-
-            // Apply our update
-            var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
+                // Apply our update
+                var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
     ""ProjectChanges"": {
         ""Compile"": {
             ""Difference"": { 
@@ -698,16 +712,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
     }
 }");
-            var result = await mgr.TestProcessAsync(update);
+                var result = await mgr.TestProcessAsync(update);
 
-            // One file should have been added
-            Assert.Single(result.Inputs);
-            Assert.Equal("Resources1.Designer.cs", result.Inputs.First());
-            Assert.Empty(result.SharedInputs);
-            Assert.Single(mgr.DirtyItems);
-            Assert.Equal("Resources1.Designer.cs", mgr.DirtyItems.First());
-            Assert.Empty(mgr.DeletedItems);
-            Assert.Empty(mgr.CompiledItems);
+                // One file should have been added
+                Assert.Single(result.Inputs);
+                Assert.Equal("Resources1.Designer.cs", result.Inputs.First());
+                Assert.Empty(result.SharedInputs);
+                Assert.Single(mgr.DirtyItems);
+                Assert.Equal("Resources1.Designer.cs", mgr.DirtyItems.First());
+                Assert.Empty(mgr.DeletedItems);
+                Assert.Empty(mgr.CompiledItems);
+            }
         }
 
 
@@ -715,12 +730,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public async Task Process_NonInputPropertyChanged_ReturnsOneInput()
         {
             // Initial state is a single design time input
-            var mgr = new TestTempPEBuildManager();
+            using (var mgr = new TestTempPEBuildManager())
+            {
+                await mgr.SetInputs(new[] { "Resources1.Designer.cs" }, null);
 
-            await mgr.SetInputs(new[] { "Resources1.Designer.cs" }, null);
-
-            // Apply our update
-            var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
+                // Apply our update
+                var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
     ""ProjectChanges"": {
         ""Compile"": {
             ""Difference"": { 
@@ -745,27 +760,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
     }
 }");
-            var result = await mgr.TestProcessAsync(update);
+                var result = await mgr.TestProcessAsync(update);
 
-            // One file should have been added
-            Assert.Single(result.Inputs);
-            Assert.Equal("Resources1.Designer.cs", result.Inputs.First());
-            Assert.Empty(result.SharedInputs);
-            Assert.Empty(mgr.DirtyItems);
-            Assert.Empty(mgr.DeletedItems);
-            Assert.Empty(mgr.CompiledItems);
+                // One file should have been added
+                Assert.Single(result.Inputs);
+                Assert.Equal("Resources1.Designer.cs", result.Inputs.First());
+                Assert.Empty(result.SharedInputs);
+                Assert.Empty(mgr.DirtyItems);
+                Assert.Empty(mgr.DeletedItems);
+                Assert.Empty(mgr.CompiledItems);
+            }
         }
 
         [Fact]
         public async Task Process_NonInputPropertyChangedOnSharedItem_ReturnsOneInput()
         {
             // Initial state is a single design time input
-            var mgr = new TestTempPEBuildManager();
+            using (var mgr = new TestTempPEBuildManager())
+            {
+                await mgr.SetInputs(new[] { "Resources1.Designer.cs" }, new[] { "Settings.Designer.cs" });
 
-            await mgr.SetInputs(new[] { "Resources1.Designer.cs" }, new[] { "Settings.Designer.cs" });
-
-            // Apply our update
-            var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
+                // Apply our update
+                var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
     ""ProjectChanges"": {
         ""Compile"": {
             ""Difference"": { 
@@ -790,33 +806,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
     }
 }");
-            var result = await mgr.TestProcessAsync(update);
+                var result = await mgr.TestProcessAsync(update);
 
-            // One file should have been added
-            Assert.Single(result.Inputs);
-            Assert.Equal("Resources1.Designer.cs", result.Inputs.First());
-            Assert.Single(result.SharedInputs);
-            Assert.Equal("Settings.Designer.cs", result.SharedInputs.First());
-            Assert.Empty(mgr.DirtyItems);
-            Assert.Empty(mgr.DeletedItems);
-            Assert.Empty(mgr.CompiledItems);
+                // One file should have been added
+                Assert.Single(result.Inputs);
+                Assert.Equal("Resources1.Designer.cs", result.Inputs.First());
+                Assert.Single(result.SharedInputs);
+                Assert.Equal("Settings.Designer.cs", result.SharedInputs.First());
+                Assert.Empty(mgr.DirtyItems);
+                Assert.Empty(mgr.DeletedItems);
+                Assert.Empty(mgr.CompiledItems);
+            }
         }
 
         [Fact]
         public async Task Process_RootNamespaceChanged_DirtiesAllPEs()
         {
             // Initial state is a single design time input
-            var mgr = new TestTempPEBuildManager();
+            using (var mgr = new TestTempPEBuildManager())
+            {
+                await mgr.SetInputs(new[] { "Resources1.Designer.cs", "Resources2.Designer.cs" }, null);
 
-            await mgr.SetInputs(new[] { "Resources1.Designer.cs", "Resources2.Designer.cs" }, null);
-
-            var compileUpdate = IProjectSubscriptionUpdateFactory.FromJson(@"{
+                var compileUpdate = IProjectSubscriptionUpdateFactory.FromJson(@"{
    ""ProjectChanges"": {
         ""Compile"": { }
     }
 }");
 
-            var configUpdate = IProjectSubscriptionUpdateFactory.FromJson(@"{
+                var configUpdate = IProjectSubscriptionUpdateFactory.FromJson(@"{
    ""ProjectChanges"": {
         ""ConfigurationGeneral"": {
             ""Difference"": {
@@ -831,20 +848,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     }
 }");
 
-            var result = await mgr.TestProcessAsync(compileUpdate, configUpdate);
+                var result = await mgr.TestProcessAsync(compileUpdate, configUpdate);
 
-            // One file should have been added
-            Assert.Equal(2, result.Inputs.Count);
-            Assert.Equal("Resources1.Designer.cs", result.Inputs.First());
-            Assert.Equal("Resources2.Designer.cs", result.Inputs.Last());
-            Assert.Empty(result.SharedInputs);
-            Assert.Equal(2, mgr.DirtyItems.Count);
-            Assert.Equal("Resources1.Designer.cs", mgr.DirtyItems.First());
-            Assert.Equal("Resources2.Designer.cs", mgr.DirtyItems.Last());
-            Assert.Empty(mgr.DeletedItems);
-            Assert.Equal(2, mgr.CompiledItems.Count);
-            Assert.Equal("TempPE\\Resources1.Designer.cs.dll", mgr.CompiledItems.First());
-            Assert.Equal("TempPE\\Resources2.Designer.cs.dll", mgr.CompiledItems.Last());
+                // One file should have been added
+                Assert.Equal(2, result.Inputs.Count);
+                Assert.Equal("Resources1.Designer.cs", result.Inputs.First());
+                Assert.Equal("Resources2.Designer.cs", result.Inputs.Last());
+                Assert.Empty(result.SharedInputs);
+                Assert.Equal(2, mgr.DirtyItems.Count);
+                Assert.Equal("Resources1.Designer.cs", mgr.DirtyItems.First());
+                Assert.Equal("Resources2.Designer.cs", mgr.DirtyItems.Last());
+                Assert.Empty(mgr.DeletedItems);
+                Assert.Equal(2, mgr.CompiledItems.Count);
+                Assert.Equal("TempPE\\Resources1.Designer.cs.dll", mgr.CompiledItems.First());
+                Assert.Equal("TempPE\\Resources2.Designer.cs.dll", mgr.CompiledItems.Last());
+            }
         }
 
 
@@ -852,10 +870,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public async Task Process_NonInputPropertyChangedOnNonItem_ReturnsEmptyCollections()
         {
             // Initial state is an empty object
-            var mgr = new TestTempPEBuildManager();
-
-            // Apply our update
-            var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
+            using (var mgr = new TestTempPEBuildManager())
+            {
+                // Apply our update
+                var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
     ""ProjectChanges"": {
         ""Compile"": {
             ""Difference"": { 
@@ -878,24 +896,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
     }
 }");
-            var result = await mgr.TestProcessAsync(update);
+                var result = await mgr.TestProcessAsync(update);
 
-            // Nothing should have been added
-            Assert.Empty(result.Inputs);
-            Assert.Empty(result.SharedInputs);
-            Assert.Empty(mgr.DirtyItems);
-            Assert.Empty(mgr.DeletedItems);
-            Assert.Empty(mgr.CompiledItems);
+                // Nothing should have been added
+                Assert.Empty(result.Inputs);
+                Assert.Empty(result.SharedInputs);
+                Assert.Empty(mgr.DirtyItems);
+                Assert.Empty(mgr.DeletedItems);
+                Assert.Empty(mgr.CompiledItems);
+            }
         }
 
         [Fact]
         public async Task Process_OneDesignTimeInputAndOneShared_ReturnsOneInputEach()
         {
             // Initial state is an empty object
-            var mgr = new TestTempPEBuildManager();
-
-            // Apply our update
-            var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
+            using (var mgr = new TestTempPEBuildManager())
+            {
+                // Apply our update
+                var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
     ""ProjectChanges"": {
         ""Compile"": {
             ""Difference"": { 
@@ -920,30 +939,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
     }
 }");
-            var result = await mgr.TestProcessAsync(update);
+                var result = await mgr.TestProcessAsync(update);
 
-            // One file should have been added
-            Assert.Single(result.Inputs);
-            Assert.Equal("Resources1.Designer.cs", result.Inputs.First());
-            Assert.Single(result.SharedInputs);
-            Assert.Equal("Settings.Designer.cs", result.SharedInputs.First());
-            Assert.Single(mgr.DirtyItems);
-            Assert.Equal("Resources1.Designer.cs", mgr.DirtyItems.First());
-            Assert.Empty(mgr.DeletedItems);
-            Assert.Single(mgr.CompiledItems);
-            Assert.Contains("TempPE\\Resources1.Designer.cs.dll", mgr.CompiledItems);
+                // One file should have been added
+                Assert.Single(result.Inputs);
+                Assert.Equal("Resources1.Designer.cs", result.Inputs.First());
+                Assert.Single(result.SharedInputs);
+                Assert.Equal("Settings.Designer.cs", result.SharedInputs.First());
+                Assert.Single(mgr.DirtyItems);
+                Assert.Equal("Resources1.Designer.cs", mgr.DirtyItems.First());
+                Assert.Empty(mgr.DeletedItems);
+                Assert.Single(mgr.CompiledItems);
+                Assert.Contains("TempPE\\Resources1.Designer.cs.dll", mgr.CompiledItems);
+            }
         }
 
         [Fact]
         public async Task Process_AddDesignTimeInput_ReturnsCorrectInputs()
         {
             // Initial state is a single design time input
-            var mgr = new TestTempPEBuildManager();
+            using (var mgr = new TestTempPEBuildManager())
+            {
+                await mgr.SetInputs(new[] { "Resources1.Designer.cs" }, null);
 
-            await mgr.SetInputs(new[] { "Resources1.Designer.cs" }, null);
-
-            // Apply our update
-            var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
+                // Apply our update
+                var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
     ""ProjectChanges"": {
         ""Compile"": {
             ""Difference"": { 
@@ -961,32 +981,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
     }
 }");
-            var result = await mgr.TestProcessAsync(update);
+                var result = await mgr.TestProcessAsync(update);
 
-            // Should be two design time files now
-            Assert.Equal(2, result.Inputs.Count);
-            Assert.Contains("Resources1.Designer.cs", result.Inputs);
-            Assert.Contains("Resources2.Designer.cs", result.Inputs);
-            Assert.Empty(result.SharedInputs);
-            Assert.Single(mgr.DirtyItems);
-            Assert.Equal("Resources2.Designer.cs", mgr.DirtyItems.First());
-            Assert.Empty(mgr.DeletedItems);
-            Assert.Single(mgr.CompiledItems);
-            Assert.Contains("TempPE\\Resources2.Designer.cs.dll", mgr.CompiledItems);
+                // Should be two design time files now
+                Assert.Equal(2, result.Inputs.Count);
+                Assert.Contains("Resources1.Designer.cs", result.Inputs);
+                Assert.Contains("Resources2.Designer.cs", result.Inputs);
+                Assert.Empty(result.SharedInputs);
+                Assert.Single(mgr.DirtyItems);
+                Assert.Equal("Resources2.Designer.cs", mgr.DirtyItems.First());
+                Assert.Empty(mgr.DeletedItems);
+                Assert.Single(mgr.CompiledItems);
+                Assert.Contains("TempPE\\Resources2.Designer.cs.dll", mgr.CompiledItems);
+            }
         }
 
         [Fact]
         public async Task Process_RemoveDesignTimeInput_ReturnsCorrectInput()
         {
             // Initial state is two design time inputs
-            var mgr = new TestTempPEBuildManager();
-            await mgr.SetInputs(new[] {
+            using (var mgr = new TestTempPEBuildManager())
+            {
+                await mgr.SetInputs(new[] {
                                                 "Resources1.Designer.cs",
                                                 "Resources2.Designer.cs"
                                               }, null);
 
-            // Apply our update
-            var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
+                // Apply our update
+                var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
     ""ProjectChanges"": {
         ""Compile"": {
             ""Difference"": { 
@@ -1004,33 +1026,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
     }
 }");
-            var result = await mgr.TestProcessAsync(update);
+                var result = await mgr.TestProcessAsync(update);
 
-            // One file should have been removed
-            Assert.Single(result.Inputs);
-            Assert.Equal("Resources1.Designer.cs", result.Inputs.First());
-            Assert.Empty(result.SharedInputs);
-            Assert.Empty(mgr.DirtyItems);
-            Assert.Single(mgr.DeletedItems);
-            Assert.Equal("Resources2.Designer.cs", mgr.DeletedItems.First());
-            Assert.Empty(mgr.CompiledItems);
+                // One file should have been removed
+                Assert.Single(result.Inputs);
+                Assert.Equal("Resources1.Designer.cs", result.Inputs.First());
+                Assert.Empty(result.SharedInputs);
+                Assert.Empty(mgr.DirtyItems);
+                Assert.Single(mgr.DeletedItems);
+                Assert.Equal("Resources2.Designer.cs", mgr.DeletedItems.First());
+                Assert.Empty(mgr.CompiledItems);
+            }
         }
 
         [Fact]
         public async Task Process_RemoveSharedDesignTimeInput_ReturnsCorrectInput()
         {
             // Initial state is two design time inputs
-            var mgr = new TestTempPEBuildManager();
-            await mgr.SetInputs(new[] {
+            using (var mgr = new TestTempPEBuildManager())
+            {
+                await mgr.SetInputs(new[] {
                                                 "Resources1.Designer.cs",
                                                 "Resources2.Designer.cs"
                                               },
-                                new[] {
+                                    new[] {
                                                 "Settings.Designer.cs"
-                                      });
+                                          });
 
-            // Apply our update
-            var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
+                // Apply our update
+                var update = IProjectSubscriptionUpdateFactory.FromJson(@"{
     ""ProjectChanges"": {
         ""Compile"": {
             ""Difference"": { 
@@ -1048,18 +1072,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
     }
 }");
-            var result = await mgr.TestProcessAsync(update);
+                var result = await mgr.TestProcessAsync(update);
 
-            // One file should have been removed
-            Assert.Equal(2, result.Inputs.Count);
-            Assert.Equal("Resources1.Designer.cs", result.Inputs.First());
-            Assert.Equal("Resources2.Designer.cs", result.Inputs.Last());
-            Assert.Empty(result.SharedInputs);
-            Assert.Equal(2, mgr.DirtyItems.Count);
-            Assert.Equal("Resources1.Designer.cs", mgr.DirtyItems.First());
-            Assert.Equal("Resources2.Designer.cs", mgr.DirtyItems.Last());
-            Assert.Empty(mgr.DeletedItems);
-            Assert.Empty(mgr.CompiledItems);
+                // One file should have been removed
+                Assert.Equal(2, result.Inputs.Count);
+                Assert.Equal("Resources1.Designer.cs", result.Inputs.First());
+                Assert.Equal("Resources2.Designer.cs", result.Inputs.Last());
+                Assert.Empty(result.SharedInputs);
+                Assert.Equal(2, mgr.DirtyItems.Count);
+                Assert.Equal("Resources1.Designer.cs", mgr.DirtyItems.First());
+                Assert.Equal("Resources2.Designer.cs", mgr.DirtyItems.Last());
+                Assert.Empty(mgr.DeletedItems);
+                Assert.Empty(mgr.CompiledItems);
+            }
         }
 
         internal class TestTempPEBuildManager : TempPEBuildManager
@@ -1078,7 +1103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                       IUnconfiguredProjectCommonServicesFactory.Create(threadingService: IProjectThreadingServiceFactory.Create()),
                       IActiveWorkspaceProjectContextHostFactory.Create(),
                       IActiveConfiguredProjectSubscriptionServiceFactory.Create(),
-                      null, 
+                      null,
                       fileSystem,
                       IProjectFaultHandlerServiceFactory.Create(),
                       null)
@@ -1124,7 +1149,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 var result = await base.PreprocessAsync(input, previousOutput);
 
                 await base.ApplyAsync(result);
-                await Task.Delay(600);
                 return AppliedValue.Value;
             }
 
@@ -1140,7 +1164,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 await base.ApplyAsync(new DesignTimeInputsDelta
                 {
                     AddedItems = ImmutableArray.CreateRange<string>(designTimeInputs),
-                    AddedSharedItems = ImmutableArray.CreateRange<string>(sharedDesignTimeInputs)                    
+                    AddedSharedItems = ImmutableArray.CreateRange<string>(sharedDesignTimeInputs)
                 });
 
                 DeletedItems.Clear();
