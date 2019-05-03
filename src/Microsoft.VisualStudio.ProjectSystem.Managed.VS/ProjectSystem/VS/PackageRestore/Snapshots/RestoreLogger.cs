@@ -13,21 +13,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         {
             if (logger.IsEnabled)
             {
-                using (IProjectLoggerBatch batch = logger.BeginBatch())
-                {
-                    batch.WriteLine();
-                    batch.WriteLine("------------------------------------------");
-                    batch.WriteLine($"BEGIN Nominate Restore for {fullPath}");
-                    batch.IndentLevel++;
+                using IProjectLoggerBatch batch = logger.BeginBatch();
+                batch.WriteLine();
+                batch.WriteLine("------------------------------------------");
+                batch.WriteLine($"BEGIN Nominate Restore for {fullPath}");
+                batch.IndentLevel++;
 
-                    batch.WriteLine($"MSBuildProjectExtensionsPath:     {projectRestoreInfo.BaseIntermediatePath}");
-                    batch.WriteLine($"OriginalTargetFrameworks:         {projectRestoreInfo.OriginalTargetFrameworks}");
-                    LogTargetFrameworks(batch, projectRestoreInfo.TargetFrameworks);
-                    LogReferenceItems(batch, "Tool References", projectRestoreInfo.ToolReferences);
+                batch.WriteLine($"MSBuildProjectExtensionsPath:     {projectRestoreInfo.BaseIntermediatePath}");
+                batch.WriteLine($"OriginalTargetFrameworks:         {projectRestoreInfo.OriginalTargetFrameworks}");
+                LogTargetFrameworks(batch, projectRestoreInfo.TargetFrameworks);
+                LogReferenceItems(batch, "Tool References", projectRestoreInfo.ToolReferences);
 
-                    batch.IndentLevel--;
-                    batch.WriteLine();
-                }
+                batch.IndentLevel--;
+                batch.WriteLine();
             }
         }
 
@@ -35,13 +33,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         {
             if (logger.IsEnabled)
             {
-                using (IProjectLoggerBatch batch = logger.BeginBatch())
-                {
-                    batch.WriteLine();
-                    batch.WriteLine("------------------------------------------");
-                    batch.WriteLine($"COMPLETED Nominate Restore for {fullPath}");
-                    batch.WriteLine();
-                }
+                using IProjectLoggerBatch batch = logger.BeginBatch();
+                batch.WriteLine();
+                batch.WriteLine("------------------------------------------");
+                batch.WriteLine($"COMPLETED Nominate Restore for {fullPath}");
+                batch.WriteLine();
             }
         }
 

@@ -135,19 +135,17 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private async Task ExecuteUnderLockCoreAsync(Func<CancellationToken, Task> action, CancellationToken cancellationToken = default)
         {
-            using (var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, DisposalToken))
-            {
-                CancellationToken jointCancellationToken = source.Token;
+            using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, DisposalToken);
+            CancellationToken jointCancellationToken = source.Token;
 
-                try
-                {
-                    await _semaphore.ExecuteAsync(() => action(jointCancellationToken), jointCancellationToken);
-                }
-                catch (Exception ex)
-                {
-                    if (!TryTranslateException(ex, cancellationToken, DisposalToken))
-                        throw;
-                }
+            try
+            {
+                await _semaphore.ExecuteAsync(() => action(jointCancellationToken), jointCancellationToken);
+            }
+            catch (Exception ex)
+            {
+                if (!TryTranslateException(ex, cancellationToken, DisposalToken))
+                    throw;
             }
         }
 
