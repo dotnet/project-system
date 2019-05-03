@@ -86,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             workspace = WorkspaceFactory.Create(code, language);
             var projectFilePath = workspace.CurrentSolution.Projects.First().FilePath;
             var project = UnconfiguredProjectFactory.Create(filePath: projectFilePath);
-            additionalProps = additionalProps ?? new Dictionary<string, string>();
+            additionalProps ??= new Dictionary<string, string>();
             additionalProps[propertyName] = propertyValueInProjectFile;
             var defaultProperties = CreateProjectProperties(additionalProps, saveInProjectFile: true);
             return new TestProjectFileOrAssemblyInfoPropertiesProvider(project, workspace: workspace, defaultProperties: defaultProperties, interceptingProvider: interceptingProvider);
@@ -94,7 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         private IProjectProperties CreateProjectProperties(Dictionary<string, string> additionalProps, bool saveInProjectFile)
         {
-            additionalProps = additionalProps ?? new Dictionary<string, string>();
+            additionalProps ??= new Dictionary<string, string>();
 
             // Configure whether AssemblyInfo properties are generated in project file or not.
             var saveInProjectFileStr = saveInProjectFile.ToString();

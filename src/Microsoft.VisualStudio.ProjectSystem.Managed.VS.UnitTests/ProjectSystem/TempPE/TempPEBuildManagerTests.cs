@@ -1159,8 +1159,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             public async Task SetInputs(string[] designTimeInputs, string[] sharedDesignTimeInputs)
             {
-                designTimeInputs = designTimeInputs ?? Array.Empty<string>();
-                sharedDesignTimeInputs = sharedDesignTimeInputs ?? Array.Empty<string>();
+                designTimeInputs ??= Array.Empty<string>();
+                sharedDesignTimeInputs ??= Array.Empty<string>();
                 await base.ApplyAsync(new DesignTimeInputsDelta
                 {
                     AddedItems = ImmutableArray.CreateRange<string>(designTimeInputs),

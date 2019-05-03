@@ -11,8 +11,8 @@ namespace Microsoft.VisualStudio.Shell.Interop
         {
             var buildManager = new Mock<IVsSolutionBuildManager2>();
 
-            solutionEventsListener = solutionEventsListener ?? IVsUpdateSolutionEventsFactory.Create();
-            hierarchyToBuild = hierarchyToBuild ?? IVsHierarchyFactory.Create();
+            solutionEventsListener ??= IVsUpdateSolutionEventsFactory.Create();
+            hierarchyToBuild ??= IVsHierarchyFactory.Create();
 
             int isBusy = isBuilding ? 1 : 0;
             buildManager.Setup(b => b.QueryBuildManagerBusy(out isBusy))

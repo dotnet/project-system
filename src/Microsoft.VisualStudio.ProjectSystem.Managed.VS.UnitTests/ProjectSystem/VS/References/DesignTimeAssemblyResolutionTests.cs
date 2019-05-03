@@ -292,7 +292,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 
         private static DesignTimeAssemblyResolution CreateInstance(IVsHierarchy hierarchy = null)
         {
-            hierarchy = hierarchy ?? IVsHierarchyFactory.Create();
+            hierarchy ??= IVsHierarchyFactory.Create();
 
             IUnconfiguredProjectVsServices projectVsServices = IUnconfiguredProjectVsServicesFactory.Implement(() => hierarchy);
 

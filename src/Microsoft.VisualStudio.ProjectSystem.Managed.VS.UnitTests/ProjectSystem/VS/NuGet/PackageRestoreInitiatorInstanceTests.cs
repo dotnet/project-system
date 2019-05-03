@@ -91,11 +91,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
         private PackageRestoreInitiatorInstance CreateInstance(UnconfiguredProject project = null, IPackageRestoreUnconfiguredDataSource dataSource = null, IVsSolutionRestoreService3 solutionRestoreService = null)
         {
-            project = project ?? UnconfiguredProjectFactory.Create();
-            dataSource = dataSource ?? IPackageRestoreUnconfiguredDataSourceFactory.Create();
+            project ??= UnconfiguredProjectFactory.Create();
+            dataSource ??= IPackageRestoreUnconfiguredDataSourceFactory.Create();
             IProjectThreadingService threadingService = IProjectThreadingServiceFactory.Create();
             IProjectAsynchronousTasksService projectAsynchronousTasksService = IProjectAsynchronousTasksServiceFactory.Create();
-            solutionRestoreService = solutionRestoreService ?? IVsSolutionRestoreServiceFactory.Create();
+            solutionRestoreService ??= IVsSolutionRestoreServiceFactory.Create();
             IProjectLogger logger = IProjectLoggerFactory.Create();
 
             return new PackageRestoreInitiatorInstance(project, dataSource, threadingService, projectAsynchronousTasksService, solutionRestoreService, logger);

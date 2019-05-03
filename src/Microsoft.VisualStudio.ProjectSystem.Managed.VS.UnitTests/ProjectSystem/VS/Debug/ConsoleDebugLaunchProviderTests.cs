@@ -631,11 +631,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                                                            IVsDebugger10 debugger = null)
         {
 
-            environment = environment ?? Mock.Of<IEnvironmentHelper>();
-            tokenReplacer = tokenReplacer ?? IDebugTokenReplacerFactory.Create();
-            activeDebugFramework = activeDebugFramework ?? IActiveDebugFrameworkServicesFactory.ImplementGetConfiguredProjectForActiveFrameworkAsync(configuredProject);
-            threadingService = threadingService ?? IProjectThreadingServiceFactory.Create();
-            debugger = debugger ?? IVsDebugger10Factory.ImplementIsIntegratedConsoleEnabled(enabled: false);
+            environment ??= Mock.Of<IEnvironmentHelper>();
+            tokenReplacer ??= IDebugTokenReplacerFactory.Create();
+            activeDebugFramework ??= IActiveDebugFrameworkServicesFactory.ImplementGetConfiguredProjectForActiveFrameworkAsync(configuredProject);
+            threadingService ??= IProjectThreadingServiceFactory.Create();
+            debugger ??= IVsDebugger10Factory.ImplementIsIntegratedConsoleEnabled(enabled: false);
             
             
             return new ConsoleDebugTargetsProvider(project, tokenReplacer, fileSystem, environment, activeDebugFramework, properties, threadingService, IVsUIServiceFactory.Create<SVsShellDebugger, IVsDebugger10>(debugger));

@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var mock = new Mock<IProjectService>();
 
-            services = services ?? ProjectServicesFactory.Create(projectService: mock.Object);
+            services ??= ProjectServicesFactory.Create(projectService: mock.Object);
 
             mock.Setup(p => p.Services)
                    .Returns(services);
