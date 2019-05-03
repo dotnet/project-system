@@ -107,9 +107,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private CreateFileFromTemplateService CreateInstance(IUnconfiguredProjectVsServices projectVsServices, DTE2 dte, ProjectProperties properties)
         {
-            projectVsServices = projectVsServices ?? IUnconfiguredProjectVsServicesFactory.Create();
-            dte = dte ?? DTEFactory.Create();
-            properties = properties ?? ProjectPropertiesFactory.CreateEmpty();
+            projectVsServices ??= IUnconfiguredProjectVsServicesFactory.Create();
+            dte ??= DTEFactory.Create();
+            properties ??= ProjectPropertiesFactory.CreateEmpty();
 
             return new CreateFileFromTemplateService(projectVsServices, IVsUIServiceFactory.Create<SDTE, DTE2>(dte), properties);
         }

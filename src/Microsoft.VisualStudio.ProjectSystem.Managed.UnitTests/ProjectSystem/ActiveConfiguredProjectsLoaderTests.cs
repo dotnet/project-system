@@ -135,7 +135,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private static ActiveConfiguredProjectsLoader CreateInstance(UnconfiguredProject project, IActiveConfigurationGroupService activeConfigurationGroupService, IUnconfiguredProjectTasksService tasksService)
         {
-            tasksService = tasksService ?? IUnconfiguredProjectTasksServiceFactory.ImplementLoadedProjectAsync<ConfiguredProject>(t => t());
+            tasksService ??= IUnconfiguredProjectTasksServiceFactory.ImplementLoadedProjectAsync<ConfiguredProject>(t => t());
 
             return new ActiveConfiguredProjectsLoader(project, activeConfigurationGroupService, tasksService);
         }

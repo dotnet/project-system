@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     {
         public static IProjectCapabilitiesScope Create(IEnumerable<string> capabilities = null)
         {
-            capabilities = capabilities ?? Enumerable.Empty<string>();
+            capabilities ??= Enumerable.Empty<string>();
             var snapshot = new Mock<IProjectCapabilitiesSnapshot>();
             snapshot.Setup(s => s.IsProjectCapabilityPresent(It.IsAny<string>())).Returns((string capability) => capabilities.Contains(capability));
 

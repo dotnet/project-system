@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public static IProjectCommonServices ImplementThreadingPolicy(IProjectThreadingService threadingService)
         {
-            threadingService = threadingService ?? IProjectThreadingServiceFactory.Create();
+            threadingService ??= IProjectThreadingServiceFactory.Create();
 
             var services = ProjectServicesFactory.Create(threadingService);
             var projectService = IProjectServiceFactory.Create(services);

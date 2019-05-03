@@ -40,10 +40,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 
         internal AbstractMoveCommand CreateAbstractInstance(IPhysicalProjectTree projectTree = null, Shell.SVsServiceProvider serviceProvider = null, ConfiguredProject configuredProject = null, IProjectAccessor accessor = null)
         {
-            projectTree = projectTree ?? IPhysicalProjectTreeFactory.Create();
-            serviceProvider = serviceProvider ?? SVsServiceProviderFactory.Create();
-            configuredProject = configuredProject ?? ConfiguredProjectFactory.Create();
-            accessor = accessor ?? IProjectAccessorFactory.Create();
+            projectTree ??= IPhysicalProjectTreeFactory.Create();
+            serviceProvider ??= SVsServiceProviderFactory.Create();
+            configuredProject ??= ConfiguredProjectFactory.Create();
+            accessor ??= IProjectAccessorFactory.Create();
 
             return CreateInstance(projectTree, serviceProvider, configuredProject, accessor);
         }

@@ -122,11 +122,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private PhysicalProjectTreeStorage CreateInstance(IProjectTreeService treeService = null, IProjectTreeProvider treeProvider = null, IFileSystem fileSystem = null, IFolderManager folderManager = null, UnconfiguredProject project = null)
         {
-            treeService = treeService ?? IProjectTreeServiceFactory.Create(ProjectTreeParser.Parse("Root"));
-            treeProvider = treeProvider ?? IProjectTreeProviderFactory.Create();
-            fileSystem = fileSystem ?? IFileSystemFactory.Create();
-            folderManager = folderManager ?? IFolderManagerFactory.Create();
-            project = project ?? UnconfiguredProjectFactory.Create();
+            treeService ??= IProjectTreeServiceFactory.Create(ProjectTreeParser.Parse("Root"));
+            treeProvider ??= IProjectTreeProviderFactory.Create();
+            fileSystem ??= IFileSystemFactory.Create();
+            folderManager ??= IFolderManagerFactory.Create();
+            project ??= UnconfiguredProjectFactory.Create();
 
             return new PhysicalProjectTreeStorage(new Lazy<IProjectTreeService>(() => treeService),
                                                   new Lazy<IProjectTreeProvider>(() => treeProvider),

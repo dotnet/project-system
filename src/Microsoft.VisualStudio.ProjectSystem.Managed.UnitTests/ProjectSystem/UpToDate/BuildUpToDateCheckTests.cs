@@ -125,7 +125,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             Dictionary<string, IProjectRuleSnapshotModel> sourceSnapshot = null,
             bool disableFastUpToDateCheck = false)
         {
-            projectSnapshot = projectSnapshot ?? new Dictionary<string, IProjectRuleSnapshotModel>();
+            projectSnapshot ??= new Dictionary<string, IProjectRuleSnapshotModel>();
 
             if (!projectSnapshot.ContainsKey(ConfigurationGeneral.SchemaName))
             {
