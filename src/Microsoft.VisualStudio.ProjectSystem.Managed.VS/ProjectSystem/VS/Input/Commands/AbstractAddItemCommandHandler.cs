@@ -24,7 +24,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         private readonly IVsUIService<IVsAddProjectItemDlg> _addItemDialog;
         private readonly IVsUIService<IVsShell> _vsShell;
 
-        [ImportingConstructor]
         public AbstractAddItemCommandHandler(ConfiguredProject configuredProject, IPhysicalProjectTree projectTree, IUnconfiguredProjectVsServices projectVsServices, IVsUIService<IVsAddProjectItemDlg> addItemDialog, IVsUIService<SVsShell, IVsShell> vsShell)
         {
             _configuredProject = configuredProject;
