@@ -57,7 +57,6 @@ dotnet_style_predefined_type_for_member_access = true:suggestion
 # Prefer read-only on fields
 dotnet_style_readonly_field = true:warning
 
-
 # Naming Rules
 dotnet_naming_rule.interfaces_must_be_pascal_cased_and_prefixed_with_I.symbols                        = interface_symbols
 dotnet_naming_rule.interfaces_must_be_pascal_cased_and_prefixed_with_I.style                          = pascal_case_and_prefix_with_I_style
