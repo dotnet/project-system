@@ -88,15 +88,6 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Class.
-        /// </summary>
-        internal static string ClassTemplateName {
-            get {
-                return ResourceManager.GetString("ClassTemplateName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to COM.
         /// </summary>
         internal static string ComNodeName {

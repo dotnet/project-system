@@ -7,11 +7,6 @@
         <target state="translated">{0} – import pochází z cílového souboru. Tento import nelze odebrat.</target>
         <note />
       </trans-unit>
-      <trans-unit id="ClassTemplateName">
-        <source>Class</source>
-        <target state="translated">Třída</target>
-        <note />
-      </trans-unit>
       <trans-unit id="ProjectModificationsPrompt">
         <source>The project '{0}' has been modified outside the environment.
 

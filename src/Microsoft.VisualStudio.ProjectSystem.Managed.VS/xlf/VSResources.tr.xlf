@@ -7,11 +7,6 @@
         <target state="translated">{0} - İçeri aktarım hedef dosyadan geliyor. Bu içeri aktarım kaldırılamaz.</target>
         <note />
       </trans-unit>
-      <trans-unit id="ClassTemplateName">
-        <source>Class</source>
-        <target state="translated">Sınıf</target>
-        <note />
-      </trans-unit>
       <trans-unit id="ProjectModificationsPrompt">
         <source>The project '{0}' has been modified outside the environment.
 

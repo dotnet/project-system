@@ -40,5 +40,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public const string SortByDisplayOrder = ProjectCapabilities.SortByDisplayOrder;
         public const string DotNet = ".NET";
         public const string WindowsForms = nameof(WindowsForms);
+        public const string WPF = nameof(WPF);
     }
 }

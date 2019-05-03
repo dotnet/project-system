@@ -7,11 +7,6 @@
         <target state="translated">{0} - インポートは、ターゲット ファイルからのものです。このインポートは削除できません。</target>
         <note />
       </trans-unit>
-      <trans-unit id="ClassTemplateName">
-        <source>Class</source>
-        <target state="translated">クラス</target>
-        <note />
-      </trans-unit>
       <trans-unit id="ProjectModificationsPrompt">
         <source>The project '{0}' has been modified outside the environment.
 
