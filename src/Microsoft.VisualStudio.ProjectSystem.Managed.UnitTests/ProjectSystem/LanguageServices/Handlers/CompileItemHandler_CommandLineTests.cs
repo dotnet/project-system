@@ -14,7 +14,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
-    public class SourceItemHandler_CommandTests : CommandLineHandlerTestBase
+    public class CompileItemHandler_CommandTests : CommandLineHandlerTestBase
     {
         [Fact]
         public void Constructor_NullAsProject_ThrowsArgumentNull()
@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             Assert.Throws<ArgumentNullException>("project", () =>
             {
-                new SourceItemHandler((UnconfiguredProject)null);
+                new CompileItemHandler((UnconfiguredProject)null);
             });
         }
 
@@ -83,11 +83,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             return CreateInstance(null, null);
         }
 
-        private SourceItemHandler CreateInstance(UnconfiguredProject project = null, IWorkspaceProjectContext context = null)
+        private CompileItemHandler CreateInstance(UnconfiguredProject project = null, IWorkspaceProjectContext context = null)
         {
             project = project ?? UnconfiguredProjectFactory.Create();
 
-            var handler = new SourceItemHandler(project);
+            var handler = new CompileItemHandler(project);
             if (context != null)
                 handler.Initialize(context);
 
