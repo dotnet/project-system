@@ -194,32 +194,32 @@
       </trans-unit>
       <trans-unit id="DeleteBtnHelpText">
         <source>Delete the current profile and change to the next available profile</source>
-        <target state="new">Delete the current profile and change to the next available profile</target>
+        <target state="translated">Usuń bieżący profil i przełącz się na następny dostępny profil</target>
         <note />
       </trans-unit>
       <trans-unit id="NewBtnHelpText">
         <source>Open the new profile dialog</source>
-        <target state="new">Open the new profile dialog</target>
+        <target state="translated">Otwórz okno dialogowe nowego profilu</target>
         <note />
       </trans-unit>
       <trans-unit id="CancelBtnHelpText">
         <source>Return to the debug property page with no changes</source>
-        <target state="new">Return to the debug property page with no changes</target>
+        <target state="translated">Wróć do strony właściwości debugowania bez wprowadzania zmian</target>
         <note />
       </trans-unit>
       <trans-unit id="OKBtnHelpText">
         <source>Create the profile and return to the debug property page with the new profile selected</source>
-        <target state="new">Create the profile and return to the debug property page with the new profile selected</target>
+        <target state="translated">Utwórz profil i wróć na stronę właściwości debugowania z wybranym nowym profilem</target>
         <note />
       </trans-unit>
       <trans-unit id="chkLaunchBrowserHelpText">
         <source>Checking enables a textbox to specify an absolute or relative URl</source>
-        <target state="new">Checking enables a textbox to specify an absolute or relative URl</target>
+        <target state="translated">Zaznaczenie spowoduje włączenie pola tekstowego, w którym będzie można określić bezwzględny lub względny identyfikator URl</target>
         <note />
       </trans-unit>
       <trans-unit id="chkNativeCodeDebuggingText">
         <source>Enable native code debugging</source>
-        <target state="new">Enable native code debugging</target>
+        <target state="translated">Włącz debugowanie kodu natywnego</target>
         <note />
       </trans-unit>
     </body>
