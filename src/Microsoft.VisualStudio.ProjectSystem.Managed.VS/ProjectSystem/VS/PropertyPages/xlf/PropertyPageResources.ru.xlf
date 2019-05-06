@@ -194,32 +194,32 @@
       </trans-unit>
       <trans-unit id="DeleteBtnHelpText">
         <source>Delete the current profile and change to the next available profile</source>
-        <target state="new">Delete the current profile and change to the next available profile</target>
+        <target state="translated">Удалить текущую конфигурацию и переключиться на следующий доступный профиль</target>
         <note />
       </trans-unit>
       <trans-unit id="NewBtnHelpText">
         <source>Open the new profile dialog</source>
-        <target state="new">Open the new profile dialog</target>
+        <target state="translated">Открыть диалоговое окно нового профиля</target>
         <note />
       </trans-unit>
       <trans-unit id="CancelBtnHelpText">
         <source>Return to the debug property page with no changes</source>
-        <target state="new">Return to the debug property page with no changes</target>
+        <target state="translated">Вернуться на страницу свойств отладки без изменений</target>
         <note />
       </trans-unit>
       <trans-unit id="OKBtnHelpText">
         <source>Create the profile and return to the debug property page with the new profile selected</source>
-        <target state="new">Create the profile and return to the debug property page with the new profile selected</target>
+        <target state="translated">Создать профиль и вернуться на страницу свойств отладки с выбранным новым профилем</target>
         <note />
       </trans-unit>
       <trans-unit id="chkLaunchBrowserHelpText">
         <source>Checking enables a textbox to specify an absolute or relative URl</source>
-        <target state="new">Checking enables a textbox to specify an absolute or relative URl</target>
+        <target state="translated">При установке флажка включается текстовое поле для указания абсолютного или относительного URI-адреса</target>
         <note />
       </trans-unit>
       <trans-unit id="chkNativeCodeDebuggingText">
         <source>Enable native code debugging</source>
-        <target state="new">Enable native code debugging</target>
+        <target state="translated">Включить отладку машинного кода</target>
         <note />
       </trans-unit>
     </body>

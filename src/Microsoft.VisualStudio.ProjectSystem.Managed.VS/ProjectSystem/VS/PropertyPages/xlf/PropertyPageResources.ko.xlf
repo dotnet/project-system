@@ -194,32 +194,32 @@
       </trans-unit>
       <trans-unit id="DeleteBtnHelpText">
         <source>Delete the current profile and change to the next available profile</source>
-        <target state="new">Delete the current profile and change to the next available profile</target>
+        <target state="translated">현재 프로필을 삭제하고 다음으로 사용 가능한 프로필로 변경합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="NewBtnHelpText">
         <source>Open the new profile dialog</source>
-        <target state="new">Open the new profile dialog</target>
+        <target state="translated">새 프로필 대화 상자를 엽니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="CancelBtnHelpText">
         <source>Return to the debug property page with no changes</source>
-        <target state="new">Return to the debug property page with no changes</target>
+        <target state="translated">변경하지 않고 디버그 속성 페이지로 돌아갑니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="OKBtnHelpText">
         <source>Create the profile and return to the debug property page with the new profile selected</source>
-        <target state="new">Create the profile and return to the debug property page with the new profile selected</target>
+        <target state="translated">새 프로필을 만들어 선택하고 디버그 속성 페이지로 돌아갑니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="chkLaunchBrowserHelpText">
         <source>Checking enables a textbox to specify an absolute or relative URl</source>
-        <target state="new">Checking enables a textbox to specify an absolute or relative URl</target>
+        <target state="translated">선택하면 텍스트 상자를 사용하여 절대 또는 상대 URI을 지정할 수 있습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="chkNativeCodeDebuggingText">
         <source>Enable native code debugging</source>
-        <target state="new">Enable native code debugging</target>
+        <target state="translated">네이티브 코드 디버깅 사용</target>
         <note />
       </trans-unit>
     </body>
