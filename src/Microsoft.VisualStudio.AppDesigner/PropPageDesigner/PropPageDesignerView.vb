@@ -17,6 +17,7 @@ Imports Microsoft.VisualStudio.Editors.PropertyPages
 Imports Microsoft.VisualStudio.ManagedInterfaces.ProjectDesigner
 Imports Microsoft.VisualStudio.PlatformUI
 Imports Microsoft.VisualStudio.Shell.Interop
+Imports Microsoft.VisualStudio.Utilities
 
 Imports OleInterop = Microsoft.VisualStudio.OLE.Interop
 Imports VSITEMID = Microsoft.VisualStudio.Editors.VSITEMIDAPPDES
@@ -54,8 +55,8 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             'Add any initialization after the InitializeComponent() call
 
             ' Scale the width of the Configuration/Platform combo boxes
-            ConfigurationComboBox.Width = DpiHelper.LogicalToDeviceUnitsX(ConfigurationComboBox.Width)
-            PlatformComboBox.Width = DpiHelper.LogicalToDeviceUnitsX(PlatformComboBox.Width)
+            ConfigurationComboBox.Width = DpiAwareness.LogicalToDeviceUnits(Handle, ConfigurationComboBox.Width)
+            PlatformComboBox.Width = DpiAwareness.LogicalToDeviceUnits(Handle, PlatformComboBox.Width)
 
             'Start out with the assumption that the configuration/platform comboboxes
             '  are invisible, otherwise they will flicker visible before being turned off.

@@ -4,13 +4,13 @@ using Moq;
 
 using NuGet.SolutionRestoreManager;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
+namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
-    internal static class IVsProjectRestoreInfoFactory
+    internal static class IVsProjectRestoreInfo2Factory
     {
-        public static IVsProjectRestoreInfo Create()
+        public static IVsProjectRestoreInfo2 Create()
         {
-            return Mock.Of<IVsProjectRestoreInfo>();
+            return Mock.Of<IVsProjectRestoreInfo2>();
         }
     }
 }

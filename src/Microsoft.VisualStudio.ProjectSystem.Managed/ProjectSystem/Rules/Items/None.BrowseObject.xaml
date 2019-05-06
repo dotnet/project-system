@@ -132,6 +132,12 @@
 
   <EnumProperty Name="SubType"
                 Visible="false">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="DesignTimeItemPropertiesStorage"
+                  ItemType="None"
+                  PersistedName="SubType"
+                  HasConfigurationCondition="false"/>
+    </EnumProperty.DataSource>
     <EnumValue Name="Designer" />
     <EnumValue Name="Component" />
     <EnumValue Name="Control" />

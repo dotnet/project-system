@@ -6,7 +6,7 @@ Imports System.Drawing
 Imports System.Windows.Forms
 
 Imports Microsoft.VisualStudio.Editors.Common
-Imports Microsoft.VisualStudio.PlatformUI
+Imports Microsoft.VisualStudio.Utilities
 
 Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
@@ -43,7 +43,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             BackColor = SystemColors.Window
             ForeColor = SystemColors.WindowText
             ' Make sure the row headers have enough space to display the glyphs in HDPI
-            RowHeadersWidth = DpiHelper.LogicalToDeviceUnitsX(RowHeadersWidth)
+            RowHeadersWidth = DpiAwareness.LogicalToDeviceUnits(Handle, RowHeadersWidth)
         End Sub
 
         ''' <summary>

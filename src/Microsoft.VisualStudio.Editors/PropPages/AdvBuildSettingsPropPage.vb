@@ -6,7 +6,7 @@ Imports System.Reflection
 Imports System.Runtime.Versioning
 Imports System.Windows.Forms
 
-Imports Microsoft.VisualStudio.PlatformUI
+Imports Microsoft.VisualStudio.Utilities
 Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.VisualStudio.Editors.Common
 Imports VSLangProj80
@@ -36,7 +36,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             cboDebugInfo.Items.AddRange(New Object() {New ComboItem("none", My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AdvancedBuildSettings_DebugInfo_None), New ComboItem("full", My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AdvancedBuildSettings_DebugInfo_Full), New ComboItem("pdbonly", My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AdvancedBuildSettings_DebugInfo_PdbOnly), New ComboItem("portable", My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AdvancedBuildSettings_DebugInfo_Portable), New ComboItem("embedded", My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AdvancedBuildSettings_DebugInfo_Embedded)})
 
             ' Scale the width of the overarching table layout panel
-            overarchingTableLayoutPanel.Width = DpiHelper.LogicalToDeviceUnitsX(overarchingTableLayoutPanel.Width)
+            overarchingTableLayoutPanel.Width = DpiAwareness.LogicalToDeviceUnits(Handle, overarchingTableLayoutPanel.Width)
 
             MinimumSize = PreferredSize()
 

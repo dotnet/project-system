@@ -8,15 +8,15 @@ namespace NuGet.SolutionRestoreManager
 {
     internal static class IVsSolutionRestoreServiceFactory
     {
-        public static IVsSolutionRestoreService Create()
+        public static IVsSolutionRestoreService3 Create()
         {
-            return Mock.Of<IVsSolutionRestoreService>();
+            return Mock.Of<IVsSolutionRestoreService3>();
         }
 
-        internal static IVsSolutionRestoreService ImplementNominateProjectAsync(Action<string, IVsProjectRestoreInfo, CancellationToken> action)
+        internal static IVsSolutionRestoreService3 ImplementNominateProjectAsync(Action<string, IVsProjectRestoreInfo2, CancellationToken> action)
         {
-            var mock = new Mock<IVsSolutionRestoreService>();
-            mock.Setup(s => s.NominateProjectAsync(It.IsAny<string>(), It.IsAny<IVsProjectRestoreInfo>(), It.IsAny<CancellationToken>()))
+            var mock = new Mock<IVsSolutionRestoreService3>();
+            mock.Setup(s => s.NominateProjectAsync(It.IsAny<string>(), It.IsAny<IVsProjectRestoreInfo2>(), It.IsAny<CancellationToken>()))
                 .Callback(action)
                 .ReturnsAsync(true);
 
