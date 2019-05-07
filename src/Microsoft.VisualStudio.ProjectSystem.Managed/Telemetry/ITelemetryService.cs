@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.ProjectSystem;
 
 namespace Microsoft.VisualStudio.Telemetry
 {
-    [ProjectSystemContract(ProjectSystemContractScope2.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
+    [ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface ITelemetryService
     {
         /// <summary>

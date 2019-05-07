@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
     /// Handles child, search, and tracking operations for a particular kind of
     /// <see cref="IDependency"/>.
     /// </summary>
-    [ProjectSystemContract(ProjectSystemContractScope2.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
+    [ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface IDependenciesGraphViewProvider
     {
         bool SupportsDependency(IDependency dependency);

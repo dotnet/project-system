@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
     /// Global scope contract that provides information about project level 
     /// dependencies snapshot providers.
     /// </summary>
-    [ProjectSystemContract(ProjectSystemContractScope2.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
+    [ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface IAggregateDependenciesSnapshotProvider
     {
         /// <summary>

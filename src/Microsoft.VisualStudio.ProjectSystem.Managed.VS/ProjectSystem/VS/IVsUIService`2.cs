@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     /// <typeparam name="TInterface">
     ///     The type of the service to return from <see cref="IVsService{T}.GetValueAsync"/>
     /// </typeparam>
-    [ProjectSystemContract(ProjectSystemContractScope2.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
+    [ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface IVsUIService<TService, TInterface> : IVsUIService<TInterface>
     {
     }

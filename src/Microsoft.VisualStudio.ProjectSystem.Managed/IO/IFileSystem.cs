@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.IO
     /// <summary>
     ///     Provides static methods for the creation, copying, deletion, moving of files and directories.
     /// </summary>
-    [ProjectSystemContract(ProjectSystemContractScope2.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
+    [ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface IFileSystem
     {
         Stream Create(string path);
