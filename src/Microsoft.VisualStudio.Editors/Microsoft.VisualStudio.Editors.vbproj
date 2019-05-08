@@ -54,6 +54,7 @@
       <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.BuildPropPage.resources</LogicalName>
     </EmbeddedResource>
     <EmbeddedResource Update="PropPages\CompilePropPage2.resx">
+      <DependentUpon>CompilePropPage2.vb</DependentUpon>
       <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.CompilePropPage2.resources</LogicalName>
     </EmbeddedResource>
     <EmbeddedResource Update="PropPages\CSharpApplicationPropPage.resx">
@@ -137,12 +138,19 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Update="PropPages\CompilePropPage2.Designer.vb">
+      <DependentUpon>CompilePropPage2.vb</DependentUpon>
+    </Compile>
     <Compile Include="..\Common\ManagedCodeMarkers.vb">
       <Link>ManagedCodeMarkers.vb</Link>
+    </Compile>
+    <Compile Update="proppages\CompilePropPage2.vb">
     </Compile>
     <Compile Update="PropPages\Strings.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Update="ResourceEditor\ResourceEditorView_EditorState.vb">
     </Compile>
     <Compile Update="Resources\Microsoft.VisualStudio.Editors.Designer.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -152,6 +160,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Update="XmlToSchema\Wizard.vb" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Docs\app-designer-visual-spec-1.png" />
