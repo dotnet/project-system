@@ -1,18 +1,10 @@
 # Branches that trigger a build on commit
 trigger:
-- master
-- dev15.0.x
-- dev15.9.x
-- dev16.0.x
-- dev16.1.x
+- feature/integration-tests
 
 # Branches that trigger builds on PR
 pr:
-- master
-- dev15.0.x
-- dev15.9.x
-- dev16.0.x
-- dev16.1.x
+- feature/integration-tests
 
 jobs:
 - job: Visual_Studio
