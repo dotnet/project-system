@@ -12,16 +12,16 @@ using Microsoft.VisualStudio.ProjectSystem.Logging;
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
     /// <summary>
-    ///     Handles changes to sources files during project evaluations and sources files that are passed
+    ///     Handles changes to Compile items during project evaluations and items that are passed
     ///     to the compiler during design-time builds.
     /// </summary>
     [Export(typeof(IWorkspaceContextHandler))]
-    internal partial class SourceItemHandler : AbstractEvaluationCommandLineHandler, IProjectEvaluationHandler, ICommandLineHandler
+    internal partial class CompileItemHandler : AbstractEvaluationCommandLineHandler, IProjectEvaluationHandler, ICommandLineHandler
     {
         private readonly UnconfiguredProject _project;
 
         [ImportingConstructor]
-        public SourceItemHandler(UnconfiguredProject project)
+        public CompileItemHandler(UnconfiguredProject project)
             : base(project)
         {
             _project = project;
