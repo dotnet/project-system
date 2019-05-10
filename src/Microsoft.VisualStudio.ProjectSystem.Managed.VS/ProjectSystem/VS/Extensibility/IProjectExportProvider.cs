@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Extensibility
     /// Interface definition for global scope VS MEF component, which helps to get MEF exports from a
     /// project level scope given IVsHierarchy or project file path.
     /// </summary>
-    [ProjectSystemContract(ProjectSystemContractScope2.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
+    [ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     public interface IProjectExportProvider
     {
         /// <summary>

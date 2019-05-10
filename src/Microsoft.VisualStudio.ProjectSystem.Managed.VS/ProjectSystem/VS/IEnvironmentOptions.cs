@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     /// <summary>
     ///     Provides a method for retrieving options from the host environment.
     /// </summary>
-    [ProjectSystemContract(ProjectSystemContractScope2.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
+    [ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface IEnvironmentOptions
     {
         /// <summary>

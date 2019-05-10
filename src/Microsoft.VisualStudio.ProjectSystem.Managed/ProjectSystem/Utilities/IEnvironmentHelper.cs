@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
     /// <summary>
     /// Abstraction for System.Environment for unit testing
     /// </summary>
-    [ProjectSystemContract(ProjectSystemContractScope2.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
+    [ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface IEnvironmentHelper
     {
         string GetEnvironmentVariable(string name);
