@@ -65,6 +65,7 @@ jobs:
         searchFolder: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\TestResults'
         configuration: '$(_configuration)'
         publishRunAttachments: true
+        failTaskOnFailedTests: true
       continueOnError: true
       condition: always()
 
