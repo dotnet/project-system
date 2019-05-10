@@ -188,6 +188,8 @@ Specifies the designer function access level (for example, `InitializeComponent(
 | _Private_ | The designer function has private visibility.                 |
 | _Public_  | The designer has public visibility (currently not supported). |
 
+These values map to members of the [`VSDESIGNER_FUNCTIONVISIBILITY`](https://docs.microsoft.com/en-us/dotnet/api/microsoft.visualstudio.shell.interop.vsdesigner_functionvisibility) enum in the VS SDK.
+
 ##### __Example__
 ``` XML
 <PropertyGroup>
@@ -208,6 +210,8 @@ Specifies the naming convention used by the designer.
 |---------| ---------------|
 | _Camel_ | Names use camel case (e.g. `checkBox1`).       |
 | _VB_    | Names use VB / Pascal case (e.g. `CheckBox1`). |
+
+These values map to members of the [`VSDESIGNER_VARIABLENAMING`](https://docs.microsoft.com/en-us/dotnet/api/microsoft.visualstudio.shell.interop.vsdesigner_variablenaming) enum in the VS SDK.
 
 ##### __Example__
 ``` XML
