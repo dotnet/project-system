@@ -294,7 +294,7 @@ function UninstallVSIXes([string] $hive){
 }
 
 function RunIntegrationTests {
-  InstallProjectSystemVSIX $rootsuffix $vsInstallDir
+  # InstallProjectSystemVSIX $rootsuffix $vsInstallDir
   SetIntegrationEnvironmentVariables
   
   # Run integration tests

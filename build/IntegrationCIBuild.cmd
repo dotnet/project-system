@@ -1,3 +1,3 @@
 @echo off
-powershell -ExecutionPolicy ByPass %~dp0Build.ps1 -restore -build -pack -ci /p:RootSuffix= %*
+powershell -ExecutionPolicy ByPass %~dp0Build.ps1 -restore -build -pack -ci -integrationTest /p:RootSuffix= %*
 exit /b %ErrorLevel%
