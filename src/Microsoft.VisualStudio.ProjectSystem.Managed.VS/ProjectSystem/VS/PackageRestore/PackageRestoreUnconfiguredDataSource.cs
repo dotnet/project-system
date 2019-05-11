@@ -168,16 +168,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
         private bool ValidateToolReference(Dictionary<string, IVsReferenceItem> existingReferences, IVsReferenceItem reference)
         {
-            // CLI tool references are project-wide, so if they have conflicts in names, 
-            // they must have the same metadata, which avoids from having to condition 
-            // them so that they only appear in one TFM.
-            if (existingReferences.TryGetValue(reference.Name, out IVsReferenceItem existingReference) && 
-                !RestoreComparer.ReferenceItems.Equals(existingReference, reference))
+            if (existingReferences.TryGetValue(reference.Name, out IVsReferenceItem existingReference))
             {
-                ReportDataSourceUserFault(
-                    new Exception(string.Format(CultureInfo.CurrentCulture, VSResources.Restore_DuplicateToolReferenceItems, existingReference.Name)),
-                    ProjectFaultSeverity.LimitedFunctionality,
-                    ContainingProject);
+                // CLI tool references are project-wide, so if they have conflicts in names, 
+                // they must have the same metadata, which avoids from having to condition 
+                // them so that they only appear in one TFM.
+                if (!RestoreComparer.ReferenceItems.Equals(existingReference, reference))
+                {
+                    ReportDataSourceUserFault(
+                        new Exception(string.Format(CultureInfo.CurrentCulture, VSResources.Restore_DuplicateToolReferenceItems, existingReference.Name)),
+                        ProjectFaultSeverity.LimitedFunctionality,
+                        ContainingProject);
+                }
 
                 return false;
             }
