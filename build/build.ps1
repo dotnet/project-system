@@ -340,35 +340,35 @@ function RunIntegrationTests {
     $runSettingsContents >> $runSettings
   }
 
-  Disable-WindowsErrorReporting
-  Write-Host "Using $VSTestExe"
-  & $VSTestExe /blame /logger:$LogFileArgs /ResultsDirectory:"$IntegrationTestTempDir" /Settings:$runSettings $TestAssembly
-  $integrationTestsFailed = $false
-  if ((-not $?) -or ($lastExitCode -ne 0)) {
-    $integrationTestsFailed = $true
-  }
-  Enable-WindowsErrorReporting
+  # Disable-WindowsErrorReporting
+  # Write-Host "Using $VSTestExe"
+  # & $VSTestExe /blame /logger:$LogFileArgs /ResultsDirectory:"$IntegrationTestTempDir" /Settings:$runSettings $TestAssembly
+  # $integrationTestsFailed = $false
+  # if ((-not $?) -or ($lastExitCode -ne 0)) {
+  #   $integrationTestsFailed = $true
+  # }
+  # Enable-WindowsErrorReporting
   
-  # Kill any VS processes left over
-  Stop-Process-Name "devenv"
+  # # Kill any VS processes left over
+  # Stop-Process-Name "devenv"
   
-  # Convert trx to be an xUnit xml file
-  Write-Host "Converting MSTest results"
-  ConvertTRXFiles $IntegrationTestTempDir
+  # # Convert trx to be an xUnit xml file
+  # Write-Host "Converting MSTest results"
+  # ConvertTRXFiles $IntegrationTestTempDir
   
-  # Move test results to test results folder
-  $TestResultsDir = Join-Path (Join-Path $ArtifactsDir $configuration) "TestResults"
-  Copy-Item -Filter *.xml -Path $IntegrationTestTempDir -Recurse -Destination $TestResultsDir
+  # # Move test results to test results folder
+  # $TestResultsDir = Join-Path (Join-Path $ArtifactsDir $configuration) "TestResults"
+  # Copy-Item -Filter *.xml -Path $IntegrationTestTempDir -Recurse -Destination $TestResultsDir
   
   # Uninstall extensions as other test runs could happen on the VM
   # NOTE: it sometimes takes 2 tries for it to succeed
-  UninstallVSIXes $rootSuffix
+  # UninstallVSIXes $rootSuffix
   
-  if ($integrationTestsFailed) {
-    # Copy screenshots and video files on failure
-    Copy-Item -Path $IntegrationTestTempDir -Recurse -Destination $TestResultsDir -Container
-    throw "Aborting after integration test failure."
-  }
+  # if ($integrationTestsFailed) {
+  #   # Copy screenshots and video files on failure
+  #   Copy-Item -Path $IntegrationTestTempDir -Recurse -Destination $TestResultsDir -Container
+  #   throw "Aborting after integration test failure."
+  # }
 }
 
 try {

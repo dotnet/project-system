@@ -19,6 +19,18 @@ jobs:
   timeoutInMinutes: 20
   steps:
     - script: $(Build.SourcesDirectory)\build\IntegrationCIBuild.cmd -configuration $(_configuration) -prepareMachine
+    - task: VSTest@2
+      inputs:
+        testSelector: 'testAssemblies'
+        testAssemblyVer2: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\bin\IntegrationTests\*.IntegrationTests.dll!$(Build.SourcesDirectory)\artifacts\$(_configuration)\obj\**' # Required when testSelector == TestAssemblies
+        vsTestVersion: 'latest'
+        runSettingsFile: '$(Build.SourcesDirectory)\artifacts\IntegrationTestTemp\integration.runsettings'
+        runInParallel: False
+        runTestsInIsolation: True
+        codeCoverageEnabled: False
+        publishRunAttachments: True
+        diagnosticsEnabled: True
+        collectDumpOn: 'onAbortOnly'
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\log'
@@ -47,13 +59,13 @@ jobs:
         publishLocation: Container
       continueOnError: true
       condition: failed()
-    - task: PublishTestResults@2
-      inputs:
-        testRunner: 'xUnit'
-        testResultsFiles: '**/*.xml' 
-        searchFolder: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\TestResults'
-        configuration: '$(_configuration)'
-        publishRunAttachments: true
-        failTaskOnFailedTests: true
-      continueOnError: true
-      condition: always()
+    # - task: PublishTestResults@2
+    #   inputs:
+    #     testRunner: 'xUnit'
+    #     testResultsFiles: '**/*.xml' 
+    #     searchFolder: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\TestResults'
+    #     configuration: '$(_configuration)'
+    #     publishRunAttachments: true
+    #     failTaskOnFailedTests: true
+    #   continueOnError: true
+    #   condition: always()
