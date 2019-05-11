@@ -122,14 +122,14 @@ Specifies whether `CoreCompile` should skip compiler execution.
 
 This property is helpful when used with the [ProvideCommandLineArgs](#providecommandlineargs_(bool)) property.
 
-
-
 ##### __Example__
 ``` XML
   <PropertyGroup>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
   </PropertyGroup>
 ```
+
+---
 
 ## __Design-Time Properties, Items and Item Metadata__
 These properties, items and item metadata are used for solely for Visual Studio and design-time purposes, and have no influence on the resulting build.
@@ -170,6 +170,53 @@ Specifies whether the contents of the _Application Designer_ folder are only vis
 ``` XML
 <PropertyGroup>
     <AppDesignerFolderContentsVisibleOnlyInShowAllFiles>true</AppDesignerFolderContentsVisibleOnlyInShowAllFiles>
+<PropertyGroup>
+```
+
+#### __DesignerFunctionVisibility (enum)__
+
+| Language      | Default            |
+|---------------| -------------------|
+| C#            | Private            |
+| Visual Basic  | Friend             |
+
+Specifies the designer function access level (for example, `InitializeComponent()`).
+
+| Value     | Description    |
+|-----------| ---------------|
+| _Friend_  | The designer function has friend (internal) visibility.       |
+| _Private_ | The designer function has private visibility.                 |
+| _Public_  | The designer has public visibility (currently not supported). |
+
+These values map to members of the [`VSDESIGNER_FUNCTIONVISIBILITY`](https://docs.microsoft.com/en-us/dotnet/api/microsoft.visualstudio.shell.interop.vsdesigner_functionvisibility) enum in the VS SDK.
+
+##### __Example__
+``` XML
+<PropertyGroup>
+    <DesignerFunctionVisibility>Private</DesignerFunctionVisibility>
+<PropertyGroup>
+```
+
+#### __DesignerVariableNaming (enum)__
+
+| Language      | Default |
+|---------------| --------|
+| C#            | Camel   |
+| Visual Basic  | VB      |
+
+Specifies the naming convention used by the designer.
+
+| Value   | Description    |
+|---------| ---------------|
+| _Camel_ | Names use camel case (e.g. `checkBox1`).       |
+| _VB_    | Names use VB / Pascal case (e.g. `CheckBox1`). |
+
+These values map to members of the [`VSDESIGNER_VARIABLENAMING`](https://docs.microsoft.com/en-us/dotnet/api/microsoft.visualstudio.shell.interop.vsdesigner_variablenaming) enum in the VS SDK.
+
+##### __Example__
+``` XML
+<PropertyGroup>
+    <DesignerVariableNaming>Camel</DesignerVariableNaming>
 <PropertyGroup>
 ```
 
