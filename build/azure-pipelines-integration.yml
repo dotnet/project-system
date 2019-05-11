@@ -25,7 +25,6 @@ jobs:
         testAssemblyVer2: '*IntegrationTests.dll'
         searchFolder: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\bin\IntegrationTests'
         vsTestVersion: 'latest'
-        runSettingsFile: '$(Build.SourcesDirectory)\artifacts\IntegrationTestTemp\integration.runsettings'
         runInParallel: False
         runTestsInIsolation: True
         codeCoverageEnabled: False
