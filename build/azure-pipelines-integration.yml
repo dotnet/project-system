@@ -22,7 +22,8 @@ jobs:
     - task: VSTest@2
       inputs:
         testSelector: 'testAssemblies'
-        testAssemblyVer2: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\bin\IntegrationTests\*.IntegrationTests.dll!$(Build.SourcesDirectory)\artifacts\$(_configuration)\obj\**' # Required when testSelector == TestAssemblies
+        testAssemblyVer2: '*IntegrationTests.dll'
+        searchFolder: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\bin\IntegrationTests'
         vsTestVersion: 'latest'
         runSettingsFile: '$(Build.SourcesDirectory)\artifacts\IntegrationTestTemp\integration.runsettings'
         runInParallel: False
