@@ -15,6 +15,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public const string CSharpAppDesigner = ProjectCapabilities.CSharp + " & " + AppDesigner;
         public const string FSharpAppDesigner = FSharp + " & " + AppDesigner;
         public const string CSharpOrVisualBasic = "(" + ProjectCapabilities.CSharp + " | " + ProjectCapabilities.VB + ")";
+        public const string CSharpOrVisualBasicLanguageService = CSharpOrVisualBasic + " & " + LanguageService;
+        public const string CSharpOrVisualBasicLanguageServiceWindowsForms = CSharpOrVisualBasic + " & " + LanguageService + " & " + WindowsForms;
 
         public const string AppDesigner = nameof(AppDesigner);
         public const string AppSettings = nameof(AppSettings);
@@ -37,5 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public const string DotNetLanguageService = DotNet + " & " + LanguageService;
         public const string SortByDisplayOrder = ProjectCapabilities.SortByDisplayOrder;
         public const string DotNet = ".NET";
+        public const string WindowsForms = nameof(WindowsForms);
+        public const string WPF = nameof(WPF);
     }
 }

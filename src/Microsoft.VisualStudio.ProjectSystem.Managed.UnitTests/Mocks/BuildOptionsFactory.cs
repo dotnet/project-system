@@ -13,7 +13,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             return new BuildOptions(ImmutableArray<CommandLineSourceFile>.Empty,
                                     ImmutableArray<CommandLineSourceFile>.Empty,
                                     ImmutableArray<CommandLineReference>.Empty,
-                                    ImmutableArray<CommandLineAnalyzerReference>.Empty);
+                                    ImmutableArray<CommandLineAnalyzerReference>.Empty,
+                                    ImmutableArray<string>.Empty);
         }
     }
 }

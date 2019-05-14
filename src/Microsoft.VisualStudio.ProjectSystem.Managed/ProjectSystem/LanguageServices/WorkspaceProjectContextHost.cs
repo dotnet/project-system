@@ -25,15 +25,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private readonly IWorkspaceProjectContextProvider _workspaceProjectContextProvider;
         private readonly IActiveEditorContextTracker _activeWorkspaceProjectContextTracker;
         private readonly ExportFactory<IApplyChangesToWorkspaceContext> _applyChangesToWorkspaceContextFactory;
+        private readonly IDataProgressTrackerService _dataProgressTrackerService;
 
         [ImportingConstructor]
         public WorkspaceProjectContextHost(ConfiguredProject project,
-                                    IProjectThreadingService threadingService,
-                                    IUnconfiguredProjectTasksService tasksService,
-                                    IProjectSubscriptionService projectSubscriptionService,
-                                    IWorkspaceProjectContextProvider workspaceProjectContextProvider,
-                                    IActiveEditorContextTracker activeWorkspaceProjectContextTracker,
-                                    ExportFactory<IApplyChangesToWorkspaceContext> applyChangesToWorkspaceContextFactory)
+                                           IProjectThreadingService threadingService,
+                                           IUnconfiguredProjectTasksService tasksService,
+                                           IProjectSubscriptionService projectSubscriptionService,
+                                           IWorkspaceProjectContextProvider workspaceProjectContextProvider,
+                                           IActiveEditorContextTracker activeWorkspaceProjectContextTracker,
+                                           ExportFactory<IApplyChangesToWorkspaceContext> applyChangesToWorkspaceContextFactory,
+                                           IDataProgressTrackerService dataProgressTrackerService)
             : base(threadingService.JoinableTaskContext)
         {
             _project = project;
@@ -43,6 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             _workspaceProjectContextProvider = workspaceProjectContextProvider;
             _activeWorkspaceProjectContextTracker = activeWorkspaceProjectContextTracker;
             _applyChangesToWorkspaceContextFactory = applyChangesToWorkspaceContextFactory;
+            _dataProgressTrackerService = dataProgressTrackerService;
         }
 
         public Task ActivateAsync()
@@ -82,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         protected override WorkspaceProjectContextHostInstance CreateInstance()
         {
-            return new WorkspaceProjectContextHostInstance(_project, _threadingService, _tasksService, _projectSubscriptionService, _workspaceProjectContextProvider, _activeWorkspaceProjectContextTracker, _applyChangesToWorkspaceContextFactory);
+            return new WorkspaceProjectContextHostInstance(_project, _threadingService, _tasksService, _projectSubscriptionService, _workspaceProjectContextProvider, _activeWorkspaceProjectContextTracker, _applyChangesToWorkspaceContextFactory, _dataProgressTrackerService);
         }
     }
 }

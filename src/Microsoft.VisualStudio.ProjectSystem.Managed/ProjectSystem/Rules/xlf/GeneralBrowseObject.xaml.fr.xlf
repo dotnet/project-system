@@ -47,11 +47,6 @@
         <target state="translated">Dossier du projet</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|PackageId|DisplayName">
-        <source>Package Id</source>
-        <target state="translated">ID de package</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|FileName|Description">
         <source>Name of the project file.</source>
         <target state="translated">Nom du fichier projet.</target>

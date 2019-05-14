@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="CollectedPackageDownload"
+      PageTemplate="generic"
+      xmlns="http://schemas.microsoft.com/build/2009/properties">
+
+  <!-- Represents the set of <PackageDownload /> items that are gathered during a design-time build to be pushed to Solution Restore service -->
+  
+  <Rule.DataSource>
+    <DataSource HasConfigurationCondition="False"
+                ItemType="PackageDownload"
+                MSBuildTarget="CollectPackageDownloads"
+                Persistence="ProjectFile"
+                SourceOfDefaultValue="AfterContext"
+                SourceType="TargetResults" />
+  </Rule.DataSource>
+
+  <StringProperty Name="Version" />
+
+</Rule>

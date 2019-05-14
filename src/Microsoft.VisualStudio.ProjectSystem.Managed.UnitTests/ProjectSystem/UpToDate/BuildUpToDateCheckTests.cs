@@ -408,7 +408,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             // Run check again (t4)
             await AssertNotUpToDateAsync(
-                "Input 'C:\\Dev\\Solution\\Project\\ItemPath1' has been modified since the last up-to-date check, not up to date.",
+                $"Input 'C:\\Dev\\Solution\\Project\\ItemPath1' ({t2.ToLocalTime()}) has been modified since the last up-to-date check ({_buildUpToDateCheck.LastCheckTimeUtc.ToLocalTime()}), not up to date.",
                 "Outputs");
         }
 

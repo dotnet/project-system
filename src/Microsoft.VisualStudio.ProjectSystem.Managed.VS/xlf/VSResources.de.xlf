@@ -7,11 +7,6 @@
         <target state="translated">{0} – Import kommt von der Zieldatei. Dieser Import kann nicht entfernt werden.</target>
         <note />
       </trans-unit>
-      <trans-unit id="ClassTemplateName">
-        <source>Class</source>
-        <target state="translated">Klasse</target>
-        <note />
-      </trans-unit>
       <trans-unit id="ProjectModificationsPrompt">
         <source>The project '{0}' has been modified outside the environment.
 
@@ -309,6 +304,21 @@ Um das Projekt zu debuggen, fügen Sie dieser Projektmappe ein ausführbares Pro
       <trans-unit id="OKButtonText">
         <source>OK</source>
         <target state="translated">OK</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Restore_PropertyWithInconsistentValues">
+        <source>The value of the '{0}' property is inconsistent between target frameworks. This property must be identical for NuGet restore to function correctly. The value '{1}' from the '{2}' configuration will be used, other target frameworks may fail to pick NuGet assets.</source>
+        <target state="translated">Der Wert der Eigenschaft "{0}" ist zwischen Zielframeworks inkonsistent. Diese Eigenschaft muss identisch sein, damit die NuGet-Wiederherstellung ordnungsgemäß funktioniert. Der Wert "{1}" aus der {2}-Konfiguration wird verwendet, andere Zielframeworks wählen möglicherweise keine NuGet-Objekte aus.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Restore_DuplicateToolReferenceItems">
+        <source>The metadata on 'DotNetCliToolReference' item '{0}' is inconsistent between target frameworks. Only the first one will be restored.</source>
+        <target state="translated">Die Metadaten für das DotNetCliToolReference-Element "{0}" sind zwischen Zielframeworks inkonsistent. Nur das erste Element wird wiederhergestellt.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Restore_EmptyTargetFrameworkMoniker">
+        <source>The value of the 'TargetFrameworkMoniker' property in the '{0}' configuration is empty. This configuration will not contribute to NuGet restore, which may result in restore and build errors.</source>
+        <target state="translated">Der Wert der Eigenschaft "TargetFrameworkMoniker" in der "{0}"-Konfiguration ist leer. Diese Konfiguration wird bei der NuGet-Wiederherstellung nicht berücksichtigt, was zu Wiederherstellungs- und Buildfehlern führen kann.</target>
         <note />
       </trans-unit>
     </body>

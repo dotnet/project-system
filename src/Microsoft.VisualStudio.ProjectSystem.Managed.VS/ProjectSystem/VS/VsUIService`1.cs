@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     return _value.Value;
                 }
 
-                throw new COMException("This method must be called on the UI thread.", VSConstants.RPC_E_WRONG_THREAD);
+                throw new COMException("This method must be called on the UI thread.", HResult.WrongThread);
             }
         }
 

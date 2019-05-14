@@ -13,43 +13,6 @@ namespace Microsoft.VisualStudio.Telemetry
     public class VsTelemetryServiceTests
     {
         [Fact]
-        public void PostFault_NullAsEventName_ThrowsArgumentNull()
-        {
-            var service = CreateInstance();
-            var exception = new Exception();
-
-            Assert.Throws<ArgumentNullException>("eventName", () =>
-            {
-                service.PostFault(null, exception);
-            });
-        }
-
-        [Fact]
-        public void PostFault_EmptyAsEventName_ThrowsArgumentNull()
-        {
-            var service = CreateInstance();
-            var exception = new Exception();
-
-            Assert.Throws<ArgumentException>("eventName", () =>
-            {
-                service.PostFault(string.Empty, exception);
-            });
-        }
-
-
-        [Fact]
-        public void PostFault_NullAsExceptionObject_ThrowsArgumentNull()
-        {
-            var service = CreateInstance();
-            var exception = new Exception();
-
-            Assert.Throws<ArgumentNullException>("exceptionObject", () =>
-            {
-                service.PostFault("vs/projectsystem/managed/fault", (Exception)null);
-            });
-        }
-
-        [Fact]
         public void PostEvent_NullAsEventName_ThrowsArgumentNull()
         {
             var service = CreateInstance();
@@ -169,18 +132,6 @@ namespace Microsoft.VisualStudio.Telemetry
             {
                 service.PostProperties("event1", new List<(string propertyName, object propertyValue)>());
             });
-        }
-
-        [Fact]
-        public void PostFault_SendsFaultEvent()
-        {
-            TelemetryEvent result = null;
-            var service = CreateInstance((e) => { result = e; });
-
-            service.PostFault("vs/projectsystem/managed/fault", new Exception());
-
-            Assert.Equal("vs/projectsystem/managed/fault", result.Name);
-            Assert.IsType<FaultEvent>(result);
         }
 
         [Fact]

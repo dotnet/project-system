@@ -1,7 +1,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <VisualStudioVersion>16.1.0</VisualStudioVersion>
-    <ProjectSystemVersion>3.1.0</ProjectSystemVersion>
+    <VisualStudioVersion>16.2.0</VisualStudioVersion>
+    <ProjectSystemVersion>3.2.0</ProjectSystemVersion>
     <VersionBase Condition="'$(UseVisualStudioVersion)' == 'true'">$(VisualStudioVersion)</VersionBase>
     <VersionBase Condition="'$(UseVisualStudioVersion)' != 'true'">$(ProjectSystemVersion)</VersionBase>
     <PreReleaseVersionLabel>beta1</PreReleaseVersionLabel>
@@ -19,11 +19,13 @@
     <VSWhereVersion>2.3.2</VSWhereVersion>
     <TRXUnitVersion>1.0.0-beta1</TRXUnitVersion>
     <MicrosoftDotNetIBCMergeVersion>4.7.1-alpha-00001</MicrosoftDotNetIBCMergeVersion>
-    <MicrosoftNetCompilersVersion>2.11.0-beta2-63529-05</MicrosoftNetCompilersVersion>
+    <MicrosoftNetCompilersVersion>3.0.0</MicrosoftNetCompilersVersion>
     <MicrosoftDiaSymReaderPdb2PdbVersion>1.1.0-beta1-62624-01</MicrosoftDiaSymReaderPdb2PdbVersion>
     <RoslynAnalyzersPackagesVersion>2.6.3-beta1.19059.2</RoslynAnalyzersPackagesVersion>
     <OpenCoverVersion>4.6.519</OpenCoverVersion>
     <CodecovVersion>1.1.0</CodecovVersion>
+    <MicrosoftDevDivValidationMediaRecorderVersion>15.0.199</MicrosoftDevDivValidationMediaRecorderVersion>
+    <MicrosoftDevDivValidationLoggingScreenshotCollectorVersion>1.1.86</MicrosoftDevDivValidationLoggingScreenshotCollectorVersion>
 
     <!--
       TODO:
@@ -38,6 +40,6 @@
     <MicrosoftVisualStudioSetupConfigurationInteropVersion>1.16.30</MicrosoftVisualStudioSetupConfigurationInteropVersion>
 
     <!-- Tests -->
-    <XUnitVersion>2.4.0</XUnitVersion>
+    <XUnitVersion>2.4.1</XUnitVersion>
   </PropertyGroup>
 </Project>

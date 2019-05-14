@@ -15,7 +15,7 @@ Imports Microsoft.VisualStudio.Editors.Common
 Imports Microsoft.VisualStudio.Editors.DesignerFramework
 Imports Microsoft.VisualStudio.Editors.Interop
 Imports Microsoft.VisualStudio.Editors.PropertyPages
-Imports Microsoft.VisualStudio.PlatformUI
+Imports Microsoft.VisualStudio.Utilities
 Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.VSDesigner.VSDesignerPackage
 
@@ -170,10 +170,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 .AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
                 .FillWeight = 100.0!,
                 .HeaderText = My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_GridViewValueColumnHeaderText,
-                .MinimumWidth = DpiHelper.LogicalToDeviceUnitsX(SystemInformation.VerticalScrollBarWidth + 2), ' Add 2 for left/right borders...
+                .MinimumWidth = DpiAwareness.LogicalToDeviceUnits(Handle, SystemInformation.VerticalScrollBarWidth + 2), ' Add 2 for left/right borders...
                 .Resizable = DataGridViewTriState.True,
                 .SortMode = DataGridViewColumnSortMode.Automatic,
-                .Width = DpiHelper.LogicalToDeviceUnitsX(200)
+                .Width = DpiAwareness.LogicalToDeviceUnits(Handle, 200)
             }
             _settingsGridView.Columns.Add(TypeEditorCol)
 
@@ -268,29 +268,29 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             '
             resources.ApplyResources(_dataGridViewTextBoxColumn1, "DataGridViewTextBoxColumn1")
             _dataGridViewTextBoxColumn1.AutoSizeMode = DataGridViewAutoSizeColumnMode.None
-            _dataGridViewTextBoxColumn1.MinimumWidth = DpiHelper.LogicalToDeviceUnitsX(100)
+            _dataGridViewTextBoxColumn1.MinimumWidth = DpiAwareness.LogicalToDeviceUnits(Handle, 100)
             _dataGridViewTextBoxColumn1.Name = "GridViewNameTextBoxColumn"
-            _dataGridViewComboBoxColumn1.Width = DpiHelper.LogicalToDeviceUnitsX(100)
+            _dataGridViewComboBoxColumn1.Width = DpiAwareness.LogicalToDeviceUnits(Handle, 100)
             '
             'DataGridViewComboBoxColumn1
             '
             resources.ApplyResources(_dataGridViewComboBoxColumn1, "DataGridViewComboBoxColumn1")
             _dataGridViewComboBoxColumn1.AutoSizeMode = DataGridViewAutoSizeColumnMode.None
-            _dataGridViewComboBoxColumn1.MinimumWidth = DpiHelper.LogicalToDeviceUnitsX(100)
+            _dataGridViewComboBoxColumn1.MinimumWidth = DpiAwareness.LogicalToDeviceUnits(Handle, 100)
             _dataGridViewComboBoxColumn1.Name = "GridViewTypeComboBoxColumn"
             _dataGridViewComboBoxColumn1.SortMode = DataGridViewColumnSortMode.Automatic
-            _dataGridViewComboBoxColumn1.Width = DpiHelper.LogicalToDeviceUnitsX(100)
+            _dataGridViewComboBoxColumn1.Width = DpiAwareness.LogicalToDeviceUnits(Handle, 100)
             '
             'DataGridViewComboBoxColumn2
             '
             _dataGridViewComboBoxColumn2.AutoSizeMode = DataGridViewAutoSizeColumnMode.None
             resources.ApplyResources(_dataGridViewComboBoxColumn2, "DataGridViewComboBoxColumn2")
             _dataGridViewComboBoxColumn2.MaxDropDownItems = 2
-            _dataGridViewComboBoxColumn2.MinimumWidth = DpiHelper.LogicalToDeviceUnitsX(100)
+            _dataGridViewComboBoxColumn2.MinimumWidth = DpiAwareness.LogicalToDeviceUnits(Handle, 100)
             _dataGridViewComboBoxColumn2.Name = "GridViewScopeComboBoxColumn"
             _dataGridViewComboBoxColumn2.SortMode = DataGridViewColumnSortMode.Automatic
             _dataGridViewComboBoxColumn2.ValueType = GetType(DesignTimeSettingInstance.SettingScope)
-            _dataGridViewComboBoxColumn2.Width = DpiHelper.LogicalToDeviceUnitsX(100)
+            _dataGridViewComboBoxColumn2.Width = DpiAwareness.LogicalToDeviceUnits(Handle, 100)
             '
             'DescriptionLinkLabel
             '
@@ -396,10 +396,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             TypeColumn.Items.Add(_typeNameResolver.PersistedSettingTypeNameToTypeDisplayName(SettingsSerializer.CultureInvariantVirtualTypeNameWebReference))
             TypeColumn.Items.Add(_typeNameResolver.PersistedSettingTypeNameToTypeDisplayName(SettingsSerializer.CultureInvariantVirtualTypeNameConnectionString))
             TypeColumn.Items.Add(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ComboBoxItem_BrowseType)
-            TypeColumn.Width = DpiHelper.LogicalToDeviceUnitsX(TypeColumn.GetPreferredWidth(DataGridViewAutoSizeColumnMode.AllCells, False) + SystemInformation.VerticalScrollBarWidth + InternalComboBoxPadding)
+            TypeColumn.Width = DpiAwareness.LogicalToDeviceUnits(Handle, TypeColumn.GetPreferredWidth(DataGridViewAutoSizeColumnMode.AllCells, False) + SystemInformation.VerticalScrollBarWidth + InternalComboBoxPadding)
 
 
-            ScopeColumn.Width = DpiHelper.LogicalToDeviceUnitsX(ScopeColumn.GetPreferredWidth(DataGridViewAutoSizeColumnMode.AllCells, False) + SystemInformation.VerticalScrollBarWidth + InternalComboBoxPadding)
+            ScopeColumn.Width = DpiAwareness.LogicalToDeviceUnits(Handle, ScopeColumn.GetPreferredWidth(DataGridViewAutoSizeColumnMode.AllCells, False) + SystemInformation.VerticalScrollBarWidth + InternalComboBoxPadding)
 
             'Hook up for broadcast messages
             If _cookieBroadcastMessages = 0 Then

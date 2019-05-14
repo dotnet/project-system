@@ -42,8 +42,27 @@ M:Microsoft.VisualStudio.ProjectSystem.IProjectFaultHandlerService.HandleFaultAs
 M:Microsoft.VisualStudio.ProjectSystem.IProjectFaultHandlerService.RegisterFaultHandler(System.Threading.Tasks.Task,Microsoft.VisualStudio.ProjectSystem.ErrorReportSettings,Microsoft.VisualStudio.ProjectSystem.ProjectFaultSeverity,Microsoft.VisualStudio.ProjectSystem.UnconfiguredProject); Use IProjectFaultHandlerService.Forget to ensure that failed tasks are reported as non-fatal watsons and assigned to the correct component
 M:Microsoft.VisualStudio.ProjectSystem.IProjectFaultHandlerService.RegisterFaultHandler`1(System.Threading.Tasks.Task{``0},Microsoft.VisualStudio.ProjectSystem.ErrorReportSettings,Microsoft.VisualStudio.ProjectSystem.ProjectFaultSeverity,Microsoft.VisualStudio.ProjectSystem.UnconfiguredProject); Use IProjectFaultHandlerService.Forget to ensure that failed tasks are reported as non-fatal watsons and assigned to the correct component
 
+M:Microsoft.VisualStudio.Telemetry.PostFault(Microsoft.VisualStudio.Telemetry.TelemetrySession,System.String,System.String);Use IProjectFaultHandlerService.Forget to ensure that failed tasks are reported as non-fatal watsons and assigned to the correct component
+M:Microsoft.VisualStudio.Telemetry.PostFault(Microsoft.VisualStudio.Telemetry.TelemetrySession,System.String,System.String,System.Exception);Use IProjectFaultHandlerService.Forget to ensure that failed tasks are reported as non-fatal watsons and assigned to the correct component
+M:Microsoft.VisualStudio.Telemetry.PostFault(Microsoft.VisualStudio.Telemetry.TelemetrySession,System.String,System.String,System.Exception,System.Func{Microsoft.VisualStudio.Telemetry.IFaultUtility,System.Int32});Use IProjectFaultHandlerService.Forget to ensure that failed tasks are reported as non-fatal watsons and assigned to the correct component
+M:Microsoft.VisualStudio.Telemetry.PostFault(Microsoft.VisualStudio.Telemetry.TelemetrySession,System.String,System.String,System.Exception,System.Func{Microsoft.VisualStudio.Telemetry.IFaultUtility,System.Int32},Microsoft.VisualStudio.Telemetry.TelemetryEventCorrelation[]);Use IProjectFaultHandlerService.Forget to ensure that failed tasks are reported as non-fatal watsons and assigned to the correct component
+
 M:Microsoft.VisualStudio.ProjectSystem.IProjectThreadingService.Fork(System.Func{System.Threading.Tasks.Task},Microsoft.VisualStudio.Threading.JoinableTaskFactory,Microsoft.VisualStudio.ProjectSystem.UnconfiguredProject,Microsoft.VisualStudio.ProjectSystem.ConfiguredProject,Microsoft.VisualStudio.ProjectSystem.ErrorReportSettings,Microsoft.VisualStudio.ProjectSystem.ProjectFaultSeverity,Microsoft.VisualStudio.ProjectSystem.ForkOptions); Use IProjectThreadingService.RunAndForget to ensure non-fatal watsons are assigned to the correct component
 
 T:System.Threading.Tasks.Dataflow.ActionBlock`1;Use DataflowUtilities.LinkToAction/LinkToAsyncAction or DataflowBlockSlim.CreateActionBlock to reduce memory and avoid the overhead of the built-in blocks
 T:System.Threading.Tasks.Dataflow.BroadcastBlock`1;Use DataflowBlockSlim.CreateBroadcastBlock to reduce memory and avoid the overhead of the built-in blocks
 T:System.Threading.Tasks.Dataflow.TransformManyBlock`2;Use DataflowBlockSlim.CreateTransformManyBlock to reduce memory and avoid the overhead of the built-in blocks
+
+M:Microsoft.VisualStudio.VSConstants.S_OK;Use HResult.OK or HResult.IsOK
+M:Microsoft.VisualStudio.VSConstants.E_FAIL;Use HResult.Fail or HResult.Failed
+M:Microsoft.VisualStudio.VSConstants.S_FALSE;Use HResult.False or HResult.IsFalse
+M:Microsoft.VisualStudio.VSConstants.E_NOTIMPL;Use HResult.NotImplemented or HResult.IsNotImplemented
+M:Microsoft.VisualStudio.VSConstants.E_INVALIDARG;Use HResult.InvalidArg
+M:Microsoft.VisualStudio.VSConstants.RPC_E_WRONG_THREAD;Use HResult.WrongThread
+M:Microsoft.VisualStudio.VSConstants.E_ABORT;Use HResult.Abort
+M:Microsoft.VisualStudio.VSConstants.E_PENDING;Use HResult.Pending
+M:Microsoft.VisualStudio.VSConstants.DISP_E_MEMBERNOTFOUND;Use HResult.MemberNotFound
+M:Microsoft.VisualStudio.VSConstants.E_NOINTERFACE;Use HResult.NoInterface
+M:Microsoft.VisualStudio.VSConstants.E_UNEXPECTED;Use HResult.Unexpected
+M:Microsoft.VisualStudio.OLE.Interop.Constants.OLECMDERR_E_NOTSUPPORTED;Use HResult.Ole.Cmd.NotSupported
+M:Microsoft.VisualStudio.OLE.Interop.Constants.OLECMDERR_E_UNKNOWNGROUP;Use HResult.Ole.Cmd.UnknownGroup

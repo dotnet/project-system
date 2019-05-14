@@ -37,10 +37,29 @@
   <StringProperty Name="CustomToolNamespace" />
 
   <StringProperty Name="DependentUpon"
-                  Visible="false" />
+                  Visible="false">
+    <StringProperty.Metadata>
+      <NameValuePair Name="DoNotCopyAcrossProjects"
+                     Value="true" />
+    </StringProperty.Metadata>
+  </StringProperty>
 
   <BoolProperty Name="DesignTime"
                 Visible="false" />
+
+  <BoolProperty Name="DesignTimeSharedInput"
+                Visible="false" />
+
+  <StringProperty Name="FullPath"
+                  ReadOnly="true"
+                  Visible="false">
+    <StringProperty.DataSource>
+      <DataSource ItemType="Resource"
+                  PersistedName="FullPath"
+                  Persistence="Intrinsic"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
 
   <StringProperty Name="Generator" />
 
@@ -52,6 +71,20 @@
     <StringProperty.DataSource>
       <DataSource PersistenceStyle="Attribute"
                   SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+    <StringProperty.Metadata>
+      <NameValuePair Name="DoNotCopyAcrossProjects"
+                     Value="true" />
+    </StringProperty.Metadata>
+  </StringProperty>
+
+  <StringProperty Name="SubType"
+                  Visible="false">
+    <StringProperty.DataSource>
+      <DataSource Persistence="DesignTimeItemPropertiesStorage"
+                  ItemType="Resource"
+                  PersistedName="SubType"
+                  HasConfigurationCondition="false"/>
     </StringProperty.DataSource>
   </StringProperty>
 

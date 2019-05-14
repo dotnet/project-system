@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.Composition;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    [ProjectSystemContract(ProjectSystemContractScope2.Global, ProjectSystemContractProvider.Host, Cardinality = ImportCardinality.ExactlyOne)]
+    [ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.Host, Cardinality = ImportCardinality.ExactlyOne)]
     public interface ITargetFrameworkProvider
     {
         /// <summary>

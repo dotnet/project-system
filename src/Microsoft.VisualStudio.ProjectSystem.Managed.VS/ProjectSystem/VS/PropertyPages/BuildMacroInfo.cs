@@ -52,11 +52,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             if (pbstrBuildMacroValue == null)
             {
                 pbstrBuildMacroValue = string.Empty;
-                return VSConstants.E_FAIL;
+                return HResult.Fail;
             }
             else
             {
-                return VSConstants.S_OK;
+                return HResult.OK;
             }
         }
 

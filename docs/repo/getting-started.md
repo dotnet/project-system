@@ -1,7 +1,7 @@
 # Getting Started
 
 #### Prerequisites
-- [Visual Studio 2019 RC](https://visualstudio.microsoft.com/downloads/) or [Visual Studio 2019 Preview 4](https://visualstudio.microsoft.com/vs/preview/)
+- [Visual Studio 2019](https://visualstudio.microsoft.com/downloads/)
 - GitHub account
 - Basic Git experience: https://try.github.io/
 

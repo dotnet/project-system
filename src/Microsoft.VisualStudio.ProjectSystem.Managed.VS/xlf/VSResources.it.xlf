@@ -7,11 +7,6 @@
         <target state="translated">{0} - L'importazione proviene dal file di destinazione e non può essere rimossa.</target>
         <note />
       </trans-unit>
-      <trans-unit id="ClassTemplateName">
-        <source>Class</source>
-        <target state="translated">Classe</target>
-        <note />
-      </trans-unit>
       <trans-unit id="ProjectModificationsPrompt">
         <source>The project '{0}' has been modified outside the environment.
 
@@ -309,6 +304,21 @@ Per eseguire il debug del progetto, aggiungere a questa soluzione un progetto es
       <trans-unit id="OKButtonText">
         <source>OK</source>
         <target state="translated">OK</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Restore_PropertyWithInconsistentValues">
+        <source>The value of the '{0}' property is inconsistent between target frameworks. This property must be identical for NuGet restore to function correctly. The value '{1}' from the '{2}' configuration will be used, other target frameworks may fail to pick NuGet assets.</source>
+        <target state="translated">Il valore della proprietà '{0}' non è coerente tra i framework di destinazione. Questa proprietà deve essere identica affinché il ripristino NuGet funzioni correttamente. Verrà usato il valore '{1}' della configurazione '{2}'. Altri framework di destinazione potrebbero non riuscire a selezionare gli asset NuGet.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Restore_DuplicateToolReferenceItems">
+        <source>The metadata on 'DotNetCliToolReference' item '{0}' is inconsistent between target frameworks. Only the first one will be restored.</source>
+        <target state="translated">I metadati dell'elemento '{0}' di 'DotNetCliToolReference' non sono coerenti tra i framework di destinazione. Verrà ripristinato solo il primo.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Restore_EmptyTargetFrameworkMoniker">
+        <source>The value of the 'TargetFrameworkMoniker' property in the '{0}' configuration is empty. This configuration will not contribute to NuGet restore, which may result in restore and build errors.</source>
+        <target state="translated">Il valore della proprietà 'TargetFrameworkMoniker' nella configurazione '{0}' è vuoto. Questa configurazione non contribuisce al ripristino di NuGet e questo può comportare errori di ripristino e di compilazione.</target>
         <note />
       </trans-unit>
     </body>

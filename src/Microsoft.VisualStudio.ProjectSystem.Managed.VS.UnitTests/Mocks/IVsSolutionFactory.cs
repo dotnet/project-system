@@ -28,11 +28,17 @@ namespace Microsoft.VisualStudio.Shell.Interop
             return mock.Object;
         }
 
-        public static IVsSolution CreateWithAdviseUnadviseSolutionEvents(uint adviseCookie)
+        public static IVsSolution CreateWithAdviseUnadviseSolutionEvents(uint adviseCookie, bool? isFullyLoaded = null)
         {
             var mock = new Mock<IVsSolution>();
             mock.Setup(x => x.AdviseSolutionEvents(It.IsAny<IVsSolutionEvents>(), out adviseCookie)).Returns(VSConstants.S_OK);
             mock.Setup(x => x.UnadviseSolutionEvents(It.IsAny<uint>())).Returns(VSConstants.S_OK);
+            if (isFullyLoaded != null)
+            {
+                object value = isFullyLoaded.Value;
+                mock.Setup(x => x.GetProperty(It.IsAny<int>(), out value)).Returns(VSConstants.S_OK);
+            }
+
             return mock.Object;
         }
 

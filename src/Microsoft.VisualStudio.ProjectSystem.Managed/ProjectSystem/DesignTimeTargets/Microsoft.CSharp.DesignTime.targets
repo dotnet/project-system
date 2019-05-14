@@ -18,6 +18,8 @@
     <AddItemTemplatesGuid Condition="'$(AddItemTemplatesGuid)' == ''">{FAE04EC0-301F-11d3-BF4B-00C04F79EFBC}</AddItemTemplatesGuid>
     <CmdUIContextGuid Condition="'$(CmdUIContextGuid)' == ''">{FAE04EC1-301F-11d3-BF4B-00C04F79EFBC}</CmdUIContextGuid>
     <GeneratorsTypeGuid Condition="'$(GeneratorsTypeGuid)' == ''">{FAE04EC1-301F-11d3-BF4B-00C04F79EFBC}</GeneratorsTypeGuid>
+    <DesignerFunctionVisibility Condition="'$(DesignerFunctionVisibility)' == ''">Private</DesignerFunctionVisibility>
+    <DesignerVariableNaming Condition="'$(DesignerVariableNaming)' == ''">Camel</DesignerVariableNaming>
   
     <!-- Turn off rules and capabilities that are defined in MSBuild so that we can import our own below -->
     <DefineCSharpItemSchemas>false</DefineCSharpItemSchemas>

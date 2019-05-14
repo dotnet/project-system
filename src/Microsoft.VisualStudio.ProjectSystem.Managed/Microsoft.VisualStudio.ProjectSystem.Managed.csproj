@@ -20,12 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.VS" />
-    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.CSharp.VS" />
-    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS" />
-    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.FSharp.VS" />
-    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.CSharp.VS.UnitTests" />
-    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.UnitTests" />
-    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.FSharp.VS.UnitTests" />
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests" />
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests" />
     <InternalsVisibleTo Include="DynamicProxyGenAssembly2" Key="$(MoqPublicKey)" />
@@ -43,8 +37,14 @@
     <Compile Update="ProjectSystem\Rules\Items\Page.cs">
       <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
+    <Compile Update="ProjectSystem\Rules\CollectedFrameworkReference.cs">
+      <DependentUpon>CollectedFrameworkReference.xaml</DependentUpon>
+    </Compile>
     <Compile Update="ProjectSystem\Rules\ProjectDebugger.xaml.cs">
       <DependentUpon>ProjectDebugger.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\CollectedPackageDownload.cs">
+      <DependentUpon>CollectedPackageDownload.xaml</DependentUpon>
     </Compile>
     <Compile Update="ProjectSystem\Rules\ResolvedAnalyzerReference.xaml.cs">
       <DependentUpon>ResolvedAnalyzerReference.xaml</DependentUpon>
@@ -154,6 +154,9 @@
     <Compile Update="ProjectSystem\Rules\Items\Resource.cs">
       <DependentUpon>Resource.xaml</DependentUpon>
     </Compile>
+    <Compile Update="ProjectSystem\Rules\PotentialEditorConfigFiles.cs">
+      <DependentUpon>PotentialEditorConfigFiles.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -190,6 +193,16 @@
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
     </XamlPropertyRule>
     <XamlPropertyRule Include="ProjectSystem\Rules\Items\EmbeddedResource.xaml">
+      <XlfInput>false</XlfInput>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\CollectedFrameworkReference.xaml">
+      <XlfInput>false</XlfInput>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\CollectedPackageDownload.xaml">
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
@@ -339,6 +352,11 @@
       <SubType>Designer</SubType>
     </XamlPropertyRule>
     <XamlPropertyRule Include="ProjectSystem\Rules\Items\XamlAppDef.xaml">
+      <XlfInput>false</XlfInput>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\PotentialEditorConfigFiles.xaml">
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>

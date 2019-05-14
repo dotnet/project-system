@@ -32,11 +32,6 @@
         <target state="translated">Kontroly aktuálnosti</target>
         <note />
       </trans-unit>
-      <trans-unit id="General_UsePreviewSdk">
-        <source>Use previews of the .NET Core SDK</source>
-        <target state="translated">Používat preview verze sady .NET Core SDK</target>
-        <note />
-      </trans-unit>
     </body>
   </file>
 </xliff>

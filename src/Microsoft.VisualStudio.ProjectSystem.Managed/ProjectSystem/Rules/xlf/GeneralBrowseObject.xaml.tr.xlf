@@ -47,11 +47,6 @@
         <target state="translated">Proje Klasörü</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|PackageId|DisplayName">
-        <source>Package Id</source>
-        <target state="translated">Paket Kimliği</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|FileName|Description">
         <source>Name of the project file.</source>
         <target state="translated">Proje dosyasının adı.</target>

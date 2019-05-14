@@ -180,7 +180,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
                     }
                 }
             }
-            return VSConstants.S_OK;
+            return HResult.OK;
         }
 
         internal (string logFile, int exitCode) MigrateProject(string solutionDirectory, string projectDirectory, string xprojLocation, string projectName, IVsUpgradeLogger pLogger)
@@ -324,7 +324,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
                 upgradeProjectCapabilityFlags = 0;
             }
 
-            return VSConstants.S_OK;
+            return HResult.OK;
         }
 
         private static string GetDotnetArguments(string xprojLocation, string projectDirectory, string logFile) =>

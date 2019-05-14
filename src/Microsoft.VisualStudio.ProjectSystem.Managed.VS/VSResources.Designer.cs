@@ -88,15 +88,6 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Class.
-        /// </summary>
-        internal static string ClassTemplateName {
-            get {
-                return ResourceManager.GetString("ClassTemplateName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to COM.
         /// </summary>
         internal static string ComNodeName {
@@ -519,6 +510,33 @@ namespace Microsoft.VisualStudio {
         internal static string RenameSymbolPrompt {
             get {
                 return ResourceManager.GetString("RenameSymbolPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The metadata on &apos;DotNetCliToolReference&apos; item &apos;{0}&apos; is inconsistent between target frameworks. Only the first one will be restored..
+        /// </summary>
+        internal static string Restore_DuplicateToolReferenceItems {
+            get {
+                return ResourceManager.GetString("Restore_DuplicateToolReferenceItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value of the &apos;TargetFrameworkMoniker&apos; property in the &apos;{0}&apos; configuration is empty. This configuration will not contribute to NuGet restore, which may result in restore and build errors..
+        /// </summary>
+        internal static string Restore_EmptyTargetFrameworkMoniker {
+            get {
+                return ResourceManager.GetString("Restore_EmptyTargetFrameworkMoniker", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value of the &apos;{0}&apos; property is inconsistent between target frameworks. This property must be identical for NuGet restore to function correctly. The value &apos;{1}&apos; from the &apos;{2}&apos; configuration will be used, other target frameworks may fail to pick NuGet assets..
+        /// </summary>
+        internal static string Restore_PropertyWithInconsistentValues {
+            get {
+                return ResourceManager.GetString("Restore_PropertyWithInconsistentValues", resourceCulture);
             }
         }
         

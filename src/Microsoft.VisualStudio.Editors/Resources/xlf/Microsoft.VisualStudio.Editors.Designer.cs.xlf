@@ -1498,7 +1498,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="RSE_GraphicSizeFormat">
         <source>{0} x {1}</source>
-        <target state="needs-review-translation">{0} x {1}</target>
+        <target state="translated">{0} x {1}</target>
         <note>Format string for showing a graphic's size
 
 #  {0} = width (as an integer)
@@ -2480,7 +2480,7 @@ Chcete aktualizovat hodnotu v souboru .settings?</target>
       </trans-unit>
       <trans-unit id="PPG_Services_HelpLabelText">
         <source>Client application services enable your Windows-based applications to use the ASP.NET login (authentication), roles, and profile (settings) services. To enable client application services, you must set the Target Framework for your application to the full version of the .NET Framework 3.5 or later.  </source>
-        <target state="translated">Klientské aplikační služby umožňují vašim aplikacím pro Windows použít služby technologie ASP.NET pro přihlášení (ověřování), role a nastavení profilu. Pokud chcete povolit klientské aplikační služby, musíte nastavit cílovou platformu aplikace na plnou verzi rozhraní .NET Framework 3.5 nebo novější.  </target>
+        <target state="translated">Klientské aplikační služby umožňují vašim aplikacím pro Windows použít služby technologie ASP.NET pro přihlášení (ověřování), role a nastavení profilu. Pokud chcete povolit klientské aplikační služby, musíte nastavit cílovou architekturu aplikace na plnou verzi rozhraní .NET Framework 3.5 nebo novější.  </target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Services_HelpLabelLink">
@@ -2525,7 +2525,7 @@ Chcete aktualizovat hodnotu v souboru .settings?</target>
       </trans-unit>
       <trans-unit id="PPG_Services_VersionWarning">
         <source>To enable client application services, you must set the Target Framework for your application to .NET Framework 3.5 or later. In C#, you can do this on the Application property page. In Visual Basic, you can do this on the Compile property page by clicking Advanced Compile Options.</source>
-        <target state="translated">Pokud chcete povolit klientské aplikační služby, musíte nastavit cílovou platformu aplikace na rozhraní .NET Framework 3.5 nebo novější. V jazyce C# to uděláte na stránce vlastností aplikace. Ve Visual Basicu to uděláte na stránce vlastností kompilace, když kliknete na Pokročilé možnosti kompilace.</target>
+        <target state="translated">Pokud chcete povolit klientské aplikační služby, musíte nastavit cílovou architekturu aplikace na rozhraní .NET Framework 3.5 nebo novější. V jazyce C# to uděláte na stránce vlastností aplikace. Ve Visual Basicu to uděláte na stránce vlastností kompilace, když kliknete na Pokročilé možnosti kompilace.</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Services_InvalidAppConfigXml">

@@ -28,12 +28,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         // WIN32 Constants
         private const int SW_HIDE = 0;
 
-        internal static class NativeMethods
-        {
-            public const int
-                S_OK = 0x00000000;
-        }
-
         protected abstract string PropertyPageName { get; }
 
         internal PropertyPage()
@@ -183,8 +177,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         public int IsPageDirty()
         {
             if (IsDirty)
-                return VSConstants.S_OK;
-            return VSConstants.S_FALSE;
+                return HResult.OK;
+
+            return HResult.False;
         }
 
         ///--------------------------------------------------------------------------------------------
@@ -212,7 +207,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         public int OnModeChange(DBGMODE dbgmodeNew)
         {
             Enabled = (dbgmodeNew == DBGMODE.DBGMODE_Design);
-            return NativeMethods.S_OK;
+            return HResult.OK;
         }
 
         /// <summary>
@@ -277,7 +272,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 pMsg[0].wParam = m.WParam;
                 pMsg[0].lParam = m.LParam;
                 // Returning S_OK indicates we handled the message ourselves
-                return VSConstants.S_OK;
+                return HResult.OK;
             }
 
 
@@ -350,8 +345,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             {
                 if (ppunk[i] is IVsBrowseObject browseObj)
                 {
-                    int hr = browseObj.GetProjectItem(out IVsHierarchy hier, out uint itemid);
-                    if (hr == VSConstants.S_OK && itemid == VSConstants.VSITEMID_ROOT)
+                    HResult hr = browseObj.GetProjectItem(out IVsHierarchy hier, out uint itemid);
+                    if (hr.IsOK && itemid == VSConstants.VSITEMID_ROOT)
                     {
                         UnconfiguredProject = hier.GetUnconfiguredProject();
 

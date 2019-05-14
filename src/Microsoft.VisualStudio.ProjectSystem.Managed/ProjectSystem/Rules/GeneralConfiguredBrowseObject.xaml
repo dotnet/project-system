@@ -245,9 +245,6 @@
     <EnumValue Name="OnOutputUpdated" />
   </EnumProperty>
 
-  <BoolProperty Name="Tailcalls"
-                Visible="False" />
-
   <StringProperty Name="TreatSpecificWarningsAsErrors"
                   Visible="False">
     <StringProperty.DataSource>
@@ -270,4 +267,7 @@
     </DynamicEnumProperty.DataSource>
   </DynamicEnumProperty>
 
+  <!-- F# specific properties-->
+  <BoolProperty Name="Tailcalls" Visible="False" />
+  <StringProperty Name="OtherFlags" Visible="False" />
 </Rule>

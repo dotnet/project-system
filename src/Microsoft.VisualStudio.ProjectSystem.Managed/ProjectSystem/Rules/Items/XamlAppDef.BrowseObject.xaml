@@ -26,6 +26,9 @@
                        DisplayName="Build Action"
                        EnumProvider="ItemTypes" />
 
+  <BoolProperty Name="AutoGen"
+                Visible="false" />
+
   <EnumProperty Name="CopyToOutputDirectory"
                 Category="Advanced"
                 Description="Specifies the source file will be copied to the output directory."
@@ -38,6 +41,17 @@
                DisplayName="Copy if newer" />
   </EnumProperty>
 
+  <StringProperty Name="CustomTool"
+                  Visible="false">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  ItemType="XamlAppDef"
+                  PersistedName="Generator"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
   <StringProperty Name="CustomToolNamespace"
                   Category="Advanced"
                   Description="The namespace into which the output of the custom tool is placed."
@@ -45,6 +59,12 @@
 
   <StringProperty Name="DependentUpon"
                   Visible="false" />
+
+  <BoolProperty Name="DesignTime"
+                Visible="false" />
+
+  <BoolProperty Name="DesignTimeSharedInput"
+                Visible="false" />
 
   <StringProperty Name="Extension"
                   ReadOnly="true"
@@ -99,12 +119,31 @@
     </StringProperty.DataSource>
   </StringProperty>
 
+  <StringProperty Name="LastGenOutput"
+                  Visible="false" />
+
   <StringProperty Name="Link"
                   Visible="false">
     <StringProperty.DataSource>
-      <DataSource SourceOfDefaultValue="AfterContext" />
+      <DataSource PersistenceStyle="Attribute"
+                  SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
+
+  <EnumProperty Name="SubType"
+                Visible="false">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="DesignTimeItemPropertiesStorage"
+                  ItemType="XamlAppDef"
+                  PersistedName="SubType"
+                  HasConfigurationCondition="false"/>
+    </EnumProperty.DataSource>
+    <EnumValue Name="Designer" />
+    <EnumValue Name="Component" />
+    <EnumValue Name="Control" />
+    <EnumValue Name="Form" />
+    <EnumValue Name="Code" />
+  </EnumProperty>
 
   <StringProperty Name="URL"
                   ReadOnly="true"
