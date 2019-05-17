@@ -13,7 +13,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.CSharp
 {
-    public class CSharpSimpleRenamerTests : SimpleRenamerTestsBase
+    public class RenamerTests : RenamerTestsBase
     {
         protected override string ProjectFileExtension => "csproj";
 
