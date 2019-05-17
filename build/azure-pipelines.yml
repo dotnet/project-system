@@ -5,6 +5,7 @@ trigger:
 - dev15.9.x
 - dev16.0.x
 - dev16.1.x
+- feature/rename-type-to-match-file
 
 # Branches that trigger builds on PR
 pr:
@@ -12,7 +13,7 @@ pr:
 - dev15.0.x
 - dev15.9.x
 - dev16.0.x
-- dev16.1.x
+- feature/rename-type-to-match-file
 
 jobs:
 - job: Windows
