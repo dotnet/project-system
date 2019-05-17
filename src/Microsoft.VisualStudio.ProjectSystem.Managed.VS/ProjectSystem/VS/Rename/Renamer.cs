@@ -89,6 +89,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         private async Task RenameAsync(Project project, string oldFilePath, string newFilePath, bool isCaseSensitive)
         {
             string oldNameBase = Path.GetFileNameWithoutExtension(oldFilePath);
+
+            if (!await ShouldRenameAsync(project, oldNameBase, newFilePath, isCaseSensitive))
+                return;
+
+            bool userConfirmed = await CheckUserConfirmation(oldNameBase);
+            if (!userConfirmed)
+                return;
+
             Solution renamedSolution = await GetRenamedSolutionAsync(project, oldNameBase, newFilePath, isCaseSensitive);
             if (renamedSolution == null)
                 return;
@@ -104,41 +112,59 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             }
         }
 
+        private static async Task<bool> ShouldRenameAsync(Project project, string oldNameBase, string newFilePath, bool isCaseSensitive)
+        {
+            // Do not rename is the name does not change
+            string newName = Path.GetFileNameWithoutExtension(newFilePath);
+            if (string.Compare(oldNameBase, newName, !isCaseSensitive) == 0)
+                return false;
+
+            // Do not rename if we cannot find the symbol
+            ISymbol symbol = await TryGetSymbolToRenameAsync(project, oldNameBase, newFilePath, isCaseSensitive);
+            return symbol != null;
+        }
+
+        private static async Task<ISymbol> TryGetSymbolToRenameAsync(Project myNewProject, string oldNameBase, string newFilePath, bool isCaseSensitive)
+        {
+            Project project = myNewProject;
+
+            Document newDocument = GetDocument(project, newFilePath);
+            if (newDocument == null)
+                return null;
+
+            SyntaxNode root = await GetRootNode(newDocument);
+            if (root == null)
+                return null;
+
+            SemanticModel semanticModel = await newDocument.GetSemanticModelAsync();
+            if (semanticModel == null)
+                return null;
+
+            IEnumerable<SyntaxNode> declarations = root.DescendantNodes().Where(n => HasMatchingSyntaxNode(semanticModel, n, oldNameBase, isCaseSensitive));
+            SyntaxNode declaration = declarations.FirstOrDefault();
+            if (declaration == null)
+                return null;
+
+            return semanticModel.GetDeclaredSymbol(declaration);
+        }
+
         private async Task<Solution> GetRenamedSolutionAsync(Project myNewProject, string oldNameBase, string newFilePath, bool isCaseSensitive)
         {
             Project project = myNewProject;
-            Solution renamedSolution = null;
+            ISymbol symbol = await TryGetSymbolToRenameAsync(myNewProject, oldNameBase, newFilePath, isCaseSensitive);
+            if (symbol == null)
+                return null;
 
+            string newName = Path.GetFileNameWithoutExtension(newFilePath);
+            Solution solutionToRename = null;
             while (project != null)
             {
-                Document newDocument = GetDocument(project, newFilePath);
-                if (newDocument == null)
-                    return renamedSolution;
-
-                SyntaxNode root = await GetRootNode(newDocument);
-                if (root == null)
-                    return renamedSolution;
-
-                SemanticModel semanticModel = await newDocument.GetSemanticModelAsync();
-                if (semanticModel == null)
-                    return renamedSolution;
-
-                IEnumerable<SyntaxNode> declarations = root.DescendantNodes().Where(n => HasMatchingSyntaxNode(semanticModel, n, oldNameBase, isCaseSensitive));
-                SyntaxNode declaration = declarations.FirstOrDefault();
-                if (declaration == null)
-                    return renamedSolution;
-
-                bool userConfirmed = await CheckUserConfirmation(oldNameBase);
-                if (!userConfirmed)
-                    return renamedSolution;
-
-                string newName = Path.GetFileNameWithoutExtension(newDocument.FilePath);
-
                 // Note that RenameSymbolAsync will return a new snapshot of solution.
-                renamedSolution = await _roslynServices.RenameSymbolAsync(newDocument.Project.Solution, semanticModel.GetDeclaredSymbol(declaration), newName);
-                project = renamedSolution.Projects.Where(p => StringComparers.Paths.Equals(p.FilePath, myNewProject.FilePath)).FirstOrDefault();
+                solutionToRename = await _roslynServices.RenameSymbolAsync(project.Solution, symbol, newName);
+                project = solutionToRename.Projects.Where(p => StringComparers.Paths.Equals(p.FilePath, myNewProject.FilePath)).FirstOrDefault();
             }
-            return null;
+
+            return solutionToRename;
         }
 
         private static Document GetDocument(Project project, string filePath) =>
