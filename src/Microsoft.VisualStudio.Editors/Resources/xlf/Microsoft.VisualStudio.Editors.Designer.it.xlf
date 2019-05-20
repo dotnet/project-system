@@ -2348,11 +2348,6 @@ Aggiornare il valore nel file .settings?</target>
         <target state="translated">Il servizio '{0}' non è stato trovato. Assicurarsi che l'applicazione sia installata correttamente.</target>
         <note>Settings Global-Object-Provider Strings</note>
       </trans-unit>
-      <trans-unit id="PPG_Application_RootNamespaceJSharp">
-        <source>Default pac&amp;kage:</source>
-        <target state="translated">Pacc&amp;hetto predefinito:</target>
-        <note>J# Specific String for Root Namespace</note>
-      </trans-unit>
       <trans-unit id="RSE_AccessModifier_Custom">
         <source>(Custom)</source>
         <target state="translated">(Personalizzata)</target>

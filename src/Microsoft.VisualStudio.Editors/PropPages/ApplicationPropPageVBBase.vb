@@ -15,7 +15,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     ''' <summary>
     ''' Contains functionality common to the VB-only application prop pages, for
     '''   both WinForms and WPF projects
-    '''   See comments in proppage.vb: "Application property pages (VB, C#, J#)"
+    '''   See comments in proppage.vb: "Application property pages (VB and C#)"
     ''' </summary>
     ''' <remarks></remarks>
     Friend Class ApplicationPropPageVBBase

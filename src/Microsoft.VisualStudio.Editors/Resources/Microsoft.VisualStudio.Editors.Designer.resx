@@ -1713,10 +1713,6 @@ Do you want to update the value in the .settings file?</value>
     <value>Unable to find service '{0}'.  Ensure that the application is installed correctly.</value>
     <comment>Settings Global-Object-Provider Strings</comment>
   </data>
-  <data name="PPG_Application_RootNamespaceJSharp" xml:space="preserve">
-    <value>Default pac&amp;kage:</value>
-    <comment>J# Specific String for Root Namespace</comment>
-  </data>
   <data name="RSE_AccessModifier_Custom" xml:space="preserve">
     <value>(Custom)</value>
     <comment>Entry in the "Accessibility dropdown"</comment>

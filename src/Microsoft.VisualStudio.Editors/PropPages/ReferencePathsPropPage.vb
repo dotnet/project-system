@@ -360,9 +360,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Protected Overrides Function GetF1HelpKeyword() As String
-            If IsJSProject() Then
-                Return HelpKeywords.JSProjPropReferencePaths
-            ElseIf IsCSProject() Then
+            If IsCSProject() Then
                 Return HelpKeywords.CSProjPropReferencePaths
             Else
                 Debug.Assert(IsVBProject, "Unknown project type")

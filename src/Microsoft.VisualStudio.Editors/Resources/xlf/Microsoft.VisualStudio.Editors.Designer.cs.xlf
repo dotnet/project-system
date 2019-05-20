@@ -2348,11 +2348,6 @@ Chcete aktualizovat hodnotu v souboru .settings?</target>
         <target state="translated">Službu {0} se nepodařilo najít.  Ověřte, jestli je aplikace správně nainstalovaná.</target>
         <note>Settings Global-Object-Provider Strings</note>
       </trans-unit>
-      <trans-unit id="PPG_Application_RootNamespaceJSharp">
-        <source>Default pac&amp;kage:</source>
-        <target state="translated">Výchozí balíče&amp;k:</target>
-        <note>J# Specific String for Root Namespace</note>
-      </trans-unit>
       <trans-unit id="RSE_AccessModifier_Custom">
         <source>(Custom)</source>
         <target state="translated">(vlastní)</target>

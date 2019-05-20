@@ -30,7 +30,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '  DISPID used by the project because a) when properties are changed by a source other than through the property pages,
         '  the DISPID is used to determine which property has changed, b) these are used by IPropertyPageInternal.EditProperty support.
         'For properties which do not correspond to project properties (user-persisted), any unique integer can be used, but it is
-        '  best to keep them out of the range of properties implemented by the project system (the VB, C# and J# projects use integers
+        '  best to keep them out of the range of properties implemented by the project system (the VB and C# projects use integers
         '  above 10000).
         Private ReadOnly _dispId As Integer 'A numeric id for this property
 

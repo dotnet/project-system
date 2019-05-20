@@ -20,7 +20,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             UNKNOWN = -1
             CSharp = 0
             VB = 1
-            JSharp = 2
         End Enum
 #Region "Private fields"
 
@@ -42,8 +41,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     language = Language.CSharp
                 Case EnvDTE.CodeModelLanguageConstants.vsCMLanguageVB
                     language = Language.VB
-                Case EnvDTE80.CodeModelLanguageConstants2.vsCMLanguageJSharp
-                    language = Language.JSharp
                 Case Else
                     language = Language.UNKNOWN
             End Select
@@ -60,7 +57,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             _languageSpecificToFxTypeName = New Dictionary(Of String, String)(16, comparer)
             _fxTypeNameToLanguageSpecific = New Dictionary(Of String, String)(16, comparer)
             If language <> Language.UNKNOWN Then
-                ' add language specific type names for C#, VB, J# respectively
+                ' add language specific type names for C# and VB respectively
                 AddEntry((GetType(Boolean).FullName), New String() {"bool", "Boolean", "boolean"}(language))
                 AddEntry((GetType(Byte).FullName), New String() {"byte", "Byte", "byte"}(language))
                 AddEntry((GetType(Char).FullName), New String() {"char", "Char", "char"}(language))
