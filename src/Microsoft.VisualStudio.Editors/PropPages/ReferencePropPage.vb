@@ -15,7 +15,7 @@ Imports Microsoft.VisualStudio.ComponentModelHost
 Imports Microsoft.VisualStudio.Editors.Common
 Imports Microsoft.VisualStudio.Editors.Interop
 Imports Microsoft.VisualStudio.LanguageServices
-Imports Microsoft.VisualStudio.PlatformUI
+Imports Microsoft.VisualStudio.Utilities
 Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.VisualStudio.WCFReference.Interop
 
@@ -72,9 +72,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             InitializeComponent()
 
             ' Scale buttons
-            addSplitButton.Size = DpiHelper.LogicalToDeviceUnits(addSplitButton.Size)
-            RemoveReference.Size = DpiHelper.LogicalToDeviceUnits(RemoveReference.Size)
-            UpdateReferences.Size = DpiHelper.LogicalToDeviceUnits(UpdateReferences.Size)
+            addSplitButton.Size = DpiAwareness.LogicalToDeviceSize(Handle, addSplitButton.Size)
+            RemoveReference.Size = DpiAwareness.LogicalToDeviceSize(Handle, RemoveReference.Size)
+            UpdateReferences.Size = DpiAwareness.LogicalToDeviceSize(Handle, UpdateReferences.Size)
 
             'Add any initialization after the InitializeComponent() call
             AddChangeHandlers()

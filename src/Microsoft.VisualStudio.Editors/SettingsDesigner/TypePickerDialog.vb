@@ -6,8 +6,9 @@ Imports System.Windows.Forms
 
 Imports Microsoft.VisualStudio.Editors.Common
 Imports Microsoft.VisualStudio.Editors.DesignerFramework
-Imports Microsoft.VisualStudio.PlatformUI
+Imports Microsoft.VisualStudio.Imaging
 Imports Microsoft.VisualStudio.Shell.Interop
+Imports Microsoft.VisualStudio.Utilities
 
 Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
@@ -443,17 +444,19 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 PathSeparator = "."
                 Sorted = True
 
-                Dim assemblyImage As Bitmap = GetManifestBitmapTransparent("assembly.bmp", Color.FromArgb(255, 0, 255))
-                Dim namespaceImage As Bitmap = GetManifestBitmapTransparent("namespace.bmp", Color.FromArgb(255, 0, 255))
-                Dim objectImage As Bitmap = GetManifestBitmapTransparent("object.bmp", Color.FromArgb(255, 0, 255))
+                Dim assemblyImage As Image = GetImageFromImageService(KnownMonikers.Assembly, 96, 96, Color.Transparent)
+                Dim namespaceImage As Image = GetImageFromImageService(KnownMonikers.Namespace, 96, 96, Color.Transparent)
+                Dim objectImage As Image = GetImageFromImageService(KnownMonikers.ClassPublic, 96, 96, Color.Transparent)
+
+                'Scale the imagelist for High DPI
+                DpiAwareness.LogicalToDeviceSize(Handle, assemblyImage.Size)
+                DpiAwareness.LogicalToDeviceSize(Handle, namespaceImage.Size)
+                DpiAwareness.LogicalToDeviceSize(Handle, objectImage.Size)
 
                 Dim treeViewIcons As ImageList = New ImageList()
                 treeViewIcons.Images.Add(assemblyImage)
                 treeViewIcons.Images.Add(namespaceImage)
                 treeViewIcons.Images.Add(objectImage)
-
-                'Scale the imagelist for High DPI
-                DpiHelper.LogicalToDeviceUnits(treeViewIcons)
 
                 ImageList = treeViewIcons
 
