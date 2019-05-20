@@ -71,7 +71,7 @@ jobs:
 
 - job: Spanish
   pool:
-    name: NetCorePublic-Int-Pool
+    name: NetCorePublic-Pool
     queue: BuildPool.Windows.10.Amd64.ES.VS2017.Open
   variables:
     _configuration: Debug
