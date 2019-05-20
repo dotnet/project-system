@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis.Text;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 {
-    public abstract class SimpleRenamerTestsBase
+    public abstract class RenamerTestsBase
     {
         protected abstract string ProjectFileExtension { get; }
 
