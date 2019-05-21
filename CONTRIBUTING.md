@@ -15,3 +15,9 @@ For additional information, see the following:
 - [Visual Studio Threading Guidelines](https://github.com/Microsoft/vs-threading/blob/master/doc/index.md)
 - [Common Project System (CPS) Documention](https://github.com/microsoft/vsprojectsystem)
 - [Code of Conduct](https://github.com/dotnet/home/blob/master/guidance/be-nice.md)
+
+# IntelliCode
+
+To provide better IntelliSense results when working with this project in Visual Studio 2019 you can [add our IntelliCode model](https://docs.microsoft.com/en-us/visualstudio/intellicode/share-models#add-a-custom-model) to your installation.
+
+https://prod.intellicode.vsengsaas.visualstudio.com/get?m=A17F43B28B8B4488B7A89D27F33E1BB6
