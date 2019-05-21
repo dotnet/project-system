@@ -1834,8 +1834,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                                     'to the Auth Service
                                     servicesAuthForm.LoadAnonymously = True
                                 Else
-                                    Dim result As DialogResult = servicesAuthForm.ShowDialog()
-                                    If result = DialogResult.Cancel Then Exit Sub
+                                    Using (DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware))
+                                        Dim result As DialogResult = servicesAuthForm.ShowDialog()
+                                        If result = DialogResult.Cancel Then Exit Sub
+                                    End Using
                                     'TODO: What exceptions do we need to catch?
                                 End If
                                 If servicesAuthForm.LoadAnonymously OrElse
@@ -2061,16 +2063,18 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Try
                 _isShowingTypePicker = True
                 If Not DBNull.Value.Equals(_settingsGridView.CurrentCell.Value) Then
-                    Dim TypePickerDlg As New TypePickerDialog(Settings.Site, DesignerLoader.VsHierarchy, DesignerLoader.ProjectItemid)
+                    Using (DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware))
+                        Dim TypePickerDlg As New TypePickerDialog(Settings.Site, DesignerLoader.VsHierarchy, DesignerLoader.ProjectItemid)
 
-                    TypePickerDlg.SetProjectReferencedAssemblies()
+                        TypePickerDlg.SetProjectReferencedAssemblies()
 
-                    If UIService.ShowDialog(TypePickerDlg) = DialogResult.OK Then
-                        ChangeSettingType(_settingsGridView.Rows(ptCurrent.Y), TypePickerDlg.TypeName)
-                    Else
-                        ' The user clicked cancel in the dialog - let's cancel this edit
-                        _settingsGridView.CancelEdit()
-                    End If
+                        If UIService.ShowDialog(TypePickerDlg) = DialogResult.OK Then
+                            ChangeSettingType(_settingsGridView.Rows(ptCurrent.Y), TypePickerDlg.TypeName)
+                        Else
+                            ' The user clicked cancel in the dialog - let's cancel this edit
+                            _settingsGridView.CancelEdit()
+                        End If
+                    End Using
                 End If
             Finally
                 _isShowingTypePicker = False
