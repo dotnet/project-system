@@ -1043,7 +1043,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                                 Else
                                     Common.Switches.TracePDFocus(TraceLevel.Info, "  ... Calling CreateDesigner")
                                     HostingPanel.SuspendLayout()
-                                    Debug.Assert(HostingPanel.Size.Width <> 0 AndAlso HostingPanel.Size.Height <> 0)
                                     Try
                                         .CreateDesigner()
                                     Finally
