@@ -3,6 +3,7 @@
 Imports System.Text
 Imports System.Windows.Forms
 Imports System.Windows.Forms.Design
+Imports Microsoft.VisualStudio.Utilities
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 

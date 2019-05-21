@@ -6,6 +6,7 @@ Imports Microsoft.VisualStudio.Data.Core
 Imports Microsoft.VisualStudio.Data.Services
 Imports Microsoft.VisualStudio.Data.Services.SupportEntities
 Imports Microsoft.VisualStudio.DataTools.Interop
+Imports Microsoft.VisualStudio.Utilities
 Imports Microsoft.VSDesigner.Data.Local
 Imports Microsoft.VSDesigner.VSDesignerPackage
 
