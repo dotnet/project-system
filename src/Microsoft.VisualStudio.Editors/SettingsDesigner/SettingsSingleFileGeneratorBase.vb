@@ -143,6 +143,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
                 Dim typeAttrs As TypeAttributes
 
+                typeAttrs = SettingsClassVisibility
+
                 ' for VB, we need to generate some code that is fully-qualified, but our generator is always invoked
                 '   without the project's root namespace due to VB convention. If this is VB, then we need to look
                 '   up the project's root namespace and pass that in to Create in order to be able to generate the
