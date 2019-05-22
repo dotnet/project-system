@@ -34,7 +34,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Const Const_MyApplicationEntryPoint As String = "My.MyApplication"
         Protected Const Const_MyApplication As String = "MyApplication"
 
-
         Private ReadOnly _shutdownModeStringValues As String()
         Private ReadOnly _authenticationModeStringValues As String()
         Private ReadOnly _noneText As String
@@ -47,7 +46,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private WithEvents _myApplicationPropertiesNotifyPropertyChanged As INotifyPropertyChanged
 
         'Set to true if we have tried to cache the MyApplication properties value.  If this is True and
-        '  m_MyApplicationPropertiesCache is Nothing, it indicates that the MyApplication property is not
+        '  _myApplicationPropertiesCache is Nothing, it indicates that the MyApplication property is not
         '  supported in this project system (which may mean the project flavor has turned off this support)
         Private _isMyApplicationPropertiesCached As Boolean
 
@@ -144,9 +143,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     ' is initialized correctly...
                     Dim datalist As List(Of PropertyControlData) = New List(Of PropertyControlData)
 
-                    Dim data As PropertyControlData = New PropertyControlData(VBProjPropId.VBPROJPROPID_MyApplication, Const_MyApplication, Nothing, AddressOf MyApplicationSet, AddressOf MyApplicationGet, ControlDataFlags.UserHandledEvents)
+                    Dim data As PropertyControlData = New PropertyControlData(VBProjPropId.VBPROJPROPID_MyApplication, Const_MyApplication, Nothing, AddressOf MyApplicationSet, AddressOf MyApplicationGet, ControlDataFlags.UserHandledEvents Or ControlDataFlags.UserPersisted)
                     datalist.Add(data)
-                    data = New PropertyControlData(MyAppDISPIDs.CustomSubMain, Const_CustomSubMain, UseApplicationFrameworkCheckBox, AddressOf CustomSubMainSet, AddressOf CustomSubMainGet, ControlDataFlags.UserPersisted Or ControlDataFlags.UserHandledEvents Or ControlDataFlags.PersistedInVBMyAppFile)
+                    data = New MyApplicationPersistedPropertyControlData(MyAppDISPIDs.CustomSubMain, Const_CustomSubMain, UseApplicationFrameworkCheckBox, AddressOf CustomSubMainSet, AddressOf CustomSubMainGet, ControlDataFlags.UserPersisted Or ControlDataFlags.UserHandledEvents, AddressOf MyApplicationGet)
                     datalist.Add(data)
                     data = New PropertyControlData(VsProjPropId.VBPROJPROPID_RootNamespace, Const_RootNamespace, RootNamespaceTextBox, New Control() {RootNamespaceLabel}) With {
                         .DisplayPropertyName = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Property_RootNamespace
@@ -154,7 +153,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     datalist.Add(data)
                     data = New PropertyControlData(VsProjPropId110.VBPROJPROPID_OutputTypeEx, Const_OutputTypeEx, Nothing, AddressOf OutputTypeSet, AddressOf OutputTypeGet, ControlDataFlags.None, ControlsThatDependOnOutputTypeProperty)
                     datalist.Add(data)
-                    data = New PropertyControlData(MyAppDISPIDs.MainForm, Const_MainFormNoRootNS, MainFormTextboxNoRootNS, AddressOf MainFormNoRootNSSet, Nothing, ControlDataFlags.UserPersisted Or ControlDataFlags.PersistedInVBMyAppFile)
+                    data = New MyApplicationPersistedPropertyControlData(MyAppDISPIDs.MainForm, Const_MainFormNoRootNS, MainFormTextboxNoRootNS, AddressOf MainFormNoRootNSSet, Nothing, ControlDataFlags.UserPersisted, AddressOf MyApplicationGet)
                     datalist.Add(data)
                     data = New PropertyControlData(VsProjPropId.VBPROJPROPID_StartupObject, Const_StartupObject, StartupObjectComboBox, AddressOf StartupObjectSet, AddressOf StartupObjectGet, ControlDataFlags.UserHandledEvents, ControlsThatDependOnStartupObjectProperty) With {
                         .DisplayPropertyName = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Property_StartupObject
@@ -170,17 +169,17 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     datalist.Add(data)
                     data = New PropertyControlData(VBProjPropId.VBPROJPROPID_MyType, Const_MyType, Nothing, AddressOf MyTypeSet, AddressOf MyTypeGet)
                     datalist.Add(data)
-                    data = New PropertyControlData(MyAppDISPIDs.EnableVisualStyles, Const_EnableVisualStyles, EnableXPThemesCheckBox, ControlDataFlags.UserPersisted Or ControlDataFlags.PersistedInVBMyAppFile)
+                    data = New MyApplicationPersistedPropertyControlData(MyAppDISPIDs.EnableVisualStyles, Const_EnableVisualStyles, EnableXPThemesCheckBox, ControlDataFlags.UserPersisted, AddressOf MyApplicationGet)
                     datalist.Add(data)
-                    data = New PropertyControlData(MyAppDISPIDs.AuthenticationMode, Const_AuthenticationMode, AuthenticationModeComboBox, ControlDataFlags.UserPersisted Or ControlDataFlags.PersistedInVBMyAppFile)
+                    data = New MyApplicationPersistedPropertyControlData(MyAppDISPIDs.AuthenticationMode, Const_AuthenticationMode, AuthenticationModeComboBox, ControlDataFlags.UserPersisted, AddressOf MyApplicationGet)
                     datalist.Add(data)
-                    data = New PropertyControlData(MyAppDISPIDs.SingleInstance, Const_SingleInstance, SingleInstanceCheckBox, ControlDataFlags.UserPersisted Or ControlDataFlags.PersistedInVBMyAppFile)
+                    data = New MyApplicationPersistedPropertyControlData(MyAppDISPIDs.SingleInstance, Const_SingleInstance, SingleInstanceCheckBox, ControlDataFlags.UserPersisted, AddressOf MyApplicationGet)
                     datalist.Add(data)
-                    data = New PropertyControlData(MyAppDISPIDs.ShutdownMode, Const_ShutdownMode, ShutdownModeComboBox, ControlDataFlags.UserPersisted Or ControlDataFlags.PersistedInVBMyAppFile, New Control() {ShutdownModeLabel})
+                    data = New MyApplicationPersistedPropertyControlData(MyAppDISPIDs.ShutdownMode, Const_ShutdownMode, ShutdownModeComboBox, ControlDataFlags.UserPersisted, New Control() {ShutdownModeLabel}, AddressOf MyApplicationGet)
                     datalist.Add(data)
-                    data = New PropertyControlData(MyAppDISPIDs.SplashScreen, Const_SplashScreenNoRootNS, SplashScreenComboBox, ControlDataFlags.UserPersisted Or ControlDataFlags.PersistedInVBMyAppFile, New Control() {SplashScreenLabel})
+                    data = New MyApplicationPersistedPropertyControlData(MyAppDISPIDs.SplashScreen, Const_SplashScreenNoRootNS, SplashScreenComboBox, ControlDataFlags.UserPersisted, New Control() {SplashScreenLabel}, AddressOf MyApplicationGet)
                     datalist.Add(data)
-                    data = New PropertyControlData(MyAppDISPIDs.SaveMySettingsOnExit, Const_SaveMySettingsOnExit, SaveMySettingsCheckbox, ControlDataFlags.UserPersisted Or ControlDataFlags.PersistedInVBMyAppFile)
+                    data = New MyApplicationPersistedPropertyControlData(MyAppDISPIDs.SaveMySettingsOnExit, Const_SaveMySettingsOnExit, SaveMySettingsCheckbox, ControlDataFlags.UserPersisted, AddressOf MyApplicationGet)
                     datalist.Add(data)
                     data = New PropertyControlData(VsProjPropId90.VBPROJPROPID_ApplicationManifest, "ApplicationManifest", Nothing, ControlDataFlags.Hidden)
                     datalist.Add(data)
@@ -238,10 +237,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     'Set a flag so we don't keep trying to query for this property
                     _isMyApplicationPropertiesCached = True
 
-                    Dim ApplicationProperties As Object = Nothing
-                    If GetProperty(VBProjPropId.VBPROJPROPID_MyApplication, ApplicationProperties) Then
-                        _myApplicationPropertiesCache = TryCast(ApplicationProperties, IMyApplicationPropertiesInternal)
-                        _myApplicationPropertiesNotifyPropertyChanged = TryCast(ApplicationProperties, INotifyPropertyChanged)
+                    ' TODO: Remove this condition once VB property pages are fully supported on CPS
+                    If Not ProjectHierarchy.IsCapabilityMatch("PreventAutomaticMyApplication") Then
+                        _myApplicationPropertiesCache = MyApplicationProjectLifetimeTracker.Track(ProjectHierarchy)
+                        _myApplicationPropertiesNotifyPropertyChanged = TryCast(_myApplicationPropertiesCache, INotifyPropertyChanged)
                     Else
                         'MyApplication property is not supported in this project system
                         _myApplicationPropertiesCache = Nothing
@@ -1058,7 +1057,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Public Overrides Function GetUserDefinedPropertyDescriptor(PropertyName As String) As PropertyDescriptor
-            If PropertyName = Const_EnableVisualStyles Then
+            If PropertyName = Const_MyApplication Then
+                Return New UserPropertyDescriptor(PropertyName, GetType(MyApplicationProperties))
+
+            ElseIf PropertyName = Const_EnableVisualStyles Then
                 Return New UserPropertyDescriptor(PropertyName, GetType(Boolean))
 
             ElseIf PropertyName = Const_AuthenticationMode Then
@@ -1072,6 +1074,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             ElseIf PropertyName = Const_SplashScreenNoRootNS Then
                 Return New UserPropertyDescriptor(PropertyName, GetType(String))
+
             ElseIf PropertyName = Const_CustomSubMain Then
                 Return New UserPropertyDescriptor(PropertyName, GetType(Boolean))
 
@@ -1095,7 +1098,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Public Overrides Function ReadUserDefinedProperty(PropertyName As String, ByRef Value As Object) As Boolean
 
-            If PropertyName = Const_EnableVisualStyles Then
+            If PropertyName = Const_MyApplication Then
+                If Not MyApplicationPropertiesSupported Then
+                    Value = PropertyControlData.MissingProperty
+                Else
+                    Value = MyApplicationProperties
+                End If
+
+            ElseIf PropertyName = Const_EnableVisualStyles Then
                 If Not MyApplicationPropertiesSupported Then
                     Value = PropertyControlData.MissingProperty
                 Else
@@ -1189,7 +1199,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Overrides Function WriteUserDefinedProperty(PropertyName As String, Value As Object) As Boolean
-            If PropertyName = Const_EnableVisualStyles Then
+            If PropertyName = Const_MyApplication Then
+                Dim x = MyApplicationProperties
+
+            ElseIf PropertyName = Const_EnableVisualStyles Then
                 If Not MyApplicationPropertiesSupported Then
                     Debug.Fail("Shouldn't be trying to write this property when MyApplicationProperties is missing")
                     Return True 'defensive
