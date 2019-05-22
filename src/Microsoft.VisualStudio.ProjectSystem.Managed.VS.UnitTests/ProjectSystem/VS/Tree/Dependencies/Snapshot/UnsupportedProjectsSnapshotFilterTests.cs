@@ -48,8 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             });
 
             return;
-
-            void AssertNoChange(IDependency dependency)
+            static void AssertNoChange(IDependency dependency)
             {
                 var aggregateSnapshotProvider = IAggregateDependenciesSnapshotProviderFactory.Create();
 

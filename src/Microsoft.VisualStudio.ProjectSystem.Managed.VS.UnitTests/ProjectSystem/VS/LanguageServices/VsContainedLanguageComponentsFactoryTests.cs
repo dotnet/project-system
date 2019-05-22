@@ -110,8 +110,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
         private static VsContainedLanguageComponentsFactory CreateInstance(IOleAsyncServiceProvider serviceProvider = null, IUnconfiguredProjectVsServices projectVsServices = null, IActiveWorkspaceProjectContextHost projectContextHost = null)
         {
-            projectVsServices = projectVsServices ?? IUnconfiguredProjectVsServicesFactory.Create();
-            projectContextHost = projectContextHost ?? IActiveWorkspaceProjectContextHostFactory.Create();
+            projectVsServices ??= IUnconfiguredProjectVsServicesFactory.Create();
+            projectContextHost ??= IActiveWorkspaceProjectContextHostFactory.Create();
 
             return new VsContainedLanguageComponentsFactory(IVsServiceFactory.Create<SAsyncServiceProvider, IOleAsyncServiceProvider>(serviceProvider),
                                                             projectVsServices,

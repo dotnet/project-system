@@ -206,8 +206,8 @@ Root (flags: {ProjectRoot})
 
         private ProjectRootImageProjectTreePropertiesProvider CreateInstance(IProjectCapabilitiesService capabilities, IProjectImageProvider imageProvider)
         {
-            capabilities = capabilities ?? IProjectCapabilitiesServiceFactory.Create();
-            imageProvider = imageProvider ?? IProjectImageProviderFactory.Create();
+            capabilities ??= IProjectCapabilitiesServiceFactory.Create();
+            imageProvider ??= IProjectImageProviderFactory.Create();
 
             return new ProjectRootImageProjectTreePropertiesProvider(capabilities, imageProvider);
         }

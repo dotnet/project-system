@@ -155,16 +155,16 @@ Root (flags: {ProjectRoot})
             var hierarchy = IVsHierarchyFactory.Create();
             var project = UnconfiguredProjectFactory.Create(hierarchy);
             var threadingService = IProjectThreadingServiceFactory.Create();
-            buildManager = buildManager ?? IVsSolutionBuildManager2Factory.Create(solutionEventsListener, hierarchy, isBuilding, cancelBuild);
+            buildManager ??= IVsSolutionBuildManager2Factory.Create(solutionEventsListener, hierarchy, isBuilding, cancelBuild);
             var serviceProvider = IVsServiceFactory.Create<SVsSolutionBuildManager, IVsSolutionBuildManager2>(buildManager);
-            generatePackageOnBuildPropertyProvider = generatePackageOnBuildPropertyProvider ?? CreateGeneratePackageOnBuildPropertyProvider();
+            generatePackageOnBuildPropertyProvider ??= CreateGeneratePackageOnBuildPropertyProvider();
 
             return CreateInstanceCore(project, threadingService, serviceProvider, generatePackageOnBuildPropertyProvider);
         }
 
         private static GeneratePackageOnBuildPropertyProvider CreateGeneratePackageOnBuildPropertyProvider(IProjectService projectService = null)
         {
-            projectService = projectService ?? IProjectServiceFactory.Create();
+            projectService ??= IProjectServiceFactory.Create();
             return new GeneratePackageOnBuildPropertyProvider(projectService);
         }
 

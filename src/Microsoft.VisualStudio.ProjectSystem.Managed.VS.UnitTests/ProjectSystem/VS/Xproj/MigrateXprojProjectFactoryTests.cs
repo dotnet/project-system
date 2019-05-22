@@ -567,7 +567,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 
             if (withEntries)
             {
-                report = report ?? new MigrationReport(1, new List<ProjectMigrationReport>()
+                report ??= new MigrationReport(1, new List<ProjectMigrationReport>()
                 {
                     new ProjectMigrationReport(true, CsprojLocation, RootLocation, ProjectName, new List<string>(), new List<MigrationError>())
                 });

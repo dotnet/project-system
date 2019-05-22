@@ -562,8 +562,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 project = ConfiguredProjectFactory.ImplementUnconfiguredProject(unconfiguredProject);
             }
 
-            commandLineParser = commandLineParser ?? ICommandLineParserServiceFactory.Create();
-            logger = logger ?? IProjectLoggerFactory.Create();
+            commandLineParser ??= ICommandLineParserServiceFactory.Create();
+            logger ??= IProjectLoggerFactory.Create();
 
             var factories = handlers.Select(h => ExportFactoryFactory.ImplementCreateValueWithAutoDispose(() => h))
                                     .ToArray();

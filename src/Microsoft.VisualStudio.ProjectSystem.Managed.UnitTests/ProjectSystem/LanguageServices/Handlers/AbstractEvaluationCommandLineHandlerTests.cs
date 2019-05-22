@@ -446,7 +446,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         private static void ApplyProjectEvaluation(AbstractEvaluationCommandLineHandler handler, IComparable version, IProjectChangeDiff difference, IImmutableDictionary<string, IImmutableDictionary<string, string>> metadata = null)
         {
-            metadata = metadata ?? ImmutableDictionary<string, IImmutableDictionary<string, string>>.Empty;
+            metadata ??= ImmutableDictionary<string, IImmutableDictionary<string, string>>.Empty;
             bool isActiveContext = true;
             var logger = IProjectLoggerFactory.Create();
 

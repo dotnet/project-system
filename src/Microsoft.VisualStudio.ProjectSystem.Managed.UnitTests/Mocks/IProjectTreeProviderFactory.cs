@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
         public static IProjectTreeProvider ImplementGetAddNewItemDirectory(Func<IProjectTree, string> action)
         {
-            string getPath(IProjectTree tree) => tree.FilePath;
+            static string getPath(IProjectTree tree) => tree.FilePath;
 
             var mock = new Mock<IProjectTreeProvider>();
             mock.Setup(p => p.GetPath(It.IsAny<IProjectTree>()))

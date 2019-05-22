@@ -12,10 +12,8 @@ namespace Microsoft.Build.Construction
             if (string.IsNullOrEmpty(xml))
                 xml = "<Project/>";
 
-            using (var reader = XmlReader.Create(new StringReader(xml)))
-            {
-                return ProjectRootElement.Create(reader);
-            }
+            using var reader = XmlReader.Create(new StringReader(xml));
+            return ProjectRootElement.Create(reader);
         }
     }
 }
