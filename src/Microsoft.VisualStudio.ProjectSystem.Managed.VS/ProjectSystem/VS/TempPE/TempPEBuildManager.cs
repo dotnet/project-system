@@ -350,7 +350,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 BuildManager.OnDesignTimeOutputDeleted(item);
             }
 
-            bool TryGetValueIfUnused<T>(string item, ImmutableDictionary<string, T>.Builder source, ImmutableHashSet<string>.Builder otherSources, out T result)
+            static bool TryGetValueIfUnused<T>(string item, ImmutableDictionary<string, T>.Builder source, ImmutableHashSet<string>.Builder otherSources, out T result)
             {
                 // return the value from the source, but only if it doesn't appear in other sources
                 return source.TryGetValue(item, out result) && !otherSources.Contains(item);
@@ -497,8 +497,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             };
 
             return Task.FromResult(result);
-
-            (bool designTime, bool designTimeShared) GetDesignTimePropsForItem(IImmutableDictionary<string, string> item)
+            static (bool designTime, bool designTimeShared) GetDesignTimePropsForItem(IImmutableDictionary<string, string> item)
             {
                 item.TryGetValue(Compile.LinkProperty, out string linkString);
                 item.TryGetValue(Compile.DesignTimeProperty, out string designTimeString);

@@ -85,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         private CompileItemHandler CreateInstance(UnconfiguredProject project = null, IWorkspaceProjectContext context = null)
         {
-            project = project ?? UnconfiguredProjectFactory.Create();
+            project ??= UnconfiguredProjectFactory.Create();
 
             var handler = new CompileItemHandler(project);
             if (context != null)

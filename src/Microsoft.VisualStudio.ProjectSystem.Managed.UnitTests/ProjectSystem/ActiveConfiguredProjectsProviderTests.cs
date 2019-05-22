@@ -146,8 +146,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private ActiveConfiguredProjectsProvider CreateInstance(IUnconfiguredProjectServices services = null, UnconfiguredProject project = null, IEnumerable<IActiveConfiguredProjectsDimensionProvider> dimensionProviders = null)
         {
-            services = services ?? IUnconfiguredProjectServicesFactory.Create();
-            project = project ?? UnconfiguredProjectFactory.Create();
+            services ??= IUnconfiguredProjectServicesFactory.Create();
+            project ??= UnconfiguredProjectFactory.Create();
 
             var provider = new ActiveConfiguredProjectsProvider(services, project);
 

@@ -8,8 +8,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
         public static ProjectServices Create(IProjectThreadingService threadingService = null, IProjectFaultHandlerService faultHandlerService = null, IProjectService projectService = null)
         {
-            threadingService = threadingService ?? IProjectThreadingServiceFactory.Create();
-            faultHandlerService = faultHandlerService ?? IProjectFaultHandlerServiceFactory.Create();
+            threadingService ??= IProjectThreadingServiceFactory.Create();
+            faultHandlerService ??= IProjectFaultHandlerServiceFactory.Create();
 
             var projectServices = new Mock<ProjectServices>();
             projectServices.Setup(u => u.ThreadingPolicy)

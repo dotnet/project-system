@@ -182,8 +182,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
         private static ProjectDesignerService CreateInstance(IUnconfiguredProjectVsServices projectVsServices, IVsProjectDesignerPageService vsProjectDesignerPageService)
         {
-            projectVsServices = projectVsServices ?? IUnconfiguredProjectVsServicesFactory.Create();
-            vsProjectDesignerPageService = vsProjectDesignerPageService ?? IVsProjectDesignerPageServiceFactory.Create();
+            projectVsServices ??= IUnconfiguredProjectVsServicesFactory.Create();
+            vsProjectDesignerPageService ??= IVsProjectDesignerPageServiceFactory.Create();
 
             return new ProjectDesignerService(projectVsServices, vsProjectDesignerPageService);
         }

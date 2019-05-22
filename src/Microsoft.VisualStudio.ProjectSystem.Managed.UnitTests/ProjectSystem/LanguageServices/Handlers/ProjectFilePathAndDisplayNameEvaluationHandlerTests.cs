@@ -124,7 +124,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         private ProjectFilePathAndDisplayNameEvaluationHandler CreateInstance(ProjectConfiguration configuration = null, IImplicitlyActiveDimensionProvider implicitlyActiveDimensionProvider = null, IWorkspaceProjectContext context = null)
         {
             var project = ConfiguredProjectFactory.ImplementProjectConfiguration(configuration ?? ProjectConfigurationFactory.Create("Debug|AnyCPU"));
-            implicitlyActiveDimensionProvider = implicitlyActiveDimensionProvider ?? IImplicitlyActiveDimensionProviderFactory.Create();
+            implicitlyActiveDimensionProvider ??= IImplicitlyActiveDimensionProviderFactory.Create();
 
             var handler = new ProjectFilePathAndDisplayNameEvaluationHandler(project, implicitlyActiveDimensionProvider);
             if (context != null)

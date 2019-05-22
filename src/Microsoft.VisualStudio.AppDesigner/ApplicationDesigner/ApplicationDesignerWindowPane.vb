@@ -436,7 +436,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                             hr = rdt.FindAndLockDocument(CUInt(_VSRDTFLAGS.RDT_NoLock), ProjectFullName, Hierarchy, ItemId, punkDocData, dwCookie)
                             If VSErrorHandler.Succeeded(hr) Then
                                 'We only want to save the project file itself, not any other its children (any of the other files in the project)
-                                hr = rdt.SaveDocuments(CUInt(__VSRDTSAVEOPTIONS.RDTSAVEOPT_SaveIfDirty Or __VSRDTSAVEOPTIONS.RDTSAVEOPT_SaveNoChildren),
+                                'but we do want to force it so that the MyApplication file will be saved is necessary
+                                hr = rdt.SaveDocuments(CUInt(__VSRDTSAVEOPTIONS.RDTSAVEOPT_ForceSave Or __VSRDTSAVEOPTIONS.RDTSAVEOPT_SaveNoChildren),
                                     Hierarchy, ItemId, dwCookie)
 
                                 'Now that the project file has been saved, we need to tell the

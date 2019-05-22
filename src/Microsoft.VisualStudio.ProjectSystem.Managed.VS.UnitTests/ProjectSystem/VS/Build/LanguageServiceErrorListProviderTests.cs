@@ -349,7 +349,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
         private static LanguageServiceErrorListProvider CreateInstance(IActiveWorkspaceProjectContextHost projectContextHost)
         {
-            projectContextHost = projectContextHost ?? IActiveWorkspaceProjectContextHostFactory.Create();
+            projectContextHost ??= IActiveWorkspaceProjectContextHostFactory.Create();
 
             var provider = new LanguageServiceErrorListProvider(UnconfiguredProjectFactory.Create(), projectContextHost);
 

@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         private static BuildMacroInfo CreateInstance(ConfiguredProject configuredProject = null)
         {
-            configuredProject = configuredProject ?? ConfiguredProjectFactory.Create();
+            configuredProject ??= ConfiguredProjectFactory.Create();
 
             var threadingService = IProjectThreadingServiceFactory.Create();
 

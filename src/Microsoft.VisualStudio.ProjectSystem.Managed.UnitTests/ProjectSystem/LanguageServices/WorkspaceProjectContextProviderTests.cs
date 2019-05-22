@@ -216,7 +216,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         private static WorkspaceProjectContextProvider CreateInstance(UnconfiguredProject project = null, IProjectThreadingService threadingService = null, IWorkspaceProjectContextFactory workspaceProjectContextFactory = null, ISafeProjectGuidService projectGuidService = null, IProjectRuleSnapshot projectRuleSnapshot = null)
         {
-            projectRuleSnapshot = projectRuleSnapshot ?? IProjectRuleSnapshotFactory.FromJson(
+            projectRuleSnapshot ??= IProjectRuleSnapshotFactory.FromJson(
 @"{
     ""Properties"": {
         ""MSBuildProjectFullPath"": ""C:\\Project\\Project.csproj"",
@@ -226,10 +226,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 }");
 
             var projectFaultService = IProjectFaultHandlerServiceFactory.Create();
-            project = project ?? UnconfiguredProjectFactory.Create();
-            threadingService = threadingService ?? IProjectThreadingServiceFactory.Create();
-            workspaceProjectContextFactory = workspaceProjectContextFactory ?? IWorkspaceProjectContextFactoryFactory.Create();
-            projectGuidService = projectGuidService ?? ISafeProjectGuidServiceFactory.ImplementGetProjectGuidAsync(Guid.NewGuid());
+            project ??= UnconfiguredProjectFactory.Create();
+            threadingService ??= IProjectThreadingServiceFactory.Create();
+            workspaceProjectContextFactory ??= IWorkspaceProjectContextFactoryFactory.Create();
+            projectGuidService ??= ISafeProjectGuidServiceFactory.ImplementGetProjectGuidAsync(Guid.NewGuid());
 
             var mock = new Mock<WorkspaceProjectContextProvider>(project, threadingService, projectGuidService, projectFaultService, workspaceProjectContextFactory.AsLazy());
             mock.Protected().Setup<Task<IProjectRuleSnapshot>>("GetLatestSnapshotAsync", ItExpr.IsAny<ConfiguredProject>())

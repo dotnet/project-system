@@ -45,17 +45,15 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
             
             var tasksService = IUnconfiguredProjectTasksServiceFactory.ImplementLoadedProjectAsync<ConfiguredProject>(t => t());
 
-            using (var watcher = new ProjectAssetFileWatcherInstance(IVsServiceFactory.Create<SVsFileChangeEx, Shell.IVsAsyncFileChangeEx>(fileChangeService), IProjectTreeProviderFactory.Create(), IUnconfiguredProjectCommonServicesFactory.Create(threadingService: IProjectThreadingServiceFactory.Create()), tasksService, IActiveConfiguredProjectSubscriptionServiceFactory.Create()))
-            {
-                var tree = ProjectTreeParser.Parse(inputTree);
-                var projectUpdate = IProjectSubscriptionUpdateFactory.FromJson(ProjectCurrentStateJson);
-                await watcher.InitializeAsync();
-                await watcher.DataFlow_ChangedAsync(IProjectVersionedValueFactory.Create(Tuple.Create(IProjectTreeSnapshotFactory.Create(tree), projectUpdate)));
+            using var watcher = new ProjectAssetFileWatcherInstance(IVsServiceFactory.Create<SVsFileChangeEx, Shell.IVsAsyncFileChangeEx>(fileChangeService), IProjectTreeProviderFactory.Create(), IUnconfiguredProjectCommonServicesFactory.Create(threadingService: IProjectThreadingServiceFactory.Create()), tasksService, IActiveConfiguredProjectSubscriptionServiceFactory.Create());
+            var tree = ProjectTreeParser.Parse(inputTree);
+            var projectUpdate = IProjectSubscriptionUpdateFactory.FromJson(ProjectCurrentStateJson);
+            await watcher.InitializeAsync();
+            await watcher.DataFlow_ChangedAsync(IProjectVersionedValueFactory.Create(Tuple.Create(IProjectTreeSnapshotFactory.Create(tree), projectUpdate)));
 
-                // If fileToWatch is null then we expect to not register any filewatcher.
-                var times = fileToWatch == null ? Times.Never() : Times.Once();
-                Mock.Get(fileChangeService).Verify(s => s.AdviseFileChangeAsync(fileToWatch ?? It.IsAny<string>(), It.IsAny<_VSFILECHANGEFLAGS>(), watcher, CancellationToken.None), times);
-            }
+            // If fileToWatch is null then we expect to not register any filewatcher.
+            var times = fileToWatch == null ? Times.Never() : Times.Once();
+            Mock.Get(fileChangeService).Verify(s => s.AdviseFileChangeAsync(fileToWatch ?? It.IsAny<string>(), It.IsAny<_VSFILECHANGEFLAGS>(), watcher, CancellationToken.None), times);
         }
 
         [Theory]
@@ -96,28 +94,26 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
             
             var tasksService = IUnconfiguredProjectTasksServiceFactory.ImplementLoadedProjectAsync<ConfiguredProject>(t => t());
 
-            using (var watcher = new ProjectAssetFileWatcherInstance(
-                IVsServiceFactory.Create<SVsFileChangeEx, IVsAsyncFileChangeEx>(fileChangeService), 
-                IProjectTreeProviderFactory.Create(), 
+            using var watcher = new ProjectAssetFileWatcherInstance(
+                IVsServiceFactory.Create<SVsFileChangeEx, IVsAsyncFileChangeEx>(fileChangeService),
+                IProjectTreeProviderFactory.Create(),
                 IUnconfiguredProjectCommonServicesFactory.Create(threadingService: IProjectThreadingServiceFactory.Create()),
                 tasksService,
-                IActiveConfiguredProjectSubscriptionServiceFactory.Create()))
-            {
-                await watcher.InitializeAsync();
-                var projectUpdate = IProjectSubscriptionUpdateFactory.FromJson(ProjectCurrentStateJson);
+                IActiveConfiguredProjectSubscriptionServiceFactory.Create());
+            await watcher.InitializeAsync();
+            var projectUpdate = IProjectSubscriptionUpdateFactory.FromJson(ProjectCurrentStateJson);
 
-                var firstTree = ProjectTreeParser.Parse(inputTree);
-                await watcher.DataFlow_ChangedAsync(IProjectVersionedValueFactory.Create(Tuple.Create(IProjectTreeSnapshotFactory.Create(firstTree), projectUpdate)));
+            var firstTree = ProjectTreeParser.Parse(inputTree);
+            await watcher.DataFlow_ChangedAsync(IProjectVersionedValueFactory.Create(Tuple.Create(IProjectTreeSnapshotFactory.Create(firstTree), projectUpdate)));
 
-                var secondTree = ProjectTreeParser.Parse(changedTree);
-                await watcher.DataFlow_ChangedAsync(IProjectVersionedValueFactory.Create(Tuple.Create(IProjectTreeSnapshotFactory.Create(secondTree), projectUpdate)));
+            var secondTree = ProjectTreeParser.Parse(changedTree);
+            await watcher.DataFlow_ChangedAsync(IProjectVersionedValueFactory.Create(Tuple.Create(IProjectTreeSnapshotFactory.Create(secondTree), projectUpdate)));
 
-                // If fileToWatch is null then we expect to not register any filewatcher.
-                var fileChangeServiceMock = Mock.Get(fileChangeService);
-                fileChangeServiceMock.Verify(s => s.AdviseFileChangeAsync(It.IsAny<string>(), It.IsAny<_VSFILECHANGEFLAGS>(), watcher, CancellationToken.None),
-                    Times.Exactly(numRegisterCalls));
-                fileChangeServiceMock.Verify(s => s.UnadviseFileChangeAsync(adviseCookie, CancellationToken.None), Times.Exactly(numUnregisterCalls));
-            }
+            // If fileToWatch is null then we expect to not register any filewatcher.
+            var fileChangeServiceMock = Mock.Get(fileChangeService);
+            fileChangeServiceMock.Verify(s => s.AdviseFileChangeAsync(It.IsAny<string>(), It.IsAny<_VSFILECHANGEFLAGS>(), watcher, CancellationToken.None),
+                Times.Exactly(numRegisterCalls));
+            fileChangeServiceMock.Verify(s => s.UnadviseFileChangeAsync(adviseCookie, CancellationToken.None), Times.Exactly(numUnregisterCalls));
 
         }
 
@@ -128,15 +124,14 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
             
             var tasksService = IUnconfiguredProjectTasksServiceFactory.ImplementLoadedProjectAsync<ConfiguredProject>(t => t());
 
-            using (var watcher = new ProjectAssetFileWatcherInstance(
+            using var watcher = new ProjectAssetFileWatcherInstance(
                 IVsServiceFactory.Create<SVsFileChangeEx, IVsAsyncFileChangeEx>(fileChangeService),
                 IProjectTreeProviderFactory.Create(),
                 IUnconfiguredProjectCommonServicesFactory.Create(threadingService: IProjectThreadingServiceFactory.Create()),
                 tasksService,
-                IActiveConfiguredProjectSubscriptionServiceFactory.Create()))
-            {
-                var tree = ProjectTreeParser.Parse(@"Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""");
-                var projectUpdate = IProjectSubscriptionUpdateFactory.FromJson(@"{
+                IActiveConfiguredProjectSubscriptionServiceFactory.Create());
+            var tree = ProjectTreeParser.Parse(@"Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""");
+            var projectUpdate = IProjectSubscriptionUpdateFactory.FromJson(@"{
     ""CurrentState"": {
         ""ConfigurationGeneral"": {
             ""Properties"": {
@@ -146,13 +141,12 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
     }
 }");
 
-                await watcher.InitializeAsync();
-                await watcher.DataFlow_ChangedAsync(IProjectVersionedValueFactory.Create(Tuple.Create(IProjectTreeSnapshotFactory.Create(tree), projectUpdate)));
+            await watcher.InitializeAsync();
+            await watcher.DataFlow_ChangedAsync(IProjectVersionedValueFactory.Create(Tuple.Create(IProjectTreeSnapshotFactory.Create(tree), projectUpdate)));
 
-                var fileChangeServiceMock = Mock.Get(fileChangeService);
-                fileChangeServiceMock.Verify(s => s.AdviseFileChangeAsync(It.IsAny<string>(), It.IsAny<_VSFILECHANGEFLAGS>(), watcher, CancellationToken.None),
-                    Times.Never());
-            }
+            var fileChangeServiceMock = Mock.Get(fileChangeService);
+            fileChangeServiceMock.Verify(s => s.AdviseFileChangeAsync(It.IsAny<string>(), It.IsAny<_VSFILECHANGEFLAGS>(), watcher, CancellationToken.None),
+                Times.Never());
         }
     }
 }
