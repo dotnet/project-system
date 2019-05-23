@@ -28,8 +28,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             IProjectRuleSnapshot packageReferences = update.GetSnapshotOrEmpty(PackageReference.SchemaName);
             IProjectRuleSnapshot toolReferences = update.GetSnapshotOrEmpty(DotNetCliToolReference.SchemaName);
 
+            // For certain project types such as UWP, "TargetFrameworkMoniker" != the moniker that restore uses
+            string targetMoniker = properties.GetPropertyOrEmpty(NuGetRestore.NuGetTargetMonikerProperty);
+            if (targetMoniker.Length == 0)
+                targetMoniker = properties.GetPropertyOrEmpty(NuGetRestore.TargetFrameworkMonikerProperty);
+
             IVsTargetFrameworkInfo2 frameworkInfo = new TargetFrameworkInfo(
-                properties.GetPropertyOrEmpty(NuGetRestore.TargetFrameworkMonikerProperty),
+                targetMoniker,
                 ToReferenceItems(frameworkReferences.Items),
                 ToReferenceItems(packageDownloads.Items),
                 ToReferenceItems(projectReferences.Items),
