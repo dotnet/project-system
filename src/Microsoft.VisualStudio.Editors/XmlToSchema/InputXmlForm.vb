@@ -6,6 +6,7 @@ Imports System.Windows.Forms
 Imports System.Windows.Forms.Design
 Imports System.Xml
 Imports System.Xml.Schema
+Imports Microsoft.VisualStudio.Utilities
 
 Namespace Microsoft.VisualStudio.Editors.XmlToSchema
 
@@ -59,66 +60,72 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
         End Sub
 
         Private Sub _addFromFileButton_Click(sender As Object, e As EventArgs) Handles _addFromFileButton.Click
-            _xmlFileDialog.InitialDirectory = _projectPath
-            If _xmlFileDialog.ShowDialog() = DialogResult.OK Then
-                Dim anyInvalid = False
-                Try
-                    For Each fileName In _xmlFileDialog.FileNames
-                        UseWaitCursor = True
-                        XElement.Load(fileName)
-                    Next
-                Catch ex As Exception
-                    If FilterException(ex) Then
-                        ShowWarning(String.Format(My.Resources.Microsoft_VisualStudio_Editors_Designer.XmlToSchema_ErrorLoadingXml, ex.Message))
-                        anyInvalid = True
-                    Else
-                        Throw
+            Using (DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware))
+                _xmlFileDialog.InitialDirectory = _projectPath
+                If _xmlFileDialog.ShowDialog() = DialogResult.OK Then
+                    Dim anyInvalid = False
+                    Try
+                        For Each fileName In _xmlFileDialog.FileNames
+                            UseWaitCursor = True
+                            XElement.Load(fileName)
+                        Next
+                    Catch ex As Exception
+                        If FilterException(ex) Then
+                            ShowWarning(String.Format(My.Resources.Microsoft_VisualStudio_Editors_Designer.XmlToSchema_ErrorLoadingXml, ex.Message))
+                            anyInvalid = True
+                        Else
+                            Throw
+                        End If
+                    Finally
+                        UseWaitCursor = False
+                    End Try
+
+                    If Not anyInvalid Then
+                        For Each fileName In _xmlFileDialog.FileNames
+                            AddFile(fileName)
+                        Next
                     End If
-                Finally
-                    UseWaitCursor = False
-                End Try
-
-                If Not anyInvalid Then
-                    For Each fileName In _xmlFileDialog.FileNames
-                        AddFile(fileName)
-                    Next
                 End If
-            End If
 
-            Common.TelemetryLogger.LogInputXmlFormEvent(Common.TelemetryLogger.InputXmlFormEvent.FromFileButtonClicked)
+                Common.TelemetryLogger.LogInputXmlFormEvent(Common.TelemetryLogger.InputXmlFormEvent.FromFileButtonClicked)
+            End Using
         End Sub
 
         Private Sub _addFromWebButton_Click(sender As Object, e As EventArgs) Handles _addFromWebButton.Click
-            Using dialog As New WebUrlDialog()
-                dialog.ServiceProvider = ServiceProvider
-                Dim uiService As IUIService = CType(ServiceProvider.GetService(GetType(IUIService)), IUIService)
-                If uiService.ShowDialog(dialog) = DialogResult.OK Then
-                    If Not ContainsFile(dialog.Url) Then
-                        Dim item As New ListViewItem("URL") With {.Tag = dialog.Xml}
-                        item.SubItems.Add(dialog.Url)
-                        _listView.Items.Add(item)
+            Using (DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware))
+                Using dialog As New WebUrlDialog()
+                    dialog.ServiceProvider = ServiceProvider
+                    Dim uiService As IUIService = CType(ServiceProvider.GetService(GetType(IUIService)), IUIService)
+                    If uiService.ShowDialog(dialog) = DialogResult.OK Then
+                        If Not ContainsFile(dialog.Url) Then
+                            Dim item As New ListViewItem("URL") With {.Tag = dialog.Xml}
+                            item.SubItems.Add(dialog.Url)
+                            _listView.Items.Add(item)
+                        End If
                     End If
-                End If
 
-                Common.TelemetryLogger.LogInputXmlFormEvent(Common.TelemetryLogger.InputXmlFormEvent.FromWebButtonClicked)
+                    Common.TelemetryLogger.LogInputXmlFormEvent(Common.TelemetryLogger.InputXmlFormEvent.FromWebButtonClicked)
+                End Using
             End Using
         End Sub
 
         Private Sub _addAsTextButton_Click(sender As Object, e As EventArgs) Handles _addAsTextButton.Click
-            Using dialog As New PasteXmlDialog()
-                dialog.ServiceProvider = ServiceProvider
-                Dim uiService As IUIService = CType(ServiceProvider.GetService(GetType(IUIService)), IUIService)
-                If uiService.ShowDialog(dialog) = DialogResult.OK Then
-                    Dim item As New ListViewItem("XML") With {.Tag = dialog.Xml}
-                    Dim xmlText = dialog.Xml.ToString(SaveOptions.DisableFormatting)
-                    If xmlText.Length > 128 Then
-                        xmlText = xmlText.Substring(0, 128)
+            Using (DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware))
+                Using dialog As New PasteXmlDialog()
+                    dialog.ServiceProvider = ServiceProvider
+                    Dim uiService As IUIService = CType(ServiceProvider.GetService(GetType(IUIService)), IUIService)
+                    If uiService.ShowDialog(dialog) = DialogResult.OK Then
+                        Dim item As New ListViewItem("XML") With {.Tag = dialog.Xml}
+                        Dim xmlText = dialog.Xml.ToString(SaveOptions.DisableFormatting)
+                        If xmlText.Length > 128 Then
+                            xmlText = xmlText.Substring(0, 128)
+                        End If
+                        item.SubItems.Add(xmlText)
+                        _listView.Items.Add(item)
                     End If
-                    item.SubItems.Add(xmlText)
-                    _listView.Items.Add(item)
-                End If
 
-                Common.TelemetryLogger.LogInputXmlFormEvent(Common.TelemetryLogger.InputXmlFormEvent.AsTextButtonClicked)
+                    Common.TelemetryLogger.LogInputXmlFormEvent(Common.TelemetryLogger.InputXmlFormEvent.AsTextButtonClicked)
+                End Using
             End Using
         End Sub
 
