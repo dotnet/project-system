@@ -1014,9 +1014,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                     Dim comparer As IComparer
                     If _alphabetizedOrder Then
-                        comparer = New AlphabetizedOrderComparer()
+                        comparer = AlphabetizedOrderComparer.Instance
                     Else
-                        comparer = New OriginalOrderComparer()
+                        comparer = OriginalOrderComparer.Instance
                     End If
 
                     Array.Sort(resourceList, comparer)
@@ -1610,6 +1610,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Class AlphabetizedOrderComparer
             Implements IComparer
 
+            Public Shared ReadOnly Instance As New AlphabetizedOrderComparer
+
             Public Function Compare(x As Object, y As Object) As Integer Implements IComparer.Compare
                 Dim r1 As Resource = CType(x, Resource)
                 Dim r2 As Resource = CType(y, Resource)
@@ -1623,6 +1625,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         Private Class OriginalOrderComparer
             Implements IComparer
+
+            Public Shared ReadOnly Instance As New OriginalOrderComparer
 
             Public Function Compare(x As Object, y As Object) As Integer Implements IComparer.Compare
                 Dim r1 As Resource = CType(x, Resource)
