@@ -2348,11 +2348,6 @@ El nuevo valor del archivo app.config es '{1}'
         <target state="translated">No se encuentra el servicio '{0}'.  Asegúrese de que la aplicación se ha instalado correctamente.</target>
         <note>Settings Global-Object-Provider Strings</note>
       </trans-unit>
-      <trans-unit id="PPG_Application_RootNamespaceJSharp">
-        <source>Default pac&amp;kage:</source>
-        <target state="translated">Paquete pre&amp;determinado:</target>
-        <note>J# Specific String for Root Namespace</note>
-      </trans-unit>
       <trans-unit id="RSE_AccessModifier_Custom">
         <source>(Custom)</source>
         <target state="translated">(Personalizado)</target>
