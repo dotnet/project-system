@@ -122,6 +122,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         public IDependenciesSnapshot CurrentSnapshot => _currentSnapshot;
 
+        IReceivableSourceBlock<SnapshotChangedEventArgs> IDependenciesSnapshotProvider.SnapshotChangedSource => _snapshotChangedSource;
+
         private ImmutableArray<IDependencyCrossTargetSubscriber> Subscribers
         {
             get
@@ -145,8 +147,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 return _subscribers;
             }
         }
-
-        IReceivableSourceBlock<SnapshotChangedEventArgs> IDependenciesSnapshotProvider.SnapshotChangedSource => _snapshotChangedSource;
 
 #pragma warning disable RS0030 // symbol ProjectAutoLoad is banned
         [ProjectAutoLoad(ProjectLoadCheckpoint.ProjectFactoryCompleted)]
@@ -219,6 +219,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             _dependenciesUpdateScheduler.Dispose();
 
             _contextUpdateGate.Dispose();
+            _snapshotChangedSource.Complete();
 
             if (initialized)
             {

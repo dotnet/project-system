@@ -53,6 +53,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <summary>Latest updated snapshot of all rules schema catalogs.</summary>
         private IImmutableDictionary<string, IPropertyPagesCatalog> _namedCatalogs;
 
+        /// <summary>
+        /// A subscription to the snapshot service dataflow.
+        /// </summary>
         private IDisposable _snapshotEventListener;
 
         /// <summary>
@@ -348,7 +351,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                 },
                                 initialTreeCancellationToken);
 
-                            var actionBlock = DataflowBlockSlim.CreateActionBlock<SnapshotChangedEventArgs>(
+                            ITargetBlock<SnapshotChangedEventArgs> actionBlock = DataflowBlockSlim.CreateActionBlock<SnapshotChangedEventArgs>(
                                 e => OnDependenciesSnapshotChanged(_dependenciesSnapshotProvider, e),
                                 "DependenciesProjectTreeProviderSource {1}",
                                 skipIntermediateInputData: true);
@@ -425,23 +428,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return;
             }
 
-            _ = SubmitTreeUpdateAsync(
-                async (treeSnapshot, configuredProjectExports, cancellationToken) =>
-                {
-                    IProjectTree dependenciesNode = treeSnapshot.Value.Tree;
-
-                    if (!cancellationToken.IsCancellationRequested)
+            try
+            {
+                _ = SubmitTreeUpdateAsync(
+                    async (treeSnapshot, configuredProjectExports, cancellationToken) =>
                     {
-                        dependenciesNode = await viewProvider.BuildTreeAsync(dependenciesNode, snapshot, cancellationToken);
+                        IProjectTree dependenciesNode = treeSnapshot.Value.Tree;
 
-                        await _treeTelemetryService.ObserveTreeUpdateCompletedAsync(snapshot.HasUnresolvedDependency);
-                    }
+                        if (!cancellationToken.IsCancellationRequested)
+                        {
+                            dependenciesNode = await viewProvider.BuildTreeAsync(dependenciesNode, snapshot, cancellationToken);
+
+                            await _treeTelemetryService.ObserveTreeUpdateCompletedAsync(snapshot.HasUnresolvedDependency);
+                        }
 
                     // TODO We still are getting mismatched data sources and need to figure out better 
                     // way of merging, mute them for now and get to it in U1
                     return new TreeUpdateResult(dependenciesNode);
-                },
-                _treeUpdateCancellationSeries.CreateNext(e.Token));
+                    },
+                    _treeUpdateCancellationSeries.CreateNext(e.Token));
+            }
+            catch (OperationCanceledException)
+            {
+            }
+            catch (Exception ex)
+            {
+                // We do not expect any exception when we call SubmitTreeUpdateAsync, but we don't want to leak an exception here.
+                // Because it will fail the dataflow block and stops updating the project tree silently.
+                _ = ProjectFaultHandlerService.ReportFaultAsync(ex, UnconfiguredProject);
+            }
         }
 
         /// <summary>

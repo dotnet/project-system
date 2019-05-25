@@ -2348,11 +2348,6 @@ Do you want to update the value in the .settings file?</source>
         <target state="translated">Не удается найти службу "{0}".  Убедитесь, что приложение установлено правильно.</target>
         <note>Settings Global-Object-Provider Strings</note>
       </trans-unit>
-      <trans-unit id="PPG_Application_RootNamespaceJSharp">
-        <source>Default pac&amp;kage:</source>
-        <target state="translated">Пакет по ум&amp;олчанию:</target>
-        <note>J# Specific String for Root Namespace</note>
-      </trans-unit>
       <trans-unit id="RSE_AccessModifier_Custom">
         <source>(Custom)</source>
         <target state="translated">(Настраиваемое)</target>

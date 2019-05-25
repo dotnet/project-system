@@ -85,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         private MetadataReferenceItemHandler CreateInstance(UnconfiguredProject project = null, IWorkspaceProjectContext context = null)
         {
-            project = project ?? UnconfiguredProjectFactory.Create();
+            project ??= UnconfiguredProjectFactory.Create();
 
             var handler = new MetadataReferenceItemHandler(project);
             if (context != null)

@@ -69,11 +69,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var targetFrameworksProperty = targetFrameworks == null ? string.Empty : string.Format(propertyFormat, ConfigurationGeneral.TargetFrameworksProperty, targetFrameworks);
             var projectFile = string.Format(projectFileFormat, targetFrameworkProperty, targetFrameworksProperty);
 
-            using (Stream str = new MemoryStream(Encoding.UTF8.GetBytes(projectFile)))
-            using (var xr = XmlReader.Create(str))
-            {
-                return ProjectRootElement.Create(xr).Properties.ToImmutableArray();
-            }
+            using Stream str = new MemoryStream(Encoding.UTF8.GetBytes(projectFile));
+            using var xr = XmlReader.Create(str);
+            return ProjectRootElement.Create(xr).Properties.ToImmutableArray();
         }
     }
 }

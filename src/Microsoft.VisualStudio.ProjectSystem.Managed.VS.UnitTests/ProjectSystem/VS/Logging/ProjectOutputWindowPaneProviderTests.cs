@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
 
         private static ProjectOutputWindowPaneProvider CreateInstance(IProjectThreadingService threadingService = null, IVsOutputWindow outputWindow = null)
         {
-            threadingService = threadingService ?? IProjectThreadingServiceFactory.Create();
+            threadingService ??= IProjectThreadingServiceFactory.Create();
 
             var outputWindowService = IVsUIServiceFactory.Create<SVsOutputWindow, IVsOutputWindow>(outputWindow);
 

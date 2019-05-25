@@ -144,20 +144,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                         continue;
                     }
 
-                    using (var scope = new GraphTransactionScope())
+                    using var scope = new GraphTransactionScope();
+                    if (viewProvider.ApplyChanges(
+                        graphContext,
+                        nodeProjectPath,
+                        updatedDependency,
+                        inputGraphNode,
+                        updatedSnapshot.Targets[updatedDependency.TargetFramework]))
                     {
-                        if (viewProvider.ApplyChanges(
-                            graphContext,
-                            nodeProjectPath,
-                            updatedDependency,
-                            inputGraphNode,
-                            updatedSnapshot.Targets[updatedDependency.TargetFramework]))
-                        {
-                            anyChanges = true;
-                        }
-
-                        scope.Complete();
+                        anyChanges = true;
                     }
+
+                    scope.Complete();
                 }
 
                 return anyChanges;

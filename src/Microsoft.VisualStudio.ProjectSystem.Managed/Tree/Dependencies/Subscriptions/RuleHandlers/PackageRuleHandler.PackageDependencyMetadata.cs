@@ -116,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     properties);
                 return true;
 
-                string GetTargetFromDependencyId(string dependencyId)
+                static string GetTargetFromDependencyId(string dependencyId)
                 {
                     string firstPart = new LazyStringSplit(dependencyId, '/').FirstOrDefault();
 
