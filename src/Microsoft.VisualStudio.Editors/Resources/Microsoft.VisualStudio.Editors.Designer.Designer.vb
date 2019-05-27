@@ -885,15 +885,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Default pac&amp;kage:.
-        '''</summary>
-        Friend Shared ReadOnly Property PPG_Application_RootNamespaceJSharp() As String
-            Get
-                Return ResourceManager.GetString("PPG_Application_RootNamespaceJSharp", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to The splash screen form cannot be the start-up form..
         '''</summary>
         Friend Shared ReadOnly Property PPG_Application_SplashSameAsStart() As String

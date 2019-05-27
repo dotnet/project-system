@@ -125,7 +125,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             Dictionary<string, IProjectRuleSnapshotModel> sourceSnapshot = null,
             bool disableFastUpToDateCheck = false)
         {
-            projectSnapshot = projectSnapshot ?? new Dictionary<string, IProjectRuleSnapshotModel>();
+            projectSnapshot ??= new Dictionary<string, IProjectRuleSnapshotModel>();
 
             if (!projectSnapshot.ContainsKey(ConfigurationGeneral.SchemaName))
             {
@@ -151,8 +151,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _buildUpToDateCheck.OnChangedAsync(value);
 
             return;
-
-            IProjectSubscriptionUpdate CreateUpdate(Dictionary<string, IProjectRuleSnapshotModel> snapshotBySchemaName)
+            static IProjectSubscriptionUpdate CreateUpdate(Dictionary<string, IProjectRuleSnapshotModel> snapshotBySchemaName)
             {
                 var snapshots = ImmutableDictionary<string, IProjectRuleSnapshot>.Empty;
                 var changes = ImmutableDictionary<string, IProjectChangeDescription>.Empty;

@@ -2348,11 +2348,6 @@ app.config 파일의 새 값은 '{1}'입니다.
         <target state="translated">'{0}' 서비스를 찾을 수 없습니다.  애플리케이션이 제대로 설치되어 있는지 확인하세요.</target>
         <note>Settings Global-Object-Provider Strings</note>
       </trans-unit>
-      <trans-unit id="PPG_Application_RootNamespaceJSharp">
-        <source>Default pac&amp;kage:</source>
-        <target state="translated">기본 패키지(&amp;K):</target>
-        <note>J# Specific String for Root Namespace</note>
-      </trans-unit>
       <trans-unit id="RSE_AccessModifier_Custom">
         <source>(Custom)</source>
         <target state="translated">(사용자 지정)</target>

@@ -7,7 +7,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-
+using System.Threading.Tasks.Dataflow;
 using Microsoft.Build.Execution;
 using Microsoft.VisualStudio.Build;
 using Microsoft.VisualStudio.Composition;
@@ -54,6 +54,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         private ImmutableArray<IDependencyCrossTargetSubscriber> _subscribers;
         private DependenciesSnapshot _currentSnapshot;
         private int _isInitialized;
+
+        private readonly IBroadcastBlock<SnapshotChangedEventArgs> _snapshotChangedSource;
 
         /// <summary>
         ///     Current <see cref="AggregateCrossTargetProjectContext"/>, which is an immutable map of
@@ -113,10 +115,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 commonServices.ThreadingService,
                 tasksService.UnloadCancellationToken);
 
+            _snapshotChangedSource = DataflowBlockSlim.CreateBroadcastBlock<SnapshotChangedEventArgs>("DependenciesSnapshot {1}", skipIntermediateInputData: true);
+
             aggregateSnapshotProvider.RegisterSnapshotProvider(this);
         }
 
         public IDependenciesSnapshot CurrentSnapshot => _currentSnapshot;
+
+        IReceivableSourceBlock<SnapshotChangedEventArgs> IDependenciesSnapshotProvider.SnapshotChangedSource => _snapshotChangedSource;
 
         private ImmutableArray<IDependencyCrossTargetSubscriber> Subscribers
         {
@@ -213,6 +219,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             _dependenciesUpdateScheduler.Dispose();
 
             _contextUpdateGate.Dispose();
+            _snapshotChangedSource.Complete();
 
             if (initialized)
             {
@@ -539,7 +546,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     // Always publish the latest snapshot
                     IDependenciesSnapshot snapshot = _currentSnapshot;
 
-                    SnapshotChanged?.Invoke(this, new SnapshotChangedEventArgs(snapshot, ct));
+                    var events = new SnapshotChangedEventArgs(snapshot, ct);
+                    _snapshotChangedSource.Post(events);
+                    SnapshotChanged?.Invoke(this, events);
 
                     return Task.CompletedTask;
                 }, token);

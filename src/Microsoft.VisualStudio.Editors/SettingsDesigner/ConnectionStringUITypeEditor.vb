@@ -6,6 +6,7 @@ Imports Microsoft.VisualStudio.Data.Core
 Imports Microsoft.VisualStudio.Data.Services
 Imports Microsoft.VisualStudio.Data.Services.SupportEntities
 Imports Microsoft.VisualStudio.DataTools.Interop
+Imports Microsoft.VisualStudio.Utilities
 Imports Microsoft.VSDesigner.Data.Local
 Imports Microsoft.VSDesigner.VSDesignerPackage
 
@@ -44,130 +45,132 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <returns></returns>
         ''' <remarks>Does not use the IWindowsFormsEditorService service to show it's dialog...</remarks>
         Public Overrides Function EditValue(context As ComponentModel.ITypeDescriptorContext, ServiceProvider As IServiceProvider, oValue As Object) As Object
-            Dim dataConnectionDialogFactory As IVsDataConnectionDialogFactory = DirectCast(ServiceProvider.GetService(GetType(IVsDataConnectionDialogFactory)), IVsDataConnectionDialogFactory)
+            Using (DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware))
+                Dim dataConnectionDialogFactory As IVsDataConnectionDialogFactory = DirectCast(ServiceProvider.GetService(GetType(IVsDataConnectionDialogFactory)), IVsDataConnectionDialogFactory)
 
-            If dataConnectionDialogFactory Is Nothing Then
-                Debug.Fail("Couldn't get the IVsDataConnectionDialogFactory service from our provider...")
-                Return oValue
-            End If
+                If dataConnectionDialogFactory Is Nothing Then
+                    Debug.Fail("Couldn't get the IVsDataConnectionDialogFactory service from our provider...")
+                    Return oValue
+                End If
 
-            Dim providerManager As IVsDataProviderManager = DirectCast(ServiceProvider.GetService(GetType(IVsDataProviderManager)), IVsDataProviderManager)
-            If providerManager Is Nothing Then
-                Debug.Fail("Couldn't get the IVsProviderManager service from our provider")
-                Return oValue
-            End If
+                Dim providerManager As IVsDataProviderManager = DirectCast(ServiceProvider.GetService(GetType(IVsDataProviderManager)), IVsDataProviderManager)
+                If providerManager Is Nothing Then
+                    Debug.Fail("Couldn't get the IVsProviderManager service from our provider")
+                    Return oValue
+                End If
 
-            Dim providerMapper As IDTAdoDotNetProviderMapper = DirectCast(ServiceProvider.GetService(GetType(IDTAdoDotNetProviderMapper)), IDTAdoDotNetProviderMapper)
-            If providerMapper Is Nothing Then
-                Debug.Fail("Couldn't get the IDTAdoDotNetProviderMapper service from our provider")
-                Return oValue
-            End If
+                Dim providerMapper As IDTAdoDotNetProviderMapper = DirectCast(ServiceProvider.GetService(GetType(IDTAdoDotNetProviderMapper)), IDTAdoDotNetProviderMapper)
+                If providerMapper Is Nothing Then
+                    Debug.Fail("Couldn't get the IDTAdoDotNetProviderMapper service from our provider")
+                    Return oValue
+                End If
 
-            Dim dataConnectionDialog As IVsDataConnectionDialog = dataConnectionDialogFactory.CreateConnectionDialog()
+                Dim dataConnectionDialog As IVsDataConnectionDialog = dataConnectionDialogFactory.CreateConnectionDialog()
 
-            If dataConnectionDialog Is Nothing Then
-                Debug.Fail("Failed to get a IVsDataConnectionDialog from the IVsDataConnectionDialogFactory!?")
-                Return oValue
-            End If
+                If dataConnectionDialog Is Nothing Then
+                    Debug.Fail("Failed to get a IVsDataConnectionDialog from the IVsDataConnectionDialogFactory!?")
+                    Return oValue
+                End If
 
-            ' If this is a local data file, we've gotta let the connectionstringconverter service
-            ' do it's magic to convert the path. Trying to convert a non-local data connection string
-            ' should be a no-op, so we should be safe if we just try to get hold of the required services
-            ' and give it a try...
-            Dim dteProj As EnvDTE.Project = Nothing
-            Dim connectionStringConverter As IConnectionStringConverterService =
+                ' If this is a local data file, we've gotta let the connectionstringconverter service
+                ' do it's magic to convert the path. Trying to convert a non-local data connection string
+                ' should be a no-op, so we should be safe if we just try to get hold of the required services
+                ' and give it a try...
+                Dim dteProj As EnvDTE.Project = Nothing
+                Dim connectionStringConverter As IConnectionStringConverterService =
                 DirectCast(ServiceProvider.GetService(GetType(IConnectionStringConverterService)), IConnectionStringConverterService)
-            If connectionStringConverter IsNot Nothing Then
-                ' The SettingsDesignerLoader should have added the project item as a service in case someone needs to 
-                ' get hold of it....
-                Dim dteProjItem As EnvDTE.ProjectItem = Nothing
-                dteProjItem = DirectCast(ServiceProvider.GetService(GetType(EnvDTE.ProjectItem)), EnvDTE.ProjectItem)
-                If dteProjItem IsNot Nothing Then
-                    dteProj = dteProjItem.ContainingProject
-                Else
-                    Debug.Fail("We failed to get the EnvDTE.ProjectItem service from our service provider. The settings designer loader should have added it...")
-                End If
-            End If
-
-            dataConnectionDialog.AddSources(AddressOf New DataConnectionDialogFilterer(dteProj).IsCombinationSupported)
-            dataConnectionDialog.LoadSourceSelection()
-            dataConnectionDialog.LoadProviderSelections()
-
-            Dim value As SerializableConnectionString
-            Try
-                value = TryCast(oValue, SerializableConnectionString)
-
-                ' We keep track of if there was sensitive data in the string when we were called - if not, we've gotta prompt the user
-                ' about the potential security implications if (s)he adds sensitive data
-                Dim containedSensitiveData As Boolean = False
-
-                ' If we have a value coming in, we should feed the dialog with this value
-                If value IsNot Nothing Then
-                    ' The normalized connection string contains the connection string after the connection string converter is done
-                    ' munching it.
-                    Dim normalizedConnectionString As String = Nothing
-                    Try
-                        If connectionStringConverter IsNot Nothing AndAlso dteProj IsNot Nothing AndAlso value.ProviderName <> "" Then
-                            normalizedConnectionString = connectionStringConverter.ToDesignTime(dteProj, value.ConnectionString, value.ProviderName)
-                        End If
-                    Catch ex As ArgumentException
-                    Catch ex As ConnectionStringConverterServiceException
-                        ' Well, the user may very well type garbage into the connection string text box
-                    Finally
-                        ' If we couldn't find the service, or if something else went wrong, we fall back 
-                        ' to the connection string as it is showing in the designer...
-                        If normalizedConnectionString Is Nothing Then
-                            normalizedConnectionString = value.ConnectionString
-                        End If
-                    End Try
-
-                    Dim providerGuid As Guid = Guid.Empty
-                    If value.ProviderName <> "" Then
-                        ' Get the provider GUID (if any)
-                        providerGuid = GetGuidFromInvariantProviderName(providerMapper, value.ProviderName, normalizedConnectionString, False)
-                    End If
-
-                    ' If we have a provider, we can feed the dialog with the initial values. 
-                    If Not providerGuid.Equals(Guid.Empty) Then
-                        dataConnectionDialog.LoadExistingConfiguration(providerGuid, normalizedConnectionString, False)
-
-                        Dim oldConnectionStringProperties As IVsDataConnectionProperties = GetConnectionStringProperties(providerManager, providerGuid, normalizedConnectionString)
-                        If oldConnectionStringProperties IsNot Nothing AndAlso ContainsSensitiveData(oldConnectionStringProperties) Then
-                            ' If we already had sensitive data in the string coming in to this function, we don't have to prompt again...
-                            containedSensitiveData = True
-                        End If
-                    ElseIf normalizedConnectionString <> "" Then
-                        dataConnectionDialog.SafeConnectionString = normalizedConnectionString
+                If connectionStringConverter IsNot Nothing Then
+                    ' The SettingsDesignerLoader should have added the project item as a service in case someone needs to 
+                    ' get hold of it....
+                    Dim dteProjItem As EnvDTE.ProjectItem = Nothing
+                    dteProjItem = DirectCast(ServiceProvider.GetService(GetType(EnvDTE.ProjectItem)), EnvDTE.ProjectItem)
+                    If dteProjItem IsNot Nothing Then
+                        dteProj = dteProjItem.ContainingProject
+                    Else
+                        Debug.Fail("We failed to get the EnvDTE.ProjectItem service from our service provider. The settings designer loader should have added it...")
                     End If
                 End If
 
-                If (dataConnectionDialog.ShowDialog() AndAlso dataConnectionDialog.DisplayConnectionString <> "") Then
-                    ' If the user press OK and we have a connection string, lets return this new value!
-                    dataConnectionDialog.SaveProviderSelections()
-                    If (dataConnectionDialog.SaveSelection) Then
-                        dataConnectionDialog.SaveSourceSelection()
+                dataConnectionDialog.AddSources(AddressOf New DataConnectionDialogFilterer(dteProj).IsCombinationSupported)
+                dataConnectionDialog.LoadSourceSelection()
+                dataConnectionDialog.LoadProviderSelections()
+
+                Dim value As SerializableConnectionString
+                Try
+                    value = TryCast(oValue, SerializableConnectionString)
+
+                    ' We keep track of if there was sensitive data in the string when we were called - if not, we've gotta prompt the user
+                    ' about the potential security implications if (s)he adds sensitive data
+                    Dim containedSensitiveData As Boolean = False
+
+                    ' If we have a value coming in, we should feed the dialog with this value
+                    If value IsNot Nothing Then
+                        ' The normalized connection string contains the connection string after the connection string converter is done
+                        ' munching it.
+                        Dim normalizedConnectionString As String = Nothing
+                        Try
+                            If connectionStringConverter IsNot Nothing AndAlso dteProj IsNot Nothing AndAlso value.ProviderName <> "" Then
+                                normalizedConnectionString = connectionStringConverter.ToDesignTime(dteProj, value.ConnectionString, value.ProviderName)
+                            End If
+                        Catch ex As ArgumentException
+                        Catch ex As ConnectionStringConverterServiceException
+                            ' Well, the user may very well type garbage into the connection string text box
+                        Finally
+                            ' If we couldn't find the service, or if something else went wrong, we fall back 
+                            ' to the connection string as it is showing in the designer...
+                            If normalizedConnectionString Is Nothing Then
+                                normalizedConnectionString = value.ConnectionString
+                            End If
+                        End Try
+
+                        Dim providerGuid As Guid = Guid.Empty
+                        If value.ProviderName <> "" Then
+                            ' Get the provider GUID (if any)
+                            providerGuid = GetGuidFromInvariantProviderName(providerMapper, value.ProviderName, normalizedConnectionString, False)
+                        End If
+
+                        ' If we have a provider, we can feed the dialog with the initial values. 
+                        If Not providerGuid.Equals(Guid.Empty) Then
+                            dataConnectionDialog.LoadExistingConfiguration(providerGuid, normalizedConnectionString, False)
+
+                            Dim oldConnectionStringProperties As IVsDataConnectionProperties = GetConnectionStringProperties(providerManager, providerGuid, normalizedConnectionString)
+                            If oldConnectionStringProperties IsNot Nothing AndAlso ContainsSensitiveData(oldConnectionStringProperties) Then
+                                ' If we already had sensitive data in the string coming in to this function, we don't have to prompt again...
+                                containedSensitiveData = True
+                            End If
+                        ElseIf normalizedConnectionString <> "" Then
+                            dataConnectionDialog.SafeConnectionString = normalizedConnectionString
+                        End If
                     End If
 
-                    Dim newValue As New SerializableConnectionString With {
+                    If (dataConnectionDialog.ShowDialog() AndAlso dataConnectionDialog.DisplayConnectionString <> "") Then
+                        ' If the user press OK and we have a connection string, lets return this new value!
+                        dataConnectionDialog.SaveProviderSelections()
+                        If (dataConnectionDialog.SaveSelection) Then
+                            dataConnectionDialog.SaveSourceSelection()
+                        End If
+
+                        Dim newValue As New SerializableConnectionString With {
                         .ProviderName = GetInvariantProviderNameFromGuid(providerMapper, dataConnectionDialog.SelectedProvider),
                         .ConnectionString = GetConnectionString(ServiceProvider, dataConnectionDialog, Not containedSensitiveData)
                     }
-                    If dteProj IsNot Nothing AndAlso connectionStringConverter IsNot Nothing Then
-                        ' Go back to the runtime representation of the string...
-                        newValue.ConnectionString = connectionStringConverter.ToRunTime(dteProj, newValue.ConnectionString, newValue.ProviderName)
-                    End If
+                        If dteProj IsNot Nothing AndAlso connectionStringConverter IsNot Nothing Then
+                            ' Go back to the runtime representation of the string...
+                            newValue.ConnectionString = connectionStringConverter.ToRunTime(dteProj, newValue.ConnectionString, newValue.ProviderName)
+                        End If
 
-                    Return newValue
-                Else
-                    ' Well, we better return the old value...
-                    Return oValue
-                End If
-            Finally
-                If dataConnectionDialog IsNot Nothing Then
-                    dataConnectionDialog.Dispose()
-                End If
-            End Try
-            Return oValue
+                        Return newValue
+                    Else
+                        ' Well, we better return the old value...
+                        Return oValue
+                    End If
+                Finally
+                    If dataConnectionDialog IsNot Nothing Then
+                        dataConnectionDialog.Dispose()
+                    End If
+                End Try
+                Return oValue
+            End Using
         End Function
 
         ''' <summary>

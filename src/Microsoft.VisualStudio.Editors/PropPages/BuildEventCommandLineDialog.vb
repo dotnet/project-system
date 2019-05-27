@@ -3,6 +3,7 @@
 Imports System.Text
 Imports System.Windows.Forms
 Imports System.Windows.Forms.Design
+Imports Microsoft.VisualStudio.Utilities
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
@@ -264,14 +265,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If sp IsNot Nothing Then
                 ServiceProvider = sp
             End If
-
-            If ServiceProvider IsNot Nothing Then
-                Dim uiService As IUIService = CType(ServiceProvider.GetService(GetType(IUIService)), IUIService)
-                If uiService IsNot Nothing Then
-                    Return uiService.ShowDialog(Me)
+            Using (DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware))
+                If ServiceProvider IsNot Nothing Then
+                    Dim uiService As IUIService = CType(ServiceProvider.GetService(GetType(IUIService)), IUIService)
+                    If uiService IsNot Nothing Then
+                        Return uiService.ShowDialog(Me)
+                    End If
                 End If
-            End If
-            Return MyBase.ShowDialog()
+                Return MyBase.ShowDialog()
+            End Using
         End Function
     End Class
 End Namespace

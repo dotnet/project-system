@@ -208,9 +208,6 @@
     <EmbeddedResource Include="Resources\ResourceEditor\BlankWav.wav">
       <LogicalName>Microsoft.VisualStudio.Editors.ResourceEditor.BlankWav</LogicalName>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\SettingsDesigner\assembly.bmp" />
-    <EmbeddedResource Include="Resources\SettingsDesigner\namespace.bmp" />
-    <EmbeddedResource Include="Resources\SettingsDesigner\object.bmp" />
     <EmbeddedResource Update="SettingsDesigner\SettingsDesignerView.resx">
       <DependentUpon>SettingsDesignerView.vb</DependentUpon>
       <LogicalName>Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsDesignerView.resources</LogicalName>

@@ -15,7 +15,6 @@ Imports Microsoft.VisualStudio.Editors.AppDesInterop
 Imports Microsoft.VisualStudio.Editors.ApplicationDesigner
 Imports Microsoft.VisualStudio.Editors.PropertyPages
 Imports Microsoft.VisualStudio.ManagedInterfaces.ProjectDesigner
-Imports Microsoft.VisualStudio.PlatformUI
 Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.VisualStudio.Utilities
 
@@ -466,8 +465,8 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             AddHandler _configurationState.SimplifiedConfigModeChanged, AddressOf ConfigurationState_SimplifiedConfigModeChanged
 
             'Scale the comboboxes widths if necessary, for High-DPI
-            ConfigurationComboBox.Size = DpiHelper.LogicalToDeviceUnits(ConfigurationComboBox.Size)
-            PlatformComboBox.Size = DpiHelper.LogicalToDeviceUnits(PlatformComboBox.Size)
+            ConfigurationComboBox.Size = DpiAwareness.LogicalToDeviceSize(Handle, ConfigurationComboBox.Size)
+            PlatformComboBox.Size = DpiAwareness.LogicalToDeviceSize(Handle, PlatformComboBox.Size)
 
             'Set up configuration/platform comboboxes
             SetConfigDropdownVisibility()

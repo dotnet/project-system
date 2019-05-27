@@ -110,7 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
 
         private ProjectImageProviderAggregator CreateInstance(UnconfiguredProject project = null)
         {
-            project = project ?? UnconfiguredProjectFactory.Create();
+            project ??= UnconfiguredProjectFactory.Create();
 
             return new ProjectImageProviderAggregator(project);
         }

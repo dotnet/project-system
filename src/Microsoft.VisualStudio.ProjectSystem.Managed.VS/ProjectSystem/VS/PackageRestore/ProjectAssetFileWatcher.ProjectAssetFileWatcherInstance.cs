@@ -133,12 +133,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
                 try
                 {
-                    using (var hasher = SHA256.Create())
-                    using (FileStream file = File.OpenRead(path))
-                    {
-                        file.Position = 0;
-                        hash = hasher.ComputeHash(file);
-                    }
+                    using var hasher = SHA256.Create();
+                    using FileStream file = File.OpenRead(path);
+                    file.Position = 0;
+                    hash = hasher.ComputeHash(file);
                 }
                 catch (Exception ex) when (ex is IOException || ex is UnauthorizedAccessException)
                 {

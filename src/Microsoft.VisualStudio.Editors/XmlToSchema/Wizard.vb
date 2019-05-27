@@ -7,6 +7,7 @@ Imports System.Windows.Forms.Design
 Imports EnvDTE
 
 Imports Microsoft.VisualStudio.TemplateWizard
+Imports Microsoft.VisualStudio.Utilities
 
 Namespace Microsoft.VisualStudio.Editors.XmlToSchema
     Public NotInheritable Class Wizard
@@ -73,7 +74,9 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
                     .ServiceProvider = Common.ShellUtil.GetServiceProvider(dte)
                 }
                 Dim uiService As IUIService = CType(inputForm.ServiceProvider.GetService(GetType(IUIService)), IUIService)
-                uiService.ShowDialog(inputForm)
+                Using (DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware))
+                    uiService.ShowDialog(inputForm)
+                End Using
 
             Catch ex As Exception
                 If FilterException(ex) Then

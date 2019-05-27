@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         private DynamicItemHandler CreateInstance(UnconfiguredProject project = null, IWorkspaceProjectContext context = null)
         {
-            project = project ?? UnconfiguredProjectFactory.Create();
+            project ??= UnconfiguredProjectFactory.Create();
 
             var handler = new DynamicItemHandler(project);
             if (context != null)

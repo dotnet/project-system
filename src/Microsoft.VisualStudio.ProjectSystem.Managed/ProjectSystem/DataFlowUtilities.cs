@@ -348,19 +348,17 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return input =>
             {
                 SynchronizationContext currentSynchronizationContext = SynchronizationContext.Current;
-                using (ExecutionContext copy = context.CreateCopy())
-                {
-                    Task result = null;
-                    ExecutionContext.Run(
-                        copy,
-                        state =>
-                        {
-                            SynchronizationContext.SetSynchronizationContext(currentSynchronizationContext);
-                            result = function(input);
-                        },
-                        null);
-                    return result;
-                }
+                using ExecutionContext copy = context.CreateCopy();
+                Task result = null;
+                ExecutionContext.Run(
+                    copy,
+                    state =>
+                    {
+                        SynchronizationContext.SetSynchronizationContext(currentSynchronizationContext);
+                        result = function(input);
+                    },
+                    null);
+                return result;
             };
         }
     }
