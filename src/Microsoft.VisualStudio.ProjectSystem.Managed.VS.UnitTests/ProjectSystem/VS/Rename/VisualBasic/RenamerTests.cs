@@ -124,18 +124,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.VisualBasic
 
         internal async Task RenameAsync(string sourceCode, string oldFilePath, string newFilePath, IUserNotificationServices userNotificationServices, IRoslynServices roslynServices, string language)
         {
-            using (var ws = new AdhocWorkspace())
-            {
-                var projectId = ProjectId.CreateNewId();
-                Solution solution = ws.AddSolution(InitializeWorkspace(projectId, newFilePath, sourceCode, language));
-                Project project = (from d in solution.Projects where d.Id == projectId select d).FirstOrDefault();
+            using var ws = new AdhocWorkspace();
+            var projectId = ProjectId.CreateNewId();
+            Solution solution = ws.AddSolution(InitializeWorkspace(projectId, newFilePath, sourceCode, language));
+            Project project = (from d in solution.Projects where d.Id == projectId select d).FirstOrDefault();
 
-                var environmentOptionsFactory = IEnvironmentOptionsFactory.Implement((string category, string page, string property, bool defaultValue) => { return true; });
+            var environmentOptionsFactory = IEnvironmentOptionsFactory.Implement((string category, string page, string property, bool defaultValue) => { return true; });
 
-                var renamer = new Renamer(ws, IProjectThreadingServiceFactory.Create(), userNotificationServices, environmentOptionsFactory, roslynServices, project, oldFilePath, newFilePath);
-                await renamer.RenameAsync(project)
-                             .TimeoutAfter(TimeSpan.FromSeconds(1));
-            }
+            var renamer = new Renamer(ws, IProjectThreadingServiceFactory.Create(), userNotificationServices, environmentOptionsFactory, roslynServices, project, oldFilePath, newFilePath);
+            await renamer.RenameAsync(project)
+                         .TimeoutAfter(TimeSpan.FromSeconds(1));
         }
     }
 }

@@ -115,7 +115,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                     <!-- <add name="PDSubSku" value="CSharp" /> -->
                     <!-- <add name="PDSubSku" value="Architect" /> -->
                     <!-- <add name="PDSubSku" value="IDE" /> -->
-                    <!-- <add name="PDSubSku" value="JSharp" /> -->
                     <!-- <add name="PDSubSku" value="Web" /> -->
 
                 </switches>

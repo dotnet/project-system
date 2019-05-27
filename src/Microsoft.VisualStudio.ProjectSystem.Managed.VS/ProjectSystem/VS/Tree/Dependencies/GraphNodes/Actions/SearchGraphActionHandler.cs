@@ -77,76 +77,74 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                 IEnumerable<IDependency> allTopLevelDependencies = snapshot.GetFlatTopLevelDependencies();
                 HashSet<IDependency> matchedDependencies = searchResultsPerContext[snapshot.ProjectPath];
 
-                using (var scope = new GraphTransactionScope())
+                using var scope = new GraphTransactionScope();
+                foreach (IDependency topLevelDependency in allTopLevelDependencies)
                 {
-                    foreach (IDependency topLevelDependency in allTopLevelDependencies)
+                    ITargetedDependenciesSnapshot targetedSnapshot = snapshot.Targets[topLevelDependency.TargetFramework];
+
+                    if (!cachedDependencyToMatchingResultsMap
+                            .TryGetValue(topLevelDependency.Id, out HashSet<IDependency> topLevelDependencyMatches))
                     {
-                        ITargetedDependenciesSnapshot targetedSnapshot = snapshot.Targets[topLevelDependency.TargetFramework];
+                        IDependenciesGraphViewProvider viewProvider = FindViewProvider(topLevelDependency);
 
-                        if (!cachedDependencyToMatchingResultsMap
-                                .TryGetValue(topLevelDependency.Id, out HashSet<IDependency> topLevelDependencyMatches))
-                        {
-                            IDependenciesGraphViewProvider viewProvider = FindViewProvider(topLevelDependency);
-
-                            if (viewProvider == null)
-                            {
-                                continue;
-                            }
-
-                            bool processed = viewProvider.MatchSearchResults(
-                                topLevelDependency,
-                                searchResultsPerContext,
-                                out topLevelDependencyMatches);
-
-                            if (!processed)
-                            {
-                                if (matchedDependencies.Count == 0)
-                                {
-                                    continue;
-                                }
-
-                                topLevelDependencyMatches = GetMatchingResultsForDependency(
-                                    topLevelDependency,
-                                    targetedSnapshot,
-                                    matchedDependencies,
-                                    cachedDependencyToMatchingResultsMap);
-                            }
-
-                            cachedDependencyToMatchingResultsMap[topLevelDependency.Id] = topLevelDependencyMatches;
-                        }
-
-                        if (topLevelDependencyMatches.Count == 0)
+                        if (viewProvider == null)
                         {
                             continue;
                         }
 
-                        GraphNode topLevelNode = _builder.AddTopLevelGraphNode(graphContext,
-                                                                snapshot.ProjectPath,
-                                                                topLevelDependency.ToViewModel(targetedSnapshot));
-                        foreach (IDependency matchedDependency in topLevelDependencyMatches)
-                        {
-                            GraphNode matchedDependencyNode = _builder.AddGraphNode(graphContext,
-                                                                    snapshot.ProjectPath,
-                                                                    topLevelNode,
-                                                                    matchedDependency.ToViewModel(targetedSnapshot));
+                        bool processed = viewProvider.MatchSearchResults(
+                            topLevelDependency,
+                            searchResultsPerContext,
+                            out topLevelDependencyMatches);
 
-                            graphContext.Graph.Links.GetOrCreate(topLevelNode,
-                                                                 matchedDependencyNode,
-                                                                 label: null,
-                                                                 GraphCommonSchema.Contains);
+                        if (!processed)
+                        {
+                            if (matchedDependencies.Count == 0)
+                            {
+                                continue;
+                            }
+
+                            topLevelDependencyMatches = GetMatchingResultsForDependency(
+                                topLevelDependency,
+                                targetedSnapshot,
+                                matchedDependencies,
+                                cachedDependencyToMatchingResultsMap);
                         }
 
-                        if (topLevelNode != null)
-                        {
-                            // 'node' is a GraphNode for top level dependency (which is part of solution explorer tree)
-                            // Setting ProjectItem category (and correct GraphNodeId) ensures that search graph appears 
-                            // under right solution explorer hierarchy item
-                            topLevelNode.AddCategory(CodeNodeCategories.ProjectItem);
-                        }
+                        cachedDependencyToMatchingResultsMap[topLevelDependency.Id] = topLevelDependencyMatches;
                     }
 
-                    scope.Complete();
+                    if (topLevelDependencyMatches.Count == 0)
+                    {
+                        continue;
+                    }
+
+                    GraphNode topLevelNode = _builder.AddTopLevelGraphNode(graphContext,
+                                                            snapshot.ProjectPath,
+                                                            topLevelDependency.ToViewModel(targetedSnapshot));
+                    foreach (IDependency matchedDependency in topLevelDependencyMatches)
+                    {
+                        GraphNode matchedDependencyNode = _builder.AddGraphNode(graphContext,
+                                                                snapshot.ProjectPath,
+                                                                topLevelNode,
+                                                                matchedDependency.ToViewModel(targetedSnapshot));
+
+                        graphContext.Graph.Links.GetOrCreate(topLevelNode,
+                                                             matchedDependencyNode,
+                                                             label: null,
+                                                             GraphCommonSchema.Contains);
+                    }
+
+                    if (topLevelNode != null)
+                    {
+                        // 'node' is a GraphNode for top level dependency (which is part of solution explorer tree)
+                        // Setting ProjectItem category (and correct GraphNodeId) ensures that search graph appears 
+                        // under right solution explorer hierarchy item
+                        topLevelNode.AddCategory(CodeNodeCategories.ProjectItem);
+                    }
                 }
+
+                scope.Complete();
             }
 
             graphContext.OnCompleted();

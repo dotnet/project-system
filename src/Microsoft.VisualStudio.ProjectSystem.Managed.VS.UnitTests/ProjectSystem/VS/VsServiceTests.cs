@@ -102,8 +102,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private VsService<TService, TInterface> CreateInstance<TService, TInterface>(IAsyncServiceProvider serviceProvider = null, IProjectThreadingService threadingService = null)
         {
-            serviceProvider = serviceProvider ?? IAsyncServiceProviderFactory.Create();
-            threadingService = threadingService ?? IProjectThreadingServiceFactory.Create();
+            serviceProvider ??= IAsyncServiceProviderFactory.Create();
+            threadingService ??= IProjectThreadingServiceFactory.Create();
 
             return new VsService<TService, TInterface>(serviceProvider, threadingService.JoinableTaskContext.Context);
         }

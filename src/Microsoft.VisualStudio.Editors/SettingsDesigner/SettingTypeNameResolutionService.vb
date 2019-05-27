@@ -20,7 +20,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             UNKNOWN = -1
             CSharp = 0
             VB = 1
-            JSharp = 2
         End Enum
 #Region "Private fields"
 
@@ -42,8 +41,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     language = Language.CSharp
                 Case EnvDTE.CodeModelLanguageConstants.vsCMLanguageVB
                     language = Language.VB
-                Case EnvDTE80.CodeModelLanguageConstants2.vsCMLanguageJSharp
-                    language = Language.JSharp
                 Case Else
                     language = Language.UNKNOWN
             End Select
@@ -60,22 +57,22 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             _languageSpecificToFxTypeName = New Dictionary(Of String, String)(16, comparer)
             _fxTypeNameToLanguageSpecific = New Dictionary(Of String, String)(16, comparer)
             If language <> Language.UNKNOWN Then
-                ' add language specific type names for C#, VB, J# respectively
-                AddEntry((GetType(Boolean).FullName), New String() {"bool", "Boolean", "boolean"}(language))
-                AddEntry((GetType(Byte).FullName), New String() {"byte", "Byte", "byte"}(language))
-                AddEntry((GetType(Char).FullName), New String() {"char", "Char", "char"}(language))
-                AddEntry((GetType(Decimal).FullName), New String() {"decimal", "Decimal", Nothing}(language))
-                AddEntry((GetType(Double).FullName), New String() {"double", "Double", "double"}(language))
-                AddEntry((GetType(Short).FullName), New String() {"short", "Short", "short"}(language))
-                AddEntry((GetType(Integer).FullName), New String() {"int", "Integer", "int"}(language))
-                AddEntry((GetType(Long).FullName), New String() {"long", "Long", "long"}(language))
-                AddEntry((GetType(SByte).FullName), New String() {"sbyte", "SByte", Nothing}(language))
-                AddEntry((GetType(Single).FullName), New String() {"float", "Single", "float"}(language))
-                AddEntry((GetType(UShort).FullName), New String() {"ushort", "UShort", Nothing}(language))
-                AddEntry((GetType(UInteger).FullName), New String() {"uint", "UInteger", Nothing}(language))
-                AddEntry((GetType(ULong).FullName), New String() {"ulong", "ULong", Nothing}(language))
-                AddEntry((GetType(String).FullName), New String() {"string", "String", "String"}(language))
-                AddEntry((GetType(Date).FullName), New String() {Nothing, "Date", Nothing}(language))
+                ' add language specific type names for C# and VB respectively
+                AddEntry((GetType(Boolean).FullName), New String() {"bool", "Boolean"}(language))
+                AddEntry((GetType(Byte).FullName), New String() {"byte", "Byte"}(language))
+                AddEntry((GetType(Char).FullName), New String() {"char", "Char"}(language))
+                AddEntry((GetType(Decimal).FullName), New String() {"decimal", "Decimal"}(language))
+                AddEntry((GetType(Double).FullName), New String() {"double", "Double"}(language))
+                AddEntry((GetType(Short).FullName), New String() {"short", "Short"}(language))
+                AddEntry((GetType(Integer).FullName), New String() {"int", "Integer"}(language))
+                AddEntry((GetType(Long).FullName), New String() {"long", "Long"}(language))
+                AddEntry((GetType(SByte).FullName), New String() {"sbyte", "SByte"}(language))
+                AddEntry((GetType(Single).FullName), New String() {"float", "Single"}(language))
+                AddEntry((GetType(UShort).FullName), New String() {"ushort", "UShort"}(language))
+                AddEntry((GetType(UInteger).FullName), New String() {"uint", "UInteger"}(language))
+                AddEntry((GetType(ULong).FullName), New String() {"ulong", "ULong"}(language))
+                AddEntry((GetType(String).FullName), New String() {"string", "String"}(language))
+                AddEntry((GetType(Date).FullName), New String() {Nothing, "Date"}(language))
             End If
         End Sub
 

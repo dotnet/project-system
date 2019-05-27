@@ -93,6 +93,10 @@
                   ReadOnly="True"
                   Visible="False" />
 
+  <StringProperty Name="NuGetTargetMoniker"
+                  ReadOnly="True"
+                  Visible="False" />
+
   <StringProperty Name="TargetFramework"
                   DisplayName="Target Framework">
     <StringProperty.DataSource>

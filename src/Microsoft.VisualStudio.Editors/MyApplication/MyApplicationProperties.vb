@@ -133,85 +133,23 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
     ''' </summary>
     ''' <remarks></remarks>
     <ComVisible(True), Guid("29255174-ccb9-434d-8489-dae5b912b1d3"), CLSCompliant(False)>
+    <Obsolete("MyApplication is automatically managed by the property pages. All usage of this class can be removed.")>
     Public NotInheritable Class MyApplicationManager
         Implements IVsMyAppManager
 
-        Private _myProps As MyApplicationProperties
-
-        'WeakReference list of MyApplicationProperties objects, one for each
-        '  IVsHierarchy that we've been initialized against
-        Private Shared ReadOnly s_myPropertyInstances As New Hashtable
-
-
-        ''' <summary>
-        ''' Initialize the MyApplicationProperties object, etc.
-        ''' </summary>
-        ''' <param name="ProjectHierarchy"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function Init(ProjectHierarchy As IVsHierarchy) As Integer Implements IVsMyAppManager.Init
-            If ProjectHierarchy Is Nothing Then
-                Throw New ArgumentNullException(NameOf(ProjectHierarchy))
-            End If
-
-            SyncLock s_myPropertyInstances
-                Dim weakref As WeakReference
-
-                If s_myPropertyInstances.Contains(ProjectHierarchy) Then
-                    weakref = TryCast(s_myPropertyInstances.Item(ProjectHierarchy), WeakReference)
-                    If weakref.IsAlive Then
-                        _myProps = TryCast(weakref.Target, MyApplicationProperties)
-                        Return VSConstants.S_OK
-                    End If
-                    'Reference is no longer alive, remove it from the list
-                    s_myPropertyInstances.Remove(ProjectHierarchy)
-                End If
-
-                'Create a new instance
-                _myProps = New MyApplicationProperties()
-                _myProps.Init(ProjectHierarchy)
-                'Cache for later use
-                s_myPropertyInstances.Add(ProjectHierarchy, New WeakReference(_myProps))
-            End SyncLock
-
             Return NativeMethods.S_OK
         End Function
 
-
-        ''' <summary>
-        ''' Returns a dispatch object containing the properties for the MyApplication component
-        ''' </summary>
-        ''' <param name="MyAppProps"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function GetProperties(ByRef MyAppProps As Object) As Integer Implements IVsMyAppManager.GetProperties
-            MyAppProps = _myProps
             Return NativeMethods.S_OK
         End Function
 
-        ''' <summary>
-        ''' Called by the project system upon closing a project.  Any unpersisted data at this point is discarded
-        ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function Close() As Integer Implements IVsMyAppManager.Close
-            If _myProps IsNot Nothing Then
-                _myProps.Close()
-                _myProps = Nothing
-            End If
             Return NativeMethods.S_OK
         End Function
 
-        ''' <summary>
-        ''' Called by the project system when we need to save all the MyApplication files.  Saves directly to disk.  Does not save
-        '''   if not dirty.
-        ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function Save() As Integer Implements IVsMyAppManager.Save
-            If _myProps IsNot Nothing Then
-                _myProps.Save()
-            End If
             Return NativeMethods.S_OK
         End Function
 
@@ -283,6 +221,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         Private Const Const_MyApplicationFileName_B1Compat As String = "MyApplication.myapp" 'Old (Beta 1) name for this file to remain backwards compatible
 
         Private _myAppFileName As String 'The actual file for the XML file that we found and are using (*not* including the path)
+        Private _initialized As Boolean 'Whether this instance has been initialized
 
         'The name of the file where users hook up My events
         Private Const Const_MyEventsFileName As String = "ApplicationEvents.vb"
@@ -310,6 +249,10 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="ProjectHierarchy"></param>
         ''' <remarks></remarks>
         Friend Sub Init(ProjectHierarchy As IVsHierarchy)
+            If _initialized Then Return
+
+            _initialized = True
+
             Dim hr As Integer
             Dim obj As Object = Nothing
 

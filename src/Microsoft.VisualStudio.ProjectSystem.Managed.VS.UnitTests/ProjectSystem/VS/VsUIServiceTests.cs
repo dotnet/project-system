@@ -102,8 +102,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private VsUIService<TService, TInterface> CreateInstance<TService, TInterface>(IServiceProvider serviceProvider = null, JoinableTaskContext joinableTaskContext = null)
         {
-            serviceProvider = serviceProvider ?? SVsServiceProviderFactory.Create();
-            joinableTaskContext = joinableTaskContext ?? new JoinableTaskContext();
+            serviceProvider ??= SVsServiceProviderFactory.Create();
+            joinableTaskContext ??= new JoinableTaskContext();
 
             return new VsUIService<TService, TInterface>(serviceProvider, joinableTaskContext);
         }

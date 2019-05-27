@@ -92,7 +92,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                 int num = i;
                 tasks.Add(sequencer.ExecuteTask(async () =>
                 {
-                    async Task func()
+                    static async Task func()
                     {
                         await Task.Delay(100);
                     }

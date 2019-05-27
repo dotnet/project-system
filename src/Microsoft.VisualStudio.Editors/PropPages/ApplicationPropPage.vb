@@ -17,7 +17,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
     ''' <summary>
     ''' Not currently used directly (but it's inherited from)
-    '''   - see comments in proppage.vb: "Application property pages (VB, C#, J#)"
+    '''   - see comments in proppage.vb: "Application property pages (VB and C#)"
     ''' </summary>
     Partial Friend Class ApplicationPropPage
         Inherits ApplicationPropPageInternalBase
@@ -717,12 +717,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             PopulateIconList(False)
             PopulateManifestList(False)
             UpdateIconImage(False)
-
-            'VSWhidbey 206085
-            'In J#, this should be Default package
-            If IsJSProject() Then
-                RootNamespaceLabel.Text = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_RootNamespaceJSharp
-            End If
         End Sub
 
         ''' <summary>
@@ -798,12 +792,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Protected Overrides Function GetF1HelpKeyword() As String
-            If IsJSProject() Then
-                Return HelpKeywords.JSProjPropApplication
-            Else
-                Debug.Assert(IsCSProject, "Unknown project type")
-                Return HelpKeywords.CSProjPropApplication
-            End If
+            Debug.Assert(IsCSProject, "Unknown project type")
+            Return HelpKeywords.CSProjPropApplication
         End Function
 
         ''' <summary>

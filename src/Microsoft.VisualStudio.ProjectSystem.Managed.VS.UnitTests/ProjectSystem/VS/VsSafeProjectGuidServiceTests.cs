@@ -96,7 +96,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private static VsSafeProjectGuidService CreateInstance(IUnconfiguredProjectTasksService tasksService = null)
         {
             var project = UnconfiguredProjectFactory.Create();
-            tasksService = tasksService ?? IUnconfiguredProjectTasksServiceFactory.ImplementPrioritizedProjectLoadedInHost(() => Task.CompletedTask);
+            tasksService ??= IUnconfiguredProjectTasksServiceFactory.ImplementPrioritizedProjectLoadedInHost(() => Task.CompletedTask);
             
             return new VsSafeProjectGuidService(project, tasksService);
         }

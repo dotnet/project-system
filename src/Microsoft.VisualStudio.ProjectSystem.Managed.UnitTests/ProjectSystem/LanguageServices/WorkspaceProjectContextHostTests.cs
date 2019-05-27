@@ -124,13 +124,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         private WorkspaceProjectContextHost CreateInstance(ConfiguredProject project = null, IProjectThreadingService threadingService = null, IUnconfiguredProjectTasksService tasksService = null, IProjectSubscriptionService projectSubscriptionService = null, IActiveEditorContextTracker activeWorkspaceProjectContextTracker = null, IWorkspaceProjectContextProvider workspaceProjectContextProvider = null, IApplyChangesToWorkspaceContext applyChangesToWorkspaceContext = null)
         {
-            project = project ?? ConfiguredProjectFactory.Create();
-            threadingService = threadingService ?? IProjectThreadingServiceFactory.Create();
-            tasksService = tasksService ?? IUnconfiguredProjectTasksServiceFactory.Create();
-            projectSubscriptionService = projectSubscriptionService ?? IProjectSubscriptionServiceFactory.Create();
-            activeWorkspaceProjectContextTracker = activeWorkspaceProjectContextTracker ?? IActiveEditorContextTrackerFactory.Create();
-            workspaceProjectContextProvider = workspaceProjectContextProvider ?? IWorkspaceProjectContextProviderFactory.ImplementCreateProjectContextAsync(IWorkspaceProjectContextAccessorFactory.Create());
-            applyChangesToWorkspaceContext = applyChangesToWorkspaceContext ?? IApplyChangesToWorkspaceContextFactory.Create();
+            project ??= ConfiguredProjectFactory.Create();
+            threadingService ??= IProjectThreadingServiceFactory.Create();
+            tasksService ??= IUnconfiguredProjectTasksServiceFactory.Create();
+            projectSubscriptionService ??= IProjectSubscriptionServiceFactory.Create();
+            activeWorkspaceProjectContextTracker ??= IActiveEditorContextTrackerFactory.Create();
+            workspaceProjectContextProvider ??= IWorkspaceProjectContextProviderFactory.ImplementCreateProjectContextAsync(IWorkspaceProjectContextAccessorFactory.Create());
+            applyChangesToWorkspaceContext ??= IApplyChangesToWorkspaceContextFactory.Create();
             IDataProgressTrackerService dataProgressTrackerService = IDataProgressTrackerServiceFactory.Create();
 
             return new WorkspaceProjectContextHost(project,

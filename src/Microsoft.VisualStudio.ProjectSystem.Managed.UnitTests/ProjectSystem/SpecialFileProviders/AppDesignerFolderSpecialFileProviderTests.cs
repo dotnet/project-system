@@ -119,8 +119,8 @@ Project (flags: {ProjectRoot}), FilePath: ""C:\Project\Project.csproj""
 
         private AppDesignerFolderSpecialFileProvider CreateInstance(IPhysicalProjectTree physicalProjectTree = null, ProjectProperties properties = null)
         {
-            physicalProjectTree = physicalProjectTree ?? IPhysicalProjectTreeFactory.Create();
-            properties = properties ?? ProjectPropertiesFactory.CreateEmpty();
+            physicalProjectTree ??= IPhysicalProjectTreeFactory.Create();
+            properties ??= ProjectPropertiesFactory.CreateEmpty();
 
             return new AppDesignerFolderSpecialFileProvider(new Lazy<IPhysicalProjectTree>(() => physicalProjectTree), properties);
         }

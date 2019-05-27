@@ -351,9 +351,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
 
         private static ProjectOutputWindowProjectLogger CreateInstance(IProjectThreadingService threadingService = null, IProjectSystemOptions options = null, IProjectOutputWindowPaneProvider outputWindowProvider = null)
         {
-            threadingService = threadingService ?? IProjectThreadingServiceFactory.Create();
-            options = options ?? IProjectSystemOptionsFactory.Create();
-            outputWindowProvider = outputWindowProvider ?? IProjectOutputWindowPaneProviderFactory.Create();
+            threadingService ??= IProjectThreadingServiceFactory.Create();
+            options ??= IProjectSystemOptionsFactory.Create();
+            outputWindowProvider ??= IProjectOutputWindowPaneProviderFactory.Create();
 
             return new ProjectOutputWindowProjectLogger(threadingService, options, outputWindowProvider);
         }

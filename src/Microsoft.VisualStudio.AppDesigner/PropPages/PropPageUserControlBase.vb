@@ -220,7 +220,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ' page while building
         Private WithEvents _buildEvents As EnvDTE.BuildEvents
 
-        'The ProjectProperties object from a VSLangProj-based project (VB, C#, J#).  Used for querying
+        'The ProjectProperties object from a VSLangProj-based project (VB, C#).  Used for querying
         '  common project properties in these types of projects.  Note that this object was *not* passed
         '  in through SetObjects, rather we obtained it by querying for the project.  It is used
         '  for common property handling.  See comments for m_CommonPropertyDescriptors.
@@ -495,7 +495,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Public ReadOnly Property CommonPropertiesObject() As Object
             Get
                 If _projectPropertiesObject IsNot Nothing Then
-                    'Used by VB, J#, C#-based projects
+                    'Used by VB and C#-based projects
                     Return _projectPropertiesObject
                 Else
                     'C++ projects.
@@ -806,7 +806,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Property
 
         ''' <summary>
-        ''' Returns the ProjectProperties object from a VSLangProj-based project (VB, C#, J#).  Used for querying
+        ''' Returns the ProjectProperties object from a VSLangProj-based project (VB and C#).  Used for querying
         '''   common project properties in these types of projects.  Should only be used if you are certain of the
         '''   project type.  Otherwise, use CommonPropertiesObject.
         ''' </summary>
@@ -3483,15 +3483,6 @@ NextControl:
         ''' <remarks></remarks>
         Public Function IsCSProject() As Boolean
             Return String.Compare(ProjectLanguage, EnvDTE.CodeModelLanguageConstants.vsCMLanguageCSharp, StringComparison.OrdinalIgnoreCase) = 0
-        End Function
-
-        ''' <summary>
-        ''' Returns True iff the project associated with the properties being displayed is a J# project.
-        ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Function IsJSProject() As Boolean
-            Return String.Compare(ProjectLanguage, EnvDTE80.CodeModelLanguageConstants2.vsCMLanguageJSharp, StringComparison.OrdinalIgnoreCase) = 0
         End Function
 
 #End Region
