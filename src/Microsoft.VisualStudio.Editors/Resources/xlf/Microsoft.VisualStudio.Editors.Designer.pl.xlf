@@ -2348,11 +2348,6 @@ Czy chcesz zaktualizować wartość w pliku settings?</target>
         <target state="translated">Nie można odnaleźć usługi „{0}”.  Upewnij się, że aplikacja jest poprawnie zainstalowana.</target>
         <note>Settings Global-Object-Provider Strings</note>
       </trans-unit>
-      <trans-unit id="PPG_Application_RootNamespaceJSharp">
-        <source>Default pac&amp;kage:</source>
-        <target state="translated">Pa&amp;kiet domyślny:</target>
-        <note>J# Specific String for Root Namespace</note>
-      </trans-unit>
       <trans-unit id="RSE_AccessModifier_Custom">
         <source>(Custom)</source>
         <target state="translated">(Niestandardowy)</target>

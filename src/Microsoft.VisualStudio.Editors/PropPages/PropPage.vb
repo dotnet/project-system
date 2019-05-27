@@ -9,7 +9,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 #Region "Com Classes for our property pages"
 
-#Region "Application property pages (VB, C#, J#)"
+#Region "Application property pages (VB and C#)"
 
 
     'Property page class hierarchy:
@@ -21,13 +21,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     '   + ApplicationPropPage
     '       + CSharpApplicationPropPage
     '
-    'The ApplicationPropPage vs CSharpApplicationPropPage split was originally
-    '  meant to allow differentiation with J#, but currently J# uses the same 
-    '  page that C# does (CSharpApplicationPropPage).
-    '
 
 
-#Region "ApplicationPropPageComClass (Not directly used, inherited from by J#/C#)"
+#Region "ApplicationPropPageComClass (Not directly used, inherited from by C#)"
 
     <Guid("1C25D270-6E41-4360-9221-1D22E4942FAD"), ComVisible(True), CLSCompliant(False)>
     Public NotInheritable Class ApplicationPropPageComClass 'See class hierarchy comments above
@@ -107,7 +103,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 #End Region
 
-#Region "CSharpApplicationPropPageComClass (C#/J# Application property page)"
+#Region "CSharpApplicationPropPageComClass (C# Application property page)"
 
     <Guid("5E9A8AC2-4F34-4521-858F-4C248BA31532"), ComVisible(True), CLSCompliant(False)>
     Public NotInheritable Class CSharpApplicationPropPageComClass 'See class hierarchy comments above

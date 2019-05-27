@@ -12,7 +12,7 @@ Imports VSLangProj80
 
 Imports VslangProj90
 
-'This is the VB version of this page.  BuildPropPage.vb is the C#/J# version.
+'This is the VB version of this page.  BuildPropPage.vb is the C# version.
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 

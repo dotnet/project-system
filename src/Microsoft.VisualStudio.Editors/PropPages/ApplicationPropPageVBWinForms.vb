@@ -21,7 +21,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
     ''' <summary>
     ''' The application property page for VB WinForms apps
-    ''' - see comments in proppage.vb: "Application property pages (VB, C#, J#)"
+    ''' - see comments in proppage.vb: "Application property pages (VB and C#)"
     ''' </summary>
     ''' <remarks></remarks>
     Friend Class ApplicationPropPageVBWinForms

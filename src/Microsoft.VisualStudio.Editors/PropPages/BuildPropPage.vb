@@ -1,6 +1,6 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-'This is the C#/J# version of the Compile property page.  'CompilePropPage2.vb is the VB version.
+'This is the C# version of the Compile property page.  'CompilePropPage2.vb is the VB version.
 
 Imports System.ComponentModel
 Imports System.IO
@@ -440,12 +440,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Protected Overrides Function GetF1HelpKeyword() As String
-            If IsJSProject() Then
-                Return HelpKeywords.JSProjPropBuild
-            Else
-                Debug.Assert(IsCSProject, "Unknown project type")
-                Return HelpKeywords.CSProjPropBuild
-            End If
+            Debug.Assert(IsCSProject, "Unknown project type")
+            Return HelpKeywords.CSProjPropBuild
         End Function
 
         Private Function WarningLevelSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean

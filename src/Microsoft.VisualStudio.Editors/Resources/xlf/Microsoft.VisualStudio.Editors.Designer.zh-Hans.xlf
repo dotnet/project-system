@@ -2348,11 +2348,6 @@ app.config 文件中的新值为“{1}”
         <target state="translated">无法找到服务“{0}”。请确保已正确安装该应用程序。</target>
         <note>Settings Global-Object-Provider Strings</note>
       </trans-unit>
-      <trans-unit id="PPG_Application_RootNamespaceJSharp">
-        <source>Default pac&amp;kage:</source>
-        <target state="translated">默认包(&amp;K):</target>
-        <note>J# Specific String for Root Namespace</note>
-      </trans-unit>
       <trans-unit id="RSE_AccessModifier_Custom">
         <source>(Custom)</source>
         <target state="translated">(自定义)</target>

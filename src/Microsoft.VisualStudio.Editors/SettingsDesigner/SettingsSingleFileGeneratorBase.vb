@@ -143,13 +143,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
                 Dim typeAttrs As TypeAttributes
 
-                If CodeDomProvider.FileExtension.Equals(".jsl", StringComparison.OrdinalIgnoreCase) Then
-                    ' VsWhidbey 302842, J# doesn't have assembly-only scoped types.... gotta generate the type
-                    ' as Public for now - hopefully we'll have a better solution post beta1
-                    typeAttrs = TypeAttributes.Public Or TypeAttributes.Sealed
-                Else
-                    typeAttrs = SettingsClassVisibility
-                End If
+                typeAttrs = SettingsClassVisibility
 
                 ' for VB, we need to generate some code that is fully-qualified, but our generator is always invoked
                 '   without the project's root namespace due to VB convention. If this is VB, then we need to look

@@ -2609,7 +2609,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '  disk.  The project item is not actually stored in the project itself.
         Private Const CF_VSREFPROJECTITEMS As String = "CF_VSREFPROJECTITEMS"
 
-        'This drag/drop format is used by storage-based projects (e.g., C#, VB, J#), where the items in a project are generally stored in the project's
+        'This drag/drop format is used by storage-based projects (e.g., VB or C#), where the items in a project are generally stored in the project's
         '  directories rather than simply being references.
         Private Const CF_VSSTGPROJECTITEMS As String = "CF_VSSTGPROJECTITEMS"
 
@@ -5339,7 +5339,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     PropertyDefinitionCodeElement2 = TryCast(PropertyDefinitionCodeElement, EnvDTE80.CodeElement2)
                     Debug.Assert(PropertyDefinitionCodeElement2 IsNot Nothing, "Failed to get CodeElement2 interface from CodeElement - CodeModel doesn't support ReplaceSymbol?")
                 Else
-                    ' Try to find get_Property because some languages do not support property directly (like J#)
+                    ' Try to find get_Property because some languages do not support property directly
                     Dim FindFunctionFilter As New SettingsDesigner.ProjectUtils.FindFunctionFilter(GeneratedClassCodeElement, "get_" & OldName)
                     Dim FunctionCodeElement As CodeElement = SettingsDesigner.ProjectUtils.FindElement(ProjItem, ExpandChildElements:=True, ExpandChildItems:=True, Filter:=FindFunctionFilter)
                     If FunctionCodeElement IsNot Nothing Then
