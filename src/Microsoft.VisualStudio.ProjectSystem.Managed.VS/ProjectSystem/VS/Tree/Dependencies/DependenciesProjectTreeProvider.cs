@@ -526,6 +526,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             if (!namedCatalogs.TryGetValue(PropertyPageContexts.BrowseObject, out IPropertyPagesCatalog browseObjectsCatalog))
             {
+                // Issue https://github.com/dotnet/project-system/issues/4860 suggests this code path
+                // can exist, however a repro was not found to dig deeper into the underlying cause.
+                // For now just return null as the upstream caller handles null correctly anyway.
                 return null;
             }
 
