@@ -1,6 +1,6 @@
 **Visual Studio Version**:
 
-**Summary:**
+**Summary**:
 
 
 **Steps to Reproduce**:

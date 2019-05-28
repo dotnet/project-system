@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
         internal override AbstractOpenProjectDesignerCommand CreateInstance(IProjectDesignerService designerService = null)
         {
-            designerService = designerService ?? IProjectDesignerServiceFactory.Create();
+            designerService ??= IProjectDesignerServiceFactory.Create();
 
             return new OpenProjectDesignerCommand(designerService);
         }

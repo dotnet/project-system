@@ -16,8 +16,8 @@ Imports VslangProj90
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
     ''' <summary>
-    ''' Contains functionality common to the application prop pages of VB, C# and J#
-    '''   See comments in proppage.vb: "Application property pages (VB, C#, J#)"
+    ''' Contains functionality common to the application prop pages of VB and C#
+    '''   See comments in proppage.vb: "Application property pages (VB and C#)"
     ''' </summary>
     ''' <remarks></remarks>
     Partial Public Class ApplicationPropPageBase

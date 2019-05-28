@@ -842,18 +842,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 return LazyInitializer.EnsureInitialized(ref _browseDirectoryCommand, () =>
                     new DelegateCommand(state =>
                     {
-                        using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
+                        using var dialog = new System.Windows.Forms.FolderBrowserDialog();
+                        string folder = WorkingDirectory;
+                        if (!string.IsNullOrEmpty(folder) && Directory.Exists(folder))
                         {
-                            string folder = WorkingDirectory;
-                            if (!string.IsNullOrEmpty(folder) && Directory.Exists(folder))
-                            {
-                                dialog.SelectedPath = folder;
-                            }
-                            DialogResult result = dialog.ShowDialog();
-                            if (result == DialogResult.OK)
-                            {
-                                WorkingDirectory = dialog.SelectedPath.ToString();
-                            }
+                            dialog.SelectedPath = folder;
+                        }
+                        DialogResult result = dialog.ShowDialog();
+                        if (result == DialogResult.OK)
+                        {
+                            WorkingDirectory = dialog.SelectedPath.ToString();
                         }
                     }));
             }
@@ -867,21 +865,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 return LazyInitializer.EnsureInitialized(ref _browseExecutableCommand, () =>
                     new DelegateCommand(state =>
                     {
-                        using (var dialog = new System.Windows.Forms.OpenFileDialog())
+                        using var dialog = new System.Windows.Forms.OpenFileDialog();
+                        string file = ExecutablePath;
+                        if (!string.IsNullOrEmpty(file) && (file.IndexOfAny(Path.GetInvalidPathChars()) == -1) && Path.IsPathRooted(file))
                         {
-                            string file = ExecutablePath;
-                            if (!string.IsNullOrEmpty(file) && (file.IndexOfAny(Path.GetInvalidPathChars()) == -1) && Path.IsPathRooted(file))
-                            {
-                                dialog.InitialDirectory = Path.GetDirectoryName(file);
-                                dialog.FileName = file;
-                            }
-                            dialog.Multiselect = false;
-                            dialog.Filter = _executableFilter;
-                            DialogResult result = dialog.ShowDialog();
-                            if (result == DialogResult.OK)
-                            {
-                                ExecutablePath = dialog.FileName.ToString();
-                            }
+                            dialog.InitialDirectory = Path.GetDirectoryName(file);
+                            dialog.FileName = file;
+                        }
+                        dialog.Multiselect = false;
+                        dialog.Filter = _executableFilter;
+                        DialogResult result = dialog.ShowDialog();
+                        if (result == DialogResult.OK)
+                        {
+                            ExecutablePath = dialog.FileName.ToString();
                         }
                     }));
             }

@@ -5,7 +5,8 @@ Imports System.Drawing
 Imports System.Windows.Forms
 
 Imports Microsoft.VisualStudio.Editors.Common
-Imports Microsoft.VisualStudio.PlatformUI
+Imports Microsoft.VisualStudio.Imaging
+Imports Microsoft.VisualStudio.Utilities
 Imports Microsoft.Win32
 
 Imports VSLangProj80
@@ -34,22 +35,17 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             InitializeComponent()
 
             ' Scale buttons
-            MoveUp.Size = DpiHelper.LogicalToDeviceUnits(MoveUp.Size)
-            MoveDown.Size = DpiHelper.LogicalToDeviceUnits(MoveDown.Size)
-            RemoveFolder.Size = DpiHelper.LogicalToDeviceUnits(RemoveFolder.Size)
+            MoveUp.Size = DpiAwareness.LogicalToDeviceSize(Handle, MoveUp.Size)
+            MoveDown.Size = DpiAwareness.LogicalToDeviceSize(Handle, MoveDown.Size)
+            RemoveFolder.Size = DpiAwareness.LogicalToDeviceSize(Handle, RemoveFolder.Size)
 
             'Add any initialization after the InitializeComponent() call
             MinimumSize = Size
 
             ' Recalculate all images for the button from the default image we put in the resource file
-            _moveUpImageOriginal = MoveUp.Image
-            _moveDownImageOriginal = MoveDown.Image
-            _removeFolderImageOriginal = RemoveFolder.Image
-
-            ' Rescale images
-            DpiHelper.LogicalToDeviceUnits(_moveUpImageOriginal)
-            DpiHelper.LogicalToDeviceUnits(_moveDownImageOriginal)
-            DpiHelper.LogicalToDeviceUnits(_removeFolderImageOriginal)
+            _moveUpImageOriginal = GetImageFromImageService(KnownMonikers.MoveUp, MoveUp.Size.Width, MoveUp.Size.Height, Color.Transparent)
+            _moveDownImageOriginal = GetImageFromImageService(KnownMonikers.MoveDown, MoveDown.Size.Width, MoveDown.Size.Height, Color.Transparent)
+            _removeFolderImageOriginal = GetImageFromImageService(KnownMonikers.DeleteFolder, RemoveFolder.Size.Width, RemoveFolder.Size.Height, Color.Transparent)
 
             GenerateButtonImages()
             UpdateButtonImages()
@@ -360,9 +356,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Protected Overrides Function GetF1HelpKeyword() As String
-            If IsJSProject() Then
-                Return HelpKeywords.JSProjPropReferencePaths
-            ElseIf IsCSProject() Then
+            If IsCSProject() Then
                 Return HelpKeywords.CSProjPropReferencePaths
             Else
                 Debug.Assert(IsVBProject, "Unknown project type")

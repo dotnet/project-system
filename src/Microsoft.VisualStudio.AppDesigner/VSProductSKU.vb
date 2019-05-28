@@ -42,7 +42,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             CSharp = &H4
             Architect = &H8
             IDE = &H10
-            JSharp = &H20
             Web = &H40 'from vsappid80.idl
         End Enum
 

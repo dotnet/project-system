@@ -202,9 +202,8 @@ Root (flags: {ProjectRoot})
         internal AbstractAddItemCommandHandler CreateInstance(IPhysicalProjectTree projectTree = null, IUnconfiguredProjectVsServices projectVsServices = null, IProjectTreeProvider provider = null, IVsAddProjectItemDlg addItemDialog = null, string capability = null)
         {
             var configuredProject = ConfiguredProjectFactory.Create(IProjectCapabilitiesScopeFactory.Create(new string[] { capability ?? TestAddItemCommand.Capability }));
-            projectTree = projectTree ?? IPhysicalProjectTreeFactory.Create(provider);
-            projectVsServices = projectVsServices ??
-                IUnconfiguredProjectVsServicesFactory.Implement(
+            projectTree ??= IPhysicalProjectTreeFactory.Create(provider);
+            projectVsServices ??=                 IUnconfiguredProjectVsServicesFactory.Implement(
                     threadingServiceCreator: () => IProjectThreadingServiceFactory.Create()
                 );
             var addItemDialogService = IVsUIServiceFactory.Create<SVsAddProjectItemDlg, IVsAddProjectItemDlg>(addItemDialog);

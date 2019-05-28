@@ -690,7 +690,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Try
 
 #If DEBUG Then
-            Static ProjectGuid_JSharp As New Guid("E6FDF86B-F3D1-11D4-8576-0002A516ECE8")
             Static ProjectGuid_VB As New Guid("F184B08F-C81C-45F6-A57F-5ABD9991F28F")
             Static ProjectGuid_CSharp As New Guid("FAE04EC0-301F-11D3-BF4B-00C04F79EFBC")
             Static ProjectGuid_CPlusPlus As New Guid("8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942")

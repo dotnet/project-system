@@ -339,12 +339,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private static ConfiguredProjectImplicitActivationTracking CreateInstance(ConfiguredProject project, IProjectAsynchronousTasksService tasksService, out ProjectValueDataSource<IConfigurationGroup<ProjectConfiguration>> source)
         {
-            project = project ?? ConfiguredProjectFactory.Create();
+            project ??= ConfiguredProjectFactory.Create();
             var services = IProjectCommonServicesFactory.CreateWithDefaultThreadingPolicy();
             source = ProjectValueDataSourceFactory.Create<IConfigurationGroup<ProjectConfiguration>>(services);
             var activeConfigurationGroupService = IActiveConfigurationGroupServiceFactory.Implement(source);
 
-            tasksService = tasksService ?? IProjectAsynchronousTasksServiceFactory.Create();
+            tasksService ??= IProjectAsynchronousTasksServiceFactory.Create();
 
             return new ConfiguredProjectImplicitActivationTracking(project, activeConfigurationGroupService, tasksService);
         }

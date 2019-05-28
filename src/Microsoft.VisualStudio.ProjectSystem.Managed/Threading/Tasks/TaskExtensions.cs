@@ -28,16 +28,14 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         /// </exception>
         public static async Task<bool> TryWaitForCompleteOrTimeout(this Task task, int millisecondsTimeout)
         {
-            using (var cts = new CancellationTokenSource())
+            using var cts = new CancellationTokenSource();
+            if (task != await Task.WhenAny(task, Task.Delay(millisecondsTimeout, cts.Token)))
             {
-                if (task != await Task.WhenAny(task, Task.Delay(millisecondsTimeout, cts.Token)))
-                {
-                    return false;
-                }
-                cts.Cancel();
-                await task;
-                return true;
+                return false;
             }
+            cts.Cancel();
+            await task;
+            return true;
         }
     }
 }

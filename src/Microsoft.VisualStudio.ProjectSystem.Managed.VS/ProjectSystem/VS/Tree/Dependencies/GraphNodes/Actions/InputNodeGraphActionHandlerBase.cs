@@ -69,12 +69,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                     continue;
                 }
 
-                using (var scope = new GraphTransactionScope())
-                {
-                    ProcessInputNode(graphContext, inputGraphNode, dependency, snapshot, viewProvider, projectPath, ref trackChanges);
+                using var scope = new GraphTransactionScope();
+                ProcessInputNode(graphContext, inputGraphNode, dependency, snapshot, viewProvider, projectPath, ref trackChanges);
 
-                    scope.Complete();
-                }
+                scope.Complete();
             }
 
             return trackChanges;

@@ -24,7 +24,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
     ''' <summary>
     ''' The application property page for VB WPF apps
-    ''' - see comments in proppage.vb: "Application property pages (VB, C#, J#)"
+    ''' - see comments in proppage.vb: "Application property pages (VB and C#)"
     ''' </summary>
     Partial Friend Class ApplicationPropPageVBWPF
         Inherits ApplicationPropPageVBBase

@@ -4,6 +4,7 @@ Imports System.ComponentModel
 Imports System.ComponentModel.Design
 Imports System.Windows.Forms
 Imports System.Windows.Forms.Design
+Imports Microsoft.VisualStudio.Utilities
 
 Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
@@ -86,11 +87,13 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 _uiService = CType(GetService(GetType(IUIService)), IUIService)
             End If
 
-            If Not (_uiService Is Nothing) Then
-                Return _uiService.ShowDialog(Me)
-            Else
-                Return MyBase.ShowDialog()
-            End If
+            Using (DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware))
+                If Not (_uiService Is Nothing) Then
+                    Return _uiService.ShowDialog(Me)
+                Else
+                    Return MyBase.ShowDialog()
+                End If
+            End Using
         End Function 'ShowDialog
 
         '= FRIEND =============================================================

@@ -126,8 +126,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private static UnconfiguredProjectTasksService CreateInstance(IProjectAsynchronousTasksService tasksService = null, ILoadedInHostListener loadedInHostListener = null)
         {
-            tasksService = tasksService ?? IProjectAsynchronousTasksServiceFactory.Create();
-            loadedInHostListener  = loadedInHostListener ?? ILoadedInHostListenerFactory.Create();
+            tasksService ??= IProjectAsynchronousTasksServiceFactory.Create();
+            loadedInHostListener  ??= ILoadedInHostListenerFactory.Create();
 
             return new UnconfiguredProjectTasksService(tasksService, IProjectThreadingServiceFactory.Create(), loadedInHostListener);
         }

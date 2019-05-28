@@ -537,7 +537,6 @@ Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.IsCSProject
 Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.IsDirty() -> Boolean
 Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.IsDirty(Value As Boolean) -> Void
 Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.IsInProjectCheckoutSection() -> Boolean
-Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.IsJSProject() -> Boolean
 Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.IsUndoEnabled() -> Boolean
 Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.IsVBProject() -> Boolean
 Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.LeaveProjectCheckoutSection() -> Void
@@ -618,7 +617,6 @@ Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASubSKUEdition
 Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASubSKUEdition.Architect = 8 -> Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASubSKUEdition
 Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASubSKUEdition.CSharp = 4 -> Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASubSKUEdition
 Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASubSKUEdition.IDE = 16 -> Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASubSKUEdition
-Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASubSKUEdition.JSharp = 32 -> Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASubSKUEdition
 Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASubSKUEdition.None = 0 -> Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASubSKUEdition
 Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASubSKUEdition.VB = 2 -> Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASubSKUEdition
 Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASubSKUEdition.VC = 1 -> Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASubSKUEdition

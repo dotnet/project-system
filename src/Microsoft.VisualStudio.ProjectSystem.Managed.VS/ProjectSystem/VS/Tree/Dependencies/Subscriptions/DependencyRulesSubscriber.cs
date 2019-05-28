@@ -119,7 +119,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         NameFormat = "CrossTarget Intermediate Evaluation Input: {1}"
                     });
 
-            _subscriptions = _subscriptions ?? new DisposableBag();
+            _subscriptions ??= new DisposableBag();
 
             _subscriptions.AddDisposable(
                 subscriptionService.JointRuleSource.SourceBlock.LinkTo(

@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel
 Imports System.Windows.Forms
@@ -8,7 +8,7 @@ Imports Microsoft.VisualStudio.Editors.Common
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
     ''' <summary>
-    ''' C#/J# application property page - see comments in proppage.vb: "Application property pages (VB, C#, J#)"
+    ''' C# application property page - see comments in proppage.vb: "Application property pages (VB and C#)"
     ''' </summary>
     ''' <remarks></remarks>
     Partial Friend Class CSharpApplicationPropPage
