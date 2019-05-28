@@ -11,7 +11,7 @@ using Microsoft.Build.Construction;
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
-    ///     Reloads a project if the number of configuration dimensions has changed.
+    ///     Reloads a project if its configuration dimensions change.
     /// </summary>
     [Export(typeof(IProjectReloadInterceptor))]
     [AppliesTo(ProjectCapabilities.ProjectConfigurationsDeclaredDimensions)]
@@ -47,16 +47,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             // Look through the properties and find all declared dimensions (ie <Configurations>, <Platforms>, <TargetFrameworks>) 
             // and return their dimension name equivalents (Configuration, Platform, TargetFramework)
-            IEnumerable<IProjectConfigurationDimensionsProvider4> providers = DimensionProviders.Select(v => v.Value)
-                                                                                                .OfType<IProjectConfigurationDimensionsProvider4>();
-
-            foreach (IProjectConfigurationDimensionsProvider4 provider in providers)
-            {
-                foreach (string name in provider.GetBestGuessDimensionNames(properties))
-                {
-                    yield return name;
-                }
-            }
+            return DimensionProviders.Select(v => v.Value)
+                                     .OfType<IProjectConfigurationDimensionsProvider4>()
+                                     .SelectMany(p => p.GetBestGuessDimensionNames(properties));
         }
     }
 }
