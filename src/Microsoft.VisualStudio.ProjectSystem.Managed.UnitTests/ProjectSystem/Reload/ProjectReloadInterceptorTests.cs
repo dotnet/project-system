@@ -63,6 +63,19 @@ namespace Microsoft.VisualStudio.ProjectSystem
 ", @"
 <Project>
   <PropertyGroup>
+    <TargetFrameworks>net45</TargetFrameworks>
+  </PropertyGroup>
+</Project>
+")]
+        [InlineData(@"
+<Project>
+  <PropertyGroup>
+    <TargetFramework>net45</TargetFramework>    
+  </PropertyGroup>
+</Project>
+", @"
+<Project>
+  <PropertyGroup>
     <TargetFrameworks>net45;netcoreapp2.2</TargetFrameworks>
   </PropertyGroup>
 </Project>
