@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             Requires.NotNullOrEmpty(value, nameof(value));
 
-            _tokenizer = new Tokenizer(new StringReader(value), Delimiters.Structural);
+            _tokenizer = new Tokenizer(new SimpleStringReader(value), Delimiters.Structural);
         }
 
         public static IProjectTree Parse(string value)
