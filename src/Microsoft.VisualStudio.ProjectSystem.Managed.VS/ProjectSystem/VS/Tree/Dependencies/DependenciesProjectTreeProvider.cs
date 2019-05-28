@@ -23,6 +23,8 @@ using Microsoft.VisualStudio.Threading.Tasks;
 
 using Task = System.Threading.Tasks.Task;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     /// <summary>
@@ -51,12 +53,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         private readonly IDependencyTreeTelemetryService _treeTelemetryService;
 
         /// <summary>Latest updated snapshot of all rules schema catalogs.</summary>
-        private IImmutableDictionary<string, IPropertyPagesCatalog> _namedCatalogs;
+        private IImmutableDictionary<string, IPropertyPagesCatalog>? _namedCatalogs;
 
         /// <summary>
         /// A subscription to the snapshot service dataflow.
         /// </summary>
-        private IDisposable _snapshotEventListener;
+        private IDisposable? _snapshotEventListener;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DependenciesProjectTreeProvider"/> class.
@@ -284,7 +286,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <param name="root">The root of the tree.</param>
         /// <param name="path">The absolute or project-relative path to the item sought.</param>
         /// <returns>The item in the tree if found; otherwise <c>null</c>.</returns>
-        public override IProjectTree FindByPath(IProjectTree root, string path)
+        public override IProjectTree? FindByPath(IProjectTree root, string path)
         {
             // We override this since we need to find children under either:
             //
@@ -416,7 +418,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
 
             // Take the highest priority view provider
-            IDependenciesTreeViewProvider viewProvider = _viewProviders.FirstOrDefault()?.Value;
+            IDependenciesTreeViewProvider? viewProvider = _viewProviders.FirstOrDefault()?.Value;
 
             if (viewProvider == null)
             {
@@ -469,10 +471,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public IProjectTree CreateTree(
             string caption,
             IProjectPropertiesContext itemContext,
-            IPropertySheet propertySheet = null,
-            IRule browseObjectProperties = null,
-            ProjectImageMoniker icon = null,
-            ProjectImageMoniker expandedIcon = null,
+            IPropertySheet? propertySheet = null,
+            IRule? browseObjectProperties = null,
+            ProjectImageMoniker? icon = null,
+            ProjectImageMoniker? expandedIcon = null,
             bool visible = true,
             ProjectTreeFlags? flags = default)
         {
@@ -495,9 +497,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public IProjectTree CreateTree(
             string caption,
             string filePath,
-            IRule browseObjectProperties = null,
-            ProjectImageMoniker icon = null,
-            ProjectImageMoniker expandedIcon = null,
+            IRule? browseObjectProperties = null,
+            ProjectImageMoniker? icon = null,
+            ProjectImageMoniker? expandedIcon = null,
             bool visible = true,
             ProjectTreeFlags? flags = default)
         {
@@ -511,7 +513,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 flags: flags);
         }
 
-        public async Task<IRule> GetRuleAsync(IDependency dependency, IProjectCatalogSnapshot catalogs)
+        public async Task<IRule?> GetRuleAsync(IDependency dependency, IProjectCatalogSnapshot? catalogs)
         {
             Requires.NotNull(dependency, nameof(dependency));
 
