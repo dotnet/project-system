@@ -442,9 +442,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                             await _treeTelemetryService.ObserveTreeUpdateCompletedAsync(snapshot.HasUnresolvedDependency);
                         }
 
-                    // TODO We still are getting mismatched data sources and need to figure out better 
-                    // way of merging, mute them for now and get to it in U1
-                    return new TreeUpdateResult(dependenciesNode);
+                        // TODO We still are getting mismatched data sources and need to figure out better 
+                        // way of merging, mute them for now and get to it in U1
+                        return new TreeUpdateResult(dependenciesNode);
                     },
                     _treeUpdateCancellationSeries.CreateNext(e.Token));
             }
