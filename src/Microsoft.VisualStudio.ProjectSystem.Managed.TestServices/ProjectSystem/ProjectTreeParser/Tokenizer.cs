@@ -8,10 +8,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal partial class Tokenizer
     {
-        private readonly StringReader _reader;
+        private readonly SimpleStringReader _reader;
         private readonly ImmutableArray<TokenType> _delimiters;
 
-        public Tokenizer(StringReader reader, ImmutableArray<TokenType> delimiters)
+        public Tokenizer(SimpleStringReader reader, ImmutableArray<TokenType> delimiters)
         {
             Assumes.NotNull(reader);
 
@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _delimiters = delimiters;
         }
 
-        public StringReader UnderlyingReader
+        public SimpleStringReader UnderlyingReader
         {
             get { return _reader; }
         }
@@ -130,7 +130,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private Token? PeekToken()
         {
-            StringReader reader = _reader.Clone();
+            SimpleStringReader reader = _reader.Clone();
 
             return GetTokenFrom(reader);
         }
@@ -140,7 +140,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return GetTokenFrom(_reader);
         }
 
-        private Token? GetTokenFrom(StringReader reader)
+        private Token? GetTokenFrom(SimpleStringReader reader)
         {
             if (reader.CanRead)
             {
