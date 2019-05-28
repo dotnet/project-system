@@ -410,11 +410,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             IDependenciesSnapshot snapshot = e.Snapshot;
 
-            if (snapshot == null)
-            {
-                return;
-            }
-
             if (_tasksService.UnloadCancellationToken.IsCancellationRequested || e.Token.IsCancellationRequested)
             {
                 return;
