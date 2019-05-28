@@ -522,7 +522,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             IImmutableDictionary<string, IPropertyPagesCatalog> namedCatalogs = await GetNamedCatalogsAsync();
             Requires.NotNull(namedCatalogs, nameof(namedCatalogs));
 
-            IPropertyPagesCatalog browseObjectsCatalog = namedCatalogs[PropertyPageContexts.BrowseObject];
+            if (!namedCatalogs.TryGetValue(PropertyPageContexts.BrowseObject, out IPropertyPagesCatalog browseObjectsCatalog))
+            {
+                return null;
+            }
+
             Rule schema = browseObjectsCatalog.GetSchema(dependency.SchemaName);
             string itemSpec = string.IsNullOrEmpty(dependency.OriginalItemSpec) ? dependency.Path : dependency.OriginalItemSpec;
             var context = ProjectPropertiesContext.GetContext(UnconfiguredProject,
