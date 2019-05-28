@@ -220,6 +220,30 @@ These values map to members of the [`VSDESIGNER_VARIABLENAMING`](https://docs.mi
 <PropertyGroup>
 ```
 
+#### __DesignerHiddenCodeGeneration (enum list)__
+
+| Language      | Default                         |
+|---------------| --------------------------------|
+| C#            | Declarations                    |
+| Visual Basic  | Declarations | InitMethods      |
+
+Specifies which code the designer should put in the hidden designer file.
+
+| Value            | Description                            |
+|------------------| ---------------------------------------|
+| _Declarations_   | Include declarations.                  |
+| _InitMethods_    | Include member initialization members. |
+| _EventMethods_   | Include event methods.                 |
+
+These values map to members of the [`__VSDESIGNER_HIDDENCODEGENERATION`](https://docs.microsoft.com/en-us/dotnet/api/microsoft.visualstudio.shell.interop.__vsdesigner_hiddencodegeneration) enum in the VS SDK.
+
+##### __Example__
+``` XML
+<PropertyGroup>
+    <DesignerHiddenCodeGeneration>Declarations;InitMethods</DesignerHiddenCodeGeneration>
+<PropertyGroup>
+```
+
 #### __ProjectGuid (GUID) [deprecated]__
 
 | Language      | Default            |
