@@ -100,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             {
                 IComparable version = GetConfiguredProjectVersion(update);
 
-                return ProcessProjectUpdateHandlersAsync(version, update, isActiveContext, cancellationToken);
+                ProcessProjectUpdateHandlers(version, update, isActiveContext, cancellationToken);
             }
 
             return Task.CompletedTask;
@@ -221,7 +221,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             return Task.CompletedTask;
         }
 
-        private Task ProcessProjectUpdateHandlersAsync(IComparable version, IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool isActiveContext, CancellationToken cancellationToken)
+        private void ProcessProjectUpdateHandlers(IComparable version, IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool isActiveContext, CancellationToken cancellationToken)
         {
             foreach (ExportLifetimeContext<IWorkspaceContextHandler> handler in _handlers)
             {
@@ -236,8 +236,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     evaluationHandler.HandleProjectUpdate(version, projectChange, isActiveContext, _logger);
                 }
             }
-
-            return Task.CompletedTask;
         }
 
         private static IComparable GetConfiguredProjectVersion(IProjectVersionedValue<IProjectSubscriptionUpdate> update)
