@@ -1,9 +1,10 @@
-﻿using System;
-using System.Linq;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
 using System.Threading.Tasks;
 
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices.VisualBasic;
+
 using Moq;
 
 using Xunit;
@@ -120,20 +121,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.VisualBasic
 
             Mock.Get(userNotificationServices).Verify(h => h.Confirm(It.IsAny<string>()), Times.Once);
             Mock.Get(roslynServices).Verify(h => h.RenameSymbolAsync(It.IsAny<Solution>(), It.IsAny<ISymbol>(), It.IsAny<string>()), Times.Never);
-        }
-
-        internal async Task RenameAsync(string sourceCode, string oldFilePath, string newFilePath, IUserNotificationServices userNotificationServices, IRoslynServices roslynServices, string language)
-        {
-            using var ws = new AdhocWorkspace();
-            var projectId = ProjectId.CreateNewId();
-            Solution solution = ws.AddSolution(InitializeWorkspace(projectId, newFilePath, sourceCode, language));
-            Project project = (from d in solution.Projects where d.Id == projectId select d).FirstOrDefault();
-
-            var environmentOptionsFactory = IEnvironmentOptionsFactory.Implement((string category, string page, string property, bool defaultValue) => { return true; });
-
-            var renamer = new Renamer(ws, IProjectThreadingServiceFactory.Create(), userNotificationServices, environmentOptionsFactory, roslynServices, project, oldFilePath, newFilePath);
-            await renamer.RenameAsync(project)
-                         .TimeoutAfter(TimeSpan.FromSeconds(1));
         }
     }
 }
