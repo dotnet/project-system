@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.Telemetry;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     internal partial class SDKVersionTelemetryServiceComponent
@@ -40,9 +42,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     await _unconfiguredProjectTasksService.ProjectLoadedInHost;
 
                     ConfigurationGeneral projectProperties = await _projectVsServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync();
-                    Task<object> task = projectProperties?.NETCoreSdkVersion?.GetValueAsync();
+                    Task<object>? task = projectProperties?.NETCoreSdkVersion?.GetValueAsync();
                     string version = task == null ? string.Empty : (string)await task;
-                    string projectId = await GetProjectIdAsync();
+                    string? projectId = await GetProjectIdAsync();
 
                     if (string.IsNullOrEmpty(version) || string.IsNullOrEmpty(projectId))
                     {
@@ -62,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             {   
             }
 
-            private async Task<string> GetProjectIdAsync()
+            private async Task<string?> GetProjectIdAsync()
             {
                 Guid projectGuid = await _projectGuidService.GetProjectGuidAsync();
                 return projectGuid == Guid.Empty ? null : projectGuid.ToString();

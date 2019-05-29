@@ -6,6 +6,8 @@ using System.ComponentModel.Composition;
 
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters
 {
     /// <summary>
@@ -32,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             ITargetFramework targetFramework,
             IDependency dependency,
             IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
-            IImmutableSet<string> projectItemSpecs,
+            IImmutableSet<string>? projectItemSpecs,
             IAddDependencyContext context)
         {
             if (dependency.TopLevel
@@ -40,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                 && dependency.Flags.Contains(DependencyTreeFlags.ProjectNodeFlags)
                 && !dependency.Flags.Contains(DependencyTreeFlags.SharedProjectFlags))
             {
-                ITargetedDependenciesSnapshot snapshot = _aggregateSnapshotProvider.GetSnapshot(dependency);
+                ITargetedDependenciesSnapshot? snapshot = _aggregateSnapshotProvider.GetSnapshot(dependency);
 
                 if (snapshot != null && snapshot.HasUnresolvedDependency)
                 {

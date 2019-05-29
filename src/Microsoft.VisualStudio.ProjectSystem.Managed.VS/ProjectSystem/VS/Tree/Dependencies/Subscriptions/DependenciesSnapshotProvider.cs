@@ -18,6 +18,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters
 using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.Threading.Tasks;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions
 {
     [Export(DependencySubscriptionsHostContract, typeof(ICrossTargetSubscriptionsHost))]
@@ -70,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         ///     Value is null before initialization, and not null after.
         /// </para>
         /// </remarks>
-        private AggregateCrossTargetProjectContext _currentAggregateProjectContext;
+        private AggregateCrossTargetProjectContext? _currentAggregateProjectContext;
 
         [ImportingConstructor]
         public DependenciesSnapshotProvider(
@@ -273,8 +275,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 return;
             }
 
+            // TODO remove ! when https://github.com/dotnet/roslyn/issues/36018 is fixed
             ITargetFramework targetFramework =
-                string.IsNullOrEmpty(e.TargetShortOrFullName) || TargetFramework.Any.Equals(e.TargetShortOrFullName)
+                string.IsNullOrEmpty(e.TargetShortOrFullName) || TargetFramework.Any.Equals(e.TargetShortOrFullName!)
                     ? TargetFramework.Any
                     : _targetFrameworkProvider.GetTargetFramework(e.TargetShortOrFullName) ?? TargetFramework.Any;
 
@@ -285,11 +288,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         private void UpdateDependenciesSnapshot(
             ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes,
-            IProjectCatalogSnapshot catalogs,
-            ITargetFramework activeTargetFramework,
+            IProjectCatalogSnapshot? catalogs,
+            ITargetFramework? activeTargetFramework,
             CancellationToken token)
         {
-            IImmutableSet<string> projectItemSpecs = GetProjectItemSpecsFromSnapshot();
+            IImmutableSet<string>? projectItemSpecs = GetProjectItemSpecsFromSnapshot();
 
             TryUpdateSnapshot(
                 snapshot => DependenciesSnapshot.FromChanges(
@@ -306,7 +309,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             return;
 
             // Gets the set of items defined directly the project, and not included by imports.
-            IImmutableSet<string> GetProjectItemSpecsFromSnapshot()
+            IImmutableSet<string>? GetProjectItemSpecsFromSnapshot()
             {
                 // We don't have catalog snapshot, we're likely updating because one of our project 
                 // dependencies changed. Just return 'no data'
@@ -336,7 +339,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             }
         }
 
-        public async Task<AggregateCrossTargetProjectContext> GetCurrentAggregateProjectContextAsync()
+        public async Task<AggregateCrossTargetProjectContext?> GetCurrentAggregateProjectContextAsync()
         {
             if (IsDisposing || IsDisposed)
             {
@@ -348,9 +351,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             return _currentAggregateProjectContext;
         }
 
-        public ConfiguredProject GetConfiguredProject(ITargetFramework target)
+        public ConfiguredProject? GetConfiguredProject(ITargetFramework target)
         {
-            return _currentAggregateProjectContext.GetInnerConfiguredProject(target);
+            return _currentAggregateProjectContext!.GetInnerConfiguredProject(target);
         }
 
         private Task OnConfiguredProjectEvaluatedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
@@ -393,9 +396,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             return;
 
-            async Task<AggregateCrossTargetProjectContext> TryUpdateCurrentAggregateProjectContextAsync()
+            async Task<AggregateCrossTargetProjectContext?> TryUpdateCurrentAggregateProjectContextAsync()
             {
-                AggregateCrossTargetProjectContext previousContext = _currentAggregateProjectContext;
+                AggregateCrossTargetProjectContext? previousContext = _currentAggregateProjectContext;
 
                 // Check if we have already computed the project context.
                 if (previousContext != null)
@@ -408,7 +411,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     if (!previousContext.IsCrossTargeting)
                     {
                         string newTargetFrameworkName = (string)await projectProperties.TargetFramework.GetValueAsync();
-                        ITargetFramework newTargetFramework = _targetFrameworkProvider.GetTargetFramework(newTargetFrameworkName);
+                        ITargetFramework? newTargetFramework = _targetFrameworkProvider.GetTargetFramework(newTargetFrameworkName);
                         if (previousContext.ActiveTargetFramework.Equals(newTargetFramework))
                         {
                             // No change
@@ -450,7 +453,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             {
                 Assumes.True(activeProjectConfiguration.IsCrossTargeting());
 
-                ITargetFramework activeTargetFramework = _targetFrameworkProvider.GetTargetFramework(activeProjectConfiguration.Dimensions[ConfigurationGeneral.TargetFrameworkProperty]);
+                ITargetFramework? activeTargetFramework = _targetFrameworkProvider.GetTargetFramework(activeProjectConfiguration.Dimensions[ConfigurationGeneral.TargetFrameworkProperty]);
                 if (!previousContext.ActiveTargetFramework.Equals(activeTargetFramework))
                 {
                     // Active target framework is different.
@@ -470,9 +473,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
                 foreach (string targetFrameworkMoniker in targetFrameworkMonikers)
                 {
-                    ITargetFramework targetFramework = _targetFrameworkProvider.GetTargetFramework(targetFrameworkMoniker);
+                    ITargetFramework? targetFramework = _targetFrameworkProvider.GetTargetFramework(targetFrameworkMoniker);
 
-                    if (!previousContext.TargetFrameworks.Contains(targetFramework))
+                    if (targetFramework == null || !previousContext.TargetFrameworks.Contains(targetFramework))
                     {
                         // Differing TargetFramework
                         return false;
@@ -483,7 +486,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             }
 
             void OnAggregateContextChanged(
-                AggregateCrossTargetProjectContext oldContext,
+                AggregateCrossTargetProjectContext? oldContext,
                 AggregateCrossTargetProjectContext newContext)
             {
                 if (oldContext == null)

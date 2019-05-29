@@ -3,15 +3,17 @@
 using System;
 using System.Runtime.Versioning;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
-    internal interface ITargetFramework : IEquatable<ITargetFramework>,
-                                          IEquatable<string>
+    internal interface ITargetFramework : IEquatable<ITargetFramework?>,
+                                          IEquatable<string?>
     {
         /// <summary>
         /// Basic target framework info. Can be <see langword="null" /> if the framework is unknown.
         /// </summary>
-        FrameworkName FrameworkName { get; }
+        FrameworkName? FrameworkName { get; }
 
         /// <summary>
         /// Gets the full moniker (TFM).

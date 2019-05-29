@@ -9,6 +9,8 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     [DebuggerDisplay("{TargetFramework.FriendlyName} - {DependenciesWorld.Count} dependencies ({TopLevelDependencies} top level) - {ProjectPath}")]
@@ -16,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
     {
         #region Factories and internal constructor
 
-        public static ITargetedDependenciesSnapshot CreateEmpty(string projectPath, ITargetFramework targetFramework, IProjectCatalogSnapshot catalogs)
+        public static ITargetedDependenciesSnapshot CreateEmpty(string projectPath, ITargetFramework targetFramework, IProjectCatalogSnapshot? catalogs)
         {
             return new TargetedDependenciesSnapshot(
                 projectPath,
@@ -34,10 +36,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             string projectPath,
             ITargetedDependenciesSnapshot previousSnapshot,
             IDependenciesChanges changes,
-            IProjectCatalogSnapshot catalogs,
+            IProjectCatalogSnapshot? catalogs,
             ImmutableArray<IDependenciesSnapshotFilter> snapshotFilters,
             IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
-            IImmutableSet<string> projectItemSpecs)
+            IImmutableSet<string>? projectItemSpecs)
         {
             Requires.NotNullOrWhiteSpace(projectPath, nameof(projectPath));
             Requires.NotNull(previousSnapshot, nameof(previousSnapshot));
@@ -126,7 +128,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             void Add(AddDependencyContext context, IDependencyModel dependencyModel)
             {
                 // Create the unfiltered dependency
-                IDependency dependency = new Dependency(dependencyModel, targetFramework, projectPath);
+                IDependency? dependency = new Dependency(dependencyModel, targetFramework, projectPath);
 
                 context.Reset();
 
@@ -167,7 +169,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         internal TargetedDependenciesSnapshot(
             string projectPath,
             ITargetFramework targetFramework,
-            IProjectCatalogSnapshot catalogs,
+            IProjectCatalogSnapshot? catalogs,
             ImmutableDictionary<string, IDependency> dependenciesWorld)
         {
             Requires.NotNullOrEmpty(projectPath, nameof(projectPath));
@@ -220,7 +222,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public ITargetFramework TargetFramework { get; }
 
         /// <inheritdoc />
-        public IProjectCatalogSnapshot Catalogs { get; }
+        public IProjectCatalogSnapshot? Catalogs { get; }
 
         /// <inheritdoc />
         public ImmutableArray<IDependency> TopLevelDependencies { get; }

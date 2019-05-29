@@ -3,6 +3,8 @@
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Composition;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
     /// <summary>
@@ -16,8 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         ///     Creates a <see cref="AggregateCrossTargetProjectContext"/>.
         /// </summary>
         /// <returns>
-        ///     The created <see cref="AggregateCrossTargetProjectContext"/> or <see langword="null"/> if it could
-        ///     not be created due to the project targeting an unrecognized language.
+        ///     The created <see cref="AggregateCrossTargetProjectContext"/>.
         /// </returns>
         Task<AggregateCrossTargetProjectContext> CreateProjectContextAsync();
     }

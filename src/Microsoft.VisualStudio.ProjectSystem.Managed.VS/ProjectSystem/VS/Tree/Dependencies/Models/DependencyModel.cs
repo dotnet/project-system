@@ -6,6 +6,8 @@ using System.Collections.Immutable;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
     internal abstract partial class DependencyModel : IDependencyModel
@@ -21,11 +23,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         protected DependencyModel(
             string path,
-            string originalItemSpec,
+            string? originalItemSpec,
             ProjectTreeFlags flags,
             bool isResolved,
             bool isImplicit,
-            IImmutableDictionary<string, string> properties,
+            IImmutableDictionary<string, string>? properties,
             bool isTopLevel = true,
             bool isVisible = true)
         {
@@ -62,8 +64,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
         public string Caption { get; protected set; }
         public string OriginalItemSpec { get; }
         public string Path { get; }
-        public virtual string SchemaName => null;
-        public virtual string SchemaItemType => null;
+        public virtual string? SchemaName => null;
+        public virtual string? SchemaItemType => null;
         public virtual string Version => throw new NotImplementedException();
         public bool Resolved => (_flags & DependencyFlags.Resolved) != 0;
         public bool TopLevel => (_flags & DependencyFlags.TopLevel) != 0;

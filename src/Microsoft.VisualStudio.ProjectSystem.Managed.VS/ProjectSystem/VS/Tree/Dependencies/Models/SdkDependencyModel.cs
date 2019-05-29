@@ -8,6 +8,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.Ru
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Text;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
     internal class SdkDependencyModel : DependencyModel
@@ -34,9 +36,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public override string ProviderType => SdkRuleHandler.ProviderTypeString;
 
-        public override string SchemaItemType => SdkReference.PrimaryDataSourceItemType;
+        public override string? SchemaItemType => SdkReference.PrimaryDataSourceItemType;
 
-        public override string SchemaName => Resolved ? ResolvedSdkReference.SchemaName : SdkReference.SchemaName;
+        public override string? SchemaName => Resolved ? ResolvedSdkReference.SchemaName : SdkReference.SchemaName;
 
         public SdkDependencyModel(
             string path,

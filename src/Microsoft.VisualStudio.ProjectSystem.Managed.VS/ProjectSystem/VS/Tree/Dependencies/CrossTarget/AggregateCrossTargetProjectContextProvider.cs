@@ -6,6 +6,8 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
     /// <summary>
@@ -72,7 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         {
             if (string.IsNullOrEmpty(shortOrFullName))
             {
-                object targetObject = await configurationGeneralProperties.TargetFramework.GetValueAsync();
+                object? targetObject = await configurationGeneralProperties.TargetFramework.GetValueAsync();
 
                 if (targetObject == null)
                 {

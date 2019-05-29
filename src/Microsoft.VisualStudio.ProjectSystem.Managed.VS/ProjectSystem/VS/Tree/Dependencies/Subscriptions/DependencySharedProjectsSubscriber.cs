@@ -14,6 +14,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.RuleHandlers;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
     [Export(typeof(IDependencyCrossTargetSubscriber))]
@@ -23,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         private readonly List<IDisposable> _subscriptionLinks = new List<IDisposable>();
         private readonly IUnconfiguredProjectTasksService _tasksService;
         private readonly IDependenciesSnapshotProvider _dependenciesSnapshotProvider;
-        private ICrossTargetSubscriptionsHost _host;
+        private ICrossTargetSubscriptionsHost? _host;
 
         [ImportingConstructor]
         public DependencySharedProjectsSubscriber(
@@ -116,7 +118,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         private async Task HandleAsync(Tuple<IProjectSubscriptionUpdate, IProjectSharedFoldersSnapshot, IProjectCatalogSnapshot> e)
         {
-            AggregateCrossTargetProjectContext currentAggregateContext = await _host.GetCurrentAggregateProjectContextAsync();
+            AggregateCrossTargetProjectContext? currentAggregateContext = await _host!.GetCurrentAggregateProjectContextAsync();
             if (currentAggregateContext == null)
             {
                 return;
@@ -127,7 +129,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             IProjectCatalogSnapshot catalogs = e.Item3;
 
             // Get the target framework to update for this change.
-            ITargetFramework targetFrameworkToUpdate = currentAggregateContext.GetProjectFramework(projectUpdate.ProjectConfiguration);
+            ITargetFramework? targetFrameworkToUpdate = currentAggregateContext.GetProjectFramework(projectUpdate.ProjectConfiguration);
 
             if (targetFrameworkToUpdate == null)
             {
@@ -138,7 +140,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
             ProcessSharedProjectsUpdates(sharedProjectsUpdate, targetFrameworkToUpdate, changesBuilder);
 
-            ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes = changesBuilder.TryBuildChanges();
+            ImmutableDictionary<ITargetFramework, IDependenciesChanges>? changes = changesBuilder.TryBuildChanges();
 
             if (changes != null)
             {

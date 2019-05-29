@@ -7,6 +7,8 @@ using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.RuleHandlers;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
     internal class PackageAnalyzerAssemblyDependencyModel : DependencyModel
@@ -53,6 +55,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             if (dependenciesIDs != null)
             {
                 DependencyIDs = ImmutableArray.CreateRange(dependenciesIDs);
+            }
+            else
+            {
+                DependencyIDs = ImmutableList<string>.Empty;
             }
         }
     }

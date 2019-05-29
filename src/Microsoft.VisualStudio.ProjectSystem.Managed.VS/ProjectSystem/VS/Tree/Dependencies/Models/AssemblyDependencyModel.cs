@@ -8,6 +8,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.RuleHandlers;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
     internal class AssemblyDependencyModel : DependencyModel
@@ -32,9 +34,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public override int Priority => Dependency.FrameworkAssemblyNodePriority;
 
-        public override string SchemaItemType => AssemblyReference.PrimaryDataSourceItemType;
+        public override string? SchemaItemType => AssemblyReference.PrimaryDataSourceItemType;
 
-        public override string SchemaName => Resolved ? ResolvedAssemblyReference.SchemaName : AssemblyReference.SchemaName;
+        public override string? SchemaName => Resolved ? ResolvedAssemblyReference.SchemaName : AssemblyReference.SchemaName;
 
         public AssemblyDependencyModel(
             string path,

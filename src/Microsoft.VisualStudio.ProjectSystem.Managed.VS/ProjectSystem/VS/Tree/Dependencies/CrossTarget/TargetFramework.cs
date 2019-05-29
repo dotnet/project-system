@@ -3,6 +3,8 @@
 using System;
 using System.Runtime.Versioning;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
     internal class TargetFramework : ITargetFramework
@@ -14,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         /// </summary>
         public static readonly ITargetFramework Any = new TargetFramework("any");
 
-        public TargetFramework(FrameworkName frameworkName, string shortName = null)
+        public TargetFramework(FrameworkName frameworkName, string? shortName = null)
         {
             Requires.NotNull(frameworkName, nameof(frameworkName));
 
@@ -39,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         }
 
         /// <inheritdoc />
-        public FrameworkName FrameworkName { get; }
+        public FrameworkName? FrameworkName { get; }
 
         /// <inheritdoc />
         public string FullName { get; }
@@ -56,22 +58,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         /// </summary>
         public override bool Equals(object obj)
         {
-            if (obj == null)
+            return obj switch
             {
-                return false;
-            }
-
-            if (obj is ITargetFramework targetFramework)
-            {
-                return Equals(targetFramework);
-            }
-            else
-            {
-                return Equals(obj as string);
-            }
+                ITargetFramework targetFramework => Equals(targetFramework),
+                string s => Equals(s),
+                _ => false
+            };
         }
 
-        public bool Equals(ITargetFramework obj)
+        public bool Equals(ITargetFramework? obj)
         {
             if (obj != null)
             {
@@ -81,12 +76,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             return false;
         }
 
-        public bool Equals(string obj)
+        public bool Equals(string? obj)
         {
             if (obj != null)
             {
                 return string.Equals(FullName, obj, StringComparison.OrdinalIgnoreCase)
-                        || string.Equals(ShortName, obj, StringComparison.OrdinalIgnoreCase);
+                    || string.Equals(ShortName, obj, StringComparison.OrdinalIgnoreCase);
             }
 
             return false;

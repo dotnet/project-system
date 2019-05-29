@@ -5,13 +5,15 @@ using System.Collections.Immutable;
 
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions
 {
     internal sealed class CrossTargetDependenciesChangesBuilder
     {
-        private Dictionary<ITargetFramework, DependenciesChangesBuilder> _changes;
+        private Dictionary<ITargetFramework, DependenciesChangesBuilder>? _changes;
 
-        public ImmutableDictionary<ITargetFramework, IDependenciesChanges> TryBuildChanges()
+        public ImmutableDictionary<ITargetFramework, IDependenciesChanges>? TryBuildChanges()
         {
             return _changes?.ToImmutableDictionary(
                 pair => pair.Key,

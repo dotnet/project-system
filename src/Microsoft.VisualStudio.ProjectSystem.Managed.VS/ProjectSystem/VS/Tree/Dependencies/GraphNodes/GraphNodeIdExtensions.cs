@@ -5,6 +5,8 @@ using System;
 using Microsoft.VisualStudio.GraphModel;
 using Microsoft.VisualStudio.GraphModel.Schemas;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     internal static class IProjectTreeExtensions1
@@ -12,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <summary>
         /// Finds a tree node by it's flags. If there many nodes that satisfy flags, returns first.
         /// </summary>
-        internal static IProjectTree GetSubTreeNode(this IProjectTree self, ProjectTreeFlags flags)
+        internal static IProjectTree? GetSubTreeNode(this IProjectTree self, ProjectTreeFlags flags)
         {
             foreach (IProjectTree child in self.Children)
             {
@@ -25,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             return null;
         }
 
-        internal static string GetValue(this GraphNodeId id, GraphNodeIdName idPartName)
+        internal static string? GetValue(this GraphNodeId id, GraphNodeIdName idPartName)
         {
             if (idPartName == CodeGraphNodeIdName.Assembly || idPartName == CodeGraphNodeIdName.File)
             {
