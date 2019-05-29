@@ -69,12 +69,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             VerifyInitialized();
 
-            if (projectChange.Difference.RenamedItems.Any())
+            foreach ((string original, string renamed) in projectChange.Difference.RenamedItems)
             {
-                foreach ((string original, string renamed) in projectChange.Difference.RenamedItems)
-                {
-                    HandleItemRename(original, renamed, logger);
-                }
+                HandleItemRename(original, renamed, logger);
             }
         }
 
