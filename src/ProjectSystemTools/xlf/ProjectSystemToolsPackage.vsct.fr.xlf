@@ -22,6 +22,11 @@
         <target state="new">Log Roslyn Workplace Structure...</target>
         <note />
       </trans-unit>
+      <trans-unit id="OpenLogsExternalCommandId|ButtonText">
+        <source>Open Logs External...</source>
+        <target state="new">Open Logs External...</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StartLoggingCommandId|ButtonText">
         <source>Start logging</source>
         <target state="new">Start logging</target>

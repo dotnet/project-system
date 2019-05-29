@@ -75,6 +75,11 @@
           <ButtonText>Open Logs...</ButtonText>
         </Strings>
       </Button>
+      <Button guid="CommandSetGuid" id="OpenLogsExternalCommandId" type="Button">
+        <Strings>
+          <ButtonText>Open Logs External...</ButtonText>
+        </Strings>
+      </Button>
       <Button guid="CommandSetGuid" id="MessageListCommandId" type="Button">
         <Strings>
           <ButtonText>Build Log Message List</ButtonText>
@@ -116,6 +121,9 @@
     <CommandPlacement guid="CommandSetGuid" id="OpenLogsCommandId" priority="0x0010">
       <Parent guid="UIGuid" id="BuildLoggingContextGroupId" />
     </CommandPlacement>
+    <CommandPlacement guid="CommandSetGuid" id="OpenLogsExternalCommandId" priority="0x0020">
+      <Parent guid="UIGuid" id="BuildLoggingContextGroupId" />
+    </CommandPlacement>
     <CommandPlacement guid="CommandSetGuid" id="MessageListCommandId" priority="0x0100">
       <Parent guid="guidSHLMainMenu" id="IDG_VS_WNDO_OTRWNDWS1" />
     </CommandPlacement>
@@ -144,6 +152,7 @@
       <IDSymbol name="BuildTypeComboCommandId" value="0x0106"/>
       <IDSymbol name="BuildTypeComboGetListCommandId" value="0x0107"/>
       <IDSymbol name="MessageListCommandId" value="0x010b" />
+      <IDSymbol name="OpenLogsExternalCommandId" value="0x010c" />
       <IDSymbol name="LogRoslynWorkspaceStructureCommandId" value="0x0200"/>
     </GuidSymbol>
     <GuidSymbol name="UIGuid" value="{629080DF-2A44-40E5-9AF4-371D4B727D16}">

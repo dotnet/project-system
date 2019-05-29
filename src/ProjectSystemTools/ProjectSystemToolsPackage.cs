@@ -41,6 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools
         public const int BuildTypeComboCommandId = 0x0106;
         public const int BuildTypeComboGetListCommandId = 0x0107;
         public const int MessageListCommandId = 0x010b;
+        public const int OpenLogsExternalCommandId = 0x010c;
 
         public const int LogRoslynWorkspaceStructureCommandId = 0x0200;
 
