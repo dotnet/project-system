@@ -17,6 +17,11 @@
         <target state="translated">C# 分析器其他文件</target>
         <note />
       </trans-unit>
+      <trans-unit id="ItemType|EditorConfigFiles|DisplayName">
+        <source>C# .editorconfig file</source>
+        <target state="new">C# .editorconfig file</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

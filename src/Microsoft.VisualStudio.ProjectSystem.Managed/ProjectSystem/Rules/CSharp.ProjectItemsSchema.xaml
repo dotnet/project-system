@@ -3,15 +3,16 @@
 <ProjectSchemaDefinitions
     xmlns="http://schemas.microsoft.com/build/2009/properties">
 
-    <ContentType
-        Name="CSharpFile"
-        DisplayName="C# file"
-        ItemType="Compile">
-    </ContentType>
+  <ContentType
+      Name="CSharpFile"
+      DisplayName="C# file"
+      ItemType="Compile">
+  </ContentType>
 
-    <ItemType Name="Compile" DisplayName="C# compiler"/>
-    <ItemType Name="AdditionalFiles" DisplayName="C# analyzer additional file"/>
-    
-    <FileExtension Name=".cs" ContentType="CSharpFile"/>
+  <ItemType Name="Compile" DisplayName="C# compiler"/>
+  <ItemType Name="AdditionalFiles" DisplayName="C# analyzer additional file"/>
+  <ItemType Name="EditorConfigFiles" DisplayName="C# .editorconfig file" />
+
+  <FileExtension Name=".cs" ContentType="CSharpFile"/>
 </ProjectSchemaDefinitions>
 
