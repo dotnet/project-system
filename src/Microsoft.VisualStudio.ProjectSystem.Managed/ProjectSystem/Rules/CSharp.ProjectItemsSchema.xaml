@@ -11,7 +11,7 @@
 
   <ItemType Name="Compile" DisplayName="C# compiler"/>
   <ItemType Name="AdditionalFiles" DisplayName="C# analyzer additional file"/>
-  <ItemType Name="EditorConfigFiles" DisplayName="C# .editorconfig file" />
+  <ItemType Name="EditorConfigFiles" DisplayName=".editorconfig file" />
 
   <FileExtension Name=".cs" ContentType="CSharpFile"/>
 </ProjectSchemaDefinitions>

@@ -18,8 +18,8 @@
         <note />
       </trans-unit>
       <trans-unit id="ItemType|EditorConfigFiles|DisplayName">
-        <source>VB .editorconfig file</source>
-        <target state="new">VB .editorconfig file</target>
+        <source>.editorconfig file</source>
+        <target state="new">.editorconfig file</target>
         <note />
       </trans-unit>
     </body>
