@@ -9,6 +9,8 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     /// <inheritdoc />
@@ -40,11 +42,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             string projectPath,
             DependenciesSnapshot previousSnapshot,
             ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes,
-            IProjectCatalogSnapshot catalogs,
-            ITargetFramework activeTargetFramework,
+            IProjectCatalogSnapshot? catalogs,
+            ITargetFramework? activeTargetFramework,
             ImmutableArray<IDependenciesSnapshotFilter> snapshotFilters,
             IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
-            IImmutableSet<string> projectItemSpecs)
+            IImmutableSet<string>? projectItemSpecs)
         {
             Requires.NotNullOrWhiteSpace(projectPath, nameof(projectPath));
             Requires.NotNull(previousSnapshot, nameof(previousSnapshot));
@@ -112,7 +114,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             {
                 // This is a long-winded way of doing this that minimises allocations
 
-                List<ITargetFramework> emptyFrameworks = null;
+                List<ITargetFramework>? emptyFrameworks = null;
                 bool anythingRemoved = false;
 
                 foreach ((ITargetFramework targetFramework, ITargetedDependenciesSnapshot targetedSnapshot) in builder)
@@ -180,7 +182,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public bool HasUnresolvedDependency => Targets.Any(x => x.Value.HasUnresolvedDependency);
 
         /// <inheritdoc />
-        public IDependency FindDependency(string dependencyId, bool topLevel = false)
+        public IDependency? FindDependency(string dependencyId, bool topLevel = false)
         {
             if (string.IsNullOrEmpty(dependencyId))
             {

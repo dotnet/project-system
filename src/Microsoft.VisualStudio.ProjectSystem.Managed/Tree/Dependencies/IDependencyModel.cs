@@ -5,6 +5,8 @@ using System.Collections.Immutable;
 
 using Microsoft.VisualStudio.Imaging.Interop;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     /// <summary>
@@ -57,13 +59,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// Used in <see cref="IDependenciesTreeServices.GetRuleAsync"/> to determine the browse
         /// object rule for this dependency.
         /// </summary>
-        string SchemaName { get; }
+        string? SchemaName { get; }
 
         /// <summary>
         /// Used in <see cref="IDependenciesTreeServices.GetRuleAsync"/> to determine the browse
         /// object rule for this dependency.
         /// </summary>
-        string SchemaItemType { get; }
+        string? SchemaItemType { get; }
 
         /// <summary>
         /// Version of the dependency

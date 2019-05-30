@@ -8,6 +8,8 @@ using Microsoft.VisualStudio.GraphModel.Schemas;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.ViewProviders;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.Actions
 {
     /// <summary>
@@ -48,21 +50,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                     return trackChanges;
                 }
 
-                string projectPath = inputGraphNode.Id.GetValue(CodeGraphNodeIdName.Assembly);
+                string? projectPath = inputGraphNode.Id.GetValue(CodeGraphNodeIdName.Assembly);
 
                 if (string.IsNullOrEmpty(projectPath))
                 {
                     continue;
                 }
 
-                IDependency dependency = FindDependency(inputGraphNode, out IDependenciesSnapshot snapshot);
+                IDependency? dependency = FindDependency(inputGraphNode, out IDependenciesSnapshot? snapshot);
 
                 if (dependency == null || snapshot == null)
                 {
                     continue;
                 }
 
-                IDependenciesGraphViewProvider viewProvider = FindViewProvider(dependency);
+                IDependenciesGraphViewProvider? viewProvider = FindViewProvider(dependency);
 
                 if (viewProvider == null)
                 {
@@ -78,9 +80,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
             return trackChanges;
         }
 
-        private IDependency FindDependency(GraphNode inputGraphNode, out IDependenciesSnapshot snapshot)
+        private IDependency? FindDependency(GraphNode inputGraphNode, out IDependenciesSnapshot? snapshot)
         {
-            string projectPath = inputGraphNode.Id.GetValue(CodeGraphNodeIdName.Assembly);
+            string? projectPath = inputGraphNode.Id.GetValue(CodeGraphNodeIdName.Assembly);
 
             if (string.IsNullOrWhiteSpace(projectPath))
             {
@@ -96,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                 return null;
             }
 
-            string id = inputGraphNode.GetValue<string>(DependenciesGraphSchema.DependencyIdProperty);
+            string? id = inputGraphNode.GetValue<string>(DependenciesGraphSchema.DependencyIdProperty);
 
             bool topLevel;
 

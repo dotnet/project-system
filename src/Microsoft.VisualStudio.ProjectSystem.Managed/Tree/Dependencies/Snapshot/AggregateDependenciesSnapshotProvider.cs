@@ -8,6 +8,8 @@ using System.Linq;
 using Microsoft.VisualStudio.ProjectSystem.VS.Extensibility;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     /// <inheritdoc />
@@ -88,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         }
 
         /// <inheritdoc />
-        public IDependenciesSnapshot GetSnapshot(string projectFilePath)
+        public IDependenciesSnapshot? GetSnapshot(string projectFilePath)
         {
             Requires.NotNullOrEmpty(projectFilePath, nameof(projectFilePath));
 
@@ -109,16 +111,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         }
 
         /// <inheritdoc />
-        public ITargetedDependenciesSnapshot GetSnapshot(IDependency dependency)
+        public ITargetedDependenciesSnapshot? GetSnapshot(IDependency dependency)
         {
-            IDependenciesSnapshot snapshot = GetSnapshot(dependency.FullPath);
+            IDependenciesSnapshot? snapshot = GetSnapshot(dependency.FullPath);
 
             if (snapshot == null)
             {
                 return null;
             }
 
-            ITargetFramework targetFramework = _targetFrameworkProvider.GetNearestFramework(
+            ITargetFramework? targetFramework = _targetFrameworkProvider.GetNearestFramework(
                 dependency.TargetFramework, snapshot.Targets.Keys);
 
             if (targetFramework == null)

@@ -5,6 +5,8 @@ using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     /// <summary>
@@ -28,10 +30,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         IProjectTree CreateTree(
             string caption,
             IProjectPropertiesContext itemContext,
-            IPropertySheet propertySheet = null,
-            IRule browseObjectProperties = null,
-            ProjectImageMoniker icon = null,
-            ProjectImageMoniker expandedIcon = null,
+            IPropertySheet? propertySheet = null,
+            IRule? browseObjectProperties = null,
+            ProjectImageMoniker? icon = null,
+            ProjectImageMoniker? expandedIcon = null,
             bool visible = true,
             ProjectTreeFlags? flags = default);
 
@@ -48,10 +50,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <returns></returns>
         IProjectTree CreateTree(
             string caption,
-            string filePath,
-            IRule browseObjectProperties = null,
-            ProjectImageMoniker icon = null,
-            ProjectImageMoniker expandedIcon = null,
+            string? filePath,
+            IRule? browseObjectProperties = null,
+            ProjectImageMoniker? icon = null,
+            ProjectImageMoniker? expandedIcon = null,
             bool visible = true,
             ProjectTreeFlags? flags = default);
 
@@ -62,6 +64,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <param name="dependency"></param>
         /// <param name="catalogs"></param>
         /// <returns></returns>
-        Task<IRule> GetRuleAsync(IDependency dependency, IProjectCatalogSnapshot catalogs);
+        Task<IRule?> GetRuleAsync(IDependency dependency, IProjectCatalogSnapshot? catalogs);
     }
 }

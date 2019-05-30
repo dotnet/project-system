@@ -5,6 +5,8 @@ using System.Collections.Immutable;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     /// <summary>
@@ -25,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// <summary>
         /// Catalogs of rules for project items (optional, custom dependency providers might not provide it).
         /// </summary>
-        IProjectCatalogSnapshot Catalogs { get; }
+        IProjectCatalogSnapshot? Catalogs { get; }
 
         /// <summary>
         /// Top level project dependencies.

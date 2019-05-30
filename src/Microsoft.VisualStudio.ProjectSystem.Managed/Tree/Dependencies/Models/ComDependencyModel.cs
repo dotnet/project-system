@@ -5,6 +5,8 @@ using System.Collections.Immutable;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.RuleHandlers;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
     internal class ComDependencyModel : DependencyModel
@@ -29,9 +31,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public override int Priority => Dependency.ComNodePriority;
 
-        public override string SchemaItemType => ComReference.PrimaryDataSourceItemType;
+        public override string? SchemaItemType => ComReference.PrimaryDataSourceItemType;
 
-        public override string SchemaName => Resolved ? ResolvedCOMReference.SchemaName : ComReference.SchemaName;
+        public override string? SchemaName => Resolved ? ResolvedCOMReference.SchemaName : ComReference.SchemaName;
 
         public ComDependencyModel(
             string path,

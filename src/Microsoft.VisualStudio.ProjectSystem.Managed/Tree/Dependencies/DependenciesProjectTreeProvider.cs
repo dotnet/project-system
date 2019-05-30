@@ -168,7 +168,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     continue;
                 }
 
-                IDependency dependency = snapshot.FindDependency(filePath, topLevel: true);
+                IDependency? dependency = snapshot.FindDependency(filePath, topLevel: true);
                 if (dependency == null || dependency.Implicit)
                 {
                     return false;
@@ -254,7 +254,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         continue;
                     }
 
-                    IDependency sharedProjectDependency = snapshot.FindDependency(sharedFilePath, topLevel: true);
+                    IDependency? sharedProjectDependency = snapshot.FindDependency(sharedFilePath, topLevel: true);
                     if (sharedProjectDependency != null)
                     {
                         sharedFilePath = sharedProjectDependency.Path;
@@ -496,7 +496,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         public IProjectTree CreateTree(
             string caption,
-            string filePath,
+            string? filePath,
             IRule? browseObjectProperties = null,
             ProjectImageMoniker? icon = null,
             ProjectImageMoniker? expandedIcon = null,

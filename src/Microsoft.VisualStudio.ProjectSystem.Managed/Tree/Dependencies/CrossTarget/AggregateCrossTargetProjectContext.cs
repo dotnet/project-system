@@ -3,6 +3,8 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
     /// <summary>
@@ -38,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         public IEnumerable<ConfiguredProject> InnerConfiguredProjects => _configuredProjectByTargetFramework.Values;
 
-        public ITargetFramework GetProjectFramework(ProjectConfiguration projectConfiguration)
+        public ITargetFramework? GetProjectFramework(ProjectConfiguration projectConfiguration)
         {
             if (projectConfiguration.Dimensions.TryGetValue(ConfigurationGeneral.TargetFrameworkProperty, out string targetFrameworkMoniker))
             {
@@ -50,9 +52,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             }
         }
 
-        public ConfiguredProject GetInnerConfiguredProject(ITargetFramework target)
+        public ConfiguredProject? GetInnerConfiguredProject(ITargetFramework target)
         {
-            return _configuredProjectByTargetFramework.FirstOrDefault((x, t) => t.Equals(x.Key), target).Value;
+            // TODO remove ! when https://github.com/dotnet/roslyn/issues/36018 is fixed
+            return _configuredProjectByTargetFramework.FirstOrDefault((x, t) => t.Equals(x.Key!), target).Value;
         }
     }
 }

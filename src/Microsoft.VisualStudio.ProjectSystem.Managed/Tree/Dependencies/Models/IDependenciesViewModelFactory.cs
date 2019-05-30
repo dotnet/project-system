@@ -3,12 +3,14 @@
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
     internal interface IDependenciesViewModelFactory
     {
         IDependencyViewModel CreateTargetViewModel(ITargetedDependenciesSnapshot snapshot);
-        IDependencyViewModel CreateRootViewModel(string providerType, bool hasUnresolvedDependency);
+        IDependencyViewModel? CreateRootViewModel(string providerType, bool hasUnresolvedDependency);
         ImageMoniker GetDependenciesRootIcon(bool hasUnresolvedDependencies);
     }
 }

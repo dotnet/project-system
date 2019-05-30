@@ -2,11 +2,14 @@
 
 using System.Threading.Tasks;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
     internal interface ICrossTargetSubscriptionsHost
     {
-        Task<AggregateCrossTargetProjectContext> GetCurrentAggregateProjectContextAsync();
-        ConfiguredProject GetConfiguredProject(ITargetFramework target);
+        Task<AggregateCrossTargetProjectContext?> GetCurrentAggregateProjectContextAsync();
+
+        ConfiguredProject? GetConfiguredProject(ITargetFramework target);
     }
 }

@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.Telemetry;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     /// <summary>
@@ -31,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         private readonly ConcurrentDictionary<ITargetFramework, TelemetryState> _telemetryStates =
             new ConcurrentDictionary<ITargetFramework, TelemetryState>();
         private readonly object _stateUpdateLock = new object();
-        private string _projectId;
+        private string? _projectId;
         private bool _stopTelemetry = false;
         private int _eventCount = 0;
 
@@ -118,7 +120,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             if (_projectId == null)
             {
-                await InitializeProjectIdAsync();
+                _projectId = await GetProjectIdAsync();
             }
 
             if (hasUnresolvedDependency)
@@ -142,24 +144,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             bool ObservedAllRules() => _telemetryStates.All(state => state.Value.ObservedAllRules());
 
-            async Task InitializeProjectIdAsync()
+            async Task<string> GetProjectIdAsync()
             {
-                Guid projectGuild = await _safeProjectGuidService.GetProjectGuidAsync();
-                if (!projectGuild.Equals(Guid.Empty))
+                Guid projectGuid = await _safeProjectGuidService.GetProjectGuidAsync();
+
+                if (!projectGuid.Equals(Guid.Empty))
                 {
-                    SetProjectId(projectGuild.ToString());
+                    return projectGuid.ToString();
                 }
                 else
                 {
-                    SetProjectId(_telemetryService.HashValue(_project.FullPath));
+                    return _telemetryService.HashValue(_project.FullPath);
                 }
             }
-        }
-
-        // helper to support testing
-        internal void SetProjectId(string projectId)
-        {
-            _projectId = projectId;
         }
 
         /// <summary>

@@ -10,6 +10,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.ViewP
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.Shell;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.Actions
 {
     /// <summary>
@@ -53,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
             string searchParametersTypeName = typeof(ISolutionSearchParameters).GUID.ToString();
             ISolutionSearchParameters searchParameters = graphContext.GetValue<ISolutionSearchParameters>(searchParametersTypeName);
 
-            string searchTerm = searchParameters?.SearchQuery.SearchString;
+            string? searchTerm = searchParameters?.SearchQuery.SearchString;
             if (searchTerm == null)
             {
                 return;
@@ -82,21 +84,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                     ITargetedDependenciesSnapshot targetedSnapshot = snapshot.Targets[topLevelDependency.TargetFramework];
 
                     if (!cachedDependencyToMatchingResultsMap
-                            .TryGetValue(topLevelDependency.Id, out HashSet<IDependency> topLevelDependencyMatches))
+                            .TryGetValue(topLevelDependency.Id, out HashSet<IDependency>? topLevelDependencyMatches))
                     {
-                        IDependenciesGraphViewProvider viewProvider = FindViewProvider(topLevelDependency);
+                        IDependenciesGraphViewProvider? viewProvider = FindViewProvider(topLevelDependency);
 
                         if (viewProvider == null)
                         {
                             continue;
                         }
 
-                        bool processed = viewProvider.MatchSearchResults(
+                        if (!viewProvider.MatchSearchResults(
                             topLevelDependency,
                             searchResultsPerContext,
-                            out topLevelDependencyMatches);
-
-                        if (!processed)
+                            out topLevelDependencyMatches))
                         {
                             if (matchedDependencies.Count == 0)
                             {
@@ -177,6 +177,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
             Dictionary<string, HashSet<IDependency>> cachedPositiveResults)
         {
             var matchingNodes = new HashSet<IDependency>();
+
             foreach (string childDependency in rootDependency.DependencyIDs)
             {
                 if (!snapshot.DependenciesWorld

@@ -6,12 +6,14 @@ using System.Collections.Immutable;
 
 using Microsoft.VisualStudio.Imaging.Interop;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions
 {
     internal sealed class DependenciesChangesBuilder
     {
-        private HashSet<IDependencyModel> _added;
-        private HashSet<IDependencyModel> _removed;
+        private HashSet<IDependencyModel>? _added;
+        private HashSet<IDependencyModel>? _removed;
 
         public void Added(IDependencyModel model)
         {
@@ -79,8 +81,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             public string OriginalItemSpec => throw NotImplemented();
             public string Path => throw NotImplemented();
             public string Caption => throw NotImplemented();
-            public string SchemaName => throw NotImplemented();
-            public string SchemaItemType => throw NotImplemented();
+            public string? SchemaName => throw NotImplemented();
+            public string? SchemaItemType => throw NotImplemented();
             public string Version => throw NotImplemented();
             public bool Resolved => throw NotImplemented();
             public bool TopLevel => throw NotImplemented();

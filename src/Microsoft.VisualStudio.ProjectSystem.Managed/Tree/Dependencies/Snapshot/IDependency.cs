@@ -5,6 +5,8 @@ using System.Collections.Immutable;
 
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     /// <summary>
@@ -38,12 +40,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// Returns a copy of this immutable instance with the specified property changes.
         /// </summary>
         IDependency SetProperties(
-            string caption = null,
+            string? caption = null,
             bool? resolved = null,
             ProjectTreeFlags? flags = null,
-            string schemaName = null,
+            string? schemaName = null,
             ImmutableArray<string> dependencyIDs = default,
-            DependencyIconSet iconSet = null,
+            DependencyIconSet? iconSet = null,
             bool? isImplicit = null);
 
         #region Copied from IDependencyModel

@@ -8,6 +8,8 @@ using System.Linq;
 using System.Runtime.Versioning;
 using NuGet.VisualStudio;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     [Export(typeof(ITargetFrameworkProvider))]
@@ -31,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _nuGetFrameworkParser = nugetFrameworkParser;
         }
 
-        public ITargetFramework GetTargetFramework(string shortOrFullName)
+        public ITargetFramework? GetTargetFramework(string shortOrFullName)
         {
             if (string.IsNullOrEmpty(shortOrFullName))
             {
@@ -47,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             try
             {
                 // Try to parse a short or full framework name
-                FrameworkName frameworkName = _nuGetFrameworkParser.ParseFrameworkName(shortOrFullName);
+                FrameworkName? frameworkName = _nuGetFrameworkParser.ParseFrameworkName(shortOrFullName);
 
                 if (frameworkName == null)
                 {
@@ -62,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     return exitingByFullName;
                 }
 
-                string shortName = _nuGetFrameworkParser.GetShortFrameworkName(frameworkName);
+                string? shortName = _nuGetFrameworkParser.GetShortFrameworkName(frameworkName);
 
                 if (shortName != null && _targetFrameworkByName.TryGetValue(shortName, out ITargetFramework exitingByShortName))
                 {
@@ -86,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
         }
 
-        public ITargetFramework GetNearestFramework(ITargetFramework targetFramework,
+        public ITargetFramework? GetNearestFramework(ITargetFramework targetFramework,
                                                     IEnumerable<ITargetFramework> otherFrameworks)
         {
             if (targetFramework?.FrameworkName == null || otherFrameworks == null)
@@ -101,7 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 return null;
             }
 
-            FrameworkName nearestFrameworkName = _nuGetComparer.GetNearest(
+            FrameworkName? nearestFrameworkName = _nuGetComparer.GetNearest(
                 targetFramework.FrameworkName, others.Select(x => x.FrameworkName));
 
             if (nearestFrameworkName == null)

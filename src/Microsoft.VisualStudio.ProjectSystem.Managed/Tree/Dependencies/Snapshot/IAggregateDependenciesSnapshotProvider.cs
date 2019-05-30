@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.Composition;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     /// <summary>
@@ -24,14 +26,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// </summary>
         /// <param name="projectFilePath">Path to the project for which the snapshot is requested.</param>
         /// <returns><see cref="IDependenciesSnapshot"/> or <see langword="null"/> if no project exists with the specified path.</returns>
-        IDependenciesSnapshot GetSnapshot(string projectFilePath);
+        IDependenciesSnapshot? GetSnapshot(string projectFilePath);
 
         /// <summary>
         /// Gets the targeted snapshot for <paramref name="dependency"/>, or <see langword="null"/> if none found.
         /// </summary>
         /// <param name="dependency">A dependency that identifies the project and target framework to search with.</param>
         /// <returns><see cref="ITargetedDependenciesSnapshot"/> or <see langword="null"/> if no snapshot exists with matching project and target framework.</returns>
-        ITargetedDependenciesSnapshot GetSnapshot(IDependency dependency);
+        ITargetedDependenciesSnapshot? GetSnapshot(IDependency dependency);
 
         /// <summary>
         /// Gets the current snapshot from every registered project.

@@ -2,6 +2,8 @@
 
 using System.Linq;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions
 {
     internal static class IDependenciesChangesExtensions

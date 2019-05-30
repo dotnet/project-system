@@ -9,6 +9,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Text;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.RuleHandlers
 {
     internal sealed partial class PackageRuleHandler
@@ -52,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 string itemSpec,
                 bool isResolved,
                 IImmutableDictionary<string, string> properties,
-                HashSet<string> unresolvedChanges,
+                HashSet<string>? unresolvedChanges,
                 ITargetFramework targetFramework,
                 ITargetFrameworkProvider targetFrameworkProvider,
                 out PackageDependencyMetadata metadata)
@@ -87,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         return false;
                     }
 
-                    ITargetFramework packageTargetFramework = targetFrameworkProvider.GetTargetFramework(target);
+                    ITargetFramework? packageTargetFramework = targetFrameworkProvider.GetTargetFramework(target);
 
                     if (packageTargetFramework?.Equals(targetFramework) != true)
                     {

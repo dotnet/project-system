@@ -14,6 +14,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     /// <summary>
@@ -139,14 +141,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         /// <inheritdoc />
-        public IProjectTree FindByPath(IProjectTree root, string path)
+        public IProjectTree? FindByPath(IProjectTree root, string path)
         {
             if (root == null)
             {
                 return null;
             }
 
-            IProjectTree dependenciesNode = root.Flags.Contains(DependencyTreeFlags.DependenciesRootNodeFlags)
+            IProjectTree? dependenciesNode = root.Flags.Contains(DependencyTreeFlags.DependenciesRootNodeFlags)
                 ? root
                 : root.GetSubTreeNode(DependencyTreeFlags.DependenciesRootNodeFlags);
 
@@ -194,7 +196,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             bool isActiveTarget = targetedSnapshot.TargetFramework.Equals(activeTarget);
             foreach ((string providerType, List<IDependency> dependencies) in groupedByProviderType)
             {
-                IDependencyViewModel subTreeViewModel = _viewModelFactory.CreateRootViewModel(
+                IDependencyViewModel? subTreeViewModel = _viewModelFactory.CreateRootViewModel(
                     providerType, targetedSnapshot.CheckForUnresolvedDependencies(providerType));
 
                 if (subTreeViewModel == null)
@@ -245,16 +247,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             bool isActiveTarget,
             bool shouldCleanup)
         {
-            List<IProjectTree> currentNodes = shouldCleanup
+            List<IProjectTree>? currentNodes = shouldCleanup
                 ? new List<IProjectTree>(capacity: dependencies.Count)
                 : null;
 
             foreach (IDependency dependency in dependencies)
             {
-                IProjectTree dependencyNode = rootNode.FindChildWithCaption(dependency.Caption);
+                IProjectTree? dependencyNode = rootNode.FindChildWithCaption(dependency.Caption);
                 bool isNewDependencyNode = dependencyNode == null;
 
-                if (!isNewDependencyNode
+                if (dependencyNode != null
                     && dependency.Flags.Contains(DependencyTreeFlags.SupportsHierarchy))
                 {
                     if ((dependency.Resolved && dependencyNode.Flags.Contains(DependencyTreeFlags.UnresolvedFlags))
@@ -277,7 +279,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     : dependencyNode.Parent;
             }
 
-            return shouldCleanup
+            return currentNodes != null // shouldCleanup
                 ? CleanupOldNodes(rootNode, currentNodes)
                 : rootNode;
         }
@@ -296,14 +298,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         private async Task<IProjectTree> CreateOrUpdateNodeAsync(
-            IProjectTree node,
+            IProjectTree? node,
             IDependency dependency,
             ITargetedDependenciesSnapshot targetedSnapshot,
             bool isProjectItem,
             ProjectTreeFlags? additionalFlags = null,
             ProjectTreeFlags? excludedFlags = null)
         {
-            IRule rule = null;
+            IRule? rule = null;
             if (dependency.Flags.Contains(DependencyTreeFlags.SupportsRuleProperties))
             {
                 rule = await _treeServices.GetRuleAsync(dependency, targetedSnapshot.Catalogs);
@@ -319,9 +321,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         private IProjectTree CreateOrUpdateNode(
-            IProjectTree node,
+            IProjectTree? node,
             IDependencyViewModel viewModel,
-            IRule rule,
+            IRule? rule,
             bool isProjectItem,
             ProjectTreeFlags? additionalFlags = null,
             ProjectTreeFlags? excludedFlags = null)
@@ -331,7 +333,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return UpdateTreeNode();
             }
 
-            string filePath = viewModel.OriginalModel != null &&
+            string? filePath = viewModel.OriginalModel != null &&
                               viewModel.OriginalModel.TopLevel &&
                               viewModel.OriginalModel.Resolved
                 ? viewModel.OriginalModel.GetTopLevelId()
@@ -362,6 +364,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             IProjectTree CreateProjectItemTreeNode()
             {
+                Requires.NotNull(filePath, nameof(filePath));
+
                 var itemContext = ProjectPropertiesContext.GetContext(
                     _commonServices.Project,
                     file: filePath,
@@ -383,7 +387,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 var updatedNodeParentContext = new ProjectTreeCustomizablePropertyContext
                 {
                     ExistsOnDisk = false,
-                    ParentNodeFlags = node.Parent?.Flags ?? default
+                    ParentNodeFlags = node!.Parent?.Flags ?? default
                 };
 
                 var updatedValues = new ReferencesProjectTreeCustomizablePropertyValues
@@ -433,11 +437,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             //      we avoid creating backing fields for them to keep the size of
             //      this class down. They can be changed as needed in future.
 
-            public string ItemName => null;
+            public string? ItemName => null;
 
-            public string ItemType => null;
+            public string? ItemType => null;
 
-            public IImmutableDictionary<string, string> Metadata => null;
+            public IImmutableDictionary<string, string>? Metadata => null;
 
             public ProjectTreeFlags ParentNodeFlags { get; set; }
 
@@ -447,7 +451,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             public bool IsNonFileSystemProjectItem => true;
 
-            public IImmutableDictionary<string, string> ProjectTreeSettings => null;
+            public IImmutableDictionary<string, string>? ProjectTreeSettings => null;
         }
     }
 }

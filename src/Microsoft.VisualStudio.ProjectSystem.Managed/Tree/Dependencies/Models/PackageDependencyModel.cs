@@ -6,6 +6,8 @@ using System.Collections.Immutable;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.RuleHandlers;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
     internal class PackageDependencyModel : DependencyModel
@@ -37,9 +39,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public override string ProviderType => PackageRuleHandler.ProviderTypeString;
 
-        public override string SchemaItemType => PackageReference.PrimaryDataSourceItemType;
+        public override string? SchemaItemType => PackageReference.PrimaryDataSourceItemType;
 
-        public override string SchemaName => Resolved ? ResolvedPackageReference.SchemaName : PackageReference.SchemaName;
+        public override string? SchemaName => Resolved ? ResolvedPackageReference.SchemaName : PackageReference.SchemaName;
 
         public PackageDependencyModel(
             string path,
@@ -70,6 +72,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             if (dependenciesIDs != null)
             {
                 DependencyIDs = ImmutableArray.CreateRange(dependenciesIDs);
+            }
+            else
+            {
+                DependencyIDs = ImmutableList<string>.Empty;
             }
         }
     }

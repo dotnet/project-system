@@ -6,6 +6,8 @@ using Microsoft.VisualStudio.GraphModel;
 using Microsoft.VisualStudio.GraphModel.Schemas;
 using Microsoft.VisualStudio.Shell;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     internal static class IProjectTreeExtensions1
@@ -19,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public static HierarchyId GetHierarchyId(this IProjectTree tree) =>
             new HierarchyId(tree.IsRoot() ? VSConstants.VSITEMID_ROOT : unchecked((uint)tree.Identity));
 
-        internal static string GetValue(this GraphNodeId id, GraphNodeIdName idPartName)
+        internal static string? GetValue(this GraphNodeId id, GraphNodeIdName idPartName)
         {
             if (idPartName == CodeGraphNodeIdName.Assembly || idPartName == CodeGraphNodeIdName.File)
             {

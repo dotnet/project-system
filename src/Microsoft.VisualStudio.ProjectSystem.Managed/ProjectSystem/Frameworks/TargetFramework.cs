@@ -3,6 +3,8 @@
 using System;
 using System.Runtime.Versioning;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal class TargetFramework : ITargetFramework
@@ -14,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// </summary>
         public static readonly ITargetFramework Any = new TargetFramework("any");
 
-        public TargetFramework(FrameworkName frameworkName, string shortName = null)
+        public TargetFramework(FrameworkName frameworkName, string? shortName = null)
         {
             Requires.NotNull(frameworkName, nameof(frameworkName));
 
@@ -39,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         /// <inheritdoc />
-        public FrameworkName FrameworkName { get; }
+        public FrameworkName? FrameworkName { get; }
 
         /// <inheritdoc />
         public string FullName { get; }
@@ -56,22 +58,15 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// </summary>
         public override bool Equals(object obj)
         {
-            if (obj == null)
+            return obj switch
             {
-                return false;
-            }
-
-            if (obj is ITargetFramework targetFramework)
-            {
-                return Equals(targetFramework);
-            }
-            else
-            {
-                return Equals(obj as string);
-            }
+                ITargetFramework targetFramework => Equals(targetFramework),
+                string s => Equals(s),
+                _ => false
+            };
         }
 
-        public bool Equals(ITargetFramework obj)
+        public bool Equals(ITargetFramework? obj)
         {
             if (obj != null)
             {
@@ -81,12 +76,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return false;
         }
 
-        public bool Equals(string obj)
+        public bool Equals(string? obj)
         {
             if (obj != null)
             {
                 return string.Equals(FullName, obj, StringComparison.OrdinalIgnoreCase)
-                        || string.Equals(ShortName, obj, StringComparison.OrdinalIgnoreCase);
+                    || string.Equals(ShortName, obj, StringComparison.OrdinalIgnoreCase);
             }
 
             return false;
@@ -98,9 +93,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public static bool operator !=(TargetFramework left, TargetFramework right)
             => !(left == right);
 
-        /// <summary>
-        ///  Need to override this to ensure it can be hashed correctly
-        /// </summary>
         public override int GetHashCode()
         {
             return StringComparer.OrdinalIgnoreCase.GetHashCode(FullName);

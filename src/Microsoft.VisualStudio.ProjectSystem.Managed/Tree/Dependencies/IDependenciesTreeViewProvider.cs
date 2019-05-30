@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     /// <summary>
@@ -34,6 +36,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <param name="root">Node where we start searching</param>
         /// <param name="path">Path to find</param>
         /// <returns></returns>
-        IProjectTree FindByPath(IProjectTree root, string path);
+        IProjectTree? FindByPath(IProjectTree root, string path);
     }
 }

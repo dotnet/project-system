@@ -5,6 +5,8 @@ using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
     [Export(typeof(IDependenciesViewModelFactory))]
@@ -27,11 +29,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             return new TargetDependencyViewModel(snapshot);
         }
 
-        public IDependencyViewModel CreateRootViewModel(string providerType, bool hasUnresolvedDependency)
+        public IDependencyViewModel? CreateRootViewModel(string providerType, bool hasUnresolvedDependency)
         {
-            IProjectDependenciesSubTreeProvider provider = GetProvider(providerType);
+            IProjectDependenciesSubTreeProvider? provider = GetProvider(providerType);
 
-            IDependencyModel dependencyModel = provider?.CreateRootDependencyNode();
+            IDependencyModel? dependencyModel = provider?.CreateRootDependencyNode();
 
             return dependencyModel?.ToViewModel(hasUnresolvedDependency);
         }
@@ -43,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
                 : ManagedImageMonikers.ReferenceGroup;
         }
 
-        private IProjectDependenciesSubTreeProvider GetProvider(string providerType)
+        private IProjectDependenciesSubTreeProvider? GetProvider(string providerType)
         {
             return SubTreeProviders
                 .FirstOrDefault((x, t) => StringComparers.DependencyProviderTypes.Equals(x.Value.ProviderType, t), providerType)

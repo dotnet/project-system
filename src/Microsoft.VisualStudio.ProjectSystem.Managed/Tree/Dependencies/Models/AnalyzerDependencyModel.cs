@@ -6,6 +6,8 @@ using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.RuleHandlers;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
     internal class AnalyzerDependencyModel : DependencyModel
@@ -30,9 +32,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public override string ProviderType => AnalyzerRuleHandler.ProviderTypeString;
 
-        public override string SchemaItemType => AnalyzerReference.PrimaryDataSourceItemType;
+        public override string? SchemaItemType => AnalyzerReference.PrimaryDataSourceItemType;
 
-        public override string SchemaName => Resolved ? ResolvedAnalyzerReference.SchemaName : AnalyzerReference.SchemaName;
+        public override string? SchemaName => Resolved ? ResolvedAnalyzerReference.SchemaName : AnalyzerReference.SchemaName;
 
         public AnalyzerDependencyModel(
             string path,

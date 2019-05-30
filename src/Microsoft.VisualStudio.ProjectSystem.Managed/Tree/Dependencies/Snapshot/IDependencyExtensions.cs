@@ -7,6 +7,8 @@ using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.RuleHandlers;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     internal static class IDependencyExtensions
@@ -47,11 +49,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 _hasUnresolvedDependency = hasUnresolvedDependency;
             }
 
-            public IDependency OriginalModel => _model;
+            public IDependency? OriginalModel => _model;
             public string Caption => _model.Caption;
-            public string FilePath => _model.Id;
-            public string SchemaName => _model.SchemaName;
-            public string SchemaItemType => _model.SchemaItemType;
+            public string? FilePath => _model.Id;
+            public string? SchemaName => _model.SchemaName;
+            public string? SchemaItemType => _model.SchemaItemType;
             public int Priority => _model.Priority;
             public ImageMoniker Icon => _hasUnresolvedDependency ? _model.IconSet.UnresolvedIcon : _model.IconSet.Icon;
             public ImageMoniker ExpandedIcon => _hasUnresolvedDependency ? _model.IconSet.UnresolvedExpandedIcon : _model.IconSet.ExpandedIcon;
@@ -108,7 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         public static IDependency ToResolved(
             this IDependency dependency,
-            string schemaName = null,
+            string? schemaName = null,
             ImmutableArray<string> dependencyIDs = default)
         {
             return dependency.SetProperties(
@@ -120,7 +122,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         public static IDependency ToUnresolved(
             this IDependency dependency,
-            string schemaName = null,
+            string? schemaName = null,
             ImmutableArray<string> dependencyIDs = default)
         {
             return dependency.SetProperties(

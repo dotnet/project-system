@@ -9,6 +9,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Text;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     internal sealed class Dependency : IDependency
@@ -108,12 +110,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// </summary>
         private Dependency(
             Dependency dependency,
-            string caption,
+            string? caption,
             bool? resolved,
             ProjectTreeFlags? flags,
-            string schemaName,
+            string? schemaName,
             ImmutableArray<string> dependencyIDs,
-            DependencyIconSet iconSet,
+            DependencyIconSet? iconSet,
             bool? isImplicit)
         {
             // Copy values as necessary to create a clone with any properties overridden
@@ -147,9 +149,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// to get a unique id for the whole snapshot.
         /// </summary>
         private readonly string _modelId;
-        private string _id;
+        private string? _id;
         private readonly string _containingProjectPath;
-        private string _fullPath;
+        private string? _fullPath;
 
         public string Id
         {
@@ -242,12 +244,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         }
 
         public IDependency SetProperties(
-            string caption = null,
+            string? caption = null,
             bool? resolved = null,
             ProjectTreeFlags? flags = null,
-            string schemaName = null,
+            string? schemaName = null,
             ImmutableArray<string> dependencyIDs = default,
-            DependencyIconSet iconSet = null,
+            DependencyIconSet? iconSet = null,
             bool? isImplicit = null)
         {
             return new Dependency(this, caption, resolved, flags, schemaName, dependencyIDs, iconSet, isImplicit);

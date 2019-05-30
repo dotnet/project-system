@@ -10,6 +10,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.RuleHandlers
 {
     [Export(DependencyRulesSubscriber.DependencyRulesSubscriberContract,
@@ -86,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             CrossTargetDependenciesChangesBuilder changesBuilder,
             ITargetFramework targetFramework,
             bool resolved,
-            HashSet<string> unresolvedChanges = null)
+            HashSet<string>? unresolvedChanges = null)
         {
             Requires.NotNull(targetFramework, nameof(targetFramework));
 

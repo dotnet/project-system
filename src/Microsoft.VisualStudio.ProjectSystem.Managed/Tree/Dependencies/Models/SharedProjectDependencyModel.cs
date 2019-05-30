@@ -6,6 +6,8 @@ using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.RuleHandlers;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
     internal class SharedProjectDependencyModel : DependencyModel
@@ -33,9 +35,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public override string ProviderType => ProjectRuleHandler.ProviderTypeString;
 
-        public override string SchemaItemType => ProjectReference.PrimaryDataSourceItemType;
+        public override string? SchemaItemType => ProjectReference.PrimaryDataSourceItemType;
 
-        public override string SchemaName => Resolved ? ResolvedProjectReference.SchemaName : ProjectReference.SchemaName;
+        public override string? SchemaName => Resolved ? ResolvedProjectReference.SchemaName : ProjectReference.SchemaName;
 
         public SharedProjectDependencyModel(
             string path,
