@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.Composition;
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     [ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.Host, Cardinality = ImportCardinality.ExactlyOne)]
-    public interface ITargetFrameworkProvider
+    internal interface ITargetFrameworkProvider
     {
         /// <summary>
         /// Parses full tfm or short framework name and returns a corresponding <see cref="ITargetFramework"/>

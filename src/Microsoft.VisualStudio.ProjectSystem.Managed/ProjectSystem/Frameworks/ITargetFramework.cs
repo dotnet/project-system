@@ -5,7 +5,7 @@ using System.Runtime.Versioning;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    public interface ITargetFramework : IEquatable<ITargetFramework>,
+    internal interface ITargetFramework : IEquatable<ITargetFramework>,
                                           IEquatable<string>
     {
         /// <summary>
