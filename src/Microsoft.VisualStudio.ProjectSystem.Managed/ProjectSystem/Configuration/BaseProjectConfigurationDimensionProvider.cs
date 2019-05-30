@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
     /// <summary>
     /// Base project configuration dimension provider
     /// </summary>
-    internal abstract class BaseProjectConfigurationDimensionProvider : IProjectConfigurationDimensionsProvider3
+    internal abstract class BaseProjectConfigurationDimensionProvider : IProjectConfigurationDimensionsProvider4
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseProjectConfigurationDimensionProvider"/> class.
@@ -132,6 +132,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             }
         }
 
+        public IEnumerable<string> GetBestGuessDimensionNames(ImmutableArray<ProjectPropertyElement> properties)
+        {
+            if (FindDimensionProperty(properties) != null)
+                return new string[] { DimensionName };
+
+            return Array.Empty<string>();
+        }
+
         public async Task<IEnumerable<KeyValuePair<string, string>>> GetBestGuessDefaultValuesForDimensionsAsync(UnconfiguredProject project)
         {
             string defaultValue = await FindDefaultValueFromDimensionPropertyAsync(project) ?? DimensionDefaultValue;
@@ -195,14 +203,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 
         private ProjectPropertyElement FindDimensionProperty(ProjectRootElement projectXml)
         {
+            IEnumerable<ProjectPropertyElement> properties = projectXml.PropertyGroups
+                                                                       .SelectMany(group => group.Properties);
+
+            return FindDimensionProperty(properties);
+        }
+
+        private ProjectPropertyElement FindDimensionProperty(IEnumerable<ProjectPropertyElement> properties)
+        {
             // NOTE: We try to somewhat mimic evaluation, but it doesn't have to be exact; its just a guess
             // at what "might" be the default configuration, not what it actually is.
-            return projectXml.PropertyGroups
-                .SelectMany(group => group.Properties)
-                .Reverse()
-                .FirstOrDefault(
-                    p => StringComparers.PropertyNames.Equals(PropertyName, p.Name) &&
-                         BuildUtilities.HasWellKnownConditionsThatAlwaysEvaluateToTrue(p));
+            return properties.Reverse()
+                             .FirstOrDefault(
+                                p => StringComparers.PropertyNames.Equals(PropertyName, p.Name) &&
+                                BuildUtilities.HasWellKnownConditionsThatAlwaysEvaluateToTrue(p));
         }
+
     }
 }

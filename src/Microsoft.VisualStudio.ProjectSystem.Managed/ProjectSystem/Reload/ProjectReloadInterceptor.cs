@@ -1,62 +1,55 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+using System.Linq;
 
 using Microsoft.Build.Construction;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
-    /// C#/VB specific project reload interceptor.
+    ///     Reloads a project if its configuration dimensions change.
     /// </summary>
     [Export(typeof(IProjectReloadInterceptor))]
-    [AppliesTo(ProjectCapability.DotNet)]
+    [AppliesTo(ProjectCapabilities.ProjectConfigurationsDeclaredDimensions)]
     internal sealed class ProjectReloadInterceptor : IProjectReloadInterceptor
     {
         [ImportingConstructor]
-        public ProjectReloadInterceptor()
+        public ProjectReloadInterceptor(UnconfiguredProject project)
         {
+            DimensionProviders = new OrderPrecedenceImportCollection<IProjectConfigurationDimensionsProvider>(projectCapabilityCheckProvider: project);
+        }
+
+        [ImportMany]
+        public OrderPrecedenceImportCollection<IProjectConfigurationDimensionsProvider> DimensionProviders
+        {
+            get;
         }
 
         public ProjectReloadResult InterceptProjectReload(ImmutableArray<ProjectPropertyElement> oldProperties, ImmutableArray<ProjectPropertyElement> newProperties)
         {
-            if (NeedsForcedReload(oldProperties, newProperties))
-            {
-                return ProjectReloadResult.NeedsForceReload;
-            }
+            IEnumerable<string> oldDimensionsNames = GetDimensionsNames(oldProperties);
+            IEnumerable<string> newDimensionsNames = GetDimensionsNames(newProperties);
 
-            return ProjectReloadResult.NoAction;
+            // If we have same dimensions, no need to reload
+            if (oldDimensionsNames.SequenceEqual(newDimensionsNames, StringComparers.ConfigurationDimensionNames))
+                return ProjectReloadResult.NoAction;
+
+            // We no longer have same dimensions so we need to reload all configurations by reloading the project.
+            // This catches when we switch from [Configuration, Platform] ->  [Configuration, Platform, TargetFramework] or vice versa, 
+            return ProjectReloadResult.NeedsForceReload;
         }
 
-        private static bool NeedsForcedReload(ImmutableArray<ProjectPropertyElement> oldProperties, ImmutableArray<ProjectPropertyElement> newProperties)
+        private IEnumerable<string> GetDimensionsNames(ImmutableArray<ProjectPropertyElement> properties)
         {
-            // If user added or removed TargetFramework/TargetFrameworks property, then force a full project reload.
-            (bool hasTargetFramework, bool hasTargetFrameworks) = ComputeProjectTargets(oldProperties);
-            (bool hasTargetFramework, bool hasTargetFrameworks) newTargets = ComputeProjectTargets(newProperties);
-
-            return hasTargetFramework != newTargets.hasTargetFramework || hasTargetFrameworks != newTargets.hasTargetFrameworks;
-        }
-
-        private static (bool hasTargetFramework, bool hasTargetFrameworks) ComputeProjectTargets(ImmutableArray<ProjectPropertyElement> properties)
-        {
-            (bool hasTargetFramework, bool hasTargetFrameworks) targets = (false, false);
-
-            foreach (ProjectPropertyElement property in properties)
-            {
-                if (property.Name.Equals(ConfigurationGeneral.TargetFrameworkProperty, StringComparison.OrdinalIgnoreCase))
-                {
-                    targets.hasTargetFramework = true;
-                }
-
-                if (property.Name.Equals(ConfigurationGeneral.TargetFrameworksProperty, StringComparison.OrdinalIgnoreCase))
-                {
-                    targets.hasTargetFrameworks = true;
-                }
-            }
-
-            return targets;
+            // Look through the properties and find all declared dimensions (ie <Configurations>, <Platforms>, <TargetFrameworks>) 
+            // and return their dimension name equivalents (Configuration, Platform, TargetFramework)
+            return DimensionProviders.Select(v => v.Value)
+                                     .OfType<IProjectConfigurationDimensionsProvider4>()
+                                     .SelectMany(p => p.GetBestGuessDimensionNames(properties));
         }
     }
 }

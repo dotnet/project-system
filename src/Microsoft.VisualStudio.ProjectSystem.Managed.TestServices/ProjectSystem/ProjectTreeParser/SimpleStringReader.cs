@@ -4,17 +4,17 @@
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     // Simple, cheap, forward-only string reader
-    internal class StringReader
+    internal class SimpleStringReader
     {
         private readonly string _input;
         private int _position;
 
-        public StringReader(string input)
+        public SimpleStringReader(string input)
             : this(input, 0)
         {
         }
 
-        private StringReader(string input, int startIndex)
+        private SimpleStringReader(string input, int startIndex)
         {
             Assumes.NotNull(input);
             Assumes.True(input.Length > 0);
@@ -60,9 +60,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return _input[_position];
         }
 
-        public StringReader Clone()
+        public SimpleStringReader Clone()
         {
-            return new StringReader(_input, _position);
+            return new SimpleStringReader(_input, _position);
         }
     }
 }

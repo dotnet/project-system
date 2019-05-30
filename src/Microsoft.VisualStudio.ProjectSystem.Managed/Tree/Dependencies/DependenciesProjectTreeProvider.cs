@@ -23,6 +23,8 @@ using Microsoft.VisualStudio.Threading.Tasks;
 
 using Task = System.Threading.Tasks.Task;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     /// <summary>
@@ -51,12 +53,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         private readonly IDependencyTreeTelemetryService _treeTelemetryService;
 
         /// <summary>Latest updated snapshot of all rules schema catalogs.</summary>
-        private IImmutableDictionary<string, IPropertyPagesCatalog> _namedCatalogs;
+        private IImmutableDictionary<string, IPropertyPagesCatalog>? _namedCatalogs;
 
         /// <summary>
         /// A subscription to the snapshot service dataflow.
         /// </summary>
-        private IDisposable _snapshotEventListener;
+        private IDisposable? _snapshotEventListener;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DependenciesProjectTreeProvider"/> class.
@@ -284,7 +286,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <param name="root">The root of the tree.</param>
         /// <param name="path">The absolute or project-relative path to the item sought.</param>
         /// <returns>The item in the tree if found; otherwise <c>null</c>.</returns>
-        public override IProjectTree FindByPath(IProjectTree root, string path)
+        public override IProjectTree? FindByPath(IProjectTree root, string path)
         {
             // We override this since we need to find children under either:
             //
@@ -410,18 +412,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             IDependenciesSnapshot snapshot = e.Snapshot;
 
-            if (snapshot == null)
-            {
-                return;
-            }
-
             if (_tasksService.UnloadCancellationToken.IsCancellationRequested || e.Token.IsCancellationRequested)
             {
                 return;
             }
 
             // Take the highest priority view provider
-            IDependenciesTreeViewProvider viewProvider = _viewProviders.FirstOrDefault()?.Value;
+            IDependenciesTreeViewProvider? viewProvider = _viewProviders.FirstOrDefault()?.Value;
 
             if (viewProvider == null)
             {
@@ -442,9 +439,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                             await _treeTelemetryService.ObserveTreeUpdateCompletedAsync(snapshot.HasUnresolvedDependency);
                         }
 
-                    // TODO We still are getting mismatched data sources and need to figure out better 
-                    // way of merging, mute them for now and get to it in U1
-                    return new TreeUpdateResult(dependenciesNode);
+                        // TODO We still are getting mismatched data sources and need to figure out better 
+                        // way of merging, mute them for now and get to it in U1
+                        return new TreeUpdateResult(dependenciesNode);
                     },
                     _treeUpdateCancellationSeries.CreateNext(e.Token));
             }
@@ -474,10 +471,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public IProjectTree CreateTree(
             string caption,
             IProjectPropertiesContext itemContext,
-            IPropertySheet propertySheet = null,
-            IRule browseObjectProperties = null,
-            ProjectImageMoniker icon = null,
-            ProjectImageMoniker expandedIcon = null,
+            IPropertySheet? propertySheet = null,
+            IRule? browseObjectProperties = null,
+            ProjectImageMoniker? icon = null,
+            ProjectImageMoniker? expandedIcon = null,
             bool visible = true,
             ProjectTreeFlags? flags = default)
         {
@@ -500,9 +497,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public IProjectTree CreateTree(
             string caption,
             string filePath,
-            IRule browseObjectProperties = null,
-            ProjectImageMoniker icon = null,
-            ProjectImageMoniker expandedIcon = null,
+            IRule? browseObjectProperties = null,
+            ProjectImageMoniker? icon = null,
+            ProjectImageMoniker? expandedIcon = null,
             bool visible = true,
             ProjectTreeFlags? flags = default)
         {
@@ -516,7 +513,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 flags: flags);
         }
 
-        public async Task<IRule> GetRuleAsync(IDependency dependency, IProjectCatalogSnapshot catalogs)
+        public async Task<IRule?> GetRuleAsync(IDependency dependency, IProjectCatalogSnapshot? catalogs)
         {
             Requires.NotNull(dependency, nameof(dependency));
 
@@ -527,7 +524,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             IImmutableDictionary<string, IPropertyPagesCatalog> namedCatalogs = await GetNamedCatalogsAsync();
             Requires.NotNull(namedCatalogs, nameof(namedCatalogs));
 
-            IPropertyPagesCatalog browseObjectsCatalog = namedCatalogs[PropertyPageContexts.BrowseObject];
+            if (!namedCatalogs.TryGetValue(PropertyPageContexts.BrowseObject, out IPropertyPagesCatalog browseObjectsCatalog))
+            {
+                // Issue https://github.com/dotnet/project-system/issues/4860 suggests this code path
+                // can exist, however a repro was not found to dig deeper into the underlying cause.
+                // For now just return null as the upstream caller handles null correctly anyway.
+                return null;
+            }
+
             Rule schema = browseObjectsCatalog.GetSchema(dependency.SchemaName);
             string itemSpec = string.IsNullOrEmpty(dependency.OriginalItemSpec) ? dependency.Path : dependency.OriginalItemSpec;
             var context = ProjectPropertiesContext.GetContext(UnconfiguredProject,
