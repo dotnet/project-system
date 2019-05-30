@@ -97,41 +97,6 @@ Pokud chcete ignorovat externí změny, stiskněte Ignorovat. Pokud projekt zav�
         <target state="translated">Při pokusu o sledování souboru projektu {0} došlo k nečekané chybě</target>
         <note />
       </trans-unit>
-      <trans-unit id="FrameworkAssembliesNodeName">
-        <source>Framework Assemblies</source>
-        <target state="translated">Sestavení rozhraní</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ComNodeName">
-        <source>COM</source>
-        <target state="translated">Model COM</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="SdkNodeName">
-        <source>SDK</source>
-        <target state="translated">SDK</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="AssembliesNodeName">
-        <source>Assemblies</source>
-        <target state="translated">Sestavení</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DependenciesLoadingPostfix">
-        <source> (Loading...)</source>
-        <target state="translated"> (Načítání...)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DependenciesNodeErrorsSuffix">
-        <source>(Errors - see Error List)</source>
-        <target state="translated">(Chyby – viz seznam chyb)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DependenciesNodeName">
-        <source>Dependencies</source>
-        <target state="translated">Závislosti</target>
-        <note />
-      </trans-unit>
       <trans-unit id="GraphNodeCategoryDependency">
         <source>Dependency</source>
         <target state="translated">Závislost</target>
@@ -140,21 +105,6 @@ Pokud chcete ignorovat externí změny, stiskněte Ignorovat. Pokud projekt zav�
       <trans-unit id="NoItemTypeForRule">
         <source>Expected to find item type for rule {0}. The rule file is either missing or malformed.</source>
         <target state="translated">Očekává se pro nalezení typu položky pro pravidlo {0}. Soubor pravidla chybí nebo nemá správný formát.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="NuGetPackagesNodeName">
-        <source>NuGet</source>
-        <target state="translated">NuGet</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ProjectsNodeName">
-        <source>Projects</source>
-        <target state="translated">Projekty</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="AnalyzersNodeName">
-        <source>Analyzers</source>
-        <target state="translated">Analyzátory</target>
         <note />
       </trans-unit>
       <trans-unit id="DotNetCoreProjectsNotSupported">

@@ -4,26 +4,20 @@ using System;
 
 using Microsoft.VisualStudio.GraphModel;
 using Microsoft.VisualStudio.GraphModel.Schemas;
+using Microsoft.VisualStudio.Shell;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     internal static class IProjectTreeExtensions1
     {
-        /// <summary>
-        /// Finds a tree node by it's flags. If there many nodes that satisfy flags, returns first.
-        /// </summary>
-        internal static IProjectTree GetSubTreeNode(this IProjectTree self, ProjectTreeFlags flags)
-        {
-            foreach (IProjectTree child in self.Children)
-            {
-                if (child.Flags.Contains(flags))
-                {
-                    return child;
-                }
-            }
 
-            return null;
-        }
+        /// <summary>
+        /// Returns HierarchyId for given IProjectTree
+        /// </summary>
+        /// <param name="tree"></param>
+        /// <returns></returns>
+        public static HierarchyId GetHierarchyId(this IProjectTree tree) =>
+            new HierarchyId(tree.IsRoot() ? VSConstants.VSITEMID_ROOT : unchecked((uint)tree.Identity));
 
         internal static string GetValue(this GraphNodeId id, GraphNodeIdName idPartName)
         {

@@ -369,7 +369,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             {
                 var values = new ReferencesProjectTreeCustomizablePropertyValues
                 {
-                    Caption = VSResources.DependenciesNodeName,
+                    Caption = Resources.DependenciesNodeName,
                     Icon = ManagedImageMonikers.ReferenceGroup.ToProjectSystemType(),
                     ExpandedIcon = ManagedImageMonikers.ReferenceGroup.ToProjectSystemType(),
                     Flags = DependencyTreeFlags.DependenciesRootNodeFlags

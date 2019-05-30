@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         private static readonly SubTreeRootDependencyModel s_rootModel = new SubTreeRootDependencyModel(
             ProviderTypeString,
-            VSResources.AssembliesNodeName,
+            Resources.AssembliesNodeName,
             s_iconSet,
             DependencyTreeFlags.AssemblySubTreeRootNodeFlags);
 

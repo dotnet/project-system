@@ -2,8 +2,6 @@
 
 using System;
 
-using Microsoft.VisualStudio.Shell;
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal static class IProjectTreeExtensions
@@ -20,11 +18,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         /// <summary>
-        /// Returns HierarchyId for given IProjectTree
+        /// Finds a tree node by it's flags. If there many nodes that satisfy flags, returns first.
         /// </summary>
-        /// <param name="tree"></param>
-        /// <returns></returns>
-        public static HierarchyId GetHierarchyId(this IProjectTree tree) =>
-            new HierarchyId(tree.IsRoot() ? VSConstants.VSITEMID_ROOT : unchecked((uint)tree.Identity));
+        internal static IProjectTree GetSubTreeNode(this IProjectTree self, ProjectTreeFlags flags)
+        {
+            foreach (IProjectTree child in self.Children)
+            {
+                if (child.Flags.Contains(flags))
+                {
+                    return child;
+                }
+            }
+
+            return null;
+        }
     }
 }

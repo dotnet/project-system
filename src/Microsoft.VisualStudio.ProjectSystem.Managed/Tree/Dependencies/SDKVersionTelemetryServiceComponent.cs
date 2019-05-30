@@ -13,14 +13,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     [AppliesTo(ProjectCapability.DotNet)]
     internal partial class SDKVersionTelemetryServiceComponent : AbstractMultiLifetimeComponent<SDKVersionTelemetryServiceComponent.SDKVersionTelemetryServiceInstance>, IProjectDynamicLoadComponent
     {
-        private readonly IUnconfiguredProjectVsServices _projectVsServices;
+        private readonly IUnconfiguredProjectCommonServices _projectVsServices;
         private readonly ITelemetryService _telemetryService;
         private readonly ISafeProjectGuidService _projectGuidService;
         private readonly IUnconfiguredProjectTasksService _unconfiguredProjectTasksService;
 
         [ImportingConstructor]
         public SDKVersionTelemetryServiceComponent(
-            IUnconfiguredProjectVsServices projectVsServices,
+            IUnconfiguredProjectCommonServices projectVsServices,
             ISafeProjectGuidService projectGuidService,
             ITelemetryService telemetryService,
             IUnconfiguredProjectTasksService unconfiguredProjectTasksService)

@@ -96,11 +96,8 @@ Microsoft.VisualStudio.ProjectSystem.VS.Debug.IDebugProfileLaunchTargetsProvider
 Microsoft.VisualStudio.ProjectSystem.VS.Debug.IDebugProfileLaunchTargetsProvider.SupportsProfile(Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile profile) -> bool
 Microsoft.VisualStudio.ProjectSystem.VS.Debug.IDebugProfileLaunchTargetsProvider2
 Microsoft.VisualStudio.ProjectSystem.VS.Debug.IDebugProfileLaunchTargetsProvider2.QueryDebugTargetsForDebugLaunchAsync(Microsoft.VisualStudio.ProjectSystem.Debug.DebugLaunchOptions launchOptions, Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile profile) -> System.Threading.Tasks.Task<System.Collections.Generic.IReadOnlyList<Microsoft.VisualStudio.ProjectSystem.VS.Debug.IDebugLaunchSettings>>
-Microsoft.VisualStudio.ProjectSystem.VS.Extensibility.IProjectExportProvider
-Microsoft.VisualStudio.ProjectSystem.VS.Extensibility.IProjectExportProvider.GetExport<T>(string projectFilePath) -> T
 Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices.IVsContainedLanguageComponentsFactory
 Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices.IVsContainedLanguageComponentsFactory.GetContainedLanguageFactoryForFile(string filePath, out Microsoft.VisualStudio.Shell.Interop.IVsHierarchy hierarchy, out uint itemid, out Microsoft.VisualStudio.TextManager.Interop.IVsContainedLanguageFactory containedLanguageFactory) -> int
-Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers
 Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties
 Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.__id.get -> string
 Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.AllowUnsafeBlocks.get -> bool
@@ -243,67 +240,8 @@ Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPage.SetPageSite(M
 Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPage.Show(uint nCmdShow) -> void
 Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPage.TranslateAccelerator(Microsoft.VisualStudio.OLE.Interop.MSG[] pMsg) -> int
 Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependenciesChangedEventArgs
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependenciesChangedEventArgs.Changes.get -> Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependenciesChanges
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependenciesChangedEventArgs.DependenciesChangedEventArgs(Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSubTreeProvider provider, string targetShortOrFullName, Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependenciesChanges changes, Microsoft.VisualStudio.ProjectSystem.Properties.IProjectCatalogSnapshot catalogs, System.Collections.Immutable.IImmutableDictionary<Microsoft.VisualStudio.ProjectSystem.NamedIdentity, System.IComparable> dataSourceVersions) -> void
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependenciesChangedEventArgs.DependenciesChangedEventArgs(Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSubTreeProvider provider, string targetShortOrFullName, Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependenciesChanges changes, System.Threading.CancellationToken token) -> void
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependenciesChangedEventArgs.Provider.get -> Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSubTreeProvider
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependenciesChangedEventArgs.TargetShortOrFullName.get -> string
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependenciesChangedEventArgs.Token.get -> System.Threading.CancellationToken
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependencyTreeFlags
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependenciesChanges
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependenciesChanges.AddedNodes.get -> System.Collections.Immutable.IImmutableList<Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel>
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependenciesChanges.RemovedNodes.get -> System.Collections.Immutable.IImmutableList<Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel>
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Caption.get -> string
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.DependencyIDs.get -> System.Collections.Immutable.IImmutableList<string>
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.ExpandedIcon.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Flags.get -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Icon.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Id.get -> string
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Implicit.get -> bool
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Name.get -> string
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.OriginalItemSpec.get -> string
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Path.get -> string
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Priority.get -> int
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Properties.get -> System.Collections.Immutable.IImmutableDictionary<string, string>
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.ProviderType.get -> string
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Resolved.get -> bool
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.SchemaItemType.get -> string
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.SchemaName.get -> string
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.TopLevel.get -> bool
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.UnresolvedExpandedIcon.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.UnresolvedIcon.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Version.get -> string
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Visible.get -> bool
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSubTreeProvider
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSubTreeProvider.CreateRootDependencyNode() -> Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSubTreeProvider.DependenciesChanged -> System.EventHandler<Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependenciesChangedEventArgs>
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSubTreeProvider.ProviderType.get -> string
 Microsoft.VisualStudio.ProjectSystem.VS.Utilities.FocusAttacher
 Microsoft.VisualStudio.ProjectSystem.VS.Utilities.FocusAttacher.FocusAttacher() -> void
-static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ApplicationPrivate.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
-static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ApplicationWarning.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
-static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.CodeInformationPrivate.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
-static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.CodeInformationWarning.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
-static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.Component.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
-static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ComponentPrivate.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
-static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ComponentWarning.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
-static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ErrorSmall.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
-static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.LibraryWarning.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
-static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.NuGetGrey.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
-static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.NuGetGreyPrivate.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
-static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.NuGetGreyWarning.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
-static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ReferenceGroup.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
-static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ReferenceGroupWarning.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
-static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ReferencePrivate.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
-static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.Sdk.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
-static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.SdkPrivate.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
-static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.SdkWarning.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
-static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.SharedProject.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
-static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.SharedProjectPrivate.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
-static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.SharedProjectWarning.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
-static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.WarningSmall.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.GetProfileNameDialog.DialogCaption.get -> string
 static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.AddBtn.get -> string
 static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.AllFiles.get -> string
@@ -348,13 +286,6 @@ static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResourc
 static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.WorkingDirectoryWatermark.get -> string
 static Microsoft.VisualStudio.ProjectSystem.VS.Utilities.FocusAttacher.GetFocus(System.Windows.DependencyObject d) -> bool
 static Microsoft.VisualStudio.ProjectSystem.VS.Utilities.FocusAttacher.SetFocus(System.Windows.DependencyObject d, bool value) -> void
-static readonly Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependencyTreeFlags.BaseReferenceFlags -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
-static readonly Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependencyTreeFlags.DependencyFlags -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
-static readonly Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependencyTreeFlags.ResolvedDependencyFlags -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
-static readonly Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependencyTreeFlags.ShowEmptyProviderRootNode -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
-static readonly Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependencyTreeFlags.SupportsHierarchy -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
-static readonly Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependencyTreeFlags.SupportsRemove -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
-static readonly Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependencyTreeFlags.UnresolvedDependencyFlags -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
 static readonly Microsoft.VisualStudio.ProjectSystem.VS.Utilities.FocusAttacher.FocusProperty -> System.Windows.DependencyProperty
 XamlGeneratedNamespace.GeneratedInternalTypeHelper
 XamlGeneratedNamespace.GeneratedInternalTypeHelper.GeneratedInternalTypeHelper() -> void

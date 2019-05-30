@@ -13,24 +13,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             typeof(IDependenciesRuleHandler))]
     [Export(typeof(IProjectDependenciesSubTreeProvider))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
-    internal class ComRuleHandler : DependenciesRuleHandlerBase
+    internal class SdkRuleHandler : DependenciesRuleHandlerBase
     {
-        public const string ProviderTypeString = "ComDependency";
+        public const string ProviderTypeString = "SdkDependency";
 
         private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
-            icon: ManagedImageMonikers.Component,
-            expandedIcon: ManagedImageMonikers.Component,
-            unresolvedIcon: ManagedImageMonikers.ComponentWarning,
-            unresolvedExpandedIcon: ManagedImageMonikers.ComponentWarning);
+            icon: ManagedImageMonikers.Sdk,
+            expandedIcon: ManagedImageMonikers.Sdk,
+            unresolvedIcon: ManagedImageMonikers.SdkWarning,
+            unresolvedExpandedIcon: ManagedImageMonikers.SdkWarning);
 
         private static readonly SubTreeRootDependencyModel s_rootModel = new SubTreeRootDependencyModel(
             ProviderTypeString,
-            VSResources.ComNodeName,
+            Resources.SdkNodeName,
             s_iconSet,
-            DependencyTreeFlags.ComSubTreeRootNodeFlags);
+            DependencyTreeFlags.SdkSubTreeRootNodeFlags);
 
-        public ComRuleHandler()
-            : base(ComReference.SchemaName, ResolvedCOMReference.SchemaName)
+        public SdkRuleHandler()
+            : base(SdkReference.SchemaName, ResolvedSdkReference.SchemaName)
         {
         }
 
@@ -45,17 +45,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             bool isImplicit,
             IImmutableDictionary<string, string> properties)
         {
-            return new ComDependencyModel(
+            // Note that an implicit SDK is always created as unresolved. It will be resolved
+            // later when SdkAndPackagesDependenciesSnapshotFilter observes their corresponding
+            // package.
+
+            return new SdkDependencyModel(
                 path,
                 originalItemSpec,
-                resolved,
+                resolved && !isImplicit,
                 isImplicit,
                 properties);
         }
 
         public override ImageMoniker GetImplicitIcon()
         {
-            return ManagedImageMonikers.ComponentPrivate;
+            return ManagedImageMonikers.SdkPrivate;
         }
     }
 }

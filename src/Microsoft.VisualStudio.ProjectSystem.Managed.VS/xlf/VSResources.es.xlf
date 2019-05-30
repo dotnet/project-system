@@ -97,41 +97,6 @@ Presione Omitir para pasar por alto los cambios externos. Sus cambios pueden per
         <target state="translated">Error inesperado al intentar inspeccionar el archivo del proyecto '{0}'</target>
         <note />
       </trans-unit>
-      <trans-unit id="FrameworkAssembliesNodeName">
-        <source>Framework Assemblies</source>
-        <target state="translated">Ensamblados de plataforma</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ComNodeName">
-        <source>COM</source>
-        <target state="translated">COM</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="SdkNodeName">
-        <source>SDK</source>
-        <target state="translated">SDK</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="AssembliesNodeName">
-        <source>Assemblies</source>
-        <target state="translated">Ensamblados</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DependenciesLoadingPostfix">
-        <source> (Loading...)</source>
-        <target state="translated"> (Cargando...)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DependenciesNodeErrorsSuffix">
-        <source>(Errors - see Error List)</source>
-        <target state="translated">(Errores - ver lista de errores)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DependenciesNodeName">
-        <source>Dependencies</source>
-        <target state="translated">Dependencias</target>
-        <note />
-      </trans-unit>
       <trans-unit id="GraphNodeCategoryDependency">
         <source>Dependency</source>
         <target state="translated">Dependencia</target>
@@ -140,21 +105,6 @@ Presione Omitir para pasar por alto los cambios externos. Sus cambios pueden per
       <trans-unit id="NoItemTypeForRule">
         <source>Expected to find item type for rule {0}. The rule file is either missing or malformed.</source>
         <target state="translated">Se esperaba encontrar un tipo de elemento para la regla {0}. Falta el archivo de regla o tiene un formato incorrecto.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="NuGetPackagesNodeName">
-        <source>NuGet</source>
-        <target state="translated">NuGet</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ProjectsNodeName">
-        <source>Projects</source>
-        <target state="translated">Proyectos</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="AnalyzersNodeName">
-        <source>Analyzers</source>
-        <target state="translated">Analizadores</target>
         <note />
       </trans-unit>
       <trans-unit id="DotNetCoreProjectsNotSupported">

@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -61,6 +61,69 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Analyzers.
+        /// </summary>
+        internal static string AnalyzersNodeName {
+            get {
+                return ResourceManager.GetString("AnalyzersNodeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Assemblies.
+        /// </summary>
+        internal static string AssembliesNodeName {
+            get {
+                return ResourceManager.GetString("AssembliesNodeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to COM.
+        /// </summary>
+        internal static string ComNodeName {
+            get {
+                return ResourceManager.GetString("ComNodeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The framework name &apos;{0}&apos; cannot be converted to a short framework name..
+        /// </summary>
+        internal static string CouldNotGetShortFrameworkName {
+            get {
+                return ResourceManager.GetString("CouldNotGetShortFrameworkName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  (Loading...).
+        /// </summary>
+        internal static string DependenciesLoadingPostfix {
+            get {
+                return ResourceManager.GetString("DependenciesLoadingPostfix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (Errors - see Error List).
+        /// </summary>
+        internal static string DependenciesNodeErrorsSuffix {
+            get {
+                return ResourceManager.GetString("DependenciesNodeErrorsSuffix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dependencies.
+        /// </summary>
+        internal static string DependenciesNodeName {
+            get {
+                return ResourceManager.GetString("DependenciesNodeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The following error occurred when reading the launch settings file &apos;{0}&apos;. {1} .
         /// </summary>
         internal static string ErrorReadingLaunchSettings {
@@ -75,6 +138,24 @@ namespace Microsoft.VisualStudio {
         internal static string ErrorWritingDebugSettings {
             get {
                 return ResourceManager.GetString("ErrorWritingDebugSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Framework Assemblies.
+        /// </summary>
+        internal static string FrameworkAssembliesNodeName {
+            get {
+                return ResourceManager.GetString("FrameworkAssembliesNodeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The specified framework name &apos;{0}&apos; must be .NETStandard..
+        /// </summary>
+        internal static string InvalidNetStandardFramework {
+            get {
+                return ResourceManager.GetString("InvalidNetStandardFramework", resourceCulture);
             }
         }
         
@@ -124,11 +205,38 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to NuGet.
+        /// </summary>
+        internal static string NuGetPackagesNodeName {
+            get {
+                return ResourceManager.GetString("NuGetPackagesNodeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to At least one launch profile is missing the required name attribute. These profiles will be ignored.
         /// </summary>
         internal static string ProfileMissingName {
             get {
                 return ResourceManager.GetString("ProfileMissingName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Projects.
+        /// </summary>
+        internal static string ProjectsNodeName {
+            get {
+                return ResourceManager.GetString("ProjectsNodeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SDK.
+        /// </summary>
+        internal static string SdkNodeName {
+            get {
+                return ResourceManager.GetString("SdkNodeName", resourceCulture);
             }
         }
     }

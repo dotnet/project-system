@@ -97,41 +97,6 @@ Fare clic su Ignora per ignorare le modifiche esterne. Le modifiche potrebbero a
         <target state="translated">Si è verificato un errore imprevisto durante il tentativo di controllare il file di progetto '{0}'</target>
         <note />
       </trans-unit>
-      <trans-unit id="FrameworkAssembliesNodeName">
-        <source>Framework Assemblies</source>
-        <target state="translated">Assembly del framework</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ComNodeName">
-        <source>COM</source>
-        <target state="translated">COM</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="SdkNodeName">
-        <source>SDK</source>
-        <target state="translated">SDK</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="AssembliesNodeName">
-        <source>Assemblies</source>
-        <target state="translated">Assembly</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DependenciesLoadingPostfix">
-        <source> (Loading...)</source>
-        <target state="translated"> (Caricamento...)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DependenciesNodeErrorsSuffix">
-        <source>(Errors - see Error List)</source>
-        <target state="translated">(Errori - vedere Elenco errori)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DependenciesNodeName">
-        <source>Dependencies</source>
-        <target state="translated">Dipendenze</target>
-        <note />
-      </trans-unit>
       <trans-unit id="GraphNodeCategoryDependency">
         <source>Dependency</source>
         <target state="translated">Dipendenza</target>
@@ -140,21 +105,6 @@ Fare clic su Ignora per ignorare le modifiche esterne. Le modifiche potrebbero a
       <trans-unit id="NoItemTypeForRule">
         <source>Expected to find item type for rule {0}. The rule file is either missing or malformed.</source>
         <target state="translated">È previsto un tipo di elemento per la regola {0}. Il file delle regole non è presente o non è valido.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="NuGetPackagesNodeName">
-        <source>NuGet</source>
-        <target state="translated">NuGet</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ProjectsNodeName">
-        <source>Projects</source>
-        <target state="translated">Progetti</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="AnalyzersNodeName">
-        <source>Analyzers</source>
-        <target state="translated">Analizzatori</target>
         <note />
       </trans-unit>
       <trans-unit id="DotNetCoreProjectsNotSupported">
