@@ -16,24 +16,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             typeof(IDependenciesRuleHandler))]
     [Export(typeof(IProjectDependenciesSubTreeProvider))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
-    internal class AssemblyRuleHandler : DependenciesRuleHandlerBase
+    internal class AnalyzerRuleHandler : DependenciesRuleHandlerBase
     {
-        public const string ProviderTypeString = "AssemblyDependency";
+        public const string ProviderTypeString = "AnalyzerDependency";
 
         private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
-            icon: KnownMonikers.Reference,
-            expandedIcon: KnownMonikers.Reference,
-            unresolvedIcon: KnownMonikers.ReferenceWarning,
-            unresolvedExpandedIcon: KnownMonikers.ReferenceWarning);
+            icon: KnownMonikers.CodeInformation,
+            expandedIcon: KnownMonikers.CodeInformation,
+            unresolvedIcon: ManagedImageMonikers.CodeInformationWarning,
+            unresolvedExpandedIcon: ManagedImageMonikers.CodeInformationWarning);
 
         private static readonly SubTreeRootDependencyModel s_rootModel = new SubTreeRootDependencyModel(
             ProviderTypeString,
-            VSResources.AssembliesNodeName,
+            Resources.AnalyzersNodeName,
             s_iconSet,
-            DependencyTreeFlags.AssemblySubTreeRootNodeFlags);
+            DependencyTreeFlags.AnalyzerSubTreeRootNodeFlags);
 
-        public AssemblyRuleHandler()
-            : base(AssemblyReference.SchemaName, ResolvedAssemblyReference.SchemaName)
+        public AnalyzerRuleHandler()
+            : base(AnalyzerReference.SchemaName, ResolvedAnalyzerReference.SchemaName)
         {
         }
 
@@ -48,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             bool isImplicit,
             IImmutableDictionary<string, string> properties)
         {
-            return new AssemblyDependencyModel(
+            return new AnalyzerDependencyModel(
                 path,
                 originalItemSpec,
                 resolved,
@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         public override ImageMoniker GetImplicitIcon()
         {
-            return ManagedImageMonikers.ReferencePrivate;
+            return ManagedImageMonikers.CodeInformationPrivate;
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Runtime.Versioning;
 
 #nullable enable
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
+namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal class TargetFramework : ITargetFramework
     {
@@ -93,9 +93,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         public static bool operator !=(TargetFramework left, TargetFramework right)
             => !(left == right);
 
-        /// <summary>
-        ///  Need to override this to ensure it can be hashed correctly
-        /// </summary>
         public override int GetHashCode()
         {
             return StringComparer.OrdinalIgnoreCase.GetHashCode(FullName);

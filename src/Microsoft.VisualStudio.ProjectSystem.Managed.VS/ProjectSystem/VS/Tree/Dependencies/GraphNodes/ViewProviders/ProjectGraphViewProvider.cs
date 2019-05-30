@@ -5,7 +5,6 @@ using System.ComponentModel.Composition;
 using System.Linq;
 
 using Microsoft.VisualStudio.GraphModel;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
 #nullable enable

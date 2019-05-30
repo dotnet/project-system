@@ -3,6 +3,7 @@
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 
+using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
@@ -15,24 +16,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             typeof(IDependenciesRuleHandler))]
     [Export(typeof(IProjectDependenciesSubTreeProvider))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
-    internal class ComRuleHandler : DependenciesRuleHandlerBase
+    internal class AssemblyRuleHandler : DependenciesRuleHandlerBase
     {
-        public const string ProviderTypeString = "ComDependency";
+        public const string ProviderTypeString = "AssemblyDependency";
 
         private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
-            icon: ManagedImageMonikers.Component,
-            expandedIcon: ManagedImageMonikers.Component,
-            unresolvedIcon: ManagedImageMonikers.ComponentWarning,
-            unresolvedExpandedIcon: ManagedImageMonikers.ComponentWarning);
+            icon: KnownMonikers.Reference,
+            expandedIcon: KnownMonikers.Reference,
+            unresolvedIcon: KnownMonikers.ReferenceWarning,
+            unresolvedExpandedIcon: KnownMonikers.ReferenceWarning);
 
         private static readonly SubTreeRootDependencyModel s_rootModel = new SubTreeRootDependencyModel(
             ProviderTypeString,
-            VSResources.ComNodeName,
+            Resources.AssembliesNodeName,
             s_iconSet,
-            DependencyTreeFlags.ComSubTreeRootNodeFlags);
+            DependencyTreeFlags.AssemblySubTreeRootNodeFlags);
 
-        public ComRuleHandler()
-            : base(ComReference.SchemaName, ResolvedCOMReference.SchemaName)
+        public AssemblyRuleHandler()
+            : base(AssemblyReference.SchemaName, ResolvedAssemblyReference.SchemaName)
         {
         }
 
@@ -47,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             bool isImplicit,
             IImmutableDictionary<string, string> properties)
         {
-            return new ComDependencyModel(
+            return new AssemblyDependencyModel(
                 path,
                 originalItemSpec,
                 resolved,
@@ -57,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         public override ImageMoniker GetImplicitIcon()
         {
-            return ManagedImageMonikers.ComponentPrivate;
+            return ManagedImageMonikers.ReferencePrivate;
         }
     }
 }

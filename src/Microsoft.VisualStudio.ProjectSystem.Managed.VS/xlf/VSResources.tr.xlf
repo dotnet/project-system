@@ -97,41 +97,6 @@ Harici değişiklikleri yoksaymak için, Yoksay’a basın. Projeyi kapatıp yen
         <target state="translated">'{0}' proje dosyası izlenmeye çalışılırken beklenmeyen bir hata oluştu</target>
         <note />
       </trans-unit>
-      <trans-unit id="FrameworkAssembliesNodeName">
-        <source>Framework Assemblies</source>
-        <target state="translated">Çerçeve Bütünleştirilmiş Kodları</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ComNodeName">
-        <source>COM</source>
-        <target state="translated">COM</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="SdkNodeName">
-        <source>SDK</source>
-        <target state="translated">SDK</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="AssembliesNodeName">
-        <source>Assemblies</source>
-        <target state="translated">Bütünleştirilmiş Kodlar</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DependenciesLoadingPostfix">
-        <source> (Loading...)</source>
-        <target state="translated"> (Yükleniyor...)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DependenciesNodeErrorsSuffix">
-        <source>(Errors - see Error List)</source>
-        <target state="translated">(Hatalar - bkz. Hata Listesi)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DependenciesNodeName">
-        <source>Dependencies</source>
-        <target state="translated">Bağımlılıklar</target>
-        <note />
-      </trans-unit>
       <trans-unit id="GraphNodeCategoryDependency">
         <source>Dependency</source>
         <target state="translated">Bağımlılık.</target>
@@ -140,21 +105,6 @@ Harici değişiklikleri yoksaymak için, Yoksay’a basın. Projeyi kapatıp yen
       <trans-unit id="NoItemTypeForRule">
         <source>Expected to find item type for rule {0}. The rule file is either missing or malformed.</source>
         <target state="translated">{0} kuralı için öğe türü bulunması bekleniyordu. Kural dosyası eksik veya hatalı biçimlendirilmiş.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="NuGetPackagesNodeName">
-        <source>NuGet</source>
-        <target state="translated">NuGet</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ProjectsNodeName">
-        <source>Projects</source>
-        <target state="translated">Projeler</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="AnalyzersNodeName">
-        <source>Analyzers</source>
-        <target state="translated">Çözümleyiciler</target>
         <note />
       </trans-unit>
       <trans-unit id="DotNetCoreProjectsNotSupported">

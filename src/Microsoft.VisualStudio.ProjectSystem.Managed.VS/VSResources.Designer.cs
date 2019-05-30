@@ -70,33 +70,6 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Analyzers.
-        /// </summary>
-        internal static string AnalyzersNodeName {
-            get {
-                return ResourceManager.GetString("AnalyzersNodeName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Assemblies.
-        /// </summary>
-        internal static string AssembliesNodeName {
-            get {
-                return ResourceManager.GetString("AssembliesNodeName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to COM.
-        /// </summary>
-        internal static string ComNodeName {
-            get {
-                return ResourceManager.GetString("ComNodeName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The project &apos;{0}&apos; has been modified outside the environment, and there are unsaved changes to the project.
         ///
         ///Press Save As to save the unsaved changes and load the updated project from disk.
@@ -135,33 +108,6 @@ namespace Microsoft.VisualStudio {
         internal static string DebugFrameworkMenuText {
             get {
                 return ResourceManager.GetString("DebugFrameworkMenuText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to  (Loading...).
-        /// </summary>
-        internal static string DependenciesLoadingPostfix {
-            get {
-                return ResourceManager.GetString("DependenciesLoadingPostfix", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to (Errors - see Error List).
-        /// </summary>
-        internal static string DependenciesNodeErrorsSuffix {
-            get {
-                return ResourceManager.GetString("DependenciesNodeErrorsSuffix", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Dependencies.
-        /// </summary>
-        internal static string DependenciesNodeName {
-            get {
-                return ResourceManager.GetString("DependenciesNodeName", resourceCulture);
             }
         }
         
@@ -234,15 +180,6 @@ namespace Microsoft.VisualStudio {
         internal static string FailedToWatchProject {
             get {
                 return ResourceManager.GetString("FailedToWatchProject", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Framework Assemblies.
-        /// </summary>
-        internal static string FrameworkAssembliesNodeName {
-            get {
-                return ResourceManager.GetString("FrameworkAssembliesNodeName", resourceCulture);
             }
         }
         
@@ -373,15 +310,6 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to NuGet.
-        /// </summary>
-        internal static string NuGetPackagesNodeName {
-            get {
-                return ResourceManager.GetString("NuGetPackagesNodeName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to OK.
         /// </summary>
         internal static string OKButtonText {
@@ -469,15 +397,6 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Projects.
-        /// </summary>
-        internal static string ProjectsNodeName {
-            get {
-                return ResourceManager.GetString("ProjectsNodeName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to _Reload.
         /// </summary>
         internal static string Reload {
@@ -546,15 +465,6 @@ namespace Microsoft.VisualStudio {
         internal static string SaveAs {
             get {
                 return ResourceManager.GetString("SaveAs", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to SDK.
-        /// </summary>
-        internal static string SdkNodeName {
-            get {
-                return ResourceManager.GetString("SdkNodeName", resourceCulture);
             }
         }
         

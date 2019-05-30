@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.ComponentModel.Composition;
 
 using Microsoft.VisualStudio.Shell.Interop;
@@ -14,11 +15,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     internal class UnconfiguredProjectVsServices : IUnconfiguredProjectVsServices
     {
         private readonly IUnconfiguredProjectCommonServices _commonServices;
+        private readonly Lazy<IPhysicalProjectTree> _projectTree;
 
         [ImportingConstructor]
-        public UnconfiguredProjectVsServices(IUnconfiguredProjectCommonServices commonServices)
+        public UnconfiguredProjectVsServices(IUnconfiguredProjectCommonServices commonServices, Lazy<IPhysicalProjectTree> projectTree)
         {
             _commonServices = commonServices;
+            _projectTree = projectTree;
         }
 
         public IVsHierarchy VsHierarchy
@@ -43,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public IPhysicalProjectTree ProjectTree
         {
-            get { return _commonServices.ProjectTree; }
+            get { return _projectTree.Value; }
         }
 
         public ConfiguredProject ActiveConfiguredProject
