@@ -53,7 +53,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 
         [ImportMany] private readonly OrderPrecedenceImportCollection<IDependenciesGraphActionHandler> _graphActionHandlers;
 
-        private GraphIconCache? _iconCache;
+        /// <summary>
+        /// Non-null once initialised.
+        /// </summary>
+        private GraphIconCache _iconCache = null!;
 
         [ImportingConstructor]
         public DependenciesGraphProvider(
@@ -155,7 +158,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             GraphNode? parentNode,
             IDependencyViewModel viewModel)
         {
-            _iconCache!.Register(viewModel.Icon);
+            _iconCache.Register(viewModel.Icon);
             _iconCache.Register(viewModel.ExpandedIcon);
 
             GraphNode newNode = graphContext.Graph.Nodes.GetOrCreate(graphNodeId, label: viewModel.Caption, category: DependenciesGraphSchema.CategoryDependency);

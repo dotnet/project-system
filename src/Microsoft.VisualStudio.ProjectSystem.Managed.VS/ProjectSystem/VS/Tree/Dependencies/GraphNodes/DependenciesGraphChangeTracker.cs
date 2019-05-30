@@ -129,7 +129,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 
                     IDependency? updatedDependency = updatedSnapshot?.FindDependency(existingDependencyId);
 
-                    if (updatedDependency == null)
+                    if (updatedDependency == null) // or updatedSnapshot == null
                     {
                         continue;
                     }
