@@ -173,10 +173,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private static ImmutableArray<ProjectPropertyElement> CreateProperties(string projectXml)
         {
-            using (var reader = XmlReader.Create(new StringReader(projectXml)))
-            {
-                return ProjectRootElement.Create(reader).Properties.ToImmutableArray();
-            }
+            using var reader = XmlReader.Create(new StringReader(projectXml));
+
+            return ProjectRootElement.Create(reader).Properties.ToImmutableArray();
         }
 
         private static ProjectReloadInterceptor CreateInstance()
