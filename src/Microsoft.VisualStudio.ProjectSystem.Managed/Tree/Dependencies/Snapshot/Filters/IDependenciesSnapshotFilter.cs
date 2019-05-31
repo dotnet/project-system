@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 
 using Microsoft.VisualStudio.Composition;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 
 #nullable enable
 

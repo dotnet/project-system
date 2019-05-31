@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.Composition;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 
 #nullable enable
 
