@@ -17,6 +17,11 @@
         <target state="translated">Fichier supplémentaire de l'analyseur VB</target>
         <note />
       </trans-unit>
+      <trans-unit id="ItemType|EditorConfigFiles|DisplayName">
+        <source>.editorconfig file</source>
+        <target state="new">.editorconfig file</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

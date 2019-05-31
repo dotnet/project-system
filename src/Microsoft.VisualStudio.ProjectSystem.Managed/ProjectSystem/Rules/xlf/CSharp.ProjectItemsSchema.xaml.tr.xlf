@@ -17,6 +17,11 @@
         <target state="translated">C# çözümleyicisi ek dosyası</target>
         <note />
       </trans-unit>
+      <trans-unit id="ItemType|EditorConfigFiles|DisplayName">
+        <source>.editorconfig file</source>
+        <target state="new">.editorconfig file</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>
