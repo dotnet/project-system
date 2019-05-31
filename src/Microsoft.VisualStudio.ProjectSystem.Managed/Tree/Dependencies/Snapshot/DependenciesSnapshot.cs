@@ -50,10 +50,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Requires.NotNullOrWhiteSpace(projectPath, nameof(projectPath));
             Requires.NotNull(previousSnapshot, nameof(previousSnapshot));
             Requires.NotNull(changes, nameof(changes));
-            // catalogs can be null
             Requires.Argument(!snapshotFilters.IsDefault, nameof(snapshotFilters), "Cannot be default.");
             Requires.NotNull(subTreeProviderByProviderType, nameof(subTreeProviderByProviderType));
-            // projectItemSpecs can be null
 
             var builder = previousSnapshot.Targets.ToBuilder();
 
