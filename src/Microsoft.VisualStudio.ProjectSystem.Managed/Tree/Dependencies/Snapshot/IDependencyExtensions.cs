@@ -57,7 +57,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             public int Priority => _model.Priority;
             public ImageMoniker Icon => _hasUnresolvedDependency ? _model.IconSet.UnresolvedIcon : _model.IconSet.Icon;
             public ImageMoniker ExpandedIcon => _hasUnresolvedDependency ? _model.IconSet.UnresolvedExpandedIcon : _model.IconSet.ExpandedIcon;
-            public IImmutableDictionary<string, string> Properties => _model.Properties;
             public ProjectTreeFlags Flags => _model.Flags;
         }
 
