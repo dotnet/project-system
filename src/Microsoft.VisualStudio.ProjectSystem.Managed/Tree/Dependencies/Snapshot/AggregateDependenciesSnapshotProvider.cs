@@ -6,7 +6,6 @@ using System.ComponentModel.Composition;
 using System.Linq;
 
 using Microsoft.VisualStudio.ProjectSystem.VS.Extensibility;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 
 #nullable enable
 

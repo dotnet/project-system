@@ -87,7 +87,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.Equal(dependencyResolved.Priority, viewModelResolved.Priority);
             Assert.Equal(iconSet.Icon, viewModelResolved.Icon);
             Assert.Equal(iconSet.ExpandedIcon, viewModelResolved.ExpandedIcon);
-            Assert.Equal(dependencyResolved.Properties, viewModelResolved.Properties);
 
             var viewModelUnresolved = dependencyUnresolved.ToViewModel(mockSnapshot);
 
@@ -99,7 +98,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.Equal(dependencyUnresolved.Priority, viewModelUnresolved.Priority);
             Assert.Equal(iconSet.UnresolvedIcon, viewModelUnresolved.Icon);
             Assert.Equal(iconSet.UnresolvedExpandedIcon, viewModelUnresolved.ExpandedIcon);
-            Assert.Equal(dependencyUnresolved.Properties, viewModelUnresolved.Properties);
 
             var viewModelUnresolvedDependency = dependencyResolved.ToViewModel(mockSnapshotUnresolvedDependency);
 
@@ -111,7 +109,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.Equal(dependencyUnresolved.Priority, viewModelUnresolvedDependency.Priority);
             Assert.Equal(iconSet.UnresolvedIcon, viewModelUnresolvedDependency.Icon);
             Assert.Equal(iconSet.UnresolvedExpandedIcon, viewModelUnresolvedDependency.ExpandedIcon);
-            Assert.Equal(dependencyUnresolved.Properties, viewModelUnresolvedDependency.Properties);
         }
 
         [Fact]

@@ -3,30 +3,23 @@
 using System.Collections.Immutable;
 
 using Microsoft.VisualStudio.Composition;
-using Microsoft.VisualStudio.ProjectSystem;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
-
-[assembly: ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ZeroOrMore, ContractName = DependencyRulesSubscriber.DependencyRulesSubscriberContract, ContractType = typeof(IDependenciesRuleHandler))]
 
 #nullable enable
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
+    [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ZeroOrMore, ContractName = DependencyRulesSubscriber.DependencyRulesSubscriberContract)]
     internal interface IDependenciesRuleHandler
     {
         /// <summary>
-        ///     Gets the rule this handler handles.
+        /// Gets the set of rule names this handler handles.
         /// </summary>
-        /// <value>
-        ///     A <see cref="string"/> containing the rule that this <see cref="IDependenciesRuleHandler"/> 
-        ///     handles.
-        /// </value>
         ImmutableHashSet<string> GetRuleNames(RuleHandlerType handlerType);
 
         /// <summary>
-        ///     Handles the specified set of changes to a rule, and applies them
-        ///     to the given <see cref="CrossTargetDependenciesChangesBuilder"/>.
+        /// Handles the specified set of changes to a rule, and applies them
+        /// to the given <see cref="CrossTargetDependenciesChangesBuilder"/>.
         /// </summary>
         void Handle(
             IImmutableDictionary<string, IProjectChangeDescription> changesByRuleName,

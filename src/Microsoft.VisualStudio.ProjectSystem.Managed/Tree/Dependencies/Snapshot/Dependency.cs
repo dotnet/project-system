@@ -4,7 +4,6 @@ using System;
 using System.Collections.Immutable;
 
 using Microsoft.VisualStudio.Buffers.PooledObjects;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Text;

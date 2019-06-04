@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
-
 #nullable enable
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters

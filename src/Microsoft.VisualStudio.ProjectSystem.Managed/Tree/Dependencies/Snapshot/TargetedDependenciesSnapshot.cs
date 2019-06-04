@@ -6,7 +6,6 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters;
 
 #nullable enable
@@ -43,11 +42,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         {
             Requires.NotNullOrWhiteSpace(projectPath, nameof(projectPath));
             Requires.NotNull(previousSnapshot, nameof(previousSnapshot));
-            // catalogs can be null
             Requires.NotNull(changes, nameof(changes));
             Requires.Argument(!snapshotFilters.IsDefault, nameof(snapshotFilters), "Cannot be default.");
             Requires.NotNull(subTreeProviderByProviderType, nameof(subTreeProviderByProviderType));
-            // projectItemSpecs can be null
 
             bool anyChanges = false;
 
@@ -174,7 +171,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         {
             Requires.NotNullOrEmpty(projectPath, nameof(projectPath));
             Requires.NotNull(targetFramework, nameof(targetFramework));
-            // catalogs can be null
             Requires.NotNull(dependenciesWorld, nameof(dependenciesWorld));
 
             ProjectPath = projectPath;
