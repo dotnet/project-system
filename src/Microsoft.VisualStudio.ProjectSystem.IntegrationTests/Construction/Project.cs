@@ -20,6 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private List<Project>? _referencedProjects;
         private List<PackageReference>? _packageReferences;
+        private List<IFile>? _files;
 
         public XElement XElement { get; } = new XElement("Project");
 
@@ -41,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             Sdk = sdk;
         }
 
-        public void Save(string rootPath)
+        public void Save(string solutionRoot)
         {
             XElement.Add(new XAttribute("Sdk", Sdk));
 
@@ -68,9 +69,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                         new XAttribute("Version", p.Version)))));
             }
 
-            Directory.CreateDirectory(Path.Combine(rootPath, ProjectName));
+            var projectRoot = Path.Combine(solutionRoot, ProjectName);
 
-            XElement.Save(Path.Combine(rootPath, RelativeProjectFilePath));
+            Directory.CreateDirectory(projectRoot);
+
+            XElement.Save(Path.Combine(solutionRoot, RelativeProjectFilePath));
+
+            if (_files != null)
+            {
+                foreach (var file in _files)
+                {
+                    file.Save(projectRoot);
+                }
+            }
         }
 
         /// <summary>
@@ -91,6 +102,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _packageReferences.Add(packageReference);
         }
 
+        public void Add(IFile file)
+        {
+            if (_files == null)
+                _files = new List<IFile>();
+            _files.Add(file);
+        }
+
         /// <summary>
         /// We only implement <see cref="IEnumerable"/> to support collection initialiser syntax.
         /// </summary>
@@ -106,6 +124,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             PackageId = packageId;
             Version = version;
+        }
+    }
+
+    public interface IFile
+    {
+        void Save(string projectRoot);
+    }
+
+    public sealed class CSharpClass : IFile
+    {
+        public string Name { get; }
+
+        public CSharpClass(string name)
+        {
+            Name = name;
+        }
+
+        public void Save(string projectRoot)
+        {
+            var content = $@"class {Name} {{ }}";
+
+            File.WriteAllText(Path.Combine(projectRoot, $"{Name}.cs"), content);
         }
     }
 }
