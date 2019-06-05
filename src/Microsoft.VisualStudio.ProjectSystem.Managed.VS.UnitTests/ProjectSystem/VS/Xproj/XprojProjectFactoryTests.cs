@@ -9,14 +9,14 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 {
-    public sealed class MigrateXprojProjectFactoryTests
+    public sealed class XprojProjectFactoryTests
     {
         [Theory]
         [InlineData("foo\\bar.xproj",  __VSPPROJECTUPGRADEVIAFACTORYREPAIRFLAGS.VSPUVF_PROJECT_DEPRECATED)]
         [InlineData("foo\\bar.csproj", __VSPPROJECTUPGRADEVIAFACTORYREPAIRFLAGS.VSPUVF_PROJECT_NOREPAIR)]
         public void UpgradeCheck(string project, __VSPPROJECTUPGRADEVIAFACTORYREPAIRFLAGS expectedFlags)
         {
-            var factory = new MigrateXprojProjectFactory();
+            var factory = new XprojProjectFactory();
 
             var loggedMessages = new List<LogMessage>();
             var logger = IVsUpgradeLoggerFactory.CreateLogger(loggedMessages);
@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 
             Assert.Equal((int)HResult.OK, result);
             Assert.Equal((int)expectedFlags, upgradeRequired);
-            Assert.Equal(typeof(MigrateXprojProjectFactory).GUID, migratedProjectFactor);
+            Assert.Equal(typeof(XprojProjectFactory).GUID, migratedProjectFactor);
             Assert.Equal(default, upgradeProjectCapabilityFlags);
             Assert.Empty(loggedMessages);
         }
@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         [Fact]
         public void GetSccInfo_Throws()
         {
-            var factory = new MigrateXprojProjectFactory();
+            var factory = new XprojProjectFactory();
 
             Assert.Throws<NotImplementedException>(() => factory.GetSccInfo("file.xproj", out _, out _, out _, out _));
         }
@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         [Fact]
         public void UpgradeProject_DoesNothing()
         {
-            var factory = new MigrateXprojProjectFactory();
+            var factory = new XprojProjectFactory();
 
             var loggedMessages = new List<LogMessage>();
             var logger = IVsUpgradeLoggerFactory.CreateLogger(loggedMessages);

@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.Packaging
 {
     [Guid(PackageGuid)]
     [PackageRegistration(AllowsBackgroundLoading = true, RegisterUsing = RegistrationMethod.CodeBase, UseManagedResourcesOnly = true)]
-    [ProvideProjectFactory(typeof(MigrateXprojProjectFactory), null, "#27", "xproj", "xproj", null)]
+    [ProvideProjectFactory(typeof(XprojProjectFactory), null, "#27", "xproj", "xproj", null)]
     [ProvideAutoLoad(ActivationContextGuid, PackageAutoLoadFlags.BackgroundLoad)]
     [ProvideUIContextRule(ActivationContextGuid, "Load Managed Project Package",
         "dotnetcore",
@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.Packaging
             _dotNetCoreCompatibilityDetector = projectServiceAccessor.Value.GetProjectService().Services.ExportProvider.GetExport<IDotNetCoreProjectCompatibilityDetector>().Value;
             await _dotNetCoreCompatibilityDetector.InitializeAsync();
 
-            IVsProjectFactory factory = new MigrateXprojProjectFactory();
+            IVsProjectFactory factory = new XprojProjectFactory();
             factory.SetSite(new ServiceProviderToOleServiceProviderAdapter(ServiceProvider.GlobalProvider));
             RegisterProjectFactory(factory);
 
