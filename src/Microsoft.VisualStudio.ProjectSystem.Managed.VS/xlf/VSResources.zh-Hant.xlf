@@ -171,21 +171,6 @@ In order to debug this project, add an executable project to this solution which
         <target state="translated">必須在 {0} 中找到已移轉的 cpsroj，但找不到任何檔案。</target>
         <note />
       </trans-unit>
-      <trans-unit id="XprojMigrationFailed">
-        <source>Failed to migrate XProj project {0}. 'dotnet migrate --skip-backup -s -p "{1}" -x "{2}"' exited with error code {3}.</source>
-        <target state="translated">無法移轉 XProj 專案 {0}。'dotnet migrate --skip-backup -s -p "{1}" -x "{2}"' 已結束，錯誤碼為 {3}。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="MigrationBackupFile">
-        <source>Backing up {0} to {1}.</source>
-        <target state="translated">正在將 {0} 備份到 {1}。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="XprojMigrationFailedProjectJsonFileNotFound">
-        <source>Failed to migrate XProj project {0}. Could not find project.json at {1}.</source>
-        <target state="translated">無法移轉 XProj 專案 {0}。在 {1} 中找不到 project.json。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="EditProjectFileCommand">
         <source>Edit {0}</source>
         <target state="translated">編輯 {0}</target>
@@ -209,16 +194,6 @@ In order to debug this project, add an executable project to this solution which
       <trans-unit id="PackSelectedProjectCommand">
         <source>&amp;Pack {0}</source>
         <target state="translated">套件 {0}(&amp;P)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="XprojMigrationFailedCannotReadReport">
-        <source>Could not read post-migration report at '{0}'.</source>
-        <target state="translated">無法讀取位於 '{0}' 的移轉後報告。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="XprojMigrationGeneralFailure">
-        <source>Failed to migrate XProj project {0}. '{1}' exited with error code {2}.</source>
-        <target state="translated">無法移轉 XProj 檔案 {0}。'{1}' 已結束，出現錯誤碼 {2}。</target>
         <note />
       </trans-unit>
       <trans-unit id="DebugFrameworkMenuText">

@@ -171,21 +171,6 @@ In order to debug this project, add an executable project to this solution which
         <target state="translated">Ожидался перенесенный CPSROJ-файл в {0}, однако найти его не удалось.</target>
         <note />
       </trans-unit>
-      <trans-unit id="XprojMigrationFailed">
-        <source>Failed to migrate XProj project {0}. 'dotnet migrate --skip-backup -s -p "{1}" -x "{2}"' exited with error code {3}.</source>
-        <target state="translated">Не удалось перенести проект XProj {0}. Команда dotnet migrate --skip-backup -s -p "{1}" -x "{2}" выполнила выход с кодом ошибки {3}.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="MigrationBackupFile">
-        <source>Backing up {0} to {1}.</source>
-        <target state="translated">Резервное копирование {0} в {1}.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="XprojMigrationFailedProjectJsonFileNotFound">
-        <source>Failed to migrate XProj project {0}. Could not find project.json at {1}.</source>
-        <target state="translated">Не удалось перенести проект XProj {0}. Не удалось найти project.json в {1}.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="EditProjectFileCommand">
         <source>Edit {0}</source>
         <target state="translated">Изменить {0}</target>
@@ -209,16 +194,6 @@ In order to debug this project, add an executable project to this solution which
       <trans-unit id="PackSelectedProjectCommand">
         <source>&amp;Pack {0}</source>
         <target state="translated">&amp;Упаковать {0}</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="XprojMigrationFailedCannotReadReport">
-        <source>Could not read post-migration report at '{0}'.</source>
-        <target state="translated">Не удалось прочитать отчет, формируемый после миграции, в "{0}".</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="XprojMigrationGeneralFailure">
-        <source>Failed to migrate XProj project {0}. '{1}' exited with error code {2}.</source>
-        <target state="translated">Не удалось переместить проект XProj "{0}". "{1}" завершено с кодом ошибки {2}.</target>
         <note />
       </trans-unit>
       <trans-unit id="DebugFrameworkMenuText">

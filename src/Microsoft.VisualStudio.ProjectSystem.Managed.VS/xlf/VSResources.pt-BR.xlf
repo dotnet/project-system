@@ -171,21 +171,6 @@ Para depurar esse projeto, adicione um projeto executável a essa solução que 
         <target state="translated">Era esperada a localização do cpsroj migrado no {0}, mas nenhum foi localizado.</target>
         <note />
       </trans-unit>
-      <trans-unit id="XprojMigrationFailed">
-        <source>Failed to migrate XProj project {0}. 'dotnet migrate --skip-backup -s -p "{1}" -x "{2}"' exited with error code {3}.</source>
-        <target state="translated">Falha ao migrar o projeto XProj {0}. 'dotnet migrate --skip-backup -s -p "{1}" -x "{2}"' foi encerrado com o código de erro {3}.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="MigrationBackupFile">
-        <source>Backing up {0} to {1}.</source>
-        <target state="translated">Fazendo backup de {0} para {1}.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="XprojMigrationFailedProjectJsonFileNotFound">
-        <source>Failed to migrate XProj project {0}. Could not find project.json at {1}.</source>
-        <target state="translated">Falha o migrar o projeto XProj {0}. Não foi possível encontrar o project.json em {1}.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="EditProjectFileCommand">
         <source>Edit {0}</source>
         <target state="translated">Editar {0}</target>
@@ -209,16 +194,6 @@ Para depurar esse projeto, adicione um projeto executável a essa solução que 
       <trans-unit id="PackSelectedProjectCommand">
         <source>&amp;Pack {0}</source>
         <target state="translated">&amp;Pacote {0}</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="XprojMigrationFailedCannotReadReport">
-        <source>Could not read post-migration report at '{0}'.</source>
-        <target state="translated">Não foi possível ler o relatório pós-migração em '{0}'.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="XprojMigrationGeneralFailure">
-        <source>Failed to migrate XProj project {0}. '{1}' exited with error code {2}.</source>
-        <target state="translated">Falha ao migrar o projeto XProj {0}. '{1}' fechado com o código de erro {2}.</target>
         <note />
       </trans-unit>
       <trans-unit id="DebugFrameworkMenuText">

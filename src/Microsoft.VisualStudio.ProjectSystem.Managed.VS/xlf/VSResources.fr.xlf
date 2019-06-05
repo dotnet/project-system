@@ -171,21 +171,6 @@ Pour déboguer ce projet, ajoutez à cette solution un projet exécutable qui fa
         <target state="translated">Fichier cpsroj migré attendu dans {0}, mais celui-ci est introuvable.</target>
         <note />
       </trans-unit>
-      <trans-unit id="XprojMigrationFailed">
-        <source>Failed to migrate XProj project {0}. 'dotnet migrate --skip-backup -s -p "{1}" -x "{2}"' exited with error code {3}.</source>
-        <target state="translated">Échec de la migration du projet XProj {0}. 'dotnet migrate --skip-backup -s -p "{1}" -x "{2}"' s'est arrêté avec le code d'erreur {3}.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="MigrationBackupFile">
-        <source>Backing up {0} to {1}.</source>
-        <target state="translated">Sauvegarde de {0} sur {1}.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="XprojMigrationFailedProjectJsonFileNotFound">
-        <source>Failed to migrate XProj project {0}. Could not find project.json at {1}.</source>
-        <target state="translated">Échec de la migration du projet XProj {0}. Fichier project.json introuvable à l'emplacement {1}.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="EditProjectFileCommand">
         <source>Edit {0}</source>
         <target state="translated">Modifier {0}</target>
@@ -209,16 +194,6 @@ Pour déboguer ce projet, ajoutez à cette solution un projet exécutable qui fa
       <trans-unit id="PackSelectedProjectCommand">
         <source>&amp;Pack {0}</source>
         <target state="translated">&amp;Compresser {0}</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="XprojMigrationFailedCannotReadReport">
-        <source>Could not read post-migration report at '{0}'.</source>
-        <target state="translated">Impossible de lire le rapport postmigration de '{0}'.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="XprojMigrationGeneralFailure">
-        <source>Failed to migrate XProj project {0}. '{1}' exited with error code {2}.</source>
-        <target state="translated">Échec de la migration du projet XProj {0}. '{1}' a quitté avec le code d'erreur {2}.</target>
         <note />
       </trans-unit>
       <trans-unit id="DebugFrameworkMenuText">

@@ -171,21 +171,6 @@ Pokud chcete projekt ladit, přidejte do řešení spustitelný projekt, který 
         <target state="translated">V {0} se měl najít migrovaný cpsroj, který se ale nenašel.</target>
         <note />
       </trans-unit>
-      <trans-unit id="XprojMigrationFailed">
-        <source>Failed to migrate XProj project {0}. 'dotnet migrate --skip-backup -s -p "{1}" -x "{2}"' exited with error code {3}.</source>
-        <target state="translated">Migrace projektu XProj {0} se nepodařila. 'dotnet migrate --skip-backup -s -p "{1}" -x "{2}"' byl ukončen s kódem chyby {3}.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="MigrationBackupFile">
-        <source>Backing up {0} to {1}.</source>
-        <target state="translated">{0} se zálohuje na {1}.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="XprojMigrationFailedProjectJsonFileNotFound">
-        <source>Failed to migrate XProj project {0}. Could not find project.json at {1}.</source>
-        <target state="translated">Migrace projektu XProj {0} se nepodařila. Soubor project.json se nepodařilo najít na {1}.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="EditProjectFileCommand">
         <source>Edit {0}</source>
         <target state="translated">Upravit {0}</target>
@@ -209,16 +194,6 @@ Pokud chcete projekt ladit, přidejte do řešení spustitelný projekt, který 
       <trans-unit id="PackSelectedProjectCommand">
         <source>&amp;Pack {0}</source>
         <target state="translated">&amp;Zabalit {0}</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="XprojMigrationFailedCannotReadReport">
-        <source>Could not read post-migration report at '{0}'.</source>
-        <target state="translated">Nejde přečíst zprávu po migraci na {0}.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="XprojMigrationGeneralFailure">
-        <source>Failed to migrate XProj project {0}. '{1}' exited with error code {2}.</source>
-        <target state="translated">Nepovedlo se migrovat projekt XProj {0}. {1} se ukončil s kódem chyby {2}.</target>
         <note />
       </trans-unit>
       <trans-unit id="DebugFrameworkMenuText">

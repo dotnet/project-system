@@ -171,21 +171,6 @@ Aby debugować ten projekt, dodaj projekt wykonywalny do tego rozwiązania, któ
         <target state="translated">Oczekiwano znalezienia zmigrowanego pliku cpsroj w katalogu {0}, ale nie odnaleziono go.</target>
         <note />
       </trans-unit>
-      <trans-unit id="XprojMigrationFailed">
-        <source>Failed to migrate XProj project {0}. 'dotnet migrate --skip-backup -s -p "{1}" -x "{2}"' exited with error code {3}.</source>
-        <target state="translated">Migracja projektu XProj {0} nie powiodła się. Element „dotnet migrate --skip-backup -s -p "{1}" -x "{2}"” został zakończony z kodem błędu {3}.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="MigrationBackupFile">
-        <source>Backing up {0} to {1}.</source>
-        <target state="translated">Tworzenie kopii zapasowej elementu {0} do {1}.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="XprojMigrationFailedProjectJsonFileNotFound">
-        <source>Failed to migrate XProj project {0}. Could not find project.json at {1}.</source>
-        <target state="translated">Migracja projektu XProj {0} nie powiodła się. Nie można odnaleźć pliku project.json w katalogu {1}.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="EditProjectFileCommand">
         <source>Edit {0}</source>
         <target state="translated">Edytuj element {0}</target>
@@ -209,16 +194,6 @@ Aby debugować ten projekt, dodaj projekt wykonywalny do tego rozwiązania, któ
       <trans-unit id="PackSelectedProjectCommand">
         <source>&amp;Pack {0}</source>
         <target state="translated">&amp;Pakuj {0}</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="XprojMigrationFailedCannotReadReport">
-        <source>Could not read post-migration report at '{0}'.</source>
-        <target state="translated">Nie można odczytać raportu po migracji w „{0}”.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="XprojMigrationGeneralFailure">
-        <source>Failed to migrate XProj project {0}. '{1}' exited with error code {2}.</source>
-        <target state="translated">Nie można migrować projektu XProj {0}. Element „{1}” zakończył działanie z kodem błędu {2}.</target>
         <note />
       </trans-unit>
       <trans-unit id="DebugFrameworkMenuText">
