@@ -55,10 +55,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [TestMethod]
         public void ProjectToProjectReferences()
         {
-            var project1 = new Project("netcoreapp2.1");
             var project2 = new Project("netstandard1.6");
 
-            project1.AddProjectReference(project2);
+            var project1 = new Project("netcoreapp2.1")
+            {
+                project2
+            };
 
             var solution = new Solution
             {

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     /// <summary>
     /// Defines a <c>.csproj</c> file to be created when using <see cref="ProjectLayoutTestBase"/>.
     /// </summary>
-    public sealed class Project
+    public sealed class Project : IEnumerable   
     {
         private static readonly Guid _sdkProjectTypeGuid = Guid.Parse("9A19103F-16F7-4668-BE54-9A1E7A4F7556");
 
@@ -65,10 +66,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// Adds a P2P (project-to-project) reference from this project to <paramref name="referree"/>.
         /// </summary>
         /// <param name="referree">The project to reference.</param>
-        public void AddProjectReference(Project referree)
+        public void Add(Project referree)
         {
             _referencedProjects ??= new List<Project>();
             _referencedProjects.Add(referree);
         }
+
+        /// <summary>
+        /// We only implement <see cref="IEnumerable"/> to support collection initialiser syntax.
+        /// </summary>
+        IEnumerator IEnumerable.GetEnumerator() => throw new NotSupportedException();
     }
 }
