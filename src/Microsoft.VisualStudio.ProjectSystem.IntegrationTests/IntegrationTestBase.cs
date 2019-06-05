@@ -3,8 +3,6 @@
 using Microsoft.Test.Apex;
 using Microsoft.Test.Apex.VisualStudio;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     public abstract class IntegrationTestBase : VisualStudioHostTest
