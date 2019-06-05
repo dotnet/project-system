@@ -55,6 +55,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         [TestMethod]
+        public void MultiTarget_WithPackageRef()
+        {
+            var project = new Project("netstandard2.0;net461")
+            {
+                new PackageReference("MetadataExtractor", "2.1.0")
+            };
+
+            CreateProject(project);
+
+            VerifyDependenciesNode(
+                new Node(".NETFramework 4.6.1", ManagedImageMonikers.Library)
+                {
+                    new Node("Assemblies", ManagedImageMonikers.Reference),
+                    new Node("NuGet", ManagedImageMonikers.NuGetGrey)
+                    {
+                        new Node("MetadataExtractor (2.1.0)", ManagedImageMonikers.NuGetGrey)
+                    }
+                },
+                new Node(".NETStandard 2.0", ManagedImageMonikers.Library)
+                {
+                    new Node("NuGet", ManagedImageMonikers.NuGetGrey)
+                    {
+                        new Node("MetadataExtractor (2.1.0)", ManagedImageMonikers.NuGetGrey)
+                    },
+                    new Node("SDK", ManagedImageMonikers.Sdk)
+                });
+        }
+
+        [TestMethod]
         public void ProjectToProjectReferences()
         {
             var project2 = new Project("netstandard1.6");

@@ -19,6 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private static readonly Guid _sdkProjectTypeGuid = Guid.Parse("9A19103F-16F7-4668-BE54-9A1E7A4F7556");
 
         private List<Project>? _referencedProjects;
+        private List<PackageReference>? _packageReferences;
 
         public XElement XElement { get; } = new XElement("Project");
 
@@ -57,6 +58,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                         new XAttribute("Include", $"..\\{p.RelativeProjectFilePath}")))));
             }
 
+            if (_packageReferences != null)
+            {
+                XElement.Add(new XElement(
+                    "ItemGroup",
+                    _packageReferences.Select(p => new XElement(
+                        "PackageReference",
+                        new XAttribute("Include", p.PackageId),
+                        new XAttribute("Version", p.Version)))));
+            }
+
             Directory.CreateDirectory(Path.Combine(rootPath, ProjectName));
 
             XElement.Save(Path.Combine(rootPath, RelativeProjectFilePath));
@@ -73,9 +84,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _referencedProjects.Add(referree);
         }
 
+        public void Add(PackageReference packageReference)
+        {
+            if (_packageReferences == null)
+                _packageReferences = new List<PackageReference>();
+            _packageReferences.Add(packageReference);
+        }
+
         /// <summary>
         /// We only implement <see cref="IEnumerable"/> to support collection initialiser syntax.
         /// </summary>
         IEnumerator IEnumerable.GetEnumerator() => throw new NotSupportedException();
+    }
+
+    public readonly struct PackageReference
+    {
+        public string PackageId { get; }
+        public string Version { get; }
+
+        public PackageReference(string packageId, string version)
+        {
+            PackageId = packageId;
+            Version = version;
+        }
     }
 }
