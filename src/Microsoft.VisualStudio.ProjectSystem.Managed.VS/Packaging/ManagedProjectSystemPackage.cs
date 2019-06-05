@@ -6,7 +6,6 @@ using System.Runtime.InteropServices;
 using System.Threading;
 
 using Microsoft.VisualStudio.ComponentModelHost;
-using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.FSharp;
@@ -76,7 +75,7 @@ namespace Microsoft.VisualStudio.Packaging
             _dotNetCoreCompatibilityDetector = projectServiceAccessor.Value.GetProjectService().Services.ExportProvider.GetExport<IDotNetCoreProjectCompatibilityDetector>().Value;
             await _dotNetCoreCompatibilityDetector.InitializeAsync();
 
-            IVsProjectFactory factory = new MigrateXprojProjectFactory(new ProcessRunner(), new Win32FileSystem(), ServiceProvider.GlobalProvider, new GlobalJsonRemover.GlobalJsonSetup());
+            IVsProjectFactory factory = new MigrateXprojProjectFactory();
             factory.SetSite(new ServiceProviderToOleServiceProviderAdapter(ServiceProvider.GlobalProvider));
             RegisterProjectFactory(factory);
 
