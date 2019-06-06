@@ -20,6 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private List<Project>? _referencedProjects;
         private List<PackageReference>? _packageReferences;
+        private List<AssemblyReference>? _assemblyReferences;
         private List<IFile>? _files;
 
         public XElement XElement { get; } = new XElement("Project");
@@ -57,6 +58,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     _referencedProjects.Select(p => new XElement(
                         "ProjectReference",
                         new XAttribute("Include", $"..\\{p.RelativeProjectFilePath}")))));
+            }
+
+            if (_assemblyReferences != null)
+            {
+                XElement.Add(new XElement(
+                    "ItemGroup",
+                    _assemblyReferences.Select(p => new XElement(
+                        "Reference",
+                        new XAttribute("Include", p.Name)))));
             }
 
             if (_packageReferences != null)
@@ -102,6 +112,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _packageReferences.Add(packageReference);
         }
 
+        public void Add(AssemblyReference assemblyReference)
+        {
+            if (_assemblyReferences == null)
+                _assemblyReferences = new List<AssemblyReference>();
+            _assemblyReferences.Add(assemblyReference);
+        }
+
         public void Add(IFile file)
         {
             if (_files == null)
@@ -124,6 +141,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             PackageId = packageId;
             Version = version;
+        }
+    }
+
+    public readonly struct AssemblyReference
+    {
+        public string Name { get; }
+
+        public AssemblyReference(string name)
+        {
+            Name = name;
         }
     }
 
