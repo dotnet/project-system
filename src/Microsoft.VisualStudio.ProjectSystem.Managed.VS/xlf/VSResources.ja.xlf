@@ -268,7 +268,7 @@ In order to debug this project, add an executable project to this solution which
       </trans-unit>
       <trans-unit id="Restore_EmptyTargetFrameworkMoniker">
         <source>The value of the 'TargetFrameworkMoniker' and 'NuGetTargetMoniker' properties in the '{0}' configuration are both empty. This configuration will not contribute to NuGet restore, which may result in restore and build errors.</source>
-        <target state="needs-review-translation">'{0}' 構成の 'TargetFrameworkMoniker' プロパティの値が空です。この構成は NuGet の復元には影響しませんが、復元およびビルドのエラーが発生する可能性があります。</target>
+        <target state="translated">'{0}' 構成の 'TargetFrameworkMoniker' プロパティおよび 'NuGetTargetMoniker' プロパティの値が両方とも空です。この構成は NuGet の復元には影響しませんが、復元およびビルドのエラーが発生する可能性があります。</target>
         <note />
       </trans-unit>
     </body>

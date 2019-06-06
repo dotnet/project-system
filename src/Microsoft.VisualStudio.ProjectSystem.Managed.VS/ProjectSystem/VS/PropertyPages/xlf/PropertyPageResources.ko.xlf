@@ -214,7 +214,7 @@
       </trans-unit>
       <trans-unit id="chkLaunchBrowserHelpText">
         <source>Checking enables a textbox to specify an absolute or relative URl</source>
-        <target state="translated">선택하면 텍스트 상자를 사용하여 절대 또는 상대 URI을 지정할 수 있습니다.</target>
+        <target state="translated">선택하면 텍스트 상자를 사용하여 절대 또는 상대 URL을 지정할 수 있습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="chkNativeCodeDebuggingText">

@@ -39,7 +39,7 @@
       </trans-unit>
       <trans-unit id="GenerateXMLCheckBox.Text">
         <source>&amp;Generate XML documentation file</source>
-        <target state="translated">Générer le fichier de documentation XML</target>
+        <target state="translated">&amp;Générer le fichier de documentation XML</target>
         <note />
       </trans-unit>
       <trans-unit id="OptionStrictLabel.Text">

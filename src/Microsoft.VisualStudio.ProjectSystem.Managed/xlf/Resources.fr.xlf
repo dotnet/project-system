@@ -44,63 +44,63 @@
       </trans-unit>
       <trans-unit id="AnalyzersNodeName">
         <source>Analyzers</source>
-        <target state="new">Analyzers</target>
+        <target state="translated">Analyseurs</target>
         <note />
       </trans-unit>
       <trans-unit id="AssembliesNodeName">
         <source>Assemblies</source>
-        <target state="new">Assemblies</target>
+        <target state="translated">Assemblys</target>
         <note />
       </trans-unit>
       <trans-unit id="ComNodeName">
         <source>COM</source>
-        <target state="new">COM</target>
+        <target state="translated">COM</target>
         <note />
       </trans-unit>
       <trans-unit id="DependenciesLoadingPostfix">
         <source> (Loading...)</source>
-        <target state="new"> (Loading...)</target>
+        <target state="translated"> (Chargement...)</target>
         <note />
       </trans-unit>
       <trans-unit id="DependenciesNodeErrorsSuffix">
         <source>(Errors - see Error List)</source>
-        <target state="new">(Errors - see Error List)</target>
+        <target state="translated">(Erreurs - voir la liste d'erreurs)</target>
         <note />
       </trans-unit>
       <trans-unit id="DependenciesNodeName">
         <source>Dependencies</source>
-        <target state="new">Dependencies</target>
+        <target state="translated">Dépendances</target>
         <note />
       </trans-unit>
       <trans-unit id="FrameworkAssembliesNodeName">
         <source>Framework Assemblies</source>
-        <target state="new">Framework Assemblies</target>
+        <target state="translated">Assemblys de framework</target>
         <note />
       </trans-unit>
       <trans-unit id="NuGetPackagesNodeName">
         <source>NuGet</source>
-        <target state="new">NuGet</target>
+        <target state="translated">NuGet</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectsNodeName">
         <source>Projects</source>
-        <target state="new">Projects</target>
+        <target state="translated">Projets</target>
         <note />
       </trans-unit>
       <trans-unit id="SdkNodeName">
         <source>SDK</source>
-        <target state="new">SDK</target>
+        <target state="translated">Kit de développement logiciel</target>
         <note />
       </trans-unit>
       <trans-unit id="CouldNotGetShortFrameworkName">
         <source>The framework name '{0}' cannot be converted to a short framework name.</source>
-        <target state="new">The framework name '{0}' cannot be converted to a short framework name.</target>
+        <target state="translated">Le nom de framework '{0}' ne peut pas être converti en nom de framework court.</target>
         <note>Arguments in order:
 The string representation of the user's input framework name.</note>
       </trans-unit>
       <trans-unit id="InvalidNetStandardFramework">
         <source>The specified framework name '{0}' must be .NETStandard.</source>
-        <target state="new">The specified framework name '{0}' must be .NETStandard.</target>
+        <target state="translated">Le nom du framework spécifié '{0}' doit être .NETStandard.</target>
         <note />
       </trans-unit>
     </body>

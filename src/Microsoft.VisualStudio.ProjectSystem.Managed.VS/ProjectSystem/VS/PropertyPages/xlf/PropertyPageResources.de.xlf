@@ -214,7 +214,7 @@
       </trans-unit>
       <trans-unit id="chkLaunchBrowserHelpText">
         <source>Checking enables a textbox to specify an absolute or relative URl</source>
-        <target state="translated">Überprüfung aktiviert ein Textfeld zur Angabe eines absoluten oder relativen URl</target>
+        <target state="translated">Durch die Aktivierung wird ein Textfeld zur Angabe eines absoluten oder relativen URl aktiviert.</target>
         <note />
       </trans-unit>
       <trans-unit id="chkNativeCodeDebuggingText">

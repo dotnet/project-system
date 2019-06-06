@@ -744,7 +744,7 @@ Error:</source>
       </trans-unit>
       <trans-unit id="PPG_Signing_NoPrivateKey">
         <source>The selected file does not contain a private key. You must choose a certificate that contains a private key.</source>
-        <target state="translated">선택한 파일에 개인 키가 없습니다. 개인 키를 포함하는 인증서를 선택해야 합니다.</target>
+        <target state="translated">선택한 파일에 프라이빗 키가 없습니다. 프라이빗 키를 포함하는 인증서를 선택해야 합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Signing_NoPrivateKeyTitle">

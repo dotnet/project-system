@@ -89,7 +89,7 @@
       </trans-unit>
       <trans-unit id="EnableUnmanagedDebugging.Text">
         <source>Enable na&amp;tive code debugging</source>
-        <target state="translated">Debuggen von nativem Code aktivieren</target>
+        <target state="translated">Debuggen von nativem Code ak&amp;tivieren</target>
         <note />
       </trans-unit>
       <trans-unit id="StartArguments.AccessibleName">
