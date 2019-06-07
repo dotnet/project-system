@@ -117,18 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="JsonErrorReadingLaunchSettings" xml:space="preserve">
-    <value>Error reading the launch settings file. This error will need to be corrected in order to debug this project. '{0}' </value>
-  </data>
-  <data name="ErrorReadingLaunchSettings" xml:space="preserve">
-    <value>The following error occurred when reading the launch settings file '{0}'. {1} </value>
-  </data>
-  <data name="ErrorWritingDebugSettings" xml:space="preserve">
-    <value>The following error occurred when writing to the launch settings file '{0}'. {1} </value>
-  </data>
-  <data name="ProfileMissingName" xml:space="preserve">
-    <value>At least one launch profile is missing the required name attribute. These profiles will be ignored</value>
-  </data>
   <data name="NoActionProfileName" xml:space="preserve">
     <value>Start</value>
   </data>
@@ -152,12 +140,6 @@
   <data name="ComNodeName" xml:space="preserve">
     <value>COM</value>
   </data>
-  <data name="DependenciesLoadingPostfix" xml:space="preserve">
-    <value> (Loading...)</value>
-  </data>
-  <data name="DependenciesNodeErrorsSuffix" xml:space="preserve">
-    <value>(Errors - see Error List)</value>
-  </data>
   <data name="DependenciesNodeName" xml:space="preserve">
     <value>Dependencies</value>
   </data>
@@ -172,13 +154,5 @@
   </data>
   <data name="SdkNodeName" xml:space="preserve">
     <value>SDK</value>
-  </data>
-  <data name="CouldNotGetShortFrameworkName" xml:space="preserve">
-    <value>The framework name '{0}' cannot be converted to a short framework name.</value>
-    <comment>Arguments in order:
-The string representation of the user's input framework name.</comment>
-  </data>
-  <data name="InvalidNetStandardFramework" xml:space="preserve">
-    <value>The specified framework name '{0}' must be .NETStandard.</value>
   </data>
 </root>

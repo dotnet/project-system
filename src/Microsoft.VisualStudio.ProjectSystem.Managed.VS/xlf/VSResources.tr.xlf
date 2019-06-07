@@ -7,76 +7,6 @@
         <target state="translated">{0} - İçeri aktarım hedef dosyadan geliyor. Bu içeri aktarım kaldırılamaz.</target>
         <note />
       </trans-unit>
-      <trans-unit id="ProjectModificationsPrompt">
-        <source>The project '{0}' has been modified outside the environment.
-
-Press Reload to load the updated project from disk.
-Press Ignore to ignore the external changes. The changes will be used the next time you open the project.
-    </source>
-        <target state="translated">'{0}' projesi ortamın dışında değiştirildi.
-
-Güncelleştirilmiş projeyi diskten yüklemek için, Yeniden Yükle’ye basın.
-Harici değişiklikleri yoksaymak için, Yoksay’a basın. Değişiklikler, projeyi bir sonraki açışınızda kullanılacaktır.
-    </target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ConflictingModificationsPrompt">
-        <source>The project '{0}' has been modified outside the environment, and there are unsaved changes to the project.
-
-Press Save As to save the unsaved changes and load the updated project from disk.
-Press Discard to discard the unsaved changes and load the updated project from disk.
-Press Overwrite to overwrite the external changes with your changes.
-Press Ignore to ignore the external changes. Your changes may be lost if you close and reopen the project.
-    </source>
-        <target state="translated">'{0}' projesi ortamın dışında değiştirildi ve projede kaydedilmemiş değişiklikler var.
-
-Kaydedilmemiş değişiklikleri kaydetmek ve güncelleştirilmiş projeyi diskten yüklemek için, Farklı Kaydet’e basın.
-Kaydedilmemiş değişiklikleri atmak ve güncelleştirilmiş projeyi diskten yüklemek için, At’a basın.
-Değişikliklerinizi harici değişikliklerin üzerine yazmak için, Üzerine Yaz’a basın.
-Harici değişiklikleri yoksaymak için, Yoksay’a basın. Projeyi kapatıp yeniden açarsanız değişiklikleriniz kaybolabilir.
-    </target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ConflictingProjectModificationTitle">
-        <source>Conflicting Project Modification Detected</source>
-        <target state="translated">Çakışan Proje Değişikliği Algılandı</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Discard">
-        <source>_Discard</source>
-        <target state="translated">_At</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Ignore">
-        <source>_Ignore</source>
-        <target state="translated">_Yoksay</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="IgnoreAll">
-        <source>Ignore A_ll</source>
-        <target state="translated">Tümünü Y_oksay</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Overwrite">
-        <source>_Overwrite</source>
-        <target state="translated">_Üzerine Yaz</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ProjectModificationDlgTitle">
-        <source>Project Modification Detected</source>
-        <target state="translated">Proje Değişikliği Algılandı</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Reload">
-        <source>_Reload</source>
-        <target state="translated">_Yeniden Yükle</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ReloadAll">
-        <source>Reload A_ll</source>
-        <target state="translated">Tümünü Y_eniden Yükle</target>
-        <note />
-      </trans-unit>
       <trans-unit id="RenameSymbolFailed">
         <source>Renaming the code element '{0}' failed.</source>
         <target state="translated">'{0}' kod öğesi yeniden adlandırılamadı.</target>
@@ -87,29 +17,9 @@ Harici değişiklikleri yoksaymak için, Yoksay’a basın. Projeyi kapatıp yen
         <target state="translated">Bir dosyayı yeniden adlandırıyorsunuz. Bu dosyadaki '{0}' kod öğesine yapılan tüm başvurularda yeniden adlandırma işlemi gerçekleştirmek ister misiniz?</target>
         <note />
       </trans-unit>
-      <trans-unit id="SaveAs">
-        <source>_Save As</source>
-        <target state="translated">_Farklı Kaydet</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="FailedToWatchProject">
-        <source>An unexpected error occurred attempting to watch project file '{0}'</source>
-        <target state="translated">'{0}' proje dosyası izlenmeye çalışılırken beklenmeyen bir hata oluştu</target>
-        <note />
-      </trans-unit>
       <trans-unit id="GraphNodeCategoryDependency">
         <source>Dependency</source>
         <target state="translated">Bağımlılık.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="NoItemTypeForRule">
-        <source>Expected to find item type for rule {0}. The rule file is either missing or malformed.</source>
-        <target state="translated">{0} kuralı için öğe türü bulunması bekleniyordu. Kural dosyası eksik veya hatalı biçimlendirilmiş.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DotNetCoreProjectsNotSupported">
-        <source>.NET Core projects are not supported in this release of Visual Studio. Support will be available in a later update.</source>
-        <target state="translated">.NET Core projeleri Visual Studio’nun bu sürümünde desteklenmez. Sonraki güncelleştirmelerde destek sunulacaktır.</target>
         <note />
       </trans-unit>
       <trans-unit id="ActiveLaunchProfileNotFound">
@@ -139,16 +49,6 @@ In order to debug this project, add an executable project to this solution which
         <target state="translated">Çıkış Türü Sınıf Kitaplığı olan bir proje doğrudan başlatılamaz.
 
 Bu projede hata ayıklamak için bu çözüme, kitaplık projesine başvuran bir yürütülebilir proje ekleyin. Yürütülebilir projeyi başlangıç projesi olarak ayarlayın.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="NoUrlSpecified">
-        <source>The debug profile '{0}' has requested a web browser be launched, but a URL was not specified.</source>
-        <target state="translated">'{0}' hata ayıklama profili bir web tarayıcısının başlatılmasını istedi, ancak bir URL belirtilmedi.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="InvalidAbsoluteUrlSpecified">
-        <source>The debug profile '{0}' has requested a web browser be launched, but the URL specified is not a valid absolute URL.  {1}</source>
-        <target state="translated">'{0}' hata ayıklama profili bir web tarayıcısının başlatılmasını istedi, ancak belirtilen URL geçerli bir mutlak URL değil. {1}</target>
         <note />
       </trans-unit>
       <trans-unit id="NoDebugExecutableSpecified">

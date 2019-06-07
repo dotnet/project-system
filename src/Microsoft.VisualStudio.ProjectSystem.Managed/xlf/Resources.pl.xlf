@@ -2,26 +2,6 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="pl" original="../Resources.resx">
     <body>
-      <trans-unit id="JsonErrorReadingLaunchSettings">
-        <source>Error reading the launch settings file. This error will need to be corrected in order to debug this project. '{0}' </source>
-        <target state="translated">Błąd podczas odczytywania pliku ustawień uruchamiania. Należy poprawić ten błąd w celu przeprowadzenia debugowania tego projektu. „{0}” </target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ErrorReadingLaunchSettings">
-        <source>The following error occurred when reading the launch settings file '{0}'. {1} </source>
-        <target state="translated">Następujący błąd wystąpił podczas odczytywania pliku ustawień uruchamiania „{0}”. {1} </target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ErrorWritingDebugSettings">
-        <source>The following error occurred when writing to the launch settings file '{0}'. {1} </source>
-        <target state="translated">Następujący błąd wystąpił podczas zapisywania do pliku ustawień uruchamiania „{0}”. {1} </target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ProfileMissingName">
-        <source>At least one launch profile is missing the required name attribute. These profiles will be ignored</source>
-        <target state="translated">W co najmniej jednym profilu uruchomienia brakuje wymaganego atrybutu nazwy. Te profile będą ignorowane</target>
-        <note />
-      </trans-unit>
       <trans-unit id="NoActionProfileName">
         <source>Start</source>
         <target state="translated">Uruchom</target>
@@ -57,16 +37,6 @@
         <target state="new">COM</target>
         <note />
       </trans-unit>
-      <trans-unit id="DependenciesLoadingPostfix">
-        <source> (Loading...)</source>
-        <target state="new"> (Loading...)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DependenciesNodeErrorsSuffix">
-        <source>(Errors - see Error List)</source>
-        <target state="new">(Errors - see Error List)</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DependenciesNodeName">
         <source>Dependencies</source>
         <target state="new">Dependencies</target>
@@ -90,17 +60,6 @@
       <trans-unit id="SdkNodeName">
         <source>SDK</source>
         <target state="new">SDK</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="CouldNotGetShortFrameworkName">
-        <source>The framework name '{0}' cannot be converted to a short framework name.</source>
-        <target state="new">The framework name '{0}' cannot be converted to a short framework name.</target>
-        <note>Arguments in order:
-The string representation of the user's input framework name.</note>
-      </trans-unit>
-      <trans-unit id="InvalidNetStandardFramework">
-        <source>The specified framework name '{0}' must be .NETStandard.</source>
-        <target state="new">The specified framework name '{0}' must be .NETStandard.</target>
         <note />
       </trans-unit>
     </body>

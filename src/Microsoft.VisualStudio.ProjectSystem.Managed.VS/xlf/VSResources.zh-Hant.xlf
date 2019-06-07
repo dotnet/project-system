@@ -7,76 +7,6 @@
         <target state="translated">{0} - 匯入來自目標檔案。此項匯入無法移除。</target>
         <note />
       </trans-unit>
-      <trans-unit id="ProjectModificationsPrompt">
-        <source>The project '{0}' has been modified outside the environment.
-
-Press Reload to load the updated project from disk.
-Press Ignore to ignore the external changes. The changes will be used the next time you open the project.
-    </source>
-        <target state="translated">專案 '{0}' 已在環境外部修改。
-
-按 [重新載入] 從磁碟載入更新的專案。
-按 [略過] 以略過外部變更。所做的變更會在您下次開啟專案時使用。
-    </target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ConflictingModificationsPrompt">
-        <source>The project '{0}' has been modified outside the environment, and there are unsaved changes to the project.
-
-Press Save As to save the unsaved changes and load the updated project from disk.
-Press Discard to discard the unsaved changes and load the updated project from disk.
-Press Overwrite to overwrite the external changes with your changes.
-Press Ignore to ignore the external changes. Your changes may be lost if you close and reopen the project.
-    </source>
-        <target state="translated">專案 '{0}' 已在環境外部修改，而專案有未儲存的變更。
-
-按 [另存新檔] 儲存未儲存的變更並從磁碟載入更新的專案。
-按 [捨棄] 以捨棄未儲存的變更並從磁碟載入更新的專案。
-按 [覆寫] 以您的變更來覆寫外部變更。
-按 [略過] 以略過外部變更。如果關閉並重新開啟專案，可能會遺失您所做的變更。
-    </target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ConflictingProjectModificationTitle">
-        <source>Conflicting Project Modification Detected</source>
-        <target state="translated">偵測到衝突的專案修改</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Discard">
-        <source>_Discard</source>
-        <target state="translated">捨棄(_D)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Ignore">
-        <source>_Ignore</source>
-        <target state="translated">略過(_I)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="IgnoreAll">
-        <source>Ignore A_ll</source>
-        <target state="translated">全部略過(_L)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Overwrite">
-        <source>_Overwrite</source>
-        <target state="translated">覆寫(_O)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ProjectModificationDlgTitle">
-        <source>Project Modification Detected</source>
-        <target state="translated">偵測到專案修改</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Reload">
-        <source>_Reload</source>
-        <target state="translated">重新載入(_R)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ReloadAll">
-        <source>Reload A_ll</source>
-        <target state="translated">全部重新載入(_L)</target>
-        <note />
-      </trans-unit>
       <trans-unit id="RenameSymbolFailed">
         <source>Renaming the code element '{0}' failed.</source>
         <target state="translated">重新命名程式碼項目 '{0}' 失敗。</target>
@@ -87,29 +17,9 @@ Press Ignore to ignore the external changes. Your changes may be lost if you clo
         <target state="translated">您正在重新命名檔案。您是否也要重新命名此專案中對於程式碼項目 '{0}' 的所有參考?</target>
         <note />
       </trans-unit>
-      <trans-unit id="SaveAs">
-        <source>_Save As</source>
-        <target state="translated">另存新檔(_S)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="FailedToWatchProject">
-        <source>An unexpected error occurred attempting to watch project file '{0}'</source>
-        <target state="translated">嘗試監看專案檔 '{0}' 時發生未預期的錯誤</target>
-        <note />
-      </trans-unit>
       <trans-unit id="GraphNodeCategoryDependency">
         <source>Dependency</source>
         <target state="translated">相依性</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="NoItemTypeForRule">
-        <source>Expected to find item type for rule {0}. The rule file is either missing or malformed.</source>
-        <target state="translated">必須找到規則 {0} 的項目類型。規則檔可能遺漏或格式錯誤。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DotNetCoreProjectsNotSupported">
-        <source>.NET Core projects are not supported in this release of Visual Studio. Support will be available in a later update.</source>
-        <target state="translated">這一版的 Visual Studio 不支援 .NET Core 專案。稍後的更新將提供支援。</target>
         <note />
       </trans-unit>
       <trans-unit id="ActiveLaunchProfileNotFound">
@@ -139,16 +49,6 @@ In order to debug this project, add an executable project to this solution which
         <target state="translated">無法直接啟動輸出類型為類別庫的專案。
 
 為了為此專案偵錯，請將可執行檔專案新增至參考程式庫專案的此項解決方案，然後將這個可執行檔專案設定為啟始專案。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="NoUrlSpecified">
-        <source>The debug profile '{0}' has requested a web browser be launched, but a URL was not specified.</source>
-        <target state="translated">偵錯設定檔 '{0}' 已要求啟動網頁瀏覽器，但未指定 URL。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="InvalidAbsoluteUrlSpecified">
-        <source>The debug profile '{0}' has requested a web browser be launched, but the URL specified is not a valid absolute URL.  {1}</source>
-        <target state="translated">偵錯設定檔 '{0}' 已要求啟動網頁瀏覽器，但指定的 URL 不是有效的絕對 URL。{1}</target>
         <note />
       </trans-unit>
       <trans-unit id="NoDebugExecutableSpecified">
