@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(KnownMonikers.ReferenceWarning, model.UnresolvedIcon);
             Assert.Equal(KnownMonikers.ReferenceWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
-                DependencyTreeFlags.AssemblySubTreeNodeFlags +
+                DependencyTreeFlags.AssemblyDependency +
                 DependencyTreeFlags.GenericResolvedDependencyFlags,
                 model.Flags);
         }
@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(KnownMonikers.ReferenceWarning, model.UnresolvedIcon);
             Assert.Equal(KnownMonikers.ReferenceWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
-                DependencyTreeFlags.AssemblySubTreeNodeFlags +
+                DependencyTreeFlags.AssemblyDependency +
                 DependencyTreeFlags.GenericResolvedDependencyFlags,
                 model.Flags);
         }
@@ -104,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(KnownMonikers.ReferenceWarning, model.UnresolvedIcon);
             Assert.Equal(KnownMonikers.ReferenceWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
-                DependencyTreeFlags.AssemblySubTreeNodeFlags +
+                DependencyTreeFlags.AssemblyDependency +
                 DependencyTreeFlags.GenericUnresolvedDependencyFlags,
                 model.Flags);
         }
@@ -136,7 +136,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(KnownMonikers.ReferenceWarning, model.UnresolvedIcon);
             Assert.Equal(KnownMonikers.ReferenceWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
-                DependencyTreeFlags.AssemblySubTreeNodeFlags +
+                DependencyTreeFlags.AssemblyDependency +
                 DependencyTreeFlags.GenericResolvedDependencyFlags -
                 DependencyTreeFlags.SupportsRemove,
                 model.Flags);

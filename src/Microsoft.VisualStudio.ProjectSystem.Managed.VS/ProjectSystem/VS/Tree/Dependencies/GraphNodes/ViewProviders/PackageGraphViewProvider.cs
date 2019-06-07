@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                     continue;
                 }
 
-                if (childDependency.Flags.Contains(DependencyTreeFlags.FxAssemblyProjectFlags))
+                if (childDependency.Flags.Contains(DependencyTreeFlags.FxAssemblyDependency))
                 {
                     fxAssembliesChildren.Add(childDependency);
                 }

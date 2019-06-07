@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             if (!dependency.TopLevel
                 || dependency.Implicit
                 || !dependency.Resolved
-                || !dependency.Flags.Contains(DependencyTreeFlags.GenericDependencyFlags)
+                || !dependency.Flags.Contains(DependencyTreeFlags.GenericDependency)
                 || dependency.Flags.Contains(DependencyTreeFlags.SharedProjectFlags))
             {
                 context.Accept(dependency);

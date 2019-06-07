@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             ProviderTypeString,
             Resources.AnalyzersNodeName,
             s_iconSet,
-            DependencyTreeFlags.AnalyzerSubTreeRootNodeFlags);
+            DependencyTreeFlags.AnalyzerSubTreeRootNode);
 
         public AnalyzerRuleHandler()
             : base(AnalyzerReference.SchemaName, ResolvedAnalyzerReference.SchemaName)

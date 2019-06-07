@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(Dependency.FrameworkAssemblyNodePriority, model.Priority);
             Assert.Equal(KnownMonikers.Library, model.Icon);
             Assert.Equal(KnownMonikers.Library, model.ExpandedIcon);
-            Assert.Equal(DependencyTreeFlags.FrameworkAssembliesNodeFlags, model.Flags);
+            Assert.Equal(DependencyTreeFlags.FrameworkAssembliesNode, model.Flags);
         }
     }
 }

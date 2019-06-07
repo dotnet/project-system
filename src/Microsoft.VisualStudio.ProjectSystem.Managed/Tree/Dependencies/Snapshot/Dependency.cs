@@ -61,16 +61,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             // in the tree to avoid flicks).
             if (Resolved)
             {
-                if (!Flags.Contains(DependencyTreeFlags.ResolvedFlags))
+                if (!Flags.Contains(DependencyTreeFlags.Resolved))
                 {
-                    Flags += DependencyTreeFlags.ResolvedFlags;
+                    Flags += DependencyTreeFlags.Resolved;
                 }
             }
             else
             {
-                if (!Flags.Contains(DependencyTreeFlags.UnresolvedFlags))
+                if (!Flags.Contains(DependencyTreeFlags.Unresolved))
                 {
-                    Flags += DependencyTreeFlags.UnresolvedFlags;
+                    Flags += DependencyTreeFlags.Unresolved;
                 }
             }
 
@@ -206,7 +206,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 // Thus always set predefined itemType for all custom nodes.
                 // TODO: generate specific xaml rule for generic Dependency nodes
                 // tracking issue: https://github.com/dotnet/project-system/issues/1102
-                bool isGenericNodeType = Flags.Contains(DependencyTreeFlags.GenericDependencyFlags);
+                bool isGenericNodeType = Flags.Contains(DependencyTreeFlags.GenericDependency);
                 return isGenericNodeType ? _schemaItemType : Folder.PrimaryDataSourceItemType;
             }
         }

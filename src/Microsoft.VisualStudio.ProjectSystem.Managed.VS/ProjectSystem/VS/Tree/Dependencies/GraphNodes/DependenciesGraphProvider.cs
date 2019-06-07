@@ -28,9 +28,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 {
     /// <summary>
     /// Provides actual dependencies nodes under Dependencies\[DependencyType]\[TopLevel]\[....] sub nodes. 
-    /// Note: when dependency has <see cref="ProjectTreeFlags.Common.BrokenReference"/> flag,
-    /// <see cref="IGraphProvider"/> API are not called for that node.
     /// </summary>
+    /// <remarks>
+    /// When a dependency has flag <see cref="ProjectTreeFlags.Common.BrokenReference"/>,
+    /// <see cref="IGraphProvider"/> APIs are not called for that node.
+    /// </remarks>
     [Export(typeof(DependenciesGraphProvider))]
     [Export(typeof(IDependenciesGraphBuilder))]
     [AppliesTo(ProjectCapability.DependenciesTree)]

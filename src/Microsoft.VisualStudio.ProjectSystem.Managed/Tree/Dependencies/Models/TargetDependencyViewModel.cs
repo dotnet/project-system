@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
         public TargetDependencyViewModel(ITargetedDependenciesSnapshot snapshot)
         {
             Caption = snapshot.TargetFramework.FriendlyName;
-            Flags = DependencyTreeFlags.TargetNodeFlags.Add($"$TFM:{snapshot.TargetFramework.FullName}");
+            Flags = DependencyTreeFlags.TargetNode.Add($"$TFM:{snapshot.TargetFramework.FullName}");
             _hasUnresolvedDependency = snapshot.HasUnresolvedDependency;
         }
 
