@@ -258,8 +258,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 if (dependencyNode != null
                     && dependency.Flags.Contains(DependencyTreeFlags.SupportsHierarchy))
                 {
-                    if ((dependency.Resolved && dependencyNode.Flags.Contains(DependencyTreeFlags.UnresolvedFlags))
-                        || (!dependency.Resolved && dependencyNode.Flags.Contains(DependencyTreeFlags.ResolvedFlags)))
+                    if ((dependency.Resolved && dependencyNode.Flags.Contains(DependencyTreeFlags.Unresolved))
+                        || (!dependency.Resolved && dependencyNode.Flags.Contains(DependencyTreeFlags.Resolved)))
                     {
                         // when transition from unresolved to resolved or vise versa - remove old node
                         // and re-add new  one to allow GraphProvider to recalculate children

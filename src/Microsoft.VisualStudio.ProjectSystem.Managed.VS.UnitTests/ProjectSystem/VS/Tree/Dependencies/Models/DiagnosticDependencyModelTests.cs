@@ -43,9 +43,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(ManagedImageMonikers.ErrorSmall, model.UnresolvedIcon);
             Assert.Equal(ManagedImageMonikers.ErrorSmall, model.UnresolvedExpandedIcon);
             Assert.Equal(
-                DependencyTreeFlags.NuGetSubTreeNodeFlags +
-                DependencyTreeFlags.DiagnosticNodeFlags +
-                DependencyTreeFlags.DiagnosticErrorNodeFlags +
+                DependencyTreeFlags.NuGetDependency +
+                DependencyTreeFlags.Diagnostic +
+                DependencyTreeFlags.ErrorDiagnostic +
                 DependencyTreeFlags.GenericUnresolvedDependencyFlags,
                 model.Flags);
         }
@@ -81,9 +81,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(ManagedImageMonikers.WarningSmall, model.UnresolvedIcon);
             Assert.Equal(ManagedImageMonikers.WarningSmall, model.UnresolvedExpandedIcon);
             Assert.Equal(
-                DependencyTreeFlags.NuGetSubTreeNodeFlags +
-                DependencyTreeFlags.DiagnosticNodeFlags +
-                DependencyTreeFlags.DiagnosticWarningNodeFlags +
+                DependencyTreeFlags.NuGetDependency +
+                DependencyTreeFlags.Diagnostic +
+                DependencyTreeFlags.WarningDiagnostic +
                 DependencyTreeFlags.GenericUnresolvedDependencyFlags,
                 model.Flags);
         }

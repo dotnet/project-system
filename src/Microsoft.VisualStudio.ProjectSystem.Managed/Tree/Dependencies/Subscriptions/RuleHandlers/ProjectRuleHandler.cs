@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             ProviderTypeString,
             Resources.ProjectsNodeName,
             s_iconSet,
-            DependencyTreeFlags.ProjectSubTreeRootNodeFlags);
+            DependencyTreeFlags.ProjectSubTreeRootNode);
 
         public override string ProviderType => ProviderTypeString;
 

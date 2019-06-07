@@ -19,14 +19,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
     internal class DiagnosticDependencyModel : DependencyModel
     {
         private static readonly ProjectTreeFlags s_errorFlags = new DependencyFlagCache(
-            add: DependencyTreeFlags.NuGetSubTreeNodeFlags +
-                 DependencyTreeFlags.DiagnosticNodeFlags +
-                 DependencyTreeFlags.DiagnosticErrorNodeFlags).Get(isResolved: false, isImplicit: false);
+            add: DependencyTreeFlags.NuGetDependency +
+                 DependencyTreeFlags.Diagnostic +
+                 DependencyTreeFlags.ErrorDiagnostic).Get(isResolved: false, isImplicit: false);
 
         private static readonly ProjectTreeFlags s_warningFlags = new DependencyFlagCache(
-            add: DependencyTreeFlags.NuGetSubTreeNodeFlags +
-                 DependencyTreeFlags.DiagnosticNodeFlags +
-                 DependencyTreeFlags.DiagnosticWarningNodeFlags).Get(isResolved: false, isImplicit: false);
+            add: DependencyTreeFlags.NuGetDependency +
+                 DependencyTreeFlags.Diagnostic +
+                 DependencyTreeFlags.WarningDiagnostic).Get(isResolved: false, isImplicit: false);
 
         private static readonly DependencyIconSet s_errorIconSet = new DependencyIconSet(
             icon: ManagedImageMonikers.ErrorSmall,

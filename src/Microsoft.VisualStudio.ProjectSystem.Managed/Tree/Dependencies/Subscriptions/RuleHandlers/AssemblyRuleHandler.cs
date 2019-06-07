@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             ProviderTypeString,
             Resources.AssembliesNodeName,
             s_iconSet,
-            DependencyTreeFlags.AssemblySubTreeRootNodeFlags);
+            DependencyTreeFlags.AssemblySubTreeRootNode);
 
         public AssemblyRuleHandler()
             : base(AssemblyReference.SchemaName, ResolvedAssemblyReference.SchemaName)

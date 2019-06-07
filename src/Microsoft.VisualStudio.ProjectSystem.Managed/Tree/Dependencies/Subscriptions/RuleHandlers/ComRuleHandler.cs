@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             ProviderTypeString,
             Resources.ComNodeName,
             s_iconSet,
-            DependencyTreeFlags.ComSubTreeRootNodeFlags);
+            DependencyTreeFlags.ComSubTreeRootNode);
 
         public ComRuleHandler()
             : base(ComReference.SchemaName, ResolvedCOMReference.SchemaName)

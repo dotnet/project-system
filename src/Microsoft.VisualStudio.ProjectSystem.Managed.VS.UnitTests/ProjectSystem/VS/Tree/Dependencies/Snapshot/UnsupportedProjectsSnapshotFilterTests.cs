@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Id = "dependency1",
                 TopLevel = true,
                 Resolved = true,
-                Flags = DependencyTreeFlags.ProjectNodeFlags
+                Flags = DependencyTreeFlags.ProjectDependency
             };
 
             AssertNoChange(new TestDependency
@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             AssertNoChange(new TestDependency
             {
                 ClonePropertiesFrom = acceptable,
-                Flags = DependencyTreeFlags.ProjectNodeFlags.Union(DependencyTreeFlags.SharedProjectFlags)
+                Flags = DependencyTreeFlags.ProjectDependency.Union(DependencyTreeFlags.SharedProjectFlags)
             });
 
             return;
@@ -85,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Id = "dependency1",
                 TopLevel = true,
                 Resolved = true,
-                Flags = DependencyTreeFlags.ProjectNodeFlags.Union(DependencyTreeFlags.ResolvedFlags),
+                Flags = DependencyTreeFlags.ProjectDependency.Union(DependencyTreeFlags.Resolved),
                 TargetFramework = targetFramework,
                 FullPath = projectPath
             };
@@ -129,7 +129,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Id = "dependency1",
                 TopLevel = true,
                 Resolved = true,
-                Flags = DependencyTreeFlags.ProjectNodeFlags.Union(DependencyTreeFlags.ResolvedFlags),
+                Flags = DependencyTreeFlags.ProjectDependency.Union(DependencyTreeFlags.Resolved),
                 FullPath = projectPath
             };
 
@@ -171,7 +171,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Id = "dependency1",
                 TopLevel = true,
                 Resolved = true,
-                Flags = DependencyTreeFlags.ProjectNodeFlags.Union(DependencyTreeFlags.ResolvedFlags),
+                Flags = DependencyTreeFlags.ProjectDependency.Union(DependencyTreeFlags.Resolved),
                 FullPath = projectPath,
                 TargetFramework = targetFramework
             };

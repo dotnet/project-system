@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
     internal class SharedProjectDependencyModel : DependencyModel
     {
         private static readonly DependencyFlagCache s_flagCache = new DependencyFlagCache(
-            add: DependencyTreeFlags.ProjectNodeFlags +
+            add: DependencyTreeFlags.ProjectDependency +
                  DependencyTreeFlags.SharedProjectFlags,
             remove: DependencyTreeFlags.SupportsRuleProperties);
 

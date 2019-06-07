@@ -134,15 +134,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public static ProjectTreeFlags GetResolvedFlags(this IDependency dependency)
         {
             return dependency.Flags
-                .Union(DependencyTreeFlags.ResolvedFlags)
-                .Except(DependencyTreeFlags.UnresolvedFlags);
+                .Union(DependencyTreeFlags.Resolved)
+                .Except(DependencyTreeFlags.Unresolved);
         }
 
         public static ProjectTreeFlags GetUnresolvedFlags(this IDependency dependency)
         {
             return dependency.Flags
-                .Union(DependencyTreeFlags.UnresolvedFlags)
-                .Except(DependencyTreeFlags.ResolvedFlags);
+                .Union(DependencyTreeFlags.Unresolved)
+                .Except(DependencyTreeFlags.Resolved);
         }
     }
 }

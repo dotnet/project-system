@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             TopLevel = true,
             Implicit = false,
             Resolved = true,
-            Flags = DependencyTreeFlags.GenericDependencyFlags,
+            Flags = DependencyTreeFlags.GenericDependency,
             OriginalItemSpec = ProjectItemSpec
         };
 
@@ -120,7 +120,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 TopLevel = true,
                 Implicit = false,
                 Resolved = true,
-                Flags = DependencyTreeFlags.GenericDependencyFlags,
+                Flags = DependencyTreeFlags.GenericDependency,
                 OriginalItemSpec = projectItemSpec,
                 IconSet = new DependencyIconSet(KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference)
             };

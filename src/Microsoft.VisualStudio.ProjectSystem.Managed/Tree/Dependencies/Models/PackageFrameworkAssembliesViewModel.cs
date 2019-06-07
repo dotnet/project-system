@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public int Priority => Dependency.FrameworkAssemblyNodePriority;
         public ImageMoniker Icon => RegularIcon;
         public ImageMoniker ExpandedIcon => RegularIcon;
-        public ProjectTreeFlags Flags => DependencyTreeFlags.FrameworkAssembliesNodeFlags;
+        public ProjectTreeFlags Flags => DependencyTreeFlags.FrameworkAssembliesNode;
         public IDependency? OriginalModel => null;
     }
 }
