@@ -1,5 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 #nullable disable
@@ -140,6 +142,49 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     new Node("System.Xml", ManagedImageMonikers.ReferencePrivate),
                     new Node("System.Xml.Linq", ManagedImageMonikers.ReferencePrivate)
                 });
+        }
+
+        [TestMethod]
+        [DataRow("net461;netstandard1.3")]
+        [DataRow("net461")]
+        public void DteFindsReferences(string targetFrameworks)
+        {
+            // NOTE the dependencies node makes only the first TFM visible via DTE.
+            // For example, netstandard1.3 has 49 references while net461 has the 14 shown here.
+
+            CreateProject(new Project(targetFrameworks)
+            {
+                new PackageReference("MetadataExtractor", "2.1.0"),
+                new AssemblyReference("System.Windows.Forms"),
+                new CSharpClass("Class1")
+            });
+
+            var expected = new[]
+            {
+                "System.IO.Compression.FileSystem",
+                "System.Numerics",
+                "System.Xml.Linq",
+                "System.Data",
+                "System.Core",
+                "System",
+                "System.Runtime.Serialization",
+                "System.Drawing",
+                "System.Xml",
+                "System.Windows.Forms",
+                "mscorlib",
+                "MetadataExtractor",
+                "Microsoft.CSharp",
+                "XmpCore"
+            };
+
+            var projects = (Array)VisualStudio.Dte.ActiveSolutionProjects;
+            var vsproject = (VSLangProj.VSProject)projects.Cast<EnvDTE.Project>().First().Object;
+            var actual = vsproject.References
+                .Cast<VSLangProj.Reference>()
+                .Select(r => r.Name)
+                .ToList();
+
+            CollectionAssert.AreEquivalent(expected, actual);
         }
     }
 }
