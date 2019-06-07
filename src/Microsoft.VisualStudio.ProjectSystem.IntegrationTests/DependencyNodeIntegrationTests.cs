@@ -114,5 +114,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 project2,
                 new Node("SDK", ManagedImageMonikers.Sdk));
         }
+
+        [TestMethod]
+        public void AssemblyReferences()
+        {
+            var project = new Project("net461")
+            {
+                new AssemblyReference("System.Windows.Forms")
+            };
+
+            CreateProject(project);
+
+            VerifyDependenciesNode(
+                project,
+                new Node("Assemblies", ManagedImageMonikers.Reference)
+                {
+                    new Node("System", ManagedImageMonikers.ReferencePrivate),
+                    new Node("System.Core", ManagedImageMonikers.ReferencePrivate),
+                    new Node("System.Data", ManagedImageMonikers.ReferencePrivate),
+                    new Node("System.Drawing", ManagedImageMonikers.ReferencePrivate),
+                    new Node("System.IO.Compression.FileSystem", ManagedImageMonikers.ReferencePrivate),
+                    new Node("System.Numerics", ManagedImageMonikers.ReferencePrivate),
+                    new Node("System.Runtime.Serialization", ManagedImageMonikers.ReferencePrivate),
+                    new Node("System.Windows.Forms", ManagedImageMonikers.Reference), // non private as explicitly added
+                    new Node("System.Xml", ManagedImageMonikers.ReferencePrivate),
+                    new Node("System.Xml.Linq", ManagedImageMonikers.ReferencePrivate)
+                });
+        }
     }
 }
