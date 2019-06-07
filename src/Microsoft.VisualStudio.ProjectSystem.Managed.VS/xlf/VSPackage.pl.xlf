@@ -79,12 +79,12 @@
       </trans-unit>
       <trans-unit id="26">
         <source>C# Project Files (*.csproj);*.csproj</source>
-        <target state="new">C# Project Files (*.csproj);*.csproj</target>
+        <target state="translated">Pliki projektu C# (*.csproj); *.csproj</target>
         <note />
       </trans-unit>
       <trans-unit id="27">
         <source>.NET Core 2015 Project Files (*.xproj);*.xproj</source>
-        <target state="new">.NET Core 2015 Project Files (*.xproj);*.xproj</target>
+        <target state="translated">Pliki projektu .NET Core 2015 (*.xproj); *.xproj</target>
         <note />
       </trans-unit>
     </body>
