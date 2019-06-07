@@ -4,6 +4,9 @@
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
+    /// <summary>
+    /// Cached immutable instances of <see cref="ProjectTreeFlags"/> used by nodes in the dependencies tree.
+    /// </summary>
     public static class DependencyTreeFlags
     {
         internal static readonly ProjectTreeFlags DependenciesRootNodeFlags
@@ -18,10 +21,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 = ProjectTreeFlags.Create(ProjectTreeFlags.Common.Reference);
 
         /// <summary>
-        /// The set of flags to assign to unresolvable Reference nodes.
-        /// Note: when dependency has ProjectTreeFlags.Common.BrokenReference flag, GraphProvider API are not 
-        /// called for that node.
+        /// The set of flags to assign to unresolved Reference nodes.
         /// </summary>
+        /// <remarks>
+        /// Contains <see cref="ProjectTreeFlags.Common.BrokenReference"/> which stops
+        /// <c>IGraphProvider</c> APIs from being called for that node.
+        /// </remarks>
         internal static readonly ProjectTreeFlags UnresolvedReferenceFlags
                 = BaseReferenceFlags.Add(ProjectTreeFlags.Common.BrokenReference);
 
@@ -46,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         /// <summary>
         /// These public flags below are to be used with all nodes: default project item
-        /// nodes and all custom nodes provided by third party IProjectDependenciesSubTreeProvider
+        /// nodes and all custom nodes provided by third party <see cref="IProjectDependenciesSubTreeProvider"/>
         /// implementations. This is to have a way to distinguish dependency nodes in general.
         /// </summary>
         public static readonly ProjectTreeFlags DependencyFlags
