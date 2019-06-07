@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using Microsoft.VisualStudio.ProjectSystem.Properties;
 using VSLangProj;
 using VSLangProj110;
 
@@ -13,130 +14,99 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             get { return _projectProperties.Value; }
         }
 
+        private T GetBrowseObjectValue<T>(Func<ConfigurationGeneralBrowseObject, IEvaluatedProperty> func)
+        {
+            return _threadingService.ExecuteSynchronously(async () =>
+            {
+                ConfigurationGeneralBrowseObject browseObject = await ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync();
+                IEvaluatedProperty evaluatedProperty = func(browseObject);
+                object value = await evaluatedProperty.GetValueAsync();
+                return (T)value;
+            });
+        }
+
+        private void SetBrowseObjectValue(Func<ConfigurationGeneralBrowseObject, IEvaluatedProperty> func, object value)
+        {
+            _threadingService.ExecuteSynchronously(async () =>
+            {
+                ConfigurationGeneralBrowseObject browseObject = await ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync();
+                IEvaluatedProperty evaluatedProperty = func(browseObject);
+                await evaluatedProperty.SetValueAsync(value);
+            });
+        }
+
+        private string GetBrowseObjectValueAtEnd(Func<ConfigurationGeneralBrowseObject, IEvaluatedProperty> func)
+        {
+            return _threadingService.ExecuteSynchronously(async () =>
+            {
+                ConfigurationGeneralBrowseObject browseObject = await ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync();
+                IEvaluatedProperty evaluatedProperty = func(browseObject);
+                return await evaluatedProperty.GetEvaluatedValueAtEndAsync();
+            });
+        }
+
+        private string GetValueAtEnd(Func<ConfigurationGeneral, IEvaluatedProperty> func)
+        {
+            return _threadingService.ExecuteSynchronously(async () =>
+            {
+                ConfigurationGeneral configurationGeneral = await ProjectProperties.GetConfigurationGeneralPropertiesAsync();
+                IEvaluatedProperty evaluatedProperty = func(configurationGeneral);
+                return await evaluatedProperty.GetEvaluatedValueAtEndAsync();
+            });
+        }
+
+        private void SetValue(Func<ConfigurationGeneral, IEvaluatedProperty> func, object value)
+        {
+            _threadingService.ExecuteSynchronously(async () =>
+            {
+                ConfigurationGeneral configurationGeneral = await ProjectProperties.GetConfigurationGeneralPropertiesAsync();
+                IEvaluatedProperty evaluatedProperty = func(configurationGeneral);
+                await evaluatedProperty.SetValueAsync(value);
+            });
+        }
+
+
         public prjOutputTypeEx OutputTypeEx
         {
-            get
-            {
-                return _threadingService.ExecuteSynchronously(async () =>
-                {
-                    ConfigurationGeneralBrowseObject configurationGeneralProperties = await ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync();
-                    object value = await configurationGeneralProperties.OutputType.GetValueAsync();
-                    return (prjOutputTypeEx)value;
-                });
-            }
-
-            set
-            {
-                _threadingService.ExecuteSynchronously(async () =>
-                {
-                    ConfigurationGeneralBrowseObject configurationGeneralProperties = await ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync();
-                    await configurationGeneralProperties.OutputType.SetValueAsync(value);
-                });
-            }
+            get => GetBrowseObjectValue<prjOutputTypeEx>(browseObject => browseObject.OutputType);
+            set => SetBrowseObjectValue(browseObject => browseObject.OutputType, value);
         }
+
 
         // Implementation of VsLangProj.ProjectProperties
         public prjOutputType OutputType
         {
-            get
-            {
-                return _threadingService.ExecuteSynchronously(async () =>
-                {
-                    ConfigurationGeneralBrowseObject configurationGeneralProperties = await ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync();
-                    object value = await configurationGeneralProperties.OutputType.GetValueAsync();
-                    return (prjOutputType)value;
-                });
-            }
-
-            set
-            {
-                _threadingService.ExecuteSynchronously(async () =>
-                {
-                    ConfigurationGeneralBrowseObject configurationGeneralProperties = await ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync();
-                    await configurationGeneralProperties.OutputType.SetValueAsync(value);
-                });
-            }
+            get => GetBrowseObjectValue<prjOutputType>(browseObject => browseObject.OutputType);
+            set => SetBrowseObjectValue(browseObject => browseObject.OutputType, value);
         }
 
         public string AssemblyName
         {
-            get
-            {
-                return _threadingService.ExecuteSynchronously(async () =>
-                {
-                    ConfigurationGeneral configurationGeneralProperties = await ProjectProperties.GetConfigurationGeneralPropertiesAsync();
-                    return await configurationGeneralProperties.AssemblyName.GetEvaluatedValueAtEndAsync();
-                });
-            }
-
-            set
-            {
-                _threadingService.ExecuteSynchronously(async () =>
-                {
-                    ConfigurationGeneral browseObjectProperties = await ProjectProperties.GetConfigurationGeneralPropertiesAsync();
-                    await browseObjectProperties.AssemblyName.SetValueAsync(value);
-                });
-            }
+            get => GetValueAtEnd(configurationGeneral => configurationGeneral.AssemblyName);
+            set => SetValue(configurationGeneral => configurationGeneral.AssemblyName, value);
         }
 
         public string FullPath
         {
-            get
-            {
-                return _threadingService.ExecuteSynchronously(async () =>
-                {
-                    ConfigurationGeneral configurationGeneralProperties = await ProjectProperties.GetConfigurationGeneralPropertiesAsync();
-                    return await configurationGeneralProperties.ProjectDir.GetEvaluatedValueAtEndAsync();
-                });
-            }
+            get => GetValueAtEnd(configurationGeneral => configurationGeneral.ProjectDir);
         }
 
         public string OutputFileName
         {
-            get
-            {
-                return _threadingService.ExecuteSynchronously(async () =>
-                {
-                    ConfigurationGeneralBrowseObject configurationGeneralProperties = await ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync();
-                    return await configurationGeneralProperties.OutputFileName.GetEvaluatedValueAtEndAsync();
-                });
-            }
+            get => GetBrowseObjectValueAtEnd(browseObject => browseObject.OutputFileName);
         }
 
         public string? ExtenderCATID => null;
 
         public string AbsoluteProjectDirectory
         {
-            get
-            {
-                return _threadingService.ExecuteSynchronously(async () =>
-                {
-                    ConfigurationGeneralBrowseObject browseObjectProperties = await ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync();
-                    return await browseObjectProperties.FullPath.GetEvaluatedValueAtEndAsync();
-                });
-            }
+            get => GetBrowseObjectValueAtEnd(browseObject => browseObject.FullPath);
         }
 
         public bool AutoGenerateBindingRedirects
         {
-            get
-            {
-                return _threadingService.ExecuteSynchronously(async () =>
-                {
-                    ConfigurationGeneralBrowseObject configurationGeneralProperties = await ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync();
-                    object value = await configurationGeneralProperties.AutoGenerateBindingRedirects.GetValueAsync();
-                    return ((bool?)value).GetValueOrDefault();
-                });
-            }
-
-            set
-            {
-                _threadingService.ExecuteSynchronously(async () =>
-                {
-                    ConfigurationGeneralBrowseObject configurationGeneralProperties = await ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync();
-                    await configurationGeneralProperties.AutoGenerateBindingRedirects.SetValueAsync(value);
-                });
-            }
+            get => GetBrowseObjectValue<bool?>(browseObject => browseObject.AutoGenerateBindingRedirects).GetValueOrDefault();
+            set => SetBrowseObjectValue(browseObject => browseObject.AutoGenerateBindingRedirects, value);
         }
 
         public string __id => throw new NotImplementedException();
@@ -203,9 +173,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 
         public string DefaultNamespace { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-        public object get_Extender(string ExtenderName)
-        {
-            throw new NotImplementedException();
-        }
+        public object get_Extender(string ExtenderName) => throw new NotImplementedException();
     }
 }
