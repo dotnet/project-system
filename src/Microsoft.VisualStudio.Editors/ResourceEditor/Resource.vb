@@ -1164,7 +1164,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                     Debug.Assert(TypeName <> "", "ResXDataNode.GetValueTypeName() should never return an empty string or Nothing (not even for ResXNullRef)")
 
-                    TypeName = AdjustSystemStringAssemblyQualifiedName(TypeName)
+                    TypeName = AdjustAssemblyQualifiedName(TypeName)
 
                     Return TypeName
                 Catch ex As Exception When ReportWithoutCrash(ex, "Unexpected exception - ResXDataNode.GetValueTypeName() is not supposed to throw exceptions (except unrecoverable ones), it should instead return the typename as in the original .resx file", NameOf(Resource))
@@ -1630,11 +1630,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' file are only used to produce the .designer.cs file, which is still built against
         ''' netstandard.dll.
         ''' </remarks>
-        Private Shared Function AdjustSystemStringAssemblyQualifiedName(AssemblyQualifiedName As String) As String
-            Static SystemStringAssemblyQualifiedName As String
+        Private Shared Function AdjustAssemblyQualifiedName(AssemblyQualifiedName As String) As String
+            Static CorrectedAssemblyQualifiedName As String
 
             ' If this type definitely isn't System.String then bail out before we allocate
-            If Not AssemblyQualifiedName.StartsWith("System.String") Then
+            If Not (AssemblyQualifiedName.StartsWith("System.String") Or AssemblyQualifiedName.StartsWith("System.Drawing.Bitmap") Or AssemblyQualifiedName.StartsWith("System.Drawing.Icon")) Then
                 Return AssemblyQualifiedName
             End If
 
@@ -1643,11 +1643,27 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Dim typeName = AssemblyQualifiedName.Substring(startIndex:=0, length:=indexOfFirstComma)
                 If typeName = "System.String" Then
 
-                    If SystemStringAssemblyQualifiedName Is Nothing Then
-                        SystemStringAssemblyQualifiedName = GetType(String).AssemblyQualifiedName
+                    If CorrectedAssemblyQualifiedName Is Nothing Then
+                        CorrectedAssemblyQualifiedName = GetType(String).AssemblyQualifiedName
                     End If
 
-                    Return SystemStringAssemblyQualifiedName
+                    Return CorrectedAssemblyQualifiedName
+                End If
+                If typeName = "System.Drawing.Bitmap" Then
+
+                    If CorrectedAssemblyQualifiedName Is Nothing Then
+                        CorrectedAssemblyQualifiedName = GetType(Drawing.Bitmap).AssemblyQualifiedName
+                    End If
+
+                    Return CorrectedAssemblyQualifiedName
+                End If
+                If typeName = "System.Drawing.Icon" Then
+
+                    If CorrectedAssemblyQualifiedName Is Nothing Then
+                        CorrectedAssemblyQualifiedName = GetType(Drawing.Icon).AssemblyQualifiedName
+                    End If
+
+                    Return CorrectedAssemblyQualifiedName
                 End If
             End If
 
