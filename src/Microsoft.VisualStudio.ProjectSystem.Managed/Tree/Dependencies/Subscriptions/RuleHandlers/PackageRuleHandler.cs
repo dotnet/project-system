@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             ProviderTypeString,
             Resources.NuGetPackagesNodeName,
             s_iconSet,
-            DependencyTreeFlags.NuGetSubTreeRootNodeFlags);
+            DependencyTreeFlags.NuGetSubTreeRootNode);
 
         [ImportingConstructor]
         public PackageRuleHandler(ITargetFrameworkProvider targetFrameworkProvider)

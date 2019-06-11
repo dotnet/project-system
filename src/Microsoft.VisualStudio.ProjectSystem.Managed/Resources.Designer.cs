@@ -88,56 +88,11 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The framework name &apos;{0}&apos; cannot be converted to a short framework name..
-        /// </summary>
-        internal static string CouldNotGetShortFrameworkName {
-            get {
-                return ResourceManager.GetString("CouldNotGetShortFrameworkName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to  (Loading...).
-        /// </summary>
-        internal static string DependenciesLoadingPostfix {
-            get {
-                return ResourceManager.GetString("DependenciesLoadingPostfix", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to (Errors - see Error List).
-        /// </summary>
-        internal static string DependenciesNodeErrorsSuffix {
-            get {
-                return ResourceManager.GetString("DependenciesNodeErrorsSuffix", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Dependencies.
         /// </summary>
         internal static string DependenciesNodeName {
             get {
                 return ResourceManager.GetString("DependenciesNodeName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The following error occurred when reading the launch settings file &apos;{0}&apos;. {1} .
-        /// </summary>
-        internal static string ErrorReadingLaunchSettings {
-            get {
-                return ResourceManager.GetString("ErrorReadingLaunchSettings", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The following error occurred when writing to the launch settings file &apos;{0}&apos;. {1} .
-        /// </summary>
-        internal static string ErrorWritingDebugSettings {
-            get {
-                return ResourceManager.GetString("ErrorWritingDebugSettings", resourceCulture);
             }
         }
         
@@ -151,29 +106,11 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The specified framework name &apos;{0}&apos; must be .NETStandard..
-        /// </summary>
-        internal static string InvalidNetStandardFramework {
-            get {
-                return ResourceManager.GetString("InvalidNetStandardFramework", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Errors in &apos;{0}&apos; need to be corrected before applying changes..
         /// </summary>
         internal static string JsonErrorNeedToBeCorrected {
             get {
                 return ResourceManager.GetString("JsonErrorNeedToBeCorrected", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Error reading the launch settings file. This error will need to be corrected in order to debug this project. &apos;{0}&apos; .
-        /// </summary>
-        internal static string JsonErrorReadingLaunchSettings {
-            get {
-                return ResourceManager.GetString("JsonErrorReadingLaunchSettings", resourceCulture);
             }
         }
         
@@ -210,15 +147,6 @@ namespace Microsoft.VisualStudio {
         internal static string NuGetPackagesNodeName {
             get {
                 return ResourceManager.GetString("NuGetPackagesNodeName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to At least one launch profile is missing the required name attribute. These profiles will be ignored.
-        /// </summary>
-        internal static string ProfileMissingName {
-            get {
-                return ResourceManager.GetString("ProfileMissingName", resourceCulture);
             }
         }
         

@@ -82,23 +82,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             targetChanged |= RemoveTargetFrameworksWithNoDependencies();
 
-            ITargetFramework activeTarget = activeTargetFramework ?? previousSnapshot.ActiveTarget;
+            activeTargetFramework ??= previousSnapshot.ActiveTarget;
 
             if (targetChanged)
             {
                 // Targets have changed
                 return new DependenciesSnapshot(
                     previousSnapshot.ProjectPath,
-                    activeTarget,
+                    activeTargetFramework,
                     builder.ToImmutable());
             }
 
-            if (!activeTarget.Equals(previousSnapshot.ActiveTarget))
+            if (!activeTargetFramework.Equals(previousSnapshot.ActiveTarget))
             {
                 // The active target changed
                 return new DependenciesSnapshot(
                     previousSnapshot.ProjectPath,
-                    activeTarget,
+                    activeTargetFramework,
                     previousSnapshot.Targets);
             }
 

@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                 return;
             }
 
-            if (dependency.Flags.Contains(DependencyTreeFlags.SdkSubTreeNodeFlags))
+            if (dependency.Flags.Contains(DependencyTreeFlags.SdkDependency))
             {
                 // This is an SDK dependency.
                 //
@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                     return;
                 }
             }
-            else if (dependency.Flags.Contains(DependencyTreeFlags.PackageNodeFlags) && dependency.Resolved)
+            else if (dependency.Flags.Contains(DependencyTreeFlags.NuGetPackageDependency) && dependency.Resolved)
             {
                 // This is a resolved package dependency.
                 //
@@ -86,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
         {
             if (dependency.TopLevel &&
                 dependency.Resolved &&
-                dependency.Flags.Contains(DependencyTreeFlags.PackageNodeFlags))
+                dependency.Flags.Contains(DependencyTreeFlags.NuGetPackageDependency))
             {
                 // This is a package dependency.
                 //

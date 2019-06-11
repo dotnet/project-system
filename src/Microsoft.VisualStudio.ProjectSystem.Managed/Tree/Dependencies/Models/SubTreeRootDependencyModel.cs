@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
     {
         private static readonly DependencyFlagCache s_flagCache = new DependencyFlagCache(
             add: DependencyTreeFlags.DependencyFlags +
-                 DependencyTreeFlags.SubTreeRootNodeFlags,
+                 DependencyTreeFlags.SubTreeRootNode,
             remove: DependencyTreeFlags.SupportsRuleProperties +
                     DependencyTreeFlags.SupportsRemove);
 

@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             ProviderTypeString,
             Resources.SdkNodeName,
             s_iconSet,
-            DependencyTreeFlags.SdkSubTreeRootNodeFlags);
+            DependencyTreeFlags.SdkSubTreeRootNode);
 
         public SdkRuleHandler()
             : base(SdkReference.SchemaName, ResolvedSdkReference.SchemaName)

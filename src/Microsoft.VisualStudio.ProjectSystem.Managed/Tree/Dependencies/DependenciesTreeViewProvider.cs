@@ -258,8 +258,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 if (dependencyNode != null
                     && dependency.Flags.Contains(DependencyTreeFlags.SupportsHierarchy))
                 {
-                    if ((dependency.Resolved && dependencyNode.Flags.Contains(DependencyTreeFlags.UnresolvedFlags))
-                        || (!dependency.Resolved && dependencyNode.Flags.Contains(DependencyTreeFlags.ResolvedFlags)))
+                    if ((dependency.Resolved && dependencyNode.Flags.Contains(DependencyTreeFlags.Unresolved))
+                        || (!dependency.Resolved && dependencyNode.Flags.Contains(DependencyTreeFlags.Resolved)))
                     {
                         // when transition from unresolved to resolved or vise versa - remove old node
                         // and re-add new  one to allow GraphProvider to recalculate children
@@ -269,7 +269,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     }
                 }
 
-                dependencyNode = await CreateOrUpdateNodeAsync(dependencyNode, dependency, targetedSnapshot, isActiveTarget);
+                // NOTE this project system supports multiple implicit configuration dimensions (such as target framework)
+                // which is a concept not modelled by DTE/VSLangProj. In order to produce a sensible view of the project
+                // via automation, we expose only the active target framework at any given time.
+                //
+                // This is achieved by using IProjectItemTree for active target framework items, and IProjectTree for inactive
+                // target frameworks. CPS only creates automation objects for items with "Reference" flag if they implement
+                // IProjectItemTree. See SimpleItemNode.Initialize (in CPS) for details.
+
+                dependencyNode = await CreateOrUpdateNodeAsync(
+                    dependencyNode,
+                    dependency,
+                    targetedSnapshot,
+                    isProjectItem: isActiveTarget);
 
                 currentNodes?.Add(dependencyNode);
 

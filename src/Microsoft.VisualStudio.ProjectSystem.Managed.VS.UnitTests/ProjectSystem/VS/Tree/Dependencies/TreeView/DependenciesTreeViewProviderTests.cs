@@ -181,7 +181,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.TreeView
                                 Caption = "DependencyExisting",
                                 FilePath = "tfm1\\yyy\\dependencyExisting",
                                 CustomTag = "ShouldBeCleanedSinceNodeWillBeRecreated",
-                                Flags = DependencyTreeFlags.UnresolvedFlags
+                                Flags = DependencyTreeFlags.Unresolved
                             }
                         }
                     }
@@ -242,7 +242,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.TreeView
                                 Caption = "DependencyExisting",
                                 FilePath = "tfm1\\yyy\\dependencyExisting",
                                 CustomTag = "ShouldBeCleanedSinceNodeWillBeRecreated",
-                                Flags = DependencyTreeFlags.ResolvedFlags
+                                Flags = DependencyTreeFlags.Resolved
                             }
                         }
                     }
@@ -302,7 +302,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.TreeView
                             {
                                 Caption = "DependencyExisting",
                                 FilePath = "tfm1\\yyy\\dependencyExisting",
-                                Flags = DependencyTreeFlags.ResolvedFlags
+                                Flags = DependencyTreeFlags.Resolved
                             }
                         }
                     }

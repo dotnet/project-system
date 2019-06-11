@@ -91,7 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                     ""Visible"": ""true"",
                     ""Priority"": ""3""
                 }",
-                flags: DependencyTreeFlags.DependencyFlags.Union(DependencyTreeFlags.GenericDependencyFlags),
+                flags: DependencyTreeFlags.DependencyFlags.Union(DependencyTreeFlags.GenericDependency),
                 icon: KnownMonikers.Path,
                 expandedIcon: KnownMonikers.PathIcon,
                 unresolvedIcon: KnownMonikers.PathListBox,
@@ -119,7 +119,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.True(dependency.Properties.ContainsKey("prop1"));
             Assert.Single(dependency.DependencyIDs);
             Assert.Equal("Tfm1\\xxx\\otherid", dependency.DependencyIDs[0]);
-            Assert.True(dependency.Flags.Contains(DependencyTreeFlags.ResolvedFlags));
+            Assert.True(dependency.Flags.Contains(DependencyTreeFlags.Resolved));
             Assert.True(dependency.Flags.Contains(DependencyTreeFlags.DependencyFlags));
         }
 
