@@ -22,15 +22,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             var loggedMessages = new List<LogMessage>();
             var logger = IVsUpgradeLoggerFactory.CreateLogger(loggedMessages);
 
-            var result = factory.UpgradeProject_CheckOnly(
+            factory.UpgradeProject_CheckOnly(
                 fileName: projectPath,
                 logger,
-                out int upgradeRequired,
+                out uint upgradeRequired,
                 out Guid migratedProjectFactor,
                 out uint upgradeProjectCapabilityFlags);
 
-            Assert.Equal((int)HResult.OK, result);
-            Assert.Equal((int)expectedFlags, upgradeRequired);
+            Assert.Equal((uint)expectedFlags, upgradeRequired);
             Assert.Equal(typeof(XprojProjectFactory).GUID, migratedProjectFactor);
             Assert.Equal(default, upgradeProjectCapabilityFlags);
 
@@ -46,38 +45,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             {
                 Assert.Empty(loggedMessages);
             }
-        }
-
-        [Fact]
-        public void GetSccInfo_Throws()
-        {
-            var factory = new XprojProjectFactory();
-
-            Assert.Throws<NotImplementedException>(() => factory.GetSccInfo("file.xproj", out _, out _, out _, out _));
-        }
-
-        [Fact]
-        public void UpgradeProject_DoesNothing()
-        {
-            var factory = new XprojProjectFactory();
-
-            var loggedMessages = new List<LogMessage>();
-            var logger = IVsUpgradeLoggerFactory.CreateLogger(loggedMessages);
-
-            var result = factory.UpgradeProject(
-                "file.xproj",
-                0,
-                "c:\\temp",
-                out var migratedProjectFileLocation,
-                logger,
-                out var upgradeRequired,
-                out var migratedProjectGuid);
-
-            Assert.Equal(VSConstants.S_FALSE, result);
-            Assert.Equal(default, migratedProjectFileLocation);
-            Assert.Equal(default, upgradeRequired);
-            Assert.Equal(default, migratedProjectGuid);
-            Assert.Empty(loggedMessages);
         }
     }
 }
