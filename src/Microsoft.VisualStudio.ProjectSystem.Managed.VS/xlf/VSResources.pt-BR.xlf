@@ -317,8 +317,8 @@ Para depurar esse projeto, adicione um projeto executável a essa solução que 
         <note />
       </trans-unit>
       <trans-unit id="Restore_EmptyTargetFrameworkMoniker">
-        <source>The value of the 'TargetFrameworkMoniker' property in the '{0}' configuration is empty. This configuration will not contribute to NuGet restore, which may result in restore and build errors.</source>
-        <target state="translated">O valor da propriedade 'TargetFrameworkMoniker' na configuração '{0}' está vazio. Essa configuração não contribuirá para a restauração do NuGet, o que pode resultar em erros de restauração e de build.</target>
+        <source>The value of the 'TargetFrameworkMoniker' and 'NuGetTargetMoniker' properties in the '{0}' configuration are both empty. This configuration will not contribute to NuGet restore, which may result in restore and build errors.</source>
+        <target state="needs-review-translation">O valor da propriedade 'TargetFrameworkMoniker' na configuração '{0}' está vazio. Essa configuração não contribuirá para a restauração do NuGet, o que pode resultar em erros de restauração e de build.</target>
         <note />
       </trans-unit>
     </body>

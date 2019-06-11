@@ -523,7 +523,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The value of the &apos;TargetFrameworkMoniker&apos; property in the &apos;{0}&apos; configuration is empty. This configuration will not contribute to NuGet restore, which may result in restore and build errors..
+        ///   Looks up a localized string similar to The value of the &apos;TargetFrameworkMoniker&apos; and &apos;NuGetTargetMoniker&apos; properties in the &apos;{0}&apos; configuration are both empty. This configuration will not contribute to NuGet restore, which may result in restore and build errors..
         /// </summary>
         internal static string Restore_EmptyTargetFrameworkMoniker {
             get {

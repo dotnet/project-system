@@ -7,6 +7,7 @@ Imports System.Windows.Forms
 Imports System.Windows.Forms.Design
 
 Imports Microsoft.VisualStudio.Editors.Common
+Imports Microsoft.VisualStudio.Utilities
 
 Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
@@ -511,11 +512,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
         Public Function ShowDialog(dialog As Form) As DialogResult Implements IWindowsFormsEditorService.ShowDialog
             Dim UiSvc As IUIService = DirectCast(GetService(GetType(IUIService)), IUIService)
-            If Not UiSvc Is Nothing Then
-                Return UiSvc.ShowDialog(dialog)
-            Else
-                Return dialog.ShowDialog(_showEditorButton)
-            End If
+            Using (DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware))
+                If Not UiSvc Is Nothing Then
+                    Return UiSvc.ShowDialog(dialog)
+                Else
+                    Return dialog.ShowDialog(_showEditorButton)
+                End If
+            End Using
         End Function
 
 #End Region

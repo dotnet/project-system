@@ -63,6 +63,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         }
 
         [Fact]
+        public void ToProjectRestoreInfo_RespectsNuGetTargetMonikerIfPresent()
+        {
+            var update = IProjectSubscriptionUpdateFactory.FromJson(@"
+{
+    ""CurrentState"": {
+        ""NuGetRestore"": {
+            ""Properties"": {
+                ""NuGetTargetMoniker"": ""UWP, Version=v10"",
+                ""TargetFrameworkMoniker"": "".NETFramework, Version=v4.5""
+            },
+        }
+    }
+}
+");
+            var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
+            var targetFramework = result.TargetFrameworks.Item(0);
+
+            Assert.Equal("UWP, Version=v10", targetFramework.TargetFrameworkMoniker);
+        }
+
+        [Fact]
         public void ToProjectRestoreInfo_SetsCoreProperties()
         {
             var update = IProjectSubscriptionUpdateFactory.FromJson(@"

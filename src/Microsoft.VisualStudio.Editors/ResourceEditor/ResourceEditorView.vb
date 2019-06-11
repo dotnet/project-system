@@ -4605,22 +4605,24 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <returns>The selected folder, or Nothing if the user canceled.</returns>
         ''' <remarks></remarks>
         Public Function ShowFolderBrowserDialog(ByRef UserCanceled As Boolean, Title As String, ShowNewFolderButton As Boolean, Optional DefaultPath As String = Nothing) As String
-            UserCanceled = False
-            Dim Dialog As New FolderBrowserDialog
-            With Dialog
-                .Description = Title
-                .ShowNewFolderButton = ShowNewFolderButton
-                If DefaultPath <> "" Then
-                    .SelectedPath = DefaultPath
-                End If
+            Using (DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware))
+                UserCanceled = False
+                Dim Dialog As New FolderBrowserDialog
+                With Dialog
+                    .Description = Title
+                    .ShowNewFolderButton = ShowNewFolderButton
+                    If DefaultPath <> "" Then
+                        .SelectedPath = DefaultPath
+                    End If
 
-                If .ShowDialog(GetDialogOwnerWindow()) = DialogResult.Cancel Then
-                    UserCanceled = True
-                    Return Nothing
-                End If
+                    If .ShowDialog(GetDialogOwnerWindow()) = DialogResult.Cancel Then
+                        UserCanceled = True
+                        Return Nothing
+                    End If
 
-                Return .SelectedPath
-            End With
+                    Return .SelectedPath
+                End With
+            End Using
         End Function
 
 

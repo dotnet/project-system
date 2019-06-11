@@ -956,7 +956,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                             ' we check whether the resource item in the original file was alphabetized, we keep the style when we save it...
                             If _alphabetizedOrder Then
-                                If String.Compare(lastName, Resource.Name, StringComparison.Ordinal) > 0 Then
+                                If StringComparers.ResourceNames.Compare(lastName, Resource.Name) > 0 Then
                                     _alphabetizedOrder = False
                                 Else
                                     lastName = Resource.Name
@@ -1014,9 +1014,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                     Dim comparer As IComparer
                     If _alphabetizedOrder Then
-                        comparer = New AlphabetizedOrderComparer()
+                        comparer = AlphabetizedOrderComparer.Instance
                     Else
-                        comparer = New OriginalOrderComparer()
+                        comparer = OriginalOrderComparer.Instance
                     End If
 
                     Array.Sort(resourceList, comparer)
@@ -1610,11 +1610,13 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Class AlphabetizedOrderComparer
             Implements IComparer
 
+            Public Shared ReadOnly Instance As New AlphabetizedOrderComparer
+
             Public Function Compare(x As Object, y As Object) As Integer Implements IComparer.Compare
                 Dim r1 As Resource = CType(x, Resource)
                 Dim r2 As Resource = CType(y, Resource)
 
-                Return String.Compare(r1.Name, r2.Name, StringComparison.OrdinalIgnoreCase)
+                Return StringComparers.ResourceNames.Compare(r1.Name, r2.Name)
             End Function
         End Class
 
@@ -1624,12 +1626,14 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Class OriginalOrderComparer
             Implements IComparer
 
+            Public Shared ReadOnly Instance As New OriginalOrderComparer
+
             Public Function Compare(x As Object, y As Object) As Integer Implements IComparer.Compare
                 Dim r1 As Resource = CType(x, Resource)
                 Dim r2 As Resource = CType(y, Resource)
 
                 If r1.OrderID = r2.OrderID Then
-                    Return String.Compare(r1.Name, r2.Name, StringComparison.OrdinalIgnoreCase)
+                    Return StringComparers.ResourceNames.Compare(r1.Name, r2.Name)
                 Else
                     Return r1.OrderID - r2.OrderID
                 End If

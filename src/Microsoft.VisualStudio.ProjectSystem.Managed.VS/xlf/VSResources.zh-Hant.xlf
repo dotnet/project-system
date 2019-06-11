@@ -317,8 +317,8 @@ In order to debug this project, add an executable project to this solution which
         <note />
       </trans-unit>
       <trans-unit id="Restore_EmptyTargetFrameworkMoniker">
-        <source>The value of the 'TargetFrameworkMoniker' property in the '{0}' configuration is empty. This configuration will not contribute to NuGet restore, which may result in restore and build errors.</source>
-        <target state="translated">'{0}' 組態中的 'TargetFrameworkMoniker' 屬性值是空的。這樣的組態不會對 NuGet 還原生效，而可能導致還原及建置錯誤。</target>
+        <source>The value of the 'TargetFrameworkMoniker' and 'NuGetTargetMoniker' properties in the '{0}' configuration are both empty. This configuration will not contribute to NuGet restore, which may result in restore and build errors.</source>
+        <target state="needs-review-translation">'{0}' 組態中的 'TargetFrameworkMoniker' 屬性值是空的。這樣的組態不會對 NuGet 還原生效，而可能導致還原及建置錯誤。</target>
         <note />
       </trans-unit>
     </body>
