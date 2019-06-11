@@ -8,15 +8,17 @@ using Microsoft.VisualStudio.Shell.Interop;
 
 using Xunit;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 {
     public sealed class XprojProjectFactoryTests
     {
-        [Theory]
-        [InlineData("foo\\bar.xproj",  __VSPPROJECTUPGRADEVIAFACTORYREPAIRFLAGS.VSPUVF_PROJECT_DEPRECATED, true)]
-        [InlineData("foo\\bar.csproj", __VSPPROJECTUPGRADEVIAFACTORYREPAIRFLAGS.VSPUVF_PROJECT_NOREPAIR,   false)]
-        public void UpgradeCheck(string projectPath, __VSPPROJECTUPGRADEVIAFACTORYREPAIRFLAGS expectedFlags, bool shouldLogError)
+        [Fact]
+        public void UpgradeCheck()
         {
+            string projectPath = "foo\\bar.xproj";
+
             var factory = new XprojProjectFactory();
 
             var loggedMessages = new List<LogMessage>();
@@ -29,22 +31,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
                 out Guid migratedProjectFactor,
                 out uint upgradeProjectCapabilityFlags);
 
-            Assert.Equal((uint)expectedFlags, upgradeRequired);
+            Assert.Equal((uint)__VSPPROJECTUPGRADEVIAFACTORYREPAIRFLAGS.VSPUVF_PROJECT_DEPRECATED, upgradeRequired);
             Assert.Equal(typeof(XprojProjectFactory).GUID, migratedProjectFactor);
             Assert.Equal(default, upgradeProjectCapabilityFlags);
 
-            if (shouldLogError)
-            {
-                LogMessage message = Assert.Single(loggedMessages);
-                Assert.Equal(projectPath, message.File);
-                Assert.Equal(Path.GetFileNameWithoutExtension(projectPath), message.Project);
-                Assert.Equal((uint)__VSUL_ERRORLEVEL.VSUL_ERROR, message.Level);
-                Assert.Equal(VSResources.XprojNotSupported, message.Message);
-            }
-            else
-            {
-                Assert.Empty(loggedMessages);
-            }
+            LogMessage message = Assert.Single(loggedMessages);
+            Assert.Equal(projectPath, message.File);
+            Assert.Equal(Path.GetFileNameWithoutExtension(projectPath), message.Project);
+            Assert.Equal((uint)__VSUL_ERRORLEVEL.VSUL_ERROR, message.Level);
+            Assert.Equal(VSResources.XprojNotSupported, message.Message);
         }
     }
 }

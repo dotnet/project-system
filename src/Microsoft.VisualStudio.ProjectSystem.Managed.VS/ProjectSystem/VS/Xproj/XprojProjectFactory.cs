@@ -7,6 +7,8 @@ using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.Shell.Flavor;
 using Microsoft.VisualStudio.Shell.Interop;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 {
     [Guid(ProjectType.LegacyXProj)]
@@ -14,28 +16,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
     {
         public void UpgradeProject_CheckOnly(
             string fileName,
-            IVsUpgradeLogger logger,
+            IVsUpgradeLogger? logger,
             out uint upgradeRequired,
             out Guid migratedProjectFactory,
             out uint upgradeProjectCapabilityFlags)
         {
-            bool isXproj = fileName.EndsWith(".xproj");
-
-            // If the project is an xproj, then indicate it is deprecated. If it isn't, then there's nothing we can do with it.
-            upgradeRequired = isXproj
-                ? (uint)__VSPPROJECTUPGRADEVIAFACTORYREPAIRFLAGS.VSPUVF_PROJECT_DEPRECATED
-                : (uint)__VSPPROJECTUPGRADEVIAFACTORYREPAIRFLAGS.VSPUVF_PROJECT_NOREPAIR;
-
-            if (isXproj && logger != null)
-            {
-                // Log a message explaining that the project cannot be automatically upgraded
-                // and how to perform the upgrade manually.
-                string projectName = Path.GetFileNameWithoutExtension(fileName);
-                logger.LogMessage((uint)__VSUL_ERRORLEVEL.VSUL_ERROR, projectName, fileName, VSResources.XprojNotSupported);
-            }
-
+            // Xproj is deprecated. It cannot be upgraded, and cannot be loaded.
+            upgradeRequired = (uint)__VSPPROJECTUPGRADEVIAFACTORYREPAIRFLAGS.VSPUVF_PROJECT_DEPRECATED;
             migratedProjectFactory = GetType().GUID;
             upgradeProjectCapabilityFlags = 0;
+
+            // Log a message explaining that the project cannot be automatically upgraded
+            // and how to perform the upgrade manually. This message will be presented in
+            // the upgrade report.
+            logger?.LogMessage(
+                (uint)__VSUL_ERRORLEVEL.VSUL_ERROR,
+                Path.GetFileNameWithoutExtension(fileName),
+                fileName,
+                VSResources.XprojNotSupported);
         }
 
         protected override object PreCreateForOuter(IntPtr outerProjectIUnknown)
