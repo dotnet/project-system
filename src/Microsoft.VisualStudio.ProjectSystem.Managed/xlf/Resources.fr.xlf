@@ -24,42 +24,42 @@
       </trans-unit>
       <trans-unit id="AnalyzersNodeName">
         <source>Analyzers</source>
-        <target state="new">Analyzers</target>
+        <target state="translated">Analyseurs</target>
         <note />
       </trans-unit>
       <trans-unit id="AssembliesNodeName">
         <source>Assemblies</source>
-        <target state="new">Assemblies</target>
+        <target state="translated">Assemblys</target>
         <note />
       </trans-unit>
       <trans-unit id="ComNodeName">
         <source>COM</source>
-        <target state="new">COM</target>
+        <target state="translated">COM</target>
         <note />
       </trans-unit>
       <trans-unit id="DependenciesNodeName">
         <source>Dependencies</source>
-        <target state="new">Dependencies</target>
+        <target state="translated">Dépendances</target>
         <note />
       </trans-unit>
       <trans-unit id="FrameworkAssembliesNodeName">
         <source>Framework Assemblies</source>
-        <target state="new">Framework Assemblies</target>
+        <target state="translated">Assemblys de framework</target>
         <note />
       </trans-unit>
       <trans-unit id="NuGetPackagesNodeName">
         <source>NuGet</source>
-        <target state="new">NuGet</target>
+        <target state="translated">NuGet</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectsNodeName">
         <source>Projects</source>
-        <target state="new">Projects</target>
+        <target state="translated">Projets</target>
         <note />
       </trans-unit>
       <trans-unit id="SdkNodeName">
         <source>SDK</source>
-        <target state="new">SDK</target>
+        <target state="translated">Kit de développement logiciel</target>
         <note />
       </trans-unit>
     </body>

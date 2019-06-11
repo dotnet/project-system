@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="zh-Hans" original="../InputXmlForm.resx">
+  <file datatype="xml" source-language="en" target-language="zh-HANS" original="../InputXmlForm.resx">
     <body>
       <trans-unit id="_cancelButton.Text">
         <source>Cancel</source>
@@ -29,7 +29,7 @@
       </trans-unit>
       <trans-unit id="_addAsTextButton.Text">
         <source>Type or paste &amp;XML</source>
-        <target state="translated">键入或粘贴 &amp;XML(&amp;X)</target>
+        <target state="translated">键入或粘贴 XML(&amp;X)</target>
         <note />
       </trans-unit>
       <trans-unit id="Label1.Text">
