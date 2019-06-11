@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.IO;
 using System.Runtime.InteropServices;
 
 using Microsoft.VisualStudio.Shell.Flavor;
@@ -39,6 +40,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             upgradeRequired = isXproj
                 ? (int)__VSPPROJECTUPGRADEVIAFACTORYREPAIRFLAGS.VSPUVF_PROJECT_DEPRECATED
                 : (int)__VSPPROJECTUPGRADEVIAFACTORYREPAIRFLAGS.VSPUVF_PROJECT_NOREPAIR;
+
+            if (isXproj && logger != null)
+            {
+                // Log a message explaining that the project cannot be automatically upgraded
+                // and how to perform the upgrade manually.
+                string projectName = Path.GetFileNameWithoutExtension(fileName);
+                logger.LogMessage((uint)__VSUL_ERRORLEVEL.VSUL_ERROR, projectName, fileName, VSResources.XprojNotSupported);
+            }
 
             migratedProjectFactory = GetType().GUID;
             upgradeProjectCapabilityFlags = 0;

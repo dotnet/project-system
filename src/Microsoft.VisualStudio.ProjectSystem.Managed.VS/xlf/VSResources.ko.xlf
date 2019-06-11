@@ -246,6 +246,11 @@ In order to debug this project, add an executable project to this solution which
         <target state="needs-review-translation">'{0}' 구성의 'TargetFrameworkMoniker' 속성 값이 비어 있습니다. 이 구성은 NuGet 복원에 기여하지 않아 복원 및 빌드 오류가 발생할 수 있습니다.</target>
         <note />
       </trans-unit>
+      <trans-unit id="XprojNotSupported">
+        <source>Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/en-us/dotnet/core/migration/.</source>
+        <target state="new">Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/en-us/dotnet/core/migration/.</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

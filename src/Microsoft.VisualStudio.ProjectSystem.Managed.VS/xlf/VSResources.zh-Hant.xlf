@@ -246,6 +246,11 @@ In order to debug this project, add an executable project to this solution which
         <target state="needs-review-translation">'{0}' 組態中的 'TargetFrameworkMoniker' 屬性值是空的。這樣的組態不會對 NuGet 還原生效，而可能導致還原及建置錯誤。</target>
         <note />
       </trans-unit>
+      <trans-unit id="XprojNotSupported">
+        <source>Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/en-us/dotnet/core/migration/.</source>
+        <target state="new">Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/en-us/dotnet/core/migration/.</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

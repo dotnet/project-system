@@ -246,6 +246,11 @@ Para depurar esse projeto, adicione um projeto executável a essa solução que 
         <target state="needs-review-translation">O valor da propriedade 'TargetFrameworkMoniker' na configuração '{0}' está vazio. Essa configuração não contribuirá para a restauração do NuGet, o que pode resultar em erros de restauração e de build.</target>
         <note />
       </trans-unit>
+      <trans-unit id="XprojNotSupported">
+        <source>Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/en-us/dotnet/core/migration/.</source>
+        <target state="new">Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/en-us/dotnet/core/migration/.</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

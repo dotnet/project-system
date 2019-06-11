@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 using Microsoft.VisualStudio.Shell.Interop;
 
@@ -12,9 +13,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
     public sealed class XprojProjectFactoryTests
     {
         [Theory]
-        [InlineData("foo\\bar.xproj",  __VSPPROJECTUPGRADEVIAFACTORYREPAIRFLAGS.VSPUVF_PROJECT_DEPRECATED)]
-        [InlineData("foo\\bar.csproj", __VSPPROJECTUPGRADEVIAFACTORYREPAIRFLAGS.VSPUVF_PROJECT_NOREPAIR)]
-        public void UpgradeCheck(string project, __VSPPROJECTUPGRADEVIAFACTORYREPAIRFLAGS expectedFlags)
+        [InlineData("foo\\bar.xproj",  __VSPPROJECTUPGRADEVIAFACTORYREPAIRFLAGS.VSPUVF_PROJECT_DEPRECATED, true)]
+        [InlineData("foo\\bar.csproj", __VSPPROJECTUPGRADEVIAFACTORYREPAIRFLAGS.VSPUVF_PROJECT_NOREPAIR,   false)]
+        public void UpgradeCheck(string projectPath, __VSPPROJECTUPGRADEVIAFACTORYREPAIRFLAGS expectedFlags, bool shouldLogError)
         {
             var factory = new XprojProjectFactory();
 
@@ -22,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             var logger = IVsUpgradeLoggerFactory.CreateLogger(loggedMessages);
 
             var result = factory.UpgradeProject_CheckOnly(
-                fileName: project,
+                fileName: projectPath,
                 logger,
                 out int upgradeRequired,
                 out Guid migratedProjectFactor,
@@ -32,7 +33,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             Assert.Equal((int)expectedFlags, upgradeRequired);
             Assert.Equal(typeof(XprojProjectFactory).GUID, migratedProjectFactor);
             Assert.Equal(default, upgradeProjectCapabilityFlags);
-            Assert.Empty(loggedMessages);
+
+            if (shouldLogError)
+            {
+                LogMessage message = Assert.Single(loggedMessages);
+                Assert.Equal(projectPath, message.File);
+                Assert.Equal(Path.GetFileNameWithoutExtension(projectPath), message.Project);
+                Assert.Equal((uint)__VSUL_ERRORLEVEL.VSUL_ERROR, message.Level);
+                Assert.Equal(VSResources.XprojNotSupported, message.Message);
+            }
+            else
+            {
+                Assert.Empty(loggedMessages);
+            }
         }
 
         [Fact]

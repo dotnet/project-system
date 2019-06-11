@@ -246,6 +246,11 @@ In order to debug this project, add an executable project to this solution which
         <target state="needs-review-translation">“{0}”配置中的 TargetFrameworkMoniker 属性的值为空。此配置将影响 NuGet 还原，这可能导致还原并生成错误。</target>
         <note />
       </trans-unit>
+      <trans-unit id="XprojNotSupported">
+        <source>Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/en-us/dotnet/core/migration/.</source>
+        <target state="new">Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/en-us/dotnet/core/migration/.</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

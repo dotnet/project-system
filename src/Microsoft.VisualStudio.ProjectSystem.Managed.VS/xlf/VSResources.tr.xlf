@@ -246,6 +246,11 @@ Bu projede hata ayıklamak için bu çözüme, kitaplık projesine başvuran bir
         <target state="needs-review-translation">'{0}' yapılandırmasındaki 'TargetFrameworkMoniker' özelliğinin değeri boş. Bu yapılandırma NuGet geri yüklemeye katkıda bulunmaz, bu da geri yükleme ve derleme hatalarına neden olabilir.</target>
         <note />
       </trans-unit>
+      <trans-unit id="XprojNotSupported">
+        <source>Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/en-us/dotnet/core/migration/.</source>
+        <target state="new">Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/en-us/dotnet/core/migration/.</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

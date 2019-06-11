@@ -467,5 +467,14 @@ namespace Microsoft.VisualStudio {
                 return ResourceManager.GetString("WorkingDirecotryInvalid", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/en-us/dotnet/core/migration/..
+        /// </summary>
+        internal static string XprojNotSupported {
+            get {
+                return ResourceManager.GetString("XprojNotSupported", resourceCulture);
+            }
+        }
     }
 }
