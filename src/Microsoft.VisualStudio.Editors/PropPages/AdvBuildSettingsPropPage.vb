@@ -44,6 +44,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             AutoScaleMode = AutoScaleMode.Font
             PageRequiresScaling = False
+
+            TelemetryLogger.LogAdvBuildSettingsPropPageEvent(TelemetryLogger.AdvBuildSettingsPropPageEvent.FormOpened)
         End Sub
 
         Protected Overrides ReadOnly Property ControlData() As PropertyControlData()
