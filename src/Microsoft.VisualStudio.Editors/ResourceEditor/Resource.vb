@@ -1637,11 +1637,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' netstandard.dll.
         ''' </remarks>
         Private Shared Function AdjustAssemblyQualifiedName(AssemblyQualifiedName As String) As String
-            Dim correctedAssemblyQualifiedName As String = Nothing
-
             Dim indexOfFirstComma = AssemblyQualifiedName.IndexOf(",")
             If indexOfFirstComma <> -1 Then
                 Dim typeName = AssemblyQualifiedName.Substring(startIndex:=0, length:=indexOfFirstComma)
+                Dim correctedAssemblyQualifiedName As String = Nothing
                 If s_correctedAssemblyQualifiedName.TryGetValue(typeName, CorrectedAssemblyQualifiedName) Then
                     Return correctedAssemblyQualifiedName
                 End If
