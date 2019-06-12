@@ -1612,7 +1612,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
         End Function
 
-        Private Shared ReadOnly s_correctedAssemblyQualifiedName As New Dictionary(Of String, String)
+        Private Shared ReadOnly s_correctedAssemblyQualifiedName As New Dictionary(Of String, String) From {
+            {"System.String", GetType(String).AssemblyQualifiedName},
+            {"System.Drawing.Bitmap", GetType(Drawing.Bitmap).AssemblyQualifiedName},
+            {"System.Drawing.Icon", GetType(Drawing.Icon).AssemblyQualifiedName}
+        }
 
         ''' <remarks>
         ''' Our multi-targeting support quite correctly tells us that types like System.String are found
@@ -1633,27 +1637,13 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' netstandard.dll.
         ''' </remarks>
         Private Shared Function AdjustAssemblyQualifiedName(AssemblyQualifiedName As String) As String
-            Dim CorrectedAssemblyQualifiedName As String = Nothing
+            Dim correctedAssemblyQualifiedName As String = Nothing
 
             Dim indexOfFirstComma = AssemblyQualifiedName.IndexOf(",")
             If indexOfFirstComma <> -1 Then
                 Dim typeName = AssemblyQualifiedName.Substring(startIndex:=0, length:=indexOfFirstComma)
                 If s_correctedAssemblyQualifiedName.TryGetValue(typeName, CorrectedAssemblyQualifiedName) Then
-                    Return CorrectedAssemblyQualifiedName
-                Else
-                    If typeName = "System.String" Then
-                        CorrectedAssemblyQualifiedName = GetType(String).AssemblyQualifiedName
-                        s_correctedAssemblyQualifiedName(typeName) = CorrectedAssemblyQualifiedName
-                        Return CorrectedAssemblyQualifiedName
-                    ElseIf typeName = "System.Drawing.Bitmap" Then
-                        CorrectedAssemblyQualifiedName = GetType(Drawing.Bitmap).AssemblyQualifiedName
-                        s_correctedAssemblyQualifiedName(typeName) = CorrectedAssemblyQualifiedName
-                        Return CorrectedAssemblyQualifiedName
-                    ElseIf typeName = "System.Drawing.Icon" Then
-                        CorrectedAssemblyQualifiedName = GetType(Drawing.Icon).AssemblyQualifiedName
-                        s_correctedAssemblyQualifiedName(typeName) = CorrectedAssemblyQualifiedName
-                        Return CorrectedAssemblyQualifiedName
-                    End If
+                    Return correctedAssemblyQualifiedName
                 End If
             End If
 
