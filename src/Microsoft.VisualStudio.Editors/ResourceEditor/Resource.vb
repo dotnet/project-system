@@ -1612,6 +1612,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
         End Function
 
+        Private Shared ReadOnly s_correctedAssemblyQualifiedName As New Dictionary(Of String, String)
+
         ''' <remarks>
         ''' Our multi-targeting support quite correctly tells us that types like System.String are found
         ''' in netstandard.dll. However, VS (and thus the resx designer) and resgen.exe run on the net462
@@ -1631,39 +1633,27 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' netstandard.dll.
         ''' </remarks>
         Private Shared Function AdjustAssemblyQualifiedName(AssemblyQualifiedName As String) As String
-            Static CorrectedAssemblyQualifiedName As String
-
-            ' If this type definitely isn't System.String then bail out before we allocate
-            If Not (AssemblyQualifiedName.StartsWith("System.String") Or AssemblyQualifiedName.StartsWith("System.Drawing.Bitmap") Or AssemblyQualifiedName.StartsWith("System.Drawing.Icon")) Then
-                Return AssemblyQualifiedName
-            End If
+            Dim CorrectedAssemblyQualifiedName As String = Nothing
 
             Dim indexOfFirstComma = AssemblyQualifiedName.IndexOf(",")
             If indexOfFirstComma <> -1 Then
                 Dim typeName = AssemblyQualifiedName.Substring(startIndex:=0, length:=indexOfFirstComma)
-                If typeName = "System.String" Then
-
-                    If CorrectedAssemblyQualifiedName Is Nothing Then
+                If s_correctedAssemblyQualifiedName.TryGetValue(typeName, CorrectedAssemblyQualifiedName) Then
+                    Return CorrectedAssemblyQualifiedName
+                Else
+                    If typeName = "System.String" Then
                         CorrectedAssemblyQualifiedName = GetType(String).AssemblyQualifiedName
-                    End If
-
-                    Return CorrectedAssemblyQualifiedName
-                End If
-                If typeName = "System.Drawing.Bitmap" Then
-
-                    If CorrectedAssemblyQualifiedName Is Nothing Then
+                        s_correctedAssemblyQualifiedName(typeName) = CorrectedAssemblyQualifiedName
+                        Return CorrectedAssemblyQualifiedName
+                    ElseIf typeName = "System.Drawing.Bitmap" Then
                         CorrectedAssemblyQualifiedName = GetType(Drawing.Bitmap).AssemblyQualifiedName
-                    End If
-
-                    Return CorrectedAssemblyQualifiedName
-                End If
-                If typeName = "System.Drawing.Icon" Then
-
-                    If CorrectedAssemblyQualifiedName Is Nothing Then
+                        s_correctedAssemblyQualifiedName(typeName) = CorrectedAssemblyQualifiedName
+                        Return CorrectedAssemblyQualifiedName
+                    ElseIf typeName = "System.Drawing.Icon" Then
                         CorrectedAssemblyQualifiedName = GetType(Drawing.Icon).AssemblyQualifiedName
+                        s_correctedAssemblyQualifiedName(typeName) = CorrectedAssemblyQualifiedName
+                        Return CorrectedAssemblyQualifiedName
                     End If
-
-                    Return CorrectedAssemblyQualifiedName
                 End If
             End If
 
