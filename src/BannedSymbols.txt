@@ -66,3 +66,5 @@ M:Microsoft.VisualStudio.VSConstants.E_NOINTERFACE;Use HResult.NoInterface
 M:Microsoft.VisualStudio.VSConstants.E_UNEXPECTED;Use HResult.Unexpected
 M:Microsoft.VisualStudio.OLE.Interop.Constants.OLECMDERR_E_NOTSUPPORTED;Use HResult.Ole.Cmd.NotSupported
 M:Microsoft.VisualStudio.OLE.Interop.Constants.OLECMDERR_E_UNKNOWNGROUP;Use HResult.Ole.Cmd.UnknownGroup
+
+T:Microsoft.VisualStudio.Shell.ThreadHelper;Import JoinableTaskContext if inside a MEF component for unit testing purposes
