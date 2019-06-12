@@ -54,9 +54,9 @@ namespace Microsoft.VisualStudio.Packaging
 
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
+#pragma warning disable RS0030 // Do not used banned APIs
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
-#pragma warning disable RS0030 // Do not used banned APIs
             _projectSelectorService = await this.GetServiceAsync<SVsRegisterProjectTypes, IVsRegisterProjectSelector>();
 #pragma warning restore RS0030 // Do not used banned APIs
             Guid selectorGuid = typeof(FSharpProjectSelector).GUID;
