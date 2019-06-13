@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="zh-Hans" original="../VisualBasic.ProjectItemsSchema.xaml">
+  <file datatype="xml" source-language="en" target-language="zh-HANS" original="../VisualBasic.ProjectItemsSchema.xaml">
     <body>
       <trans-unit id="ContentType|VisualBasicFile|DisplayName">
         <source>VB file</source>
@@ -19,7 +19,7 @@
       </trans-unit>
       <trans-unit id="ItemType|EditorConfigFiles|DisplayName">
         <source>.editorconfig file</source>
-        <target state="new">.editorconfig file</target>
+        <target state="translated">.editorconfig 文件</target>
         <note />
       </trans-unit>
     </body>

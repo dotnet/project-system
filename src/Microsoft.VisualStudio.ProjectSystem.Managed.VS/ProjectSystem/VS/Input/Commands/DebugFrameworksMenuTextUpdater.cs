@@ -120,7 +120,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         protected virtual void ExecuteSynchronously(Func<Task> asyncFunction)
         {
 #pragma warning disable VSTHRD102 // Only wrapped for test purposes
+#pragma warning disable RS0030 // Do not used banned APIs
             ThreadHelper.JoinableTaskFactory.Run(asyncFunction);
+#pragma warning restore RS0030 // Do not used banned APIs
 #pragma warning restore VSTHRD102
         }
     }

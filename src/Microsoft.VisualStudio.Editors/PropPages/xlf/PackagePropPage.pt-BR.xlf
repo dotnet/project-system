@@ -59,7 +59,7 @@
       </trans-unit>
       <trans-unit id="NeutralLanguageLabel.Text">
         <source>Assembly &amp;neutral language:</source>
-        <target state="translated">Idioma neutro do assembly:</target>
+        <target state="translated">Idioma &amp;neutro do assembly:</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionRevisionTextBox.AccessibleName">

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.Settings;
-using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
@@ -17,15 +17,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private const string FastUpToDateEnabledSettingKey = @"ManagedProjectSystem\FastUpToDateCheckEnabled";
         private const string FastUpToDateLogLevelSettingKey = @"ManagedProjectSystem\FastUpToDateLogLevel";
 
-        private readonly IVsUIService<ISettingsManager> _settingsManager;
         private readonly IEnvironmentHelper _environment;
+        private readonly IVsUIService<ISettingsManager> _settingsManager;
+        private readonly JoinableTaskContext _joinableTaskContext;
         private bool? _isProjectOutputPaneEnabled;
 
         [ImportingConstructor]
-        public ProjectSystemOptions(IEnvironmentHelper environment, IVsUIService<SVsSettingsPersistenceManager, ISettingsManager> settingsManager)
+        public ProjectSystemOptions(IEnvironmentHelper environment, IVsUIService<SVsSettingsPersistenceManager, ISettingsManager> settingsManager, JoinableTaskContext joinableTaskContext)
         {
             _environment = environment;
             _settingsManager = settingsManager;
+            _joinableTaskContext = joinableTaskContext;
         }
 
         public bool IsProjectOutputPaneEnabled
@@ -38,13 +40,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public async Task<bool> GetIsFastUpToDateCheckEnabledAsync(CancellationToken cancellationToken = default)
         {
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
+            await _joinableTaskContext.Factory.SwitchToMainThreadAsync(cancellationToken);
             return _settingsManager.Value?.GetValueOrDefault(FastUpToDateEnabledSettingKey, true) ?? true;
         }
 
         public async Task<LogLevel> GetFastUpToDateLoggingLevelAsync(CancellationToken cancellationToken = default)
         {
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
+            await _joinableTaskContext.Factory.SwitchToMainThreadAsync(cancellationToken);
             return _settingsManager.Value?.GetValueOrDefault(FastUpToDateLogLevelSettingKey, LogLevel.None) ?? LogLevel.None;
         }
 

@@ -168,7 +168,7 @@ Um das Projekt zu debuggen, fügen Sie dieser Projektmappe ein ausführbares Pro
       </trans-unit>
       <trans-unit id="Restore_EmptyTargetFrameworkMoniker">
         <source>The value of the 'TargetFrameworkMoniker' and 'NuGetTargetMoniker' properties in the '{0}' configuration are both empty. This configuration will not contribute to NuGet restore, which may result in restore and build errors.</source>
-        <target state="needs-review-translation">Der Wert der Eigenschaft "TargetFrameworkMoniker" in der "{0}"-Konfiguration ist leer. Diese Konfiguration wird bei der NuGet-Wiederherstellung nicht berücksichtigt, was zu Wiederherstellungs- und Buildfehlern führen kann.</target>
+        <target state="translated">Die Werte der Eigenschaften "TargetFrameworkMoniker" und "NuGetTargetMoniker" in der Konfiguration "{0}" sind beide leer. Diese Konfiguration wird bei der NuGet-Wiederherstellung nicht berücksichtigt, was zu Wiederherstellungs- und Buildfehlern führen kann.</target>
         <note />
       </trans-unit>
     </body>

@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="TargetFrameworkLabel.Text">
         <source>&amp;Target framework:</source>
-        <target state="translated">Cílová pla&amp;tforma:</target>
+        <target state="translated">Cílová archi&amp;tektura:</target>
         <note />
       </trans-unit>
       <trans-unit id="StartupObjectOrUriLabel.Text">

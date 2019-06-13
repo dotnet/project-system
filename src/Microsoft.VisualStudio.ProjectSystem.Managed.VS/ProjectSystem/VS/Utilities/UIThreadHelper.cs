@@ -22,7 +22,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             {
                 try
                 {
+#pragma warning disable RS0030 // Do not used banned APIs
                     ThreadHelper.ThrowIfNotOnUIThread(memberName);
+#pragma warning restore RS0030 // Do not used banned APIs
                 }
                 catch
                 {

@@ -29,7 +29,7 @@
       </trans-unit>
       <trans-unit id="chkRegisterForCOM.Text">
         <source>Register for &amp;COM interop</source>
-        <target state="translated">COM birlikte çalışabilirliği için kaydolun</target>
+        <target state="translated">&amp;COM birlikte çalışabilirliği için kaydolun</target>
         <note />
       </trans-unit>
       <trans-unit id="chkXMLDocumentationFile.Text">

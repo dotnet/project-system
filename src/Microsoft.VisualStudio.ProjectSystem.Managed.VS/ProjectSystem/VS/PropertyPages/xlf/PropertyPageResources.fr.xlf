@@ -214,7 +214,7 @@
       </trans-unit>
       <trans-unit id="chkLaunchBrowserHelpText">
         <source>Checking enables a textbox to specify an absolute or relative URl</source>
-        <target state="translated">La vérification permet à une zone de texte de spécifier une URI absolue ou relative</target>
+        <target state="translated">Quand la case est cochée, permet de spécifier une URI absolue ou relative via une zone de texte</target>
         <note />
       </trans-unit>
       <trans-unit id="chkNativeCodeDebuggingText">
