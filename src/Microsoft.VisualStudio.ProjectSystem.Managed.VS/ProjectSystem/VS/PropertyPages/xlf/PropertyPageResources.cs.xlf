@@ -214,7 +214,7 @@
       </trans-unit>
       <trans-unit id="chkLaunchBrowserHelpText">
         <source>Checking enables a textbox to specify an absolute or relative URl</source>
-        <target state="translated">Zaškrtnutí povolí do textového pole zadat absolutní nebo relativní adresu URl.</target>
+        <target state="translated">Zaškrtnutí povolí do textového pole zadat absolutní nebo relativní identifikátor URl.</target>
         <note />
       </trans-unit>
       <trans-unit id="chkNativeCodeDebuggingText">

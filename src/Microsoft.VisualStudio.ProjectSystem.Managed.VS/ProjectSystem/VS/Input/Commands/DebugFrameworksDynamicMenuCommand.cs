@@ -6,16 +6,13 @@ using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Design;
 using System.Linq;
-
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.Input;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
-using Microsoft.VisualStudio.Shell;
-
-using Task = System.Threading.Tasks.Task;
+using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
-
     /// <summary>
     /// Handles populating a menu command on the debug dropdown when the menu reflects the IEnumValues for
     /// a debug property. It shows the active framework used for running the app (F5/Ctrl+F5).
@@ -24,15 +21,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     internal class DebugFrameworksDynamicMenuCommand : DynamicMenuCommand
     {
         private const int MaxFrameworks = 20;
+        private readonly IStartupProjectHelper _startupProjectHelper;
+        private readonly JoinableTaskContext _joinableTaskContext;
 
         [ImportingConstructor]
-        public DebugFrameworksDynamicMenuCommand(IStartupProjectHelper startupProjectHelper)
+        public DebugFrameworksDynamicMenuCommand(IStartupProjectHelper startupProjectHelper, JoinableTaskContext joinableTaskContext)
           : base(new CommandID(new Guid(CommandGroup.ManagedProjectSystem), ManagedProjectSystemCommandId.DebugFrameworks), MaxFrameworks)
         {
-            StartupProjectHelper = startupProjectHelper;
+            _startupProjectHelper = startupProjectHelper;
+            _joinableTaskContext = joinableTaskContext;
         }
-
-        private IStartupProjectHelper StartupProjectHelper { get; }
 
         /// <summary>
         /// Called by the base when one if our menu ids is clicked. Need to return true if the command was handled
@@ -40,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         public override bool ExecCommand(int cmdIndex, EventArgs e)
         {
             bool handled = false;
-            ImmutableArray<IActiveDebugFrameworkServices> activeDebugFrameworks = StartupProjectHelper.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles);
+            ImmutableArray<IActiveDebugFrameworkServices> activeDebugFrameworks = _startupProjectHelper.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles);
             if (activeDebugFrameworks.Length > 0)
             {
                 ExecuteSynchronously(async () =>
@@ -66,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         /// </summary>
         public override bool QueryStatusCommand(int cmdIndex, EventArgs e)
         {
-            ImmutableArray<IActiveDebugFrameworkServices> activeDebugFrameworks = StartupProjectHelper.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles);
+            ImmutableArray<IActiveDebugFrameworkServices> activeDebugFrameworks = _startupProjectHelper.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles);
             if (activeDebugFrameworks.Length > 0)
             {
                 // See if the projects support at least two runtimes
@@ -125,13 +123,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             return false;
         }
 
-        /// <summary>
-        /// For unit testing to wrap the JTF.Run call.
-        /// </summary>
-        protected virtual void ExecuteSynchronously(Func<Task> asyncFunction)
+        private void ExecuteSynchronously(Func<Task> asyncFunction)
         {
 #pragma warning disable VSTHRD102 // Implement internal logic asynchronously
-            ThreadHelper.JoinableTaskFactory.Run(asyncFunction);
+            _joinableTaskContext.Factory.Run(asyncFunction);
 #pragma warning restore VSTHRD102 // Implement internal logic asynchronously
         }
     }

@@ -84,7 +84,7 @@
       </trans-unit>
       <trans-unit id="BuildOutputPathLabel.Text">
         <source>B&amp;uild output path:</source>
-        <target state="translated">Kompiluj ścieżkę wyjściową:</target>
+        <target state="translated">Kompil&amp;uj ścieżkę wyjściową:</target>
         <note />
       </trans-unit>
       <trans-unit id="TargetCPULabel.Text">
