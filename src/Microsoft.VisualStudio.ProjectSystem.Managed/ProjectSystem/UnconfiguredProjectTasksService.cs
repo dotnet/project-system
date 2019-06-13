@@ -23,7 +23,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private readonly JoinableTaskCollection _prioritizedTasks;
 
         [ImportingConstructor]
-        public UnconfiguredProjectTasksService([Import(ExportContractNames.Scopes.UnconfiguredProject)]IProjectAsynchronousTasksService tasksService, IProjectThreadingService threadingService, ILoadedInHostListener loadedInHostListener)
+        public UnconfiguredProjectTasksService(
+            [Import(ExportContractNames.Scopes.UnconfiguredProject)]IProjectAsynchronousTasksService tasksService,
+            IProjectThreadingService threadingService,
+            [Import(AllowDefault = true)] ILoadedInHostListener loadedInHostListener)
         {
             _prioritizedTasks = threadingService.JoinableTaskContext.CreateCollection();
             _prioritizedTasks.DisplayName = "PrioritizedProjectLoadedInHostTasks";
@@ -38,7 +41,15 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [AppliesTo(ProjectCapability.DotNet)]
         public Task OnProjectFactoryCompleted()
         {
-            return _loadedInHostListener.StartListeningAsync();
+            if (_loadedInHostListener != null)
+            {
+                return _loadedInHostListener.StartListeningAsync();
+            }
+            else
+            {
+                _projectLoadedInHost.TrySetResult(false);
+                return Task.CompletedTask;
+            }
         }
 
         public Task ProjectLoadedInHost

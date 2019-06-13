@@ -162,7 +162,7 @@
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)Content.BrowseObject.xaml">
       <Context>BrowseObject</Context>
     </PropertyPageSchema>
-
+    
     <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)EmbeddedResource.xaml">
       <Context>File</Context>
     </PropertyPageSchema>

@@ -14,6 +14,11 @@
     <NoWarn>$(NoWarn);NU5125</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <!-- Not a VS assembly, but still needs a couple VS imaging types -->
+    <PackageReference Include="Microsoft.VisualStudio.Imaging.Interop.14.0.DesignTime" Version="14.3.25407" Pack="false" />
+    <PackageReference Include="Microsoft.VisualStudio.ImageCatalog" Version="15.0.26606" />
+  </ItemGroup>
+  <ItemGroup>
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.VS" />
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests" />
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests" />
@@ -151,6 +156,9 @@
     </Compile>
     <Compile Update="ProjectSystem\Rules\PotentialEditorConfigFiles.cs">
       <DependentUpon>PotentialEditorConfigFiles.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\Items\EditorConfigFiles.cs">
+      <DependentUpon>EditorConfigFiles.xaml</DependentUpon>
     </Compile>
     <Compile Update="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -356,10 +364,16 @@
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\Items\EditorConfigFiles.xaml">
+      <XlfInput>false</XlfInput>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\AdditionalFiles.BrowseObject.xaml" />
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\ApplicationDefinition.BrowseObject.xaml" />
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\Compile.BrowseObject.xaml" />
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\Content.BrowseObject.xaml" />
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\EditorConfigFiles.BrowseObject.xaml" />
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\EmbeddedResource.BrowseObject.xaml" />
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\None.BrowseObject.xaml" />
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\Page.BrowseObject.xaml" />

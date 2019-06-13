@@ -22,13 +22,17 @@ using Microsoft.VisualStudio.Threading;
 using IAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider;
 using Task = System.Threading.Tasks.Task;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 {
     /// <summary>
     /// Provides actual dependencies nodes under Dependencies\[DependencyType]\[TopLevel]\[....] sub nodes. 
-    /// Note: when dependency has <see cref="ProjectTreeFlags.Common.BrokenReference"/> flag,
-    /// <see cref="IGraphProvider"/> API are not called for that node.
     /// </summary>
+    /// <remarks>
+    /// When a dependency has flag <see cref="ProjectTreeFlags.Common.BrokenReference"/>,
+    /// <see cref="IGraphProvider"/> APIs are not called for that node.
+    /// </remarks>
     [Export(typeof(DependenciesGraphProvider))]
     [Export(typeof(IDependenciesGraphBuilder))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
@@ -51,7 +55,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 
         [ImportMany] private readonly OrderPrecedenceImportCollection<IDependenciesGraphActionHandler> _graphActionHandlers;
 
-        private GraphIconCache _iconCache;
+        /// <summary>
+        /// Non-null once initialised.
+        /// </summary>
+        private GraphIconCache _iconCache = null!;
 
         [ImportingConstructor]
         public DependenciesGraphProvider(
@@ -116,9 +123,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 
         public IEnumerable<GraphCommand> GetCommands(IEnumerable<GraphNode> nodes) => s_commands;
 
-        public T GetExtension<T>(GraphObject graphObject, T previous) where T : class => null;
+        public T? GetExtension<T>(GraphObject graphObject, T previous) where T : class => null;
 
-        public Graph Schema => null;
+        public Graph? Schema => null;
 
         public GraphNode AddGraphNode(
             IGraphContext graphContext,
@@ -142,7 +149,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 
             Assumes.True(IsInitialized);
 
-            GraphNodeId newNodeId = GetTopLevelGraphNodeId(projectPath, viewModel.OriginalModel.GetTopLevelId());
+            GraphNodeId newNodeId = GetTopLevelGraphNodeId(projectPath, viewModel.OriginalModel!.GetTopLevelId());
             return DoAddGraphNode(newNodeId, graphContext, projectPath, parentNode: null, viewModel);
         }
 
@@ -150,7 +157,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             GraphNodeId graphNodeId,
             IGraphContext graphContext,
             string projectPath,
-            GraphNode parentNode,
+            GraphNode? parentNode,
             IDependencyViewModel viewModel)
         {
             _iconCache.Register(viewModel.Icon);
@@ -197,7 +204,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             }
         }
 
-        private static GraphNodeId GetGraphNodeId(string projectPath, GraphNode parentNode, string modelId)
+        private static GraphNodeId GetGraphNodeId(string projectPath, GraphNode? parentNode, string modelId)
         {
             string parents;
             if (parentNode != null)

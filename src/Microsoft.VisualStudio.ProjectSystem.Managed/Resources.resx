@@ -117,18 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="JsonErrorReadingLaunchSettings" xml:space="preserve">
-    <value>Error reading the launch settings file. This error will need to be corrected in order to debug this project. '{0}' </value>
-  </data>
-  <data name="ErrorReadingLaunchSettings" xml:space="preserve">
-    <value>The following error occurred when reading the launch settings file '{0}'. {1} </value>
-  </data>
-  <data name="ErrorWritingDebugSettings" xml:space="preserve">
-    <value>The following error occurred when writing to the launch settings file '{0}'. {1} </value>
-  </data>
-  <data name="ProfileMissingName" xml:space="preserve">
-    <value>At least one launch profile is missing the required name attribute. These profiles will be ignored</value>
-  </data>
   <data name="NoActionProfileName" xml:space="preserve">
     <value>Start</value>
   </data>
@@ -142,5 +130,29 @@
   <data name="MsBuildMissingValueToRename" xml:space="preserve">
     <value>The specified value to rename '{0}' was not present in the property '{1}'</value>
     <comment>{0} will be a specific property value such as "Debug", {1} will be an MsBuild property name such as "Configurations". Neither of those values will be localized.</comment>
+  </data>
+  <data name="AnalyzersNodeName" xml:space="preserve">
+    <value>Analyzers</value>
+  </data>
+  <data name="AssembliesNodeName" xml:space="preserve">
+    <value>Assemblies</value>
+  </data>
+  <data name="ComNodeName" xml:space="preserve">
+    <value>COM</value>
+  </data>
+  <data name="DependenciesNodeName" xml:space="preserve">
+    <value>Dependencies</value>
+  </data>
+  <data name="FrameworkAssembliesNodeName" xml:space="preserve">
+    <value>Framework Assemblies</value>
+  </data>
+  <data name="NuGetPackagesNodeName" xml:space="preserve">
+    <value>NuGet</value>
+  </data>
+  <data name="ProjectsNodeName" xml:space="preserve">
+    <value>Projects</value>
+  </data>
+  <data name="SdkNodeName" xml:space="preserve">
+    <value>SDK</value>
   </data>
 </root>

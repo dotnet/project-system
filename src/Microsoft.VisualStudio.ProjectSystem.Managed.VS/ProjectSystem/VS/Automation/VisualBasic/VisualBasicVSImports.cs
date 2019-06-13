@@ -106,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
                         else
                         {
                             // Cannot reach this point, since index has to be Int or String
-                            System.Diagnostics.Debug.Assert(false, $"Parameter {nameof(index)} is niether an int nor a string");
+                            System.Diagnostics.Debug.Assert(false, $"Parameter {nameof(index)} is neither an int nor a string");
                         }
 
                         if (importProjectItem.IsImported)

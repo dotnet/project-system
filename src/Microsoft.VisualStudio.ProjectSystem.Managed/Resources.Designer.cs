@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -61,20 +61,47 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The following error occurred when reading the launch settings file &apos;{0}&apos;. {1} .
+        ///   Looks up a localized string similar to Analyzers.
         /// </summary>
-        internal static string ErrorReadingLaunchSettings {
+        internal static string AnalyzersNodeName {
             get {
-                return ResourceManager.GetString("ErrorReadingLaunchSettings", resourceCulture);
+                return ResourceManager.GetString("AnalyzersNodeName", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The following error occurred when writing to the launch settings file &apos;{0}&apos;. {1} .
+        ///   Looks up a localized string similar to Assemblies.
         /// </summary>
-        internal static string ErrorWritingDebugSettings {
+        internal static string AssembliesNodeName {
             get {
-                return ResourceManager.GetString("ErrorWritingDebugSettings", resourceCulture);
+                return ResourceManager.GetString("AssembliesNodeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to COM.
+        /// </summary>
+        internal static string ComNodeName {
+            get {
+                return ResourceManager.GetString("ComNodeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dependencies.
+        /// </summary>
+        internal static string DependenciesNodeName {
+            get {
+                return ResourceManager.GetString("DependenciesNodeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Framework Assemblies.
+        /// </summary>
+        internal static string FrameworkAssembliesNodeName {
+            get {
+                return ResourceManager.GetString("FrameworkAssembliesNodeName", resourceCulture);
             }
         }
         
@@ -84,15 +111,6 @@ namespace Microsoft.VisualStudio {
         internal static string JsonErrorNeedToBeCorrected {
             get {
                 return ResourceManager.GetString("JsonErrorNeedToBeCorrected", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Error reading the launch settings file. This error will need to be corrected in order to debug this project. &apos;{0}&apos; .
-        /// </summary>
-        internal static string JsonErrorReadingLaunchSettings {
-            get {
-                return ResourceManager.GetString("JsonErrorReadingLaunchSettings", resourceCulture);
             }
         }
         
@@ -124,11 +142,29 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to At least one launch profile is missing the required name attribute. These profiles will be ignored.
+        ///   Looks up a localized string similar to NuGet.
         /// </summary>
-        internal static string ProfileMissingName {
+        internal static string NuGetPackagesNodeName {
             get {
-                return ResourceManager.GetString("ProfileMissingName", resourceCulture);
+                return ResourceManager.GetString("NuGetPackagesNodeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Projects.
+        /// </summary>
+        internal static string ProjectsNodeName {
+            get {
+                return ResourceManager.GetString("ProjectsNodeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SDK.
+        /// </summary>
+        internal static string SdkNodeName {
+            get {
+                return ResourceManager.GetString("SdkNodeName", resourceCulture);
             }
         }
     }
