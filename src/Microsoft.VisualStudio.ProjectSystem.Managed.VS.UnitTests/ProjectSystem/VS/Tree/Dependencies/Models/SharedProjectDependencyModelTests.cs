@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.True(model.Flags.Contains(DependencyTreeFlags.SharedProjectFlags));
             Assert.False(model.Flags.Contains(DependencyTreeFlags.SupportsRuleProperties));
             Assert.Equal(
-                DependencyTreeFlags.ProjectNodeFlags +
+                DependencyTreeFlags.ProjectDependency +
                 DependencyTreeFlags.SharedProjectFlags +
                 DependencyTreeFlags.GenericResolvedDependencyFlags -
                 DependencyTreeFlags.SupportsRuleProperties,
@@ -76,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(ManagedImageMonikers.SharedProjectWarning, model.UnresolvedIcon);
             Assert.Equal(ManagedImageMonikers.SharedProjectWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
-                DependencyTreeFlags.ProjectNodeFlags +
+                DependencyTreeFlags.ProjectDependency +
                 DependencyTreeFlags.SharedProjectFlags +
                 DependencyTreeFlags.GenericUnresolvedDependencyFlags -
                 DependencyTreeFlags.SupportsRuleProperties,
@@ -110,7 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(ManagedImageMonikers.SharedProjectWarning, model.UnresolvedIcon);
             Assert.Equal(ManagedImageMonikers.SharedProjectWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
-                DependencyTreeFlags.ProjectNodeFlags +
+                DependencyTreeFlags.ProjectDependency +
                 DependencyTreeFlags.SharedProjectFlags +
                 DependencyTreeFlags.GenericResolvedDependencyFlags -
                 DependencyTreeFlags.SupportsRuleProperties -

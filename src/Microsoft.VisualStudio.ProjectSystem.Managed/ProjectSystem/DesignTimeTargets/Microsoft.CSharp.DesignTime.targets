@@ -20,6 +20,7 @@
     <GeneratorsTypeGuid Condition="'$(GeneratorsTypeGuid)' == ''">{FAE04EC1-301F-11d3-BF4B-00C04F79EFBC}</GeneratorsTypeGuid>
     <DesignerFunctionVisibility Condition="'$(DesignerFunctionVisibility)' == ''">Private</DesignerFunctionVisibility>
     <DesignerVariableNaming Condition="'$(DesignerVariableNaming)' == ''">Camel</DesignerVariableNaming>
+    <DesignerHiddenCodeGeneration Condition="'$(DesignerHiddenCodeGeneration)' == ''">Declarations</DesignerHiddenCodeGeneration>
   
     <!-- Turn off rules and capabilities that are defined in MSBuild so that we can import our own below -->
     <DefineCSharpItemSchemas>false</DefineCSharpItemSchemas>
@@ -34,6 +35,18 @@
                           ClassDesigner;" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(DefineCommonManagedItemSchemas)' == 'true'">
+    
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)EditorConfigFiles.xaml">
+      <Context>File</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)EditorConfigFiles.BrowseObject.xaml">
+      <Context>BrowseObject</Context>
+    </PropertyPageSchema>
+    
+  </ItemGroup>
+  
   <!-- Targets -->
 
   <!-- Returns Csc command-line arguments for the language service -->

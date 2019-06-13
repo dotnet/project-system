@@ -7,76 +7,6 @@
         <target state="translated">{0} - L'importation provient du fichier cible. Impossible de supprimer cette importation.</target>
         <note />
       </trans-unit>
-      <trans-unit id="ProjectModificationsPrompt">
-        <source>The project '{0}' has been modified outside the environment.
-
-Press Reload to load the updated project from disk.
-Press Ignore to ignore the external changes. The changes will be used the next time you open the project.
-    </source>
-        <target state="translated">Le projet '{0}' a été modifié en dehors de l'environnement.
-
-Appuyez sur Recharger pour charger le projet mis à jour à partir du disque.
-Appuyez sur Ignorer pour ignorer les modifications externes. Les modifications seront appliquées à la prochaine ouverture du projet.
-    </target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ConflictingModificationsPrompt">
-        <source>The project '{0}' has been modified outside the environment, and there are unsaved changes to the project.
-
-Press Save As to save the unsaved changes and load the updated project from disk.
-Press Discard to discard the unsaved changes and load the updated project from disk.
-Press Overwrite to overwrite the external changes with your changes.
-Press Ignore to ignore the external changes. Your changes may be lost if you close and reopen the project.
-    </source>
-        <target state="translated">Le projet '{0}' a été modifié en dehors de l'environnement et des modifications non enregistrées existent.
-
-Appuyez sur Enregistrer sous pour enregistrer les modifications et charger le projet mis à jour à partir du disque.
-Appuyez sur Abandonner pour ignorer les modifications et charger le projet mis à jour à partir du disque.
-Appuyez sur Remplacer pour remplacer les modifications externes par vos modifications.
-Appuyez sur Ignorer pour ignorer les modifications externes. Vous risquez de perdre vos modifications si vous fermez et rouvrez le projet.
-    </target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ConflictingProjectModificationTitle">
-        <source>Conflicting Project Modification Detected</source>
-        <target state="translated">Modification de projet en conflit détectée</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Discard">
-        <source>_Discard</source>
-        <target state="translated">Aban_donner</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Ignore">
-        <source>_Ignore</source>
-        <target state="translated">_Ignorer</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="IgnoreAll">
-        <source>Ignore A_ll</source>
-        <target state="translated">Ignore t_out</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Overwrite">
-        <source>_Overwrite</source>
-        <target state="translated">_Remplacer</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ProjectModificationDlgTitle">
-        <source>Project Modification Detected</source>
-        <target state="translated">Modification de projet détectée</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Reload">
-        <source>_Reload</source>
-        <target state="translated">_Recharger</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ReloadAll">
-        <source>Reload A_ll</source>
-        <target state="translated">Recharger t_out</target>
-        <note />
-      </trans-unit>
       <trans-unit id="RenameSymbolFailed">
         <source>Renaming the code element '{0}' failed.</source>
         <target state="translated">Échec du changement de nom de l'élément de code en '{0}'.</target>
@@ -87,79 +17,9 @@ Appuyez sur Ignorer pour ignorer les modifications externes. Vous risquez de per
         <target state="translated">Vous renommez un fichier. Voulez-vous également renommer dans ce projet toutes les références à l'élément de code '{0}' ?</target>
         <note />
       </trans-unit>
-      <trans-unit id="SaveAs">
-        <source>_Save As</source>
-        <target state="translated">Enregistrer _sous</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="FailedToWatchProject">
-        <source>An unexpected error occurred attempting to watch project file '{0}'</source>
-        <target state="translated">Une erreur inattendue s'est produite durant une tentative de suivi du fichier projet '{0}'</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="FrameworkAssembliesNodeName">
-        <source>Framework Assemblies</source>
-        <target state="translated">Assemblys de framework</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ComNodeName">
-        <source>COM</source>
-        <target state="translated">COM</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="SdkNodeName">
-        <source>SDK</source>
-        <target state="translated">Kit de développement logiciel</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="AssembliesNodeName">
-        <source>Assemblies</source>
-        <target state="translated">Assemblys</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DependenciesLoadingPostfix">
-        <source> (Loading...)</source>
-        <target state="translated"> (Chargement...)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DependenciesNodeErrorsSuffix">
-        <source>(Errors - see Error List)</source>
-        <target state="translated">(Erreurs - voir la liste d'erreurs)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DependenciesNodeName">
-        <source>Dependencies</source>
-        <target state="translated">Dépendances</target>
-        <note />
-      </trans-unit>
       <trans-unit id="GraphNodeCategoryDependency">
         <source>Dependency</source>
         <target state="translated">Dépendance</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="NoItemTypeForRule">
-        <source>Expected to find item type for rule {0}. The rule file is either missing or malformed.</source>
-        <target state="translated">Le type d'élément de la règle {0} était attendu. Le fichier de règle est manquant ou incorrectement formé.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="NuGetPackagesNodeName">
-        <source>NuGet</source>
-        <target state="translated">NuGet</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ProjectsNodeName">
-        <source>Projects</source>
-        <target state="translated">Projets</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="AnalyzersNodeName">
-        <source>Analyzers</source>
-        <target state="translated">Analyseurs</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DotNetCoreProjectsNotSupported">
-        <source>.NET Core projects are not supported in this release of Visual Studio. Support will be available in a later update.</source>
-        <target state="translated">Les projets .NET Core ne sont pas pris en charge dans cette version de Visual Studio. Ils le seront dans une mise à jour ultérieure.</target>
         <note />
       </trans-unit>
       <trans-unit id="ActiveLaunchProfileNotFound">
@@ -189,16 +49,6 @@ In order to debug this project, add an executable project to this solution which
         <target state="translated">Impossible de démarrer directement un projet avec un type de sortie de bibliothèque de classes.
 
 Pour déboguer ce projet, ajoutez à cette solution un projet exécutable qui fait référence au projet de bibliothèque. Définissez le projet exécutable comme projet de démarrage.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="NoUrlSpecified">
-        <source>The debug profile '{0}' has requested a web browser be launched, but a URL was not specified.</source>
-        <target state="translated">Le profil de débogage '{0}' a demandé le lancement d'un navigateur web, mais aucune URL n'a été spécifiée.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="InvalidAbsoluteUrlSpecified">
-        <source>The debug profile '{0}' has requested a web browser be launched, but the URL specified is not a valid absolute URL.  {1}</source>
-        <target state="translated">Le profil de débogage '{0}' a demandé le lancement d'un navigateur web, mais l'URL spécifiée n'est pas une URL absolue valide. {1}</target>
         <note />
       </trans-unit>
       <trans-unit id="NoDebugExecutableSpecified">

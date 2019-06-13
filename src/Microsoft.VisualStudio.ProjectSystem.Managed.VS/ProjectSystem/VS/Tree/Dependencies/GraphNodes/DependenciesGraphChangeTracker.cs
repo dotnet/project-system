@@ -11,6 +11,8 @@ using Microsoft.VisualStudio.GraphModel.Schemas;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.ViewProviders;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 {
     /// <summary>
@@ -111,28 +113,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 
                 foreach (GraphNode inputGraphNode in graphContext.InputNodes.ToList())
                 {
-                    string existingDependencyId = inputGraphNode.GetValue<string>(DependenciesGraphSchema.DependencyIdProperty);
+                    string? existingDependencyId = inputGraphNode.GetValue<string>(DependenciesGraphSchema.DependencyIdProperty);
                     if (string.IsNullOrEmpty(existingDependencyId))
                     {
                         continue;
                     }
 
-                    string nodeProjectPath = inputGraphNode.Id.GetValue(CodeGraphNodeIdName.Assembly);
+                    string? nodeProjectPath = inputGraphNode.Id.GetValue(CodeGraphNodeIdName.Assembly);
                     if (string.IsNullOrEmpty(nodeProjectPath))
                     {
                         continue;
                     }
 
-                    IDependenciesSnapshot updatedSnapshot = _aggregateSnapshotProvider.GetSnapshot(nodeProjectPath);
+                    IDependenciesSnapshot? updatedSnapshot = _aggregateSnapshotProvider.GetSnapshot(nodeProjectPath);
 
-                    IDependency updatedDependency = updatedSnapshot?.FindDependency(existingDependencyId);
+                    IDependency? updatedDependency = updatedSnapshot?.FindDependency(existingDependencyId);
 
-                    if (updatedDependency == null)
+                    if (updatedDependency == null) // or updatedSnapshot == null
                     {
                         continue;
                     }
 
-                    IDependenciesGraphViewProvider viewProvider = _viewProviders
+                    IDependenciesGraphViewProvider? viewProvider = _viewProviders
                         .FirstOrDefaultValue((x, d) => x.SupportsDependency(d), updatedDependency);
                     if (viewProvider == null)
                     {
@@ -150,7 +152,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                         nodeProjectPath,
                         updatedDependency,
                         inputGraphNode,
-                        updatedSnapshot.Targets[updatedDependency.TargetFramework]))
+                        updatedSnapshot!.Targets[updatedDependency.TargetFramework]))
                     {
                         anyChanges = true;
                     }
@@ -214,7 +216,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                 {
                     _list = list;
                     _next = list.First;
-                    Current = null;
+                    Current = null!;
                 }
 
                 public T Current { get; private set; }
@@ -239,7 +241,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                         }
                     }
 
-                    Current = null;
+                    Current = null!;
                     return false;
                 }
             }

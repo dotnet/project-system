@@ -5,8 +5,9 @@ using System.ComponentModel.Composition;
 using System.Linq;
 
 using Microsoft.VisualStudio.GraphModel;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
+
+#nullable enable
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.ViewProviders
 {
@@ -43,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
 
         public override bool HasChildren(IDependency dependency)
         {
-            ITargetedDependenciesSnapshot targetedSnapshot = _aggregateSnapshotProvider.GetSnapshot(dependency);
+            ITargetedDependenciesSnapshot? targetedSnapshot = _aggregateSnapshotProvider.GetSnapshot(dependency);
 
             return targetedSnapshot?.TopLevelDependencies.Length != 0;
         }
@@ -59,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             dependencyGraphNode.SetValue(DependenciesGraphSchema.DependencyIdProperty, dependency.Id);
             dependencyGraphNode.SetValue(DependenciesGraphSchema.ResolvedProperty, dependency.Resolved);
 
-            ITargetedDependenciesSnapshot otherProjectTargetedSnapshot = _aggregateSnapshotProvider.GetSnapshot(dependency);
+            ITargetedDependenciesSnapshot? otherProjectTargetedSnapshot = _aggregateSnapshotProvider.GetSnapshot(dependency);
 
             if (otherProjectTargetedSnapshot == null)
             {
@@ -100,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             GraphNode dependencyGraphNode,
             ITargetedDependenciesSnapshot targetedSnapshot)
         {
-            ITargetedDependenciesSnapshot referencedProjectSnapshot = _aggregateSnapshotProvider.GetSnapshot(updatedDependency);
+            ITargetedDependenciesSnapshot? referencedProjectSnapshot = _aggregateSnapshotProvider.GetSnapshot(updatedDependency);
 
             if (referencedProjectSnapshot == null)
             {
@@ -121,11 +122,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
         public override bool MatchSearchResults(
             IDependency topLevelDependency,
             Dictionary<string, HashSet<IDependency>> searchResultsPerContext,
-            out HashSet<IDependency> topLevelDependencyMatches)
+            out HashSet<IDependency>? topLevelDependencyMatches)
         {
             topLevelDependencyMatches = new HashSet<IDependency>();
 
-            if (!topLevelDependency.Flags.Contains(DependencyTreeFlags.ProjectNodeFlags))
+            if (!topLevelDependency.Flags.Contains(DependencyTreeFlags.ProjectDependency))
             {
                 return false;
             }
@@ -143,7 +144,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                 return true;
             }
 
-            ITargetFramework nearestTargetFramework = _targetFrameworkProvider.GetNearestFramework(
+            ITargetFramework? nearestTargetFramework = _targetFrameworkProvider.GetNearestFramework(
                 topLevelDependency.TargetFramework,
                 contextResults.Select(x => x.TargetFramework));
 

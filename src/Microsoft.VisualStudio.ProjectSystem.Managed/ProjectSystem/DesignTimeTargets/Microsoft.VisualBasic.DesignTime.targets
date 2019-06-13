@@ -20,6 +20,7 @@
     <GeneratorsTypeGuid Condition="'$(GeneratorsTypeGuid)' == ''">{164B10B9-B200-11d0-8C61-00A0C91E29D5}</GeneratorsTypeGuid>
     <DesignerFunctionVisibility Condition="'$(DesignerFunctionVisibility)' == ''">Friend</DesignerFunctionVisibility>
     <DesignerVariableNaming Condition="'$(DesignerVariableNaming)' == ''">VB</DesignerVariableNaming>
+    <DesignerHiddenCodeGeneration Condition="'$(DesignerHiddenCodeGeneration)' == ''">Declarations;InitMethods</DesignerHiddenCodeGeneration>
 
     <!-- Turn off rules and capabilities that are defined in MSBuild so that we can import our own below -->
     <DefineVisualBasicItemSchemas>false</DefineVisualBasicItemSchemas>
@@ -38,6 +39,18 @@
                           Managed;
                           ClassDesigner;
                           PreventAutomaticMyApplication;" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(DefineCommonManagedItemSchemas)' == 'true'">
+
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)EditorConfigFiles.xaml">
+      <Context>File</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)EditorConfigFiles.BrowseObject.xaml">
+      <Context>BrowseObject</Context>
+    </PropertyPageSchema>
+
   </ItemGroup>
 
   <!-- Targets -->

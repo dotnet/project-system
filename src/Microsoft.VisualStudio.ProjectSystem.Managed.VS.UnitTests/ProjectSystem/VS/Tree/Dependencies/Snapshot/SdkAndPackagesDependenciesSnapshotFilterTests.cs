@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             {
                 Id = "dependency1",
                 TopLevel = false,
-                Flags = DependencyTreeFlags.SdkSubTreeNodeFlags
+                Flags = DependencyTreeFlags.SdkDependency
             });
         }
 
@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Name = sdkName,
                 TopLevel = true,
                 Resolved = false,
-                Flags = DependencyTreeFlags.SdkSubTreeNodeFlags
+                Flags = DependencyTreeFlags.SdkDependency
             };
 
             var packageDependency = new TestDependency
@@ -48,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Id = Dependency.GetID(targetFramework, PackageRuleHandler.ProviderTypeString, sdkName),
                 Resolved = true,
                 DependencyIDs = dependencyIDs,
-                Flags = DependencyTreeFlags.PackageNodeFlags
+                Flags = DependencyTreeFlags.NuGetPackageDependency
             };
 
             var worldBuilder = new IDependency[] { sdkDependency, packageDependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
@@ -91,14 +91,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Name = sdkName,
                 TopLevel = false,
                 Resolved = true,
-                Flags = DependencyTreeFlags.SdkSubTreeNodeFlags
+                Flags = DependencyTreeFlags.SdkDependency
             };
 
             var packageDependency = new TestDependency
             {
                 Id = Dependency.GetID(targetFramework, PackageRuleHandler.ProviderTypeString, sdkName),
                 Resolved = false,
-                Flags = DependencyTreeFlags.PackageNodeFlags
+                Flags = DependencyTreeFlags.NuGetPackageDependency
             };
 
             var worldBuilder = new IDependency[] { sdkDependency, packageDependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
@@ -135,14 +135,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Id = Dependency.GetID(targetFramework, SdkRuleHandler.ProviderTypeString, packageName),
                 TopLevel = false,
                 Resolved = true,
-                Flags = DependencyTreeFlags.PackageNodeFlags.Union(DependencyTreeFlags.UnresolvedFlags) // to see if unresolved is fixed
+                Flags = DependencyTreeFlags.NuGetPackageDependency.Union(DependencyTreeFlags.Unresolved) // to see if unresolved is fixed
             };
 
             var packageDependency = new TestDependency
             {
                 Id = "packageId",
                 Name = packageName,
-                Flags = DependencyTreeFlags.PackageNodeFlags,
+                Flags = DependencyTreeFlags.NuGetPackageDependency,
                 TopLevel = true,
                 Resolved = true,
                 DependencyIDs = dependencyIDs
@@ -186,14 +186,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Id = Dependency.GetID(targetFramework, SdkRuleHandler.ProviderTypeString, packageName),
                 TopLevel = false,
                 Resolved = true,
-                Flags = DependencyTreeFlags.SdkSubTreeNodeFlags.Union(DependencyTreeFlags.ResolvedFlags)
+                Flags = DependencyTreeFlags.SdkDependency.Union(DependencyTreeFlags.Resolved)
             };
 
             var packageDependency = new TestDependency
             {
                 Id = "packageId",
                 Name = packageName,
-                Flags = DependencyTreeFlags.PackageNodeFlags,
+                Flags = DependencyTreeFlags.NuGetPackageDependency,
                 TopLevel = true,
                 Resolved = true
             };

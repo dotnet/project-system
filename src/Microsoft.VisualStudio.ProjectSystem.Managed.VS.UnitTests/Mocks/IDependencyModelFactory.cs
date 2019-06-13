@@ -92,8 +92,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
 
             data.Flags += data.Resolved
-                ? DependencyTreeFlags.ResolvedFlags
-                : DependencyTreeFlags.UnresolvedFlags;
+                ? DependencyTreeFlags.Resolved
+                : DependencyTreeFlags.Unresolved;
 
             if (icon.HasValue)
             {

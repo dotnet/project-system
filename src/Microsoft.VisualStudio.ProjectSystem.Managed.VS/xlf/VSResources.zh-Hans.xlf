@@ -7,76 +7,6 @@
         <target state="translated">{0} - 导入项来自目标文件。无法删除此导入。</target>
         <note />
       </trans-unit>
-      <trans-unit id="ProjectModificationsPrompt">
-        <source>The project '{0}' has been modified outside the environment.
-
-Press Reload to load the updated project from disk.
-Press Ignore to ignore the external changes. The changes will be used the next time you open the project.
-    </source>
-        <target state="translated">项目“{0}”已在环境外部修改。
-
-按“重载”，从磁盘加载更新的项目。
-按“忽略”，忽略外部更改。将在下次打开项目时使用此更改。
-    </target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ConflictingModificationsPrompt">
-        <source>The project '{0}' has been modified outside the environment, and there are unsaved changes to the project.
-
-Press Save As to save the unsaved changes and load the updated project from disk.
-Press Discard to discard the unsaved changes and load the updated project from disk.
-Press Overwrite to overwrite the external changes with your changes.
-Press Ignore to ignore the external changes. Your changes may be lost if you close and reopen the project.
-    </source>
-        <target state="translated">项目“{0}”已在环境外部修改，并且该项目有未保存的更改。
-
-按“另存为”，保存未保存的更改并从磁盘加载更新的项目。
-按“放弃”，放弃未保存的更改并从磁盘加载更新的项目。
-按“覆盖”，可以用你的更改覆盖外部更改。
-按“忽略”，忽略外部更改。如果关闭并重新打开项目，所做更改可能会丢失。
-    </target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ConflictingProjectModificationTitle">
-        <source>Conflicting Project Modification Detected</source>
-        <target state="translated">检测到冲突的项目修改</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Discard">
-        <source>_Discard</source>
-        <target state="translated">放弃(_D)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Ignore">
-        <source>_Ignore</source>
-        <target state="translated">忽略(_I)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="IgnoreAll">
-        <source>Ignore A_ll</source>
-        <target state="translated">全部忽略(_L)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Overwrite">
-        <source>_Overwrite</source>
-        <target state="translated">覆盖(_O)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ProjectModificationDlgTitle">
-        <source>Project Modification Detected</source>
-        <target state="translated">检测到项目修改</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Reload">
-        <source>_Reload</source>
-        <target state="translated">重载(_R)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ReloadAll">
-        <source>Reload A_ll</source>
-        <target state="translated">全部重载(_L)</target>
-        <note />
-      </trans-unit>
       <trans-unit id="RenameSymbolFailed">
         <source>Renaming the code element '{0}' failed.</source>
         <target state="translated">重命名代码元素“{0}”失败。</target>
@@ -87,79 +17,9 @@ Press Ignore to ignore the external changes. Your changes may be lost if you clo
         <target state="translated">你正在重命名文件。是否也对此项目中对代码元素“{0}”的所有引用执行重命名操作?</target>
         <note />
       </trans-unit>
-      <trans-unit id="SaveAs">
-        <source>_Save As</source>
-        <target state="translated">另存为(_S)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="FailedToWatchProject">
-        <source>An unexpected error occurred attempting to watch project file '{0}'</source>
-        <target state="translated">尝试监视项目文件“{0}”时发生意外错误</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="FrameworkAssembliesNodeName">
-        <source>Framework Assemblies</source>
-        <target state="translated">框架程序集</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ComNodeName">
-        <source>COM</source>
-        <target state="translated">COM</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="SdkNodeName">
-        <source>SDK</source>
-        <target state="translated">SDK</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="AssembliesNodeName">
-        <source>Assemblies</source>
-        <target state="translated">程序集</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DependenciesLoadingPostfix">
-        <source> (Loading...)</source>
-        <target state="translated"> (正在加载...)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DependenciesNodeErrorsSuffix">
-        <source>(Errors - see Error List)</source>
-        <target state="translated">(错误 - 查看错误列表)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DependenciesNodeName">
-        <source>Dependencies</source>
-        <target state="translated">依赖项</target>
-        <note />
-      </trans-unit>
       <trans-unit id="GraphNodeCategoryDependency">
         <source>Dependency</source>
         <target state="translated">依赖项</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="NoItemTypeForRule">
-        <source>Expected to find item type for rule {0}. The rule file is either missing or malformed.</source>
-        <target state="translated">预期查找规则 {0} 的项类型。规则文件丢失或格式不正确。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="NuGetPackagesNodeName">
-        <source>NuGet</source>
-        <target state="translated">NuGet</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ProjectsNodeName">
-        <source>Projects</source>
-        <target state="translated">项目</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="AnalyzersNodeName">
-        <source>Analyzers</source>
-        <target state="translated">分析器</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DotNetCoreProjectsNotSupported">
-        <source>.NET Core projects are not supported in this release of Visual Studio. Support will be available in a later update.</source>
-        <target state="translated">此版本的 Visual Studio 不支持 .NET Core 项目。将在以后的更新中提供支持。</target>
         <note />
       </trans-unit>
       <trans-unit id="ActiveLaunchProfileNotFound">
@@ -189,16 +49,6 @@ In order to debug this project, add an executable project to this solution which
         <target state="translated">无法直接启动带有“类库输出类型”的项目。
 
 若要调试此项目，请向引用库项目的此解决方案中添加可执行项目。将此可执行项目设置为启动项目。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="NoUrlSpecified">
-        <source>The debug profile '{0}' has requested a web browser be launched, but a URL was not specified.</source>
-        <target state="translated">调试配置文件“{0}”已请求启动 Web 浏览器，但未指定 URL。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="InvalidAbsoluteUrlSpecified">
-        <source>The debug profile '{0}' has requested a web browser be launched, but the URL specified is not a valid absolute URL.  {1}</source>
-        <target state="translated">调试配置文件“{0}”已请求启动 Web 浏览器，但指定的 URL 不是有效的绝对 URL。{1}</target>
         <note />
       </trans-unit>
       <trans-unit id="NoDebugExecutableSpecified">

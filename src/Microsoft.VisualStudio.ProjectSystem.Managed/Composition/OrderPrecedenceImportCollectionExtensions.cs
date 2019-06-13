@@ -8,6 +8,8 @@ using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.Composition
 {
     internal static class OrderPrecedenceImportCollectionExtensions
@@ -56,7 +58,7 @@ namespace Microsoft.VisualStudio.Composition
             }
         }
 
-        public static T FirstOrDefaultValue<T>(this OrderPrecedenceImportCollection<T> imports, Func<T, bool> predicate)
+        public static T? FirstOrDefaultValue<T>(this OrderPrecedenceImportCollection<T> imports, Func<T, bool> predicate) where T : class
         {
             Requires.NotNull(imports, nameof(imports));
 
@@ -72,7 +74,7 @@ namespace Microsoft.VisualStudio.Composition
             return default;
         }
 
-        public static TImport FirstOrDefaultValue<TImport, TArg>(this OrderPrecedenceImportCollection<TImport> imports, Func<TImport, TArg, bool> predicate, TArg arg)
+        public static TImport? FirstOrDefaultValue<TImport, TArg>(this OrderPrecedenceImportCollection<TImport> imports, Func<TImport, TArg, bool> predicate, TArg arg) where TImport : class
         {
             Requires.NotNull(imports, nameof(imports));
 
@@ -102,7 +104,7 @@ namespace Microsoft.VisualStudio.Composition
             return builder.MoveToImmutable();
         }
 
-        public static Dictionary<TKey, TImport> ToValueDictionary<TKey, TImport>(this OrderPrecedenceImportCollection<TImport> imports, Func<TImport, TKey> keySelector, IEqualityComparer<TKey> comparer = default)
+        public static Dictionary<TKey, TImport> ToValueDictionary<TKey, TImport>(this OrderPrecedenceImportCollection<TImport> imports, Func<TImport, TKey> keySelector, IEqualityComparer<TKey>? comparer = default)
         {
             var dictionary = new Dictionary<TKey, TImport>(comparer);
 

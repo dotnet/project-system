@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 flag + 
                 DependencyTreeFlags.GenericResolvedDependencyFlags + 
                 DependencyTreeFlags.DependencyFlags +
-                DependencyTreeFlags.SubTreeRootNodeFlags -
+                DependencyTreeFlags.SubTreeRootNode -
                 DependencyTreeFlags.SupportsRuleProperties -
                 DependencyTreeFlags.SupportsRemove,
                 model.Flags);

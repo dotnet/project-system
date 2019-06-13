@@ -7,6 +7,8 @@ using Microsoft.VisualStudio.GraphModel;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.ViewProviders;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.Actions
 {
     /// <summary>
@@ -30,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
         /// <inheritdoc />
         public abstract bool TryHandleRequest(IGraphContext graphContext);
 
-        protected IDependenciesGraphViewProvider FindViewProvider(IDependency dependency)
+        protected IDependenciesGraphViewProvider? FindViewProvider(IDependency dependency)
         {
             return _viewProviders.FirstOrDefaultValue((x, d) => x.SupportsDependency(d), dependency);
         }

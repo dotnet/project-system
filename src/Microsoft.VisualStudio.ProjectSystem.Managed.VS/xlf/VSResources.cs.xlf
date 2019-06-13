@@ -7,76 +7,6 @@
         <target state="translated">{0} – import pochází z cílového souboru. Tento import nelze odebrat.</target>
         <note />
       </trans-unit>
-      <trans-unit id="ProjectModificationsPrompt">
-        <source>The project '{0}' has been modified outside the environment.
-
-Press Reload to load the updated project from disk.
-Press Ignore to ignore the external changes. The changes will be used the next time you open the project.
-    </source>
-        <target state="translated">Projekt {0} byl upravený mimo prostředí.
-
-Pokud chcete načíst aktualizovaný projekt z disku, stiskněte Načíst znovu.
-Pokud chcete ignorovat externí změny, stiskněte Ignorovat. Změny se použijí při příštím otevření projektu.
-    </target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ConflictingModificationsPrompt">
-        <source>The project '{0}' has been modified outside the environment, and there are unsaved changes to the project.
-
-Press Save As to save the unsaved changes and load the updated project from disk.
-Press Discard to discard the unsaved changes and load the updated project from disk.
-Press Overwrite to overwrite the external changes with your changes.
-Press Ignore to ignore the external changes. Your changes may be lost if you close and reopen the project.
-    </source>
-        <target state="translated">Projekt {0} byl změněn mimo toto prostředí, takže obsahuje neuložené změny.
-
-Pokud chcete neuložené změny uložit a načíst aktualizovaný projekt z disku, stiskněte Uložit jako.
-Pokud chcete neuložené změny zahodit a načíst aktualizovaný projekt z disku, stiskněte Zahodit.
-Pokud chcete externí změny přepsat svými změnami, stiskněte Přepsat.
-Pokud chcete ignorovat externí změny, stiskněte Ignorovat. Pokud projekt zavřete a znovu ho otevřete, můžete o změny přijít.
-    </target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ConflictingProjectModificationTitle">
-        <source>Conflicting Project Modification Detected</source>
-        <target state="translated">Byly zjištěny konfliktní změny projektu</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Discard">
-        <source>_Discard</source>
-        <target state="translated">_Zahodit</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Ignore">
-        <source>_Ignore</source>
-        <target state="translated">_Ignorovat</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="IgnoreAll">
-        <source>Ignore A_ll</source>
-        <target state="translated">Ignorovat V_še</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Overwrite">
-        <source>_Overwrite</source>
-        <target state="translated">_Přepsat</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ProjectModificationDlgTitle">
-        <source>Project Modification Detected</source>
-        <target state="translated">Byly zjištěny změny projektu</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Reload">
-        <source>_Reload</source>
-        <target state="translated">_Znovu načíst</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ReloadAll">
-        <source>Reload A_ll</source>
-        <target state="translated">Znovu načíst V_še</target>
-        <note />
-      </trans-unit>
       <trans-unit id="RenameSymbolFailed">
         <source>Renaming the code element '{0}' failed.</source>
         <target state="translated">Přejmenování prvku kódu {0} nebylo úspěšné.</target>
@@ -87,79 +17,9 @@ Pokud chcete ignorovat externí změny, stiskněte Ignorovat. Pokud projekt zav�
         <target state="translated">Přejmenováváte soubor. Chcete také v tomto projektu přejmenovat všechny odkazy na prvek kódu {0}?</target>
         <note />
       </trans-unit>
-      <trans-unit id="SaveAs">
-        <source>_Save As</source>
-        <target state="translated">_Uložit jako</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="FailedToWatchProject">
-        <source>An unexpected error occurred attempting to watch project file '{0}'</source>
-        <target state="translated">Při pokusu o sledování souboru projektu {0} došlo k nečekané chybě</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="FrameworkAssembliesNodeName">
-        <source>Framework Assemblies</source>
-        <target state="translated">Sestavení rozhraní</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ComNodeName">
-        <source>COM</source>
-        <target state="translated">Model COM</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="SdkNodeName">
-        <source>SDK</source>
-        <target state="translated">SDK</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="AssembliesNodeName">
-        <source>Assemblies</source>
-        <target state="translated">Sestavení</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DependenciesLoadingPostfix">
-        <source> (Loading...)</source>
-        <target state="translated"> (Načítání...)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DependenciesNodeErrorsSuffix">
-        <source>(Errors - see Error List)</source>
-        <target state="translated">(Chyby – viz seznam chyb)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DependenciesNodeName">
-        <source>Dependencies</source>
-        <target state="translated">Závislosti</target>
-        <note />
-      </trans-unit>
       <trans-unit id="GraphNodeCategoryDependency">
         <source>Dependency</source>
         <target state="translated">Závislost</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="NoItemTypeForRule">
-        <source>Expected to find item type for rule {0}. The rule file is either missing or malformed.</source>
-        <target state="translated">Očekává se pro nalezení typu položky pro pravidlo {0}. Soubor pravidla chybí nebo nemá správný formát.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="NuGetPackagesNodeName">
-        <source>NuGet</source>
-        <target state="translated">NuGet</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ProjectsNodeName">
-        <source>Projects</source>
-        <target state="translated">Projekty</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="AnalyzersNodeName">
-        <source>Analyzers</source>
-        <target state="translated">Analyzátory</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DotNetCoreProjectsNotSupported">
-        <source>.NET Core projects are not supported in this release of Visual Studio. Support will be available in a later update.</source>
-        <target state="translated">Projekty .NET Core nejsou v této verzi sady Visual Studio podporované. Podpora bude k dispozici v další aktualizaci.</target>
         <note />
       </trans-unit>
       <trans-unit id="ActiveLaunchProfileNotFound">
@@ -189,16 +49,6 @@ In order to debug this project, add an executable project to this solution which
         <target state="translated">Projekt s typem výstupu Knihovna tříd se nedá spustit přímo.
 
 Pokud chcete projekt ladit, přidejte do řešení spustitelný projekt, který odkazuje na projekt knihovny. Spustitelný projekt nastavte jako úvodní projekt.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="NoUrlSpecified">
-        <source>The debug profile '{0}' has requested a web browser be launched, but a URL was not specified.</source>
-        <target state="translated">Ladicí profil {0} vyžaduje spuštění webového prohlížeče, ale není zadaná adresa URL.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="InvalidAbsoluteUrlSpecified">
-        <source>The debug profile '{0}' has requested a web browser be launched, but the URL specified is not a valid absolute URL.  {1}</source>
-        <target state="translated">Ladicí profil {0} vyžaduje spuštění webového prohlížeče, ale zadaná adresa URL není platná absolutní adresa URL. {1}</target>
         <note />
       </trans-unit>
       <trans-unit id="NoDebugExecutableSpecified">
