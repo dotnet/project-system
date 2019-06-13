@@ -171,6 +171,21 @@ In order to debug this project, add an executable project to this solution which
         <target state="translated">Значения свойств "TargetFrameworkMoniker" и "NuGetTargetMoniker" в конфигурации "{0}" являются пустыми. Эта конфигурация не будет задействована в восстановлении NuGet, что может привести к ошибкам при восстановлении и сборке.</target>
         <note />
       </trans-unit>
+      <trans-unit id="WindowsFormEditor_DisplayName">
+        <source>Form Designer (Windows Forms)</source>
+        <target state="new">Form Designer (Windows Forms)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ComponentEditor_DisplayName">
+        <source>Component Designer (Windows Forms)</source>
+        <target state="new">Component Designer (Windows Forms)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UserControlEditor_DisplayName">
+        <source>User Control Designer (Windows Forms)</source>
+        <target state="new">User Control Designer (Windows Forms)</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

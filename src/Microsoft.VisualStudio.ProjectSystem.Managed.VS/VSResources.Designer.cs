@@ -70,6 +70,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Component Designer (Windows Forms).
+        /// </summary>
+        internal static string ComponentEditor_DisplayName {
+            get {
+                return ResourceManager.GetString("ComponentEditor_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The debug executable &apos;{0}&apos; specified in the &apos;{1}&apos; debug profile does not exist..
         /// </summary>
         internal static string DebugExecutableNotFound {
@@ -102,6 +111,15 @@ namespace Microsoft.VisualStudio {
         internal static string DontShowAgain {
             get {
                 return ResourceManager.GetString("DontShowAgain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit {0}.
+        /// </summary>
+        internal static string EditProjectFileCommand {
+            get {
+                return ResourceManager.GetString("EditProjectFileCommand", resourceCulture);
             }
         }
         
@@ -174,6 +192,15 @@ namespace Microsoft.VisualStudio {
         internal static string NoDebugExecutableSpecified {
             get {
                 return ResourceManager.GetString("NoDebugExecutableSpecified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Expected to find migrated cpsroj in {0}, but did not find any..
+        /// </summary>
+        internal static string NoMigratedCSProjFound {
+            get {
+                return ResourceManager.GetString("NoMigratedCSProjFound", resourceCulture);
             }
         }
         
@@ -293,6 +320,24 @@ namespace Microsoft.VisualStudio {
         internal static string Restore_PropertyWithInconsistentValues {
             get {
                 return ResourceManager.GetString("Restore_PropertyWithInconsistentValues", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Control Designer (Windows Forms).
+        /// </summary>
+        internal static string UserControlEditor_DisplayName {
+            get {
+                return ResourceManager.GetString("UserControlEditor_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Form Designer (Windows Forms).
+        /// </summary>
+        internal static string WindowsFormEditor_DisplayName {
+            get {
+                return ResourceManager.GetString("WindowsFormEditor_DisplayName", resourceCulture);
             }
         }
         

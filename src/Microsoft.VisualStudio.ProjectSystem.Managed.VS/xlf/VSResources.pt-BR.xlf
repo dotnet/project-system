@@ -171,6 +171,21 @@ Para depurar esse projeto, adicione um projeto executável a essa solução que 
         <target state="translated">Os valores das propriedades 'TargetFrameworkMoniker' e 'NuGetTargetMoniker' na configuração '{0}' estão vazios. Essa configuração não contribuirá para a restauração do NuGet, o que poderá resultar em erros de restauração e de build.</target>
         <note />
       </trans-unit>
+      <trans-unit id="WindowsFormEditor_DisplayName">
+        <source>Form Designer (Windows Forms)</source>
+        <target state="new">Form Designer (Windows Forms)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ComponentEditor_DisplayName">
+        <source>Component Designer (Windows Forms)</source>
+        <target state="new">Component Designer (Windows Forms)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UserControlEditor_DisplayName">
+        <source>User Control Designer (Windows Forms)</source>
+        <target state="new">User Control Designer (Windows Forms)</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

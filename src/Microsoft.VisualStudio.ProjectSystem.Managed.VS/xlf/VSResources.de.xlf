@@ -171,6 +171,21 @@ Um das Projekt zu debuggen, fügen Sie dieser Projektmappe ein ausführbares Pro
         <target state="translated">Die Werte der Eigenschaften "TargetFrameworkMoniker" und "NuGetTargetMoniker" in der Konfiguration "{0}" sind beide leer. Diese Konfiguration wird bei der NuGet-Wiederherstellung nicht berücksichtigt, was zu Wiederherstellungs- und Buildfehlern führen kann.</target>
         <note />
       </trans-unit>
+      <trans-unit id="WindowsFormEditor_DisplayName">
+        <source>Form Designer (Windows Forms)</source>
+        <target state="new">Form Designer (Windows Forms)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ComponentEditor_DisplayName">
+        <source>Component Designer (Windows Forms)</source>
+        <target state="new">Component Designer (Windows Forms)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UserControlEditor_DisplayName">
+        <source>User Control Designer (Windows Forms)</source>
+        <target state="new">User Control Designer (Windows Forms)</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

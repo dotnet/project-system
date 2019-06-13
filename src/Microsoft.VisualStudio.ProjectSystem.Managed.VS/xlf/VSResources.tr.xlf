@@ -171,6 +171,21 @@ Bu projede hata ayıklamak için bu çözüme, kitaplık projesine başvuran bir
         <target state="translated">'{0}' yapılandırmasındaki 'TargetFrameworkMoniker' ve 'NuGetTargetMoniker' özelliklerinin değeri boş. Bu yapılandırma NuGet geri yüklemesine katkıda bulunmaz, bu da geri yükleme ve derleme hatalarına neden olabilir.</target>
         <note />
       </trans-unit>
+      <trans-unit id="WindowsFormEditor_DisplayName">
+        <source>Form Designer (Windows Forms)</source>
+        <target state="new">Form Designer (Windows Forms)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ComponentEditor_DisplayName">
+        <source>Component Designer (Windows Forms)</source>
+        <target state="new">Component Designer (Windows Forms)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UserControlEditor_DisplayName">
+        <source>User Control Designer (Windows Forms)</source>
+        <target state="new">User Control Designer (Windows Forms)</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

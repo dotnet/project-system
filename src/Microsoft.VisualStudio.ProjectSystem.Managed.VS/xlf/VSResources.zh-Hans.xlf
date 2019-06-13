@@ -171,6 +171,21 @@ In order to debug this project, add an executable project to this solution which
         <target state="translated">“{0}”配置中 "TargetFrameworkMoniker" 和 "NuGetTargetMoniker" 属性的值均为空。此配置将影响 NuGet 还原，这可能导致还原和生成错误。</target>
         <note />
       </trans-unit>
+      <trans-unit id="WindowsFormEditor_DisplayName">
+        <source>Form Designer (Windows Forms)</source>
+        <target state="new">Form Designer (Windows Forms)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ComponentEditor_DisplayName">
+        <source>Component Designer (Windows Forms)</source>
+        <target state="new">Component Designer (Windows Forms)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UserControlEditor_DisplayName">
+        <source>User Control Designer (Windows Forms)</source>
+        <target state="new">User Control Designer (Windows Forms)</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -171,6 +171,21 @@ Pokud chcete projekt ladit, přidejte do řešení spustitelný projekt, který 
         <target state="translated">Hodnoty vlastností TargetFrameworkMoniker a NuGetTargetMoniker v konfiguraci {0} jsou obě prázdné. Tato konfigurace se nebude podílet na obnovení přes NuGet, což může mít za následek chyby při obnovení a sestavení.</target>
         <note />
       </trans-unit>
+      <trans-unit id="WindowsFormEditor_DisplayName">
+        <source>Form Designer (Windows Forms)</source>
+        <target state="new">Form Designer (Windows Forms)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ComponentEditor_DisplayName">
+        <source>Component Designer (Windows Forms)</source>
+        <target state="new">Component Designer (Windows Forms)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UserControlEditor_DisplayName">
+        <source>User Control Designer (Windows Forms)</source>
+        <target state="new">User Control Designer (Windows Forms)</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>
