@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     {
         private const string FastUpToDateEnabledSettingKey = @"ManagedProjectSystem\FastUpToDateCheckEnabled";
         private const string FastUpToDateLogLevelSettingKey = @"ManagedProjectSystem\FastUpToDateLogLevel";
-
+        
         private readonly IEnvironmentHelper _environment;
         private readonly IVsUIService<ISettingsManager> _settingsManager;
         private readonly JoinableTaskContext _joinableTaskContext;
@@ -32,10 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public bool IsProjectOutputPaneEnabled
         {
-            get
-            {
-                return IsEnabled("PROJECTSYSTEM_PROJECTOUTPUTPANEENABLED", ref _isProjectOutputPaneEnabled);
-            }
+            get { return IsEnvironmentVariableEnabled("PROJECTSYSTEM_PROJECTOUTPUTPANEENABLED", ref _isProjectOutputPaneEnabled); }
         }
 
         public async Task<bool> GetIsFastUpToDateCheckEnabledAsync(CancellationToken cancellationToken = default)
@@ -47,10 +44,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public async Task<LogLevel> GetFastUpToDateLoggingLevelAsync(CancellationToken cancellationToken = default)
         {
             await _joinableTaskContext.Factory.SwitchToMainThreadAsync(cancellationToken);
+
             return _settingsManager.Value?.GetValueOrDefault(FastUpToDateLogLevelSettingKey, LogLevel.None) ?? LogLevel.None;
         }
 
-        private bool IsEnabled(string variable, ref bool? result)
+        private bool IsEnvironmentVariableEnabled(string variable, ref bool? result)
         {
             if (result == null)
             {
@@ -61,5 +59,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             return result.Value;
         }
+
     }
 }
