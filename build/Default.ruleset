@@ -35,6 +35,7 @@
     <Rule Id="CA1066" Action="None" />
     <Rule Id="CA1067" Action="Warning" />
     <Rule Id="CA1068" Action="Warning" />
+    <Rule Id="CA1031" Action="None" /> <!-- Do not catch general exception types -->
     <Rule Id="CA1304" Action="None" />
     <Rule Id="CA1707" Action="None" />
     <Rule Id="CA1710" Action="None" />
