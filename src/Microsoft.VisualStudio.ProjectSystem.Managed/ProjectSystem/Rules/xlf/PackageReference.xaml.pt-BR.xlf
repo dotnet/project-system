@@ -87,6 +87,16 @@
         <target state="translated">Indica se é necessário gerar uma propriedade do MSBuild com a localização do diretório de raiz do pacote. O nome da propriedade gerado é em forma de 'Pkg [PackageID]', onde '[PackageID] 'é o ID do pacote com quaisquer períodos'.' substituído com caracteres de sublinhado '_'.</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|Name|DisplayName">
+        <source>Name</source>
+        <target state="new">Name</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Path|DisplayName">
+        <source>Path</source>
+        <target state="new">Path</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

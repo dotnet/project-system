@@ -21,7 +21,8 @@
                   Visible="False" />
 
   <StringProperty Name="ResolvedPath"
-                  ReadOnly="True">
+                  ReadOnly="True"
+                  DisplayName="Resolved Path">
     <StringProperty.DataSource>
       <DataSource PersistedName="Identity"
                   SourceOfDefaultValue="AfterContext" />

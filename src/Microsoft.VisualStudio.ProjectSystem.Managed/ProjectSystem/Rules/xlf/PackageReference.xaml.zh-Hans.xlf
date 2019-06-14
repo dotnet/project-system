@@ -87,6 +87,16 @@
         <target state="translated">指示是否要使用包的根目录的位置生成 MSBuild 属性。所生成的属性名称采用 "Pkg[PackageID]" 的形式，其中 "[PackageID]" 是包的 ID，且所有句点 "." 均替换为下划线 "_"。</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|Name|DisplayName">
+        <source>Name</source>
+        <target state="new">Name</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Path|DisplayName">
+        <source>Path</source>
+        <target state="new">Path</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

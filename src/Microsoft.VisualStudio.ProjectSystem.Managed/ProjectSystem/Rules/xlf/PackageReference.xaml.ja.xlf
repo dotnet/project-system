@@ -87,6 +87,16 @@
         <target state="translated">MSBuild プロパティをパッケージのルート ディレクトリーの場所に生成するかどうかを示します。生成されるプロパティ名は 'Pkg[PackageID]' という形式になります。'[PackageID]' はパッケージの ID で、ピリオド (.) はアンダースコア (_) に置き換えられます。</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|Name|DisplayName">
+        <source>Name</source>
+        <target state="new">Name</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Path|DisplayName">
+        <source>Path</source>
+        <target state="new">Path</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

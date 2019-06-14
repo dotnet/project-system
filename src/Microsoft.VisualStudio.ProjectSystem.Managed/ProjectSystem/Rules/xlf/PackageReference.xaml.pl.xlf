@@ -87,6 +87,16 @@
         <target state="translated">Wskazuje, czy należy generowania właściwość MSBuild z lokalizacją katalogu głównego pakietu. Nazwa właściwości generowane jest w formie 'Pkg [PackageID]', gdzie '[PackageID] 'jest identyfikator pakietu z okresów'.' zastąpione znakami podkreślenia '_'.</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|Name|DisplayName">
+        <source>Name</source>
+        <target state="new">Name</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Path|DisplayName">
+        <source>Path</source>
+        <target state="new">Path</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

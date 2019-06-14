@@ -87,6 +87,16 @@
         <target state="translated">Určuje, jestli se má generovat vlastnost MSBuildu s umístěním kořenového adresáře balíčku. Název generované vlastnosti je ve formátu Pkg[ID_balíčku], kde [ID_balíčku] je ID balíčku, ve kterém jsou tečky nahrazené podtržítky.</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|Name|DisplayName">
+        <source>Name</source>
+        <target state="new">Name</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Path|DisplayName">
+        <source>Path</source>
+        <target state="new">Path</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

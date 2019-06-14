@@ -34,7 +34,8 @@
                   DisplayName="IncludeAssets" />
 
   <StringProperty Name="Name"
-                  ReadOnly="True" />
+                  ReadOnly="True"
+                  DisplayName="Name" />
 
   <StringProperty Name="OriginalItemSpec"
                   ReadOnly="True"

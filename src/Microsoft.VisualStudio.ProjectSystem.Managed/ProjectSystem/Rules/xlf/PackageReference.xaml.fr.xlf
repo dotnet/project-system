@@ -87,6 +87,16 @@
         <target state="translated">Indique s'il faut générer une propriété MSBuild avec l'emplacement du répertoire racine du package. Le nom de la propriété générée est au format 'Pkg[PackageID]', où '[PackageID]' est l'ID du package avec tous les points '.' remplacés par des traits de soulignement '_'.</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|Name|DisplayName">
+        <source>Name</source>
+        <target state="new">Name</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Path|DisplayName">
+        <source>Path</source>
+        <target state="new">Path</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

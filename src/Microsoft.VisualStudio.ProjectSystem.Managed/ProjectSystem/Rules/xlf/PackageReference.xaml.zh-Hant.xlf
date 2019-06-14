@@ -87,6 +87,16 @@
         <target state="translated">表示是否要以套件根目錄的位置產生 MSBuild 屬性。產生屬性的名稱格式為 'Pkg[PackageID]'，其中 '[PackageID]' 是套件的識別碼，所有句點 '.' 均會替換為底線 '_'。</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|Name|DisplayName">
+        <source>Name</source>
+        <target state="new">Name</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Path|DisplayName">
+        <source>Path</source>
+        <target state="new">Path</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

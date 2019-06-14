@@ -85,6 +85,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
         [Theory]
         [MemberData(nameof(GetAllRules))]
+        public void VisiblePropertiesMustHaveDisplayName(string ruleName, string fullPath)
+        {
+            // The "DisplayName" property is localised, while "Name" is not.
+            // Visible properties without a "DisplayName" will appear in English in all locales.
+
+            XElement rule = LoadXamlRuleX(fullPath).Root;
+
+            // Ignore XAML documents for other types such as ProjectSchemaDefinitions
+            if (rule.Name.LocalName != "Rule")
+                return;
+
+            foreach (var property in GetProperties(rule))
+            {
+                // Properties are visible by default
+                string visibleValue = property.Attribute("Visible")?.Value ?? "true";
+
+                Assert.True(bool.TryParse(visibleValue, out bool visible));
+
+                if (!visible)
+                    continue;
+
+                string displayName = property.Attribute("DisplayName")?.Value;
+
+                Assert.NotNull(displayName);
+                Assert.NotEqual("", displayName);
+            }
+        }
+
+        [Theory]
+        [MemberData(nameof(GetAllRules))]
         public void PropertyDescriptionMustEndWithFullStop(string ruleName, string fullPath)
         {
             XElement rule = LoadXamlRuleX(fullPath).Root;

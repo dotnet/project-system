@@ -62,6 +62,11 @@
         <target state="needs-review-translation">此引用中的私有资产</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|Name|DisplayName">
+        <source>Name</source>
+        <target state="new">Name</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

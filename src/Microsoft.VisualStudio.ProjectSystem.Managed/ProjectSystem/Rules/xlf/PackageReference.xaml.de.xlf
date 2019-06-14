@@ -87,6 +87,16 @@
         <target state="translated">Gibt an, ob eine MSBuild-Eigenschaft mit dem Speicherort des Stammverzeichnisses des Pakets generiert werden soll. Der Name der generierten Eigenschaft weist das Format "Pkg[Paket-ID]" auf, wobei "[Paket-ID]" der ID des Pakets entspricht. Hierbei müssen Punkte (.) jedoch durch Unterstriche (_) ersetzt werden.</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|Name|DisplayName">
+        <source>Name</source>
+        <target state="new">Name</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Path|DisplayName">
+        <source>Path</source>
+        <target state="new">Path</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

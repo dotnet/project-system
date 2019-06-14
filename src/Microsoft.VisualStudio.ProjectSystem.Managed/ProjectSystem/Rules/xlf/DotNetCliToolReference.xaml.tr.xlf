@@ -62,6 +62,11 @@
         <target state="needs-review-translation">Bu başvuruda özel olan varlıklar</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|Name|DisplayName">
+        <source>Name</source>
+        <target state="new">Name</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

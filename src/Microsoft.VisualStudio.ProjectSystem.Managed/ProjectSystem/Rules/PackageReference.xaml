@@ -44,7 +44,8 @@
                   Visible="False" />
 
   <StringProperty Name="Name"
-                  ReadOnly="True" />
+                  ReadOnly="True"
+                  DisplayName="Name" />
 
   <StringProperty Name="NoWarn"
                   Description="Comma-delimited list of warnings that should be suppressed for this package."
@@ -56,7 +57,8 @@
 
   <StringProperty Name="Path"
                   Description="Location of the package being referenced."
-                  ReadOnly="True" />
+                  ReadOnly="True"
+                  DisplayName="Path" />
 
   <StringProperty Name="PrivateAssets"
                   Description="Assets that are private in this reference."

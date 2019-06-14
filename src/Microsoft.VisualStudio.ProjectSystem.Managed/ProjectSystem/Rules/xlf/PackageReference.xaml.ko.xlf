@@ -87,6 +87,16 @@
         <target state="translated">패키지의 루트 디렉터리 위치를 사용하여 MSBuild 속성을 생성할지 여부를 제어합니다. 생성된 속성 이름은 'Pkg[PackageID]' 형식입니다. 여기서 '[PackageID]'는 패키지의 ID이고 마침표 '.'는 밑줄 '_'로 바뀝니다.</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|Name|DisplayName">
+        <source>Name</source>
+        <target state="new">Name</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Path|DisplayName">
+        <source>Path</source>
+        <target state="new">Path</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

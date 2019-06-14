@@ -87,6 +87,16 @@
         <target state="translated">Paket kök dizini konumuyla bir MSBuild özelliği oluşturulup oluşturulmayacağını belirtir. Oluşturulan özellik adı 'Pkg[PackageID]' biçimindedir. Burada '[PackageID]', noktalar '.' alt çizgi '_' ile değiştirilmiş olarak paketin adıdır.</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|Name|DisplayName">
+        <source>Name</source>
+        <target state="new">Name</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Path|DisplayName">
+        <source>Path</source>
+        <target state="new">Path</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

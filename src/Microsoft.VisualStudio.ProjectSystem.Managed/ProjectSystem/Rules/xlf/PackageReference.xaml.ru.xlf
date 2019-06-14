@@ -87,6 +87,16 @@
         <target state="translated">Указывает, необходимо ли создать свойство MSBuild, содержащее расположение корневого каталог пакета. Имя созданного свойства имеет вид 'Pkg[PackageID]', где '[PackageID]' — идентификатор пакета, в котором точки ('.') заменены на нижние подчеркивания ('_').</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|Name|DisplayName">
+        <source>Name</source>
+        <target state="new">Name</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Path|DisplayName">
+        <source>Path</source>
+        <target state="new">Path</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>
