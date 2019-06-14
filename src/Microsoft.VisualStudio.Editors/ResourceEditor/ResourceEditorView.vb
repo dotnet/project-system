@@ -3232,7 +3232,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="HDropStream"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function GetFileListFromVsHDropHandle(HDropStream As Stream) As DraggedFileInfo()
+        Private Shared Function GetFileListFromVsHDropHandle(HDropStream As Stream) As DraggedFileInfo()
             Dim Files() As DraggedFileInfo
             Const MAX_PATH As Integer = 260
             Const FILEINFO_LENGTH As Integer = 2 * MAX_PATH + 41     ' FILEINFO include two paths and a GUID
