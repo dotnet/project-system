@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml;
+using System.Xml.Linq;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Rules
@@ -77,6 +78,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
                     Assert.False(element.HasAttribute("Category"));
                 }
             }
+        }
+
+        [Theory]
+        [MemberData(nameof(GetAllRules))]
+        public void RuleMustHaveAName(string ruleName, string fullPath)
+        {
+            XElement rule = LoadXamlRuleX(fullPath).Root;
+
+            // Ignore XAML documents for other types such as ProjectSchemaDefinitions
+            if (rule.Name.LocalName != "Rule")
+                return;
+
+            string name = rule.Attribute("Name")?.Value;
+
+            Assert.NotNull(name);
+            Assert.NotEqual("", name);
         }
 
         [Theory]
@@ -243,6 +260,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             }
 
             return rule;
+        }
+
+        private static XDocument LoadXamlRuleX(string fullPath)
+        {
+            var settings = new XmlReaderSettings { XmlResolver = null };
+            using var fileStream = File.OpenRead(fullPath);
+            using var reader = XmlReader.Create(fileStream, settings);
+            return XDocument.Load(reader);
         }
 
         private void AssertXmlEqual(XmlDocument left, XmlDocument right)
