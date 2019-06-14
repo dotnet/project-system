@@ -17,13 +17,11 @@
   <StringProperty Name="Description"
                   Description="Dependency description."
                   DisplayName="Description"
-                  ReadOnly="True"
-                  Visible="True" />
+                  ReadOnly="True" />
 
   <StringProperty Name="ExcludeAssets"
                   Description="Assets to exclude from this reference."
-                  DisplayName="Excluded assets"
-                  Visible="True" />
+                  DisplayName="Excluded assets" />
 
   <StringProperty Name="FrameworkName"
                   ReadOnly="True"
@@ -35,26 +33,22 @@
 
   <BoolProperty Name="GeneratePathProperty"
                 Description="Indicates whether to generate an MSBuild property with the location of the package's root directory. The generated property name is in the form of 'Pkg[PackageID]', where '[PackageID]' is the ID of the package with any periods '.' replaced with underscores '_'."
-                DisplayName="Generate path property"
-                Visible="True" />
+                DisplayName="Generate path property" />
 
   <StringProperty Name="IncludeAssets"
                   Description="Assets to include from this reference."
-                  DisplayName="Included assets"
-                  Visible="True" />
+                  DisplayName="Included assets" />
 
   <StringProperty Name="IsImplicitlyDefined"
                   ReadOnly="True"
                   Visible="False" />
 
   <StringProperty Name="Name"
-                  ReadOnly="True"
-                  Visible="True" />
+                  ReadOnly="True" />
 
   <StringProperty Name="NoWarn"
                   Description="Comma-delimited list of warnings that should be suppressed for this package."
-                  DisplayName="Suppress warnings"
-                  Visible="True" />
+                  DisplayName="Suppress warnings" />
 
   <StringProperty Name="OriginalItemSpec"
                   ReadOnly="True"
@@ -62,13 +56,11 @@
 
   <StringProperty Name="Path"
                   Description="Location of the package being referenced."
-                  ReadOnly="True"
-                  Visible="True" />
+                  ReadOnly="True" />
 
   <StringProperty Name="PrivateAssets"
                   Description="Assets that are private in this reference."
-                  DisplayName="Private assets"
-                  Visible="True" />
+                  DisplayName="Private assets" />
 
   <StringProperty Name="RuntimeIdentifier"
                   ReadOnly="True"

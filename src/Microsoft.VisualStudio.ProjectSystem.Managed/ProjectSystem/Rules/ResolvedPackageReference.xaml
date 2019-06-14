@@ -28,13 +28,11 @@
   <StringProperty Name="Description"
                   Description="Dependency description."
                   DisplayName="Description"
-                  ReadOnly="True"
-                  Visible="True" />
+                  ReadOnly="True" />
 
   <StringProperty Name="ExcludeAssets"
                   Description="Assets to exclude from this reference."
-                  DisplayName="ExcludeAssets"
-                  Visible="True">
+                  DisplayName="ExcludeAssets">
     <StringProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
                   ItemType="PackageReference"
@@ -53,8 +51,7 @@
 
   <StringProperty Name="IncludeAssets"
                   Description="Assets to include from this reference."
-                  DisplayName="IncludeAssets"
-                  Visible="True">
+                  DisplayName="IncludeAssets">
     <StringProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
                   ItemType="PackageReference"
@@ -72,8 +69,7 @@
                 Visible="False" />
 
   <StringProperty Name="Name"
-                  ReadOnly="True"
-                  Visible="True" />
+                  ReadOnly="True" />
 
   <StringProperty Name="NoWarn"
                   Description="Comma-delimited list of warnings that should be suppressed for this package."
@@ -92,13 +88,11 @@
 
   <StringProperty Name="Path"
                   Description="Location of the package being referenced."
-                  ReadOnly="True"
-                  Visible="True" />
+                  ReadOnly="True" />
 
   <StringProperty Name="PrivateAssets"
                   Description="Assets that are private in this reference."
-                  DisplayName="PrivateAssets"
-                  Visible="True">
+                  DisplayName="PrivateAssets">
     <StringProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
                   ItemType="PackageReference"
