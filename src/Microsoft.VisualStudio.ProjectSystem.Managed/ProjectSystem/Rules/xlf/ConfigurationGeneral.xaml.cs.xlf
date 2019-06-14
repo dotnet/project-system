@@ -83,8 +83,8 @@
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
-        <source>Should compiler optimize output?</source>
-        <target state="translated">Má kompilátor optimalizovat výstup?</target>
+        <source>Whether the compiler should optimize output.</source>
+        <target state="needs-review-translation">Má kompilátor optimalizovat výstup?</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|TargetRuntime.AppHost|DisplayName">

@@ -38,8 +38,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|Description">
-        <source>Assets to include from this reference</source>
-        <target state="translated">この参照から含める資産</target>
+        <source>Assets to include from this reference.</source>
+        <target state="needs-review-translation">この参照から含める資産</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
@@ -48,8 +48,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|Description">
-        <source>Assets to exclude from this reference</source>
-        <target state="translated">この参照から除外する資産</target>
+        <source>Assets to exclude from this reference.</source>
+        <target state="needs-review-translation">この参照から除外する資産</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|DisplayName">
@@ -58,8 +58,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|Description">
-        <source>Assets that are private in this reference</source>
-        <target state="translated">この参照で非公開のアセット</target>
+        <source>Assets that are private in this reference.</source>
+        <target state="needs-review-translation">この参照で非公開のアセット</target>
         <note />
       </trans-unit>
     </body>

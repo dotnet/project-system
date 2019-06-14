@@ -38,8 +38,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|Description">
-        <source>Assets to include from this reference</source>
-        <target state="translated">Risorse da includere da questo riferimento</target>
+        <source>Assets to include from this reference.</source>
+        <target state="needs-review-translation">Risorse da includere da questo riferimento</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
@@ -48,8 +48,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|Description">
-        <source>Assets to exclude from this reference</source>
-        <target state="translated">Risorse da escludere da questo riferimento</target>
+        <source>Assets to exclude from this reference.</source>
+        <target state="needs-review-translation">Risorse da escludere da questo riferimento</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|DisplayName">
@@ -58,8 +58,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|Description">
-        <source>Assets that are private in this reference</source>
-        <target state="translated">Risorse private in questo riferimento</target>
+        <source>Assets that are private in this reference.</source>
+        <target state="needs-review-translation">Risorse private in questo riferimento</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|DisplayName">
@@ -68,8 +68,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|Description">
-        <source>Comma-delimited list of warnings that should be suppressed for this package</source>
-        <target state="translated">Elenco di avvisi delimitati da virgole che non devono essere visualizzati per questo pacchetto</target>
+        <source>Comma-delimited list of warnings that should be suppressed for this package.</source>
+        <target state="needs-review-translation">Elenco di avvisi delimitati da virgole che non devono essere visualizzati per questo pacchetto</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Path|Description">

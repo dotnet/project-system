@@ -21,7 +21,7 @@
                   Visible="True" />
 
   <StringProperty Name="ExcludeAssets"
-                  Description="Assets to exclude from this reference"
+                  Description="Assets to exclude from this reference."
                   DisplayName="Excluded assets"
                   Visible="True" />
 
@@ -39,7 +39,7 @@
                 Visible="True" />
 
   <StringProperty Name="IncludeAssets"
-                  Description="Assets to include from this reference"
+                  Description="Assets to include from this reference."
                   DisplayName="Included assets"
                   Visible="True" />
 
@@ -52,7 +52,7 @@
                   Visible="True" />
 
   <StringProperty Name="NoWarn"
-                  Description="Comma-delimited list of warnings that should be suppressed for this package"
+                  Description="Comma-delimited list of warnings that should be suppressed for this package."
                   DisplayName="Suppress warnings"
                   Visible="True" />
 
@@ -66,7 +66,7 @@
                   Visible="True" />
 
   <StringProperty Name="PrivateAssets"
-                  Description="Assets that are private in this reference"
+                  Description="Assets that are private in this reference."
                   DisplayName="Private assets"
                   Visible="True" />
 

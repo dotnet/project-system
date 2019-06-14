@@ -19,7 +19,7 @@
                   Visible="True" />
 
   <StringProperty Name="ExcludeAssets"
-                  Description="Assets to exclude from this reference"
+                  Description="Assets to exclude from this reference."
                   DisplayName="ExcludeAssets"
                   Visible="True" />
 
@@ -32,7 +32,7 @@
                   Visible="False" />
 
   <StringProperty Name="IncludeAssets"
-                  Description="Assets to include from this reference"
+                  Description="Assets to include from this reference."
                   DisplayName="IncludeAssets"
                   Visible="True" />
 
@@ -49,7 +49,7 @@
                   Visible="False" />
 
   <StringProperty Name="PrivateAssets"
-                  Description="Assets that are private in this reference"
+                  Description="Assets that are private in this reference."
                   DisplayName="PrivateAssets"
                   Visible="True" />
 

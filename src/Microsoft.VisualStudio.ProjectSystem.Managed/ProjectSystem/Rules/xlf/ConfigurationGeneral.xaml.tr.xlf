@@ -83,8 +83,8 @@
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
-        <source>Should compiler optimize output?</source>
-        <target state="translated">Derleyici çıkışı en iyi duruma getirmeli midir?</target>
+        <source>Whether the compiler should optimize output.</source>
+        <target state="needs-review-translation">Derleyici çıkışı en iyi duruma getirmeli midir?</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|TargetRuntime.AppHost|DisplayName">

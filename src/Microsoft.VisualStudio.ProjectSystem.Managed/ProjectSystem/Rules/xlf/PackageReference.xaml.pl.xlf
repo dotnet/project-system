@@ -38,8 +38,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|Description">
-        <source>Assets to include from this reference</source>
-        <target state="translated">Zasoby do uwzględnienia z tego odwołania</target>
+        <source>Assets to include from this reference.</source>
+        <target state="needs-review-translation">Zasoby do uwzględnienia z tego odwołania</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
@@ -48,8 +48,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|Description">
-        <source>Assets to exclude from this reference</source>
-        <target state="translated">Zasoby do wykluczenia z tego odwołania</target>
+        <source>Assets to exclude from this reference.</source>
+        <target state="needs-review-translation">Zasoby do wykluczenia z tego odwołania</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|DisplayName">
@@ -58,8 +58,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|Description">
-        <source>Assets that are private in this reference</source>
-        <target state="translated">Prywatne zasoby w tym odwołaniu</target>
+        <source>Assets that are private in this reference.</source>
+        <target state="needs-review-translation">Prywatne zasoby w tym odwołaniu</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|DisplayName">
@@ -68,8 +68,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|Description">
-        <source>Comma-delimited list of warnings that should be suppressed for this package</source>
-        <target state="translated">Rozdzielona przecinkami lista ostrzeżeń, które mają zostać pominięte dla tego pakietu</target>
+        <source>Comma-delimited list of warnings that should be suppressed for this package.</source>
+        <target state="needs-review-translation">Rozdzielona przecinkami lista ostrzeżeń, które mają zostać pominięte dla tego pakietu</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Path|Description">

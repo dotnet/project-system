@@ -108,8 +108,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|Description">
-        <source>Assets to exclude from this reference</source>
-        <target state="translated">Ресурсы, исключаемые из этой ссылки</target>
+        <source>Assets to exclude from this reference.</source>
+        <target state="needs-review-translation">Ресурсы, исключаемые из этой ссылки</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|DisplayName">
@@ -118,8 +118,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|Description">
-        <source>Assets to include from this reference</source>
-        <target state="translated">Ресурсы, включаемые из этой ссылки</target>
+        <source>Assets to include from this reference.</source>
+        <target state="needs-review-translation">Ресурсы, включаемые из этой ссылки</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ReferenceOutputAssembly|DisplayName">
@@ -138,8 +138,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|Description">
-        <source>Assets that are private in this reference</source>
-        <target state="translated">Ресурсы, являющиеся закрытыми в этой ссылке</target>
+        <source>Assets that are private in this reference.</source>
+        <target state="needs-review-translation">Ресурсы, являющиеся закрытыми в этой ссылке</target>
         <note />
       </trans-unit>
     </body>

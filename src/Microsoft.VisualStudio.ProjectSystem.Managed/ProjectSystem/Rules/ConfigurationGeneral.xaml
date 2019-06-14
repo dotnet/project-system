@@ -110,7 +110,7 @@
                   Visible="False" />
 
   <BoolProperty Name="Optimize"
-                Description="Should compiler optimize output?" />
+                Description="Whether the compiler should optimize output." />
 
   <StringProperty Name="OutputName" />
 

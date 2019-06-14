@@ -85,6 +85,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
         [Theory]
         [MemberData(nameof(GetAllRules))]
+        public void PropertyDescriptionMustEndWithFullStop(string ruleName, string fullPath)
+        {
+            XElement rule = LoadXamlRuleX(fullPath).Root;
+
+            // Ignore XAML documents for other types such as ProjectSchemaDefinitions
+            if (rule.Name.LocalName != "Rule")
+                return;
+
+            foreach (var property in GetProperties(rule))
+            {
+                string description = property.Attribute("Description")?.Value;
+
+                if (description != null)
+                {
+                    Assert.EndsWith(".", description);
+                }
+            }
+        }
+
+        [Theory]
+        [MemberData(nameof(GetAllRules))]
         public void RuleMustHaveAName(string ruleName, string fullPath)
         {
             XElement rule = LoadXamlRuleX(fullPath).Root;
@@ -271,6 +292,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             using var fileStream = File.OpenRead(fullPath);
             using var reader = XmlReader.Create(fileStream, settings);
             return XDocument.Load(reader);
+        }
+
+        private static IEnumerable<XElement> GetProperties(XElement rule)
+        {
+            foreach (var child in rule.Elements())
+            {
+                if (child.Name.LocalName.EndsWith("Property", StringComparison.Ordinal) &&
+                    child.Name.LocalName.IndexOf('.') == -1)
+                {
+                    yield return child;
+                }
+            }
         }
 
         private void AssertXmlEqual(XmlDocument left, XmlDocument right)
