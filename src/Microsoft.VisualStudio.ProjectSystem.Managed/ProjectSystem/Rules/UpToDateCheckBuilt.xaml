@@ -10,7 +10,8 @@
                 SourceType="TargetResults" />
   </Rule.DataSource>
 
-  <StringProperty Name="Original" />
+  <StringProperty Name="Original"
+                  DisplayName="Original" />
 
   <BoolProperty Name="Visible"
                 ReadOnly="True"

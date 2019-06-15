@@ -38,8 +38,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|Description">
-        <source>Assets to include from this reference</source>
-        <target state="translated">Zasoby do uwzględnienia z tego odwołania</target>
+        <source>Assets to include from this reference.</source>
+        <target state="needs-review-translation">Zasoby do uwzględnienia z tego odwołania</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
@@ -48,8 +48,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|Description">
-        <source>Assets to exclude from this reference</source>
-        <target state="translated">Zasoby do wykluczenia z tego odwołania</target>
+        <source>Assets to exclude from this reference.</source>
+        <target state="needs-review-translation">Zasoby do wykluczenia z tego odwołania</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|DisplayName">
@@ -58,8 +58,13 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|Description">
-        <source>Assets that are private in this reference</source>
-        <target state="translated">Prywatne zasoby w tym odwołaniu</target>
+        <source>Assets that are private in this reference.</source>
+        <target state="needs-review-translation">Prywatne zasoby w tym odwołaniu</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Name|DisplayName">
+        <source>Name</source>
+        <target state="new">Name</target>
         <note />
       </trans-unit>
     </body>

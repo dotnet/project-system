@@ -15,6 +15,7 @@
                 SourceType="TargetResults" />
   </Rule.DataSource>
 
-  <StringProperty Name="PrivateAssets" />
+  <StringProperty Name="PrivateAssets"
+                  DisplayName="Private Assets" />
 
 </Rule>

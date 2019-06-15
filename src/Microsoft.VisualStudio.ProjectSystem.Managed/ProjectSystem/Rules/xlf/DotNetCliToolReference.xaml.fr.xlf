@@ -38,8 +38,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|Description">
-        <source>Assets to include from this reference</source>
-        <target state="translated">Composants à inclure à partir de cette référence</target>
+        <source>Assets to include from this reference.</source>
+        <target state="needs-review-translation">Composants à inclure à partir de cette référence</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
@@ -48,8 +48,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|Description">
-        <source>Assets to exclude from this reference</source>
-        <target state="translated">Composants à exclure à partir de cette référence</target>
+        <source>Assets to exclude from this reference.</source>
+        <target state="needs-review-translation">Composants à exclure à partir de cette référence</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|DisplayName">
@@ -58,8 +58,13 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|Description">
-        <source>Assets that are private in this reference</source>
-        <target state="translated">Composants privés dans cette référence</target>
+        <source>Assets that are private in this reference.</source>
+        <target state="needs-review-translation">Composants privés dans cette référence</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Name|DisplayName">
+        <source>Name</source>
+        <target state="new">Name</target>
         <note />
       </trans-unit>
     </body>

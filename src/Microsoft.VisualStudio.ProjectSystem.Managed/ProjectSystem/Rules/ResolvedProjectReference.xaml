@@ -64,7 +64,7 @@
   </BoolProperty>
 
   <StringProperty Name="ExcludeAssets"
-                  Description="Assets to exclude from this reference"
+                  Description="Assets to exclude from this reference."
                   DisplayName="Exclude Assets"
                   Visible="True" />
 
@@ -94,7 +94,7 @@
   </StringProperty>
 
   <StringProperty Name="IncludeAssets"
-                  Description="Assets to include from this reference"
+                  Description="Assets to include from this reference."
                   DisplayName="Include Assets"
                   Visible="True" />
 
@@ -110,7 +110,7 @@
                   Visible="False" />
 
   <StringProperty Name="PrivateAssets"
-                  Description="Assets that are private in this reference"
+                  Description="Assets that are private in this reference."
                   DisplayName="Private Assets"
                   Visible="True" />
 
