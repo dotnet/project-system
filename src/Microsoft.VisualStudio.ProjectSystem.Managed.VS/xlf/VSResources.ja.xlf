@@ -71,21 +71,6 @@ In order to debug this project, add an executable project to this solution which
         <target state="translated">移行された cpsroj が {0} に見つかる必要がありましたが、何も見つかりませんでした。</target>
         <note />
       </trans-unit>
-      <trans-unit id="XprojMigrationFailed">
-        <source>Failed to migrate XProj project {0}. 'dotnet migrate --skip-backup -s -p "{1}" -x "{2}"' exited with error code {3}.</source>
-        <target state="translated">XProj プロジェクト {0} の移行に失敗しました。'dotnet migrate --skip-backup -s -p "{1}" -x "{2}"' はエラー コード {3} で終了しました。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="MigrationBackupFile">
-        <source>Backing up {0} to {1}.</source>
-        <target state="translated">{0} を {1} にバックアップしています。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="XprojMigrationFailedProjectJsonFileNotFound">
-        <source>Failed to migrate XProj project {0}. Could not find project.json at {1}.</source>
-        <target state="translated">XProj プロジェクト {0} の移行に失敗しました。{1} で project.json が見つかりませんでした。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="EditProjectFileCommand">
         <source>Edit {0}</source>
         <target state="translated">{0} を編集する</target>
@@ -109,16 +94,6 @@ In order to debug this project, add an executable project to this solution which
       <trans-unit id="PackSelectedProjectCommand">
         <source>&amp;Pack {0}</source>
         <target state="translated">パッケージ {0}(&amp;P)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="XprojMigrationFailedCannotReadReport">
-        <source>Could not read post-migration report at '{0}'.</source>
-        <target state="translated">'{0}' で移行後のレポートを読み取れませんでした。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="XprojMigrationGeneralFailure">
-        <source>Failed to migrate XProj project {0}. '{1}' exited with error code {2}.</source>
-        <target state="translated">XProj プロジェクト {0} の移行に失敗しました。'{1}' はエラー コード {2} で終了しました。</target>
         <note />
       </trans-unit>
       <trans-unit id="DebugFrameworkMenuText">
@@ -169,6 +144,11 @@ In order to debug this project, add an executable project to this solution which
       <trans-unit id="Restore_EmptyTargetFrameworkMoniker">
         <source>The value of the 'TargetFrameworkMoniker' and 'NuGetTargetMoniker' properties in the '{0}' configuration are both empty. This configuration will not contribute to NuGet restore, which may result in restore and build errors.</source>
         <target state="translated">'{0}' 構成の 'TargetFrameworkMoniker' プロパティおよび 'NuGetTargetMoniker' プロパティの値が両方とも空です。この構成は NuGet の復元には影響しませんが、復元およびビルドのエラーが発生する可能性があります。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XprojNotSupported">
+        <source>Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/en-us/dotnet/core/migration/.</source>
+        <target state="new">Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/en-us/dotnet/core/migration/.</target>
         <note />
       </trans-unit>
     </body>

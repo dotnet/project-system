@@ -155,15 +155,6 @@ In order to debug this project, add an executable project to this solution which
   <data name="NoMigratedCSProjFound" xml:space="preserve">
     <value>Expected to find migrated cpsroj in {0}, but did not find any.</value>
   </data>
-  <data name="XprojMigrationFailed" xml:space="preserve">
-    <value>Failed to migrate XProj project {0}. 'dotnet migrate --skip-backup -s -p "{1}" -x "{2}"' exited with error code {3}.</value>
-  </data>
-  <data name="MigrationBackupFile" xml:space="preserve">
-    <value>Backing up {0} to {1}.</value>
-  </data>
-  <data name="XprojMigrationFailedProjectJsonFileNotFound" xml:space="preserve">
-    <value>Failed to migrate XProj project {0}. Could not find project.json at {1}.</value>
-  </data>
   <data name="EditProjectFileCommand" xml:space="preserve">
     <value>Edit {0}</value>
   </data>
@@ -178,12 +169,6 @@ In order to debug this project, add an executable project to this solution which
   </data>
   <data name="PackSelectedProjectCommand" xml:space="preserve">
     <value>&amp;Pack {0}</value>
-  </data>
-  <data name="XprojMigrationFailedCannotReadReport" xml:space="preserve">
-    <value>Could not read post-migration report at '{0}'.</value>
-  </data>
-  <data name="XprojMigrationGeneralFailure" xml:space="preserve">
-    <value>Failed to migrate XProj project {0}. '{1}' exited with error code {2}.</value>
   </data>
   <data name="DebugFrameworkMenuText" xml:space="preserve">
     <value>Framework ({0})</value>
@@ -217,5 +202,8 @@ In order to debug this project, add an executable project to this solution which
   </data>
   <data name="Restore_EmptyTargetFrameworkMoniker" xml:space="preserve">
     <value>The value of the 'TargetFrameworkMoniker' and 'NuGetTargetMoniker' properties in the '{0}' configuration are both empty. This configuration will not contribute to NuGet restore, which may result in restore and build errors.</value>
+  </data>
+  <data name="XprojNotSupported" xml:space="preserve">
+    <value>Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/en-us/dotnet/core/migration/.</value>
   </data>
 </root>

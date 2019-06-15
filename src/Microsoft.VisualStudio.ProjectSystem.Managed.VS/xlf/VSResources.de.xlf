@@ -71,21 +71,6 @@ Um das Projekt zu debuggen, fügen Sie dieser Projektmappe ein ausführbares Pro
         <target state="translated">In "{0}" wurde eine migrierte CSPROJ-Datei erwartet, aber keine gefunden.</target>
         <note />
       </trans-unit>
-      <trans-unit id="XprojMigrationFailed">
-        <source>Failed to migrate XProj project {0}. 'dotnet migrate --skip-backup -s -p "{1}" -x "{2}"' exited with error code {3}.</source>
-        <target state="translated">Fehler beim Migrieren des XProj-Projekts "{0}". "dotnet migrate --skip-backup -s -p "{1}" -x "{2}"" wurde mit folgendem Fehlercode beendet: {3}.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="MigrationBackupFile">
-        <source>Backing up {0} to {1}.</source>
-        <target state="translated">"{0}" wird unter "{1}" gesichert.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="XprojMigrationFailedProjectJsonFileNotFound">
-        <source>Failed to migrate XProj project {0}. Could not find project.json at {1}.</source>
-        <target state="translated">Fehler beim Migrieren des XProj-Projekts "{0}". "project.json" wurde unter "{1}" nicht gefunden.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="EditProjectFileCommand">
         <source>Edit {0}</source>
         <target state="translated">„{0}“ bearbeiten</target>
@@ -109,16 +94,6 @@ Um das Projekt zu debuggen, fügen Sie dieser Projektmappe ein ausführbares Pro
       <trans-unit id="PackSelectedProjectCommand">
         <source>&amp;Pack {0}</source>
         <target state="translated">&amp;Paket {0}</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="XprojMigrationFailedCannotReadReport">
-        <source>Could not read post-migration report at '{0}'.</source>
-        <target state="translated">Der Postmigrationsbericht unter "{0}" konnte nicht gelesen werden.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="XprojMigrationGeneralFailure">
-        <source>Failed to migrate XProj project {0}. '{1}' exited with error code {2}.</source>
-        <target state="translated">Fehler beim Migrieren des XProj-Projekts {0}. "{1}" wurde mit dem Fehlercode {2} beendet.</target>
         <note />
       </trans-unit>
       <trans-unit id="DebugFrameworkMenuText">
@@ -169,6 +144,11 @@ Um das Projekt zu debuggen, fügen Sie dieser Projektmappe ein ausführbares Pro
       <trans-unit id="Restore_EmptyTargetFrameworkMoniker">
         <source>The value of the 'TargetFrameworkMoniker' and 'NuGetTargetMoniker' properties in the '{0}' configuration are both empty. This configuration will not contribute to NuGet restore, which may result in restore and build errors.</source>
         <target state="translated">Die Werte der Eigenschaften "TargetFrameworkMoniker" und "NuGetTargetMoniker" in der Konfiguration "{0}" sind beide leer. Diese Konfiguration wird bei der NuGet-Wiederherstellung nicht berücksichtigt, was zu Wiederherstellungs- und Buildfehlern führen kann.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XprojNotSupported">
+        <source>Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/en-us/dotnet/core/migration/.</source>
+        <target state="new">Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/en-us/dotnet/core/migration/.</target>
         <note />
       </trans-unit>
     </body>
