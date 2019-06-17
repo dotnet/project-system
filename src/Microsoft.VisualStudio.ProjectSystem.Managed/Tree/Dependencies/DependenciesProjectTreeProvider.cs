@@ -576,7 +576,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     // Thus, just in case, explicitly request it here (GetCatalogsAsync will acquire a project read lock)
                     _namedCatalogs = await ActiveConfiguredProject.Services
                         .PropertyPagesCatalog
-                        .GetCatalogsAsync(CancellationToken.None);
+                        .GetCatalogsAsync();
                 }
 
                 return _namedCatalogs;
