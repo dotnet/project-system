@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </summary>
         /// <remarks>
         /// Consumers must only use the <see cref="IDependencyModel.Id"/> and
-        /// <see cref="IDependencyModel.ProviderType"/> properties of returns items.
+        /// <see cref="IDependencyModel.ProviderType"/> properties of returned items.
         /// </remarks>
         IImmutableList<IDependencyModel> RemovedNodes { get; }
     }
