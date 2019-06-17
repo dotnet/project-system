@@ -130,10 +130,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
                 if (emptyFrameworks != null)
                 {
-                    foreach (ITargetFramework framework in emptyFrameworks)
-                    {
-                        builder.Remove(framework);
-                    }
+                    builder.RemoveRange(emptyFrameworks);
                 }
 
                 return anythingRemoved;
