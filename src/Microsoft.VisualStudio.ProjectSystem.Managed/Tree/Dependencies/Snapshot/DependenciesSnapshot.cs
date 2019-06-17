@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             var builder = previousSnapshot.Targets.ToBuilder();
 
-            bool targetChanged = false;
+            bool builderChanged = false;
 
             foreach ((ITargetFramework targetFramework, IDependenciesChanges dependenciesChanges) in changes)
             {
@@ -76,15 +76,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 if (!ReferenceEquals(previousTargetedSnapshot, newTargetedSnapshot))
                 {
                     builder[targetFramework] = newTargetedSnapshot;
-                    targetChanged = true;
+                    builderChanged = true;
                 }
             }
 
-            targetChanged |= RemoveTargetFrameworksWithNoDependencies();
+            builderChanged |= RemoveTargetFrameworksWithNoDependencies();
 
             activeTargetFramework ??= previousSnapshot.ActiveTarget;
 
-            if (targetChanged)
+            if (builderChanged)
             {
                 // Targets have changed
                 return new DependenciesSnapshot(
