@@ -199,7 +199,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             foreach ((string providerType, List<IDependency> dependencies) in groupedByProviderType)
             {
                 IDependencyViewModel? subTreeViewModel = _viewModelFactory.CreateRootViewModel(
-                    providerType, targetedSnapshot.CheckForUnresolvedDependencies(providerType));
+                    providerType,
+                    targetedSnapshot.CheckForUnresolvedDependencies(providerType));
 
                 if (subTreeViewModel == null)
                 {
