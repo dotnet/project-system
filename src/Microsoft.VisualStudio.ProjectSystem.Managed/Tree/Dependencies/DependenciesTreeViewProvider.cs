@@ -319,7 +319,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             IRule? rule = null;
             if (dependency.Flags.Contains(DependencyTreeFlags.SupportsRuleProperties))
             {
-                rule = await _treeServices.GetRuleAsync(dependency, targetedSnapshot.Catalogs);
+                rule = await _treeServices.GetBrowseObjectRuleAsync(dependency, targetedSnapshot.Catalogs);
             }
 
             return CreateOrUpdateNode(

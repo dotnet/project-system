@@ -64,6 +64,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <param name="dependency"></param>
         /// <param name="catalogs"></param>
         /// <returns></returns>
-        Task<IRule?> GetRuleAsync(IDependency dependency, IProjectCatalogSnapshot? catalogs);
+        Task<IRule?> GetBrowseObjectRuleAsync(IDependency dependency, IProjectCatalogSnapshot? catalogs);
     }
 }
