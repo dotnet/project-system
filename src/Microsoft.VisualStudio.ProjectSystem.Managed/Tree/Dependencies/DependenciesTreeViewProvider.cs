@@ -171,14 +171,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             {
                 if (!dependency.Visible)
                 {
-                    if (dependency.Flags.Contains(DependencyTreeFlags.ShowEmptyProviderRootNode))
+                    // If a dependency is not visible we will still register a top-level group if it
+                    // has the ShowEmptyProviderRootNode flag.
+                    if (!dependency.Flags.Contains(DependencyTreeFlags.ShowEmptyProviderRootNode))
                     {
-                        // if provider sends special invisible node with flag ShowEmptyProviderRootNode, we 
-                        // need to show provider node even if it does not have any dependencies.
-                        groupedByProviderType.Add(dependency.ProviderType, new List<IDependency>());
+                        // No such flag, so skip it completely.
+                        continue;
                     }
-
-                    continue;
                 }
 
                 if (!groupedByProviderType.TryGetValue(dependency.ProviderType, out List<IDependency> dependencies))
@@ -187,7 +186,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     groupedByProviderType.Add(dependency.ProviderType, dependencies);
                 }
 
-                dependencies.Add(dependency);
+                // Only add visible dependencies. See note above.
+                if (dependency.Visible)
+                {
+                    dependencies.Add(dependency);
+                }
             }
 
             var currentNodes = new List<IProjectTree>(capacity: groupedByProviderType.Count);
