@@ -51,6 +51,8 @@
     <CopyVsixManifestToOutput>false</CopyVsixManifestToOutput>
     
     <NoWarn>$(NoWarn);NU5125</NoWarn>
+
+    <DiscoverEditorConfigFiles>true</DiscoverEditorConfigFiles>
   </PropertyGroup>
 
   <ItemGroup>
