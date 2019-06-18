@@ -119,6 +119,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         {
             // Copy values as necessary to create a clone with any properties overridden
 
+            _id = dependency._id;
             _modelId = dependency._modelId;
             _fullPath = dependency._fullPath;
             TargetFramework = dependency.TargetFramework;

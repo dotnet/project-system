@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             var builder = previousSnapshot.Targets.ToBuilder();
 
-            bool targetChanged = false;
+            bool builderChanged = false;
 
             foreach ((ITargetFramework targetFramework, IDependenciesChanges dependenciesChanges) in changes)
             {
@@ -76,19 +76,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 if (!ReferenceEquals(previousTargetedSnapshot, newTargetedSnapshot))
                 {
                     builder[targetFramework] = newTargetedSnapshot;
-                    targetChanged = true;
+                    builderChanged = true;
                 }
             }
 
-            targetChanged |= RemoveTargetFrameworksWithNoDependencies();
+            builderChanged |= RemoveTargetFrameworksWithNoDependencies();
 
             activeTargetFramework ??= previousSnapshot.ActiveTarget;
 
-            if (targetChanged)
+            if (builderChanged)
             {
                 // Targets have changed
                 return new DependenciesSnapshot(
-                    previousSnapshot.ProjectPath,
+                    projectPath,
                     activeTargetFramework,
                     builder.ToImmutable());
             }
@@ -97,7 +97,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             {
                 // The active target changed
                 return new DependenciesSnapshot(
-                    previousSnapshot.ProjectPath,
+                    projectPath,
+                    activeTargetFramework,
+                    previousSnapshot.Targets);
+            }
+
+            if (projectPath != previousSnapshot.ProjectPath)
+            {
+                // The project path changed
+                return new DependenciesSnapshot(
+                    projectPath,
                     activeTargetFramework,
                     previousSnapshot.Targets);
             }
@@ -130,10 +139,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
                 if (emptyFrameworks != null)
                 {
-                    foreach (ITargetFramework framework in emptyFrameworks)
-                    {
-                        builder.Remove(framework);
-                    }
+                    builder.RemoveRange(emptyFrameworks);
                 }
 
                 return anythingRemoved;
@@ -150,7 +156,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 : new DependenciesSnapshot(ProjectPath, ActiveTarget, newTargets);
         }
 
-        private DependenciesSnapshot(
+        // Internal, for test use -- normal code should use the factory methods
+        internal DependenciesSnapshot(
             string projectPath,
             ITargetFramework activeTarget,
             ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot> targets)
