@@ -103,7 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         node = CreateOrUpdateNode(
                             node,
                             targetViewModel,
-                            rule: null,
+                            browseObjectProperties: null,
                             isProjectItem: false,
                             additionalFlags: ProjectTreeFlags.Create(ProjectTreeFlags.Common.BubbleUp));
 
@@ -219,7 +219,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 subTreeNode = CreateOrUpdateNode(
                     subTreeNode,
                     subTreeViewModel,
-                    rule: null,
+                    browseObjectProperties: null,
                     isProjectItem: false,
                     excludedFlags: excludedFlags);
 
@@ -320,16 +320,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             ProjectTreeFlags? additionalFlags = null,
             ProjectTreeFlags? excludedFlags = null)
         {
-            IRule? rule = null;
-            if (dependency.Flags.Contains(DependencyTreeFlags.SupportsRuleProperties))
-            {
-                rule = await _treeServices.GetBrowseObjectRuleAsync(dependency, targetedSnapshot.Catalogs);
-            }
+            IRule? browseObjectProperties = dependency.Flags.Contains(DependencyTreeFlags.SupportsRuleProperties)
+                ? await _treeServices.GetBrowseObjectRuleAsync(dependency, targetedSnapshot.Catalogs)
+                : null;
 
             return CreateOrUpdateNode(
                 node,
                 dependency.ToViewModel(targetedSnapshot),
-                rule,
+                browseObjectProperties,
                 isProjectItem,
                 additionalFlags,
                 excludedFlags);
@@ -338,7 +336,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         private IProjectTree CreateOrUpdateNode(
             IProjectTree? node,
             IDependencyViewModel viewModel,
-            IRule? rule,
+            IRule? browseObjectProperties,
             bool isProjectItem,
             ProjectTreeFlags? additionalFlags = null,
             ProjectTreeFlags? excludedFlags = null)
@@ -349,8 +347,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
 
             string? filePath = viewModel.OriginalModel != null &&
-                              viewModel.OriginalModel.TopLevel &&
-                              viewModel.OriginalModel.Resolved
+                               viewModel.OriginalModel.TopLevel &&
+                               viewModel.OriginalModel.Resolved
                 ? viewModel.OriginalModel.GetTopLevelId()
                 : viewModel.FilePath;
 
@@ -370,7 +368,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return _treeServices.CreateTree(
                     caption: viewModel.Caption,
                     filePath,
-                    browseObjectProperties: rule,
+                    browseObjectProperties: browseObjectProperties,
                     icon: viewModel.Icon.ToProjectSystemType(),
                     expandedIcon: viewModel.ExpandedIcon.ToProjectSystemType(),
                     visible: true,
@@ -390,7 +388,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return _treeServices.CreateTree(
                     caption: viewModel.Caption,
                     itemContext: itemContext,
-                    browseObjectProperties: rule,
+                    browseObjectProperties: browseObjectProperties,
                     icon: viewModel.Icon.ToProjectSystemType(),
                     expandedIcon: viewModel.ExpandedIcon.ToProjectSystemType(),
                     visible: true,
@@ -420,7 +418,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                 return node.SetProperties(
                     caption: updatedValues.Caption,
-                    browseObjectProperties: rule,
+                    browseObjectProperties: browseObjectProperties,
                     icon: updatedValues.Icon,
                     expandedIcon: updatedValues.ExpandedIcon,
                     flags: updatedValues.Flags);

@@ -2,6 +2,8 @@
 
 #nullable enable
 
+using Microsoft.VisualStudio.ProjectSystem.Properties;
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     /// <summary>
@@ -43,6 +45,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         public static readonly ProjectTreeFlags SupportsRemove = ProjectTreeFlags.Create("SupportsRemove");
 
+        /// <summary>
+        /// Dependencies having this flag support displaying a browse object, where the corresponding <see cref="IRule" />
+        /// is obtained by <see cref="IDependenciesTreeServices.GetBrowseObjectRuleAsync(Snapshot.IDependency, IProjectCatalogSnapshot)" />.
+        /// </summary>
         internal static readonly ProjectTreeFlags SupportsRuleProperties = ProjectTreeFlags.Create("SupportsRuleProperties");
 
         /// <summary>
