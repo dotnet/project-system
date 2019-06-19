@@ -57,17 +57,40 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             IDependenciesSnapshot snapshot,
             CancellationToken cancellationToken = default)
         {
+            // Keep a reference to the original tree to return in case we are cancelled.
             IProjectTree originalTree = dependenciesTree;
+
+            bool hasSingleTarget = snapshot.DependenciesByTargetFramework.Count(x => !x.Key.Equals(TargetFramework.Any)) == 1;
 
             var currentTopLevelNodes = new List<IProjectTree>();
 
-            if (snapshot.DependenciesByTargetFramework.Count(x => !x.Key.Equals(TargetFramework.Any)) == 1)
+            if (hasSingleTarget)
+            {
+                await BuildSingleTargetTreeAsync();
+            }
+            else
+            {
+                await BuildMultiTargetTreeAsync();
+            }
+
+            if (cancellationToken.IsCancellationRequested)
+            {
+                return originalTree;
+            }
+
+            dependenciesTree = CleanupOldNodes(dependenciesTree, currentTopLevelNodes);
+
+            ProjectImageMoniker rootIcon = _viewModelFactory.GetDependenciesRootIcon(snapshot.HasUnresolvedDependency).ToProjectSystemType();
+
+            return dependenciesTree.SetProperties(icon: rootIcon, expandedIcon: rootIcon);
+
+            async Task BuildSingleTargetTreeAsync()
             {
                 foreach ((ITargetFramework _, ITargetedDependenciesSnapshot targetedSnapshot) in snapshot.DependenciesByTargetFramework)
                 {
                     if (cancellationToken.IsCancellationRequested)
                     {
-                        return originalTree;
+                        return;
                     }
 
                     dependenciesTree = await BuildSubTreesAsync(
@@ -77,13 +100,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         RememberNewNodes);
                 }
             }
-            else
+
+            async Task BuildMultiTargetTreeAsync()
             {
                 foreach ((ITargetFramework targetFramework, ITargetedDependenciesSnapshot targetedSnapshot) in snapshot.DependenciesByTargetFramework)
                 {
                     if (cancellationToken.IsCancellationRequested)
                     {
-                        return originalTree;
+                        return;
                     }
 
                     if (targetFramework.Equals(TargetFramework.Any))
@@ -121,12 +145,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     }
                 }
             }
-
-            dependenciesTree = CleanupOldNodes(dependenciesTree, currentTopLevelNodes);
-
-            // now update root Dependencies node status
-            ProjectImageMoniker rootIcon = _viewModelFactory.GetDependenciesRootIcon(snapshot.HasUnresolvedDependency).ToProjectSystemType();
-            return dependenciesTree.SetProperties(icon: rootIcon, expandedIcon: rootIcon);
 
             IProjectTree RememberNewNodes(IProjectTree rootNode, IEnumerable<IProjectTree> currentNodes)
             {
