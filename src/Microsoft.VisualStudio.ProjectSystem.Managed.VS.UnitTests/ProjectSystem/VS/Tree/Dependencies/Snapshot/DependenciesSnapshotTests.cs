@@ -26,16 +26,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public void Constructor()
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
-            var activeTarget = new TargetFramework("tfm1");
+            var targetFramework = new TargetFramework("tfm1");
 
             var snapshot = new DependenciesSnapshot(
                 projectPath,
-                activeTarget,
+                activeTargetFramework: targetFramework,
                 ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot>.Empty);
 
             Assert.Same(projectPath, snapshot.ProjectPath);
-            Assert.Same(activeTarget, snapshot.ActiveTargetFramework);
             Assert.Empty(snapshot.DependenciesByTargetFramework);
+            Assert.Same(targetFramework, snapshot.ActiveTargetFramework);
             Assert.False(snapshot.HasUnresolvedDependency);
             Assert.Null(snapshot.FindDependency("foo"));
         }
@@ -59,22 +59,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var catalogs = IProjectCatalogSnapshotFactory.Create();
-            var activeTarget = new TargetFramework("tfm1");
+            var targetFramework = new TargetFramework("tfm1");
 
             var previousSnapshot = new DependenciesSnapshot(
                 projectPath,
-                activeTarget,
+                activeTargetFramework: targetFramework,
                 ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot>.Empty);
 
             var targetChanges = new DependenciesChangesBuilder();
-            var changes = new Dictionary<ITargetFramework, IDependenciesChanges> { [activeTarget] = targetChanges.Build() };
+            var changes = new Dictionary<ITargetFramework, IDependenciesChanges> { [targetFramework] = targetChanges.Build() };
 
             var snapshot = DependenciesSnapshot.FromChanges(
                 projectPath,
                 previousSnapshot,
                 changes.ToImmutableDictionary(),
                 catalogs,
-                activeTarget,
+                targetFramework,
                 ImmutableArray<IDependenciesSnapshotFilter>.Empty,
                 new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
                 null);
@@ -89,29 +89,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             const string newProjectPath = @"c:\somefolder\someproject\b.csproj";
 
             var catalogs = IProjectCatalogSnapshotFactory.Create();
-            var activeTarget = new TargetFramework("tfm1");
+            var targetFramework = new TargetFramework("tfm1");
 
             var previousSnapshot = new DependenciesSnapshot(
                 previousProjectPath,
-                activeTarget,
+                activeTargetFramework: targetFramework,
                 ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot>.Empty);
 
             var targetChanges = new DependenciesChangesBuilder();
-            var changes = new Dictionary<ITargetFramework, IDependenciesChanges> { [activeTarget] = targetChanges.Build() };
+            var changes = new Dictionary<ITargetFramework, IDependenciesChanges> { [targetFramework] = targetChanges.Build() };
 
             var snapshot = DependenciesSnapshot.FromChanges(
                 newProjectPath,
                 previousSnapshot,
                 changes.ToImmutableDictionary(),
                 catalogs,
-                activeTarget,
+                targetFramework,
                 ImmutableArray<IDependenciesSnapshotFilter>.Empty,
                 new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
                 null);
 
             Assert.NotSame(previousSnapshot, snapshot);
             Assert.Same(newProjectPath, snapshot.ProjectPath);
-            Assert.Same(activeTarget, snapshot.ActiveTargetFramework);
+            Assert.Same(targetFramework, snapshot.ActiveTargetFramework);
             Assert.Same(previousSnapshot.DependenciesByTargetFramework, snapshot.DependenciesByTargetFramework);
         }
 
@@ -122,19 +122,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             const string newProjectPath = @"c:\somefolder\someproject\b.csproj";
 
             var catalogs = IProjectCatalogSnapshotFactory.Create();
-            var previousActiveTarget = new TargetFramework("tfm1");
-            var newActiveTarget = new TargetFramework("tfm2");
+            var targetFramework1 = new TargetFramework("tfm1");
+            var targetFramework2 = new TargetFramework("tfm2");
 
             var previousSnapshot = new DependenciesSnapshot(
                 previousProjectPath,
-                previousActiveTarget,
+                activeTargetFramework: targetFramework1,
                 ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot>.Empty);
 
             var targetChanges = new DependenciesChangesBuilder();
             var changes = new Dictionary<ITargetFramework, IDependenciesChanges>
             {
-                [previousActiveTarget] = targetChanges.Build(),
-                [newActiveTarget] = targetChanges.Build()
+                [targetFramework1] = targetChanges.Build(),
+                [targetFramework2] = targetChanges.Build()
             };
 
             var snapshot = DependenciesSnapshot.FromChanges(
@@ -142,14 +142,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 previousSnapshot,
                 changes.ToImmutableDictionary(),
                 catalogs,
-                newActiveTarget,
+                activeTargetFramework: targetFramework2,
                 ImmutableArray<IDependenciesSnapshotFilter>.Empty,
                 new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
                 null);
 
             Assert.NotSame(previousSnapshot, snapshot);
             Assert.Same(newProjectPath, snapshot.ProjectPath);
-            Assert.Same(newActiveTarget, snapshot.ActiveTargetFramework);
+            Assert.Same(targetFramework2, snapshot.ActiveTargetFramework);
             Assert.Same(previousSnapshot.DependenciesByTargetFramework, snapshot.DependenciesByTargetFramework);
         }
 
@@ -160,11 +160,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             const string newProjectPath = @"c:\somefolder\someproject\b.csproj";
 
             var catalogs = IProjectCatalogSnapshotFactory.Create();
-            var activeTarget = new TargetFramework("tfm1");
+            var targetFramework = new TargetFramework("tfm1");
 
             var previousSnapshot = new DependenciesSnapshot(
                 previousProjectPath,
-                activeTarget,
+                activeTargetFramework: targetFramework,
                 ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot>.Empty);
 
             var targetChanges = new DependenciesChangesBuilder();
@@ -174,23 +174,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Id = "dependency1"
             };
             targetChanges.Added(model);
-            var changes = new Dictionary<ITargetFramework, IDependenciesChanges> { [activeTarget] = targetChanges.Build() };
+            var changes = new Dictionary<ITargetFramework, IDependenciesChanges> { [targetFramework] = targetChanges.Build() };
 
             var snapshot = DependenciesSnapshot.FromChanges(
                 newProjectPath,
                 previousSnapshot,
                 changes.ToImmutableDictionary(),
                 catalogs,
-                activeTarget,
+                activeTargetFramework: targetFramework,
                 ImmutableArray<IDependenciesSnapshotFilter>.Empty,
                 new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
                 null);
 
             Assert.NotSame(previousSnapshot, snapshot);
             Assert.Same(newProjectPath, snapshot.ProjectPath);
-            Assert.Same(activeTarget, snapshot.ActiveTargetFramework);
+            Assert.Same(targetFramework, snapshot.ActiveTargetFramework);
             Assert.NotSame(previousSnapshot.DependenciesByTargetFramework, snapshot.DependenciesByTargetFramework);
-            Assert.Equal(@"tfm1\Xxx\dependency1", snapshot.DependenciesByTargetFramework[activeTarget].DependenciesWorld.First().Value.Id);
+            Assert.Equal(@"tfm1\Xxx\dependency1", snapshot.DependenciesByTargetFramework[targetFramework].DependenciesWorld.First().Value.Id);
         }
     }
 }
