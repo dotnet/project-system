@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// <summary>
         /// Gets the active target framework for project.
         /// </summary>
-        ITargetFramework ActiveTarget { get; }
+        ITargetFramework ActiveTargetFramework { get; }
 
         /// <summary>
         /// Gets a dictionary of dependencies by target framework.

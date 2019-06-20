@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                     dependenciesTree = await BuildSubTreesAsync(
                         rootNode: dependenciesTree,
-                        snapshot.ActiveTarget,
+                        snapshot.ActiveTargetFramework,
                         targetedSnapshot,
                         RememberNewNodes);
                 }
@@ -90,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     {
                         dependenciesTree = await BuildSubTreesAsync(
                             rootNode: dependenciesTree,
-                            snapshot.ActiveTarget,
+                            snapshot.ActiveTargetFramework,
                             targetedSnapshot,
                             RememberNewNodes);
                     }
@@ -109,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                         node = await BuildSubTreesAsync(
                             rootNode: node,
-                            snapshot.ActiveTarget,
+                            snapshot.ActiveTargetFramework,
                             targetedSnapshot,
                             CleanupOldNodes);
 

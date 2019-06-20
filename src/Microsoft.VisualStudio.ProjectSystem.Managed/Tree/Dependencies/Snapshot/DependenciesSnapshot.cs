@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         {
             return new DependenciesSnapshot(
                 projectPath,
-                activeTarget: TargetFramework.Empty,
+                activeTargetFramework: TargetFramework.Empty,
                 dependenciesByTargetFramework: ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot>.Empty);
         }
 
@@ -80,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             builderChanged |= RemoveTargetFrameworksWithNoDependencies();
 
-            activeTargetFramework ??= previousSnapshot.ActiveTarget;
+            activeTargetFramework ??= previousSnapshot.ActiveTargetFramework;
 
             if (builderChanged)
             {
@@ -91,9 +91,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                     builder.ToImmutable());
             }
 
-            if (!activeTargetFramework.Equals(previousSnapshot.ActiveTarget))
+            if (!activeTargetFramework.Equals(previousSnapshot.ActiveTargetFramework))
             {
-                // The active target changed
+                // The active target framework changed
                 return new DependenciesSnapshot(
                     projectPath,
                     activeTargetFramework,
@@ -149,21 +149,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             // Return this if no targets changed
             return ReferenceEquals(newTargets, DependenciesByTargetFramework)
                 ? this
-                : new DependenciesSnapshot(ProjectPath, ActiveTarget, newTargets);
+                : new DependenciesSnapshot(ProjectPath, ActiveTargetFramework, newTargets);
         }
 
         // Internal, for test use -- normal code should use the factory methods
         internal DependenciesSnapshot(
             string projectPath,
-            ITargetFramework activeTarget,
+            ITargetFramework activeTargetFramework,
             ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot> dependenciesByTargetFramework)
         {
             Requires.NotNullOrEmpty(projectPath, nameof(projectPath));
-            Requires.NotNull(activeTarget, nameof(activeTarget));
+            Requires.NotNull(activeTargetFramework, nameof(activeTargetFramework));
             Requires.NotNull(dependenciesByTargetFramework, nameof(dependenciesByTargetFramework));
 
             ProjectPath = projectPath;
-            ActiveTarget = activeTarget;
+            ActiveTargetFramework = activeTargetFramework;
             DependenciesByTargetFramework = dependenciesByTargetFramework;
         }
 
@@ -173,7 +173,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public string ProjectPath { get; }
 
         /// <inheritdoc />
-        public ITargetFramework ActiveTarget { get; }
+        public ITargetFramework ActiveTargetFramework { get; }
 
         /// <inheritdoc />
         public ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot> DependenciesByTargetFramework { get; }

@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             if (activeTarget != null)
             {
-                mock.Setup(x => x.ActiveTarget).Returns(activeTarget);
+                mock.Setup(x => x.ActiveTargetFramework).Returns(activeTarget);
             }
 
             return mock.Object;
