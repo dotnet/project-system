@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Component Designer (Windows Forms).
+        ///   Looks up a localized string similar to Component (Windows Forms) Designer.
         /// </summary>
         internal static string ComponentEditor_DisplayName {
             get {
@@ -324,7 +324,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to User Control Designer (Windows Forms).
+        ///   Looks up a localized string similar to User Control (Windows Forms) Designer.
         /// </summary>
         internal static string UserControlEditor_DisplayName {
             get {
@@ -333,7 +333,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Form Designer (Windows Forms).
+        ///   Looks up a localized string similar to Form (Windows Forms) Designer.
         /// </summary>
         internal static string WindowsFormEditor_DisplayName {
             get {

@@ -172,18 +172,18 @@ Per eseguire il debug del progetto, aggiungere a questa soluzione un progetto es
         <note />
       </trans-unit>
       <trans-unit id="WindowsFormEditor_DisplayName">
-        <source>Form Designer (Windows Forms)</source>
-        <target state="new">Form Designer (Windows Forms)</target>
+        <source>Form (Windows Forms) Designer</source>
+        <target state="new">Form (Windows Forms) Designer</target>
         <note />
       </trans-unit>
       <trans-unit id="ComponentEditor_DisplayName">
-        <source>Component Designer (Windows Forms)</source>
-        <target state="new">Component Designer (Windows Forms)</target>
+        <source>Component (Windows Forms) Designer</source>
+        <target state="new">Component (Windows Forms) Designer</target>
         <note />
       </trans-unit>
       <trans-unit id="UserControlEditor_DisplayName">
-        <source>User Control Designer (Windows Forms)</source>
-        <target state="new">User Control Designer (Windows Forms)</target>
+        <source>User Control (Windows Forms) Designer</source>
+        <target state="new">User Control (Windows Forms) Designer</target>
         <note />
       </trans-unit>
     </body>
