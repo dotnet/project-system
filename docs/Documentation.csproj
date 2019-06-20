@@ -1,7 +1,11 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project>
 
+  <!-- See https://github.com/microsoft/MSBuildSdks/tree/master/src/NoTargets -->
+  <Sdk Name="Microsoft.Build.NoTargets" Version="1.0.73" />
+  
   <ItemGroup>
     <None Include="**/*.md" />
+    <PackageReference Remove="@(PackageReference)" />
   </ItemGroup>
 
 </Project>
