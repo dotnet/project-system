@@ -147,6 +147,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 DependenciesChanged?.Invoke(
                     this,
                     new DependencySubscriptionChangedEventArgs(
+                        currentAggregateContext.TargetFrameworks,
                         currentAggregateContext.ActiveTargetFramework,
                         catalogs,
                         changes));

@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters;
@@ -40,6 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             DependenciesSnapshot previousSnapshot,
             ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes,
             IProjectCatalogSnapshot? catalogs,
+            ImmutableArray<ITargetFramework> targetFrameworks,
             ITargetFramework? activeTargetFramework,
             ImmutableArray<IDependenciesSnapshotFilter> snapshotFilters,
             IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
@@ -78,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 }
             }
 
-            builderChanged |= RemoveTargetFrameworksWithNoDependencies();
+            builderChanged |= SyncTargetFrameworks();
 
             activeTargetFramework ??= previousSnapshot.ActiveTargetFramework;
 
@@ -112,30 +114,39 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             // Nothing has changed, so return the same snapshot
             return previousSnapshot;
 
-            bool RemoveTargetFrameworksWithNoDependencies()
+            bool SyncTargetFrameworks()
             {
+                // Only sync if a the full list of target frameworks has been provided
+                if (targetFrameworks.IsDefault)
+                {
+                    return false;
+                }
+
                 // This is a long-winded way of doing this that minimises allocations
 
-                List<ITargetFramework>? emptyFrameworks = null;
                 bool anythingRemoved = false;
 
-                foreach ((ITargetFramework targetFramework, ITargetedDependenciesSnapshot targetedSnapshot) in builder)
+                // Ensure all required target frameworks are present
+                foreach (ITargetFramework targetFramework in targetFrameworks)
                 {
-                    if (targetedSnapshot.DependenciesWorld.Count == 0)
+                    if (!builder.ContainsKey(targetFramework))
                     {
-                        if (emptyFrameworks == null)
-                        {
-                            anythingRemoved = true;
-                            emptyFrameworks = new List<ITargetFramework>(builder.Count);
-                        }
-
-                        emptyFrameworks.Add(targetFramework);
+                        builder.Add(targetFramework, TargetedDependenciesSnapshot.CreateEmpty(projectPath, targetFramework, catalogs));
+                        anythingRemoved = true;
                     }
                 }
 
-                if (emptyFrameworks != null)
+                // Remove any extra target frameworks
+                if (builder.Count != targetFrameworks.Length)
                 {
-                    builder.RemoveRange(emptyFrameworks);
+                    IEnumerable<ITargetFramework> targetFrameworksToRemove = builder.Keys.Except(targetFrameworks);
+
+                    foreach (ITargetFramework targetFramework in targetFrameworksToRemove)
+                    {
+                        builder.Remove(targetFramework);
+                    }
+
+                    anythingRemoved = true;
                 }
 
                 return anythingRemoved;
@@ -161,6 +172,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Requires.NotNullOrEmpty(projectPath, nameof(projectPath));
             Requires.NotNull(activeTargetFramework, nameof(activeTargetFramework));
             Requires.NotNull(dependenciesByTargetFramework, nameof(dependenciesByTargetFramework));
+
+            if (activeTargetFramework.Equals(TargetFramework.Empty))
+            {
+                if (dependenciesByTargetFramework.Count != 0)
+                {
+                    Requires.Fail($"If {nameof(activeTargetFramework)} is empty, {nameof(dependenciesByTargetFramework)} must be empty.");
+                }
+            }
+            else
+            {
+                if (!dependenciesByTargetFramework.ContainsKey(activeTargetFramework))
+                {
+                    Requires.Fail($"{nameof(activeTargetFramework)} must be present in {nameof(dependenciesByTargetFramework)}.");
+                }
+            }
 
             ProjectPath = projectPath;
             ActiveTargetFramework = activeTargetFramework;
