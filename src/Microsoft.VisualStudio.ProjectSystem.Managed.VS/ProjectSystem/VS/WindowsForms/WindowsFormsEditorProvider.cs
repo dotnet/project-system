@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
     [Export(typeof(IProjectSpecificEditorProvider))]
     [AppliesTo(ProjectCapability.DotNet)]
     [Order(Order.BeforeDefault)] // Need to run before CPS's version before its deleted
-    internal partial class WindowsFormEditorProvider : IProjectSpecificEditorProvider
+    internal partial class WindowsFormsEditorProvider : IProjectSpecificEditorProvider
     {
         private readonly static SubTypeDescriptor[] SubTypeDescriptors = new[]
         {
@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
         private readonly Lazy<IProjectSystemOptions> _options;
 
         [ImportingConstructor]
-        public WindowsFormEditorProvider(UnconfiguredProject unconfiguredProject, Lazy<IPhysicalProjectTree> projectTree, Lazy<IProjectSystemOptions> options)
+        public WindowsFormsEditorProvider(UnconfiguredProject unconfiguredProject, Lazy<IPhysicalProjectTree> projectTree, Lazy<IProjectSystemOptions> options)
         {
             _projectTree = projectTree;
             _options = options;

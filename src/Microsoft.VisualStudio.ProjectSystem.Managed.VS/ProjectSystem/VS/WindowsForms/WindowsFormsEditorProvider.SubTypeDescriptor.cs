@@ -4,7 +4,7 @@
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
 {
-    internal partial class WindowsFormEditorProvider
+    internal partial class WindowsFormsEditorProvider
     {
         private class SubTypeDescriptor
         { 
