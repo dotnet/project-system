@@ -114,8 +114,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             // Nothing has changed, so return the same snapshot
             return previousSnapshot;
 
-            // Active target differs
-
             bool RemoveTargetFrameworksWithNoDependencies()
             {
                 // This is a long-winded way of doing this that minimises allocations
