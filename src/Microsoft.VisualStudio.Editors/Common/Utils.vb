@@ -1762,6 +1762,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Private Const AdvBuildSettingsPropPageEventName As String = "vs/projectsystem/appdesigner/advbuildsettingsproppage"
             Public Enum AdvBuildSettingsPropPageEvent
                 FormOpened = 0
+                LangVersionMoreInfoLinkClicked = 1
             End Enum
 
             Public Shared Sub LogAdvBuildSettingsPropPageEvent(eventValue As AdvBuildSettingsPropPageEvent)

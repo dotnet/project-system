@@ -3,11 +3,9 @@
 Imports System.ComponentModel
 Imports System.Globalization
 Imports System.Reflection
-Imports System.Runtime.Versioning
 Imports System.Windows.Forms
 
 Imports Microsoft.VisualStudio.Utilities
-Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.VisualStudio.Editors.Common
 Imports VSLangProj80
 
@@ -35,6 +33,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             cboReportCompilerErrors.Items.AddRange(New Object() {New ComboItem("none", My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AdvancedBuildSettings_ReportCompilerErrors_None), New ComboItem("prompt", My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AdvancedBuildSettings_ReportCompilerErrors_Prompt), New ComboItem("send", My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AdvancedBuildSettings_ReportCompilerErrors_Send), New ComboItem("queue", My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AdvancedBuildSettings_ReportCompilerErrors_Queue)})
             cboDebugInfo.Items.AddRange(New Object() {New ComboItem("none", My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AdvancedBuildSettings_DebugInfo_None), New ComboItem("full", My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AdvancedBuildSettings_DebugInfo_Full), New ComboItem("pdbonly", My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AdvancedBuildSettings_DebugInfo_PdbOnly), New ComboItem("portable", My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AdvancedBuildSettings_DebugInfo_Portable), New ComboItem("embedded", My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AdvancedBuildSettings_DebugInfo_Embedded)})
 
+            PopulateLanguageVersions()
+            SetupLangVersionLinkLabel()
+
             ' Scale the width of the overarching table layout panel
             overarchingTableLayoutPanel.Width = DpiAwareness.LogicalToDeviceUnits(Handle, overarchingTableLayoutPanel.Width)
 
@@ -52,7 +53,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Get
                 If m_ControlData Is Nothing Then
                     m_ControlData = New PropertyControlData() {
-                    New PropertyControlData(CSharpProjPropId.CSPROJPROPID_LanguageVersion, "LanguageVersion", cboLanguageVersion, AddressOf LanguageVersionSet, AddressOf LanguageVersionGet, ControlDataFlags.None, New Control() {lblLanguageVersion}),
                     New PropertyControlData(CSharpProjPropId.CSPROJPROPID_ErrorReport, "ErrorReport", cboReportCompilerErrors, AddressOf ErrorReportSet, AddressOf ErrorReportGet, ControlDataFlags.None, New Control() {lblReportCompilerErrors}),
                     New PropertyControlData(VsProjPropId.VBPROJPROPID_CheckForOverflowUnderflow, "CheckForOverflowUnderflow", chkOverflow, AddressOf OverflowUnderflowSet, AddressOf OverflowUnderflowGet),
                     New PropertyControlData(VsProjPropId.VBPROJPROPID_FileAlignment, "FileAlignment", cboFileAlignment, AddressOf FileAlignmentSet, AddressOf FileAlignmentGet, ControlDataFlags.None, New Control() {lblFileAlignment}),
@@ -70,24 +70,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' 829715
         ''' </summary>
         Private Sub PopulateLanguageVersions()
-            cboLanguageVersion.Items.Clear()
-
-            cboLanguageVersion.Items.AddRange(CSharpLanguageVersionUtilities.GetAllLanguageVersions())
+            cboLanguageVersion.Items.Add(My.Resources.Strings.LanguageVersionAutomaticallySelected)
             cboLanguageVersion.SelectedIndex = 0
-
-            Dim propertyValue As Object = Nothing
-            ProjectHierarchy.GetProperty(VSITEMID.ROOT, __VSHPROPID4.VSHPROPID_TargetFrameworkMoniker, propertyValue)
-
-            If propertyValue Is Nothing Then
-                Return
-            End If
-
-            Dim frameworkName As New FrameworkName(DirectCast(propertyValue, String))
-
-            If Not IsTargetingDotNetCore(ProjectHierarchy) OrElse (IsTargetingDotNetCore(ProjectHierarchy) AndAlso frameworkName.Version.Major < 3) Then
-                cboLanguageVersion.Items.Remove(CSharpLanguageVersion.Preview)
-                cboLanguageVersion.Items.Remove(CSharpLanguageVersion.Version8_0)
-            End If
         End Sub
 
 
@@ -102,7 +86,17 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </remarks>
         Protected Overrides Sub PreInitPage()
             MyBase.PreInitPage()
-            PopulateLanguageVersions()
+        End Sub
+
+        ''' <summary>
+        ''' Sets up the link to take the user to more information on why they can't change the language
+        ''' version.
+        ''' </summary>
+        Private Sub SetupLangVersionLinkLabel()
+            Dim link = New LinkLabel.Link
+            link.LinkData = My.Resources.Strings.CantSelectLanguageVersionFWLink
+            lnkLabel.Links.Add(link)
+            lnkLabel.TabStop = True
         End Sub
 
         ''' <summary>
@@ -117,42 +111,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Overrides Sub PostInitPage()
             MyBase.PostInitPage()
         End Sub
-
-        Private Function LanguageVersionSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
-
-            cboLanguageVersion.SelectedIndex = -1
-
-            If PropertyControlData.IsSpecialValue(value) Then
-                'Leave it unselected
-            Else
-                Dim stValue As String = CType(value, String)
-                If stValue = "" Then
-                    stValue = CSharpLanguageVersion.Default.Value
-                End If
-
-                For Each entry As CSharpLanguageVersion In cboLanguageVersion.Items
-                    If entry.Value = stValue Then
-                        cboLanguageVersion.SelectedItem = entry
-                        Exit For
-                    End If
-                Next
-
-            End If
-            Return True
-        End Function
-
-        Private Function LanguageVersionGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
-
-            Dim currentVersion As CSharpLanguageVersion = CType(CType(control, ComboBox).SelectedItem, CSharpLanguageVersion)
-            If currentVersion IsNot Nothing Then
-                value = currentVersion.Value
-                Return True
-            End If
-
-            Debug.Fail("The combobox should not have still been unselected yet be dirty")
-            Return False
-
-        End Function
 
         Private Function ErrorReportSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             If (Not (PropertyControlData.IsSpecialValue(value))) Then
@@ -351,6 +309,18 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Exit For
                 End If
             Next
+        End Sub
+
+        Private Sub LnkLabel_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles lnkLabel.LinkClicked
+            TelemetryLogger.LogAdvBuildSettingsPropPageEvent(TelemetryLogger.AdvBuildSettingsPropPageEvent.LangVersionMoreInfoLinkClicked)
+
+            Dim url = DirectCast(e.Link.LinkData, String)
+            Try
+                Process.Start(url)
+            Catch ex As Exception
+                ' This could throw an exception if the user has no default URL handler installed.
+                ' There's no point in letting such an exception propogate.
+            End Try
         End Sub
     End Class
 

@@ -67,24 +67,9 @@
         <target state="translated">檢查算術溢位/反向溢位(&amp;K)</target>
         <note />
       </trans-unit>
-      <trans-unit id="CSharpLanguageVersion.Default">
-        <source>C# latest supported minor version (default)</source>
-        <target state="translated">c# 支援的最新次要版本 (預設)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="CSharpLanguageVersion.LatestMajor">
-        <source>C# latest supported major version (latestmajor)</source>
-        <target state="translated">C# 支援的最新主要版本 (latestmajor)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="CSharpLanguageVersion.Latest">
-        <source>C# latest supported minor version (latest)</source>
-        <target state="translated">C# 支援的最新次要版本 (最新)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="CSharpLanguageVersion.Preview">
-        <source>unsupported preview of next C# version (preview)</source>
-        <target state="translated">不受支援的下一個 C# 版本預覽 (預覽)</target>
+      <trans-unit id="lnkLabel.Text">
+        <source>Why can't I select a different C# version?</source>
+        <target state="new">Why can't I select a different C# version?</target>
         <note />
       </trans-unit>
     </body>

@@ -67,24 +67,9 @@
         <target state="translated">Проверять ариф&amp;метическое переполнение/потерю значимости</target>
         <note />
       </trans-unit>
-      <trans-unit id="CSharpLanguageVersion.Default">
-        <source>C# latest supported minor version (default)</source>
-        <target state="translated">Последняя поддерживаемая вспомогательная версия C# (по умолчанию)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="CSharpLanguageVersion.LatestMajor">
-        <source>C# latest supported major version (latestmajor)</source>
-        <target state="translated">Последняя поддерживаемая основная версия C# (по умолчанию)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="CSharpLanguageVersion.Latest">
-        <source>C# latest supported minor version (latest)</source>
-        <target state="translated">Последняя поддерживаемая вспомогательная версия C# (последняя)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="CSharpLanguageVersion.Preview">
-        <source>unsupported preview of next C# version (preview)</source>
-        <target state="translated">неподдерживаемая предварительная версия для следующей версии C# (предварительная версия)</target>
+      <trans-unit id="lnkLabel.Text">
+        <source>Why can't I select a different C# version?</source>
+        <target state="new">Why can't I select a different C# version?</target>
         <note />
       </trans-unit>
     </body>
