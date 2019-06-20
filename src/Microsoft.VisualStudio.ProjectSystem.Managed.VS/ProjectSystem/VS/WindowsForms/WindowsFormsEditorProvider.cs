@@ -106,17 +106,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
         private async Task<string?> GetSubTypeAsync(string documentMoniker)
         {
             IProjectItemTree? item = await FindCompileItemByMonikerAsync(documentMoniker);
-            if (item == null)
-                return null;
 
-            IRule browseObject = item.BrowseObjectProperties;
-            if (browseObject == null)
-                return null;
+            IRule? browseObject = item?.BrowseObjectProperties;
 
-            if (!(browseObject.GetProperty(Compile.SubTypeProperty) is IEvaluatedProperty property))
-                return null;
+            if (browseObject?.GetProperty(Compile.SubTypeProperty) is IEvaluatedProperty property)
+                return await property.GetEvaluatedValueAtEndAsync();
 
-            return await property.GetEvaluatedValueAtEndAsync();
+            return null;
         }
 
         private async Task<IProjectItemTree?> FindCompileItemByMonikerAsync(string documentMoniker)
