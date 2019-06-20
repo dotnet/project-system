@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         {
             Assert.Throws<ArgumentNullException>("projectPath", () => new DependenciesSnapshot(projectPath: null, null, null));
             Assert.Throws<ArgumentNullException>("activeTarget", () => new DependenciesSnapshot("path", activeTarget: null, null));
-            Assert.Throws<ArgumentNullException>("targets", () => new DependenciesSnapshot("path", TargetFramework.Any, null));
+            Assert.Throws<ArgumentNullException>("dependenciesByTargetFramework", () => new DependenciesSnapshot("path", TargetFramework.Any, null));
         }
 
         [Fact]
@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             Assert.Same(projectPath, snapshot.ProjectPath);
             Assert.Same(activeTarget, snapshot.ActiveTarget);
-            Assert.Empty(snapshot.Targets);
+            Assert.Empty(snapshot.DependenciesByTargetFramework);
             Assert.False(snapshot.HasUnresolvedDependency);
             Assert.Null(snapshot.FindDependency("foo"));
         }
@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             Assert.Same(projectPath, snapshot.ProjectPath);
             Assert.Same(TargetFramework.Empty, snapshot.ActiveTarget);
-            Assert.Empty(snapshot.Targets);
+            Assert.Empty(snapshot.DependenciesByTargetFramework);
             Assert.False(snapshot.HasUnresolvedDependency);
             Assert.Null(snapshot.FindDependency("foo"));
         }
@@ -112,7 +112,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.NotSame(previousSnapshot, snapshot);
             Assert.Same(newProjectPath, snapshot.ProjectPath);
             Assert.Same(activeTarget, snapshot.ActiveTarget);
-            Assert.Same(previousSnapshot.Targets, snapshot.Targets);
+            Assert.Same(previousSnapshot.DependenciesByTargetFramework, snapshot.DependenciesByTargetFramework);
         }
 
         [Fact]
@@ -150,7 +150,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.NotSame(previousSnapshot, snapshot);
             Assert.Same(newProjectPath, snapshot.ProjectPath);
             Assert.Same(newActiveTarget, snapshot.ActiveTarget);
-            Assert.Same(previousSnapshot.Targets, snapshot.Targets);
+            Assert.Same(previousSnapshot.DependenciesByTargetFramework, snapshot.DependenciesByTargetFramework);
         }
 
         [Fact]
@@ -189,8 +189,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.NotSame(previousSnapshot, snapshot);
             Assert.Same(newProjectPath, snapshot.ProjectPath);
             Assert.Same(activeTarget, snapshot.ActiveTarget);
-            Assert.NotSame(previousSnapshot.Targets, snapshot.Targets);
-            Assert.Equal(@"tfm1\Xxx\dependency1", snapshot.Targets[activeTarget].DependenciesWorld.First().Value.Id);
+            Assert.NotSame(previousSnapshot.DependenciesByTargetFramework, snapshot.DependenciesByTargetFramework);
+            Assert.Equal(@"tfm1\Xxx\dependency1", snapshot.DependenciesByTargetFramework[activeTarget].DependenciesWorld.First().Value.Id);
         }
     }
 }

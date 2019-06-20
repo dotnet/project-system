@@ -287,7 +287,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         }
 
         private void UpdateDependenciesSnapshot(
-            ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes,
+            ImmutableDictionary<ITargetFramework, IDependenciesChanges> changesByTargetFramework,
             IProjectCatalogSnapshot? catalogs,
             ITargetFramework? activeTargetFramework,
             CancellationToken token)
@@ -298,7 +298,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 snapshot => DependenciesSnapshot.FromChanges(
                     _commonServices.Project.FullPath,
                     snapshot,
-                    changes,
+                    changesByTargetFramework,
                     catalogs,
                     activeTargetFramework,
                     _snapshotFilters.ToImmutableValueArray(),

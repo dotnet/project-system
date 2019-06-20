@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// <summary>
         /// Gets a dictionary of dependencies by target framework.
         /// </summary>
-        ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot> Targets { get; }
+        ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot> DependenciesByTargetFramework { get; }
 
         /// <summary>
         /// Gets whether this snapshot contains at least one unresolved/broken dependency at any level
