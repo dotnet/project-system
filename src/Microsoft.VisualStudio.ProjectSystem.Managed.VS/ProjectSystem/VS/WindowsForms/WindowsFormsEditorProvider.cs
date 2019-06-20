@@ -6,6 +6,8 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
 {
     /// <summary>
@@ -47,15 +49,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
             get;
         }
 
-        public async Task<IProjectSpecificEditorInfo> GetSpecificEditorAsync(string documentMoniker)
+        public async Task<IProjectSpecificEditorInfo?> GetSpecificEditorAsync(string documentMoniker)
         {
             Requires.NotNullOrEmpty(documentMoniker, nameof(documentMoniker));
 
-            IProjectSpecificEditorInfo editor = await GetDefaultEditorAsync(documentMoniker);
+            IProjectSpecificEditorInfo? editor = await GetDefaultEditorAsync(documentMoniker);
             if (editor == null)
                 return null;
 
-            SubTypeDescriptor descriptor = await GetSubTypeDescriptorAsync(documentMoniker);
+            SubTypeDescriptor? descriptor = await GetSubTypeDescriptorAsync(documentMoniker);
             if (descriptor == null)
                 return null;
 
@@ -68,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
         {
             Requires.NotNullOrEmpty(documentMoniker, nameof(documentMoniker));
 
-            SubTypeDescriptor editorInfo = await GetSubTypeDescriptorAsync(documentMoniker);
+            SubTypeDescriptor? editorInfo = await GetSubTypeDescriptorAsync(documentMoniker);
             if (editorInfo == null)
                 return false;
 
@@ -77,31 +79,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
             return true;
         }
 
-        private async Task<IProjectSpecificEditorInfo> GetDefaultEditorAsync(string documentMoniker)
+        private async Task<IProjectSpecificEditorInfo?> GetDefaultEditorAsync(string documentMoniker)
         {
-            IProjectSpecificEditorProvider defaultProvider = GetDefaultEditorProvider();
+            IProjectSpecificEditorProvider? defaultProvider = GetDefaultEditorProvider();
             if (defaultProvider == null)
                 return null;
 
             return await defaultProvider.GetSpecificEditorAsync(documentMoniker);
         }
 
-        private async Task<SubTypeDescriptor> GetSubTypeDescriptorAsync(string documentMoniker)
+        private async Task<SubTypeDescriptor?> GetSubTypeDescriptorAsync(string documentMoniker)
         {
-            string subType = await GetSubTypeAsync(documentMoniker);
-
-            foreach (SubTypeDescriptor descriptor in SubTypeDescriptors)
+            string? subType = await GetSubTypeAsync(documentMoniker);
+            if (subType != null)
             {
-                if (StringComparers.PropertyLiteralValues.Equals(subType, descriptor.SubType))
-                    return descriptor;
+                foreach (SubTypeDescriptor descriptor in SubTypeDescriptors)
+                {
+                    if (StringComparers.PropertyLiteralValues.Equals(subType, descriptor.SubType))
+                        return descriptor;
+                }
             }
 
             return null;
         }
 
-        private async Task<string> GetSubTypeAsync(string documentMoniker)
+        private async Task<string?> GetSubTypeAsync(string documentMoniker)
         {
-            IProjectItemTree item = await FindCompileItemByMonikerAsync(documentMoniker);
+            IProjectItemTree? item = await FindCompileItemByMonikerAsync(documentMoniker);
             if (item == null)
                 return null;
 
@@ -115,7 +119,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
             return await property.GetEvaluatedValueAtEndAsync();
         }
 
-        private async Task<IProjectItemTree> FindCompileItemByMonikerAsync(string documentMoniker)
+        private async Task<IProjectItemTree?> FindCompileItemByMonikerAsync(string documentMoniker)
         {
             IProjectTreeServiceState result = await _projectTree.Value.TreeService.PublishAnyNonNullTreeAsync();
 
@@ -128,7 +132,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
             return null;
         }
 
-        private IProjectSpecificEditorProvider GetDefaultEditorProvider()
+        private IProjectSpecificEditorProvider? GetDefaultEditorProvider()
         {
             Lazy<IProjectSpecificEditorProvider> editorProvider = ProjectSpecificEditorProviders.FirstOrDefault(p => string.Equals(p.Metadata.Name, "Default", StringComparison.OrdinalIgnoreCase));
 

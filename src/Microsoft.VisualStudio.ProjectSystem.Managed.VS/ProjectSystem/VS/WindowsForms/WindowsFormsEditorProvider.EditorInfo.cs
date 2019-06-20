@@ -2,6 +2,8 @@
 
 using System;
 
+#nullable enable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
 {
     internal partial class WindowsFormEditorProvider
