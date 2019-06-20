@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         string ProjectPath { get; }
 
         /// <summary>
-        /// Gets the active target framework for project (first in the <c>TargetFrameworks</c> property).
+        /// Gets the active target framework for project.
         /// </summary>
         ITargetFramework ActiveTarget { get; }
 
