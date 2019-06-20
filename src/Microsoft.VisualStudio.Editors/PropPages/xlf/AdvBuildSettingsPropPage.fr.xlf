@@ -67,24 +67,9 @@
         <target state="translated">Re&amp;chercher un débordement/soupassement arithmétique</target>
         <note />
       </trans-unit>
-      <trans-unit id="CSharpLanguageVersion.Default">
-        <source>C# latest supported minor version (default)</source>
-        <target state="translated">Dernière version mineure de C# prise en charge (default)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="CSharpLanguageVersion.LatestMajor">
-        <source>C# latest supported major version (latestmajor)</source>
-        <target state="translated">Dernière version majeure de C# prise en charge (lastestmajor)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="CSharpLanguageVersion.Latest">
-        <source>C# latest supported minor version (latest)</source>
-        <target state="translated">Dernière version mineure de C# prise en charge (latest)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="CSharpLanguageVersion.Preview">
-        <source>unsupported preview of next C# version (preview)</source>
-        <target state="translated">préversion non prise en charge de la prochaine version de C# (preview)</target>
+      <trans-unit id="lnkLabel.Text">
+        <source>Why can't I select a different C# version?</source>
+        <target state="new">Why can't I select a different C# version?</target>
         <note />
       </trans-unit>
     </body>

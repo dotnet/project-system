@@ -67,24 +67,9 @@
         <target state="translated">산술 오버플로/언더플로 확인(&amp;K)</target>
         <note />
       </trans-unit>
-      <trans-unit id="CSharpLanguageVersion.Default">
-        <source>C# latest supported minor version (default)</source>
-        <target state="translated">C# 지원되는 최신 부 버전(기본값)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="CSharpLanguageVersion.LatestMajor">
-        <source>C# latest supported major version (latestmajor)</source>
-        <target state="translated">C# 지원되는 최신 주 버전(latestmajor)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="CSharpLanguageVersion.Latest">
-        <source>C# latest supported minor version (latest)</source>
-        <target state="translated">C# 지원되는 최신 부 버전(최신)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="CSharpLanguageVersion.Preview">
-        <source>unsupported preview of next C# version (preview)</source>
-        <target state="translated">다음 C# 버전의 지원되지 않는 미리 보기(미리 보기)</target>
+      <trans-unit id="lnkLabel.Text">
+        <source>Why can't I select a different C# version?</source>
+        <target state="new">Why can't I select a different C# version?</target>
         <note />
       </trans-unit>
     </body>
