@@ -175,17 +175,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             if (activeTargetFramework.Equals(TargetFramework.Empty))
             {
-                if (dependenciesByTargetFramework.Count != 0)
-                {
-                    Requires.Fail($"If {nameof(activeTargetFramework)} is empty, {nameof(dependenciesByTargetFramework)} must be empty.");
-                }
+                Requires.Argument(
+                    dependenciesByTargetFramework.Count == 0,
+                    nameof(dependenciesByTargetFramework),
+                    $"Must be empty when {nameof(activeTargetFramework)} is empty.");
             }
             else
             {
-                if (!dependenciesByTargetFramework.ContainsKey(activeTargetFramework))
-                {
-                    Requires.Fail($"{nameof(activeTargetFramework)} must be present in {nameof(dependenciesByTargetFramework)}.");
-                }
+                Requires.Argument(
+                    dependenciesByTargetFramework.ContainsKey(activeTargetFramework),
+                    nameof(dependenciesByTargetFramework),
+                    $"Must contain {nameof(activeTargetFramework)} ({activeTargetFramework.FullName}).");
             }
 
             ProjectPath = projectPath;

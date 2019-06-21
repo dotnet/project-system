@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 activeTargetFramework: targetFramework,
                 ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot>.Empty));
 
-            Assert.Equal("activeTargetFramework must be present in dependenciesByTargetFramework.", ex.Message);
+            Assert.StartsWith("Must contain activeTargetFramework (tfm1).", ex.Message);
         }
 
         [Fact]
