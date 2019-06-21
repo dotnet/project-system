@@ -352,7 +352,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="refObject">Internal Reference Object</param>
         ''' <returns>ListViewItem object containing information from reference</returns>
         ''' <remarks>Helper for RefreshReferenceList()</remarks>
-        Private Function WebReferenceToListViewItem(webRef As EnvDTE.ProjectItem, refObject As Object) As ListViewItem
+        Private Shared Function WebReferenceToListViewItem(webRef As EnvDTE.ProjectItem, refObject As Object) As ListViewItem
             Debug.Assert(webRef IsNot Nothing)
 
             Dim lvi As ListViewItem
@@ -377,7 +377,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="serviceReference">service reference component</param>
         ''' <returns>ListViewItem object containing information from reference</returns>
         ''' <remarks>Helper for RefreshReferenceList()</remarks>
-        Private Function ServiceReferenceToListViewItem(serviceReference As ServiceReferenceComponent) As ListViewItem
+        Private Shared Function ServiceReferenceToListViewItem(serviceReference As ServiceReferenceComponent) As ListViewItem
             Debug.Assert(serviceReference IsNot Nothing)
 
             Dim lvi As ListViewItem

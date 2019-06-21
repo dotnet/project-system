@@ -148,7 +148,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Return the ListViewItem for the given extension code file.
         ''' </summary>
-        Private Function ExtensionProjectItemGroupToDataGridViewRow(extensionProjectFile As MyExtensionProjectItemGroup) _
+        Private Shared Function ExtensionProjectItemGroupToDataGridViewRow(extensionProjectFile As MyExtensionProjectItemGroup) _
                 As DataGridViewRow
             Debug.Assert(extensionProjectFile IsNot Nothing)
 
