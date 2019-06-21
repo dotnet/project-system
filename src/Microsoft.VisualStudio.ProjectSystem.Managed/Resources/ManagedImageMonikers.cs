@@ -13,11 +13,12 @@ using Microsoft.VisualStudio.ProjectSystem;
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>
-    /// Contains monikers for icons shipped with Managed Project System. Icons are located in
-    /// <c>ManagedImages.imagemanifest</c> file that is also installed to VS extension path.
+    /// Contains monikers for icons shipped with Managed Project System.
     /// </summary>
     public static class ManagedImageMonikers
     {
+        // These GUIDs and IDs are defined in src\Microsoft.VisualStudio.ProjectSystem.Managed.VS\ManagedImages.imagemanifest
+
         private static readonly Guid s_manifestGuid = new Guid("{259567C1-AA6B-46BF-811C-C145DD9F3B48}");
 
         public static ImageMoniker ApplicationPrivate     => new ImageMoniker { Guid = s_manifestGuid, Id = 0  };
@@ -42,6 +43,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public static ImageMoniker SharedProjectPrivate   => new ImageMoniker { Guid = s_manifestGuid, Id = 19 };
         public static ImageMoniker SharedProjectWarning   => new ImageMoniker { Guid = s_manifestGuid, Id = 20 };
         public static ImageMoniker WarningSmall           => new ImageMoniker { Guid = s_manifestGuid, Id = 21 };
+
+        // These internal fields are provided for convenience
 
         internal static ImageMoniker Abbreviation     => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.Abbreviation     };
         internal static ImageMoniker AboutBox         => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.AboutBox         };
