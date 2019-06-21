@@ -61,9 +61,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             var currentTopLevelNodes = new List<IProjectTree>();
 
-            if (snapshot.Targets.Count(x => !x.Key.Equals(TargetFramework.Any)) == 1)
+            if (snapshot.DependenciesByTargetFramework.Count(x => !x.Key.Equals(TargetFramework.Any)) == 1)
             {
-                foreach ((ITargetFramework _, ITargetedDependenciesSnapshot targetedSnapshot) in snapshot.Targets)
+                foreach ((ITargetFramework _, ITargetedDependenciesSnapshot targetedSnapshot) in snapshot.DependenciesByTargetFramework)
                 {
                     if (cancellationToken.IsCancellationRequested)
                     {
@@ -72,14 +72,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                     dependenciesTree = await BuildSubTreesAsync(
                         rootNode: dependenciesTree,
-                        snapshot.ActiveTarget,
+                        snapshot.ActiveTargetFramework,
                         targetedSnapshot,
                         RememberNewNodes);
                 }
             }
             else
             {
-                foreach ((ITargetFramework targetFramework, ITargetedDependenciesSnapshot targetedSnapshot) in snapshot.Targets)
+                foreach ((ITargetFramework targetFramework, ITargetedDependenciesSnapshot targetedSnapshot) in snapshot.DependenciesByTargetFramework)
                 {
                     if (cancellationToken.IsCancellationRequested)
                     {
@@ -90,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     {
                         dependenciesTree = await BuildSubTreesAsync(
                             rootNode: dependenciesTree,
-                            snapshot.ActiveTarget,
+                            snapshot.ActiveTargetFramework,
                             targetedSnapshot,
                             RememberNewNodes);
                     }
@@ -109,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                         node = await BuildSubTreesAsync(
                             rootNode: node,
-                            snapshot.ActiveTarget,
+                            snapshot.ActiveTargetFramework,
                             targetedSnapshot,
                             CleanupOldNodes);
 

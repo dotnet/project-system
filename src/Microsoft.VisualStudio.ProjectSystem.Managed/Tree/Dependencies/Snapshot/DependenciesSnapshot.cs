@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics;
+using System.Linq;
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters;
@@ -13,7 +13,6 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     /// <inheritdoc />
-    [DebuggerDisplay("{Targets.Count} targets - {ProjectPath}")]
     internal sealed class DependenciesSnapshot : IDependenciesSnapshot
     {
         #region Factories and private constructor
@@ -22,8 +21,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         {
             return new DependenciesSnapshot(
                 projectPath,
-                activeTarget: TargetFramework.Empty,
-                targets: ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot>.Empty);
+                activeTargetFramework: TargetFramework.Empty,
+                dependenciesByTargetFramework: ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot>.Empty);
         }
 
         /// <summary>
@@ -42,6 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             DependenciesSnapshot previousSnapshot,
             ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes,
             IProjectCatalogSnapshot? catalogs,
+            ImmutableArray<ITargetFramework> targetFrameworks,
             ITargetFramework? activeTargetFramework,
             ImmutableArray<IDependenciesSnapshotFilter> snapshotFilters,
             IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Requires.Argument(!snapshotFilters.IsDefault, nameof(snapshotFilters), "Cannot be default.");
             Requires.NotNull(subTreeProviderByProviderType, nameof(subTreeProviderByProviderType));
 
-            var builder = previousSnapshot.Targets.ToBuilder();
+            var builder = previousSnapshot.DependenciesByTargetFramework.ToBuilder();
 
             bool builderChanged = false;
 
@@ -80,26 +80,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 }
             }
 
-            builderChanged |= RemoveTargetFrameworksWithNoDependencies();
+            builderChanged |= SyncTargetFrameworks();
 
-            activeTargetFramework ??= previousSnapshot.ActiveTarget;
+            activeTargetFramework ??= previousSnapshot.ActiveTargetFramework;
 
             if (builderChanged)
             {
-                // Targets have changed
+                // Dependencies-by-target-framework has changed
                 return new DependenciesSnapshot(
                     projectPath,
                     activeTargetFramework,
                     builder.ToImmutable());
             }
 
-            if (!activeTargetFramework.Equals(previousSnapshot.ActiveTarget))
+            if (!activeTargetFramework.Equals(previousSnapshot.ActiveTargetFramework))
             {
-                // The active target changed
+                // The active target framework changed
                 return new DependenciesSnapshot(
                     projectPath,
                     activeTargetFramework,
-                    previousSnapshot.Targets);
+                    previousSnapshot.DependenciesByTargetFramework);
             }
 
             if (projectPath != previousSnapshot.ProjectPath)
@@ -108,38 +108,45 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 return new DependenciesSnapshot(
                     projectPath,
                     activeTargetFramework,
-                    previousSnapshot.Targets);
+                    previousSnapshot.DependenciesByTargetFramework);
             }
 
             // Nothing has changed, so return the same snapshot
             return previousSnapshot;
 
-            // Active target differs
-
-            bool RemoveTargetFrameworksWithNoDependencies()
+            bool SyncTargetFrameworks()
             {
+                // Only sync if a the full list of target frameworks has been provided
+                if (targetFrameworks.IsDefault)
+                {
+                    return false;
+                }
+
                 // This is a long-winded way of doing this that minimises allocations
 
-                List<ITargetFramework>? emptyFrameworks = null;
                 bool anythingRemoved = false;
 
-                foreach ((ITargetFramework targetFramework, ITargetedDependenciesSnapshot targetedSnapshot) in builder)
+                // Ensure all required target frameworks are present
+                foreach (ITargetFramework targetFramework in targetFrameworks)
                 {
-                    if (targetedSnapshot.DependenciesWorld.Count == 0)
+                    if (!builder.ContainsKey(targetFramework))
                     {
-                        if (emptyFrameworks == null)
-                        {
-                            anythingRemoved = true;
-                            emptyFrameworks = new List<ITargetFramework>(builder.Count);
-                        }
-
-                        emptyFrameworks.Add(targetFramework);
+                        builder.Add(targetFramework, TargetedDependenciesSnapshot.CreateEmpty(projectPath, targetFramework, catalogs));
+                        anythingRemoved = true;
                     }
                 }
 
-                if (emptyFrameworks != null)
+                // Remove any extra target frameworks
+                if (builder.Count != targetFrameworks.Length)
                 {
-                    builder.RemoveRange(emptyFrameworks);
+                    IEnumerable<ITargetFramework> targetFrameworksToRemove = builder.Keys.Except(targetFrameworks);
+
+                    foreach (ITargetFramework targetFramework in targetFrameworksToRemove)
+                    {
+                        builder.Remove(targetFramework);
+                    }
+
+                    anythingRemoved = true;
                 }
 
                 return anythingRemoved;
@@ -148,27 +155,42 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         public DependenciesSnapshot RemoveTargets(IEnumerable<ITargetFramework> targetToRemove)
         {
-            ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot> newTargets = Targets.RemoveRange(targetToRemove);
+            ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot> newTargets = DependenciesByTargetFramework.RemoveRange(targetToRemove);
 
             // Return this if no targets changed
-            return ReferenceEquals(newTargets, Targets)
+            return ReferenceEquals(newTargets, DependenciesByTargetFramework)
                 ? this
-                : new DependenciesSnapshot(ProjectPath, ActiveTarget, newTargets);
+                : new DependenciesSnapshot(ProjectPath, ActiveTargetFramework, newTargets);
         }
 
         // Internal, for test use -- normal code should use the factory methods
         internal DependenciesSnapshot(
             string projectPath,
-            ITargetFramework activeTarget,
-            ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot> targets)
+            ITargetFramework activeTargetFramework,
+            ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot> dependenciesByTargetFramework)
         {
             Requires.NotNullOrEmpty(projectPath, nameof(projectPath));
-            Requires.NotNull(activeTarget, nameof(activeTarget));
-            Requires.NotNull(targets, nameof(targets));
+            Requires.NotNull(activeTargetFramework, nameof(activeTargetFramework));
+            Requires.NotNull(dependenciesByTargetFramework, nameof(dependenciesByTargetFramework));
+
+            if (activeTargetFramework.Equals(TargetFramework.Empty))
+            {
+                Requires.Argument(
+                    dependenciesByTargetFramework.Count == 0,
+                    nameof(dependenciesByTargetFramework),
+                    $"Must be empty when {nameof(activeTargetFramework)} is empty.");
+            }
+            else
+            {
+                Requires.Argument(
+                    dependenciesByTargetFramework.ContainsKey(activeTargetFramework),
+                    nameof(dependenciesByTargetFramework),
+                    $"Must contain {nameof(activeTargetFramework)} ({activeTargetFramework.FullName}).");
+            }
 
             ProjectPath = projectPath;
-            ActiveTarget = activeTarget;
-            Targets = targets;
+            ActiveTargetFramework = activeTargetFramework;
+            DependenciesByTargetFramework = dependenciesByTargetFramework;
         }
 
         #endregion
@@ -177,13 +199,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public string ProjectPath { get; }
 
         /// <inheritdoc />
-        public ITargetFramework ActiveTarget { get; }
+        public ITargetFramework ActiveTargetFramework { get; }
 
         /// <inheritdoc />
-        public ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot> Targets { get; }
+        public ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot> DependenciesByTargetFramework { get; }
 
         /// <inheritdoc />
-        public bool HasUnresolvedDependency => Targets.Any(x => x.Value.HasUnresolvedDependency);
+        public bool HasUnresolvedDependency => DependenciesByTargetFramework.Any(x => x.Value.HasUnresolvedDependency);
 
         /// <inheritdoc />
         public IDependency? FindDependency(string dependencyId, bool topLevel = false)
@@ -197,7 +219,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             {
                 // if top level first try to find by top level id with full path,
                 // if found - return, if not - try regular Id in the DependenciesWorld
-                foreach ((ITargetFramework _, ITargetedDependenciesSnapshot targetedDependencies) in Targets)
+                foreach ((ITargetFramework _, ITargetedDependenciesSnapshot targetedDependencies) in DependenciesByTargetFramework)
                 {
                     IDependency dependency = targetedDependencies.TopLevelDependencies
                         .FirstOrDefault((x, id) => x.TopLevelIdEquals(id), dependencyId);
@@ -209,7 +231,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 }
             }
 
-            foreach ((ITargetFramework _, ITargetedDependenciesSnapshot targetedDependencies) in Targets)
+            foreach ((ITargetFramework _, ITargetedDependenciesSnapshot targetedDependencies) in DependenciesByTargetFramework)
             {
                 if (targetedDependencies.DependenciesWorld.TryGetValue(dependencyId, out IDependency dependency))
                 {
@@ -225,5 +247,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         {
             return other != null && other.ProjectPath.Equals(ProjectPath, StringComparison.OrdinalIgnoreCase);
         }
+
+        public override string ToString() => $"{DependenciesByTargetFramework.Count} target framework{(DependenciesByTargetFramework.Count == 1 ? "" : "s")} - {ProjectPath}";
     }
 }

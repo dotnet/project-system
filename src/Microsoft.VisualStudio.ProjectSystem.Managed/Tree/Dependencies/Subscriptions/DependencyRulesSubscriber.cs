@@ -258,6 +258,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 DependenciesChanged?.Invoke(
                     this,
                     new DependencySubscriptionChangedEventArgs(
+                        currentAggregateContext.TargetFrameworks,
                         currentAggregateContext.ActiveTargetFramework,
                         catalogSnapshot,
                         changes));

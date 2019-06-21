@@ -61,16 +61,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
     internal sealed class DependencySubscriptionChangedEventArgs
     {
         public DependencySubscriptionChangedEventArgs(
+            ImmutableArray<ITargetFramework> targetFrameworks,
             ITargetFramework activeTarget,
             IProjectCatalogSnapshot catalogs,
             ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes)
         {
+            Requires.Argument(!targetFrameworks.IsDefaultOrEmpty, nameof(targetFrameworks), "Must not be default or empty.");
             Requires.Argument(changes.Count != 0, nameof(changes), "Must not be zero.");
 
+            TargetFrameworks = targetFrameworks;
             ActiveTarget = activeTarget;
             Catalogs = catalogs;
             Changes = changes;
         }
+
+        public ImmutableArray<ITargetFramework> TargetFrameworks { get; }
 
         public ITargetFramework ActiveTarget { get; }
 
