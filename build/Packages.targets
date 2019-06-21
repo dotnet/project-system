@@ -104,12 +104,14 @@
     <!-- Analyzers -->
     <!-- Note: analyzers from github.com/dotnet/roslyn-analyzers are built together and share the same version -->
     <PackageReference Update="Microsoft.CodeAnalysis.Analyzers" Version="$(RoslynAnalyzersPackagesVersion)" />
-    <PackageReference Update="Microsoft.CodeQuality.Analyzers.Exp" Version="$(RoslynAnalyzersPackagesVersion)" />
     <PackageReference Update="Microsoft.CodeQuality.Analyzers" Version="$(RoslynAnalyzersPackagesVersion)" />
     <PackageReference Update="Microsoft.NetFramework.Analyzers" Version="$(RoslynAnalyzersPackagesVersion)" />
-    <PackageReference Update="Roslyn.Diagnostics.Analyzers" Version="$(RoslynAnalyzersPackagesVersion)" />
-    <PackageReference Update="Text.Analyzers" Version="$(RoslynAnalyzersPackagesVersion)" />
-    
+    <PackageReference Update="Microsoft.CodeAnalysis.BannedApiAnalyzers" Version="$(RoslynAnalyzersPackagesVersion)" />
+    <PackageReference Update="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="$(RoslynAnalyzersPackagesVersion)" />
+    <PackageReference Update="Text.Analyzers" Version="$(RoslynAnalyzersOldPackagesVersion)" />
+    <PackageReference Update="Microsoft.CodeQuality.Analyzers.Exp" Version="$(RoslynAnalyzersOldPackagesVersion)" />
+    <PackageReference Update="Roslyn.Diagnostics.Analyzers" Version="$(RoslynAnalyzersOldPackagesVersion)" />
+
     <!-- NuGet -->
     <PackageReference Update="NuGet.SolutionRestoreManager.Interop" Version="5.1.0-rtm.5921" />
     <PackageReference Update="NuGet.VisualStudio" Version="5.1.0-rtm.5921" />
