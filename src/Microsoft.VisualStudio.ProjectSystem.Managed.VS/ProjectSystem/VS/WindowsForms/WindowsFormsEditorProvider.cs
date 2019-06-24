@@ -23,12 +23,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
     [Order(Order.BeforeDefault)] // Need to run before CPS's version before its deleted
     internal partial class WindowsFormsEditorProvider : IProjectSpecificEditorProvider
     {
-        private readonly static SubTypeDescriptor[] SubTypeDescriptors = new[]
+        private static readonly SubTypeDescriptor[] s_subTypeDescriptors = new[]
         {
-            new SubTypeDescriptor("Form",           VSResources.WindowsFormEditor_DisplayName, "Form",         useDesignerByDefault: true), // "Form" and "Designer" represent the same thing
-            new SubTypeDescriptor("Designer",       VSResources.WindowsFormEditor_DisplayName, "Form",         useDesignerByDefault: true),
-            new SubTypeDescriptor("UserControl",    VSResources.UserControlEditor_DisplayName, "UserControl",  useDesignerByDefault: true),
-            new SubTypeDescriptor("Component",      VSResources.ComponentEditor_DisplayName,   "Component",    useDesignerByDefault: false)
+            new SubTypeDescriptor("Form",           VSResources.WindowsFormEditor_DisplayName, useDesignerByDefault: true),
+            new SubTypeDescriptor("Designer",       VSResources.WindowsFormEditor_DisplayName, useDesignerByDefault: true),
+            new SubTypeDescriptor("UserControl",    VSResources.UserControlEditor_DisplayName, useDesignerByDefault: true),
+            new SubTypeDescriptor("Component",      VSResources.ComponentEditor_DisplayName,   useDesignerByDefault: false)
         };
 
         private readonly Lazy<IPhysicalProjectTree> _projectTree;
@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
             if (descriptor == null)
                 return null;
 
-            bool isDefaultEditor = await _options.Value.GetUseDesignerByDefaultAsync(descriptor.DesignerCategoryForPersistence, descriptor.UseDesignerByDefault);
+            bool isDefaultEditor = await _options.Value.GetUseDesignerByDefaultAsync(descriptor.SubType, descriptor.UseDesignerByDefault);
 
             return new EditorInfo(editor.EditorFactory, descriptor.DisplayName, isDefaultEditor);
         }
@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
                 return false;
 
             // 'useGlobalEditor' means use the default editor that is registered for source files
-            await _options.Value.SetUseDesignerByDefaultAsync(editorInfo.DesignerCategoryForPersistence, !useGlobalEditor);
+            await _options.Value.SetUseDesignerByDefaultAsync(editorInfo.SubType, !useGlobalEditor);
             return true;
         }
 
@@ -93,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
             string? subType = await GetSubTypeAsync(documentMoniker);
             if (subType != null)
             {
-                foreach (SubTypeDescriptor descriptor in SubTypeDescriptors)
+                foreach (SubTypeDescriptor descriptor in s_subTypeDescriptors)
                 {
                     if (StringComparers.PropertyLiteralValues.Equals(subType, descriptor.SubType))
                         return descriptor;

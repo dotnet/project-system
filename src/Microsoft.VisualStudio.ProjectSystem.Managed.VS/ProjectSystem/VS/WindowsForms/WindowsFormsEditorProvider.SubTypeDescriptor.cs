@@ -12,15 +12,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
 
             public readonly string DisplayName;
 
-            public readonly string DesignerCategoryForPersistence;
-
             public readonly bool UseDesignerByDefault;
 
-            public SubTypeDescriptor(string subType, string displayName, string designerCategoryForPersistence, bool useDesignerByDefault)
+            public SubTypeDescriptor(string subType, string displayName, bool useDesignerByDefault)
             {
                 SubType = subType;
                 DisplayName = displayName;
-                DesignerCategoryForPersistence = designerCategoryForPersistence;
                 UseDesignerByDefault = useDesignerByDefault;
             }
         }
