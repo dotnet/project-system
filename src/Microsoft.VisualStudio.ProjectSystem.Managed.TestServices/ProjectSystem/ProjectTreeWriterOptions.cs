@@ -13,6 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         Capabilities = 4,
         Visibility = 8,
         Icons = 16,
-        AllProperties = FilePath | Visibility | Capabilities | Icons
+        ItemType = 32,
+        AllProperties = FilePath | Visibility | Capabilities | Icons | ItemType
     }
 }

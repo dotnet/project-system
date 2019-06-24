@@ -277,6 +277,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             public string ItemName { get; set; }
 
+            public string ItemType { get; set; }
+
             public MutableProjectItemTree ToMutableProjectItemTree()
             {
                 var newItemTree = new MutableProjectItemTree();
@@ -292,10 +294,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 newTree.ExpandedIcon = ExpandedIcon;
                 newTree.DisplayOrder = DisplayOrder;
                 newTree.ItemName = ItemName;
+                newTree.ItemType = ItemType;
 
                 var projectPropertiesContext = new MutableProjectPropertiesContext
                 {
-                    ItemName = ItemName
+                    ItemName = ItemName,
+                    ItemType = ItemType
                 };
 
                 newItemTree.Item = projectPropertiesContext;

@@ -267,6 +267,15 @@ namespace Microsoft.VisualStudio.ProjectSystem
             AssertProjectTree(input, expected);
         }
 
+        // Input                                                                                    // Expected
+        [Theory]
+        [InlineData(@"Project Root, ItemType: Compile",                                             @"Project Root[caption], ItemType: Compile[itemtype]")]
+        [InlineData(@"Project Root, ItemType: None",                                                @"Project Root[caption], ItemType: None[itemtype]")]
+        public void Parse_RootWithItemType_CanParse(string input, string expected)
+        {
+            AssertProjectTree(input, expected, ProjectTreeWriterOptions.ItemType);
+        }
+
         // Input                                                                                                                                    // Expected
         [Theory]
         [InlineData(@"Project Root (), Icon: {}",                                                                                                   @"Project Root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]"", Icon: {[icon]}, ExpandedIcon: {[icon]}")]

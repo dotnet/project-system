@@ -46,6 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             WriteCaption(tree);
             WriteProperties(tree);
             WriteFilePath(tree);
+            WriteItemType(tree);
             WriteIcons(tree);
             WriteChildren(tree, indentLevel);
         }
@@ -122,6 +123,23 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
 
             _builder.Append('"');
+        }
+
+        private void WriteItemType(IProjectTree tree)
+        {
+            if (!_options.HasFlag(ProjectTreeWriterOptions.ItemType))
+                return;
+
+            if (tree is IProjectItemTree item)
+            {
+                _builder.Append(", ItemType: ");
+                _builder.Append(item.Item.ItemType);
+
+                if (TagElements)
+                {
+                    _builder.Append("[itemtype]");
+                }
+            }
         }
 
         private void WriteVisibility(IProjectTree tree)

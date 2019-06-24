@@ -122,13 +122,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var tree = new MutableProjectTree();
             ReadProjectItemProperties(tree);
 
-            if (string.IsNullOrWhiteSpace(tree.ItemName))
+            if (string.IsNullOrWhiteSpace(tree.ItemName) && string.IsNullOrWhiteSpace(tree.ItemType))
             {
                 return tree;
             }
             else
             {
-                // Because we have an evaluated include value (ItemName), this means we have a project item tree.
+                // Because we have an evaluated include value (ItemName or ItemType), this means we have a project item tree.
                 return tree.ToMutableProjectItemTree();
             }
         }
@@ -263,6 +263,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
                         ReadFilePath(tree);
                         break;
 
+                    case "ItemType":
+                        tokenizer.Skip(TokenType.Colon);
+                        tokenizer.Skip(TokenType.WhiteSpace);
+                        ReadItemType(tree);
+                        break;
+
                     case "Icon":
                         tokenizer.Skip(TokenType.Colon);
                         tokenizer.Skip(TokenType.WhiteSpace);
@@ -294,7 +300,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         private void ReadDisplayOrder(MutableProjectTree tree)
-        {   // Parses ': 1`
+        {   // Parses '1`
 
             Tokenizer tokenizer = Tokenizer(Delimiters.PropertyValue);
 
@@ -304,15 +310,23 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         private void ReadItemName(MutableProjectTree tree)
-        {   // Parses ': "test.fs"'
+        {   // Parses '"test.fs"'
 
             tree.ItemName = ReadQuotedPropertyValue();
         }
 
         private void ReadFilePath(MutableProjectTree tree)
-        {   // Parses ': "C:\Temp\Foo"'
+        {   // Parses '"C:\Temp\Foo"'
 
             tree.FilePath = ReadQuotedPropertyValue();
+        }
+
+        private void ReadItemType(MutableProjectTree tree)
+        {   // Parses 'Compile'
+
+            Tokenizer tokenizer = Tokenizer(Delimiters.PropertyValue);
+
+            tree.ItemType = tokenizer.ReadIdentifier(IdentifierParseOptions.Required);
         }
 
         private string ReadQuotedPropertyValue()
