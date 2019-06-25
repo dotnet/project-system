@@ -1642,7 +1642,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If indexOfFirstComma <> -1 Then
                 Dim typeName = AssemblyQualifiedName.Substring(startIndex:=0, length:=indexOfFirstComma)
                 Dim correctedAssemblyQualifiedName As String = Nothing
-                If s_correctedAssemblyQualifiedName.TryGetValue(typeName, CorrectedAssemblyQualifiedName) Then
+                If s_correctedAssemblyQualifiedName.TryGetValue(typeName, correctedAssemblyQualifiedName) Then
                     Return correctedAssemblyQualifiedName
                 End If
             End If
