@@ -7,9 +7,9 @@
 
 ## What is a design-time build?
 
-Design-time builds are special builds that are launched by the project system to gather just enough information to populate the language service and other project services, such as the references node.  Design-time builds are not directly user-initiated, but may be indirectly launched in response to a user action such as changing the project file or build options, or adding/removing source files and references, or switching configurations.
+Design-time builds are special builds that are launched by the project system to gather just enough information to populate the language service and other project services, such as the Dependencies node.  Design-time builds are not directly user-initiated, but may be indirectly launched in response to a user action such as changing the project file, build options, adding/removing source files and references, or switching configurations.
 
-For performance reasons and unlike normal builds, which call the _Build_ target, design-time builds call a limited set of targets. This can lead to custom builds that succeed during a normal build, but end up failing during a design-time build, typically due to custom targets with under-specified dependencies.
+For performance reasons, and unlike normal builds which call the _Build_ target, design-time builds call a limited set of targets. This can lead to custom builds that succeed during a normal build, but end up failing during a design-time build, typically due to custom targets with under-specified dependencies.
 
 ## Targets that run during design-time builds
 
@@ -20,7 +20,8 @@ Design-Time Target                            | Normal Target                   
 ResolveAssemblyReferencesDesignTime           | ResolveAssemblyReferences          | Resolves `<Reference>` items to their paths.
 ResolveProjectReferencesDesignTime            | ResolveProjectReferences           | Resolves `<ProjectReference>` items to their output paths.
 ResolveComReferencesDesignTime                | ResolveComReferences               | Resolves `<COMReference>` items to their primary interop assemblies (PIA) paths.
-CompileDesignTime (new project system)/Compile| Compile                            | Passes command-line arguments, include `<Compile>` and `<Analyzer>` items to the compiler in normal builds, or language service in design-time builds.
+ResolvePackageDependenciesDesignTime          | ResolvePackageDependencies         | Resolves `<PackageReference>` items to their paths.
+CompileDesignTime (new project system)/Compile| Compile                            | Passes command-line arguments, `<Compile>` items and `<Analyzer>` items to the compiler in normal builds, or to the language service in design-time builds.
 
 The design-time targets are typically simple wrappers around their normal target equivalents, with customized behavior for design-time builds. 
 
@@ -39,25 +40,24 @@ If you've determined that your target needs to run in a design-time build, using
 ```
 The `AddAdditionalReferences` target will run in both normal builds _and_ design-time builds, leading to consistent results between them.
 
-### Determining whether a target is run in a design-time build
+### Determining whether a target is running in a design-time build
 
-Use the `DesignTimeBuild` (CPS-based projects) and `BuildingProject` (legacy project system) properties to differentiate between when a target is run in a design-time build versus a normal build. This can be used to avoid expensive calculations or work that is only needed for a normal build.
+Use both the `DesignTimeBuild` (CPS-based projects) and `BuildingProject` (legacy project system) properties to determine whether a target is running in a design-time build or a normal build. This can be used to avoid expensive calculations or work that is only needed for a normal build, helping to keep the IDE responsive.
 
 ``` XML
   <Target Name="AddAdditionalReferences" BeforeTargets="ResolveAssemblyReferences">
-     <PropertyGroup Condition="$(DesignTimeBuild) == true OR $(BuildingProject) != true">
+     <PropertyGroup Condition="'$(DesignTimeBuild)' == 'true' OR '$(BuildingProject)' != 'true'">
          <_AvoidExpensiveCalculation>true</_AvoidExpensiveCalculation>
      </PropertyGroup>
-
      ...
   </Target>
 ```
 
-__NOTE:__ The DesignTimeBuild property is typically empty ('') inside of a normal build, so avoid comparisons to `false`.
+__NOTE:__ The `DesignTimeBuild` property is typically empty (`''`) in normal builds, so avoid comparisons to `'false'`.
  
 ### Specifying explicit dependencies
 
-If your target has dependencies on properties, items or files produced during the build, it must have an accurate `DependsOnTargets` attribute that indicates the set of targets that produce those assets. An under-specified `DependsOnTargets` will lead to unexpected behavior, such as targets that fail on the first design-time build or fail during every design-time build.
+If your target has dependencies on properties, items or files produced during the build, it must have a `DependsOnTargets` attribute that accurately indicates the set of targets that produce those assets. An under-specified `DependsOnTargets` will lead to unexpected behavior, such as targets that fail on the first design-time build or fail during every design-time build.
 
 ## Diagnosing design-time builds
 
@@ -71,8 +71,8 @@ While the results of design-time builds are not directly visible by default, the
 
 The following are symptoms of a design-time build that is taking too long:
 
-- Making modifications to project, such as renaming, adding or deleting files take a large amount of time
-- Switching build configurations, for example, from Debug to Release, takes large amounts of time
+- Project modifications, such as renaming, adding or deleting files, take a long time
+- Switching build configurations, for example from Debug to Release, takes a long time
 
 ### Getting Visual Studio to output the results of a design-time build
 
@@ -81,11 +81,11 @@ You can force Visual Studio to show the results of a design-time build using the
 #### Visual Studio 2015 or below
 
 1. Delete the `.vs` directory that sits alongside the solution that is experiencing the problem
-2. Start a Developer Command Prompt for VS2015
+2. Start a _Developer Command Prompt for VS2015_
 3. At the prompt, run `SET TRACEDESIGNTIME=true`
-4. At the prompt, run 'devenv'
+4. At the prompt, run `devenv`
 5. Open the solution
-6. Under %TEMP%, look for [RANDOMGUID].designtime.log files, these will contain the results of the design-time build. If running Visual Studio 2015 Update 2 or higher, the name of the project and design-time target that is being called will also be included in the file name.
+6. Under `%TEMP%`, look for `[RANDOMGUID].designtime.log` files, these will contain the results of the design-time build. If running Visual Studio 2015 Update 2 or higher, the name of the project and design-time target that is being called will also be included in the file name.
 
 #### Visual Studio 2017 or later
 
@@ -93,9 +93,9 @@ You can force Visual Studio to show the results of a design-time build using the
 2. In Visual Studio, choose the `View > Other Windows > Build Logging` menu item.
 3. Click on the "play" button.
 
-This will cause design time builds to show up in the build logging tool window. If you have the [MSBuild Binary and Structured Log Viewer](http://msbuildlog.com/) installed, you can double-click on a log to view it in the viewer, otherwise you can right-click and choose `Save As...` to save the log in the new [binary log format](https://github.com/Microsoft/msbuild/wiki/Binary-Log).
+This will cause design-time builds to show up in the build logging tool window. If you have the [MSBuild Binary and Structured Log Viewer](http://msbuildlog.com/) installed, you can double-click on a log to view it in the viewer, otherwise you can right-click and choose `Save As...` to save the log in the new [binary log format](https://github.com/Microsoft/msbuild/wiki/Binary-Log).
 
-### Diagnosing why a design-time build is failing or taking too long
+### Diagnosing failing or slow design-time builds
 
 After following the above instructions, open the resulting build log file or Output window (for the new project system).
 
@@ -114,7 +114,7 @@ These errors indicate that a target failed, typically this is due to targets tha
 
 
 #### Slow design-time build
-For a slow design-time, look for the target performance summary at end of the long which can indicate long running tasks and targets:
+For a slow design-time, look for the target performance summary at end of the log which can indicate long running tasks and targets:
 
 ```
 Target Performance Summary:
