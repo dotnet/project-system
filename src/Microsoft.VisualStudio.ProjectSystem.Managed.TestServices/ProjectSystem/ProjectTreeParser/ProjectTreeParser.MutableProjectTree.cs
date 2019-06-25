@@ -274,38 +274,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
                 return this;
             }
-
-            public string ItemName { get; set; }
-
-            public string ItemType { get; set; }
-
-            public MutableProjectItemTree ToMutableProjectItemTree()
-            {
-                var newItemTree = new MutableProjectItemTree();
-                var newTree = newItemTree as MutableProjectTree;
-
-                newTree.Children = new Collection<MutableProjectTree>(Children);
-                newTree.Caption = Caption;
-                newTree.Flags = Flags;
-                newTree.FilePath = FilePath;
-                newTree.Visible = Visible;
-                newTree.Parent = Parent;
-                newTree.Icon = Icon;
-                newTree.ExpandedIcon = ExpandedIcon;
-                newTree.DisplayOrder = DisplayOrder;
-                newTree.ItemName = ItemName;
-                newTree.ItemType = ItemType;
-
-                var projectPropertiesContext = new MutableProjectPropertiesContext
-                {
-                    ItemName = ItemName,
-                    ItemType = ItemType
-                };
-
-                newItemTree.Item = projectPropertiesContext;
-
-                return newItemTree;
-            }
         }
     }
 }
