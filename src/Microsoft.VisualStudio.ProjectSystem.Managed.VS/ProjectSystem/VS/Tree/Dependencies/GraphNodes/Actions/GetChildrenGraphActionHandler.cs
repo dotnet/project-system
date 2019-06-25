@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                 projectPath,
                 dependency,
                 inputGraphNode,
-                snapshot.Targets[dependency.TargetFramework]);
+                snapshot.DependenciesByTargetFramework[dependency.TargetFramework]);
         }
     }
 }

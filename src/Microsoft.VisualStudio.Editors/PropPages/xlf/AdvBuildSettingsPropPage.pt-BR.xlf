@@ -67,24 +67,9 @@
         <target state="translated">Verifiqu&amp;e se há estouro aritmético/estouro negativo</target>
         <note />
       </trans-unit>
-      <trans-unit id="CSharpLanguageVersion.Default">
-        <source>C# latest supported minor version (default)</source>
-        <target state="translated">Versão secundária de C# mais recente com suporte (padrão)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="CSharpLanguageVersion.LatestMajor">
-        <source>C# latest supported major version (latestmajor)</source>
-        <target state="translated">Versões principais de C# com suporte mais recentes (latestmajor)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="CSharpLanguageVersion.Latest">
-        <source>C# latest supported minor version (latest)</source>
-        <target state="translated">Versão secundária de C# mais recente com suporte (mais recente)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="CSharpLanguageVersion.Preview">
-        <source>unsupported preview of next C# version (preview)</source>
-        <target state="translated">visualização sem suporte da próxima versão de C# (visualização)</target>
+      <trans-unit id="lnkLabel.Text">
+        <source>Why can't I select a different C# version?</source>
+        <target state="new">Why can't I select a different C# version?</target>
         <note />
       </trans-unit>
     </body>

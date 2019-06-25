@@ -18,8 +18,8 @@
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ActiveDebugProfile|Description">
-        <source>Specifies the profile to use for debugging</source>
-        <target state="translated">Spécifie le profil à utiliser pour le débogage</target>
+        <source>Specifies the profile to use for debugging.</source>
+        <target state="needs-review-translation">Spécifie le profil à utiliser pour le débogage</target>
         <note />
       </trans-unit>
     </body>

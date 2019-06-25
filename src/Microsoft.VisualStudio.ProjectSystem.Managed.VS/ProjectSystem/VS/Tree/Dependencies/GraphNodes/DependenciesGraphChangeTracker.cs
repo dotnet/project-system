@@ -152,7 +152,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                         nodeProjectPath,
                         updatedDependency,
                         inputGraphNode,
-                        updatedSnapshot!.Targets[updatedDependency.TargetFramework]))
+                        updatedSnapshot!.DependenciesByTargetFramework[updatedDependency.TargetFramework]))
                     {
                         anyChanges = true;
                     }

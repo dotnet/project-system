@@ -1,8 +1,12 @@
-﻿using System;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml;
+using System.Xml.Linq;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Rules
@@ -77,6 +81,73 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
                     Assert.False(element.HasAttribute("Category"));
                 }
             }
+        }
+
+        [Theory]
+        [MemberData(nameof(GetAllRules))]
+        public void VisiblePropertiesMustHaveDisplayName(string ruleName, string fullPath)
+        {
+            // The "DisplayName" property is localised, while "Name" is not.
+            // Visible properties without a "DisplayName" will appear in English in all locales.
+
+            XElement rule = LoadXamlRuleX(fullPath).Root;
+
+            // Ignore XAML documents for other types such as ProjectSchemaDefinitions
+            if (rule.Name.LocalName != "Rule")
+                return;
+
+            foreach (var property in GetProperties(rule))
+            {
+                // Properties are visible by default
+                string visibleValue = property.Attribute("Visible")?.Value ?? "true";
+
+                Assert.True(bool.TryParse(visibleValue, out bool visible));
+
+                if (!visible)
+                    continue;
+
+                string displayName = property.Attribute("DisplayName")?.Value;
+
+                Assert.NotNull(displayName);
+                Assert.NotEqual("", displayName);
+            }
+        }
+
+        [Theory]
+        [MemberData(nameof(GetAllRules))]
+        public void PropertyDescriptionMustEndWithFullStop(string ruleName, string fullPath)
+        {
+            XElement rule = LoadXamlRuleX(fullPath).Root;
+
+            // Ignore XAML documents for other types such as ProjectSchemaDefinitions
+            if (rule.Name.LocalName != "Rule")
+                return;
+
+            foreach (var property in GetProperties(rule))
+            {
+                string description = property.Attribute("Description")?.Value;
+
+                if (description != null)
+                {
+                    Assert.EndsWith(".", description);
+                }
+            }
+        }
+
+        [Theory]
+        [MemberData(nameof(GetAllRules))]
+        public void RuleMustHaveAName(string ruleName, string fullPath)
+        {
+            XElement rule = LoadXamlRuleX(fullPath).Root;
+
+            // Ignore XAML documents for other types such as ProjectSchemaDefinitions
+            if (rule.Name.LocalName != "Rule")
+                return;
+
+            string name = rule.Attribute("Name")?.Value;
+
+            Assert.NotNull(name);
+            Assert.NotEqual("", name);
         }
 
         [Theory]
@@ -243,6 +314,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             }
 
             return rule;
+        }
+
+        private static XDocument LoadXamlRuleX(string fullPath)
+        {
+            var settings = new XmlReaderSettings { XmlResolver = null };
+            using var fileStream = File.OpenRead(fullPath);
+            using var reader = XmlReader.Create(fileStream, settings);
+            return XDocument.Load(reader);
+        }
+
+        private static IEnumerable<XElement> GetProperties(XElement rule)
+        {
+            foreach (var child in rule.Elements())
+            {
+                if (child.Name.LocalName.EndsWith("Property", StringComparison.Ordinal) &&
+                    child.Name.LocalName.IndexOf('.') == -1)
+                {
+                    yield return child;
+                }
+            }
         }
 
         private void AssertXmlEqual(XmlDocument left, XmlDocument right)

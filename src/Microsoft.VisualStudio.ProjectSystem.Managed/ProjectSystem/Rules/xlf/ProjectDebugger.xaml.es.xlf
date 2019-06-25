@@ -18,8 +18,8 @@
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ActiveDebugProfile|Description">
-        <source>Specifies the profile to use for debugging</source>
-        <target state="translated">Especifica el perfil que debe usarse para la depuración</target>
+        <source>Specifies the profile to use for debugging.</source>
+        <target state="needs-review-translation">Especifica el perfil que debe usarse para la depuración</target>
         <note />
       </trans-unit>
     </body>

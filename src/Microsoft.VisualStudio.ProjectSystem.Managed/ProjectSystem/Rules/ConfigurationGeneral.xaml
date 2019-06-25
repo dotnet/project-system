@@ -27,7 +27,8 @@
   <StringProperty Name="ApplicationIcon"
                   DisplayName="Application Icon" />
 
-  <StringProperty Name="AssemblyName" />
+  <StringProperty Name="AssemblyName"
+                  DisplayName="Assembly Name" />
 
   <StringProperty Name="AssemblyReferenceTabs"
                   Visible="false" />
@@ -45,9 +46,11 @@
   </BoolProperty>
 
   <StringListProperty Name="AvailablePlatforms"
-                      Separator="," />
+                      Separator=","
+                      DisplayName="Available Platforms" />
 
-  <StringProperty Name="BaseIntermediateOutputPath" />
+  <StringProperty Name="BaseIntermediateOutputPath"
+                  DisplayName="Base Intermediate Output Path" />
 
   <StringProperty Name="Configuration"
                   Visible="false" />
@@ -100,7 +103,8 @@
   <StringProperty Name="MSBuildProjectFullPath"
                   Visible="false" />
 
-  <StringProperty Name="Name" />
+  <StringProperty Name="Name"
+                  DisplayName="Name" />
 
   <StringProperty Name="NETCoreSdkVersion"
                   ReadOnly="True"
@@ -110,13 +114,17 @@
                   Visible="False" />
 
   <BoolProperty Name="Optimize"
-                Description="Should compiler optimize output?" />
+                Description="Whether the compiler should optimize output."
+                DisplayName="Optimize" />
 
-  <StringProperty Name="OutputName" />
+  <StringProperty Name="OutputName"
+                  DisplayName="Output Name" />
 
-  <StringProperty Name="OutputPath" />
+  <StringProperty Name="OutputPath"
+                  DisplayName="Output Path" />
 
-  <EnumProperty Name="OutputType">
+  <EnumProperty Name="OutputType"
+                DisplayName="Output Type" >
     <EnumValue Name="Library"
                DisplayName="Class Library" />
     <EnumValue Name="Exe"
@@ -270,7 +278,8 @@
     </StringProperty.DataSource>
   </StringProperty>
 
-  <StringProperty Name="TargetPath" />
+  <StringProperty Name="TargetPath"
+                  DisplayName="Target Path" />
 
   <StringProperty Name="TargetPlatformIdentifier"
                   Visible="false" />

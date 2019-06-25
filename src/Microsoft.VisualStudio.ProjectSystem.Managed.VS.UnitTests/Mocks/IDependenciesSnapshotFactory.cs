@@ -2,8 +2,6 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
-
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
 using Moq;
@@ -18,16 +16,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         public static IDependenciesSnapshot Implement(
-            Dictionary<ITargetFramework, ITargetedDependenciesSnapshot> targets = null,
+            Dictionary<ITargetFramework, ITargetedDependenciesSnapshot> dependenciesByTarget = null,
             bool? hasUnresolvedDependency = null,
             ITargetFramework activeTarget = null,
             MockBehavior mockBehavior = MockBehavior.Default)
         {
             var mock = new Mock<IDependenciesSnapshot>(mockBehavior);
 
-            if (targets != null)
+            if (dependenciesByTarget != null)
             {
-                mock.Setup(x => x.Targets).Returns(targets.ToImmutableDictionary());
+                mock.Setup(x => x.DependenciesByTargetFramework).Returns(dependenciesByTarget.ToImmutableDictionary());
             }
 
             if (hasUnresolvedDependency.HasValue)
@@ -37,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             if (activeTarget != null)
             {
-                mock.Setup(x => x.ActiveTarget).Returns(activeTarget);
+                mock.Setup(x => x.ActiveTargetFramework).Returns(activeTarget);
             }
 
             return mock.Object;

@@ -6,7 +6,6 @@ using System.Collections.Immutable;
 using System.Linq;
 
 using Microsoft.VisualStudio.Imaging;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
 
@@ -17,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
     public sealed class TargetedDependenciesSnapshotTests
     {
         [Fact]
-        public void TConstructor_WhenRequiredParamsNotProvided_ShouldThrow()
+        public void Constructor_WhenRequiredParamsNotProvided_ShouldThrow()
         {
             Assert.Throws<ArgumentNullException>("projectPath", () => new TargetedDependenciesSnapshot(projectPath: null, null, null, null));
             Assert.Throws<ArgumentNullException>("targetFramework", () => new TargetedDependenciesSnapshot("path", targetFramework: null, null, null));
@@ -25,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         }
 
         [Fact]
-        public void TConstructor()
+        public void Constructor()
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = new TargetFramework("tfm1");
@@ -37,16 +36,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 catalogs,
                 ImmutableDictionary<string, IDependency>.Empty);
 
-            Assert.NotNull(snapshot.TargetFramework);
-            Assert.Equal("tfm1", snapshot.TargetFramework.FullName);
-            Assert.Equal(projectPath, snapshot.ProjectPath);
-            Assert.Equal(catalogs, snapshot.Catalogs);
+            Assert.Same(projectPath, snapshot.ProjectPath);
+            Assert.Same(targetFramework, snapshot.TargetFramework);
+            Assert.Same(catalogs, snapshot.Catalogs);
+            Assert.False(snapshot.HasUnresolvedDependency);
             Assert.Empty(snapshot.TopLevelDependencies);
             Assert.Empty(snapshot.DependenciesWorld);
+            Assert.False(snapshot.CheckForUnresolvedDependencies("foo"));
+            Assert.Empty(snapshot.GetDependencyChildren(new TestDependency()));
         }
 
         [Fact]
-        public void TCreateEmpty()
+        public void CreateEmpty()
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = new TargetFramework("tfm1");
@@ -55,17 +56,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var snapshot = TargetedDependenciesSnapshot.CreateEmpty(projectPath, targetFramework, catalogs);
 
             Assert.Same(projectPath, snapshot.ProjectPath);
-            Assert.Same(catalogs, snapshot.Catalogs);
             Assert.Same(targetFramework, snapshot.TargetFramework);
+            Assert.Same(catalogs, snapshot.Catalogs);
             Assert.False(snapshot.HasUnresolvedDependency);
-            Assert.Empty(snapshot.DependenciesWorld);
             Assert.Empty(snapshot.TopLevelDependencies);
+            Assert.Empty(snapshot.DependenciesWorld);
             Assert.False(snapshot.CheckForUnresolvedDependencies("foo"));
             Assert.Empty(snapshot.GetDependencyChildren(new TestDependency()));
         }
 
         [Fact]
-        public void TFromChanges_Empty()
+        public void FromChanges_Empty_NoChanges()
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = new TargetFramework("tfm1");
@@ -87,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         }
 
         [Fact]
-        public void TFromChanges_NoChanges()
+        public void FromChanges_NotEmpty_NoChanges()
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = new TargetFramework("tfm1");
@@ -123,7 +124,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         }
 
         [Fact]
-        public void TFromChanges_AddingToEmpty()
+        public void FromChanges_AddingToEmpty()
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = new TargetFramework("tfm1");
@@ -182,7 +183,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         }
 
         [Fact]
-        public void TFromChanges_NoChangesAfterBeforeRemoveFilterDeclinedChange()
+        public void FromChanges_NoChangesAfterBeforeRemoveFilterDeclinedChange()
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
 
@@ -236,7 +237,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         }
 
         [Fact]
-        public void TFromChanges_ReportedChangesAfterBeforeRemoveFilterDeclinedChange()
+        public void FromChanges_ReportedChangesAfterBeforeRemoveFilterDeclinedChange()
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = new TargetFramework("tfm1");
@@ -299,7 +300,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         }
 
         [Fact]
-        public void TFromChanges_NoChangesAfterBeforeAddFilterDeclinedChange()
+        public void FromChanges_NoChangesAfterBeforeAddFilterDeclinedChange()
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = new TargetFramework("tfm1");
@@ -365,7 +366,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         }
 
         [Fact]
-        public void TFromChanges_ReportedChangesAfterBeforeAddFilterDeclinedChange()
+        public void FromChanges_ReportedChangesAfterBeforeAddFilterDeclinedChange()
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = new TargetFramework("tfm1");
@@ -446,7 +447,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         }
 
         [Fact]
-        public void TFromChanges_RemovedAndAddedChanges()
+        public void FromChanges_RemovedAndAddedChanges()
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = new TargetFramework("tfm1");
@@ -595,7 +596,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         }
 
         [Fact]
-        public void TFromChanges_UpdatesTopLevelDependencies()
+        public void FromChanges_UpdatesTopLevelDependencies()
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = new TargetFramework("tfm1");
@@ -664,7 +665,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// https://github.com/dotnet/project-system/issues/3374
         /// </summary>
         [Fact]
-        public void TCheckForUnresolvedDependencies_CircularDependency_DoesNotRecurseInfinitely()
+        public void CheckForUnresolvedDependencies_CircularDependency_DoesNotRecurseInfinitely()
         {
             const string id1 = @"tfm1\xxx\dependency1";
             const string id2 = @"tfm1\xxx\dependency2";

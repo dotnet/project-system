@@ -18,8 +18,8 @@
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ActiveDebugProfile|Description">
-        <source>Specifies the profile to use for debugging</source>
-        <target state="translated">デバッグに使用するプロファイルを指定する</target>
+        <source>Specifies the profile to use for debugging.</source>
+        <target state="needs-review-translation">デバッグに使用するプロファイルを指定する</target>
         <note />
       </trans-unit>
     </body>

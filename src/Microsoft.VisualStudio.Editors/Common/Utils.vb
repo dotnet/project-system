@@ -1759,6 +1759,18 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 TelemetryService.DefaultSession.PostFault(InputXmlFormEventName, "Exception encountered during Xml Schema Inference", ex)
             End Sub
 
+            Private Const AdvBuildSettingsPropPageEventName As String = "vs/projectsystem/appdesigner/advbuildsettingsproppage"
+            Public Enum AdvBuildSettingsPropPageEvent
+                FormOpened = 0
+                LangVersionMoreInfoLinkClicked = 1
+            End Enum
+
+            Public Shared Sub LogAdvBuildSettingsPropPageEvent(eventValue As AdvBuildSettingsPropPageEvent)
+                Dim userTask = New UserTaskEvent(AdvBuildSettingsPropPageEventName, TelemetryResult.Success)
+                userTask.Properties("vs.projectsystem.appdesigner.advbuildsettingsproppage") = eventValue
+                TelemetryService.DefaultSession.PostEvent(userTask)
+            End Sub
+
         End Class
 #End Region
     End Module

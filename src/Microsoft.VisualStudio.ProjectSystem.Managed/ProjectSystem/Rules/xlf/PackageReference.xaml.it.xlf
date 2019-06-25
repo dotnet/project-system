@@ -38,8 +38,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|Description">
-        <source>Assets to include from this reference</source>
-        <target state="translated">Risorse da includere da questo riferimento</target>
+        <source>Assets to include from this reference.</source>
+        <target state="needs-review-translation">Risorse da includere da questo riferimento</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
@@ -48,8 +48,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|Description">
-        <source>Assets to exclude from this reference</source>
-        <target state="translated">Risorse da escludere da questo riferimento</target>
+        <source>Assets to exclude from this reference.</source>
+        <target state="needs-review-translation">Risorse da escludere da questo riferimento</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|DisplayName">
@@ -58,8 +58,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|Description">
-        <source>Assets that are private in this reference</source>
-        <target state="translated">Risorse private in questo riferimento</target>
+        <source>Assets that are private in this reference.</source>
+        <target state="needs-review-translation">Risorse private in questo riferimento</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|DisplayName">
@@ -68,8 +68,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|Description">
-        <source>Comma-delimited list of warnings that should be suppressed for this package</source>
-        <target state="translated">Elenco di avvisi delimitati da virgole che non devono essere visualizzati per questo pacchetto</target>
+        <source>Comma-delimited list of warnings that should be suppressed for this package.</source>
+        <target state="needs-review-translation">Elenco di avvisi delimitati da virgole che non devono essere visualizzati per questo pacchetto</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Path|Description">
@@ -85,6 +85,16 @@
       <trans-unit id="BoolProperty|GeneratePathProperty|Description">
         <source>Indicates whether to generate an MSBuild property with the location of the package's root directory. The generated property name is in the form of 'Pkg[PackageID]', where '[PackageID]' is the ID of the package with any periods '.' replaced with underscores '_'.</source>
         <target state="translated">Indica se generare una proprietà MSBuild con il percorso della directory radice del pacchetto. Il nome di proprietà generato è in formato 'Pkg[IDpacchetto]', dove '[IDpacchetto]' è l'ID del pacchetto in cui gli eventuali punti ('.') sono stati sostituiti da caratteri di sottolineatura ('_').</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Name|DisplayName">
+        <source>Name</source>
+        <target state="new">Name</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Path|DisplayName">
+        <source>Path</source>
+        <target state="new">Path</target>
         <note />
       </trans-unit>
     </body>

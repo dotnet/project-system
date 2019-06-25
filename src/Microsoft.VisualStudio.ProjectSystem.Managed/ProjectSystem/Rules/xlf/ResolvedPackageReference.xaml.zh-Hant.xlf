@@ -38,8 +38,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|Description">
-        <source>Comma-delimited list of warnings that should be suppressed for this package</source>
-        <target state="translated">不應對此套件顯示的警告清單 (以逗點分隔)</target>
+        <source>Comma-delimited list of warnings that should be suppressed for this package.</source>
+        <target state="needs-review-translation">不應對此套件顯示的警告清單 (以逗點分隔)</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|DisplayName">
@@ -48,8 +48,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|Description">
-        <source>Assets to include from this reference</source>
-        <target state="translated">要從此參考包含的資產</target>
+        <source>Assets to include from this reference.</source>
+        <target state="needs-review-translation">要從此參考包含的資產</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
@@ -58,8 +58,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|Description">
-        <source>Assets to exclude from this reference</source>
-        <target state="translated">要從此參考排除的資產</target>
+        <source>Assets to exclude from this reference.</source>
+        <target state="needs-review-translation">要從此參考排除的資產</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|DisplayName">
@@ -68,13 +68,23 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|Description">
-        <source>Assets that are private in this reference</source>
-        <target state="translated">此參考中的私用資產</target>
+        <source>Assets that are private in this reference.</source>
+        <target state="needs-review-translation">此參考中的私用資產</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Path|Description">
         <source>Location of the package being referenced.</source>
         <target state="translated">目前參考的套件位置。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Name|DisplayName">
+        <source>Name</source>
+        <target state="new">Name</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Path|DisplayName">
+        <source>Path</source>
+        <target state="new">Path</target>
         <note />
       </trans-unit>
     </body>

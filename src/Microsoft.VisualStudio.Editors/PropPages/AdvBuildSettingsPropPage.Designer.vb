@@ -52,6 +52,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.generalLabel = New System.Windows.Forms.Label()
             Me.generalLineLabel = New System.Windows.Forms.Label()
             Me.chkOverflow = New System.Windows.Forms.CheckBox()
+            Me.lnkLabel = New System.Windows.Forms.LinkLabel()
             Me.overarchingTableLayoutPanel.SuspendLayout()
             Me.outputTableLayoutPanel.SuspendLayout()
             Me.generalTableLayoutPanel.SuspendLayout()
@@ -119,19 +120,20 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'overarchingTableLayoutPanel
             '
             resources.ApplyResources(Me.overarchingTableLayoutPanel, "overarchingTableLayoutPanel")
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.outputTableLayoutPanel, 0, 4)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.txtDLLBase, 1, 7)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.outputTableLayoutPanel, 0, 5)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.txtDLLBase, 1, 8)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.generalTableLayoutPanel, 0, 0)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.lblDLLBase, 0, 7)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.lblFileAlignment, 0, 6)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.cboDebugInfo, 1, 5)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.cboFileAlignment, 1, 6)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.lblDebugInfo, 0, 5)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.cboReportCompilerErrors, 1, 2)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.lblDLLBase, 0, 8)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.lblFileAlignment, 0, 7)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.cboDebugInfo, 1, 6)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.cboFileAlignment, 1, 7)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.lblDebugInfo, 0, 6)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.cboReportCompilerErrors, 1, 3)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.cboLanguageVersion, 1, 1)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.chkOverflow, 0, 3)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.lblReportCompilerErrors, 0, 2)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.chkOverflow, 0, 4)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.lblReportCompilerErrors, 0, 3)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.lblLanguageVersion, 0, 1)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.lnkLabel, 1, 2)
             Me.overarchingTableLayoutPanel.Name = "overarchingTableLayoutPanel"
             '
             'outputTableLayoutPanel
@@ -178,6 +180,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.overarchingTableLayoutPanel.SetColumnSpan(Me.chkOverflow, 2)
             Me.chkOverflow.Name = "chkOverflow"
             '
+            'lnkLabel
+            '
+            resources.ApplyResources(Me.lnkLabel, "lnkLabel")
+            Me.lnkLabel.Name = "lnkLabel"
+            Me.lnkLabel.TabStop = True
+            '
             'AdvBuildSettingsPropPage
             '
             resources.ApplyResources(Me, "$this")
@@ -193,6 +201,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.PerformLayout()
 
         End Sub
+
+        Friend WithEvents lnkLabel As Windows.Forms.LinkLabel
     End Class
 
 End Namespace

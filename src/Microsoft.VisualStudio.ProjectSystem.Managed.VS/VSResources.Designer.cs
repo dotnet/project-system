@@ -151,15 +151,6 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Backing up {0} to {1}..
-        /// </summary>
-        internal static string MigrationBackupFile {
-            get {
-                return ResourceManager.GetString("MigrationBackupFile", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Editing of multiple target framework is not supported..
         /// </summary>
         internal static string MultiTFEditNotSupported {
@@ -306,38 +297,11 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed to migrate XProj project {0}. &apos;dotnet migrate --skip-backup -s -p &quot;{1}&quot; -x &quot;{2}&quot;&apos; exited with error code {3}..
+        ///   Looks up a localized string similar to Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/en-us/dotnet/core/migration/..
         /// </summary>
-        internal static string XprojMigrationFailed {
+        internal static string XprojNotSupported {
             get {
-                return ResourceManager.GetString("XprojMigrationFailed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Could not read post-migration report at &apos;{0}&apos;..
-        /// </summary>
-        internal static string XprojMigrationFailedCannotReadReport {
-            get {
-                return ResourceManager.GetString("XprojMigrationFailedCannotReadReport", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Failed to migrate XProj project {0}. Could not find project.json at {1}..
-        /// </summary>
-        internal static string XprojMigrationFailedProjectJsonFileNotFound {
-            get {
-                return ResourceManager.GetString("XprojMigrationFailedProjectJsonFileNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Failed to migrate XProj project {0}. &apos;{1}&apos; exited with error code {2}..
-        /// </summary>
-        internal static string XprojMigrationGeneralFailure {
-            get {
-                return ResourceManager.GetString("XprojMigrationGeneralFailure", resourceCulture);
+                return ResourceManager.GetString("XprojNotSupported", resourceCulture);
             }
         }
     }

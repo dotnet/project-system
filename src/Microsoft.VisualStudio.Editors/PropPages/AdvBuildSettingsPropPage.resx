@@ -160,7 +160,7 @@
     <value>True</value>
   </data>
   <data name="lblReportCompilerErrors.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 50</value>
+    <value>6, 69</value>
   </data>
   <data name="lblReportCompilerErrors.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>6, 3, 3, 3</value>
@@ -169,7 +169,7 @@
     <value>155, 13</value>
   </data>
   <data name="lblReportCompilerErrors.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="lblReportCompilerErrors.Text" xml:space="preserve">
     <value>&amp;Internal compiler error reporting:</value>
@@ -189,6 +189,9 @@
   <data name="cboLanguageVersion.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left, Right</value>
   </data>
+  <data name="cboLanguageVersion.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
   <data name="cboLanguageVersion.Location" type="System.Drawing.Point, System.Drawing">
     <value>167, 19</value>
   </data>
@@ -196,7 +199,7 @@
     <value>3, 3, 0, 3</value>
   </data>
   <data name="cboLanguageVersion.Size" type="System.Drawing.Size, System.Drawing">
-    <value>273, 21</value>
+    <value>352, 21</value>
   </data>
   <data name="cboLanguageVersion.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -217,16 +220,16 @@
     <value>Left, Right</value>
   </data>
   <data name="cboReportCompilerErrors.Location" type="System.Drawing.Point, System.Drawing">
-    <value>167, 46</value>
+    <value>167, 65</value>
   </data>
   <data name="cboReportCompilerErrors.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 0, 3</value>
   </data>
   <data name="cboReportCompilerErrors.Size" type="System.Drawing.Size, System.Drawing">
-    <value>273, 21</value>
+    <value>352, 21</value>
   </data>
   <data name="cboReportCompilerErrors.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="&gt;&gt;cboReportCompilerErrors.Name" xml:space="preserve">
     <value>cboReportCompilerErrors</value>
@@ -247,7 +250,7 @@
     <value>True</value>
   </data>
   <data name="lblDebugInfo.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 119</value>
+    <value>6, 138</value>
   </data>
   <data name="lblDebugInfo.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>6, 3, 3, 3</value>
@@ -256,7 +259,7 @@
     <value>116, 13</value>
   </data>
   <data name="lblDebugInfo.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="lblDebugInfo.Text" xml:space="preserve">
     <value>D&amp;ebugging information:</value>
@@ -277,16 +280,16 @@
     <value>Left, Right</value>
   </data>
   <data name="cboDebugInfo.Location" type="System.Drawing.Point, System.Drawing">
-    <value>167, 115</value>
+    <value>167, 134</value>
   </data>
   <data name="cboDebugInfo.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 0, 3</value>
   </data>
   <data name="cboDebugInfo.Size" type="System.Drawing.Size, System.Drawing">
-    <value>273, 21</value>
+    <value>352, 21</value>
   </data>
   <data name="cboDebugInfo.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="&gt;&gt;cboDebugInfo.Name" xml:space="preserve">
     <value>cboDebugInfo</value>
@@ -307,7 +310,7 @@
     <value>True</value>
   </data>
   <data name="lblFileAlignment.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 146</value>
+    <value>6, 165</value>
   </data>
   <data name="lblFileAlignment.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>6, 3, 3, 3</value>
@@ -316,7 +319,7 @@
     <value>74, 13</value>
   </data>
   <data name="lblFileAlignment.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="lblFileAlignment.Text" xml:space="preserve">
     <value>&amp;File alignment:</value>
@@ -352,16 +355,16 @@
     <value>8192</value>
   </data>
   <data name="cboFileAlignment.Location" type="System.Drawing.Point, System.Drawing">
-    <value>167, 142</value>
+    <value>167, 161</value>
   </data>
   <data name="cboFileAlignment.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 0, 3</value>
   </data>
   <data name="cboFileAlignment.Size" type="System.Drawing.Size, System.Drawing">
-    <value>273, 21</value>
+    <value>352, 21</value>
   </data>
   <data name="cboFileAlignment.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+    <value>11</value>
   </data>
   <data name="&gt;&gt;cboFileAlignment.Name" xml:space="preserve">
     <value>cboFileAlignment</value>
@@ -385,7 +388,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblDLLBase.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 172</value>
+    <value>6, 191</value>
   </data>
   <data name="lblDLLBase.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>6, 3, 3, 0</value>
@@ -394,7 +397,7 @@
     <value>107, 13</value>
   </data>
   <data name="lblDLLBase.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+    <value>12</value>
   </data>
   <data name="lblDLLBase.Text" xml:space="preserve">
     <value>Library &amp;base address:</value>
@@ -415,16 +418,16 @@
     <value>Left, Right</value>
   </data>
   <data name="txtDLLBase.Location" type="System.Drawing.Point, System.Drawing">
-    <value>167, 169</value>
+    <value>167, 188</value>
   </data>
   <data name="txtDLLBase.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 0, 0</value>
   </data>
   <data name="txtDLLBase.Size" type="System.Drawing.Size, System.Drawing">
-    <value>273, 20</value>
+    <value>352, 20</value>
   </data>
   <data name="txtDLLBase.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
+    <value>13</value>
   </data>
   <data name="&gt;&gt;txtDLLBase.Name" xml:space="preserve">
     <value>txtDLLBase</value>
@@ -496,7 +499,7 @@
     <value>3, 0, 0, 0</value>
   </data>
   <data name="outputLineLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>395, 1</value>
+    <value>474, 1</value>
   </data>
   <data name="outputLineLabel.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -514,7 +517,7 @@
     <value>1</value>
   </data>
   <data name="outputTableLayoutPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 96</value>
+    <value>0, 115</value>
   </data>
   <data name="outputTableLayoutPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 3, 0, 3</value>
@@ -523,10 +526,10 @@
     <value>1</value>
   </data>
   <data name="outputTableLayoutPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>440, 13</value>
+    <value>519, 13</value>
   </data>
   <data name="outputTableLayoutPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="&gt;&gt;outputTableLayoutPanel.Name" xml:space="preserve">
     <value>outputTableLayoutPanel</value>
@@ -541,7 +544,7 @@
     <value>0</value>
   </data>
   <data name="outputTableLayoutPanel.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls /&gt;&lt;Columns Styles="AutoSize,0,Percent,100" /&gt;&lt;Rows Styles="AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="outputLabel" Row="-1" RowSpan="1" Column="-1" ColumnSpan="1" /&gt;&lt;Control Name="outputLineLabel" Row="-1" RowSpan="1" Column="-1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100" /&gt;&lt;Rows Styles="AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="generalTableLayoutPanel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left, Right</value>
@@ -595,7 +598,7 @@
     <value>3, 0, 0, 0</value>
   </data>
   <data name="generalLineLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>390, 1</value>
+    <value>469, 1</value>
   </data>
   <data name="generalLineLabel.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -622,7 +625,7 @@
     <value>1</value>
   </data>
   <data name="generalTableLayoutPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>440, 13</value>
+    <value>519, 13</value>
   </data>
   <data name="generalTableLayoutPanel.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -646,7 +649,7 @@
     <value>True</value>
   </data>
   <data name="chkOverflow.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 73</value>
+    <value>9, 92</value>
   </data>
   <data name="chkOverflow.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>9, 3, 3, 3</value>
@@ -655,7 +658,7 @@
     <value>214, 17</value>
   </data>
   <data name="chkOverflow.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="chkOverflow.Text" xml:space="preserve">
     <value>Chec&amp;k for arithmetic overflow/underflow</value>
@@ -672,6 +675,36 @@
   <data name="&gt;&gt;chkOverflow.ZOrder" xml:space="preserve">
     <value>10</value>
   </data>
+  <data name="lnkLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lnkLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>167, 46</value>
+  </data>
+  <data name="lnkLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 0, 3</value>
+  </data>
+  <data name="lnkLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>202, 13</value>
+  </data>
+  <data name="lnkLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="lnkLabel.Text" xml:space="preserve">
+    <value>Why can't I select a different C# version?</value>
+  </data>
+  <data name="&gt;&gt;lnkLabel.Name" xml:space="preserve">
+    <value>lnkLabel</value>
+  </data>
+  <data name="&gt;&gt;lnkLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lnkLabel.Parent" xml:space="preserve">
+    <value>overarchingTableLayoutPanel</value>
+  </data>
+  <data name="&gt;&gt;lnkLabel.ZOrder" xml:space="preserve">
+    <value>13</value>
+  </data>
   <data name="overarchingTableLayoutPanel.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
@@ -679,10 +712,10 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="overarchingTableLayoutPanel.RowCount" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="overarchingTableLayoutPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>440, 189</value>
+    <value>519, 228</value>
   </data>
   <data name="overarchingTableLayoutPanel.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -700,33 +733,21 @@
     <value>0</value>
   </data>
   <data name="overarchingTableLayoutPanel.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="outputTableLayoutPanel" Row="4" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="txtDLLBase" Row="7" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="generalTableLayoutPanel" Row="0" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="lblDLLBase" Row="7" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="lblFileAlignment" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cboDebugInfo" Row="5" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="cboFileAlignment" Row="6" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lblDebugInfo" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cboReportCompilerErrors" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="cboLanguageVersion" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="chkOverflow" Row="3" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="lblReportCompilerErrors" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="lblLanguageVersion" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="outputTableLayoutPanel" Row="5" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="txtDLLBase" Row="8" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="generalTableLayoutPanel" Row="0" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="lblDLLBase" Row="8" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="lblFileAlignment" Row="7" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cboDebugInfo" Row="6" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="cboFileAlignment" Row="7" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lblDebugInfo" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cboReportCompilerErrors" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="cboLanguageVersion" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="chkOverflow" Row="4" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="lblReportCompilerErrors" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="lblLanguageVersion" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="lnkLabel" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
-  <data name="$this.Localizable" type="System.Boolean, mscorlib">
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
-  </data>
+  </metadata>
   <data name="$this.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>440, 189</value>
+    <value>519, 228</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>AdvBuildSettingsPropPage</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase, Microsoft.VisualStudio.AppDesigner, Version=42.42.42.42, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="CSharpLanguageVersion.Default" xml:space="preserve">
-    <value>C# latest supported minor version (default)</value>
-  </data>
-  <data name="CSharpLanguageVersion.LatestMajor" xml:space="preserve">
-    <value>C# latest supported major version (latestmajor)</value>
-  </data>
-  <data name="CSharpLanguageVersion.Latest" xml:space="preserve">
-    <value>C# latest supported minor version (latest)</value>
-  </data>
-  <data name="CSharpLanguageVersion.Preview" xml:space="preserve">
-    <value>unsupported preview of next C# version (preview)</value>
   </data>
 </root>

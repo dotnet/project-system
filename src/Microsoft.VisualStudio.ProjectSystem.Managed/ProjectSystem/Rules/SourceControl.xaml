@@ -12,12 +12,16 @@
                 SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
 
-  <StringProperty Name="SccAuxPath" />
+  <StringProperty Name="SccAuxPath"
+                  DisplayName="SccAuxPath" />
 
-  <StringProperty Name="SccLocalPath" />
+  <StringProperty Name="SccLocalPath"
+                  DisplayName="SccLocalPath" />
 
-  <StringProperty Name="SccProjectName" />
+  <StringProperty Name="SccProjectName"
+                  DisplayName="SccProjectName" />
 
-  <StringProperty Name="SccProvider" />
+  <StringProperty Name="SccProvider"
+                  DisplayName="SccProvider" />
 
 </Rule>

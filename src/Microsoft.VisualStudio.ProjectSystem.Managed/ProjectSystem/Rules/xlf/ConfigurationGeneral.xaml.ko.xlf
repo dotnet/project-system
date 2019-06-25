@@ -83,8 +83,8 @@
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
-        <source>Should compiler optimize output?</source>
-        <target state="translated">컴파일러가 출력을 최적화해야 합니까?</target>
+        <source>Whether the compiler should optimize output.</source>
+        <target state="needs-review-translation">컴파일러가 출력을 최적화해야 합니까?</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|TargetRuntime.AppHost|DisplayName">
@@ -110,6 +110,51 @@
       <trans-unit id="BoolProperty|DisableFastUpToDateCheck|DisplayName">
         <source>Disable Fast Up To Date Check</source>
         <target state="translated">빠른 최신 검사 사용 안 함</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringListProperty|AvailablePlatforms|DisplayName">
+        <source>Available Platforms</source>
+        <target state="new">Available Platforms</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|BaseIntermediateOutputPath|DisplayName">
+        <source>Base Intermediate Output Path</source>
+        <target state="new">Base Intermediate Output Path</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Name|DisplayName">
+        <source>Name</source>
+        <target state="new">Name</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Optimize|DisplayName">
+        <source>Optimize</source>
+        <target state="new">Optimize</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|OutputName|DisplayName">
+        <source>Output Name</source>
+        <target state="new">Output Name</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|OutputPath|DisplayName">
+        <source>Output Path</source>
+        <target state="new">Output Path</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|OutputType|DisplayName">
+        <source>Output Type</source>
+        <target state="new">Output Type</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|TargetPath|DisplayName">
+        <source>Target Path</source>
+        <target state="new">Target Path</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|AssemblyName|DisplayName">
+        <source>Assembly Name</source>
+        <target state="new">Assembly Name</target>
         <note />
       </trans-unit>
     </body>

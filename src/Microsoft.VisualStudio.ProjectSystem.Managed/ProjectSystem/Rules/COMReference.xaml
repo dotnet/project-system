@@ -20,20 +20,24 @@
                   ReadOnly="True"
                   Visible="False" />
 
-  <BoolProperty Name="Isolated" />
+  <BoolProperty Name="Isolated"
+                DisplayName="Isolated" />
 
   <StringProperty Name="Lcid"
                   Description="The LCID of the COM server."
                   DisplayName="Locale" />
 
-  <IntProperty Name="VersionMajor" />
+  <IntProperty Name="VersionMajor"
+               DisplayName="Major Version" />
 
-  <IntProperty Name="VersionMinor" />
+  <IntProperty Name="VersionMinor"
+               DisplayName="Minor Version" />
 
   <BoolProperty Name="Visible"
                 ReadOnly="True"
                 Visible="False" />
 
-  <StringProperty Name="WrapperTool" />
+  <StringProperty Name="WrapperTool"
+                  DisplayName="Wrapper Tool" />
 
 </Rule>

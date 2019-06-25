@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Imaging.Interop;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
 using Xunit;
@@ -804,7 +803,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.TreeView
         private static IDependenciesSnapshot GetSnapshot(params (ITargetFramework tfm, IReadOnlyList<IDependency> dependencies)[] testData)
         {
             var catalogs = IProjectCatalogSnapshotFactory.Create();
-            var targets = new Dictionary<ITargetFramework, ITargetedDependenciesSnapshot>();
+            var dependenciesByTarget = new Dictionary<ITargetFramework, ITargetedDependenciesSnapshot>();
 
             foreach ((ITargetFramework tfm, IReadOnlyList<IDependency> dependencies) in testData)
             {
@@ -814,11 +813,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.TreeView
                     checkForUnresolvedDependencies: false,
                     targetFramework: tfm);
 
-                targets.Add(tfm, targetedSnapshot);
+                dependenciesByTarget.Add(tfm, targetedSnapshot);
             }
 
             return IDependenciesSnapshotFactory.Implement(
-                targets: targets,
+                dependenciesByTarget: dependenciesByTarget,
                 hasUnresolvedDependency: false,
                 activeTarget: testData[0].tfm);
         }

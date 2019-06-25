@@ -38,8 +38,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|Description">
-        <source>Assets to include from this reference</source>
-        <target state="translated">Prostředky zahrnuté z tohoto odkazu</target>
+        <source>Assets to include from this reference.</source>
+        <target state="needs-review-translation">Prostředky zahrnuté z tohoto odkazu</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
@@ -48,8 +48,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|Description">
-        <source>Assets to exclude from this reference</source>
-        <target state="translated">Prostředky vyloučené z tohoto odkazu</target>
+        <source>Assets to exclude from this reference.</source>
+        <target state="needs-review-translation">Prostředky vyloučené z tohoto odkazu</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|DisplayName">
@@ -58,8 +58,13 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|Description">
-        <source>Assets that are private in this reference</source>
-        <target state="translated">Soukromé prostředky v tomto odkazu</target>
+        <source>Assets that are private in this reference.</source>
+        <target state="needs-review-translation">Soukromé prostředky v tomto odkazu</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Name|DisplayName">
+        <source>Name</source>
+        <target state="new">Name</target>
         <note />
       </trans-unit>
     </body>

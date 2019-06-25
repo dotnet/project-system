@@ -38,8 +38,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|Description">
-        <source>Assets to include from this reference</source>
-        <target state="translated">Bu başvurudan eklenecek varlıklar</target>
+        <source>Assets to include from this reference.</source>
+        <target state="needs-review-translation">Bu başvurudan eklenecek varlıklar</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
@@ -48,8 +48,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|Description">
-        <source>Assets to exclude from this reference</source>
-        <target state="translated">Bu başvurudan dışlanacak varlıklar</target>
+        <source>Assets to exclude from this reference.</source>
+        <target state="needs-review-translation">Bu başvurudan dışlanacak varlıklar</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|DisplayName">
@@ -58,8 +58,13 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|Description">
-        <source>Assets that are private in this reference</source>
-        <target state="translated">Bu başvuruda özel olan varlıklar</target>
+        <source>Assets that are private in this reference.</source>
+        <target state="needs-review-translation">Bu başvuruda özel olan varlıklar</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Name|DisplayName">
+        <source>Name</source>
+        <target state="new">Name</target>
         <note />
       </trans-unit>
     </body>
