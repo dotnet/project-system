@@ -160,6 +160,12 @@
     <Compile Update="ProjectSystem\Rules\Items\EditorConfigFiles.cs">
       <DependentUpon>EditorConfigFiles.xaml</DependentUpon>
     </Compile>
+    <Compile Update="ProjectSystem\Rules\FrameworkReference.cs">
+      <DependentUpon>FrameworkReference.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\ResolvedFrameworkReference.cs">
+      <DependentUpon>ResolvedFrameworkReference.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -365,6 +371,16 @@
       <SubType>Designer</SubType>
     </XamlPropertyRule>
     <XamlPropertyRule Include="ProjectSystem\Rules\Items\EditorConfigFiles.xaml">
+      <XlfInput>false</XlfInput>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\FrameworkReference.xaml">
+      <XlfInput>false</XlfInput>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\ResolvedFrameworkReference.xaml">
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>

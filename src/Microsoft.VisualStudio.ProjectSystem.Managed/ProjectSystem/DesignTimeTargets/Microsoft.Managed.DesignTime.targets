@@ -300,6 +300,14 @@
     </PropertyPageSchema>
 
     <!-- Framework references -->
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)FrameworkReference.xaml">
+      <Context>Project;BrowseObject</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)ResolvedFrameworkReference.xaml">
+      <Context>ProjectSubscriptionService;BrowseObject</Context>
+    </PropertyPageSchema>
+
     <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)CollectedFrameworkReference.xaml">
       <Context>ProjectSubscriptionService</Context>
     </PropertyPageSchema>
@@ -374,6 +382,11 @@
   <Target Name="ResolvePackageDependenciesDesignTime" />
   <Target Name="CollectSDKReferencesDesignTime" />
   <Target Name="CollectResolvedSDKReferencesDesignTime" />
+
+  <Target
+    Name="ResolveFrameworkReferencesDesignTime"
+    Returns="@(FrameworkReference)"
+    DependsOnTargets="ResolveFrameworkReferences" />
 
   <!-- This target is used to collect the PackageReferences in the project. This target can be overriden to add\remove packagereferences before they are
        sent to NuGet to be restored.-->

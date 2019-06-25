@@ -25,6 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public const int AnalyzerNodePriority = 160;
         public const int ComNodePriority = 170;
         public const int SdkNodePriority = 180;
+        public const int FrameworkReferenceNodePriority = 190;
 
         public Dependency(IDependencyModel dependencyModel, ITargetFramework targetFramework, string containingProjectPath)
         {
