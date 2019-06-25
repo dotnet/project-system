@@ -171,6 +171,21 @@ In order to debug this project, add an executable project to this solution which
         <target state="translated">'{0}' 구성의 'TargetFrameworkMoniker' 및 'NuGetTargetMoniker' 속성 값이 둘 다 비어 있습니다. 이 구성은 NuGet 복원에 영향을 주지 않아 복원 및 빌드 오류가 발생할 수 있습니다.</target>
         <note />
       </trans-unit>
+      <trans-unit id="WindowsFormEditor_DisplayName">
+        <source>Form (Windows Forms) Designer</source>
+        <target state="new">Form (Windows Forms) Designer</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ComponentEditor_DisplayName">
+        <source>Component (Windows Forms) Designer</source>
+        <target state="new">Component (Windows Forms) Designer</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UserControlEditor_DisplayName">
+        <source>User Control (Windows Forms) Designer</source>
+        <target state="new">User Control (Windows Forms) Designer</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

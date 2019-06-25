@@ -171,6 +171,21 @@ Per eseguire il debug del progetto, aggiungere a questa soluzione un progetto es
         <target state="translated">I valori delle proprietà 'TargetFrameworkMoniker' e 'NuGetTargetMoniker' nella configurazione '{0}' sono vuoti. Questa configurazione non contribuisce al ripristino di NuGet e questo può comportare errori di ripristino e di compilazione.</target>
         <note />
       </trans-unit>
+      <trans-unit id="WindowsFormEditor_DisplayName">
+        <source>Form (Windows Forms) Designer</source>
+        <target state="new">Form (Windows Forms) Designer</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ComponentEditor_DisplayName">
+        <source>Component (Windows Forms) Designer</source>
+        <target state="new">Component (Windows Forms) Designer</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UserControlEditor_DisplayName">
+        <source>User Control (Windows Forms) Designer</source>
+        <target state="new">User Control (Windows Forms) Designer</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

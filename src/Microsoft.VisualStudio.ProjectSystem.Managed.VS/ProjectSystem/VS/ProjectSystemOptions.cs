@@ -16,6 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     {
         private const string FastUpToDateEnabledSettingKey = @"ManagedProjectSystem\FastUpToDateCheckEnabled";
         private const string FastUpToDateLogLevelSettingKey = @"ManagedProjectSystem\FastUpToDateLogLevel";
+        private const string UseDesignerByDefaultSettingKey = @"ManagedProjectSystem\UseDesignerByDefault";
 
         private readonly IEnvironmentHelper _environment;
         private readonly IVsUIService<ISettingsManager> _settingsManager;
@@ -32,25 +33,44 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public bool IsProjectOutputPaneEnabled
         {
-            get
-            {
-                return IsEnabled("PROJECTSYSTEM_PROJECTOUTPUTPANEENABLED", ref _isProjectOutputPaneEnabled);
-            }
+            get { return IsEnvironmentVariableEnabled("PROJECTSYSTEM_PROJECTOUTPUTPANEENABLED", ref _isProjectOutputPaneEnabled); }
         }
 
-        public async Task<bool> GetIsFastUpToDateCheckEnabledAsync(CancellationToken cancellationToken = default)
+        public Task<bool> GetIsFastUpToDateCheckEnabledAsync(CancellationToken cancellationToken = default)
+        {
+            return GetSettingValueOrDefault(FastUpToDateEnabledSettingKey, true, cancellationToken);
+        }
+
+        public Task<LogLevel> GetFastUpToDateLoggingLevelAsync(CancellationToken cancellationToken = default)
+        {
+            return GetSettingValueOrDefault(FastUpToDateLogLevelSettingKey, LogLevel.None, cancellationToken);
+        }
+
+        public Task<bool> GetUseDesignerByDefaultAsync(string designerCategory, bool defaultValue, CancellationToken cancellationToken = default)
+        {
+            return GetSettingValueOrDefault(UseDesignerByDefaultSettingKey + "\\" + designerCategory, defaultValue, cancellationToken);
+        }
+
+        public Task SetUseDesignerByDefaultAsync(string designerCategory, bool value, CancellationToken cancellationToken = default)
+        {
+            return SetSettingValueAsync(UseDesignerByDefaultSettingKey + "\\" + designerCategory, value, cancellationToken);
+        }
+
+        private async Task<T> GetSettingValueOrDefault<T>(string name, T defaultValue, CancellationToken cancellationToken)
         {
             await _joinableTaskContext.Factory.SwitchToMainThreadAsync(cancellationToken);
-            return _settingsManager.Value?.GetValueOrDefault(FastUpToDateEnabledSettingKey, true) ?? true;
+
+            return _settingsManager.Value.GetValueOrDefault(name, defaultValue);
         }
 
-        public async Task<LogLevel> GetFastUpToDateLoggingLevelAsync(CancellationToken cancellationToken = default)
+        private async Task SetSettingValueAsync(string name, object value, CancellationToken cancellationToken)
         {
             await _joinableTaskContext.Factory.SwitchToMainThreadAsync(cancellationToken);
-            return _settingsManager.Value?.GetValueOrDefault(FastUpToDateLogLevelSettingKey, LogLevel.None) ?? LogLevel.None;
+
+            await _settingsManager.Value.SetValueAsync(name, value, isMachineLocal:false);
         }
 
-        private bool IsEnabled(string variable, ref bool? result)
+        private bool IsEnvironmentVariableEnabled(string variable, ref bool? result)
         {
             if (result == null)
             {

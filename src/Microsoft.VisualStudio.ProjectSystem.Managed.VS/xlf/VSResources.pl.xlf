@@ -171,6 +171,21 @@ Aby debugować ten projekt, dodaj projekt wykonywalny do tego rozwiązania, któ
         <target state="translated">Wartości właściwości „TargetFrameworkMoniker” i „NuGetTargetMoniker” w konfiguracji „{0}” są puste. Ta konfiguracja nie zostanie uwzględniona przy przywracaniu pakietów NuGet, co może skutkować błędami przywracania i kompilacji.</target>
         <note />
       </trans-unit>
+      <trans-unit id="WindowsFormEditor_DisplayName">
+        <source>Form (Windows Forms) Designer</source>
+        <target state="new">Form (Windows Forms) Designer</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ComponentEditor_DisplayName">
+        <source>Component (Windows Forms) Designer</source>
+        <target state="new">Component (Windows Forms) Designer</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UserControlEditor_DisplayName">
+        <source>User Control (Windows Forms) Designer</source>
+        <target state="new">User Control (Windows Forms) Designer</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>
