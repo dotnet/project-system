@@ -1615,7 +1615,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Shared ReadOnly s_correctedAssemblyQualifiedName As New Dictionary(Of String, String) From {
             {"System.String", GetType(String).AssemblyQualifiedName},
             {"System.Drawing.Bitmap", GetType(Drawing.Bitmap).AssemblyQualifiedName},
-            {"System.Drawing.Icon", GetType(Drawing.Icon).AssemblyQualifiedName}
+            {"System.Drawing.Icon", GetType(Drawing.Icon).AssemblyQualifiedName},
+            {"System.IO.MemoryStream", GetType(MemoryStream).AssemblyQualifiedName}
         }
 
         ''' <remarks>
