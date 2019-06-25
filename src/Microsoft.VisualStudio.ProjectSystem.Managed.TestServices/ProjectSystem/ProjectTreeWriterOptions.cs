@@ -15,6 +15,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         Icons = 16,
         ItemType = 32,
         SubType = 64,
-        AllProperties = FilePath | Visibility | Flags | Icons | ItemType
+        AllProperties = FilePath | Visibility | Flags | Icons | ItemType | SubType
     }
 }
