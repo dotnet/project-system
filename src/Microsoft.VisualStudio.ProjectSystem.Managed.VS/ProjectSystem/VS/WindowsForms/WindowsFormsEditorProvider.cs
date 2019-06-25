@@ -108,11 +108,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
             IProjectItemTree? item = await FindCompileItemByMonikerAsync(documentMoniker);
 
             IRule? browseObject = item?.BrowseObjectProperties;
+            if (browseObject == null)
+                return null;
 
-            if (browseObject?.GetProperty(Compile.SubTypeProperty) is IEvaluatedProperty property)
-                return await property.GetEvaluatedValueAtEndAsync();
-
-            return null;
+            return await browseObject.GetPropertyValueAsync(Compile.SubTypeProperty);
         }
 
         private async Task<IProjectItemTree?> FindCompileItemByMonikerAsync(string documentMoniker)
