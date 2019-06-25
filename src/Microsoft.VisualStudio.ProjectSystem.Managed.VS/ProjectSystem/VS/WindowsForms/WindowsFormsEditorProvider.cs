@@ -119,6 +119,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
             IProjectTreeServiceState result = await _projectTree.Value.TreeService.PublishAnyNonLoadingTreeAsync();
 
             if (result.TreeProvider.FindByPath(result.Tree, documentMoniker) is IProjectItemTree treeItem &&
+                !treeItem.Parent.Flags.Contains(ProjectTreeFlags.SourceFile) &&
                 StringComparers.ItemTypes.Equals(treeItem.Item.ItemType, Compile.SchemaName))
             {
                 return treeItem;

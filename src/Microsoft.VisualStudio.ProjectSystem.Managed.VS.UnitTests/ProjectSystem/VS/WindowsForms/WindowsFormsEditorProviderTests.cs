@@ -177,6 +177,35 @@ Project
             Assert.False(result);
         }
 
+        [Fact]
+        public async Task GetSpecificEditorAsync_WhenParentIsSourceFile_ReturnsNull()
+        {   // Let's folks double-click the designer file to open it as text
+
+            var provider = CreateInstanceWithDefaultEditorProvider(@"
+Project
+    Foo.cs (flags: {SourceFile})
+        Foo.Designer.cs, FilePath: ""C:\Foo.Designer.cs"", ItemType: Compile, SubType: Designer
+");
+
+            var result = await provider.GetSpecificEditorAsync(@"C:\Foo.Designer.cs");
+
+            Assert.Null(result);
+        }
+
+        [Fact]
+        public async Task SetUseGlobalEditorAsync_WhenParentIsSourceFile_ReturnsFalse()
+        {   
+            var provider = CreateInstanceWithDefaultEditorProvider(@"
+Project
+    Foo.cs (flags: {SourceFile})
+        Foo.Designer.cs, FilePath: ""C:\Foo.Designer.cs"", ItemType: Compile, SubType: Designer
+");
+
+            var result = await provider.SetUseGlobalEditorAsync(@"C:\Foo.Designer.cs", false);
+
+            Assert.False(result);
+        }
+
         [Theory]
         [InlineData(@"
 Project
