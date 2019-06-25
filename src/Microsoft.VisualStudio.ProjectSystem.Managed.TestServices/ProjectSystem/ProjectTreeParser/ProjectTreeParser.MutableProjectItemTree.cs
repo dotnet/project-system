@@ -113,6 +113,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 tree.Visible = Visible;
                 tree.Parent = Parent;
                 tree.Icon = Icon;
+                tree.SubType = SubType;
                 tree.ExpandedIcon = ExpandedIcon;
                 tree.DisplayOrder = DisplayOrder;
 

@@ -4,19 +4,19 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal partial class ProjectTreeParser
     {
-        private class MutableProjectTree : IProjectTree2
+        private partial class MutableProjectTree : IProjectTree2
         {
             public MutableProjectTree()
             {
                 Children = new Collection<MutableProjectTree>();
                 Visible = true;
+                BrowseObjectProperties = new SubTypeRule(this);
             }
 
             public Collection<MutableProjectTree> Children
@@ -32,6 +32,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
 
             public ProjectTreeFlags Flags
+            {
+                get;
+                set;
+            }
+
+            public string SubType
             {
                 get;
                 set;
@@ -65,12 +71,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 get { return Parent; }
             }
 
-            IRule IProjectTree.BrowseObjectProperties
+            public IRule BrowseObjectProperties
             {
-                get
-                {
-                    throw new NotImplementedException();
-                }
+                get;
             }
 
             IReadOnlyList<IProjectTree> IProjectTree.Children

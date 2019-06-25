@@ -261,6 +261,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
                         ReadItemType(tree);
                         break;
 
+                    case "SubType":
+                        tokenizer.Skip(TokenType.Colon);
+                        tokenizer.Skip(TokenType.WhiteSpace);
+                        ReadSubType(tree);
+                        break;
+
                     case "Icon":
                         tokenizer.Skip(TokenType.Colon);
                         tokenizer.Skip(TokenType.WhiteSpace);
@@ -314,11 +320,20 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         private void ReadItemType(MutableProjectItemTree tree)
-        {   // Parses 'Compile'
+        {
+            tree.Item.ItemType = ReadPropertyValue();
+        }
 
+        private void ReadSubType(MutableProjectItemTree tree)
+        {
+            tree.SubType = ReadPropertyValue();
+        }
+
+        private string ReadPropertyValue()
+        {   
             Tokenizer tokenizer = Tokenizer(Delimiters.PropertyValue);
 
-            tree.Item.ItemType = tokenizer.ReadIdentifier(IdentifierParseOptions.None);
+            return tokenizer.ReadIdentifier(IdentifierParseOptions.None);
         }
 
         private string ReadQuotedPropertyValue()

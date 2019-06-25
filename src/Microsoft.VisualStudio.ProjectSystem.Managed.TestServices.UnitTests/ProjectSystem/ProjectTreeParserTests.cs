@@ -276,6 +276,15 @@ namespace Microsoft.VisualStudio.ProjectSystem
             AssertProjectTree(input, expected, ProjectTreeWriterOptions.ItemType);
         }
 
+        // Input                                                                                    // Expected
+        [Theory]
+        [InlineData(@"Project Root, SubType: Designer",                                             @"Project Root[caption], SubType: Designer[subtype]")]
+        [InlineData(@"Project Root, SubType: Form",                                                 @"Project Root[caption], SubType: Form[subtype]")]
+        public void Parse_RootWithSubType_CanParse(string input, string expected)
+        {
+            AssertProjectTree(input, expected, ProjectTreeWriterOptions.SubType);
+        }
+
         // Input                                                                                                                                    // Expected
         [Theory]
         [InlineData(@"Project Root (), Icon: {}",                                                                                                   @"Project Root[caption], Icon: {[icon]}, ExpandedIcon: {[icon]}")]

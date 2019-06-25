@@ -47,6 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             WriteProperties(tree);
             WriteFilePath(tree);
             WriteItemType(tree);
+            WriteSubType(tree);
             WriteIcons(tree);
             WriteChildren(tree, indentLevel);
         }
@@ -145,6 +146,20 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 {
                     _builder.Append("[itemtype]");
                 }
+            }
+        }
+
+        private void WriteSubType(IProjectTree tree)
+        {
+            if (!_options.HasFlag(ProjectTreeWriterOptions.SubType))
+                return;
+
+            _builder.Append(", SubType: ");
+            _builder.Append(tree.BrowseObjectProperties.GetPropertyValueAsync("SubType").Result);
+
+            if (TagElements)
+            {
+                _builder.Append("[subtype]");
             }
         }
 
