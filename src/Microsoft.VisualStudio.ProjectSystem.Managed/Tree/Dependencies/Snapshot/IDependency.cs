@@ -92,13 +92,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         string Caption { get; }
 
         /// <summary>
-        /// Used in <see cref="IDependenciesTreeServices.GetRuleAsync"/> to determine the browse
+        /// Used in <see cref="IDependenciesTreeServices.GetBrowseObjectRuleAsync"/> to determine the browse
         /// object rule for this dependency.
         /// </summary>
         string SchemaName { get; }
 
         /// <summary>
-        /// Used in <see cref="IDependenciesTreeServices.GetRuleAsync"/> to determine the browse
+        /// Used in <see cref="IDependenciesTreeServices.GetBrowseObjectRuleAsync"/> to determine the browse
         /// object rule for this dependency.
         /// </summary>
         string SchemaItemType { get; }

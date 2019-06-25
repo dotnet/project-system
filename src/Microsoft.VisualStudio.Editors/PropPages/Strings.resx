@@ -131,4 +131,12 @@
     <value>http://go.microsoft.com/fwlink/?LinkID=287120</value>
     <comment>{Locked}</comment>
   </data>
+  <data name="LanguageVersionAutomaticallySelected" xml:space="preserve">
+    <value>Automatically selected based on framework version</value>
+    <comment>Refers to the C# language version being automatically selected based on the target framework</comment>
+  </data>
+  <data name="CantSelectLanguageVersionFWLink" xml:space="preserve">
+    <value>https://aka.ms/csharp-versions</value>
+    <comment>{Locked}</comment>
+  </data>
 </root>

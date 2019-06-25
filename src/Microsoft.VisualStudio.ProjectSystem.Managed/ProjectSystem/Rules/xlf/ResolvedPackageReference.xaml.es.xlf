@@ -38,8 +38,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|Description">
-        <source>Comma-delimited list of warnings that should be suppressed for this package</source>
-        <target state="translated">Lista de advertencias delimitada por comas que se deben suprimir en este paquete</target>
+        <source>Comma-delimited list of warnings that should be suppressed for this package.</source>
+        <target state="needs-review-translation">Lista de advertencias delimitada por comas que se deben suprimir en este paquete</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|DisplayName">
@@ -48,8 +48,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|Description">
-        <source>Assets to include from this reference</source>
-        <target state="translated">Recursos de esta referencia que se deben incluir</target>
+        <source>Assets to include from this reference.</source>
+        <target state="needs-review-translation">Recursos de esta referencia que se deben incluir</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
@@ -58,8 +58,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|Description">
-        <source>Assets to exclude from this reference</source>
-        <target state="translated">Recursos de esta referencia que se deben excluir</target>
+        <source>Assets to exclude from this reference.</source>
+        <target state="needs-review-translation">Recursos de esta referencia que se deben excluir</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|DisplayName">
@@ -68,13 +68,23 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|Description">
-        <source>Assets that are private in this reference</source>
-        <target state="translated">Recursos que son privados en esta referencia</target>
+        <source>Assets that are private in this reference.</source>
+        <target state="needs-review-translation">Recursos que son privados en esta referencia</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Path|Description">
         <source>Location of the package being referenced.</source>
         <target state="translated">Ubicación del paquete al que se hace referencia.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Name|DisplayName">
+        <source>Name</source>
+        <target state="new">Name</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Path|DisplayName">
+        <source>Path</source>
+        <target state="new">Path</target>
         <note />
       </trans-unit>
     </body>

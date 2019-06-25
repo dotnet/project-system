@@ -12,6 +12,26 @@
         <target state="translated">일반</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|SccAuxPath|DisplayName">
+        <source>SccAuxPath</source>
+        <target state="new">SccAuxPath</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|SccLocalPath|DisplayName">
+        <source>SccLocalPath</source>
+        <target state="new">SccLocalPath</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|SccProjectName|DisplayName">
+        <source>SccProjectName</source>
+        <target state="new">SccProjectName</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|SccProvider|DisplayName">
+        <source>SccProvider</source>
+        <target state="new">SccProvider</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

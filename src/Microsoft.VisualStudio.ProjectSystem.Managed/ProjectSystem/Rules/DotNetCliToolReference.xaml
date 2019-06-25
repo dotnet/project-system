@@ -15,13 +15,11 @@
   <StringProperty Name="Description"
                   Description="Dependency description."
                   DisplayName="Description"
-                  ReadOnly="True"
-                  Visible="True" />
+                  ReadOnly="True" />
 
   <StringProperty Name="ExcludeAssets"
-                  Description="Assets to exclude from this reference"
-                  DisplayName="ExcludeAssets"
-                  Visible="True" />
+                  Description="Assets to exclude from this reference."
+                  DisplayName="ExcludeAssets" />
 
   <StringProperty Name="FrameworkName"
                   ReadOnly="True"
@@ -32,13 +30,12 @@
                   Visible="False" />
 
   <StringProperty Name="IncludeAssets"
-                  Description="Assets to include from this reference"
-                  DisplayName="IncludeAssets"
-                  Visible="True" />
+                  Description="Assets to include from this reference."
+                  DisplayName="IncludeAssets" />
 
   <StringProperty Name="Name"
                   ReadOnly="True"
-                  Visible="True" />
+                  DisplayName="Name" />
 
   <StringProperty Name="OriginalItemSpec"
                   ReadOnly="True"
@@ -49,9 +46,8 @@
                   Visible="False" />
 
   <StringProperty Name="PrivateAssets"
-                  Description="Assets that are private in this reference"
-                  DisplayName="PrivateAssets"
-                  Visible="True" />
+                  Description="Assets that are private in this reference."
+                  DisplayName="PrivateAssets" />
 
   <StringProperty Name="RuntimeIdentifier"
                   ReadOnly="True"
@@ -67,7 +63,6 @@
 
   <StringProperty Name="Version"
                   Description="Version of dependency."
-                  DisplayName="Version"
-                  ReadOnly="True" />
+                  DisplayName="Version" />
 
 </Rule>

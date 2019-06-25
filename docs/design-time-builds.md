@@ -87,30 +87,7 @@ You can force Visual Studio to show the results of a design-time build using the
 5. Open the solution
 6. Under %TEMP%, look for [RANDOMGUID].designtime.log files, these will contain the results of the design-time build. If running Visual Studio 2015 Update 2 or higher, the name of the project and design-time target that is being called will also be included in the file name.
 
-#### Visual Studio 2017 (version 15.3 or earlier)
-
-In Visual Studio 2017 there are two C# and Visual Basic project systems. By default the majority of projects (.NET Framework, UWP, etc) continue to open in the same project system as previous versions of Visual Studio, and hence the instructions are the same as above. 
-
-The new .NET Core and .NET Standard project types, however, open in the new [project system](http://github.com/dotnet/project-system) and you can use the following steps to see the results of design-time builds:
-
-1. Close all instances of Visual Studio
-2. Download the following script: [DesignTimeBuildOutputPane.cmd](/docs/repo/content/DesignTimeBuildOutputPane.cmd?raw=true)
-3. From a elevated Visual Studio command-prompt, run the following:
-```
-DesignTimeBuildOutputPane.cmd enable
-```
-4. Open the solution in Visual Studio
-
-The results of the design time build will appear in a new category called __Build - Design-time__ in the __Output__ window. The verbosity of the category respects the same settings under __Tools__ -> __Options__ -> __Project and Solutions__ -> __Build and Run__ as normal builds.
-
-To turn off this pane:
-
-1. From a elevated Visual Studio command-prompt, run the following:
-```
-DesignTimeBuildOutputPane.cmd disable
-```
-
-#### Visual Studio 2017 (version 15.4 or later)
+#### Visual Studio 2017 or later
 
 1. Install the [Project System Tools](https://marketplace.visualstudio.com/items?itemName=VisualStudioProductTeam.ProjectSystemTools) extension
 2. In Visual Studio, choose the `View > Other Windows > Build Logging` menu item.

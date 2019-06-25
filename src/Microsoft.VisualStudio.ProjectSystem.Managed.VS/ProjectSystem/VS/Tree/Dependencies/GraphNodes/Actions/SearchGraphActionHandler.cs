@@ -81,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                 using var scope = new GraphTransactionScope();
                 foreach (IDependency topLevelDependency in allTopLevelDependencies)
                 {
-                    ITargetedDependenciesSnapshot targetedSnapshot = snapshot.Targets[topLevelDependency.TargetFramework];
+                    ITargetedDependenciesSnapshot targetedSnapshot = snapshot.DependenciesByTargetFramework[topLevelDependency.TargetFramework];
 
                     if (!cachedDependencyToMatchingResultsMap
                             .TryGetValue(topLevelDependency.Id, out HashSet<IDependency>? topLevelDependencyMatches))
@@ -156,7 +156,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
         {
             var matchedDependencies = new HashSet<IDependency>();
 
-            foreach ((ITargetFramework _, ITargetedDependenciesSnapshot targetedSnapshot) in dependenciesSnapshot.Targets)
+            foreach ((ITargetFramework _, ITargetedDependenciesSnapshot targetedSnapshot) in dependenciesSnapshot.DependenciesByTargetFramework)
             {
                 foreach ((string _, IDependency dependency) in targetedSnapshot.DependenciesWorld)
                 {

@@ -98,6 +98,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
                    StringComparers.DependencyProviderTypes.Equals(other.ProviderType, ProviderType);
         }
 
-        public override string ToString() => Id;
+        public override string ToString() => $"{ProviderType}-{Id}";
     }
 }

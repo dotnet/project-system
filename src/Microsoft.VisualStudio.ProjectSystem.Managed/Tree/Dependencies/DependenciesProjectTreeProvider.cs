@@ -513,13 +513,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 flags: flags);
         }
 
-        public async Task<IRule?> GetRuleAsync(IDependency dependency, IProjectCatalogSnapshot? catalogs)
+        public async Task<IRule?> GetBrowseObjectRuleAsync(IDependency dependency, IProjectCatalogSnapshot? catalogs)
         {
             Requires.NotNull(dependency, nameof(dependency));
-
-            ConfiguredProject project = dependency.TargetFramework.Equals(TargetFramework.Any)
-                ? ActiveConfiguredProject
-                : _dependenciesHost.GetConfiguredProject(dependency.TargetFramework) ?? ActiveConfiguredProject;
 
             IImmutableDictionary<string, IPropertyPagesCatalog> namedCatalogs = await GetNamedCatalogsAsync();
             Requires.NotNull(namedCatalogs, nameof(namedCatalogs));
@@ -543,7 +539,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 // Since we have no browse object, we still need to create *something* so
                 // that standard property pages can pop up.
                 Rule emptyRule = RuleExtensions.SynthesizeEmptyRule(context.ItemType);
-                return GetActiveConfiguredProjectExports(project).PropertyPagesDataModelProvider.GetRule(
+                return GetConfiguredProjectExports().PropertyPagesDataModelProvider.GetRule(
                     emptyRule,
                     context.File,
                     context.ItemType,
@@ -552,7 +548,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             if (dependency.Resolved)
             {
-                return GetActiveConfiguredProjectExports(project).RuleFactory.CreateResolvedReferencePageRule(
+                return GetConfiguredProjectExports().RuleFactory.CreateResolvedReferencePageRule(
                     schema,
                     context,
                     dependency.Name,
@@ -576,10 +572,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     // Thus, just in case, explicitly request it here (GetCatalogsAsync will acquire a project read lock)
                     _namedCatalogs = await ActiveConfiguredProject.Services
                         .PropertyPagesCatalog
-                        .GetCatalogsAsync(CancellationToken.None);
+                        .GetCatalogsAsync();
                 }
 
                 return _namedCatalogs;
+            }
+
+            ConfiguredProjectExports GetConfiguredProjectExports()
+            {
+                ConfiguredProject project = dependency.TargetFramework.Equals(TargetFramework.Any)
+                    ? ActiveConfiguredProject
+                    : _dependenciesHost.GetConfiguredProject(dependency.TargetFramework) ?? ActiveConfiguredProject;
+
+                return GetActiveConfiguredProjectExports(project);
             }
         }
 
