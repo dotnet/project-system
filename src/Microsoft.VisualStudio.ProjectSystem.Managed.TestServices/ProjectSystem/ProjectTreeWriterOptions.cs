@@ -10,10 +10,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
         None = 0,
         Tags = 1,
         FilePath = 2,
-        Capabilities = 4,
+        Flags = 4,
         Visibility = 8,
         Icons = 16,
         ItemType = 32,
-        AllProperties = FilePath | Visibility | Capabilities | Icons | ItemType
+        AllProperties = FilePath | Visibility | Flags | Icons | ItemType
     }
 }

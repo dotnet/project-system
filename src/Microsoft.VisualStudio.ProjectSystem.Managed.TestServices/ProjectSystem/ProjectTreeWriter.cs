@@ -88,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private void WriteProperties(IProjectTree tree)
         {
             bool visibility = _options.HasFlag(ProjectTreeWriterOptions.Visibility);
-            bool flags = _options.HasFlag(ProjectTreeWriterOptions.Capabilities);
+            bool flags = _options.HasFlag(ProjectTreeWriterOptions.Flags);
 
             if (!visibility && !flags)
                 return;

@@ -248,7 +248,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [InlineData(@"Project Root (flags: {App:Designer}, visibility: visible)",                   @"Project Root[caption] (flags: {App:Designer[capability]})")]
         public void Parse_RootWithCapabilities_CanParse(string input, string expected)
         {
-            AssertProjectTree(input, expected, ProjectTreeWriterOptions.Capabilities);
+            AssertProjectTree(input, expected, ProjectTreeWriterOptions.Flags);
         }
 
         // Input                                                                                    // Expected
@@ -405,7 +405,7 @@ Root
             AssertThrows(input, ProjectTreeFormatError.IndentTooManyLevels);
         }
 
-        private void AssertProjectTree(string input, string expected, ProjectTreeWriterOptions options = ProjectTreeWriterOptions.Capabilities | ProjectTreeWriterOptions.FilePath | ProjectTreeWriterOptions.Visibility)
+        private void AssertProjectTree(string input, string expected, ProjectTreeWriterOptions options = ProjectTreeWriterOptions.Flags | ProjectTreeWriterOptions.FilePath | ProjectTreeWriterOptions.Visibility)
         {
             // Remove the newlines from the start and end of input and expected so that 
             // it makes it easier inside the test to layout the repro.
