@@ -116,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
 
         private async Task<IProjectItemTree?> FindCompileItemByMonikerAsync(string documentMoniker)
         {
-            IProjectTreeServiceState result = await _projectTree.Value.TreeService.PublishAnyNonNullTreeAsync();
+            IProjectTreeServiceState result = await _projectTree.Value.TreeService.PublishAnyNonLoadingTreeAsync();
 
             if (result.TreeProvider.FindByPath(result.Tree, documentMoniker) is IProjectItemTree treeItem &&
                 StringComparers.ItemTypes.Equals(treeItem.Item.ItemType, Compile.SchemaName))
