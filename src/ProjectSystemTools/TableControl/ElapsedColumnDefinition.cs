@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.TableControl
                 && status != BuildStatus.Running
                 && entry.TryGetValue(TableKeyNames.Elapsed, out var value) && value != null && value is TimeSpan timeSpan)
             {
-                content = timeSpan.ToString(@"hh\:mm\:ss\:ff");
+                content = timeSpan.TotalSeconds.ToString("N3");
                 return true;
             }
 
