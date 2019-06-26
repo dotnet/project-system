@@ -19,17 +19,37 @@
                   ReadOnly="True"
                   Visible="False" />
 
+  <StringProperty Name="TargetingPackPath"
+                  DisplayName="Targeting Pack Path"
+                  ReadOnly="True" />
+
+  <StringProperty Name="TargetingPackName"
+                  DisplayName="Targeting Pack Name"
+                  ReadOnly="True" />
+
+  <StringProperty Name="TargetingPackVersion"
+                  DisplayName="Targeting Pack Version"
+                  ReadOnly="True" />
+
+  <StringProperty Name="Profile"
+                  DisplayName="Profile"
+                  ReadOnly="True" />
+
+  <StringProperty Name="RuntimePackPath"
+                  DisplayName="Runtime Pack Path"
+                  ReadOnly="True" />
+
+  <StringProperty Name="RuntimePackName"
+                  DisplayName="Runtime Pack Name"
+                  ReadOnly="True" />
+
+  <StringProperty Name="RuntimePackVersion"
+                  DisplayName="Runtime Pack Version"
+                  ReadOnly="True" />
+
   <StringProperty Name="IsImplicitlyDefined"
                   ReadOnly="True"
                   Visible="False" />
-
-  <StringProperty Name="Path"
-                  DisplayName="Path"
-                  ReadOnly="True" />
-
-  <StringProperty Name="Version"
-                  DisplayName="Version"
-                  ReadOnly="True" />
 
   <StringProperty Name="PrivateAssets"
                   DisplayName="Private Assets" />
