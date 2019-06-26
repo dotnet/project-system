@@ -3,6 +3,7 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Windows;
+using System.Windows.Controls;
 using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model;
 using Microsoft.VisualStudio.Shell.TableControl;
 using Microsoft.VisualStudio.Utilities;
@@ -23,13 +24,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.TableControl
 
         public override TextWrapping TextWrapping => TextWrapping.NoWrap;
 
-        public override bool TryCreateStringContent(ITableEntryHandle entry, bool truncatedText, bool singleColumnView, out string content)
+        public override bool TryCreateColumnContent(ITableEntryHandle entry, bool singleColumnView, out FrameworkElement content)
         {
             if (entry.TryGetValue(TableKeyNames.Status, out var statusValue) && statusValue != null && statusValue is BuildStatus status
                 && status != BuildStatus.Running
                 && entry.TryGetValue(TableKeyNames.Elapsed, out var value) && value != null && value is TimeSpan timeSpan)
             {
-                content = timeSpan.TotalSeconds.ToString("N3");
+                content = new TextBlock
+                {
+                    Text = timeSpan.TotalSeconds.ToString("N3"),
+                    TextAlignment = TextAlignment.Right
+                };
                 return true;
             }
 
