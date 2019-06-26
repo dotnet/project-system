@@ -10,9 +10,17 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
         private class MutableProjectItemTree : MutableProjectTree, IProjectItemTree2
         {
-            public bool IsLinked => throw new NotImplementedException();
+            public MutableProjectItemTree()
+            {
+                Item = new MutableProjectPropertiesContext();
+            }
 
-            public IProjectPropertiesContext Item { get; set; }
+            public MutableProjectPropertiesContext Item
+            {
+                get;
+            }
+
+            public bool IsLinked => throw new NotImplementedException();
 
             public IPropertySheet PropertySheet => throw new NotImplementedException();
 
@@ -66,6 +74,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 throw new NotImplementedException();
             }
 
+            IProjectPropertiesContext IProjectItemTree.Item
+            {
+                get { return Item; }
+            }
+
             IProjectItemTree2 IProjectItemTree2.SetProperties(string caption, string filePath, IRule browseObjectProperties, ProjectImageMoniker icon, ProjectImageMoniker expandedIcon, bool? visible, ProjectTreeFlags? flags, IProjectPropertiesContext context, IPropertySheet propertySheet, bool? isLinked, bool resetFilePath, bool resetBrowseObjectProperties, bool resetIcon, bool resetExpandedIcon, int? displayOrder)
             {
                 throw new NotImplementedException();
@@ -74,6 +87,37 @@ namespace Microsoft.VisualStudio.ProjectSystem
             IProjectItemTree IProjectItemTree.SetProperties(string caption, string filePath, IRule browseObjectProperties, ProjectImageMoniker icon, ProjectImageMoniker expandedIcon, bool? visible, ProjectTreeFlags? flags, IProjectPropertiesContext context, IPropertySheet propertySheet, bool? isLinked, bool resetFilePath, bool resetBrowseObjectProperties, bool resetIcon, bool resetExpandedIcon)
             {
                 throw new NotImplementedException();
+            }
+
+            public MutableProjectTree BuildProjectTree()
+            {
+                // MutableProjectItemTree acts as a builder for both MutableProjectItemTree and MutableProjectTree
+                // 
+                // Once we've finished building, return either ourselves if we are already are a MutableProjectItemTree
+                // otherwise, copy ourselves to a MutableProjectTree.
+
+                if (!string.IsNullOrEmpty(Item.ItemName) || !string.IsNullOrEmpty(Item.ItemType))
+                {
+                    return this;
+                }
+
+                var tree = new MutableProjectTree();
+                foreach (MutableProjectTree child in Children)
+                {
+                    tree.Children.Add(child);
+                }
+
+                tree.Caption = Caption;
+                tree.Flags = Flags;
+                tree.FilePath = FilePath;
+                tree.Visible = Visible;
+                tree.Parent = Parent;
+                tree.Icon = Icon;
+                tree.SubType = SubType;
+                tree.ExpandedIcon = ExpandedIcon;
+                tree.DisplayOrder = DisplayOrder;
+
+                return tree;
             }
         }
     }
