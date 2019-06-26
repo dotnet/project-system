@@ -20,7 +20,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.TableControl
 
         public override StringComparer Comparer => StringComparer.Ordinal;
 
-        public override double MinWidth => 100.0;
+        public override double MinWidth => 60.0;
+
+        public override GridLength ColumnDefinition => new GridLength(60);
 
         public override TextWrapping TextWrapping => TextWrapping.NoWrap;
 
