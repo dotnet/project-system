@@ -7,8 +7,6 @@ using System.Linq;
 
 using Microsoft.VisualStudio.ProjectSystem.VS.Extensibility;
 
-#nullable enable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     /// <inheritdoc />

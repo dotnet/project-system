@@ -6,8 +6,6 @@ using System.Collections.Immutable;
 
 using Microsoft.VisualStudio.Imaging.Interop;
 
-#nullable enable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions
 {
     internal sealed class DependenciesChangesBuilder
