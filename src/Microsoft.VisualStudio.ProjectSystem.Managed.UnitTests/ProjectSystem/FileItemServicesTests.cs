@@ -5,6 +5,8 @@ using System.Collections.Immutable;
 
 using Xunit;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     public class FileItemServicesTests

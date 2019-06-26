@@ -6,6 +6,8 @@ using System.Threading.Tasks.Dataflow;
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>

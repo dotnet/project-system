@@ -11,6 +11,8 @@ using Microsoft.VisualStudio.Workspaces;
 
 using Xunit;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     internal class TestProjectFileOrAssemblyInfoPropertiesProvider : AbstractProjectFileOrAssemblyInfoPropertiesProvider

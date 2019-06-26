@@ -4,6 +4,8 @@ using VSLangProj;
 
 using VSLangProj80;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
     public abstract class AbstractProjectConfigurationProperties : ProjectConfigurationProperties3

@@ -11,6 +11,8 @@ using Microsoft.VisualStudio.Shell;
 
 using NuGet.VisualStudio;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
     [ExportInterceptingPropertyValueProvider("TargetFrameworkMoniker", ExportInterceptingPropertyValueProviderFile.ProjectFile)]

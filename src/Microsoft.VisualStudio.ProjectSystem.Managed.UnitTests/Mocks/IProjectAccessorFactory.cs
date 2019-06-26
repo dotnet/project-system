@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IProjectAccessorFactory

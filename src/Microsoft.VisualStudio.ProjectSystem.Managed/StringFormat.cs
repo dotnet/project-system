@@ -3,6 +3,8 @@
 using System;
 using System.Globalization;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio
 {
     /// <summary>

@@ -10,6 +10,8 @@ using Xunit;
 
 using IOleAsyncServiceProvider = Microsoft.VisualStudio.Shell.Interop.IAsyncServiceProvider;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {
     public class VsContainedLanguageComponentsFactoryTests

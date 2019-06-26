@@ -2,6 +2,8 @@
 
 using System;
 
+#nullable disable
+
 namespace Microsoft
 {
     internal static class StringExtensions

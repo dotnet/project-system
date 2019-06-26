@@ -4,6 +4,8 @@ using Moq;
 
 using VSLangProj;
 
+#nullable disable
+
 namespace VSLangProj80
 {
     internal static class Reference3Factory

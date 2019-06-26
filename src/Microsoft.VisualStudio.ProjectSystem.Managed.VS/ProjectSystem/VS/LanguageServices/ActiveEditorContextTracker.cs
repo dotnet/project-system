@@ -11,6 +11,8 @@ using Microsoft.VisualStudio.Threading;
 
 using HierarchyId = Microsoft.VisualStudio.Shell.HierarchyId;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {
     /// <summary>

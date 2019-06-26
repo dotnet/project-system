@@ -16,6 +16,8 @@ using Microsoft.VisualStudio.Text;
 
 using Task = System.Threading.Tasks.Task;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
     /// <summary>

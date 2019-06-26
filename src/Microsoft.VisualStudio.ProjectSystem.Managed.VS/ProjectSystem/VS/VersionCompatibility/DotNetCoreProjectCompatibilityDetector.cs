@@ -21,6 +21,8 @@ using Microsoft.VisualStudio.Threading;
 
 using Task = System.Threading.Tasks.Task;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>

@@ -20,6 +20,8 @@ using Microsoft.VisualStudio.Shell;
 using DialogResult = System.Windows.Forms.DialogResult;
 using Task = System.Threading.Tasks.Task;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
     internal class DebugPageViewModel : PropertyPageViewModel, INotifyDataErrorInfo

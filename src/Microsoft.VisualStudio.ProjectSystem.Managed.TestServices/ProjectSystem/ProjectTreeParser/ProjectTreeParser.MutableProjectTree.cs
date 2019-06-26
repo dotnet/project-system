@@ -6,6 +6,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal partial class ProjectTreeParser

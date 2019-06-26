@@ -4,6 +4,8 @@ using System;
 using System.Collections.Immutable;
 using System.IO;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class FileItemServices

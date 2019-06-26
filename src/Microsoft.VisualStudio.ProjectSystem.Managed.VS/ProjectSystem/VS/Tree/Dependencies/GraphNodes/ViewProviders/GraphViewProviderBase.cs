@@ -7,8 +7,6 @@ using System.Linq;
 using Microsoft.VisualStudio.GraphModel;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
-#nullable enable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.ViewProviders
 {
     internal abstract class GraphViewProviderBase : IDependenciesGraphViewProvider

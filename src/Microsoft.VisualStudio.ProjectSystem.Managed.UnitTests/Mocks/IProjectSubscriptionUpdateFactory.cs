@@ -8,6 +8,8 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 using Moq;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IProjectSubscriptionUpdateFactory

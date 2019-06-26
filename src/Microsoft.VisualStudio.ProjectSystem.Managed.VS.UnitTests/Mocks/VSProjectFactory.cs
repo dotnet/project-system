@@ -8,6 +8,8 @@ using EnvDTE;
 
 using Moq;
 
+#nullable disable
+
 namespace VSLangProj
 {
     internal static class VSProjectFactory

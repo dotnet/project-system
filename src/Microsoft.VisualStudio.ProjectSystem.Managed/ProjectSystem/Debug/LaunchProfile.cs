@@ -3,6 +3,8 @@
 using System;
 using System.Collections.Immutable;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     /// <summary>

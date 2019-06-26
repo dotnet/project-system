@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 using Moq;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.Shell.Interop
 {
     internal static class IVsUpgradeLoggerFactory

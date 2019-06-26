@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
 

@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 {
     internal class UpToDateCheckItemComparer : IEqualityComparer<(string path, string link, CopyToOutputDirectoryType copyType)>

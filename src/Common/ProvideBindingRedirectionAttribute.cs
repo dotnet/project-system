@@ -4,6 +4,8 @@ using System;
 
 using Microsoft.VisualStudio.Shell;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio
 {
     /// <summary>

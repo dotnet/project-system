@@ -6,6 +6,8 @@ using System.Windows.Forms.Integration;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
     internal class PropertyPageElementHost : ElementHost

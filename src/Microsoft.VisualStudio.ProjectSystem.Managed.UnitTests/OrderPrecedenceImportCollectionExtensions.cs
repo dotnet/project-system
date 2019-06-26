@@ -3,6 +3,8 @@
 using System;
 using System.ComponentModel.Composition;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class OrderPrecedenceImportCollectionExtensions

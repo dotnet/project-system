@@ -10,6 +10,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint;
 
 using VSLangProj;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 {
     /// <summary>

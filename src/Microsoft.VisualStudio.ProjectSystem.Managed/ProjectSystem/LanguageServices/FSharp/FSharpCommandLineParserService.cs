@@ -9,6 +9,8 @@ using System.IO;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.Text;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.FSharp
 {
     [Export(typeof(ICommandLineParserService))]

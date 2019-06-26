@@ -9,6 +9,8 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
     /// <summary>

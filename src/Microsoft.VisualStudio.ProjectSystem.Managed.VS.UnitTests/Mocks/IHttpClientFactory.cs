@@ -4,6 +4,8 @@ using System;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Moq;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio
 {
     internal static class IHttpClientFactory

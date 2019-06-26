@@ -6,8 +6,6 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
 
-#nullable enable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
 {
     /// <summary>

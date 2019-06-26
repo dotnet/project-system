@@ -5,6 +5,8 @@ using System.Reflection;
 
 using Microsoft.CodeAnalysis;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     internal class BuildOptions

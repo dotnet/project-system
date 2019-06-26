@@ -4,8 +4,6 @@ using System.ComponentModel.Composition;
 
 using Microsoft.VisualStudio.Telemetry;
 
-#nullable enable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     /// <summary>

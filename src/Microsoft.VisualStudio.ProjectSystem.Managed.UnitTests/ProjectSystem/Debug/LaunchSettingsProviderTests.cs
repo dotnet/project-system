@@ -22,6 +22,8 @@ using Newtonsoft.Json.Linq;
 
 using Xunit;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     public class LaunchSettingsProviderTests

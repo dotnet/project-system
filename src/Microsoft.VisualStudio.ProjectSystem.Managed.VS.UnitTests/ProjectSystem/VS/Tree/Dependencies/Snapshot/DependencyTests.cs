@@ -9,6 +9,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 
 using Xunit;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     public class DependencyTests

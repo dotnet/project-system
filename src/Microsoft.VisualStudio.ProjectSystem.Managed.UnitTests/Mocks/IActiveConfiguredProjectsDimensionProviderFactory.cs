@@ -2,6 +2,8 @@
 
 using Moq;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 {
     internal static class IActiveConfiguredProjectsDimensionProviderFactory

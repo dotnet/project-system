@@ -5,6 +5,8 @@ using Microsoft.VisualStudio.ProjectSystem.Configuration;
 
 using Xunit;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
     public class ProjectFilePathAndDisplayNameEvaluationHandlerTests : EvaluationHandlerTestBase

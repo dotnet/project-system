@@ -3,6 +3,8 @@
 using System;
 using System.Text;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.Buffers.PooledObjects
 {
     /// <summary>

@@ -5,6 +5,8 @@ using System.Collections.Immutable;
 
 using static Microsoft.VisualStudio.ProjectSystem.Tokenizer;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     // Parses a string into a project tree

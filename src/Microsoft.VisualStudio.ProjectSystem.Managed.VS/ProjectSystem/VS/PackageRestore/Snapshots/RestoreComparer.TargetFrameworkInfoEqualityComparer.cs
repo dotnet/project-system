@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using NuGet.SolutionRestoreManager;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
     internal static partial class RestoreComparer

@@ -10,6 +10,8 @@ using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 {
     /// <summary>

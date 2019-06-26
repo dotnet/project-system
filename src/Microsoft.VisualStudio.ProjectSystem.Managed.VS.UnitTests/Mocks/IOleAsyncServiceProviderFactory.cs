@@ -6,6 +6,8 @@ using Moq;
 
 using IOleAsyncServiceProvider = Microsoft.VisualStudio.Shell.Interop.IAsyncServiceProvider;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.Shell.Interop
 {
     internal static class IOleAsyncServiceProviderFactory

@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Moq;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class UnconfiguredProjectFactory

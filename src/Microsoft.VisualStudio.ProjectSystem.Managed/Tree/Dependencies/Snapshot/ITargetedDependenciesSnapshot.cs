@@ -4,8 +4,6 @@ using System.Collections.Immutable;
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-#nullable enable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     /// <summary>

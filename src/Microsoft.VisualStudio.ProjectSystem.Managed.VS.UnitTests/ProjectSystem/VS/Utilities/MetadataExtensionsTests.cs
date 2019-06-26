@@ -4,6 +4,8 @@ using System.Collections.Immutable;
 
 using Xunit;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 {
     public sealed class MetadataExtensionsTests

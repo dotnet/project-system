@@ -6,6 +6,8 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal class ProjectTreeProvider : IProjectTreeProvider

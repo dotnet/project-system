@@ -5,6 +5,8 @@ using System.IO;
 
 using Moq;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.IO
 {
     internal static class IFileSystemFactory

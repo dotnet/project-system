@@ -8,6 +8,8 @@ using Microsoft.VisualStudio.ProjectSystem.Logging;
 
 using Xunit;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
     public partial class AbstractEvaluationCommandLineHandlerTests

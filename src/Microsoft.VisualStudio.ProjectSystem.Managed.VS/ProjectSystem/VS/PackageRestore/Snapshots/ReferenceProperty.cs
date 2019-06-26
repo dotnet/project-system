@@ -3,6 +3,8 @@
 using System.Diagnostics;
 using NuGet.SolutionRestoreManager;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
     /// <summary>
