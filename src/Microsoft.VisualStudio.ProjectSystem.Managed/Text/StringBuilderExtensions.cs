@@ -5,6 +5,8 @@ using System.Text;
 
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.Text
 {
     /// <summary>

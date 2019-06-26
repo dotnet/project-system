@@ -2,6 +2,8 @@
 
 using System.Collections.Generic;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.Buffers.PooledObjects
 {
     // HashSet that can be recycled via an object pool

@@ -6,6 +6,8 @@ using Microsoft.VisualStudio.ProjectSystem.Imaging;
 
 using Xunit;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging.VisualBasic
 {
     public class VisualBasicProjectImageProviderTests

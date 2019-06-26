@@ -5,6 +5,8 @@ using System.Text;
 
 using Microsoft.VisualStudio.Text;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.Logging
 {
     internal partial class ProjectLoggerExtensions

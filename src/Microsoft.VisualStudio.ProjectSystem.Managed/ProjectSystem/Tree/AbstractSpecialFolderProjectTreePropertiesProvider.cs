@@ -4,6 +4,8 @@ using System.Collections.Immutable;
 
 using Microsoft.VisualStudio.ProjectSystem.Imaging;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>

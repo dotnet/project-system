@@ -4,6 +4,8 @@ using System.Collections.Immutable;
 
 #nullable enable    
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     /// <summary>

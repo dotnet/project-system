@@ -4,6 +4,8 @@ using System;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Xunit;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.VersionCompatibility
 {
     public class VersionCompatibilityTests

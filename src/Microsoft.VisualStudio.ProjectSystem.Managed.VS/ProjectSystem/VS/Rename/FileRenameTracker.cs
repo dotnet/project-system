@@ -19,6 +19,8 @@ using Microsoft.VisualStudio.LanguageServices;
 
 using Task = System.Threading.Tasks.Task;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 {
     [Export(typeof(IProjectChangeHintReceiver))]

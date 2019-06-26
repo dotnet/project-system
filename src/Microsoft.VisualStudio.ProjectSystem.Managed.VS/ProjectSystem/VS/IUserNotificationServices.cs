@@ -3,6 +3,8 @@
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.Composition;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     [ProjectSystemContract(ProjectSystemContractScope.ProjectService, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]

@@ -14,6 +14,8 @@ using Xunit;
 
 using static Microsoft.VisualStudio.Telemetry.ITelemetryServiceFactory;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.Telemetry
 {
     public class SDKVersionTelemetryTests

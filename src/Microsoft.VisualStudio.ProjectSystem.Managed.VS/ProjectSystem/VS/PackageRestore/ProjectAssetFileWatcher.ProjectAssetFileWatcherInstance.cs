@@ -16,6 +16,8 @@ using Microsoft.VisualStudio.Threading.Tasks;
 
 using Task = System.Threading.Tasks.Task;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
     internal partial class ProjectAssetFileWatcher

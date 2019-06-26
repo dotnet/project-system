@@ -10,6 +10,8 @@ using Microsoft.VisualStudio.ProjectSystem;
 
 using DiagDebugger = System.Diagnostics.Debugger;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.Packaging
 {
     internal partial class ManagedProjectSystemPackage

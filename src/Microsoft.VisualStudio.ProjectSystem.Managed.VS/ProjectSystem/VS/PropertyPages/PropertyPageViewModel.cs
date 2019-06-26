@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
     internal abstract class PropertyPageViewModel : INotifyPropertyChanged

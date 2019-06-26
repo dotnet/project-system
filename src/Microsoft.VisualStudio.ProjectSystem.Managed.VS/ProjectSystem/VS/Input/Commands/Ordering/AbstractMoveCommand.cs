@@ -7,6 +7,8 @@ using Microsoft.Build.Evaluation;
 using Microsoft.VisualStudio.ProjectSystem.Input;
 using Microsoft.VisualStudio.Shell;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 {
     internal abstract class AbstractMoveCommand : AbstractSingleNodeProjectCommand

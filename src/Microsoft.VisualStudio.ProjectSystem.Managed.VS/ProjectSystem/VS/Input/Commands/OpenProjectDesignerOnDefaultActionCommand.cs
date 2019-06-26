@@ -6,6 +6,8 @@ using Microsoft.VisualStudio.Input;
 using Microsoft.VisualStudio.ProjectSystem.Input;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
     // Opens the Project Designer ("Property Pages") when the user double-clicks or presses ENTER on the AppDesigner folder while its selected

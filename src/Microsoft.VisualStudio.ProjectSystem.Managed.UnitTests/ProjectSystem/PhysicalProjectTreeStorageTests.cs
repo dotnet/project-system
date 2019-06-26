@@ -7,6 +7,8 @@ using Microsoft.VisualStudio.IO;
 
 using Xunit;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     public class PhysicalProjectTreeStorageTests

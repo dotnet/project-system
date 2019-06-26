@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Shell.Interop;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>

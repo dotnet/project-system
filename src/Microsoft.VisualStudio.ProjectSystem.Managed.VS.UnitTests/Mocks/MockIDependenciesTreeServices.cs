@@ -9,6 +9,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.TreeView;
 
 using Moq;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal class MockIDependenciesTreeServices : IDependenciesTreeServices

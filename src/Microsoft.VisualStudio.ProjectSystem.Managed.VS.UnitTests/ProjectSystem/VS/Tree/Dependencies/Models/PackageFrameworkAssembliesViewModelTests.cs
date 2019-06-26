@@ -5,6 +5,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
 using Xunit;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     public class PackageFrameworkAssembliesViewModelTests

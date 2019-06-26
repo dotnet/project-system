@@ -17,6 +17,8 @@ using VSLangProj;
 
 using VSLangProj80;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 {
     /// <summary>

@@ -6,6 +6,8 @@ using System.Windows;
 using Microsoft.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.Shell;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
     [ExcludeFromCodeCoverage]

@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 
 using Microsoft.CodeAnalysis;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 {
     /// <summary>

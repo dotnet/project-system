@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Forms;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
     internal abstract partial class WpfBasedPropertyPage : PropertyPage

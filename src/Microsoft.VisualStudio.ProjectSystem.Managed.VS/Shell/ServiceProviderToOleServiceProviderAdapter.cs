@@ -7,6 +7,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS;
 
 using IOleServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.Shell
 {
     // Adapts an IServiceProvider to an OLE IServiceProvider

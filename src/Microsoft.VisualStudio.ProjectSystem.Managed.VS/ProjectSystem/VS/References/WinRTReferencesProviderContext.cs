@@ -2,6 +2,8 @@
 
 using System.ComponentModel.Composition;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 {
     [ExportIVsReferenceManagerUserAsync(VSConstants.PlatformReferenceProvider_string, ReferencePriority.Platform)]

@@ -8,6 +8,8 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Moq;
 using Xunit;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
     public class AbstractAddItemCommandHandlerTests

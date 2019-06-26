@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.VS.Interop;
 using Microsoft.VisualStudio.Shell.Interop;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
 {
     /// <summary>

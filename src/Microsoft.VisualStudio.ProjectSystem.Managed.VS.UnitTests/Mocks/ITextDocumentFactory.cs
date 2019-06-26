@@ -2,6 +2,8 @@
 
 using Moq;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.Text
 {
     internal static class ITextDocumentFactory

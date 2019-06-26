@@ -7,6 +7,8 @@ using System.Linq;
 using Microsoft.Build.Framework;
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.Telemetry
 {
     internal sealed class DesignTimeTelemetryLogger : ILogger

@@ -10,6 +10,8 @@ using Microsoft.Build.Execution;
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.Text;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.Build
 {
     /// <summary>

@@ -3,6 +3,8 @@ using System;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
     internal class PropertyPageControl : UserControl

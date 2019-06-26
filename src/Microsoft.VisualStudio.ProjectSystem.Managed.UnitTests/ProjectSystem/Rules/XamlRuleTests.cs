@@ -9,6 +9,8 @@ using System.Xml.Linq;
 
 using Xunit;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.Rules
 {
     public class XamlRuleTests

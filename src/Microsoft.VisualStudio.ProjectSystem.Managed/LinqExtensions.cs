@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio
 {
     internal static class LinqExtensions

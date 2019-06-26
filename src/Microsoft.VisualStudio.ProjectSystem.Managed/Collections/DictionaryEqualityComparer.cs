@@ -3,6 +3,8 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.Collections
 {
     /// <summary>

@@ -6,6 +6,8 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Text;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.IO
 {
     /// <summary>

@@ -13,6 +13,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
 using Task = System.Threading.Tasks.Task;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.Telemetry
 {
     [Export(typeof(IBuildLoggerProviderAsync))]

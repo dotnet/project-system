@@ -14,6 +14,8 @@ using Microsoft.VisualStudio.Shell.Interop;
 using NuGet.SolutionRestoreManager;
 using NuGet.VisualStudio;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     [Export(typeof(NuGetApexTestService))]

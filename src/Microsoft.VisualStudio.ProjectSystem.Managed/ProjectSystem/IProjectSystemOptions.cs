@@ -4,6 +4,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Composition;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>

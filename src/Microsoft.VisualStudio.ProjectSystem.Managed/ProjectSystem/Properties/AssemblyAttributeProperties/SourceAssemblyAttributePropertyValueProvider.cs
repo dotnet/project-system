@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Editing;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     /// <summary>

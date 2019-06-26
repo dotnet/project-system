@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.Buffers.PooledObjects
 {
     [DebuggerDisplay("Count = {Count,nq}")]

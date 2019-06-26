@@ -6,6 +6,8 @@ using Microsoft.VisualStudio.TextManager.Interop;
 
 using Moq;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.Shell.Interop
 {
     internal static class IVsLanguageServiceBuildErrorReporter2Factory

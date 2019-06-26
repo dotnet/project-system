@@ -6,6 +6,8 @@ using System.Linq;
 
 using Xunit;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic
 {
     public class VisualBasicProjectConfigurationPropertiesTests

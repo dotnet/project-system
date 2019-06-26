@@ -5,6 +5,8 @@ using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.Workspaces
 {
     public static class WorkspaceFactory

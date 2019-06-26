@@ -5,6 +5,8 @@ using System.Collections.Immutable;
 
 using Moq;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     internal static class IProjectRuleSnapshotFactory

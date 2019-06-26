@@ -4,6 +4,8 @@ using System;
 using System.Globalization;
 using System.Windows.Data;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 {
     internal sealed class MultiValueBoolToBool_And : IMultiValueConverter

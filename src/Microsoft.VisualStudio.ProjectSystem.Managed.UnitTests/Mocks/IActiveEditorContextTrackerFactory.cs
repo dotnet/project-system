@@ -4,6 +4,8 @@ using System;
 
 using Moq;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     internal static class IActiveEditorContextTrackerFactory

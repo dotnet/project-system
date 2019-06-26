@@ -15,6 +15,8 @@ using Xunit;
 
 using Task = System.Threading.Tasks.Task;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     public class TempPEBuildManagerTests

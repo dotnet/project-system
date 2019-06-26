@@ -7,6 +7,8 @@ using Microsoft.VisualStudio.Shell.Interop;
 
 using static Microsoft.VisualStudio.VSConstants;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     [Export(typeof(IUserNotificationServices))]

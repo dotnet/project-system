@@ -2,6 +2,8 @@
 
 using Microsoft.Test.Apex.VisualStudio;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     public sealed class NuGetApexVerifier : VisualStudioMarshallableProxyVerifier

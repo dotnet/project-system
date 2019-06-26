@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
 {
     /// <summary>
