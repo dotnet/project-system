@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="fr" original="../ResolvedFrameworkReference.xaml">
+    <body>
+      <trans-unit id="Rule|ResolvedFrameworkReference|Description">
+        <source>Framework Reference Properties</source>
+        <target state="new">Framework Reference Properties</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|ResolvedFrameworkReference|DisplayName">
+        <source>Framework Reference</source>
+        <target state="new">Framework Reference</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|TargetingPackPath|DisplayName">
+        <source>Targeting Pack Path</source>
+        <target state="new">Targeting Pack Path</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|TargetingPackName|DisplayName">
+        <source>Targeting Pack Name</source>
+        <target state="new">Targeting Pack Name</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|TargetingPackVersion|DisplayName">
+        <source>Targeting Pack Version</source>
+        <target state="new">Targeting Pack Version</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Profile|DisplayName">
+        <source>Profile</source>
+        <target state="new">Profile</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|RuntimePackPath|DisplayName">
+        <source>Runtime Pack Path</source>
+        <target state="new">Runtime Pack Path</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|RuntimePackName|DisplayName">
+        <source>Runtime Pack Name</source>
+        <target state="new">Runtime Pack Name</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|RuntimePackVersion|DisplayName">
+        <source>Runtime Pack Version</source>
+        <target state="new">Runtime Pack Version</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PrivateAssets|DisplayName">
+        <source>Private Assets</source>
+        <target state="new">Private Assets</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

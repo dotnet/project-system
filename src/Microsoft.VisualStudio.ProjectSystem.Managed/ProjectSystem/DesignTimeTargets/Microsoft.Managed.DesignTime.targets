@@ -300,11 +300,11 @@
     </PropertyPageSchema>
 
     <!-- Framework references -->
-    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)FrameworkReference.xaml">
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)FrameworkReference.xaml">
       <Context>Project;BrowseObject</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)ResolvedFrameworkReference.xaml">
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ResolvedFrameworkReference.xaml">
       <Context>ProjectSubscriptionService;BrowseObject</Context>
     </PropertyPageSchema>
 
