@@ -89,6 +89,10 @@
                   ReadOnly="True"
                   Visible="False" />
 
+  <StringProperty Name="RuntimeIdentifierGraphPath"
+                  ReadOnly="True"
+                  Visible="False" />
+
   <StringProperty Name="RuntimeIdentifiers"
                   ReadOnly="True"
                   Visible="False" />

@@ -4,19 +4,19 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal partial class ProjectTreeParser
     {
-        private class MutableProjectTree : IProjectTree2
+        private partial class MutableProjectTree : IProjectTree2
         {
             public MutableProjectTree()
             {
                 Children = new Collection<MutableProjectTree>();
                 Visible = true;
+                BrowseObjectProperties = new SubTypeRule(this);
             }
 
             public Collection<MutableProjectTree> Children
@@ -32,6 +32,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
 
             public ProjectTreeFlags Flags
+            {
+                get;
+                set;
+            }
+
+            public string SubType
             {
                 get;
                 set;
@@ -65,12 +71,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 get { return Parent; }
             }
 
-            IRule IProjectTree.BrowseObjectProperties
+            public IRule BrowseObjectProperties
             {
-                get
-                {
-                    throw new NotImplementedException();
-                }
+                get;
             }
 
             IReadOnlyList<IProjectTree> IProjectTree.Children
@@ -273,34 +276,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 DisplayOrder = displayOrder;
 
                 return this;
-            }
-
-            public string ItemName { get; set; }
-
-            public MutableProjectItemTree ToMutableProjectItemTree()
-            {
-                var newItemTree = new MutableProjectItemTree();
-                var newTree = newItemTree as MutableProjectTree;
-
-                newTree.Children = new Collection<MutableProjectTree>(Children);
-                newTree.Caption = Caption;
-                newTree.Flags = Flags;
-                newTree.FilePath = FilePath;
-                newTree.Visible = Visible;
-                newTree.Parent = Parent;
-                newTree.Icon = Icon;
-                newTree.ExpandedIcon = ExpandedIcon;
-                newTree.DisplayOrder = DisplayOrder;
-                newTree.ItemName = ItemName;
-
-                var projectPropertiesContext = new MutableProjectPropertiesContext
-                {
-                    ItemName = ItemName
-                };
-
-                newItemTree.Item = projectPropertiesContext;
-
-                return newItemTree;
             }
         }
     }

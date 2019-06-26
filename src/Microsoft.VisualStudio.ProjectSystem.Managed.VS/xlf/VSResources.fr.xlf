@@ -151,6 +151,21 @@ Pour déboguer ce projet, ajoutez à cette solution un projet exécutable qui fa
         <target state="new">Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/en-us/dotnet/core/migration/.</target>
         <note />
       </trans-unit>
+      <trans-unit id="WindowsFormEditor_DisplayName">
+        <source>Form (Windows Forms) Designer</source>
+        <target state="new">Form (Windows Forms) Designer</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ComponentEditor_DisplayName">
+        <source>Component (Windows Forms) Designer</source>
+        <target state="new">Component (Windows Forms) Designer</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UserControlEditor_DisplayName">
+        <source>User Control (Windows Forms) Designer</source>
+        <target state="new">User Control (Windows Forms) Designer</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>
