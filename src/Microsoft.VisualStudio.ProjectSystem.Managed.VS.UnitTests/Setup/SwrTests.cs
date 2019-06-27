@@ -11,8 +11,6 @@ using Microsoft.VisualStudio.Utilities;
 using Xunit;
 using Xunit.Abstractions;
 
-#nullable enable
-
 namespace Microsoft.VisualStudio.Setup
 {
     public sealed class SwrTests
