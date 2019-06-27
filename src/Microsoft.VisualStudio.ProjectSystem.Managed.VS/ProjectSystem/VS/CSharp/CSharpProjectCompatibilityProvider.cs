@@ -11,7 +11,7 @@ using Microsoft.VisualStudio.Threading;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.CSharp
 {
     /// <summary>
-    ///     Checks a legacy VB project for compability with the new project system.
+    ///     Checks a legacy VB project for compatibility with the new project system.
     /// </summary>
     [SupportedProjectTypeGuid(ProjectType.LegacyCSharp)]
     [Export(ExportContractNames.Extensions.SupportedProjectTypeGuid)]
