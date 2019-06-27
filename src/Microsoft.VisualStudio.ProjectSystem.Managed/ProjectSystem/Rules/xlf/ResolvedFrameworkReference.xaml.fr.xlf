@@ -32,21 +32,6 @@
         <target state="new">Profile</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|RuntimePackPath|DisplayName">
-        <source>Runtime Pack Path</source>
-        <target state="new">Runtime Pack Path</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|RuntimePackName|DisplayName">
-        <source>Runtime Pack Name</source>
-        <target state="new">Runtime Pack Name</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|RuntimePackVersion|DisplayName">
-        <source>Runtime Pack Version</source>
-        <target state="new">Runtime Pack Version</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|DisplayName">
         <source>Private Assets</source>
         <target state="new">Private Assets</target>

@@ -13,10 +13,6 @@
                 SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
 
-  <StringProperty Name="OriginalItemSpec"
-                  ReadOnly="True"
-                  Visible="False" />
-
   <StringProperty Name="IsImplicitlyDefined"
                   ReadOnly="True"
                   Visible="False" />
