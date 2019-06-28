@@ -20,15 +20,7 @@
                   Visible="False" />
 
   <StringProperty Name="TargetingPackPath"
-                  DisplayName="Targeting Pack Path"
-                  ReadOnly="True" />
-
-  <StringProperty Name="TargetingPackName"
-                  DisplayName="Targeting Pack Name"
-                  ReadOnly="True" />
-
-  <StringProperty Name="TargetingPackVersion"
-                  DisplayName="Targeting Pack Version"
+                  DisplayName="Path"
                   ReadOnly="True" />
 
   <StringProperty Name="Profile"
