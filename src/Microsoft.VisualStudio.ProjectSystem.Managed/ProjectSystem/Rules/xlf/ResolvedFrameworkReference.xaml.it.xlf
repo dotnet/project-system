@@ -13,18 +13,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|TargetingPackPath|DisplayName">
-        <source>Targeting Pack Path</source>
-        <target state="new">Targeting Pack Path</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|TargetingPackName|DisplayName">
-        <source>Targeting Pack Name</source>
-        <target state="new">Targeting Pack Name</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|TargetingPackVersion|DisplayName">
-        <source>Targeting Pack Version</source>
-        <target state="new">Targeting Pack Version</target>
+        <source>Path</source>
+        <target state="new">Path</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Profile|DisplayName">
