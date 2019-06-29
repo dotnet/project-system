@@ -34,6 +34,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{DD7EF107-AAD4-4C43-8A58-0DC1BC614ADE}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		.vsts-ci.yml = .vsts-ci.yml
 		build\Packages.targets = build\Packages.targets
 		build\SignToolData.json = build\SignToolData.json
 		build\Versions.props = build\Versions.props
