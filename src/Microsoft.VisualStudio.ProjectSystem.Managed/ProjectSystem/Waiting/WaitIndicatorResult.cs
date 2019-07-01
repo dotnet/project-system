@@ -7,4 +7,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Waiting
         Completed,
         Canceled,
     }
+
+    internal static class WaitIndicatorResultExtensions
+    {
+        public static bool WasCanceled(this WaitIndicatorResult result) => result == WaitIndicatorResult.Canceled;
+    }
 }

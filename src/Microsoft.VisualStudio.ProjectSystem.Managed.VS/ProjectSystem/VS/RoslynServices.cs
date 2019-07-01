@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.ComponentModel.Composition;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.CodeAnalysis;
@@ -35,9 +36,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
         }
 
-        public Task<Solution> RenameSymbolAsync(Solution solution, ISymbol symbol, string newName)
+        public Task<Solution> RenameSymbolAsync(Solution solution, ISymbol symbol, string newName, CancellationToken token = default)
         {
-            return RoslynRenamer.Renamer.RenameSymbolAsync(solution, symbol, newName, solution.Workspace.Options);
+            return RoslynRenamer.Renamer.RenameSymbolAsync(solution, symbol, newName, solution.Workspace.Options, token);
         }
 
         public bool ApplyChangesToSolution(Workspace ws, Solution renamedSolution)
