@@ -120,7 +120,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
         public virtual bool MatchSearchResults(
             IDependency topLevelDependency,
             Dictionary<string, HashSet<IDependency>> searchResultsPerContext,
-            [MaybeNullWhen(returnValue: false)] out HashSet<IDependency> topLevelDependencyMatches)
+            [NotNullWhen(returnValue: true)] out HashSet<IDependency>? topLevelDependencyMatches)
         {
             topLevelDependencyMatches = null;
             return false;

@@ -58,6 +58,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
         bool MatchSearchResults(
             IDependency topLevelDependency,
             Dictionary<string, HashSet<IDependency>> searchResultsPerContext,
-            [MaybeNullWhen(false)] out HashSet<IDependency> topLevelDependencyMatches);
+            [NotNullWhen(returnValue: true)] out HashSet<IDependency>? topLevelDependencyMatches);
     }
 }
