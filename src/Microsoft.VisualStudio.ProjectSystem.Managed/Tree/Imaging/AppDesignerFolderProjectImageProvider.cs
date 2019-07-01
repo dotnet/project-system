@@ -25,14 +25,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging
         {
             Requires.NotNullOrEmpty(key, nameof(key));
 
-            switch (key)
-            {
-                case ProjectImageKey.AppDesignerFolder:
-                    return KnownMonikers.Property.ToProjectSystemType();
-
-                default:
-                    return null;
-            }
+            return key == ProjectImageKey.AppDesignerFolder ?
+                KnownMonikers.Property.ToProjectSystemType() :
+                null;
         }
     }
 }
