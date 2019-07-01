@@ -13,13 +13,15 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public static ConfiguredProjectServices Create(IPropertyPagesCatalogProvider propertyPagesCatalogProvider = null,
                                                        IAdditionalRuleDefinitionsService ruleService = null,
                                                        IProjectSubscriptionService projectSubscriptionService = null,
-                                                       IProjectPropertiesProvider projectPropertiesProvider = null)
+                                                       IProjectPropertiesProvider projectPropertiesProvider = null,
+                                                       IProjectService projectService = null)
         {
             var mock = new Mock<ConfiguredProjectServices>();
             mock.Setup(c => c.PropertyPagesCatalog).Returns(propertyPagesCatalogProvider);
             mock.Setup(c => c.AdditionalRuleDefinitions).Returns(ruleService);
             mock.Setup(c => c.ProjectSubscription).Returns(projectSubscriptionService);
             mock.Setup(c => c.ProjectPropertiesProvider).Returns(projectPropertiesProvider);
+            mock.SetupGet(s => s.ProjectService).Returns(projectService);
             return mock.Object;
         }
     }
