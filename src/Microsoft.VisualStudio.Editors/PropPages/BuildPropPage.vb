@@ -55,8 +55,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             WARNINGS_NONE
         End Enum
 
-        Protected Overrides Sub EnableAllControls(_enabled As Boolean)
-            MyBase.EnableAllControls(_enabled)
+        Protected Overrides Sub EnableAllControls(enabled As Boolean)
+            MyBase.EnableAllControls(enabled)
         End Sub
 
         Protected Overrides ReadOnly Property ControlData() As PropertyControlData()

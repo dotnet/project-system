@@ -868,7 +868,7 @@ Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase
 Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.DisableOnDebug() -> Boolean (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
 Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.DisableWhenDebugMode(mode As Microsoft.VisualStudio.Shell.Interop.DBGMODE) -> Boolean (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
 Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.EditProperty(dispid As Integer) -> Void (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
-Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.EnableAllControls(_enabled As Boolean) -> Void (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.EnableAllControls(enabled As Boolean) -> Void (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
 Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.GetF1HelpKeyword() -> String (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
 Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.GetProperty(dispid As Integer, ByRef obj As Object) -> Boolean (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
 Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.GetPropertyControl(PropertyId As Integer) -> System.Windows.Forms.Control (forwarded, contained in Microsoft.VisualStudio.AppDesigner)

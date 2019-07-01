@@ -851,7 +851,7 @@ Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase
 Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.DisableOnDebug() -> Boolean
 Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.DisableWhenDebugMode(mode As Microsoft.VisualStudio.Shell.Interop.DBGMODE) -> Boolean
 Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.EditProperty(dispid As Integer) -> Void
-Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.EnableAllControls(_enabled As Boolean) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.EnableAllControls(enabled As Boolean) -> Void
 Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.GetF1HelpKeyword() -> String
 Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.GetProperty(dispid As Integer, ByRef obj As Object) -> Boolean
 Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.GetPropertyControl(PropertyId As Integer) -> System.Windows.Forms.Control
