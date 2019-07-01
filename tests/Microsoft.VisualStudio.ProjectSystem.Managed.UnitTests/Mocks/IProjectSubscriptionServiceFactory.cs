@@ -22,6 +22,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             mock.SetupGet(s => s.ProjectSource)
                 .Returns(projectSource);
 
+            mock.SetupGet(s => s.SourceItemsRuleSource)
+                .Returns(source);
+
             return mock.Object;
         }
     }
