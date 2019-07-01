@@ -28,7 +28,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging.FSharp
             return key == ProjectImageKey.ProjectRoot ?
                 KnownMonikers.FSProjectNode.ToProjectSystemType() :
                 null;
-            }
         }
     }
 }
