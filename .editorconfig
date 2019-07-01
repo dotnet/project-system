@@ -411,3 +411,5 @@ dotnet_diagnostic.xUnit1004.severity = none     # Test methods should not be ski
 dotnet_diagnostic.IDE0001.severity = none       # Too noisy due to https://github.com/dotnet/roslyn/issues/27819
 dotnet_diagnostic.IDE1006.severity = none       # Naming styles is too noisy as it fires on all async tests
 dotnet_diagnositc.IDE1006WithoutSuggestion.severity = none
+dotnet_diagnositc.IDE0067.severity = none	    # Noisy in tests
+dotnet_diagnositc.IDE0068.severity = none       # Noisy in tests
