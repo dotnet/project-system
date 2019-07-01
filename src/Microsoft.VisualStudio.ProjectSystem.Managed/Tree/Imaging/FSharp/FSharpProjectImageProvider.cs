@@ -25,13 +25,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging.FSharp
         {
             Requires.NotNullOrEmpty(key, nameof(key));
 
-            switch (key)
-            {
-                case ProjectImageKey.ProjectRoot:
-                    return KnownMonikers.FSProjectNode.ToProjectSystemType();
-
-                default:
-                    return null;
+            return key == ProjectImageKey.ProjectRoot ?
+                KnownMonikers.FSProjectNode.ToProjectSystemType() :
+                null;
             }
         }
     }

@@ -350,16 +350,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// </summary>
         private static IProjectTree GetSiblingByMoveAction(IProjectTree projectTree, MoveAction moveAction)
         {
-            switch (moveAction)
-            {
-                case MoveAction.Above:
-                    return GetPreviousSibling(projectTree);
-
-                case MoveAction.Below:
-                    return GetNextSibling(projectTree);
-            }
-
-            return null;
+            return moveAction == MoveAction.Above ? 
+                GetPreviousSibling(projectTree) : 
+                GetNextSibling(projectTree);
         }
 
         /// <summary>
@@ -368,16 +361,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// </summary>
         private static ProjectItemElement TryGetReferenceElement(Project project, IProjectTree projectTree, ImmutableArray<string> excludeIncludes, MoveAction moveAction)
         {
-            switch (moveAction)
-            {
-                case MoveAction.Above:
-                    return GetItemElements(project, projectTree, excludeIncludes).FirstOrDefault();
+            ImmutableArray<ProjectItemElement> items = GetItemElements(project, projectTree, excludeIncludes);
 
-                case MoveAction.Below:
-                    return GetItemElements(project, projectTree, excludeIncludes).LastOrDefault();
-            }
-
-            return null;
+            return moveAction == MoveAction.Above ? 
+                items.FirstOrDefault() : 
+                items.LastOrDefault();
         }
 
         /// <summary>

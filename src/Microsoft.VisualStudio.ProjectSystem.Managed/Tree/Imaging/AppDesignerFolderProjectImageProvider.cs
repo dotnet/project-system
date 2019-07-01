@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.ComponentModel.Composition;
-
+using System.Windows.Navigation;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.Imaging;
 
@@ -25,14 +25,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging
         {
             Requires.NotNullOrEmpty(key, nameof(key));
 
-            switch (key)
-            {
-                case ProjectImageKey.AppDesignerFolder:
-                    return KnownMonikers.Property.ToProjectSystemType();
-
-                default:
-                    return null;
-            }
+            return key == ProjectImageKey.AppDesignerFolder ?
+                KnownMonikers.Property.ToProjectSystemType() :
+                null;
         }
     }
 }
