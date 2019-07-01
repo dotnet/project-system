@@ -30,6 +30,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     /// <summary>
     /// Provides the special "Dependencies" folder to project trees.
     /// </summary>
+    /// <remarks>
+    /// This provider handles data subscription. It delegates the construction of the actual "Dependencies" node tree
+    /// to an instance of <see cref="IDependenciesTreeViewProvider" />.
+    /// </remarks>
     [Export(ExportContractNames.ProjectTreeProviders.PhysicalViewRootGraft, typeof(IProjectTreeProvider))]
     [Export(typeof(IDependenciesTreeServices))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
@@ -518,6 +522,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Requires.NotNull(dependency, nameof(dependency));
 
             IImmutableDictionary<string, IPropertyPagesCatalog> namedCatalogs = await GetNamedCatalogsAsync();
+
             Requires.NotNull(namedCatalogs, nameof(namedCatalogs));
 
             if (!namedCatalogs.TryGetValue(PropertyPageContexts.BrowseObject, out IPropertyPagesCatalog browseObjectsCatalog))
@@ -529,7 +534,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
 
             Rule schema = browseObjectsCatalog.GetSchema(dependency.SchemaName);
-            string itemSpec = string.IsNullOrEmpty(dependency.OriginalItemSpec) ? dependency.Path : dependency.OriginalItemSpec;
+
+            string itemSpec = string.IsNullOrEmpty(dependency.OriginalItemSpec)
+                ? dependency.Path
+                : dependency.OriginalItemSpec;
+
             var context = ProjectPropertiesContext.GetContext(UnconfiguredProject,
                 itemType: dependency.SchemaItemType,
                 itemName: itemSpec);
@@ -539,6 +548,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 // Since we have no browse object, we still need to create *something* so
                 // that standard property pages can pop up.
                 Rule emptyRule = RuleExtensions.SynthesizeEmptyRule(context.ItemType);
+
                 return GetConfiguredProjectExports().PropertyPagesDataModelProvider.GetRule(
                     emptyRule,
                     context.File,

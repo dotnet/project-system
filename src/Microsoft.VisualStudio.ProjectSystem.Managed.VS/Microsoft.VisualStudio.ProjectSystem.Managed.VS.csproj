@@ -194,7 +194,6 @@
     <Resource Include="Resources\Icons\NuGetGreyPrivate_16x.png" />
     <Resource Include="Resources\Icons\ReferenceGroupWarning_16x.png" />
     <Resource Include="Resources\Icons\ReferenceGroup_16x.png" />
-    <Resource Include="warning.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="**\*.xlf" />

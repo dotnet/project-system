@@ -2,7 +2,7 @@
 
 ## Diagnosing Design-Time Builds
 
-See [Diagnostic Design-Time Builds](/docs/design-time-builds.md#diagnosing-design-time-builds).
+See [Diagnosing Design-Time Builds](/docs/design-time-builds.md#diagnosing-design-time-builds).
 
 ## Failing Design-Time Builds
 
@@ -18,7 +18,7 @@ You can artificially fail a design-time build with the following:
 You can artificially delay a design-time build with the following:
 
 ``` XML
-  <UsingTask TaskName="Sleep" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+<UsingTask TaskName="Sleep" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
   <ParameterGroup>
     <!-- Delay in milliseconds -->
     <Delay ParameterType="System.Int32" Required="true" />
@@ -26,15 +26,15 @@ You can artificially delay a design-time build with the following:
   <Task>
     <Code Type="Fragment" Language="cs">
       <![CDATA[
-System.Threading.Thread.Sleep(this.Delay);
-]]>
+      System.Threading.Thread.Sleep(this.Delay);
+      ]]>
     </Code>
   </Task>
 </UsingTask>
 
-  <Target Name="DelayDesignTimeBuild" AfterTargets="ResolveAssemblyReferences">
-      <Sleep Delay="10000" />
-  </Target>
+<Target Name="DelayDesignTimeBuild" AfterTargets="ResolveAssemblyReferences">
+  <Sleep Delay="10000" />
+</Target>
 ```
 
 ## Measuring Design-Time Builds
