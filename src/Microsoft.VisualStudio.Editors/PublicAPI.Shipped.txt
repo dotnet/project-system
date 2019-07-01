@@ -496,6 +496,7 @@ Microsoft.VisualStudio.Editors.PropertyPages.PackagePropPageComClass
 Microsoft.VisualStudio.Editors.PropertyPages.PackagePropPageComClass.New() -> Void
 Microsoft.VisualStudio.Editors.PropertyPages.ProjectReloadedException (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
 Microsoft.VisualStudio.Editors.PropertyPages.ProjectReloadedException.New() -> Void (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
+Microsoft.VisualStudio.Editors.PropertyPages.ProjectReloadedException.New(Info As System.Runtime.Serialization.SerializationInfo, Context As System.Runtime.Serialization.StreamingContext) -> Void (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
 Microsoft.VisualStudio.Editors.PropertyPages.PropPageBase (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
 Microsoft.VisualStudio.Editors.PropertyPages.PropPageBase.FinishPendingValidations() -> Boolean (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
 Microsoft.VisualStudio.Editors.PropertyPages.PropPageBase.GetLocaleID() -> Integer (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
