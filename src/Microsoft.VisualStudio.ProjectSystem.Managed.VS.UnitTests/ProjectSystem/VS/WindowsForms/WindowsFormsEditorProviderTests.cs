@@ -283,13 +283,6 @@ Project
             return provider;
         }
 
-        private static WindowsFormsEditorProvider CreateInstance(string projectTree)
-        {
-            var tree = ProjectTreeParser.Parse(projectTree);
-
-            return CreateInstance(projectTree: IPhysicalProjectTreeFactory.Create(currentTree: tree));
-        }
-
         private static WindowsFormsEditorProvider CreateInstance(UnconfiguredProject unconfiguredProject = null, IPhysicalProjectTree projectTree = null, IProjectSystemOptions options = null)
         {
             unconfiguredProject ??= UnconfiguredProjectFactory.Create();
