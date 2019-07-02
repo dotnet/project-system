@@ -56,14 +56,14 @@ namespace Microsoft.VisualStudio.IO
                 _fileWatcher.EnableRaisingEvents = false;
                 if (_handler != null)
                 {
-                    _fileWatcher.Created += _handler;
-                    _fileWatcher.Deleted += _handler;
-                    _fileWatcher.Changed += _handler;
+                    _fileWatcher.Created -= _handler;
+                    _fileWatcher.Deleted -= _handler;
+                    _fileWatcher.Changed -= _handler;
                     _handler = null;
                 }
                 if (_renameHandler != null)
                 {
-                    _fileWatcher.Renamed += _renameHandler;
+                    _fileWatcher.Renamed -= _renameHandler;
                     _renameHandler = null;
                 }
                 _fileWatcher.Dispose();
