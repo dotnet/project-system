@@ -3,13 +3,12 @@
 using System;
 
 using Microsoft.VisualStudio.ProjectSystem.VS;
-using Microsoft.VisualStudio.Shell.Interop;
 
 using Moq;
 
 using Xunit;
 
-namespace Microsoft.VisualStudio.Mocks
+namespace Microsoft.VisualStudio.Shell.Interop
 {
     internal static class IVsThreadedWaitDialogFactoryFactory
     {
