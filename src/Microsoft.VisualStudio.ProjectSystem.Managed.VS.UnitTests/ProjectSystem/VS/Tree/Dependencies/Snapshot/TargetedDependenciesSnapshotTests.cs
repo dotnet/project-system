@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.Same(projectPath, snapshot.ProjectPath);
             Assert.Same(targetFramework, snapshot.TargetFramework);
             Assert.Same(catalogs, snapshot.Catalogs);
-            Assert.False(snapshot.HasUnresolvedDependency);
+            Assert.False(snapshot.HasVisibleUnresolvedDependency);
             Assert.Empty(snapshot.TopLevelDependencies);
             Assert.Empty(snapshot.DependenciesWorld);
             Assert.False(snapshot.CheckForUnresolvedDependencies("foo"));
@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.Same(projectPath, snapshot.ProjectPath);
             Assert.Same(targetFramework, snapshot.TargetFramework);
             Assert.Same(catalogs, snapshot.Catalogs);
-            Assert.False(snapshot.HasUnresolvedDependency);
+            Assert.False(snapshot.HasVisibleUnresolvedDependency);
             Assert.Empty(snapshot.TopLevelDependencies);
             Assert.Empty(snapshot.DependenciesWorld);
             Assert.False(snapshot.CheckForUnresolvedDependencies("foo"));
@@ -176,7 +176,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.NotSame(previousSnapshot, snapshot);
             Assert.Same(updatedProjectPath, snapshot.ProjectPath);
             Assert.Same(catalogs, snapshot.Catalogs);
-            Assert.True(snapshot.HasUnresolvedDependency);
+            Assert.True(snapshot.HasVisibleUnresolvedDependency);
             AssertEx.CollectionLength(snapshot.DependenciesWorld, 2);
             AssertEx.CollectionLength(snapshot.TopLevelDependencies, 1);
             Assert.True(resolvedTop.Matches(snapshot.TopLevelDependencies.Single(), targetFramework));
