@@ -63,6 +63,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [ImportingConstructor]
         public ActiveConfiguredProjectsProvider(IUnconfiguredProjectServices services, UnconfiguredProject project)
         {
+            Requires.NotNull(services, nameof(services));
+            Requires.NotNull(project, nameof(project));
+
             _services = services;
             _project = project;
 
