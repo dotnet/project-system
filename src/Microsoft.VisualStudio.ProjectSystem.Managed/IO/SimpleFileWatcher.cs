@@ -46,9 +46,6 @@ namespace Microsoft.VisualStudio.IO
             _renameHandler = renameHandler;
         }
 
-        /// <summary>
-        /// Cleans up our watcher on the Project.Json file
-        /// </summary>
         public void Dispose()
         {
             if (_fileWatcher != null)
