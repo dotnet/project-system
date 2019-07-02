@@ -12,8 +12,8 @@
 # default for csharp files.
 # Note: This is only used by command line
 ###############################################################################
-*.cs     diff=csharp text 
-*.vb     text
+*.cs     text eol=crlf diff=csharp
+*.vb     text eol=crlf
 
 ###############################################################################
 # Set the merge driver for project and solution files
