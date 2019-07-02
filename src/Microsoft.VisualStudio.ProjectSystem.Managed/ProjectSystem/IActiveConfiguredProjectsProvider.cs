@@ -22,8 +22,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
     internal interface IActiveConfiguredProjectsProvider
     {
         /// <summary>
-        /// Gets all the active configured projects by TargetFramework dimension for the current unconfigured project.
-        /// If the current project is not a cross-targeting project, then it returns a singleton key-value pair with an ignorable key and single active configured project as value.
+        ///     Gets all the active configured projects by TargetFramework dimension for the current unconfigured project.
+        ///     If the current project is not a cross-targeting project, then it returns a singleton key-value pair with an
+        ///     ignorable key and single active configured project as value.
         /// </summary>
         /// <returns>Map from TargetFramework dimension to active configured project.</returns>
         [Obsolete("This method will be removed in a future build.")]

@@ -220,6 +220,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                                 p => StringComparers.PropertyNames.Equals(PropertyName, p.Name) &&
                                 BuildUtilities.HasWellKnownConditionsThatAlwaysEvaluateToTrue(p));
         }
-
     }
 }

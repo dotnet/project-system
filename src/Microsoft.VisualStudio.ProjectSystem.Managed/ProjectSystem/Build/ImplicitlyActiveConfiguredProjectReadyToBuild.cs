@@ -33,6 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
         private void ActiveConfiguredProject_Changed(object sender, ActiveConfigurationChangedEventArgs e) => GetLatestActivationTask();
 
         public bool IsValidToBuild => GetLatestActivationTask().IsCompleted;
+
         public Task WaitReadyToBuildAsync() => GetLatestActivationTask();
 
         private Task GetLatestActivationTask()
@@ -66,6 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
         private bool IsActive()
         {
             ProjectConfiguration activeConfig = _activeConfiguredProjectProvider.ActiveProjectConfiguration;
+
             if (activeConfig == null)
                 return false;
 

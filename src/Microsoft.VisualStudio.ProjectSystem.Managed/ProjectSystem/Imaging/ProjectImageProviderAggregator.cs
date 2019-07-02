@@ -36,9 +36,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
             foreach (Lazy<IProjectImageProvider> provider in ImageProviders)
             {
                 ProjectImageMoniker image = provider.Value.GetProjectImage(key);
-                if (image != null)
-                    return image;
 
+                if (image != null)
+                {
+                    return image;
+                }
             }
 
             return null;

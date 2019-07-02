@@ -57,7 +57,6 @@ namespace Microsoft.VisualStudio.Buffers.PooledObjects
         // global pool
         private static readonly ObjectPool<PooledStringBuilder> s_poolInstance = CreatePool();
 
-        // if someone needs to create a private pool;
         /// <summary>
         /// If someone need to create a private pool
         /// </summary>

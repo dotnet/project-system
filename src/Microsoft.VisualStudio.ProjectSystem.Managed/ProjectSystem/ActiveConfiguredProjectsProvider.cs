@@ -82,6 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             ActiveConfiguredObjects<ConfiguredProject> projects = await GetActiveConfiguredProjectsAsync();
 
             bool isCrossTargeting = projects.Objects.All(project => project.ProjectConfiguration.IsCrossTargeting());
+
             if (isCrossTargeting)
             {
                 foreach (ConfiguredProject project in projects.Objects)
@@ -102,7 +103,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             ActiveConfiguredObjects<ProjectConfiguration> configurations = await GetActiveProjectConfigurationsAsync();
             if (configurations == null)
+            {
                 return null;
+            }
 
             ImmutableArray<ConfiguredProject>.Builder builder = ImmutableArray.CreateBuilder<ConfiguredProject>(configurations.Objects.Count);
 
@@ -119,8 +122,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public async Task<ActiveConfiguredObjects<ProjectConfiguration>> GetActiveProjectConfigurationsAsync()
         {
             ProjectConfiguration activeSolutionConfiguration = _services.ActiveConfiguredProjectProvider.ActiveProjectConfiguration;
+
             if (activeSolutionConfiguration == null)
+            {
                 return null;
+            }
 
             IImmutableSet<ProjectConfiguration> configurations = await _services.ProjectConfigurationsService.GetKnownProjectConfigurationsAsync();
 
@@ -156,7 +162,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             foreach ((string dimensionName, string dimensionValue) in activeSolutionConfiguration.Dimensions)
             {
                 if (ignoredDimensionNames.Contains(dimensionName))
+                {
                     continue;
+                }
 
                 if (!configuration.Dimensions.TryGetValue(dimensionName, out string otherDimensionValue) ||
                     !string.Equals(dimensionValue, otherDimensionValue, StringComparison.Ordinal))

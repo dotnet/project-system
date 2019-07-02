@@ -52,6 +52,7 @@ namespace Microsoft.VisualStudio.Collections
             var concreteDictionary1 = obj as ImmutableDictionary<TKey, TValue>;
             IEqualityComparer<TKey> keyComparer = concreteDictionary1 != null ? concreteDictionary1.KeyComparer : EqualityComparer<TKey>.Default;
             IEqualityComparer<TValue> valueComparer = concreteDictionary1 != null ? concreteDictionary1.ValueComparer : EqualityComparer<TValue>.Default;
+
             if (obj != null)
             {
                 foreach (KeyValuePair<TKey, TValue> pair in obj)
@@ -68,6 +69,7 @@ namespace Microsoft.VisualStudio.Collections
         private static bool AreEquivalent(IImmutableDictionary<TKey, TValue> dictionary1, IImmutableDictionary<TKey, TValue> dictionary2)
         {
             Requires.NotNull(dictionary1, "dictionary1");
+
             if (dictionary1 == dictionary2)
             {
                 return true;
@@ -116,6 +118,5 @@ namespace Microsoft.VisualStudio.Collections
 
             return true;
         }
-
     }
 }
