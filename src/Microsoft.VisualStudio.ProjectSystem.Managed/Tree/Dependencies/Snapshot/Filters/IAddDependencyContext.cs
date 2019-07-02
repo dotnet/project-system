@@ -2,8 +2,6 @@
 
 using System.Collections.Immutable;
 
-#nullable enable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters
 {
     /// <summary>
@@ -30,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
         void Reject();
 
         /// <summary>
-        /// Adds a new, or replaces an existing dependency (keyed on <see cref="IDependencyModel.Id"/>).
+        /// Adds a new, or replaces an existing dependency (keyed on <see cref="IDependency.Id"/>).
         /// </summary>
         /// <remarks>
         /// In the course of filtering one dependency, the filter may wish to modify or add other

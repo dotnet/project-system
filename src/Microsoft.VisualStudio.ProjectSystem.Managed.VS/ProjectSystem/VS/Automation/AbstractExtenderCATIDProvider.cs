@@ -4,6 +4,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Properties;
 
 using BCLDebug = System.Diagnostics.Debug;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 {
     /// <summary>

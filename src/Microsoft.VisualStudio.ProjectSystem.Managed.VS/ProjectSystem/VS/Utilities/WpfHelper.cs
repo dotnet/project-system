@@ -2,6 +2,8 @@
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]

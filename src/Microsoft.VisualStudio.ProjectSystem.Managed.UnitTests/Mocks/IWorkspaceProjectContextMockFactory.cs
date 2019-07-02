@@ -8,6 +8,8 @@ using Microsoft.VisualStudio.ProjectSystem;
 
 using Moq;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.LanguageServices.ProjectSystem
 {
     internal static class IWorkspaceProjectContextMockFactory

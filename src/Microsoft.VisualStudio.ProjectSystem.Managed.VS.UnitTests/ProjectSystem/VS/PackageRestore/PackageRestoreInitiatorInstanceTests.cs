@@ -9,6 +9,8 @@ using Xunit;
 
 using static Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.PackageRestoreInitiator;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
     public class PackageRestoreInitiatorInstanceTests

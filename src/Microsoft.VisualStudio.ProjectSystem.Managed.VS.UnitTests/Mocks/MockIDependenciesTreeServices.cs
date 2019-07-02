@@ -9,6 +9,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.TreeView;
 
 using Moq;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal class MockIDependenciesTreeServices : IDependenciesTreeServices
@@ -58,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             };
         }
 
-        public Task<IRule> GetRuleAsync(IDependency dependency, IProjectCatalogSnapshot catalogs)
+        public Task<IRule> GetBrowseObjectRuleAsync(IDependency dependency, IProjectCatalogSnapshot catalogs)
         {
             var mockRule = new Mock<IRule>(MockBehavior.Strict);
             mockRule.Setup(x => x.Name).Returns(dependency.SchemaItemType);

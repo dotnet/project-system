@@ -10,6 +10,8 @@ using Microsoft.VisualStudio.ProjectSystem.Debug;
 
 using ExportOrder = Microsoft.VisualStudio.ProjectSystem.OrderAttribute;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
 

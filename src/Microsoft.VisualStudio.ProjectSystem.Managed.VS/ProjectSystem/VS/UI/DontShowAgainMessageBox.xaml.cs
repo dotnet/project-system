@@ -5,6 +5,8 @@ using System.Windows.Input;
 
 using Microsoft.VisualStudio.PlatformUI;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
 {
     internal partial class DontShowAgainMessageBox : DialogWindow

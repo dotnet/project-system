@@ -3,8 +3,6 @@
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Composition;
 
-#nullable enable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
     /// <summary>

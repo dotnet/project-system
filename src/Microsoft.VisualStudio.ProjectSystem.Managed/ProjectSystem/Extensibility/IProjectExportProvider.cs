@@ -2,6 +2,8 @@
 
 using Microsoft.VisualStudio.Composition;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Extensibility
 {
     /// <summary>

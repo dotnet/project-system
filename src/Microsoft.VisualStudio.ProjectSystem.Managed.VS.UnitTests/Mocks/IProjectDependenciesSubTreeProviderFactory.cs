@@ -7,6 +7,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 
 using Moq;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal static class IProjectDependenciesSubTreeProviderFactory

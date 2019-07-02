@@ -2,6 +2,8 @@
 
 using Moq;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.Shell.Interop
 {
     internal static class IVsProjectSpecialFilesFactory

@@ -4,6 +4,8 @@ using System.Runtime.InteropServices;
 
 using Microsoft.VisualStudio.Composition;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>

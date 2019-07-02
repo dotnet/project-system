@@ -8,6 +8,8 @@ using Moq;
 
 using Xunit;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.VisualBasic
 {
     public class VisualBasicSimpleRenameTests : SimpleRenamerTestsBase

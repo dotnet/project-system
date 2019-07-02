@@ -5,6 +5,8 @@ using System.ComponentModel.Composition;
 
 using Microsoft.VisualStudio.IO;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders.VisualBasic
 {
     [ExportSpecialFileProvider(SpecialFiles.AssemblyInfo)]

@@ -5,6 +5,8 @@ using System.Xml;
 
 using Microsoft.Build.Construction;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 {
     public static class StringExtensions

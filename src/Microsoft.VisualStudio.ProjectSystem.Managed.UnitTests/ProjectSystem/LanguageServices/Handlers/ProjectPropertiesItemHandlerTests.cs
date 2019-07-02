@@ -4,6 +4,8 @@ using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
 using Xunit;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
     public class ProjectPropertiesItemHandlerTests : EvaluationHandlerTestBase

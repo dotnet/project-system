@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.IO
 {
     /// <summary>

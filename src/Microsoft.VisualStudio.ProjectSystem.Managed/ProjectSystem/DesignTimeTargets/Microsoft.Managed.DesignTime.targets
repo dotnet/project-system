@@ -300,6 +300,14 @@
     </PropertyPageSchema>
 
     <!-- Framework references -->
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)FrameworkReference.xaml">
+      <Context>Project;BrowseObject</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ResolvedFrameworkReference.xaml">
+      <Context>ProjectSubscriptionService;BrowseObject</Context>
+    </PropertyPageSchema>
+
     <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)CollectedFrameworkReference.xaml">
       <Context>ProjectSubscriptionService</Context>
     </PropertyPageSchema>
@@ -374,6 +382,26 @@
   <Target Name="ResolvePackageDependenciesDesignTime" />
   <Target Name="CollectSDKReferencesDesignTime" />
   <Target Name="CollectResolvedSDKReferencesDesignTime" />
+
+  <Target
+    Name="ResolveFrameworkReferencesDesignTime"
+    Returns="@(_ResolvedFrameworkReference)"
+    DependsOnTargets="ResolveFrameworkReferences">
+
+    <!--
+    This is temporary. It populates some metadata on _ResolvedFrameworkReference items.
+    Once we have a version of the SDK that produces ResolvedFrameworkReference items, this
+    can be removed and the item type above (and in the RFR.xaml rule data source) have the
+    underscore prefix removed.
+    -->
+    <ItemGroup>
+      <_ResolvedFrameworkReference Include="@(FrameworkReference)">
+        <OriginalItemSpec>%(FrameworkReference.ItemSpec)</OriginalItemSpec>
+        <TargetingPackPath>c:\some\path</TargetingPackPath>
+      </_ResolvedFrameworkReference>
+    </ItemGroup>
+
+  </Target>
 
   <!-- This target is used to collect the PackageReferences in the project. This target can be overriden to add\remove packagereferences before they are
        sent to NuGet to be restored.-->

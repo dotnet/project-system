@@ -4,6 +4,8 @@ using System.ComponentModel.Composition;
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectProperties
 {
     [ExportInterceptingPropertyValueProvider(PostBuildEvent, ExportInterceptingPropertyValueProviderFile.ProjectFile)]

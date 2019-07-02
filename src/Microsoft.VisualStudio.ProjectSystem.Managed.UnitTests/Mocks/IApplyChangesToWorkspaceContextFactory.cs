@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 using Moq;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     internal static class IApplyChangesToWorkspaceContextFactory

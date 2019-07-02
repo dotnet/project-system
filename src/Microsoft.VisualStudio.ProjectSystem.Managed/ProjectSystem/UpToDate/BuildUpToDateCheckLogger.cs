@@ -3,6 +3,8 @@
 using System;
 using System.IO;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 {
     internal sealed class BuildUpToDateCheckLogger

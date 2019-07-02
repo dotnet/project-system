@@ -24,6 +24,11 @@
   <PropertyGroup Condition="'$(Language)' == 'C#'">
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <LangVersion>8.0</LangVersion>
+    <!-- New name -->
+    <Nullable>enable</Nullable>
+    
+    <!-- Old name while we wait for new name to be everywhere -->
+    <NullableContextOptions>enable</NullableContextOptions>
     <Features>strict</Features>
   </PropertyGroup>
 

@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
 using Moq;
 
 using Newtonsoft.Json.Linq;
+
+#nullable disable
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {

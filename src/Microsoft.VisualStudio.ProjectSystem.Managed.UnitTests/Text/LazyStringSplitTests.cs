@@ -5,6 +5,8 @@ using System.Collections.Generic;
 
 using Xunit;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.Text
 {
     public sealed class LazyStringSplitTests

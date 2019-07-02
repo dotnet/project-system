@@ -8,6 +8,8 @@ using Microsoft.VisualStudio.ProjectSystem.References;
 
 using Xunit;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
 {
     public class TreeItemOrderPropertyProviderTests

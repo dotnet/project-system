@@ -10,6 +10,8 @@ using Xunit;
 
 using static Microsoft.VisualStudio.ProjectSystem.VS.Debug.StartupProjectRegistrar;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
     public class StartupProjectRegistrarTests

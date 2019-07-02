@@ -3,8 +3,6 @@
 using System;
 using System.Collections.Immutable;
 
-#nullable enable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     /// <summary>
@@ -21,14 +19,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         string ProjectPath { get; }
 
         /// <summary>
-        /// Gets the active target framework for project (first in the <c>TargetFrameworks</c> property).
+        /// Gets the active target framework for project.
         /// </summary>
-        ITargetFramework ActiveTarget { get; }
+        ITargetFramework ActiveTargetFramework { get; }
 
         /// <summary>
         /// Gets a dictionary of dependencies by target framework.
         /// </summary>
-        ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot> Targets { get; }
+        ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot> DependenciesByTargetFramework { get; }
 
         /// <summary>
         /// Gets whether this snapshot contains at least one unresolved/broken dependency at any level

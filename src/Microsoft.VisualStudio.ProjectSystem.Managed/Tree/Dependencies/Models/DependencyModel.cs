@@ -6,8 +6,6 @@ using System.Collections.Immutable;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
-#nullable enable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
     internal abstract partial class DependencyModel : IDependencyModel
@@ -98,6 +96,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
                    StringComparers.DependencyProviderTypes.Equals(other.ProviderType, ProviderType);
         }
 
-        public override string ToString() => Id;
+        public override string ToString() => $"{ProviderType}-{Id}";
     }
 }

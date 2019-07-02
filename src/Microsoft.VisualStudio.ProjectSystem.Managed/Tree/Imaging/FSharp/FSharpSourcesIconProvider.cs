@@ -5,6 +5,8 @@ using System.IO;
 
 using Microsoft.VisualStudio.Imaging;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging.FSharp
 {
     [Export(typeof(IProjectTreePropertiesProvider))]

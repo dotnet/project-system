@@ -6,8 +6,6 @@ using System.Collections.Immutable;
 
 using Microsoft.VisualStudio.Imaging.Interop;
 
-#nullable enable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions
 {
     internal sealed class DependenciesChangesBuilder
@@ -45,6 +43,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 _removed == null ? (IImmutableList<IDependencyModel>)ImmutableList<IDependencyModel>.Empty : ImmutableArray.CreateRange(_removed));
         }
 
+        public override string ToString() => ToString(_added, _removed);
+
         private sealed class DependenciesChanges : IDependenciesChanges
         {
             public IImmutableList<IDependencyModel> AddedNodes { get; }
@@ -57,6 +57,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 AddedNodes = addedNodes;
                 RemovedNodes = removedNodes;
             }
+
+            public override string ToString() => DependenciesChangesBuilder.ToString(AddedNodes, RemovedNodes);
+        }
+
+        private static string ToString(IReadOnlyCollection<IDependencyModel>? added, IReadOnlyCollection<IDependencyModel>? removed)
+        {
+            int addedCount = added?.Count ?? 0;
+            int removedCount = removed?.Count ?? 0;
+
+            return (addedCount, removedCount) switch
+            {
+                (0, 0) => "No changes",
+                (0, _) => $"{removedCount} removed",
+                (_, 0) => $"{addedCount} added",
+                (_, _) => $"{addedCount} added, {removedCount} removed"
+            };
         }
 
         private sealed class RemovedDependencyModel : IDependencyModel
@@ -105,6 +121,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             public override int GetHashCode()
                 => unchecked(StringComparer.OrdinalIgnoreCase.GetHashCode(Id) * 397 ^
                              StringComparer.OrdinalIgnoreCase.GetHashCode(ProviderType));
+
+            public override string ToString() => $"{ProviderType}-{Id}";
         }
     }
 }

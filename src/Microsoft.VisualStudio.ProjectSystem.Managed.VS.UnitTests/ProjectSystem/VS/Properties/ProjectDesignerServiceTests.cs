@@ -11,6 +11,8 @@ using Xunit;
 
 using Task = System.Threading.Tasks.Task;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
     public class ProjectDesignerServiceTests

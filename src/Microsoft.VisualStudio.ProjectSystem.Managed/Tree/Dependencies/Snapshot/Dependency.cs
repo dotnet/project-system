@@ -8,8 +8,6 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Text;
 
-#nullable enable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     internal sealed class Dependency : IDependency
@@ -27,6 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public const int AnalyzerNodePriority = 160;
         public const int ComNodePriority = 170;
         public const int SdkNodePriority = 180;
+        public const int FrameworkReferenceNodePriority = 190;
 
         public Dependency(IDependencyModel dependencyModel, ITargetFramework targetFramework, string containingProjectPath)
         {
@@ -119,6 +118,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         {
             // Copy values as necessary to create a clone with any properties overridden
 
+            _id = dependency._id;
             _modelId = dependency._modelId;
             _fullPath = dependency._fullPath;
             TargetFramework = dependency.TargetFramework;

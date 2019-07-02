@@ -1,5 +1,7 @@
 ﻿using System;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
     internal partial class AbstractAddItemCommandHandler

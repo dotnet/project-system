@@ -6,6 +6,8 @@ using Microsoft.VisualStudio.ProjectSystem.Logging;
 
 using Moq;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     internal static class ICommandLineHandlerFactory

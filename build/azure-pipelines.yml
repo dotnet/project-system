@@ -5,6 +5,7 @@ trigger:
 - dev15.9.x
 - dev16.0.x
 - dev16.1.x
+- dev16.2.x
 
 # Branches that trigger builds on PR
 pr:
@@ -13,6 +14,7 @@ pr:
 - dev15.9.x
 - dev16.0.x
 - dev16.1.x
+- dev16.2.x
 
 jobs:
 - job: Windows

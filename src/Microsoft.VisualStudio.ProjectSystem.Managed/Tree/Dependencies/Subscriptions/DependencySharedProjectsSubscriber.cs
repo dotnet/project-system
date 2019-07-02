@@ -14,8 +14,6 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.RuleHandlers;
 
-#nullable enable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
     [Export(typeof(IDependencyCrossTargetSubscriber))]
@@ -147,6 +145,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 DependenciesChanged?.Invoke(
                     this,
                     new DependencySubscriptionChangedEventArgs(
+                        currentAggregateContext.TargetFrameworks,
                         currentAggregateContext.ActiveTargetFramework,
                         catalogs,
                         changes));
@@ -163,7 +162,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             Requires.NotNull(changesBuilder, nameof(changesBuilder));
 
             IDependenciesSnapshot snapshot = _dependenciesSnapshotProvider.CurrentSnapshot;
-            if (!snapshot.Targets.TryGetValue(targetFramework, out ITargetedDependenciesSnapshot targetedSnapshot))
+            if (!snapshot.DependenciesByTargetFramework.TryGetValue(targetFramework, out ITargetedDependenciesSnapshot targetedSnapshot))
             {
                 return;
             }

@@ -14,6 +14,8 @@ using ENC_BREAKSTATE_REASON = Microsoft.VisualStudio.LanguageServices.Implementa
 using IVsENCRebuildableProjectCfg2 = Microsoft.VisualStudio.LanguageServices.Implementation.EditAndContinue.Interop.IVsENCRebuildableProjectCfg2;
 using IVsENCRebuildableProjectCfg4 = Microsoft.VisualStudio.LanguageServices.Implementation.EditAndContinue.Interop.IVsENCRebuildableProjectCfg4;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.EditAndContinue
 {
     [ExportProjectNodeComService(typeof(IVsENCRebuildableProjectCfg), typeof(IVsENCRebuildableProjectCfg2), typeof(IVsENCRebuildableProjectCfg4))]

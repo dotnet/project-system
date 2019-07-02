@@ -3,6 +3,8 @@
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.Threading.Tasks;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 {
     internal partial class TempPEBuildManager

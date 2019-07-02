@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.Shell.Interop
 {
     internal class IVsSettingsManagerFactory : IVsSettingsManager

@@ -8,6 +8,8 @@ using Microsoft.VisualStudio.Shell;
 
 using Task = System.Threading.Tasks.Task;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 {
     internal abstract class AbstractAddItemCommand : AbstractSingleNodeProjectCommand

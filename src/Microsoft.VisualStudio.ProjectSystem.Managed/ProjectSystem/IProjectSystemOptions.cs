@@ -4,6 +4,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Composition;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
@@ -44,5 +46,15 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     The level of fast up to date check logging.
         /// </value>
         Task<LogLevel> GetFastUpToDateLoggingLevelAsync(CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Gets a value indicating whether the designer view is the default editor for the specified designer category.
+        /// </summary>
+        Task<bool> GetUseDesignerByDefaultAsync(string designerCategory, bool defaultValue, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Sets a value indicating whether the designer view is the default editor for the specified designer category.
+        /// </summary>
+        Task SetUseDesignerByDefaultAsync(string designerCategory, bool value, CancellationToken cancellationToken = default);
     }
 }

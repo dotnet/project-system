@@ -18,8 +18,6 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters
 using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.Threading.Tasks;
 
-#nullable enable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions
 {
     [Export(DependencySubscriptionsHostContract, typeof(ICrossTargetSubscriptionsHost))]
@@ -265,7 +263,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 return;
             }
 
-            UpdateDependenciesSnapshot(e.Changes, e.Catalogs, e.ActiveTarget, CancellationToken.None);
+            UpdateDependenciesSnapshot(e.Changes, e.Catalogs, e.TargetFrameworks, e.ActiveTarget, CancellationToken.None);
         }
 
         private void OnSubtreeProviderDependenciesChanged(object sender, DependenciesChangedEventArgs e)
@@ -283,12 +281,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes = ImmutableDictionary<ITargetFramework, IDependenciesChanges>.Empty.Add(targetFramework, e.Changes);
 
-            UpdateDependenciesSnapshot(changes, catalogs: null, activeTargetFramework: null, e.Token);
+            UpdateDependenciesSnapshot(changes, catalogs: null, targetFrameworks: default, activeTargetFramework: null, e.Token);
         }
 
         private void UpdateDependenciesSnapshot(
-            ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes,
+            ImmutableDictionary<ITargetFramework, IDependenciesChanges> changesByTargetFramework,
             IProjectCatalogSnapshot? catalogs,
+            ImmutableArray<ITargetFramework> targetFrameworks,
             ITargetFramework? activeTargetFramework,
             CancellationToken token)
         {
@@ -298,8 +297,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 snapshot => DependenciesSnapshot.FromChanges(
                     _commonServices.Project.FullPath,
                     snapshot,
-                    changes,
+                    changesByTargetFramework,
                     catalogs,
+                    targetFrameworks,
                     activeTargetFramework,
                     _snapshotFilters.ToImmutableValueArray(),
                     _subTreeProviders.ToValueDictionary(p => p.ProviderType, StringComparers.DependencyProviderTypes),

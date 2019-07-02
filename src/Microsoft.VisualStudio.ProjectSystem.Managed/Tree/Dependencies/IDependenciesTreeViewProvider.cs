@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
-#nullable enable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     /// <summary>
@@ -15,16 +13,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     /// between different views. 
     /// View is responsible for building nodes hierarchy based on given dependencies snapshot.
     /// </summary>
-    [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
+    [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ZeroOrMore)]
     internal interface IDependenciesTreeViewProvider
     {
         /// <summary>
-        /// Builds Dependency node contents (target frameworks, groups and top level dependencies) for a given snapshot.
+        /// Builds the "Dependencies" node <see cref="IProjectTree"/> for the given <paramref name="snapshot"/> based on the previous <paramref name="dependenciesTree"/>.
+        /// Implementations should nest all top-level dependencies beneath this node, potentially grouped by target framework, dependency type and so forth.
         /// </summary>
-        /// <param name="dependenciesTree">Old dependencies node</param>
-        /// <param name="snapshot">Current dependencies snapshot</param>
-        /// <param name="cancellationToken">Cancellation token if need to stop building the view</param>
-        /// <returns>New dependencies node</returns>
+        /// <param name="dependenciesTree">The previous dependencies tree, to which the updated <paramref name="snapshot"/> should be applied.</param>
+        /// <param name="snapshot">The current dependencies snapshot to apply to the tree.</param>
+        /// <param name="cancellationToken">Supports cancellation of this operation.</param>
+        /// <returns>An updated "Dependencies" node.</returns>
         Task<IProjectTree> BuildTreeAsync(
             IProjectTree dependenciesTree,
             IDependenciesSnapshot snapshot,

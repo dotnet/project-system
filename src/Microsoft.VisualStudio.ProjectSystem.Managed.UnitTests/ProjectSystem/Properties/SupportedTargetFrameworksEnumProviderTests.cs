@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 using Xunit;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     public class SupportedTargetFrameworksEnumProviderTests

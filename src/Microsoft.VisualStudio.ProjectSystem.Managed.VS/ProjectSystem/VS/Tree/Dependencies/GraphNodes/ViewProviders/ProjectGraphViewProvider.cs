@@ -2,12 +2,11 @@
 
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 using Microsoft.VisualStudio.GraphModel;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
-
-#nullable enable
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.ViewProviders
 {
@@ -122,14 +121,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
         public override bool MatchSearchResults(
             IDependency topLevelDependency,
             Dictionary<string, HashSet<IDependency>> searchResultsPerContext,
-            out HashSet<IDependency>? topLevelDependencyMatches)
+            [NotNullWhen(returnValue: true)] out HashSet<IDependency>? topLevelDependencyMatches)
         {
-            topLevelDependencyMatches = new HashSet<IDependency>();
-
             if (!topLevelDependency.Flags.Contains(DependencyTreeFlags.ProjectDependency))
             {
+                topLevelDependencyMatches = null;
                 return false;
             }
+
+            topLevelDependencyMatches = new HashSet<IDependency>();
 
             if (!topLevelDependency.Visible)
             {

@@ -4,6 +4,8 @@ using System;
 using System.Linq;
 using System.Text;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal class ProjectTreeWriter
@@ -46,6 +48,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             WriteCaption(tree);
             WriteProperties(tree);
             WriteFilePath(tree);
+            WriteItemType(tree);
+            WriteSubType(tree);
             WriteIcons(tree);
             WriteChildren(tree, indentLevel);
         }
@@ -87,7 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private void WriteProperties(IProjectTree tree)
         {
             bool visibility = _options.HasFlag(ProjectTreeWriterOptions.Visibility);
-            bool flags = _options.HasFlag(ProjectTreeWriterOptions.Visibility);
+            bool flags = _options.HasFlag(ProjectTreeWriterOptions.Flags);
 
             if (!visibility && !flags)
                 return;
@@ -97,12 +101,18 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             if (visibility)
             {
-                WriteVisibility(tree);
-                _builder.Append(", ");
+                WriteVisibility(tree);                
             }
 
             if (flags)
+            {
+                if (visibility)
+                {
+                    _builder.Append(", ");
+                }
+
                 WriteFlags(tree);
+            }
 
             _builder.Append(')');
         }
@@ -122,6 +132,37 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
 
             _builder.Append('"');
+        }
+
+        private void WriteItemType(IProjectTree tree)
+        {
+            if (!_options.HasFlag(ProjectTreeWriterOptions.ItemType))
+                return;
+
+            if (tree is IProjectItemTree item)
+            {
+                _builder.Append(", ItemType: ");
+                _builder.Append(item.Item.ItemType);
+
+                if (TagElements)
+                {
+                    _builder.Append("[itemtype]");
+                }
+            }
+        }
+
+        private void WriteSubType(IProjectTree tree)
+        {
+            if (!_options.HasFlag(ProjectTreeWriterOptions.SubType))
+                return;
+
+            _builder.Append(", SubType: ");
+            _builder.Append(tree.BrowseObjectProperties.GetPropertyValueAsync("SubType").Result);
+
+            if (TagElements)
+            {
+                _builder.Append("[subtype]");
+            }
         }
 
         private void WriteVisibility(IProjectTree tree)
