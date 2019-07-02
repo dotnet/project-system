@@ -75,12 +75,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 return;
             }
 
-            Project project = GetCurrentProject();
-            if (project is null)
+            if (GetCurrentProject() is null)
                 return;
 
             // see if the current project contains a compilation
-            (bool success, bool isCaseSensitive) = await TryDetermineIfCompilationIsCaseSensitiveAsync(project);
+            (bool success, bool isCaseSensitive) = await TryDetermineIfCompilationIsCaseSensitiveAsync(GetCurrentProject());
             if (!success)
                 return;
 
@@ -91,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 return;
 
             // Check if there are any symbols that need to be renamed
-            (success, _) = await TryGetSymbolToRename(oldName, oldFilePath, newFilePath, isCaseSensitive, project);
+            (success, _) = await TryGetSymbolToRename(oldName, oldFilePath, newFilePath, isCaseSensitive, GetCurrentProject());
             if (!success)
                 return;
 
@@ -112,7 +111,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                     return await _unconfiguredProjectTasksService.LoadedProjectAsync(async () =>
                     {
                         // Perform the rename operation
-                        Solution renamedSolution = await GetRenamedSolutionAsync(oldName, oldFilePath, newFilePath, isCaseSensitive, project, token);
+                        Solution renamedSolution = await GetRenamedSolutionAsync(oldName, oldFilePath, newFilePath, isCaseSensitive, GetCurrentProject(), token);
                         if (renamedSolution == null)
                             return false;
 

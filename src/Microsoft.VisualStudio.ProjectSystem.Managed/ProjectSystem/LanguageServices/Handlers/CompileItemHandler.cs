@@ -89,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Context.RemoveSourceFile(fullPath);
         }
 
-        private void HandleItemRename(string fullPathBefore, string fullPathAfter, IProjectLogger logger)
+        protected override void HandleItemRename(string fullPathBefore, string fullPathAfter, IProjectLogger logger)
         {
             logger.WriteLine("Handling rename of source file '{0}' to {1}", fullPathBefore, fullPathAfter);
             foreach (IFileRenameHandler fileRenameHandler in _fileRenameHandlers)
