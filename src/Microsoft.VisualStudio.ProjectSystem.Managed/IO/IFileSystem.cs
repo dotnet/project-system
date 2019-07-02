@@ -8,8 +8,6 @@ using System.Text;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.IO
 {
     /// <summary>

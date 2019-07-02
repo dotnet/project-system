@@ -10,8 +10,6 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.ProjectSystem.Configuration;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     [Export(typeof(IActiveConfiguredProjectsProvider))]
@@ -78,11 +76,16 @@ namespace Microsoft.VisualStudio.ProjectSystem
             get;
         }
 
-        public async Task<ImmutableDictionary<string, ConfiguredProject>> GetActiveConfiguredProjectsMapAsync()
+        public async Task<ImmutableDictionary<string, ConfiguredProject>?> GetActiveConfiguredProjectsMapAsync()
         {
-            var builder = PooledDictionary<string, ConfiguredProject>.GetInstance();
+            ActiveConfiguredObjects<ConfiguredProject>? projects = await GetActiveConfiguredProjectsAsync();
 
-            ActiveConfiguredObjects<ConfiguredProject> projects = await GetActiveConfiguredProjectsAsync();
+            if (projects == null || projects.Objects.Count == 0)
+            {
+                return null;
+            }
+
+            var builder = PooledDictionary<string, ConfiguredProject>.GetInstance();
 
             bool isCrossTargeting = projects.Objects.All(project => project.ProjectConfiguration.IsCrossTargeting());
 
@@ -102,9 +105,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return builder.ToImmutableDictionaryAndFree();
         }
 
-        public async Task<ActiveConfiguredObjects<ConfiguredProject>> GetActiveConfiguredProjectsAsync()
+        public async Task<ActiveConfiguredObjects<ConfiguredProject>?> GetActiveConfiguredProjectsAsync()
         {
-            ActiveConfiguredObjects<ProjectConfiguration> configurations = await GetActiveProjectConfigurationsAsync();
+            ActiveConfiguredObjects<ProjectConfiguration>? configurations = await GetActiveProjectConfigurationsAsync();
+
             if (configurations == null)
             {
                 return null;
@@ -122,7 +126,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return new ActiveConfiguredObjects<ConfiguredProject>(builder.MoveToImmutable(), configurations.DimensionNames);
         }
 
-        public async Task<ActiveConfiguredObjects<ProjectConfiguration>> GetActiveProjectConfigurationsAsync()
+        public async Task<ActiveConfiguredObjects<ProjectConfiguration>?> GetActiveProjectConfigurationsAsync()
         {
             ProjectConfiguration activeSolutionConfiguration = _services.ActiveConfiguredProjectProvider.ActiveProjectConfiguration;
 

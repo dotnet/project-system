@@ -3,8 +3,6 @@
 using System;
 using System.IO;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.IO
 {
     /// <summary>
@@ -12,9 +10,9 @@ namespace Microsoft.VisualStudio.IO
     /// </summary>
     internal sealed class SimpleFileWatcher : IDisposable
     {
-        private FileSystemWatcher _fileWatcher;
-        private FileSystemEventHandler _handler;
-        private RenamedEventHandler _renameHandler;
+        private FileSystemWatcher? _fileWatcher;
+        private FileSystemEventHandler? _handler;
+        private RenamedEventHandler? _renameHandler;
 
         // For unit tests
         public SimpleFileWatcher()
@@ -22,7 +20,7 @@ namespace Microsoft.VisualStudio.IO
         }
 
         public SimpleFileWatcher(string dirToWatch, bool includeSubDirs, NotifyFilters notifyFilters, string fileFilter,
-                                 FileSystemEventHandler handler, RenamedEventHandler renameHandler)
+                                 FileSystemEventHandler? handler, RenamedEventHandler? renameHandler)
         {
             _fileWatcher = new FileSystemWatcher(dirToWatch)
             {

@@ -4,8 +4,6 @@ using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Build
 {
     [Export(typeof(IConfiguredProjectReadyToBuild))]
@@ -16,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
         private readonly ConfiguredProject _configuredProject;
         private readonly IActiveConfiguredProjectProvider _activeConfiguredProjectProvider;
 
-        private TaskCompletionSource<object> _activationTask;
+        private TaskCompletionSource<object?> _activationTask;
 
         [ImportingConstructor]
         public ImplicitlyActiveConfiguredProjectReadyToBuild(
@@ -25,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
         {
             _configuredProject = configuredProject;
             _activeConfiguredProjectProvider = activeConfiguredProjectProvider;
-            _activationTask = new TaskCompletionSource<object>();
+            _activationTask = new TaskCompletionSource<object?>();
 
             _activeConfiguredProjectProvider.Changed += ActiveConfiguredProject_Changed;
         }
@@ -46,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
                 {
                     if (!nowActive)
                     {
-                        _activationTask = new TaskCompletionSource<object>();
+                        _activationTask = new TaskCompletionSource<object?>();
                     }
                 }
                 else if (nowActive)
@@ -66,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
 
         private bool IsActive()
         {
-            ProjectConfiguration activeConfig = _activeConfiguredProjectProvider.ActiveProjectConfiguration;
+            ProjectConfiguration? activeConfig = _activeConfiguredProjectProvider.ActiveProjectConfiguration;
 
             if (activeConfig == null)
                 return false;

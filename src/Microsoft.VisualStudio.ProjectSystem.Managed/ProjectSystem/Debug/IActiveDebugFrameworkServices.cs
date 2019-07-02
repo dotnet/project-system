@@ -2,9 +2,8 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.Composition;
 
-#nullable disable
+using Microsoft.VisualStudio.Composition;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
@@ -18,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// <summary>
         /// Returns the set of frameworks in the order defined in msbuild. If not multi-targeting it returns null.
         /// </summary>
-        Task<List<string>> GetProjectFrameworksAsync();
+        Task<List<string>?> GetProjectFrameworksAsync();
 
         /// <summary>
         /// Sets the value of the active debugging target framework property.
@@ -28,11 +27,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// <summary>
         /// Returns the value of the property, or empty string/null if the property has never been set.
         /// </summary>
-        Task<string> GetActiveDebuggingFrameworkPropertyAsync();
+        Task<string?> GetActiveDebuggingFrameworkPropertyAsync();
 
         /// <summary>
         /// Returns the configured project which represents the active framework. This is valid whether multi-targeting or not.
         /// </summary>
-        Task<ConfiguredProject> GetConfiguredProjectForActiveFrameworkAsync();
+        Task<ConfiguredProject?> GetConfiguredProjectForActiveFrameworkAsync();
     }
 }

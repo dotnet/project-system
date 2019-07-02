@@ -2,9 +2,8 @@
 
 using System;
 using System.ComponentModel.Composition;
-using Microsoft.VisualStudio.Composition;
 
-#nullable disable
+using Microsoft.VisualStudio.Composition;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Imaging
 {
@@ -29,13 +28,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
             get;
         }
 
-        public ProjectImageMoniker GetProjectImage(string key)
+        public ProjectImageMoniker? GetProjectImage(string key)
         {
             Requires.NotNullOrEmpty(key, nameof(key));
 
             foreach (Lazy<IProjectImageProvider> provider in ImageProviders)
             {
-                ProjectImageMoniker image = provider.Value.GetProjectImage(key);
+                ProjectImageMoniker? image = provider.Value.GetProjectImage(key);
 
                 if (image != null)
                 {

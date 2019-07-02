@@ -2,8 +2,6 @@
 
 using Microsoft.VisualStudio.Composition;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Extensibility
 {
     /// <summary>
@@ -18,6 +16,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Extensibility
         /// UI thread. This is the preferred method for getting access to project specific
         /// exports.
         /// </summary>
-        T GetExport<T>(string projectFilePath) where T : class;
+        T? GetExport<T>(string projectFilePath) where T : class;
     }
 }
