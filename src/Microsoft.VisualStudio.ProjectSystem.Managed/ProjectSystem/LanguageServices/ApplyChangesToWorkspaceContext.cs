@@ -95,8 +95,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             VerifyInitializedAndNotDisposed();
 
-            IProjectChangeDescription projectChange = update.Value.ProjectChanges[ProjectBuildRuleName];
-            if (projectChange.Difference.AnyChanges)
+            if (update.Value.ProjectChanges.TryGetValue(ProjectBuildRuleName, out IProjectChangeDescription projectChange) &&
+                projectChange.Difference.AnyChanges)
             {
                 IComparable version = GetConfiguredProjectVersion(update);
 
@@ -227,12 +227,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                if (handler.Value is IProjectUpdatedHandler evaluationHandler)
+                if (handler.Value is IProjectUpdatedHandler evaluationHandler &&
+                    update.Value.ProjectChanges.TryGetValue(evaluationHandler.ProjectEvaluationRule, out IProjectChangeDescription projectChange) &&
+                    projectChange.Difference.AnyChanges)
                 {
-                    IProjectChangeDescription projectChange = update.Value.ProjectChanges[evaluationHandler.ProjectEvaluationRule];
-                    if (!projectChange.Difference.AnyChanges)
-                        continue;
-
                     evaluationHandler.HandleProjectUpdate(version, projectChange, isActiveContext, _logger);
                 }
             }
