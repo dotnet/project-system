@@ -109,8 +109,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             // Try and apply the changes to the current solution
             await _projectVsServices.ThreadingService.SwitchToUIThread();
             var (result, renamedSolutionApplied) = _waitService.WaitForAsyncFunctionWithResult(
-                title: $"Renaming Type",
-                message: $"Renaming Type from '{oldName}' to '{newName}'",
+                title: VSResources.Renaming_Type,
+                message: string.Format(CultureInfo.CurrentCulture, VSResources.Renaming_Type_from_0_to_1, oldName, newName),
                 allowCancel: true,
                 async token =>
                 {
