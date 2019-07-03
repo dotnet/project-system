@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.Build;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     /// <summary>
@@ -32,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// <summary>
         /// <see cref="IActiveDebugFrameworkServices.GetProjectFrameworksAsync"/>
         /// </summary>
-        public async Task<List<string>> GetProjectFrameworksAsync()
+        public async Task<List<string>?> GetProjectFrameworksAsync()
         {
             // It is important that we return the frameworks in the order they are specified in the project to ensure the default is set
             // correctly. 
@@ -40,11 +38,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             string targetFrameworks = (string)await props.TargetFrameworks.GetValueAsync();
 
-            if (!string.IsNullOrWhiteSpace(targetFrameworks))
+            if (string.IsNullOrWhiteSpace(targetFrameworks))
             {
-                return BuildUtilities.GetPropertyValues(targetFrameworks).ToList();
+                return null;
             }
-            return null;
+
+            return BuildUtilities.GetPropertyValues(targetFrameworks).ToList();
         }
 
         /// <summary>
@@ -59,21 +58,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// <summary>
         /// <see cref="IActiveDebugFrameworkServices.GetActiveDebuggingFrameworkPropertyAsync"/>
         /// </summary>
-        public async Task<string> GetActiveDebuggingFrameworkPropertyAsync()
+        public async Task<string?> GetActiveDebuggingFrameworkPropertyAsync()
         {
             ProjectDebugger props = await _commonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync();
-            string activeValue = await props.ActiveDebugFramework.GetValueAsync() as string;
+            string? activeValue = await props.ActiveDebugFramework.GetValueAsync() as string;
             return activeValue;
         }
 
         /// <summary>
         /// <see cref="IActiveDebugFrameworkServices.GetConfiguredProjectForActiveFrameworkAsync"/>
         /// </summary>
-        public async Task<ConfiguredProject> GetConfiguredProjectForActiveFrameworkAsync()
+        public async Task<ConfiguredProject?> GetConfiguredProjectForActiveFrameworkAsync()
         {
 #pragma warning disable CS0618 // Type or member is obsolete
-            ImmutableDictionary<string, ConfiguredProject> configProjects = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsMapAsync();
+            ImmutableDictionary<string, ConfiguredProject>? configProjects = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsMapAsync();
 #pragma warning restore CS0618 // Type or member is obsolete
+
+            if (configProjects == null)
+            {
+                return null;
+            }
 
             // If there is only one we are done
             if (configProjects.Count == 1)
@@ -81,7 +85,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 return configProjects.First().Value;
             }
 
-            string activeFramework = await GetActiveDebuggingFrameworkPropertyAsync();
+            string? activeFramework = await GetActiveDebuggingFrameworkPropertyAsync();
+
             if (!string.IsNullOrWhiteSpace(activeFramework))
             {
                 if (configProjects.TryGetValue(activeFramework, out ConfiguredProject configuredProject))
@@ -92,7 +97,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             // We can't just select the first one. If activeFramework is not set we must pick the first one as defined by the 
             // targetFrameworks property. So we need the order as returned by GetProjectFrameworks()
-            List<string> frameworks = await GetProjectFrameworksAsync();
+            List<string>? frameworks = await GetProjectFrameworksAsync();
+
             if (frameworks != null && frameworks.Count > 0)
             {
                 if (configProjects.TryGetValue(frameworks[0], out ConfiguredProject configuredProject))
