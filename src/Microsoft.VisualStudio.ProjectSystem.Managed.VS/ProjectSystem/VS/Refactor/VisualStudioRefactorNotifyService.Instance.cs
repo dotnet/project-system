@@ -22,59 +22,49 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
                 _solutionService = solutionService;
             }
 
-            public async Task<bool> TryOnBeforeGlobalSymbolRenamedAsync(string projectPath, IEnumerable<string> filePaths, string rqName, string newName)
+            public async Task TryOnBeforeGlobalSymbolRenamedAsync(string projectPath, IEnumerable<string> filePaths, string rqName, string newName)
             {
                 IVsHierarchy projectHierarchy = await GetProjectHierarchy(projectPath);
                 if (projectHierarchy == null)
                 {
-                    return false;
+                    return;
                 }
 
                 if (!(projectHierarchy is IVsHierarchyRefactorNotify refactorNotify))
                 {
-                    return false;
+                    return;
                 }
 
                 var ids = GetIdsForFiles(projectHierarchy, filePaths).ToArray();
 
-                if (refactorNotify.OnBeforeGlobalSymbolRenamed(cItemsAffected: (uint)ids.Length,
-                                                               rgItemsAffected: ids,
-                                                               cRQNames: (uint)1,
-                                                               rglpszRQName: new[] { rqName },
-                                                               lpszNewName: newName,
-                                                               promptContinueOnFail: 1) != HResult.OK)
-                {
-                    return false;
-                }
-
-                return true;
+                refactorNotify.OnBeforeGlobalSymbolRenamed(cItemsAffected: (uint)ids.Length,
+                                                           rgItemsAffected: ids,
+                                                           cRQNames: (uint)1,
+                                                           rglpszRQName: new[] { rqName },
+                                                           lpszNewName: newName,
+                                                           promptContinueOnFail: 1);
             }
 
-            public async Task<bool> TryOnAfterGlobalSymbolRenamedAsync(string projectPath, IEnumerable<string> filePaths, string rqName, string newName)
+            public async Task TryOnAfterGlobalSymbolRenamedAsync(string projectPath, IEnumerable<string> filePaths, string rqName, string newName)
             {
                 IVsHierarchy projectHierarchy = await GetProjectHierarchy(projectPath);
                 if (projectHierarchy == null)
                 {
-                    return false;
+                    return;
                 }
 
                 if (!(projectHierarchy is IVsHierarchyRefactorNotify refactorNotify))
                 {
-                    return false;
+                    return;
                 }
 
                 var ids = GetIdsForFiles(projectHierarchy, filePaths).ToArray();
 
-                if (refactorNotify.OnGlobalSymbolRenamed(cItemsAffected: (uint)ids.Length,
-                                                         rgItemsAffected: ids,
-                                                         cRQNames: (uint)1,
-                                                         rglpszRQName: new[] { rqName },
-                                                         lpszNewName: newName) != HResult.OK)
-                {
-                    return false;
-                }
-
-                return true;
+                refactorNotify.OnGlobalSymbolRenamed(cItemsAffected: (uint)ids.Length,
+                                                     rgItemsAffected: ids,
+                                                     cRQNames: (uint)1,
+                                                     rglpszRQName: new[] { rqName },
+                                                     lpszNewName: newName);
             }
 
             private async Task<IVsHierarchy> GetProjectHierarchy(string projectPath)

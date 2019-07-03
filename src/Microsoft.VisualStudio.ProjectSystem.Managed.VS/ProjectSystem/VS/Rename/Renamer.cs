@@ -174,7 +174,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 Project project = change.NewProject;
                 string projectPath = project.FilePath;
                 string[] filePaths = change.GetChangedDocuments().Select(x => project.GetDocument(x).FilePath).ToArray();
-                _ = await _refactorNotifyService.TryOnAfterGlobalSymbolRenamedAsync(projectPath, filePaths, rqName, newName);
+                await _refactorNotifyService.TryOnAfterGlobalSymbolRenamedAsync(projectPath, filePaths, rqName, newName);
             }
         }
 
@@ -185,7 +185,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 Project project = change.NewProject;
                 string projectPath = project.FilePath;
                 string[] filePaths = change.GetChangedDocuments().Select(x => project.GetDocument(x).FilePath).ToArray();
-                _ = await _refactorNotifyService.TryOnBeforeGlobalSymbolRenamedAsync(projectPath, filePaths, rqName, newName);
+                await _refactorNotifyService.TryOnBeforeGlobalSymbolRenamedAsync(projectPath, filePaths, rqName, newName);
             }
         }
 
