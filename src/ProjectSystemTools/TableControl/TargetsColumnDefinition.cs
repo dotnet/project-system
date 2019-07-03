@@ -25,9 +25,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.TableControl
 
         public override bool TryCreateStringContent(ITableEntryHandle entry, bool truncatedText, bool singleColumnView, out string content)
         {
-            if (entry.TryGetValue(TableKeyNames.Targets, out var value) && value != null &&
-                value is IEnumerable<string> targets &&
-                targets.Any())
+            if (entry.TryGetValue(TableKeyNames.Targets, out var value) &&
+                value is IEnumerable<string> targets)
             {
                 content = string.Join(";", targets);
                 return true;
