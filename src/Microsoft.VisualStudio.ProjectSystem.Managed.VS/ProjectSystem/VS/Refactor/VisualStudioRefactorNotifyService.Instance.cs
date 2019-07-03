@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
                 _solutionService = solutionService;
             }
 
-            public async Task TryOnBeforeGlobalSymbolRenamedAsync(string projectPath, IEnumerable<string> filePaths, string rqName, string newName)
+            public async Task OnBeforeGlobalSymbolRenamedAsync(string projectPath, IEnumerable<string> filePaths, string rqName, string newName)
             {
                 IVsHierarchy projectHierarchy = await GetProjectHierarchy(projectPath);
                 if (projectHierarchy == null)
@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
                                                            promptContinueOnFail: 1);
             }
 
-            public async Task TryOnAfterGlobalSymbolRenamedAsync(string projectPath, IEnumerable<string> filePaths, string rqName, string newName)
+            public async Task OnAfterGlobalSymbolRenamedAsync(string projectPath, IEnumerable<string> filePaths, string rqName, string newName)
             {
                 IVsHierarchy projectHierarchy = await GetProjectHierarchy(projectPath);
                 if (projectHierarchy == null)

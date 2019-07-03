@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
 
         protected override Instance CreateInstance() => new Instance(_dte, _solutionService);
 
-        public async Task TryOnBeforeGlobalSymbolRenamedAsync(string projectPath, IEnumerable<string> filePaths, string rqName, string newName)
+        public async Task OnBeforeGlobalSymbolRenamedAsync(string projectPath, IEnumerable<string> filePaths, string rqName, string newName)
         {
             Requires.NotNull(projectPath, nameof(projectPath));
             Requires.NotNull(filePaths, nameof(filePaths));
@@ -43,10 +43,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
             Requires.NotNull(newName, nameof(newName));
 
             Instance instance = await WaitForLoadedAsync();
-            await instance.TryOnBeforeGlobalSymbolRenamedAsync(projectPath, filePaths, rqName, newName);
+            await instance.OnBeforeGlobalSymbolRenamedAsync(projectPath, filePaths, rqName, newName);
         }
 
-        public async Task TryOnAfterGlobalSymbolRenamedAsync(string projectPath, IEnumerable<string> filePaths, string rqName, string newName)
+        public async Task OnAfterGlobalSymbolRenamedAsync(string projectPath, IEnumerable<string> filePaths, string rqName, string newName)
         {
             Requires.NotNull(projectPath, nameof(projectPath));
             Requires.NotNull(filePaths, nameof(filePaths));
@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
             Requires.NotNull(newName, nameof(newName));
 
             Instance instance = await WaitForLoadedAsync();
-            await instance.TryOnAfterGlobalSymbolRenamedAsync(projectPath, filePaths, rqName, newName);
+            await instance.OnAfterGlobalSymbolRenamedAsync(projectPath, filePaths, rqName, newName);
         }
     }
 }

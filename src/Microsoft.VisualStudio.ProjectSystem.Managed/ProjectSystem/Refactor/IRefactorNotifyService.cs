@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Refactor
 {
     internal interface IRefactorNotifyService
     {
-        Task TryOnBeforeGlobalSymbolRenamedAsync(string projectPath, IEnumerable<string> filePaths, string rqName, string newName);
-        Task TryOnAfterGlobalSymbolRenamedAsync(string projectPath, IEnumerable<string> filePaths, string rqName, string newName);
+        Task OnBeforeGlobalSymbolRenamedAsync(string projectPath, IEnumerable<string> filePaths, string rqName, string newName);
+        Task OnAfterGlobalSymbolRenamedAsync(string projectPath, IEnumerable<string> filePaths, string rqName, string newName);
     }
 }
