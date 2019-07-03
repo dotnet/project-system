@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Linq;
 using System.Windows;
 using Microsoft.VisualStudio.Shell.TableControl;
 using Microsoft.VisualStudio.Utilities;
@@ -30,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.TableControl
                 value is IEnumerable<string> targets &&
                 targets.Any())
             {
-                content = targets.Aggregate((current, next) => $"{current};{next}");
+                content = string.Join(";", targets);
                 return true;
             }
 
