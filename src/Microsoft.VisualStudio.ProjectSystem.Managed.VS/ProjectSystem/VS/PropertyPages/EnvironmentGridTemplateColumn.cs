@@ -5,6 +5,8 @@ using System.Windows.Controls;
 
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
     internal class EnvironmentDataGridTemplateColumn : DataGridTemplateColumn

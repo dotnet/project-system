@@ -8,6 +8,8 @@ using Microsoft.Build.Construction;
 
 using Xunit;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
     public class AvoidPersistingProjectGuidStorageProviderTests

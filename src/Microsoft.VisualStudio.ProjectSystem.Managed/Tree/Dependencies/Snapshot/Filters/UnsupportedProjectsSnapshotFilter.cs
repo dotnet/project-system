@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 
-#nullable enable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters
 {
     /// <summary>
@@ -42,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             {
                 ITargetedDependenciesSnapshot? snapshot = _aggregateSnapshotProvider.GetSnapshot(dependency);
 
-                if (snapshot != null && snapshot.HasUnresolvedDependency)
+                if (snapshot != null && snapshot.HasVisibleUnresolvedDependency)
                 {
                     context.Accept(dependency.ToUnresolved(ProjectReference.SchemaName));
                     return;

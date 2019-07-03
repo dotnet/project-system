@@ -6,6 +6,8 @@ using VSLangProj;
 
 using VSLangProj110;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 {
     public partial class VSProject : VSLangProj.ProjectProperties

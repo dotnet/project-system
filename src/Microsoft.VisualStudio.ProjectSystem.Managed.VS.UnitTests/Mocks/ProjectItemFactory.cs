@@ -2,6 +2,8 @@
 
 using Moq;
 
+#nullable disable
+
 namespace EnvDTE
 {
     internal static class ProjectItemFactory

@@ -9,6 +9,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Settings;
 using Microsoft.VisualStudio.Shell.Interop;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.VersionCompatibility
 {
     internal class TestDotNetCoreProjectCompatibilityDetector : DotNetCoreProjectCompatibilityDetector

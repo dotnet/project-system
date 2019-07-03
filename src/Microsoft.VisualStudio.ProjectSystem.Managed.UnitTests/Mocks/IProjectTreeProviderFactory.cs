@@ -7,6 +7,8 @@ using System.Threading.Tasks.Dataflow;
 
 using Moq;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IProjectTreeProviderFactory

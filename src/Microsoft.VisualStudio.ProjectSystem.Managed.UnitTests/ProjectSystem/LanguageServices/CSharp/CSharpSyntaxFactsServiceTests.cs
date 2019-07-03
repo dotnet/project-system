@@ -2,6 +2,8 @@
 
 using Xunit;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.CSharp
 {
     public class CSharpSyntaxFactsServiceTests

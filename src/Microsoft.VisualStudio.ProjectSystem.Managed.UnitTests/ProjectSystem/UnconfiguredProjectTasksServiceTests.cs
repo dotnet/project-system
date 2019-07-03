@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 
 using Xunit;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     public class UnconfiguredProjectTasksServiceTests

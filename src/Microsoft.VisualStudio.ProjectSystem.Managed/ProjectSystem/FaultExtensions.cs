@@ -6,6 +6,8 @@ using System;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>

@@ -10,6 +10,8 @@ using Microsoft.Build.Evaluation;
 using Microsoft.VisualStudio.Build;
 using Microsoft.VisualStudio.ProjectSystem.Build;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
 

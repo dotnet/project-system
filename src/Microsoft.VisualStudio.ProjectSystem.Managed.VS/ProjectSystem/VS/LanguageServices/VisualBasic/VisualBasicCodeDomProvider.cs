@@ -6,6 +6,8 @@ using System.ComponentModel.Composition;
 using Microsoft.VisualBasic;
 using Microsoft.VisualStudio.Designer.Interfaces;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices.VisualBasic
 {
     /// <summary>

@@ -1,0 +1,19 @@
+<Viewbox Width="16" Height="16" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+  <Rectangle Width="16" Height="16">
+    <Rectangle.Fill>
+      <DrawingBrush>
+        <DrawingBrush.Drawing>
+          <DrawingGroup>
+            <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
+            <GeometryDrawing Brush="#FFF6F6F6" Geometry="F1M5.5863,1.9996L3.9993,3.5866 3.9993,5.0006 0.000299999999999301,5.0006 0.000299999999999301,9.9996 3.9993,9.9996 3.9993,11.4146 5.5853,13.0006 14.4143,13.0006 16.0003,11.4146 16.0003,3.5866 14.4153,1.9996z" />
+            <GeometryDrawing Brush="#FF414141" Geometry="F1M14,11L6,11 6,4 14,4z M5,4L5,7 4,7 4,6 1,6 1,9 4,9 4,8 5,8 5,11 6,12 14,12 15,11 15,4 14,3 6,3z" />
+            <GeometryDrawing Brush="#FF414141" Geometry="F1M11,7L13,7 13,5 11,5z" />
+            <GeometryDrawing Brush="#FF414141" Geometry="F1M7,9L10,9 10,6 7,6z" />
+            <GeometryDrawing Brush="#FF414141" Geometry="F1M11,10L13,10 13,8 11,8z" />
+            <GeometryDrawing Brush="#FFF0EFF1" Geometry="F1M13,7L11,7 11,5 13,5z M13,10L11,10 11,8 13,8z M10,9L7,9 7,6 10,6z M6,11L14,11 14,4 6,4z" />
+          </DrawingGroup>
+        </DrawingBrush.Drawing>
+      </DrawingBrush>
+    </Rectangle.Fill>
+  </Rectangle>
+</Viewbox>

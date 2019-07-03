@@ -5,6 +5,8 @@ using System.Windows.Controls;
 
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
     /// <summary>

@@ -89,6 +89,10 @@
                   ReadOnly="True"
                   Visible="False" />
 
+  <StringProperty Name="RuntimeIdentifierGraphPath"
+                  ReadOnly="True"
+                  Visible="False" />
+
   <StringProperty Name="RuntimeIdentifiers"
                   ReadOnly="True"
                   Visible="False" />
@@ -98,7 +102,7 @@
                   Visible="False" />
 
   <StringProperty Name="TargetFramework"
-                  DisplayName="Target Framework">
+                  Visible="False">
     <StringProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
                   PersistedName="TargetFramework"
@@ -108,7 +112,7 @@
   </StringProperty>
 
   <StringProperty Name="TargetFrameworkIdentifier"
-                  DisplayName="Target Framework Identifier">
+                  Visible="False">
     <StringProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
                   PersistedName="TargetFrameworkIdentifier"
@@ -118,7 +122,7 @@
   </StringProperty>
 
   <StringProperty Name="TargetFrameworkMoniker"
-                  DisplayName="Target Framework Moniker">
+                  Visible="False">
     <StringProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
                   PersistedName="TargetFrameworkMoniker"
@@ -128,7 +132,7 @@
   </StringProperty>
 
   <StringProperty Name="TargetFrameworkProfile"
-                  DisplayName="Target Framework Profile">
+                  Visible="False">
     <StringProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
                   PersistedName="TargetFrameworkProfile"
@@ -138,7 +142,7 @@
   </StringProperty>
 
   <StringProperty Name="TargetFrameworks"
-                  DisplayName="Target Frameworks">
+                  Visible="False">
     <StringProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
                   PersistedName="TargetFrameworks"
@@ -148,7 +152,7 @@
   </StringProperty>
 
   <StringProperty Name="TargetFrameworkVersion"
-                  DisplayName="Target Framework Version">
+                  Visible="False">
     <StringProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
                   PersistedName="TargetFrameworkVersion"

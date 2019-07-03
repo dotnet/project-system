@@ -5,6 +5,8 @@ using System.Threading;
 
 using Microsoft.VisualStudio.Threading;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>

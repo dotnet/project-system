@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.Composition;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -20,12 +21,16 @@ namespace Microsoft.VisualStudio.ProjectSystem
     internal interface IActiveConfiguredProjectsProvider
     {
         /// <summary>
-        /// Gets all the active configured projects by TargetFramework dimension for the current unconfigured project.
-        /// If the current project is not a cross-targeting project, then it returns a singleton key-value pair with an ignorable key and single active configured project as value.
+        ///     Gets all the active configured projects by TargetFramework dimension for the current unconfigured project.
+        ///     If the current project is not a cross-targeting project, then it returns a singleton key-value pair with an
+        ///     ignorable key and single active configured project as value.
         /// </summary>
-        /// <returns>Map from TargetFramework dimension to active configured project.</returns>
+        /// <returns>
+        ///     Map from TargetFramework dimension to active configured project, or <see langword="null" /> if there
+        ///     are no active <see cref="ConfiguredProject"/> objects.
+        /// </returns>
         [Obsolete("This method will be removed in a future build.")]
-        Task<ImmutableDictionary<string, ConfiguredProject>> GetActiveConfiguredProjectsMapAsync();
+        Task<ImmutableDictionary<string, ConfiguredProject>?> GetActiveConfiguredProjectsMapAsync();
 
         /// <summary>
         ///     Returns the ordered list of configured projects that are active for the current project, loading them if needed.
@@ -40,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     The order in the returned <see cref="ActiveConfiguredObjects{T}"/> matches the declared ordered within
         ///     the project file.
         /// </remarks>
-        Task<ActiveConfiguredObjects<ConfiguredProject>> GetActiveConfiguredProjectsAsync();
+        Task<ActiveConfiguredObjects<ConfiguredProject>?> GetActiveConfiguredProjectsAsync();
 
         /// <summary>
         ///     Returns the ordered list of project configurations that are active for the current project.
@@ -55,6 +60,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     The order in the returned <see cref="ActiveConfiguredObjects{T}"/> matches the declared ordered within
         ///     the project file.
         /// </remarks>
-        Task<ActiveConfiguredObjects<ProjectConfiguration>> GetActiveProjectConfigurationsAsync();
+        Task<ActiveConfiguredObjects<ProjectConfiguration>?> GetActiveProjectConfigurationsAsync();
     }
 }

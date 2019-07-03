@@ -7,6 +7,8 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.Shell.Interop
 {
     /// <summary>

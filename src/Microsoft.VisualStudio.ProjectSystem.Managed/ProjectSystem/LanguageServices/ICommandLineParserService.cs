@@ -5,6 +5,8 @@ using System.Collections.Generic;
 
 using Microsoft.VisualStudio.Composition;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     /// <summary>

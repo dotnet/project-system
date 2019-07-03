@@ -5,6 +5,8 @@ using System.Collections.Immutable;
 
 using static Microsoft.VisualStudio.ProjectSystem.Tokenizer;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     // Parses a string into a project tree
@@ -119,21 +121,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private MutableProjectTree ReadProjectItem()
         {
-            var tree = new MutableProjectTree();
+            var tree = new MutableProjectItemTree();
             ReadProjectItemProperties(tree);
 
-            if (string.IsNullOrWhiteSpace(tree.ItemName))
-            {
-                return tree;
-            }
-            else
-            {
-                // Because we have an evaluated include value (ItemName), this means we have a project item tree.
-                return tree.ToMutableProjectItemTree();
-            }
+            return tree.BuildProjectTree();
         }
 
-        private void ReadProjectItemProperties(MutableProjectTree tree)
+        private void ReadProjectItemProperties(MutableProjectItemTree tree)
         {   // Parse "Root (visibility: visible, flags: {ProjectRoot}), FilePath: "C:\My Project\MyFile.txt", Icon: {1B5CF1ED-9525-42B4-85F0-2CB50530ECA9 1}, ExpandedIcon: {1B5CF1ED-9525-42B4-85F0-2CB50530ECA9 1}
 
             ReadCaption(tree);
@@ -141,14 +135,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
             ReadFields(tree);
         }
 
-        private void ReadCaption(MutableProjectTree tree)
+        private void ReadCaption(MutableProjectItemTree tree)
         {
             Tokenizer tokenizer = Tokenizer(Delimiters.Caption);
 
             tree.Caption = tokenizer.ReadIdentifier(IdentifierParseOptions.Required);
         }
 
-        private void ReadProperties(MutableProjectTree tree)
+        private void ReadProperties(MutableProjectItemTree tree)
         {   // Parses "(visibility: visible, flags: {ProjectRoot})"
 
             // Properties section is optional
@@ -170,7 +164,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _tokenizer.Skip(TokenType.RightParenthesis);
         }
 
-        private void ReadProperty(MutableProjectTree tree)
+        private void ReadProperty(MutableProjectItemTree tree)
         {
             Tokenizer tokenizer = Tokenizer(Delimiters.PropertyName);
 
@@ -195,28 +189,23 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
         }
 
-        private void ReadVisibility(MutableProjectTree tree)
+        private void ReadVisibility(MutableProjectItemTree tree)
         {   // Parse 'visible' in 'visibility:visible' or 'invisible' in 'visibility:invisible"
 
             Tokenizer tokenizer = Tokenizer(Delimiters.PropertyValue);
 
             string visibility = tokenizer.ReadIdentifier(IdentifierParseOptions.Required);
 
-            switch (visibility)
+            tree.Visible = visibility switch
             {
-                case "visible":
-                    tree.Visible = true;
-                    break;
-                case "invisible":
-                    tree.Visible = false;
-                    break;
+                "visible" => true,
+                "invisible" => false,
 
-                default:
-                    throw FormatException(ProjectTreeFormatError.UnrecognizedPropertyValue, $"Expected 'visible' or 'invisible', but encountered '{visibility}'.");
-            }
+                _ => throw FormatException(ProjectTreeFormatError.UnrecognizedPropertyValue, $"Expected 'visible' or 'invisible', but encountered '{visibility}'."),
+            };
         }
 
-        private void ReadCapabilities(MutableProjectTree tree)
+        private void ReadCapabilities(MutableProjectItemTree tree)
         {   // Parse '{ProjectRoot Folder}'
 
             Tokenizer tokenizer = Tokenizer(Delimiters.BracedPropertyValueBlock);
@@ -234,7 +223,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             tokenizer.Skip(TokenType.RightBrace);
         }
 
-        private void ReadFlag(MutableProjectTree tree)
+        private void ReadFlag(MutableProjectItemTree tree)
         {   // Parses 'AppDesigner' in '{AppDesigner Folder}'
 
             Tokenizer tokenizer = Tokenizer(Delimiters.BracedPropertyValue);
@@ -243,7 +232,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             tree.AddFlag(flag);
         }
 
-        private void ReadFields(MutableProjectTree tree)
+        private void ReadFields(MutableProjectItemTree tree)
         {   // Parses ', FilePath: "C:\Temp\Foo"'
 
             // This section is optional
@@ -261,6 +250,18 @@ namespace Microsoft.VisualStudio.ProjectSystem
                         tokenizer.Skip(TokenType.Colon);
                         tokenizer.Skip(TokenType.WhiteSpace);
                         ReadFilePath(tree);
+                        break;
+
+                    case "ItemType":
+                        tokenizer.Skip(TokenType.Colon);
+                        tokenizer.Skip(TokenType.WhiteSpace);
+                        ReadItemType(tree);
+                        break;
+
+                    case "SubType":
+                        tokenizer.Skip(TokenType.Colon);
+                        tokenizer.Skip(TokenType.WhiteSpace);
+                        ReadSubType(tree);
                         break;
 
                     case "Icon":
@@ -293,8 +294,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
         }
 
-        private void ReadDisplayOrder(MutableProjectTree tree)
-        {   // Parses ': 1`
+        private void ReadDisplayOrder(MutableProjectItemTree tree)
+        {   // Parses '1`
 
             Tokenizer tokenizer = Tokenizer(Delimiters.PropertyValue);
 
@@ -303,16 +304,33 @@ namespace Microsoft.VisualStudio.ProjectSystem
             tree.DisplayOrder = int.Parse(identifier);
         }
 
-        private void ReadItemName(MutableProjectTree tree)
-        {   // Parses ': "test.fs"'
+        private void ReadItemName(MutableProjectItemTree tree)
+        {   // Parses '"test.fs"'
 
-            tree.ItemName = ReadQuotedPropertyValue();
+            tree.Item.ItemName = ReadQuotedPropertyValue();
         }
 
-        private void ReadFilePath(MutableProjectTree tree)
-        {   // Parses ': "C:\Temp\Foo"'
+        private void ReadFilePath(MutableProjectItemTree tree)
+        {   // Parses '"C:\Temp\Foo"'
 
             tree.FilePath = ReadQuotedPropertyValue();
+        }
+
+        private void ReadItemType(MutableProjectItemTree tree)
+        {
+            tree.Item.ItemType = ReadPropertyValue();
+        }
+
+        private void ReadSubType(MutableProjectItemTree tree)
+        {
+            tree.SubType = ReadPropertyValue();
+        }
+
+        private string ReadPropertyValue()
+        {   
+            Tokenizer tokenizer = Tokenizer(Delimiters.PropertyValue);
+
+            return tokenizer.ReadIdentifier(IdentifierParseOptions.None);
         }
 
         private string ReadQuotedPropertyValue()

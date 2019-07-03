@@ -14,6 +14,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
         ///     Returns the <see cref="ProjectImageMoniker"/> for the specified key, returning <see langword="null"/>
         ///     if the provider does handle the specified key.
         /// </summary>
-        ProjectImageMoniker GetProjectImage(string key);
+        ProjectImageMoniker? GetProjectImage(string key);
     }
 }

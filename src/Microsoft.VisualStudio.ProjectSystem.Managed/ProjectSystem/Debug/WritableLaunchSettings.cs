@@ -9,6 +9,8 @@ using Microsoft.VisualStudio.Collections;
 
 using Newtonsoft.Json;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     internal class WritableLaunchSettings : IWritableLaunchSettings

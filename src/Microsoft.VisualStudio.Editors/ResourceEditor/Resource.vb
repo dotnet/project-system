@@ -1164,7 +1164,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                     Debug.Assert(TypeName <> "", "ResXDataNode.GetValueTypeName() should never return an empty string or Nothing (not even for ResXNullRef)")
 
-                    TypeName = AdjustSystemStringAssemblyQualifiedName(TypeName)
+                    TypeName = AdjustAssemblyQualifiedName(TypeName)
 
                     Return TypeName
                 Catch ex As Exception When ReportWithoutCrash(ex, "Unexpected exception - ResXDataNode.GetValueTypeName() is not supposed to throw exceptions (except unrecoverable ones), it should instead return the typename as in the original .resx file", NameOf(Resource))
@@ -1612,6 +1612,13 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
         End Function
 
+        Private Shared ReadOnly s_correctedAssemblyQualifiedName As New Dictionary(Of String, String) From {
+            {"System.String", GetType(String).AssemblyQualifiedName},
+            {"System.Drawing.Bitmap", GetType(Drawing.Bitmap).AssemblyQualifiedName},
+            {"System.Drawing.Icon", GetType(Drawing.Icon).AssemblyQualifiedName},
+            {"System.IO.MemoryStream", GetType(MemoryStream).AssemblyQualifiedName}
+        }
+
         ''' <remarks>
         ''' Our multi-targeting support quite correctly tells us that types like System.String are found
         ''' in netstandard.dll. However, VS (and thus the resx designer) and resgen.exe run on the net462
@@ -1630,24 +1637,13 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' file are only used to produce the .designer.cs file, which is still built against
         ''' netstandard.dll.
         ''' </remarks>
-        Private Shared Function AdjustSystemStringAssemblyQualifiedName(AssemblyQualifiedName As String) As String
-            Static SystemStringAssemblyQualifiedName As String
-
-            ' If this type definitely isn't System.String then bail out before we allocate
-            If Not AssemblyQualifiedName.StartsWith("System.String") Then
-                Return AssemblyQualifiedName
-            End If
-
+        Private Shared Function AdjustAssemblyQualifiedName(AssemblyQualifiedName As String) As String
             Dim indexOfFirstComma = AssemblyQualifiedName.IndexOf(",")
             If indexOfFirstComma <> -1 Then
                 Dim typeName = AssemblyQualifiedName.Substring(startIndex:=0, length:=indexOfFirstComma)
-                If typeName = "System.String" Then
-
-                    If SystemStringAssemblyQualifiedName Is Nothing Then
-                        SystemStringAssemblyQualifiedName = GetType(String).AssemblyQualifiedName
-                    End If
-
-                    Return SystemStringAssemblyQualifiedName
+                Dim correctedAssemblyQualifiedName As String = Nothing
+                If s_correctedAssemblyQualifiedName.TryGetValue(typeName, correctedAssemblyQualifiedName) Then
+                    Return correctedAssemblyQualifiedName
                 End If
             End If
 

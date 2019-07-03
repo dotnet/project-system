@@ -9,6 +9,8 @@ using Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders;
 
 using Xunit;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     public class SpecialFileProviderTests

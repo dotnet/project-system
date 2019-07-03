@@ -7,8 +7,6 @@ using System.Linq;
 
 using Microsoft.VisualStudio.ProjectSystem.VS.Extensibility;
 
-#nullable enable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     /// <inheritdoc />
@@ -95,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             lock (_snapshotProviders)
             {
-                if (!_snapshotProviders.TryGetValue(projectFilePath, out IDependenciesSnapshotProvider snapshotProvider))
+                if (!_snapshotProviders.TryGetValue(projectFilePath, out IDependenciesSnapshotProvider? snapshotProvider))
                 {
                     snapshotProvider = _projectExportProvider.GetExport<IDependenciesSnapshotProvider>(projectFilePath);
 

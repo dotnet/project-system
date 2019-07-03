@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
 
             public async Task OnBeforeGlobalSymbolRenamedAsync(string projectPath, IEnumerable<string> filePaths, string rqName, string newName)
             {
-                IVsHierarchy projectHierarchy = await GetProjectHierarchy(projectPath);
+                IVsHierarchy? projectHierarchy = await GetProjectHierarchy(projectPath);
                 if (projectHierarchy == null)
                 {
                     return;
@@ -47,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
 
             public async Task OnAfterGlobalSymbolRenamedAsync(string projectPath, IEnumerable<string> filePaths, string rqName, string newName)
             {
-                IVsHierarchy projectHierarchy = await GetProjectHierarchy(projectPath);
+                IVsHierarchy? projectHierarchy = await GetProjectHierarchy(projectPath);
                 if (projectHierarchy == null)
                 {
                     return;
@@ -67,9 +67,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
                                                      lpszNewName: newName);
             }
 
-            private async Task<IVsHierarchy> GetProjectHierarchy(string projectPath)
+            private async Task<IVsHierarchy?> GetProjectHierarchy(string projectPath)
             {
-                Project project = await TryGetProjectFromPathAsync(projectPath);
+                Project? project = await TryGetProjectFromPathAsync(projectPath);
                 if (project == null)
                 {
                     return null;
@@ -78,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
                 return await TryGetIVsHierarchyAsync(project);
             }
 
-            private async Task<Project> TryGetProjectFromPathAsync(string projectPath)
+            private async Task<Project?> TryGetProjectFromPathAsync(string projectPath)
             {
                 DTE dte = await _dte.GetValueAsync();
                 foreach (Project project in dte.Solution.Projects)
@@ -92,7 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
                 return null;
             }
 
-            private async Task<IVsHierarchy> TryGetIVsHierarchyAsync(Project project)
+            private async Task<IVsHierarchy?> TryGetIVsHierarchyAsync(Project project)
             {
                 var solutionService = await _solutionService.GetValueAsync();
                 if (solutionService.GetProjectOfUniqueName(project.UniqueName, out IVsHierarchy projectHierarchy) == HResult.OK)

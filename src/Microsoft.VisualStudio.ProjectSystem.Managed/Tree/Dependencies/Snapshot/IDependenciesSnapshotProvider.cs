@@ -5,8 +5,6 @@ using System.Threading;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.Composition;
 
-#nullable enable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     /// <summary>

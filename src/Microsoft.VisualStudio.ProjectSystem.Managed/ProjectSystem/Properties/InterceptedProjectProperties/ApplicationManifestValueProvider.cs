@@ -6,6 +6,8 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading.Tasks;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     [ExportInterceptingPropertyValueProvider("ApplicationManifest", ExportInterceptingPropertyValueProviderFile.ProjectFile)]

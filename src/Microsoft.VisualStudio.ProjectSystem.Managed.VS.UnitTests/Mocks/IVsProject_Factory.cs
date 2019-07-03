@@ -6,6 +6,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS;
 
 using Moq;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.Shell.Interop
 {
     // Named with an _ instead of IVsProjectFactory to avoid collisions with the actual IVsProjectFactory

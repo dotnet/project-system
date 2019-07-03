@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.Threading;
 using Xunit;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     public class VsUIServiceTests

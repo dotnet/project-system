@@ -3,6 +3,8 @@ using System;
 
 using Xunit;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.Imaging
 {
     public class ProjectImageProviderAggregatorTests

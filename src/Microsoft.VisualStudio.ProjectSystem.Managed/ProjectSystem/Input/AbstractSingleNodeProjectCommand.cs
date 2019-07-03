@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Input
         {
         }
 
-        protected sealed override Task<CommandStatusResult> GetCommandStatusAsync(IImmutableSet<IProjectTree> nodes, bool focused, string commandText, CommandStatus progressiveStatus)
+        protected sealed override Task<CommandStatusResult> GetCommandStatusAsync(IImmutableSet<IProjectTree> nodes, bool focused, string? commandText, CommandStatus progressiveStatus)
         {
             if (nodes.Count == 1)
             {
@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Input
             return TaskResult.False;
         }
 
-        protected abstract Task<CommandStatusResult> GetCommandStatusAsync(IProjectTree node, bool focused, string commandText, CommandStatus progressiveStatus);
+        protected abstract Task<CommandStatusResult> GetCommandStatusAsync(IProjectTree node, bool focused, string? commandText, CommandStatus progressiveStatus);
 
         protected abstract Task<bool> TryHandleCommandAsync(IProjectTree node, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut);
     }

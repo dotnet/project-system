@@ -3,6 +3,8 @@
 using System.Windows.Controls;
 using Microsoft.VisualStudio.Composition;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     public static class UIProfilePropertyName

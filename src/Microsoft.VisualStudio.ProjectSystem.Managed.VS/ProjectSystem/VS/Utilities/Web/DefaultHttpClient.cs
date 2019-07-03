@@ -5,6 +5,8 @@ using System.ComponentModel.Composition;
 using System.Net.Http;
 using System.Threading.Tasks;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 {
     [Export(typeof(IHttpClient))]

@@ -132,7 +132,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
             {
                 Assert.Throws<ArgumentNullException>(() =>
                 {
-                    waitIndicator.Wait("", "", false, null);
+                    waitIndicator.Wait("", "", false, null!);
                 });
 
                 Assert.False(waitIndicator.IsDisposed);
@@ -297,7 +297,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                waitIndicator.WaitWithResult("", "", false, null);
+                waitIndicator.WaitWithResult("", "", false, null!);
             });
 
             Assert.False(waitIndicator.IsDisposed);
@@ -386,7 +386,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                waitIndicator.WaitForAsyncFunction("", "", false, null);
+                waitIndicator.WaitForAsyncFunction("", "", false, null!);
             });
 
             Assert.False(waitIndicator.IsDisposed);
@@ -459,7 +459,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var result = waitIndicator.WaitForAsyncFunctionWithResult("", "", false, null);
+                var result = waitIndicator.WaitForAsyncFunctionWithResult("", "", false, null!);
             });
 
             Assert.False(waitIndicator.IsDisposed);
@@ -512,7 +512,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var result = waitIndicator.Wait("", "", false, (Func<CancellationToken, int>)null);
+                var result = waitIndicator.Wait("", "", false, (Func<CancellationToken, int>)null!);
             });
 
             Assert.False(waitIndicator.IsDisposed);
@@ -583,7 +583,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var (canceled, result) = waitIndicator.WaitWithResult("", "", false, (Func<CancellationToken, int>)null);
+                var (canceled, result) = waitIndicator.WaitWithResult("", "", false, (Func<CancellationToken, int>)null!);
             });
 
             Assert.False(waitIndicator.IsDisposed);
@@ -655,7 +655,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var result = waitIndicator.WaitForAsyncFunction("", "", false, (Func<CancellationToken, Task<int>>)null);
+                var result = waitIndicator.WaitForAsyncFunction("", "", false, (Func<CancellationToken, Task<int>>)null!);
             });
 
             Assert.False(waitIndicator.IsDisposed);
@@ -687,7 +687,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
             var (waitIndicator, _) = CreateVisualStudioWaitIndicator(title, message, isCancelable);
             await waitIndicator.LoadAsync();
 
-            object result = waitIndicator.WaitForAsyncFunction(title, message, isCancelable, _ =>
+            object? result = waitIndicator.WaitForAsyncFunction(title, message, isCancelable, _ =>
             {
                 if (isCancelable)
                 {
@@ -726,7 +726,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var (_, result) = waitIndicator.WaitForAsyncFunctionWithResult("", "", false, (Func<CancellationToken, Task<int>>)null);
+                var (_, result) = waitIndicator.WaitForAsyncFunctionWithResult("", "", false, (Func<CancellationToken, Task<int>>)null!);
             });
 
             Assert.False(waitIndicator.IsDisposed);

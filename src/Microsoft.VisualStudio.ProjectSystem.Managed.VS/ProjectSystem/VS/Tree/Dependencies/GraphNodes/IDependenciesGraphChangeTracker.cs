@@ -4,8 +4,6 @@ using System;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.GraphModel;
 
-#nullable enable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 {
     /// <summary>

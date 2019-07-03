@@ -9,6 +9,8 @@ using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 
 using RoslynRenamer = Microsoft.CodeAnalysis.Rename;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     [Export(typeof(IRoslynServices))]

@@ -7,6 +7,8 @@ using Microsoft.Build.Construction;
 
 using Xunit;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.Build
 {
     public class BuildUtilitiesTests

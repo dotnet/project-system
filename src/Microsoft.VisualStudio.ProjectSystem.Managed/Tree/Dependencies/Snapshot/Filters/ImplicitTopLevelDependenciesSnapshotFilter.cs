@@ -6,8 +6,6 @@ using System.ComponentModel.Composition;
 
 using Microsoft.VisualStudio.Imaging.Interop;
 
-#nullable enable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters
 {
     /// <summary>

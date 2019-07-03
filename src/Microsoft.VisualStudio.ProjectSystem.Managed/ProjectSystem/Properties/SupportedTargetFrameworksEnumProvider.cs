@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 
 using Microsoft.Build.Framework.XamlTypes;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     /// <summary>

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 using Xunit;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     public class LaunchSettingsTests

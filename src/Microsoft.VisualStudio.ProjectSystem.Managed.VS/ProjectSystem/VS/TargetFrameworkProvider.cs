@@ -8,8 +8,6 @@ using System.Linq;
 using System.Runtime.Versioning;
 using NuGet.VisualStudio;
 
-#nullable enable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     [Export(typeof(ITargetFrameworkProvider))]

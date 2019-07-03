@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.Text;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
 {
     internal abstract class BaseVersionValueProvider : InterceptingPropertyValueProviderBase

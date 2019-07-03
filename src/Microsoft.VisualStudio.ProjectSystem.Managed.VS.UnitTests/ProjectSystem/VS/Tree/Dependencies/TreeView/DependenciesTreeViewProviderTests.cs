@@ -11,6 +11,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
 using Xunit;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.TreeView
 {
     public sealed class DependenciesTreeViewProviderTests

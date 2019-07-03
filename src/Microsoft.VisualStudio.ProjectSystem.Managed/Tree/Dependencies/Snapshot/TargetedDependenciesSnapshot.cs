@@ -7,8 +7,6 @@ using System.Collections.Immutable;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters;
 
-#nullable enable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     internal sealed class TargetedDependenciesSnapshot : ITargetedDependenciesSnapshot
@@ -176,7 +174,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Catalogs = catalogs;
             DependenciesWorld = dependenciesWorld;
 
-            bool hasUnresolvedDependency = false;
+            bool hasVisibleUnresolvedDependency = false;
             ImmutableArray<IDependency>.Builder topLevelDependencies = ImmutableArray.CreateBuilder<IDependency>();
 
             foreach ((string id, IDependency dependency) in dependenciesWorld)
@@ -185,9 +183,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                     string.Equals(id, dependency.Id),
                     "dependenciesWorld dictionary entry keys must match their value's ids.");
 
-                if (!dependency.Resolved)
+                if (!dependency.Resolved && dependency.Visible)
                 {
-                    hasUnresolvedDependency = true;
+                    hasVisibleUnresolvedDependency = true;
                 }
 
                 if (dependency.TopLevel)
@@ -203,7 +201,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 }
             }
 
-            HasUnresolvedDependency = hasUnresolvedDependency;
+            HasVisibleUnresolvedDependency = hasVisibleUnresolvedDependency;
             TopLevelDependencies = topLevelDependencies.ToImmutable();
         }
 
@@ -232,7 +230,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         private object SyncLock => _dependenciesChildrenMap;
 
         /// <inheritdoc />
-        public bool HasUnresolvedDependency { get; }
+        public bool HasVisibleUnresolvedDependency { get; }
 
         /// <inheritdoc />
         public bool CheckForUnresolvedDependencies(IDependency dependency)

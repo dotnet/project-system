@@ -2,8 +2,6 @@
 
 using System.Threading.Tasks;
 
-#nullable enable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
     internal interface ICrossTargetSubscriptionsHost

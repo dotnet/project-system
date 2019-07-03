@@ -11,6 +11,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
 
 using Xunit;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     public sealed class DependenciesSnapshotTests
@@ -54,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.Same(projectPath, snapshot.ProjectPath);
             Assert.Same(targetFramework, snapshot.ActiveTargetFramework);
             Assert.Same(dependenciesByTargetFramework, snapshot.DependenciesByTargetFramework);
-            Assert.False(snapshot.HasUnresolvedDependency);
+            Assert.False(snapshot.HasVisibleUnresolvedDependency);
             Assert.Null(snapshot.FindDependency("foo"));
         }
 
@@ -68,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.Same(projectPath, snapshot.ProjectPath);
             Assert.Same(TargetFramework.Empty, snapshot.ActiveTargetFramework);
             Assert.Empty(snapshot.DependenciesByTargetFramework);
-            Assert.False(snapshot.HasUnresolvedDependency);
+            Assert.False(snapshot.HasVisibleUnresolvedDependency);
             Assert.Null(snapshot.FindDependency("foo"));
         }
 

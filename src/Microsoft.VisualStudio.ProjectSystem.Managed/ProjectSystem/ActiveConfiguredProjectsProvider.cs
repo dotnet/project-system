@@ -61,6 +61,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [ImportingConstructor]
         public ActiveConfiguredProjectsProvider(IUnconfiguredProjectServices services, UnconfiguredProject project)
         {
+            Requires.NotNull(services, nameof(services));
+            Requires.NotNull(project, nameof(project));
+
             _services = services;
             _project = project;
 
@@ -73,13 +76,19 @@ namespace Microsoft.VisualStudio.ProjectSystem
             get;
         }
 
-        public async Task<ImmutableDictionary<string, ConfiguredProject>> GetActiveConfiguredProjectsMapAsync()
+        public async Task<ImmutableDictionary<string, ConfiguredProject>?> GetActiveConfiguredProjectsMapAsync()
         {
+            ActiveConfiguredObjects<ConfiguredProject>? projects = await GetActiveConfiguredProjectsAsync();
+
+            if (projects == null || projects.Objects.Count == 0)
+            {
+                return null;
+            }
+
             var builder = PooledDictionary<string, ConfiguredProject>.GetInstance();
 
-            ActiveConfiguredObjects<ConfiguredProject> projects = await GetActiveConfiguredProjectsAsync();
-
             bool isCrossTargeting = projects.Objects.All(project => project.ProjectConfiguration.IsCrossTargeting());
+
             if (isCrossTargeting)
             {
                 foreach (ConfiguredProject project in projects.Objects)
@@ -96,11 +105,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return builder.ToImmutableDictionaryAndFree();
         }
 
-        public async Task<ActiveConfiguredObjects<ConfiguredProject>> GetActiveConfiguredProjectsAsync()
+        public async Task<ActiveConfiguredObjects<ConfiguredProject>?> GetActiveConfiguredProjectsAsync()
         {
-            ActiveConfiguredObjects<ProjectConfiguration> configurations = await GetActiveProjectConfigurationsAsync();
+            ActiveConfiguredObjects<ProjectConfiguration>? configurations = await GetActiveProjectConfigurationsAsync();
+
             if (configurations == null)
+            {
                 return null;
+            }
 
             ImmutableArray<ConfiguredProject>.Builder builder = ImmutableArray.CreateBuilder<ConfiguredProject>(configurations.Objects.Count);
 
@@ -114,11 +126,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return new ActiveConfiguredObjects<ConfiguredProject>(builder.MoveToImmutable(), configurations.DimensionNames);
         }
 
-        public async Task<ActiveConfiguredObjects<ProjectConfiguration>> GetActiveProjectConfigurationsAsync()
+        public async Task<ActiveConfiguredObjects<ProjectConfiguration>?> GetActiveProjectConfigurationsAsync()
         {
             ProjectConfiguration activeSolutionConfiguration = _services.ActiveConfiguredProjectProvider.ActiveProjectConfiguration;
+
             if (activeSolutionConfiguration == null)
+            {
                 return null;
+            }
 
             IImmutableSet<ProjectConfiguration> configurations = await _services.ProjectConfigurationsService.GetKnownProjectConfigurationsAsync();
 
@@ -154,7 +169,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             foreach ((string dimensionName, string dimensionValue) in activeSolutionConfiguration.Dimensions)
             {
                 if (ignoredDimensionNames.Contains(dimensionName))
+                {
                     continue;
+                }
 
                 if (!configuration.Dimensions.TryGetValue(dimensionName, out string otherDimensionValue) ||
                     !string.Equals(dimensionValue, otherDimensionValue, StringComparison.Ordinal))

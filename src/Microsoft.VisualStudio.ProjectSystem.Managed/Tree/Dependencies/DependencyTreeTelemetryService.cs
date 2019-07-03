@@ -8,8 +8,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Telemetry;
 
-#nullable enable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     /// <summary>

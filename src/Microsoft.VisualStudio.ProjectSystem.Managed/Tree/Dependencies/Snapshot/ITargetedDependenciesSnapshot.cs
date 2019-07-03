@@ -4,8 +4,6 @@ using System.Collections.Immutable;
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-#nullable enable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     /// <summary>
@@ -41,9 +39,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         ImmutableDictionary<string, IDependency> DependenciesWorld { get; }
 
         /// <summary>
-        /// Specifies is this snapshot contains at least one unresolved/broken dependency at any level.
+        /// Specifies is this snapshot contains at least one unresolved/broken dependency at any level which is visible.
         /// </summary>
-        bool HasUnresolvedDependency { get; }
+        bool HasVisibleUnresolvedDependency { get; }
 
         /// <summary>
         /// Efficient API for checking if a given dependency has an unresolved child dependency at any level. 
