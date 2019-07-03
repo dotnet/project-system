@@ -382,6 +382,7 @@
   <Target Name="ResolvePackageDependenciesDesignTime" />
   <Target Name="CollectSDKReferencesDesignTime" />
   <Target Name="CollectResolvedSDKReferencesDesignTime" />
+  <Target Name="ResolveFrameworkReferences" />
 
   <Target
     Name="ResolveFrameworkReferencesDesignTime"
