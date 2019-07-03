@@ -2,6 +2,8 @@
 
 using System;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal static class IProjectTreeExtensions

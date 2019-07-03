@@ -4,6 +4,8 @@ using System;
 
 using Moq;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IPhysicalProjectTreeFactory
@@ -11,15 +13,18 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public static IPhysicalProjectTree Create(IProjectTreeProvider provider = null, IProjectTree currentTree = null, IProjectTreeService service = null)
         {
+            currentTree ??= ProjectTreeParser.Parse("Project");
+            provider ??= new ProjectTreeProvider();
+
             var mock = new Mock<IPhysicalProjectTree>();
             mock.Setup(t => t.TreeProvider)
-                .Returns(provider ?? IProjectTreeProviderFactory.Create());
+                .Returns(provider);
 
             mock.Setup(t => t.CurrentTree)
-                .Returns(currentTree ?? ProjectTreeParser.Parse("Project"));
+                .Returns(currentTree);
 
             mock.Setup(t => t.TreeService)
-                .Returns(service ?? IProjectTreeServiceFactory.Create());
+                .Returns(service ?? IProjectTreeServiceFactory.Create(currentTree, provider));
 
             return mock.Object;
         }

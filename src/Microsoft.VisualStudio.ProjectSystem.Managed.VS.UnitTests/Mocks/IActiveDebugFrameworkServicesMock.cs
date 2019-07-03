@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 using Moq;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     internal class IActiveDebugFrameworkServicesMock : AbstractMock<IActiveDebugFrameworkServices>

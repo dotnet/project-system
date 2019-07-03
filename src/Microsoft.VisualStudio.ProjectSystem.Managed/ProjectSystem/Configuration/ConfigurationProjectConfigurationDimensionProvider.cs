@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 
@@ -74,7 +75,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// <returns>A task for the async operation.</returns>
         private async Task OnConfigurationAddedAsync(UnconfiguredProject project, string configurationName)
         {
-            string evaluatedPropertyValue = await GetPropertyValue(project);
+            string? evaluatedPropertyValue = await GetPropertyValue(project);
+            if (evaluatedPropertyValue == null)
+                throw new InvalidOperationException($"Property {PropertyName} not defined.");
             await ProjectAccessor.OpenProjectXmlForWriteAsync(project, msbuildProject =>
             {
                 BuildUtilities.AppendPropertyValue(msbuildProject, evaluatedPropertyValue, PropertyName, configurationName);
@@ -89,7 +92,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// <returns>A task for the async operation.</returns>
         private async Task OnConfigurationRemovedAsync(UnconfiguredProject project, string configurationName)
         {
-            string evaluatedPropertyValue = await GetPropertyValue(project);
+            string? evaluatedPropertyValue = await GetPropertyValue(project);
+            if (evaluatedPropertyValue == null)
+                throw new InvalidOperationException($"Property {PropertyName} not defined.");
             await ProjectAccessor.OpenProjectXmlForWriteAsync(project, msbuildProject =>
             {
                 BuildUtilities.RemovePropertyValue(msbuildProject, evaluatedPropertyValue, PropertyName, configurationName);
@@ -105,7 +110,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// <returns>A task for the async operation.</returns>
         private async Task OnConfigurationRenamedAsync(UnconfiguredProject project, string oldName, string newName)
         {
-            string evaluatedPropertyValue = await GetPropertyValue(project);
+            string? evaluatedPropertyValue = await GetPropertyValue(project);
+            if (evaluatedPropertyValue == null)
+                throw new InvalidOperationException($"Property {PropertyName} not defined.");
             await ProjectAccessor.OpenProjectXmlForWriteAsync(project, msbuildProject =>
             {
                 BuildUtilities.RenamePropertyValue(msbuildProject, evaluatedPropertyValue, PropertyName, oldName, newName);

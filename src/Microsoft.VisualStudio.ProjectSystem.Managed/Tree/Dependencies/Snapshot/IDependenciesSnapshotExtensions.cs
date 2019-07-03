@@ -2,8 +2,6 @@
 
 using System.Collections.Generic;
 
-#nullable enable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     internal static class IDependenciesSnapshotExtensions

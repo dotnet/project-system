@@ -14,8 +14,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Extensibility
         /// <summary>
         /// Returns the export for the given project without having to go to the 
         /// UI thread. This is the preferred method for getting access to project specific
-        /// exports
+        /// exports.
         /// </summary>
-        T GetExport<T>(string projectFilePath) where T : class;
+        T? GetExport<T>(string projectFilePath) where T : class;
     }
 }

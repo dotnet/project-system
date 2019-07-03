@@ -11,6 +11,8 @@ using Microsoft.VisualStudio.Input;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.Threading;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
     /// <summary>

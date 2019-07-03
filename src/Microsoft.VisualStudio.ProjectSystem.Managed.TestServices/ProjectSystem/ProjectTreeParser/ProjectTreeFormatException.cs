@@ -2,6 +2,8 @@
 
 using System;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal class ProjectTreeFormatException : FormatException

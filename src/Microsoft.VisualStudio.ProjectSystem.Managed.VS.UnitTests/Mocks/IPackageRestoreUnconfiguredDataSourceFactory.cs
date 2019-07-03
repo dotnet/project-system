@@ -6,6 +6,8 @@ using Moq;
 
 using NuGet.SolutionRestoreManager;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
     internal static class IPackageRestoreUnconfiguredDataSourceFactory

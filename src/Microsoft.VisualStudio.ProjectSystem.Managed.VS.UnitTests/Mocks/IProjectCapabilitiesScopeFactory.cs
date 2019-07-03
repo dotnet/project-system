@@ -5,6 +5,8 @@ using System.Linq;
 
 using Moq;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal static class IProjectCapabilitiesScopeFactory

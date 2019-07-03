@@ -4,6 +4,8 @@ using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 
 using Moq;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal static class IRoslynServicesFactory

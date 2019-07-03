@@ -4,6 +4,8 @@ using System;
 
 using Microsoft.VisualStudio.ProjectSystem.VS;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.Shell.Interop
 {
     /// <summary>

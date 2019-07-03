@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.Threading;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class AbstractMultiLifetimeComponentFactory

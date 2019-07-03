@@ -2,6 +2,8 @@
 
 using System;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.Telemetry
 {
     internal sealed class TargetRecord

@@ -13,6 +13,8 @@ using NuGet.SolutionRestoreManager;
 
 using RestoreInfo = Microsoft.VisualStudio.ProjectSystem.IProjectVersionedValue<NuGet.SolutionRestoreManager.IVsProjectRestoreInfo2>;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
     [Export(typeof(IPackageRestoreUnconfiguredDataSource))]

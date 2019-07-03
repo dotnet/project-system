@@ -5,8 +5,6 @@ using System.ComponentModel.Composition;
 
 using Microsoft.VisualStudio.GraphModel;
 
-#nullable enable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 {
     // Progression imports IGraphProviders as non-shared parts, which means if they themselves export other interfaces

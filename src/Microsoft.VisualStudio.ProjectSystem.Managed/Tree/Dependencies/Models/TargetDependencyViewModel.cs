@@ -4,8 +4,6 @@ using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
-#nullable enable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
     internal sealed class TargetDependencyViewModel : IDependencyViewModel
@@ -16,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
         {
             Caption = snapshot.TargetFramework.FriendlyName;
             Flags = DependencyTreeFlags.TargetNode.Add($"$TFM:{snapshot.TargetFramework.FullName}");
-            _hasUnresolvedDependency = snapshot.HasUnresolvedDependency;
+            _hasUnresolvedDependency = snapshot.HasVisibleUnresolvedDependency;
         }
 
         public string Caption { get; }

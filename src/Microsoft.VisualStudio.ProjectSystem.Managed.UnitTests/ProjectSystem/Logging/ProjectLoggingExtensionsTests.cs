@@ -4,6 +4,8 @@ using System;
 
 using Xunit;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.Logging
 {
     public class ProjectLoggingExtensionsTests

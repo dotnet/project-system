@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="ResolvedFrameworkReference"
+      Description="Framework Reference Properties"
+      DisplayName="Framework Reference"
+      PageTemplate="generic"
+      xmlns="http://schemas.microsoft.com/build/2009/properties">
+  
+  <Rule.DataSource>
+    <DataSource HasConfigurationCondition="False"
+                ItemType="_ResolvedFrameworkReference"
+                MSBuildTarget="ResolveFrameworkReferencesDesignTime"
+                Persistence="ResolvedReference"
+                SourceOfDefaultValue="AfterContext"
+                SourceType="TargetResults" />
+  </Rule.DataSource>
+
+  <StringProperty Name="OriginalItemSpec"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="TargetingPackPath"
+                  DisplayName="Path"
+                  ReadOnly="True" />
+
+  <StringProperty Name="Profile"
+                  DisplayName="Profile"
+                  ReadOnly="True" />
+
+  <StringProperty Name="IsImplicitlyDefined"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="PrivateAssets"
+                  DisplayName="Private Assets" />
+
+</Rule>

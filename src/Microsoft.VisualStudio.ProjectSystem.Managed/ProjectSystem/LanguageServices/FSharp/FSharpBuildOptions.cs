@@ -4,6 +4,8 @@ using System.Collections.Immutable;
 
 using Microsoft.CodeAnalysis;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.FSharp
 {
     internal class FSharpBuildOptions : BuildOptions

@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     /// <summary>

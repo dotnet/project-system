@@ -27,8 +27,8 @@ namespace Microsoft.VisualStudio.Buffers.PooledObjects
         // if someone needs to create a pool;
         public static ObjectPool<PooledHashSet<T>> CreatePool()
         {
-            ObjectPool<PooledHashSet<T>> pool = null;
-            pool = new ObjectPool<PooledHashSet<T>>(() => new PooledHashSet<T>(pool), 128);
+            ObjectPool<PooledHashSet<T>>? pool = null;
+            pool = new ObjectPool<PooledHashSet<T>>(() => new PooledHashSet<T>(pool!), 128);
             return pool;
         }
 

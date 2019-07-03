@@ -8,8 +8,6 @@ using System.Linq;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters;
 
-#nullable enable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     /// <inheritdoc />
@@ -205,7 +203,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot> DependenciesByTargetFramework { get; }
 
         /// <inheritdoc />
-        public bool HasUnresolvedDependency => DependenciesByTargetFramework.Any(x => x.Value.HasUnresolvedDependency);
+        public bool HasVisibleUnresolvedDependency => DependenciesByTargetFramework.Any(x => x.Value.HasVisibleUnresolvedDependency);
 
         /// <inheritdoc />
         public IDependency? FindDependency(string dependencyId, bool topLevel = false)

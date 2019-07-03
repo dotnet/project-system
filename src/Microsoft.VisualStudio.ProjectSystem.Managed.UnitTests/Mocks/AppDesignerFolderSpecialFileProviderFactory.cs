@@ -4,6 +4,8 @@ using System.Threading;
 
 using Moq;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
     internal static class AppDesignerFolderSpecialFileProviderFactory

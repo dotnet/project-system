@@ -8,6 +8,8 @@ using Microsoft.VisualStudio.Build;
 
 using Xunit;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 {
     public class TargetFrameworkProjectConfigurationDimensionProviderTests

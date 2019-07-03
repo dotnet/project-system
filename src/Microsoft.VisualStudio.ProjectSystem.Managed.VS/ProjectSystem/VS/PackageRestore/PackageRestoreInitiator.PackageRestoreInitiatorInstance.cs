@@ -10,6 +10,8 @@ using Microsoft.VisualStudio.Threading;
 
 using NuGet.SolutionRestoreManager;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
     internal partial class PackageRestoreInitiator

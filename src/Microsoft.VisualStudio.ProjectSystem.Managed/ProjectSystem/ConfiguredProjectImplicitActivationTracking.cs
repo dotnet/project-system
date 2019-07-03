@@ -10,6 +10,8 @@ using System.Threading.Tasks.Dataflow;
 
 using Microsoft.VisualStudio.Threading.Tasks;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>

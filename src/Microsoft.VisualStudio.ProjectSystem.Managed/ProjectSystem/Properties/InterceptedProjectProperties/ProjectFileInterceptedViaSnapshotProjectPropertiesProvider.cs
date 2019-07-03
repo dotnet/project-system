@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using Microsoft.Build.Execution;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     [Export("ProjectFileWithInterceptionViaSnapshot", typeof(IProjectPropertiesProvider))]

@@ -5,6 +5,8 @@ using System.Collections.Immutable;
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 {
     internal static class MetadataExtensions

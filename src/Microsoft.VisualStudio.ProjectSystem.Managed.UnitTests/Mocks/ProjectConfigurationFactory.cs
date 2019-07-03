@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class ProjectConfigurationFactory
@@ -64,20 +66,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private static string GetDimensionName(int ordinal)
         {
-            switch (ordinal)
+            return ordinal switch
             {
-                case 0:
-                    return "Configuration";
+                0 => "Configuration",
+                1 => "Platform",
+                2 => "TargetFramework",
 
-                case 1:
-                    return "Platform";
-
-                case 2:
-                    return "TargetFramework";
-
-                default:
-                    throw new InvalidOperationException();
-            }
+                _ => throw new InvalidOperationException(),
+            };
         }
     }
 

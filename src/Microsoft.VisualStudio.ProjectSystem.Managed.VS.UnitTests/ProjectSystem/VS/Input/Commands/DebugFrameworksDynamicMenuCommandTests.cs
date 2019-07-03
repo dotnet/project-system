@@ -12,6 +12,8 @@ using Xunit;
 
 #pragma warning disable VSSDK005 // Avoid instantiating JoinableTaskContext
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
     public class DebugFrameworksDynamicMenuCommandTests

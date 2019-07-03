@@ -6,6 +6,8 @@ using System.IO;
 using Microsoft.Test.Apex.VisualStudio;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     [TestClass] // AssemblyInitialize won't be found without it

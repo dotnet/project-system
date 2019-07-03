@@ -163,12 +163,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return True
         End Function
 
-        Protected Overrides Sub EnableAllControls(_enabled As Boolean)
-            MyBase.EnableAllControls(_enabled)
+        Protected Overrides Sub EnableAllControls(enabled As Boolean)
+            MyBase.EnableAllControls(enabled)
 
-            GetPropertyControlData(VsProjPropId.VBPROJPROPID_StartAction).EnableControls(_enabled)
-            GetPropertyControlData(VsProjPropId.VBPROJPROPID_StartProgram).EnableControls(_enabled)
-            GetPropertyControlData(VsProjPropId.VBPROJPROPID_StartURL).EnableControls(_enabled)
+            GetPropertyControlData(VsProjPropId.VBPROJPROPID_StartAction).EnableControls(enabled)
+            GetPropertyControlData(VsProjPropId.VBPROJPROPID_StartProgram).EnableControls(enabled)
+            GetPropertyControlData(VsProjPropId.VBPROJPROPID_StartURL).EnableControls(enabled)
         End Sub
 
         ''' <summary>

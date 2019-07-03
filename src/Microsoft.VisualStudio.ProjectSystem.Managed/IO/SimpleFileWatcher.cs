@@ -10,9 +10,9 @@ namespace Microsoft.VisualStudio.IO
     /// </summary>
     internal sealed class SimpleFileWatcher : IDisposable
     {
-        private FileSystemWatcher FileWatcher { get; set; }
-        private FileSystemEventHandler _handler;
-        private RenamedEventHandler _renameHandler;
+        private FileSystemWatcher? _fileWatcher;
+        private FileSystemEventHandler? _handler;
+        private RenamedEventHandler? _renameHandler;
 
         // For unit tests
         public SimpleFileWatcher()
@@ -20,9 +20,9 @@ namespace Microsoft.VisualStudio.IO
         }
 
         public SimpleFileWatcher(string dirToWatch, bool includeSubDirs, NotifyFilters notifyFilters, string fileFilter,
-                                       FileSystemEventHandler handler, RenamedEventHandler renameHandler)
+                                 FileSystemEventHandler? handler, RenamedEventHandler? renameHandler)
         {
-            FileWatcher = new FileSystemWatcher(dirToWatch)
+            _fileWatcher = new FileSystemWatcher(dirToWatch)
             {
                 IncludeSubdirectories = includeSubDirs,
                 NotifyFilter = notifyFilters,
@@ -31,42 +31,40 @@ namespace Microsoft.VisualStudio.IO
 
             if (handler != null)
             {
-                FileWatcher.Created += handler;
-                FileWatcher.Deleted += handler;
-                FileWatcher.Changed += handler;
+                _fileWatcher.Created += handler;
+                _fileWatcher.Deleted += handler;
+                _fileWatcher.Changed += handler;
             }
 
             if (renameHandler != null)
             {
-                FileWatcher.Renamed += renameHandler;
+                _fileWatcher.Renamed += renameHandler;
             }
-            FileWatcher.EnableRaisingEvents = true;
+
+            _fileWatcher.EnableRaisingEvents = true;
             _handler = handler;
             _renameHandler = renameHandler;
         }
 
-        /// <summary>
-        /// Cleans up our watcher on the Project.Json file
-        /// </summary>
         public void Dispose()
         {
-            if (FileWatcher != null)
+            if (_fileWatcher != null)
             {
-                FileWatcher.EnableRaisingEvents = false;
+                _fileWatcher.EnableRaisingEvents = false;
                 if (_handler != null)
                 {
-                    FileWatcher.Created += _handler;
-                    FileWatcher.Deleted += _handler;
-                    FileWatcher.Changed += _handler;
+                    _fileWatcher.Created -= _handler;
+                    _fileWatcher.Deleted -= _handler;
+                    _fileWatcher.Changed -= _handler;
                     _handler = null;
                 }
                 if (_renameHandler != null)
                 {
-                    FileWatcher.Renamed += _renameHandler;
+                    _fileWatcher.Renamed -= _renameHandler;
                     _renameHandler = null;
                 }
-                FileWatcher.Dispose();
-                FileWatcher = null;
+                _fileWatcher.Dispose();
+                _fileWatcher = null;
             }
         }
     }

@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 using Microsoft.Build.Construction;
 using Microsoft.VisualStudio.Threading;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.VisualBasic
 {
     /// <summary>
-    ///     Checks a legacy Visual Basic project for compability with the new project system.
+    ///     Checks a legacy Visual Basic project for compatibility with the new project system.
     /// </summary>
     [SupportedProjectTypeGuid(ProjectType.LegacyVisualBasic)]
     [Export(ExportContractNames.Extensions.SupportedProjectTypeGuid)]

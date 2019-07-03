@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 using Microsoft.Build.Construction;
 using Microsoft.VisualStudio.Threading;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.CSharp
 {
     /// <summary>
-    ///     Checks a legacy VB project for compability with the new project system.
+    ///     Checks a legacy VB project for compatibility with the new project system.
     /// </summary>
     [SupportedProjectTypeGuid(ProjectType.LegacyCSharp)]
     [Export(ExportContractNames.Extensions.SupportedProjectTypeGuid)]

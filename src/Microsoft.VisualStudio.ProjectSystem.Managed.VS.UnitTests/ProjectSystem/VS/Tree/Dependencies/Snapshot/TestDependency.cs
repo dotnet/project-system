@@ -6,6 +6,8 @@ using System.Diagnostics;
 
 using Microsoft.VisualStudio.Imaging;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     [DebuggerDisplay("{" + nameof(Id) + ",nq}")]

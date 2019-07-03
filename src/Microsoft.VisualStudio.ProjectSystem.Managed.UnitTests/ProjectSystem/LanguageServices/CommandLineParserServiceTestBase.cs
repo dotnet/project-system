@@ -5,6 +5,8 @@ using System.Linq;
 
 using Xunit;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     public abstract class CommandLineParserServiceTestBase

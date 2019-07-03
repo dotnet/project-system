@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         {
             Requires.NotNull(project, nameof(project));
 
-            string targetFrameworksProperty = await GetPropertyValue(project, ConfigurationGeneral.TargetFrameworksProperty);
+            string? targetFrameworksProperty = await GetPropertyValue(project, ConfigurationGeneral.TargetFrameworksProperty);
             if (targetFrameworksProperty != null)
             {
                 return BuildUtilities.GetPropertyValues(targetFrameworksProperty).ToImmutableArray();

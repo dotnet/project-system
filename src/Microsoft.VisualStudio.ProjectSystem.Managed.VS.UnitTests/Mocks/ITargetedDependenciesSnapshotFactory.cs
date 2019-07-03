@@ -12,6 +12,8 @@ using Moq;
 
 using Xunit;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal static class ITargetedDependenciesSnapshotFactory
@@ -72,7 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             if (hasUnresolvedDependency.HasValue)
             {
-                mock.Setup(x => x.HasUnresolvedDependency).Returns(hasUnresolvedDependency.Value);
+                mock.Setup(x => x.HasVisibleUnresolvedDependency).Returns(hasUnresolvedDependency.Value);
             }
 
             if (catalogs != null)

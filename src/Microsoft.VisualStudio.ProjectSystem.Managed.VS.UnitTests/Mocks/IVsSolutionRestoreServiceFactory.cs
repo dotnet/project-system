@@ -4,6 +4,8 @@ using System;
 using System.Threading;
 using Moq;
 
+#nullable disable
+
 namespace NuGet.SolutionRestoreManager
 {
     internal static class IVsSolutionRestoreServiceFactory

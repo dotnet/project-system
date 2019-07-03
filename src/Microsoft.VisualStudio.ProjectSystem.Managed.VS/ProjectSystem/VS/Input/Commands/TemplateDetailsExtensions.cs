@@ -4,6 +4,8 @@ using System;
 using System.Collections.Immutable;
 using static Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.AbstractAddItemCommandHandler;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
     internal static class TemplateDetailsExtensions

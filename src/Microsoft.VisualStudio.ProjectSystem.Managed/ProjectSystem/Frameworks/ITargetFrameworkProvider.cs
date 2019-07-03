@@ -3,8 +3,6 @@
 using System.Collections.Generic;
 using Microsoft.VisualStudio.Composition;
 
-#nullable enable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     [ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.Host, Cardinality = ImportCardinality.ExactlyOne)]

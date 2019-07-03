@@ -11,6 +11,8 @@ using Xunit;
 
 using static Microsoft.VisualStudio.ProjectSystem.LanguageServices.WorkspaceProjectContextHost;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     public class WorkspaceProjectContextHostInstanceTests

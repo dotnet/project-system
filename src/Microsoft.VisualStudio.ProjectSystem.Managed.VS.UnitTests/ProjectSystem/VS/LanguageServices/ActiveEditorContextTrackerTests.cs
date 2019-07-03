@@ -6,6 +6,8 @@ using Microsoft.VisualStudio.Shell;
 
 using Xunit;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {
     public class ActiveEditorContextTrackerTests

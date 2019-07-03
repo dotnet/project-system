@@ -7,7 +7,11 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 
+using Microsoft.VisualStudio.Utilities;
+
 using Xunit;
+
+#nullable disable
 
 namespace Microsoft.VisualStudio.ProjectSystem.Rules
 {
@@ -271,14 +275,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         public static IEnumerable<object[]> GetRules(string suffix, bool file, bool browseObject)
         {
             // Not all rules are embedded as manifests so we have to read the xaml files from the file system.
-            // Instead of hardcoding knowledge of unit test paths and build locations, we just traverse up to the artifacts folder and start from there
-            string artifactsPath = typeof(XamlRuleTests).Assembly.Location;
-            while (!Path.GetFileName(artifactsPath).Equals("artifacts", StringComparisons.Paths))
-            {
-                artifactsPath = Path.GetDirectoryName(artifactsPath);
-            }
-
-            string rulesPath = Path.Combine(artifactsPath, "..", "src", "Microsoft.VisualStudio.ProjectSystem.Managed", "ProjectSystem", "Rules");
+            string rulesPath = Path.Combine(RepoUtil.FindRepoRootPath(), "src", "Microsoft.VisualStudio.ProjectSystem.Managed", "ProjectSystem", "Rules");
             Assert.True(Directory.Exists(rulesPath), "Couldn't find XAML rules folder: " + rulesPath);
 
             if (!string.IsNullOrEmpty(suffix))

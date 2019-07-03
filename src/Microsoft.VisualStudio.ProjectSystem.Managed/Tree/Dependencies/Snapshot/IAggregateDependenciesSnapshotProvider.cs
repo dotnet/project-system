@@ -4,8 +4,6 @@ using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.Composition;
 
-#nullable enable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     /// <summary>

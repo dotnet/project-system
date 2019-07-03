@@ -4,6 +4,8 @@ using System.ComponentModel.Composition;
 
 using Microsoft.VisualStudio.ProjectSystem.Imaging;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.Tree
 {
     /// <summary>

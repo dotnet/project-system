@@ -8,6 +8,8 @@ using Microsoft.VisualStudio.ProjectSystem.Build;
 
 using Moq;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal static class IOutputGroupsServiceFactory

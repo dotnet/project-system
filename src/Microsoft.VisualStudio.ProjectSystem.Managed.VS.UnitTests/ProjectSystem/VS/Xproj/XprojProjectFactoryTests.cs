@@ -8,8 +8,6 @@ using Microsoft.VisualStudio.Shell.Interop;
 
 using Xunit;
 
-#nullable enable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 {
     public sealed class XprojProjectFactoryTests

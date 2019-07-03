@@ -101,15 +101,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             MyBase.CleanupCOMReferences()
         End Sub
 
-        Protected Overrides Sub EnableAllControls(_enabled As Boolean)
-            MyBase.EnableAllControls(_enabled)
+        Protected Overrides Sub EnableAllControls(enabled As Boolean)
+            MyBase.EnableAllControls(enabled)
 
-            ReferenceList.Enabled = _enabled
-            addSplitButton.Enabled = _enabled
-            RemoveReference.Enabled = _enabled
-            UpdateReferences.Enabled = _enabled
-            UnusedReferences.Enabled = _enabled
-            GetPropertyControlData("ImportList").EnableControls(_enabled)
+            ReferenceList.Enabled = enabled
+            addSplitButton.Enabled = enabled
+            RemoveReference.Enabled = enabled
+            UpdateReferences.Enabled = enabled
+            UnusedReferences.Enabled = enabled
+            GetPropertyControlData("ImportList").EnableControls(enabled)
         End Sub
 
         Protected Overrides ReadOnly Property ControlData() As PropertyControlData()
@@ -713,9 +713,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             EnableImportGroup()
         End Sub
 
-        Private Sub AddNamespaceToImportList(_namespace As String)
-            If ImportList.Items.IndexOf(_namespace) = -1 Then
-                ImportList.Items.Add(_namespace)
+        Private Sub AddNamespaceToImportList(ns As String)
+            If ImportList.Items.IndexOf(ns) = -1 Then
+                ImportList.Items.Add(ns)
             End If
         End Sub
 

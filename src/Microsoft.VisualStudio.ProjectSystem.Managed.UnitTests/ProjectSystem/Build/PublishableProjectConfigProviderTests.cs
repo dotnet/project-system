@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 using Xunit;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.Build
 {
     public class PublishableProjectConfigProviderTests

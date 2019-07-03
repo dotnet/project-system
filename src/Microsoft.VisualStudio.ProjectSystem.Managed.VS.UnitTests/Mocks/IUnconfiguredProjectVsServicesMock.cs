@@ -4,6 +4,8 @@ using Microsoft.VisualStudio.Shell.Interop;
 
 using Moq;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal class IUnconfiguredProjectVsServicesMock : AbstractMock<IUnconfiguredProjectVsServices>

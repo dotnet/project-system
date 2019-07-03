@@ -2,6 +2,8 @@
 
 using System.Linq;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
 {
     internal static class VisualBasicNamespaceImportsListFactory

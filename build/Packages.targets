@@ -93,8 +93,8 @@
     <PackageReference Update="Microsoft.Test.Apex.VisualStudio" Version="16.0.28117-pre" />
 
     <!-- CPS -->
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK" Version="16.1.163-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers" Version="16.1.163-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK" Version="16.2.133-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers" Version="16.2.133-pre" />
 
     <!-- Roslyn -->
     <PackageReference Update="Microsoft.VisualStudio.LanguageServices" Version="3.0.0" />
@@ -117,10 +117,10 @@
     <PackageReference Update="NuGet.VisualStudio" Version="5.1.0-rtm.5921" />
 
     <!-- MSBuild -->
-    <PackageReference Update="Microsoft.Build" Version="16.0.452"/>
-    <PackageReference Update="Microsoft.Build.Utilities.Core" Version="16.0.452"/>
-    <PackageReference Update="Microsoft.Build.Engine" Version="16.0.452"/>
-    <PackageReference Update="Microsoft.Build.Tasks.Core" Version="16.0.452"/>
+    <PackageReference Update="Microsoft.Build" Version="16.0.461"/>
+    <PackageReference Update="Microsoft.Build.Utilities.Core" Version="16.0.461"/>
+    <PackageReference Update="Microsoft.Build.Engine" Version="16.0.461"/>
+    <PackageReference Update="Microsoft.Build.Tasks.Core" Version="16.0.461"/>
 
     <!-- Libraries -->
     <PackageReference Update="Newtonsoft.Json" Version="9.0.1"/>
