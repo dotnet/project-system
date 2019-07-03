@@ -8,6 +8,8 @@ using Microsoft.VisualStudio.Threading;
 
 using Xunit;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     public class ConfiguredProjectImplicitActivationTrackingTests

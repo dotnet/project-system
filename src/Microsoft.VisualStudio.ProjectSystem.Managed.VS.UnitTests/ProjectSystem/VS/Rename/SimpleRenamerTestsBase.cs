@@ -3,6 +3,8 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 {
     public abstract class SimpleRenamerTestsBase

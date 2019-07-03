@@ -12,6 +12,8 @@ using VSLangProj80;
 
 using Xunit;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 {
     public class DesignTimeAssemblyResolutionTests

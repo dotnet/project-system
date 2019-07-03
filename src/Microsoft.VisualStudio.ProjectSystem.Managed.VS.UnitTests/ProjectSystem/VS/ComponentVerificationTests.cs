@@ -10,6 +10,8 @@ using Microsoft.VisualStudio.Composition.Reflection;
 
 using Xunit;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     public partial class ComponentVerificationTests

@@ -2,6 +2,8 @@
 
 using Moq;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.TextManager.Interop
 {
     internal static class IVsContainedLanguageFactoryFactory

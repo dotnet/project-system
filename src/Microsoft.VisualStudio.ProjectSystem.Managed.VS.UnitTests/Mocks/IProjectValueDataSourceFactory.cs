@@ -4,6 +4,8 @@ using System.Threading.Tasks.Dataflow;
 
 using Moq;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     public static class IProjectValueDataSourceFactory

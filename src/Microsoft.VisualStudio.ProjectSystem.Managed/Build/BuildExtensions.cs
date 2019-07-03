@@ -5,6 +5,8 @@ using System;
 using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.Build
 {
     internal static class BuildExtensions

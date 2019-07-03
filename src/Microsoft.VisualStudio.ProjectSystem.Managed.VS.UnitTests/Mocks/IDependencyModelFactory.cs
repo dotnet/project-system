@@ -10,6 +10,8 @@ using Moq;
 
 using Newtonsoft.Json.Linq;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal static class IDependencyModelFactory

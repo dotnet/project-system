@@ -4,6 +4,8 @@ using System;
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Composition;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.Imaging
 {
     /// <summary>

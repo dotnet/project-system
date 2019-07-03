@@ -5,6 +5,8 @@ using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.Imaging;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging
 {
     /// <summary>
@@ -23,14 +25,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging
         {
             Requires.NotNullOrEmpty(key, nameof(key));
 
-            switch (key)
-            {
-                case ProjectImageKey.AppDesignerFolder:
-                    return KnownMonikers.Property.ToProjectSystemType();
-
-                default:
-                    return null;
-            }
+            return key == ProjectImageKey.AppDesignerFolder ?
+                KnownMonikers.Property.ToProjectSystemType() :
+                null;
         }
     }
 }

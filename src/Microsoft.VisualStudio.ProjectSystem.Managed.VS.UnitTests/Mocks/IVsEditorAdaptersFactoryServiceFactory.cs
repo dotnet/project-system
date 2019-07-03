@@ -5,6 +5,8 @@ using Microsoft.VisualStudio.TextManager.Interop;
 
 using Moq;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.Editor
 {
     internal static class IVsEditorAdaptersFactoryServiceFactory

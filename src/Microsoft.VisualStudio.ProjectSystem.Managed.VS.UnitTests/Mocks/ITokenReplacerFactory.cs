@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 
 using Moq;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     internal static class IDebugTokenReplacerFactory

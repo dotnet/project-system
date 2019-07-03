@@ -6,6 +6,8 @@ using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
 using Microsoft.VisualStudio.Shell.Interop;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
 {
     /// <summary>

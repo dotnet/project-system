@@ -7,6 +7,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
 using Xunit;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
     public class PostBuildEventValueProviderTests

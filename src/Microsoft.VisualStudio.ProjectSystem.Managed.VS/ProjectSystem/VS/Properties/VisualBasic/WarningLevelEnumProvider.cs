@@ -8,6 +8,8 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 using VSLangProj;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic
 {
     [ExportDynamicEnumValuesProvider("WarningLevelEnumProvider")]

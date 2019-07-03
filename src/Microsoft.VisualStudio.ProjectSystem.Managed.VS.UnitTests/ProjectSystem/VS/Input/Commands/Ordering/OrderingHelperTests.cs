@@ -10,6 +10,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
 using Xunit;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 {
     public class OrderingHelperTests

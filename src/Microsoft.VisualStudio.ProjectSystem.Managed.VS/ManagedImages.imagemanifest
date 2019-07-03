@@ -27,6 +27,9 @@
     <ID Name="SharedProjectPrivate" Value="19" />
     <ID Name="SharedProjectWarning" Value="20" />
     <ID Name="WarningSmall" Value="21" />
+    <ID Name="Framework" Value="22" />
+    <ID Name="FrameworkPrivate" Value="23" />
+    <ID Name="FrameworkWarning" Value="24" />
   </Symbols>
   <Images>
     <Image Guid="$(ManagedImagesGuid)" ID="$(ApplicationPrivate)">
@@ -158,6 +161,24 @@
     <Image Guid="$(ManagedImagesGuid)" ID="$(WarningSmall)">
       <Source Uri="$(Resources)/Icons/WarningSmall_16x.xaml" />
       <Source Uri="$(Resources)/Icons/WarningSmall_16x.png">
+        <Size Value="16" />
+      </Source>
+    </Image>
+    <Image Guid="$(ManagedImagesGuid)" ID="$(Framework)">
+      <Source Uri="$(Resources)/Icons/Framework_16x.xaml" />
+      <Source Uri="$(Resources)/Icons/Framework_16x.png">
+        <Size Value="16" />
+      </Source>
+    </Image>
+    <Image Guid="$(ManagedImagesGuid)" ID="$(FrameworkPrivate)">
+      <Source Uri="$(Resources)/Icons/FrameworkPrivate_16x.xaml" />
+      <Source Uri="$(Resources)/Icons/FrameworkPrivate_16x.png">
+        <Size Value="16" />
+      </Source>
+    </Image>
+    <Image Guid="$(ManagedImagesGuid)" ID="$(FrameworkWarning)">
+      <Source Uri="$(Resources)/Icons/FrameworkWarning_16x.xaml" />
+      <Source Uri="$(Resources)/Icons/FrameworkWarning_16x.png">
         <Size Value="16" />
       </Source>
     </Image>

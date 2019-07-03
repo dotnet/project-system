@@ -5,6 +5,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Interop;
 using Microsoft.VisualStudio.Shell.Interop;
 using Moq;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
 {
     internal static class IVsShellUtilitiesHelperFactory

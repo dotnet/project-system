@@ -47,6 +47,9 @@ static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.Component.ge
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ComponentPrivate.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ComponentWarning.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ErrorSmall.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.Framework.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.FrameworkPrivate.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.FrameworkWarning.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.LibraryWarning.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.NuGetGrey.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.NuGetGreyPrivate.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker

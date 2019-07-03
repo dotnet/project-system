@@ -21,6 +21,8 @@ using Microsoft.VisualStudio.Threading;
 
 using Task = System.Threading.Tasks.Task;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>
@@ -451,7 +453,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             try
             {
                 // Try the cache file
-                Dictionary<Version, VersionCompatibilityData> versionCompatData = GetCompabilityDataFromCacheFile();
+                Dictionary<Version, VersionCompatibilityData> versionCompatData = GetCompatibilityDataFromCacheFile();
 
                 // See if the cache file needs refreshing and if so, kick off a task to do so
                 if (_versionDataCacheFile != null && _versionDataCacheFile.CacheFileIsStale())
@@ -510,7 +512,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// <summary>
         /// If the cached file exists reads the data and returns it
         /// </summary>
-        private Dictionary<Version, VersionCompatibilityData> GetCompabilityDataFromCacheFile()
+        private Dictionary<Version, VersionCompatibilityData> GetCompatibilityDataFromCacheFile()
         {
             try
             {

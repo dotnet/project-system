@@ -155,4 +155,7 @@
   <data name="SdkNodeName" xml:space="preserve">
     <value>SDK</value>
   </data>
+  <data name="FrameworkNodeName" xml:space="preserve">
+    <value>Frameworks</value>
+  </data>
 </root>

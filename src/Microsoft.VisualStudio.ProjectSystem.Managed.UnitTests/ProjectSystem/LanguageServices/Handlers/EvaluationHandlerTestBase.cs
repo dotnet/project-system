@@ -10,6 +10,8 @@ using Moq;
 
 using Xunit;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
     public abstract class EvaluationHandlerTestBase

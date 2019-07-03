@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.ProjectSystem.Configuration;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     [Export(typeof(IActiveConfiguredProjectsProvider))]

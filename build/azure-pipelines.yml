@@ -5,6 +5,7 @@ trigger:
 - dev15.9.x
 - dev16.0.x
 - dev16.1.x
+- dev16.2.x
 - feature/integration-tests
 
 # Branches that trigger builds on PR
@@ -14,12 +15,14 @@ pr:
 - dev15.9.x
 - dev16.0.x
 - dev16.1.x
+- dev16.2.x
 - feature/integration-tests
 
 jobs:
 - job: Windows
   pool:
-    vmImage: 'vs2017-win2016'
+    name: NetCorePublic-Pool
+    queue: buildpool.windows.10.amd64.vs2019.pre.open
   strategy:
     maxParallel: 4
     matrix:

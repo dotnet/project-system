@@ -13,6 +13,8 @@ using Microsoft.VisualStudio.Threading;
 
 using IOleAsyncServiceProvider = Microsoft.VisualStudio.Shell.Interop.IAsyncServiceProvider;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {
     [Export(typeof(IVsContainedLanguageComponentsFactory))]

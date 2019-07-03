@@ -4,6 +4,8 @@
 
 using System.Composition;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal partial class ComponentComposition

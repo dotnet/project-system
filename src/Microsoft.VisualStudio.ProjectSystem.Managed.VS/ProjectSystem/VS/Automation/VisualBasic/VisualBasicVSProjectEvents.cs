@@ -4,6 +4,8 @@ using System.ComponentModel.Composition;
 
 using VSLangProj;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
 {
     [Export(typeof(VSProjectEvents))]

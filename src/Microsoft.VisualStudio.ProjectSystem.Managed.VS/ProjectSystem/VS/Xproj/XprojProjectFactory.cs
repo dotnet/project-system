@@ -7,8 +7,6 @@ using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.Shell.Flavor;
 using Microsoft.VisualStudio.Shell.Interop;
 
-#nullable enable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 {
     [Guid(ProjectType.LegacyXProj)]

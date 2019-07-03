@@ -5,6 +5,8 @@ using System.Collections.Generic;
 
 using Moq;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.Telemetry
 {
     internal static class ITelemetryServiceFactory

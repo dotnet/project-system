@@ -4,6 +4,8 @@ using System;
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal partial class ProjectTreeParser
@@ -14,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             public string File => throw new NotImplementedException();
 
-            public string ItemType => throw new NotImplementedException();
+            public string ItemType { get; set; }
 
             public string ItemName { get; set; }
         }

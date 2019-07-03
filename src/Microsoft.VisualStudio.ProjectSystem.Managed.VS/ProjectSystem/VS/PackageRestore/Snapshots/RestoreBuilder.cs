@@ -7,6 +7,8 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 using NuGet.SolutionRestoreManager;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
     /// <summary>

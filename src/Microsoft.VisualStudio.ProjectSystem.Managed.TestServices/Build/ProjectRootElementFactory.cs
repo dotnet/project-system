@@ -3,6 +3,8 @@
 using System.IO;
 using System.Xml;
 
+#nullable disable
+
 namespace Microsoft.Build.Construction
 {
     internal static class ProjectRootElementFactory

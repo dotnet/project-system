@@ -8,6 +8,8 @@ using System.Linq;
 
 using Microsoft.Build.Construction;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>

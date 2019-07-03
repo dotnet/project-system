@@ -4,6 +4,8 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.Threading.Tasks
 {
     /// <summary>

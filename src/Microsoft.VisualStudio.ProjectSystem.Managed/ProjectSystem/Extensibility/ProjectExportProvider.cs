@@ -4,6 +4,8 @@ using System;
 using System.ComponentModel.Composition;
 using System.Linq;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Extensibility
 {
     /// <summary>

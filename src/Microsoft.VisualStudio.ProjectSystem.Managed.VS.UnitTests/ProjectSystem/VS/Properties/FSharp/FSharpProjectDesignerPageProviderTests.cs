@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 using Xunit;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.FSharp
 {
     public class FSharpProjectDesignerPageProviderTests

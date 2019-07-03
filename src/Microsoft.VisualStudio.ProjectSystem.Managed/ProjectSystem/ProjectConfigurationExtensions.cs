@@ -3,6 +3,8 @@
 using System;
 using System.Collections.Generic;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class ProjectConfigurationExtensions

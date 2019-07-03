@@ -3,8 +3,6 @@
 using System;
 using System.Runtime.Versioning;
 
-#nullable enable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal interface ITargetFramework : IEquatable<ITargetFramework?>,

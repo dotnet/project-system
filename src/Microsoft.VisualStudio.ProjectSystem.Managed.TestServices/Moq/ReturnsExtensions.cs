@@ -9,6 +9,8 @@ using Microsoft;
 using Moq.Language;
 using Moq.Language.Flow;
 
+#nullable disable
+
 namespace Moq
 {
     internal static class ReturnsExtensions

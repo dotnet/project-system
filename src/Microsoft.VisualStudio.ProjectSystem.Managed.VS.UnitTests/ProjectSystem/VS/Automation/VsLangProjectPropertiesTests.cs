@@ -12,6 +12,8 @@ using VSLangProj110;
 
 using Xunit;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 {
     public class VSProject_VSLangProjectPropertiesTests

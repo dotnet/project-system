@@ -8,6 +8,8 @@ using Moq.Protected;
 
 using Xunit;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.Telemetry
 {
     public class VsTelemetryServiceTests

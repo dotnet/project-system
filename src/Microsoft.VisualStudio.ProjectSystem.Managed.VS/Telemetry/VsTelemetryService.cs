@@ -6,6 +6,8 @@ using System.ComponentModel.Composition;
 using System.Security.Cryptography;
 using System.Text;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.Telemetry
 {
     [Export(typeof(ITelemetryService))]

@@ -7,6 +7,8 @@ using Xunit;
 
 using Task = System.Threading.Tasks.Task;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.Threading.Tasks
 {
     public class SequentialTaskExecutorTests

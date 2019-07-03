@@ -3,6 +3,8 @@
 using Microsoft.VisualStudio.ProjectSystem.VS.UI;
 using Moq;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio
 {
     internal class IDialogServicesFactory

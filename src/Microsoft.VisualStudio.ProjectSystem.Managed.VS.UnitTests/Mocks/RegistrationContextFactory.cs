@@ -4,6 +4,8 @@ using Moq;
 
 using static Microsoft.VisualStudio.Shell.RegistrationAttribute;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.Shell
 {
     internal class RegistrationContextFactory

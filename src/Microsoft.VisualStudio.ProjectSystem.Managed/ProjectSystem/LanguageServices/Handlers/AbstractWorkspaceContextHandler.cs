@@ -4,6 +4,8 @@ using System;
 
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
     internal class AbstractWorkspaceContextHandler : IWorkspaceContextHandler

@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.Build;
 
+#nullable disable
+
 namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 {
     /// <summary>
