@@ -5,8 +5,6 @@ using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.Imaging;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging.CSharp
 {
     /// <summary>
@@ -21,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging.CSharp
         {
         }
 
-        public ProjectImageMoniker GetProjectImage(string key)
+        public ProjectImageMoniker? GetProjectImage(string key)
         {
             Requires.NotNullOrEmpty(key, nameof(key));
 

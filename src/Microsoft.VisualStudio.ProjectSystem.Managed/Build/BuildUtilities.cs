@@ -10,8 +10,6 @@ using Microsoft.Build.Execution;
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.Text;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.Build
 {
     /// <summary>
@@ -54,7 +52,7 @@ namespace Microsoft.VisualStudio.Build
         /// <param name="project">Xml representation of the MsBuild project.</param>
         /// <param name="propertyName">Name of the property.</param>
         /// <returns>Requested project property. Null if the property is not present.</returns>
-        public static ProjectPropertyElement GetProperty(ProjectRootElement project, string propertyName)
+        public static ProjectPropertyElement? GetProperty(ProjectRootElement project, string propertyName)
         {
             Requires.NotNull(project, "project");
 
@@ -70,7 +68,7 @@ namespace Microsoft.VisualStudio.Build
         /// <returns>Collection of individual values in the property.</returns>
         public static IEnumerable<string> GetPropertyValues(string propertyValue, char delimiter = ';')
         {
-            HashSet<string> seen = null;
+            HashSet<string>? seen = null;
 
             // We need to ensure that we return values in the specified order.
             foreach (string value in new LazyStringSplit(propertyValue, delimiter))
@@ -223,7 +221,7 @@ namespace Microsoft.VisualStudio.Build
         public static ProjectPropertyElement GetOrAddProperty(ProjectRootElement project, string propertyName)
         {
             Requires.NotNull(project, "project");
-            ProjectPropertyElement property = GetProperty(project, propertyName);
+            ProjectPropertyElement? property = GetProperty(project, propertyName);
 
             if (property != null)
             {
