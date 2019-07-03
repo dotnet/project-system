@@ -35,5 +35,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.TableControl
             content = null;
             return false;
         }
+
+        public override bool TryCreateToolTip(ITableEntryHandle entry, out object toolTip)
+        {
+            if (entry.TryGetValue(TableKeyNames.Targets, out var value) &&
+                value is IEnumerable<string> targets)
+            {
+                toolTip = string.Join(Environment.NewLine, targets);
+                return true;
+            }
+
+            return base.TryCreateToolTip(entry, out toolTip);
+        }
     }
 }
