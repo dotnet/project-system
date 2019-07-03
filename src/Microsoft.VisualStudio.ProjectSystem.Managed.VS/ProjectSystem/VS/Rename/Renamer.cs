@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.LanguageServices;
+using Microsoft.VisualStudio.ProjectSystem.Refactor;
 using Microsoft.VisualStudio.ProjectSystem.Rename;
 using Microsoft.VisualStudio.ProjectSystem.Waiting;
 
@@ -27,6 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         private readonly IEnvironmentOptions _environmentOptions;
         private readonly IRoslynServices _roslynServices;
         private readonly IWaitIndicator _waitService;
+        private readonly IRefactorNotifyService _refactorNotifyService;
 
         [ImportingConstructor]
         internal Renamer(IUnconfiguredProjectVsServices projectVsServices,
@@ -35,8 +37,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                          IEnvironmentOptions environmentOptions,
                          IUserNotificationServices userNotificationServices,
                          IRoslynServices roslynServices,
-                         IWaitIndicator waitService)
-            : this(projectVsServices, unconfiguredProjectTasksService, workspace as Workspace, environmentOptions, userNotificationServices, roslynServices, waitService)
+                         IWaitIndicator waitService,
+                         IRefactorNotifyService refactorNotifyService)
+            : this(projectVsServices, unconfiguredProjectTasksService, workspace as Workspace, environmentOptions, userNotificationServices, roslynServices, waitService, refactorNotifyService)
         {
         }
 
@@ -46,7 +49,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                          IEnvironmentOptions environmentOptions,
                          IUserNotificationServices userNotificationServices,
                          IRoslynServices roslynServices,
-                         IWaitIndicator waitService)
+                         IWaitIndicator waitService,
+                         IRefactorNotifyService refactorNotifyService)
         {
             _projectVsServices = projectVsServices;
             _unconfiguredProjectTasksService = unconfiguredProjectTasksService;
@@ -55,6 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             _userNotificationServices = userNotificationServices;
             _roslynServices = roslynServices;
             _waitService = waitService;
+            _refactorNotifyService = refactorNotifyService;
         }
 
         public void HandleRename(string oldFilePath, string newFilePath)
@@ -90,8 +95,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 return;
 
             // Check if there are any symbols that need to be renamed
-            (success, _) = await TryGetSymbolToRename(oldName, oldFilePath, newFilePath, isCaseSensitive, GetCurrentProject());
-            if (!success)
+            (_, ISymbol symbol) = await TryGetSymbolToRename(oldName, oldFilePath, newFilePath, isCaseSensitive, GetCurrentProject());
+            if (symbol is null)
                 return;
 
             // Ask if the user wants to rename the symbol
@@ -115,9 +120,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                         if (renamedSolution == null)
                             return false;
 
+                        string rqName = RQName.From(symbol);
+                        IEnumerable<ProjectChanges> changes = renamedSolution.GetChanges(GetCurrentProject().Solution).GetProjectChanges();
+                        
+                        // Notify other VS features that symbol is about to be renamed
+                        await NotifyBeforeRename(newName, rqName, changes);
+
                         // Try and apply the changes to the current solution
                         token.ThrowIfCancellationRequested();
-                        return _roslynServices.ApplyChangesToSolution(renamedSolution.Workspace, renamedSolution);
+                        if (_roslynServices.ApplyChangesToSolution(renamedSolution.Workspace, renamedSolution))
+                        {
+                            // Notify other VS features that symbol has been renamed
+                            await NotifyAfterRename(newName, rqName, changes);
+
+                            return true;
+                        }
+
+                        return false;
                     });
                 });
 
@@ -145,6 +164,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 }
 
                 return null;
+            }
+        }
+
+        private async Task NotifyAfterRename(string newName, string rqName, IEnumerable<ProjectChanges> changes)
+        {
+            foreach (ProjectChanges change in changes)
+            {
+                Project project = change.NewProject;
+                string projectPath = project.FilePath;
+                string[] filePaths = change.GetChangedDocuments().Select(x => project.GetDocument(x).FilePath).ToArray();
+                await _refactorNotifyService.OnAfterGlobalSymbolRenamedAsync(projectPath, filePaths, rqName, newName);
+            }
+        }
+
+        private async Task NotifyBeforeRename(string newName, string rqName, IEnumerable<ProjectChanges> changes)
+        {
+            foreach (ProjectChanges change in changes)
+            {
+                Project project = change.NewProject;
+                string projectPath = project.FilePath;
+                string[] filePaths = change.GetChangedDocuments().Select(x => project.GetDocument(x).FilePath).ToArray();
+                await _refactorNotifyService.OnBeforeGlobalSymbolRenamedAsync(projectPath, filePaths, rqName, newName);
             }
         }
 
