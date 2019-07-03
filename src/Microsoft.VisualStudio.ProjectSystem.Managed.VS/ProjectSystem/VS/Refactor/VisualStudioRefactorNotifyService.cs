@@ -37,14 +37,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
 
         public async Task<bool> TryOnBeforeGlobalSymbolRenamedAsync(string projectPath, IEnumerable<string> filePaths, string rqName, string newName)
         {
-            if (projectPath is null)
-                throw new System.ArgumentNullException(nameof(projectPath));
-            if (filePaths is null)
-                throw new System.ArgumentNullException(nameof(filePaths));
-            if (rqName is null)
-                throw new System.ArgumentNullException(nameof(rqName));
-            if (newName is null)
-                throw new System.ArgumentNullException(nameof(newName));
+            Requires.NotNull(projectPath, nameof(projectPath));
+            Requires.NotNull(filePaths, nameof(filePaths));
+            Requires.NotNull(rqName, nameof(rqName));
+            Requires.NotNull(newName, nameof(newName));
 
             Instance instance = await WaitForLoadedAsync();
             return await instance.TryOnBeforeGlobalSymbolRenamedAsync(projectPath, filePaths, rqName, newName);
@@ -52,14 +48,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
 
         public async Task<bool> TryOnAfterGlobalSymbolRenamedAsync(string projectPath, IEnumerable<string> filePaths, string rqName, string newName)
         {
-            if (projectPath is null)
-                throw new System.ArgumentNullException(nameof(projectPath));
-            if (filePaths is null)
-                throw new System.ArgumentNullException(nameof(filePaths));
-            if (rqName is null)
-                throw new System.ArgumentNullException(nameof(rqName));
-            if (newName is null)
-                throw new System.ArgumentNullException(nameof(newName));
+            Requires.NotNull(projectPath, nameof(projectPath));
+            Requires.NotNull(filePaths, nameof(filePaths));
+            Requires.NotNull(rqName, nameof(rqName));
+            Requires.NotNull(newName, nameof(newName));
 
             Instance instance = await WaitForLoadedAsync();
             return await instance.TryOnAfterGlobalSymbolRenamedAsync(projectPath, filePaths, rqName, newName);
