@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using Microsoft.VisualStudio.Imaging;
-
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.RuleHandlers;
 using Xunit;
 
 #nullable disable
@@ -113,51 +113,51 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.Equal(iconSet.UnresolvedExpandedIcon, viewModelUnresolvedDependency.ExpandedIcon);
         }
 
-        [Fact]
-        public void IsPackage()
+        [Theory]
+        [InlineData(AnalyzerRuleHandler.ProviderTypeString,  false)]
+        [InlineData(AssemblyRuleHandler.ProviderTypeString,  false)]
+        [InlineData(ComRuleHandler.ProviderTypeString,       false)]
+        [InlineData(FrameworkRuleHandler.ProviderTypeString, false)]
+        [InlineData(PackageRuleHandler.ProviderTypeString,   true)]
+        [InlineData(ProjectRuleHandler.ProviderTypeString,   false)]
+        [InlineData(SdkRuleHandler.ProviderTypeString,       false)]
+        public void IsPackage(string providerType, bool isPackage)
         {
-            var dependency = IDependencyFactory.FromJson(@"
-{
-    ""ProviderType"": ""NuGetDependency""
-}");
+            var dependency = new TestDependency
+            {
+                ProviderType = providerType
+            };
 
-            Assert.True(dependency.IsPackage());
-
-            var dependency2 = IDependencyFactory.FromJson(@"
-{
-    ""ProviderType"": ""Project""
-}");
-
-            Assert.False(dependency2.IsPackage());
+            Assert.Equal(isPackage, dependency.IsPackage());
         }
 
-        [Fact]
-        public void IsProject()
+        [Theory]
+        [InlineData(AnalyzerRuleHandler.ProviderTypeString,  false)]
+        [InlineData(AssemblyRuleHandler.ProviderTypeString,  false)]
+        [InlineData(ComRuleHandler.ProviderTypeString,       false)]
+        [InlineData(FrameworkRuleHandler.ProviderTypeString, false)]
+        [InlineData(PackageRuleHandler.ProviderTypeString,   false)]
+        [InlineData(ProjectRuleHandler.ProviderTypeString,   true)]
+        [InlineData(SdkRuleHandler.ProviderTypeString,       false)]
+        public void IsProject(string providerType, bool isProject)
         {
-            var dependency = IDependencyFactory.FromJson(@"
-{
-    ""ProviderType"": ""ProjectDependency""
-}");
+            var dependency = new TestDependency
+            {
+                ProviderType = providerType
+            };
 
-            Assert.True(dependency.IsProject());
-
-            var dependency2 = IDependencyFactory.FromJson(@"
-{
-    ""ProviderType"": ""NotProject""
-}");
-
-            Assert.False(dependency2.IsProject());
+            Assert.Equal(isProject, dependency.IsProject());
         }
 
         [Fact]
         public void HasSameTarget()
         {
-            var targetFramework1 = ITargetFrameworkFactory.Implement("tfm1");
-            var targetFramework2 = ITargetFrameworkFactory.Implement("tfm2");
+            var targetFramework1 = new TargetFramework("tfm1");
+            var targetFramework2 = new TargetFramework("tfm2");
 
-            var dependency1 = IDependencyFactory.Implement(targetFramework: targetFramework1).Object;
-            var dependency2 = IDependencyFactory.Implement(targetFramework: targetFramework1).Object;
-            var dependency3 = IDependencyFactory.Implement(targetFramework: targetFramework2).Object;
+            var dependency1 = new TestDependency { TargetFramework = targetFramework1 };
+            var dependency2 = new TestDependency { TargetFramework = targetFramework1 };
+            var dependency3 = new TestDependency { TargetFramework = targetFramework2 };
 
             Assert.True(dependency1.HasSameTarget(dependency2));
             Assert.False(dependency1.HasSameTarget(dependency3));
@@ -166,20 +166,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         [Fact]
         public void GetTopLevelId()
         {
-            var dependency1 = IDependencyFactory.FromJson(@"
-{
-    ""Id"":""id1"",
-    ""ProviderType"": ""ProjectDependency""
-}");
+            var dependency1 = new TestDependency
+            {
+                Id = "id1",
+                ProviderType = "MyProvider"
+            };
 
             Assert.Equal("id1", dependency1.GetTopLevelId());
 
-            var dependency2 = IDependencyFactory.FromJson(@"
-{
-    ""Id"":""id1"",
-    ""Path"":""xxxxxxx"",
-    ""ProviderType"": ""MyProvider""
-}", targetFramework: ITargetFrameworkFactory.Implement("tfm1"));
+            var dependency2 = new TestDependency
+            {
+                Id = "id1",
+                Path = "xxxxxxx",
+                ProviderType = "MyProvider",
+                TargetFramework = new TargetFramework("tfm1")
+            };
 
             Assert.Equal("tfm1\\MyProvider\\xxxxxxx", dependency2.GetTopLevelId());
         }

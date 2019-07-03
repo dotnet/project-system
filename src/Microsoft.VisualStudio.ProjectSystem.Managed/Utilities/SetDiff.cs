@@ -4,8 +4,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal sealed class SetDiff<T>
@@ -70,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 {
                     _flag = flag;
                     _enumerator = dic.GetEnumerator();
-                    Current = default;
+                    Current = default!;
                 }
 
                 public bool MoveNext()
@@ -89,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
                 public T Current { get; private set; }
 
-                object IEnumerator.Current => Current;
+                object IEnumerator.Current => Current!;
 
                 void IEnumerator.Reset() => throw new NotSupportedException();
 
