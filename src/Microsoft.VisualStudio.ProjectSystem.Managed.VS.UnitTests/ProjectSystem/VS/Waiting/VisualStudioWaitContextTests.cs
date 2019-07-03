@@ -97,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
                 .Setup(m => m.CreateInstance(out It.Ref<IVsThreadedWaitDialog2>.IsAny))
                 .Callback(new CreateInstanceCallback((out IVsThreadedWaitDialog2 ppIVsThreadedWaitDialog) =>
                 {
-                    ppIVsThreadedWaitDialog = null;
+                    ppIVsThreadedWaitDialog = null!;
                 }))
                 .Returns(HResult.OK);
             return new VisualStudioWaitContext(threadedWaitDialogFactoryMock.Object, title, message, allowCancel);

@@ -359,7 +359,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
             string title = "Test07";
             string message = "Testing07";
             var (instance, _) = await CreateAsync(title, message, isCancelable);
-            object result = instance.WaitForAsyncFunction(title, message, isCancelable, _ =>
+            object? result = instance.WaitForAsyncFunction(title, message, isCancelable, _ =>
             {
                 if (isCancelable)
                 {

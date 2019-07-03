@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
 
         public static (IVsThreadedWaitDialogFactory dialogFactory, Action cancel) Create(string title = "", string message = "", bool isCancelable = false)
         {
-            IVsThreadedWaitDialogCallback callback = null;
+            IVsThreadedWaitDialogCallback? callback = null;
             var threadedWaitDialogFactoryMock = new Mock<IVsThreadedWaitDialogFactory>();
             var threadedWaitDialogMock = new Mock<IVsThreadedWaitDialog3>();
             threadedWaitDialogMock.Setup(m => m.StartWaitDialogWithCallback(
