@@ -134,29 +134,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = TargetedDependenciesSnapshot.CreateEmpty(projectPath, targetFramework, catalogs);
 
-            var resolvedTop = IDependencyModelFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Xxx"",
-                    ""Id"": ""dependency1"",
-                    ""Name"": ""Dependency1"",
-                    ""Caption"": ""Dependency1"",
-                    ""Resolved"": ""true"",
-                    ""TopLevel"": ""true""
-                }",
-                icon: KnownMonikers.Uninstall,
-                expandedIcon: KnownMonikers.Uninstall);
+            var resolvedTop = new TestDependencyModel
+            {
+                ProviderType = "Xxx",
+                Id = "dependency1",
+                Name = "Dependency1",
+                Caption = "Dependency1",
+                Resolved = true,
+                TopLevel = true,
+                Flags = DependencyTreeFlags.Resolved,
+                Icon = KnownMonikers.Uninstall,
+                ExpandedIcon = KnownMonikers.Uninstall
+            };
 
-            var unresolved = IDependencyModelFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Xxx"",
-                    ""Id"": ""dependency2"",
-                    ""Name"": ""Dependency2"",
-                    ""Caption"": ""Dependency2"",
-                    ""Resolved"": ""false"",
-                    ""TopLevel"": ""false""
-                }",
-                icon: KnownMonikers.Uninstall,
-                expandedIcon: KnownMonikers.Uninstall);
+            var unresolved = new TestDependencyModel
+            {
+                ProviderType = "Xxx",
+                Id = "dependency2",
+                Name = "Dependency2",
+                Caption = "Dependency2",
+                Resolved = false,
+                TopLevel = false,
+                Flags = DependencyTreeFlags.Unresolved,
+                Icon = KnownMonikers.Uninstall,
+                ExpandedIcon = KnownMonikers.Uninstall
+            };
 
             var changes = new DependenciesChangesBuilder();
             changes.Added(resolvedTop);
@@ -191,27 +193,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             var targetFramework = new TargetFramework("tfm1");
 
-            var dependencyTop1 = IDependencyFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Xxx"",
-                    ""Id"": ""tfm1\\xxx\\topdependency1"",
-                    ""Name"":""TopDependency1"",
-                    ""Caption"":""TopDependency1"",
-                    ""SchemaItemType"":""Xxx"",
-                    ""Resolved"":""true"",
-                    ""TopLevel"":""true""
-                }");
+            var dependencyTop1 = new TestDependency
+            {
+                ProviderType = "Xxx",
+                Id = Dependency.GetID(targetFramework, "Xxx", "topdependency1"),
+                Name = "TopDependency1",
+                Caption = "TopDependency1",
+                SchemaItemType = "Xxx",
+                Resolved = true,
+                TopLevel = true
+            };
 
-            var dependencyChild1 = IDependencyFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Xxx"",
-                    ""Id"": ""tfm1\\xxx\\childdependency1"",
-                    ""Name"":""ChildDependency1"",
-                    ""Caption"":""ChildDependency1"",
-                    ""SchemaItemType"":""Xxx"",
-                    ""Resolved"":""true"",
-                    ""TopLevel"":""false""
-                }");
+            var dependencyChild1 = new TestDependency
+            {
+                ProviderType = "Xxx",
+                Id = Dependency.GetID(targetFramework, "Xxx", "childdependency1"),
+                Name = "ChildDependency1",
+                Caption = "ChildDependency1",
+                SchemaItemType = "Xxx",
+                Resolved = true,
+                TopLevel = false
+            };
 
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = ITargetedDependenciesSnapshotFactory.Implement(
@@ -244,27 +246,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = new TargetFramework("tfm1");
 
-            var dependencyTop1 = IDependencyFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Xxx"",
-                    ""Id"": ""tfm1\\xxx\\topdependency1"",
-                    ""Name"":""TopDependency1"",
-                    ""Caption"":""TopDependency1"",
-                    ""SchemaItemType"":""Xxx"",
-                    ""Resolved"":""true"",
-                    ""TopLevel"":""true""
-                }");
+            var dependencyTop1 = new TestDependency
+            {
+                ProviderType = "Xxx",
+                Id = "tfm1\\xxx\\topdependency1",
+                Name = "TopDependency1",
+                Caption = "TopDependency1",
+                SchemaItemType = "Xxx",
+                Resolved = true,
+                TopLevel = true
+            };
 
-            var dependencyChild1 = IDependencyFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Xxx"",
-                    ""Id"": ""tfm1\\xxx\\childdependency1"",
-                    ""Name"":""ChildDependency1"",
-                    ""Caption"":""ChildDependency1"",
-                    ""SchemaItemType"":""Xxx"",
-                    ""Resolved"":""true"",
-                    ""TopLevel"":""false""
-                }");
+            var dependencyChild1 = new TestDependency
+            {
+                ProviderType =  "Xxx",
+                Id =  "tfm1\\xxx\\childdependency1",
+                Name = "ChildDependency1",
+                Caption = "ChildDependency1",
+                SchemaItemType = "Xxx",
+                Resolved = true,
+                TopLevel = false
+            };
 
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = ITargetedDependenciesSnapshotFactory.Implement(
@@ -307,39 +309,39 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = new TargetFramework("tfm1");
 
-            var dependencyTop1 = IDependencyFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Xxx"",
-                    ""Id"": ""tfm1\\xxx\\topdependency1"",
-                    ""Name"":""TopDependency1"",
-                    ""Caption"":""TopDependency1"",
-                    ""SchemaItemType"":""Xxx"",
-                    ""Resolved"":""true"",
-                    ""TopLevel"":""true""
-                }");
+            var dependencyTop1 = new TestDependency
+            {
+                ProviderType = "Xxx",
+                Id = Dependency.GetID(targetFramework, "Xxx", "topdependency1"),
+                Name = "TopDependency1",
+                Caption = "TopDependency1",
+                SchemaItemType = "Xxx",
+                Resolved = true,
+                TopLevel = true
+            };
 
-            var dependencyChild1 = IDependencyFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Xxx"",
-                    ""Id"": ""tfm1\\xxx\\childdependency1"",
-                    ""Name"":""ChildDependency1"",
-                    ""Caption"":""ChildDependency1"",
-                    ""SchemaItemType"":""Xxx"",
-                    ""Resolved"":""true"",
-                    ""TopLevel"":""false""
-                }");
+            var dependencyChild1 = new TestDependency
+            {
+                ProviderType = "Xxx",
+                Id = Dependency.GetID(targetFramework, "Xxx", "childdependency1"),
+                Name = "ChildDependency1",
+                Caption = "ChildDependency1",
+                SchemaItemType = "Xxx",
+                Resolved = true,
+                TopLevel = false
+            };
 
-            var dependencyModelNew1 = IDependencyModelFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Xxx"",
-                    ""Id"": ""newdependency1"",
-                    ""Name"":""NewDependency1"",
-                    ""Caption"":""NewDependency1"",
-                    ""SchemaItemType"":""Xxx"",
-                    ""Resolved"":""true""
-                }",
-                icon: KnownMonikers.Uninstall,
-                expandedIcon: KnownMonikers.Uninstall);
+            var dependencyModelNew1 = new TestDependencyModel
+            {
+                ProviderType =  "Xxx",
+                Id =  "newdependency1",
+                Name = "NewDependency1",
+                Caption = "NewDependency1",
+                SchemaItemType = "Xxx",
+                Resolved = true,
+                Icon = KnownMonikers.Uninstall,
+                ExpandedIcon = KnownMonikers.Uninstall
+            };
 
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = ITargetedDependenciesSnapshotFactory.Implement(
@@ -373,39 +375,39 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = new TargetFramework("tfm1");
 
-            var dependencyTop1 = IDependencyFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Xxx"",
-                    ""Id"": ""tfm1\\xxx\\topdependency1"",
-                    ""Name"":""TopDependency1"",
-                    ""Caption"":""TopDependency1"",
-                    ""SchemaItemType"":""Xxx"",
-                    ""Resolved"":""true"",
-                    ""TopLevel"":""true""
-                }");
+            var dependencyTop1 = new TestDependency
+            {
+                ProviderType = "Xxx",
+                Id = "tfm1\\xxx\\topdependency1",
+                Name = "TopDependency1",
+                Caption = "TopDependency1",
+                SchemaItemType = "Xxx",
+                Resolved = true,
+                TopLevel = true
+            };
 
-            var dependencyChild1 = IDependencyFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Xxx"",
-                    ""Id"": ""tfm1\\xxx\\childdependency1"",
-                    ""Name"":""ChildDependency1"",
-                    ""Caption"":""ChildDependency1"",
-                    ""SchemaItemType"":""Xxx"",
-                    ""Resolved"":""true"",
-                    ""TopLevel"":""false""
-                }");
+            var dependencyChild1 = new TestDependency
+            {
+                ProviderType = "Xxx",
+                Id = "tfm1\\xxx\\childdependency1",
+                Name = "ChildDependency1",
+                Caption = "ChildDependency1",
+                SchemaItemType = "Xxx",
+                Resolved = true,
+                TopLevel = false
+            };
 
-            var dependencyModelNew1 = IDependencyModelFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Xxx"",
-                    ""Id"": ""newdependency1"",
-                    ""Name"":""NewDependency1"",
-                    ""Caption"":""NewDependency1"",
-                    ""SchemaItemType"":""Xxx"",
-                    ""Resolved"":""true""
-                }",
-                icon: KnownMonikers.Uninstall,
-                expandedIcon: KnownMonikers.Uninstall);
+            var dependencyModelNew1 = new TestDependencyModel
+            {
+                ProviderType = "Xxx",
+                Id = "newdependency1",
+                Name = "NewDependency1",
+                Caption = "NewDependency1",
+                SchemaItemType = "Xxx",
+                Resolved = true,
+                Icon = KnownMonikers.Uninstall,
+                ExpandedIcon = KnownMonikers.Uninstall
+            };
 
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = ITargetedDependenciesSnapshotFactory.Implement(
@@ -454,99 +456,99 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = new TargetFramework("tfm1");
 
-            var dependencyTop1 = IDependencyFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Xxx"",
-                    ""Id"": ""tfm1\\xxx\\topdependency1"",
-                    ""Name"":""TopDependency1"",
-                    ""Caption"":""TopDependency1"",
-                    ""SchemaItemType"":""Xxx"",
-                    ""Resolved"":""true"",
-                    ""TopLevel"":""true""
-                }");
+            var dependencyTop1 = new TestDependency
+            {
+                ProviderType = "Xxx",
+                Id = "tfm1\\xxx\\topdependency1",
+                Name = "TopDependency1",
+                Caption = "TopDependency1",
+                SchemaItemType = "Xxx",
+                Resolved = true,
+                TopLevel = true
+            };
 
-            var dependencyChild1 = IDependencyFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Xxx"",
-                    ""Id"": ""tfm1\\xxx\\childdependency1"",
-                    ""Name"":""ChildDependency1"",
-                    ""Caption"":""ChildDependency1"",
-                    ""SchemaItemType"":""Xxx"",
-                    ""Resolved"":""true"",
-                    ""TopLevel"":""false""
-                }");
+            var dependencyChild1 = new TestDependency
+            {
+                ProviderType = "Xxx",
+                Id = "tfm1\\xxx\\childdependency1",
+                Name = "ChildDependency1",
+                Caption = "ChildDependency1",
+                SchemaItemType = "Xxx",
+                Resolved = true,
+                TopLevel = false
+            };
 
-            var dependencyModelAdded1 = IDependencyModelFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Xxx"",
-                    ""Id"": ""addeddependency1"",
-                    ""Name"":""AddedDependency1"",
-                    ""Caption"":""AddedDependency1"",
-                    ""SchemaItemType"":""Xxx"",
-                    ""Resolved"":""true"",
-                    ""TopLevel"":""false""
-                }",
-                icon: KnownMonikers.Uninstall,
-                expandedIcon: KnownMonikers.Uninstall);
+            var dependencyModelAdded1 = new TestDependencyModel
+            {
+                ProviderType = "Xxx",
+                Id = "addeddependency1",
+                Name = "AddedDependency1",
+                Caption = "AddedDependency1",
+                SchemaItemType = "Xxx",
+                Resolved = true,
+                TopLevel = false,
+                Icon = KnownMonikers.Uninstall,
+                ExpandedIcon = KnownMonikers.Uninstall
+            };
 
-            var dependencyModelAdded2 = IDependencyModelFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Xxx"",
-                    ""Id"": ""addeddependency2"",
-                    ""Name"":""AddedDependency2"",
-                    ""Caption"":""AddedDependency2"",
-                    ""SchemaItemType"":""Xxx"",
-                    ""Resolved"":""true"",
-                    ""TopLevel"":""false""
-                }",
-                icon: KnownMonikers.Uninstall,
-                expandedIcon: KnownMonikers.Uninstall);
+            var dependencyModelAdded2 = new TestDependencyModel
+            {
+                ProviderType = "Xxx",
+                Id = "addeddependency2",
+                Name = "AddedDependency2",
+                Caption = "AddedDependency2",
+                SchemaItemType = "Xxx",
+                Resolved = true,
+                TopLevel = false,
+                Icon = KnownMonikers.Uninstall,
+                ExpandedIcon = KnownMonikers.Uninstall
+            };
 
-            var dependencyModelAdded3 = IDependencyModelFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Xxx"",
-                    ""Id"": ""addeddependency3"",
-                    ""Name"":""AddedDependency3"",
-                    ""Caption"":""AddedDependency3"",
-                    ""SchemaItemType"":""Xxx"",
-                    ""Resolved"":""true"",
-                    ""TopLevel"":""false""
-                }",
-                icon: KnownMonikers.Uninstall,
-                expandedIcon: KnownMonikers.Uninstall);
+            var dependencyModelAdded3 = new TestDependencyModel
+            {
+                ProviderType = "Xxx",
+                Id = "addeddependency3",
+                Name = "AddedDependency3",
+                Caption = "AddedDependency3",
+                SchemaItemType = "Xxx",
+                Resolved = true,
+                TopLevel = false,
+                Icon = KnownMonikers.Uninstall,
+                ExpandedIcon = KnownMonikers.Uninstall
+            };
 
-            var dependencyAdded2Changed = IDependencyFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Xxx"",
-                    ""Id"": ""tfm1\\xxx\\addeddependency2"",
-                    ""Name"":""AddedDependency2Changed"",
-                    ""Caption"":""AddedDependency2Changed"",
-                    ""SchemaItemType"":""Xxx"",
-                    ""Resolved"":""true"",
-                    ""TopLevel"":""true""
-                }");
+            var dependencyAdded2Changed = new TestDependency
+            {
+                ProviderType = "Xxx",
+                Id = "tfm1\\xxx\\addeddependency2",
+                Name = "AddedDependency2Changed",
+                Caption = "AddedDependency2Changed",
+                SchemaItemType = "Xxx",
+                Resolved = true,
+                TopLevel = true
+            };
 
-            var dependencyRemoved1 = IDependencyFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Xxx"",
-                    ""Id"": ""tfm1\\xxx\\Removeddependency1"",
-                    ""Name"":""RemovedDependency1"",
-                    ""Caption"":""RemovedDependency1"",
-                    ""SchemaItemType"":""Xxx"",
-                    ""Resolved"":""true"",
-                    ""TopLevel"":""false""
-                }");
+            var dependencyRemoved1 = new TestDependency
+            {
+                ProviderType = "Xxx",
+                Id = "tfm1\\xxx\\Removeddependency1",
+                Name = "RemovedDependency1",
+                Caption = "RemovedDependency1",
+                SchemaItemType = "Xxx",
+                Resolved = true,
+                TopLevel = false
+            };
 
-            var dependencyInsteadRemoved1 = IDependencyFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Xxx"",
-                    ""Id"": ""tfm1\\xxx\\InsteadRemoveddependency1"",
-                    ""Name"":""InsteadRemovedDependency1"",
-                    ""Caption"":""InsteadRemovedDependency1"",
-                    ""SchemaItemType"":""Xxx"",
-                    ""Resolved"":""true"",
-                    ""TopLevel"":""false""
-                }");
+            var dependencyInsteadRemoved1 = new TestDependency
+            {
+                ProviderType = "Xxx",
+                Id = "tfm1\\xxx\\InsteadRemoveddependency1",
+                Name = "InsteadRemovedDependency1",
+                Caption = "InsteadRemovedDependency1",
+                SchemaItemType = "Xxx",
+                Resolved = true,
+                TopLevel = false
+            };
 
             Assert.True(dependencyTop1.TopLevel);
             Assert.False(dependencyChild1.TopLevel);
@@ -603,37 +605,37 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = new TargetFramework("tfm1");
 
-            var dependencyTopPrevious = IDependencyFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Xxx"",
-                    ""Id"": ""tfm1\\xxx\\topdependency1"",
-                    ""Name"": ""TopDependency1"",
-                    ""Caption"": ""TopDependency1"",
-                    ""SchemaItemType"": ""Xxx"",
-                    ""Resolved"": ""true""
-                }");
+            var dependencyTopPrevious = new TestDependency
+            {
+                ProviderType = "Xxx",
+                Id = "tfm1\\xxx\\topdependency1",
+                Name = "TopDependency1",
+                Caption = "TopDependency1",
+                SchemaItemType = "Xxx",
+                Resolved = true
+            };
 
-            var dependencyModelTopAdded = IDependencyModelFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Xxx"",
-                    ""Id"": ""topdependency1"",
-                    ""Name"": ""TopDependency1"",
-                    ""Caption"": ""TopDependency1"",
-                    ""SchemaItemType"": ""Xxx"",
-                    ""Resolved"": ""true""
-                }",
-                icon: KnownMonikers.Uninstall,
-                expandedIcon: KnownMonikers.Uninstall);
+            var dependencyModelTopAdded = new TestDependencyModel
+            {
+                ProviderType = "Xxx",
+                Id = "topdependency1",
+                Name = "TopDependency1",
+                Caption = "TopDependency1",
+                SchemaItemType = "Xxx",
+                Resolved = true,
+                Icon = KnownMonikers.Uninstall,
+                ExpandedIcon = KnownMonikers.Uninstall
+            };
 
-            var dependencyTopUpdated = IDependencyFactory.FromJson(@"
-                {
-                    ""ProviderType"": ""Xxx"",
-                    ""Id"": ""tfm1\\xxx\\topdependency1"",
-                    ""Name"": ""TopDependency1"",
-                    ""Caption"": ""TopDependency1"",
-                    ""SchemaItemType"": ""Xxx"",
-                    ""Resolved"": ""true""
-                }");
+            var dependencyTopUpdated = new TestDependency
+            {
+                ProviderType = "Xxx",
+                Id = "tfm1\\xxx\\topdependency1",
+                Name = "TopDependency1",
+                Caption = "TopDependency1",
+                SchemaItemType = "Xxx",
+                Resolved = true
+            };
 
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = ITargetedDependenciesSnapshotFactory.Implement(

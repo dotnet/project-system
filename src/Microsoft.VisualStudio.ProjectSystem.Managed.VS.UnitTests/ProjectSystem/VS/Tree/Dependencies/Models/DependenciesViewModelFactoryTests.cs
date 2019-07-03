@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public void CreateTargetViewModel_NoUnresolvedDependency()
         {
             var project = UnconfiguredProjectFactory.Create();
-            var targetFramework = ITargetFrameworkFactory.Implement(moniker: "tFm1");
+            var targetFramework = new TargetFramework(moniker: "tFm1");
             var targetedSnapshot = ITargetedDependenciesSnapshotFactory.Implement(
                     hasUnresolvedDependency: false,
                     targetFramework: targetFramework);
@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public void CreateTargetViewModel_HasUnresolvedDependency()
         {
             var project = UnconfiguredProjectFactory.Create();
-            var targetFramework = ITargetFrameworkFactory.Implement(moniker: "tFm1");
+            var targetFramework = new TargetFramework(moniker: "tFm1");
             var targetedSnapshot = ITargetedDependenciesSnapshotFactory.Implement(
                     hasUnresolvedDependency: true,
                     targetFramework: targetFramework);
