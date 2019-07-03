@@ -37,7 +37,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
 
                 var ids = GetIdsForFiles(projectHierarchy, filePaths).ToArray();
 
-                // call OnBeforeGlobalSymbolRenamed
                 if (refactorNotify.OnBeforeGlobalSymbolRenamed(cItemsAffected: (uint)ids.Length,
                                                                rgItemsAffected: ids,
                                                                cRQNames: (uint)1,
@@ -66,7 +65,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
 
                 var ids = GetIdsForFiles(projectHierarchy, filePaths).ToArray();
 
-                // call OnBeforeGlobalSymbolRenamed
                 if (refactorNotify.OnGlobalSymbolRenamed(cItemsAffected: (uint)ids.Length,
                                                          rgItemsAffected: ids,
                                                          cRQNames: (uint)1,
@@ -81,7 +79,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
 
             private async Task<IVsHierarchy> GetProjectHierarchy(string projectPath)
             {
-                // get the DTE project from the path
                 Project project = await TryGetProjectFromPathAsync(projectPath);
                 if (project == null)
                 {
@@ -93,7 +90,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
 
             private async Task<Project> TryGetProjectFromPathAsync(string projectPath)
             {
-                // get the DTE project from the path
                 DTE dte = await _dte.GetValueAsync();
                 foreach (Project project in dte.Solution.Projects)
                 {
