@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         private readonly string _title;
         private string _message;
         private bool _allowCancel;
-        private readonly CancellationTokenSource _cancellationTokenSource;
+        private readonly CancellationTokenSource? _cancellationTokenSource;
         private readonly IVsThreadedWaitDialog3 _dialog;
 
         public VisualStudioWaitContext(IVsThreadedWaitDialogFactory waitDialogFactory,
@@ -75,9 +75,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
             }
         }
 
-        public CancellationToken CancellationToken => _allowCancel
-                                                    ? _cancellationTokenSource.Token
-                                                    : CancellationToken.None;
+        public CancellationToken CancellationToken => _cancellationTokenSource is null
+                                                    ? CancellationToken.None
+                                                    : _cancellationTokenSource.Token;
 
         public bool AllowCancel
         {
@@ -115,10 +115,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
 
         private void OnCanceled()
         {
-            if (_allowCancel)
-            {
-                _cancellationTokenSource.Cancel();
-            }
+            _cancellationTokenSource?.Cancel();
         }
     }
 }
