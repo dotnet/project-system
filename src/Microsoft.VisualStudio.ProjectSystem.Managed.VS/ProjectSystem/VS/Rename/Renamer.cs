@@ -97,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 return;
 
             // Check if there are any symbols that need to be renamed
-            (_, ISymbol symbol) = await TryGetSymbolToRename(oldName, oldFilePath, newFilePath, isCaseSensitive, GetCurrentProject());
+            ISymbol symbol = await TryGetSymbolToRename(oldName, oldFilePath, newFilePath, isCaseSensitive, GetCurrentProject());
             if (symbol is null)
                 return;
 
@@ -109,8 +109,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             // Try and apply the changes to the current solution
             await _projectVsServices.ThreadingService.SwitchToUIThread();
             var (result, renamedSolutionApplied) = _waitService.WaitForAsyncFunctionWithResult(
-                title: $"Renaming Type",
-                message: $"Renaming Type from '{oldName}' to '{newName}'",
+                title: VSResources.Renaming_Type,
+                message: string.Format(CultureInfo.CurrentCulture, VSResources.Renaming_Type_from_0_to_1, oldName, newName),
                 allowCancel: true,
                 async token =>
                 {
@@ -213,31 +213,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                     ? StringComparison.Ordinal
                     : StringComparison.OrdinalIgnoreCase));
 
-        private static async Task<(bool success, ISymbol symbolToRename)> TryGetSymbolToRename(string oldName, string oldFilePath, string newFileName, bool isCaseSensitive, Project project, CancellationToken token = default)
+        private static async Task<ISymbol> TryGetSymbolToRename(string oldName, string oldFilePath, string newFileName, bool isCaseSensitive, Project project, CancellationToken token = default)
         {
             token.ThrowIfCancellationRequested();
 
             if (project == null)
-                return (false, null);
+                return null;
 
             Document newDocument = GetDocument(project, oldFilePath, newFileName);
             if (newDocument == null)
-                return (false, null);
+                return null;
 
             SyntaxNode root = await GetRootNode(newDocument);
             if (root == null)
-                return (false, null);
+                return null;
 
             SemanticModel semanticModel = await newDocument.GetSemanticModelAsync();
             if (semanticModel == null)
-                return (false, null);
+                return null;
 
             IEnumerable<SyntaxNode> declarations = root.DescendantNodes().Where(n => HasMatchingSyntaxNode(semanticModel, n, oldName, isCaseSensitive));
             SyntaxNode declaration = declarations.FirstOrDefault();
             if (declaration == null)
-                return (false, null);
+                return null;
 
-            return (true, semanticModel.GetDeclaredSymbol(declaration));
+            return semanticModel.GetDeclaredSymbol(declaration);
         }
 
         private static Document GetDocument(Project project, string oldFilePath, string newFilePath)
@@ -288,8 +288,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
         private async Task<Solution> GetRenamedSolutionAsync(string oldName, string oldFileName, string newFileName, bool isCaseSensitive, Project project, CancellationToken token = default)
         {
-            (bool success, ISymbol symbolToRename) = await TryGetSymbolToRename(oldName, oldFileName, newFileName, isCaseSensitive, project, token);
-            if (!success)
+            ISymbol symbolToRename = await TryGetSymbolToRename(oldName, oldFileName, newFileName, isCaseSensitive, project, token);
+            if (symbolToRename is null)
                 return null;
 
             string newName = Path.GetFileNameWithoutExtension(newFileName);
