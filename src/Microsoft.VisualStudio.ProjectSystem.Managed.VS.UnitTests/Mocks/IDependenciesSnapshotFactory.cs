@@ -12,11 +12,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal static class IDependenciesSnapshotFactory
     {
-        public static IDependenciesSnapshot Create()
-        {
-            return Mock.Of<IDependenciesSnapshot>();
-        }
-
         public static IDependenciesSnapshot Implement(
             Dictionary<ITargetFramework, ITargetedDependenciesSnapshot> dependenciesByTarget = null,
             bool? hasUnresolvedDependency = null,
