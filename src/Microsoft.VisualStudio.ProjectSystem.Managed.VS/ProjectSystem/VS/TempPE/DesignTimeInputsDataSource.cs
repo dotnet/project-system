@@ -35,14 +35,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             get { return _project; }
         }
 
-        /// <summary>
-        /// Allow unit tests to initialize this class. May be removed in future
-        /// </summary>
-        internal void Test_Initialize()
-        {
-            EnsureInitialized();
-        }
-
         protected override IDisposable LinkExternalInput(ITargetBlock<IProjectVersionedValue<DesignTimeInputs>> targetBlock)
         {
             IProjectValueDataSource<IProjectSubscriptionUpdate> source = _projectSubscriptionService.SourceItemsRuleSource;

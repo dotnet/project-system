@@ -3,14 +3,13 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using Microsoft.VisualStudio.ProjectSystem.VS.TempPE;
 using Xunit;
 
 // Nullable annotations don't add a lot of value to this class, and until https://github.com/dotnet/roslyn/issues/33199 is fixed
 // MemberData doesn't work anyway
 #nullable disable
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS
+namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 {
     public class DesignTimeInputsDataSourceTests
     {
@@ -110,18 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [MemberData(nameof(GetTestCases))]
         public async Task VerifyDesignTimeInputsProcessed(string projectState, string[] designTimeInputs, string[] sharedDesignTimeInputs)
         {
-            var projectServices = ProjectServicesFactory.Create(threadingService: IProjectThreadingServiceFactory.Create(), projectLockService: IProjectLockServiceFactory.Create());
-            var projectService = IProjectServiceFactory.Create(projectServices);
-            var projectSubscriptionService = IProjectSubscriptionServiceFactory.Create();
-
-            var configuredProject = ConfiguredProjectFactory.Create(
-                services: ConfiguredProjectServicesFactory.Create(projectService: projectService),
-                unconfiguredProject: UnconfiguredProjectFactory.Create());
-
-            // Construct and initialize an instance to test
-            using var dataSource = new DesignTimeInputsDataSource(configuredProject, projectSubscriptionService);
-
-            dataSource.Test_Initialize();
+            using DesignTimeInputsDataSource dataSource = CreateDesignTimeInputsDataSource(out ProjectValueDataSource<IProjectSubscriptionUpdate> sourceItemsRuleSource);
 
             const string defaultProjectConfig = @"""ProjectConfiguration"": {
                                                     ""Name"": ""Debug|AnyCPU"",
@@ -143,13 +131,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var configUpdate = IProjectSubscriptionUpdateFactory.FromJson("{ " + projectState + "," + defaultProjectConfig + " }");
 
             // Send our input, and wait for our receiver to complete
-            var sourceItems = (ProjectValueDataSource<IProjectSubscriptionUpdate>)projectSubscriptionService.SourceItemsRuleSource;
-            await sourceItems.SendAndCompleteAsync(configUpdate, receiver);
+            await sourceItemsRuleSource.SendAndCompleteAsync(configUpdate, receiver);
 
             // Assert
             Assert.NotNull(inputs);
             Assert.Equal(designTimeInputs, inputs.Inputs);
             Assert.Equal(sharedDesignTimeInputs, inputs.SharedInputs);
+        }
+
+        private static DesignTimeInputsDataSource CreateDesignTimeInputsDataSource(out ProjectValueDataSource<IProjectSubscriptionUpdate> sourceItemsRuleSource)
+        {
+            var projectServices = ProjectServicesFactory.Create(threadingService: IProjectThreadingServiceFactory.Create(), projectLockService: IProjectLockServiceFactory.Create());
+            var projectService = IProjectServiceFactory.Create(projectServices);
+            var projectSubscriptionService = IProjectSubscriptionServiceFactory.Create();
+
+            var configuredProject = ConfiguredProjectFactory.Create(
+                services: ConfiguredProjectServicesFactory.Create(projectService: projectService),
+                unconfiguredProject: UnconfiguredProjectFactory.Create());
+
+            var dataSource = new DesignTimeInputsDataSource(configuredProject, projectSubscriptionService);
+
+            sourceItemsRuleSource = (ProjectValueDataSource<IProjectSubscriptionUpdate>)projectSubscriptionService.SourceItemsRuleSource;
+
+            return dataSource;
         }
     }
 }
