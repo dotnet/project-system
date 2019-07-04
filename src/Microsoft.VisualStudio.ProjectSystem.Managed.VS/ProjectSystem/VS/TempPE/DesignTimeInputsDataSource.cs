@@ -77,11 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 }
             }
 
-            return new DesignTimeInputs
-            {
-                Inputs = designTimeInputs.ToArray(),
-                SharedInputs = designTimeSharedInputs.ToArray()
-            };
+            return new DesignTimeInputs(designTimeInputs, designTimeSharedInputs);
         }
 
         private static (bool designTime, bool designTimeShared) GetDesignTimePropsForItem(IImmutableDictionary<string, string> item)
