@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="de" original="../CodeAnalysisPropPage.resx">
+    <body>
+      <trans-unit id="InstallCustomVersionButton.Text">
+        <source>&amp;...</source>
+        <target state="new">&amp;...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InstallLatestVersionButton.Text">
+        <source>&amp;Install</source>
+        <target state="new">&amp;Install</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InstalledVersionLabel.Text">
+        <source>Installed Version:</source>
+        <target state="new">Installed Version:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UninstallAnalyzersButton.Text">
+        <source>&amp;Uninstall</source>
+        <target state="new">&amp;Uninstall</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FxCopAnalyzersPackageNameLabel.Text">
+        <source>Recommended analyzer package:</source>
+        <target state="new">Recommended analyzer package:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FxCopAnalyzersPackageNameTextBox.Text">
+        <source>Microsoft.CodeAnalysis.FxCopAnalyzers</source>
+        <target state="new">Microsoft.CodeAnalysis.FxCopAnalyzers</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RoslynAnalyzersLabel.Text">
+        <source>Roslyn source analyzers</source>
+        <target state="new">Roslyn source analyzers</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RunRoslynAnalyzersDuringBuild.Text">
+        <source>Run on &amp;build</source>
+        <target state="new">Run on &amp;build</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RunRoslynAnalyzersDuringLiveAnalysis.Text">
+        <source>Run on &amp;live analysis</source>
+        <target state="new">Run on &amp;live analysis</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RefreshButton.Text">
+        <source>&amp;Refresh</source>
+        <target state="new">&amp;Refresh</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RoslynAnalyzersLineLabel.Text">
+        <source>Label1</source>
+        <target state="new">Label1</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RoslynAnalyzersHelpLinkLabel.Text">
+        <source>What are the benefits of Roslyn source analyzers?</source>
+        <target state="new">What are the benefits of Roslyn source analyzers?</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

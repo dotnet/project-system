@@ -122,6 +122,12 @@
 "InprocServer32"="$System$\mscoree.dll"
 "ThreadingModel"="Both"
 
+[$RootKey$\CLSID\{c02f393c-8a1e-480d-aa82-6a75d693559d}]
+"Assembly"="Microsoft.VisualStudio.Editors,version=15.0.0.0,publicKeyToken=b03f5f7f11d50a3a,culture=neutral"
+"Class"="Microsoft.VisualStudio.Editors.PropertyPages.CodeAnalysisPropPageComClass"
+"InprocServer32"="$System$\mscoree.dll"
+"ThreadingModel"="Both"
+
 [$RootKey$\Editors]
 
 [$RootKey$\Editors\{04b8ab82-a572-4fef-95ce-5222444b6b64}]

@@ -18,5 +18,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.CSharp
         public static readonly ProjectDesignerPageMetadata Debug = new ProjectDesignerPageMetadata(new Guid("{0273C280-1882-4ED0-9308-52914672E3AA}"), pageOrder: 4, hasConfigurationCondition: false);
         public static readonly ProjectDesignerPageMetadata ReferencePaths = new ProjectDesignerPageMetadata(new Guid("{031911C8-6148-4e25-B1B1-44BCA9A0C45C}"), pageOrder: 5, hasConfigurationCondition: false);
         public static readonly ProjectDesignerPageMetadata Signing = new ProjectDesignerPageMetadata(new Guid("{F8D6553F-F752-4DBF-ACB6-F291B744A792}"), pageOrder: 6, hasConfigurationCondition: false);
+        public static readonly ProjectDesignerPageMetadata CodeAnalysis = new ProjectDesignerPageMetadata(new Guid("{c02f393c-8a1e-480d-aa82-6a75d693559d}"), pageOrder: 7, hasConfigurationCondition: false);
     }
 }

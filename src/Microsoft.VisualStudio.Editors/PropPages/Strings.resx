@@ -139,4 +139,16 @@
     <value>https://aka.ms/csharp-versions</value>
     <comment>{Locked}</comment>
   </data>
+  <data name="FxCopAnalyzersInstallFailedMessage" xml:space="preserve">
+    <value>Failed to install the latest Microsoft.CodeAnalysis.FxCopAnalyzers package</value>
+  </data>
+  <data name="FxCopAnalyzersUninstallFailedMessage" xml:space="preserve">
+    <value>Failed to uninstall Microsoft.CodeAnalysis.FxCopAnalyzers version '{0}'</value>
+  </data>
+  <data name="NotInstalledText" xml:space="preserve">
+    <value>(not installed)</value>
+  </data>
+  <data name="RestoringPackagesMessage" xml:space="preserve">
+    <value>Restoring Packages...</value>
+  </data>
 </root>

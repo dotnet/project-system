@@ -111,6 +111,11 @@
       <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.BuildPropPage.resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Update="PropPages\CodeAnalysisPropPage.resx">
+      <DependentUpon>CodeAnalysisPropPage.vb</DependentUpon>
+      <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.CodeAnalysisPropPage.resources</LogicalName>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Update="PropPages\CompilePropPage2.resx">
       <DependentUpon>CompilePropPage2.vb</DependentUpon>
       <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.CompilePropPage2.resources</LogicalName>
@@ -291,6 +296,10 @@
       <DependentUpon>BuildPropPage.vb</DependentUpon>
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Update="PropPages\CodeAnalysisPropPage.Designer.vb">
+      <DependentUpon>CodeAnalysisPropPage.vb</DependentUpon>
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Update="PropPages\CompilePropPage2.Designer.vb">
       <DependentUpon>CompilePropPage2.vb</DependentUpon>
       <SubType>UserControl</SubType>
@@ -437,6 +446,9 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Update="proppages\BuildPropPageBase.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="proppages\CodeAnalysisPropPage.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Update="proppages\CompilePropPage2.vb">

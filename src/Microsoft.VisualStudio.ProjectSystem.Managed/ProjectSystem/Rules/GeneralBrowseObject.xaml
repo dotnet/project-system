@@ -389,4 +389,23 @@
     </StringProperty.DataSource>
   </StringProperty>
 
+  <BoolProperty Name="RunRoslynAnalyzersDuringBuild"
+                Visible="False">
+    <BoolProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  PersistedName="RunRoslynAnalyzersDuringBuild"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+
+  <BoolProperty Name="RunRoslynAnalyzersDuringLiveAnalysis"
+                Visible="False">
+    <BoolProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  PersistedName="RunRoslynAnalyzersDuringLiveAnalysis"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
 </Rule>

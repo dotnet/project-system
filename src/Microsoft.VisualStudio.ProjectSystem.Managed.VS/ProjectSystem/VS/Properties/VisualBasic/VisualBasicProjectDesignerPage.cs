@@ -17,5 +17,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic
         public static readonly ProjectDesignerPageMetadata References = new ProjectDesignerPageMetadata(new Guid("{4E43F4AB-9F03-4129-95BF-B8FF870AF6AB}"), pageOrder: 1, hasConfigurationCondition: false);
         public static readonly ProjectDesignerPageMetadata Debug = new ProjectDesignerPageMetadata(new Guid("{0273C280-1882-4ED0-9308-52914672E3AA}"), pageOrder: 2, hasConfigurationCondition: false);
         public static readonly ProjectDesignerPageMetadata Signing = new ProjectDesignerPageMetadata(new Guid("{F8D6553F-F752-4DBF-ACB6-F291B744A792}"), pageOrder: 6, hasConfigurationCondition: false);
+        public static readonly ProjectDesignerPageMetadata CodeAnalysis = new ProjectDesignerPageMetadata(new Guid("{c02f393c-8a1e-480d-aa82-6a75d693559d}"), pageOrder: 7, hasConfigurationCondition: false);
     }
 }

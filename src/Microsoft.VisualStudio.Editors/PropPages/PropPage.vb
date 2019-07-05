@@ -352,6 +352,31 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 #End Region
 
+#Region "CodeAnalysisPropPageComClass (Code Analysis property page)"
+
+    <Guid("c02f393c-8a1e-480d-aa82-6a75d693559d"), ComVisible(True), CLSCompliant(False)>
+    Public NotInheritable Class CodeAnalysisPropPageComClass 'See class hierarchy comments above
+        Inherits VBPropPageBase
+
+        Protected Overrides ReadOnly Property Title() As String
+            Get
+                Return My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_CodeAnalysisTitle
+            End Get
+        End Property
+
+        Protected Overrides ReadOnly Property ControlType() As Type
+            Get
+                Return GetType(CodeAnalysisPropPage)
+            End Get
+        End Property
+
+        Protected Overrides Function CreateControl() As Control
+            Return New CodeAnalysisPropPage
+        End Function
+
+    End Class
+#End Region
+
 #End Region
 
 End Namespace
