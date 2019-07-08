@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         private ImmutableDictionary<string, uint> _fileWatcherCookies = ImmutableDictionary<string, uint>.Empty.WithComparers(StringComparers.Paths);
 
         private int _version;
-        private readonly DisposableBag _disposables = new DisposableBag();
+        private IDisposable? _dataSourceLink;
 
         /// <summary>
         /// The block that receives updates from the active tree provider.
@@ -69,12 +69,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         {
             base.Initialize();
 
-            IDisposable dataSourceLink = _designTimeInputsDataSource.SourceBlock.LinkToAsyncAction(ProcessDesignTimeInputs);
+            _dataSourceLink = _designTimeInputsDataSource.SourceBlock.LinkToAsyncAction(ProcessDesignTimeInputs);
 
-            IDisposable join = JoinUpstreamDataSources(_designTimeInputsDataSource);
-
-            _disposables.AddDisposable(dataSourceLink);
-            _disposables.AddDisposable(join);
+            JoinUpstreamDataSources(_designTimeInputsDataSource);
 
             _broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<string>>(nameFormat: nameof(DesignTimeInputsFileWatcher) + "Broadcast {1}");
             _publicBlock = _broadcastBlock.SafePublicize();
@@ -136,7 +133,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             if (disposing)
             {
                 _broadcastBlock?.Complete();
-                _disposables.Dispose();
+                _dataSourceLink?.Dispose();
 
                 _threadingService.ExecuteSynchronously(async () =>
                 {
