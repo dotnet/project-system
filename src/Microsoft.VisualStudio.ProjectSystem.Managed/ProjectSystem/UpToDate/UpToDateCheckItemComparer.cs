@@ -6,7 +6,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 {
     internal class UpToDateCheckItemComparer : IEqualityComparer<(string path, string link, CopyToOutputDirectoryType copyType)>
     {
-        public static UpToDateCheckItemComparer Instance = new UpToDateCheckItemComparer();
+        public static readonly UpToDateCheckItemComparer Instance = new UpToDateCheckItemComparer();
 
         private UpToDateCheckItemComparer()
         {
