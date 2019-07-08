@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             var instance = await CreateInitializedInstance(solutionRestoreService: solutionRestoreService);
 
             var restoreInfo = IVsProjectRestoreInfo2Factory.Create();
-            var value = IProjectVersionedValueFactory.Create(restoreInfo);
+            var value = IProjectVersionedValueFactory.Create(new UnconfiguredProjectRestoreUpdate(restoreInfo));
 
             await instance.OnRestoreInfoChangedAsync(value);
 
@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
             var instance = await CreateInitializedInstance(solutionRestoreService: solutionRestoreService);
 
-            var value = IProjectVersionedValueFactory.Create<IVsProjectRestoreInfo2>(null);
+            var value = IProjectVersionedValueFactory.Create<UnconfiguredProjectRestoreUpdate>(null);
 
             await instance.OnRestoreInfoChangedAsync(value);
 
@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             var instance = await CreateInitializedInstance(solutionRestoreService: solutionRestoreService);
 
             var restoreInfo = IVsProjectRestoreInfo2Factory.Create();
-            var value = IProjectVersionedValueFactory.Create<IVsProjectRestoreInfo2>(restoreInfo);
+            var value = IProjectVersionedValueFactory.Create(new UnconfiguredProjectRestoreUpdate(restoreInfo));
 
             await instance.OnRestoreInfoChangedAsync(value);
 

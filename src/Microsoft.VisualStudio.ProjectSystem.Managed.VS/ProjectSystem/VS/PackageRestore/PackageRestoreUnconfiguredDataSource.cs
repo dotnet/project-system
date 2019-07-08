@@ -11,7 +11,7 @@ using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
 using NuGet.SolutionRestoreManager;
 
-using RestoreInfo = Microsoft.VisualStudio.ProjectSystem.IProjectVersionedValue<NuGet.SolutionRestoreManager.IVsProjectRestoreInfo2>;
+using RestoreInfo = Microsoft.VisualStudio.ProjectSystem.IProjectVersionedValue<Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.UnconfiguredProjectRestoreUpdate>;
 
 #nullable disable
 
@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
     [Export(typeof(IPackageRestoreUnconfiguredDataSource))]
     [AppliesTo(ProjectCapability.PackageReferences)]
-    internal partial class PackageRestoreUnconfiguredDataSource : ChainedProjectValueDataSourceBase<IVsProjectRestoreInfo2>, IPackageRestoreUnconfiguredDataSource
+    internal partial class PackageRestoreUnconfiguredDataSource : ChainedProjectValueDataSourceBase<UnconfiguredProjectRestoreUpdate>, IPackageRestoreUnconfiguredDataSource
     {
         private readonly UnconfiguredProject _project;
         private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             return disposables;
         }
 
-        private IVsProjectRestoreInfo2 MergeRestoreData(IReadOnlyCollection<ConfiguredProjectRestoreUpdate> updates)
+        private UnconfiguredProjectRestoreUpdate MergeRestoreData(IReadOnlyCollection<ConfiguredProjectRestoreUpdate> updates)
         {
             // We have no active configuration
             if (updates.Count == 0)
@@ -84,11 +84,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             IVsReferenceItems toolReferences = ResolveToolReferenceConflicts(updates);
             IVsTargetFrameworks2 targetFrameworks = GetAllTargetFrameworks(updates);
 
-            return new ProjectRestoreInfo(
+            var restoreInfo = new ProjectRestoreInfo(
                 msbuildProjectExtensionsPath,
                 originalTargetFrameworks,
                 targetFrameworks,
                 toolReferences);
+
+            return new UnconfiguredProjectRestoreUpdate(restoreInfo);
         }
 
         private string ResolveMSBuildProjectExtensionsPathConflicts(IEnumerable<ConfiguredProjectRestoreUpdate> updates)
