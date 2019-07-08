@@ -431,7 +431,7 @@
     </ItemGroup>
   </Target>
 
-  <!-- This target collects all the extra inputs for the up to date check. -->
+  <!-- This target collects all the extra outputs for the up to date check. -->
   <Target Name="CollectUpToDateCheckOutputDesignTime" DependsOnTargets="CompileDesignTime" Returns="@(UpToDateCheckOutput)" />
 
   <!-- This target collects all the things built by the project for the up to date check. -->
