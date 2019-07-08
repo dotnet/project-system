@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Linq;
 using System.Windows;
 using Microsoft.VisualStudio.Shell.TableControl;
 using Microsoft.VisualStudio.Utilities;
@@ -26,16 +25,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.TableControl
 
         public override bool TryCreateStringContent(ITableEntryHandle entry, bool truncatedText, bool singleColumnView, out string content)
         {
-            if (entry.TryGetValue(TableKeyNames.Targets, out var value) && value != null &&
-                value is IEnumerable<string> targets &&
-                targets.Any())
+            if (entry.TryGetValue(TableKeyNames.Targets, out var value) &&
+                value is IEnumerable<string> targets)
             {
-                content = targets.Aggregate((current, next) => $"{current};{next}");
+                content = string.Join(";", targets);
                 return true;
             }
 
             content = null;
             return false;
+        }
+
+        public override bool TryCreateToolTip(ITableEntryHandle entry, out object toolTip)
+        {
+            if (entry.TryGetValue(TableKeyNames.Targets, out var value) &&
+                value is IEnumerable<string> targets)
+            {
+                toolTip = string.Join(Environment.NewLine, targets);
+                return true;
+            }
+
+            return base.TryCreateToolTip(entry, out toolTip);
         }
     }
 }
