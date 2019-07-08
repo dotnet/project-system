@@ -9,8 +9,6 @@ using Xunit;
 
 using static Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.PackageRestoreInitiator;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
     public class PackageRestoreInitiatorInstanceTests
@@ -38,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         [Fact]
         public async Task OnRestoreInfoChangedAsync_PushesRestoreInfoToRestoreService()
         {
-            IVsProjectRestoreInfo2 result = null;
+            IVsProjectRestoreInfo2? result = null;
             var solutionRestoreService = IVsSolutionRestoreServiceFactory.ImplementNominateProjectAsync((projectFile, info, cancellationToken) => { result = info; });
 
             var instance = await CreateInitializedInstance(solutionRestoreService: solutionRestoreService);
@@ -82,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             Assert.Equal(1, callCount); // Should have only been called once
         }
 
-        private async Task<PackageRestoreInitiatorInstance> CreateInitializedInstance(UnconfiguredProject project = null, IPackageRestoreUnconfiguredDataSource dataSource = null, IVsSolutionRestoreService3 solutionRestoreService = null)
+        private async Task<PackageRestoreInitiatorInstance> CreateInitializedInstance(UnconfiguredProject? project = null, IPackageRestoreUnconfiguredDataSource? dataSource = null, IVsSolutionRestoreService3? solutionRestoreService = null)
         {
             var instance = CreateInstance(project, dataSource, solutionRestoreService);
 
@@ -91,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             return instance;
         }
 
-        private PackageRestoreInitiatorInstance CreateInstance(UnconfiguredProject project = null, IPackageRestoreUnconfiguredDataSource dataSource = null, IVsSolutionRestoreService3 solutionRestoreService = null)
+        private PackageRestoreInitiatorInstance CreateInstance(UnconfiguredProject? project = null, IPackageRestoreUnconfiguredDataSource? dataSource = null, IVsSolutionRestoreService3? solutionRestoreService = null)
         {
             project ??= UnconfiguredProjectFactory.Create();
             dataSource ??= IPackageRestoreUnconfiguredDataSourceFactory.Create();

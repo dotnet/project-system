@@ -11,8 +11,6 @@ using NuGet.SolutionRestoreManager;
 
 using RestoreUpdate = Microsoft.VisualStudio.ProjectSystem.IProjectVersionedValue<Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.ConfiguredProjectRestoreUpdate>;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
     /// <summary>

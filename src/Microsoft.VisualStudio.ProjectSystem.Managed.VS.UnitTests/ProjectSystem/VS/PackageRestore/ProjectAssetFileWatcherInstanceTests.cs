@@ -14,8 +14,6 @@ using Task = System.Threading.Tasks.Task;
 
 using static Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.ProjectAssetFileWatcher;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
     public class ProjectAssetFileWatcherInstanceTests

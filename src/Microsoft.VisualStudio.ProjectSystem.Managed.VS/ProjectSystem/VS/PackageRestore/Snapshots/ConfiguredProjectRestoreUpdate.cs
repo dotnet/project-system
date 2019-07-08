@@ -2,8 +2,6 @@
 
 using NuGet.SolutionRestoreManager;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
     /// <summary>
@@ -13,9 +11,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
     {
         public ConfiguredProjectRestoreUpdate(ConfiguredProject project, IVsProjectRestoreInfo2 restoreInfo)
         {
-            Requires.NotNull(project, nameof(project));
-            Requires.NotNull(restoreInfo, nameof(restoreInfo));
-
             Project = project;
             RestoreInfo = restoreInfo;
         }

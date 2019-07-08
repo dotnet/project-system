@@ -13,8 +13,6 @@ using NuGet.SolutionRestoreManager;
 
 using RestoreInfo = Microsoft.VisualStudio.ProjectSystem.IProjectVersionedValue<Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.UnconfiguredProjectRestoreUpdate>;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
     [Export(typeof(IPackageRestoreUnconfiguredDataSource))]
@@ -73,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         private UnconfiguredProjectRestoreUpdate MergeRestoreData(IReadOnlyCollection<ConfiguredProjectRestoreUpdate> updates)
         {
             // If there are no updates, we have no active configurations
-            ProjectRestoreInfo restoreInfo = null;
+            ProjectRestoreInfo? restoreInfo = null;
             if (updates.Count != 0)
             {
                 // We need to combine the snapshots from each implicitly active configuration (ie per TFM), 

@@ -3,8 +3,6 @@
 using NuGet.SolutionRestoreManager;
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
     public class RestoreBuilderTests

@@ -10,8 +10,6 @@ using Microsoft.VisualStudio.Threading;
 
 using NuGet.SolutionRestoreManager;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
     internal partial class PackageRestoreInitiator
@@ -24,8 +22,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             private readonly IVsSolutionRestoreService3 _solutionRestoreService;
             private readonly IProjectLogger _logger;
 
-            private IDisposable _subscription;
-            private IVsProjectRestoreInfo2 _latestValue;
+            private IDisposable? _subscription;
+            private IVsProjectRestoreInfo2? _latestValue;
 
             public PackageRestoreInitiatorInstance(
                 UnconfiguredProject project,
@@ -65,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             internal async Task OnRestoreInfoChangedAsync(IProjectVersionedValue<UnconfiguredProjectRestoreUpdate> e)
             {
                 UnconfiguredProjectRestoreUpdate update = e.Value;
-                IVsProjectRestoreInfo2 restoreInfo = e.Value.RestoreInfo;
+                IVsProjectRestoreInfo2? restoreInfo = e.Value.RestoreInfo;
 
                 // Restore service always does work regardless of whether the value we pass them to actually
                 // contains changes, only nominate if there are any.
