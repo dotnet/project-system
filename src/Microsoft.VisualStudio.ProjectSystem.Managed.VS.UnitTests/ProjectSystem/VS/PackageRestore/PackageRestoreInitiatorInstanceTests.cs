@@ -52,14 +52,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         }
 
         [Fact]
-        public async Task OnRestoreInfoChangedAsync_NullAsValue_DoesNotPushToRestoreService()
+        public async Task OnRestoreInfoChangedAsync_NullAsRestoreInfo_DoesNotPushToRestoreService()
         {
             int callCount = 0;
             var solutionRestoreService = IVsSolutionRestoreServiceFactory.ImplementNominateProjectAsync((projectFile, info, cancellationToken) => { callCount++; });
 
             var instance = await CreateInitializedInstance(solutionRestoreService: solutionRestoreService);
 
-            var value = IProjectVersionedValueFactory.Create<UnconfiguredProjectRestoreUpdate>(null);
+            var value = IProjectVersionedValueFactory.Create(new UnconfiguredProjectRestoreUpdate(null, new ConfiguredProjectRestoreUpdate[0]));
 
             await instance.OnRestoreInfoChangedAsync(value);
 

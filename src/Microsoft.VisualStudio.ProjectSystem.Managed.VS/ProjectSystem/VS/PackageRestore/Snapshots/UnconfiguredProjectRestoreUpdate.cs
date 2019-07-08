@@ -14,7 +14,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
     {
         public UnconfiguredProjectRestoreUpdate(IVsProjectRestoreInfo2 restoreInfo, IReadOnlyCollection<ConfiguredProjectRestoreUpdate> configuredProjectRestoreUpdates)
         {
-            Requires.NotNull(restoreInfo, nameof(restoreInfo));
             Requires.NotNull(configuredProjectRestoreUpdates, nameof(configuredProjectRestoreUpdates));
 
             RestoreInfo = restoreInfo;
@@ -22,7 +21,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         }
         
         /// <summary>
-        ///     Gets the restore information produced in this update.
+        ///     Gets the restore information produced in this update. Can be <see langword="null"/> if
+        ///     the project has no active configurations.
         /// </summary>
         public IVsProjectRestoreInfo2 RestoreInfo
         {

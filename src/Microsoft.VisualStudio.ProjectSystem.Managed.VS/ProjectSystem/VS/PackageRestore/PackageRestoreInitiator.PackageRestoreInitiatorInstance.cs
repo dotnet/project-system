@@ -65,21 +65,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             internal async Task OnRestoreInfoChangedAsync(IProjectVersionedValue<UnconfiguredProjectRestoreUpdate> e)
             {
                 UnconfiguredProjectRestoreUpdate update = e.Value;
+                IVsProjectRestoreInfo2 restoreInfo = e.Value.RestoreInfo;
 
                 // Restore service always does work regardless of whether the value we pass them to actually
                 // contains changes, only nominate if there are any.
-                if (RestoreComparer.RestoreInfos.Equals(_latestValue, update?.RestoreInfo))
+                if (RestoreComparer.RestoreInfos.Equals(_latestValue, restoreInfo))
                     return;
 
                 // No configurations - likely during project close
-                if (update == null)
+                if (restoreInfo == null)
                     return;
 
-                _latestValue = e.Value.RestoreInfo;
+                _latestValue = restoreInfo;
 
                 JoinableTask joinableTask = JoinableFactory.RunAsync(() =>
                 {
-                    return NominateProjectRestoreAsync(update.RestoreInfo, _projectAsynchronousTasksService.UnloadCancellationToken);
+                    return NominateProjectRestoreAsync(restoreInfo, _projectAsynchronousTasksService.UnloadCancellationToken);
                 });
 
                 _projectAsynchronousTasksService.RegisterAsyncTask(joinableTask,

@@ -72,23 +72,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
         private UnconfiguredProjectRestoreUpdate MergeRestoreData(IReadOnlyCollection<ConfiguredProjectRestoreUpdate> updates)
         {
-            // We have no active configuration
-            if (updates.Count == 0)
-                return null;
+            // If there are no updates, we have no active configurations
+            ProjectRestoreInfo restoreInfo = null;
+            if (updates.Count != 0)
+            {
+                // We need to combine the snapshots from each implicitly active configuration (ie per TFM), 
+                // resolving any conflicts, which we'll report to the user.
+                string msbuildProjectExtensionsPath = ResolveMSBuildProjectExtensionsPathConflicts(updates);
+                string originalTargetFrameworks = ResolveOriginalTargetFrameworksConflicts(updates);
+                IVsReferenceItems toolReferences = ResolveToolReferenceConflicts(updates);
+                IVsTargetFrameworks2 targetFrameworks = GetAllTargetFrameworks(updates);
 
-            // We need to combine the snapshots from each implicitly active configuration (ie per TFM), 
-            // resolving any conflicts, which we'll report to the user. 
-
-            string msbuildProjectExtensionsPath = ResolveMSBuildProjectExtensionsPathConflicts(updates);
-            string originalTargetFrameworks = ResolveOriginalTargetFrameworksConflicts(updates);
-            IVsReferenceItems toolReferences = ResolveToolReferenceConflicts(updates);
-            IVsTargetFrameworks2 targetFrameworks = GetAllTargetFrameworks(updates);
-
-            var restoreInfo = new ProjectRestoreInfo(
-                msbuildProjectExtensionsPath,
-                originalTargetFrameworks,
-                targetFrameworks,
-                toolReferences);
+                restoreInfo = new ProjectRestoreInfo(
+                    msbuildProjectExtensionsPath,
+                    originalTargetFrameworks,
+                    targetFrameworks,
+                    toolReferences);
+            }
 
             return new UnconfiguredProjectRestoreUpdate(restoreInfo, updates);
         }
