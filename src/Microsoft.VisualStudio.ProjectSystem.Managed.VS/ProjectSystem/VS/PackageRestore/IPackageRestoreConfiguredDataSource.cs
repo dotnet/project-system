@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
     ///     <see cref="UnconfiguredProject"/> to provide enough data to restore the entire project.
     /// </summary>
     [ProjectSystemContract(ProjectSystemContractScope.ConfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
-    internal interface IPackageRestoreConfiguredDataSource : IProjectValueDataSource<ProjectRestoreUpdate>
+    internal interface IPackageRestoreConfiguredDataSource : IProjectValueDataSource<ConfiguredProjectRestoreUpdate>
     {
     }
 }

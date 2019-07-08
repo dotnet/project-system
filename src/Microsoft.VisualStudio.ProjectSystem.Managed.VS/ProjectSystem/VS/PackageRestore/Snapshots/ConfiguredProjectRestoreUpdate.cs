@@ -9,9 +9,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
     /// <summary>
     ///     Represents restore data for a single <see cref="ConfiguredProject"/>.
     /// </summary>
-    internal class ProjectRestoreUpdate
+    internal class ConfiguredProjectRestoreUpdate
     {
-        public ProjectRestoreUpdate(ProjectConfiguration projectConfiguration, IVsProjectRestoreInfo2 restoreInfo)
+        public ConfiguredProjectRestoreUpdate(ProjectConfiguration projectConfiguration, IVsProjectRestoreInfo2 restoreInfo)
         {
             Requires.NotNull(projectConfiguration, nameof(projectConfiguration));
             Requires.NotNull(restoreInfo, nameof(restoreInfo));

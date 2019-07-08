@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 using NuGet.SolutionRestoreManager;
 
-using RestoreUpdate = Microsoft.VisualStudio.ProjectSystem.IProjectVersionedValue<Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.ProjectRestoreUpdate>;
+using RestoreUpdate = Microsoft.VisualStudio.ProjectSystem.IProjectVersionedValue<Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.ConfiguredProjectRestoreUpdate>;
 
 #nullable disable
 
@@ -18,11 +18,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
     /// <summary>
     ///     Provides an implementation of <see cref="IPackageRestoreConfiguredDataSource"/> that combines evaluations results
     ///     of <see cref="DotNetCliToolReference"/>, <see cref="ProjectReference"/> and project build versions of <see cref="PackageReference"/> 
-    ///     into <see cref="ProjectRestoreUpdate"/>.
+    ///     into <see cref="ConfiguredProjectRestoreUpdate"/>.
     /// </summary>
     [Export(typeof(IPackageRestoreConfiguredDataSource))]
     [AppliesTo(ProjectCapability.PackageReferences)]
-    internal partial class PackageRestoreConfiguredDataSource : ChainedProjectValueDataSourceBase<ProjectRestoreUpdate>, IPackageRestoreConfiguredDataSource
+    internal partial class PackageRestoreConfiguredDataSource : ChainedProjectValueDataSourceBase<ConfiguredProjectRestoreUpdate>, IPackageRestoreConfiguredDataSource
     {
         private static readonly ImmutableHashSet<string> s_rules = Empty.OrdinalIgnoreCaseStringSet
                                                                         .Add(NuGetRestore.SchemaName)                       // Evaluation
@@ -69,11 +69,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             return transformBlock;
         }
 
-        private ProjectRestoreUpdate CreateRestoreUpdate(ProjectConfiguration projectConfiguration, IImmutableDictionary<string, IProjectRuleSnapshot> update)
+        private ConfiguredProjectRestoreUpdate CreateRestoreUpdate(ProjectConfiguration projectConfiguration, IImmutableDictionary<string, IProjectRuleSnapshot> update)
         {
             IVsProjectRestoreInfo2 restoreInfo = RestoreBuilder.ToProjectRestoreInfo(update);
 
-            return new ProjectRestoreUpdate(projectConfiguration, restoreInfo);
+            return new ConfiguredProjectRestoreUpdate(projectConfiguration, restoreInfo);
         }
     }
 }
