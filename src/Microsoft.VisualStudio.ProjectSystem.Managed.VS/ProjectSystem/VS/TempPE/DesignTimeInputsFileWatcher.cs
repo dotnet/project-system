@@ -1,16 +1,15 @@
-// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
-using System.Linq;
+using System.Threading;
 using System.Threading.Tasks.Dataflow;
 
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-
+using Microsoft.VisualStudio.Threading;
 using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
@@ -26,6 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         private readonly IDesignTimeInputsDataSource _designTimeInputsDataSource;
         private readonly IVsService<IVsAsyncFileChangeEx> _fileChangeService;
         private ImmutableDictionary<string, uint> _fileWatcherCookies = ImmutableDictionary<string, uint>.Empty.WithComparers(StringComparers.Paths);
+        private readonly SemaphoreSlim _disposeGate = new SemaphoreSlim(initialCount: 1);
 
         private int _version;
         private IDisposable? _dataSourceLink;
@@ -79,45 +79,48 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         private async Task ProcessDesignTimeInputs(IProjectVersionedValue<DesignTimeInputs> input)
         {
-            // We don't want to watch any new files while we're disposing
-            if (IsDisposing)
+            await _disposeGate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, async () =>
             {
-                return;
-            }
-
-            DesignTimeInputs designTimeInputs = input.Value;
-
-            IVsAsyncFileChangeEx vsAsyncFileChangeEx = await _fileChangeService.GetValueAsync();
-
-            // we don't care about the difference between types of inputs, so we just construct one hashset for fast comparisons later
-            var allFiles = new HashSet<string>(StringComparers.Paths);
-            allFiles.AddRange(designTimeInputs.Inputs);
-            allFiles.AddRange(designTimeInputs.SharedInputs);
-
-            // Remove any files we're watching that we don't care about any more
-            foreach (string file in _fileWatcherCookies.Keys.ToArray())
-            {
-                if (!allFiles.Contains(file))
+                // We don't want to watch any new files while we're disposing
+                if (IsDisposing || IsDisposed)
                 {
-                    ImmutableInterlocked.TryRemove(ref _fileWatcherCookies, file, out uint cookie);
-                    await vsAsyncFileChangeEx.UnadviseFileChangeAsync(cookie);
+                    return;
                 }
-            }
 
-            // Now watch and output files that are new
-            foreach (string file in allFiles)
-            {
-                if (!_fileWatcherCookies.ContainsKey(file))
+                DesignTimeInputs designTimeInputs = input.Value;
+
+                IVsAsyncFileChangeEx vsAsyncFileChangeEx = await _fileChangeService.GetValueAsync();
+
+                // we don't care about the difference between types of inputs, so we just construct one hashset for fast comparisons later
+                var allFiles = new HashSet<string>(StringComparers.Paths);
+                allFiles.AddRange(designTimeInputs.Inputs);
+                allFiles.AddRange(designTimeInputs.SharedInputs);
+
+                // Remove any files we're watching that we don't care about any more
+                foreach ((string file, uint cookie) in _fileWatcherCookies)
                 {
-                    // We don't care about delete and add here, as they come through data flow, plus they are really bouncy - every file change is a Time, Del and Add event)
-                    uint cookie = await vsAsyncFileChangeEx.AdviseFileChangeAsync(file, _VSFILECHANGEFLAGS.VSFILECHG_Time | _VSFILECHANGEFLAGS.VSFILECHG_Size, sink: this);
-
-                    ImmutableInterlocked.TryAdd(ref _fileWatcherCookies, file, cookie);
-
-                    // Advise of an addition now
-                    PostToOutput(file);
+                    if (!allFiles.Contains(file))
+                    {
+                        await vsAsyncFileChangeEx.UnadviseFileChangeAsync(cookie);
+                        _fileWatcherCookies = _fileWatcherCookies.Remove(file);
+                    }
                 }
-            }
+
+                // Now watch and output files that are new
+                foreach (string file in allFiles)
+                {
+                    if (!_fileWatcherCookies.ContainsKey(file))
+                    {
+                        // We don't care about delete and add here, as they come through data flow, plus they are really bouncy - every file change is a Time, Del and Add event)
+                        uint cookie = await vsAsyncFileChangeEx.AdviseFileChangeAsync(file, _VSFILECHANGEFLAGS.VSFILECHG_Time | _VSFILECHANGEFLAGS.VSFILECHG_Size, sink: this);
+
+                        _fileWatcherCookies = _fileWatcherCookies.Add(file, cookie);
+
+                        // Advise of an addition now
+                        PostToOutput(file);
+                    }
+                }
+            });
         }
 
         private void PostToOutput(string file)
@@ -134,6 +137,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             {
                 _broadcastBlock?.Complete();
                 _dataSourceLink?.Dispose();
+
+                _disposeGate.Dispose();
 
                 _threadingService.ExecuteSynchronously(async () =>
                 {
