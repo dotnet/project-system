@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             var instance = await CreateInitializedInstance(solutionRestoreService: solutionRestoreService);
 
             var restoreInfo = IVsProjectRestoreInfo2Factory.Create();
-            var value = IProjectVersionedValueFactory.Create(restoreInfo);
+            var value = IProjectVersionedValueFactory.Create(new UnconfiguredProjectRestoreUpdate(restoreInfo, new ConfiguredProjectRestoreUpdate[0]));
 
             await instance.OnRestoreInfoChangedAsync(value);
 
@@ -52,14 +52,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         }
 
         [Fact]
-        public async Task OnRestoreInfoChangedAsync_NullAsValue_DoesNotPushToRestoreService()
+        public async Task OnRestoreInfoChangedAsync_NullAsRestoreInfo_DoesNotPushToRestoreService()
         {
             int callCount = 0;
             var solutionRestoreService = IVsSolutionRestoreServiceFactory.ImplementNominateProjectAsync((projectFile, info, cancellationToken) => { callCount++; });
 
             var instance = await CreateInitializedInstance(solutionRestoreService: solutionRestoreService);
 
-            var value = IProjectVersionedValueFactory.Create<IVsProjectRestoreInfo2>(null);
+            var value = IProjectVersionedValueFactory.Create(new UnconfiguredProjectRestoreUpdate(null, new ConfiguredProjectRestoreUpdate[0]));
 
             await instance.OnRestoreInfoChangedAsync(value);
 
@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             var instance = await CreateInitializedInstance(solutionRestoreService: solutionRestoreService);
 
             var restoreInfo = IVsProjectRestoreInfo2Factory.Create();
-            var value = IProjectVersionedValueFactory.Create<IVsProjectRestoreInfo2>(restoreInfo);
+            var value = IProjectVersionedValueFactory.Create(new UnconfiguredProjectRestoreUpdate(restoreInfo, new ConfiguredProjectRestoreUpdate[0]));
 
             await instance.OnRestoreInfoChangedAsync(value);
 
