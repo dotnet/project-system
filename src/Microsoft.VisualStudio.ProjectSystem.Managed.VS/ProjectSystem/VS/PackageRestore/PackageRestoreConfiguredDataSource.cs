@@ -31,22 +31,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                                                                         .Add(CollectedFrameworkReference.SchemaName)        // Project Build
                                                                         .Add(CollectedPackageDownload.SchemaName)           // Project Build                                                                        
                                                                         .Add(PackageReference.SchemaName);                  // Project Build
-                                                                        
-
-        private readonly UnconfiguredProject _project;
+        private readonly ConfiguredProject _project;
+        private readonly UnconfiguredProject _containingProject;
         private readonly IProjectSubscriptionService _projectSubscriptionService;
 
         [ImportingConstructor]
         public PackageRestoreConfiguredDataSource(ConfiguredProject project, IProjectSubscriptionService projectSubscriptionService)
             : base(project.Services, synchronousDisposal: true, registerDataSource: false)
         {
-            _project = project.UnconfiguredProject;
+            _project = project;
+            _containingProject = project.UnconfiguredProject;
             _projectSubscriptionService = projectSubscriptionService;
         }
 
         protected override UnconfiguredProject ContainingProject
         {
-            get { return _project; }
+            get { return _containingProject; }
         }
 
         protected override IDisposable LinkExternalInput(ITargetBlock<RestoreUpdate> targetBlock)
@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
             // Transform the changes from evaluation/design-time build -> restore data
             DisposableValue<ISourceBlock<RestoreUpdate>> transformBlock = source.SourceBlock
-                                                                                .TransformWithNoDelta(update => update.Derive(u => CreateRestoreUpdate(u.ProjectConfiguration, u.CurrentState)),
+                                                                                .TransformWithNoDelta(update => update.Derive(u => CreateRestoreUpdate(_project, u.CurrentState)),
                                                                                                       suppressVersionOnlyUpdates: false,    // We need to coordinate these at the unconfigured-level
                                                                                                       ruleNames: s_rules);
 
@@ -69,11 +69,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             return transformBlock;
         }
 
-        private ConfiguredProjectRestoreUpdate CreateRestoreUpdate(ProjectConfiguration projectConfiguration, IImmutableDictionary<string, IProjectRuleSnapshot> update)
+        private ConfiguredProjectRestoreUpdate CreateRestoreUpdate(ConfiguredProject project, IImmutableDictionary<string, IProjectRuleSnapshot> update)
         {
             IVsProjectRestoreInfo2 restoreInfo = RestoreBuilder.ToProjectRestoreInfo(update);
 
-            return new ConfiguredProjectRestoreUpdate(projectConfiguration, restoreInfo);
+            return new ConfiguredProjectRestoreUpdate(project, restoreInfo);
         }
     }
 }

@@ -126,7 +126,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                         VSResources.Restore_PropertyWithInconsistentValues,
                         propertyName,
                         propertyValue,
-                        update.ProjectConfiguration)),
+                        update.Project.ProjectConfiguration)),
                     ProjectFaultSeverity.LimitedFunctionality,
                     ContainingProject);
             }
@@ -161,7 +161,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
                 IVsTargetFrameworkInfo2 framework = update.RestoreInfo.TargetFrameworks.Item(0);
 
-                if (ValidateTargetFramework(update.ProjectConfiguration, framework))
+                if (ValidateTargetFramework(update.Project.ProjectConfiguration, framework))
                 {
                     frameworks.Add(framework);
                 }
