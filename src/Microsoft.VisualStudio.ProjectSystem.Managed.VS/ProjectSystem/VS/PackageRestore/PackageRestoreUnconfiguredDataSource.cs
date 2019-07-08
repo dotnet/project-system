@@ -90,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 targetFrameworks,
                 toolReferences);
 
-            return new UnconfiguredProjectRestoreUpdate(restoreInfo);
+            return new UnconfiguredProjectRestoreUpdate(restoreInfo, updates);
         }
 
         private string ResolveMSBuildProjectExtensionsPathConflicts(IEnumerable<ConfiguredProjectRestoreUpdate> updates)
