@@ -3,17 +3,15 @@
 using System;
 using System.IO;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 {
     internal sealed class BuildUpToDateCheckLogger
     {
-        private readonly TextWriter _logger;
+        private readonly TextWriter? _logger;
         private readonly LogLevel _requestedLogLevel;
         private readonly string _fileName;
 
-        public BuildUpToDateCheckLogger(TextWriter logger, LogLevel requestedLogLevel, string projectPath)
+        public BuildUpToDateCheckLogger(TextWriter? logger, LogLevel requestedLogLevel, string projectPath)
         {
             _logger = logger;
             _requestedLogLevel = requestedLogLevel;
@@ -31,6 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 _logger?.WriteLine($"FastUpToDate: {string.Format(message, values)} ({_fileName})");
             }
         }
+
         private static void ConvertToLocalTimes(object[] values)
         {
             for (int i = 0; i < values.Length; i++)
