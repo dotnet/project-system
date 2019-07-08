@@ -19,8 +19,4 @@
                 SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
 
-  <BoolProperty Name="Visible"
-                Default="false"
-                Visible="false" />
-
 </Rule>
