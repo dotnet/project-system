@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
+using System.Xml.XPath;
 
 using Microsoft.VisualStudio.Utilities;
 
@@ -155,6 +156,54 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         }
 
         [Theory]
+        [MemberData(nameof(GetAllRules))]
+        public void TargetResultsDataSourcesMustSpecifyTheTarget(string ruleName, string fullPath)
+        {
+            var dataSource = LoadDataSourceElement(fullPath);
+
+            var sourceType = dataSource?.Attribute("SourceType");
+            var msBuildTarget = dataSource?.Attribute("MSBuildTarget");
+
+            if (sourceType != null)
+            {
+                if (sourceType.Value == "TargetResults")
+                {
+                    // A target must be specified
+                    Assert.NotNull(msBuildTarget);
+                }
+                else
+                {
+                    // Target must not be specified on other source types
+                    Assert.Null(msBuildTarget);
+                }
+            }
+        }
+
+        [Theory]
+        [MemberData(nameof(GetAllRules))]
+        public void ItemDataSourcesMustSpecifyTheItemType(string ruleName, string fullPath)
+        {
+            var dataSource = LoadDataSourceElement(fullPath);
+
+            var sourceType = dataSource?.Attribute("SourceType");
+            var itemType = dataSource?.Attribute("ItemType");
+
+            if (sourceType != null)
+            {
+                if (sourceType.Value == "Item")
+                {
+                    // An item type must be specified
+                    Assert.NotNull(itemType);
+                }
+                else
+                {
+                    // Item type has no purpose on other source types
+                    Assert.Null(itemType);
+                }
+            }
+        }
+
+        [Theory]
         [MemberData(nameof(GetFileItemRules))]
         public void FileRulesShouldntBeLocalized(string ruleName, string fullPath)
         {
@@ -178,7 +227,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
                 }
             }
         }
-
 
         [Theory]
         [MemberData(nameof(GetBrowseObjectItemRules))]
@@ -282,12 +330,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             {
                 rulesPath = Path.Combine(rulesPath, suffix);
             }
+
             foreach (var fileName in Directory.EnumerateFiles(rulesPath, "*.xaml"))
             {
                 if (fileName.EndsWith(".BrowseObject.xaml", StringComparisons.Paths) && !browseObject)
                 {
                     continue;
                 }
+
                 // Special case for Folder because it is File and BrowseObject context (for now) but naming convention is like File
                 if ((!fileName.EndsWith(".BrowseObject.xaml", StringComparisons.Paths) && !file) ||
                     (fileName.EndsWith("Folder.xaml", StringComparisons.Paths) && browseObject))
@@ -319,6 +369,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             using var fileStream = File.OpenRead(fullPath);
             using var reader = XmlReader.Create(fileStream, settings);
             return XDocument.Load(reader);
+        }
+
+        private static XElement LoadDataSourceElement(string filePath)
+        {
+            var settings = new XmlReaderSettings {XmlResolver = null};
+            using var fileStream = File.OpenRead(filePath);
+            using var reader = XmlReader.Create(fileStream, settings);
+            var doc = XDocument.Load(reader);
+
+            // Ignore XAML documents for other types such as ProjectSchemaDefinitions
+            if (doc.Root.Name.LocalName != "Rule")
+            {
+                return null;
+            }
+
+            var namespaceManager = new XmlNamespaceManager(reader.NameTable);
+            namespaceManager.AddNamespace("msb", "http://schemas.microsoft.com/build/2009/properties");
+
+            return doc.Root.XPathSelectElement(@"/msb:Rule/msb:Rule.DataSource/msb:DataSource", namespaceManager);
         }
 
         private static IEnumerable<XElement> GetProperties(XElement rule)
