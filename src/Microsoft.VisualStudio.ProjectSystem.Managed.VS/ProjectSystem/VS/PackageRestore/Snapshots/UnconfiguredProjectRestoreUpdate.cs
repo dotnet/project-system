@@ -3,8 +3,6 @@
 using System.Collections.Generic;
 using NuGet.SolutionRestoreManager;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
     /// <summary>
@@ -12,10 +10,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
     /// </summary>
     internal class UnconfiguredProjectRestoreUpdate
     {
-        public UnconfiguredProjectRestoreUpdate(IVsProjectRestoreInfo2 restoreInfo, IReadOnlyCollection<ConfiguredProjectRestoreUpdate> configuredProjectRestoreUpdates)
+        public UnconfiguredProjectRestoreUpdate(IVsProjectRestoreInfo2? restoreInfo, IReadOnlyCollection<ConfiguredProjectRestoreUpdate> configuredProjectRestoreUpdates)
         {
-            Requires.NotNull(configuredProjectRestoreUpdates, nameof(configuredProjectRestoreUpdates));
-
             RestoreInfo = restoreInfo;
             ConfiguredProjectRestoreUpdates = configuredProjectRestoreUpdates;
         }
@@ -24,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         ///     Gets the restore information produced in this update. Can be <see langword="null"/> if
         ///     the project has no active configurations.
         /// </summary>
-        public IVsProjectRestoreInfo2 RestoreInfo
+        public IVsProjectRestoreInfo2? RestoreInfo
         {
             get;
         }

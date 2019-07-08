@@ -7,8 +7,6 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 using NuGet.SolutionRestoreManager;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
     /// <summary>
@@ -21,8 +19,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         /// </summary>
         public static IVsProjectRestoreInfo2 ToProjectRestoreInfo(IImmutableDictionary<string, IProjectRuleSnapshot> update)
         {
-            Requires.NotNull(update, nameof(update));
-
             IImmutableDictionary<string, string> properties = update.GetSnapshotOrEmpty(NuGetRestore.SchemaName).Properties;
             IProjectRuleSnapshot frameworkReferences = update.GetSnapshotOrEmpty(CollectedFrameworkReference.SchemaName);
             IProjectRuleSnapshot packageDownloads = update.GetSnapshotOrEmpty(CollectedPackageDownload.SchemaName);
