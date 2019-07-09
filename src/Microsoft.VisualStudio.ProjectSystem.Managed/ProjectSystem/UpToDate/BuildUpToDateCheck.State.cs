@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 {
     internal sealed partial class BuildUpToDateCheck
     {
-        private sealed class State
+        internal sealed class State
         {
             public static State Empty { get; } = new State();
 
@@ -23,6 +23,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             public string? NewestImportInput { get; }
             public IComparable? LastVersionSeen { get; }
             public bool IsDisabled { get; }
+
+            public DateTime LastItemChangedAtUtc { get; }
 
             public ImmutableHashSet<string> ItemTypes { get; }
             public ImmutableDictionary<string, ImmutableHashSet<(string path, string? link, CopyToOutputDirectoryType copyType)>> ItemsByItemType { get; }
@@ -41,6 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 ImmutableHashSet<string> emptyPathSet = ImmutableHashSet.Create(StringComparers.Paths);
 
+                LastItemChangedAtUtc = DateTime.MinValue;
                 ItemTypes = ImmutableHashSet.Create(StringComparers.ItemTypes);
                 ItemsByItemType = ImmutableDictionary.Create<string, ImmutableHashSet<(string path, string? link, CopyToOutputDirectoryType copyType)>>(StringComparers.ItemTypes);
                 CustomInputs = emptyPathSet;
@@ -53,12 +56,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
 
             private State(
-                string msBuildProjectFullPath,
-                string msBuildProjectDirectory,
+                string? msBuildProjectFullPath,
+                string? msBuildProjectDirectory,
                 string? markerFile,
-                string outputRelativeOrFullPath,
+                string? outputRelativeOrFullPath,
                 string? newestImportInput,
-                IComparable lastVersionSeen,
+                IComparable? lastVersionSeen,
                 bool isDisabled,
                 ImmutableHashSet<string> itemTypes,
                 ImmutableDictionary<string, ImmutableHashSet<(string, string?, CopyToOutputDirectoryType)>> itemsByItemType,
@@ -68,7 +71,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 ImmutableDictionary<string, string> copiedOutputFiles,
                 ImmutableHashSet<string> analyzerReferences,
                 ImmutableHashSet<string> compilationReferences,
-                ImmutableHashSet<string> copyReferenceInputs)
+                ImmutableHashSet<string> copyReferenceInputs,
+                DateTime lastItemChangedAtUtc)
             {
                 MSBuildProjectFullPath = msBuildProjectFullPath;
                 MSBuildProjectDirectory = msBuildProjectDirectory;
@@ -86,14 +90,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 AnalyzerReferences = analyzerReferences;
                 CompilationReferences = compilationReferences;
                 CopyReferenceInputs = copyReferenceInputs;
+                LastItemChangedAtUtc = lastItemChangedAtUtc;
             }
 
             public State Update(
                 IProjectSubscriptionUpdate jointRuleUpdate,
                 IProjectSubscriptionUpdate sourceItemsUpdate,
                 IProjectItemSchema projectItemSchema,
-                IComparable configuredProjectVersion,
-                out bool itemsChanged)
+                IComparable configuredProjectVersion)
             {
                 bool isDisabled = jointRuleUpdate.CurrentState.IsPropertyTrue(ConfigurationGeneral.SchemaName, ConfigurationGeneral.DisableFastUpToDateCheckProperty, defaultValue: false);
 
@@ -212,7 +216,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     copiedOutputFiles = CopiedOutputFiles;
                 }
 
-                var itemTypes = projectItemSchema.GetKnownItemTypes()
+                // TODO these are probably the same as the previous set, so merge them to avoid allocation
+                ImmutableHashSet<string> itemTypes = projectItemSchema.GetKnownItemTypes()
                     .Where(itemType => projectItemSchema.GetItemType(itemType).UpToDateCheckInput)
                     .ToImmutableHashSet(StringComparers.ItemTypes);
 
@@ -229,7 +234,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     itemsByItemTypeBuilder = ItemsByItemType.ToBuilder();
                 }
 
-                itemsChanged = false;
+                bool itemsChanged = false;
 
                 foreach ((string itemType, IProjectChangeDescription projectChange) in sourceItemsUpdate.ProjectChanges)
                 {
@@ -243,6 +248,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     itemsByItemTypeBuilder[itemType] = projectChange.After.Items.Select(item => (item.Key, GetLink(item.Value), GetCopyType(item.Value))).ToImmutableHashSet(UpToDateCheckItemComparer.Instance);
                     itemsChanged = true;
                 }
+
+                DateTime lastItemChangedAtUtc = itemsChanged ? DateTime.UtcNow : LastItemChangedAtUtc;
 
                 return new State(
                     msBuildProjectFullPath,
@@ -260,7 +267,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     copiedOutputFiles,
                     analyzerReferences,
                     compilationReferences,
-                    copyReferenceInputs);
+                    copyReferenceInputs,
+                    lastItemChangedAtUtc);
+            }
+
+            internal State WithLastItemChangedAtUtc(DateTime lastItemChangedAtUtc)
+            {
+                return new State(
+                    MSBuildProjectFullPath,
+                    MSBuildProjectDirectory,
+                    MarkerFile,
+                    OutputRelativeOrFullPath,
+                    NewestImportInput,
+                    LastVersionSeen,
+                    IsDisabled,
+                    ItemTypes, ItemsByItemType, CustomInputs, CustomOutputs,
+                    BuiltOutputs,
+                    CopiedOutputFiles,
+                    AnalyzerReferences,
+                    CompilationReferences,
+                    CopyReferenceInputs,
+                    lastItemChangedAtUtc);
             }
         }
     }
