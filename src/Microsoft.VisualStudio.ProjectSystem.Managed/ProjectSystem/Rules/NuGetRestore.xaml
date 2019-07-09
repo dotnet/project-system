@@ -41,6 +41,10 @@
                   ReadOnly="True"
                   Visible="False" />
 
+  <StringProperty Name="ProjectAssetsFile"
+                  ReadOnly="True"
+                  Visible="False" />
+
   <StringProperty Name="PackageId"
                   ReadOnly="True"
                   Visible="False" />

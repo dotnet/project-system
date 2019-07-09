@@ -78,11 +78,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 // resolving any conflicts, which we'll report to the user.
                 string msbuildProjectExtensionsPath = ResolveMSBuildProjectExtensionsPathConflicts(inputs);
                 string originalTargetFrameworks = ResolveOriginalTargetFrameworksConflicts(inputs);
+                string projectAssetsFilePath = ResolveProjectAssetsFilePathConflicts(inputs);
                 IVsReferenceItems toolReferences = ResolveToolReferenceConflicts(inputs);
                 IVsTargetFrameworks2 targetFrameworks = GetAllTargetFrameworks(inputs);
 
                 restoreInfo = new ProjectRestoreInfo(
                     msbuildProjectExtensionsPath,
+                    projectAssetsFilePath,
                     originalTargetFrameworks,
                     targetFrameworks,
                     toolReferences);
@@ -91,10 +93,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             return new PackageRestoreUnconfiguredInput(restoreInfo, inputs);
         }
 
+        private string ResolveProjectAssetsFilePathConflicts(IEnumerable<PackageRestoreConfiguredInput> updates)
+        {
+            // All configurations need to agree on where the project-wide asset file is located.
+            return ResolvePropertyConflicts(updates, u => u.ProjectAssetsFilePath, NuGetRestore.ProjectAssetsFileProperty);
+        }
+
         private string ResolveMSBuildProjectExtensionsPathConflicts(IEnumerable<PackageRestoreConfiguredInput> updates)
         {
             // All configurations need to agree on where the project-wide asset file is located.
-            return ResolvePropertyConflicts(updates, u => u.BaseIntermediatePath, NuGetRestore.MSBuildProjectExtensionsPathProperty);
+            return ResolvePropertyConflicts(updates, u => u.MSBuildProjectExtensionsPath, NuGetRestore.MSBuildProjectExtensionsPathProperty);
         }
 
         private string ResolveOriginalTargetFrameworksConflicts(IEnumerable<PackageRestoreConfiguredInput> updates)
@@ -105,7 +113,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             return ResolvePropertyConflicts(updates, u => u.OriginalTargetFrameworks, NuGetRestore.TargetFrameworksProperty);
         }
 
-        private string ResolvePropertyConflicts(IEnumerable<PackageRestoreConfiguredInput> updates, Func<IVsProjectRestoreInfo2, string> propertyGetter, string propertyName)
+        private string ResolvePropertyConflicts(IEnumerable<PackageRestoreConfiguredInput> updates, Func<ProjectRestoreInfo, string> propertyGetter, string propertyName)
         {
             // Always use the first TFM listed in project to provide consistent behavior
             PackageRestoreConfiguredInput update = updates.First();
@@ -124,7 +132,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                         VSResources.Restore_PropertyWithInconsistentValues,
                         propertyName,
                         propertyValue,
-                        update.Project.ProjectConfiguration)),
+                        update.ProjectConfiguration)),
                     ProjectFaultSeverity.LimitedFunctionality,
                     ContainingProject);
             }
@@ -159,7 +167,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
                 IVsTargetFrameworkInfo2 framework = update.RestoreInfo.TargetFrameworks.Item(0);
 
-                if (ValidateTargetFramework(update.Project.ProjectConfiguration, framework))
+                if (ValidateTargetFramework(update.ProjectConfiguration, framework))
                 {
                     frameworks.Add(framework);
                 }

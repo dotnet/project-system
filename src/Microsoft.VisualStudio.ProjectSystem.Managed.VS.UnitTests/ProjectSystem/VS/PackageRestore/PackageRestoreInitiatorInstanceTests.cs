@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
 
 using NuGet.SolutionRestoreManager;
@@ -41,10 +42,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
             var instance = await CreateInitializedInstance(solutionRestoreService: solutionRestoreService);
 
-            var restoreInfo = IVsProjectRestoreInfo2Factory.Create();
+            var restoreInfo = ProjectRestoreInfoFactory.Create();
             var value = IProjectVersionedValueFactory.Create(new PackageRestoreUnconfiguredInput(restoreInfo, new PackageRestoreConfiguredInput[0]));
 
-            await instance.OnRestoreInfoChangedAsync(value);
+            await instance.OnInputsChanged(value);
 
             Assert.Same(restoreInfo, result);
         }
@@ -59,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
             var value = IProjectVersionedValueFactory.Create(new PackageRestoreUnconfiguredInput(null, new PackageRestoreConfiguredInput[0]));
 
-            await instance.OnRestoreInfoChangedAsync(value);
+            await instance.OnInputsChanged(value);
 
             Assert.Equal(0, callCount);
         }
@@ -72,10 +73,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
             var instance = await CreateInitializedInstance(solutionRestoreService: solutionRestoreService);
 
-            var restoreInfo = IVsProjectRestoreInfo2Factory.Create();
+            var restoreInfo = ProjectRestoreInfoFactory.Create();
             var value = IProjectVersionedValueFactory.Create(new PackageRestoreUnconfiguredInput(restoreInfo, new PackageRestoreConfiguredInput[0]));
 
-            await instance.OnRestoreInfoChangedAsync(value);
+            await instance.OnInputsChanged(value);
 
             Assert.Equal(1, callCount); // Should have only been called once
         }
@@ -97,8 +98,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             IProjectAsynchronousTasksService projectAsynchronousTasksService = IProjectAsynchronousTasksServiceFactory.Create();
             solutionRestoreService ??= IVsSolutionRestoreServiceFactory.Create();
             IProjectLogger logger = IProjectLoggerFactory.Create();
+            IFileSystem fileSystem = IFileSystemFactory.Create();
+            var broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<RestoreData>>();
 
-            return new PackageRestoreInitiatorInstance(project, dataSource, threadingService, projectAsynchronousTasksService, solutionRestoreService, logger);
+            return new PackageRestoreInitiatorInstance(project, dataSource, threadingService, projectAsynchronousTasksService, solutionRestoreService, fileSystem, logger, broadcastBlock);
         }
     }
 }

@@ -7,8 +7,6 @@ using System.Threading.Tasks.Dataflow;
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-using NuGet.SolutionRestoreManager;
-
 using RestoreUpdate = Microsoft.VisualStudio.ProjectSystem.IProjectVersionedValue<Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.PackageRestoreConfiguredInput>;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
@@ -52,10 +50,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             IProjectValueDataSource<IProjectSubscriptionUpdate> source = _projectSubscriptionService.JointRuleSource;
 
             // Transform the changes from evaluation/design-time build -> restore data
-            DisposableValue<ISourceBlock<RestoreUpdate>> transformBlock = source.SourceBlock
-                                                                                .TransformWithNoDelta(update => update.Derive(u => CreateRestoreInput(_project, u.CurrentState)),
-                                                                                                      suppressVersionOnlyUpdates: false,    // We need to coordinate these at the unconfigured-level
-                                                                                                      ruleNames: s_rules);
+            DisposableValue<ISourceBlock<RestoreUpdate>> transformBlock = source.SourceBlock.TransformWithNoDelta(update => update.Derive(u => CreateRestoreInput(u.ProjectConfiguration, u.CurrentState)),
+                                                                                                suppressVersionOnlyUpdates: false,    // We need to coordinate these at the unconfigured-level
+                                                                                                ruleNames: s_rules);
 
             // Set the link up so that we publish changes to target block
             transformBlock.Value.LinkTo(targetBlock, DataflowOption.PropagateCompletion);
@@ -67,11 +64,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             return transformBlock;
         }
 
-        private PackageRestoreConfiguredInput CreateRestoreInput(ConfiguredProject project, IImmutableDictionary<string, IProjectRuleSnapshot> update)
+        private PackageRestoreConfiguredInput CreateRestoreInput(ProjectConfiguration projectConfiguration, IImmutableDictionary<string, IProjectRuleSnapshot> update)
         {
-            IVsProjectRestoreInfo2 restoreInfo = RestoreBuilder.ToProjectRestoreInfo(update);
+            var restoreInfo = RestoreBuilder.ToProjectRestoreInfo(update);
 
-            return new PackageRestoreConfiguredInput(project, restoreInfo);
+            return new PackageRestoreConfiguredInput(projectConfiguration, restoreInfo);
         }
     }
 }

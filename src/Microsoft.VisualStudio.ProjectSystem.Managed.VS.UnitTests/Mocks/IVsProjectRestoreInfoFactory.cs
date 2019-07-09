@@ -1,18 +1,14 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Moq;
-
-using NuGet.SolutionRestoreManager;
-
 #nullable disable
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
-    internal static class IVsProjectRestoreInfo2Factory
+    internal static class ProjectRestoreInfoFactory
     {
-        public static IVsProjectRestoreInfo2 Create()
+        public static ProjectRestoreInfo Create()
         {
-            return Mock.Of<IVsProjectRestoreInfo2>();
+            return new ProjectRestoreInfo(string.Empty, string.Empty, string.Empty, null, null);
         }
     }
 }
