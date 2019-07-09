@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     /// </summary>
     internal class DelegatedProjectPropertiesBase : IProjectProperties
     {
-        protected IProjectProperties DelegatedProperties;
+        protected readonly IProjectProperties DelegatedProperties;
 
         public DelegatedProjectPropertiesBase(IProjectProperties properties)
         {
