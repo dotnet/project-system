@@ -27,10 +27,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             // disable commands, or give indicators that the project is still loading.
             //
             // To figure out when we've finished the cycle, we compare the last write time of the 
-            // assets file during the last evaluation against the timestamp of the file on disk. 
-            // If they don't match, we know that we're about to repeat and we're still incomplete. 
-            // Once they match in timestamp, we know that the last design-time build ran with the 
-            // new file and we notify operation progress that we've completed with these results.
+            // assets file during the last evaluation against the timestamp of the file on disk just 
+            // after restore. If they don't match, we know that we're about to repeat the cycle and 
+            // we're still incomplete. Once they match in timestamp, we know that the last design-time 
+            // build ran with the latest assets file and we notify operation progress that we're now
+            // completed with the results.
 
             private readonly ConfiguredProject _project;
             private readonly IDataProgressTrackerService _dataProgressTrackerService;
