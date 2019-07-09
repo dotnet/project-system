@@ -66,16 +66,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                     _project,
                     nameof(PackageRestoreProgressTracker));
 
-                Action<IProjectVersionedValue<Tuple<RestoreData, IProjectSnapshot>>> action = OnRestoreCompleted;
+                Action<IProjectVersionedValue<Tuple<IProjectSnapshot, RestoreData>>> action = OnRestoreCompleted;
 
                 _subscription = ProjectDataSources.SyncLinkTo(
-                        _restoreService.RestoreData.SyncLinkOptions(),
-                        _projectSubscriptionService.ProjectSource.SourceBlock.SyncLinkOptions(),
+                    _projectSubscriptionService.ProjectSource.SourceBlock.SyncLinkOptions(),
+                    _restoreService.RestoreData.SyncLinkOptions(),
                         DataflowBlockSlim.CreateActionBlock(action),
                         linkOptions: DataflowOption.PropagateCompletion);
             }
 
-            private void OnRestoreCompleted(IProjectVersionedValue<Tuple<RestoreData, IProjectSnapshot>> value)
+            internal void OnRestoreCompleted(IProjectVersionedValue<Tuple<IProjectSnapshot, RestoreData>> value)
             {
                 if (IsRestoreUpToDate(value.Value.Item1, value.Value.Item2))
                 {
@@ -83,11 +83,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 }
             }
 
-            private static bool IsRestoreUpToDate(RestoreData restoreData, IProjectSnapshot projectSnapshot)
+            private static bool IsRestoreUpToDate(IProjectSnapshot projectSnapshot, RestoreData restoreData)
             {
                 DateTime lastEvaluationWriteTime = GetLastWriteTimeUtc(restoreData.ProjectAssetsFilePath, projectSnapshot);
 
-                return lastEvaluationWriteTime == restoreData.ProjectAssetsLastWriteTimeUtc;
+                return lastEvaluationWriteTime >= restoreData.ProjectAssetsLastWriteTimeUtc;
             }
             
             private static DateTime GetLastWriteTimeUtc(string filePath, IProjectSnapshot projectSnapshot)
@@ -98,8 +98,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                     return lastWriteTimeUtc;
                 }
 
-                // The file wasn't included as part of the <AdditionalDesignTimeBuildInput> item
-                return DateTime.MinValue;
+                // The assets file wasn't included as part of the <AdditionalDesignTimeBuildInput> item,
+                // consider it up-to-date so that it is not forever stuck out-of-date.
+                return DateTime.MaxValue;
             }
 
             protected override void Dispose(bool disposing)

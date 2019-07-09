@@ -13,8 +13,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
         public static IDataProgressTrackerServiceRegistration Create()
         {
+            return ImplementNotifyOutputDataCalculated(_ => { });
+        }
+
+        public static IDataProgressTrackerServiceRegistration ImplementNotifyOutputDataCalculated(Action<IImmutableDictionary<NamedIdentity, IComparable>> action)
+        {
             var mock = new Mock<IDataProgressTrackerServiceRegistration>();
-            mock.Setup(s => s.NotifyOutputDataCalculated(It.IsAny<IImmutableDictionary<NamedIdentity, IComparable>>()));
+            mock.Setup(s => s.NotifyOutputDataCalculated(It.IsAny<IImmutableDictionary<NamedIdentity, IComparable>>()))
+               .Callback(action);
 
             return mock.Object;
         }

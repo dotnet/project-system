@@ -1,0 +1,141 @@
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using System;
+using System.Threading.Tasks;
+
+using Xunit;
+
+using static Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.PackageRestoreProgressTracker;
+
+namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
+{
+    public class PackageRestoreProgressTrackerInstanceTests
+    {
+        [Fact]
+        public async Task Dispose_WhenNotInitialized_DoesNotThrow()
+        {
+            var instance = CreateInstance();
+
+            await instance.DisposeAsync();
+
+            Assert.True(instance.IsDisposed);
+        }
+
+        [Fact]
+        public async Task Dispose_WhenInitialized_DoesNotThrow()
+        {
+            var instance = await CreateInitializedInstance();
+
+            await instance.DisposeAsync();
+
+            Assert.True(instance.IsDisposed);
+        }
+
+        [Fact]
+        public async Task OnRestoreCompleted_WhenEvaluationRanWithOlderAssetsFile_IsNotUpToDate()
+        {
+            string projectAssetsFile = @"C:\Project\obj\project.assets.json";
+
+            var currentTimestamp = DateTime.Now;
+            var evaluationTimestamp = DateTime.Now.AddDays(-1);
+
+            var restoreData = new RestoreData(projectAssetsFile, currentTimestamp);
+            var snapshot = IProjectSnapshot2Factory.WithAdditionalDependentFileTime(
+                projectAssetsFile,
+                evaluationTimestamp) ;
+
+            var result = await OnRestoreCompleted(snapshot, restoreData);
+
+            Assert.False(result);
+        }
+
+        [Fact]
+        public async Task OnRestoreCompleted_WhenEvaluationRanWithNewerAssetsFile_IsUpToDate()
+        {
+            string projectAssetsFile = @"C:\Project\obj\project.assets.json";
+
+            var currentTimestamp = DateTime.Now;
+            var evaluationTimestamp = DateTime.Now.AddDays(1);
+
+            var restoreData = new RestoreData(projectAssetsFile, currentTimestamp);
+            var snapshot = IProjectSnapshot2Factory.WithAdditionalDependentFileTime(
+                projectAssetsFile,
+                evaluationTimestamp);
+
+            var result = await OnRestoreCompleted(snapshot, restoreData);
+
+            Assert.True(result);
+        }
+
+        [Fact]
+        public async Task OnRestoreCompleted_WhenEvaluationRanSameAssetsFile_IsUpToDate()
+        {
+            string projectAssetsFile = @"C:\Project\obj\project.assets.json";
+
+            var currentTimestamp = DateTime.Now;
+            var evaluationTimestamp = currentTimestamp;
+
+            var restoreData = new RestoreData(projectAssetsFile, currentTimestamp);
+            var snapshot = IProjectSnapshot2Factory.WithAdditionalDependentFileTime(
+                projectAssetsFile,
+                evaluationTimestamp);
+
+            var result = await OnRestoreCompleted(snapshot, restoreData);
+
+            Assert.True(result);
+        }
+
+        [Fact]
+        public async Task OnRestoreCompleted_WhenEvaluationIsMissingProjectAssetsFile_IsUpToDate()
+        {
+            string projectAssetsFile = @"C:\Project\obj\project.assets.json";
+
+            var currentTimestamp = DateTime.Now;
+
+            var restoreData = new RestoreData(projectAssetsFile, currentTimestamp);
+            var snapshot = IProjectSnapshot2Factory.CreateEmpty();
+
+            var result = await OnRestoreCompleted(snapshot, restoreData);
+
+            Assert.True(result);
+        }
+
+        private async Task<bool> OnRestoreCompleted(IProjectSnapshot projectSnapshot, RestoreData restoreData)
+        {
+            bool result = false;
+            var dataProgressTrackerService = IDataProgressTrackerServiceFactory.ImplementNotifyOutputDataCalculated(_ => { result = true; });
+
+            var instance = await CreateInitializedInstance(dataProgressTrackerService: dataProgressTrackerService);
+
+            var tuple = Tuple.Create(projectSnapshot, restoreData);
+            var value = IProjectVersionedValueFactory.Create(tuple);
+
+            instance.OnRestoreCompleted(value);
+
+            return result;
+        }
+
+        private async Task<PackageRestoreProgressTrackerInstance> CreateInitializedInstance(ConfiguredProject? project = null, IDataProgressTrackerService? dataProgressTrackerService = null, IPackageRestoreService? packageRestoreService = null, IProjectSubscriptionService? projectSubscriptionService = null)
+        {
+            var instance = CreateInstance(project, dataProgressTrackerService, packageRestoreService, projectSubscriptionService);
+
+            await instance.InitializeAsync();
+
+            return instance;
+        }
+
+        private PackageRestoreProgressTrackerInstance CreateInstance(ConfiguredProject? project = null, IDataProgressTrackerService? dataProgressTrackerService = null, IPackageRestoreService? packageRestoreService = null, IProjectSubscriptionService? projectSubscriptionService = null)
+        {
+            project ??= ConfiguredProjectFactory.Create();
+            dataProgressTrackerService ??= IDataProgressTrackerServiceFactory.Create();
+            packageRestoreService ??= IPackageRestoreServiceFactory.Create();
+            projectSubscriptionService ??= IProjectSubscriptionServiceFactory.Create();
+
+            return new PackageRestoreProgressTrackerInstance(
+                project,
+                dataProgressTrackerService,
+                packageRestoreService,
+                projectSubscriptionService);
+        }
+    }
+}

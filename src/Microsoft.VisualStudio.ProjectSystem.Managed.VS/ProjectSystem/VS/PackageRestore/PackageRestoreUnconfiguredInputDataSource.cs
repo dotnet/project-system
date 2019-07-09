@@ -101,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
         private string ResolveMSBuildProjectExtensionsPathConflicts(IEnumerable<PackageRestoreConfiguredInput> updates)
         {
-            // All configurations need to agree on where the project-wide asset file is located.
+            // All configurations need to agree on where the project-wide extensions path is located
             return ResolvePropertyConflicts(updates, u => u.MSBuildProjectExtensionsPath, NuGetRestore.MSBuildProjectExtensionsPathProperty);
         }
 
