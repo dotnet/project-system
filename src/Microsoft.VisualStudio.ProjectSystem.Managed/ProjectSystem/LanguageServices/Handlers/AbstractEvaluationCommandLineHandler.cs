@@ -180,10 +180,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 AddToContextIfNotPresent(includePath, metadata, isActiveContext, logger);
             }
 
-            // Wait for all context changed to be propogated first before handling rename
+            // Wait for all context changed to be propagated first before handling rename
             foreach ((string pathBefore, string pathAfter) in renamedItems)
             {
-                ProccessRename(pathBefore, pathAfter, logger);
+                ProcessRename(pathBefore, pathAfter, logger);
             }
 
             Assumes.True(difference.RenamedItems.Count == 0, "We should have normalized renames.");
@@ -219,7 +219,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             }
         }
 
-        private void ProccessRename(string pathBefore, string pathAfter, IProjectLogger logger)
+        private void ProcessRename(string pathBefore, string pathAfter, IProjectLogger logger)
         {
             string fullPathBefore = _project.MakeRooted(pathBefore);
             string fullPathAfter = _project.MakeRooted(pathAfter);
