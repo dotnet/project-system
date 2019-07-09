@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     internal partial class WorkspaceProjectContextHost
     {
         /// <summary>
-        ///     Responsible for lifetime of a <see cref="IWorkspaceProjectContext"/> and appling changes to a 
+        ///     Responsible for lifetime of a <see cref="IWorkspaceProjectContext"/> and applying changes to a 
         ///     project to the context via the <see cref="IApplyChangesToWorkspaceContext"/> service.
         /// </summary>
         internal class WorkspaceProjectContextHostInstance : OnceInitializedOnceDisposedUnderLockAsync, IMultiLifetimeInstance
