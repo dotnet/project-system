@@ -91,9 +91,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             int notificationCount = 0;
             // Create a block to receive the output
-            var receiver = DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<string>>(val =>
+            var receiver = DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<string[]>>(val =>
             {
-                Assert.Equal(fileChangeNotificationsExpected[notificationCount++], val.Value);
+                foreach (string file in val.Value)
+                {
+                    Assert.Equal(fileChangeNotificationsExpected[notificationCount++], file);
+                }
 
                 // if we've seen every file, we're done
                 if (notificationCount == fileChangeNotificationsExpected.Length)
