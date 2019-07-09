@@ -63,8 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             IProjectRuleSnapshot snapshot = update.GetSnapshotOrEmpty(ItemRuleName);
 
-            var fullPaths = snapshot.Items.Select(item => item.Value)
-                                          .Select(metadata => metadata.GetValueOrDefault(Compile.FullPathProperty))
+            var fullPaths = snapshot.Items.Select(item => item.Value.GetValueOrDefault(Compile.FullPathProperty))
                                           .Where(item => item != null)
                                           .ToImmutableList();
 
