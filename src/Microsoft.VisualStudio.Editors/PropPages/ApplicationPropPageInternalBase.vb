@@ -6,6 +6,7 @@ Imports System.Windows.Forms
 
 Imports Microsoft.VisualStudio.Editors.Common
 Imports Microsoft.VisualStudio.Shell.Interop
+Imports Microsoft.VisualStudio.Shell
 
 Imports NativeMethods = Microsoft.VisualStudio.Editors.Interop.NativeMethods
 
@@ -126,7 +127,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Try
                 Dim siteServiceProvider As OLE.Interop.IServiceProvider = Nothing
                 VSErrorHandler.ThrowOnFailure(ProjectHierarchy.GetSite(siteServiceProvider))
-                Dim sp As New Shell.ServiceProvider(siteServiceProvider)
+                Dim sp As New ServiceProvider(siteServiceProvider)
                 Dim vsFrameworkMultiTargeting As IVsFrameworkMultiTargeting = TryCast(sp.GetService(GetType(SVsFrameworkMultiTargeting).GUID), IVsFrameworkMultiTargeting)
                 ' TODO: Remove IsTargetFrameworksDefined check after issue #800 is resolved.
                 If (TargetFrameworksDefined() = False And vsFrameworkMultiTargeting IsNot Nothing) Then
@@ -134,7 +135,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Dim supportedTargetFrameworksDescriptor = GetPropertyDescriptor("SupportedTargetFrameworks")
                     Dim supportedFrameworks As IEnumerable(Of TargetFrameworkMoniker) = TargetFrameworkMoniker.GetSupportedTargetFrameworkMonikers(vsFrameworkMultiTargeting, DTEProject, supportedTargetFrameworksDescriptor)
 
+                    Dim isWPForWindowsForms = ProjectHierarchy.IsCapabilityMatch("WPF") Or ProjectHierarchy.IsCapabilityMatch("WindowsForms")
+
                     For Each supportedFramework As TargetFrameworkMoniker In supportedFrameworks
+                        Dim frameworkName As New FrameworkName(supportedFramework.Moniker)
+                        If isWPForWindowsForms And frameworkName.Version.Major < 3 And String.Equals(frameworkName.Identifier, ".NETCoreApp") Then
+                            Continue For
+                        End If
                         targetFrameworkComboBox.Items.Add(supportedFramework)
                     Next
 
