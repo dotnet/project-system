@@ -102,8 +102,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         private IProjectChangeDiff ConvertToProjectDiff(BuildOptions added, BuildOptions removed)
         {
-            var addedSet = ImmutableHashSet.ToImmutableHashSet(GetFilePaths(added), StringComparers.Paths);
-            var removedSet = ImmutableHashSet.ToImmutableHashSet(GetFilePaths(removed), StringComparers.Paths);
+            var addedSet = GetFilePaths(added).ToImmutableHashSet(StringComparers.Paths);
+            var removedSet = GetFilePaths(removed).ToImmutableHashSet(StringComparers.Paths);
 
             return new ProjectChangeDiff(addedSet, removedSet);
         }
