@@ -102,7 +102,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.FSharp
                     handler?.Invoke(binPath, fscAdded.SourceFiles, fscAdded.MetadataReferences, fscAdded.CompileOptions);
                 }
             }
-            return;
         }
     }
 }
