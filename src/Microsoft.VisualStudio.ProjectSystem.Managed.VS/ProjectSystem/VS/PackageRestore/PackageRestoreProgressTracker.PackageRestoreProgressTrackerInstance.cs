@@ -105,8 +105,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
             protected override void Dispose(bool disposing)
             {
-                _progressRegistration?.Dispose();
                 _subscription?.Dispose();
+                _progressRegistration?.Dispose();
             }
         }
     }
