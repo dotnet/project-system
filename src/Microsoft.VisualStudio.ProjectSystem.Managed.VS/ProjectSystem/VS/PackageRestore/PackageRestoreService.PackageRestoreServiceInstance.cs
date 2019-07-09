@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
             protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
             {
-                _subscription = _dataSource.SourceBlock.LinkToAsyncAction(OnInputsChanged);
+                _subscription = _dataSource.SourceBlock.LinkToAsyncAction(OnInputsChangedAsync);
 
                 return Task.CompletedTask;
             }
@@ -69,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 return Task.CompletedTask;
             }
 
-            internal async Task OnInputsChanged(IProjectVersionedValue<PackageRestoreUnconfiguredInput> e)
+            internal async Task OnInputsChangedAsync(IProjectVersionedValue<PackageRestoreUnconfiguredInput> e)
             {
                 // No configurations - likely during project close
                 if (e.Value.RestoreInfo is null)
