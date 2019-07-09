@@ -30,8 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         }
 
         [ImportMany]
-        [NotNull, AllowNull]
-        private readonly IEnumerable<IFileRenameHandler> _fileRenameHandlers = null;
+        private readonly IEnumerable<IFileRenameHandler> _fileRenameHandlers = Array.Empty<IFileRenameHandler>();
 
         public string ProjectEvaluationRule
         {

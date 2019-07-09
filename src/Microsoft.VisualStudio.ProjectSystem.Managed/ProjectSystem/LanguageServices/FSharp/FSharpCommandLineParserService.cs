@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
 using Microsoft.CodeAnalysis;
@@ -20,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.FSharp
         private const string LongReferencePrefix = "--reference:";
 
         [ImportMany]
-        private readonly IEnumerable<Action<string, ImmutableArray<CommandLineSourceFile>, ImmutableArray<CommandLineReference>, ImmutableArray<string>>>? _handlers = null;
+        private readonly IEnumerable<Action<string, ImmutableArray<CommandLineSourceFile>, ImmutableArray<CommandLineReference>, ImmutableArray<string>>> _handlers = Array.Empty<Action<string, ImmutableArray<CommandLineSourceFile>, ImmutableArray<CommandLineReference>, ImmutableArray<string>>>();
 
         [ImportingConstructor]
         public FSharpCommandLineParserService()
@@ -95,7 +96,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.FSharp
         {
             if (added is FSharpBuildOptions fscAdded)
             {
-                foreach (Action<string, ImmutableArray<CommandLineSourceFile>, ImmutableArray<CommandLineReference>, ImmutableArray<string>> handler in _handlers!)
+                foreach (Action<string, ImmutableArray<CommandLineSourceFile>, ImmutableArray<CommandLineReference>, ImmutableArray<string>> handler in _handlers)
                 {
                     handler?.Invoke(binPath, fscAdded.SourceFiles, fscAdded.MetadataReferences, fscAdded.CompileOptions);
                 }
