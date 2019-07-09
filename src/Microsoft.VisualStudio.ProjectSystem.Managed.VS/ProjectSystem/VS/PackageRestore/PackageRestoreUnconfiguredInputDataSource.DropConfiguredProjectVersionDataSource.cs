@@ -5,7 +5,7 @@ using System.Threading.Tasks.Dataflow;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
-    internal partial class PackageRestoreUnconfiguredDataSource
+    internal partial class PackageRestoreUnconfiguredInputDataSource
     {
         /// <summary>
         ///     A <see cref="IProjectValueDataSource{T}"/> that drops <see cref="ProjectDataSources.ConfiguredProjectIdentity"/> and 

@@ -5,18 +5,18 @@ using NuGet.SolutionRestoreManager;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
     /// <summary>
-    ///     Represents restore data for a single <see cref="ConfiguredProject"/>.
+    ///     Represents restore input data for a single <see cref="ConfiguredProject"/>.
     /// </summary>
-    internal class ConfiguredProjectRestoreUpdate
+    internal class PackageRestoreConfiguredInput
     {
-        public ConfiguredProjectRestoreUpdate(ConfiguredProject project, IVsProjectRestoreInfo2 restoreInfo)
+        public PackageRestoreConfiguredInput(ConfiguredProject project, IVsProjectRestoreInfo2 restoreInfo)
         {
             Project = project;
             RestoreInfo = restoreInfo;
         }
-        
+
         /// <summary>
-        ///     Gets the restore information produced in this update.
+        ///     Gets the restore information produced in this input.
         /// </summary>
         public IVsProjectRestoreInfo2 RestoreInfo
         {
@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         }
 
         /// <summary>
-        ///     Gets the <see cref="ConfiguredProject"/> this update was produced from.
+        ///     Gets the <see cref="ConfiguredProject"/> this input was produced from.
         /// </summary>
         public ConfiguredProject Project
         {

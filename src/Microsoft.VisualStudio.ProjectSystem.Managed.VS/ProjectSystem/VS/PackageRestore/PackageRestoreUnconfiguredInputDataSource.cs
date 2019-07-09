@@ -11,19 +11,19 @@ using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
 using NuGet.SolutionRestoreManager;
 
-using RestoreInfo = Microsoft.VisualStudio.ProjectSystem.IProjectVersionedValue<Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.UnconfiguredProjectRestoreUpdate>;
+using RestoreInfo = Microsoft.VisualStudio.ProjectSystem.IProjectVersionedValue<Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.PackageRestoreUnconfiguredInput>;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
-    [Export(typeof(IPackageRestoreUnconfiguredDataSource))]
+    [Export(typeof(IPackageRestoreUnconfiguredInputDataSource))]
     [AppliesTo(ProjectCapability.PackageReferences)]
-    internal partial class PackageRestoreUnconfiguredDataSource : ChainedProjectValueDataSourceBase<UnconfiguredProjectRestoreUpdate>, IPackageRestoreUnconfiguredDataSource
+    internal partial class PackageRestoreUnconfiguredInputDataSource : ChainedProjectValueDataSourceBase<PackageRestoreUnconfiguredInput>, IPackageRestoreUnconfiguredInputDataSource
     {
         private readonly UnconfiguredProject _project;
         private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
 
         [ImportingConstructor]
-        public PackageRestoreUnconfiguredDataSource(UnconfiguredProject project, IActiveConfigurationGroupService activeConfigurationGroupService)
+        public PackageRestoreUnconfiguredInputDataSource(UnconfiguredProject project, IActiveConfigurationGroupService activeConfigurationGroupService)
             : base(project.Services, synchronousDisposal: true, registerDataSource: false)
         {
             _project = project;
@@ -43,19 +43,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             // active configuration changes, we should react to it, and publish data from the new set of implicitly active configurations.
             var disposables = new DisposableBag();
 
-            var packageRestoreConfiguredSource = new UnwrapCollectionChainedProjectValueDataSource<IReadOnlyCollection<ConfiguredProject>, ConfiguredProjectRestoreUpdate>(
+            var restoreConfiguredInputSource = new UnwrapCollectionChainedProjectValueDataSource<IReadOnlyCollection<ConfiguredProject>, PackageRestoreConfiguredInput>(
                 _project.Services, 
                 projects => projects.Select(project => GetProjectRestoreDataSource(project)),
                 includeSourceVersions: true);
 
-            disposables.AddDisposable(packageRestoreConfiguredSource);
+            disposables.AddDisposable(restoreConfiguredInputSource);
 
             IProjectValueDataSource<IConfigurationGroup<ConfiguredProject>> activeConfiguredProjectsSource = _activeConfigurationGroupService.ActiveConfiguredProjectGroupSource;
-            disposables.AddDisposable(activeConfiguredProjectsSource.SourceBlock.LinkTo(packageRestoreConfiguredSource, DataflowOption.PropagateCompletion));
+            disposables.AddDisposable(activeConfiguredProjectsSource.SourceBlock.LinkTo(restoreConfiguredInputSource, DataflowOption.PropagateCompletion));
 
             // Transform all restore data -> combined restore data
-            DisposableValue<ISourceBlock<RestoreInfo>> mergeBlock = packageRestoreConfiguredSource.SourceBlock
-                                                                                                  .TransformWithNoDelta(update => update.Derive(MergeRestoreData));
+            DisposableValue<ISourceBlock<RestoreInfo>> mergeBlock = restoreConfiguredInputSource.SourceBlock
+                                                                                                .TransformWithNoDelta(update => update.Derive(MergeRestoreInputs));
             disposables.AddDisposable(mergeBlock);
 
             // Set the link up so that we publish changes to target block
@@ -63,23 +63,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
             // Join the source blocks, so if they need to switch to UI thread to complete 
             // and someone is blocked on us on the same thread, the call proceeds
-            JoinUpstreamDataSources(packageRestoreConfiguredSource, activeConfiguredProjectsSource);
+            JoinUpstreamDataSources(restoreConfiguredInputSource, activeConfiguredProjectsSource);
 
             return disposables;
         }
 
-        private UnconfiguredProjectRestoreUpdate MergeRestoreData(IReadOnlyCollection<ConfiguredProjectRestoreUpdate> updates)
+        private PackageRestoreUnconfiguredInput MergeRestoreInputs(IReadOnlyCollection<PackageRestoreConfiguredInput> inputs)
         {
             // If there are no updates, we have no active configurations
             ProjectRestoreInfo? restoreInfo = null;
-            if (updates.Count != 0)
+            if (inputs.Count != 0)
             {
                 // We need to combine the snapshots from each implicitly active configuration (ie per TFM), 
                 // resolving any conflicts, which we'll report to the user.
-                string msbuildProjectExtensionsPath = ResolveMSBuildProjectExtensionsPathConflicts(updates);
-                string originalTargetFrameworks = ResolveOriginalTargetFrameworksConflicts(updates);
-                IVsReferenceItems toolReferences = ResolveToolReferenceConflicts(updates);
-                IVsTargetFrameworks2 targetFrameworks = GetAllTargetFrameworks(updates);
+                string msbuildProjectExtensionsPath = ResolveMSBuildProjectExtensionsPathConflicts(inputs);
+                string originalTargetFrameworks = ResolveOriginalTargetFrameworksConflicts(inputs);
+                IVsReferenceItems toolReferences = ResolveToolReferenceConflicts(inputs);
+                IVsTargetFrameworks2 targetFrameworks = GetAllTargetFrameworks(inputs);
 
                 restoreInfo = new ProjectRestoreInfo(
                     msbuildProjectExtensionsPath,
@@ -88,16 +88,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                     toolReferences);
             }
 
-            return new UnconfiguredProjectRestoreUpdate(restoreInfo, updates);
+            return new PackageRestoreUnconfiguredInput(restoreInfo, inputs);
         }
 
-        private string ResolveMSBuildProjectExtensionsPathConflicts(IEnumerable<ConfiguredProjectRestoreUpdate> updates)
+        private string ResolveMSBuildProjectExtensionsPathConflicts(IEnumerable<PackageRestoreConfiguredInput> updates)
         {
             // All configurations need to agree on where the project-wide asset file is located.
             return ResolvePropertyConflicts(updates, u => u.BaseIntermediatePath, NuGetRestore.MSBuildProjectExtensionsPathProperty);
         }
 
-        private string ResolveOriginalTargetFrameworksConflicts(IEnumerable<ConfiguredProjectRestoreUpdate> updates)
+        private string ResolveOriginalTargetFrameworksConflicts(IEnumerable<PackageRestoreConfiguredInput> updates)
         {
             // All configurations need to agree on what the overall "user-written" frameworks for the 
             // project so that conditions in the project-wide 'nuget.g.props' and 'nuget.g.targets' 
@@ -105,10 +105,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             return ResolvePropertyConflicts(updates, u => u.OriginalTargetFrameworks, NuGetRestore.TargetFrameworksProperty);
         }
 
-        private string ResolvePropertyConflicts(IEnumerable<ConfiguredProjectRestoreUpdate> updates, Func<IVsProjectRestoreInfo2, string> propertyGetter, string propertyName)
+        private string ResolvePropertyConflicts(IEnumerable<PackageRestoreConfiguredInput> updates, Func<IVsProjectRestoreInfo2, string> propertyGetter, string propertyName)
         {
             // Always use the first TFM listed in project to provide consistent behavior
-            ConfiguredProjectRestoreUpdate update = updates.First();
+            PackageRestoreConfiguredInput update = updates.First();
             string propertyValue = propertyGetter(update.RestoreInfo);
 
             // Every config should had same value
@@ -132,11 +132,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             return propertyValue;
         }
 
-        private IVsReferenceItems ResolveToolReferenceConflicts(IEnumerable<ConfiguredProjectRestoreUpdate> updates)
+        private IVsReferenceItems ResolveToolReferenceConflicts(IEnumerable<PackageRestoreConfiguredInput> updates)
         {
             var references = new Dictionary<string, IVsReferenceItem>(StringComparers.ItemNames);
 
-            foreach (ConfiguredProjectRestoreUpdate update in updates)
+            foreach (PackageRestoreConfiguredInput update in updates)
             {
                 foreach (IVsReferenceItem reference in update.RestoreInfo.ToolReferences)
                 {
@@ -149,11 +149,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
             return new ReferenceItems(references.Values);
         }
-        private IVsTargetFrameworks2 GetAllTargetFrameworks(IEnumerable<ConfiguredProjectRestoreUpdate> updates)
+        private IVsTargetFrameworks2 GetAllTargetFrameworks(IEnumerable<PackageRestoreConfiguredInput> updates)
         {
             var frameworks = new List<IVsTargetFrameworkInfo2>();
 
-            foreach (ConfiguredProjectRestoreUpdate update in updates)
+            foreach (PackageRestoreConfiguredInput update in updates)
             {
                 Assumes.True(update.RestoreInfo.TargetFrameworks.Count == 1);
 
@@ -204,14 +204,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             return true;
         }
 
-        private IProjectValueDataSource<ConfiguredProjectRestoreUpdate> GetProjectRestoreDataSource(ConfiguredProject project)
+        private IProjectValueDataSource<PackageRestoreConfiguredInput> GetProjectRestoreDataSource(ConfiguredProject project)
         {
             // Get the individual configuration's view of the restore data
-            IPackageRestoreConfiguredDataSource dataSource = project.Services.ExportProvider.GetExportedValue<IPackageRestoreConfiguredDataSource>();
+            IPackageRestoreConfiguredInputDataSource dataSource = project.Services.ExportProvider.GetExportedValue<IPackageRestoreConfiguredInputDataSource>();
 
             // Wrap it in a data source that will drop project version and identity versions so as they will never agree
             // on these versions as they are unique to each configuration. They'll be consistent by all other versions.
-            return new DropConfiguredProjectVersionDataSource<ConfiguredProjectRestoreUpdate>(_project.Services, dataSource);
+            return new DropConfiguredProjectVersionDataSource<PackageRestoreConfiguredInput>(_project.Services, dataSource);
         }
     }
 }
