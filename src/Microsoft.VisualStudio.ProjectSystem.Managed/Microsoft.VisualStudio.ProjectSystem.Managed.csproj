@@ -154,6 +154,9 @@
     <Compile Update="ProjectSystem\Rules\Items\Resource.cs">
       <DependentUpon>Resource.xaml</DependentUpon>
     </Compile>
+    <Compile Update="ProjectSystem\Rules\AdditionalDesignTimeBuildInput.cs">
+      <DependentUpon>AdditionalDesignTimeBuildInput.xaml</DependentUpon>
+    </Compile>
     <Compile Update="ProjectSystem\Rules\PotentialEditorConfigFiles.cs">
       <DependentUpon>PotentialEditorConfigFiles.xaml</DependentUpon>
     </Compile>
@@ -361,6 +364,11 @@
       <SubType>Designer</SubType>
     </XamlPropertyRule>
     <XamlPropertyRule Include="ProjectSystem\Rules\Items\XamlAppDef.xaml">
+      <XlfInput>false</XlfInput>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\AdditionalDesignTimeBuildInput.xaml">
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
