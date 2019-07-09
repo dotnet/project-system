@@ -8,11 +8,11 @@ using NuGet.SolutionRestoreManager;
 
 using Xunit;
 
-using static Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.PackageRestoreInitiator;
+using static Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.PackageRestoreService;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
-    public class PackageRestoreInitiatorInstanceTests
+    public class PackageRestoreServiceInstanceTests
     {
         [Fact]
         public async Task Dispose_WhenNotInitialized_DoesNotThrow()
@@ -81,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             Assert.Equal(1, callCount); // Should have only been called once
         }
 
-        private async Task<PackageRestoreInitiatorInstance> CreateInitializedInstance(UnconfiguredProject? project = null, IPackageRestoreUnconfiguredInputDataSource? dataSource = null, IVsSolutionRestoreService3? solutionRestoreService = null)
+        private async Task<PackageRestoreServiceInstance> CreateInitializedInstance(UnconfiguredProject? project = null, IPackageRestoreUnconfiguredInputDataSource? dataSource = null, IVsSolutionRestoreService3? solutionRestoreService = null)
         {
             var instance = CreateInstance(project, dataSource, solutionRestoreService);
 
@@ -90,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             return instance;
         }
 
-        private PackageRestoreInitiatorInstance CreateInstance(UnconfiguredProject? project = null, IPackageRestoreUnconfiguredInputDataSource? dataSource = null, IVsSolutionRestoreService3? solutionRestoreService = null)
+        private PackageRestoreServiceInstance CreateInstance(UnconfiguredProject? project = null, IPackageRestoreUnconfiguredInputDataSource? dataSource = null, IVsSolutionRestoreService3? solutionRestoreService = null)
         {
             project ??= UnconfiguredProjectFactory.Create();
             dataSource ??= IPackageRestoreUnconfiguredInputDataSourceFactory.Create();
@@ -101,7 +101,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             IFileSystem fileSystem = IFileSystemFactory.Create();
             var broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<RestoreData>>();
 
-            return new PackageRestoreInitiatorInstance(project, dataSource, threadingService, projectAsynchronousTasksService, solutionRestoreService, fileSystem, logger, broadcastBlock);
+            return new PackageRestoreServiceInstance(
+                project, 
+                dataSource, 
+                threadingService, 
+                projectAsynchronousTasksService, 
+                solutionRestoreService, 
+                fileSystem, 
+                logger, 
+                broadcastBlock);
         }
     }
 }

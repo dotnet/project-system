@@ -15,9 +15,9 @@ using NuGet.SolutionRestoreManager;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
-    internal partial class PackageRestoreInitiator
+    internal partial class PackageRestoreService
     {
-        internal class PackageRestoreInitiatorInstance : OnceInitializedOnceDisposedAsync, IMultiLifetimeInstance
+        internal class PackageRestoreServiceInstance : OnceInitializedOnceDisposedAsync, IMultiLifetimeInstance
         {
             private readonly UnconfiguredProject _project;
             private readonly IPackageRestoreUnconfiguredInputDataSource _dataSource;
@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             private IDisposable? _subscription;
             private ProjectRestoreInfo? _latestValue;
 
-            public PackageRestoreInitiatorInstance(
+            public PackageRestoreServiceInstance(
                 UnconfiguredProject project,
                 IPackageRestoreUnconfiguredInputDataSource dataSource,
                 IProjectThreadingService threadingService,

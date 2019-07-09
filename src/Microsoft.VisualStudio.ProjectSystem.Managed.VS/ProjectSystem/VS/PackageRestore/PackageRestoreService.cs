@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
     [Export(typeof(IPackageRestoreService))]
     [Export(ExportContractNames.Scopes.UnconfiguredProject, typeof(IProjectDynamicLoadComponent))]
     [AppliesTo(ProjectCapability.PackageReferences)]
-    internal partial class PackageRestoreInitiator : AbstractMultiLifetimeComponent<PackageRestoreInitiator.PackageRestoreInitiatorInstance>, IProjectDynamicLoadComponent, IPackageRestoreService
+    internal partial class PackageRestoreService : AbstractMultiLifetimeComponent<PackageRestoreService.PackageRestoreServiceInstance>, IProjectDynamicLoadComponent, IPackageRestoreService
     {
         private readonly UnconfiguredProject _project;
         private readonly IPackageRestoreUnconfiguredInputDataSource _dataSource;
@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         private IBroadcastBlock<IProjectVersionedValue<RestoreData>>? _broadcastBlock;
 
         [ImportingConstructor]
-        public PackageRestoreInitiator(
+        public PackageRestoreService(
             UnconfiguredProject project,
             IPackageRestoreUnconfiguredInputDataSource dataSource,
             IProjectThreadingService threadingService,
@@ -61,9 +61,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             }
         }
 
-        protected override PackageRestoreInitiatorInstance CreateInstance()
+        protected override PackageRestoreServiceInstance CreateInstance()
         {
-            return new PackageRestoreInitiatorInstance(
+            return new PackageRestoreServiceInstance(
                 _project,
                 _dataSource,
                 _threadingService,
