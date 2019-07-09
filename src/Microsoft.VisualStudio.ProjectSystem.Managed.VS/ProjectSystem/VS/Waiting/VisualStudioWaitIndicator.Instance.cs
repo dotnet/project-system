@@ -97,11 +97,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
                     }
                     catch (OperationCanceledException)
                     {
+                        // TODO track https://github.com/dotnet/roslyn/issues/37069 regarding these suppressions
+#pragma warning disable CS8653
                         return (WaitIndicatorResult.Canceled, default);
+#pragma warning restore CS8653
                     }
                     catch (AggregateException aggregate) when (aggregate.InnerExceptions.All(e => e is OperationCanceledException))
                     {
+#pragma warning disable CS8653
                         return (WaitIndicatorResult.Canceled, default);
+#pragma warning restore CS8653
                     }
                 }
             }
