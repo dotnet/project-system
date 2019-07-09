@@ -98,8 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                     return lastWriteTimeUtc;
                 }
 
-                // No assets file in the project, or the file wasn't included 
-                // as part of the <AdditionalDesignTimeBuildInput> item
+                // The file wasn't included as part of the <AdditionalDesignTimeBuildInput> item
                 return DateTime.MinValue;
             }
 
