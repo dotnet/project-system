@@ -12,7 +12,7 @@ using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
 #nullable disable
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS
+namespace Microsoft.VisualStudio.ProjectSystem
 {
     [Export(typeof(IFileWatchDataSource))]
     [AppliesTo(ProjectCapability.DotNetLanguageService)]
