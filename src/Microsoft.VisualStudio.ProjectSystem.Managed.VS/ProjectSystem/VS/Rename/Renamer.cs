@@ -26,6 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly IUnconfiguredProjectTasksService _unconfiguredProjectTasksService;
         private readonly Workspace _workspace;
+        private readonly IVsService<Shell.Interop.SDTE, EnvDTE.DTE> _dte;
         private readonly IUserNotificationServices _userNotificationServices;
         private readonly IEnvironmentOptions _environmentOptions;
         private readonly IRoslynServices _roslynServices;
@@ -36,18 +37,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         internal Renamer(IUnconfiguredProjectVsServices projectVsServices,
                          IUnconfiguredProjectTasksService unconfiguredProjectTasksService,
                          VisualStudioWorkspace workspace,
+                         IVsService<Shell.Interop.SDTE, EnvDTE.DTE> dte,
                          IEnvironmentOptions environmentOptions,
                          IUserNotificationServices userNotificationServices,
                          IRoslynServices roslynServices,
                          IWaitIndicator waitService,
                          IRefactorNotifyService refactorNotifyService)
-            : this(projectVsServices, unconfiguredProjectTasksService, workspace as Workspace, environmentOptions, userNotificationServices, roslynServices, waitService, refactorNotifyService)
+            : this(projectVsServices, unconfiguredProjectTasksService, workspace as Workspace, dte, environmentOptions, userNotificationServices, roslynServices, waitService, refactorNotifyService)
         {
         }
 
         internal Renamer(IUnconfiguredProjectVsServices projectVsServices,
                          IUnconfiguredProjectTasksService unconfiguredProjectTasksService,
                          Workspace workspace,
+                         IVsService<Shell.Interop.SDTE, EnvDTE.DTE> dte,
                          IEnvironmentOptions environmentOptions,
                          IUserNotificationServices userNotificationServices,
                          IRoslynServices roslynServices,
@@ -57,6 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             _projectVsServices = projectVsServices;
             _unconfiguredProjectTasksService = unconfiguredProjectTasksService;
             _workspace = workspace;
+            _dte = dte;
             _environmentOptions = environmentOptions;
             _userNotificationServices = userNotificationServices;
             _roslynServices = roslynServices;
@@ -108,9 +112,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
             // Try and apply the changes to the current solution
             await _projectVsServices.ThreadingService.SwitchToUIThread();
+            string renameOperationName = string.Format(CultureInfo.CurrentCulture, VSResources.Renaming_Type_from_0_to_1, oldName, newName);
             var (result, renamedSolutionApplied) = _waitService.WaitForAsyncFunctionWithResult(
                 title: VSResources.Renaming_Type,
-                message: string.Format(CultureInfo.CurrentCulture, VSResources.Renaming_Type_from_0_to_1, oldName, newName),
+                message: renameOperationName,
                 allowCancel: true,
                 async token =>
                 {
@@ -124,21 +129,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
                         string rqName = RQName.From(symbol);
                         IEnumerable<ProjectChanges> changes = renamedSolution.GetChanges(GetCurrentProject().Solution).GetProjectChanges();
-                        
+
                         // Notify other VS features that symbol is about to be renamed
                         await NotifyBeforeRename(newName, rqName, changes);
 
                         // Try and apply the changes to the current solution
                         token.ThrowIfCancellationRequested();
-                        if (_roslynServices.ApplyChangesToSolution(renamedSolution.Workspace, renamedSolution))
+                        bool applyChangesSucceeded = false;
+                        using (var undo = await UndoTransaction.CreateAsync(_dte, _projectVsServices.ThreadingService, renameOperationName, token))
+                        {
+                            applyChangesSucceeded = _roslynServices.ApplyChangesToSolution(renamedSolution.Workspace, renamedSolution);
+                        }
+
+                        if (applyChangesSucceeded)
                         {
                             // Notify other VS features that symbol has been renamed
                             await NotifyAfterRename(newName, rqName, changes);
-
-                            return true;
                         }
 
-                        return false;
+                        return applyChangesSucceeded;
                     });
                 });
 
@@ -166,6 +175,53 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 }
 
                 return null;
+            }
+        }
+
+        private sealed class UndoTransaction : IDisposable
+        {
+            private readonly string _renameOperationName;
+            private readonly IVsService<Shell.Interop.SDTE, EnvDTE.DTE> _dte;
+            private readonly IProjectThreadingService _threadingService;
+            private bool _shouldClose = true;
+
+            private UndoTransaction(string renameOperationName, IVsService<Shell.Interop.SDTE, EnvDTE.DTE> dte, IProjectThreadingService threadingService)
+            {
+                _renameOperationName = renameOperationName;
+                _dte = dte;
+                _threadingService = threadingService;
+            }
+
+            internal static async Task<UndoTransaction> CreateAsync(IVsService<Shell.Interop.SDTE, EnvDTE.DTE> dte,
+                                                                    IProjectThreadingService threadingService,
+                                                                    string renameOperationName,
+                                                                    CancellationToken token = default)
+            {
+                var undo = new UndoTransaction(renameOperationName, dte, threadingService);
+                await undo.StartUndoAsync(token);
+                return undo;
+            }
+
+            private async Task StartUndoAsync(CancellationToken token = default)
+            {
+                EnvDTE.DTE dte = await _dte.GetValueAsync(token);
+                if (dte.UndoContext.IsOpen)
+                {
+                    _shouldClose = false;
+                }
+                dte.UndoContext.Open(_renameOperationName, false);
+            }
+
+            public void Dispose()
+            {
+                if (_shouldClose)
+                {
+                    _threadingService.ExecuteSynchronously(async () =>
+                    {
+                        EnvDTE.DTE dte = await _dte.GetValueAsync();
+                        dte.UndoContext.Close();
+                    });
+                }
             }
         }
 
