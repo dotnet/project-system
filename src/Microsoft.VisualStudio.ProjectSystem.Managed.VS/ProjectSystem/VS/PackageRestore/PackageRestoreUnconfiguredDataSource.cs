@@ -11,15 +11,13 @@ using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
 using NuGet.SolutionRestoreManager;
 
-using RestoreInfo = Microsoft.VisualStudio.ProjectSystem.IProjectVersionedValue<NuGet.SolutionRestoreManager.IVsProjectRestoreInfo2>;
-
-#nullable disable
+using RestoreInfo = Microsoft.VisualStudio.ProjectSystem.IProjectVersionedValue<Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.UnconfiguredProjectRestoreUpdate>;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
     [Export(typeof(IPackageRestoreUnconfiguredDataSource))]
     [AppliesTo(ProjectCapability.PackageReferences)]
-    internal partial class PackageRestoreUnconfiguredDataSource : ChainedProjectValueDataSourceBase<IVsProjectRestoreInfo2>, IPackageRestoreUnconfiguredDataSource
+    internal partial class PackageRestoreUnconfiguredDataSource : ChainedProjectValueDataSourceBase<UnconfiguredProjectRestoreUpdate>, IPackageRestoreUnconfiguredDataSource
     {
         private readonly UnconfiguredProject _project;
         private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
@@ -45,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             // active configuration changes, we should react to it, and publish data from the new set of implicitly active configurations.
             var disposables = new DisposableBag();
 
-            var packageRestoreConfiguredSource = new UnwrapCollectionChainedProjectValueDataSource<IReadOnlyCollection<ConfiguredProject>, ProjectRestoreUpdate>(
+            var packageRestoreConfiguredSource = new UnwrapCollectionChainedProjectValueDataSource<IReadOnlyCollection<ConfiguredProject>, ConfiguredProjectRestoreUpdate>(
                 _project.Services, 
                 projects => projects.Select(project => GetProjectRestoreDataSource(project)),
                 includeSourceVersions: true);
@@ -70,34 +68,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             return disposables;
         }
 
-        private IVsProjectRestoreInfo2 MergeRestoreData(IReadOnlyCollection<ProjectRestoreUpdate> updates)
+        private UnconfiguredProjectRestoreUpdate MergeRestoreData(IReadOnlyCollection<ConfiguredProjectRestoreUpdate> updates)
         {
-            // We have no active configuration
-            if (updates.Count == 0)
-                return null;
+            // If there are no updates, we have no active configurations
+            ProjectRestoreInfo? restoreInfo = null;
+            if (updates.Count != 0)
+            {
+                // We need to combine the snapshots from each implicitly active configuration (ie per TFM), 
+                // resolving any conflicts, which we'll report to the user.
+                string msbuildProjectExtensionsPath = ResolveMSBuildProjectExtensionsPathConflicts(updates);
+                string originalTargetFrameworks = ResolveOriginalTargetFrameworksConflicts(updates);
+                IVsReferenceItems toolReferences = ResolveToolReferenceConflicts(updates);
+                IVsTargetFrameworks2 targetFrameworks = GetAllTargetFrameworks(updates);
 
-            // We need to combine the snapshots from each implicitly active configuration (ie per TFM), 
-            // resolving any conflicts, which we'll report to the user. 
+                restoreInfo = new ProjectRestoreInfo(
+                    msbuildProjectExtensionsPath,
+                    originalTargetFrameworks,
+                    targetFrameworks,
+                    toolReferences);
+            }
 
-            string msbuildProjectExtensionsPath = ResolveMSBuildProjectExtensionsPathConflicts(updates);
-            string originalTargetFrameworks = ResolveOriginalTargetFrameworksConflicts(updates);
-            IVsReferenceItems toolReferences = ResolveToolReferenceConflicts(updates);
-            IVsTargetFrameworks2 targetFrameworks = GetAllTargetFrameworks(updates);
-
-            return new ProjectRestoreInfo(
-                msbuildProjectExtensionsPath,
-                originalTargetFrameworks,
-                targetFrameworks,
-                toolReferences);
+            return new UnconfiguredProjectRestoreUpdate(restoreInfo, updates);
         }
 
-        private string ResolveMSBuildProjectExtensionsPathConflicts(IEnumerable<ProjectRestoreUpdate> updates)
+        private string ResolveMSBuildProjectExtensionsPathConflicts(IEnumerable<ConfiguredProjectRestoreUpdate> updates)
         {
             // All configurations need to agree on where the project-wide asset file is located.
             return ResolvePropertyConflicts(updates, u => u.BaseIntermediatePath, NuGetRestore.MSBuildProjectExtensionsPathProperty);
         }
 
-        private string ResolveOriginalTargetFrameworksConflicts(IEnumerable<ProjectRestoreUpdate> updates)
+        private string ResolveOriginalTargetFrameworksConflicts(IEnumerable<ConfiguredProjectRestoreUpdate> updates)
         {
             // All configurations need to agree on what the overall "user-written" frameworks for the 
             // project so that conditions in the project-wide 'nuget.g.props' and 'nuget.g.targets' 
@@ -105,10 +105,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             return ResolvePropertyConflicts(updates, u => u.OriginalTargetFrameworks, NuGetRestore.TargetFrameworksProperty);
         }
 
-        private string ResolvePropertyConflicts(IEnumerable<ProjectRestoreUpdate> updates, Func<IVsProjectRestoreInfo2, string> propertyGetter, string propertyName)
+        private string ResolvePropertyConflicts(IEnumerable<ConfiguredProjectRestoreUpdate> updates, Func<IVsProjectRestoreInfo2, string> propertyGetter, string propertyName)
         {
             // Always use the first TFM listed in project to provide consistent behavior
-            ProjectRestoreUpdate update = updates.First();
+            ConfiguredProjectRestoreUpdate update = updates.First();
             string propertyValue = propertyGetter(update.RestoreInfo);
 
             // Every config should had same value
@@ -124,7 +124,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                         VSResources.Restore_PropertyWithInconsistentValues,
                         propertyName,
                         propertyValue,
-                        update.ProjectConfiguration)),
+                        update.Project.ProjectConfiguration)),
                     ProjectFaultSeverity.LimitedFunctionality,
                     ContainingProject);
             }
@@ -132,11 +132,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             return propertyValue;
         }
 
-        private IVsReferenceItems ResolveToolReferenceConflicts(IEnumerable<ProjectRestoreUpdate> updates)
+        private IVsReferenceItems ResolveToolReferenceConflicts(IEnumerable<ConfiguredProjectRestoreUpdate> updates)
         {
             var references = new Dictionary<string, IVsReferenceItem>(StringComparers.ItemNames);
 
-            foreach (ProjectRestoreUpdate update in updates)
+            foreach (ConfiguredProjectRestoreUpdate update in updates)
             {
                 foreach (IVsReferenceItem reference in update.RestoreInfo.ToolReferences)
                 {
@@ -149,17 +149,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
             return new ReferenceItems(references.Values);
         }
-        private IVsTargetFrameworks2 GetAllTargetFrameworks(IEnumerable<ProjectRestoreUpdate> updates)
+        private IVsTargetFrameworks2 GetAllTargetFrameworks(IEnumerable<ConfiguredProjectRestoreUpdate> updates)
         {
             var frameworks = new List<IVsTargetFrameworkInfo2>();
 
-            foreach (ProjectRestoreUpdate update in updates)
+            foreach (ConfiguredProjectRestoreUpdate update in updates)
             {
                 Assumes.True(update.RestoreInfo.TargetFrameworks.Count == 1);
 
                 IVsTargetFrameworkInfo2 framework = update.RestoreInfo.TargetFrameworks.Item(0);
 
-                if (ValidateTargetFramework(update.ProjectConfiguration, framework))
+                if (ValidateTargetFramework(update.Project.ProjectConfiguration, framework))
                 {
                     frameworks.Add(framework);
                 }
@@ -204,14 +204,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             return true;
         }
 
-        private IProjectValueDataSource<ProjectRestoreUpdate> GetProjectRestoreDataSource(ConfiguredProject project)
+        private IProjectValueDataSource<ConfiguredProjectRestoreUpdate> GetProjectRestoreDataSource(ConfiguredProject project)
         {
             // Get the individual configuration's view of the restore data
             IPackageRestoreConfiguredDataSource dataSource = project.Services.ExportProvider.GetExportedValue<IPackageRestoreConfiguredDataSource>();
 
             // Wrap it in a data source that will drop project version and identity versions so as they will never agree
             // on these versions as they are unique to each configuration. They'll be consistent by all other versions.
-            return new DropConfiguredProjectVersionDataSource<ProjectRestoreUpdate>(_project.Services, dataSource);
+            return new DropConfiguredProjectVersionDataSource<ConfiguredProjectRestoreUpdate>(_project.Services, dataSource);
         }
     }
 }

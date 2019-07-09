@@ -10,8 +10,6 @@ using Microsoft.VisualStudio.Threading;
 
 using NuGet.SolutionRestoreManager;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
     internal partial class PackageRestoreInitiator
@@ -24,8 +22,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             private readonly IVsSolutionRestoreService3 _solutionRestoreService;
             private readonly IProjectLogger _logger;
 
-            private IDisposable _subscription;
-            private IVsProjectRestoreInfo2 _latestValue;
+            private IDisposable? _subscription;
+            private IVsProjectRestoreInfo2? _latestValue;
 
             public PackageRestoreInitiatorInstance(
                 UnconfiguredProject project,
@@ -62,22 +60,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 return Task.CompletedTask;
             }
 
-            internal async Task OnRestoreInfoChangedAsync(IProjectVersionedValue<IVsProjectRestoreInfo2> e)
+            internal async Task OnRestoreInfoChangedAsync(IProjectVersionedValue<UnconfiguredProjectRestoreUpdate> e)
             {
+                UnconfiguredProjectRestoreUpdate update = e.Value;
+                IVsProjectRestoreInfo2? restoreInfo = e.Value.RestoreInfo;
+
                 // Restore service always does work regardless of whether the value we pass them to actually
                 // contains changes, only nominate if there are any.
-                if (RestoreComparer.RestoreInfos.Equals(_latestValue, e.Value))
+                if (RestoreComparer.RestoreInfos.Equals(_latestValue, restoreInfo))
                     return;
 
                 // No configurations - likely during project close
-                if (e.Value == null)
+                if (restoreInfo == null)
                     return;
 
-                _latestValue = e.Value;
+                _latestValue = restoreInfo;
 
                 JoinableTask joinableTask = JoinableFactory.RunAsync(() =>
                 {
-                    return NominateProjectRestoreAsync(e.Value, _projectAsynchronousTasksService.UnloadCancellationToken);
+                    return NominateProjectRestoreAsync(restoreInfo, _projectAsynchronousTasksService.UnloadCancellationToken);
                 });
 
                 _projectAsynchronousTasksService.RegisterAsyncTask(joinableTask,

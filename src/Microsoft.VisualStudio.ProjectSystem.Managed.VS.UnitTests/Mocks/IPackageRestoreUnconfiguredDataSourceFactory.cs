@@ -2,9 +2,8 @@
 
 using System;
 using System.Threading.Tasks.Dataflow;
-using Moq;
 
-using NuGet.SolutionRestoreManager;
+using Moq;
 
 #nullable disable
 
@@ -14,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
     {
         public static IPackageRestoreUnconfiguredDataSource Create()
         {
-            var sourceBlock = Mock.Of<IReceivableSourceBlock<IProjectVersionedValue<IVsProjectRestoreInfo2>>>();
+            var sourceBlock = Mock.Of<IReceivableSourceBlock<IProjectVersionedValue<UnconfiguredProjectRestoreUpdate>>>();
 
             // Moq gets really confused with mocking IProjectValueDataSource<IVsProjectRestoreInfo2>.SourceBlock
             // because of the generic/non-generic version of it. Avoid it.
@@ -23,12 +22,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
         private class PackageRestoreUnconfiguredDataSource : IPackageRestoreUnconfiguredDataSource
         {
-            public PackageRestoreUnconfiguredDataSource(IReceivableSourceBlock<IProjectVersionedValue<IVsProjectRestoreInfo2>> sourceBlock)
+            public PackageRestoreUnconfiguredDataSource(IReceivableSourceBlock<IProjectVersionedValue<UnconfiguredProjectRestoreUpdate>> sourceBlock)
             {
                 SourceBlock = sourceBlock;
             }
 
-            public IReceivableSourceBlock<IProjectVersionedValue<IVsProjectRestoreInfo2>> SourceBlock { get; }
+            public IReceivableSourceBlock<IProjectVersionedValue<UnconfiguredProjectRestoreUpdate>> SourceBlock { get; }
 
             public NamedIdentity DataSourceKey { get; }
 

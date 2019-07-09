@@ -7,7 +7,6 @@
       xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
     <DataSource HasConfigurationCondition="False"
-                ItemType="PackageReference"
                 MSBuildTarget="CollectPackageReferences"
                 Persistence="ProjectFile"
                 SourceOfDefaultValue="AfterContext"

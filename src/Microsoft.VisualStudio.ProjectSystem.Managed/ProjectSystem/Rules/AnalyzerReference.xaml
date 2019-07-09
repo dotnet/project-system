@@ -7,7 +7,6 @@
       xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
     <DataSource HasConfigurationCondition="False"
-                ItemType="Analyzer"
                 MSBuildTarget="CollectAnalyzersDesignTime"
                 Persistence="ProjectFile"
                 SourceOfDefaultValue="AfterContext"

@@ -2,8 +2,6 @@
 
 using NuGet.SolutionRestoreManager;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
     /// <summary>
@@ -14,11 +12,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
     {
         public ProjectRestoreInfo(string msbuildProjectExtensionsPath, string originalTargetFrameworks, IVsTargetFrameworks2 targetFrameworks, IVsReferenceItems toolReferences)
         {
-            Requires.NotNull(msbuildProjectExtensionsPath, nameof(msbuildProjectExtensionsPath));
-            Requires.NotNull(originalTargetFrameworks, nameof(originalTargetFrameworks));
-            Requires.NotNull(targetFrameworks, nameof(targetFrameworks));
-            Requires.NotNull(toolReferences, nameof(toolReferences));
-
             MSBuildProjectExtensionsPath = msbuildProjectExtensionsPath;
             OriginalTargetFrameworks = originalTargetFrameworks;
             TargetFrameworks = targetFrameworks;
