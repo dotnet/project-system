@@ -9,18 +9,18 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 using NuGet.SolutionRestoreManager;
 
-using RestoreUpdate = Microsoft.VisualStudio.ProjectSystem.IProjectVersionedValue<Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.ConfiguredProjectRestoreUpdate>;
+using RestoreUpdate = Microsoft.VisualStudio.ProjectSystem.IProjectVersionedValue<Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.PackageRestoreConfiguredInput>;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
     /// <summary>
-    ///     Provides an implementation of <see cref="IPackageRestoreConfiguredDataSource"/> that combines evaluations results
+    ///     Provides an implementation of <see cref="IPackageRestoreConfiguredInputDataSource"/> that combines evaluations results
     ///     of <see cref="DotNetCliToolReference"/>, <see cref="ProjectReference"/> and project build versions of <see cref="PackageReference"/> 
-    ///     into <see cref="ConfiguredProjectRestoreUpdate"/>.
+    ///     into <see cref="PackageRestoreConfiguredInput"/>.
     /// </summary>
-    [Export(typeof(IPackageRestoreConfiguredDataSource))]
+    [Export(typeof(IPackageRestoreConfiguredInputDataSource))]
     [AppliesTo(ProjectCapability.PackageReferences)]
-    internal partial class PackageRestoreConfiguredDataSource : ChainedProjectValueDataSourceBase<ConfiguredProjectRestoreUpdate>, IPackageRestoreConfiguredDataSource
+    internal partial class PackageRestoreConfiguredInputDataSource : ChainedProjectValueDataSourceBase<PackageRestoreConfiguredInput>, IPackageRestoreConfiguredInputDataSource
     {
         private static readonly ImmutableHashSet<string> s_rules = Empty.OrdinalIgnoreCaseStringSet
                                                                         .Add(NuGetRestore.SchemaName)                       // Evaluation
@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         private readonly IProjectSubscriptionService _projectSubscriptionService;
 
         [ImportingConstructor]
-        public PackageRestoreConfiguredDataSource(ConfiguredProject project, IProjectSubscriptionService projectSubscriptionService)
+        public PackageRestoreConfiguredInputDataSource(ConfiguredProject project, IProjectSubscriptionService projectSubscriptionService)
             : base(project.Services, synchronousDisposal: true, registerDataSource: false)
         {
             _project = project;
@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
             // Transform the changes from evaluation/design-time build -> restore data
             DisposableValue<ISourceBlock<RestoreUpdate>> transformBlock = source.SourceBlock
-                                                                                .TransformWithNoDelta(update => update.Derive(u => CreateRestoreUpdate(_project, u.CurrentState)),
+                                                                                .TransformWithNoDelta(update => update.Derive(u => CreateRestoreInput(_project, u.CurrentState)),
                                                                                                       suppressVersionOnlyUpdates: false,    // We need to coordinate these at the unconfigured-level
                                                                                                       ruleNames: s_rules);
 
@@ -67,11 +67,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             return transformBlock;
         }
 
-        private ConfiguredProjectRestoreUpdate CreateRestoreUpdate(ConfiguredProject project, IImmutableDictionary<string, IProjectRuleSnapshot> update)
+        private PackageRestoreConfiguredInput CreateRestoreInput(ConfiguredProject project, IImmutableDictionary<string, IProjectRuleSnapshot> update)
         {
             IVsProjectRestoreInfo2 restoreInfo = RestoreBuilder.ToProjectRestoreInfo(update);
 
-            return new ConfiguredProjectRestoreUpdate(project, restoreInfo);
+            return new PackageRestoreConfiguredInput(project, restoreInfo);
         }
     }
 }
