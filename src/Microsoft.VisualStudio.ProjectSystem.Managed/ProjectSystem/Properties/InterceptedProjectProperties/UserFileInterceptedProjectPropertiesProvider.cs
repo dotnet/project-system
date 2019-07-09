@@ -4,8 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     [Export("UserFileWithInterception", typeof(IProjectPropertiesProvider))]

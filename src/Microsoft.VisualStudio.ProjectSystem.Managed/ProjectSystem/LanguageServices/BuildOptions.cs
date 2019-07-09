@@ -5,13 +5,11 @@ using System.Reflection;
 
 using Microsoft.CodeAnalysis;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     internal class BuildOptions
     {
-        private static readonly PropertyInfo s_analyzerConfigPathsProperty = typeof(CommandLineArguments).GetProperty("AnalyzerConfigPaths");
+        private static readonly PropertyInfo? s_analyzerConfigPathsProperty = typeof(CommandLineArguments).GetProperty("AnalyzerConfigPaths");
 
         public BuildOptions(
             ImmutableArray<CommandLineSourceFile> sourceFiles,

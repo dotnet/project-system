@@ -2,13 +2,10 @@
 
 using System;
 using System.ComponentModel.Composition;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.Threading;
-
-#nullable disable
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
@@ -20,8 +17,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private readonly IProjectAsynchronousTasksService _tasksService;
         private readonly IProjectThreadingService _threadingService;
         private readonly ILoadedInHostListener _loadedInHostListener;
-        private readonly TaskCompletionSource<object> _projectLoadedInHost = new TaskCompletionSource<object>();
-        private readonly TaskCompletionSource<object> _prioritizedProjectLoadedInHost = new TaskCompletionSource<object>();
+        private readonly TaskCompletionSource<object?> _projectLoadedInHost = new TaskCompletionSource<object?>();
+        private readonly TaskCompletionSource<object?> _prioritizedProjectLoadedInHost = new TaskCompletionSource<object?>();
         private readonly JoinableTaskCollection _prioritizedTasks;
 
         [ImportingConstructor]
@@ -49,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
             else
             {
-                _projectLoadedInHost.TrySetResult(false);
+                _projectLoadedInHost.TrySetResult(null);
                 return Task.CompletedTask;
             }
         }

@@ -4,8 +4,6 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Composition;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     /// <summary>
@@ -23,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="project"/> is <see langword="null"/>.
         /// </exception>
-        Task<IWorkspaceProjectContextAccessor> CreateProjectContextAsync(ConfiguredProject project);
+        Task<IWorkspaceProjectContextAccessor?> CreateProjectContextAsync(ConfiguredProject project);
 
         /// <summary>
         ///     Release the <see cref="IWorkspaceProjectContextAccessor"/>.

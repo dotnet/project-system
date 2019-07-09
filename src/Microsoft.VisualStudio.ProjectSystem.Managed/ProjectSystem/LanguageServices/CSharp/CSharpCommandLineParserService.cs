@@ -5,8 +5,6 @@ using System.ComponentModel.Composition;
 
 using Microsoft.CodeAnalysis.CSharp;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.CSharp
 {
     [Export(typeof(ICommandLineParserService))]

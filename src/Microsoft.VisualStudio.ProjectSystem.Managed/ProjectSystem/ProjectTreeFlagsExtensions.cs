@@ -1,8 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
@@ -51,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             ProjectTreeFlags newFlags = source.Except(flags);
 
-            return ((source.Count - newFlags.Count)) == flags.Count;
+            return (source.Count - newFlags.Count) == flags.Count;
         }
     }
 }

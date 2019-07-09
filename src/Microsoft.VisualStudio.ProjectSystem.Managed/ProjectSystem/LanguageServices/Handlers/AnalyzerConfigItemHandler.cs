@@ -4,9 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Reflection;
-using Microsoft.VisualStudio.ProjectSystem.Logging;
 
-#nullable disable
+using Microsoft.VisualStudio.ProjectSystem.Logging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
@@ -25,8 +24,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         private bool _triedToRetrieveAddAnalyzerConfigFileMethod = false;
         private bool _triedToRetrieveRemoveAnalyzerConfigFileMethod = false;
-        private MethodInfo _addAnalyzerConfigFileMethod;
-        private MethodInfo _removeAnalyzerConfigFileMethod;
+        private MethodInfo? _addAnalyzerConfigFileMethod;
+        private MethodInfo? _removeAnalyzerConfigFileMethod;
 
         [ImportingConstructor]
         public AnalyzerConfigItemHandler(UnconfiguredProject project)

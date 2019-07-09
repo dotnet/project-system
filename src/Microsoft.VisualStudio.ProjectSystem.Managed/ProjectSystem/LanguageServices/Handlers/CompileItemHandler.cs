@@ -4,13 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 
 using Microsoft.VisualStudio.ProjectSystem.Logging;
 using Microsoft.VisualStudio.ProjectSystem.Rename;
-
-#nullable disable
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
@@ -19,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     ///     to the compiler during design-time builds.
     /// </summary>
     [Export(typeof(IWorkspaceContextHandler))]
-    internal partial class CompileItemHandler : AbstractEvaluationCommandLineHandler, IProjectEvaluationHandler, ICommandLineHandler, IProjectUpdatedHandler
+    internal class CompileItemHandler : AbstractEvaluationCommandLineHandler, IProjectEvaluationHandler, ICommandLineHandler, IProjectUpdatedHandler
     {
         private readonly UnconfiguredProject _project;
 
@@ -31,6 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         }
 
         [ImportMany]
+        [NotNull, AllowNull]
         private readonly IEnumerable<IFileRenameHandler> _fileRenameHandlers = null;
 
         public string ProjectEvaluationRule
@@ -79,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         protected override void AddToContext(string fullPath, IImmutableDictionary<string, string> metadata, bool isActiveContext, IProjectLogger logger)
         {
-            string[] folderNames = FileItemServices.GetLogicalFolderNames(Path.GetDirectoryName(_project.FullPath), fullPath, metadata);
+            string[]? folderNames = FileItemServices.GetLogicalFolderNames(Path.GetDirectoryName(_project.FullPath), fullPath, metadata);
 
             logger.WriteLine("Adding source file '{0}'", fullPath);
             Context.AddSourceFile(fullPath, isInCurrentContext: isActiveContext, folderNames: folderNames);

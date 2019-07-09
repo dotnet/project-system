@@ -3,8 +3,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     /// <summary>
@@ -31,25 +29,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public virtual Task DeleteDirectPropertiesAsync()
             => DelegatedProperties.DeleteDirectPropertiesAsync();
 
-        public virtual Task DeletePropertyAsync(string propertyName, IReadOnlyDictionary<string, string> dimensionalConditions = null)
+        public virtual Task DeletePropertyAsync(string propertyName, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
             => DelegatedProperties.DeletePropertyAsync(propertyName, dimensionalConditions);
 
         public virtual Task<IEnumerable<string>> GetDirectPropertyNamesAsync()
             => DelegatedProperties.GetDirectPropertyNamesAsync();
 
-        public virtual Task<string> GetEvaluatedPropertyValueAsync(string propertyName)
+        public virtual Task<string?> GetEvaluatedPropertyValueAsync(string propertyName)
             => DelegatedProperties.GetEvaluatedPropertyValueAsync(propertyName);
 
         public virtual Task<IEnumerable<string>> GetPropertyNamesAsync()
             => DelegatedProperties.GetPropertyNamesAsync();
 
-        public virtual Task<string> GetUnevaluatedPropertyValueAsync(string propertyName)
+        public virtual Task<string?> GetUnevaluatedPropertyValueAsync(string propertyName)
             => DelegatedProperties.GetUnevaluatedPropertyValueAsync(propertyName);
 
         public virtual Task<bool> IsValueInheritedAsync(string propertyName)
             => DelegatedProperties.IsValueInheritedAsync(propertyName);
 
-        public virtual Task SetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IReadOnlyDictionary<string, string> dimensionalConditions = null)
+        public virtual Task SetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
             => DelegatedProperties.SetPropertyValueAsync(propertyName, unevaluatedPropertyValue, dimensionalConditions);
     }
 }

@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 foreach (string removedItem in projectChange.Difference.RemovedItems)
                 {
                     string dependencyId = resolved
-                        ? projectChange.Before.GetProjectItemProperties(removedItem).GetStringProperty(ResolvedAssemblyReference.OriginalItemSpecProperty) ?? removedItem
+                        ? projectChange.Before.GetProjectItemProperties(removedItem)!.GetStringProperty(ResolvedAssemblyReference.OriginalItemSpecProperty) ?? removedItem
                         : removedItem;
 
                     if (shouldProcess(dependencyId))
@@ -109,10 +109,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
                 IDependencyModel CreateDependencyModelForRule(string itemSpec, IProjectRuleSnapshot projectRuleSnapshot)
                 {
-                    IImmutableDictionary<string, string> properties = projectRuleSnapshot.GetProjectItemProperties(itemSpec);
+                    IImmutableDictionary<string, string> properties = projectRuleSnapshot.GetProjectItemProperties(itemSpec)!;
 
                     string originalItemSpec = resolved
-                        ? properties.GetStringProperty(ResolvedAssemblyReference.OriginalItemSpecProperty)
+                        ? properties.GetStringProperty(ResolvedAssemblyReference.OriginalItemSpecProperty) ?? itemSpec
                         : itemSpec;
 
                     bool isImplicit = properties.GetBoolProperty(ProjectItemMetadata.IsImplicitlyDefined) ?? false;
