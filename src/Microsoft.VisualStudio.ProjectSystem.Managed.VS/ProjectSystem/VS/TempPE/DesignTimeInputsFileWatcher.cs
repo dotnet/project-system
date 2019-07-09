@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
     /// </summary>
     [Export(typeof(IDesignTimeInputsFileWatcher))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
-    internal class DesignTimeInputsFileWatcher : ProjectValueDataSourceBase<string>, IVsFreeThreadedFileChangeEvents2, IDesignTimeInputsFileWatcher
+    internal class DesignTimeInputsFileWatcher : ProjectValueDataSourceBase<string[]>, IVsFreeThreadedFileChangeEvents2, IDesignTimeInputsFileWatcher
     {
         private readonly IProjectThreadingService _threadingService;
         private readonly IDesignTimeInputsDataSource _designTimeInputsDataSource;
@@ -33,12 +33,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         /// <summary>
         /// The block that receives updates from the active tree provider.
         /// </summary>
-        private IBroadcastBlock<IProjectVersionedValue<string>>? _broadcastBlock;
+        private IBroadcastBlock<IProjectVersionedValue<string[]>>? _broadcastBlock;
 
         /// <summary>
         /// The public facade for the broadcast block.
         /// </summary>
-        private IReceivableSourceBlock<IProjectVersionedValue<string>>? _publicBlock;
+        private IReceivableSourceBlock<IProjectVersionedValue<string[]>>? _publicBlock;
 
         [ImportingConstructor]
         public DesignTimeInputsFileWatcher(ConfiguredProject project,
@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         public override IComparable DataSourceVersion => _version;
 
-        public override IReceivableSourceBlock<IProjectVersionedValue<string>> SourceBlock
+        public override IReceivableSourceBlock<IProjectVersionedValue<string[]>> SourceBlock
         {
             get
             {
@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             JoinUpstreamDataSources(_designTimeInputsDataSource);
 
-            _broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<string>>(nameFormat: nameof(DesignTimeInputsFileWatcher) + "Broadcast {1}");
+            _broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<string[]>>(nameFormat: nameof(DesignTimeInputsFileWatcher) + "Broadcast {1}");
             _publicBlock = _broadcastBlock.SafePublicize();
         }
 
@@ -106,6 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                     }
                 }
 
+                var newFiles = new List<string>();
                 // Now watch and output files that are new
                 foreach (string file in allFiles)
                 {
@@ -117,18 +118,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                         _fileWatcherCookies = _fileWatcherCookies.Add(file, cookie);
 
                         // Advise of an addition now
-                        PostToOutput(file);
+                        newFiles.Add(file);
                     }
+                }
+
+                if (newFiles.Count > 0)
+                {
+                    PostToOutput(newFiles.ToArray());
                 }
             });
         }
 
-        private void PostToOutput(string file)
+        private void PostToOutput(string[] file)
         {
             _version++;
             ImmutableDictionary<NamedIdentity, IComparable> dataSources = ImmutableDictionary<NamedIdentity, IComparable>.Empty.Add(DataSourceKey, DataSourceVersion);
 
-            _broadcastBlock.Post(new ProjectVersionedValue<string>(file, dataSources));
+            _broadcastBlock.Post(new ProjectVersionedValue<string[]>(file, dataSources));
         }
 
         protected override void Dispose(bool disposing)
@@ -156,10 +162,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         public int FilesChanged(uint cChanges, string[] rgpszFile, uint[] rggrfChange)
         {
-            for (int i = 0; i < cChanges; i++)
-            {
-                PostToOutput(rgpszFile[i]);
-            }
+            PostToOutput(rgpszFile);
 
             return HResult.OK;
         }
