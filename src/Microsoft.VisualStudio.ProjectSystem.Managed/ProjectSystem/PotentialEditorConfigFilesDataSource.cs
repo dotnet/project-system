@@ -14,7 +14,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
         }
 
-        public override string ItemRuleName => PotentialEditorConfigFiles.SchemaName;
+        public override string ItemSchemaName => PotentialEditorConfigFiles.SchemaName;
+
+        public override string FullPathProperty => PotentialEditorConfigFiles.FullPathProperty;
 
         public override FileWatchChangeKinds FileWatchChangeKinds => FileWatchChangeKinds.Added | FileWatchChangeKinds.Removed;
     }

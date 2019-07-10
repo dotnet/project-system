@@ -24,7 +24,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _projectSubscriptionService = projectSubscriptionService;
         }
 
-        public abstract string ItemRuleName
+        public abstract string ItemSchemaName
+        {
+            get;
+        }
+
+        public abstract string FullPathProperty
         {
             get;
         }
@@ -47,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             DisposableValue<ISourceBlock<IProjectVersionedValue<FileWatchData>>> transformBlock = source.SourceBlock
                                                                                                         .TransformWithNoDelta(update => update.Derive(u => CreateFileWatch(u.CurrentState)),
                                                                                                             suppressVersionOnlyUpdates: true,
-                                                                                                            ruleNames: new[] { ItemRuleName });
+                                                                                                            ruleNames: new[] { ItemSchemaName });
 
             // Set the link up so that we publish changes to target block
             transformBlock.Value.LinkTo(targetBlock, DataflowOption.PropagateCompletion);
@@ -61,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private FileWatchData CreateFileWatch(IImmutableDictionary<string, IProjectRuleSnapshot> update)
         {
-            IProjectRuleSnapshot snapshot = update.GetSnapshotOrEmpty(ItemRuleName);
+            IProjectRuleSnapshot snapshot = update.GetSnapshotOrEmpty(ItemSchemaName);
 
             var fullPaths = snapshot.Items.Select(item => item.Value.GetValueOrDefault(Compile.FullPathProperty))
                                           .Where(item => item != null)

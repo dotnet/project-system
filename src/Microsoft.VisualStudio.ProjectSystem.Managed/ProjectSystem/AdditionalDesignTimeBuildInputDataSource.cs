@@ -18,7 +18,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
         }
 
-        public override string ItemRuleName => AdditionalDesignTimeBuildInput.SchemaName;
+        public override string ItemSchemaName => AdditionalDesignTimeBuildInput.SchemaName;
+
+        public override string FullPathProperty => AdditionalDesignTimeBuildInput.FullPathProperty;
 
         public override FileWatchChangeKinds FileWatchChangeKinds => FileWatchChangeKinds.Added | FileWatchChangeKinds.Removed | FileWatchChangeKinds.Changed;
 
