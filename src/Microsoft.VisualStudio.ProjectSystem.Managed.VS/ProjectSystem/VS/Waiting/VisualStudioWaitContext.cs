@@ -111,7 +111,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
                 pfCanceled: out _);
         }
 
-        public void Dispose() => _dialog.EndWaitDialog(out _);
+        public void Dispose()
+        {
+            _dialog.EndWaitDialog(out _);
+            _cancellationTokenSource?.Dispose();
+        }
 
         private void OnCanceled()
         {
