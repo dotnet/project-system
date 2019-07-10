@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
                     return;
                 }
 
-                var ids = GetIdsForFiles(projectHierarchy, filePaths).ToArray();
+                uint[] ids = GetIdsForFiles(projectHierarchy, filePaths).ToArray();
 
                 refactorNotify.OnBeforeGlobalSymbolRenamed(cItemsAffected: (uint)ids.Length,
                                                            rgItemsAffected: ids,
@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
                     return;
                 }
 
-                var ids = GetIdsForFiles(projectHierarchy, filePaths).ToArray();
+                uint[] ids = GetIdsForFiles(projectHierarchy, filePaths).ToArray();
 
                 refactorNotify.OnGlobalSymbolRenamed(cItemsAffected: (uint)ids.Length,
                                                      rgItemsAffected: ids,
@@ -94,7 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
 
             private async Task<IVsHierarchy?> TryGetIVsHierarchyAsync(Project project)
             {
-                var solutionService = await _solutionService.GetValueAsync();
+                IVsSolution solutionService = await _solutionService.GetValueAsync();
                 if (solutionService.GetProjectOfUniqueName(project.UniqueName, out IVsHierarchy projectHierarchy) == HResult.OK)
                 {
                     return projectHierarchy;
@@ -105,7 +105,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
 
             private IEnumerable<uint> GetIdsForFiles(IVsHierarchy projectHierarchy, IEnumerable<string> filePaths)
             {
-                foreach (var filePath in filePaths)
+                foreach (string filePath in filePaths)
                 {
                     if (projectHierarchy.ParseCanonicalName(filePath, out uint id) == HResult.OK)
                     {
