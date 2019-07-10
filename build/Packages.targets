@@ -109,7 +109,6 @@
     <PackageReference Update="Microsoft.CodeAnalysis.BannedApiAnalyzers" Version="$(RoslynAnalyzersPackagesVersion)" />
     <PackageReference Update="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="$(RoslynAnalyzersPackagesVersion)" />
     <PackageReference Update="Text.Analyzers" Version="$(RoslynAnalyzersOldPackagesVersion)" />
-    <PackageReference Update="Microsoft.CodeQuality.Analyzers.Exp" Version="$(RoslynAnalyzersOldPackagesVersion)" />
     <PackageReference Update="Roslyn.Diagnostics.Analyzers" Version="$(RoslynAnalyzersOldPackagesVersion)" />
 
     <!-- NuGet -->
@@ -126,7 +125,7 @@
     <PackageReference Update="Newtonsoft.Json" Version="9.0.1"/>
 
     <!-- Tests -->
-    <PackageReference Update="Moq" Version="4.9.0"/>
+    <PackageReference Update="Moq" Version="4.12.0"/>
     <PackageReference Update="xunit" Version="$(XUnitVersion)" />
     <PackageReference Update="xunit.assert" Version="$(XunitVersion)" />
     <PackageReference Update="xunit.extensibility.core" Version="$(XunitVersion)" />

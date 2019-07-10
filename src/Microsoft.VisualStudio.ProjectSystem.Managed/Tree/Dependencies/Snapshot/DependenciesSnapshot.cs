@@ -157,7 +157,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         {
             bool activeChanged = !activeTargetFramework.Equals(ActiveTargetFramework);
 
-            var map = DependenciesByTargetFramework;
+            ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot> map = DependenciesByTargetFramework;
 
             var diff = new SetDiff<ITargetFramework>(map.Keys, targetFrameworks);
 
