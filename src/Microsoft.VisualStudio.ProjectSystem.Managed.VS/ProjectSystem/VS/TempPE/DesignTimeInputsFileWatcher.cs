@@ -69,12 +69,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         {
             base.Initialize();
 
+            _broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<string[]>>(nameFormat: nameof(DesignTimeInputsFileWatcher) + "Broadcast {1}");
+            _publicBlock = _broadcastBlock.SafePublicize();
+
             _dataSourceLink = _designTimeInputsDataSource.SourceBlock.LinkToAsyncAction(ProcessDesignTimeInputs);
 
             JoinUpstreamDataSources(_designTimeInputsDataSource);
-
-            _broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<string[]>>(nameFormat: nameof(DesignTimeInputsFileWatcher) + "Broadcast {1}");
-            _publicBlock = _broadcastBlock.SafePublicize();
         }
 
         private async Task ProcessDesignTimeInputs(IProjectVersionedValue<DesignTimeInputs> input)
@@ -144,17 +144,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 _broadcastBlock?.Complete();
                 _dataSourceLink?.Dispose();
 
-                _disposeGate.Dispose();
-
                 _threadingService.ExecuteSynchronously(async () =>
                 {
                     IVsAsyncFileChangeEx vsAsyncFileChangeEx = await _fileChangeService.GetValueAsync();
 
-                    foreach (uint cookie in _fileWatcherCookies.Values)
+                    await _disposeGate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, async () =>
                     {
-                        await vsAsyncFileChangeEx.UnadviseFileChangeAsync(cookie);
-                    }
+                        foreach (uint cookie in _fileWatcherCookies.Values)
+                        {
+                            await vsAsyncFileChangeEx.UnadviseFileChangeAsync(cookie);
+                        }
+                    });
                 });
+                _disposeGate.Dispose();
             }
 
             base.Dispose(disposing);
