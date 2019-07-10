@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<T>>(null);
         }
 
-        public async Task SendAndCompleteAsync(T value, ITargetBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>> targetBlock)
+        public async Task SendAndCompleteAsync(T value, IDataflowBlock targetBlock)
         {
             await SendAsync(value);
 
