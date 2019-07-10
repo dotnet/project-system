@@ -109,7 +109,6 @@
     <PackageReference Update="Microsoft.CodeAnalysis.BannedApiAnalyzers" Version="$(RoslynAnalyzersPackagesVersion)" />
     <PackageReference Update="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="$(RoslynAnalyzersPackagesVersion)" />
     <PackageReference Update="Text.Analyzers" Version="$(RoslynAnalyzersOldPackagesVersion)" />
-    <PackageReference Update="Microsoft.CodeQuality.Analyzers.Exp" Version="$(RoslynAnalyzersOldPackagesVersion)" />
     <PackageReference Update="Roslyn.Diagnostics.Analyzers" Version="$(RoslynAnalyzersOldPackagesVersion)" />
 
     <!-- NuGet -->
