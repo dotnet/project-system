@@ -132,22 +132,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
                         IEnumerable<ProjectChanges> changes = renamedSolution.GetChanges(solution).GetProjectChanges();
 
-                        using (UndoScope undo = await UndoScope.CreateAsync(_dte, _projectVsServices.ThreadingService, renameOperationName, token))
+                        using UndoScope undo = await UndoScope.CreateAsync(_dte, _projectVsServices.ThreadingService, renameOperationName, token);
+
+                        // Notify other VS features that symbol is about to be renamed
+                        await NotifyBeforeRename(newName, rqName, changes);
+
+                        // Try and apply the changes to the current solution
+                        token.ThrowIfCancellationRequested();
+                        bool applyChangesSucceeded = _roslynServices.ApplyChangesToSolution(renamedSolution.Workspace, renamedSolution);
+
+                        if (applyChangesSucceeded)
                         {
-                            // Notify other VS features that symbol is about to be renamed
-                            await NotifyBeforeRename(newName, rqName, changes);
-
-                            // Try and apply the changes to the current solution
-                            token.ThrowIfCancellationRequested();
-                            bool applyChangesSucceeded = _roslynServices.ApplyChangesToSolution(renamedSolution.Workspace, renamedSolution);
-
-                            if (applyChangesSucceeded)
-                            {
-                                // Notify other VS features that symbol has been renamed
-                                await NotifyAfterRename(newName, rqName, changes);
-                            }
-                            return applyChangesSucceeded;
+                            // Notify other VS features that symbol has been renamed
+                            await NotifyAfterRename(newName, rqName, changes);
                         }
+                        return applyChangesSucceeded;
                     });
                 });
 
