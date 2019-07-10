@@ -241,6 +241,7 @@ dotnet_diagnostic.CA1052.severity = none
 dotnet_diagnostic.CA1054.severity = none
 dotnet_diagnostic.CA1055.severity = none
 dotnet_diagnostic.CA1056.severity = none
+dotnet_diagnostic.CA1062.severity = none
 dotnet_diagnostic.CA1063.severity = warning
 dotnet_diagnostic.CA1064.severity = none
 dotnet_diagnostic.CA1065.severity = none
@@ -248,6 +249,7 @@ dotnet_diagnostic.CA1066.severity = none
 dotnet_diagnostic.CA1067.severity = warning
 dotnet_diagnostic.CA1068.severity = warning
 dotnet_diagnostic.CA1031.severity = none        # Do not catch general exception types
+dotnet_diagnostic.CA1303.severity = none
 dotnet_diagnostic.CA1304.severity = none
 dotnet_diagnostic.CA1707.severity = none
 dotnet_diagnostic.CA1710.severity = none
@@ -270,11 +272,6 @@ dotnet_diagnostic.CA2225.severity = none
 dotnet_diagnostic.CA2227.severity = none
 dotnet_diagnostic.CA2231.severity = none
 dotnet_diagnostic.CA2234.severity = none
-
-# Microsoft.CodeQuality.Analyzers.Exp
-dotnet_diagnostic.CA1062.severity = none
-dotnet_diagnostic.CA1303.severity = none
-dotnet_diagnostic.CA1508.severity = none        # disable until 2.9.x per https://github.com/dotnet/roslyn-analyzers/issues/1921#issuecomment-446702992
 
 # Microsoft.NetFramework.Analyzers
 dotnet_diagnostic.CA2153.severity = none        # TODO do not catch CorruptedStateExceptions
@@ -375,7 +372,7 @@ dotnet_diagnostic.IDE0005.severity = error          # Using directive is unneces
 dotnet_diagnostic.IDE0030.severity = error          # Use coalesce expression (nullable)           int? y = x.HasValue ? x.Value : 0                   int? y = x ?? 0;
 dotnet_diagnostic.IDE0030WithoutSuggestion.severity = error
 dotnet_diagnostic.IDE1006.severity = error          # Naming styles                                Task Open()                                         Task OpenAsync()
-dotnet_diagnositc.IDE1006WithoutSuggestion.severity = suggestion
+dotnet_diagnostic.IDE1006WithoutSuggestion.severity = suggestion
 
 # Dotnet code analysis settings for test projects:
 [src/*Tests/**/*.{cs,vb}]
@@ -410,6 +407,7 @@ dotnet_diagnostic.xUnit1004.severity = none     # Test methods should not be ski
 # Microsoft.CodeAnalysis.CSharp.Features
 dotnet_diagnostic.IDE0001.severity = none       # Too noisy due to https://github.com/dotnet/roslyn/issues/27819
 dotnet_diagnostic.IDE1006.severity = none       # Naming styles is too noisy as it fires on all async tests
-dotnet_diagnositc.IDE1006WithoutSuggestion.severity = none
-dotnet_diagnositc.IDE0067.severity = none	    # Noisy in tests
-dotnet_diagnositc.IDE0068.severity = none       # Noisy in tests
+dotnet_diagnostic.IDE1006WithoutSuggestion.severity = none
+dotnet_diagnostic.IDE0067.severity = none	    # Noisy in tests
+dotnet_diagnostic.IDE0068.severity = none       # Noisy in tests
+dotnet_diagnostic.IDE0068.severity = none       # Noisy in tests

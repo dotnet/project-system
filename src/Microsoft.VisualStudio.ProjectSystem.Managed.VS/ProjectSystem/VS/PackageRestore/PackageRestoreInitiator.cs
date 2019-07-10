@@ -6,8 +6,6 @@ using Microsoft.VisualStudio.ProjectSystem.Logging;
 
 using NuGet.SolutionRestoreManager;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
     /// <summary>
@@ -19,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
     internal partial class PackageRestoreInitiator : AbstractMultiLifetimeComponent<PackageRestoreInitiator.PackageRestoreInitiatorInstance>, IProjectDynamicLoadComponent
     {
         private readonly UnconfiguredProject _project;
-        private readonly IPackageRestoreUnconfiguredDataSource _dataSource;
+        private readonly IPackageRestoreUnconfiguredInputDataSource _dataSource;
         private readonly IProjectThreadingService _threadingService;
         private readonly IProjectAsynchronousTasksService _projectAsynchronousTasksService;
         private readonly IVsSolutionRestoreService3 _solutionRestoreService;
@@ -28,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         [ImportingConstructor]
         public PackageRestoreInitiator(
             UnconfiguredProject project,
-            IPackageRestoreUnconfiguredDataSource dataSource,
+            IPackageRestoreUnconfiguredInputDataSource dataSource,
             IProjectThreadingService threadingService,
             [Import(ExportContractNames.Scopes.UnconfiguredProject)]IProjectAsynchronousTasksService projectAsynchronousTasksService,
             IVsSolutionRestoreService3 solutionRestoreService,

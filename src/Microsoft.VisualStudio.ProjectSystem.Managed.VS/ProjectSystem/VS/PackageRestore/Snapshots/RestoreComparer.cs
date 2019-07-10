@@ -3,16 +3,14 @@
 using System.Collections.Generic;
 using NuGet.SolutionRestoreManager;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
     internal static partial class RestoreComparer
     {
-        public readonly static IEqualityComparer<IVsProjectRestoreInfo2> RestoreInfos = new ProjectRestoreInfoEqualityComparer();
-        public readonly static IEqualityComparer<IVsReferenceItem> ReferenceItems = new ReferenceItemEqualityComparer();
-        public readonly static IEqualityComparer<IVsProjectProperty> ProjectProperties = new ProjectPropertyEqualityComparer();
-        public readonly static IEqualityComparer<IVsReferenceProperty> ReferenceProperties = new ReferencePropertyEqualityComparer();
-        public readonly static IEqualityComparer<IVsTargetFrameworkInfo2> TargetFrameworks = new TargetFrameworkInfoEqualityComparer();
+        public readonly static IEqualityComparer<IVsProjectRestoreInfo2?> RestoreInfos = new ProjectRestoreInfoEqualityComparer();
+        public readonly static IEqualityComparer<IVsReferenceItem?> ReferenceItems = new ReferenceItemEqualityComparer();
+        public readonly static IEqualityComparer<IVsProjectProperty?> ProjectProperties = new ProjectPropertyEqualityComparer();
+        public readonly static IEqualityComparer<IVsReferenceProperty?> ReferenceProperties = new ReferencePropertyEqualityComparer();
+        public readonly static IEqualityComparer<IVsTargetFrameworkInfo2?> TargetFrameworks = new TargetFrameworkInfoEqualityComparer();
     }
 }

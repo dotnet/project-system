@@ -69,7 +69,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             Requires.NotNull(action, nameof(action));
 
+#pragma warning disable IDE0067 // Does not own liftime
             WorkspaceProjectContextHostInstance instance = await WaitForLoadedAsync();
+#pragma warning restore IDE0067 
 
             // Throws ActiveProjectConfigurationChangedException if 'instance' is Disposed
             await instance.OpenContextForWriteAsync(action);
@@ -79,7 +81,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             Requires.NotNull(action, nameof(action));
 
+#pragma warning disable IDE0067 // Does not own liftime
             WorkspaceProjectContextHostInstance instance = await WaitForLoadedAsync();
+#pragma warning restore IDE0067
 
             // Throws ActiveProjectConfigurationChangedException if 'instance' is Disposed
             return await instance.OpenContextForWriteAsync(action);

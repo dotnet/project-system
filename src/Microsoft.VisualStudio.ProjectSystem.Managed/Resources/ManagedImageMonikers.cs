@@ -10,8 +10,6 @@ using Microsoft.VisualStudio.ProjectSystem;
 [assembly: DebuggerDisplay("{Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ImageMonikerDebugDisplay(this)}", Target = typeof(ImageMoniker))]
 [assembly: DebuggerDisplay("{Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ProjectImageMonikerDebugDisplay(this)}", Target = typeof(ProjectImageMoniker))]
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>

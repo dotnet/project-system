@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.Threading;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Input
 {
     /// <summary>
@@ -22,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Input
             _commandIds = new Lazy<long[]>(() => GetCommandIds(this));
         }
 
-        public Task<CommandStatusResult> GetCommandStatusAsync(IImmutableSet<IProjectTree> nodes, long commandId, bool focused, string commandText, CommandStatus progressiveStatus)
+        public Task<CommandStatusResult> GetCommandStatusAsync(IImmutableSet<IProjectTree> nodes, long commandId, bool focused, string? commandText, CommandStatus progressiveStatus)
         {
             Requires.NotNull(nodes, nameof(nodes));
 
@@ -48,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Input
             return TaskResult.False;
         }
 
-        protected abstract Task<CommandStatusResult> GetCommandStatusAsync(IImmutableSet<IProjectTree> nodes, bool focused, string commandText, CommandStatus progressiveStatus);
+        protected abstract Task<CommandStatusResult> GetCommandStatusAsync(IImmutableSet<IProjectTree> nodes, bool focused, string? commandText, CommandStatus progressiveStatus);
 
         protected abstract Task<bool> TryHandleCommandAsync(IImmutableSet<IProjectTree> nodes, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut);
 

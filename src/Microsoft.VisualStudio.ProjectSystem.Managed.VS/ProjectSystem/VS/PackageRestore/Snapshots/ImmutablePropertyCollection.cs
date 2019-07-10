@@ -6,8 +6,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
     /// <summary>
@@ -21,8 +19,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
         protected ImmutablePropertyCollection(IEnumerable<T> items)
         {
-            Requires.NotNull(items, nameof(items));
-
             _items = ImmutableList.CreateRange(items);
             _itemsByName = _items.ToImmutableDictionary(i => GetKeyForItem(i), StringComparers.ItemNames);
         }
@@ -43,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
         protected abstract string GetKeyForItem(T item);
 
-        public T Item(object index)
+        public T? Item(object index)
         {
             if (index is string name)
             {
@@ -57,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             throw new ArgumentException(null, nameof(index));
         }
 
-        private T GetItemByName(string name)
+        private T? GetItemByName(string name)
         {
             if (_itemsByName.TryGetValue(name, out T value))
             {

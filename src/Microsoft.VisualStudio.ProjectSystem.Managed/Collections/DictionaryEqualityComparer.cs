@@ -3,8 +3,6 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.Collections
 {
     /// <summary>
@@ -49,9 +47,10 @@ namespace Microsoft.VisualStudio.Collections
         {
             int hashCode = 0;
 
-            var concreteDictionary1 = obj as ImmutableDictionary<TKey, TValue>;
+            ImmutableDictionary<TKey, TValue>? concreteDictionary1 = obj as ImmutableDictionary<TKey, TValue>;
             IEqualityComparer<TKey> keyComparer = concreteDictionary1 != null ? concreteDictionary1.KeyComparer : EqualityComparer<TKey>.Default;
             IEqualityComparer<TValue> valueComparer = concreteDictionary1 != null ? concreteDictionary1.ValueComparer : EqualityComparer<TValue>.Default;
+
             if (obj != null)
             {
                 foreach (KeyValuePair<TKey, TValue> pair in obj)
@@ -68,6 +67,7 @@ namespace Microsoft.VisualStudio.Collections
         private static bool AreEquivalent(IImmutableDictionary<TKey, TValue> dictionary1, IImmutableDictionary<TKey, TValue> dictionary2)
         {
             Requires.NotNull(dictionary1, "dictionary1");
+
             if (dictionary1 == dictionary2)
             {
                 return true;
@@ -80,7 +80,7 @@ namespace Microsoft.VisualStudio.Collections
         /// <summary>
         /// Tests two dictionaries to see if their contents are identical.
         /// </summary>
-        private static bool AreEquivalent(IReadOnlyDictionary<TKey, TValue> dictionary1, IReadOnlyDictionary<TKey, TValue> dictionary2, IEqualityComparer<TValue> valueComparer)
+        private static bool AreEquivalent(IReadOnlyDictionary<TKey, TValue>? dictionary1, IReadOnlyDictionary<TKey, TValue>? dictionary2, IEqualityComparer<TValue> valueComparer)
         {
             Requires.NotNull(valueComparer, "valueComparer");
 
@@ -89,7 +89,7 @@ namespace Microsoft.VisualStudio.Collections
                 return true;
             }
 
-            if ((dictionary1 == null) ^ (dictionary2 == null)) // XOR
+            if (dictionary1 == null || dictionary2 == null)
             {
                 return false;
             }
@@ -116,6 +116,5 @@ namespace Microsoft.VisualStudio.Collections
 
             return true;
         }
-
     }
 }

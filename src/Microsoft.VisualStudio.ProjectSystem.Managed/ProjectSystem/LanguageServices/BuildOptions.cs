@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             Requires.NotNull(commandLineArguments, nameof(commandLineArguments));
 
-            var analyzerConfigPaths = s_analyzerConfigPathsProperty != null
+            ImmutableArray<string> analyzerConfigPaths = s_analyzerConfigPathsProperty != null
                 ? (ImmutableArray<string>)s_analyzerConfigPathsProperty.GetValue(commandLineArguments)
                 : ImmutableArray<string>.Empty;
 
