@@ -10,9 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
     internal abstract partial class WpfBasedPropertyPage : PropertyPage
     {
-#pragma warning disable CA2213 // WPF Controls implement IDisposable 
         private PropertyPageElementHost _host;
-#pragma warning restore CA2213
         private PropertyPageControl _control;
         private PropertyPageViewModel _viewModel;
 
@@ -99,6 +97,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             if (IsDirty != _control.IsDirty)
             {
                 IsDirty = _control.IsDirty;
+            }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            try
+            {
+                if (disposing)
+                {
+                    _host.Dispose();
+                }
+            }
+            finally
+            {
+                base.Dispose(disposing);
             }
         }
     }
