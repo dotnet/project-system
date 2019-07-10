@@ -79,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         [MemberData(nameof(GetTestCases))]
         internal async Task VerifyDesignTimeInputsWatched(string[] designTimeInputs, string[] sharedDesignTimeInputs, string[] watchedFiles, string[] fileChangeNotificationsToSend, string[] fileChangeNotificationsExpected)
         {
-            var fileChangeService = new TestIVsAsyncFileChangeEx();
+            var fileChangeService = new IVsAsyncFileChangeExMock();
 
             using DesignTimeInputsFileWatcher watcher = CreateDesignTimeInputsFileWatcher(fileChangeService, out ProjectValueDataSource<DesignTimeInputs> source);
 

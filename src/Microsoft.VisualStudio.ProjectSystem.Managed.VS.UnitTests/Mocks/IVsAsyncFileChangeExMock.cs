@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.Shell
 {
-    public class TestIVsAsyncFileChangeEx : IVsAsyncFileChangeEx
+    public class IVsAsyncFileChangeExMock : IVsAsyncFileChangeEx
     {
         private uint _lastCookie;
         private readonly Dictionary<uint, string> _watchedFiles = new Dictionary<uint, string>();
