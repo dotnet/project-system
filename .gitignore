@@ -19,6 +19,8 @@ x64/
 
 # MSTest test Results
 [Tt]est[Rr]esult*/
+[Dd]eploy*/[Oo]ut
+*.coverage
 [Bb]uild[Ll]og.*
 UnitTestResults.html
 

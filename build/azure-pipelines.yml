@@ -6,6 +6,7 @@ trigger:
 - dev16.0.x
 - dev16.1.x
 - dev16.2.x
+- dev16.3.x
 - feature/*
 
 # Branches that trigger builds on PR
@@ -16,6 +17,7 @@ pr:
 - dev16.0.x
 - dev16.1.x
 - dev16.2.x
+- dev16.3.x
 - feature/*
 
 jobs:

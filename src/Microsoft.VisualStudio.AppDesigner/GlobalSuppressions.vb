@@ -11,7 +11,7 @@
 <Assembly: CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification:="Public API and cannot be changed.", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerLoader.InitializeEx(Microsoft.VisualStudio.Shell.ServiceProvider,Microsoft.VisualStudio.Shell.Interop.IVsHierarchy,System.UInt32,System.Object)")>
 <Assembly: CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification:="Public API and cannot be changed.", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.PropPageDesigner.PropertyPageSerializationService.#ctor(System.IServiceProvider)")>
 
-' Baselined for the port, we should revisit these, see: https://github.com/dotnet/project-system/issues/121.
+' Baselined, we should revisit these, see: https://github.com/dotnet/project-system/issues/121.
 <Assembly: CodeAnalysis.SuppressMessage("Reliability", "RS0015:Always consume the value returned by methods marked with PreserveSigAttribute", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.AppDesCommon.Utils.FocusFirstOrLastTabItem(System.IntPtr,System.Boolean)~System.Boolean")>
 <Assembly: CodeAnalysis.SuppressMessage("Reliability", "RS0015:Always consume the value returned by methods marked with PreserveSigAttribute", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.AppDesDesignerFramework.DeferrableWindowPaneProviderServiceBase.DesignerWindowPaneBase.OnUndoing(System.Object,System.EventArgs)")>
 <Assembly: CodeAnalysis.SuppressMessage("Reliability", "RS0015:Always consume the value returned by methods marked with PreserveSigAttribute", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.AppDesDesignerFramework.DeferrableWindowPaneProviderServiceBase.DesignerWindowPaneBase.OnUndone(System.Object,System.EventArgs)")>
@@ -399,6 +399,14 @@
 <Assembly: CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Scope:="type", Target:="~T:Microsoft.VisualStudio.Editors.PropertyPages.IPropertyPageSiteInternal")>
 <Assembly: CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Scope:="type", Target:="~T:Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData")>
 <Assembly: CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Scope:="type", Target:="~T:Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerDocData")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0069:Disposable fields should be disposed", Scope:="member", Target:="~F:Microsoft.VisualStudio.Editors.AppDesDesignerFramework.ErrorControl._sizingLabel")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0069:Disposable fields should be disposed", Scope:="member", Target:="~F:Microsoft.VisualStudio.Editors.ApplicationDesigner.ErrorControlCustomViewProvider._view")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0069:Disposable fields should be disposed", Scope:="member", Target:="~F:Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl._hostingPanel")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0069:Disposable fields should be disposed", Scope:="member", Target:="~F:Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl._overflowMenu")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0069:Disposable fields should be disposed", Scope:="member", Target:="~F:Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl._overflowTooltip")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0069:Disposable fields should be disposed", Scope:="member", Target:="~F:Microsoft.VisualStudio.Editors.ApplicationDesigner.SpecialFileCustomViewProvider._view")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0069:Disposable fields should be disposed", Scope:="member", Target:="~F:Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase._serviceProvider")>
+<Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0068:Use recommended dispose pattern", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.AttemptConnectPropertyNotifyObject(System.Object,System.String)")>
 
 ' https://github.com/dotnet/roslyn-analyzers/issues/1878
 <Assembly: CodeAnalysis.SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Scope:="type", Target:="~T:Microsoft.VisualStudio.Editors.AppDesCommon.DTEUtils")>

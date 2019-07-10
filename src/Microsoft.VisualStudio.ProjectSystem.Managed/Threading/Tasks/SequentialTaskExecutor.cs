@@ -16,9 +16,9 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         private bool _disposed;
         private Task _taskAdded = Task.CompletedTask;
         private readonly object _syncObject = new object();
-#pragma warning disable CA2213 // Tests fail if this is disposed
+#pragma warning disable IDE0069 // Tests fail if this is disposed
         private readonly CancellationTokenSource _disposedCancelTokenSource = new CancellationTokenSource();
-#pragma warning restore CA2213 
+#pragma warning restore IDE0069 
 
         /// <summary>
         /// Deadlocks will occur if a task returned from ExecuteTask , awaits a task which also calls ExecuteTask. The 2nd one will never get started since

@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         private IVsDebugger _debugger;
         private uint _debuggerCookie;
         private bool _isActivated = false;
-        internal IProjectThreadingService _threadHandling;
+        private IProjectThreadingService _threadHandling;
 
         // WIN32 Constants
         private const int SW_HIDE = 0;

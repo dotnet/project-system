@@ -9,25 +9,25 @@ using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
-    internal static class IPackageRestoreUnconfiguredDataSourceFactory
+    internal static class IPackageRestoreUnconfiguredInputDataSourceFactory
     {
-        public static IPackageRestoreUnconfiguredDataSource Create()
+        public static IPackageRestoreUnconfiguredInputDataSource Create()
         {
-            var sourceBlock = Mock.Of<IReceivableSourceBlock<IProjectVersionedValue<UnconfiguredProjectRestoreUpdate>>>();
+            var sourceBlock = Mock.Of<IReceivableSourceBlock<IProjectVersionedValue<PackageRestoreUnconfiguredInput>>>();
 
             // Moq gets really confused with mocking IProjectValueDataSource<IVsProjectRestoreInfo2>.SourceBlock
             // because of the generic/non-generic version of it. Avoid it.
             return new PackageRestoreUnconfiguredDataSource(sourceBlock);
         }
 
-        private class PackageRestoreUnconfiguredDataSource : IPackageRestoreUnconfiguredDataSource
+        private class PackageRestoreUnconfiguredDataSource : IPackageRestoreUnconfiguredInputDataSource
         {
-            public PackageRestoreUnconfiguredDataSource(IReceivableSourceBlock<IProjectVersionedValue<UnconfiguredProjectRestoreUpdate>> sourceBlock)
+            public PackageRestoreUnconfiguredDataSource(IReceivableSourceBlock<IProjectVersionedValue<PackageRestoreUnconfiguredInput>> sourceBlock)
             {
                 SourceBlock = sourceBlock;
             }
 
-            public IReceivableSourceBlock<IProjectVersionedValue<UnconfiguredProjectRestoreUpdate>> SourceBlock { get; }
+            public IReceivableSourceBlock<IProjectVersionedValue<PackageRestoreUnconfiguredInput>> SourceBlock { get; }
 
             public NamedIdentity DataSourceKey { get; }
 
