@@ -50,31 +50,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 KnownMonikers.AboutBox,
                 KnownMonikers.Abbreviation);
 
-            var dependencyResolved = IDependencyFactory.FromJson(@"
-{
-    ""ProviderType"": ""Yyy"",
-    ""Id"": ""tfm1\\yyy\\dependencyExisting"",
-    ""Name"":""dependencyExisting"",
-    ""Caption"":""DependencyExisting"",
-    ""HasUnresolvedDependency"":""false"",
-    ""SchemaName"":""MySchema"",
-    ""SchemaItemType"":""MySchemaItemType"",
-    ""Priority"":""1"",
-    ""Resolved"":""true""
-}", iconSet: iconSet);
+            var dependencyResolved = new TestDependency
+            {
+                ProviderType = "Yyy",
+                Id = "tfm1\\yyy\\dependencyExisting",
+                Name = "dependencyExisting",
+                Caption = "DependencyExisting",
+                SchemaName = "MySchema",
+                SchemaItemType = "MySchemaItemType",
+                Priority = 1,
+                Resolved = true,
+                IconSet = iconSet
+            };
 
-            var dependencyUnresolved = IDependencyFactory.FromJson(@"
-{
-    ""ProviderType"": ""Yyy"",
-    ""Id"": ""tfm1\\yyy\\dependencyExisting"",
-    ""Name"":""dependencyExisting"",
-    ""Caption"":""DependencyExisting"",
-    ""HasUnresolvedDependency"":""false"",
-    ""SchemaName"":""MySchema"",
-    ""SchemaItemType"":""MySchemaItemType"",
-    ""Priority"":""1"",
-    ""Resolved"":""false""
-}", iconSet: iconSet);
+            var dependencyUnresolved = new TestDependency
+            {
+                ProviderType = "Yyy",
+                Id = "tfm1\\yyy\\dependencyExisting",
+                Name = "dependencyExisting",
+                Caption = "DependencyExisting",
+                SchemaName = "MySchema",
+                SchemaItemType = "MySchemaItemType",
+                Priority = 1,
+                Resolved = false,
+                IconSet = iconSet
+            };
 
             var mockSnapshot = ITargetedDependenciesSnapshotFactory.ImplementMock(checkForUnresolvedDependencies: false).Object;
             var mockSnapshotUnresolvedDependency = ITargetedDependenciesSnapshotFactory.ImplementMock(checkForUnresolvedDependencies: true).Object;

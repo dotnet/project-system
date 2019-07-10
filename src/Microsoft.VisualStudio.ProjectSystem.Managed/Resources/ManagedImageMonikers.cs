@@ -45,6 +45,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public static ImageMoniker SharedProjectPrivate   => new ImageMoniker { Guid = s_manifestGuid, Id = 19 };
         public static ImageMoniker SharedProjectWarning   => new ImageMoniker { Guid = s_manifestGuid, Id = 20 };
         public static ImageMoniker WarningSmall           => new ImageMoniker { Guid = s_manifestGuid, Id = 21 };
+        public static ImageMoniker Framework              => new ImageMoniker { Guid = s_manifestGuid, Id = 22 };
+        public static ImageMoniker FrameworkPrivate       => new ImageMoniker { Guid = s_manifestGuid, Id = 23 };
+        public static ImageMoniker FrameworkWarning       => new ImageMoniker { Guid = s_manifestGuid, Id = 24 };
 
         // These internal fields are provided for convenience
 
@@ -116,6 +119,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     case 19: return nameof(SharedProjectPrivate);
                     case 20: return nameof(SharedProjectWarning);
                     case 21: return nameof(WarningSmall);
+                    case 22: return nameof(Framework);
+                    case 23: return nameof(FrameworkPrivate);
+                    case 24: return nameof(FrameworkWarning);
                 }
             }
 
