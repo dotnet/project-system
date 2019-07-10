@@ -14,11 +14,6 @@
     <NoWarn>$(NoWarn);NU5125</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <!-- Not a VS assembly, but still needs a couple VS imaging types -->
-    <PackageReference Include="Microsoft.VisualStudio.Imaging.Interop.14.0.DesignTime" Version="14.3.25407" Pack="false" />
-    <PackageReference Include="Microsoft.VisualStudio.ImageCatalog" Version="15.0.26606" />
-  </ItemGroup>
-  <ItemGroup>
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.VS" />
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests" />
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests" />
@@ -420,10 +415,5 @@
   <ItemGroup>
     <AdditionalFiles Include="PublicAPI.Shipped.txt" />
     <AdditionalFiles Include="PublicAPI.Unshipped.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="ProjectSystem\Rules\AdditionalDesignTimeBuildInput.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
   </ItemGroup>
 </Project>
