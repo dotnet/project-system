@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
 using Microsoft.CodeAnalysis;
@@ -21,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.FSharp
         private const string LongReferencePrefix = "--reference:";
 
         [ImportMany]
-        private readonly IEnumerable<Action<string, ImmutableArray<CommandLineSourceFile>, ImmutableArray<CommandLineReference>, ImmutableArray<string>>> _handlers = Array.Empty<Action<string, ImmutableArray<CommandLineSourceFile>, ImmutableArray<CommandLineReference>, ImmutableArray<string>>>();
+        private readonly IEnumerable<Action<string, ImmutableArray<CommandLineSourceFile>, ImmutableArray<CommandLineReference>, ImmutableArray<string>>> _handlers = null!;
 
         [ImportingConstructor]
         public FSharpCommandLineParserService()

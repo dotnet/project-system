@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 
@@ -30,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         }
 
         [ImportMany]
-        private readonly IEnumerable<IFileRenameHandler> _fileRenameHandlers = Array.Empty<IFileRenameHandler>();
+        private readonly IEnumerable<IFileRenameHandler> _fileRenameHandlers = null!;
 
         public string ProjectEvaluationRule
         {
