@@ -8,6 +8,7 @@
   
   <Rule.DataSource>
     <DataSource HasConfigurationCondition="False"
+                ItemType="PackageDownload"
                 MSBuildTarget="CollectPackageDownloads"
                 Persistence="ProjectFile"
                 SourceOfDefaultValue="AfterContext"
