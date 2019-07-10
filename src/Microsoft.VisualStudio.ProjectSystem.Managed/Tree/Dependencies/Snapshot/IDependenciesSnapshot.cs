@@ -30,9 +30,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         /// <summary>
         /// Gets whether this snapshot contains at least one unresolved/broken dependency at any level
-        /// for any target framework.
+        /// for any target framework which is visible.
         /// </summary>
-        bool HasUnresolvedDependency { get; }
+        bool HasVisibleUnresolvedDependency { get; }
 
         /// <summary>
         /// Finds dependency for given id across all target frameworks.

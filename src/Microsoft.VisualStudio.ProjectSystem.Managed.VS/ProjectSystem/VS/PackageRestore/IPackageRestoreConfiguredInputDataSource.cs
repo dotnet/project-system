@@ -2,17 +2,15 @@
 
 using Microsoft.VisualStudio.Composition;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
     /// <summary>
-    ///     Represents the data source of metadata needed for restore operations for an individual <see cref="ConfiguredProject"/>.
+    ///     Represents the data source of metadata needed for input into restore operations for an individual <see cref="ConfiguredProject"/>.
     ///     This will be later combined with other implicitly active <see cref="ConfiguredProject"/> instances within a 
     ///     <see cref="UnconfiguredProject"/> to provide enough data to restore the entire project.
     /// </summary>
     [ProjectSystemContract(ProjectSystemContractScope.ConfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
-    internal interface IPackageRestoreConfiguredDataSource : IProjectValueDataSource<ProjectRestoreUpdate>
+    internal interface IPackageRestoreConfiguredInputDataSource : IProjectValueDataSource<PackageRestoreConfiguredInput>
     {
     }
 }

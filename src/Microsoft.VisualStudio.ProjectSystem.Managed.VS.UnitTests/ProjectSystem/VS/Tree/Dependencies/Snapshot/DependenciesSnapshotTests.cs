@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.Same(projectPath, snapshot.ProjectPath);
             Assert.Same(targetFramework, snapshot.ActiveTargetFramework);
             Assert.Same(dependenciesByTargetFramework, snapshot.DependenciesByTargetFramework);
-            Assert.False(snapshot.HasUnresolvedDependency);
+            Assert.False(snapshot.HasVisibleUnresolvedDependency);
             Assert.Null(snapshot.FindDependency("foo"));
         }
 
@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.Same(projectPath, snapshot.ProjectPath);
             Assert.Same(TargetFramework.Empty, snapshot.ActiveTargetFramework);
             Assert.Empty(snapshot.DependenciesByTargetFramework);
-            Assert.False(snapshot.HasUnresolvedDependency);
+            Assert.False(snapshot.HasVisibleUnresolvedDependency);
             Assert.Null(snapshot.FindDependency("foo"));
         }
 
@@ -249,6 +249,77 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.Same(targetFramework, snapshot.ActiveTargetFramework);
             Assert.NotSame(previousSnapshot.DependenciesByTargetFramework, snapshot.DependenciesByTargetFramework);
             Assert.Equal(@"tfm1\Xxx\dependency1", snapshot.DependenciesByTargetFramework[targetFramework].DependenciesWorld.First().Value.Id);
+        }
+
+        [Fact]
+        public void SetTargets_FromEmpty()
+        {
+            const string projectPath = @"c:\somefolder\someproject\a.csproj";
+
+            ITargetFramework tfm1 = new TargetFramework("tfm1");
+            ITargetFramework tfm2 = new TargetFramework("tfm2");
+
+            var snapshot = DependenciesSnapshot.CreateEmpty(projectPath)
+                .SetTargets(new[] { tfm1, tfm2 }.ToImmutableArray(), tfm1);
+
+            Assert.Same(tfm1, snapshot.ActiveTargetFramework);
+            Assert.Equal(2, snapshot.DependenciesByTargetFramework.Count);
+            Assert.True(snapshot.DependenciesByTargetFramework.ContainsKey(tfm1));
+            Assert.True(snapshot.DependenciesByTargetFramework.ContainsKey(tfm2));
+        }
+
+        [Fact]
+        public void SetTargets_SameMembers_DifferentActive()
+        {
+            const string projectPath = @"c:\somefolder\someproject\a.csproj";
+
+            ITargetFramework tfm1 = new TargetFramework("tfm1");
+            ITargetFramework tfm2 = new TargetFramework("tfm2");
+
+            var before = DependenciesSnapshot.CreateEmpty(projectPath)
+                .SetTargets(new[] { tfm1, tfm2 }.ToImmutableArray(), tfm1);
+
+            var after = before.SetTargets(new[] { tfm1, tfm2 }.ToImmutableArray(), tfm2);
+
+            Assert.Same(tfm2, after.ActiveTargetFramework);
+            Assert.Same(before.DependenciesByTargetFramework, after.DependenciesByTargetFramework);
+        }
+
+        [Fact]
+        public void SetTargets_SameMembers_SameActive()
+        {
+            const string projectPath = @"c:\somefolder\someproject\a.csproj";
+
+            ITargetFramework tfm1 = new TargetFramework("tfm1");
+            ITargetFramework tfm2 = new TargetFramework("tfm2");
+
+            var before = DependenciesSnapshot.CreateEmpty(projectPath)
+                .SetTargets(new[] { tfm1, tfm2 }.ToImmutableArray(), tfm1);
+
+            var after = before.SetTargets(new[] { tfm1, tfm2 }.ToImmutableArray(), tfm1);
+
+            Assert.Same(before, after);
+        }
+
+        [Fact]
+        public void SetTargets_DifferentMembers_DifferentActive()
+        {
+            const string projectPath = @"c:\somefolder\someproject\a.csproj";
+
+            ITargetFramework tfm1 = new TargetFramework("tfm1");
+            ITargetFramework tfm2 = new TargetFramework("tfm2");
+            ITargetFramework tfm3 = new TargetFramework("tfm3");
+
+            var before = DependenciesSnapshot.CreateEmpty(projectPath)
+                .SetTargets(new[] { tfm1, tfm2 }.ToImmutableArray(), tfm1);
+
+            var after = before.SetTargets(new[] { tfm2, tfm3 }.ToImmutableArray(), tfm3);
+
+            Assert.Same(tfm3, after.ActiveTargetFramework);
+            Assert.Equal(2, after.DependenciesByTargetFramework.Count);
+            Assert.True(after.DependenciesByTargetFramework.ContainsKey(tfm2));
+            Assert.True(after.DependenciesByTargetFramework.ContainsKey(tfm3));
+            Assert.Same(before.DependenciesByTargetFramework[tfm2], after.DependenciesByTargetFramework[tfm2]);
         }
 
         private static ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot> CreateDependenciesByTargetFramework(

@@ -3,8 +3,6 @@
 using System;
 using System.Text;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.Buffers.PooledObjects
 {
     /// <summary>
@@ -57,7 +55,6 @@ namespace Microsoft.VisualStudio.Buffers.PooledObjects
         // global pool
         private static readonly ObjectPool<PooledStringBuilder> s_poolInstance = CreatePool();
 
-        // if someone needs to create a private pool;
         /// <summary>
         /// If someone need to create a private pool
         /// </summary>
@@ -65,8 +62,8 @@ namespace Microsoft.VisualStudio.Buffers.PooledObjects
         /// <returns></returns>
         public static ObjectPool<PooledStringBuilder> CreatePool(int size = 32)
         {
-            ObjectPool<PooledStringBuilder> pool = null;
-            pool = new ObjectPool<PooledStringBuilder>(() => new PooledStringBuilder(pool), size);
+            ObjectPool<PooledStringBuilder>? pool = null;
+            pool = new ObjectPool<PooledStringBuilder>(() => new PooledStringBuilder(pool!), size);
             return pool;
         }
 

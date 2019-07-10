@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
+
 using Microsoft.Build.Execution;
 using Microsoft.VisualStudio.Build;
 using Microsoft.VisualStudio.Composition;
@@ -489,31 +490,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 AggregateCrossTargetProjectContext? oldContext,
                 AggregateCrossTargetProjectContext newContext)
             {
-                if (oldContext == null)
-                {
-                    // all new rules will be sent to new context, we don't need to clean up anything
-                    return;
-                }
-
-                var targetsToClean = new HashSet<ITargetFramework>();
-
-                ImmutableArray<ITargetFramework> oldTargets = oldContext.TargetFrameworks;
-
-                if (newContext == null)
-                {
-                    targetsToClean.AddRange(oldTargets);
-                }
-                else
-                {
-                    ImmutableArray<ITargetFramework> newTargets = newContext.TargetFrameworks;
-
-                    targetsToClean.AddRange(oldTargets.Except(newTargets));
-                }
-
-                if (targetsToClean.Count != 0)
-                {
-                    TryUpdateSnapshot(snapshot => snapshot.RemoveTargets(targetsToClean));
-                }
+                TryUpdateSnapshot(snapshot => snapshot.SetTargets(newContext.TargetFrameworks, newContext.ActiveTargetFramework));
             }
         }
 
