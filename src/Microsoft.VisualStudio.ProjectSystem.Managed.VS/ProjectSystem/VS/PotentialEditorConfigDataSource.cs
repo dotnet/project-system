@@ -58,6 +58,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             base.Initialize();
 
+            _broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<FileWatchData>>(nameFormat: nameof(PotentialEditorConfigDataSource) + "Broadcast {1}");
+
             IDisposable projectRuleSourceLink = _project.Services.ProjectSubscription.ProjectRuleSource.SourceBlock.LinkToAsyncAction(ProcessProjectChanged, ruleNames: PotentialEditorConfigFiles.SchemaName);
 
             IDisposable join = JoinUpstreamDataSources(_project.Services.ProjectSubscription.ProjectRuleSource);
@@ -66,7 +68,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _disposables.AddDisposable(projectRuleSourceLink);
             _disposables.AddDisposable(join);
 
-            _broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<FileWatchData>>(nameFormat: nameof(PotentialEditorConfigDataSource) + "Broadcast {1}");
             _publicBlock = _broadcastBlock.SafePublicize();
         }
 
