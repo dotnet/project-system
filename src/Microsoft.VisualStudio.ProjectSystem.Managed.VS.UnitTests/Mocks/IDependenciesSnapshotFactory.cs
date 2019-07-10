@@ -12,11 +12,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal static class IDependenciesSnapshotFactory
     {
-        public static IDependenciesSnapshot Create()
-        {
-            return Mock.Of<IDependenciesSnapshot>();
-        }
-
         public static IDependenciesSnapshot Implement(
             Dictionary<ITargetFramework, ITargetedDependenciesSnapshot> dependenciesByTarget = null,
             bool? hasUnresolvedDependency = null,
@@ -32,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             if (hasUnresolvedDependency.HasValue)
             {
-                mock.Setup(x => x.HasUnresolvedDependency).Returns(hasUnresolvedDependency.Value);
+                mock.Setup(x => x.HasVisibleUnresolvedDependency).Returns(hasUnresolvedDependency.Value);
             }
 
             if (activeTarget != null)

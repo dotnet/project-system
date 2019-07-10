@@ -3,8 +3,6 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.Buffers.PooledObjects
 {
     // Dictionary that can be recycled via an object pool
@@ -37,8 +35,8 @@ namespace Microsoft.VisualStudio.Buffers.PooledObjects
         // if someone needs to create a pool;
         public static ObjectPool<PooledDictionary<K, V>> CreatePool()
         {
-            ObjectPool<PooledDictionary<K, V>> pool = null;
-            pool = new ObjectPool<PooledDictionary<K, V>>(() => new PooledDictionary<K, V>(pool), 128);
+            ObjectPool<PooledDictionary<K, V>>? pool = null;
+            pool = new ObjectPool<PooledDictionary<K, V>>(() => new PooledDictionary<K, V>(pool!), 128);
             return pool;
         }
 

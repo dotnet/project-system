@@ -7,7 +7,6 @@
       xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
     <DataSource HasConfigurationCondition="False"
-                ItemType="Reference"
                 MSBuildTarget="ResolveAssemblyReferencesDesignTime"
                 Persistence="ResolvedReference"
                 SourceOfDefaultValue="AfterContext"

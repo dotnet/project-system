@@ -106,6 +106,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Frameworks.
+        /// </summary>
+        internal static string FrameworkNodeName {
+            get {
+                return ResourceManager.GetString("FrameworkNodeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Errors in &apos;{0}&apos; need to be corrected before applying changes..
         /// </summary>
         internal static string JsonErrorNeedToBeCorrected {

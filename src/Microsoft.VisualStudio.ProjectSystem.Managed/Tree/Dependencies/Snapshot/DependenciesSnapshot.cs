@@ -151,14 +151,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             }
         }
 
-        public DependenciesSnapshot RemoveTargets(IEnumerable<ITargetFramework> targetToRemove)
+        public DependenciesSnapshot SetTargets(
+            ImmutableArray<ITargetFramework> targetFrameworks,
+            ITargetFramework activeTargetFramework)
         {
-            ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot> newTargets = DependenciesByTargetFramework.RemoveRange(targetToRemove);
+            bool activeChanged = !activeTargetFramework.Equals(ActiveTargetFramework);
 
-            // Return this if no targets changed
-            return ReferenceEquals(newTargets, DependenciesByTargetFramework)
-                ? this
-                : new DependenciesSnapshot(ProjectPath, ActiveTargetFramework, newTargets);
+            var map = DependenciesByTargetFramework;
+
+            var diff = new SetDiff<ITargetFramework>(map.Keys, targetFrameworks);
+
+            map = map.RemoveRange(diff.Removed);
+            map = map.AddRange(
+                diff.Added.Select(
+                    added => new KeyValuePair<ITargetFramework, ITargetedDependenciesSnapshot>(
+                        added,
+                        TargetedDependenciesSnapshot.CreateEmpty(ProjectPath, added, null))));
+
+            if (activeChanged || !ReferenceEquals(map, DependenciesByTargetFramework))
+            {
+                return new DependenciesSnapshot(ProjectPath, activeTargetFramework, map);
+            }
+
+            return this;
         }
 
         // Internal, for test use -- normal code should use the factory methods
@@ -203,7 +218,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot> DependenciesByTargetFramework { get; }
 
         /// <inheritdoc />
-        public bool HasUnresolvedDependency => DependenciesByTargetFramework.Any(x => x.Value.HasUnresolvedDependency);
+        public bool HasVisibleUnresolvedDependency => DependenciesByTargetFramework.Any(x => x.Value.HasVisibleUnresolvedDependency);
 
         /// <inheritdoc />
         public IDependency? FindDependency(string dependencyId, bool topLevel = false)

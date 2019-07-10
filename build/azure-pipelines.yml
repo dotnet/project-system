@@ -7,6 +7,7 @@ trigger:
 - dev16.1.x
 - dev16.2.x
 - dev16.3.x
+- feature/*
 
 # Branches that trigger builds on PR
 pr:
@@ -17,11 +18,13 @@ pr:
 - dev16.1.x
 - dev16.2.x
 - dev16.3.x
+- feature/*
 
 jobs:
 - job: Windows
   pool:
-    vmImage: 'vs2017-win2016'
+    name: NetCorePublic-Pool
+    queue: buildpool.windows.10.amd64.vs2019.pre.open
   strategy:
     maxParallel: 4
     matrix:

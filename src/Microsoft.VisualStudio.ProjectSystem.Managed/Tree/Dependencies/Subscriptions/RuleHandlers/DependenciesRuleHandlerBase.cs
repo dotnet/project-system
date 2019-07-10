@@ -35,15 +35,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         public ImmutableHashSet<string> GetRuleNames(RuleHandlerType handlerType)
         {
-            switch (handlerType)
-            {
-                case RuleHandlerType.Evaluation:
-                    return _evaluationRuleNames;
-                case RuleHandlerType.DesignTimeBuild:
-                    return _designTimeBuildRuleNames;
-                default:
-                    return ImmutableStringHashSet.EmptyOrdinal;
-            }
+            return handlerType == RuleHandlerType.Evaluation ?
+                _evaluationRuleNames :
+                _designTimeBuildRuleNames;
         }
 
         public abstract ImageMoniker GetImplicitIcon();

@@ -102,6 +102,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         internal static readonly ProjectTreeFlags FrameworkAssembliesNode = ProjectTreeFlags.Create("FrameworkAssembliesNode");
         internal static readonly ProjectTreeFlags FxAssemblyDependency = ProjectTreeFlags.Create("FxAssemblyDependency");
 
+        internal static readonly ProjectTreeFlags FrameworkSubTreeRootNode = ProjectTreeFlags.Create("FrameworkSubTreeRootNode");
+        internal static readonly ProjectTreeFlags FrameworkDependency = ProjectTreeFlags.Create("FrameworkDependency");
+
         internal static readonly ProjectTreeFlags ProjectSubTreeRootNode = ProjectTreeFlags.Create("ProjectSubTreeRootNode");
         internal static readonly ProjectTreeFlags ProjectDependency = ProjectTreeFlags.Create("ProjectDependency");
 

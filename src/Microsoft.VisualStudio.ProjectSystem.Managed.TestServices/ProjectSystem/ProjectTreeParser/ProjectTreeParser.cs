@@ -196,18 +196,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             string visibility = tokenizer.ReadIdentifier(IdentifierParseOptions.Required);
 
-            switch (visibility)
+            tree.Visible = visibility switch
             {
-                case "visible":
-                    tree.Visible = true;
-                    break;
-                case "invisible":
-                    tree.Visible = false;
-                    break;
+                "visible" => true,
+                "invisible" => false,
 
-                default:
-                    throw FormatException(ProjectTreeFormatError.UnrecognizedPropertyValue, $"Expected 'visible' or 'invisible', but encountered '{visibility}'.");
-            }
+                _ => throw FormatException(ProjectTreeFormatError.UnrecognizedPropertyValue, $"Expected 'visible' or 'invisible', but encountered '{visibility}'."),
+            };
         }
 
         private void ReadCapabilities(MutableProjectItemTree tree)

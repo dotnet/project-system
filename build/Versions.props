@@ -19,7 +19,7 @@
     <VSWhereVersion>2.3.2</VSWhereVersion>
     <TRXUnitVersion>1.0.0-beta1</TRXUnitVersion>
     <MicrosoftDotNetIBCMergeVersion>4.7.1-alpha-00001</MicrosoftDotNetIBCMergeVersion>
-    <MicrosoftNetCompilersVersion>3.0.0</MicrosoftNetCompilersVersion>
+    <MicrosoftNetCompilersVersion>3.3.0-beta1-19327-04</MicrosoftNetCompilersVersion>
     <MicrosoftDiaSymReaderPdb2PdbVersion>1.1.0-beta1-62624-01</MicrosoftDiaSymReaderPdb2PdbVersion>
     <RoslynAnalyzersPackagesVersion>2.9.3</RoslynAnalyzersPackagesVersion>
     <RoslynAnalyzersOldPackagesVersion>2.6.3-beta1.19059.2</RoslynAnalyzersOldPackagesVersion>

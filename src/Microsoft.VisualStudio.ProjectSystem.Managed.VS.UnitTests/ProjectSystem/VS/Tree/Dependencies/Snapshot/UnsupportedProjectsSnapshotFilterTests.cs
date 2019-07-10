@@ -80,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         {
             const string projectPath = @"c:\project\project.csproj";
 
-            var targetFramework = ITargetFrameworkFactory.Implement(moniker: "tfm1");
+            var targetFramework = new TargetFramework(moniker: "tfm1");
 
             var dependency = new TestDependency
             {
@@ -165,7 +165,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         {
             const string projectPath = @"c:\project\project.csproj";
 
-            var targetFramework = ITargetFrameworkFactory.Implement(moniker: "tfm1");
+            var targetFramework = new TargetFramework(moniker: "tfm1");
             var targetedSnapshot = ITargetedDependenciesSnapshotFactory.Implement(hasUnresolvedDependency: false);
 
             var dependency = new TestDependency

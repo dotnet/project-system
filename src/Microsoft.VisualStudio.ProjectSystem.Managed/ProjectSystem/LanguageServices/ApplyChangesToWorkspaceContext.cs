@@ -91,6 +91,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             return ProcessProjectEvaluationHandlersAsync(version, update, isActiveContext, cancellationToken);
         }
 
+        public Task ApplyProjectEndBatchAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool isActiveContext, CancellationToken cancellationToken)
+        {
+            Requires.NotNull(update, nameof(update));
+
+            VerifyInitializedAndNotDisposed();
+
+            if (update.Value.ProjectChanges.TryGetValue(ProjectBuildRuleName, out IProjectChangeDescription projectChange) &&
+                projectChange.Difference.AnyChanges)
+            {
+                IComparable version = GetConfiguredProjectVersion(update);
+
+                ProcessProjectUpdateHandlers(version, update, isActiveContext, cancellationToken);
+            }
+
+            return Task.CompletedTask;
+        }
+
         public IEnumerable<string> GetProjectEvaluationRules()
         {
             VerifyInitializedAndNotDisposed();
@@ -204,6 +221,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             }
 
             return Task.CompletedTask;
+        }
+
+        private void ProcessProjectUpdateHandlers(IComparable version, IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool isActiveContext, CancellationToken cancellationToken)
+        {
+            foreach (ExportLifetimeContext<IWorkspaceContextHandler> handler in _handlers)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                if (handler.Value is IProjectUpdatedHandler evaluationHandler &&
+                    update.Value.ProjectChanges.TryGetValue(evaluationHandler.ProjectEvaluationRule, out IProjectChangeDescription projectChange) &&
+                    projectChange.Difference.AnyChanges)
+                {
+                    evaluationHandler.HandleProjectUpdate(version, projectChange, isActiveContext, _logger);
+                }
+            }
         }
 
         private static IComparable GetConfiguredProjectVersion(IProjectVersionedValue<IProjectSubscriptionUpdate> update)
