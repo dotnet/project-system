@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             IProjectValueDataSource<IProjectSubscriptionUpdate> source = _projectSubscriptionService.ProjectRuleSource;
 
-            // Transform the changes from evaluation/design-time build -> restore data
+            // Transform the changes from evaluation -> FileWatchData
             DisposableValue<ISourceBlock<IProjectVersionedValue<FileWatchData>>> transformBlock = source.SourceBlock
                                                                                                         .TransformWithNoDelta(update => update.Derive(u => CreateFileWatch(u.CurrentState)),
                                                                                                             suppressVersionOnlyUpdates: true,
