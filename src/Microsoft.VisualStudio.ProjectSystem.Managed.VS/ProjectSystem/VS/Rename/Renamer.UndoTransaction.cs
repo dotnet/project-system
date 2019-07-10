@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using EnvDTE;
-using Microsoft.VisualStudio.Shell.Interop;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,18 +14,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         private sealed class UndoScope : IDisposable
         {
             private readonly string _renameOperationName;
-            private readonly IVsService<SDTE, DTE> _dte;
+            private readonly IVsService<DTE> _dte;
             private readonly IProjectThreadingService _threadingService;
             private bool _shouldClose = true;
 
-            private UndoScope(string renameOperationName, IVsService<SDTE, DTE> dte, IProjectThreadingService threadingService)
+            private UndoScope(string renameOperationName, IVsService<DTE> dte, IProjectThreadingService threadingService)
             {
                 _renameOperationName = renameOperationName;
                 _dte = dte;
                 _threadingService = threadingService;
             }
 
-            internal static async Task<UndoScope> CreateAsync(IVsService<SDTE, DTE> dte,
+            internal static async Task<UndoScope> CreateAsync(IVsService<DTE> dte,
                                                                     IProjectThreadingService threadingService,
                                                                     string renameOperationName,
                                                                     CancellationToken token = default)
