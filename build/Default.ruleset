@@ -112,6 +112,8 @@
     <Rule Id="RS0027" Action="Error" />
     <Rule Id="RS0030" Action="Error" />
     <Rule Id="RS0031" Action="Error" />
+    <Rule Id="RS0033" Action="None" /> <!-- Importing constructor should be [Obsolete] -->
+    <Rule Id="RS0034" Action="None" /> <!-- Style rule that enforces public MEF constructor marked with [ImportingConstructor] -->
   </Rules>
   <Rules AnalyzerId="System.Collections.Immutable.Analyzers" RuleNamespace="System.Collections.Immutable.Analyzers">
     <Rule Id="RS0012" Action="Warning" />

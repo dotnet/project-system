@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Reflection;
 
 using Microsoft.VisualStudio.ProjectSystem.Logging;
 
@@ -21,11 +20,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         private readonly UnconfiguredProject _project;
         private readonly HashSet<string> _paths = new HashSet<string>(StringComparers.Paths);
-
-        private bool _triedToRetrieveAddAnalyzerConfigFileMethod = false;
-        private bool _triedToRetrieveRemoveAnalyzerConfigFileMethod = false;
-        private MethodInfo? _addAnalyzerConfigFileMethod;
-        private MethodInfo? _removeAnalyzerConfigFileMethod;
 
         [ImportingConstructor]
         public AnalyzerConfigItemHandler(UnconfiguredProject project)
@@ -81,30 +75,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         private void AddToContext(string fullPath)
         {
-            if (!_triedToRetrieveAddAnalyzerConfigFileMethod)
-            {
-                _addAnalyzerConfigFileMethod = Context.GetType().GetMethod("AddAnalyzerConfigFile");
-                _triedToRetrieveAddAnalyzerConfigFileMethod = true;
-            }
-
-            if (_addAnalyzerConfigFileMethod != null)
-            {
-                _addAnalyzerConfigFileMethod.Invoke(Context, new[] { fullPath });
-            }
+            Context.AddAnalyzerConfigFile(fullPath);
         }
 
         private void RemoveFromContext(string fullPath)
         {
-            if (!_triedToRetrieveRemoveAnalyzerConfigFileMethod)
-            {
-                _removeAnalyzerConfigFileMethod = Context.GetType().GetMethod("RemoveAnalyzerConfigFile");
-                _triedToRetrieveRemoveAnalyzerConfigFileMethod = true;
-            }
-
-            if (_removeAnalyzerConfigFileMethod != null)
-            {
-                _removeAnalyzerConfigFileMethod.Invoke(Context, new[] { fullPath });
-            }
+            Context.RemoveAnalyzerConfigFile(fullPath);
         }
     }
 }

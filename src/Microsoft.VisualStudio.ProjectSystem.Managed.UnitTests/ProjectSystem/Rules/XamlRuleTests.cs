@@ -195,11 +195,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
                     // An item type must be specified
                     Assert.NotNull(itemType);
                 }
-                else
-                {
-                    // Item type has no purpose on other source types
-                    Assert.Null(itemType);
-                }
             }
         }
 
