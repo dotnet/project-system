@@ -82,6 +82,7 @@
     <PackageReference Update="EnvDTE" Version="8.0.1" />
     <PackageReference Update="EnvDTE80" Version="8.0.1" />
     <PackageReference Update="EnvDTE90" Version="9.0.1" />
+    <PackageReference Update="StreamJsonRpc" Version="2.0.167" />
 
     <!-- VS Editor APIs -->
     <PackageReference Update="Microsoft.VisualStudio.CoreUtility" Version="16.0.177-g0ae5fa46a1" />
@@ -97,18 +98,18 @@
     <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers" Version="16.2.133-pre" />
 
     <!-- Roslyn -->
-    <PackageReference Update="Microsoft.VisualStudio.LanguageServices" Version="3.0.0" />
-    <PackageReference Update="Microsoft.CodeAnalysis" Version="3.0.0" />
+    <PackageReference Update="Microsoft.VisualStudio.LanguageServices" Version="3.2.0-beta4-19359-03" />
+    <PackageReference Update="Microsoft.CodeAnalysis" Version="3.2.0-beta4-19359-03" />
     <PackageReference Update="Microsoft.VisualStudio.IntegrationTest.Utilities" Version="2.6.0-beta1-62113-02" />
 
     <!-- Analyzers -->
     <!-- Note: analyzers from github.com/dotnet/roslyn-analyzers are built together and share the same version -->
-    <PackageReference Update="Microsoft.CodeAnalysis.Analyzers" Version="$(RoslynAnalyzersPackagesVersion)" />
-    <PackageReference Update="Microsoft.CodeQuality.Analyzers" Version="$(RoslynAnalyzersPackagesVersion)" />
-    <PackageReference Update="Microsoft.NetFramework.Analyzers" Version="$(RoslynAnalyzersPackagesVersion)" />
-    <PackageReference Update="Microsoft.CodeAnalysis.BannedApiAnalyzers" Version="$(RoslynAnalyzersPackagesVersion)" />
-    <PackageReference Update="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="$(RoslynAnalyzersPackagesVersion)" />
-    <PackageReference Update="Roslyn.Diagnostics.Analyzers" Version="$(RoslynAnalyzersOldPackagesVersion)" />
+    <PackageReference Update="Microsoft.CodeAnalysis.Analyzers" Version="2.9.3" />
+    <PackageReference Update="Microsoft.CodeQuality.Analyzers" Version="2.9.3" />
+    <PackageReference Update="Microsoft.NetFramework.Analyzers" Version="2.9.3" />
+    <PackageReference Update="Microsoft.CodeAnalysis.BannedApiAnalyzers" Version="2.9.3" />
+    <PackageReference Update="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="2.9.3" />
+    <PackageReference Update="Roslyn.Diagnostics.Analyzers" Version="2.9.4-beta1.final" />
 
     <!-- NuGet -->
     <PackageReference Update="NuGet.SolutionRestoreManager.Interop" Version="5.1.0-rtm.5921" />
