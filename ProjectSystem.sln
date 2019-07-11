@@ -35,7 +35,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{DD7EF107
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		.vsts-ci.yml = .vsts-ci.yml
-		build\Packages.targets = build\Packages.targets
 		build\SignToolData.json = build\SignToolData.json
 		build\Versions.props = build\Versions.props
 		build\VisualStudio.XamlRules.props = build\VisualStudio.XamlRules.props
@@ -48,7 +47,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Rulesets", "Rulesets", "{E0
 		build\Test.ruleset = build\Test.ruleset
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{6A95E22E-6D85-4494-AEB5-FCD60A8E88A3}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencies", "{6A95E22E-6D85-4494-AEB5-FCD60A8E88A3}"
 	ProjectSection(SolutionItems) = preProject
 		src\HostAgnostic.props = src\HostAgnostic.props
 		build\Packages.targets = build\Packages.targets

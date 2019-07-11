@@ -892,6 +892,50 @@ Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase
 Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.ValidateProperty(controlData As Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData, ByRef message As String, ByRef returnControl As System.Windows.Forms.Control) -> Microsoft.VisualStudio.Editors.PropertyPages.ValidationResult
 Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.ValidationControlGroups() -> System.Windows.Forms.Control()()
 Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.WriteUserDefinedProperty(PropertyName As String, Value As Object) -> Boolean
+Microsoft.VisualStudio.Editors.IVBPackage.GetService(serviceType As System.Type) -> Object
+Microsoft.VisualStudio.Editors.IVBPackage.MenuCommandService() -> System.ComponentModel.Design.IMenuCommandService
+Microsoft.VisualStudio.Editors.PropertyPages.IPropertyPageSiteInternal.IsImmediateApply() -> Boolean
+MustOverride Microsoft.VisualStudio.Editors.ApplicationDesigner.CustomViewProvider.View() -> System.Windows.Forms.Control
+MustOverride Microsoft.VisualStudio.Editors.PropertyPages.PropPageBase.ControlType() -> System.Type
+MustOverride Microsoft.VisualStudio.Editors.PropertyPages.PropPageBase.Title() -> String
+Overridable Microsoft.VisualStudio.Editors.AppDesDesignerFramework.ErrorControl.ErrorText() -> System.Windows.Forms.TextBox
+Overridable Microsoft.VisualStudio.Editors.AppDesDesignerFramework.ErrorControl.ErrorText(WithEventsValue As System.Windows.Forms.TextBox) -> Void
+Overridable Microsoft.VisualStudio.Editors.AppDesDesignerFramework.ErrorControl.IconGlyph() -> System.Windows.Forms.PictureBox
+Overridable Microsoft.VisualStudio.Editors.AppDesDesignerFramework.ErrorControl.IconGlyph(WithEventsValue As System.Windows.Forms.PictureBox) -> Void
+Overridable Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl.OverflowButton() -> System.Windows.Forms.Button
+Overridable Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl.OverflowButton(WithEventsValue As System.Windows.Forms.Button) -> Void
+Overridable Microsoft.VisualStudio.Editors.ApplicationDesigner.SpecialFileCustomView.LinkLabel() -> VSThemedLinkLabel
+Overridable Microsoft.VisualStudio.Editors.ApplicationDesigner.SpecialFileCustomView.LinkLabel(WithEventsValue As VSThemedLinkLabel) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.ConfigDividerLine() -> System.Windows.Forms.Label
+Overridable Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.ConfigDividerLine(WithEventsValue As System.Windows.Forms.Label) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.ConfigurationComboBox() -> System.Windows.Forms.ComboBox
+Overridable Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.ConfigurationComboBox(WithEventsValue As System.Windows.Forms.ComboBox) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.ConfigurationFlowLayoutPanel() -> System.Windows.Forms.FlowLayoutPanel
+Overridable Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.ConfigurationFlowLayoutPanel(WithEventsValue As System.Windows.Forms.FlowLayoutPanel) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.ConfigurationLabel() -> System.Windows.Forms.Label
+Overridable Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.ConfigurationLabel(WithEventsValue As System.Windows.Forms.Label) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.ConfigurationPanel() -> System.Windows.Forms.TableLayoutPanel
+Overridable Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.ConfigurationPanel(WithEventsValue As System.Windows.Forms.TableLayoutPanel) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.ConfigurationTableLayoutPanel() -> System.Windows.Forms.TableLayoutPanel
+Overridable Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.ConfigurationTableLayoutPanel(WithEventsValue As System.Windows.Forms.TableLayoutPanel) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.PLatformTableLayoutPanel() -> System.Windows.Forms.TableLayoutPanel
+Overridable Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.PLatformTableLayoutPanel(WithEventsValue As System.Windows.Forms.TableLayoutPanel) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.PlatformComboBox() -> System.Windows.Forms.ComboBox
+Overridable Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.PlatformComboBox(WithEventsValue As System.Windows.Forms.ComboBox) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.PlatformLabel() -> System.Windows.Forms.Label
+Overridable Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.PlatformLabel(WithEventsValue As System.Windows.Forms.Label) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.PropPageDesignerViewLayoutPanel() -> System.Windows.Forms.TableLayoutPanel
+Overridable Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.PropPageDesignerViewLayoutPanel(WithEventsValue As System.Windows.Forms.TableLayoutPanel) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.PropertyPagePanel() -> Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.ScrollablePanel
+Overridable Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.PropertyPagePanel(WithEventsValue As Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.ScrollablePanel) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageHostDialog.Cancel() -> System.Windows.Forms.Button
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageHostDialog.Cancel(WithEventsValue As System.Windows.Forms.Button) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageHostDialog.OK() -> System.Windows.Forms.Button
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageHostDialog.OK(WithEventsValue As System.Windows.Forms.Button) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageHostDialog.okCancelTableLayoutPanel() -> System.Windows.Forms.TableLayoutPanel
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageHostDialog.okCancelTableLayoutPanel(WithEventsValue As System.Windows.Forms.TableLayoutPanel) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageHostDialog.overArchingTableLayoutPanel() -> System.Windows.Forms.TableLayoutPanel
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropPageHostDialog.overArchingTableLayoutPanel(WithEventsValue As System.Windows.Forms.TableLayoutPanel) -> Void
 Overrides Microsoft.VisualStudio.Editors.AppDesDesignerFramework.BaseDialog.GetService(ServiceType As System.Type) -> Object
 Overrides Microsoft.VisualStudio.Editors.AppDesDesignerFramework.BaseRootDesigner.Dispose(Disposing As Boolean) -> Void
 Overrides Microsoft.VisualStudio.Editors.AppDesDesignerFramework.DeferrableWindowPaneProviderServiceBase.CreateWindowPane(surface As System.ComponentModel.Design.DesignSurface) -> Microsoft.VisualStudio.Shell.Design.DesignerWindowPane
