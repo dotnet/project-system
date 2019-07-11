@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     /// <summary>

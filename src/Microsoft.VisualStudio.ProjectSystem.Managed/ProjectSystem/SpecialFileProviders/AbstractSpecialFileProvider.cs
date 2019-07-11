@@ -9,8 +9,6 @@ using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.IO;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
     /// <summary>
@@ -84,13 +82,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         ///      Force-create in app-designer folder unless that file is not created there by default.
         ///      In that case create under the root node.
         /// </summary>
-        public async Task<string> GetFileAsync(SpecialFiles fileId, SpecialFileFlags flags, CancellationToken cancellationToken = default)
+        public async Task<string?> GetFileAsync(SpecialFiles fileId, SpecialFileFlags flags, CancellationToken cancellationToken = default)
         {
             // Search for the file in the app designer and root folders.
-            IProjectTree specialFileNode = await FindFileAsync(Name);
+            IProjectTree? specialFileNode = await FindFileAsync(Name);
             if (specialFileNode != null)
             {
-                if (await IsNodeInSyncWithDiskAsync(specialFileNode, forceSync: flags.HasFlag(SpecialFileFlags.CreateIfNotExist), cancellationToken: cancellationToken))
+                if (await IsNodeInSyncWithDiskAsync(specialFileNode, forceSync: flags.HasFlag(SpecialFileFlags.CreateIfNotExist), cancellationToken))
                 {
                     return specialFileNode.FilePath;
                 }
@@ -107,7 +105,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             }
 
             // We haven't found the file but return the default file path as that's the contract.
-            IProjectTree rootNode = _projectTree.CurrentTree;
+            IProjectTree? rootNode = _projectTree.CurrentTree;
+
+            if (rootNode == null)
+                return null;
+
             string rootFilePath = _projectTree.TreeProvider.GetPath(rootNode);
             string fullPath = Path.Combine(Path.GetDirectoryName(rootFilePath), Name);
             return fullPath;
@@ -118,18 +120,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         ///       Look under the appdesigner folder for files that normally live there.
         ///       Look under the project root for all files.
         /// </summary>
-        protected virtual async Task<IProjectTree> FindFileAsync(string specialFileName)
+        protected virtual async Task<IProjectTree?> FindFileAsync(string specialFileName)
         {
-            IProjectTree rootNode = _projectTree.CurrentTree;
-            IProjectTree specialFileNode;
-
             // First, we look in the AppDesigner folder.
             if (CreatedByDefaultUnderAppDesignerFolder)
             {
-                IProjectTree appDesignerFolder = await GetAppDesignerFolderAsync(createIfNotExists: false);
+                IProjectTree? appDesignerFolder = await GetAppDesignerFolderAsync(createIfNotExists: false);
                 if (appDesignerFolder != null)
                 {
-                    specialFileNode = FindFileWithinNode(appDesignerFolder, specialFileName);
+                    IProjectTree? specialFileNode = FindFileWithinNode(appDesignerFolder, specialFileName);
                     if (specialFileNode != null)
                     {
                         return specialFileNode;
@@ -137,20 +136,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
                 }
             }
 
-            // Now try the root folder.
-            specialFileNode = FindFileWithinNode(rootNode, specialFileName);
-            if (specialFileNode != null)
-            {
-                return specialFileNode;
-            }
+            IProjectTree? rootNode = _projectTree.CurrentTree;
 
-            return null;
+            if (rootNode == null)
+                return null;
+
+            // Now try the root folder.
+            return FindFileWithinNode(rootNode, specialFileName);
         }
 
         /// <summary>
         /// Find a file with the given filename within the given node.
         /// </summary>
-        private static IProjectTree FindFileWithinNode(IProjectTree parentNode, string fileName)
+        private static IProjectTree? FindFileWithinNode(IProjectTree parentNode, string fileName)
         {
             parentNode.TryFindImmediateChild(fileName, out IProjectTree fileNode);
 
@@ -206,22 +204,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         /// </summary>
         private async Task<string> CreateFileAsync(string specialFileName)
         {
-            IProjectTree rootNode = await GetParentFolderAsync(createIfNotExists: true);
+            IProjectTree? rootNode = await GetParentFolderAsync(createIfNotExists: true);
 
-            string parentPath = _projectTree.TreeProvider.GetRootedAddNewItemDirectory(rootNode);
+            Assumes.NotNull(rootNode);
+
+            string? parentPath = _projectTree.TreeProvider.GetRootedAddNewItemDirectory(rootNode!);
             string specialFilePath = Path.Combine(parentPath, specialFileName);
 
             // If we can create the file from the template do it, otherwise just create an empty file.
             if (_templateFileCreationService != null)
             {
-                await _templateFileCreationService.Value.CreateFileAsync(TemplateName, parentPath, specialFileName);
+                Assumes.NotNull(parentPath);
+
+                await _templateFileCreationService.Value.CreateFileAsync(TemplateName, parentPath!, specialFileName);
             }
             else
             {
                 using (_fileSystem.Create(specialFilePath))
                 { }
 
-                IProjectItem item = await _sourceItemsProvider.AddAsync(specialFilePath);
+                IProjectItem? item = await _sourceItemsProvider.AddAsync(specialFilePath);
                 if (item != null)
                 {
                     await _projectTree.TreeService.PublishLatestTreeAsync(waitForFileSystemUpdates: true);
@@ -231,11 +233,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             return specialFilePath;
         }
 
-        private async Task<IProjectTree> GetParentFolderAsync(bool createIfNotExists)
+        private async Task<IProjectTree?> GetParentFolderAsync(bool createIfNotExists)
         {
             if (CreatedByDefaultUnderAppDesignerFolder)
             {
-                IProjectTree tree = await GetAppDesignerFolderAsync(createIfNotExists);
+                IProjectTree? tree = await GetAppDesignerFolderAsync(createIfNotExists);
                 if (tree != null)
                     return tree;
             }
@@ -243,13 +245,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             return _projectTree.CurrentTree;
         }
 
-        private async Task<IProjectTree> GetAppDesignerFolderAsync(bool createIfNotExists)
+        private async Task<IProjectTree?> GetAppDesignerFolderAsync(bool createIfNotExists)
         {
             SpecialFileFlags flags = SpecialFileFlags.FullPath;
             if (createIfNotExists)
                 flags |= SpecialFileFlags.CreateIfNotExist;
 
-            string path = await _specialFilesManager.GetFileAsync(SpecialFiles.AppDesigner, flags);
+            string? path = await _specialFilesManager.GetFileAsync(SpecialFiles.AppDesigner, flags);
             if (path == null)
                 return null;
 

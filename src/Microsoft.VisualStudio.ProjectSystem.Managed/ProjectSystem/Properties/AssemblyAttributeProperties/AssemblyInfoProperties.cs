@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     /// <summary>
@@ -60,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <summary>
         /// Get the unevaluated property value.
         /// </summary>
-        public override async Task<string> GetUnevaluatedPropertyValueAsync(string propertyName)
+        public override async Task<string?> GetUnevaluatedPropertyValueAsync(string propertyName)
         {
             if (_attributeValueProviderMap.ContainsKey(propertyName) &&
                 !await IsAssemblyInfoPropertyGeneratedByBuild(propertyName))
@@ -74,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <summary>
         /// Get the value of a property.
         /// </summary>
-        public override async Task<string> GetEvaluatedPropertyValueAsync(string propertyName)
+        public override async Task<string?> GetEvaluatedPropertyValueAsync(string propertyName)
         {
             if (_attributeValueProviderMap.ContainsKey(propertyName) &&
                 !await IsAssemblyInfoPropertyGeneratedByBuild(propertyName))
@@ -88,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <summary>
         /// Get the value of a property from source assembly attribute.
         /// </summary>
-        private async Task<string> GetPropertyValueFromSourceAttributeAsync(string propertyName)
+        private async Task<string?> GetPropertyValueFromSourceAttributeAsync(string propertyName)
         {
             if (_attributeValueProviderMap.TryGetValue(propertyName, out SourceAssemblyAttributePropertyValueProvider provider))
             {
@@ -101,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <summary>
         /// Set the value of a property.
         /// </summary>
-        public override async Task SetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IReadOnlyDictionary<string, string> dimensionalConditions = null)
+        public override async Task SetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
             if (_attributeValueProviderMap.TryGetValue(propertyName, out SourceAssemblyAttributePropertyValueProvider provider) &&
                 !await IsAssemblyInfoPropertyGeneratedByBuild(propertyName))
@@ -121,7 +119,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             // Generate property in project file only if:
             // 1. "GenerateAssemblyInfo" is true AND
             // 2. "GenerateXXX" for this specific property is true.
-            string propertyValue = await base.GetEvaluatedPropertyValueAsync("GenerateAssemblyInfo");
+            string? propertyValue = await base.GetEvaluatedPropertyValueAsync("GenerateAssemblyInfo");
             if (!bool.TryParse(propertyValue, out bool value) || !value)
             {
                 return false;

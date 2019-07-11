@@ -4,8 +4,6 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.Threading.Tasks
 {
     /// <summary>
@@ -47,7 +45,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                     return asyncFunction();
                 }
 
-                _taskAdded = _taskAdded.ContinueWith(async (t) =>
+                _taskAdded = _taskAdded.ContinueWith(async t =>
                 {
                     _disposedCancelTokenSource.Token.ThrowIfCancellationRequested();
                     try

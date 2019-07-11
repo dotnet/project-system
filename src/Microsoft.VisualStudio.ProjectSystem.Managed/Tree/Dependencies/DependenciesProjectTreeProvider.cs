@@ -227,7 +227,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     }
 
                     IProjectPropertiesContext nodeItemContext = node.BrowseObjectProperties.Context;
-                    ProjectItem unresolvedReferenceItem = project.GetItemsByEvaluatedInclude(nodeItemContext.ItemName)
+                    ProjectItem? unresolvedReferenceItem = project.GetItemsByEvaluatedInclude(nodeItemContext.ItemName)
                         .FirstOrDefault(
                             (item, t) => string.Equals(item.ItemType, t, StringComparisons.ItemTypes),
                             nodeItemContext.ItemType);

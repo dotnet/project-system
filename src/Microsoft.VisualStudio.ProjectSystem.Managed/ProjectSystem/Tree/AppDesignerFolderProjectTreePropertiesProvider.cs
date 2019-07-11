@@ -7,8 +7,6 @@ using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Tree
 {
     /// <summary>

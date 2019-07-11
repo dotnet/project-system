@@ -4,8 +4,6 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.Threading.Tasks
 {
     /// <summary>
@@ -18,7 +16,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
     /// </remarks>
     internal sealed class CancellationSeries : IDisposable
     {
-        private CancellationTokenSource _cts = new CancellationTokenSource();
+        private CancellationTokenSource? _cts = new CancellationTokenSource();
 
         private readonly CancellationToken _superToken;
 
@@ -75,7 +73,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
             // This way we would return a cancelled token, which is reasonable.
             CancellationToken nextToken = nextSource.Token;
 
-            CancellationTokenSource priorSource = Interlocked.Exchange(ref _cts, nextSource);
+            CancellationTokenSource? priorSource = Interlocked.Exchange(ref _cts, nextSource);
 
             if (priorSource == null)
             {
@@ -105,7 +103,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
             GC.SuppressFinalize(this);
 #endif
 
-            CancellationTokenSource source = Interlocked.Exchange(ref _cts, null);
+            CancellationTokenSource? source = Interlocked.Exchange(ref _cts, null);
 
             if (source == null)
             {
