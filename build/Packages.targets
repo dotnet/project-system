@@ -82,6 +82,7 @@
     <PackageReference Update="EnvDTE" Version="8.0.1" />
     <PackageReference Update="EnvDTE80" Version="8.0.1" />
     <PackageReference Update="EnvDTE90" Version="9.0.1" />
+    <PackageReference Update="StreamJsonRpc" Version="2.0.167" />
 
     <!-- VS Editor APIs -->
     <PackageReference Update="Microsoft.VisualStudio.CoreUtility" Version="16.0.177-g0ae5fa46a1" />
