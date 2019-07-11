@@ -109,6 +109,7 @@
     <PackageReference Update="Microsoft.NetFramework.Analyzers" Version="2.9.3" />
     <PackageReference Update="Microsoft.CodeAnalysis.BannedApiAnalyzers" Version="2.9.3" />
     <PackageReference Update="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="2.9.3" />
+    <PackageReference Update="Text.Analyzers" Version="2.6.4" />
     <PackageReference Update="Roslyn.Diagnostics.Analyzers" Version="2.9.4-beta1.final" />
 
     <!-- NuGet -->

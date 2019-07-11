@@ -47,8 +47,8 @@ dotnet_separate_import_directive_groups = true
 # Suggest more modern language features when available
 dotnet_style_object_initializer = true:suggestion
 dotnet_style_collection_initializer = true:suggestion
-dotnet_style_coalesce_expression = true:error
-dotnet_style_null_propagation = true:error
+dotnet_style_coalesce_expression = true:suggestion
+dotnet_style_null_propagation = true:suggestion
 dotnet_style_explicit_tuple_names = true:suggestion
 dotnet_style_prefer_inferred_tuple_names = true:suggestion
 dotnet_style_prefer_inferred_anonymous_type_member_names = true:suggestion
@@ -58,14 +58,14 @@ dotnet_style_prefer_conditional_expression_over_assignment = false
 dotnet_style_prefer_auto_properties = false
 
 # Avoid "this." and "Me." if not necessary
-dotnet_style_qualification_for_field = false:error
-dotnet_style_qualification_for_property = false:error
-dotnet_style_qualification_for_method = false:error
-dotnet_style_qualification_for_event = false:error
+dotnet_style_qualification_for_field = false:warning
+dotnet_style_qualification_for_property = false:warning
+dotnet_style_qualification_for_method = false:warning
+dotnet_style_qualification_for_event = false:warning
 
 # Use language keywords instead of framework type names for type references
-dotnet_style_predefined_type_for_locals_parameters_members = true:error
-dotnet_style_predefined_type_for_member_access = true:error
+dotnet_style_predefined_type_for_locals_parameters_members = true:suggestion
+dotnet_style_predefined_type_for_member_access = true:suggestion
 
 # Prefer read-only on fields
 dotnet_style_readonly_field = true:warning
@@ -149,9 +149,9 @@ csharp_style_expression_bodied_indexers = true:none
 csharp_style_expression_bodied_accessors = true:none
 
 # Suggest more modern language features when available
-csharp_style_pattern_matching_over_is_with_cast_check = true:error
-csharp_style_pattern_matching_over_as_with_null_check = true:error
-csharp_style_inlined_variable_declaration = true:error
+csharp_style_pattern_matching_over_is_with_cast_check = true:suggestion
+csharp_style_pattern_matching_over_as_with_null_check = true:suggestion
+csharp_style_inlined_variable_declaration = true:suggestion
 csharp_style_throw_expression = true:suggestion
 csharp_style_conditional_delegate_call = true:suggestion
 csharp_style_deconstructed_variable_declaration = true:suggestion
@@ -210,206 +210,3 @@ csharp_prefer_braces = false:none
 # We allow usage of "var" inside tests as it reduces churn as we remove/rename types
 csharp_style_var_for_built_in_types = true:none
 csharp_style_var_elsewhere = true:none
-
-# Dotnet code analysis settings:
-[*.{cs,vb}]
-# Microsoft.Analyzers.ManagedCodeAnalysis
-dotnet_diagnostic.CA1801.severity = none
-dotnet_diagnostic.CA1804.severity = none
-dotnet_diagnostic.CA1806.severity = none
-dotnet_diagnostic.CA1821.severity = none
-dotnet_diagnostic.CA1823.severity = none
-dotnet_diagnostic.CA1824.severity = none
-dotnet_diagnostic.CA2200.severity = none
-
-# Microsoft.CodeQuality.Analyzers
-dotnet_diagnostic.CA1000.severity = none
-dotnet_diagnostic.CA1001.severity = none
-dotnet_diagnostic.CA1010.severity = none
-dotnet_diagnostic.CA1016.severity = none
-dotnet_diagnostic.CA1018.severity = none
-dotnet_diagnostic.CA1028.severity = none
-dotnet_diagnostic.CA1030.severity = none
-dotnet_diagnostic.CA1032.severity = none
-dotnet_diagnostic.CA1034.severity = none
-dotnet_diagnostic.CA1036.severity = error
-dotnet_diagnostic.CA1040.severity = none
-dotnet_diagnostic.CA1041.severity = none
-dotnet_diagnostic.CA1043.severity = none
-dotnet_diagnostic.CA1051.severity = none
-dotnet_diagnostic.CA1052.severity = none
-dotnet_diagnostic.CA1054.severity = none
-dotnet_diagnostic.CA1055.severity = none
-dotnet_diagnostic.CA1056.severity = none
-dotnet_diagnostic.CA1062.severity = none
-dotnet_diagnostic.CA1063.severity = warning
-dotnet_diagnostic.CA1064.severity = none
-dotnet_diagnostic.CA1065.severity = none
-dotnet_diagnostic.CA1066.severity = none
-dotnet_diagnostic.CA1067.severity = warning
-dotnet_diagnostic.CA1068.severity = warning
-dotnet_diagnostic.CA1031.severity = none        # Do not catch general exception types
-dotnet_diagnostic.CA1303.severity = none
-dotnet_diagnostic.CA1304.severity = none
-dotnet_diagnostic.CA1707.severity = none
-dotnet_diagnostic.CA1710.severity = none
-dotnet_diagnostic.CA1714.severity = none
-dotnet_diagnostic.CA1715.severity = none
-dotnet_diagnostic.CA1716.severity = none
-dotnet_diagnostic.CA1717.severity = none
-dotnet_diagnostic.CA1720.severity = none
-dotnet_diagnostic.CA1721.severity = none
-dotnet_diagnostic.CA1724.severity = none
-dotnet_diagnostic.CA1815.severity = none
-dotnet_diagnostic.CA1820.severity = none
-dotnet_diagnostic.CA2007.severity = none
-dotnet_diagnostic.CA2211.severity = none
-dotnet_diagnostic.CA2213.severity = none        # https://github.com/dotnet/roslyn-analyzers/issues/1796
-dotnet_diagnostic.CA2218.severity = none
-dotnet_diagnostic.CA2222.severity = none
-dotnet_diagnostic.CA2224.severity = none
-dotnet_diagnostic.CA2225.severity = none
-dotnet_diagnostic.CA2227.severity = none
-dotnet_diagnostic.CA2231.severity = none
-dotnet_diagnostic.CA2234.severity = none
-
-# Microsoft.NetFramework.Analyzers
-dotnet_diagnostic.CA2153.severity = none        # TODO do not catch CorruptedStateExceptions
-dotnet_diagnostic.CA2235.severity = error
-dotnet_diagnostic.CA3075.severity = error
-
-# Microsoft.CodeAnalysis.Analyzers
-# These diagnostics apply to the source code of analyzers themselves.
-# We do not have any analyzers in this repository, so disable these.
-dotnet_diagnostic.RS1001.severity = none
-dotnet_diagnostic.RS1002.severity = none
-dotnet_diagnostic.RS1003.severity = none
-dotnet_diagnostic.RS1004.severity = none
-dotnet_diagnostic.RS1005.severity = none
-dotnet_diagnostic.RS1006.severity = none
-dotnet_diagnostic.RS1008.severity = none
-dotnet_diagnostic.RS1009.severity = none
-dotnet_diagnostic.RS1010.severity = none
-dotnet_diagnostic.RS1011.severity = none
-dotnet_diagnostic.RS1012.severity = none
-dotnet_diagnostic.RS1013.severity = none
-dotnet_diagnostic.RS1014.severity = warning         # DoNotIgnoreReturnValueOnImmutableObjectMethodInvocation
-dotnet_diagnostic.RS1015.severity = none
-dotnet_diagnostic.RS1016.severity = none
-dotnet_diagnostic.RS1017.severity = none
-dotnet_diagnostic.RS1018.severity = none
-dotnet_diagnostic.RS1019.severity = none
-dotnet_diagnostic.RS1020.severity = none
-dotnet_diagnostic.RS1021.severity = none
-dotnet_diagnostic.RS1022.severity = none
-dotnet_diagnostic.RS1023.severity = none
-
-# Microsoft.Composition.Analyzers
-dotnet_diagnostic.RS0006.severity = error
-dotnet_diagnostic.RS0023.severity = error
-
-# Roslyn.Core
-dotnet_diagnostic.AD0001.severity = error
-
-# Roslyn.Diagnostic.Analyzers
-dotnet_diagnostic.RS0001.severity = warning
-dotnet_diagnostic.RS0002.severity = warning
-dotnet_diagnostic.RS0005.severity = warning
-dotnet_diagnostic.RS0016.severity = error
-dotnet_diagnostic.RS0017.severity = error
-dotnet_diagnostic.RS0022.severity = error
-dotnet_diagnostic.RS0024.severity = error
-dotnet_diagnostic.RS0025.severity = error
-dotnet_diagnostic.RS0026.severity = error
-dotnet_diagnostic.RS0027.severity = error
-dotnet_diagnostic.RS0030.severity = error
-dotnet_diagnostic.RS0031.severity = error
-dotnet_diagnostic.RS0033.severity = none            # Importing constructor should be [Obsolete]
-dotnet_diagnostic.RS0034.severity = none            # Style rule that enforces public MEF constructor marked with [ImportingConstructor]
-
-# System.Collections.Immutable.Analyzers
-dotnet_diagnostic.RS0012.severity = warning
-
-# System.Runtime.Analyzers
-dotnet_diagnostic.CA1305.severity = none
-dotnet_diagnostic.CA1307.severity = none
-dotnet_diagnostic.CA1308.severity = none
-dotnet_diagnostic.CA1810.severity = none
-dotnet_diagnostic.CA1816.severity = none
-dotnet_diagnostic.CA1825.severity = warning
-dotnet_diagnostic.CA2002.severity = none
-dotnet_diagnostic.CA2207.severity = none
-dotnet_diagnostic.CA2208.severity = none
-dotnet_diagnostic.CA2216.severity = none
-dotnet_diagnostic.CA2219.severity = none
-dotnet_diagnostic.CA2241.severity = none
-dotnet_diagnostic.CA2242.severity = none
-dotnet_diagnostic.RS0014.severity = warning
-
-# System.Runtime.InteropServices.Analyzers
-dotnet_diagnostic.CA1401.severity = none
-dotnet_diagnostic.CA2101.severity = none
-dotnet_diagnostic.RS0015.severity = warning
-
-# System.Threading.Tasks.Analyzers
-dotnet_diagnostic.RS0018.severity = warning
-
-# XmlDocumentationComments.Analyzers
-dotnet_diagnostic.RS0010.severity = warning
-
-# Microsoft.VisualStudio.Threading.Analyzers
-dotnet_diagnostic.VSTHRD200.severity = none     # Naming styles:  Before: Task Open()  After: Task OpenAsync()
-dotnet_diagnostic.VSTHRD010.severity = none     # Visual Studio service should be used on main thread explicitly.
-dotnet_diagnostic.VSTHRD103.severity = none     # Call async methods when in an async method.
-dotnet_diagnostic.VSTHRD108.severity = none     # Thread affinity checks should be unconditional.
-dotnet_diagnostic.VSTHRD003.severity = none     # Avoid awaiting or returning a Task representing work that was not started within your context as that can lead to deadlocks
-
-# Microsoft.VisualStudio.SDK.Analyzers
-dotnet_diagnostic.VSSDK006.severity = none      # Check whether the result of GetService calls is null
-
-# Microsoft.CodeAnalysis.CSharp.Features            # Name:                                        Before:                                             After:
-dotnet_diagnostic.IDE0001.severity = error          # Simplify names                               System.Version version;                             Version version;
-dotnet_diagnostic.IDE0002.severity = error          # Simplify (member access)                     System.Version.Equals("1", "2");                    Version.Equals("1", "2");
-dotnet_diagnostic.IDE0005.severity = error          # Using directive is unnecessary               using System.Text;                                  <nothing>
-dotnet_diagnostic.IDE0030.severity = error          # Use coalesce expression (nullable)           int? y = x.HasValue ? x.Value : 0                   int? y = x ?? 0;
-dotnet_diagnostic.IDE0030WithoutSuggestion.severity = error
-dotnet_diagnostic.IDE1006.severity = error          # Naming styles                                Task Open()                                         Task OpenAsync()
-dotnet_diagnostic.IDE1006WithoutSuggestion.severity = suggestion
-
-# Dotnet code analysis settings for test projects:
-[src/*Tests/**/*.{cs,vb}]
-# Microsoft.CodeQuality.Analyzers
-# For tests, the ConfigureAwait(true) is good enough. Either they are already running on a thread pool
-# thread where ConfigureAwait(false) does nothing, or we're running the workload from an STA thread
-# where we want to marshal the continuations back to it.
-dotnet_diagnostic.CA2007.severity = none
-dotnet_diagnostic.CA1822.severity = none
-dotnet_diagnostic.CA2000.severity = none
-dotnet_diagnostic.CA2009.severity = none
-
-# System.Runtime.Analyzers
-dotnet_diagnostic.CA1825.severity = none        # Avoid zero length allocations - suppress for non-shipping/test projects (originally RS0007)
-
-# Microsoft.Composition.Analyzers
-dotnet_diagnostic.RS0006.severity = none
-dotnet_diagnostic.RS0023.severity = none
-
-# Microsoft.VisualStudio.Threading.Analyzers
-dotnet_diagnostic.VSTHRD001.severity = none     # Await JoinableTaskFactory.SwitchToMainThreadAsync() to switch to the UI thread instead of APIs that can deadlock or require specifying a priority.
-dotnet_diagnostic.VSTHRD002.severity = none     # Synchronously waiting on tasks or awaiters may cause deadlocks. Use JoinableTaskFactory.Run instead.
-dotnet_diagnostic.VSTHRD010.severity = none     # Visual Studio service should be used on main thread explicitly.
-dotnet_diagnostic.VSTHRD103.severity = none     # Synchronously blocks. Await ThrowsAsync instead.
-dotnet_diagnostic.VSTHRD110.severity = none     # Observe result of async calls 
-dotnet_diagnostic.VSTHRD200.severity = none     # Naming stylesNaming styles:  Before: Task Open()  After: Task OpenAsync()
-
-# xunit.analyzers
-dotnet_diagnostic.xUnit1026.severity = none     # Theory methods must use all parameters 
-dotnet_diagnostic.xUnit1004.severity = none     # Test methods should not be skipped
-
-# Microsoft.CodeAnalysis.CSharp.Features
-dotnet_diagnostic.IDE0001.severity = none       # Too noisy due to https://github.com/dotnet/roslyn/issues/27819
-dotnet_diagnostic.IDE1006.severity = none       # Naming styles is too noisy as it fires on all async tests
-dotnet_diagnostic.IDE1006WithoutSuggestion.severity = none
-dotnet_diagnostic.IDE0067.severity = none	    # Noisy in tests
-dotnet_diagnostic.IDE0068.severity = none       # Noisy in tests
-dotnet_diagnostic.IDE0068.severity = none       # Noisy in tests
