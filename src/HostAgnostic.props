@@ -42,6 +42,7 @@
     <!-- Host-Agnostic Visual Studio -->
     <PackageReference Include="Microsoft.VisualStudio.Imaging.Interop.14.0.DesignTime" />
     <PackageReference Include="Microsoft.VisualStudio.ImageCatalog" />
+    <PackageReference Include="StreamJsonRpc" />
     
   </ItemGroup>
 
