@@ -41,12 +41,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{DD7EF107
 		build\VisualStudio.XamlRules.targets = build\VisualStudio.XamlRules.targets
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Rulesets", "Rulesets", "{E09AD054-22FC-4E70-8889-0F3DCF1267C7}"
-	ProjectSection(SolutionItems) = preProject
-		build\Default.ruleset = build\Default.ruleset
-		build\Test.ruleset = build\Test.ruleset
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencies", "{6A95E22E-6D85-4494-AEB5-FCD60A8E88A3}"
 	ProjectSection(SolutionItems) = preProject
 		src\HostAgnostic.props = src\HostAgnostic.props
@@ -127,7 +121,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{E09AD054-22FC-4E70-8889-0F3DCF1267C7} = {DD7EF107-AAD4-4C43-8A58-0DC1BC614ADE}
 		{6A95E22E-6D85-4494-AEB5-FCD60A8E88A3} = {DD7EF107-AAD4-4C43-8A58-0DC1BC614ADE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
