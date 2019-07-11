@@ -238,6 +238,22 @@ Microsoft.VisualStudio.Editors.MyApplication.ApplicationTypes.WindowsApp = 0 -> 
 Microsoft.VisualStudio.Editors.MyApplication.ApplicationTypes.WindowsClassLib = 1 -> Microsoft.VisualStudio.Editors.MyApplication.ApplicationTypes
 Microsoft.VisualStudio.Editors.MyApplication.ApplicationTypes.WindowsService = 3 -> Microsoft.VisualStudio.Editors.MyApplication.ApplicationTypes
 Microsoft.VisualStudio.Editors.MyApplication.IVsMyApplicationProperties
+Microsoft.VisualStudio.Editors.MyApplication.IVsMyApplicationProperties.AuthenticationMode() -> Integer
+Microsoft.VisualStudio.Editors.MyApplication.IVsMyApplicationProperties.AuthenticationMode(Value As Integer) -> Void
+Microsoft.VisualStudio.Editors.MyApplication.IVsMyApplicationProperties.CustomSubMain() -> Boolean
+Microsoft.VisualStudio.Editors.MyApplication.IVsMyApplicationProperties.CustomSubMain(Value As Boolean) -> Void
+Microsoft.VisualStudio.Editors.MyApplication.IVsMyApplicationProperties.EnableVisualStyles() -> Boolean
+Microsoft.VisualStudio.Editors.MyApplication.IVsMyApplicationProperties.EnableVisualStyles(Value As Boolean) -> Void
+Microsoft.VisualStudio.Editors.MyApplication.IVsMyApplicationProperties.MainForm() -> String
+Microsoft.VisualStudio.Editors.MyApplication.IVsMyApplicationProperties.MainForm(Value As String) -> Void
+Microsoft.VisualStudio.Editors.MyApplication.IVsMyApplicationProperties.SaveMySettingsOnExit() -> Boolean
+Microsoft.VisualStudio.Editors.MyApplication.IVsMyApplicationProperties.SaveMySettingsOnExit(Value As Boolean) -> Void
+Microsoft.VisualStudio.Editors.MyApplication.IVsMyApplicationProperties.ShutdownMode() -> Integer
+Microsoft.VisualStudio.Editors.MyApplication.IVsMyApplicationProperties.ShutdownMode(Value As Integer) -> Void
+Microsoft.VisualStudio.Editors.MyApplication.IVsMyApplicationProperties.SingleInstance() -> Boolean
+Microsoft.VisualStudio.Editors.MyApplication.IVsMyApplicationProperties.SingleInstance(Value As Boolean) -> Void
+Microsoft.VisualStudio.Editors.MyApplication.IVsMyApplicationProperties.SplashScreen() -> String
+Microsoft.VisualStudio.Editors.MyApplication.IVsMyApplicationProperties.SplashScreen(Value As String) -> Void
 Microsoft.VisualStudio.Editors.MyApplication.MyApplicationCodeGenerator
 Microsoft.VisualStudio.Editors.MyApplication.MyApplicationCodeGenerator.New() -> Void
 Microsoft.VisualStudio.Editors.MyApplication.MyApplicationManager
