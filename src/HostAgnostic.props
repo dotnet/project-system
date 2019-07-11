@@ -27,6 +27,8 @@
     <PackageReference Include="Microsoft.CodeQuality.Analyzers" />
     <PackageReference Include="Microsoft.NetFramework.Analyzers" />
     <PackageReference Include="Roslyn.Diagnostics.Analyzers" />
+    <PackageReference Include="Text.Analyzers" />
+    
 
     <!-- MSBuild -->
     <PackageReference Include="Microsoft.Build" />
