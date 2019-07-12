@@ -3,8 +3,6 @@
 using System;
 using System.Globalization;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio
 {
     /// <summary>
@@ -19,108 +17,85 @@ namespace Microsoft.VisualStudio
         private static readonly object[] s_oneArgumentArray = new object[1];
         private static readonly object[] s_twoArgumentArray = new object[2];
         private static readonly object[] s_threeArgumentArray = new object[3];
-        private readonly string _format;
-        private readonly object _argument1;
-        private readonly object _argument2;
-        private readonly object _argument3;
-        private readonly object[] _arguments;
 
         public StringFormat(string text)
         {
-            _format = text;
-            _argument1 = null;
-            _argument2 = null;
-            _argument3 = null;
-            _arguments = s_zeroArgumentArray;
+            Format = text;
+            Argument1 = null;
+            Argument2 = null;
+            Argument3 = null;
+            Arguments = s_zeroArgumentArray;
         }
 
         public StringFormat(string format, object argument)
         {
-            _format = format;
-            _argument1 = argument;
-            _argument2 = null;
-            _argument3 = null;
-            _arguments = s_oneArgumentArray;
+            Format = format;
+            Argument1 = argument;
+            Argument2 = null;
+            Argument3 = null;
+            Arguments = s_oneArgumentArray;
         }
 
         public StringFormat(string format, object argument1, object argument2)
         {
-            _format = format;
-            _argument1 = argument1;
-            _argument2 = argument2;
-            _argument3 = null;
-            _arguments = s_twoArgumentArray;
+            Format = format;
+            Argument1 = argument1;
+            Argument2 = argument2;
+            Argument3 = null;
+            Arguments = s_twoArgumentArray;
         }
 
         public StringFormat(string format, object argument1, object argument2, object argument3)
         {
-            _format = format;
-            _argument1 = argument1;
-            _argument2 = argument2;
-            _argument3 = argument3;
-            _arguments = s_threeArgumentArray;
+            Format = format;
+            Argument1 = argument1;
+            Argument2 = argument2;
+            Argument3 = argument3;
+            Arguments = s_threeArgumentArray;
         }
 
         public StringFormat(string format, object[] arguments)
         {
-            _format = format;
-            _argument1 = null;
-            _argument2 = null;
-            _argument3 = null;
-            _arguments = arguments;
+            Format = format;
+            Argument1 = null;
+            Argument2 = null;
+            Argument3 = null;
+            Arguments = arguments;
         }
 
-        public object Argument1
-        {
-            get { return _argument1; }
-        }
+        public object? Argument1 { get; }
 
-        public object Argument2
-        {
-            get { return _argument2; }
-        }
+        public object? Argument2 { get; }
 
-        public object Argument3
-        {
-            get { return _argument3; }
-        }
+        public object? Argument3 { get; }
 
-        public object[] Arguments
-        {
-            get { return _arguments; }
-        }
+        public object[] Arguments { get; }
 
-        public string Format
-        {
-            get { return _format; }
-        }
+        public string Format { get; }
 
-        public int Length
-        {
-            get { return _arguments.Length; }
-        }
+        public int Length => Arguments.Length;
 
         public string Text
         {
             get
             {
-                int length = _arguments.Length;
+                int length = Arguments.Length;
 
                 // Making sure we call through the non-params array version of String.Format 
                 // where possible to avoid "params" array allocation.
                 if (length == 0)
-                    return _format;
+                    return Format;
 
                 if (length == 1)
-                    return string.Format(CultureInfo.CurrentCulture, _format, _argument1);
+                    return string.Format(CultureInfo.CurrentCulture, Format, Argument1);
 
                 if (length == 2)
-                    return string.Format(CultureInfo.CurrentCulture, _format, _argument1, _argument2);
+                    return string.Format(CultureInfo.CurrentCulture, Format, Argument1, Argument2);
 
                 if (length == 3)
-                    return string.Format(CultureInfo.CurrentCulture, _format, _argument1, _argument2, _argument3);
+                    return string.Format(CultureInfo.CurrentCulture, Format, Argument1, Argument2, Argument3);
 
-                return string.Format(CultureInfo.CurrentCulture, _format, _arguments);
+                return string.Format(CultureInfo.CurrentCulture, Format, Arguments);
             }
         }
     }

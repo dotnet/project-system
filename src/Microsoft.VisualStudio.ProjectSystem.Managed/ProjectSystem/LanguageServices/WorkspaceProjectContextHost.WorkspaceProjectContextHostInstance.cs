@@ -10,17 +10,15 @@ using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.OperationProgress;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     internal partial class WorkspaceProjectContextHost
     {
         /// <summary>
-        ///     Responsible for lifetime of a <see cref="IWorkspaceProjectContext"/> and appling changes to a 
+        ///     Responsible for lifetime of a <see cref="IWorkspaceProjectContext"/> and applying changes to a 
         ///     project to the context via the <see cref="IApplyChangesToWorkspaceContext"/> service.
         /// </summary>
-        internal partial class WorkspaceProjectContextHostInstance : OnceInitializedOnceDisposedUnderLockAsync, IMultiLifetimeInstance
+        internal class WorkspaceProjectContextHostInstance : OnceInitializedOnceDisposedUnderLockAsync, IMultiLifetimeInstance
         {
             private readonly ConfiguredProject _project;
             private readonly IProjectSubscriptionService _projectSubscriptionService;
@@ -30,11 +28,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             private readonly ExportFactory<IApplyChangesToWorkspaceContext> _applyChangesToWorkspaceContextFactory;
             private readonly IDataProgressTrackerService _dataProgressTrackerService;
 
-            private IDataProgressTrackerServiceRegistration _evaluationProgressRegistration;
-            private IDataProgressTrackerServiceRegistration _projectBuildProgressRegistration;
-            private DisposableBag _disposables;
-            private IWorkspaceProjectContextAccessor _contextAccessor;
-            private ExportLifetimeContext<IApplyChangesToWorkspaceContext> _applyChangesToWorkspaceContext;
+            private IDataProgressTrackerServiceRegistration? _evaluationProgressRegistration;
+            private IDataProgressTrackerServiceRegistration? _projectBuildProgressRegistration;
+            private DisposableBag? _disposables;
+            private IWorkspaceProjectContextAccessor? _contextAccessor;
+            private ExportLifetimeContext<IApplyChangesToWorkspaceContext>? _applyChangesToWorkspaceContext;
 
             public WorkspaceProjectContextHostInstance(ConfiguredProject project,
                                                        IProjectThreadingService threadingService,
@@ -115,7 +113,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                 try
                 {
-                    await ExecuteUnderLockAsync(_ => action(_contextAccessor), _tasksService.UnloadCancellationToken);
+                    await ExecuteUnderLockAsync(_ => action(_contextAccessor!), _tasksService.UnloadCancellationToken);
                 }
                 catch (OperationCanceledException ex) when (ex.CancellationToken == DisposalToken)
                 {   // We treat cancellation because our instance was disposed differently from when the project is unloading.
@@ -132,7 +130,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                 try
                 {
-                    return await ExecuteUnderLockAsync(_ => action(_contextAccessor), _tasksService.UnloadCancellationToken);
+                    return await ExecuteUnderLockAsync(_ => action(_contextAccessor!), _tasksService.UnloadCancellationToken);
                 }
                 catch (OperationCanceledException ex) when (ex.CancellationToken == DisposalToken)
                 {
@@ -147,7 +145,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             private async Task ApplyProjectChangesUnderLockAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool evaluation, CancellationToken cancellationToken)
             {
-                IWorkspaceProjectContext context = _contextAccessor.Context;
+                IWorkspaceProjectContext context = _contextAccessor!.Context;
 
                 context.StartBatch();
 
@@ -158,11 +156,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                     if (evaluation)
                     {
-                        await _applyChangesToWorkspaceContext.Value.ApplyProjectEvaluationAsync(update, isActiveContext, cancellationToken);
+                        await _applyChangesToWorkspaceContext!.Value.ApplyProjectEvaluationAsync(update, isActiveContext, cancellationToken);
                     }
                     else
                     {
-                        await _applyChangesToWorkspaceContext.Value.ApplyProjectBuildAsync(update, isActiveContext, cancellationToken);
+                        await _applyChangesToWorkspaceContext!.Value.ApplyProjectBuildAsync(update, isActiveContext, cancellationToken);
                     }
 
                     context.EndBatch();
@@ -186,11 +184,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 // up-to-date with the latest version that produced, then we no longer considered "in progress".
                 if (evaluation)
                 {
-                    _evaluationProgressRegistration.NotifyOutputDataCalculated(dataSourceVersions);
+                    _evaluationProgressRegistration!.NotifyOutputDataCalculated(dataSourceVersions);
                 }
                 else
                 {
-                    _projectBuildProgressRegistration.NotifyOutputDataCalculated(dataSourceVersions);
+                    _projectBuildProgressRegistration!.NotifyOutputDataCalculated(dataSourceVersions);
                 }
             }
 

@@ -2,8 +2,6 @@
 
 using System.ComponentModel.Composition;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>

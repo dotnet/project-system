@@ -53,8 +53,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
                 properties)
         {
             string version = properties.GetStringProperty(ProjectItemMetadata.Version) ?? string.Empty;
-            string baseCaption = new LazyStringSplit(path, ',').FirstOrDefault();
-            Caption = string.IsNullOrEmpty(version) ? baseCaption : $"{baseCaption} ({version})";
+            string? baseCaption = new LazyStringSplit(path, ',').FirstOrDefault();
+            Caption = (string.IsNullOrEmpty(version) ? baseCaption : $"{baseCaption} ({version})") ?? originalItemSpec;
         }
     }
 }

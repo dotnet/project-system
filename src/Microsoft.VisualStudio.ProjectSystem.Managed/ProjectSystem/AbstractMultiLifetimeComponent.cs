@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.Threading;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
@@ -86,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public Task UnloadAsync()
         {
-            T instance = null;
+            T? instance = null;
             lock (_lock)
             {
                 if (_instanceTaskSource.Task.IsCompleted)

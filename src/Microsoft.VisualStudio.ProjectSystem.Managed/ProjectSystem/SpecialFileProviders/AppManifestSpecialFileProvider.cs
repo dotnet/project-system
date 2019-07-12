@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.IO;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
     [ExportSpecialFileProvider(SpecialFiles.AppManifest)]
@@ -15,6 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
     internal class AppManifestSpecialFileProvider : AbstractSpecialFileProvider
     {
         private readonly ProjectProperties _projectProperties;
+
         private const string NoManifestValue = "NoManifest";
         private const string DefaultManifestValue = "DefaultManifest";
 
@@ -34,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 
         protected override string TemplateName => "AppManifestInternal.zip";
 
-        protected override async Task<IProjectTree> FindFileAsync(string specialFileName)
+        protected override async Task<IProjectTree?> FindFileAsync(string specialFileName)
         {
             // If the ApplicationManifest property is defined then we should just use that - otherwise fall back to the default logic to find app.manifest.
             ConfigurationGeneralBrowseObject configurationGeneral = await _projectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync();

@@ -6,8 +6,6 @@ using System.Collections.Immutable;
 
 using Microsoft.CodeAnalysis;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     /// <summary>
