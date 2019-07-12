@@ -3,8 +3,6 @@
 using System;
 using System.Collections.Generic;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class ProjectConfigurationExtensions
@@ -45,6 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 {
                     continue;
                 }
+
                 // Dimension values must be compared in a case-sensitive manner.
                 if (!projectConfiguration2.Dimensions.TryGetValue(dimensionName, out string activeValue) ||
                     !string.Equals(dimensionValue, activeValue, StringComparison.Ordinal))

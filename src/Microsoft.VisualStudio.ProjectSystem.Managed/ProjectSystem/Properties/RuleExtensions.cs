@@ -2,8 +2,6 @@
 
 using Microsoft.Build.Framework.XamlTypes;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     /// <summary>
@@ -18,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// </summary>
         /// <param name="itemType">The item type the rule represents.  May be null or empty to represent a project-level property rule.</param>
         /// <returns>An empty rule.</returns>
-        internal static Rule SynthesizeEmptyRule(string itemType = null)
+        internal static Rule SynthesizeEmptyRule(string? itemType = null)
         {
             var emptyRule = new Rule
             {

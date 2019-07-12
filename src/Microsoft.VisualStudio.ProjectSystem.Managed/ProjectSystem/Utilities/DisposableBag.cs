@@ -1,15 +1,13 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. 
 
-#nullable disable
+using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
+using System.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Utilities
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.Immutable;
-    using System.Linq;
-    using System.Threading;
-
     /// <summary>
     /// A class that tracks a set of disposable objects and a cancellation token for purposes
     /// of managing the lifetime of a version-sync'd block join.
@@ -34,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         /// <summary>
         /// The set of disposable blocks.
         /// </summary>
-        private ImmutableHashSet<IDisposable> _disposables = ImmutableHashSet.Create<IDisposable>();
+        private ImmutableHashSet<IDisposable?> _disposables = ImmutableHashSet.Create<IDisposable?>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DisposableBag"/> class.
@@ -65,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         public void Dispose()
         {
             bool disposedThisTime = false;
-            var disposables = ImmutableHashSet.Create<IDisposable>();
+            var disposables = ImmutableHashSet.Create<IDisposable?>();
             lock (this)
             {
                 if (!IsDisposed)
@@ -96,7 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         /// Adds a value to be disposed of when this collection is disposed of or canceled.
         /// </summary>
         /// <param name="disposable">The value to be disposed of later. May be <c>null</c>.</param>
-        internal void AddDisposable(IDisposable disposable)
+        internal void AddDisposable(IDisposable? disposable)
         {
             if (disposable == null)
             {
@@ -125,11 +123,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         /// <summary>
         /// Adds values to be disposed of when this collection is disposed of or canceled.
         /// </summary>
-        internal void AddDisposables(IEnumerable<IDisposable> disposables)
+        internal void AddDisposables(IEnumerable<IDisposable?> disposables)
         {
             Requires.NotNull(disposables, nameof(disposables));
 
-            foreach (IDisposable disposable in disposables)
+            foreach (IDisposable? disposable in disposables)
             {
                 AddDisposable(disposable);
             }
@@ -139,7 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         /// Removes a disposable value from the collection.
         /// </summary>
         /// <param name="disposable">The value to remove. May be <c>null</c>.</param>
-        internal void RemoveDisposable(IDisposable disposable)
+        internal void RemoveDisposable(IDisposable? disposable)
         {
             if (disposable == null)
             {
@@ -182,7 +180,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         /// Calls <see cref="IDisposable.Dispose"/> on all elements in a sequence,
         /// allowing the sequence itself or elements inside it to be null.
         /// </summary>
-        internal static void DisposeAllIfNotNull(IEnumerable<IDisposable> sequence, bool cacheSequence = false)
+        internal static void DisposeAllIfNotNull(IEnumerable<IDisposable?> sequence, bool cacheSequence = false)
         {
             if (sequence != null)
             {
@@ -192,12 +190,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
                     sequence = sequence.ToList();
                 }
 
-                foreach (IDisposable item in sequence)
+                foreach (IDisposable? item in sequence)
                 {
-                    if (item != null)
-                    {
-                        item.Dispose();
-                    }
+                    item?.Dispose();
                 }
             }
         }

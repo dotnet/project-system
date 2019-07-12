@@ -4,6 +4,8 @@ using System.Collections.Immutable;
 
 #nullable disable
 
+// TODO annotate this file once NotNullIfNotNull is supported https://github.com/dotnet/roslyn/issues/31549
+
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     /// <summary>

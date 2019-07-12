@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.Threading;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
@@ -120,7 +118,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
                 try
                 {
-                    T result = default;
+                    T result = default!;
                     await _semaphore.ExecuteAsync(async () => { result = await action(jointCancellationToken); }, jointCancellationToken);
 
                     return result;
