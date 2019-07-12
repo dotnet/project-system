@@ -5,8 +5,6 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading.Tasks;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     [ExportInterceptingPropertyValueProvider("AssemblyOriginatorKeyFile", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
@@ -20,10 +18,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             _unconfiguredProject = project;
         }
 
-        public override Task<string> OnSetPropertyValueAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string> dimensionalConditions = null)
+        public override Task<string> OnSetPropertyValueAsync(
+            string unevaluatedPropertyValue,
+            IProjectProperties defaultProperties,
+            IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
             if (Path.IsPathRooted(unevaluatedPropertyValue) &&
-                PathHelper.TryMakeRelativeToProjectDirectory(_unconfiguredProject, unevaluatedPropertyValue, out string relativePath))
+                _unconfiguredProject.TryMakeRelativeToProjectDirectory(unevaluatedPropertyValue, out string relativePath))
             {
                 unevaluatedPropertyValue = relativePath;
             }

@@ -3,8 +3,6 @@
 using System;
 using System.ComponentModel.Composition;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     [Export(typeof(IPhysicalProjectTree))]
@@ -24,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _treeStorage = treeStorage;
         }
 
-        public IProjectTree CurrentTree
+        public IProjectTree? CurrentTree
         {
             get { return _treeService.Value.CurrentTree?.Tree; }
         }

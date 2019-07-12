@@ -25,6 +25,11 @@
      <!-- Naming styles is too noisy as it fires on all async tests -->     
     <Rule Id="IDE1006" Action="None" />                       <!-- Naming styles                                Task Open()                                         Task OpenAsync()                      -->
     <Rule Id="IDE1006WithoutSuggestion" Action="None" />
+     
+     <!-- Dispose rules are too noisy for tests -->
+    <Rule Id="IDE0067" Action="None" />
+    <Rule Id="IDE0068" Action="None" />
+    <Rule Id="IDE0069" Action="None" />
   </Rules>
   <Rules AnalyzerId="Microsoft.VisualStudio.Threading.Analyzers" RuleNamespace="Microsoft.VisualStudio.Threading.Analyzers">
     <Rule Id="VSTHRD001" Action="None" />                     <!-- Await JoinableTaskFactory.SwitchToMainThreadAsync() to switch to the UI thread instead of APIs that can deadlock or require specifying a priority.-->

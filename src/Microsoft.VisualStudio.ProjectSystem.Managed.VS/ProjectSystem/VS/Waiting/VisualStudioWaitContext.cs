@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
 
         private IVsThreadedWaitDialog3 CreateDialog(IVsThreadedWaitDialogFactory dialogFactory)
         {
-            Marshal.ThrowExceptionForHR(dialogFactory.CreateInstance(out var dialog2));
+            Marshal.ThrowExceptionForHR(dialogFactory.CreateInstance(out IVsThreadedWaitDialog2 dialog2));
             if (dialog2 == null)
                 throw new ArgumentNullException(nameof(dialog2));
 
@@ -111,7 +111,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
                 pfCanceled: out _);
         }
 
-        public void Dispose() => _dialog.EndWaitDialog(out _);
+        public void Dispose()
+        {
+            _dialog.EndWaitDialog(out _);
+            _cancellationTokenSource?.Dispose();
+        }
 
         private void OnCanceled()
         {

@@ -2,15 +2,15 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
-
-#nullable disable
 
 namespace Microsoft.VisualStudio
 {
     internal static class LinqExtensions
     {
         [Pure]
+        [return: MaybeNull]
         public static T FirstOrDefault<T, TArg>(this IEnumerable<T> source, Func<T, TArg, bool> predicate, TArg arg)
         {
             foreach (T obj in source)
@@ -19,10 +19,11 @@ namespace Microsoft.VisualStudio
                     return obj;
             }
 
-            return default;
+            return default!;
         }
 
         [Pure]
+        [return: MaybeNull]
         public static T SingleOrDefault<T, TArg>(this IEnumerable<T> source, Func<T, TArg, bool> predicate, TArg arg)
         {
             using (IEnumerator<T> enumerator = source.GetEnumerator())
@@ -47,7 +48,7 @@ namespace Microsoft.VisualStudio
                 }
             }
 
-            return default;
+            return default!;
         }
     }
 }

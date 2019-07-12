@@ -87,22 +87,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
             private (WaitIndicatorResult, T) WaitForOperationImpl<T>(string title, string message, bool allowCancel, Func<CancellationToken, T> function)
             {
                 _threadingService.VerifyOnUIThread();
-                using (IWaitContext waitContext = StartWait(title, message, allowCancel))
-                {
-                    try
-                    {
-                        T result = function(waitContext.CancellationToken);
 
-                        return (WaitIndicatorResult.Completed, result);
-                    }
-                    catch (OperationCanceledException)
-                    {
-                        return (WaitIndicatorResult.Canceled, default);
-                    }
-                    catch (AggregateException aggregate) when (aggregate.InnerExceptions.All(e => e is OperationCanceledException))
-                    {
-                        return (WaitIndicatorResult.Canceled, default);
-                    }
+                using IWaitContext waitContext = StartWait(title, message, allowCancel);
+
+                try
+                {
+                    T result = function(waitContext.CancellationToken);
+
+                    return (WaitIndicatorResult.Completed, result);
+                }
+                catch (OperationCanceledException)
+                {
+                    // TODO track https://github.com/dotnet/roslyn/issues/37069 regarding these suppressions
+#pragma warning disable CS8653
+                    return (WaitIndicatorResult.Canceled, default);
+#pragma warning restore CS8653
+                }
+                catch (AggregateException aggregate) when (aggregate.InnerExceptions.All(e => e is OperationCanceledException))
+                {
+                    // TODO track https://github.com/dotnet/roslyn/issues/37069 regarding these suppressions
+#pragma warning disable CS8653
+                    return (WaitIndicatorResult.Canceled, default);
+#pragma warning restore CS8653
                 }
             }
 

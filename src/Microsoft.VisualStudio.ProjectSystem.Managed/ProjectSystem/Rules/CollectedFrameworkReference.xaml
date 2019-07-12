@@ -8,6 +8,7 @@
   
   <Rule.DataSource>
     <DataSource HasConfigurationCondition="False"
+                ItemType="FrameworkReference"
                 MSBuildTarget="CollectFrameworkReferences"
                 Persistence="ProjectFile"
                 SourceOfDefaultValue="AfterContext"

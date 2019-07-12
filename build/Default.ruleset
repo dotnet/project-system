@@ -29,6 +29,7 @@
     <Rule Id="CA1054" Action="None" />
     <Rule Id="CA1055" Action="None" />
     <Rule Id="CA1056" Action="None" />
+    <Rule Id="CA1062" Action="None" />
     <Rule Id="CA1063" Action="Warning" />
     <Rule Id="CA1064" Action="None" />
     <Rule Id="CA1065" Action="None" />
@@ -36,6 +37,7 @@
     <Rule Id="CA1067" Action="Warning" />
     <Rule Id="CA1068" Action="Warning" />
     <Rule Id="CA1031" Action="None" /> <!-- Do not catch general exception types -->
+    <Rule Id="CA1303" Action="None" />
     <Rule Id="CA1304" Action="None" />
     <Rule Id="CA1707" Action="None" />
     <Rule Id="CA1710" Action="None" />
@@ -58,11 +60,6 @@
     <Rule Id="CA2227" Action="None" />
     <Rule Id="CA2231" Action="None" />
     <Rule Id="CA2234" Action="None" />
-  </Rules>
-  <Rules AnalyzerId="Microsoft.CodeQuality.Analyzers.Exp" RuleNamespace="Microsoft.CodeQuality.Analyzers.Exp">
-    <Rule Id="CA1062" Action="None" />
-    <Rule Id="CA1303" Action="None" />
-    <Rule Id="CA1508" Action="None" /> <!-- disable until 2.9.x per https://github.com/dotnet/roslyn-analyzers/issues/1921#issuecomment-446702992 -->
   </Rules>
   <Rules AnalyzerId="Microsoft.NetFramework.Analyzers" RuleNamespace="Microsoft.NetFramework.Analyzers">
     <Rule Id="CA2153" Action="None" /> <!-- TODO do not catch CorruptedStateExceptions -->
@@ -115,6 +112,8 @@
     <Rule Id="RS0027" Action="Error" />
     <Rule Id="RS0030" Action="Error" />
     <Rule Id="RS0031" Action="Error" />
+    <Rule Id="RS0033" Action="None" /> <!-- Importing constructor should be [Obsolete] -->
+    <Rule Id="RS0034" Action="None" /> <!-- Style rule that enforces public MEF constructor marked with [ImportingConstructor] -->
   </Rules>
   <Rules AnalyzerId="System.Collections.Immutable.Analyzers" RuleNamespace="System.Collections.Immutable.Analyzers">
     <Rule Id="RS0012" Action="Warning" />

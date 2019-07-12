@@ -58,12 +58,12 @@ namespace Microsoft.VisualStudio.Shell.Interop
                 }))
                 .Returns(HResult.OK);
 
-            Action cancel = () =>
+            void cancel()
             {
                 callback?.OnCanceled();
-            };
+            }
 
-            return (threadedWaitDialogFactoryMock.Object, cancel);
+            return (threadedWaitDialogFactoryMock.Object, (Action)cancel);
         }
     }
 }

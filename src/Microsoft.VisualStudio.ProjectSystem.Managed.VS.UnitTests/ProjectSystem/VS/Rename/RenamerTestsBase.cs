@@ -61,7 +61,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             var waitIndicator = (new Mock<IWaitIndicator>()).Object;
             var refactorNotifyService = (new Mock<IRefactorNotifyService>()).Object;
 
-            var renamer = new Renamer(projectServices, unconfiguredProjectTasksService, ws, environmentOptionsFactory, userNotificationServices, roslynServices, waitIndicator, refactorNotifyService);
+            var dte = IVsServiceFactory.Create<Shell.Interop.SDTE, EnvDTE.DTE>(null!);
+
+            var renamer = new Renamer(projectServices, unconfiguredProjectTasksService, ws, dte, environmentOptionsFactory, userNotificationServices, roslynServices, waitIndicator, refactorNotifyService);
             await renamer.HandleRenameAsync(oldFilePath, newFilePath)
                          .TimeoutAfter(TimeSpan.FromSeconds(1));
         }

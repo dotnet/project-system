@@ -35,8 +35,6 @@
     <PackageReference Include="Microsoft.VisualStudio.Designer.Interfaces" />
     <PackageReference Include="Microsoft.VisualStudio.GraphModel" />
     <PackageReference Include="Microsoft.VisualStudio.Editor" />
-    <PackageReference Include="Microsoft.VisualStudio.ImageCatalog" />
-    <PackageReference Include="Microsoft.VisualStudio.Imaging.Interop.14.0.DesignTime" />
     <PackageReference Include="Microsoft.VisualStudio.ManagedInterfaces" />
     <PackageReference Include="Microsoft.VisualStudio.Text.Data" />
     <PackageReference Include="Microsoft.VisualStudio.Text.Logic" />

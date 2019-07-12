@@ -8,6 +8,7 @@
   
   <Rule.DataSource>
     <DataSource HasConfigurationCondition="False"
+                ItemType="_ResolvedFrameworkReference"
                 MSBuildTarget="ResolveFrameworkReferencesDesignTime"
                 Persistence="ResolvedReference"
                 SourceOfDefaultValue="AfterContext"

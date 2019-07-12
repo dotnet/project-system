@@ -15,17 +15,16 @@ using Microsoft.VisualStudio.ProjectSystem.Refactor;
 using Microsoft.VisualStudio.ProjectSystem.Rename;
 using Microsoft.VisualStudio.ProjectSystem.Waiting;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 {
     [Export(typeof(IFileRenameHandler))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
-    internal sealed class Renamer : IFileRenameHandler
+    internal sealed partial class Renamer : IFileRenameHandler
     {
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly IUnconfiguredProjectTasksService _unconfiguredProjectTasksService;
         private readonly Workspace _workspace;
+        private readonly IVsService<Shell.Interop.SDTE, EnvDTE.DTE> _dte;
         private readonly IUserNotificationServices _userNotificationServices;
         private readonly IEnvironmentOptions _environmentOptions;
         private readonly IRoslynServices _roslynServices;
@@ -36,18 +35,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         internal Renamer(IUnconfiguredProjectVsServices projectVsServices,
                          IUnconfiguredProjectTasksService unconfiguredProjectTasksService,
                          VisualStudioWorkspace workspace,
+                         IVsService<Shell.Interop.SDTE, EnvDTE.DTE> dte,
                          IEnvironmentOptions environmentOptions,
                          IUserNotificationServices userNotificationServices,
                          IRoslynServices roslynServices,
                          IWaitIndicator waitService,
                          IRefactorNotifyService refactorNotifyService)
-            : this(projectVsServices, unconfiguredProjectTasksService, workspace as Workspace, environmentOptions, userNotificationServices, roslynServices, waitService, refactorNotifyService)
+            : this(projectVsServices, unconfiguredProjectTasksService, workspace as Workspace, dte, environmentOptions, userNotificationServices, roslynServices, waitService, refactorNotifyService)
         {
         }
 
         internal Renamer(IUnconfiguredProjectVsServices projectVsServices,
                          IUnconfiguredProjectTasksService unconfiguredProjectTasksService,
                          Workspace workspace,
+                         IVsService<Shell.Interop.SDTE, EnvDTE.DTE> dte,
                          IEnvironmentOptions environmentOptions,
                          IUserNotificationServices userNotificationServices,
                          IRoslynServices roslynServices,
@@ -57,6 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             _projectVsServices = projectVsServices;
             _unconfiguredProjectTasksService = unconfiguredProjectTasksService;
             _workspace = workspace;
+            _dte = dte;
             _environmentOptions = environmentOptions;
             _userNotificationServices = userNotificationServices;
             _roslynServices = roslynServices;
@@ -97,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 return;
 
             // Check if there are any symbols that need to be renamed
-            ISymbol symbol = await TryGetSymbolToRename(oldName, oldFilePath, newFilePath, isCaseSensitive, GetCurrentProject());
+            ISymbol? symbol = await TryGetSymbolToRename(oldName, oldFilePath, newFilePath, isCaseSensitive, GetCurrentProject());
             if (symbol is null)
                 return;
 
@@ -108,9 +110,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
             // Try and apply the changes to the current solution
             await _projectVsServices.ThreadingService.SwitchToUIThread();
-            var (result, renamedSolutionApplied) = _waitService.WaitForAsyncFunctionWithResult(
+            string renameOperationName = string.Format(CultureInfo.CurrentCulture, VSResources.Renaming_Type_from_0_to_1, oldName, newName);
+            (WaitIndicatorResult result, bool renamedSolutionApplied) = _waitService.WaitForAsyncFunctionWithResult(
                 title: VSResources.Renaming_Type,
-                message: string.Format(CultureInfo.CurrentCulture, VSResources.Renaming_Type_from_0_to_1, oldName, newName),
+                message: renameOperationName,
                 allowCancel: true,
                 async token =>
                 {
@@ -118,27 +121,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                     return await _unconfiguredProjectTasksService.LoadedProjectAsync(async () =>
                     {
                         // Perform the rename operation
-                        Solution renamedSolution = await GetRenamedSolutionAsync(oldName, oldFilePath, newFilePath, isCaseSensitive, GetCurrentProject(), token);
-                        if (renamedSolution == null)
+                        Solution? renamedSolution = await GetRenamedSolutionAsync(oldName, oldFilePath, newFilePath, isCaseSensitive, GetCurrentProject(), token);
+                        if (renamedSolution is null)
                             return false;
 
                         string rqName = RQName.From(symbol);
-                        IEnumerable<ProjectChanges> changes = renamedSolution.GetChanges(GetCurrentProject().Solution).GetProjectChanges();
-                        
+                        Solution? solution = GetCurrentProject()?.Solution;
+                        if (solution is null)
+                            return false;
+
+                        IEnumerable<ProjectChanges> changes = renamedSolution.GetChanges(solution).GetProjectChanges();
+
+                        using UndoScope undo = await UndoScope.CreateAsync(_dte, _projectVsServices.ThreadingService, renameOperationName, token);
+
                         // Notify other VS features that symbol is about to be renamed
                         await NotifyBeforeRename(newName, rqName, changes);
 
                         // Try and apply the changes to the current solution
                         token.ThrowIfCancellationRequested();
-                        if (_roslynServices.ApplyChangesToSolution(renamedSolution.Workspace, renamedSolution))
+                        bool applyChangesSucceeded = _roslynServices.ApplyChangesToSolution(renamedSolution.Workspace, renamedSolution);
+
+                        if (applyChangesSucceeded)
                         {
                             // Notify other VS features that symbol has been renamed
                             await NotifyAfterRename(newName, rqName, changes);
-
-                            return true;
                         }
-
-                        return false;
+                        return applyChangesSucceeded;
                     });
                 });
 
@@ -155,7 +163,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 _userNotificationServices.ShowWarning(failureMessage);
             }
 
-            Project GetCurrentProject()
+            Project? GetCurrentProject()
             {
                 foreach (Project proj in _workspace.CurrentSolution.Projects)
                 {
@@ -191,10 +199,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             }
         }
 
-        private static async Task<(bool success, bool isCaseSensitive)> TryDetermineIfCompilationIsCaseSensitiveAsync(Project project)
+        private static async Task<(bool success, bool isCaseSensitive)> TryDetermineIfCompilationIsCaseSensitiveAsync(Project? project)
         {
-            Compilation compilation = await project.GetCompilationAsync();
-            if (compilation == null)
+            if (project is null)
+                return (false, false);
+
+            Compilation? compilation = await project.GetCompilationAsync();
+            if (compilation is null)
             {
                 // this project does not support compilations
                 return (false, false);
@@ -213,7 +224,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                     ? StringComparison.Ordinal
                     : StringComparison.OrdinalIgnoreCase));
 
-        private static async Task<ISymbol> TryGetSymbolToRename(string oldName, string oldFilePath, string newFileName, bool isCaseSensitive, Project project, CancellationToken token = default)
+        private static async Task<ISymbol?> TryGetSymbolToRename(string oldName, string oldFilePath, string newFileName, bool isCaseSensitive, Project? project, CancellationToken token = default)
         {
             token.ThrowIfCancellationRequested();
 
@@ -286,15 +297,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             return true;
         }
 
-        private async Task<Solution> GetRenamedSolutionAsync(string oldName, string oldFileName, string newFileName, bool isCaseSensitive, Project project, CancellationToken token = default)
+        private async Task<Solution?> GetRenamedSolutionAsync(string oldName, string oldFileName, string newFileName, bool isCaseSensitive, Project? project, CancellationToken token = default)
         {
-            ISymbol symbolToRename = await TryGetSymbolToRename(oldName, oldFileName, newFileName, isCaseSensitive, project, token);
+            if (project is null)
+                return null;
+
+            ISymbol? symbolToRename = await TryGetSymbolToRename(oldName, oldFileName, newFileName, isCaseSensitive, project, token);
             if (symbolToRename is null)
                 return null;
 
             string newName = Path.GetFileNameWithoutExtension(newFileName);
 
-            Solution renamedSolution = await _roslynServices.RenameSymbolAsync(project.Solution, symbolToRename, newName, token);
+            Solution? renamedSolution = await _roslynServices.RenameSymbolAsync(project.Solution, symbolToRename, newName, token);
             return renamedSolution;
         }
     }

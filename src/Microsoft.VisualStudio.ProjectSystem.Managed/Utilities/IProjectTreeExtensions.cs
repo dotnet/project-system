@@ -2,8 +2,6 @@
 
 using System;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal static class IProjectTreeExtensions
@@ -12,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// Gets the direct child of <paramref name="tree"/> with <paramref name="caption"/>
         /// if found, otherwise <see langword="null"/>.
         /// </summary>
-        public static IProjectTree FindChildWithCaption(this IProjectTree tree, string caption)
+        public static IProjectTree? FindChildWithCaption(this IProjectTree tree, string caption)
         {
             return tree.Children.FirstOrDefault(
                 (child, cap) => string.Equals(cap, child.Caption, StringComparison.OrdinalIgnoreCase),
@@ -22,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// <summary>
         /// Finds a tree node by it's flags. If there many nodes that satisfy flags, returns first.
         /// </summary>
-        internal static IProjectTree GetSubTreeNode(this IProjectTree self, ProjectTreeFlags flags)
+        internal static IProjectTree? GetSubTreeNode(this IProjectTree self, ProjectTreeFlags flags)
         {
             foreach (IProjectTree child in self.Children)
             {

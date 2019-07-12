@@ -10,8 +10,6 @@ using Microsoft.Build.Evaluation;
 
 #pragma warning disable RS0030 // symbol IProjectLockService is banned
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
