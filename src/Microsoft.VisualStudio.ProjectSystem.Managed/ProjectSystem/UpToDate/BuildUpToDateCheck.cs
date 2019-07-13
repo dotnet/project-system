@@ -237,7 +237,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             foreach ((string itemType, ImmutableHashSet<(string path, string? link, CopyToOutputDirectoryType copyType)> changes) in state.Items)
             {
-                if (changes.Count != 0 && !NonCompilationItemTypes.Contains(itemType))
+                if (!NonCompilationItemTypes.Contains(itemType))
                 {
                     logger.Verbose("Adding {0} inputs:", itemType);
 

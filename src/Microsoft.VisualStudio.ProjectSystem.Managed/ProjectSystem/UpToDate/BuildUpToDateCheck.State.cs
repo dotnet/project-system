@@ -237,6 +237,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         continue;
                     if (!itemTypesChanged && !projectChange.Difference.AnyChanges)
                         continue;
+                    if (projectChange.After.Items.Count == 0)
+                        continue;
 
                     itemsBuilder[itemType] = projectChange.After.Items.Select(item => (item.Key, GetLink(item.Value), GetCopyType(item.Value))).ToImmutableHashSet(UpToDateCheckItemComparer.Instance);
                     itemsChanged = true;
