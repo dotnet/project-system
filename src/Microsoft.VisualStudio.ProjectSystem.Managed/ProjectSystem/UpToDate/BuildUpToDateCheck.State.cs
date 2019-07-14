@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             public bool IsDisabled { get; }
 
             public ImmutableHashSet<string> ItemTypes { get; }
-            public ImmutableDictionary<string, ImmutableHashSet<(string path, string? link, CopyToOutputDirectoryType copyType)>> Items { get; }
+            public ImmutableDictionary<string, ImmutableHashSet<(string path, string? link, CopyToOutputDirectoryType copyType)>> ItemsByItemType { get; }
             public ImmutableHashSet<string> CustomInputs { get; }
             public ImmutableHashSet<string> CustomOutputs { get; }
             public ImmutableHashSet<string> BuiltOutputs { get; }
@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 ImmutableHashSet<string> emptyPathSet = ImmutableHashSet.Create(StringComparers.Paths);
 
                 ItemTypes = ImmutableHashSet.Create(StringComparers.ItemTypes);
-                Items = ImmutableDictionary.Create<string, ImmutableHashSet<(string path, string? link, CopyToOutputDirectoryType copyType)>>(StringComparers.ItemTypes);
+                ItemsByItemType = ImmutableDictionary.Create<string, ImmutableHashSet<(string path, string? link, CopyToOutputDirectoryType copyType)>>(StringComparers.ItemTypes);
                 CustomInputs = emptyPathSet;
                 CustomOutputs = emptyPathSet;
                 BuiltOutputs = emptyPathSet;
@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 IComparable lastVersionSeen,
                 bool isDisabled,
                 ImmutableHashSet<string> itemTypes,
-                ImmutableDictionary<string, ImmutableHashSet<(string, string?, CopyToOutputDirectoryType)>> items,
+                ImmutableDictionary<string, ImmutableHashSet<(string, string?, CopyToOutputDirectoryType)>> itemsByItemType,
                 ImmutableHashSet<string> customInputs,
                 ImmutableHashSet<string> customOutputs,
                 ImmutableHashSet<string> builtOutputs,
@@ -78,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 LastVersionSeen = lastVersionSeen;
                 IsDisabled = isDisabled;
                 ItemTypes = itemTypes;
-                Items = items;
+                ItemsByItemType = itemsByItemType;
                 CustomInputs = customInputs;
                 CustomOutputs = customOutputs;
                 BuiltOutputs = builtOutputs;
@@ -216,17 +216,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     .Where(itemType => projectItemSchema.GetItemType(itemType).UpToDateCheckInput)
                     .ToImmutableHashSet(StringComparers.ItemTypes);
 
-                ImmutableDictionary<string, ImmutableHashSet<(string path, string? link, CopyToOutputDirectoryType copyType)>>.Builder itemsBuilder;
+                ImmutableDictionary<string, ImmutableHashSet<(string path, string? link, CopyToOutputDirectoryType copyType)>>.Builder itemsByItemTypeBuilder;
                 bool itemTypesChanged = !ItemTypes.SetEquals(itemTypes);
 
                 if (itemTypesChanged)
                 {
-                    itemsBuilder = ImmutableDictionary.CreateBuilder<string, ImmutableHashSet<(string path, string? link, CopyToOutputDirectoryType copyType)>>(StringComparers.ItemTypes);
+                    itemsByItemTypeBuilder = ImmutableDictionary.CreateBuilder<string, ImmutableHashSet<(string path, string? link, CopyToOutputDirectoryType copyType)>>(StringComparers.ItemTypes);
                 }
                 else
                 {
                     itemTypes = ItemTypes;
-                    itemsBuilder = Items.ToBuilder();
+                    itemsByItemTypeBuilder = ItemsByItemType.ToBuilder();
                 }
 
                 itemsChanged = false;
@@ -240,7 +240,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     if (projectChange.After.Items.Count == 0)
                         continue;
 
-                    itemsBuilder[itemType] = projectChange.After.Items.Select(item => (item.Key, GetLink(item.Value), GetCopyType(item.Value))).ToImmutableHashSet(UpToDateCheckItemComparer.Instance);
+                    itemsByItemTypeBuilder[itemType] = projectChange.After.Items.Select(item => (item.Key, GetLink(item.Value), GetCopyType(item.Value))).ToImmutableHashSet(UpToDateCheckItemComparer.Instance);
                     itemsChanged = true;
                 }
 
@@ -253,7 +253,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     lastVersionSeen: configuredProjectVersion,
                     isDisabled,
                     itemTypes,
-                    itemsBuilder.ToImmutable(),
+                    itemsByItemTypeBuilder.ToImmutable(),
                     customInputs,
                     customOutputs,
                     builtOutputs,
