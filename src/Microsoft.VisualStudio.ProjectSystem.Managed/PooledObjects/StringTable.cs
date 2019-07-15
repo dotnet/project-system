@@ -68,7 +68,7 @@ namespace Microsoft.VisualStudio.Buffers.PooledObjects
         }
 
         private readonly ObjectPool<StringTable>? _pool;
-        private static readonly ObjectPool<StringTable> s_staticPool = CreatePool();
+        private static ObjectPool<StringTable> s_staticPool = CreatePool();
 
         private static ObjectPool<StringTable> CreatePool()
         {
@@ -84,8 +84,12 @@ namespace Microsoft.VisualStudio.Buffers.PooledObjects
 
         public void Free()
         {
-            // leave cache content in the cache, just return it to the pool
+            _pool?.Free(this);
+        }
 
+        public void ClearAll()
+        {
+            s_staticPool = CreatePool();
             _pool?.Free(this);
         }
 
