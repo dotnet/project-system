@@ -85,8 +85,6 @@ namespace Microsoft.VisualStudio.Buffers.PooledObjects
         public void Free()
         {
             // leave cache content in the cache, just return it to the pool
-            // Array.Clear(this.localTable, 0, this.localTable.Length);
-            // Array.Clear(sharedTable, 0, sharedTable.Length);
 
             _pool?.Free(this);
         }

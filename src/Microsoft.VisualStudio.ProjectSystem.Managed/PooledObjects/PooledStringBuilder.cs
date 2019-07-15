@@ -52,6 +52,15 @@ namespace Microsoft.VisualStudio.Buffers.PooledObjects
             return result;
         }
 
+        public string InternStringAndFree()
+        {
+            var st = StringTable.GetInstance();
+            string result = st.Add(_builder);
+            Free();
+
+            return result;
+        }
+
         // global pool
         private static readonly ObjectPool<PooledStringBuilder> s_poolInstance = CreatePool();
 

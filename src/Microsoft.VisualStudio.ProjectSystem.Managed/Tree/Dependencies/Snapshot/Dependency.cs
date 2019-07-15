@@ -357,13 +357,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             sb.Replace('/', '\\', offset, modelId.Length);
             sb.Replace("..", "__", offset, modelId.Length);
             sb.TrimEnd(Delimiter.BackSlash);
-            return Intern(sb.ToStringAndFree());
-        }
-
-        private static string Intern(string s)
-        {
-            var st = StringTable.GetInstance();
-            return st.Add(s);
+            return sb.InternStringAndFree();
         }
     }
 }
