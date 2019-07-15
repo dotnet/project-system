@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         private readonly IProjectThreadingService _threadingService;
         private readonly IDesignTimeInputsDataSource _designTimeInputsDataSource;
         private readonly IVsService<IVsAsyncFileChangeEx> _fileChangeService;
-        private ImmutableDictionary<string, uint> _fileWatcherCookies = ImmutableDictionary<string, uint>.Empty.WithComparers(StringComparers.Paths);
+        private readonly Dictionary<string, uint> _fileWatcherCookies = new Dictionary<string, uint>(StringComparers.Paths);
 
         private int _version;
         private IDisposable? _dataSourceLink;
@@ -100,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 if (!allFiles.Contains(file))
                 {
                     await vsAsyncFileChangeEx.UnadviseFileChangeAsync(cookie);
-                    _fileWatcherCookies = _fileWatcherCookies.Remove(file);
+                    _fileWatcherCookies.Remove(file);
                 }
             }
 
@@ -113,7 +113,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                     // We don't care about delete and add here, as they come through data flow, plus they are really bouncy - every file change is a Time, Del and Add event)
                     uint cookie = await vsAsyncFileChangeEx.AdviseFileChangeAsync(file, _VSFILECHANGEFLAGS.VSFILECHG_Time | _VSFILECHANGEFLAGS.VSFILECHG_Size, sink: this);
 
-                    _fileWatcherCookies = _fileWatcherCookies.Add(file, cookie);
+                    _fileWatcherCookies.Add(file, cookie);
 
                     // Advise of an addition now
                     newFiles.Add(file);
