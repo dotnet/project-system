@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             var update = IProjectSubscriptionUpdateFactory.CreateEmpty();
             var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
 
-            Assert.Empty(result.BaseIntermediatePath);
+            Assert.Empty(result.MSBuildProjectExtensionsPath);
             Assert.Empty(result.OriginalTargetFrameworks);
             Assert.Equal(1, result.TargetFrameworks.Count);
 
@@ -101,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 ");
             var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
 
-            Assert.Equal("C:\\Project\\obj", result.BaseIntermediatePath);
+            Assert.Equal("C:\\Project\\obj", result.MSBuildProjectExtensionsPath);
             Assert.Equal("net45", result.OriginalTargetFrameworks);
             Assert.Equal(1, result.TargetFrameworks.Count);
 
@@ -128,7 +128,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 ");
             var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
 
-            Assert.Empty(result.BaseIntermediatePath);
+            Assert.Empty(result.MSBuildProjectExtensionsPath);
             Assert.Empty(result.OriginalTargetFrameworks);
             Assert.Equal(1, result.TargetFrameworks.Count);
 

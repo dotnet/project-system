@@ -1,7 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using NuGet.SolutionRestoreManager;
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
     /// <summary>
@@ -9,24 +7,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
     /// </summary>
     internal class PackageRestoreConfiguredInput
     {
-        public PackageRestoreConfiguredInput(ConfiguredProject project, IVsProjectRestoreInfo2 restoreInfo)
+        public PackageRestoreConfiguredInput(ProjectConfiguration projectConfiguration, ProjectRestoreInfo restoreInfo)
         {
-            Project = project;
+            ProjectConfiguration = projectConfiguration;
             RestoreInfo = restoreInfo;
         }
 
         /// <summary>
-        ///     Gets the restore information produced in this input.
+        ///     Gets the configuration of the <see cref="ConfiguredProject"/> this input was produced from.
         /// </summary>
-        public IVsProjectRestoreInfo2 RestoreInfo
+        public ProjectConfiguration ProjectConfiguration
         {
             get;
         }
 
         /// <summary>
-        ///     Gets the <see cref="ConfiguredProject"/> this input was produced from.
+        ///     Gets the restore information produced in this input.
         /// </summary>
-        public ConfiguredProject Project
+        public ProjectRestoreInfo RestoreInfo
         {
             get;
         }

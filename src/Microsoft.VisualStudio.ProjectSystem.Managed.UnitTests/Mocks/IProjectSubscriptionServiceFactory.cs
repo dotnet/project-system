@@ -11,14 +11,18 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public static IProjectSubscriptionService Create()
         {
             var services = IProjectCommonServicesFactory.CreateWithDefaultThreadingPolicy();
-            var source = ProjectValueDataSourceFactory.Create<IProjectSubscriptionUpdate>(services);
+            var ruleSource = ProjectValueDataSourceFactory.Create<IProjectSubscriptionUpdate>(services);
+            var projectSource = ProjectValueDataSourceFactory.Create<IProjectSnapshot>(services);
 
             var mock = new Mock<IProjectSubscriptionService>();
             mock.SetupGet(s => s.ProjectRuleSource)
-                .Returns(source);
+                .Returns(ruleSource);
 
             mock.SetupGet(s => s.ProjectBuildRuleSource)
-                .Returns(source);
+                .Returns(ruleSource);
+
+            mock.SetupGet(s => s.ProjectSource)
+                .Returns(projectSource);
 
             return mock.Object;
         }
