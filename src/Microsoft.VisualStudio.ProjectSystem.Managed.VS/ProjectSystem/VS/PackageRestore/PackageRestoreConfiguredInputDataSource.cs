@@ -27,7 +27,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                                                                         .Add(CollectedFrameworkReference.SchemaName)        // Project Build
                                                                         .Add(CollectedPackageDownload.SchemaName)           // Project Build                                                                        
                                                                         .Add(PackageReference.SchemaName);                  // Project Build
-        private readonly ConfiguredProject _project;
         private readonly UnconfiguredProject _containingProject;
         private readonly IProjectSubscriptionService _projectSubscriptionService;
 
@@ -35,7 +34,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         public PackageRestoreConfiguredInputDataSource(ConfiguredProject project, IProjectSubscriptionService projectSubscriptionService)
             : base(project.Services, synchronousDisposal: true, registerDataSource: false)
         {
-            _project = project;
             _containingProject = project.UnconfiguredProject;
             _projectSubscriptionService = projectSubscriptionService;
         }
