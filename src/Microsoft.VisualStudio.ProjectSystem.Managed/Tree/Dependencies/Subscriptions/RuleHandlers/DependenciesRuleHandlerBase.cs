@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 _designTimeBuildRuleNames;
         }
 
-        public abstract ImageMoniker GetImplicitIcon();
+        public abstract ImageMoniker ImplicitIcon { get; }
 
         public virtual void Handle(
             IImmutableDictionary<string, IProjectChangeDescription> changesByRuleName,

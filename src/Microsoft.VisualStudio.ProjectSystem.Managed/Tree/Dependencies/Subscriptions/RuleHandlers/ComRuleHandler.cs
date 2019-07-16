@@ -17,16 +17,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
     {
         public const string ProviderTypeString = "ComDependency";
 
-        private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
-            icon: ManagedImageMonikers.Component,
-            expandedIcon: ManagedImageMonikers.Component,
-            unresolvedIcon: ManagedImageMonikers.ComponentWarning,
-            unresolvedExpandedIcon: ManagedImageMonikers.ComponentWarning);
-
         private static readonly SubTreeRootDependencyModel s_rootModel = new SubTreeRootDependencyModel(
             ProviderTypeString,
             Resources.ComNodeName,
-            s_iconSet,
+            new DependencyIconSet(
+                icon: ManagedImageMonikers.Component,
+                expandedIcon: ManagedImageMonikers.Component,
+                unresolvedIcon: ManagedImageMonikers.ComponentWarning,
+                unresolvedExpandedIcon: ManagedImageMonikers.ComponentWarning),
             DependencyTreeFlags.ComSubTreeRootNode);
 
         public ComRuleHandler()
@@ -35,6 +33,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         }
 
         public override string ProviderType => ProviderTypeString;
+
+        public override ImageMoniker ImplicitIcon => ManagedImageMonikers.ComponentPrivate;
 
         public override IDependencyModel CreateRootDependencyNode() => s_rootModel;
 
@@ -51,11 +51,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 resolved,
                 isImplicit,
                 properties);
-        }
-
-        public override ImageMoniker GetImplicitIcon()
-        {
-            return ManagedImageMonikers.ComponentPrivate;
         }
     }
 }

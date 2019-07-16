@@ -18,16 +18,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
     {
         public const string ProviderTypeString = "AssemblyDependency";
 
-        private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
-            icon: KnownMonikers.Reference,
-            expandedIcon: KnownMonikers.Reference,
-            unresolvedIcon: KnownMonikers.ReferenceWarning,
-            unresolvedExpandedIcon: KnownMonikers.ReferenceWarning);
-
         private static readonly SubTreeRootDependencyModel s_rootModel = new SubTreeRootDependencyModel(
             ProviderTypeString,
             Resources.AssembliesNodeName,
-            s_iconSet,
+            new DependencyIconSet(
+                icon: KnownMonikers.Reference,
+                expandedIcon: KnownMonikers.Reference,
+                unresolvedIcon: KnownMonikers.ReferenceWarning,
+                unresolvedExpandedIcon: KnownMonikers.ReferenceWarning),
             DependencyTreeFlags.AssemblySubTreeRootNode);
 
         public AssemblyRuleHandler()
@@ -36,6 +34,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         }
 
         public override string ProviderType => ProviderTypeString;
+
+        public override ImageMoniker ImplicitIcon => ManagedImageMonikers.ReferencePrivate;
 
         public override IDependencyModel CreateRootDependencyNode() => s_rootModel;
 
@@ -52,11 +52,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 resolved,
                 isImplicit,
                 properties);
-        }
-
-        public override ImageMoniker GetImplicitIcon()
-        {
-            return ManagedImageMonikers.ReferencePrivate;
         }
     }
 }

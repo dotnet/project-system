@@ -18,16 +18,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
     {
         public const string ProviderTypeString = "AnalyzerDependency";
 
-        private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
-            icon: KnownMonikers.CodeInformation,
-            expandedIcon: KnownMonikers.CodeInformation,
-            unresolvedIcon: ManagedImageMonikers.CodeInformationWarning,
-            unresolvedExpandedIcon: ManagedImageMonikers.CodeInformationWarning);
-
         private static readonly SubTreeRootDependencyModel s_rootModel = new SubTreeRootDependencyModel(
             ProviderTypeString,
             Resources.AnalyzersNodeName,
-            s_iconSet,
+            new DependencyIconSet(
+                icon: KnownMonikers.CodeInformation,
+                expandedIcon: KnownMonikers.CodeInformation,
+                unresolvedIcon: ManagedImageMonikers.CodeInformationWarning,
+                unresolvedExpandedIcon: ManagedImageMonikers.CodeInformationWarning),
             DependencyTreeFlags.AnalyzerSubTreeRootNode);
 
         public AnalyzerRuleHandler()
@@ -36,6 +34,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         }
 
         public override string ProviderType => ProviderTypeString;
+
+        public override ImageMoniker ImplicitIcon => ManagedImageMonikers.CodeInformationPrivate;
 
         public override IDependencyModel CreateRootDependencyNode() => s_rootModel;
 
@@ -52,11 +52,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 resolved,
                 isImplicit,
                 properties);
-        }
-
-        public override ImageMoniker GetImplicitIcon()
-        {
-            return ManagedImageMonikers.CodeInformationPrivate;
         }
     }
 }
