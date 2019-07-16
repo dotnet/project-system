@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Immutable;
 using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.ProjectSystem.OperationProgress;
@@ -85,6 +86,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
             private static bool IsRestoreUpToDate(IProjectSnapshot projectSnapshot, RestoreData restoreData)
             {
+                // If restore failed, we treat as though it is up-to-date to avoid it forever being stuck out of date.
+                if (!restoreData.Succeeded)
+                    return true;
+
                 DateTime lastEvaluationWriteTime = GetLastWriteTimeUtc(restoreData.ProjectAssetsFilePath, projectSnapshot);
 
                 return lastEvaluationWriteTime >= restoreData.ProjectAssetsLastWriteTimeUtc;
@@ -92,15 +97,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             
             private static DateTime GetLastWriteTimeUtc(string filePath, IProjectSnapshot projectSnapshot)
             {
-                if (projectSnapshot is IProjectSnapshot2 projectSnapshot2 &&
-                    projectSnapshot2.AdditionalDependentFileTimes.TryGetValue(filePath, out DateTime lastWriteTimeUtc))
-                {
-                    return lastWriteTimeUtc;
-                }
+                var projectSnapshot2 = (IProjectSnapshot2)projectSnapshot;
 
-                // The assets file wasn't included as part of the <AdditionalDesignTimeBuildInput> item,
-                // consider it up-to-date so that it is not forever stuck out-of-date.
-                return DateTime.MaxValue;
+                // If the assets file wasn't included as part of the <AdditionalDesignTimeBuildInput> item,
+                // consider it up-to-date by return MaxValue, so that it is not forever stuck out-of-date.
+                return projectSnapshot2.AdditionalDependentFileTimes.GetValueOrDefault(filePath, DateTime.MaxValue);
             }
 
             protected override void Dispose(bool disposing)

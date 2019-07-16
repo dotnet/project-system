@@ -100,6 +100,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             Assert.True(result);
         }
 
+        [Fact]
+        public async Task OnRestoreCompleted_WhenRestoreFailed_IsUpToDate()
+        {
+            var restoreData = new RestoreData(string.Empty, DateTime.MinValue, succeeded: false);
+            var snapshot = IProjectSnapshot2Factory.CreateEmpty();
+
+            var result = await OnRestoreCompleted(snapshot, restoreData);
+
+            Assert.True(result);
+        }
+
         private async Task<bool> OnRestoreCompleted(IProjectSnapshot projectSnapshot, RestoreData restoreData)
         {
             bool result = false;

@@ -10,10 +10,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
     /// </summary>
     internal class RestoreData
     {
-        public RestoreData(string projectAssetsFilePath, DateTime projectAssetsLastWriteTimeUtc)
+        public RestoreData(string projectAssetsFilePath, DateTime projectAssetsLastWriteTimeUtc, bool succeeded = true)
         {
             ProjectAssetsFilePath = projectAssetsFilePath;
             ProjectAssetsLastWriteTimeUtc = projectAssetsLastWriteTimeUtc;
+            Succeeded = succeeded;
         }
 
         /// <summary>
@@ -29,6 +30,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         ///     Gets the file path of the assets file.
         /// </summary>
         public string ProjectAssetsFilePath
+        {
+            get;
+        }
+
+        /// <summary>
+        ///     Gets an indication if the restore was successful.
+        /// </summary>
+        public bool Succeeded
         {
             get;
         }
