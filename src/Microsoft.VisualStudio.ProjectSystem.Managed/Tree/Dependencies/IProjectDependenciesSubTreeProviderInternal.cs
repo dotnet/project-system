@@ -10,6 +10,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     /// </summary>
     internal interface IProjectDependenciesSubTreeProviderInternal : IProjectDependenciesSubTreeProvider
     {
-        ImageMoniker GetImplicitIcon();
+        ImageMoniker ImplicitIcon { get; }
     }
 }

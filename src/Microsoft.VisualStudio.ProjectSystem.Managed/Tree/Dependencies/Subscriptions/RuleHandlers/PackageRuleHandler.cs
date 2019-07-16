@@ -20,16 +20,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
     {
         public const string ProviderTypeString = "NuGetDependency";
 
-        private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
-            icon: ManagedImageMonikers.NuGetGrey,
-            expandedIcon: ManagedImageMonikers.NuGetGrey,
-            unresolvedIcon: ManagedImageMonikers.NuGetGreyWarning,
-            unresolvedExpandedIcon: ManagedImageMonikers.NuGetGreyWarning);
-
         private static readonly SubTreeRootDependencyModel s_rootModel = new SubTreeRootDependencyModel(
             ProviderTypeString,
             Resources.PackagesNodeName,
-            s_iconSet,
+            new DependencyIconSet(
+                icon: ManagedImageMonikers.NuGetGrey,
+                expandedIcon: ManagedImageMonikers.NuGetGrey,
+                unresolvedIcon: ManagedImageMonikers.NuGetGreyWarning,
+                unresolvedExpandedIcon: ManagedImageMonikers.NuGetGreyWarning),
             DependencyTreeFlags.NuGetSubTreeRootNode);
 
         [ImportingConstructor]
@@ -43,10 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         public override string ProviderType => ProviderTypeString;
 
-        public override ImageMoniker GetImplicitIcon()
-        {
-            return ManagedImageMonikers.NuGetGreyPrivate;
-        }
+        public override ImageMoniker ImplicitIcon => ManagedImageMonikers.NuGetGreyPrivate;
 
         public override void Handle(
             IImmutableDictionary<string, IProjectChangeDescription> changesByRuleName,
