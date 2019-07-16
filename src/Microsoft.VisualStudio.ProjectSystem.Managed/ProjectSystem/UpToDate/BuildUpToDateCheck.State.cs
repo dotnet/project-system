@@ -39,15 +39,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             private State()
             {
+                ImmutableHashSet<string> emptyPathSet = ImmutableHashSet.Create(StringComparers.Paths);
+
                 ItemTypes = ImmutableHashSet.Create(StringComparers.ItemTypes);
                 Items = ImmutableDictionary.Create<string, ImmutableHashSet<(string path, string? link, CopyToOutputDirectoryType copyType)>>(StringComparers.ItemTypes);
-                CustomInputs = ImmutableHashSet.Create(StringComparers.Paths);
-                CustomOutputs = ImmutableHashSet.Create(StringComparers.Paths);
-                BuiltOutputs = ImmutableHashSet.Create(StringComparers.Paths);
+                CustomInputs = emptyPathSet;
+                CustomOutputs = emptyPathSet;
+                BuiltOutputs = emptyPathSet;
                 CopiedOutputFiles = ImmutableDictionary.Create<string, string>(StringComparers.Paths);
-                AnalyzerReferences = ImmutableHashSet.Create(StringComparers.Paths);
-                CompilationReferences = ImmutableHashSet.Create(StringComparers.Paths);
-                CopyReferenceInputs = ImmutableHashSet.Create(StringComparers.Paths);
+                AnalyzerReferences = emptyPathSet;
+                CompilationReferences = emptyPathSet;
+                CopyReferenceInputs = emptyPathSet;
             }
 
             private State(
