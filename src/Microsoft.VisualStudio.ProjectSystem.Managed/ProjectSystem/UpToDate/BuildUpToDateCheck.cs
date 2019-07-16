@@ -144,7 +144,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         internal void OnChanged(IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectItemSchema>> e)
         {
-            _state = _state.Update(e, out bool itemsChanged);
+            _state = _state.Update(
+                jointRuleUpdate: e.Value.Item1,
+                sourceItemsUpdate: e.Value.Item2,
+                projectItemSchema: e.Value.Item3,
+                configuredProjectVersion: e.DataSourceVersions[ProjectDataSources.ConfiguredProjectVersion],
+                out bool itemsChanged);
 
             if (itemsChanged)
             {

@@ -86,12 +86,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 CopyReferenceInputs = copyReferenceInputs;
             }
 
-            public State Update(IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectItemSchema>> e, out bool itemsChanged)
+            public State Update(
+                IProjectSubscriptionUpdate jointRuleUpdate,
+                IProjectSubscriptionUpdate sourceItemsUpdate,
+                IProjectItemSchema projectItemSchema,
+                IComparable configuredProjectVersion,
+                out bool itemsChanged)
             {
-                IProjectSubscriptionUpdate jointRuleUpdate = e.Value.Item1;
-                IProjectSubscriptionUpdate sourceItemsUpdate = e.Value.Item2;
-                IProjectItemSchema projectItemSchema = e.Value.Item3;
-
                 bool isDisabled = jointRuleUpdate.CurrentState.IsPropertyTrue(ConfigurationGeneral.SchemaName, ConfigurationGeneral.DisableFastUpToDateCheckProperty, defaultValue: false);
 
                 string msBuildProjectFullPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectFullPathProperty, MSBuildProjectFullPath);
@@ -162,6 +163,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         {
                             copyReferenceInputsBuilder.Add(item[CopyUpToDateMarker.SchemaName]);
                         }
+
                         if (!string.IsNullOrWhiteSpace(item[ResolvedCompilationReference.OriginalPathProperty]))
                         {
                             copyReferenceInputsBuilder.Add(item[ResolvedCompilationReference.OriginalPathProperty]);
@@ -238,15 +240,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     itemsChanged = true;
                 }
 
-                IComparable lastVersionSeen = e.DataSourceVersions[ProjectDataSources.ConfiguredProjectVersion];
-
                 return new State(
                     msBuildProjectFullPath,
                     msBuildProjectDirectory,
                     markerFile,
                     outputRelativeOrFullPath,
                     newestImportInput,
-                    lastVersionSeen,
+                    lastVersionSeen: configuredProjectVersion,
                     isDisabled,
                     itemTypes,
                     itemsBuilder.ToImmutable(),
