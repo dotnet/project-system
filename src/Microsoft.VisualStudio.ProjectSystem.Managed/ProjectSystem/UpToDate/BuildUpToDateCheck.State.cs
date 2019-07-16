@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 string msBuildProjectDirectory,
                 string? markerFile,
                 string outputRelativeOrFullPath,
-                string newestImportInput,
+                string? newestImportInput,
                 IComparable lastVersionSeen,
                 bool isDisabled,
                 ImmutableHashSet<string> itemTypes,
