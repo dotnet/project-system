@@ -16,16 +16,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
     {
         public const string ProviderTypeString = "FrameworkDependency";
 
-        private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
-            icon: ManagedImageMonikers.Framework,
-            expandedIcon: ManagedImageMonikers.Framework,
-            unresolvedIcon: ManagedImageMonikers.FrameworkWarning,
-            unresolvedExpandedIcon: ManagedImageMonikers.FrameworkWarning);
-
         private static readonly SubTreeRootDependencyModel s_rootModel = new SubTreeRootDependencyModel(
             ProviderTypeString,
             Resources.FrameworkNodeName,
-            s_iconSet,
+            new DependencyIconSet(
+                icon: ManagedImageMonikers.Framework,
+                expandedIcon: ManagedImageMonikers.Framework,
+                unresolvedIcon: ManagedImageMonikers.FrameworkWarning,
+                unresolvedExpandedIcon: ManagedImageMonikers.FrameworkWarning),
             DependencyTreeFlags.FrameworkSubTreeRootNode);
 
         public FrameworkRuleHandler()

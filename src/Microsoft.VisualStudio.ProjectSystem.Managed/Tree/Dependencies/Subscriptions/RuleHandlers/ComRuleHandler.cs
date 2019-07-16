@@ -17,16 +17,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
     {
         public const string ProviderTypeString = "ComDependency";
 
-        private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
-            icon: ManagedImageMonikers.Component,
-            expandedIcon: ManagedImageMonikers.Component,
-            unresolvedIcon: ManagedImageMonikers.ComponentWarning,
-            unresolvedExpandedIcon: ManagedImageMonikers.ComponentWarning);
-
         private static readonly SubTreeRootDependencyModel s_rootModel = new SubTreeRootDependencyModel(
             ProviderTypeString,
             Resources.ComNodeName,
-            s_iconSet,
+            new DependencyIconSet(
+                icon: ManagedImageMonikers.Component,
+                expandedIcon: ManagedImageMonikers.Component,
+                unresolvedIcon: ManagedImageMonikers.ComponentWarning,
+                unresolvedExpandedIcon: ManagedImageMonikers.ComponentWarning),
             DependencyTreeFlags.ComSubTreeRootNode);
 
         public ComRuleHandler()
