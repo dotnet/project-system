@@ -14,6 +14,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
     {
         private sealed class State
         {
+            public static State Empty { get; } = new State();
+
             public string? MSBuildProjectFullPath { get; }
             public string? MSBuildProjectDirectory { get; }
             public string? MarkerFile { get; }
@@ -82,11 +84,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 AnalyzerReferences = analyzerReferences;
                 CompilationReferences = compilationReferences;
                 CopyReferenceInputs = copyReferenceInputs;
-            }
-
-            public static State CreateEmpty()
-            {
-                return new State();
             }
 
             public State Update(IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectItemSchema>> e, out bool itemsChanged)

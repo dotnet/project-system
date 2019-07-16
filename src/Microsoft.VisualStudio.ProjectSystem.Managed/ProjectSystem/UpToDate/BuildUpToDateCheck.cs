@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private readonly ITelemetryService _telemetryService;
         private readonly IFileSystem _fileSystem;
 
-        private State _state = State.CreateEmpty();
+        private State _state = State.Empty;
 
         private IDisposable? _link;
 
@@ -93,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 _link?.Dispose();
                 _link = null;
 
-                _state = State.CreateEmpty();
+                _state = State.Empty;
 
                 LastCheckTimeUtc = DateTime.MinValue;
                 _itemsChangedSinceLastCheck = true;
