@@ -1388,29 +1388,20 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <remarks></remarks>
         Friend Shared Function IsMySubMainSupported(Hierarchy As IVsHierarchy) As Boolean
             Try
-                Dim obj As Object = Nothing
-                If Hierarchy IsNot Nothing Then
-                    VSErrorHandler.ThrowOnFailure(Hierarchy.GetProperty(VSITEMID.ROOT, __VSHPROPID.VSHPROPID_BrowseObject, obj))
-                End If
-                Dim props3 As VSLangProj80.VBProjectProperties3 = TryCast(obj, VSLangProj80.VBProjectProperties3)
-                If props3 IsNot Nothing Then
-                    Return MyApplicationProperties.ApplicationTypeFromOutputType(
-                                CUInt(props3.OutputType),
-                                props3.MyType) = ApplicationTypes.WindowsApp
-                Else
-                    ' CPS projects return DynamicTypeBrowseObject for its BrowseObject, which doesn't implement VBProjectProperties3 (or anything else) so we just try to get these properties by ICustomTypeDescriptor
-                    Dim customTypeProvider As ICustomTypeDescriptor = TryCast(obj, ICustomTypeDescriptor)
-                    If customTypeProvider IsNot Nothing Then
-                        Dim properties As PropertyDescriptorCollection = customTypeProvider.GetProperties()
-                        Dim myTypeProperty As PropertyDescriptor = properties.Find(NameOf(props3.MyType), ignoreCase:=False)
-                        Dim outputTypeProperty As PropertyDescriptor = properties.Find(NameOf(props3.OutputType), ignoreCase:=False)
+                ' Query the MyType and OutputType properties from the project properties
+                Dim project As Project = EnvDTEProject(Hierarchy)
 
-                        If myTypeProperty IsNot Nothing AndAlso outputTypeProperty IsNot Nothing Then
-                            Return MyApplicationProperties.ApplicationTypeFromOutputType(
-                                CUInt(outputTypeProperty.GetValue(obj)),
-                                CType(myTypeProperty.GetValue(obj), String)) = ApplicationTypes.WindowsApp
-                        End If
-                    End If
+                If project Is Nothing Then
+                    Return False
+                End If
+
+                Dim myTypeProperty As [Property] = GetProjectProperty(project, NameOf(VSLangProj80.VBProjectProperties3.MyType))
+                Dim outputTypeProperty As [Property] = GetProjectProperty(project, NameOf(VSLangProj80.VBProjectProperties3.OutputType))
+
+                If myTypeProperty IsNot Nothing AndAlso outputTypeProperty IsNot Nothing Then
+                    Return MyApplicationProperties.ApplicationTypeFromOutputType(
+                        CUInt(outputTypeProperty.Value),
+                        CType(myTypeProperty.Value, String)) = ApplicationTypes.WindowsApp
                 End If
             Catch ex As Exception When ReportWithoutCrash(ex, NameOf(IsMySubMainSupported), NameOf(MyApplicationProperties))
             End Try
