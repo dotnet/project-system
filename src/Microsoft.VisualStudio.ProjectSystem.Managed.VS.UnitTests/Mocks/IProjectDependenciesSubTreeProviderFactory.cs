@@ -47,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             if (implicitIcon.Id != 0 || implicitIcon.Guid != Guid.Empty)
             {
-                mock.Setup(x => x.GetImplicitIcon()).Returns(implicitIcon);
+                mock.Setup(x => x.ImplicitIcon).Returns(implicitIcon);
             }
 
             return mock.Object;

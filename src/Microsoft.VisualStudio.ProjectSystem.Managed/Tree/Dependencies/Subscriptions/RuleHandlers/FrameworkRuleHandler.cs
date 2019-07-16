@@ -33,6 +33,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         public override string ProviderType => ProviderTypeString;
 
+        public override ImageMoniker ImplicitIcon => ManagedImageMonikers.FrameworkPrivate;
+
         public override IDependencyModel CreateRootDependencyNode() => s_rootModel;
 
         protected override IDependencyModel CreateDependencyModel(
@@ -48,7 +50,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 resolved,
                 properties);
         }
-
-        public override ImageMoniker GetImplicitIcon() => ManagedImageMonikers.FrameworkPrivate;
     }
 }

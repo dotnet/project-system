@@ -41,10 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         public override string ProviderType => ProviderTypeString;
 
-        public override ImageMoniker GetImplicitIcon()
-        {
-            return ManagedImageMonikers.NuGetGreyPrivate;
-        }
+        public override ImageMoniker ImplicitIcon => ManagedImageMonikers.NuGetGreyPrivate;
 
         public override void Handle(
             IImmutableDictionary<string, IProjectChangeDescription> changesByRuleName,

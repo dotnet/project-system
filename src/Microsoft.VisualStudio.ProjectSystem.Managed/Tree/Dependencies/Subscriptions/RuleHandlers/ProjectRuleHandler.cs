@@ -35,6 +35,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         public override string ProviderType => ProviderTypeString;
 
+        public override ImageMoniker ImplicitIcon => ManagedImageMonikers.ApplicationPrivate;
+
         [ImportingConstructor]
         public ProjectRuleHandler(
             IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider,
@@ -86,8 +88,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 isImplicit,
                 properties);
         }
-
-        public override ImageMoniker GetImplicitIcon() => ManagedImageMonikers.ApplicationPrivate;
 
         /// <summary>
         /// When some other project's snapshot changed we need to check if our snapshot has a top level
