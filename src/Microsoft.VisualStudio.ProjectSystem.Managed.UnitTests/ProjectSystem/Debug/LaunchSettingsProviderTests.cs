@@ -448,13 +448,14 @@ return provider.ReadSettingsFileFromDiskTestAsync();
         }
 
         [Fact]
-        public void DisposeTests()
+        public async Task Dispose_WhenNotActivated_DoesNotThrow()
         {
             var moqFS = new IFileSystemMock();
             using var provider = GetLaunchSettingsProvider(moqFS);
-            Assert.False(provider.DisposeObjectsAreNull());
-            provider.CallDispose();
-            Assert.True(provider.DisposeObjectsAreNull());
+
+            await provider.DisposeAsync();
+
+            Assert.True(provider.IsDisposed);
         }
 
         [Fact]
@@ -914,14 +915,6 @@ return provider.ReadSettingsFileFromDiskTestAsync();
         public void SetIgnoreFileChanges(bool value) { IgnoreFileChanges = value; }
         public Task<bool> SettingsFileHasChangedAsyncTest() { return SettingsFileHasChangedAsync(); }
         public Task LaunchSettingsFile_ChangedTest() => HandleLaunchSettingsFileChangedAsync();
-        public void CallDispose() { Dispose(true); }
-        public bool DisposeObjectsAreNull()
-        {
-            return FileChangeScheduler == null &&
-                   FileWatcher == null &&
-                   ProjectRuleSubscriptionLink == null &&
-                   _broadcastBlock == null;
-        }
 
         internal void SetSettingsProviderCollection(OrderPrecedenceImportCollection<ILaunchSettingsSerializationProvider, IJsonSection> settingsProviders)
         {
