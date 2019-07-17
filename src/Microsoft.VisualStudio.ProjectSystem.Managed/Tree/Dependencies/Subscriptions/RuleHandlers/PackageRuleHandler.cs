@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         private static readonly SubTreeRootDependencyModel s_rootModel = new SubTreeRootDependencyModel(
             ProviderTypeString,
-            Resources.NuGetPackagesNodeName,
+            Resources.PackagesNodeName,
             new DependencyIconSet(
                 icon: ManagedImageMonikers.NuGetGrey,
                 expandedIcon: ManagedImageMonikers.NuGetGrey,
