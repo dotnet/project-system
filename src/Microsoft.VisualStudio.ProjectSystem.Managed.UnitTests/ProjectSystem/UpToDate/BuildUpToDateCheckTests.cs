@@ -150,7 +150,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 identity: ProjectDataSources.ConfiguredProjectVersion,
                 version: _projectVersion);
 
-            _buildUpToDateCheck.OnChangedAsync(value);
+            _buildUpToDateCheck.OnChanged(value);
 
             return;
             static IProjectSubscriptionUpdate CreateUpdate(Dictionary<string, IProjectRuleSnapshotModel> snapshotBySchemaName)

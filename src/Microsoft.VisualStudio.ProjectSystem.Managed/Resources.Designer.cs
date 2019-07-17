@@ -151,11 +151,11 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to NuGet.
+        ///   Looks up a localized string similar to Packages.
         /// </summary>
-        internal static string NuGetPackagesNodeName {
+        internal static string PackagesNodeName {
             get {
-                return ResourceManager.GetString("NuGetPackagesNodeName", resourceCulture);
+                return ResourceManager.GetString("PackagesNodeName", resourceCulture);
             }
         }
         
