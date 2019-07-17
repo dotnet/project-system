@@ -1,6 +1,62 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="es" original="../VSPackage.resx">
-    <body />
+    <body>
+      <trans-unit id="1001">
+        <source>Visual Basic</source>
+        <target state="new">Visual Basic</target>
+        <note>Unknown usage.</note>
+      </trans-unit>
+      <trans-unit id="1002">
+        <source>Environment</source>
+        <target state="new">Environment</target>
+        <note>Unknown usage.</note>
+      </trans-unit>
+      <trans-unit id="1003">
+        <source>Form Design</source>
+        <target state="new">Form Design</target>
+        <note>Unknown usage.</note>
+      </trans-unit>
+      <trans-unit id="1004">
+        <source>Project</source>
+        <target state="new">Project</target>
+        <note>Unknown usage.</note>
+      </trans-unit>
+      <trans-unit id="1005">
+        <source>Editor</source>
+        <target state="new">Editor</target>
+        <note>Unknown usage.</note>
+      </trans-unit>
+      <trans-unit id="1006">
+        <source>Web</source>
+        <target state="new">Web</target>
+        <note>Unknown usage.</note>
+      </trans-unit>
+      <trans-unit id="1100">
+        <source>Managed Resources Editor</source>
+        <target state="new">Managed Resources Editor</target>
+        <note>Used for the resource editor in the shell's "Open With..." dialog plus the editor name for the key-binding it the Tools | Options | Environment | Keyboard | Use new shourtcut.</note>
+      </trans-unit>
+      <trans-unit id="1200">
+        <source>Settings Designer</source>
+        <target state="new">Settings Designer</target>
+        <note>Used for the settings designer in the shell's "Open With..." dialog.</note>
+      </trans-unit>
+      <trans-unit id="1300">
+        <source>Project Designer</source>
+        <target state="new">Project Designer</target>
+        <note>Used for the application page designer in the shell UI.</note>
+      </trans-unit>
+      <trans-unit id="1400">
+        <source>Property Page Host</source>
+        <target state="new">Property Page Host</target>
+        <note>Used for the property page designer in the shell UI.</note>
+      </trans-unit>
+      <trans-unit id="1500">
+        <source>.NET Core</source>
+        <target state="new">.NET Core</target>
+        <note>Used for the Tools|Options|Projects and Solutions page.</note>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
