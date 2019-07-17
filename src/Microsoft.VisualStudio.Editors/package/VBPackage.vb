@@ -26,7 +26,7 @@ Namespace Microsoft.VisualStudio.Editors
     '* In the future, we should consider moving to a RegPkg.exe model
     <
         Guid("67909B06-91E9-4F3E-AB50-495046BE9A9A"),
-        ProvideOptionPage(GetType(GeneralOptionPage), "Projects and Solutions", ".NET Core", 1400, 1400, True, 1600),
+        ProvideOptionPage(GetType(GeneralOptionPage), "Projects and Solutions", ".NET Core", 1400, 1400, True),
         CLSCompliant(False)
     >
     Friend Class VBPackage
