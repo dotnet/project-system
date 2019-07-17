@@ -24,10 +24,14 @@ Namespace Microsoft.VisualStudio.Editors
     '*   from here for the moment.
     '*
     '* In the future, we should consider moving to a RegPkg.exe model
-    <
-        Guid("67909B06-91E9-4F3E-AB50-495046BE9A9A"),
-        ProvideOptionPage(GetType(GeneralOptionPage), "Projects and Solutions", ".NET Core", 1400, 1400, True),
-        CLSCompliant(False)
+    <Guid("67909B06-91E9-4F3E-AB50-495046BE9A9A"),
+    ProvideOptionPage(GetType(GeneralOptionPage),
+                     "Projects and Solutions",
+                     "SDK-Style Projects",
+                     0,        ' categoryResourceID: Not used, we don't own parent category
+                     0,        ' pageNameResourceID: Not used, set in Microsoft.VisualStudio.Editors.pkgdef, 
+                     True),    ' supportsAutomation
+    CLSCompliant(False)
     >
     Friend Class VBPackage
         Inherits Shell.Package
