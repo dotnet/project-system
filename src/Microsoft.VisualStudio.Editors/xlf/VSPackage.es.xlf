@@ -57,6 +57,23 @@
         <target state="new">.NET Core</target>
         <note>Used for the Tools|Options|Projects and Solutions page.</note>
       </trans-unit>
+      <trans-unit id="1600">
+        <source>up to date checks; 
+Don't call MSBuild if a project appears to be up to date; 
+logging level; 
+futd; 
+incremental; 
+up-to-date; 
+build;</source>
+        <target state="new">up to date checks; 
+Don't call MSBuild if a project appears to be up to date; 
+logging level; 
+futd; 
+incremental; 
+up-to-date; 
+build;</target>
+        <note>.NET Core SDK-Style Projects option page keywords</note>
+      </trans-unit>
     </body>
   </file>
 </xliff>
