@@ -589,6 +589,12 @@
     <None Include="**\*.xlf" />
   </ItemGroup>
   <ItemGroup>
+    <VSCTCompile Include="Menus.vsct">
+      <ResourceName>Menus.ctmenu</ResourceName>
+      <SubType>Designer</SubType>
+    </VSCTCompile>
+  </ItemGroup>
+  <ItemGroup>
     <AdditionalFiles Include="PublicAPI.Shipped.txt" />
     <AdditionalFiles Include="PublicAPI.Unshipped.txt" />
   </ItemGroup>
