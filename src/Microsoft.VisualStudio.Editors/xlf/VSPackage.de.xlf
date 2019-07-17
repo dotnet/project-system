@@ -53,8 +53,8 @@
         <note>Used for the property page designer in the shell UI.</note>
       </trans-unit>
       <trans-unit id="1500">
-        <source>.NET Core</source>
-        <target state="new">.NET Core</target>
+        <source>SDK-Style Projects</source>
+        <target state="new">SDK-Style Projects</target>
         <note>Used for the Tools|Options|Projects and Solutions page.</note>
       </trans-unit>
     </body>

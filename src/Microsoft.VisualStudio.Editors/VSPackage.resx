@@ -158,7 +158,7 @@
     <comment>Used for the property page designer in the shell UI.</comment>
   </data>
   <data name="1500" xml:space="preserve">
-    <value>.NET Core</value>
+    <value>SDK-Style Projects</value>
     <comment>Used for the Tools|Options|Projects and Solutions page.</comment>
   </data>
 </root>
