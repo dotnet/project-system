@@ -235,10 +235,6 @@
 "InprocServer32"="$System$\mscoree.dll"
 @="Visual Studio Settings and Project Designers Package"
 
-[$RootKey$\Packages\{67909B06-91E9-4F3E-AB50-495046BE9A9A}\SatelliteDll]
-"DllName"="Microsoft.VisualStudio.EditorsUI.DLL"
-"Path"="$ShellFolder$\Common7\IDE"
-
 [$RootKey$\Projects]
 
 [$RootKey$\Projects\{E24C65DC-7377-472b-9ABA-BC803B73C61A}]
