@@ -83,6 +83,10 @@
     <PackageReference Update="EnvDTE80" Version="8.0.1" />
     <PackageReference Update="EnvDTE90" Version="9.0.1" />
     <PackageReference Update="StreamJsonRpc" Version="2.0.167" />
+    
+    <!-- Avoid double-writes, can remove when https://github.com/NuGet/Home/issues/8343 is fixed -->
+    <PackageReference Include="VSSDK.DTE" Version="7.0.4" ExcludeAssets="All" />
+    <PackageReference Include="VSSDK.TemplateWizardInterface" Version="12.0.4" ExcludeAssets="All" />
 
     <!-- VS Editor APIs -->
     <PackageReference Update="Microsoft.VisualStudio.CoreUtility" Version="16.0.177-g0ae5fa46a1" />
