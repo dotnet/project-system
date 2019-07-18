@@ -18,6 +18,7 @@ using Microsoft.VisualStudio.Telemetry;
 using Moq;
 
 using Xunit;
+using Xunit.Abstractions;
 
 #nullable disable
 
@@ -39,6 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         private readonly List<ITelemetryServiceFactory.TelemetryParameters> _telemetryEvents = new List<ITelemetryServiceFactory.TelemetryParameters>();
         private readonly BuildUpToDateCheck _buildUpToDateCheck;
+        private readonly ITestOutputHelper _output;
         private readonly IFileSystemMock _fileSystem;
 
         // Values returned by mocks that may be modified in test cases as needed
@@ -46,8 +48,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private bool _isTaskQueueEmpty = true;
         private bool _isFastUpToDateCheckEnabled = true;
 
-        public BuildUpToDateCheckTests()
+        public BuildUpToDateCheckTests(ITestOutputHelper output)
         {
+            _output = output;
+
             // NOTE most of these mocks are only present to prevent NREs in Initialize
 
             // Enable "Info" log level, as we assert logged messages in tests
@@ -153,6 +157,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _buildUpToDateCheck.OnChanged(value);
 
             return;
+
             static IProjectSubscriptionUpdate CreateUpdate(Dictionary<string, IProjectRuleSnapshotModel> snapshotBySchemaName)
             {
                 var snapshots = ImmutableDictionary<string, IProjectRuleSnapshot>.Empty;
@@ -172,6 +177,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         changes = changes.Add(schemaName, change.ToActualModel());
                     }
                 }
+
                 return IProjectSubscriptionUpdateFactory.Implement(snapshots, changes);
             }
         }
@@ -763,7 +769,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         private async Task AssertNotUpToDateAsync(IReadOnlyList<string> logMessages, string telemetryReason = null, BuildAction buildAction = BuildAction.Build)
         {
-            var writer = new AssertWriter();
+            var writer = new AssertWriter(_output);
 
             if (logMessages != null)
             {
@@ -785,7 +791,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         private async Task AssertUpToDateAsync(params string[] logMessages)
         {
-            var writer = new AssertWriter();
+            var writer = new AssertWriter(_output);
 
             if (logMessages != null)
             {
@@ -824,10 +830,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         private sealed class AssertWriter : TextWriter, IEnumerable
         {
+            private readonly ITestOutputHelper _output;
             private readonly Queue<string> _expectedLines;
 
-            public AssertWriter(params string[] expectedLines)
+            public AssertWriter(ITestOutputHelper output, params string[] expectedLines)
             {
+                _output = output;
                 _expectedLines = new Queue<string>(expectedLines);
             }
 
@@ -841,7 +849,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             public override void WriteLine(string value)
             {
                 Xunit.Assert.NotEmpty(_expectedLines);
-                Xunit.Assert.Equal($"FastUpToDate: {_expectedLines.Dequeue()} ({Path.GetFileNameWithoutExtension(_projectFullPath)})", value);
+
+                var expected = $"FastUpToDate: {_expectedLines.Dequeue()} ({Path.GetFileNameWithoutExtension(_projectFullPath)})";
+
+                if (!string.Equals(expected, value))
+                {
+                    _output.WriteLine("Expected: " + expected);
+                    _output.WriteLine("Actual:   " + value);
+                }
+
+                Xunit.Assert.Equal(expected, value);
             }
 
             public void Assert()
