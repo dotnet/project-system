@@ -12,11 +12,6 @@
         <target state="new">Environment</target>
         <note>Unknown usage.</note>
       </trans-unit>
-      <trans-unit id="1003">
-        <source>Form Design</source>
-        <target state="new">Form Design</target>
-        <note>Unknown usage.</note>
-      </trans-unit>
       <trans-unit id="1004">
         <source>Project</source>
         <target state="new">Project</target>
