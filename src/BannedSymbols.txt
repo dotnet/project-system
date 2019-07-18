@@ -68,3 +68,6 @@ M:Microsoft.VisualStudio.OLE.Interop.Constants.OLECMDERR_E_NOTSUPPORTED;Use HRes
 M:Microsoft.VisualStudio.OLE.Interop.Constants.OLECMDERR_E_UNKNOWNGROUP;Use HResult.Ole.Cmd.UnknownGroup
 
 T:Microsoft.VisualStudio.Shell.ThreadHelper;Import JoinableTaskContext if inside a MEF component for unit testing purposes
+
+T:Microsoft.VisualStudio.ProjectSystem.Properties.StandardRuleDataflowLinkOptions;Use DataflowOption.WithRuleNames to avoid boilerplate initialization
+T:System.Threading.Tasks.Dataflow.DataflowLinkOptions;Use DataflowOption.PropagateCompletion to avoid boilerplate initialization
