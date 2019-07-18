@@ -524,7 +524,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             foreach ((string path, string? link, _) in items)
             {
                 string rootedPath = _configuredProject.UnconfiguredProject.MakeRooted(path);
-                string filename = string.IsNullOrEmpty(link) ? rootedPath : link;
+                string filename = string.IsNullOrEmpty(link) ? rootedPath : link!;
 
                 if (string.IsNullOrEmpty(filename))
                 {
