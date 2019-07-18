@@ -15,7 +15,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
                                                        IProjectSubscriptionService projectSubscriptionService = null,
                                                        IProjectPropertiesProvider projectPropertiesProvider = null,
                                                        IProjectService projectService = null,
-                                                       IProjectThreadingService threadingService = null)
+                                                       IProjectThreadingService threadingService = null,
+                                                       IProjectAsynchronousTasksService projectAsynchronousTasksService = null)
         {
             var mock = new Mock<ConfiguredProjectServices>();
             mock.Setup(c => c.PropertyPagesCatalog).Returns(propertyPagesCatalogProvider);
@@ -23,6 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             mock.Setup(c => c.ProjectSubscription).Returns(projectSubscriptionService);
             mock.Setup(c => c.ProjectPropertiesProvider).Returns(projectPropertiesProvider);
             mock.Setup(c => c.ThreadingPolicy).Returns(threadingService);
+            mock.Setup(c => c.ProjectAsynchronousTasks).Returns(projectAsynchronousTasksService);
             mock.SetupGet(s => s.ProjectService).Returns(projectService);
             return mock.Object;
         }
