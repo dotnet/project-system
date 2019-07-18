@@ -40,9 +40,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 dependencies.Select();
                 dependencies.ExpandAll();
                 Assert.AreEqual("Dependencies", dependencies.Name);
-                var sdk = dependencies.Items.FirstOrDefault();
-                Assert.IsNotNull(sdk);
-                Assert.AreEqual("SDK", sdk.Name);
+                var frameworks = dependencies.Items.FirstOrDefault();
+                Assert.IsNotNull(frameworks);
+                Assert.AreEqual("Frameworks", frameworks.Name);
             }
 
             using (Scope.Enter("Build Project"))
