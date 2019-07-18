@@ -33,11 +33,6 @@
     -->
     <MicroBuildPluginsSwixBuildVersion>1.0.422</MicroBuildPluginsSwixBuildVersion>
 
-    <!-- Microsoft.DotNet.*.ProjectTemplates -->
-    <MicrosoftDotNetProjectTemplatesVersion>1.0.0-beta2-20170629-269</MicrosoftDotNetProjectTemplatesVersion>
-
-    <MicrosoftVisualStudioSetupConfigurationInteropVersion>1.16.30</MicrosoftVisualStudioSetupConfigurationInteropVersion>
-
     <!-- Tests -->
     <XUnitVersion>2.4.1</XUnitVersion>
   </PropertyGroup>
