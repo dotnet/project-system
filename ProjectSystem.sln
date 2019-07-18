@@ -53,6 +53,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencie
 		build\Packages.targets = build\Packages.targets
 		src\VisualStudio.props = src\VisualStudio.props
 		src\VisualStudioDesigner.props = src\VisualStudioDesigner.props
+		src\VisualStudioIntegration.props = src\VisualStudioIntegration.props
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Documentation", "docs\Documentation.csproj", "{C51202A5-0C1F-4146-8059-5F7B8A048232}"

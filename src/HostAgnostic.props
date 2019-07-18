@@ -2,6 +2,7 @@
 <Project>
   <PropertyGroup>
     <BannedSymbolsOptOut Condition="$(IsTestProject)">true</BannedSymbolsOptOut>
+    <NewtonsoftJsonVersion>9.0.1</NewtonsoftJsonVersion>
   </PropertyGroup>
   
   <ItemGroup>
