@@ -13,11 +13,16 @@ namespace Microsoft.VisualStudio.Shell
     {
         private uint _lastCookie;
         private readonly Dictionary<uint, string> _watchedFiles = new Dictionary<uint, string>();
+        private readonly HashSet<string> _uniqueFilesWatched = new HashSet<string>();
+
+        public IEnumerable<string> UniqueFilesWatched => _uniqueFilesWatched;
 
         public IEnumerable<string> WatchedFiles => _watchedFiles.Values;
 
         public Task<uint> AdviseFileChangeAsync(string filename, _VSFILECHANGEFLAGS filter, IVsFreeThreadedFileChangeEvents2 sink, CancellationToken cancellationToken = default)
         {
+            _uniqueFilesWatched.Add(filename);
+
             uint cookie = _lastCookie++;
             _watchedFiles.Add(cookie, filename);
             return System.Threading.Tasks.Task.FromResult(cookie);
