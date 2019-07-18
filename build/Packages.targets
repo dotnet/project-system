@@ -126,7 +126,7 @@
     <PackageReference Update="Microsoft.Build.Tasks.Core"                                             Version="16.0.461"/>
 
     <!-- Libraries -->
-    <PackageReference Update="Newtonsoft.Json"                                                        Version="$(NewtonsoftJsonVersion)"/>
+    <PackageReference Update="Newtonsoft.Json"                                                        Version="12.0.2"/>
 
     <!-- Tests -->
     <PackageReference Update="Moq"                                                                    Version="4.12.0"/>
