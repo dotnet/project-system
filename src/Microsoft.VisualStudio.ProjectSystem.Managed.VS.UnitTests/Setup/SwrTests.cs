@@ -91,7 +91,7 @@ namespace Microsoft.VisualStudio.Setup
                 Assert.StartsWith(filePrefix, item.File);
 
                 var culture = item.Folder.Substring(folderPrefix.Length).TrimStart('\\');
-                var fileName = culture == ""
+                var fileName = culture.Length == 0
                     ? item.File.Substring(filePrefix.Length)
                     : item.File.Substring(filePrefix.Length + culture.Length + 1);
 
