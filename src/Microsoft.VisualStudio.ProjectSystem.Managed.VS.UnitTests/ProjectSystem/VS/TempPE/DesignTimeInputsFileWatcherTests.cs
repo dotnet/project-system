@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.Shell;
@@ -30,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                     new string[] { },                         // shared design time inputs
                     new string[] { "File1.cs" },              // expected watched files
                     new string[] { },                         // file change notifications to send
-                    new string[] { "File1.cs" }               // file change notifications expected
+                    new string[] { }                          // file change notifications expected
                 },
 
                 // A design time input and a shared design time input
@@ -40,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                     new string[] { "File2.cs" },
                     new string[] { "File1.cs", "File2.cs" },
                     new string[] { },
-                    new string[] { "File1.cs", "File2.cs" }
+                    new string[] { }
                 },
 
                 // A file that is both design time and shared, should only be watched once
@@ -50,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                     new string[] { "File2.cs", "File1.cs" },
                     new string[] { "File1.cs", "File2.cs" },
                     new string[] { },
-                    new string[] { "File1.cs", "File2.cs" }
+                    new string[] { }
                 },
 
                 // A design time input that gets modified
@@ -60,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                     new string[] { },
                     new string[] { "File1.cs" },
                     new string[] { "File1.cs", "File1.cs", "File1.cs" },
-                    new string[] { "File1.cs", "File1.cs", "File1.cs", "File1.cs" }
+                    new string[] { "File1.cs", "File1.cs", "File1.cs" }
                 },
 
                 // A design time input and a shared design time input, that both change, to ensure ordering is correct
@@ -70,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                     new string[] { "File2.cs" },
                     new string[] { "File1.cs", "File2.cs" },
                     new string[] { "File1.cs", "File2.cs" },
-                    new string[] { "File1.cs", "File2.cs", "File1.cs", "File2.cs" }
+                    new string[] { "File1.cs", "File2.cs" }
                 },
             };
         }
@@ -118,13 +119,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             // Observe the task in case of exceptions
             await finished.Task;
 
-            // Make sure we watched all of the files we should
-            Assert.Equal(watchedFiles, fileChangeService.WatchedFiles);
-
+            // Dispose the watcher so that internal blocks complete (especially for tests that don't send any file changes)
             watcher.Dispose();
 
+            // Make sure we watched all of the files we should
+            Assert.Equal(watchedFiles, fileChangeService.UniqueFilesWatched.ToArray());
+
             // Should clean up and unwatch everything
-            Assert.Empty(fileChangeService.WatchedFiles);
+            Assert.Empty(fileChangeService.WatchedFiles.ToArray());
         }
 
         private static DesignTimeInputsFileWatcher CreateDesignTimeInputsFileWatcher(IVsAsyncFileChangeEx fileChangeService, out ProjectValueDataSource<DesignTimeInputs> source)

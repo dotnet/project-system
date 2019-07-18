@@ -104,7 +104,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 }
             }
 
-            var newFiles = new List<string>();
             // Now watch and output files that are new
             foreach (string file in allFiles)
             {
@@ -114,15 +113,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                     uint cookie = await vsAsyncFileChangeEx.AdviseFileChangeAsync(file, _VSFILECHANGEFLAGS.VSFILECHG_Time | _VSFILECHANGEFLAGS.VSFILECHG_Size, sink: this);
 
                     _fileWatcherCookies.Add(file, cookie);
-
-                    // Advise of an addition now
-                    newFiles.Add(file);
                 }
-            }
-
-            if (newFiles.Count > 0)
-            {
-                PostToOutput(newFiles.ToArray());
             }
         }
 
