@@ -22,11 +22,6 @@
         <target state="new">Project</target>
         <note>Unknown usage.</note>
       </trans-unit>
-      <trans-unit id="1005">
-        <source>Editor</source>
-        <target state="new">Editor</target>
-        <note>Unknown usage.</note>
-      </trans-unit>
       <trans-unit id="1006">
         <source>Web</source>
         <target state="new">Web</target>
