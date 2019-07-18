@@ -2,7 +2,6 @@
 
 using System;
 using System.Linq;
-using System.Threading;
 
 using Microsoft.Test.Apex.VisualStudio.Solution;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -30,11 +29,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 solution.Verify.HasProject();
             }
 
-            using (Scope.Enter("Wait for restore"))
+            using (Scope.Enter("Wait for IntelliSense"))
             {
-                Thread.Sleep(2 * 1000);
-                var nuget = VisualStudio.Get<NuGetApexTestService>();
-                nuget.WaitForAutoRestore();
+                solution.WaitForIntellisenseStage();
             }
 
             using (Scope.Enter("Verify dependency nodes"))
