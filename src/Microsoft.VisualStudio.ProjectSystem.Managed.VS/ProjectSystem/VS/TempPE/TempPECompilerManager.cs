@@ -73,16 +73,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             IDisposable projectLink = ProjectDataSources.SyncLinkTo(
                    _inputsDataSource.SourceBlock.SyncLinkOptions(
-                       linkOptions: new StandardRuleDataflowLinkOptions
-                       {
-                           PropagateCompletion = true,
-                       }),
+                       linkOptions: DataflowOption.PropagateCompletion),
                    _projectSubscriptionService.ProjectRuleSource.SourceBlock.SyncLinkOptions(
-                      linkOptions: new StandardRuleDataflowLinkOptions
-                      {
-                          RuleNames = Empty.OrdinalIgnoreCaseStringSet.Add(ConfigurationGeneral.SchemaName),
-                          PropagateCompletion = true,
-                      }),
+                      linkOptions: DataflowOption.WithRuleNames(ConfigurationGeneral.SchemaName)),
                    _inputsActionBlock,
                    DataflowOption.PropagateCompletion,
                    cancellationToken: _project.Services.ProjectAsynchronousTasks.UnloadCancellationToken);
