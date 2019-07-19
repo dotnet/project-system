@@ -53,13 +53,11 @@
 
   <!-- 4. Disable Windows Error Reporting -->
 
-  <!-- 5. Run integration tests -->
-
   <Target Name="RunTests">
 
     <ItemGroup>
       <TestAssembly Include="$(OutputPath)bin\IntegrationTests\Microsoft.VisualStudio.ProjectSystem.IntegrationTests.dll" />
-      <TestAssemblyLogNames Include="@(TestAssembly->'%(FileName)%(Extension).trx')" />
+      <TestAssemblyLogFileName Include="@(TestAssembly->'%(FileName)%(Extension).trx')" />
     </ItemGroup>
     
     <PropertyGroup>      
@@ -75,7 +73,7 @@
       Directories="$(IntegrationTestResultsDirectory)" />
 
     <Exec
-      Command='"$(VSTestExe)" /Blame /ResultsDirectory:"$(IntegrationTestResultsDirectory)\" /Settings:"$(RunSettingsFilePath)" /Logger:trx;LogFileName=@(TestAssemblyLogNames) "@(TestAssembly)"'
+      Command='"$(VSTestExe)" /Blame /ResultsDirectory:"$(IntegrationTestResultsDirectory)\" /Settings:"$(RunSettingsFilePath)" /Logger:trx;LogFileName=@(TestAssemblyLogFileName) "@(TestAssembly)"'
       EnvironmentVariables="$(VSTestExeEnvironment)"
       LogStandardErrorAsError="false"
       IgnoreExitCode="true">
@@ -83,19 +81,12 @@
       <Output TaskParameter="ExitCode" PropertyName="ExitCode" />
     </Exec>
 
-    <Message Text="There were test failures, see $(IntegrationTestResultsDirectory)@(TestAssemblyLogNames)" Condition="$(ExitCode) != 0" Importance="High" />
+    <Message Text="There were test failures, see $(IntegrationTestResultsDirectory)@(TestAssemblyLogFileName)" Condition="$(ExitCode) != 0" Importance="High" />
 
   </Target>
 
   <!-- 6. Kill VS (can we get PID's that we launched?) -->
 
   <!-- 7. Reenable Windows Error Reporting -->
-
-  <!-- 8. Convert TRX -> xUnit -->
-
-  <!-- 9. Copy tests results to tests results folder (can we make sure this happens by default?) -->
-
-  <!-- 10. Copy screenshots & video to test results if failed (can we make sure this happens by default?) -->
-
 
 </Project>
