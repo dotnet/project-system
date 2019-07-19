@@ -226,9 +226,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             _disposables.Dispose();
         }
 
-        private async Task ProcessCompileQueue(CancellationToken token)
+        private Task ProcessCompileQueue(CancellationToken token)
         {
-            await _activeWorkspaceProjectContextHost.OpenContextForWriteAsync(async accessor =>
+            return _activeWorkspaceProjectContextHost.OpenContextForWriteAsync(async accessor =>
             {
                 // Grab the next file to compile off the queue
                 (string fileName, bool ignoreFileWriteTime) = _filesToCompile.FirstOrDefault();
@@ -274,9 +274,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             string outputFileName = await GetOutputFileName(fileName);
             // make sure the file is up to date
-            await _activeWorkspaceProjectContextHost.OpenContextForWriteAsync(async accessor =>
+            await _activeWorkspaceProjectContextHost.OpenContextForWriteAsync(accessor =>
             {
-                await CompileDesignTimeInput(accessor.Context, fileName, outputFileName, ignoreFileWriteTime: false);
+                return CompileDesignTimeInput(accessor.Context, fileName, outputFileName, ignoreFileWriteTime: false);
             });
 
             return $@"<root>
