@@ -14,8 +14,8 @@
     <RunningUnderCI>false</RunningUnderCI>
     <OutputPath>C:\project-system\artifacts\Debug\</OutputPath>
     <IntegrationTestResultsDirectory>$(OutputPath)TestResults\</IntegrationTestResultsDirectory>
-    <VSTestExe>C:\Program Files (x86)\Microsoft Visual Studio\2019\master\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe</VSTestExe>
-
+    
+    <VSTestExe>vstest.console.exe</VSTestExe>
     <RunSettingsFilePath>$(IntegrationTestResultsDirectory)Integration.runsettings</RunSettingsFilePath>
   </PropertyGroup>
 
