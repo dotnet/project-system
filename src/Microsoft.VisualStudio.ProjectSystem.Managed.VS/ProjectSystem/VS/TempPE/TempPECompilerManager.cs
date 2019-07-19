@@ -206,7 +206,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         {
             if (_filesToCompile.Count > 0)
             {
-                _scheduler.ScheduleAsyncTask(ProcessCompileQueue, _project.Services.ProjectAsynchronousTasks.UnloadCancellationToken);
+                _scheduler.ScheduleAsyncTask(ProcessCompileQueueAsync, _project.Services.ProjectAsynchronousTasks.UnloadCancellationToken);
             }
         }
 
@@ -226,7 +226,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             _disposables.Dispose();
         }
 
-        private Task ProcessCompileQueue(CancellationToken token)
+        private Task ProcessCompileQueueAsync(CancellationToken token)
         {
             return _activeWorkspaceProjectContextHost.OpenContextForWriteAsync(async accessor =>
             {
@@ -244,10 +244,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                     // Remove the file from our todo list. If it wasn't there (because it was removed as a design time input while we were busy) we don't need to compile it
                     bool wasInQueue = ThreadingTools.ApplyChangeOptimistically(ref _filesToCompile, fileName, (s, f) => s.Remove(f));
 
-                    string outputFileName = await GetOutputFileName(fileName);
+                    string outputFileName = await GetOutputFileNameAsync(fileName);
                     if (wasInQueue)
                     {
-                        await CompileDesignTimeInput(accessor.Context, fileName, outputFileName, ignoreFileWriteTime, token);
+                        await CompileDesignTimeInputAsync(accessor.Context, fileName, outputFileName, ignoreFileWriteTime, token);
                     }
 
                     // Grab another file off the queue
@@ -261,7 +261,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         /// </summary>
         /// <param name="fileName"></param>
         /// <returns></returns>
-        public async Task<string> GetDesignTimeInputXML(string fileName)
+        public async Task<string> GetDesignTimeInputXmlAsync(string fileName)
         {
             // Make sure we're not being asked to compile a random file
             if (!_designTimeInputs.Contains(fileName, StringComparers.Paths))
@@ -272,11 +272,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             // Remove the file from our todo list, in case it was in there.
             ThreadingTools.ApplyChangeOptimistically(ref _filesToCompile, fileName, (s, f) => s.Remove(f));
 
-            string outputFileName = await GetOutputFileName(fileName);
+            string outputFileName = await GetOutputFileNameAsync(fileName);
             // make sure the file is up to date
             await _activeWorkspaceProjectContextHost.OpenContextForWriteAsync(accessor =>
             {
-                return CompileDesignTimeInput(accessor.Context, fileName, outputFileName, ignoreFileWriteTime: false);
+                return CompileDesignTimeInputAsync(accessor.Context, fileName, outputFileName, ignoreFileWriteTime: false);
             });
 
             return $@"<root>
@@ -291,7 +291,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 </root>";
         }
 
-        private async Task CompileDesignTimeInput(IWorkspaceProjectContext context, string designTimeInput, string outputFileName, bool ignoreFileWriteTime, CancellationToken token = default)
+        private async Task CompileDesignTimeInputAsync(IWorkspaceProjectContext context, string designTimeInput, string outputFileName, bool ignoreFileWriteTime, CancellationToken token = default)
         {
             HashSet<string> filesToCompile = GetFilesToCompile(designTimeInput);
 
@@ -314,7 +314,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             }
         }
 
-        private async Task<string> GetOutputFileName(string designTimeInput)
+        private async Task<string> GetOutputFileNameAsync(string designTimeInput)
         {
             // Wait until we've received at least one project rule update, or we won't know where to put the file
             await _receivedProjectRuleSource.Task;

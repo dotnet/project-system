@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             await VerifyProjectChangeCausesCompilation(1, inputs);
 
-            string tempPEDescriptionXml = await _manager.GetDesignTimeInputXML("File1.cs");
+            string tempPEDescriptionXml = await _manager.GetDesignTimeInputXmlAsync("File1.cs");
 
             // This also validates that getting the description didn't force a compile, because the output is up to date
             Assert.Single(_compilationResults);
@@ -87,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             // Remove the output file, should mean that getting the XML forces a compile
             _fileSystem.RemoveFile(Path.Combine(TempPECompilerManager.GetOutputPath(_projectFolder, _intermediateOutputPath), "File1.cs.dll"));
 
-            string tempPEDescriptionXml = await _manager.GetDesignTimeInputXML("File1.cs");
+            string tempPEDescriptionXml = await _manager.GetDesignTimeInputXmlAsync("File1.cs");
 
             // Verify a second compile happened
             Assert.Equal(2, _compilationResults.Count);
