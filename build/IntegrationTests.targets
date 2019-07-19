@@ -3,19 +3,19 @@
   <Target Name="Build" DependsOnTargets="GenerateRunSettings;RunTests" />
 
   <!-- Assumptions: We've already built and the VSIX is deployed 
-       Inputs: $(RootSuffix) - I think we should consider a random RootSuffix (this might not be great on local machine)
+       Inputs: $(VSSDKTargetPlatformRegRootSuffix) - I think we should consider a random RootSuffix (this might not be great on local machine)
                $(RunningUnderCI)
-               $(VSTestExe)
                $(OutputPath)             
+  	       $(VisualStudioXamlRulesDir)
   -->
 
   <PropertyGroup>
-    <RootSuffix>Exp</RootSuffix>
+    <VSSDKTargetPlatformRegRootSuffix>Exp</VSSDKTargetPlatformRegRootSuffix>
     <RunningUnderCI>false</RunningUnderCI>
     <OutputPath>C:\project-system\artifacts\Debug\</OutputPath>
+    <VisualStudioXamlRulesDir>$(OutputPath)VSSetup\Rules\</VisualStudioXamlRulesDir>
+
     <IntegrationTestResultsDirectory>$(OutputPath)TestResults\</IntegrationTestResultsDirectory>
-    
-    <VSTestExe>vstest.console.exe</VSTestExe>
     <RunSettingsFilePath>$(IntegrationTestResultsDirectory)Integration.runsettings</RunSettingsFilePath>
   </PropertyGroup>
 
@@ -29,7 +29,7 @@
         <![CDATA[
 <RunSettings>
   <TestRunParameters>
-    <Parameter name="VsRootSuffix" value="$(RootSuffix)" />
+    <Parameter name="VsRootSuffix" value="$(VSSDKTargetPlatformRegRootSuffix)" />
   </TestRunParameters>
   <RunConfiguration>
     <MaxCpuCount>1</MaxCpuCount>
@@ -61,11 +61,10 @@
     </ItemGroup>
     
     <PropertyGroup>      
-      <VisualStudioXamlRulesDirectory>$(OutputPath)VSSetup\Rules\</VisualStudioXamlRulesDirectory>
       <VSTestExeEnvironment>
-        VisualBasicDesignTimeTargetsPath=$(VisualStudioXamlRulesDirectory)Microsoft.VisualBasic.DesignTime.targets;
-        FSharpDesignTimeTargetsPath=$(VisualStudioXamlRulesDirectory)Microsoft.FSharp.DesignTime.targets;
-        CSharpDesignTimeTargetsPath=$(VisualStudioXamlRulesDirectory)Microsoft.CSharp.DesignTime.targets;
+        VisualBasicDesignTimeTargetsPath=$(VisualStudioXamlRulesDir)Microsoft.VisualBasic.DesignTime.targets;
+        FSharpDesignTimeTargetsPath=$(VisualStudioXamlRulesDir)Microsoft.FSharp.DesignTime.targets;
+        CSharpDesignTimeTargetsPath=$(VisualStudioXamlRulesDir)Microsoft.CSharp.DesignTime.targets;
       </VSTestExeEnvironment>
     </PropertyGroup>
 
@@ -73,7 +72,7 @@
       Directories="$(IntegrationTestResultsDirectory)" />
 
     <Exec 
-      Command='"$(VSTestExe)" /Blame /ResultsDirectory:"$(IntegrationTestResultsDirectory)\" /Settings:"$(RunSettingsFilePath)" /Logger:trx;LogFileName=@(TestAssemblyLogFileName) "@(TestAssembly)"'
+      Command='vstest.console.exe /Blame /ResultsDirectory:"$(IntegrationTestResultsDirectory)\" /Settings:"$(RunSettingsFilePath)" /Logger:trx;LogFileName=@(TestAssemblyLogFileName) "@(TestAssembly)"'
       EnvironmentVariables="$(VSTestExeEnvironment)"
       LogStandardErrorAsError="false"
       IgnoreExitCode="true">
