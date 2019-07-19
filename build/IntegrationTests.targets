@@ -22,10 +22,6 @@
 
   <!-- 1. Initialize VS (reset settings, etc) -->
 
-  <!-- 2. Kills dbgclr/vsjitdebugguer/dexplore -->
-
-  <!-- 3. Generate runsettings (including, Screenshot and Video recording) -->
-
   <Target Name="GenerateRunSettings">
 
     <PropertyGroup>
