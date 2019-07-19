@@ -6,7 +6,7 @@ trigger:
 pr:
 - feature/integration-tests
 
- jobs:
+jobs:
 - job: Visual_Studio
   pool:
     name: NetCorePublic-Pool
