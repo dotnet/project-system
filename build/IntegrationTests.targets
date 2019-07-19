@@ -72,7 +72,7 @@
     <MakeDir 
       Directories="$(IntegrationTestResultsDirectory)" />
 
-    <Exec
+    <Exec 
       Command='"$(VSTestExe)" /Blame /ResultsDirectory:"$(IntegrationTestResultsDirectory)\" /Settings:"$(RunSettingsFilePath)" /Logger:trx;LogFileName=@(TestAssemblyLogFileName) "@(TestAssembly)"'
       EnvironmentVariables="$(VSTestExeEnvironment)"
       LogStandardErrorAsError="false"
@@ -81,7 +81,10 @@
       <Output TaskParameter="ExitCode" PropertyName="ExitCode" />
     </Exec>
 
-    <Message Text="There were test failures, see $(IntegrationTestResultsDirectory)@(TestAssemblyLogFileName)" Condition="$(ExitCode) != 0" Importance="High" />
+    <Message 
+      Text="There were test failures, see $(IntegrationTestResultsDirectory)@(TestAssemblyLogFileName)" 
+      Condition="$(ExitCode) != 0" 
+      Importance="High" />
 
   </Target>
 
