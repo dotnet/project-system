@@ -212,21 +212,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         protected override async Task DisposeCoreAsync(bool initialized)
         {
-            if (initialized)
+            // This will stop our blocks taking any more input
+            _inputsActionBlock?.Complete();
+            _fileWatcherActionBlock?.Complete();
+
+            if (_inputsActionBlock != null)
             {
-                // This will stop our blocks taking any more input
-                _inputsActionBlock?.Complete();
-                _fileWatcherActionBlock?.Complete();
-
-                if (_inputsActionBlock != null)
-                {
-                    await Task.WhenAll(_inputsActionBlock.Completion, _fileWatcherActionBlock!.Completion);
-                }
-
-                // By waiting for completion we know that the following dispose will cancel any pending compilations, and there won't be any more
-                _scheduler.Dispose();
-                _disposables.Dispose();
+                await Task.WhenAll(_inputsActionBlock.Completion, _fileWatcherActionBlock!.Completion);
             }
+
+            // By waiting for completion we know that the following dispose will cancel any pending compilations, and there won't be any more
+            _scheduler.Dispose();
+            _disposables.Dispose();
         }
 
         private async Task ProcessCompileQueue(CancellationToken token)
