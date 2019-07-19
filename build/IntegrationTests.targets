@@ -1,0 +1,105 @@
+<Project DefaultTargets="Build">
+
+  <Target Name="Build" DependsOnTargets="GenerateRunSettings;RunTests" />
+
+  <!-- Assumptions: We've already built and the VSIX is deployed 
+       Inputs: $(RootSuffix) - I think we should consider a random RootSuffix (this might not be great on local machine)
+               $(RunningUnderCI)
+               $(VSTestExe)
+               $(OutputPath)             
+  -->
+
+  <PropertyGroup>
+    <RootSuffix>Exp</RootSuffix>
+    <RunningUnderCI>false</RunningUnderCI>
+    <OutputPath>C:\project-system\artifacts\Debug\</OutputPath>
+    <IntegrationTestResultsDirectory>$(OutputPath)TestResults\</IntegrationTestResultsDirectory>
+    <VSTestExe>C:\Program Files (x86)\Microsoft Visual Studio\2019\master\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe</VSTestExe>
+
+    <RunSettingsFilePath>$(IntegrationTestResultsDirectory)Integration.runsettings</RunSettingsFilePath>
+  </PropertyGroup>
+
+
+  <!-- 1. Initialize VS (reset settings, etc) -->
+
+  <!-- 2. Kills dbgclr/vsjitdebugguer/dexplore -->
+
+  <!-- 3. Generate runsettings (including, Screenshot and Video recording) -->
+
+  <Target Name="GenerateRunSettings">
+
+    <PropertyGroup>
+      <RunSettingsContents>
+        <![CDATA[
+<RunSettings>
+  <TestRunParameters>
+    <Parameter name="VsRootSuffix" value="$(RootSuffix)" />
+  </TestRunParameters>
+  <RunConfiguration>
+    <MaxCpuCount>1</MaxCpuCount>
+  </RunConfiguration>
+  
+  <MSTest>
+     <DeploymentEnabled>false</DeploymentEnabled>
+     <DeleteDeploymentDirectoryAfterTestRunIsComplete>False</DeleteDeploymentDirectoryAfterTestRunIsComplete>
+  </MSTest>
+</RunSettings>
+]]>
+      </RunSettingsContents>
+    </PropertyGroup>
+
+    <WriteLinesToFile
+      File="$(RunSettingsFilePath)"
+      Lines="$(RunSettingsContents)"
+      Overwrite="true" />
+
+  </Target>
+
+  <!-- 4. Disable Windows Error Reporting -->
+
+  <!-- 5. Run integration tests -->
+
+  <Target Name="RunTests">
+
+    <ItemGroup>
+      <TestAssembly Include="$(OutputPath)bin\IntegrationTests\Microsoft.VisualStudio.ProjectSystem.IntegrationTests.dll" />
+      <TestAssemblyLogNames Include="@(TestAssembly->'%(FileName)%(Extension).trx')" />
+    </ItemGroup>
+    
+    <PropertyGroup>      
+      <VisualStudioXamlRulesDirectory>$(OutputPath)VSSetup\Rules\</VisualStudioXamlRulesDirectory>
+      <VSTestExeEnvironment>
+        VisualBasicDesignTimeTargetsPath=$(VisualStudioXamlRulesDirectory)Microsoft.VisualBasic.DesignTime.targets;
+        FSharpDesignTimeTargetsPath=$(VisualStudioXamlRulesDirectory)Microsoft.FSharp.DesignTime.targets;
+        CSharpDesignTimeTargetsPath=$(VisualStudioXamlRulesDirectory)Microsoft.CSharp.DesignTime.targets;
+      </VSTestExeEnvironment>
+    </PropertyGroup>
+
+    <MakeDir 
+      Directories="$(IntegrationTestResultsDirectory)" />
+
+    <Exec
+      Command='"$(VSTestExe)" /Blame /ResultsDirectory:"$(IntegrationTestResultsDirectory)\" /Settings:"$(RunSettingsFilePath)" /Logger:trx;LogFileName=@(TestAssemblyLogNames) "@(TestAssembly)"'
+      EnvironmentVariables="$(VSTestExeEnvironment)"
+      LogStandardErrorAsError="false"
+      IgnoreExitCode="true">
+      
+      <Output TaskParameter="ExitCode" PropertyName="ExitCode" />
+    </Exec>
+
+    <Message Text="There were test failures, see $(IntegrationTestResultsDirectory)@(TestAssemblyLogNames)" Condition="$(ExitCode) != 0" Importance="High" />
+
+  </Target>
+
+  <!-- 6. Kill VS (can we get PID's that we launched?) -->
+
+  <!-- 7. Reenable Windows Error Reporting -->
+
+  <!-- 8. Convert TRX -> xUnit -->
+
+  <!-- 9. Copy tests results to tests results folder (can we make sure this happens by default?) -->
+
+  <!-- 10. Copy screenshots & video to test results if failed (can we make sure this happens by default?) -->
+
+
+</Project>
