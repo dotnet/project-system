@@ -243,16 +243,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ' the check box.
             If currentTarget Is Nothing Then
                 bindingRedirectsCheckBox.Visible = True
-            End If
-
-            Dim frameworkName As New FrameworkName(currentTarget.Moniker)
-
-            If String.Compare(frameworkName.Identifier, ".NETFramework", StringComparison.Ordinal) = 0 Then
-                bindingRedirectsCheckBox.Visible = True
             Else
-                bindingRedirectsCheckBox.Visible = False
-            End If
+                Dim frameworkName As New FrameworkName(currentTarget.Moniker)
 
+                If String.Compare(frameworkName.Identifier, ".NETFramework", StringComparison.Ordinal) = 0 Then
+                    bindingRedirectsCheckBox.Visible = True
+                Else
+                    bindingRedirectsCheckBox.Visible = False
+                End If
+            End If
         End Sub
 
 #End Region
