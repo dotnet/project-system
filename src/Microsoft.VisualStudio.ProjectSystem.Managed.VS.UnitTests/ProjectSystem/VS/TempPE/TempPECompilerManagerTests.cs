@@ -19,7 +19,7 @@ using Xunit.Sdk;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 {
-    public class TempPECompilerManagerTests
+    public class TempPECompilerManagerTests : IDisposable
     {
         private string? _lastProjectFolder;
         private string? _lastIntermediateOutputPath;
@@ -393,6 +393,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             }
 
             _manager.ProcessFileChangeNotification(new ProjectVersionedValue<string[]>(files, ImmutableDictionary<NamedIdentity, IComparable>.Empty));
+        }
+
+        public void Dispose()
+        {
+            _manager.Dispose();
         }
     }
 }
