@@ -13,7 +13,6 @@ using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
-using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.Threading.Tasks;
@@ -205,13 +204,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         protected override async Task DisposeCoreAsync(bool initialized)
         {
-            // This will stop our blocks taking any more input
-            _inputsActionBlock?.Complete();
-            _fileWatcherActionBlock?.Complete();
-
             if (_inputsActionBlock != null)
             {
-                await Task.WhenAll(_inputsActionBlock.Completion, _fileWatcherActionBlock!.Completion);
+                // This will stop our blocks taking any more input
+                _inputsActionBlock.Complete();
+                _fileWatcherActionBlock!.Complete();
+
+                await Task.WhenAll(_inputsActionBlock.Completion, _fileWatcherActionBlock.Completion);
             }
 
             // By waiting for completion we know that the following dispose will cancel any pending compilations, and there won't be any more
@@ -252,8 +251,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         /// <summary>
         /// Gets the XML that describes a TempPE DLL, including building it if necessary
         /// </summary>
-        /// <param name="fileName"></param>
-        /// <returns></returns>
+        /// <param name="fileName">A project relative path to a source file that is a design time input</param>
+        /// <returns>An XML description of the TempPE DLL for the specified file</returns>
         public async Task<string> GetDesignTimeInputXmlAsync(string fileName)
         {
             // Make sure we're not being asked to compile a random file
