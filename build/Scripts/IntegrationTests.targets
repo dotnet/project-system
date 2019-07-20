@@ -5,8 +5,11 @@
   
    Inputs:
   
-    $(VSSDKTargetPlatformRegRootSuffix): The root suffix of the hive to open.
-    $(VisualStudioXamlRulesDir): The build output location containing the XAML rules.
+    $(VSSDKTargetPlatformRegRootSuffix):  The root suffix of the hive to open.
+    $(VisualStudioXamlRulesDir):          The build output location containing the XAML rules.
+    $(ArtifactsTestResultsDir):           The build output location where test results are output.
+    $(IsIntegrationTestProject):          Indicates whether the current project is an integration project.
+    $(IntegrationTest):                   Indicates that the integration tests should be run.
   -->       
   
   <PropertyGroup>
@@ -67,8 +70,7 @@
       </VSTestExeEnvironment>
     </PropertyGroup>
 
-    <MakeDir 
-      Directories="$(TestResultsDirectory)" />
+    <MakeDir Directories="$(TestResultsDirectory)" />
 
     <Error Text="The project must built before running tests"
            File="$(MSBuildProjectFile)"
@@ -91,7 +93,7 @@
       <Output TaskParameter="ExitCode" PropertyName="ExitCode" />
     </Exec>
 
-    <Message Text="Succeeded running integration tests for $(MSBuildProjectFile)."
+    <Message Text="Succeeded running integration tests for $(MSBuildProjectFile) [$(Configuration)]."
              Condition="$(ExitCode) == 0"
              Importance="High"
              />
