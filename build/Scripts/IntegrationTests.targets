@@ -79,7 +79,7 @@
            Condition="!Exists('$(TargetPath)')"
            />
 
-    <Message Text="Running integration tests for $(MSBuildProjectFile) [$(Configuration)]..."
+    <Message Text="Running integration tests for $(MSBuildProjectFile) [$(Configuration)] (this might take a while)..."
              Importance="High"
              />
 
