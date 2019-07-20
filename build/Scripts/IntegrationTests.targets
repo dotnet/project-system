@@ -14,6 +14,10 @@
     <UsingToolXUnit Condition="$(IsIntegrationTestProject) == 'true'">false</UsingToolXUnit>
   </PropertyGroup>
 
+  <!-- To make RoslynTools.RepoToolset happy -->
+  <Target Name="IntegrationTest"
+          Condition="$(IsIntegrationTestProject) == 'true'" />
+  
   <Target Name="Test" 
           Condition="$(IsIntegrationTestProject) == 'true' AND '$(IntegrationTest)' == 'true'"
           DependsOnTargets="GenerateRunSettings;ExecuteTests" />
@@ -75,8 +79,8 @@
            Condition="!Exists('$(TargetPath)')"
            />
 
-    <Message Text="Running integration tests for $(MSBuildProjectFile) [$(Configuration)]"
-             Importance="high"
+    <Message Text="Running integration tests for $(MSBuildProjectFile) [$(Configuration)]..."
+             Importance="High"
              />
 
     <Exec 
@@ -91,6 +95,11 @@
       <Output TaskParameter="ExitCode" PropertyName="ExitCode" />
     </Exec>
 
+    <Message Text="Succeeded running integration tests for $(MSBuildProjectFile)."
+             Condition="$(ExitCode) == 0"
+             Importance="High"
+             />
+    
     <Error 
       Text="There were integration test failures, see $(TestResultsDirectory)$(TestAssemblyLogFileName) for full results." 
       Condition="$(ExitCode) != 0" 
