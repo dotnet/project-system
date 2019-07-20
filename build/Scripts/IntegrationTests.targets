@@ -8,14 +8,14 @@
   
   <!-- Runs integration tests for a project via vstest.console.exe -->
   
-  <PropertyGroup>
+  <PropertyGroup Condition="$(IsIntegrationTestProject) == 'true'">
     <!-- Opt out of RoslynTools.RepoToolset's xUnit integration -->
     <UsingToolXUnit>false</UsingToolXUnit>
   </PropertyGroup>
-  
+
   <Target Name="Test" 
-          Condition="$(IsIntegrationTestProject) == 'true'"
-          DependsOnTargets="GenerateRunSettings;RunIntegrationTest" />
+          Condition="$(IsIntegrationTestProject) == 'true' AND '$(IntegrationTest)' == 'true'"
+          DependsOnTargets="GenerateRunSettings;ExecuteTests" />
 
   <PropertyGroup>
     <TestResultsDirectory>$(ArtifactsTestResultsDir)</TestResultsDirectory>
@@ -55,7 +55,7 @@
 
   <!-- 4. Disable Windows Error Reporting -->
 
-  <Target Name="RunIntegrationTest">
+  <Target Name="ExecuteTests">
 
     <PropertyGroup>
       <TestAssemblyLogFileName>$(TargetName)$(TargetExt).trx</TestAssemblyLogFileName>
