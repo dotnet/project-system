@@ -27,8 +27,6 @@
     <RunSettingsFilePath>$(IntermediateOutputPath)$(TargetName)$(TargetExt).runsettings</RunSettingsFilePath>
   </PropertyGroup>
 
-  <!-- 1. Initialize VS (reset settings, etc) -->
-
   <Target Name="GenerateRunSettings">
 
     <PropertyGroup>
@@ -57,8 +55,6 @@
       Overwrite="true" />
 
   </Target>
-
-  <!-- 4. Disable Windows Error Reporting -->
 
   <Target Name="ExecuteTests">
 
@@ -107,9 +103,5 @@
       />
 
   </Target>
-
-  <!-- 6. Kill VS (can we get PID's that we launched?) -->
-
-  <!-- 7. Reenable Windows Error Reporting -->
 
 </Project>
