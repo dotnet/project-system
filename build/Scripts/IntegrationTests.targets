@@ -1,12 +1,14 @@
 <Project>
-
-  <!-- Assumptions: We've already built and the VSIX is deployed 
-       Inputs: $(VSSDKTargetPlatformRegRootSuffix) - I think we should consider a random RootSuffix (this might not be great on local machine)
-               $(RunningUnderCI)
-  	           $(VisualStudioXamlRulesDir)
-  -->
+  <!-- 
+   
+   Runs APEX integration tests for a project via vstest.console.exe
   
-  <!-- Runs integration tests for a project via vstest.console.exe -->
+   Inputs:
+  
+    $(VSSDKTargetPlatformRegRootSuffix): The root suffix of the hive to open.
+    $(VisualStudioXamlRulesDir): The build output location containing the XAML rules.
+  -->       
+  
   
   <PropertyGroup Condition="$(IsIntegrationTestProject) == 'true'">
     <!-- Opt out of RoslynTools.RepoToolset's xUnit integration -->
@@ -75,7 +77,7 @@
            />
 
     <Message Text="Running integration tests for $(MSBuildProjectFile) [$(Configuration)]"
-            Importance="high"
+             Importance="high"
              />
 
     <Exec 
