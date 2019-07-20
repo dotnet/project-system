@@ -6,7 +6,7 @@ trigger:
 pr:
 - feature/integration-tests
 
- jobs:
+jobs:
 - job: Visual_Studio
   pool:
     name: NetCorePublic-Pool
@@ -24,28 +24,35 @@ pr:
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\log'
-        ArtifactName: '$(_configuration) unit test logs'
+        ArtifactName: '$(_configuration) Binary Logs'
         publishLocation: Container
       continueOnError: true
       condition: failed()
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\bin'
-        ArtifactName: '$(_configuration) bin folder'
+        ArtifactName: '$(_configuration) Binaries'
         publishLocation: Container
       continueOnError: true
       condition: failed()
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\VSSetup'
-        ArtifactName: '$(_configuration) VSSetup folder'
+        ArtifactName: '$(_configuration) Insertion Artifacts'
+        publishLocation: Container
+      continueOnError: true
+      condition: failed()
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\IntegrationTestTemp'
+        ArtifactName: '$(_configuration) Temp Directory'
         publishLocation: Container
       continueOnError: true
       condition: failed()
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\TestResults'
-        ArtifactName: '$(_configuration) Test Result Logs'
+        ArtifactName: '$(_configuration) Test Results'
         publishLocation: Container
       continueOnError: true
       condition: failed()
