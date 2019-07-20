@@ -1,6 +1,6 @@
-<Project DefaultTargets="Build">
+<Project>
 
-  <Target Name="Build" DependsOnTargets="GenerateRunSettings;RunTests" />
+  <Target Name="Test" DependsOnTargets="GenerateRunSettings;RunTests" />
 
   <!-- Assumptions: We've already built and the VSIX is deployed 
        Inputs: $(VSSDKTargetPlatformRegRootSuffix) - I think we should consider a random RootSuffix (this might not be great on local machine)
