@@ -1,24 +1,26 @@
 <Project>
 
-  <Target Name="Test" DependsOnTargets="GenerateRunSettings;RunTests" />
-
   <!-- Assumptions: We've already built and the VSIX is deployed 
        Inputs: $(VSSDKTargetPlatformRegRootSuffix) - I think we should consider a random RootSuffix (this might not be great on local machine)
                $(RunningUnderCI)
-               $(OutputPath)             
-  	       $(VisualStudioXamlRulesDir)
+  	           $(VisualStudioXamlRulesDir)
   -->
+  
+  <!-- Runs integration tests for a project via vstest.console.exe -->
+  
+  <PropertyGroup>
+    <!-- Opt out of RoslynTools.RepoToolset's xUnit integration -->
+    <UsingToolXUnit>false</UsingToolXUnit>
+  </PropertyGroup>
+  
+  <Target Name="Test" 
+          Condition="$(IsIntegrationTestProject) == 'true'"
+          DependsOnTargets="GenerateRunSettings;RunIntegrationTest" />
 
   <PropertyGroup>
-    <VSSDKTargetPlatformRegRootSuffix>Exp</VSSDKTargetPlatformRegRootSuffix>
-    <RunningUnderCI>false</RunningUnderCI>
-    <OutputPath>C:\project-system\artifacts\Debug\</OutputPath>
-    <VisualStudioXamlRulesDir>$(OutputPath)VSSetup\Rules\</VisualStudioXamlRulesDir>
-
-    <IntegrationTestResultsDirectory>$(OutputPath)TestResults\</IntegrationTestResultsDirectory>
-    <RunSettingsFilePath>$(IntegrationTestResultsDirectory)Integration.runsettings</RunSettingsFilePath>
+    <TestResultsDirectory>$(ArtifactsTestResultsDir)</TestResultsDirectory>
+    <RunSettingsFilePath>$(IntermediateOutputPath)$(TargetName)$(TargetExt).runsettings</RunSettingsFilePath>
   </PropertyGroup>
-
 
   <!-- 1. Initialize VS (reset settings, etc) -->
 
@@ -53,14 +55,10 @@
 
   <!-- 4. Disable Windows Error Reporting -->
 
-  <Target Name="RunTests">
+  <Target Name="RunIntegrationTest">
 
-    <ItemGroup>
-      <TestAssembly Include="$(OutputPath)bin\IntegrationTests\Microsoft.VisualStudio.ProjectSystem.IntegrationTests.dll" />
-      <TestAssemblyLogFileName Include="@(TestAssembly->'%(FileName)%(Extension).trx')" />
-    </ItemGroup>
-    
-    <PropertyGroup>      
+    <PropertyGroup>
+      <TestAssemblyLogFileName>$(TargetName)$(TargetExt).trx</TestAssemblyLogFileName>
       <VSTestExeEnvironment>
         VisualBasicDesignTimeTargetsPath=$(VisualStudioXamlRulesDir)Microsoft.VisualBasic.DesignTime.targets;
         FSharpDesignTimeTargetsPath=$(VisualStudioXamlRulesDir)Microsoft.FSharp.DesignTime.targets;
@@ -69,21 +67,34 @@
     </PropertyGroup>
 
     <MakeDir 
-      Directories="$(IntegrationTestResultsDirectory)" />
+      Directories="$(TestResultsDirectory)" />
+
+    <Error Text="The project must built before running tests"
+           File="$(MSBuildProjectFile)"
+           Condition="!Exists('$(TargetPath)')"
+           />
+
+    <Message Text="Running integration tests for $(MSBuildProjectFile) [$(Configuration)]"
+            Importance="high"
+             />
 
     <Exec 
-      Command='vstest.console.exe /Blame /ResultsDirectory:"$(IntegrationTestResultsDirectory)\" /Settings:"$(RunSettingsFilePath)" /Logger:trx;LogFileName=@(TestAssemblyLogFileName) "@(TestAssembly)"'
+      Command='vstest.console.exe /Blame /ResultsDirectory:"$(TestResultsDirectory)\" /Settings:"$(RunSettingsFilePath)" /Logger:trx;LogFileName=$(TestAssemblyLogFileName) "$(TargetPath)"'
       EnvironmentVariables="$(VSTestExeEnvironment)"
       LogStandardErrorAsError="false"
+      IgnoreStandardErrorWarningFormat="true"
+      StandardErrorImportance="Low"
+      StandardOutputImportance="Low"
       IgnoreExitCode="true">
       
       <Output TaskParameter="ExitCode" PropertyName="ExitCode" />
     </Exec>
 
-    <Message 
-      Text="There were test failures, see $(IntegrationTestResultsDirectory)@(TestAssemblyLogFileName)" 
+    <Error 
+      Text="There were integration test failures, see $(TestResultsDirectory)$(TestAssemblyLogFileName) for full results." 
       Condition="$(ExitCode) != 0" 
-      Importance="High" />
+      File="Apex"
+      />
 
   </Target>
 
