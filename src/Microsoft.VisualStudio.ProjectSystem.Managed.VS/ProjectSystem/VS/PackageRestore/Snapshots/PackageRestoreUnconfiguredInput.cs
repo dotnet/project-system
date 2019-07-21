@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
-using NuGet.SolutionRestoreManager;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
@@ -10,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
     /// </summary>
     internal class PackageRestoreUnconfiguredInput
     {
-        public PackageRestoreUnconfiguredInput(IVsProjectRestoreInfo2? restoreInfo, IReadOnlyCollection<PackageRestoreConfiguredInput> configuredInputs)
+        public PackageRestoreUnconfiguredInput(ProjectRestoreInfo? restoreInfo, IReadOnlyCollection<PackageRestoreConfiguredInput> configuredInputs)
         {
             RestoreInfo = restoreInfo;
             ConfiguredInputs = configuredInputs;
@@ -20,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         ///     Gets the restore information produced in this input. Can be <see langword="null"/> if
         ///     the project has no active configurations.
         /// </summary>
-        public IVsProjectRestoreInfo2? RestoreInfo
+        public ProjectRestoreInfo? RestoreInfo
         {
             get;
         }

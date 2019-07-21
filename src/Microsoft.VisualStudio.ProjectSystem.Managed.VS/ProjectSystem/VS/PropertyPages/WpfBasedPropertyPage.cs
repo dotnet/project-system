@@ -1,18 +1,17 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
 using System;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Forms;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
     internal abstract partial class WpfBasedPropertyPage : PropertyPage
     {
-        private PropertyPageElementHost _host;
-        private PropertyPageControl _control;
-        private PropertyPageViewModel _viewModel;
+        private PropertyPageElementHost? _host;
+        private PropertyPageControl? _control;
+        private PropertyPageViewModel? _viewModel;
 
         protected WpfBasedPropertyPage()
         {
@@ -27,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             if (isClosing)
             {
-                _control.DetachViewModel();
+                _control?.DetachViewModel();
                 return;
             }
             else
@@ -47,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         protected override Task<int> OnApply()
         {
-            return _control.Apply();
+            return _control?.Apply() ?? Task.FromResult((int)HResult.Fail);
         }
 
         protected override Task OnDeactivate()
@@ -94,6 +93,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         private void OnControlStatusChanged(object sender, EventArgs e)
         {
+            if (_control == null)
+            {
+                return;
+            }
+
             if (IsDirty != _control.IsDirty)
             {
                 IsDirty = _control.IsDirty;
@@ -106,7 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             {
                 if (disposing)
                 {
-                    _host.Dispose();
+                    _host?.Dispose();
                 }
             }
             finally

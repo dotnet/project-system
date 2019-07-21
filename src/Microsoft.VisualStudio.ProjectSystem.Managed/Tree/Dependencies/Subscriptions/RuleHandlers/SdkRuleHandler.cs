@@ -17,16 +17,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
     {
         public const string ProviderTypeString = "SdkDependency";
 
-        private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
-            icon: ManagedImageMonikers.Sdk,
-            expandedIcon: ManagedImageMonikers.Sdk,
-            unresolvedIcon: ManagedImageMonikers.SdkWarning,
-            unresolvedExpandedIcon: ManagedImageMonikers.SdkWarning);
-
         private static readonly SubTreeRootDependencyModel s_rootModel = new SubTreeRootDependencyModel(
             ProviderTypeString,
             Resources.SdkNodeName,
-            s_iconSet,
+            new DependencyIconSet(
+                icon: ManagedImageMonikers.Sdk,
+                expandedIcon: ManagedImageMonikers.Sdk,
+                unresolvedIcon: ManagedImageMonikers.SdkWarning,
+                unresolvedExpandedIcon: ManagedImageMonikers.SdkWarning),
             DependencyTreeFlags.SdkSubTreeRootNode);
 
         public SdkRuleHandler()
@@ -35,6 +33,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         }
 
         public override string ProviderType => ProviderTypeString;
+
+        public override ImageMoniker ImplicitIcon => ManagedImageMonikers.SdkPrivate;
 
         public override IDependencyModel CreateRootDependencyNode() => s_rootModel;
 
@@ -55,11 +55,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 resolved && !isImplicit,
                 isImplicit,
                 properties);
-        }
-
-        public override ImageMoniker GetImplicitIcon()
-        {
-            return ManagedImageMonikers.SdkPrivate;
         }
     }
 }

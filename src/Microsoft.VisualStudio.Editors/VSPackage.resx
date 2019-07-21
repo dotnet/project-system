@@ -117,7 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="1001" xml:space="preserve">
-    <value>.NET Core</value>
+  <data name="1100" xml:space="preserve">
+    <value>Managed Resources Editor</value>
+    <comment>Used for the resource editor in the shell's "Open With..." dialog plus the editor name for the key-binding it the Tools | Options | Environment | Keyboard | Use new shourtcut.</comment>
+  </data>
+  <data name="1200" xml:space="preserve">
+    <value>Settings Designer</value>
+    <comment>Used for the settings designer in the shell's "Open With..." dialog.</comment>
+  </data>
+  <data name="1300" xml:space="preserve">
+    <value>Project Designer</value>
+    <comment>Used for the application page designer in the shell UI.</comment>
+  </data>
+  <data name="1400" xml:space="preserve">
+    <value>Property Page Host</value>
+    <comment>Used for the property page designer in the shell UI.</comment>
+  </data>
+  <data name="1500" xml:space="preserve">
+    <value>SDK-Style Projects</value>
+    <comment>Used for the Tools|Options|Projects and Solutions page.</comment>
+  </data>
+  <data name="1600" xml:space="preserve">
+    <value>up to date checks; 
+Don't call MSBuild if a project appears to be up to date; 
+logging level; 
+futd; 
+incremental; 
+up-to-date; 
+build;</value>
+    <comment>.NET Core SDK-Style Projects option page keywords</comment>
   </data>
 </root>

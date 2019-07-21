@@ -89,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             if (!string.IsNullOrWhiteSpace(activeFramework))
             {
-                if (configProjects.TryGetValue(activeFramework, out ConfiguredProject configuredProject))
+                if (configProjects.TryGetValue(activeFramework!, out ConfiguredProject configuredProject))
                 {
                     return configuredProject;
                 }

@@ -1,6 +1,6 @@
 ﻿<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\VisualStudio.props"/>
+  <Import Project="..\VisualStudioIntegration.props"/>
   <PropertyGroup>
     <PlatformTarget>x86</PlatformTarget>
     <TargetFramework>net472</TargetFramework>
@@ -8,9 +8,5 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.csproj" />
-
-    <PackageReference Include="Microsoft.Test.Apex.VisualStudio" />
-    <PackageReference Include="Microsoft.VisualStudio.Composition" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" />
   </ItemGroup>
 </Project>

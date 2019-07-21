@@ -28,10 +28,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         }
 
         /// <inheritdoc />
-        public event EventHandler<SnapshotChangedEventArgs> SnapshotChanged;
+        public event EventHandler<SnapshotChangedEventArgs>? SnapshotChanged;
 
         /// <inheritdoc />
-        public event EventHandler<SnapshotProviderUnloadingEventArgs> SnapshotProviderUnloading;
+        public event EventHandler<SnapshotProviderUnloadingEventArgs>? SnapshotProviderUnloading;
 
         /// <inheritdoc />
         public void RegisterSnapshotProvider(IDependenciesSnapshotProvider snapshotProvider)

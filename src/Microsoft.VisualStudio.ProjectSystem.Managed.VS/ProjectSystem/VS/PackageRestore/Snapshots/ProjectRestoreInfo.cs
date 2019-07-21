@@ -10,15 +10,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
     /// </summary>
     internal class ProjectRestoreInfo : IVsProjectRestoreInfo2
     {
-        public ProjectRestoreInfo(string msbuildProjectExtensionsPath, string originalTargetFrameworks, IVsTargetFrameworks2 targetFrameworks, IVsReferenceItems toolReferences)
+        public ProjectRestoreInfo(string msbuildProjectExtensionsPath, string projectAssetsFilePath, string originalTargetFrameworks, IVsTargetFrameworks2 targetFrameworks, IVsReferenceItems toolReferences)
         {
             MSBuildProjectExtensionsPath = msbuildProjectExtensionsPath;
+            ProjectAssetsFilePath = projectAssetsFilePath;
             OriginalTargetFrameworks = originalTargetFrameworks;
             TargetFrameworks = targetFrameworks;
             ToolReferences = toolReferences;
         }
 
         public string MSBuildProjectExtensionsPath { get; }
+        public string ProjectAssetsFilePath { get; }
 
         public string OriginalTargetFrameworks { get; }
 

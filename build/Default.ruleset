@@ -10,6 +10,11 @@
     <Rule Id="CA1824" Action="None" />
     <Rule Id="CA2200" Action="None" />
   </Rules>
+  <Rules AnalyzerId="Microsoft.NetCore.Analyzers" RuleNamespace="Microsoft.NetCore.Analyzers">
+    <Rule Id="CA2000" Action="None" /> <!-- Dispose objects before losing scope (Noisy - replaced with IDE0067, IDE0068, IDE0069) )--> 
+    <Rule Id="CA1820" Action="Warning" />
+    <Rule Id="CA5360" Action="None" /> <!-- https://github.com/dotnet/roslyn-analyzers/issues/2683 -->
+  </Rules>
   <Rules AnalyzerId="Microsoft.CodeQuality.Analyzers" RuleNamespace="Microsoft.CodeQuality.Analyzers">
     <Rule Id="CA1000" Action="None" />
     <Rule Id="CA1001" Action="None" />
@@ -49,7 +54,6 @@
     <Rule Id="CA1721" Action="None" />
     <Rule Id="CA1724" Action="None" />
     <Rule Id="CA1815" Action="None" />
-    <Rule Id="CA1820" Action="None" />
     <Rule Id="CA2007" Action="None" />
     <Rule Id="CA2211" Action="None" />
     <Rule Id="CA2213" Action="None" /> <!-- https://github.com/dotnet/roslyn-analyzers/issues/1796 -->
@@ -62,7 +66,7 @@
     <Rule Id="CA2234" Action="None" />
   </Rules>
   <Rules AnalyzerId="Microsoft.NetFramework.Analyzers" RuleNamespace="Microsoft.NetFramework.Analyzers">
-    <Rule Id="CA2153" Action="None" /> <!-- TODO do not catch CorruptedStateExceptions -->
+    <Rule Id="CA2153" Action="Error" /> <!--Do not catch CorruptedStateExceptions -->
     <Rule Id="CA2235" Action="Error" />
     <Rule Id="CA3075" Action="Error" />
   </Rules>
