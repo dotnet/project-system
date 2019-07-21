@@ -23,7 +23,7 @@
            Condition="!Exists('$(XUnitExe)') Or !Exists('$(TargetPath)')"
            />
 
-    <Message Text="Running tests for $(MSBuildProjectFile) [$(Configuration)]"
+    <Message Text="Running tests for $(MSBuildProjectFile) [$(Configuration)]..."
              Importance="high"
              />
 
@@ -38,6 +38,11 @@
               />
 
     </Exec>
+
+    <Message Text="Succeeded running tests for $(MSBuildProjectFile) [$(Configuration)]."
+             Condition="$(ExitCode) == 0"
+             Importance="High"
+             />
 
     <!-- Exec.LogStandardErrorAsError does not fail the build, we need to output explicit error to do that. -->
     <Error Text="There were test failures, see $(HtmlTestResultsFile) for full results."
