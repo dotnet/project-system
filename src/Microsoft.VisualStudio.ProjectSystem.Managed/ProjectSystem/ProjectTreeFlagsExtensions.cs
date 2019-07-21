@@ -40,15 +40,5 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             return flags.HasFlag(ProjectTreeFlags.Common.Folder);
         }
-
-        /// <summary>
-        ///     Returns a value indicating whether the specified flags exist.
-        /// </summary>
-        public static bool Contains(this ProjectTreeFlags source, ProjectTreeFlags flags)
-        {
-            ProjectTreeFlags newFlags = source.Except(flags);
-
-            return (source.Count - newFlags.Count) == flags.Count;
-        }
     }
 }
