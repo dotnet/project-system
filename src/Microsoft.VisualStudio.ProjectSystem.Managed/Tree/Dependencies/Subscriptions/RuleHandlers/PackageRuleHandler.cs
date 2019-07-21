@@ -30,14 +30,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 unresolvedExpandedIcon: ManagedImageMonikers.NuGetGreyWarning),
             DependencyTreeFlags.NuGetSubTreeRootNode);
 
+        private readonly ITargetFrameworkProvider _targetFrameworkProvider;
+
         [ImportingConstructor]
         public PackageRuleHandler(ITargetFrameworkProvider targetFrameworkProvider)
             : base(PackageReference.SchemaName, ResolvedPackageReference.SchemaName)
         {
-            TargetFrameworkProvider = targetFrameworkProvider;
+            _targetFrameworkProvider = targetFrameworkProvider;
         }
-
-        private ITargetFrameworkProvider TargetFrameworkProvider { get; }
 
         public override string ProviderType => ProviderTypeString;
 
@@ -93,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     properties: projectChange.Before.GetProjectItemProperties(removedItem) ?? ImmutableDictionary<string, string>.Empty,
                     unresolvedChanges,
                     targetFramework,
-                    TargetFrameworkProvider,
+                    _targetFrameworkProvider,
                     out PackageDependencyMetadata metadata))
                 {
                     changesBuilder.Removed(targetFramework, ProviderTypeString, metadata.OriginalItemSpec);
@@ -108,7 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     properties: projectChange.After.GetProjectItemProperties(changedItem) ?? ImmutableDictionary<string, string>.Empty,
                     unresolvedChanges,
                     targetFramework,
-                    TargetFrameworkProvider,
+                    _targetFrameworkProvider,
                     out PackageDependencyMetadata metadata))
                 {
                     changesBuilder.Removed(targetFramework, ProviderTypeString, metadata.OriginalItemSpec);
@@ -124,7 +124,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     properties: projectChange.After.GetProjectItemProperties(addedItem) ?? ImmutableDictionary<string, string>.Empty,
                     unresolvedChanges,
                     targetFramework,
-                    TargetFrameworkProvider,
+                    _targetFrameworkProvider,
                     out PackageDependencyMetadata metadata))
                 {
                     changesBuilder.Added(targetFramework, metadata.CreateDependencyModel());
