@@ -27,6 +27,8 @@
              Importance="high"
              />
 
+    <MakeDir Directories="$(TestResultsDirectory)" />
+
     <!-- xUnit writes to STDERR (test name) and STDOUT (error message, stack). STDERR gets logged as an error.  -->
     <Exec Command='"$(XUnitExe)" "$(TargetPath)" -quiet -nologo -noshadow -parallel all -xml "$(XmlTestResultsFile)" -html "$(HtmlTestResultsFile)"'
           LogStandardErrorAsError="true"
