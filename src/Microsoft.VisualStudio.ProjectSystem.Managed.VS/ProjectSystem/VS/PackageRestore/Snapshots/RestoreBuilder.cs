@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         /// <summary>
         ///     Converts an immutable dictionary of rule snapshot data into an <see cref="IVsProjectRestoreInfo"/> instance.
         /// </summary>
-        public static IVsProjectRestoreInfo2 ToProjectRestoreInfo(IImmutableDictionary<string, IProjectRuleSnapshot> update)
+        public static ProjectRestoreInfo ToProjectRestoreInfo(IImmutableDictionary<string, IProjectRuleSnapshot> update)
         {
             IImmutableDictionary<string, string> properties = update.GetSnapshotOrEmpty(NuGetRestore.SchemaName).Properties;
             IProjectRuleSnapshot frameworkReferences = update.GetSnapshotOrEmpty(CollectedFrameworkReference.SchemaName);
@@ -41,6 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
             return new ProjectRestoreInfo(
                 properties.GetPropertyOrEmpty(NuGetRestore.MSBuildProjectExtensionsPathProperty),
+                properties.GetPropertyOrEmpty(NuGetRestore.ProjectAssetsFileProperty),
                 properties.GetPropertyOrEmpty(NuGetRestore.TargetFrameworksProperty),
                 new TargetFrameworks(new[] { frameworkInfo }),
                 ToReferenceItems(toolReferences.Items));

@@ -1,17 +1,18 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
 
 using NuGet.SolutionRestoreManager;
 
 using Xunit;
 
-using static Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.PackageRestoreInitiator;
+using static Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.PackageRestoreService;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
-    public class PackageRestoreInitiatorInstanceTests
+    public class PackageRestoreServiceInstanceTests
     {
         [Fact]
         public async Task Dispose_WhenNotInitialized_DoesNotThrow()
@@ -34,23 +35,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         }
 
         [Fact]
-        public async Task OnRestoreInfoChangedAsync_PushesRestoreInfoToRestoreService()
+        public async Task OnInputsChangedAsync_PushesRestoreInfoToRestoreService()
         {
             IVsProjectRestoreInfo2? result = null;
             var solutionRestoreService = IVsSolutionRestoreServiceFactory.ImplementNominateProjectAsync((projectFile, info, cancellationToken) => { result = info; });
 
             var instance = await CreateInitializedInstance(solutionRestoreService: solutionRestoreService);
 
-            var restoreInfo = IVsProjectRestoreInfo2Factory.Create();
+            var restoreInfo = ProjectRestoreInfoFactory.Create();
             var value = IProjectVersionedValueFactory.Create(new PackageRestoreUnconfiguredInput(restoreInfo, new PackageRestoreConfiguredInput[0]));
 
-            await instance.OnRestoreInfoChangedAsync(value);
+            await instance.OnInputsChangedAsync(value);
 
             Assert.Same(restoreInfo, result);
         }
 
         [Fact]
-        public async Task OnRestoreInfoChangedAsync_NullAsRestoreInfo_DoesNotPushToRestoreService()
+        public async Task OnInputsChangedAsync_NullAsRestoreInfo_DoesNotPushToRestoreService()
         {
             int callCount = 0;
             var solutionRestoreService = IVsSolutionRestoreServiceFactory.ImplementNominateProjectAsync((projectFile, info, cancellationToken) => { callCount++; });
@@ -59,28 +60,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
             var value = IProjectVersionedValueFactory.Create(new PackageRestoreUnconfiguredInput(null, new PackageRestoreConfiguredInput[0]));
 
-            await instance.OnRestoreInfoChangedAsync(value);
+            await instance.OnInputsChangedAsync(value);
 
             Assert.Equal(0, callCount);
         }
 
         [Fact]
-        public async Task OnRestoreInfoChangedAsync_UnchangedValueAsValue_DoesNotPushToRestoreService()
+        public async Task OnInputsChangedAsync_UnchangedValueAsValue_DoesNotPushToRestoreService()
         {
             int callCount = 0;
             var solutionRestoreService = IVsSolutionRestoreServiceFactory.ImplementNominateProjectAsync((projectFile, info, cancellationToken) => { callCount++; });
 
             var instance = await CreateInitializedInstance(solutionRestoreService: solutionRestoreService);
 
-            var restoreInfo = IVsProjectRestoreInfo2Factory.Create();
+            var restoreInfo = ProjectRestoreInfoFactory.Create();
             var value = IProjectVersionedValueFactory.Create(new PackageRestoreUnconfiguredInput(restoreInfo, new PackageRestoreConfiguredInput[0]));
 
-            await instance.OnRestoreInfoChangedAsync(value);
+            await instance.OnInputsChangedAsync(value);
 
             Assert.Equal(1, callCount); // Should have only been called once
         }
 
-        private async Task<PackageRestoreInitiatorInstance> CreateInitializedInstance(UnconfiguredProject? project = null, IPackageRestoreUnconfiguredInputDataSource? dataSource = null, IVsSolutionRestoreService3? solutionRestoreService = null)
+        private async Task<PackageRestoreServiceInstance> CreateInitializedInstance(UnconfiguredProject? project = null, IPackageRestoreUnconfiguredInputDataSource? dataSource = null, IVsSolutionRestoreService3? solutionRestoreService = null)
         {
             var instance = CreateInstance(project, dataSource, solutionRestoreService);
 
@@ -89,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             return instance;
         }
 
-        private PackageRestoreInitiatorInstance CreateInstance(UnconfiguredProject? project = null, IPackageRestoreUnconfiguredInputDataSource? dataSource = null, IVsSolutionRestoreService3? solutionRestoreService = null)
+        private PackageRestoreServiceInstance CreateInstance(UnconfiguredProject? project = null, IPackageRestoreUnconfiguredInputDataSource? dataSource = null, IVsSolutionRestoreService3? solutionRestoreService = null)
         {
             project ??= UnconfiguredProjectFactory.Create();
             dataSource ??= IPackageRestoreUnconfiguredInputDataSourceFactory.Create();
@@ -97,8 +98,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             IProjectAsynchronousTasksService projectAsynchronousTasksService = IProjectAsynchronousTasksServiceFactory.Create();
             solutionRestoreService ??= IVsSolutionRestoreServiceFactory.Create();
             IProjectLogger logger = IProjectLoggerFactory.Create();
+            IFileSystem fileSystem = IFileSystemFactory.Create();
+            var broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<RestoreData>>();
 
-            return new PackageRestoreInitiatorInstance(project, dataSource, threadingService, projectAsynchronousTasksService, solutionRestoreService, logger);
+            return new PackageRestoreServiceInstance(
+                project, 
+                dataSource, 
+                threadingService, 
+                projectAsynchronousTasksService, 
+                solutionRestoreService, 
+                fileSystem, 
+                logger, 
+                broadcastBlock);
         }
     }
 }

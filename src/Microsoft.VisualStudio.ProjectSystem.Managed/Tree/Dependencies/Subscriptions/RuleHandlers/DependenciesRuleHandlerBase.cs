@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 _designTimeBuildRuleNames;
         }
 
-        public abstract ImageMoniker GetImplicitIcon();
+        public abstract ImageMoniker ImplicitIcon { get; }
 
         public virtual void Handle(
             IImmutableDictionary<string, IProjectChangeDescription> changesByRuleName,
@@ -147,7 +147,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         public abstract IDependencyModel CreateRootDependencyNode();
 
-        public event EventHandler<DependenciesChangedEventArgs> DependenciesChanged;
+        public event EventHandler<DependenciesChangedEventArgs>? DependenciesChanged;
 
         protected void FireDependenciesChanged(DependenciesChangedEventArgs args)
         {

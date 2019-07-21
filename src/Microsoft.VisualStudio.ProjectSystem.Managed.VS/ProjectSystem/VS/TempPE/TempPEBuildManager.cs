@@ -13,7 +13,6 @@ using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
-using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Automation;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Threading;
@@ -402,19 +401,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             return ProjectDataSources.SyncLinkTo(
                 _projectSubscriptionService.SourceItemsRuleSource.SourceBlock.SyncLinkOptions(
-                    linkOptions: new StandardRuleDataflowLinkOptions
-                    {
-                        RuleNames = Empty.OrdinalIgnoreCaseStringSet.Add(Compile.SchemaName),
-                        PropagateCompletion = true,
-                    }),
+                    linkOptions: DataflowOption.WithRuleNames(Compile.SchemaName)),
                 _projectSubscriptionService.ProjectRuleSource.SourceBlock.SyncLinkOptions(
-                   linkOptions: new StandardRuleDataflowLinkOptions
-                   {
-                       RuleNames = Empty.OrdinalIgnoreCaseStringSet.Add(ConfigurationGeneral.SchemaName),
-                       PropagateCompletion = true,
-                   }),
+                    linkOptions: DataflowOption.WithRuleNames(ConfigurationGeneral.SchemaName)),
+
                 targetBlock,
-                new DataflowLinkOptions { PropagateCompletion = true },
+                DataflowOption.PropagateCompletion,
                 cancellationToken: ProjectAsynchronousTasksService.UnloadCancellationToken);
         }
 

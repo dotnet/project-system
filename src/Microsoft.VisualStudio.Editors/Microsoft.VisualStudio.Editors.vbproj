@@ -21,9 +21,6 @@
     <ProjectReference Include="..\Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.vbproj" />
   </ItemGroup>
   <ItemGroup>
-    <RCResourceFile Include="native.rc" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Update="AddImportsDialogs\AddImports.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -578,8 +575,6 @@
     <None Include="Docs\ProjectDesigner Control Flow.doc" />
     <None Include="MyExtensibility\MyExtensibilityClassDiagram.cd" />
     <None Include="PropPages\AdvBuildSettingsPropPage.ComboItem.vb" />
-    <None Include="Resources\Native\ResX.ico" />
-    <None Include="Resources\Native\Settings.ico" />
     <None Include="Microsoft.VisualStudio.Editors.pkgdef">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -592,6 +587,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="**\*.xlf" />
+  </ItemGroup>
+  <ItemGroup>
+    <VSCTCompile Include="Menus.vsct">
+      <ResourceName>Menus.ctmenu</ResourceName>
+      <SubType>Designer</SubType>
+    </VSCTCompile>
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="PublicAPI.Shipped.txt" />

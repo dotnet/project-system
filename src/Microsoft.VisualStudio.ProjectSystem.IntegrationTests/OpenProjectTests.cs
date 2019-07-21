@@ -2,7 +2,6 @@
 
 using System;
 using System.Linq;
-using System.Threading;
 
 using Microsoft.Test.Apex.VisualStudio.Solution;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -17,47 +16,47 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [TestMethod]
         public void CreateProject_CreateAndBuild()
         {
+            var solution = VisualStudio.ObjectModel.Solution;
+
             ProjectTestExtension consoleProject = default;
             using (Scope.Enter("Create Project"))
             {
-                consoleProject = VisualStudio.ObjectModel.Solution.CreateProject(ProjectLanguage.CSharp, ProjectTemplate.NetCoreConsoleApp);
+                consoleProject = solution.CreateProject(ProjectLanguage.CSharp, ProjectTemplate.NetCoreConsoleApp);
             }
 
             using (Scope.Enter("Verify Create Project"))
             {
-                VisualStudio.ObjectModel.Solution.Verify.HasProject();
+                solution.Verify.HasProject();
             }
 
-            using (Scope.Enter("Wait for restore"))
+            using (Scope.Enter("Wait for IntelliSense"))
             {
-                Thread.Sleep(2 * 1000);
-                var nuget = VisualStudio.Get<NuGetApexTestService>();
-                nuget.WaitForAutoRestore();
+                solution.WaitForIntellisenseStage();
             }
 
             using (Scope.Enter("Verify dependency nodes"))
             {
-                var dependencies = VisualStudio.ObjectModel.Solution.SolutionExplorer.FindItemRecursive("Dependencies", expandToFind: true);
+                var dependencies = solution.SolutionExplorer.FindItemRecursive("Dependencies", expandToFind: true);
                 dependencies.Select();
                 dependencies.ExpandAll();
                 Assert.AreEqual("Dependencies", dependencies.Name);
-                var sdk = dependencies.Items.FirstOrDefault();
-                Assert.IsNotNull(sdk);
-                Assert.AreEqual("SDK", sdk.Name);
+                var frameworks = dependencies.Items.FirstOrDefault();
+                Assert.IsNotNull(frameworks);
+                Assert.AreEqual("Frameworks", frameworks.Name);
             }
 
             using (Scope.Enter("Build Project"))
             {
-                VisualStudio.ObjectModel.Solution.BuildManager.Build();
-                VisualStudio.ObjectModel.Solution.BuildManager.WaitForBuildFinished();
-                var success = VisualStudio.ObjectModel.Solution.BuildManager.Verify.HasFinished();
+                solution.BuildManager.Build();
+                solution.BuildManager.WaitForBuildFinished();
+                var success = solution.BuildManager.Verify.HasFinished();
                 Assert.IsTrue(success, $"project '{consoleProject.FileName}' failed to finish building.");
             }
 
             using (Scope.Enter("Verify Build Succeeded"))
             {
-                var success = VisualStudio.ObjectModel.Solution.BuildManager.Verify.ProjectBuilt(consoleProject);
-                success &= VisualStudio.ObjectModel.Solution.BuildManager.Verify.Succeeded();
+                var success = solution.BuildManager.Verify.ProjectBuilt(consoleProject);
+                success &= solution.BuildManager.Verify.Succeeded();
                 string[] errors = new string[] { };
                 if (!success)
                 {
