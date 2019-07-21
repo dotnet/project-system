@@ -18,12 +18,16 @@
   </PropertyGroup>
 
   <!-- To make RoslynTools.RepoToolset happy -->
-  <Target Name="IntegrationTest"
-          Condition="$(IsIntegrationTestProject) == 'true'" />
+  <Target 
+    Name="IntegrationTest"
+    Condition="$(IsIntegrationTestProject) == 'true'" 
+    />
   
-  <Target Name="Test" 
-          Condition="$(IsIntegrationTestProject) == 'true' AND '$(IntegrationTest)' == 'true'"
-          DependsOnTargets="GenerateRunSettings;ExecuteTests" />
+  <Target 
+    Name="Test" 
+    Condition="$(IsIntegrationTestProject) == 'true' AND '$(IntegrationTest)' == 'true'"
+    DependsOnTargets="GenerateRunSettings;ExecuteTests" 
+    />
 
   <PropertyGroup>
     <TestResultsDirectory>$(ArtifactsTestResultsDir)</TestResultsDirectory>
@@ -52,10 +56,11 @@
       </RunSettingsContents>
     </PropertyGroup>
 
-    <WriteLinesToFile
+    <WriteLinesToFile 
       File="$(RunSettingsFilePath)"
       Lines="$(RunSettingsContents)"
-      Overwrite="true" />
+      Overwrite="true" 
+      />
 
   </Target>
 
@@ -72,14 +77,16 @@
 
     <MakeDir Directories="$(TestResultsDirectory)" />
 
-    <Error Text="The project must built before running tests"
-           File="$(MSBuildProjectFile)"
-           Condition="!Exists('$(TargetPath)')"
-           />
+    <Error 
+      Text="The project must built before running tests"
+      File="$(MSBuildProjectFile)"
+      Condition="!Exists('$(TargetPath)')"
+      />
 
-    <Message Text="Running integration tests for $(MSBuildProjectFile) [$(Configuration)] (this might take a while)..."
-             Importance="High"
-             />
+    <Message 
+      Text="Running integration tests for $(MSBuildProjectFile) [$(Configuration)] (this might take a while)..."
+      Importance="High"
+      />
 
     <Exec 
       Command='vstest.console.exe /Blame /ResultsDirectory:"$(TestResultsDirectory)\" /Settings:"$(RunSettingsFilePath)" /Logger:trx;LogFileName=$(TestAssemblyLogFileName) "$(TargetPath)"'
@@ -88,15 +95,21 @@
       IgnoreStandardErrorWarningFormat="true"
       StandardErrorImportance="Low"
       StandardOutputImportance="Low"
-      IgnoreExitCode="true">
+      IgnoreExitCode="true"
+      >
       
-      <Output TaskParameter="ExitCode" PropertyName="ExitCode" />
+      <Output 
+        TaskParameter="ExitCode" 
+        PropertyName="ExitCode"
+        />
+      
     </Exec>
 
-    <Message Text="Succeeded running integration tests for $(MSBuildProjectFile) [$(Configuration)]."
-             Condition="$(ExitCode) == 0"
-             Importance="High"
-             />
+    <Message 
+      Text="Succeeded running integration tests for $(MSBuildProjectFile) [$(Configuration)]."
+      Condition="$(ExitCode) == 0"
+      Importance="High"
+      />
     
     <Error 
       Text="There were integration test failures, see $(TestResultsDirectory)$(TestAssemblyLogFileName) for full results." 
