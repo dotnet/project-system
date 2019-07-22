@@ -70,7 +70,7 @@
       />
 
     <Message 
-      Text="Running integration tests for $(MSBuildProjectFile) [$(Configuration)] (this might take a while)..."
+      Text="$(MSBuildProjectName) -> Running tests (this might take a while)..."
       Importance="High"
       />
 
@@ -92,13 +92,13 @@
     </Exec>
 
     <Message 
-      Text="Succeeded running integration tests for $(MSBuildProjectFile) [$(Configuration)]."
+      Text="$(MSBuildProjectName) -> Tests succeeded"
       Condition="$(ExitCode) == 0"
       Importance="High"
       />
     
-    <Error 
-      Text="There were integration test failures, see $(TestResultsDirectory)$(TestAssemblyLogFileName) for full results." 
+    <Error
+      Text="Tests failed, see $(TestResultsDirectory)$(TestAssemblyLogFileName) for full results."
       Condition="$(ExitCode) != 0" 
       File="Apex"
       />
