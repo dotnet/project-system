@@ -30,9 +30,9 @@
     <PackageReference Update="Microsoft.Net.Compilers"                                                Version="3.3.0-beta2-19357-02" />
     <PackageReference Update="OpenCover"                                                              Version="$(OpenCoverVersion)" />
     <PackageReference Update="Codecov"                                                                Version="$(CodecovVersion)" />
-    <PackageReference Update="MicroBuild.Core"                                                        Version="$(MicroBuildCoreVersion)" />
+    <PackageReference Update="MicroBuild.Core"                                                        Version="0.2.0" />
     <PackageReference Update="MicroBuild.Core.Sentinel"                                               Version="1.0.0" />
-    <PackageReference Update="MicroBuild.Plugins.SwixBuild"                                           Version="$(MicroBuildPluginsSwixBuildVersion)" />
+    <PackageReference Update="MicroBuild.Plugins.SwixBuild"                                           Version="1.0.422" />
 
     <!-- VS SDK -->
     <PackageReference Update="Microsoft.VSSDK.BuildTools"                                             Version="15.8.3252" />
