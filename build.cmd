@@ -12,7 +12,6 @@ set OptDeploy=$true
 set OptTest=$true
 set OptIntegrationTest=$false
 set OptLog=$false
-set OptPack=$true
 
 :ParseArguments
 if    "%1" == "" goto :DoneParsing
@@ -22,7 +21,6 @@ if /I "%1" == "/rebuild"             set OptBuild=$false && set OptRebuild=$true
 if /I "%1" == "/debug"               set BuildConfiguration=Debug                                                            && shift && goto :ParseArguments
 if /I "%1" == "/release"             set BuildConfiguration=Release                                                          && shift && goto :ParseArguments
 if /I "%1" == "/skiptests"           set OptTest=$false                                                                      && shift && goto :ParseArguments
-if /I "%1" == "/restore-only"        set OptBuild=$false && set OptDeploy=$false && set OptTest=$false && set OptPack=$false && shift && goto :ParseArguments
 if /I "%1" == "/no-deploy-extension" set OptDeploy=$false                                                                    && shift && goto :ParseArguments
 if /I "%1" == "/diagnostic"          set OptLog=$true                                                                        && shift && goto :ParseArguments
 if /I "%1" == "/integrationtests"    set OptIntegrationTest=$true                                                            && shift && goto :ParseArguments
@@ -30,7 +28,7 @@ if /I "%1" == "/rootsuffix"          set PropRootSuffix=/p:RootSuffix=%2        
 call :Usage && exit /b 1
 :DoneParsing
 
-powershell -ExecutionPolicy ByPass -Command "& """%Root%build\Build.ps1""" -configuration %BuildConfiguration% -restore -pack:%OptPack% -build:%OptBuild% -rebuild:%OptRebuild% -deploy:%OptDeploy% -test:%OptTest% -integrationTest:%OptIntegrationTest% -log:%OptLog% %PropRootSuffix%"
+powershell -ExecutionPolicy ByPass -Command "& """%Root%build\Build.ps1""" -configuration %BuildConfiguration% -restore -pack:$true -build:%OptBuild% -rebuild:%OptRebuild% -deploy:%OptDeploy% -test:%OptTest% -integrationTest:%OptIntegrationTest% -log:%OptLog% %PropRootSuffix%"
 exit /b %ERRORLEVEL%
 
 :Usage
@@ -45,7 +43,6 @@ echo     /debug                  Perform debug build (default)
 echo     /release                Perform release build
 echo.
 echo   Build options:
-echo     /restore-only           Restore dependencies only
 echo     /skiptests              Does not run unit tests
 echo     /diagnostic             Turns on logging to a binlog
 echo     /rootsuffix             Visual Studio hive to deploy VSIX extensions to (default is Exp)
