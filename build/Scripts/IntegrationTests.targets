@@ -1,28 +1,24 @@
 <Project>
-
-  <!-- Assumptions: We've already built and the VSIX is deployed 
-       Inputs: $(VSSDKTargetPlatformRegRootSuffix) - I think we should consider a random RootSuffix (this might not be great on local machine)
-               $(RunningUnderCI)
-  	           $(VisualStudioXamlRulesDir)
-  -->
+  <!-- 
+   
+   Runs APEX integration tests for a project via vstest.console.exe
   
-  <!-- Runs integration tests for a project via vstest.console.exe -->
+   Inputs:
   
-  <PropertyGroup>
-    <!-- Opt out of RoslynTools.RepoToolset's xUnit integration -->
-    <UsingToolXUnit>false</UsingToolXUnit>
-  </PropertyGroup>
+    $(VSSDKTargetPlatformRegRootSuffix):  The root suffix of the hive to open.
+    $(VisualStudioXamlRulesDir):          The build output location containing the XAML rules.
+    $(ArtifactsTestResultsDir):           The build output location where test results are output.
+  -->       
   
-  <Target Name="Test" 
-          Condition="$(IsIntegrationTestProject) == 'true'"
-          DependsOnTargets="GenerateRunSettings;RunIntegrationTest" />
+  <Target 
+    Name="IntegrationTest" 
+    DependsOnTargets="GenerateRunSettings;ExecuteTests" 
+    />
 
   <PropertyGroup>
     <TestResultsDirectory>$(ArtifactsTestResultsDir)</TestResultsDirectory>
     <RunSettingsFilePath>$(IntermediateOutputPath)$(TargetName)$(TargetExt).runsettings</RunSettingsFilePath>
   </PropertyGroup>
-
-  <!-- 1. Initialize VS (reset settings, etc) -->
 
   <Target Name="GenerateRunSettings">
 
@@ -46,16 +42,15 @@
       </RunSettingsContents>
     </PropertyGroup>
 
-    <WriteLinesToFile
+    <WriteLinesToFile 
       File="$(RunSettingsFilePath)"
       Lines="$(RunSettingsContents)"
-      Overwrite="true" />
+      Overwrite="true" 
+      />
 
   </Target>
 
-  <!-- 4. Disable Windows Error Reporting -->
-
-  <Target Name="RunIntegrationTest">
+  <Target Name="ExecuteTests">
 
     <PropertyGroup>
       <TestAssemblyLogFileName>$(TargetName)$(TargetExt).trx</TestAssemblyLogFileName>
@@ -66,17 +61,18 @@
       </VSTestExeEnvironment>
     </PropertyGroup>
 
-    <MakeDir 
-      Directories="$(TestResultsDirectory)" />
+    <MakeDir Directories="$(TestResultsDirectory)" />
 
-    <Error Text="The project must built before running tests"
-           File="$(MSBuildProjectFile)"
-           Condition="!Exists('$(TargetPath)')"
-           />
+    <Error 
+      Text="The project must built before running tests"
+      File="$(MSBuildProjectFile)"
+      Condition="!Exists('$(TargetPath)')"
+      />
 
-    <Message Text="Running integration tests for $(MSBuildProjectFile) [$(Configuration)]"
-            Importance="high"
-             />
+    <Message 
+      Text="$(MSBuildProjectName) -> Running tests (this might take a while)..."
+      Importance="High"
+      />
 
     <Exec 
       Command='vstest.console.exe /Blame /ResultsDirectory:"$(TestResultsDirectory)\" /Settings:"$(RunSettingsFilePath)" /Logger:trx;LogFileName=$(TestAssemblyLogFileName) "$(TargetPath)"'
@@ -85,21 +81,28 @@
       IgnoreStandardErrorWarningFormat="true"
       StandardErrorImportance="Low"
       StandardOutputImportance="Low"
-      IgnoreExitCode="true">
+      IgnoreExitCode="true"
+      >
       
-      <Output TaskParameter="ExitCode" PropertyName="ExitCode" />
+      <Output 
+        TaskParameter="ExitCode" 
+        PropertyName="ExitCode"
+        />
+      
     </Exec>
 
-    <Error 
-      Text="There were integration test failures, see $(TestResultsDirectory)$(TestAssemblyLogFileName) for full results." 
+    <Message 
+      Text="$(MSBuildProjectName) -> Tests succeeded"
+      Condition="$(ExitCode) == 0"
+      Importance="High"
+      />
+    
+    <Error
+      Text="Tests failed, see $(TestResultsDirectory)$(TestAssemblyLogFileName) for full results."
       Condition="$(ExitCode) != 0" 
       File="Apex"
       />
 
   </Target>
-
-  <!-- 6. Kill VS (can we get PID's that we launched?) -->
-
-  <!-- 7. Reenable Windows Error Reporting -->
 
 </Project>
