@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.Windows.Forms
 
@@ -118,33 +118,34 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Function LaunchEventBuilder(Parent As BuildEventsPropPage, valueHelper As GetTokenValueFunc, WindowTitleText As String, ByRef CommandLine As String) As Boolean
 
-            Dim frm As New BuildEventCommandLineDialog
-            Dim Values() As String = Nothing
+            Using frm As New BuildEventCommandLineDialog
+                Dim Values() As String = Nothing
 
-            '// Initialize the title text
-            frm.SetFormTitleText(WindowTitleText)
-
-
-            '// Initialize the command line
-            frm.EventCommandLine = CommandLine
-
-            '// Set the page property
-            frm.Page = Parent
-
-            '// Set the Dte object for cmdline dialog
-            ' VSWhidbey 163859 - help not able to retrieve DTE handle
-            frm.DTE = Parent.DTE
-
-            '// Initialize the token values
-
-            GetTokenValues(Values, valueHelper)
-            frm.SetTokensAndValues(s_tokenNames, Values)
+                '// Initialize the title text
+                frm.SetFormTitleText(WindowTitleText)
 
 
-            '// Show the form
-            If (frm.ShowDialog(ServiceProvider) = System.Windows.Forms.DialogResult.OK) Then
-                CommandLine = frm.EventCommandLine
-            End If
+                '// Initialize the command line
+                frm.EventCommandLine = CommandLine
+
+                '// Set the page property
+                frm.Page = Parent
+
+                '// Set the Dte object for cmdline dialog
+                ' VSWhidbey 163859 - help not able to retrieve DTE handle
+                frm.DTE = Parent.DTE
+
+                '// Initialize the token values
+
+                GetTokenValues(Values, valueHelper)
+                frm.SetTokensAndValues(s_tokenNames, Values)
+
+
+                '// Show the form
+                If (frm.ShowDialog(ServiceProvider) = System.Windows.Forms.DialogResult.OK) Then
+                    CommandLine = frm.EventCommandLine
+                End If
+            End Using
 
             Return True
         End Function
