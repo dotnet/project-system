@@ -11,6 +11,7 @@
     <UsingToolVSSDK>true</UsingToolVSSDK>
     <UsingToolIbcOptimization>true</UsingToolIbcOptimization>
     <UsingToolXUnit>false</UsingToolXUnit>
+    <UsingToolMicrosoftNetCompilers>false</UsingToolMicrosoftNetCompilers>
 
     <!-- Toolset -->
     <RoslynToolsRepoToolsetVersion>1.0.0-beta-62705-01</RoslynToolsRepoToolsetVersion>
