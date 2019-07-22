@@ -25,14 +25,13 @@ if /I "%1" == "/test"                 set OptTest=$true                         
 if /I "%1" == "/no-test"              set OptTest=$false                           && shift && goto :ParseArguments
 if /I "%1" == "/integration"          set OptIntegrationTest=$true                 && shift && goto :ParseArguments
 if /I "%1" == "/no-integration"       set OptIntegrationTest=$false                && shift && goto :ParseArguments
-if /I "%1" == "/debug"                set BuildConfiguration=Debug                 && shift && goto :ParseArguments
-if /I "%1" == "/release"              set BuildConfiguration=Release               && shift && goto :ParseArguments
 if /I "%1" == "/deploy-extension"     set OptDeploy=$true                          && shift && goto :ParseArguments
 if /I "%1" == "/no-deploy-extension"  set OptDeploy=$false                         && shift && goto :ParseArguments
 if /I "%1" == "/diagnostic"           set OptLog=$true                             && shift && goto :ParseArguments
 if /I "%1" == "/sign"                 set OptSign=$true                            && shift && goto :ParseArguments
 if /I "%1" == "/ci"                   set OptCI=$true && set PrepareMachine=$true  && shift && goto :ParseArguments
 if /I "%1" == "/rootsuffix"           set PropRootSuffix=/p:RootSuffix=%2          && shift && shift && goto :ParseArguments
+if /I "%1" == "/configuration"        set BuildConfiguration=%2                    && shift && shift && goto :ParseArguments
 
 call :Usage && exit /b 1
 
@@ -53,14 +52,11 @@ echo   Test targets:
 echo     /[no-]test                Run (default) or skip unit tests
 echo     /[no-]integration         Run or skip (default) integration tests
 echo.
-echo   Configurations:
-echo     /debug                    Perform debug build (default)
-echo     /release                  Perform release build
-echo.
 echo   Build options:
 echo     /diagnostic               Turns on logging to a binlog
 echo     /rootsuffix ^<hive^>        Hive to use when deploying Visual Studio extensions (default is 'Exp')
 echo     /[no-]deploy-extension    Deploy (default) or skip deploying Visual Studio extensions
+echo     /configuration ^<config^>   Use Debug (default) or Release build configuration
 echo     /sign                     Sign build outputs
 echo     /ci                       Configures a continuous integration build
 goto :eof
