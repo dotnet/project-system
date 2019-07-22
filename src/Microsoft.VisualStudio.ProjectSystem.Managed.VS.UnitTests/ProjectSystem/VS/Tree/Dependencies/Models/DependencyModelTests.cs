@@ -11,7 +11,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
-    public class DependencyModelTests
+    public sealed class DependencyModelTests
     {
         private class TestableDependencyModel : DependencyModel
         {
@@ -116,40 +116,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.True(model.Resolved);
             Assert.True(model.Implicit);
             Assert.Single(model.Properties);
-        }
-
-        [Fact]
-        public void EqualsAndGetHashCode()
-        {
-            var model1 = new TestableDependencyModel(
-                path: "somePath",
-                originalItemSpec: "SomeItemSpec1",
-                flags: ProjectTreeFlags.HiddenProjectItem,
-                resolved: true,
-                isImplicit: true,
-                properties: ImmutableStringDictionary<string>.EmptyOrdinal.Add("someProp1", "someVal1"));
-
-            var model2 = new TestableDependencyModel(
-                path: "somePath",
-                originalItemSpec: "SomeItemSpec1",
-                flags: ProjectTreeFlags.HiddenProjectItem,
-                resolved: true,
-                isImplicit: true,
-                properties: ImmutableStringDictionary<string>.EmptyOrdinal.Add("someProp1", "someVal1"));
-
-            var model3 = new TestableDependencyModel(
-                path: "somePath",
-                originalItemSpec: "SomeItemSpec2",
-                flags: ProjectTreeFlags.HiddenProjectItem,
-                resolved: true,
-                isImplicit: true,
-                properties: ImmutableStringDictionary<string>.EmptyOrdinal.Add("someProp1", "someVal1"));
-
-            Assert.Equal(model1, model2);
-            Assert.NotEqual(model1, model3);
-
-            Assert.Equal(model1.GetHashCode(), model2.GetHashCode());
-            Assert.NotEqual(model1.GetHashCode(), model3.GetHashCode());
         }
 
         [Fact]
