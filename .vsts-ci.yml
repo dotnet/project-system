@@ -1,3 +1,5 @@
+# Responsible for producing the signed product build for insertion into the Visual Studio repository
+
 resources:
 - repo: self
   clean: true
