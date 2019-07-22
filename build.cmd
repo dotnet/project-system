@@ -14,6 +14,7 @@ set OptIntegrationTest=$false
 set OptLog=$false
 set OptCI=$false
 set OptPrepareMachine=$false
+set OptSign=$false
 
 :ParseArguments
 if    "%1" == "" goto :DoneParsing
@@ -29,6 +30,7 @@ if /I "%1" == "/release"              set BuildConfiguration=Release            
 if /I "%1" == "/deploy-extension"     set OptDeploy=$true                          && shift && goto :ParseArguments
 if /I "%1" == "/no-deploy-extension"  set OptDeploy=$false                         && shift && goto :ParseArguments
 if /I "%1" == "/diagnostic"           set OptLog=$true                             && shift && goto :ParseArguments
+if /I "%1" == "/sign"                 set OptSign=$true                            && shift && goto :ParseArguments
 if /I "%1" == "/ci"                   set OptCI=$true && set PrepareMachine=$true  && shift && goto :ParseArguments
 if /I "%1" == "/rootsuffix"           set PropRootSuffix=/p:RootSuffix=%2          && shift && shift && goto :ParseArguments
 
@@ -36,7 +38,7 @@ call :Usage && exit /b 1
 
 :DoneParsing
 
-powershell -ExecutionPolicy ByPass -Command "& """%Root%build\Build.ps1""" -configuration %BuildConfiguration% -restore -pack:$true -build:%OptBuild% -rebuild:%OptRebuild% -deploy:%OptDeploy% -test:%OptTest% -integrationTest:%OptIntegrationTest% -log:%OptLog% %PropRootSuffix% -ci:%OptCI% -prepareMachine:%OptPrepareMachine%"
+powershell -ExecutionPolicy ByPass -Command "& """%Root%build\Build.ps1""" -configuration %BuildConfiguration% -restore -pack:$true -build:%OptBuild% -rebuild:%OptRebuild% -deploy:%OptDeploy% -test:%OptTest% -integrationTest:%OptIntegrationTest% -log:%OptLog% %PropRootSuffix% -ci:%OptCI% -prepareMachine:%OptPrepareMachine% -sign:%OptSign%"
 
 exit /b %ERRORLEVEL%
 
@@ -59,5 +61,6 @@ echo   Build options:
 echo     /diagnostic               Turns on logging to a binlog
 echo     /rootsuffix ^<hive^>        Hive to use when deploying Visual Studio extensions (default is 'Exp')
 echo     /[no-]deploy-extension    Deploy (default) or skip deploying Visual Studio extensions
+echo     /sign                     Sign build outputs
 echo     /ci                       Configures a continuous integration build
 goto :eof
