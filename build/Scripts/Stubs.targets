@@ -1,6 +1,6 @@
 <Project>
 
-  <!-- Stub targets for non-test projects which RoslynTools.RepoToolset which automatically calls 
+  <!-- Stub targets for non-test projects which RoslynTools.RepoToolset automatically calls 
        when $(Test) and $(IntegrationTest) is set. These are overridden by test projects.
   -->
   <Target Name="Test" />
