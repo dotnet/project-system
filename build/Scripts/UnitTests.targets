@@ -2,15 +2,7 @@
 
   <!-- Runs unit tests for a project via xUnit -->
 
-  <PropertyGroup>
-    <!-- Opt out of RoslynTools.RepoToolset's xUnit integration -->
-    <UsingToolXUnit>false</UsingToolXUnit>
-  </PropertyGroup>
-
-  <Target 
-    Name="Test" 
-    Condition="'$(IsUnitTestProject)' == 'true'"
-    >
+  <Target Name="Test">
 
     <PropertyGroup>
       <TestResultsDirectory>$(ArtifactsTestResultsDir)</TestResultsDirectory>
@@ -26,9 +18,9 @@
       Condition="!Exists('$(XUnitExe)') Or !Exists('$(TargetPath)')"
       />
 
-    <Message 
-      Text="Running tests for $(MSBuildProjectFile) [$(Configuration)]..."
-      Importance="high"
+    <Message
+      Text="$(MSBuildProjectName) -> Running tests..."
+      Importance="High"
       />
 
     <MakeDir Directories="$(TestResultsDirectory)" />
@@ -47,15 +39,15 @@
 
     </Exec>
 
-    <Message 
-      Text="Succeeded running tests for $(MSBuildProjectFile) [$(Configuration)]."
+    <Message
+      Text="$(MSBuildProjectName) -> Tests succeeded"
       Condition="$(ExitCode) == 0"
       Importance="High"
       />
 
     <!-- Exec.LogStandardErrorAsError does not fail the build, we need to output explicit error to do that. -->
-    <Error 
-      Text="There were test failures, see $(HtmlTestResultsFile) for full results."
+    <Error
+      Text="Tests failed, see $(HtmlTestResultsFile) for full results."
       Condition="$(ExitCode) != 0"
       File="xUnit"
       />
