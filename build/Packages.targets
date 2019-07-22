@@ -20,7 +20,6 @@
 
     <!-- Toolset -->
     <PackageReference Update="RoslynTools.RepoToolset"                                                Version="$(RoslynToolsRepoToolsetVersion)" />
-    <PackageReference Update="RoslynTools.VsixExpInstaller"                                           Version="$(RoslynToolsVsixExpInstallerVersion)" />
     <PackageReference Update="RoslynDependencies.ProjectSystem.OptimizationData"                      Version="$(RoslynDependenciesProjectSystemOptimizationDataVersion)" />
     <PackageReference Update="Microsoft.DotNet.IBCMerge"                                              Version="[$(MicrosoftDotNetIBCMergeVersion)]" />
     <PackageReference Update="Microsoft.DiaSymReader.Pdb2Pdb"                                         Version="$(MicrosoftDiaSymReaderPdb2PdbVersion)" />
