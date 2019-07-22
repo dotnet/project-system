@@ -147,7 +147,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         public abstract IDependencyModel CreateRootDependencyNode();
 
-        public event EventHandler<DependenciesChangedEventArgs> DependenciesChanged;
+        public event EventHandler<DependenciesChangedEventArgs>? DependenciesChanged;
 
         protected void FireDependenciesChanged(DependenciesChangedEventArgs args)
         {

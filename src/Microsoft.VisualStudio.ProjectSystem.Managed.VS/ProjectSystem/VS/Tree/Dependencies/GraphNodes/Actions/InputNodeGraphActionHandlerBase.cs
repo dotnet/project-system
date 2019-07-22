@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                 }
 
                 using var scope = new GraphTransactionScope();
-                ProcessInputNode(graphContext, inputGraphNode, dependency, snapshot, viewProvider, projectPath, ref trackChanges);
+                ProcessInputNode(graphContext, inputGraphNode, dependency, snapshot, viewProvider, projectPath!, ref trackChanges);
 
                 scope.Complete();
             }
@@ -132,7 +132,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                 topLevel = false;
             }
 
-            snapshot = AggregateSnapshotProvider.GetSnapshot(projectPath);
+            snapshot = AggregateSnapshotProvider.GetSnapshot(projectPath!);
 
             return snapshot?.FindDependency(id, topLevel);
         }

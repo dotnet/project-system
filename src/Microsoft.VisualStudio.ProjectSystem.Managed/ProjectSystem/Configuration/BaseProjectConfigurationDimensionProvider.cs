@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             }
             else
             {
-                return BuildUtilities.GetPropertyValues(propertyValue).ToImmutableArray();
+                return BuildUtilities.GetPropertyValues(propertyValue!).ToImmutableArray();
             }
         }
 
@@ -182,7 +182,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             if (string.IsNullOrEmpty(values))
                 return null;
 
-            foreach (string defaultValue in BuildUtilities.GetPropertyValues(values))
+            foreach (string defaultValue in BuildUtilities.GetPropertyValues(values!))
             {
                 // If this property is derived from another property, skip it and just
                 // pull default from next known values. This is better than picking a 

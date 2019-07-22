@@ -58,8 +58,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         private IDisposable? _link;
 
-        private bool _itemsChangedSinceLastCheck = true;
-
         internal DateTime LastCheckTimeUtc { get; private set; } = DateTime.MinValue;
 
         [ImportingConstructor]
@@ -96,7 +94,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 _state = State.Empty;
 
                 LastCheckTimeUtc = DateTime.MinValue;
-                _itemsChangedSinceLastCheck = true;
 
                 return Task.CompletedTask;
             });
@@ -148,13 +145,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 jointRuleUpdate: e.Value.Item1,
                 sourceItemsUpdate: e.Value.Item2,
                 projectItemSchema: e.Value.Item3,
-                configuredProjectVersion: e.DataSourceVersions[ProjectDataSources.ConfiguredProjectVersion],
-                out bool itemsChanged);
-
-            if (itemsChanged)
-            {
-                _itemsChangedSinceLastCheck = true;
-            }
+                configuredProjectVersion: e.DataSourceVersions[ProjectDataSources.ConfiguredProjectVersion]);
         }
 
         private DateTime? GetTimestampUtc(string path, IDictionary<string, DateTime> timestampCache)
@@ -186,9 +177,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return false;
             }
 
-            bool itemsChangedSinceLastCheck = _itemsChangedSinceLastCheck;
-            _itemsChangedSinceLastCheck = false;
-
             if (!_tasksService.IsTaskQueueEmpty(ProjectCriticalOperation.Build))
             {
                 return Fail(logger, "CriticalTasks", "Critical build tasks are running, not up to date.");
@@ -199,17 +187,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return Fail(logger, "ProjectInfoOutOfDate", "Project information is older than current project version, not up to date.");
             }
 
-            if (itemsChangedSinceLastCheck)
-            {
-                return Fail(logger, "ItemInfoOutOfDate", "The list of source items has changed since the last build, not up to date.");
-            }
-
             if (state.IsDisabled)
             {
                 return Fail(logger, "Disabled", "The 'DisableFastUpToDateCheck' property is true, not up to date.");
             }
 
-            string copyAlwaysItemPath = state.Items.SelectMany(kvp => kvp.Value).FirstOrDefault(item => item.copyType == CopyToOutputDirectoryType.CopyAlways).path;
+            string copyAlwaysItemPath = state.ItemsByItemType.SelectMany(kvp => kvp.Value).FirstOrDefault(item => item.copyType == CopyToOutputDirectoryType.CopyAlways).path;
 
             if (copyAlwaysItemPath != null)
             {
@@ -235,9 +218,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 yield return state.NewestImportInput;
             }
 
-            foreach ((string itemType, ImmutableHashSet<(string path, string? link, CopyToOutputDirectoryType copyType)> changes) in state.Items)
+            foreach ((string itemType, ImmutableHashSet<(string path, string? link, CopyToOutputDirectoryType copyType)> changes) in state.ItemsByItemType)
             {
-                if (changes.Count != 0 && !NonCompilationItemTypes.Contains(itemType))
+                if (!NonCompilationItemTypes.Contains(itemType))
                 {
                     logger.Verbose("Adding {0} inputs:", itemType);
 
@@ -382,6 +365,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 Assumes.NotNull(outputPath);
 
+                if (outputTime < state.LastItemChangedAtUtc)
+                {
+                    return Fail(logger, "Outputs", "The inputs were changed more recently ({0}) than the earliest output '{1}' ({2}), not up to date.", state.LastItemChangedAtUtc, outputPath!, outputTime.Value);
+                }
+
                 // Search for an input that's either missing or newer than the earliest output.
                 // As soon as we find one, we can stop the scan.
                 foreach (string input in CollectInputs(logger, state))
@@ -517,14 +505,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         private bool CheckCopyToOutputDirectoryFiles(BuildUpToDateCheckLogger logger, IDictionary<string, DateTime> timestampCache, State state)
         {
-            IEnumerable<(string path, string? link, CopyToOutputDirectoryType copyType)> items = state.Items.SelectMany(kvp => kvp.Value).Where(item => item.copyType == CopyToOutputDirectoryType.CopyIfNewer);
+            IEnumerable<(string path, string? link, CopyToOutputDirectoryType copyType)> items = state.ItemsByItemType.SelectMany(kvp => kvp.Value).Where(item => item.copyType == CopyToOutputDirectoryType.CopyIfNewer);
 
             string outputFullPath = Path.Combine(state.MSBuildProjectDirectory, state.OutputRelativeOrFullPath);
 
             foreach ((string path, string? link, _) in items)
             {
                 string rootedPath = _configuredProject.UnconfiguredProject.MakeRooted(path);
-                string filename = string.IsNullOrEmpty(link) ? rootedPath : link;
+                string filename = string.IsNullOrEmpty(link) ? rootedPath : link!;
 
                 if (string.IsNullOrEmpty(filename))
                 {
@@ -618,5 +606,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         public Task<bool> IsUpToDateCheckEnabledAsync(CancellationToken cancellationToken = default) =>
             _projectSystemOptions.GetIsFastUpToDateCheckEnabledAsync(cancellationToken);
+
+        internal readonly struct TestAccessor
+        {
+            private readonly BuildUpToDateCheck _check;
+
+            public TestAccessor(BuildUpToDateCheck check)
+            {
+                _check = check;
+            }
+
+            public State State => _check._state;
+
+            public void SetLastCheckTimeUtc(DateTime lastCheckTimeUtc)
+            {
+                _check.LastCheckTimeUtc = lastCheckTimeUtc;
+            }
+
+            public void SetLastItemChangedAtUtc(DateTime lastItemChangedAtUtc)
+            {
+                _check._state = _check._state.WithLastItemChangedAtUtc(lastItemChangedAtUtc);
+            }
+        }
+
+        /// <summary>For unit testing only.</summary>
+        internal TestAccessor TestAccess => new TestAccessor(this);
     }
 }

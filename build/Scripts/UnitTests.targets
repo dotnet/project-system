@@ -1,0 +1,79 @@
+<Project>
+
+  <!-- Runs unit tests for a project via xUnit -->
+
+  <PropertyGroup>
+    <!-- Opt out of RoslynTools.RepoToolset's xUnit integration -->
+    <UsingToolXUnit>false</UsingToolXUnit>
+  </PropertyGroup>
+
+  <Target 
+    Name="Test" 
+    Condition="'$(IsUnitTestProject)' == 'true'"
+    >
+
+    <PropertyGroup>
+      <TestResultsDirectory>$(ArtifactsTestResultsDir)</TestResultsDirectory>
+      <XUnitExe>$(Pkgxunit_runner_console)\tools\net472\xunit.console.x86.exe</XUnitExe>
+
+      <XmlTestResultsFile>$(TestResultsDirectory)$(TargetName)$(TargetExt).xml</XmlTestResultsFile>     <!-- For AzureDevOps to read -->
+      <HtmlTestResultsFile>$(TestResultsDirectory)$(TargetName)$(TargetExt).html</HtmlTestResultsFile>  <!-- For Humans to read -->
+    </PropertyGroup>
+
+    <Error 
+      Text="The project must be restored and built before running tests"
+      File="$(MSBuildProjectFile)"
+      Condition="!Exists('$(XUnitExe)') Or !Exists('$(TargetPath)')"
+      />
+
+    <Message 
+      Text="Running tests for $(MSBuildProjectFile) [$(Configuration)]..."
+      Importance="high"
+      />
+
+    <MakeDir Directories="$(TestResultsDirectory)" />
+
+    <!-- xUnit writes to STDERR (test name) and STDOUT (error message, stack). STDERR gets logged as an error.  -->
+    <Exec 
+      Command='"$(XUnitExe)" "$(TargetPath)" -quiet -nologo -noshadow -parallel all -xml "$(XmlTestResultsFile)" -html "$(HtmlTestResultsFile)"'
+      LogStandardErrorAsError="true"
+      IgnoreExitCode="true"
+      >
+
+      <Output 
+        TaskParameter="ExitCode"
+        PropertyName="ExitCode"
+        />
+
+    </Exec>
+
+    <Message 
+      Text="Succeeded running tests for $(MSBuildProjectFile) [$(Configuration)]."
+      Condition="$(ExitCode) == 0"
+      Importance="High"
+      />
+
+    <!-- Exec.LogStandardErrorAsError does not fail the build, we need to output explicit error to do that. -->
+    <Error 
+      Text="There were test failures, see $(HtmlTestResultsFile) for full results."
+      Condition="$(ExitCode) != 0"
+      File="xUnit"
+      />
+
+  </Target>
+
+  <!-- Both xunit.runner.console and xunit.runner.visualstudio carry the same file, 
+       remove it to avoid double-write. 
+  -->
+  <PropertyGroup>
+    <PrepareForBuildDependsOn>RemoveDuplicateXUnitAbstractions;$(PrepareForBuildDependsOn)</PrepareForBuildDependsOn>
+  </PropertyGroup>
+  
+  <Target Name="RemoveDuplicateXUnitAbstractions">
+    
+    <ItemGroup>
+      <None Remove="@(None)" Condition="'%(Filename)%(Extension)' == 'xunit.abstractions.dll'" />
+    </ItemGroup>
+    
+  </Target>
+</Project>
