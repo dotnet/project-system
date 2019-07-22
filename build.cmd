@@ -55,6 +55,6 @@ echo.
 echo   Build options:
 echo     /diagnostic               Turns on logging to a binlog
 echo     /rootsuffix ^<hive^>        Hive to use when deploying Visual Studio extensions (default is 'Exp')
-echo     /[no-]deploy-extension    Deploy (default) or avoid deploying Visual Studio extensions
+echo     /[no-]deploy-extension    Deploy (default) or skip deploying Visual Studio extensions
 echo     /ci                       Configures a continuous integration build
 goto :eof
