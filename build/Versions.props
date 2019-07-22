@@ -31,8 +31,5 @@
       Remove once RepoToolset is updated to at least 1.0.0-beta2-63110-06 (https://github.com/dotnet/project-system/issues/3700).
     -->
     <MicroBuildPluginsSwixBuildVersion>1.0.422</MicroBuildPluginsSwixBuildVersion>
-
-    <!-- Tests -->
-    <XUnitVersion>2.4.1</XUnitVersion>
   </PropertyGroup>
 </Project>
