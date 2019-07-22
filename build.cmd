@@ -24,6 +24,7 @@ if /I "%1" == "/integration"          set OptIntegrationTest=$true              
 if /I "%1" == "/no-integration"       set OptIntegrationTest=$false                && shift && goto :ParseArguments
 if /I "%1" == "/debug"                set BuildConfiguration=Debug                 && shift && goto :ParseArguments
 if /I "%1" == "/release"              set BuildConfiguration=Release               && shift && goto :ParseArguments
+if /I "%1" == "/deploy-extension"     set OptDeploy=$true                          && shift && goto :ParseArguments
 if /I "%1" == "/no-deploy-extension"  set OptDeploy=$false                         && shift && goto :ParseArguments
 if /I "%1" == "/diagnostic"           set OptLog=$true                             && shift && goto :ParseArguments
 if /I "%1" == "/rootsuffix"           set PropRootSuffix=/p:RootSuffix=%2          && shift && shift && goto :ParseArguments
@@ -50,6 +51,6 @@ echo     /release                  Perform release build
 echo.
 echo   Build options:
 echo     /diagnostic               Turns on logging to a binlog
-echo     /rootsuffix ^<hive^>      Visual Studio hive to deploy VSIX extensions to (default is Exp)
-echo     /no-deploy-extension      Does not deploy VSIX extensions when building the solution
+echo     /rootsuffix ^<hive^>        Hive to use when deploying Visual Studio extensions (default is 'Exp')
+echo     /[no-]deploy-extension    Deploy (default) or avoid deploying Visual Studio extensions
 goto :eof
