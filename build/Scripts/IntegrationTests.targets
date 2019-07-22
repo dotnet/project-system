@@ -10,14 +10,6 @@
     $(ArtifactsTestResultsDir):           The build output location where test results are output.
   -->       
   
-  <PropertyGroup>
-    <!-- Opt out of RoslynTools.RepoToolset's xUnit integration -->
-    <UsingToolXUnit>false</UsingToolXUnit>
-  </PropertyGroup>
-
-  <!-- Just to make RepoToolset happy -->
-  <Target Name="Test" />  
-  
   <Target 
     Name="IntegrationTest" 
     DependsOnTargets="GenerateRunSettings;ExecuteTests" 

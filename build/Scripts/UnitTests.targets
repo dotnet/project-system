@@ -2,14 +2,6 @@
 
   <!-- Runs unit tests for a project via xUnit -->
 
-  <PropertyGroup>
-    <!-- Opt out of RoslynTools.RepoToolset's xUnit integration -->
-    <UsingToolXUnit>false</UsingToolXUnit>
-  </PropertyGroup>
-
-  <!-- Just to make RepoToolset happy -->
-  <Target Name="IntegrationTest" />
-
   <Target Name="Test">
 
     <PropertyGroup>

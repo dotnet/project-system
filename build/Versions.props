@@ -7,9 +7,10 @@
     <PreReleaseVersionLabel>beta1</PreReleaseVersionLabel>
     <SuppressNETCoreSdkPreviewMessage>true</SuppressNETCoreSdkPreviewMessage>
 
-    <!-- Opt-in repo features -->
+    <!-- Opt-in and out of repo features -->
     <UsingToolVSSDK>true</UsingToolVSSDK>
     <UsingToolIbcOptimization>true</UsingToolIbcOptimization>
+    <UsingToolXUnit>false</UsingToolXUnit>
 
     <!-- Toolset -->
     <RoslynToolsRepoToolsetVersion>1.0.0-beta-62705-01</RoslynToolsRepoToolsetVersion>
