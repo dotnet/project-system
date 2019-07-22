@@ -9,10 +9,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     {
         public static IDependencyModelEqualityComparer Instance { get; } = new IDependencyModelEqualityComparer();
 
-        public bool Equals(IDependencyModel x, IDependencyModel y)
+        public bool Equals(IDependencyModel? x, IDependencyModel? y)
         {
-            Requires.NotNull(x, nameof(x));
-            Requires.NotNull(y, nameof(y));
+            if (x is null && y is null)
+                return true;
+
+            if (x is null || y is null)
+                return false;
 
             return string.Equals(x.Id, y.Id, StringComparison.OrdinalIgnoreCase) &&
                    string.Equals(x.ProviderType, y.ProviderType, StringComparisons.DependencyProviderTypes);
