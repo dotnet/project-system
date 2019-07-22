@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         {
             if (_added == null)
             {
-                _added = new HashSet<IDependencyModel>();
+                _added = new HashSet<IDependencyModel>(IDependencyModelEqualityComparer.Instance);
             }
 
             _added.Remove(model);
@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         {
             if (_removed == null)
             {
-                _removed = new HashSet<IDependencyModel>();
+                _removed = new HashSet<IDependencyModel>(IDependencyModelEqualityComparer.Instance);
             }
 
             var identity = new RemovedDependencyModel(providerType, dependencyId);
@@ -112,15 +112,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             public ProjectTreeFlags Flags => throw NotImplemented();
             public IImmutableDictionary<string, string> Properties => throw NotImplemented();
             public IImmutableList<string> DependencyIDs => throw NotImplemented();
-
-            public override bool Equals(object obj)
-                => obj is RemovedDependencyModel other &&
-                   string.Equals(Id, other.Id, StringComparison.OrdinalIgnoreCase) &&
-                   string.Equals(ProviderType, other.ProviderType, StringComparisons.DependencyProviderTypes);
-
-            public override int GetHashCode()
-                => unchecked(StringComparer.OrdinalIgnoreCase.GetHashCode(Id) * 397 ^
-                             StringComparer.OrdinalIgnoreCase.GetHashCode(ProviderType));
 
             public override string ToString() => $"{ProviderType}-{Id}";
         }
