@@ -7,10 +7,10 @@
     <UsingToolXUnit>false</UsingToolXUnit>
   </PropertyGroup>
 
-  <Target 
-    Name="Test" 
-    Condition="'$(IsUnitTestProject)' == 'true'"
-    >
+  <!-- Just to make RepoToolset happy -->
+  <Target Name="IntegrationTest" />
+
+  <Target Name="Test">
 
     <PropertyGroup>
       <TestResultsDirectory>$(ArtifactsTestResultsDir)</TestResultsDirectory>

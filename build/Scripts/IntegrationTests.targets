@@ -8,24 +8,18 @@
     $(VSSDKTargetPlatformRegRootSuffix):  The root suffix of the hive to open.
     $(VisualStudioXamlRulesDir):          The build output location containing the XAML rules.
     $(ArtifactsTestResultsDir):           The build output location where test results are output.
-    $(IsIntegrationTestProject):          Indicates whether the current project is an integration project.
-    $(IntegrationTest):                   Indicates that the integration tests should be run.
   -->       
   
   <PropertyGroup>
     <!-- Opt out of RoslynTools.RepoToolset's xUnit integration -->
-    <UsingToolXUnit Condition="$(IsIntegrationTestProject) == 'true'">false</UsingToolXUnit>
+    <UsingToolXUnit>false</UsingToolXUnit>
   </PropertyGroup>
 
-  <!-- To make RoslynTools.RepoToolset happy -->
-  <Target 
-    Name="IntegrationTest"
-    Condition="$(IsIntegrationTestProject) == 'true'" 
-    />
+  <!-- Just to make RepoToolset happy -->
+  <Target Name="Test" />  
   
   <Target 
-    Name="Test" 
-    Condition="$(IsIntegrationTestProject) == 'true' AND '$(IntegrationTest)' == 'true'"
+    Name="IntegrationTest" 
     DependsOnTargets="GenerateRunSettings;ExecuteTests" 
     />
 
