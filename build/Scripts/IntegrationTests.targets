@@ -1,0 +1,108 @@
+<Project>
+  <!-- 
+   
+   Runs APEX integration tests for a project via vstest.console.exe
+  
+   Inputs:
+  
+    $(VSSDKTargetPlatformRegRootSuffix):  The root suffix of the hive to open.
+    $(VisualStudioXamlRulesDir):          The build output location containing the XAML rules.
+    $(ArtifactsTestResultsDir):           The build output location where test results are output.
+  -->       
+  
+  <Target 
+    Name="IntegrationTest" 
+    DependsOnTargets="GenerateRunSettings;ExecuteTests" 
+    />
+
+  <PropertyGroup>
+    <TestResultsDirectory>$(ArtifactsTestResultsDir)</TestResultsDirectory>
+    <RunSettingsFilePath>$(IntermediateOutputPath)$(TargetName)$(TargetExt).runsettings</RunSettingsFilePath>
+  </PropertyGroup>
+
+  <Target Name="GenerateRunSettings">
+
+    <PropertyGroup>
+      <RunSettingsContents>
+        <![CDATA[
+<RunSettings>
+  <TestRunParameters>
+    <Parameter name="VsRootSuffix" value="$(VSSDKTargetPlatformRegRootSuffix)" />
+  </TestRunParameters>
+  <RunConfiguration>
+    <MaxCpuCount>1</MaxCpuCount>
+  </RunConfiguration>
+  
+  <MSTest>
+     <DeploymentEnabled>false</DeploymentEnabled>
+     <DeleteDeploymentDirectoryAfterTestRunIsComplete>False</DeleteDeploymentDirectoryAfterTestRunIsComplete>
+  </MSTest>
+</RunSettings>
+]]>
+      </RunSettingsContents>
+    </PropertyGroup>
+
+    <WriteLinesToFile 
+      File="$(RunSettingsFilePath)"
+      Lines="$(RunSettingsContents)"
+      Overwrite="true" 
+      />
+
+  </Target>
+
+  <Target Name="ExecuteTests">
+
+    <PropertyGroup>
+      <TestAssemblyLogFileName>$(TargetName)$(TargetExt).trx</TestAssemblyLogFileName>
+      <VSTestExeEnvironment>
+        VisualBasicDesignTimeTargetsPath=$(VisualStudioXamlRulesDir)Microsoft.VisualBasic.DesignTime.targets;
+        FSharpDesignTimeTargetsPath=$(VisualStudioXamlRulesDir)Microsoft.FSharp.DesignTime.targets;
+        CSharpDesignTimeTargetsPath=$(VisualStudioXamlRulesDir)Microsoft.CSharp.DesignTime.targets;
+      </VSTestExeEnvironment>
+    </PropertyGroup>
+
+    <MakeDir Directories="$(TestResultsDirectory)" />
+
+    <Error 
+      Text="The project must built before running tests"
+      File="$(MSBuildProjectFile)"
+      Condition="!Exists('$(TargetPath)')"
+      />
+
+    <Message 
+      Text="$(MSBuildProjectName) -> Running tests (this might take a while)..."
+      Importance="High"
+      />
+
+    <Exec 
+      Command='vstest.console.exe /Blame /ResultsDirectory:"$(TestResultsDirectory)\" /Settings:"$(RunSettingsFilePath)" /Logger:trx;LogFileName=$(TestAssemblyLogFileName) "$(TargetPath)"'
+      EnvironmentVariables="$(VSTestExeEnvironment)"
+      LogStandardErrorAsError="false"
+      IgnoreStandardErrorWarningFormat="true"
+      StandardErrorImportance="Low"
+      StandardOutputImportance="Low"
+      IgnoreExitCode="true"
+      >
+      
+      <Output 
+        TaskParameter="ExitCode" 
+        PropertyName="ExitCode"
+        />
+      
+    </Exec>
+
+    <Message 
+      Text="$(MSBuildProjectName) -> Tests succeeded"
+      Condition="$(ExitCode) == 0"
+      Importance="High"
+      />
+    
+    <Error
+      Text="Tests failed, see $(TestResultsDirectory)$(TestAssemblyLogFileName) for full results."
+      Condition="$(ExitCode) != 0" 
+      File="Apex"
+      />
+
+  </Target>
+
+</Project>
