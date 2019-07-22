@@ -13,18 +13,26 @@
       https://dotnet.myget.org/F/project-system-interop/api/v3/index.json;
       https://vside.myget.org/F/vs-impl/api/v3/index.json;
       https://vside.myget.org/F/vssdk/api/v3/index.json;
+      https://api.nuget.org/v3/index.json;
     </RestoreSources>
   </PropertyGroup>
 
   <ItemGroup>
 
     <!-- Toolset -->
-    <PackageReference Update="RoslynTools.RepoToolset"                                                Version="$(RoslynToolsRepoToolsetVersion)" />
+    <PackageReference Update="RoslynTools.RepoToolset"                                                Version="$(RoslynToolsRepoToolsetVersion)" />    
+    <PackageReference Update="RoslynTools.ModifyVsixManifest"                                         Version="$(RoslynToolsModifyVsixManifestVersion)" />
+    <PackageReference Update="RoslynTools.SignTool"                                                   Version="$(RoslynToolsSignToolVersion)" />
+    <PackageReference Update="XliffTasks"                                                             Version="$(XliffTasksVersion)" />
     <PackageReference Update="RoslynDependencies.ProjectSystem.OptimizationData"                      Version="$(RoslynDependenciesProjectSystemOptimizationDataVersion)" />
     <PackageReference Update="Microsoft.DotNet.IBCMerge"                                              Version="[$(MicrosoftDotNetIBCMergeVersion)]" />
     <PackageReference Update="Microsoft.DiaSymReader.Pdb2Pdb"                                         Version="$(MicrosoftDiaSymReaderPdb2PdbVersion)" />
+    <PackageReference Update="Microsoft.Net.Compilers"                                                Version="3.3.0-beta2-19357-02" />
     <PackageReference Update="OpenCover"                                                              Version="$(OpenCoverVersion)" />
     <PackageReference Update="Codecov"                                                                Version="$(CodecovVersion)" />
+    <PackageReference Update="MicroBuild.Core"                                                        Version="0.2.0" />
+    <PackageReference Update="MicroBuild.Core.Sentinel"                                               Version="1.0.0" />
+    <PackageReference Update="MicroBuild.Plugins.SwixBuild"                                           Version="1.0.422" />
 
     <!-- VS SDK -->
     <PackageReference Update="Microsoft.VSSDK.BuildTools"                                             Version="15.8.3252" />
@@ -134,7 +142,6 @@
     <PackageReference Update="xunit.runner.visualstudio"                                              Version="2.4.1" />
     <PackageReference Update="xunit.runner.console"                                                   Version="2.4.1" />
     <PackageReference Update="xunit.analyzers"                                                        Version="0.10.0"/>
-    <PackageReference Update="Microsoft.NET.Test.Sdk"                                                 Version="$(MicrosoftNETTestSdkVersion)" />
                                                                                                       
     <PackageReference Update="Microsoft.DotNet.Test.ProjectTemplates.1.x"                             Version="1.0.0-beta2-20170629-269" />
     <PackageReference Update="Microsoft.DotNet.Common.ProjectTemplates.1.x"                           Version="1.0.0-beta2-20170629-269" />
