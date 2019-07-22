@@ -121,27 +121,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Using dialog As New BuildEventCommandLineDialog
                 Dim values() As String = Nothing
 
-                '// Initialize the title text
                 dialog.SetFormTitleText(WindowTitleText)
-
-
-                '// Initialize the command line
                 dialog.EventCommandLine = CommandLine
-
-                '// Set the page property
                 dialog.Page = Parent
-
-                '// Set the Dte object for cmdline dialog
-                ' VSWhidbey 163859 - help not able to retrieve DTE handle
                 dialog.DTE = Parent.DTE
-
-                '// Initialize the token values
 
                 GetTokenValues(values, valueHelper)
                 dialog.SetTokensAndValues(s_tokenNames, values)
 
-
-                '// Show the form
                 If (dialog.ShowDialog(ServiceProvider) = System.Windows.Forms.DialogResult.OK) Then
                     CommandLine = dialog.EventCommandLine
                 End If
