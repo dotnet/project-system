@@ -134,7 +134,6 @@
     <PackageReference Update="xunit.runner.visualstudio"                                              Version="2.4.1" />
     <PackageReference Update="xunit.runner.console"                                                   Version="2.4.1" />
     <PackageReference Update="xunit.analyzers"                                                        Version="0.10.0"/>
-    <PackageReference Update="Microsoft.NET.Test.Sdk"                                                 Version="$(MicrosoftNETTestSdkVersion)" />
                                                                                                       
     <PackageReference Update="Microsoft.DotNet.Test.ProjectTemplates.1.x"                             Version="1.0.0-beta2-20170629-269" />
     <PackageReference Update="Microsoft.DotNet.Common.ProjectTemplates.1.x"                           Version="1.0.0-beta2-20170629-269" />
