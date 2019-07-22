@@ -118,32 +118,32 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Function LaunchEventBuilder(Parent As BuildEventsPropPage, valueHelper As GetTokenValueFunc, WindowTitleText As String, ByRef CommandLine As String) As Boolean
 
-            Using frm As New BuildEventCommandLineDialog
-                Dim Values() As String = Nothing
+            Using dialog As New BuildEventCommandLineDialog
+                Dim values() As String = Nothing
 
                 '// Initialize the title text
-                frm.SetFormTitleText(WindowTitleText)
+                dialog.SetFormTitleText(WindowTitleText)
 
 
                 '// Initialize the command line
-                frm.EventCommandLine = CommandLine
+                dialog.EventCommandLine = CommandLine
 
                 '// Set the page property
-                frm.Page = Parent
+                dialog.Page = Parent
 
                 '// Set the Dte object for cmdline dialog
                 ' VSWhidbey 163859 - help not able to retrieve DTE handle
-                frm.DTE = Parent.DTE
+                dialog.DTE = Parent.DTE
 
                 '// Initialize the token values
 
-                GetTokenValues(Values, valueHelper)
-                frm.SetTokensAndValues(s_tokenNames, Values)
+                GetTokenValues(values, valueHelper)
+                dialog.SetTokensAndValues(s_tokenNames, values)
 
 
                 '// Show the form
-                If (frm.ShowDialog(ServiceProvider) = System.Windows.Forms.DialogResult.OK) Then
-                    CommandLine = frm.EventCommandLine
+                If (dialog.ShowDialog(ServiceProvider) = System.Windows.Forms.DialogResult.OK) Then
+                    CommandLine = dialog.EventCommandLine
                 End If
             End Using
 
