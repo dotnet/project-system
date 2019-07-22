@@ -25,8 +25,8 @@ if /I "%1" == "/test"                 set OptTest=$true                         
 if /I "%1" == "/no-test"              set OptTest=$false                           && shift && goto :ParseArguments
 if /I "%1" == "/integration"          set OptIntegrationTest=$true                 && shift && goto :ParseArguments
 if /I "%1" == "/no-integration"       set OptIntegrationTest=$false                && shift && goto :ParseArguments
-if /I "%1" == "/deploy-extension"     set OptDeploy=$true                          && shift && goto :ParseArguments
-if /I "%1" == "/no-deploy-extension"  set OptDeploy=$false                         && shift && goto :ParseArguments
+if /I "%1" == "/deploy"               set OptDeploy=$true                          && shift && goto :ParseArguments
+if /I "%1" == "/no-deploy"            set OptDeploy=$false                         && shift && goto :ParseArguments
 if /I "%1" == "/diagnostic"           set OptLog=$true                             && shift && goto :ParseArguments
 if /I "%1" == "/sign"                 set OptSign=$true                            && shift && goto :ParseArguments
 if /I "%1" == "/ci"                   set OptCI=$true && set PrepareMachine=$true  && shift && goto :ParseArguments
@@ -55,7 +55,7 @@ echo.
 echo   Build options:
 echo     /diagnostic               Turns on logging to a binlog
 echo     /rootsuffix ^<hive^>        Hive to use when deploying Visual Studio extensions (default is 'Exp')
-echo     /[no-]deploy-extension    Deploy (default) or skip deploying Visual Studio extensions
+echo     /[no-]deploy              Deploy (default) or skip deploying Visual Studio extensions
 echo     /configuration ^<config^>   Use Debug (default) or Release build configuration
 echo     /sign                     Sign build outputs
 echo     /ci                       Configures a continuous integration build
