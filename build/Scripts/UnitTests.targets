@@ -7,8 +7,10 @@
     <UsingToolXUnit>false</UsingToolXUnit>
   </PropertyGroup>
 
-  <Target Name="Test" 
-          Condition="'$(IsUnitTestProject)' == 'true'">
+  <Target 
+    Name="Test" 
+    Condition="'$(IsUnitTestProject)' == 'true'"
+    >
 
     <PropertyGroup>
       <TestResultsDirectory>$(ArtifactsTestResultsDir)</TestResultsDirectory>
@@ -18,39 +20,45 @@
       <HtmlTestResultsFile>$(TestResultsDirectory)$(TargetName)$(TargetExt).html</HtmlTestResultsFile>  <!-- For Humans to read -->
     </PropertyGroup>
 
-    <Error Text="The project must be restored and built before running tests"
-           File="$(MSBuildProjectFile)"
-           Condition="!Exists('$(XUnitExe)') Or !Exists('$(TargetPath)')"
-           />
+    <Error 
+      Text="The project must be restored and built before running tests"
+      File="$(MSBuildProjectFile)"
+      Condition="!Exists('$(XUnitExe)') Or !Exists('$(TargetPath)')"
+      />
 
-    <Message Text="Running tests for $(MSBuildProjectFile) [$(Configuration)]..."
-             Importance="high"
-             />
+    <Message 
+      Text="Running tests for $(MSBuildProjectFile) [$(Configuration)]..."
+      Importance="high"
+      />
 
     <MakeDir Directories="$(TestResultsDirectory)" />
 
     <!-- xUnit writes to STDERR (test name) and STDOUT (error message, stack). STDERR gets logged as an error.  -->
-    <Exec Command='"$(XUnitExe)" "$(TargetPath)" -quiet -nologo -noshadow -parallel all -xml "$(XmlTestResultsFile)" -html "$(HtmlTestResultsFile)"'
-          LogStandardErrorAsError="true"
-          IgnoreExitCode="true"
-          >
+    <Exec 
+      Command='"$(XUnitExe)" "$(TargetPath)" -quiet -nologo -noshadow -parallel all -xml "$(XmlTestResultsFile)" -html "$(HtmlTestResultsFile)"'
+      LogStandardErrorAsError="true"
+      IgnoreExitCode="true"
+      >
 
-      <Output TaskParameter="ExitCode"
-              PropertyName="ExitCode"
-              />
+      <Output 
+        TaskParameter="ExitCode"
+        PropertyName="ExitCode"
+        />
 
     </Exec>
 
-    <Message Text="Succeeded running tests for $(MSBuildProjectFile) [$(Configuration)]."
-             Condition="$(ExitCode) == 0"
-             Importance="High"
-             />
+    <Message 
+      Text="Succeeded running tests for $(MSBuildProjectFile) [$(Configuration)]."
+      Condition="$(ExitCode) == 0"
+      Importance="High"
+      />
 
     <!-- Exec.LogStandardErrorAsError does not fail the build, we need to output explicit error to do that. -->
-    <Error Text="There were test failures, see $(HtmlTestResultsFile) for full results."
-           Condition="$(ExitCode) != 0"
-           File="xUnit"
-           />
+    <Error 
+      Text="There were test failures, see $(HtmlTestResultsFile) for full results."
+      Condition="$(ExitCode) != 0"
+      File="xUnit"
+      />
 
   </Target>
 
