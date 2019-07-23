@@ -15,8 +15,6 @@ jobs:
     matrix:
       Debug:
         _configuration: Debug
-      Release:
-        _configuration: Release
   timeoutInMinutes: 60
   steps:
     - script: $(Build.SourcesDirectory)\build.cmd /build /no-test /integration /diagnostic /ci /no-sign /deploy /configuration $(_configuration)
