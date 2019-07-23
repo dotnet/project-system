@@ -121,7 +121,7 @@ function LocateMSBuild {
 }
 
 function InstallToolset {
-  if ($ci -or $log) {
+  if ($log) {
     $logCmd = "/bl:" + (Join-Path $LogDir "RestoreToolset.binlog")
   } else {
     $logCmd = ""
@@ -133,7 +133,7 @@ function InstallToolset {
 }
 
 function Build {
-  if ($ci -or $log) {
+  if ($log) {
     $logCmd = "/bl:" + (Join-Path $LogDir "Build.binlog")
   } else {
     $logCmd = ""
@@ -225,7 +225,7 @@ try {
     Write-Host "Using $MsbuildExe"
   }
 
-  if ($ci -or $log) {
+  if ($log) {
     # Always create these directories so publish 
     # and writes to these folders succeed
     Create-Directory $LogDir

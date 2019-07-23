@@ -5,6 +5,9 @@
     <PublishOutputToSymStore>false</PublishOutputToSymStore>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\Common\ThrowingTraceListener.cs" Link="Diagnostics\ThrowingTraceListener.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Moq" />
     <PackageReference Include="xunit.assert" />
     <PackageReference Include="xunit.extensibility.core" />
