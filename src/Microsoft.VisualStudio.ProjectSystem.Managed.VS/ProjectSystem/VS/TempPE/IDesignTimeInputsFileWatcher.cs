@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
     /// <summary>
     /// Represents a data source that produces output whenever a design time input changes
     /// </summary>
-    [ProjectSystemContract(ProjectSystemContractScope.ConfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
+    [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface IDesignTimeInputsFileWatcher : IProjectValueDataSource<string[]>
     {
     }

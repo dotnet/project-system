@@ -20,13 +20,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         private static readonly ImmutableHashSet<string> s_ruleNames = Empty.OrdinalIgnoreCaseStringSet.Add(Compile.SchemaName);
 
         private readonly UnconfiguredProject _project;
-        private readonly IProjectSubscriptionService _projectSubscriptionService;
+        private readonly IActiveConfiguredProjectSubscriptionService _projectSubscriptionService;
 
         [ImportingConstructor]
-        public DesignTimeInputsDataSource(ConfiguredProject project, IProjectSubscriptionService projectSubscriptionService)
-            : base(project.Services, synchronousDisposal: true, registerDataSource: false)
+        public DesignTimeInputsDataSource(UnconfiguredProject project,
+                                          IUnconfiguredProjectServices unconfiguredProjectServices,
+                                          IActiveConfiguredProjectSubscriptionService projectSubscriptionService)
+            : base(unconfiguredProjectServices, synchronousDisposal: true, registerDataSource: false)
         {
-            _project = project.UnconfiguredProject;
+            _project = project;
             _projectSubscriptionService = projectSubscriptionService;
         }
 
