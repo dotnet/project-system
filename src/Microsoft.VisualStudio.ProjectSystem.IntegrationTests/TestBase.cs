@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             SuppressReloadPrompt = false;
         }
 
-        protected override bool IncludeReferencedAssembliesInHostComposition => false; // Do not things we reference to the MEF Container
+        protected override bool IncludeReferencedAssembliesInHostComposition => false; // Do not add things we reference to the MEF Container
 
         protected override VisualStudioHostConfiguration GetHostConfiguration()
         {
