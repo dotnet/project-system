@@ -10,12 +10,9 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="RoslynTools.RepoToolset" />
-    <PackageReference Include="RoslynTools.VsixExpInstaller" />
     <PackageReference Include="Codecov" />
     <PackageReference Include="OpenCover" />
     <PackageReference Include="Microsoft.DiaSymReader.Pdb2Pdb" />
-    <PackageReference Include="Microsoft.DevDiv.Validation.MediaRecorder" />
-    <PackageReference Include="Microsoft.DevDiv.Validation.Logging.ScreenshotCollector" />
   </ItemGroup>
 
 </Project>

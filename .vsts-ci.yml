@@ -1,3 +1,5 @@
+# Responsible for producing the signed product build for insertion into the Visual Studio repository
+
 resources:
 - repo: self
   clean: true
@@ -27,10 +29,10 @@ steps:
     feed: '8f470c7e-ac49-4afe-a6ee-cf784e438b93'
 
 - task: BatchScript@1
-  displayName: Run script CIBuild.cmd
+  displayName: Run script build.cmd
   inputs:
-    filename: 'build\CIBuild.cmd'
-    arguments: '-configuration $(BuildConfiguration) -optimize -sign'
+    filename: '$(Build.SourcesDirectory)\build.cmd '
+    arguments: '/build /test /ci /no-deploy /configuration $(BuildConfiguration) /sign'
     modifyEnvironment: false
     
 - task: PublishTestResults@1
