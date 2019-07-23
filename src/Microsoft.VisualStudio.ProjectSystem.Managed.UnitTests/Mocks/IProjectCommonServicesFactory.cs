@@ -10,14 +10,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
         public static IProjectCommonServices CreateWithDefaultThreadingPolicy()
         {
-            return ImplementThreadingPolicy(null);
+            return Create(null);
         }
 
-        public static IProjectCommonServices ImplementThreadingPolicy(IProjectThreadingService threadingService)
+        public static IProjectCommonServices Create(IProjectThreadingService threadingService = null, IProjectLockService projectLockService = null)
         {
             threadingService ??= IProjectThreadingServiceFactory.Create();
 
-            var services = ProjectServicesFactory.Create(threadingService);
+            var services = ProjectServicesFactory.Create(threadingService: threadingService, projectLockService: projectLockService);
             var projectService = IProjectServiceFactory.Create(services);
 
             var mock = new Mock<IProjectCommonServices>();

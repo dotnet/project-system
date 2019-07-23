@@ -141,15 +141,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         private static DesignTimeInputsDataSource CreateDesignTimeInputsDataSource(out ProjectValueDataSource<IProjectSubscriptionUpdate> sourceItemsRuleSource)
         {
-            var projectServices = ProjectServicesFactory.Create(threadingService: IProjectThreadingServiceFactory.Create(), projectLockService: IProjectLockServiceFactory.Create());
-            var projectService = IProjectServiceFactory.Create(projectServices);
             var projectSubscriptionService = IProjectSubscriptionServiceFactory.Create();
+            var unconfiguredProject = UnconfiguredProjectFactory.Create();
+            var projectCommonServices = IProjectCommonServicesFactory.Create(IProjectThreadingServiceFactory.Create(), IProjectLockServiceFactory.Create());
 
-            var configuredProject = ConfiguredProjectFactory.Create(
-                services: ConfiguredProjectServicesFactory.Create(projectService: projectService),
-                unconfiguredProject: UnconfiguredProjectFactory.Create());
-
-            var dataSource = new DesignTimeInputsDataSource(configuredProject, projectSubscriptionService);
+            var dataSource = new DesignTimeInputsDataSource(unconfiguredProject, projectCommonServices, projectSubscriptionService);
 
             sourceItemsRuleSource = (ProjectValueDataSource<IProjectSubscriptionUpdate>)projectSubscriptionService.SourceItemsRuleSource;
 

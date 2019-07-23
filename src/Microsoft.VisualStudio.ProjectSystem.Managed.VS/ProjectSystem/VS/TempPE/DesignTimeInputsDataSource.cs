@@ -23,10 +23,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         private readonly IProjectSubscriptionService _projectSubscriptionService;
 
         [ImportingConstructor]
-        public DesignTimeInputsDataSource(ConfiguredProject project, IProjectSubscriptionService projectSubscriptionService)
-            : base(project.Services, synchronousDisposal: true, registerDataSource: false)
+        public DesignTimeInputsDataSource(UnconfiguredProject project,
+                                          IProjectCommonServices projectCommonServices,
+                                          IProjectSubscriptionService projectSubscriptionService)
+            : base(projectCommonServices, synchronousDisposal: true, registerDataSource: false)
         {
-            _project = project.UnconfiguredProject;
+            _project = project;
             _projectSubscriptionService = projectSubscriptionService;
         }
 
