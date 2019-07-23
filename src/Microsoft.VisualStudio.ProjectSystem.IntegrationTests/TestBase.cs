@@ -3,6 +3,7 @@
 using System;
 using System.IO;
 
+using Microsoft.Test.Apex;
 using Microsoft.Test.Apex.VisualStudio;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -23,20 +24,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             SuppressReloadPrompt = false;
         }
 
+        protected override bool IncludeReferencedAssembliesInHostComposition => false; // Do not add things we reference to the MEF Container
+
         protected override VisualStudioHostConfiguration GetHostConfiguration()
         {
-            var visualStudioHostConfiguration = new VisualStudioHostConfiguration()
-            {
-                CommandLineArguments = $"/rootSuffix {_hiveName}",
-                RestoreUserSettings = false,
-                InheritProcessEnvironment = true,
-                AutomaticallyDismissMessageBoxes = true,
-                DelayInitialVsLicenseValidation = true,
-                ForceFirstLaunch = false,
-                BootstrapInjection = BootstrapInjectionMethod.DteFromROT,
-            };
+            return new ProjectSystemHostConfiguration(_hiveName);
+        }
 
-            return visualStudioHostConfiguration;
+        protected override OperationsConfiguration GetOperationsConfiguration()
+        {
+            return new ProjectSystemOperationsConfiguration(TestContext);
         }
 
         protected override void DoHostTestCleanup()

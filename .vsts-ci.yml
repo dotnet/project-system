@@ -32,7 +32,7 @@ steps:
   displayName: Run script build.cmd
   inputs:
     filename: '$(Build.SourcesDirectory)\build.cmd '
-    arguments: '/build /test /ci /sign /diagnostic /no-deploy /no-integration /configuration $(BuildConfiguration) '
+    arguments: '/build /test /ci /sign /diagnostic /no-deploy /no-integration /ibc /configuration $(BuildConfiguration) '
     modifyEnvironment: false
     
 - task: PublishTestResults@1
