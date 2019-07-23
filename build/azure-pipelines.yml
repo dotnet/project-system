@@ -36,7 +36,7 @@ jobs:
         _configuration: Release
   timeoutInMinutes: 20
   steps:
-    - script: $(Build.SourcesDirectory)\build.cmd /build /test /ci /no-deploy /configuration $(_configuration) /sign
+    - script: $(Build.SourcesDirectory)\build.cmd /build /test /ci /sign /diagnostic /no-deploy /no-integration /no-ibc /configuration $(_configuration)
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\log'
@@ -84,7 +84,7 @@ jobs:
     _configuration: Debug
   timeoutInMinutes: 20
   steps:
-    - script: $(Build.SourcesDirectory)\build.cmd /build /test /ci /no-deploy /configuration $(_configuration)
+    - script: $(Build.SourcesDirectory)\build.cmd /build /test /ci /diagnostic /no-sign /no-deploy /no-integration /no-ibc /configuration $(_configuration)
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\log'

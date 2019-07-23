@@ -14,7 +14,7 @@ Param(
   [switch] $pack,
   [switch] $ci,
   [switch] $prepareMachine,
-  [switch] $optimize,
+  [switch] $ibc,
   [switch] $log,
   [switch] $help,
   [Parameter(ValueFromRemainingArguments=$true)][String[]]$properties
@@ -46,6 +46,7 @@ function Print-Usage() {
     Write-Host "  -ci                     Set when running on CI server"
     Write-Host "  -log                    Enable logging (by default on CI)"
     Write-Host "  -prepareMachine         Prepare machine for CI run"
+    Write-Host "  -ibc                    Enable IBC (OptProf) optimization data usage"
     Write-Host ""
     Write-Host "Command line arguments not listed above are passed thru to msbuild."
     Write-Host "The above arguments can be shortened as much as to be unambiguous (e.g. -co for configuration, -t for test, etc.)."
@@ -121,7 +122,7 @@ function LocateMSBuild {
 }
 
 function InstallToolset {
-  if ($ci -or $log) {
+  if ($log) {
     $logCmd = "/bl:" + (Join-Path $LogDir "RestoreToolset.binlog")
   } else {
     $logCmd = ""
@@ -133,7 +134,7 @@ function InstallToolset {
 }
 
 function Build {
-  if ($ci -or $log) {
+  if ($log) {
     $logCmd = "/bl:" + (Join-Path $LogDir "Build.binlog")
   } else {
     $logCmd = ""
@@ -143,7 +144,7 @@ function Build {
   $useCodecov = $ci -and $env:CODECOV_TOKEN -and ($configuration -eq 'Debug') -and ($env:ghprbPullAuthorLogin -ne 'dotnet-bot')
   $useOpenCover = $useCodecov
 
-  & $MsbuildExe $ToolsetBuildProj /m /nologo /clp:Summary /nodeReuse:$nodeReuse /warnaserror /v:$verbosity $logCmd /p:Configuration=$configuration /p:SolutionPath=$solution /p:Restore=$restore /p:QuietRestore=true /p:Build=$build /p:Rebuild=$rebuild /p:Deploy=$deploy /p:Test=$test /p:IntegrationTest=$integrationTest /p:Sign=$sign /p:Pack=$pack /p:UseCodecov=$useCodecov /p:UseOpenCover=$useOpenCover /p:CIBuild=$ci /p:Optimize=$optimize /p:NuGetPackageRoot=$NuGetPackageRoot $properties
+  & $MsbuildExe $ToolsetBuildProj /m /nologo /clp:Summary /nodeReuse:$nodeReuse /warnaserror /v:$verbosity $logCmd /p:Configuration=$configuration /p:SolutionPath=$solution /p:Restore=$restore /p:QuietRestore=true /p:Build=$build /p:Rebuild=$rebuild /p:Deploy=$deploy /p:Test=$test /p:IntegrationTest=$integrationTest /p:Sign=$sign /p:Pack=$pack /p:UseCodecov=$useCodecov /p:UseOpenCover=$useOpenCover /p:CIBuild=$ci /p:EnableIbc=$ibc /p:NuGetPackageRoot=$NuGetPackageRoot $properties
   if ((-not $?) -or ($lastExitCode -ne 0)) {
     throw "Aborting after build failure."
   }
@@ -225,7 +226,7 @@ try {
     Write-Host "Using $MsbuildExe"
   }
 
-  if ($ci -or $log) {
+  if ($log) {
     # Always create these directories so publish 
     # and writes to these folders succeed
     Create-Directory $LogDir
