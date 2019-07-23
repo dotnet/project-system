@@ -74,6 +74,7 @@
 
     <PropertyGroup>
       <TestAssemblyLogFileName>$(TargetName)$(TargetExt).trx</TestAssemblyLogFileName>
+      <TestAssemblyLogFullPath>$(TestResultsDirectory)$(TestAssemblyLogFileName)</TestAssemblyLogFullPath>
       <VSTestExeEnvironment>
         VisualBasicDesignTimeTargetsPath=$(VisualStudioXamlRulesDir)Microsoft.VisualBasic.DesignTime.targets;
         FSharpDesignTimeTargetsPath=$(VisualStudioXamlRulesDir)Microsoft.FSharp.DesignTime.targets;
@@ -94,11 +95,13 @@
       Importance="High"
       />
 
+    <!-- Delete the TRX to avoid warning about overwriting it -->
+    <Delete Files="$(TestAssemblyLogFullPath)" />
+
     <Exec 
       Command='vstest.console.exe /Blame /ResultsDirectory:"$(TestResultsDirectory)\" /Settings:"$(RunSettingsFilePath)" /Logger:trx;LogFileName=$(TestAssemblyLogFileName) "$(TargetPath)"'
       EnvironmentVariables="$(VSTestExeEnvironment)"
       LogStandardErrorAsError="false"
-      IgnoreStandardErrorWarningFormat="true"
       StandardErrorImportance="Low"
       StandardOutputImportance="Low"
       IgnoreExitCode="true"
@@ -118,7 +121,7 @@
       />
     
     <Error
-      Text="Tests failed, see $(TestResultsDirectory)$(TestAssemblyLogFileName) for full results."
+      Text="Tests failed, see $(TestAssemblyLogFullPath) for full results."
       Condition="$(ExitCode) != 0" 
       File="Apex"
       />
