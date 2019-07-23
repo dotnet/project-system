@@ -11,7 +11,15 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-
+    
+    <!-- Toolset -->
+    <PackageReference Include="MicroBuild.Core" ExcludeAssets="All" />
+    <PackageReference Include="MicroBuild.Core.Sentinel" ExcludeAssets="All" />
+    <PackageReference Include="MicroBuild.Plugins.SwixBuild" ExcludeAssets="All"/>
+    <PackageReference Include="Microsoft.Net.Compilers" />
+    <PackageReference Include="RoslynTools.SignTool" />
+    <PackageReference Include="XliffTasks" />
+    
     <!-- CPS -->
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.SDK" />
     <PackageReference Include="Microsoft.VisualStudio.Validation" />
@@ -28,7 +36,6 @@
     <PackageReference Include="Microsoft.NetCore.Analyzers" />
     <PackageReference Include="Microsoft.NetFramework.Analyzers" />
     <PackageReference Include="Roslyn.Diagnostics.Analyzers" />
-    
 
     <!-- MSBuild -->
     <PackageReference Include="Microsoft.Build" />
