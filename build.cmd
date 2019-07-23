@@ -15,6 +15,7 @@ set OptLog=$false
 set OptCI=$false
 set OptPrepareMachine=$false
 set OptSign=$false
+set OptIbc=$false
 
 :ParseArguments
 if    "%1" == "" goto :DoneParsing
@@ -33,6 +34,8 @@ if /I "%1" == "/sign"                 set OptSign=$true                         
 if /I "%1" == "/no-sign"              set OptSign=$false                            && shift && goto :ParseArguments
 if /I "%1" == "/ci"                   set OptCI=$true && set PrepareMachine=$true   && shift && goto :ParseArguments
 if /I "%1" == "/no-ci"                set OptCI=$false && set PrepareMachine=$false && shift && goto :ParseArguments
+if /I "%1" == "/ibc"                  set OptIbc=$true                              && shift && goto :ParseArguments
+if /I "%1" == "/no-ibc"               set OptIbc=$false                             && shift && goto :ParseArguments
 if /I "%1" == "/rootsuffix"           set PropRootSuffix=/p:RootSuffix=%2           && shift && shift && goto :ParseArguments
 if /I "%1" == "/configuration"        set BuildConfiguration=%2                     && shift && shift && goto :ParseArguments
 
@@ -40,7 +43,7 @@ call :Usage && exit /b 1
 
 :DoneParsing
 
-powershell -ExecutionPolicy ByPass -Command "& """%Root%build\Build.ps1""" -configuration %BuildConfiguration% -restore -pack:$true -build:%OptBuild% -rebuild:%OptRebuild% -deploy:%OptDeploy% -test:%OptTest% -integrationTest:%OptIntegrationTest% -log:%OptLog% %PropRootSuffix% -ci:%OptCI% -prepareMachine:%OptPrepareMachine% -sign:%OptSign%"
+powershell -ExecutionPolicy ByPass -Command "& """%Root%build\Build.ps1""" -configuration %BuildConfiguration% -restore -pack:$true -build:%OptBuild% -rebuild:%OptRebuild% -deploy:%OptDeploy% -test:%OptTest% -integrationTest:%OptIntegrationTest% -log:%OptLog% %PropRootSuffix% -ci:%OptCI% -ibc:$OptIbc -prepareMachine:%OptPrepareMachine% -sign:%OptSign%"
 
 exit /b %ERRORLEVEL%
 
@@ -60,6 +63,7 @@ echo     /[no-]diagnostic          Turns on or turns off (default) logging to a 
 echo     /[no-]deploy              Deploy (default) or skip deploying Visual Studio extensions
 echo     /[no-]sign                Sign (default) or skip signing build outputs
 echo     /[no-]ci                  Turns on (default) or turns off a continuous integration build
+echo     /[no-]ibc                 Turns on or turns off (default) IBC (OptProf) optimization data usage
 echo     /rootsuffix ^<hive^>        Hive to use when deploying Visual Studio extensions (default is 'Exp')
 echo     /configuration ^<config^>   Use Debug (default) or Release build configuration
 goto :eof
