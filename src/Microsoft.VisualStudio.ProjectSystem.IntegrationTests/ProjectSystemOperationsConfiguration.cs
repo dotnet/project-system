@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 
 using Microsoft.Test.Apex;
 using Microsoft.Test.Apex.Providers;
@@ -26,7 +25,7 @@ namespace Microsoft.VisualStudio
 
         protected override Type Verifier => typeof(IAssertionVerifier);
 
-        protected override Type Logger => typeof(TestContextLogger);
+        protected override Type Logger => typeof(WarningIgnorerLogger);
 
         protected override void OnOperationsCreated(Operations operations)
         {
@@ -36,13 +35,8 @@ namespace Microsoft.VisualStudio
             verifier.AssertionDelegate = Assert.Fail;
             verifier.FinalFailure += WriteVerificationFailureTree;
 
-            var logger = operations.Get<TestContextLogger>();
-
-            var property = typeof(TestContextLogger).GetProperty("TestContext", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-            if (property == null)
-                throw new InvalidOperationException("Unable to find TestContextLogger.TestContext. Has it been renamed?");
-
-            property.SetValue(logger, TestContext);
+            var logger = operations.Get<WarningIgnorerLogger>();
+            logger.SetTestContext(TestContext);
         }
 
         protected override void OnProbingDirectoriesProviderCreated(IProbingDirectoriesProvider provider)
