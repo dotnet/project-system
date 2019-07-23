@@ -312,33 +312,6 @@
   <data name="&gt;&gt;FxCopAnalyzersPackageNameLabel.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <data name="RefreshButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="RefreshButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>40, 217</value>
-  </data>
-  <data name="RefreshButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>87, 22</value>
-  </data>
-  <data name="RefreshButton.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="RefreshButton.Text" xml:space="preserve">
-    <value>&amp;Refresh</value>
-  </data>
-  <data name="&gt;&gt;RefreshButton.Name" xml:space="preserve">
-    <value>RefreshButton</value>
-  </data>
-  <data name="&gt;&gt;RefreshButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;RefreshButton.Parent" xml:space="preserve">
-    <value>FxCopAnalyzersPanel</value>
-  </data>
-  <data name="&gt;&gt;RefreshButton.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
   <data name="InstalledVersionTextBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>41, 185</value>
   </data>
@@ -361,7 +334,7 @@
     <value>FxCopAnalyzersPanel</value>
   </data>
   <data name="&gt;&gt;InstalledVersionTextBox.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>7</value>
   </data>
   <data name="InstalledVersionLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -391,7 +364,7 @@
     <value>FxCopAnalyzersPanel</value>
   </data>
   <data name="&gt;&gt;InstalledVersionLabel.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>8</value>
   </data>
   <data name="InstallLatestVersionButton.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -424,7 +397,7 @@
     <value>FxCopAnalyzersPanel</value>
   </data>
   <data name="&gt;&gt;InstallLatestVersionButton.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>9</value>
   </data>
   <data name="InstallCustomVersionButton.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -457,7 +430,7 @@
     <value>FxCopAnalyzersPanel</value>
   </data>
   <data name="&gt;&gt;InstallCustomVersionButton.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>10</value>
   </data>
   <data name="UninstallAnalyzersButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -484,7 +457,7 @@
     <value>FxCopAnalyzersPanel</value>
   </data>
   <data name="&gt;&gt;UninstallAnalyzersButton.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>11</value>
   </data>
   <data name="FxCopAnalyzersPanel.Location" type="System.Drawing.Point, System.Drawing">
     <value>-30, 0</value>
@@ -493,7 +466,7 @@
     <value>2, 2, 2, 2</value>
   </data>
   <data name="FxCopAnalyzersPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>448, 253</value>
+    <value>448, 222</value>
   </data>
   <data name="FxCopAnalyzersPanel.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>

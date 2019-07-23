@@ -9,7 +9,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Friend WithEvents InstallCustomVersionButton As System.Windows.Forms.Button
         Friend WithEvents InstallLatestVersionButton As System.Windows.Forms.Button
         Friend WithEvents UninstallAnalyzersButton As System.Windows.Forms.Button
-        Friend WithEvents RefreshButton As System.Windows.Forms.Button
         Friend WithEvents FxCopAnalyzersPackageNameTextBox As System.Windows.Forms.TextBox
         Friend WithEvents FxCopAnalyzersPackageNameLabel As System.Windows.Forms.Label
         Friend WithEvents RoslynAnalyzersLabel As System.Windows.Forms.Label
@@ -38,7 +37,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.RoslynAnalyzersHelpLinkLabel = New System.Windows.Forms.LinkLabel()
             Me.FxCopAnalyzersPackageNameTextBox = New System.Windows.Forms.TextBox()
             Me.FxCopAnalyzersPackageNameLabel = New System.Windows.Forms.Label()
-            Me.RefreshButton = New System.Windows.Forms.Button()
             Me.InstalledVersionTextBox = New System.Windows.Forms.TextBox()
             Me.InstalledVersionLabel = New System.Windows.Forms.Label()
             Me.InstallLatestVersionButton = New System.Windows.Forms.Button()
@@ -56,7 +54,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.FxCopAnalyzersPanel.Controls.Add(Me.RoslynAnalyzersHelpLinkLabel)
             Me.FxCopAnalyzersPanel.Controls.Add(Me.FxCopAnalyzersPackageNameTextBox)
             Me.FxCopAnalyzersPanel.Controls.Add(Me.FxCopAnalyzersPackageNameLabel)
-            Me.FxCopAnalyzersPanel.Controls.Add(Me.RefreshButton)
             Me.FxCopAnalyzersPanel.Controls.Add(Me.InstalledVersionTextBox)
             Me.FxCopAnalyzersPanel.Controls.Add(Me.InstalledVersionLabel)
             Me.FxCopAnalyzersPanel.Controls.Add(Me.InstallLatestVersionButton)
@@ -109,12 +106,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             '
             resources.ApplyResources(Me.FxCopAnalyzersPackageNameLabel, "FxCopAnalyzersPackageNameLabel")
             Me.FxCopAnalyzersPackageNameLabel.Name = "FxCopAnalyzersPackageNameLabel"
-            '
-            'RefreshButton
-            '
-            resources.ApplyResources(Me.RefreshButton, "RefreshButton")
-            Me.RefreshButton.Name = "RefreshButton"
-            Me.RefreshButton.UseVisualStyleBackColor = True
             '
             'InstalledVersionTextBox
             '

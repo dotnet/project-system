@@ -47,11 +47,6 @@
         <target state="new">Run on &amp;live analysis</target>
         <note />
       </trans-unit>
-      <trans-unit id="RefreshButton.Text">
-        <source>&amp;Refresh</source>
-        <target state="new">&amp;Refresh</target>
-        <note />
-      </trans-unit>
       <trans-unit id="RoslynAnalyzersHelpLinkLabel.Text">
         <source>What are the benefits of Roslyn source analyzers?</source>
         <target state="new">What are the benefits of Roslyn source analyzers?</target>

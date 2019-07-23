@@ -80,8 +80,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return HelpKeywords.VBProjPropAssemblyInfo
         End Function
 
-        Private Sub RefreshInstalledFxCopAnalyzersVersionAndButtons()
-            If Not TryGetInstalledFxCopAnalyzersVersion(_installedFxCopAnalyzersVersionString) Then
+        Private Sub RefreshInstalledFxCopAnalyzersVersionAndButtons(Optional restorePackages As Boolean = False)
+            If Not TryGetInstalledFxCopAnalyzersVersion(restorePackages, _installedFxCopAnalyzersVersionString) Then
                 RefreshInstallFxCopAnalyzersButtons(reset:=True)
                 Return
             End If
@@ -108,38 +108,40 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         ' Returns False if attempt to GetInstalledPackages did not succeed
-        Private Function TryGetInstalledFxCopAnalyzersVersion(ByRef versionString As String) As Boolean
+        Private Function TryGetInstalledFxCopAnalyzersVersion(restorePackages As Boolean, ByRef versionString As String) As Boolean
             versionString = Nothing
 
             If DTEProject Is Nothing Then
                 Return False
             End If
 
-            Using session = _threadedWaitDialogFactory.StartWaitDialog(My.Resources.Strings.RestoringPackagesMessage)
-                _packageRestorer.RestorePackages(DTEProject)
+            If restorePackages Then
+                Using session = _threadedWaitDialogFactory.StartWaitDialog(My.Resources.Strings.RestoringPackagesMessage)
+                    _packageRestorer.RestorePackages(DTEProject)
 
-                session.UserCancellationToken.ThrowIfCancellationRequested()
+                    session.UserCancellationToken.ThrowIfCancellationRequested()
 
-                ' Add a small delay to ensure GetInstalledPackages invocation below gets updated packages.
-                Thread.Sleep(2000)
+                    ' Add a small delay to ensure GetInstalledPackages invocation below gets updated packages.
+                    Thread.Sleep(2000)
+                End Using
+            End If
 
-                Dim installedPackages As IEnumerable(Of IVsPackageMetadata)
-                Try
-                    installedPackages = _packageInstallerServices.GetInstalledPackages(DTEProject)
-                Catch
-                    Return False
-                End Try
+            Dim installedPackages As IEnumerable(Of IVsPackageMetadata)
+            Try
+                installedPackages = _packageInstallerServices.GetInstalledPackages(DTEProject)
+            Catch
+                Return False
+            End Try
 
-                For Each package As IVsPackageMetadata In installedPackages
-                    If String.Equals(package.Id, FxCopAnalyzersPackageId, StringComparison.OrdinalIgnoreCase) OrElse
-                       s_childPackageIds.Contains(package.Id) Then
-                        versionString = package.VersionString
-                        Exit For
-                    End If
-                Next
+            For Each package As IVsPackageMetadata In installedPackages
+                If String.Equals(package.Id, FxCopAnalyzersPackageId, StringComparison.OrdinalIgnoreCase) OrElse
+                   s_childPackageIds.Contains(package.Id) Then
+                    versionString = package.VersionString
+                    Exit For
+                End If
+            Next
 
-                Return True
-            End Using
+            Return True
         End Function
 
         Private Sub InstallLatestVersionButton_Click(sender As Object, e As EventArgs) Handles InstallLatestVersionButton.Click
@@ -151,7 +153,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 _installedFxCopAnalyzersVersionString = Nothing
             End Try
 
-            RefreshInstalledFxCopAnalyzersVersionAndButtons()
+            RefreshInstalledFxCopAnalyzersVersionAndButtons(restorePackages:=True)
 
             If _installedFxCopAnalyzersVersionString Is Nothing Then
                 DesignerFramework.DesignUtil.ShowMessage(ServiceProvider, My.Resources.Strings.FxCopAnalyzersInstallFailedMessage, DesignerFramework.DesignUtil.GetDefaultCaption(ServiceProvider), MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -168,7 +170,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Catch
             End Try
 
-            RefreshInstalledFxCopAnalyzersVersionAndButtons()
+            RefreshInstalledFxCopAnalyzersVersionAndButtons(restorePackages:=True)
 
             If _installedFxCopAnalyzersVersionString IsNot Nothing Then
                 DesignerFramework.DesignUtil.ShowMessage(ServiceProvider, String.Format(My.Resources.Strings.FxCopAnalyzersUninstallFailedMessage, versionText), DesignerFramework.DesignUtil.GetDefaultCaption(ServiceProvider), MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -178,7 +180,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Sub InstallCustomVersionButton_Click(sender As Object, e As EventArgs) Handles InstallCustomVersionButton.Click
             Debug.Assert(_nugetPackage IsNot Nothing)
 
-            ' Reset and disable all the buttons (except Refresh) as we are about to navigate
+            ' Reset and disable all the buttons as we are about to navigate
             ' away from this page to the NuGet Package manager.
             RefreshInstallFxCopAnalyzersButtons(reset:=True)
 
@@ -197,13 +199,17 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             task.Start()
         End Sub
 
-        Private Sub RefreshButton_Click(sender As Object, e As EventArgs) Handles RefreshButton.Click
-            RefreshInstalledFxCopAnalyzersVersionAndButtons()
-        End Sub
-
         Private Sub RoslynAnalyzersLabel_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles RoslynAnalyzersHelpLinkLabel.LinkClicked
             RoslynAnalyzersHelpLinkLabel.LinkVisited = True
             Process.Start(RoslynAnalyzersDocumentationLink)
+        End Sub
+
+        Protected Overrides Sub OnPageActivated(activated As Boolean)
+            MyBase.OnPageActivated(activated)
+
+            If activated Then
+                RefreshInstalledFxCopAnalyzersVersionAndButtons()
+            End If
         End Sub
 
         Private NotInheritable Class SearchQuery
