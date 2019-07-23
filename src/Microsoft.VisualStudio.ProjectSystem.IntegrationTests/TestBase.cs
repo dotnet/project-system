@@ -23,20 +23,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             SuppressReloadPrompt = false;
         }
 
+        protected override bool IncludeReferencedAssembliesInHostComposition => false; // Do not add things we reference to the MEF Container
+
         protected override VisualStudioHostConfiguration GetHostConfiguration()
         {
-            var visualStudioHostConfiguration = new VisualStudioHostConfiguration()
-            {
-                CommandLineArguments = $"/rootSuffix {_hiveName}",
-                RestoreUserSettings = false,
-                InheritProcessEnvironment = true,
-                AutomaticallyDismissMessageBoxes = true,
-                DelayInitialVsLicenseValidation = true,
-                ForceFirstLaunch = false,
-                BootstrapInjection = BootstrapInjectionMethod.DteFromROT,
-            };
-
-            return visualStudioHostConfiguration;
+            return new ProjectSystemHostConfiguration(_hiveName);
         }
 
         protected override void DoHostTestCleanup()
