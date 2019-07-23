@@ -141,17 +141,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             var dataSource = mock.Object;
 
-            // Set up all of the mocks in the world
             var threadingService = IProjectThreadingServiceFactory.Create();
-            var projectServices = ProjectServicesFactory.Create(threadingService: threadingService, projectLockService: IProjectLockServiceFactory.Create());
-            var projectService = IProjectServiceFactory.Create(projectServices);
-
-            var configuredProject = ConfiguredProjectFactory.Create(
-                services: ConfiguredProjectServicesFactory.Create(projectService: projectService, threadingService: threadingService),
-                unconfiguredProject: UnconfiguredProjectFactory.Create());
+            var unconfiguredProject = UnconfiguredProjectFactory.Create();
+            var unconfiguredProjectServices = IUnconfiguredProjectServicesFactory.Create(
+                    projectService: IProjectServiceFactory.Create(
+                        services: ProjectServicesFactory.Create(
+                            threadingService: threadingService)));
 
             // Create our class under test
-            return new DesignTimeInputsFileWatcher(configuredProject, dataSource, IVsServiceFactory.Create<SVsFileChangeEx, Shell.IVsAsyncFileChangeEx>(fileChangeService));
+            return new DesignTimeInputsFileWatcher(unconfiguredProject, unconfiguredProjectServices, threadingService, dataSource, IVsServiceFactory.Create<SVsFileChangeEx, Shell.IVsAsyncFileChangeEx>(fileChangeService));
         }
     }
 }
