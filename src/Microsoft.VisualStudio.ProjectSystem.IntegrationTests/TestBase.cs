@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 InheritProcessEnvironment = true,
                 AutomaticallyDismissMessageBoxes = true,
                 DelayInitialVsLicenseValidation = true,
-                ForceFirstLaunch = true,
+                ForceFirstLaunch = false,
                 BootstrapInjection = BootstrapInjectionMethod.DteFromROT,
             };
 
