@@ -3,6 +3,7 @@
 using System;
 using System.IO;
 
+using Microsoft.Test.Apex;
 using Microsoft.Test.Apex.VisualStudio;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -28,6 +29,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         protected override VisualStudioHostConfiguration GetHostConfiguration()
         {
             return new ProjectSystemHostConfiguration(_hiveName);
+        }
+
+        protected override OperationsConfiguration GetOperationsConfiguration()
+        {
+            return new ProjectSystemOperationsConfiguration(TestContext);
         }
 
         protected override void DoHostTestCleanup()

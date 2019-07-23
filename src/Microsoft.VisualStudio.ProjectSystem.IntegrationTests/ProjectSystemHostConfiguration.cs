@@ -9,6 +9,14 @@ namespace Microsoft.VisualStudio
 {
     internal class ProjectSystemHostConfiguration : VisualStudioHostConfiguration
     {
+        // This combined with TestBase.IncludeReferencedAssembliesInHostComposition set to false, deliberately limit
+        // the number of assemblies added to the composition to reduce MEF composition errors in the build log.
+        internal static readonly string[] CompositionAssemblyPaths = new[] {
+                    typeof(VisualStudioHostConfiguration).Assembly.Location,        // Microsoft.Test.Apex.VisualStudio
+                    typeof(HostConfiguration).Assembly.Location,                    // Microsoft.Test.Apex.Framework
+                    typeof(ProjectSystemHostConfiguration).Assembly.Location        // This assembly
+                    };
+
         public ProjectSystemHostConfiguration(string rootSuffix)
         {
             Assumes.NotNullOrEmpty(rootSuffix);
@@ -22,17 +30,6 @@ namespace Microsoft.VisualStudio
             BootstrapInjection = BootstrapInjectionMethod.DteFromROT;
         }
 
-        public override IEnumerable<string> CompositionAssemblies
-        {
-            get
-            {
-                // This combined with TestBase.IncludeReferencedAssembliesInHostComposition set to false, deliberately limit
-                // the number of assemblies added to the composition to reduce MEF composition errors in the build log.
-                return new[] {
-                    typeof(VisualStudioHostConfiguration).Assembly.Location,        // Microsoft.Test.Apex.VisualStudio
-                    typeof(HostConfiguration).Assembly.Location                     // Microsoft.Test.Apex.Framework
-                };
-            }
-        }
+        public override IEnumerable<string> CompositionAssemblies => CompositionAssemblyPaths;
     }
 }
