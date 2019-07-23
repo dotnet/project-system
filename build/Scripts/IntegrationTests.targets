@@ -43,7 +43,13 @@
   
   <DataCollectionRunSettings>
     <DataCollectors>
-      <DataCollector friendlyName="Screen and Voice Recorder" uri="datacollector://Microsoft/DevDiv/VideoRecorder/2.0" assemblyQualifiedName="Microsoft.DevDiv.Validation.MediaRecorder.Collector, Microsoft.DevDiv.Validation.MediaRecorder.Collector.VideoRecorderDataCollector, Version=15.0.0.0, Culture=neutral, PublicKeyToken=null" enabled="true"/>
+      <DataCollector friendlyName="Screen and Voice Recorder" uri="datacollector://Microsoft/DevDiv/VideoRecorder/2.0" assemblyQualifiedName="Microsoft.DevDiv.Validation.MediaRecorder.Collector, Microsoft.DevDiv.Validation.MediaRecorder.Collector.VideoRecorderDataCollector, Version=15.0.0.0, Culture=neutral, PublicKeyToken=null" enabled="true">
+        <Configuration>
+          <MediaRecorder>
+            <AudioRecorder enabled="false" />
+          </MediaRecorder>
+        </Configuration>
+      </DataCollector>
     </DataCollectors>
   </DataCollectionRunSettings>
   
