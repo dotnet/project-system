@@ -45,12 +45,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         private ITargetBlock<IProjectVersionedValue<DesignTimeInputs>>? _actionBlock;
 
         [ImportingConstructor]
-        public DesignTimeInputsFileWatcher(ConfiguredProject project,
+        public DesignTimeInputsFileWatcher(UnconfiguredProject project,
+                                           IUnconfiguredProjectServices unconfiguredProjectServices,
+                                           IProjectThreadingService threadingService,
                                            IDesignTimeInputsDataSource designTimeInputsDataSource,
                                            IVsService<SVsFileChangeEx, IVsAsyncFileChangeEx> fileChangeService)
-             : base(project.Services, synchronousDisposal: true, registerDataSource: false)
+             : base(unconfiguredProjectServices, synchronousDisposal: true, registerDataSource: false)
         {
-            _threadingService = project.Services.ThreadingPolicy;
+            _threadingService = threadingService;
             _designTimeInputsDataSource = designTimeInputsDataSource;
             _fileChangeService = fileChangeService;
         }
