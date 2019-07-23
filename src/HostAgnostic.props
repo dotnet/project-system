@@ -53,7 +53,7 @@
     
   </ItemGroup>
 
-  <ItemGroup Condition="'$(IsTestProject)' == 'true'" >
+  <ItemGroup Condition="'$(IsUnitTestProject)' == 'true'" >
     <PackageReference Include="Moq" />
     <PackageReference Include="xunit.runner.visualstudio" />
     <PackageReference Include="xunit.runner.console" />
