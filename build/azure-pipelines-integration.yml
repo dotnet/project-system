@@ -20,11 +20,18 @@ jobs:
         _configuration: Release
   timeoutInMinutes: 60
   steps:
-    - script: $(Build.SourcesDirectory)\build\IntegrationCIBuild.cmd -configuration $(_configuration) -prepareMachine
+    - script: $(Build.SourcesDirectory)\build\IntegrationCIBuild.cmd -configuration $(_configuration) -prepareMachine -log
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\log'
         ArtifactName: '$(_configuration) Binary Logs'
+        publishLocation: Container
+      continueOnError: true
+      condition: failed()
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\tmp'
+        ArtifactName: '$(_configuration) Temporary Directory'
         publishLocation: Container
       continueOnError: true
       condition: failed()
