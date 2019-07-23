@@ -52,11 +52,6 @@
         <target state="new">&amp;Refresh</target>
         <note />
       </trans-unit>
-      <trans-unit id="RoslynAnalyzersLineLabel.Text">
-        <source>Label1</source>
-        <target state="new">Label1</target>
-        <note />
-      </trans-unit>
       <trans-unit id="RoslynAnalyzersHelpLinkLabel.Text">
         <source>What are the benefits of Roslyn source analyzers?</source>
         <target state="new">What are the benefits of Roslyn source analyzers?</target>

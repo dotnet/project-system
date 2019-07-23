@@ -16,6 +16,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Const NugetFeed As String = "https://packages.nuget.org/api/v2"
         Private Const FxCopAnalyzersPackageId As String = "Microsoft.CodeAnalysis.FxCopAnalyzers"
+        Private Const NuGetPackageManagerPackageGuid As String = "5fcc8577-4feb-4d04-ad72-d6c629b083cc"
+        Private Const NuGetPackageManagerSearchProviderGuid As String = "042C2B4B-C7F7-49DB-B7A2-402EB8DC7892"
+        Private Const RoslynAnalyzersDocumentationLink As String = "https://docs.microsoft.com/visualstudio/code-quality/roslyn-analyzers-overview"
 
         Private Shared ReadOnly s_latestStableVersion As Version = New Version(2, 9, 3)
         Private Shared ReadOnly s_childPackageIds As HashSet(Of String) = New HashSet(Of String)(
@@ -54,7 +57,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             _threadedWaitDialogFactory = CType(ServiceProvider.GetService(GetType(SVsThreadedWaitDialogFactory)), IVsThreadedWaitDialogFactory)
 
             Dim shell = CType(ServiceProvider.GetService(GetType(SVsShell)), IVsShell)
-            Dim nugetGuid = New Guid("5fcc8577-4feb-4d04-ad72-d6c629b083cc")
+            Dim nugetGuid = New Guid(NuGetPackageManagerPackageGuid)
             shell?.LoadPackage(nugetGuid, _nugetPackage)
 
             RefreshInstalledFxCopAnalyzersVersionAndButtons()
@@ -129,7 +132,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                 For Each package As IVsPackageMetadata In installedPackages
                     If String.Equals(package.Id, FxCopAnalyzersPackageId, StringComparison.OrdinalIgnoreCase) OrElse
-                       s_childPackageIds.Contains(package.Id, StringComparer.OrdinalIgnoreCase) Then
+                       s_childPackageIds.Contains(package.Id) Then
                         versionString = package.VersionString
                         Exit For
                     End If
@@ -187,7 +190,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ' out that string and populate their search box with it.
 
             Dim extensionProvider = CType(_nugetPackage, IVsPackageExtensionProvider)
-            Dim extensionGuid = New Guid("042C2B4B-C7F7-49DB-B7A2-402EB8DC7892")
+            Dim extensionGuid = New Guid(NuGetPackageManagerSearchProviderGuid)
             Dim emptyGuid = Guid.Empty
             Dim searchProvider = CType(extensionProvider.CreateExtensionInstance(emptyGuid, extensionGuid), IVsSearchProvider)
             Dim task = searchProvider.CreateSearch(dwCookie:=1, pSearchQuery:=SearchQuery.FxCopAnalyzersQueryInstance, pSearchCallback:=SearchQuery.FxCopAnalyzersQueryInstance)
@@ -200,7 +203,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Sub RoslynAnalyzersLabel_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles RoslynAnalyzersHelpLinkLabel.LinkClicked
             RoslynAnalyzersHelpLinkLabel.LinkVisited = True
-            Process.Start("https://docs.microsoft.com/visualstudio/code-quality/roslyn-analyzers-overview")
+            Process.Start(RoslynAnalyzersDocumentationLink)
         End Sub
 
         Private NotInheritable Class SearchQuery
