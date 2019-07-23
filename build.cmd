@@ -57,9 +57,9 @@ echo     /[no-]integration         Run or skip (default) integration tests
 echo.
 echo   Build options:
 echo     /[no-]diagnostic          Turns on or turns off (default) logging to a binlog
-echo     /rootsuffix ^<hive^>        Hive to use when deploying Visual Studio extensions (default is 'Exp')
 echo     /[no-]deploy              Deploy (default) or skip deploying Visual Studio extensions
-echo     /configuration ^<config^>   Use Debug (default) or Release build configuration
 echo     /[no-]sign                Sign (default) or skip signing build outputs
 echo     /[no-]ci                  Turns on (default) or turns off a continuous integration build
+echo     /rootsuffix ^<hive^>        Hive to use when deploying Visual Studio extensions (default is 'Exp')
+echo     /configuration ^<config^>   Use Debug (default) or Release build configuration
 goto :eof
