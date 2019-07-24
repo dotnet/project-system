@@ -146,6 +146,7 @@
     <!-- Integration Tests -->
     <PackageReference Update="MSTest.TestFramework"                                                   Version="2.0.0-beta4" />
     <PackageReference Update="MSTest.TestAdapter"                                                     Version="2.0.0-beta4" />
+    <PackageReference Update="Microsoft.TestPlatform"                                                 Version="16.2.0" />
                                                                                                       
     <PackageReference Update="Microsoft.DotNet.Test.ProjectTemplates.1.x"                             Version="1.0.0-beta2-20170629-269" />
     <PackageReference Update="Microsoft.DotNet.Common.ProjectTemplates.1.x"                           Version="1.0.0-beta2-20170629-269" />
