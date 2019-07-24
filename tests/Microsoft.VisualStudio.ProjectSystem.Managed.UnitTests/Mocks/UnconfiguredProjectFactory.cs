@@ -17,6 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public static UnconfiguredProject Create(object? hostObject = null, string? filePath = null,
                                                  IProjectConfigurationsService? projectConfigurationsService = null,
                                                  ConfiguredProject? configuredProject = null, Encoding? projectEncoding = null,
+                                                 IProjectAsynchronousTasksService? projectAsynchronousTasksService = null,
                                                  IProjectCapabilitiesScope? scope = null)
         {
             var service = IProjectServiceFactory.Create();
@@ -32,6 +33,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var activeConfiguredProjectProvider = IActiveConfiguredProjectProviderFactory.Create(getActiveConfiguredProject: () => configuredProject);
             unconfiguredProjectServices.Setup(u => u.ActiveConfiguredProjectProvider)
                                        .Returns(activeConfiguredProjectProvider);
+
+            unconfiguredProjectServices.Setup(u => u.ProjectAsynchronousTasks)
+                                       .Returns(projectAsynchronousTasksService!);
 
             var project = new Mock<UnconfiguredProject>();
             project.Setup(u => u.ProjectService)
