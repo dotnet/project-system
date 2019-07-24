@@ -133,7 +133,7 @@
       />
 
     <Error
-      Text="The test runner $(VSTestExe) failed with error level $(VSTestExeExitCode) and failed to produce any results. See Build.binlog for more information."
+      Text="Attempting to run the test runner $(VSTestExe) failed with error level $(VSTestExeExitCode) and failed to produce any results. Use 'build.cmd /diagnostic' and consult 'log\Build.binlog' for more information."
       Condition="$(VSTestExeExitCode) != 0 AND !Exists('$(TrxLogFilePath)')"
       File="Apex"
       />

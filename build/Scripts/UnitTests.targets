@@ -25,6 +25,8 @@
 
     <MakeDir Directories="$(TestResultsDirectory)" />
 
+    <Delete Files="$(XmlTestResultsFile);$(HtmlTestResultsFile)" />
+    
     <!-- xUnit writes to STDERR (test name) and STDOUT (error message, stack). STDERR gets logged as an error.  -->
     <Exec 
       Command='"$(XUnitExe)" "$(TargetPath)" -quiet -nologo -noshadow -parallel all -xml "$(XmlTestResultsFile)" -html "$(HtmlTestResultsFile)"'
@@ -47,13 +49,13 @@
 
     <!-- Exec.LogStandardErrorAsError does not fail the build, we need to output explicit error to do that. -->
     <Error
-     Text="Tests failed, see $(HtmlTestResultsFile) for full results."
-     Condition="$(ExitCode) != 0 AND Exists('$(HtmlTestResultsFile)')"
-     File="xUnit"
+      Text="Tests failed, see $(HtmlTestResultsFile) for full results."
+      Condition="$(ExitCode) != 0 AND Exists('$(HtmlTestResultsFile)')"
+      File="xUnit"
       />
 
     <Error
-      Text="The test runner $(XUnitExe) failed with error level $(ExitCode) and failed to produce any results. See Build.binlog for more information."
+      Text="Attempting to run the test runner $(XUnitExe) failed with error level $(ExitCode) and failed to produce any results. Use 'build.cmd /diagnostic' and consult 'log\Build.binlog' for more information."
       Condition="$(ExitCode) != 0 AND !Exists('$(HtmlTestResultsFile)')"
       File="xUnit"
       />
