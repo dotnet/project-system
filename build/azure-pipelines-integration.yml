@@ -1,10 +1,9 @@
+# NOTE we do not currently trigger PR status. Once we stablise the integration tests we will enable PR triggers too.
+pr: none
+
 # Branches that trigger a build on commit
 trigger:
-- feature/integration-tests
-
- # Branches that trigger builds on PR
-pr:
-- feature/integration-tests
+- master
 
 jobs:
 - job: Visual_Studio
