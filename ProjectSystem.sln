@@ -60,6 +60,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencie
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Documentation", "docs\Documentation.csproj", "{C51202A5-0C1F-4146-8059-5F7B8A048232}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{52A4E4D7-5658-4BD7-A8FC-2D7ABB5A8AFF}"
+	ProjectSection(SolutionItems) = preProject
+		build\Scripts\IntegrationTests.targets = build\Scripts\IntegrationTests.targets
+		build\Scripts\Stubs.targets = build\Scripts\Stubs.targets
+		build\Scripts\UnitTests.targets = build\Scripts\UnitTests.targets
+		build\Scripts\Workarounds.targets = build\Scripts\Workarounds.targets
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -132,6 +140,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{E09AD054-22FC-4E70-8889-0F3DCF1267C7} = {DD7EF107-AAD4-4C43-8A58-0DC1BC614ADE}
 		{6A95E22E-6D85-4494-AEB5-FCD60A8E88A3} = {DD7EF107-AAD4-4C43-8A58-0DC1BC614ADE}
+		{52A4E4D7-5658-4BD7-A8FC-2D7ABB5A8AFF} = {DD7EF107-AAD4-4C43-8A58-0DC1BC614ADE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6B652C28-D1FD-4885-A0CA-4704C54E78E7}
