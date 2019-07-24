@@ -53,23 +53,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private static string GetVsHiveName(TestContext context)
         {
+            // Get hive from .runsettings if present (command-line)
             string rootSuffix = (string)context.Properties["VsRootSuffix"];
             if (!string.IsNullOrEmpty(rootSuffix))
                 return rootSuffix;
 
+            // Otherwise, respect the environment, failing that use the default
             return Environment.GetEnvironmentVariable("RootSuffix") ?? "Exp";
         }
 
         private static void SetTestInstallationDirectoryIfUnset()
         {
             string installationUnderTest = "VisualStudio.InstallationUnderTest.Path";
-
             if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable(installationUnderTest)))
             {
                 string vsDirectory = Environment.GetEnvironmentVariable("VSAPPIDDIR");
                 string devenv = Environment.GetEnvironmentVariable("VSAPPIDNAME");
                 if (!string.IsNullOrEmpty(vsDirectory) && !string.IsNullOrEmpty(devenv))
-                {
+                {   // Use the same version we're running inside (Test Explorer)
+
                     Environment.SetEnvironmentVariable(installationUnderTest, Path.Combine(vsDirectory, devenv));
                 }
             }
