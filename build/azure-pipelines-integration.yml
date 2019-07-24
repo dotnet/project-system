@@ -15,11 +15,9 @@ jobs:
     matrix:
       Debug:
         _configuration: Debug
-      Release:
-        _configuration: Release
   timeoutInMinutes: 60
   steps:
-    - script: $(Build.SourcesDirectory)\build\IntegrationCIBuild.cmd -configuration $(_configuration) -prepareMachine -log
+    - script: $(Build.SourcesDirectory)\build.cmd /build /no-test /integration /diagnostic /ci /no-sign /no-deploy /configuration $(_configuration)
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\log'
@@ -58,7 +56,7 @@ jobs:
     - task: PublishTestResults@2
       inputs:
         testRunner: 'VSTest'
-        testResultsFiles: '**/*.trx' 
+        testResultsFiles: '**/*.trx'
         searchFolder: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\TestResults'
         configuration: '$(_configuration)'
         publishRunAttachments: true
