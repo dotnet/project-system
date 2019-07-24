@@ -42,6 +42,16 @@ namespace Microsoft.VisualStudio.Telemetry
         /// </summary>
         public static readonly string SDKVersion = BuildEventName("SDKVersion");
 
+        /// <summary>
+        ///     Indicates that the TempPE compilation queue has been processed
+        /// </summary>
+        public static readonly string TempPEProcessQueue = BuildEventName("TempPE/ProcessCompileQueue");
+
+        /// <summary>
+        ///     Indicates that the TempPE compilation has occurred on demand from a designer
+        /// </summary>
+        public static readonly string TempPECompileOnDemand = BuildEventName("TempPE/CompileOnDemand");
+
         private static string BuildEventName(string eventName)
         {
             return Prefix + "/" + eventName.ToLowerInvariant();
