@@ -6,6 +6,7 @@ using System.IO;
 using Microsoft.Test.Apex;
 using Microsoft.Test.Apex.VisualStudio;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Omni.Logging;
 
 #nullable disable
 
@@ -34,6 +35,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         protected override OperationsConfiguration GetOperationsConfiguration()
         {
             return new ProjectSystemOperationsConfiguration(TestContext);
+        }
+
+        [TestInitialize]
+        public override void TestInitialize()
+        {
+            // Make the omni log test specific and prevent incremental logging
+            Log.ResetLog($"{GetType().Name}.{TestContext.TestName}");
+
+            base.TestInitialize();
         }
 
         protected override void DoHostTestCleanup()
