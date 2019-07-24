@@ -94,7 +94,7 @@ function InstallVSIX([string] $vsixExpInstalleExe, [string] $rootsuffix, [string
 }
 
 function LocateVisualStudio {
-  if ($InVSEnvironment) {
+  if ($InVSEnvironment -and $log) {
     Write-Host "Using Visual Studio from VSINSTALLDIR environment variable: $env:VSINSTALLDIR"
     return $env:VSINSTALLDIR
   }
@@ -107,7 +107,9 @@ function LocateVisualStudio {
     throw "Failed to locate Visual Studio (exit code '$lastExitCode')."
   }
 
-  Write-Host "Using VS version $vsVersion in directory: $vsInstallDir"
+  if ($log) {
+    Write-Host "Using VS version $vsVersion in directory: $vsInstallDir"
+  }
   return $vsInstallDir
 }
 
@@ -124,7 +126,9 @@ function LocateMSBuild {
     throw "Failed to locate MSBuild."
   }
 
-  Write-Host "Using MSBuild executable: $msbuildExe"
+  if ($log) {
+    Write-Host "Using MSBuild executable: $msbuildExe"
+  }
   return $msbuildExe
 }
 
