@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -123,7 +124,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             watcher.Dispose();
 
             // Make sure we watched all of the files we should
-            Assert.Equal(watchedFiles, fileChangeService.UniqueFilesWatched.ToArray());
+            Assert.Equal(watchedFiles, fileChangeService.UniqueFilesWatched.Select(f => Path.GetFileName(f)).ToArray());
 
             // Should clean up and unwatch everything
             Assert.Empty(fileChangeService.WatchedFiles.ToArray());
@@ -142,7 +143,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             var dataSource = mock.Object;
 
             var threadingService = IProjectThreadingServiceFactory.Create();
-            var unconfiguredProject = UnconfiguredProjectFactory.Create();
+            var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: @"C:\MyProject\MyProject.csproj");
             var unconfiguredProjectServices = IUnconfiguredProjectServicesFactory.Create(
                     projectService: IProjectServiceFactory.Create(
                         services: ProjectServicesFactory.Create(
