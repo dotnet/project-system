@@ -12,7 +12,7 @@
   
   <Target 
     Name="IntegrationTest" 
-    DependsOnTargets="GenerateRunSettings;ExecuteTests;ReportTestResults" 
+    DependsOnTargets="GenerateRunSettings;ExecuteTests;CleanupTestResults;ReportTestResults" 
     />
 
   <PropertyGroup>
@@ -137,6 +137,17 @@
       Condition="$(VSTestExeExitCode) != 0 AND !Exists('$(TrxLogFilePath)')"
       File="Apex"
       />
+
+  </Target>
+
+  <Target Name="CleanupTestResults">
+
+    <ItemGroup>
+      <UnneededTestResultsFile Include="$(TestResultsDirectory)\**\*.trmx" />       <!-- Metadata file for screen capture that contains nothing inside of it -->
+      <UnneededTestResultsFile Include="$(TestResultsDirectory)\**\*RawXml.xml" />  <!-- Unstructured XML version of OmniLog.html that we do not use -->
+    </ItemGroup>
+
+    <Delete Files="@(UnneededTestResultsFile)" />
 
   </Target>
 
