@@ -17,12 +17,15 @@
 
   <PropertyGroup>
     <TestResultsDirectory>$(ArtifactsTestResultsDir)</TestResultsDirectory>
-    <RunSettingsFilePath>$(IntermediateOutputPath)$(TargetName)$(TargetExt).runsettings</RunSettingsFilePath>
-    <MediaRecorderDirectory>$(PkgMicrosoft_DevDiv_Validation_MediaRecorder)\lib\net461</MediaRecorderDirectory>
+    <RunSettingsFilePath>$(IntermediateOutputPath)$(TargetName)$(TargetExt).runsettings</RunSettingsFilePath>    
   </PropertyGroup>
 
   <Target Name="GenerateRunSettings">
 
+    <PropertyGroup>
+      <MediaRecorderDirectory>$(PkgMicrosoft_DevDiv_Validation_MediaRecorder)\lib\net461</MediaRecorderDirectory>
+    </PropertyGroup>
+    
     <Error
       Text="The project must be restored before running tests"
       File="$(MSBuildProjectFile)"
