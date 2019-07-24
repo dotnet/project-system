@@ -12,7 +12,7 @@
   
   <Target 
     Name="IntegrationTest" 
-    DependsOnTargets="GenerateRunSettings;ExecuteTests" 
+    DependsOnTargets="GenerateRunSettings;ExecuteTests;ReportTestResults" 
     />
 
   <PropertyGroup>
@@ -88,13 +88,13 @@
 
     <MakeDir Directories="$(TestResultsDirectory)" />
 
-    <Error 
+    <Error
       Text="The project must built before running tests"
       File="$(MSBuildProjectFile)"
       Condition="!Exists('$(TargetPath)')"
       />
 
-    <Message 
+    <Message
       Text="$(MSBuildProjectName) -> Running tests (this might take a while)..."
       Importance="High"
       />
@@ -102,32 +102,36 @@
     <!-- Delete the TRX to avoid warning about overwriting it -->
     <Delete Files="$(TestAssemblyLogFullPath)" />
 
-    <Exec 
+    <Exec
       Command='"$(VSTestExe)" /Blame /ResultsDirectory:"$(TestResultsDirectory)\" /Settings:"$(RunSettingsFilePath)" /Logger:trx;LogFileName=$(TestAssemblyLogFileName) "$(TargetPath)"'
       EnvironmentVariables="$(VSTestExeEnvironment)"
       LogStandardErrorAsError="true"
       StandardOutputImportance="Low"
       IgnoreExitCode="true"
       >
-      
-      <Output 
-        TaskParameter="ExitCode" 
-        PropertyName="ExitCode"
+
+      <Output
+        TaskParameter="ExitCode"
+        PropertyName="VSTestExeExitCode"
         />
-      
+
     </Exec>
+  </Target>
+
+  <Target Name="ReportTestResults">
+    
     <Message
       Text="$(MSBuildProjectName) -> Tests succeeded"
-      Condition="$(ExitCode) == 0"
+      Condition="$(VSTestExeExitCode) == 0"
       Importance="High"
       />
 
     <Error
       Text="Tests failed, see $(TestAssemblyLogFullPath) for full results."
-      Condition="$(ExitCode) != 0"
+      Condition="$(VSTestExeExitCode) != 0"
       File="Apex"
       />
-    
+
   </Target>
 
 </Project>
