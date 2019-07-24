@@ -76,6 +76,7 @@
   <Target Name="ExecuteTests">
 
     <PropertyGroup>
+      <VSTestExe>$(PkgMicrosoft_TestPlatform)\tools\net451\Common7\IDE\Extensions\TestPlatform\vstest.console.exe</VSTestExe>
       <TestAssemblyLogFileName>$(TargetName)$(TargetExt).trx</TestAssemblyLogFileName>
       <TestAssemblyLogFullPath>$(TestResultsDirectory)$(TestAssemblyLogFileName)</TestAssemblyLogFullPath>
       <VSTestExeEnvironment>
@@ -102,7 +103,7 @@
     <Delete Files="$(TestAssemblyLogFullPath)" />
 
     <Exec 
-      Command='$(PkgMicrosoft_TestPlatform)\tools\net451\Common7\IDE\Extensions\TestPlatform\vstest.console.exe /Blame /ResultsDirectory:"$(TestResultsDirectory)\" /Settings:"$(RunSettingsFilePath)" /Logger:trx;LogFileName=$(TestAssemblyLogFileName) "$(TargetPath)"'
+      Command='"$(VSTestExe)" /Blame /ResultsDirectory:"$(TestResultsDirectory)\" /Settings:"$(RunSettingsFilePath)" /Logger:trx;LogFileName=$(TestAssemblyLogFileName) "$(TargetPath)"'
       EnvironmentVariables="$(VSTestExeEnvironment)"
       LogStandardErrorAsError="true"
       StandardOutputImportance="Low"
@@ -115,19 +116,18 @@
         />
       
     </Exec>
-
-    <Message 
+    <Message
       Text="$(MSBuildProjectName) -> Tests succeeded"
       Condition="$(ExitCode) == 0"
       Importance="High"
       />
-    
+
     <Error
       Text="Tests failed, see $(TestAssemblyLogFullPath) for full results."
-      Condition="$(ExitCode) != 0" 
+      Condition="$(ExitCode) != 0"
       File="Apex"
       />
-
+    
   </Target>
 
 </Project>
