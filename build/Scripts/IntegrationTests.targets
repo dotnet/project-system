@@ -126,6 +126,7 @@
       Importance="High"
       />
 
+    <!-- Exec.LogStandardErrorAsError does not fail the build, we need to output explicit error to do that. -->
     <Error
       Text="Tests failed, see $(TrxLogFilePath) for full results."
       Condition="$(VSTestExeExitCode) != 0 AND Exists('$(TrxLogFilePath)')"
