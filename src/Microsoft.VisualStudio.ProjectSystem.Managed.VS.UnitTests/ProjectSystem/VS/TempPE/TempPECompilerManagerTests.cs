@@ -21,7 +21,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 {
     public class TempPECompilerManagerTests : IDisposable
     {
-        private string? _lastProjectFolder;
         private string? _lastIntermediateOutputPath;
         private readonly string _projectFolder = @"C:\MyProject";
         private string _intermediateOutputPath = "MyOutput";
@@ -248,25 +247,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 .Returns(fileWatcherSource.SourceBlock);
 
             var threadingService = IProjectThreadingServiceFactory.Create();
-
-            var projectServices = ProjectServicesFactory.Create(threadingService: threadingService, projectLockService: IProjectLockServiceFactory.Create());
-            var projectService = IProjectServiceFactory.Create(projectServices);
-
-            var projectSubscriptionService = IProjectSubscriptionServiceFactory.Create();
-
-            var configuredProjectServices = ConfiguredProjectServicesFactory.Create(projectService: projectService, projectAsynchronousTasksService: IProjectAsynchronousTasksServiceFactory.Create());
-            var configuredProject = ConfiguredProjectFactory.Create(
-                services: configuredProjectServices,
-                unconfiguredProject: UnconfiguredProjectFactory.Create(filePath: Path.Combine(_projectFolder, "Project.csproj")));
+            var projectSubscriptionService = IActiveConfiguredProjectSubscriptionServiceFactory.Create();
+            var activeWorkspaceProjectContextHost = IActiveWorkspaceProjectContextHostFactory.ImplementProjectContextAccessor(IWorkspaceProjectContextAccessorFactory.Create());
+            var unconfiguredProject = UnconfiguredProjectFactory.Create(
+                filePath: Path.Combine(_projectFolder, "MyTestProj.csproj"),
+                projectAsynchronousTasksService: IProjectAsynchronousTasksServiceFactory.Create());
 
             var compilerMock = new Mock<ITempPECompiler>();
             compilerMock.Setup(c => c.CompileAsync(It.IsAny<IWorkspaceProjectContext>(), It.IsAny<string>(), It.IsAny<ISet<string>>(), It.IsAny<CancellationToken>()))
                         .Callback((IWorkspaceProjectContext context, string outputFile, ISet<string> filesToCompile, CancellationToken token) => CompilationCallBack(outputFile, filesToCompile))
                         .ReturnsAsync(true);
 
-            _manager = new TempPECompilerManager(configuredProject,
+            _manager = new TempPECompilerManager(unconfiguredProject,
                                       projectSubscriptionService,
-                                      IActiveWorkspaceProjectContextHostFactory.ImplementProjectContextAccessor(IWorkspaceProjectContextAccessorFactory.Create()),
+                                      activeWorkspaceProjectContextHost,
                                       threadingService,
                                       dataSourceMock.Object,
                                       watcherMock.Object,
@@ -336,18 +330,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                                               ""Difference"": {
                                                   ""ChangedProperties"": [ ";
 
-            if (_lastProjectFolder != _projectFolder)
-            {
-                ruleUpdate += @"                        ""ProjectDir"",";
-            }
             if (_lastIntermediateOutputPath != _intermediateOutputPath)
             {
                 ruleUpdate += @"                        ""IntermediateOutputPath"",";
             }
-            // root namespace has changed if its the first time we've sent inputs
-            if (_lastProjectFolder == null)
+            // root namespace and project folder have changed if its the first time we've sent inputs
+            if (_lastIntermediateOutputPath == null)
             {
-                ruleUpdate += @"                        ""RootNamespace""";
+                ruleUpdate += @"                        ""ProjectDir"",
+                                                        ""RootNamespace""";
             }
             ruleUpdate = ruleUpdate.TrimEnd(',');
             ruleUpdate += @"                      ]
@@ -364,7 +355,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                                   }";
             IProjectSubscriptionUpdate subscriptionUpdate = IProjectSubscriptionUpdateFactory.FromJson(ruleUpdate);
 
-            _lastProjectFolder = _projectFolder;
             _lastIntermediateOutputPath = _intermediateOutputPath;
 
             // Ensure our input files are in the mock file system
