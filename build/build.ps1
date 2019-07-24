@@ -230,8 +230,6 @@ try {
     Create-Directory $TempDir
     $env:TEMP = $TempDir
     $env:TMP = $TempDir
-
-    Write-Host "Using $MsbuildExe"
   }
 
   if ($log) {
