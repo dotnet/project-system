@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -14,6 +15,7 @@ using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
+using Microsoft.VisualStudio.Telemetry;
 using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.Threading.Tasks;
 
@@ -30,6 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         private readonly IDesignTimeInputsFileWatcher _fileWatcher;
         private readonly ITempPECompiler _compiler;
         private readonly IFileSystem _fileSystem;
+        private readonly ITelemetryService _telemetryService;
         private readonly TaskDelayScheduler _scheduler;
 
         private readonly DisposableBag _disposables = new DisposableBag();
@@ -51,7 +54,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                                      IDesignTimeInputsDataSource inputsDataSource,
                                      IDesignTimeInputsFileWatcher fileWatcher,
                                      ITempPECompiler compiler,
-                                     IFileSystem fileSystem)
+                                     IFileSystem fileSystem,
+                                     ITelemetryService telemetryService)
             : base(threadingService.JoinableTaskContext)
         {
             _project = project;
@@ -61,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             _fileWatcher = fileWatcher;
             _compiler = compiler;
             _fileSystem = fileSystem;
-
+            _telemetryService = telemetryService;
             _scheduler = new TaskDelayScheduler(s_compilationDelayTime, threadingService, CancellationToken.None);
         }
 
@@ -220,6 +224,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         private Task ProcessCompileQueueAsync(CancellationToken token)
         {
+            int compileCount = 0;
+            int initialQueueLength = _filesToCompile.Count;
+            var compileStopWatch = Stopwatch.StartNew();
             return _activeWorkspaceProjectContextHost.OpenContextForWriteAsync(async accessor =>
             {
                 // Grab the next file to compile off the queue
@@ -231,7 +238,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                         return;
                     }
 
-                    token.ThrowIfCancellationRequested();
+                    if (token.IsCancellationRequested)
+                    {
+                        LogTelemetry(true);
+                        return;
+                    }
 
                     // Remove the file from our todo list. If it wasn't there (because it was removed as a design time input while we were busy) we don't need to compile it
                     bool wasInQueue = ThreadingTools.ApplyChangeOptimistically(ref _filesToCompile, fileName, (s, f) => s.Remove(f));
@@ -239,13 +250,38 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                     string outputFileName = await GetOutputFileNameAsync(fileName);
                     if (wasInQueue)
                     {
-                        await CompileDesignTimeInputAsync(accessor.Context, fileName, outputFileName, ignoreFileWriteTime, token);
+                        try
+                        {
+                            if (await CompileDesignTimeInputAsync(accessor.Context, fileName, outputFileName, ignoreFileWriteTime, token))
+                            {
+                                compileCount++;
+                            }
+                        }
+                        catch (OperationCanceledException)
+                        {
+                            LogTelemetry(true);
+                            return;
+                        }
                     }
 
                     // Grab another file off the queue
                     (fileName, ignoreFileWriteTime) = _filesToCompile.FirstOrDefault();
                 }
+
+                LogTelemetry(false);
             });
+
+            void LogTelemetry(bool cancelled)
+            {
+                compileStopWatch.Stop();
+                _telemetryService.PostProperties(TelemetryEventName.TempPEProcessQueue, new[]
+                {
+                    ( TelemetryPropertyName.TempPECompileCount,        (object)compileCount),
+                    ( TelemetryPropertyName.TempPEInitialQueueLength,  initialQueueLength),
+                    ( TelemetryPropertyName.TempPECompileWasCancelled, cancelled),
+                    ( TelemetryPropertyName.TempPECompileDuration,     compileStopWatch.ElapsedMilliseconds)
+                });
+            }
         }
 
         /// <summary>
@@ -266,10 +302,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             string outputFileName = await GetOutputFileNameAsync(fileName);
             // make sure the file is up to date
-            await _activeWorkspaceProjectContextHost.OpenContextForWriteAsync(accessor =>
+            bool compiled = await _activeWorkspaceProjectContextHost.OpenContextForWriteAsync(accessor =>
             {
                 return CompileDesignTimeInputAsync(accessor.Context, fileName, outputFileName, ignoreFileWriteTime: false);
             });
+
+            if (compiled)
+            {
+                _telemetryService.PostEvent(TelemetryEventName.TempPECompileOnDemand);
+            }
 
             return $@"<root>
   <Application private_binpath = ""{Path.GetDirectoryName(outputFileName)}""/>
@@ -283,7 +324,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 </root>";
         }
 
-        private async Task CompileDesignTimeInputAsync(IWorkspaceProjectContext context, string designTimeInput, string outputFileName, bool ignoreFileWriteTime, CancellationToken token = default)
+        private async Task<bool> CompileDesignTimeInputAsync(IWorkspaceProjectContext context, string designTimeInput, string outputFileName, bool ignoreFileWriteTime, CancellationToken token = default)
         {
             HashSet<string> filesToCompile = GetFilesToCompile(designTimeInput);
 
@@ -303,7 +344,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                     catch (UnauthorizedAccessException)
                     { }
                 }
+
+                return true;
             }
+            return false;
         }
 
         private async Task<string> GetOutputFileNameAsync(string designTimeInput)
