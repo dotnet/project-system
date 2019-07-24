@@ -112,7 +112,6 @@ function LocateVisualStudio {
 }
 
 function LocateMSBuild {
-
   # Dev15
   $msbuildExe = Join-Path $vsInstallDir "MSBuild\15.0\Bin\msbuild.exe"
   
@@ -230,8 +229,6 @@ try {
     Create-Directory $TempDir
     $env:TEMP = $TempDir
     $env:TMP = $TempDir
-
-    Write-Host "Using $MsbuildExe"
   }
 
   if ($log) {
