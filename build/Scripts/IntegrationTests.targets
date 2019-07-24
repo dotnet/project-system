@@ -99,7 +99,7 @@
     <Delete Files="$(TestAssemblyLogFullPath)" />
 
     <Exec 
-      Command='vstest.console.exe /Blame /ResultsDirectory:"$(TestResultsDirectory)\" /Settings:"$(RunSettingsFilePath)" /Logger:trx;LogFileName=$(TestAssemblyLogFileName) "$(TargetPath)"'
+      Command='$(PkgMicrosoft_TestPlatform)\tools\net451\Common7\IDE\Extensions\TestPlatform\vstest.console.exe /Blame /ResultsDirectory:"$(TestResultsDirectory)\" /Settings:"$(RunSettingsFilePath)" /Logger:trx;LogFileName=$(TestAssemblyLogFileName) "$(TargetPath)"'
       EnvironmentVariables="$(VSTestExeEnvironment)"
       LogStandardErrorAsError="true"
       StandardOutputImportance="Low"
