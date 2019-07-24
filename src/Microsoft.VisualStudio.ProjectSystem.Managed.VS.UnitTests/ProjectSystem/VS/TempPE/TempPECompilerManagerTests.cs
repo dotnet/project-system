@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -21,7 +21,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 {
     public class TempPECompilerManagerTests : IDisposable
     {
-        private string? _lastProjectFolder;
         private string? _lastIntermediateOutputPath;
         private readonly string _projectFolder = @"C:\MyProject";
         private string _intermediateOutputPath = "MyOutput";
@@ -336,18 +335,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                                               ""Difference"": {
                                                   ""ChangedProperties"": [ ";
 
-            if (_lastProjectFolder != _projectFolder)
-            {
-                ruleUpdate += @"                        ""ProjectDir"",";
-            }
             if (_lastIntermediateOutputPath != _intermediateOutputPath)
             {
                 ruleUpdate += @"                        ""IntermediateOutputPath"",";
             }
-            // root namespace has changed if its the first time we've sent inputs
-            if (_lastProjectFolder == null)
+            // root namespace and project folder have changed if its the first time we've sent inputs
+            if (_lastIntermediateOutputPath == null)
             {
-                ruleUpdate += @"                        ""RootNamespace""";
+                ruleUpdate += @"                        ""ProjectDir"",
+                                                        ""RootNamespace""";
             }
             ruleUpdate = ruleUpdate.TrimEnd(',');
             ruleUpdate += @"                      ]
@@ -364,7 +360,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                                   }";
             IProjectSubscriptionUpdate subscriptionUpdate = IProjectSubscriptionUpdateFactory.FromJson(ruleUpdate);
 
-            _lastProjectFolder = _projectFolder;
             _lastIntermediateOutputPath = _intermediateOutputPath;
 
             // Ensure our input files are in the mock file system
