@@ -18,17 +18,10 @@
   <PropertyGroup>
     <TestResultsDirectory>$(ArtifactsTestResultsDir)</TestResultsDirectory>
     <RunSettingsFilePath>$(IntermediateOutputPath)$(TargetName)$(TargetExt).runsettings</RunSettingsFilePath>
-    <MediaRecorderDirectory>$(PkgMicrosoft_DevDiv_Validation_MediaRecorder)\lib\net461</MediaRecorderDirectory>
   </PropertyGroup>
 
   <Target Name="GenerateRunSettings">
 
-    <Error
-      Text="The project must be restored before running tests"
-      File="$(MSBuildProjectFile)"
-      Condition="!Exists('$(MediaRecorderDirectory)')"
-      />
-    
     <PropertyGroup>
       <RunSettingsContents>
         <![CDATA[
@@ -38,7 +31,7 @@
   </TestRunParameters>
   <RunConfiguration>
     <MaxCpuCount>1</MaxCpuCount>
-    <TestAdaptersPaths>$(MediaRecorderDirectory)</TestAdaptersPaths>
+    
   </RunConfiguration>
   
   <DataCollectionRunSettings>
