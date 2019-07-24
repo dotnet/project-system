@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 
 using Microsoft.Test.Apex.Hosts;
+using Microsoft.Test.Apex.Services.Logging.TestLoggerSinks.OmniLog;
 using Microsoft.Test.Apex.VisualStudio;
 
 namespace Microsoft.VisualStudio
@@ -14,7 +15,8 @@ namespace Microsoft.VisualStudio
         internal static readonly string[] CompositionAssemblyPaths = new[] {
                     typeof(VisualStudioHostConfiguration).Assembly.Location,        // Microsoft.Test.Apex.VisualStudio
                     typeof(HostConfiguration).Assembly.Location,                    // Microsoft.Test.Apex.Framework
-                    typeof(ProjectSystemHostConfiguration).Assembly.Location        // This assembly
+                    typeof(ProjectSystemHostConfiguration).Assembly.Location,       // This assembly
+                    typeof(OmniLogSink).Assembly.Location,                          // Omni
                     };
 
         public ProjectSystemHostConfiguration(string rootSuffix)
