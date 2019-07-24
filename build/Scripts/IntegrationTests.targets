@@ -128,7 +128,13 @@
 
     <Error
       Text="Tests failed, see $(TrxLogFilePath) for full results."
-      Condition="$(VSTestExeExitCode) != 0"
+      Condition="$(VSTestExeExitCode) != 0 AND Exists('$(TrxLogFilePath)')"
+      File="Apex"
+      />
+
+    <Error
+      Text="The test runner $(VSTestExe) failed with error level $(VSTestExeExitCode) and failed to produce any results. See Build.binlog for more information."
+      Condition="$(VSTestExeExitCode) != 0 AND !Exists('$(TrxLogFilePath)')"
       File="Apex"
       />
 
