@@ -8,8 +8,8 @@ trigger:
 jobs:
 - job: Visual_Studio
   pool:
-    name: NetCoreInternal-Pool
-    queue: buildpool.windows.10.amd64.vs2019.pre
+    name: NetCorePublic-Pool
+    queue: buildpool.windows.10.amd64.vs2019.pre.open
   strategy:
     maxParallel: 2
     matrix:
