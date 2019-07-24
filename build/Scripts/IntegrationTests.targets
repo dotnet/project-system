@@ -116,7 +116,7 @@
   </Target>
 
   <Target Name="ReportTestResults">
-    
+
     <Message
       Text="$(MSBuildProjectName) -> Tests succeeded"
       Condition="$(_VSTestConsoleExitCode) == 0"
@@ -124,8 +124,12 @@
       />
 
     <Error
+      Text="The test runner failed with $(_VSTestConsoleExitCode) and did not produce a log file. See Build.binlog for more information." 
+      Condition="$(_VSTestConsoleExitCode) != 0 AND !Exists('$(TrxLogFilePath')" />
+
+    <Error
       Text="Tests failed, see $(TrxLogFilePath) for full results."
-      Condition="$(_VSTestConsoleExitCode) != 0"
+      Condition="$(_VSTestConsoleExitCode) != 0 AND Exists('$(TrxLogFilePath')" 
       File="Apex"
       />
     
