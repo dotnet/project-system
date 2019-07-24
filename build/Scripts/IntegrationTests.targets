@@ -12,17 +12,20 @@
   
   <Target 
     Name="IntegrationTest" 
-    DependsOnTargets="GenerateRunSettings;ExecuteTests" 
+    DependsOnTargets="GenerateRunSettings;ExecuteTests;ReportTestResults" 
     />
 
   <PropertyGroup>
     <TestResultsDirectory>$(ArtifactsTestResultsDir)</TestResultsDirectory>
-    <RunSettingsFilePath>$(IntermediateOutputPath)$(TargetName)$(TargetExt).runsettings</RunSettingsFilePath>
-    <MediaRecorderDirectory>$(PkgMicrosoft_DevDiv_Validation_MediaRecorder)\lib\net461</MediaRecorderDirectory>
+    <RunSettingsFilePath>$(IntermediateOutputPath)$(TargetName)$(TargetExt).runsettings</RunSettingsFilePath>    
   </PropertyGroup>
 
   <Target Name="GenerateRunSettings">
 
+    <PropertyGroup>
+      <MediaRecorderDirectory>$(PkgMicrosoft_DevDiv_Validation_MediaRecorder)\lib\net461</MediaRecorderDirectory>
+    </PropertyGroup>
+    
     <Error
       Text="The project must be restored before running tests"
       File="$(MSBuildProjectFile)"
@@ -73,8 +76,9 @@
   <Target Name="ExecuteTests">
 
     <PropertyGroup>
-      <TestAssemblyLogFileName>$(TargetName)$(TargetExt).trx</TestAssemblyLogFileName>
-      <TestAssemblyLogFullPath>$(TestResultsDirectory)$(TestAssemblyLogFileName)</TestAssemblyLogFullPath>
+      <VSTestExe>$(PkgMicrosoft_TestPlatform)\tools\net451\Common7\IDE\Extensions\TestPlatform\vstest.console.exe</VSTestExe>
+      <TrxLogFileName>$(TargetName)$(TargetExt).trx</TrxLogFileName>
+      <TrxLogFilePath>$(TestResultsDirectory)$(TrxLogFileName)</TrxLogFilePath>
       <VSTestExeEnvironment>
         VisualBasicDesignTimeTargetsPath=$(VisualStudioXamlRulesDir)Microsoft.VisualBasic.DesignTime.targets;
         FSharpDesignTimeTargetsPath=$(VisualStudioXamlRulesDir)Microsoft.FSharp.DesignTime.targets;
@@ -84,44 +88,53 @@
 
     <MakeDir Directories="$(TestResultsDirectory)" />
 
-    <Error 
+    <Error
       Text="The project must built before running tests"
       File="$(MSBuildProjectFile)"
       Condition="!Exists('$(TargetPath)')"
       />
 
-    <Message 
+    <Message
       Text="$(MSBuildProjectName) -> Running tests (this might take a while)..."
       Importance="High"
       />
 
     <!-- Delete the TRX to avoid warning about overwriting it -->
-    <Delete Files="$(TestAssemblyLogFullPath)" />
+    <Delete Files="$(TrxLogFilePath)" />
 
-    <Exec 
-      Command='$(PkgMicrosoft_TestPlatform)\tools\net451\Common7\IDE\Extensions\TestPlatform\vstest.console.exe /Blame /ResultsDirectory:"$(TestResultsDirectory)\" /Settings:"$(RunSettingsFilePath)" /Logger:trx;LogFileName=$(TestAssemblyLogFileName) "$(TargetPath)"'
+    <Exec
+      Command='"$(VSTestExe)" /Blame /ResultsDirectory:"$(TestResultsDirectory)\" /Settings:"$(RunSettingsFilePath)" /Logger:trx;LogFileName=$(TrxLogFileName) "$(TargetPath)"'
       EnvironmentVariables="$(VSTestExeEnvironment)"
       LogStandardErrorAsError="true"
       StandardOutputImportance="Low"
       IgnoreExitCode="true"
       >
-      
-      <Output 
-        TaskParameter="ExitCode" 
-        PropertyName="ExitCode"
-        />
-      
-    </Exec>
 
-    <Message 
+      <Output
+        TaskParameter="ExitCode"
+        PropertyName="VSTestExeExitCode"
+        />
+
+    </Exec>
+  </Target>
+
+  <Target Name="ReportTestResults">
+    
+    <Message
       Text="$(MSBuildProjectName) -> Tests succeeded"
-      Condition="$(ExitCode) == 0"
+      Condition="$(VSTestExeExitCode) == 0"
       Importance="High"
       />
-    
+
     <Error
-      Text="Tests failed, see $(TestAssemblyLogFullPath) for full results."
-      Condition="$(ExitCode) != 0" 
+      Text="Tests failed, see $(TrxLogFilePath) for full results."
+      Condition="$(VSTestExeExitCode) != 0 AND Exists('$(TrxLogFilePath)')"
+      File="Apex"
+      />
+
+    <Error
+      Text="The test runner $(VSTestExe) failed with error level $(VSTestExeExitCode) and failed to produce any results. See Build.binlog for more information."
+      Condition="$(VSTestExeExitCode) != 0 AND !Exists('$(TrxLogFilePath)')"
       File="Apex"
       />
 
