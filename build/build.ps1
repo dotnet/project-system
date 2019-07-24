@@ -112,7 +112,6 @@ function LocateVisualStudio {
 }
 
 function LocateMSBuild {
-
   # Dev15
   $msbuildExe = Join-Path $vsInstallDir "MSBuild\15.0\Bin\msbuild.exe"
   

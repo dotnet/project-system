@@ -32,7 +32,7 @@ if /I "%1" == "/diagnostic"           set OptLog=$true                          
 if /I "%1" == "/no-diagnostic"        set OptLog=$false                             && shift && goto :ParseArguments
 if /I "%1" == "/sign"                 set OptSign=$true                             && shift && goto :ParseArguments
 if /I "%1" == "/no-sign"              set OptSign=$false                            && shift && goto :ParseArguments
-if /I "%1" == "/ci"                   set OptCI=$true && set PrepareMachine=$true   && shift && goto :ParseArguments
+if /I "%1" == "/ci"                   set OptCI=$true  && set PrepareMachine=$true  && shift && goto :ParseArguments
 if /I "%1" == "/no-ci"                set OptCI=$false && set PrepareMachine=$false && shift && goto :ParseArguments
 if /I "%1" == "/ibc"                  set OptIbc=$true                              && shift && goto :ParseArguments
 if /I "%1" == "/no-ibc"               set OptIbc=$false                             && shift && goto :ParseArguments
