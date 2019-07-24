@@ -101,8 +101,7 @@
     <Exec 
       Command='vstest.console.exe /Blame /ResultsDirectory:"$(TestResultsDirectory)\" /Settings:"$(RunSettingsFilePath)" /Logger:trx;LogFileName=$(TestAssemblyLogFileName) "$(TargetPath)"'
       EnvironmentVariables="$(VSTestExeEnvironment)"
-      LogStandardErrorAsError="false"
-      StandardErrorImportance="Low"
+      LogStandardErrorAsError="true"
       StandardOutputImportance="Low"
       IgnoreExitCode="true"
       >
