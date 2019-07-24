@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
+using Microsoft.VisualStudio.Telemetry;
 
 using Moq;
 
@@ -246,6 +247,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             watcherMock.SetupGet(s => s.SourceBlock)
                 .Returns(fileWatcherSource.SourceBlock);
 
+            var telemetryService = ITelemetryServiceFactory.Create();
             var threadingService = IProjectThreadingServiceFactory.Create();
             var projectSubscriptionService = IActiveConfiguredProjectSubscriptionServiceFactory.Create();
             var activeWorkspaceProjectContextHost = IActiveWorkspaceProjectContextHostFactory.ImplementProjectContextAccessor(IWorkspaceProjectContextAccessorFactory.Create());
@@ -265,7 +267,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                                       dataSourceMock.Object,
                                       watcherMock.Object,
                                       compilerMock.Object,
-                                      _fileSystem);
+                                      _fileSystem,
+                                      telemetryService);
         }
 
         private void CompilationCallBack(string output, ISet<string> files)
