@@ -100,8 +100,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             foreach (string changedFile in arg.Value)
             {
+                string relativeFilePath = _project.MakeRelative(changedFile);
+
                 // if a shared input changes, we recompile everything
-                if (_sharedDesignTimeInputs.Contains(changedFile))
+                if (_sharedDesignTimeInputs.Contains(relativeFilePath))
                 {
                     foreach (string file in _designTimeInputs)
                     {
@@ -113,7 +115,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 else
                 {
                     // A normal design time input, so just add it to the queue
-                    ImmutableInterlocked.TryAdd(ref _filesToCompile, changedFile, /* ignoreWriteTime */ false);
+                    ImmutableInterlocked.TryAdd(ref _filesToCompile, relativeFilePath, /* ignoreWriteTime */ false);
                 }
             }
 
