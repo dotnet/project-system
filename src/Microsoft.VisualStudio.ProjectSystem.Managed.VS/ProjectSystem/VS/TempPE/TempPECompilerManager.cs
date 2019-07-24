@@ -23,8 +23,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
     {
         private static readonly TimeSpan s_compilationDelayTime = TimeSpan.FromMilliseconds(500);
 
-        private readonly ConfiguredProject _project;
-        private readonly IProjectSubscriptionService _projectSubscriptionService;
+        private readonly UnconfiguredProject _project;
+        private readonly IActiveConfiguredProjectSubscriptionService _projectSubscriptionService;
         private readonly IActiveWorkspaceProjectContextHost _activeWorkspaceProjectContextHost;
         private readonly IDesignTimeInputsDataSource _inputsDataSource;
         private readonly IDesignTimeInputsFileWatcher _fileWatcher;
@@ -44,8 +44,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         private ITargetBlock<IProjectVersionedValue<string[]>>? _fileWatcherActionBlock;
 
         [ImportingConstructor]
-        public TempPECompilerManager(ConfiguredProject project,
-                                     IProjectSubscriptionService projectSubscriptionService,
+        public TempPECompilerManager(UnconfiguredProject project,
+                                     IActiveConfiguredProjectSubscriptionService projectSubscriptionService,
                                      IActiveWorkspaceProjectContextHost activeWorkspaceProjectContextHost,
                                      IProjectThreadingService threadingService,
                                      IDesignTimeInputsDataSource inputsDataSource,
@@ -353,8 +353,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             var files = new HashSet<string>(_sharedDesignTimeInputs.Length + 1, StringComparers.Paths);
             // All monikers are project relative paths by defintion (anything else is a link, and linked files can't be TempPE inputs) so we can convert
             // them to full paths using MakeRooted.
-            files.AddRange(_sharedDesignTimeInputs.Select(_project.UnconfiguredProject.MakeRooted));
-            files.Add(_project.UnconfiguredProject.MakeRooted(moniker));
+            files.AddRange(_sharedDesignTimeInputs.Select(_project.MakeRooted));
+            files.Add(_project.MakeRooted(moniker));
             return files;
         }
     }
