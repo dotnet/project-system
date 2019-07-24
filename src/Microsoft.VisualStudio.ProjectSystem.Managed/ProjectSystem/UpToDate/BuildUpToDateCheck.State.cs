@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             private State()
             {
-                ImmutableHashSet<string> emptyPathSet = ImmutableHashSet.Create(StringComparers.Paths);
+                var emptyPathSet = ImmutableHashSet.Create(StringComparers.Paths);
 
                 LastItemChangedAtUtc = DateTime.MinValue;
                 ItemTypes = ImmutableHashSet.Create(StringComparers.ItemTypes);
