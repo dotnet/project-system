@@ -77,8 +77,8 @@
 
     <PropertyGroup>
       <VSTestExe>$(PkgMicrosoft_TestPlatform)\tools\net451\Common7\IDE\Extensions\TestPlatform\vstest.console.exe</VSTestExe>
-      <TestAssemblyLogFileName>$(TargetName)$(TargetExt).trx</TestAssemblyLogFileName>
-      <TestAssemblyLogFullPath>$(TestResultsDirectory)$(TestAssemblyLogFileName)</TestAssemblyLogFullPath>
+      <TrxLogFileName>$(TargetName)$(TargetExt).trx</TrxLogFileName>
+      <TrxLogFilePath>$(TestResultsDirectory)$(TrxLogFileName)</TrxLogFilePath>
       <VSTestExeEnvironment>
         VisualBasicDesignTimeTargetsPath=$(VisualStudioXamlRulesDir)Microsoft.VisualBasic.DesignTime.targets;
         FSharpDesignTimeTargetsPath=$(VisualStudioXamlRulesDir)Microsoft.FSharp.DesignTime.targets;
@@ -100,10 +100,10 @@
       />
 
     <!-- Delete the TRX to avoid warning about overwriting it -->
-    <Delete Files="$(TestAssemblyLogFullPath)" />
+    <Delete Files="$(TrxLogFilePath)" />
 
     <Exec
-      Command='"$(VSTestExe)" /Blame /ResultsDirectory:"$(TestResultsDirectory)\" /Settings:"$(RunSettingsFilePath)" /Logger:trx;LogFileName=$(TestAssemblyLogFileName) "$(TargetPath)"'
+      Command='"$(VSTestExe)" /Blame /ResultsDirectory:"$(TestResultsDirectory)\" /Settings:"$(RunSettingsFilePath)" /Logger:trx;LogFileName=$(TrxLogFileName) "$(TargetPath)"'
       EnvironmentVariables="$(VSTestExeEnvironment)"
       LogStandardErrorAsError="true"
       StandardOutputImportance="Low"
@@ -127,7 +127,7 @@
       />
 
     <Error
-      Text="Tests failed, see $(TestAssemblyLogFullPath) for full results."
+      Text="Tests failed, see $(TrxLogFilePath) for full results."
       Condition="$(VSTestExeExitCode) != 0"
       File="Apex"
       />
