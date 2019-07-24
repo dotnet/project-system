@@ -12,6 +12,7 @@ set OptDeploy=$true
 set OptTest=$true
 set OptIntegrationTest=$false
 set OptLog=$false
+set OptVerbosity=minimal
 set OptCI=$false
 set OptPrepareMachine=$false
 set OptSign=$false
@@ -28,8 +29,8 @@ if /I "%1" == "/integration"          set OptIntegrationTest=$true              
 if /I "%1" == "/no-integration"       set OptIntegrationTest=$false                 && shift && goto :ParseArguments
 if /I "%1" == "/deploy"               set OptDeploy=$true                           && shift && goto :ParseArguments
 if /I "%1" == "/no-deploy"            set OptDeploy=$false                          && shift && goto :ParseArguments
-if /I "%1" == "/diagnostic"           set OptLog=$true                              && shift && goto :ParseArguments
-if /I "%1" == "/no-diagnostic"        set OptLog=$false                             && shift && goto :ParseArguments
+if /I "%1" == "/diagnostic"           set OptLog=$true  && set OptVerbosity=normal  && shift && goto :ParseArguments
+if /I "%1" == "/no-diagnostic"        set OptLog=$false && set OptVerbosity=minimal && shift && goto :ParseArguments
 if /I "%1" == "/sign"                 set OptSign=$true                             && shift && goto :ParseArguments
 if /I "%1" == "/no-sign"              set OptSign=$false                            && shift && goto :ParseArguments
 if /I "%1" == "/ci"                   set OptCI=$true  && set PrepareMachine=$true  && shift && goto :ParseArguments
@@ -43,7 +44,7 @@ call :Usage && exit /b 1
 
 :DoneParsing
 
-powershell -ExecutionPolicy ByPass -Command "& """%Root%build\Build.ps1""" -configuration %BuildConfiguration% -restore -pack:$true -build:%OptBuild% -rebuild:%OptRebuild% -deploy:%OptDeploy% -test:%OptTest% -integrationTest:%OptIntegrationTest% -log:%OptLog% %PropRootSuffix% -ci:%OptCI% -ibc:$OptIbc -prepareMachine:%OptPrepareMachine% -sign:%OptSign%"
+powershell -ExecutionPolicy ByPass -Command "& """%Root%build\Build.ps1""" -configuration %BuildConfiguration% -restore -pack:$true -build:%OptBuild% -rebuild:%OptRebuild% -deploy:%OptDeploy% -test:%OptTest% -integrationTest:%OptIntegrationTest% -log:%OptLog% -verbosity:%OptVerbosity% %PropRootSuffix% -ci:%OptCI% -ibc:$OptIbc -prepareMachine:%OptPrepareMachine% -sign:%OptSign%"
 
 exit /b %ERRORLEVEL%
 
