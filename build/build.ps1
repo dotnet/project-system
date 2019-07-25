@@ -94,31 +94,42 @@ function InstallVSIX([string] $vsixExpInstalleExe, [string] $rootsuffix, [string
 }
 
 function LocateVisualStudio {
-  if ($InVSEnvironment) {
+  if ($InVSEnvironment -and $log) {
+    Write-Host "Using Visual Studio from VSINSTALLDIR environment variable: $env:VSINSTALLDIR"
     return $env:VSINSTALLDIR
   }
 
   $vsWhereExe = GetVsWhereExe
-  $vsInstallDir = & $vsWhereExe -all -latest -prerelease -property installationPath -requires Microsoft.Component.MSBuild -requires Microsoft.VisualStudio.Component.VSSDK -requires Microsoft.Net.Component.4.6.TargetingPack -requires Microsoft.VisualStudio.Component.Roslyn.Compiler
+  $vsInstallDir = & $vsWhereExe -all -latest -prerelease -property installationPath    -requires Microsoft.Component.MSBuild -requires Microsoft.VisualStudio.Component.VSSDK -requires Microsoft.Net.Component.4.6.TargetingPack -requires Microsoft.VisualStudio.Component.Roslyn.Compiler
+  $vsVersion    = & $vsWhereExe -all -latest -prerelease -property installationVersion -requires Microsoft.Component.MSBuild -requires Microsoft.VisualStudio.Component.VSSDK -requires Microsoft.Net.Component.4.6.TargetingPack -requires Microsoft.VisualStudio.Component.Roslyn.Compiler
 
   if (!(Test-Path $vsInstallDir)) {
     throw "Failed to locate Visual Studio (exit code '$lastExitCode')."
   }
 
+  if ($log) {
+    Write-Host "Using VS version $vsVersion in directory: $vsInstallDir"
+  }
   return $vsInstallDir
 }
 
 function LocateMSBuild {
-
   # Dev15
   $msbuildExe = Join-Path $vsInstallDir "MSBuild\15.0\Bin\msbuild.exe"
   
-  if (Test-Path $msbuildExe) {
-     return $msbuildExe
+  if (!(Test-Path $msbuildExe)) {
+    # Dev16
+    $msbuildExe = Join-Path $vsInstallDir "MSBuild\Current\Bin\msbuild.exe"
   }
 
-  # Dev16
-  return Join-Path $vsInstallDir "MSBuild\Current\Bin\msbuild.exe"
+  if (!(Test-Path $msbuildExe)) {
+    throw "Failed to locate MSBuild."
+  }
+
+  if ($log) {
+    Write-Host "Using MSBuild executable: $msbuildExe"
+  }
+  return $msbuildExe
 }
 
 function InstallToolset {
@@ -222,8 +233,6 @@ try {
     Create-Directory $TempDir
     $env:TEMP = $TempDir
     $env:TMP = $TempDir
-
-    Write-Host "Using $MsbuildExe"
   }
 
   if ($log) {

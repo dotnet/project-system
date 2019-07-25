@@ -1,0 +1,65 @@
+# NOTE we do not currently trigger PR status. Once we stablise the integration tests we will enable PR triggers too.
+pr: none
+
+# Branches that trigger a build on commit
+trigger:
+- master
+
+jobs:
+- job: Visual_Studio
+  pool:
+    name: NetCorePublic-Pool
+    queue: buildpool.windows.10.amd64.vs2019.pre.open
+  strategy:
+    maxParallel: 2
+    matrix:
+      Debug:
+        _configuration: Debug
+  timeoutInMinutes: 60
+  steps:
+    - script: $(Build.SourcesDirectory)\build.cmd /build /no-test /integration /diagnostic /ci /no-sign /deploy /configuration $(_configuration)
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\log'
+        ArtifactName: '$(_configuration) Binary Logs'
+        publishLocation: Container
+      continueOnError: true
+      condition: failed()
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\tmp'
+        ArtifactName: '$(_configuration) Temporary Directory'
+        publishLocation: Container
+      continueOnError: true
+      condition: failed()
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\bin'
+        ArtifactName: '$(_configuration) Binaries'
+        publishLocation: Container
+      continueOnError: true
+      condition: failed()
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\VSSetup'
+        ArtifactName: '$(_configuration) Insertion Artifacts'
+        publishLocation: Container
+      continueOnError: true
+      condition: failed()
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\TestResults'
+        ArtifactName: '$(_configuration) Test Results'
+        publishLocation: Container
+      continueOnError: true
+      condition: failed()
+    - task: PublishTestResults@2
+      inputs:
+        testRunner: 'VSTest'
+        testResultsFiles: '**/*.trx'
+        searchFolder: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\TestResults'
+        configuration: '$(_configuration)'
+        publishRunAttachments: true
+        failTaskOnFailedTests: true
+      continueOnError: true
+      condition: always()
