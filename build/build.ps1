@@ -73,59 +73,6 @@ function GetVersion([string] $name) {
   throw "Failed to find $name in Versions.props"
 }
 
-function GetVsWhereExe{
-  $vswhereVersion = GetVersion("VSWhereVersion")
-  $vsWhereDir = Join-Path $ToolsRoot "vswhere\$vswhereVersion"
-  $vsWhereExe = Join-Path $vsWhereDir "vswhere.exe"
-
-  if (!(Test-Path $vsWhereExe)) {
-    Create-Directory $vsWhereDir
-    Write-Host "Downloading vswhere"
-    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-    Invoke-WebRequest "https://github.com/Microsoft/vswhere/releases/download/$vswhereVersion/vswhere.exe" -OutFile $vswhereExe
-  }
-  
-  return $vsWhereExe
-}
-
-function LocateVisualStudio {
-  if ($InVSEnvironment -and $log) {
-    Write-Host "Using Visual Studio from VSINSTALLDIR environment variable: $env:VSINSTALLDIR"
-    return $env:VSINSTALLDIR
-  }
-
-  $vsWhereExe = GetVsWhereExe
-  $vsInstallDir = & $vsWhereExe -all -latest -prerelease -property installationPath    -requires Microsoft.Component.MSBuild -requires Microsoft.VisualStudio.Component.VSSDK -requires Microsoft.Net.Component.4.6.TargetingPack -requires Microsoft.VisualStudio.Component.Roslyn.Compiler
-  $vsVersion    = & $vsWhereExe -all -latest -prerelease -property installationVersion -requires Microsoft.Component.MSBuild -requires Microsoft.VisualStudio.Component.VSSDK -requires Microsoft.Net.Component.4.6.TargetingPack -requires Microsoft.VisualStudio.Component.Roslyn.Compiler
-
-  if (!(Test-Path $vsInstallDir)) {
-    throw "Failed to locate Visual Studio (exit code '$lastExitCode')."
-  }
-
-  if ($log) {
-    Write-Host "Using VS version $vsVersion in directory: $vsInstallDir"
-  }
-  return $vsInstallDir
-}
-
-function LocateMSBuild {
-  # Dev15
-  $msbuildExe = Join-Path $vsInstallDir "MSBuild\15.0\Bin\msbuild.exe"
-  
-  if (!(Test-Path $msbuildExe)) {
-    # Dev16
-    $msbuildExe = Join-Path $vsInstallDir "MSBuild\Current\Bin\msbuild.exe"
-  }
-
-  if (!(Test-Path $msbuildExe)) {
-    throw "Failed to locate MSBuild."
-  }
-
-  if ($log) {
-    Write-Host "Using MSBuild executable: $msbuildExe"
-  }
-  return $msbuildExe
-}
 
 function InstallToolset {
   if ($log) {
@@ -195,7 +142,6 @@ $projectSystemAssemblyName,$projectSystemVersion.0
 }
 
 try {
-  $InVSEnvironment = !($env:VSINSTALLDIR -eq $null) -and (Test-Path $env:VSINSTALLDIR)
   $RepoRoot = Join-Path $PSScriptRoot "..\"
   $ToolsRoot = Join-Path $RepoRoot ".tools"
   $ToolsetRestoreProj = Join-Path $PSScriptRoot "Toolset.proj"
@@ -221,8 +167,12 @@ try {
   $ToolsetVersion = GetVersion("RoslynToolsRepoToolsetVersion")
   $ToolsetBuildProj = Join-Path $NuGetPackageRoot "RoslynTools.RepoToolset\$ToolsetVersion\tools\Build.proj"
 
-  $vsInstallDir = LocateVisualStudio
-  $MsbuildExe = LocateMSBuild
+  $vsInstallDir = $env:VSINSTALLDIR
+  $MsbuildExe = "msbuild.exe"
+
+  if (($vsInstallDir -eq $null) -or !(Test-Path $vsInstallDir)) {
+    throw "This script must be run from a Visual Studio Command Prompt."
+  }
 
   if ($ci) {
     Create-Directory $TempDir
@@ -237,10 +187,6 @@ try {
     Create-Directory $BinDir
     Create-Directory $VSSetupDir
     Create-Directory $TestResultsDir
-  }
-
-  if (!$InVSEnvironment) {
-    $env:VSSDKInstall = Join-Path $vsInstallDir "VSSDK\"
   }
 
   # Preparation of a CI machine
