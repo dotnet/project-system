@@ -22,7 +22,7 @@ if not exist "%VSWhereExe%" (
 )
 
 REM Find Visual Studio that suits our needs
-FOR /F "tokens=* USEBACKQ" %%F IN (`%VSWhereExe% -all -latest -prerelease -version %RequiredVSVersion% -property installationPath -requires Microsoft.Component.MSBuild`) DO (
+FOR /F "tokens=* USEBACKQ" %%F IN (`%VSWhereExe% -all -latest -prerelease -property installationPath -requires Microsoft.Component.MSBuild`) DO (
   SET DeveloperCommandPrompt=%%F\Common7\Tools\VsDevCmd.bat
 )
 
