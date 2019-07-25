@@ -6,7 +6,7 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- Depend on projects producing XAML rules included in this Willow package -->
-    <ProjectReference Include="..\..\src\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj" />
+    <ProjectReference Include="..\..\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj" />
   </ItemGroup>
   <ItemGroup>
     <SwrProperty Include="Version=$(VsixVersion)" />
@@ -15,4 +15,9 @@
   <ItemGroup>
     <SwrFile Include="*.swr" />
   </ItemGroup>
+
+  <Target Name="Build" DependsOnTargets="ResolveProjectReferences">
+    <MakeDir Directories="$(IntermediateOutputPath)" ContinueOnError="True"/>
+  </Target>
+
 </Project>
