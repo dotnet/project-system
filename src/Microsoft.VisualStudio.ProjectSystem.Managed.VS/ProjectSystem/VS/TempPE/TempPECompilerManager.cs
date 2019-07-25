@@ -332,21 +332,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             if (ignoreFileWriteTime || CompilationNeeded(filesToCompile, outputFileName))
             {
-                bool result = await _compiler.CompileAsync(context, outputFileName, filesToCompile, token);
-
-                // if the compilation failed or was cancelled we should clean up any old TempPE outputs lest a designer gets the wrong types, plus its what legacy did
-                if (!result)
+                bool result = false;
+                try
                 {
-                    try
+                    result = await _compiler.CompileAsync(context, outputFileName, filesToCompile, token);
+                }
+                catch (IOException)
+                { }
+                finally
+                {
+                    // If the compilation failed or was cancelled we should clean up any old TempPE outputs lest a designer gets the wrong types, plus its what legacy did
+                    // plus the way the Roslyn compiler works is by creating a 0 byte file first
+                    if (!result)
                     {
-                        _fileSystem.RemoveFile(outputFileName);
+                        try
+                        {
+                            _fileSystem.RemoveFile(outputFileName);
+                        }
+                        catch (IOException)
+                        { }
+                        catch (UnauthorizedAccessException)
+                        { }
                     }
-                    catch (IOException)
-                    { }
-                    catch (UnauthorizedAccessException)
-                    { }
                 }
 
+                // true in this case means "we tried to compile", and is just for telemetry reasons. It doesn't indicate success or failure of compilation
                 return true;
             }
             return false;

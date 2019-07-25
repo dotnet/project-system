@@ -27,9 +27,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         private string _intermediateOutputPath = "MyOutput";
         private readonly IFileSystemMock _fileSystem;
         private readonly TempPECompilerManager _manager;
+
+        // For tracking compilation events that occur, to verify
         private readonly List<(string OutputFileName, string[] SourceFiles)> _compilationResults = new List<(string, string[])>();
         private TaskCompletionSource<bool>? _compilationOccurredCompletionSource;
         private int _expectedCompilations;
+        private Func<string, ISet<string>, bool> _compilationCallback;
 
         [Fact]
         public async Task SingleDesignTimeInput_ShouldCompile()
@@ -193,6 +196,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         }
 
         [Fact]
+        public async Task SingleDesignTimeInput_AnotherAdded_ShouldCompileBoth()
+        {
+            var inputs = new DesignTimeInputs(new string[] { "File1.cs" }, new string[] { });
+
+            await VerifyDLLsCompiled(2, () =>
+            {
+                SendDesignTimeInputs(new DesignTimeInputs(new string[] { "File1.cs" }, new string[] { }));
+
+                SendDesignTimeInputs(new DesignTimeInputs(new string[] { "File1.cs", "File2.cs" }, new string[] { }));
+            });
+
+            Assert.Equal(2, _compilationResults.Count);
+            Assert.Contains("File2.cs", _compilationResults[0].SourceFiles);
+            Assert.DoesNotContain("File1.cs", _compilationResults[0].SourceFiles);
+            Assert.Equal(Path.Combine(TempPECompilerManager.GetOutputPath(_projectFolder, _intermediateOutputPath), "File2.cs.dll"), _compilationResults[0].OutputFileName);
+        }
+
+        [Fact]
         public async Task TwoDesignTimeInputs_OutputPathChanged_BothCompiled()
         {
             var inputs = new DesignTimeInputs(new string[] { "File1.cs", "File2.cs" }, new string[] { });
@@ -205,7 +226,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             Assert.Contains("File2.cs", _compilationResults[0].SourceFiles);
             Assert.DoesNotContain("File1.cs", _compilationResults[0].SourceFiles);
         }
-
 
         [Fact]
         public async Task NewSharedDesignTimeInput_ModifiedInThePast_ShouldCompileAll()
@@ -230,8 +250,61 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             Assert.Contains("OldFile.cs", _compilationResults[1].SourceFiles);
         }
 
+        [Fact]
+        public async Task SingleDesignTimeInput_CompileFailed_ShouldDeleteOutputFile()
+        {
+            var outputPath = Path.Combine(TempPECompilerManager.GetOutputPath(_projectFolder, _intermediateOutputPath), "File1.cs.dll");
+            _fileSystem.AddFile(outputPath, DateTime.UtcNow.AddMinutes(-10));
+
+            var inputs = new DesignTimeInputs(new string[] { "File1.cs" }, new string[] { });
+
+            // We want our compilation to fail
+            _compilationCallback = (x, z) => false;
+
+            await VerifyProjectChangeCausesCompilation(0, inputs);
+
+            Assert.Empty(_compilationResults);
+            Assert.False(_fileSystem.FileExists(outputPath));
+        }
+
+        [Fact]
+        public async Task SingleDesignTimeInput_CompileCancelled_ShouldDeleteOutputFile()
+        {
+            var outputPath = Path.Combine(TempPECompilerManager.GetOutputPath(_projectFolder, _intermediateOutputPath), "File1.cs.dll");
+            _fileSystem.AddFile(outputPath, DateTime.UtcNow.AddMinutes(-10));
+
+            var inputs = new DesignTimeInputs(new string[] { "File1.cs" }, new string[] { });
+
+            // We want our compilation to throw
+            _compilationCallback = (x, z) => throw new OperationCanceledException("Boom!");
+
+            await VerifyProjectChangeCausesCompilation(0, inputs);
+
+            Assert.Empty(_compilationResults);
+            Assert.False(_fileSystem.FileExists(outputPath));
+        }
+
+        [Fact]
+        public async Task SingleDesignTimeInput_CompileThrows_ShouldDeleteOutputFile()
+        {
+            var outputPath = Path.Combine(TempPECompilerManager.GetOutputPath(_projectFolder, _intermediateOutputPath), "File1.cs.dll");
+            _fileSystem.AddFile(outputPath, DateTime.UtcNow.AddMinutes(-10));
+
+            var inputs = new DesignTimeInputs(new string[] { "File1.cs" }, new string[] { });
+
+            // We want our compilation to throw
+            _compilationCallback = (x, z) => throw new IOException("Boom!");
+
+            await VerifyProjectChangeCausesCompilation(0, inputs);
+
+            Assert.Empty(_compilationResults);
+            Assert.False(_fileSystem.FileExists(outputPath));
+        }
+
         public TempPECompilerManagerTests()
         {
+            _compilationCallback = CompilationCallBack;
+
             _fileSystem = new IFileSystemMock();
 
             var services = IProjectCommonServicesFactory.CreateWithDefaultThreadingPolicy();
@@ -257,8 +330,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             var compilerMock = new Mock<ITempPECompiler>();
             compilerMock.Setup(c => c.CompileAsync(It.IsAny<IWorkspaceProjectContext>(), It.IsAny<string>(), It.IsAny<ISet<string>>(), It.IsAny<CancellationToken>()))
-                        .Callback((IWorkspaceProjectContext context, string outputFile, ISet<string> filesToCompile, CancellationToken token) => CompilationCallBack(outputFile, filesToCompile))
-                        .ReturnsAsync(true);
+                        .ReturnsAsync((IWorkspaceProjectContext context, string outputFile, ISet<string> filesToCompile, CancellationToken token) => _compilationCallback(outputFile, filesToCompile));
 
             _manager = new TempPECompilerManager(unconfiguredProject,
                                       projectSubscriptionService,
@@ -271,7 +343,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                                       telemetryService);
         }
 
-        private void CompilationCallBack(string output, ISet<string> files)
+        private bool CompilationCallBack(string output, ISet<string> files)
         {
             // "Create" our output file
             _fileSystem.AddFile(output);
@@ -281,6 +353,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             {
                 _compilationOccurredCompletionSource?.SetResult(true);
             }
+
+            return true;
         }
 
         private async Task VerifyProjectChangeCausesCompilation(int numberOfDLLsExpected, DesignTimeInputs designTimeInputs, string? intermediateOutputPath = null)
