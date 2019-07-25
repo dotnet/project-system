@@ -414,11 +414,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             OnPropertyChanged(nameof(NewProfileEnabled));
         }
 
+        private bool _debugTargetsCoreInitialized = false;
         public bool HasProfiles
         {
             get
             {
-                return CurrentLaunchSettings != null && CurrentLaunchSettings.Profiles.Count > 0;
+                return !_debugTargetsCoreInitialized || (CurrentLaunchSettings != null && CurrentLaunchSettings.Profiles.Count > 0);
             }
         }
 
@@ -712,6 +713,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 {
                     _firstSnapshotCompleteSource.TrySetResult(true);
                 }
+
+                _debugTargetsCoreInitialized = true;
             }
         }
 
