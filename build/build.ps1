@@ -88,11 +88,6 @@ function GetVsWhereExe{
   return $vsWhereExe
 }
 
-function InstallVSIX([string] $vsixExpInstalleExe, [string] $rootsuffix, [string] $vsInstallDir, [string] $pathToVSIX){
-  $rootedPath = [System.IO.Path]::GetFullPath($vsInstallDir)
-  & $vsixExpInstalleExe /rootSuffix:$rootsuffix /vsInstallDir:"$rootedPath" $pathToVSIX
-}
-
 function LocateVisualStudio {
   if ($InVSEnvironment -and $log) {
     Write-Host "Using Visual Studio from VSINSTALLDIR environment variable: $env:VSINSTALLDIR"
