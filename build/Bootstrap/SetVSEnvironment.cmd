@@ -36,3 +36,6 @@ if not exist "%DeveloperCommandPrompt%" (
 REM Turn off Developer Command Prompt logo
 set __VSCMD_ARG_NO_LOGO=yes
 call "%DeveloperCommandPrompt%"
+
+REM WORKAROUND: See https://github.com/dotnet/project-system/issues/5177
+SET LIB=
