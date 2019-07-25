@@ -9,7 +9,7 @@ using Microsoft.Test.Apex.Services;
 using Microsoft.Test.Apex.Services.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.VisualStudio
+namespace Microsoft.VisualStudio.Diagnostics
 {
     /// <summary>
     ///     Avoids logging "known" warnings that only make investigating real errors harder.

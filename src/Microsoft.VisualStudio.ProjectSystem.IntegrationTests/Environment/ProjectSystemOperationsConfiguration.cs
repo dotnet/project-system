@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Microsoft.Test.Apex;
 using Microsoft.Test.Apex.Providers;
 using Microsoft.Test.Apex.Services.Logging;
+using Microsoft.VisualStudio.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.VisualStudio
