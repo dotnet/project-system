@@ -19,11 +19,9 @@ namespace Microsoft.VisualStudio
                     typeof(OmniLogSink).Assembly.Location,                          // Omni
                     };
 
-        public ProjectSystemHostConfiguration(string rootSuffix)
+        public ProjectSystemHostConfiguration()
         {
-            Assumes.NotNullOrEmpty(rootSuffix);
-
-            CommandLineArguments = $"/rootSuffix {rootSuffix}";
+            CommandLineArguments = $"/rootSuffix {TestEnvironment.VisualStudioHive}";
             RestoreUserSettings = false;
             InheritProcessEnvironment = true;
             AutomaticallyDismissMessageBoxes = true;
