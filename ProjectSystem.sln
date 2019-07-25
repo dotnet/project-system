@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28301.62
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectSystemSetup", "src\ProjectSystemSetup\ProjectSystemSetup.csproj", "{9FBD7EF2-9449-486D-9FDD-FA56160AA8BB}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Setup", "Setup", "{AC8DB8AE-AC9F-4503-83C6-255B66C318C6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectSystemSetup", "src\setup\ProjectSystemSetup\ProjectSystemSetup.csproj", "{9FBD7EF2-9449-486D-9FDD-FA56160AA8BB}"
 EndProject
 Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "Microsoft.VisualStudio.AppDesigner", "src\Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.vbproj", "{19725D6F-4690-412B-934A-FC48D752B802}"
 EndProject
@@ -17,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.Proj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests", "src\Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests\Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests.csproj", "{469B50E9-FE67-459E-8AFA-44CBE523DBF6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualStudioEditorsSetup", "src\VisualStudioEditorsSetup\VisualStudioEditorsSetup.csproj", "{49705330-A4F5-47EA-BB10-3B783CE91AEA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualStudioEditorsSetup", "src\setup\VisualStudioEditorsSetup\VisualStudioEditorsSetup.csproj", "{49705330-A4F5-47EA-BB10-3B783CE91AEA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.Managed.TestServices", "src\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.csproj", "{23BCBC90-ED65-4EE3-8AF1-DD7CAEFDBEE9}"
 EndProject
@@ -67,8 +69,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{52A4
 		build\Scripts\UnitTests.targets = build\Scripts\UnitTests.targets
 		build\Scripts\Workarounds.targets = build\Scripts\Workarounds.targets
 	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Setup", "Setup", "{AC8DB8AE-AC9F-4503-83C6-255B66C318C6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -140,6 +140,8 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{9FBD7EF2-9449-486D-9FDD-FA56160AA8BB} = {AC8DB8AE-AC9F-4503-83C6-255B66C318C6}
+		{49705330-A4F5-47EA-BB10-3B783CE91AEA} = {AC8DB8AE-AC9F-4503-83C6-255B66C318C6}
 		{46C756B9-2D8E-4453-8F06-42BBE25D1805} = {AC8DB8AE-AC9F-4503-83C6-255B66C318C6}
 		{E09AD054-22FC-4E70-8889-0F3DCF1267C7} = {DD7EF107-AAD4-4C43-8A58-0DC1BC614ADE}
 		{6A95E22E-6D85-4494-AEB5-FCD60A8E88A3} = {DD7EF107-AAD4-4C43-8A58-0DC1BC614ADE}
