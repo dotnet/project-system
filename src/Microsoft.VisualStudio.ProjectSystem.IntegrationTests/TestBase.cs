@@ -31,11 +31,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return new ProjectSystemOperationsConfiguration(TestContext);
         }
 
-        protected override void DoHostTestCleanup()
+        public new void TryShutdownVisualStudioInstance()
         {
-            base.DoHostTestCleanup();
-
-            TryShutdownVisualStudioInstance();
+            base.TryShutdownVisualStudioInstance();
         }
     }
 }
