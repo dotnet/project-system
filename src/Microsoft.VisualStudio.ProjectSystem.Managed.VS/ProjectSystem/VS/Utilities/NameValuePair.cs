@@ -40,16 +40,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private bool NotifyPropertyChanged<T>(ref T refProperty, T value, [CallerMemberName] string propertyName = null)
+        private void NotifyPropertyChanged<T>(ref T refProperty, T value, [CallerMemberName] string propertyName = null)
         {
             if (!Equals(refProperty, value))
             {
                 refProperty = value;
                 NotifyPropertyChanged(propertyName);
-                return true;
             }
-
-            return false;
         }
 
         private void NotifyPropertyChanged(string propertyName)
