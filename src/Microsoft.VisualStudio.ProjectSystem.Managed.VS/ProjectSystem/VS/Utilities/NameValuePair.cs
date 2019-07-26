@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 {
     internal class NameValuePair : INotifyPropertyChanged, IDataErrorInfo
     {
-        public ObservableList<NameValuePair> ParentCollection;
+        private readonly ObservableList<NameValuePair> _parentCollection;
 
         private string _name;
         private string _value;
@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 
         public NameValuePair(string name, string value, ObservableList<NameValuePair> parentCollection = null)
         {
-            ParentCollection = parentCollection;
+            _parentCollection = parentCollection;
             Name = name;
             Value = value;
         }
@@ -100,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
                     }
                 }
 
-                ParentCollection?.RaiseValidationStatus(!HasValidationError);
+                _parentCollection?.RaiseValidationStatus(!HasValidationError);
                 return error;
             }
         }
@@ -111,9 +111,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 
         private bool IsNamePropertyDuplicate()
         {
-            if (ParentCollection != null)
+            if (_parentCollection != null)
             {
-                foreach (NameValuePair nvp in ParentCollection)
+                foreach (NameValuePair nvp in _parentCollection)
                 {
                     if (!ReferenceEquals(this, nvp))
                     {
