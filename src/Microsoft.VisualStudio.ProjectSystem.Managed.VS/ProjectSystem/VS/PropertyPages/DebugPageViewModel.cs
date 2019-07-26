@@ -411,15 +411,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         private void NotifyProfileCollectionChanged()
         {
             OnPropertyChanged(nameof(HasProfiles));
+            OnPropertyChanged(nameof(HasProfilesOrNotInitialized));
             OnPropertyChanged(nameof(NewProfileEnabled));
         }
 
         private bool _debugTargetsCoreInitialized = false;
+        public bool HasProfilesOrNotInitialized 
+        { 
+            get 
+            {
+                return !_debugTargetsCoreInitialized || HasProfiles;
+            }
+        }
+
+        
         public bool HasProfiles
         {
             get
             {
-                return !_debugTargetsCoreInitialized || (CurrentLaunchSettings != null && CurrentLaunchSettings.Profiles.Count > 0);
+                return CurrentLaunchSettings != null && CurrentLaunchSettings.Profiles.Count > 0;
             }
         }
 
