@@ -88,24 +88,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
                         error = PropertyPageResources.DuplicateKey;
                         HasValidationError = true;
                     }
-
-                    // We are doing Row Validation - make sure that in addition to Name - Value is valid
-                    if (!HasValidationError)
+                    else
                     {
+                        // We are doing Row Validation - make sure that in addition to Name - Value is valid
                         HasValidationError = IsValuePropertyEmpty();
                     }
                 }
-                if (propertyName.Equals("Value", StringComparison.OrdinalIgnoreCase))
+                else if (propertyName.Equals("Value", StringComparison.OrdinalIgnoreCase))
                 {
                     if (string.IsNullOrWhiteSpace(Value))
                     {
                         error = PropertyPageResources.ValueCannotBeEmpty;
                         HasValidationError = true;
                     }
-
-                    // We are doing Row Validation - make sure that in addition to Value - Name is valid
-                    if (!HasValidationError)
+                    else
                     {
+                        // We are doing Row Validation - make sure that in addition to Value - Name is valid
                         HasValidationError = IsNamePropertyEmpty() || IsNamePropertyDuplicate();
                     }
                 }
