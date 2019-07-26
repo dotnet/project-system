@@ -45,7 +45,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
             var restoreConfiguredInputSource = new UnwrapCollectionChainedProjectValueDataSource<IReadOnlyCollection<ConfiguredProject>, PackageRestoreConfiguredInput>(
                 _project.Services, 
-                projects => projects.Select(project => GetProjectRestoreDataSource(project)),
+                projects => projects.Select(project => project.Services.ExportProvider.GetExportedValueOrDefault<IPackageRestoreConfiguredInputDataSource>())
+                                    .Where(dataSource => dataSource != null)    // Filter out those without PackageReference
+                                    .Select(DropConfiguredProjectVersions),
                 includeSourceVersions: true);
 
             disposables.AddDisposable(restoreConfiguredInputSource);
@@ -212,11 +214,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             return true;
         }
 
-        private IProjectValueDataSource<PackageRestoreConfiguredInput> GetProjectRestoreDataSource(ConfiguredProject project)
+        private IProjectValueDataSource<PackageRestoreConfiguredInput> DropConfiguredProjectVersions(IPackageRestoreConfiguredInputDataSource dataSource)
         {
-            // Get the individual configuration's view of the restore data
-            IPackageRestoreConfiguredInputDataSource dataSource = project.Services.ExportProvider.GetExportedValue<IPackageRestoreConfiguredInputDataSource>();
-
             // Wrap it in a data source that will drop project version and identity versions so as they will never agree
             // on these versions as they are unique to each configuration. They'll be consistent by all other versions.
             return new DropConfiguredProjectVersionDataSource<PackageRestoreConfiguredInput>(_project.Services, dataSource);
