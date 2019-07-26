@@ -198,16 +198,6 @@ try {
     InstallToolset
   }
 
-  if ($integrationTest) {
-    $VSRegEditExe = Join-Path $vsInstallDir "Common7\IDE\vsregedit.exe"
-    $VSInstallDirWithoutSlash = $vsInstallDir.TrimEnd('\')
-    if ($log) {
-      Write-Host "Setting DisableFirstLaunchDialog VS registry key via: $VSRegEditExe"
-      Write-Host "Invoking: $VSRegEditExe set ""$VSInstallDirWithoutSlash"" $rootSuffix hklm Profile DisableFirstLaunchDialog dword 1"
-    }
-    & $VSRegEditExe set "$VSInstallDirWithoutSlash" $rootSuffix hklm Profile DisableFirstLaunchDialog dword 1
-  }
-
   Build
 
   GenerateDependentAssemblyVersionFile
