@@ -118,66 +118,66 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="RunRoslynAnalyzersDuringLiveAnalysis.AutoSize" type="System.Boolean, mscorlib">
+  <data name="RunAnalyzersDuringLiveAnalysis.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="RunRoslynAnalyzersDuringLiveAnalysis.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="RunAnalyzersDuringLiveAnalysis.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="RunRoslynAnalyzersDuringLiveAnalysis.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="RunAnalyzersDuringLiveAnalysis.Location" type="System.Drawing.Point, System.Drawing">
     <value>41, 85</value>
   </data>
-  <data name="RunRoslynAnalyzersDuringLiveAnalysis.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="RunAnalyzersDuringLiveAnalysis.Size" type="System.Drawing.Size, System.Drawing">
     <value>120, 17</value>
   </data>
-  <data name="RunRoslynAnalyzersDuringLiveAnalysis.TabIndex" type="System.Int32, mscorlib">
+  <data name="RunAnalyzersDuringLiveAnalysis.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="RunRoslynAnalyzersDuringLiveAnalysis.Text" xml:space="preserve">
+  <data name="RunAnalyzersDuringLiveAnalysis.Text" xml:space="preserve">
     <value>Run on &amp;live analysis</value>
   </data>
-  <data name="&gt;&gt;RunRoslynAnalyzersDuringLiveAnalysis.Name" xml:space="preserve">
-    <value>RunRoslynAnalyzersDuringLiveAnalysis</value>
+  <data name="&gt;&gt;RunAnalyzersDuringLiveAnalysis.Name" xml:space="preserve">
+    <value>RunAnalyzersDuringLiveAnalysis</value>
   </data>
-  <data name="&gt;&gt;RunRoslynAnalyzersDuringLiveAnalysis.Type" xml:space="preserve">
+  <data name="&gt;&gt;RunAnalyzersDuringLiveAnalysis.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;RunRoslynAnalyzersDuringLiveAnalysis.Parent" xml:space="preserve">
+  <data name="&gt;&gt;RunAnalyzersDuringLiveAnalysis.Parent" xml:space="preserve">
     <value>FxCopAnalyzersPanel</value>
   </data>
-  <data name="&gt;&gt;RunRoslynAnalyzersDuringLiveAnalysis.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;RunAnalyzersDuringLiveAnalysis.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="RunRoslynAnalyzersDuringBuild.AutoSize" type="System.Boolean, mscorlib">
+  <data name="RunAnalyzersDuringBuild.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="RunRoslynAnalyzersDuringBuild.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="RunAnalyzersDuringBuild.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="RunRoslynAnalyzersDuringBuild.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="RunAnalyzersDuringBuild.Location" type="System.Drawing.Point, System.Drawing">
     <value>41, 62</value>
   </data>
-  <data name="RunRoslynAnalyzersDuringBuild.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="RunAnalyzersDuringBuild.Size" type="System.Drawing.Size, System.Drawing">
     <value>86, 17</value>
   </data>
-  <data name="RunRoslynAnalyzersDuringBuild.TabIndex" type="System.Int32, mscorlib">
+  <data name="RunAnalyzersDuringBuild.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="RunRoslynAnalyzersDuringBuild.Text" xml:space="preserve">
+  <data name="RunAnalyzersDuringBuild.Text" xml:space="preserve">
     <value>Run on &amp;build</value>
   </data>
-  <data name="&gt;&gt;RunRoslynAnalyzersDuringBuild.Name" xml:space="preserve">
-    <value>RunRoslynAnalyzersDuringBuild</value>
+  <data name="&gt;&gt;RunAnalyzersDuringBuild.Name" xml:space="preserve">
+    <value>RunAnalyzersDuringBuild</value>
   </data>
-  <data name="&gt;&gt;RunRoslynAnalyzersDuringBuild.Type" xml:space="preserve">
+  <data name="&gt;&gt;RunAnalyzersDuringBuild.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;RunRoslynAnalyzersDuringBuild.Parent" xml:space="preserve">
+  <data name="&gt;&gt;RunAnalyzersDuringBuild.Parent" xml:space="preserve">
     <value>FxCopAnalyzersPanel</value>
   </data>
-  <data name="&gt;&gt;RunRoslynAnalyzersDuringBuild.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;RunAnalyzersDuringBuild.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="RoslynAnalyzersLabel.AutoSize" type="System.Boolean, mscorlib">
@@ -187,13 +187,13 @@
     <value>31, 9</value>
   </data>
   <data name="RoslynAnalyzersLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>121, 13</value>
+    <value>52, 13</value>
   </data>
   <data name="RoslynAnalyzersLabel.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
   </data>
   <data name="RoslynAnalyzersLabel.Text" xml:space="preserve">
-    <value>Roslyn source analyzers</value>
+    <value>Analyzers</value>
   </data>
   <data name="&gt;&gt;RoslynAnalyzersLabel.Name" xml:space="preserve">
     <value>RoslynAnalyzersLabel</value>
@@ -208,10 +208,10 @@
     <value>2</value>
   </data>
   <data name="RoslynAnalyzersLineLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>157, 16</value>
+    <value>87, 16</value>
   </data>
   <data name="RoslynAnalyzersLineLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>280, 1</value>
+    <value>350, 1</value>
   </data>
   <data name="RoslynAnalyzersLineLabel.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
@@ -235,13 +235,13 @@
     <value>39, 36</value>
   </data>
   <data name="RoslynAnalyzersHelpLinkLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>244, 13</value>
+    <value>236, 13</value>
   </data>
   <data name="RoslynAnalyzersHelpLinkLabel.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
   <data name="RoslynAnalyzersHelpLinkLabel.Text" xml:space="preserve">
-    <value>What are the benefits of Roslyn source analyzers?</value>
+    <value>What are the benefits of source code analyzers?</value>
   </data>
   <data name="&gt;&gt;RoslynAnalyzersHelpLinkLabel.Name" xml:space="preserve">
     <value>RoslynAnalyzersHelpLinkLabel</value>

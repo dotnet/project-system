@@ -67,8 +67,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Get
                 If m_ControlData Is Nothing Then
                     m_ControlData = New PropertyControlData() {
-                        New PropertyControlData(1, "RunRoslynAnalyzersDuringBuild", RunRoslynAnalyzersDuringBuild, ControlDataFlags.None),
-                        New PropertyControlData(2, "RunRoslynAnalyzersDuringLiveAnalysis", RunRoslynAnalyzersDuringLiveAnalysis, ControlDataFlags.None)
+                        New PropertyControlData(1, "RunAnalyzersDuringBuild", RunAnalyzersDuringBuild, ControlDataFlags.None),
+                        New PropertyControlData(2, "RunAnalyzersDuringLiveAnalysis", RunAnalyzersDuringLiveAnalysis, ControlDataFlags.None)
                     }
                 End If
                 Return m_ControlData

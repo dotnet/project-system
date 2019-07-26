@@ -14,8 +14,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Friend WithEvents RoslynAnalyzersLabel As System.Windows.Forms.Label
         Friend WithEvents RoslynAnalyzersLineLabel As System.Windows.Forms.Label
         Friend WithEvents RoslynAnalyzersHelpLinkLabel As System.Windows.Forms.LinkLabel
-        Friend WithEvents RunRoslynAnalyzersDuringLiveAnalysis As System.Windows.Forms.CheckBox
-        Friend WithEvents RunRoslynAnalyzersDuringBuild As System.Windows.Forms.CheckBox
+        Friend WithEvents RunAnalyzersDuringLiveAnalysis As System.Windows.Forms.CheckBox
+        Friend WithEvents RunAnalyzersDuringBuild As System.Windows.Forms.CheckBox
         Private _components As System.ComponentModel.IContainer
 
         Protected Overloads Overrides Sub Dispose(disposing As Boolean)
@@ -30,8 +30,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(CodeAnalysisPropPage))
             Me.FxCopAnalyzersPanel = New System.Windows.Forms.Panel()
-            Me.RunRoslynAnalyzersDuringLiveAnalysis = New System.Windows.Forms.CheckBox()
-            Me.RunRoslynAnalyzersDuringBuild = New System.Windows.Forms.CheckBox()
+            Me.RunAnalyzersDuringLiveAnalysis = New System.Windows.Forms.CheckBox()
+            Me.RunAnalyzersDuringBuild = New System.Windows.Forms.CheckBox()
             Me.RoslynAnalyzersLabel = New System.Windows.Forms.Label()
             Me.RoslynAnalyzersLineLabel = New System.Windows.Forms.Label()
             Me.RoslynAnalyzersHelpLinkLabel = New System.Windows.Forms.LinkLabel()
@@ -47,8 +47,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             '
             'FxCopAnalyzersPanel
             '
-            Me.FxCopAnalyzersPanel.Controls.Add(Me.RunRoslynAnalyzersDuringLiveAnalysis)
-            Me.FxCopAnalyzersPanel.Controls.Add(Me.RunRoslynAnalyzersDuringBuild)
+            Me.FxCopAnalyzersPanel.Controls.Add(Me.RunAnalyzersDuringLiveAnalysis)
+            Me.FxCopAnalyzersPanel.Controls.Add(Me.RunAnalyzersDuringBuild)
             Me.FxCopAnalyzersPanel.Controls.Add(Me.RoslynAnalyzersLabel)
             Me.FxCopAnalyzersPanel.Controls.Add(Me.RoslynAnalyzersLineLabel)
             Me.FxCopAnalyzersPanel.Controls.Add(Me.RoslynAnalyzersHelpLinkLabel)
@@ -62,21 +62,21 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             resources.ApplyResources(Me.FxCopAnalyzersPanel, "FxCopAnalyzersPanel")
             Me.FxCopAnalyzersPanel.Name = "FxCopAnalyzersPanel"
             '
-            'RunRoslynAnalyzersDuringLiveAnalysis
+            'RunAnalyzersDuringLiveAnalysis
             '
-            resources.ApplyResources(Me.RunRoslynAnalyzersDuringLiveAnalysis, "RunRoslynAnalyzersDuringLiveAnalysis")
-            Me.RunRoslynAnalyzersDuringLiveAnalysis.Checked = True
-            Me.RunRoslynAnalyzersDuringLiveAnalysis.CheckState = System.Windows.Forms.CheckState.Checked
-            Me.RunRoslynAnalyzersDuringLiveAnalysis.Name = "RunRoslynAnalyzersDuringLiveAnalysis"
-            Me.RunRoslynAnalyzersDuringLiveAnalysis.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.RunAnalyzersDuringLiveAnalysis, "RunAnalyzersDuringLiveAnalysis")
+            Me.RunAnalyzersDuringLiveAnalysis.Checked = True
+            Me.RunAnalyzersDuringLiveAnalysis.CheckState = System.Windows.Forms.CheckState.Checked
+            Me.RunAnalyzersDuringLiveAnalysis.Name = "RunAnalyzersDuringLiveAnalysis"
+            Me.RunAnalyzersDuringLiveAnalysis.UseVisualStyleBackColor = True
             '
-            'RunRoslynAnalyzersDuringBuild
+            'RunAnalyzersDuringBuild
             '
-            resources.ApplyResources(Me.RunRoslynAnalyzersDuringBuild, "RunRoslynAnalyzersDuringBuild")
-            Me.RunRoslynAnalyzersDuringBuild.Checked = True
-            Me.RunRoslynAnalyzersDuringBuild.CheckState = System.Windows.Forms.CheckState.Checked
-            Me.RunRoslynAnalyzersDuringBuild.Name = "RunRoslynAnalyzersDuringBuild"
-            Me.RunRoslynAnalyzersDuringBuild.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.RunAnalyzersDuringBuild, "RunAnalyzersDuringBuild")
+            Me.RunAnalyzersDuringBuild.Checked = True
+            Me.RunAnalyzersDuringBuild.CheckState = System.Windows.Forms.CheckState.Checked
+            Me.RunAnalyzersDuringBuild.Name = "RunAnalyzersDuringBuild"
+            Me.RunAnalyzersDuringBuild.UseVisualStyleBackColor = True
             '
             'RoslynAnalyzersLabel
             '

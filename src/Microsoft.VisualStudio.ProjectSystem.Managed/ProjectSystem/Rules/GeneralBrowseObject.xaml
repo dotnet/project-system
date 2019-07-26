@@ -389,21 +389,21 @@
     </StringProperty.DataSource>
   </StringProperty>
 
-  <BoolProperty Name="RunRoslynAnalyzersDuringBuild"
+  <BoolProperty Name="RunAnalyzersDuringBuild"
                 Visible="False">
     <BoolProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
-                  PersistedName="RunRoslynAnalyzersDuringBuild"
+                  PersistedName="RunAnalyzersDuringBuild"
                   Persistence="ProjectFile"
                   SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
 
-  <BoolProperty Name="RunRoslynAnalyzersDuringLiveAnalysis"
+  <BoolProperty Name="RunAnalyzersDuringLiveAnalysis"
                 Visible="False">
     <BoolProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
-                  PersistedName="RunRoslynAnalyzersDuringLiveAnalysis"
+                  PersistedName="RunAnalyzersDuringLiveAnalysis"
                   Persistence="ProjectFile"
                   SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
