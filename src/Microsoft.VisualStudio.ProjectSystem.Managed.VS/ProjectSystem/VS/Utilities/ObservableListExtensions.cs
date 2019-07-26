@@ -19,15 +19,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 
             return list;
         }
-
-        public static IDictionary<string, string> CreateDictionary(this ObservableList<NameValuePair> list)
-        {
-            var dictionary = new Dictionary<string, string>();
-            foreach (NameValuePair ev in list)
-            {
-                dictionary.Add(ev.Name, ev.Value);
-            }
-            return dictionary;
-        }
     }
 }

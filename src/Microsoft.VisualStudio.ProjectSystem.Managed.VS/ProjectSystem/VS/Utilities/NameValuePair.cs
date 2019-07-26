@@ -19,23 +19,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 
         public bool HasValidationError { get; set; }
 
-        public NameValuePair(ObservableList<NameValuePair> parentCollection = null)
-        {
-            ParentCollection = parentCollection;
-        }
-
         public NameValuePair(string name, string value, ObservableList<NameValuePair> parentCollection = null)
         {
             ParentCollection = parentCollection;
             Name = name;
             Value = value;
-        }
-
-        public NameValuePair(NameValuePair nvPair, ObservableList<NameValuePair> parentCollection = null)
-        {
-            ParentCollection = parentCollection;
-            Name = nvPair.Name;
-            Value = nvPair.Value;
         }
 
         public string Name
