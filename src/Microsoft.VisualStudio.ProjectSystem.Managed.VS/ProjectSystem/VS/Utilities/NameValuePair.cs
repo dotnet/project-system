@@ -125,7 +125,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             {
                 foreach (NameValuePair nvp in ParentCollection)
                 {
-                    if (!nvp.Equals(this))
+                    if (!ReferenceEquals(this, nvp))
                     {
                         if (string.Compare(nvp.Name, Name, StringComparison.OrdinalIgnoreCase) == 0)
                         {
