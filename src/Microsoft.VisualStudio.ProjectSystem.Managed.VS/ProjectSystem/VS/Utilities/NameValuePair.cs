@@ -45,13 +45,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             if (!Equals(refProperty, value))
             {
                 refProperty = value;
-                NotifyPropertyChanged(propertyName);
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
-        }
-
-        private void NotifyPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #region IDataErrorInfo
@@ -105,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
                     }
                 }
 
-                SendNotificationAfterValidation();
+                ParentCollection?.RaiseValidationStatus(!HasValidationError);
                 return error;
             }
         }
@@ -131,11 +126,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             }
 
             return false;
-        }
-
-        private void SendNotificationAfterValidation()
-        {
-            ParentCollection?.RaiseValidationStatus(!HasValidationError);
         }
 
         #endregion
