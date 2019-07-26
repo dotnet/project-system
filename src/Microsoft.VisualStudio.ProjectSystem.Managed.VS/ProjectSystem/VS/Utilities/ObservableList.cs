@@ -1,4 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -85,6 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
     internal class ValidationStatusChangedEventArgs : EventArgs
     {
         public bool ValidationStatus { get; set; }
+
         public ValidationStatusChangedEventArgs(bool validationStatus)
         {
             ValidationStatus = validationStatus;

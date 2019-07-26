@@ -531,9 +531,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         #region Unused
 
-        /// <summary>
-        /// Unused IVsSolutionEvents
-        /// </summary>
+        // Unused IVsSolutionEvents
+
         public int OnAfterOpenSolution(object pUnkReserved, int fNewSolution)
         {
             return HResult.OK;
@@ -574,9 +573,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return HResult.OK;
         }
 
-        /// <summary>
-        /// Unused IVsSolutionLoadEvents
-        /// </summary>
+        // Unused IVsSolutionLoadEvents
+        
         public int OnAfterLoadProjectBatch(bool fIsBackgroundIdleBatch)
         {
             return HResult.OK;
