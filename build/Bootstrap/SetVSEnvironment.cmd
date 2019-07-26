@@ -5,8 +5,6 @@ REM
 REM Downloads VSWhere, uses it to find a compatible Visual Studio and call a developer prompt to set the environment.
 
 set RequiredVSVersion=16.0
-set DownloadUrl=https://github.com/microsoft/vswhere/releases/download/2.6.7/vswhere.exe
-set VSWhereExe=%TEMP%\vswhere.exe
 
 REM Are we already in Developer Command Prompt?
 if defined VSINSTALLDIR (
@@ -14,15 +12,15 @@ if defined VSINSTALLDIR (
 )
 
 if not exist "%VSWhereExe%" (
-  echo Downloading from %DownloadUrl% to %VSWhereExe% so that we can find Visual Studio
-  bitsadmin.exe /transfer "VSWhere.exe" /dynamic /download /priority FOREGROUND %DownloadUrl% %VSWhereExe% > nul || (
+  echo Downloading VSWhere so that we can find Visual Studio...
+  powershell -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest https://github.com/microsoft/vswhere/releases/download/2.6.7/vswhere.exe -OutFile $env:TEMP\vswhere.exe" || (
     echo Failed to download, check your internet connection.
     exit /b 1
   )
 )
 
 REM Find Visual Studio that suits our needs
-FOR /F "tokens=* USEBACKQ" %%F IN (`%VSWhereExe% -all -latest -prerelease -property installationPath -requires Microsoft.Component.MSBuild`) DO (
+FOR /F "tokens=* USEBACKQ" %%F IN (`%TEMP%\vswhere.exe -all -latest -prerelease -property installationPath -requires Microsoft.Component.MSBuild`) DO (
   SET DeveloperCommandPrompt=%%F\Common7\Tools\VsDevCmd.bat
 )
 
