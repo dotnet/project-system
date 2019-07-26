@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// </value>
         /// <remarks>
         ///     Note that cancelling <paramref name="cancellationToken"/> will not cancel the 
-        ///     creation of the service, but will result in an expediant cancellation of the 
+        ///     creation of the service, but will result in an expedient cancellation of the 
         ///     returned <see cref="Task"/>, and a dis-joining of any <see cref="JoinableTask"/> 
         ///     that may have occurred as a result of this call.
         /// </remarks>
