@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public bool NotifyPropertyChanged<T>(ref T refProperty, T value, [CallerMemberName] string propertyName = null)
+        private bool NotifyPropertyChanged<T>(ref T refProperty, T value, [CallerMemberName] string propertyName = null)
         {
             if (!Equals(refProperty, value))
             {
@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             return false;
         }
 
-        public void NotifyPropertyChanged(string propertyName)
+        private void NotifyPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
