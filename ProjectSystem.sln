@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28301.62
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectSystemSetup", "src\ProjectSystemSetup\ProjectSystemSetup.csproj", "{9FBD7EF2-9449-486D-9FDD-FA56160AA8BB}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Setup", "Setup", "{AC8DB8AE-AC9F-4503-83C6-255B66C318C6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectSystemSetup", "src\setup\ProjectSystemSetup\ProjectSystemSetup.csproj", "{9FBD7EF2-9449-486D-9FDD-FA56160AA8BB}"
 EndProject
 Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "Microsoft.VisualStudio.AppDesigner", "src\Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.vbproj", "{19725D6F-4690-412B-934A-FC48D752B802}"
 EndProject
@@ -17,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.Proj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests", "src\Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests\Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests.csproj", "{469B50E9-FE67-459E-8AFA-44CBE523DBF6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualStudioEditorsSetup", "src\VisualStudioEditorsSetup\VisualStudioEditorsSetup.csproj", "{49705330-A4F5-47EA-BB10-3B783CE91AEA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualStudioEditorsSetup", "src\setup\VisualStudioEditorsSetup\VisualStudioEditorsSetup.csproj", "{49705330-A4F5-47EA-BB10-3B783CE91AEA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.Managed.TestServices", "src\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.csproj", "{23BCBC90-ED65-4EE3-8AF1-DD7CAEFDBEE9}"
 EndProject
@@ -25,11 +27,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.Proj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.IntegrationTests", "src\Microsoft.VisualStudio.ProjectSystem.IntegrationTests\Microsoft.VisualStudio.ProjectSystem.IntegrationTests.csproj", "{FB209C68-77C0-4EE9-BCA9-0B3D5721C436}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles", "setup\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.csproj", "{46C756B9-2D8E-4453-8F06-42BBE25D1805}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles", "src\setup\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.csproj", "{46C756B9-2D8E-4453-8F06-42BBE25D1805}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeployTestDependencies", "src\DeployTestDependencies\DeployTestDependencies.csproj", "{892500A5-BF6B-4FD5-A7B9-5EEA20EB775F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeployTestDependencies", "src\deploy\DeployTestDependencies\DeployTestDependencies.csproj", "{892500A5-BF6B-4FD5-A7B9-5EEA20EB775F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeployIntegrationDependencies", "src\DeployIntegrationDependencies\DeployIntegrationDependencies.csproj", "{C16993CC-6063-4447-AE16-BE671AFDE08A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeployIntegrationDependencies", "src\deploy\DeployIntegrationDependencies\DeployIntegrationDependencies.csproj", "{C16993CC-6063-4447-AE16-BE671AFDE08A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{DD7EF107-AAD4-4C43-8A58-0DC1BC614ADE}"
 	ProjectSection(SolutionItems) = preProject
@@ -67,6 +69,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{52A4
 		build\Scripts\UnitTests.targets = build\Scripts\UnitTests.targets
 		build\Scripts\Workarounds.targets = build\Scripts\Workarounds.targets
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deploy", "Deploy", "{FD8EF6D9-B9AD-40AA-8015-D74AB6E82A5A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -138,6 +142,11 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{9FBD7EF2-9449-486D-9FDD-FA56160AA8BB} = {AC8DB8AE-AC9F-4503-83C6-255B66C318C6}
+		{49705330-A4F5-47EA-BB10-3B783CE91AEA} = {AC8DB8AE-AC9F-4503-83C6-255B66C318C6}
+		{46C756B9-2D8E-4453-8F06-42BBE25D1805} = {AC8DB8AE-AC9F-4503-83C6-255B66C318C6}
+		{892500A5-BF6B-4FD5-A7B9-5EEA20EB775F} = {FD8EF6D9-B9AD-40AA-8015-D74AB6E82A5A}
+		{C16993CC-6063-4447-AE16-BE671AFDE08A} = {FD8EF6D9-B9AD-40AA-8015-D74AB6E82A5A}
 		{E09AD054-22FC-4E70-8889-0F3DCF1267C7} = {DD7EF107-AAD4-4C43-8A58-0DC1BC614ADE}
 		{6A95E22E-6D85-4494-AEB5-FCD60A8E88A3} = {DD7EF107-AAD4-4C43-8A58-0DC1BC614ADE}
 		{52A4E4D7-5658-4BD7-A8FC-2D7ABB5A8AFF} = {DD7EF107-AAD4-4C43-8A58-0DC1BC614ADE}

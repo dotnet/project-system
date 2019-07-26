@@ -1,6 +1,6 @@
 ﻿<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\VisualStudioDesigner.props"/>
+  <Import Project="..\..\VisualStudioDesigner.props"/>
   <PropertyGroup>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
     <PublishOutputToSymStore>false</PublishOutputToSymStore>
@@ -14,7 +14,7 @@
     <VisualStudioInsertionComponent>Microsoft.VisualStudio.Editors</VisualStudioInsertionComponent>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.vbproj">
+    <ProjectReference Include="..\..\Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.vbproj">
       <Name>Microsoft.VisualStudio.AppDesigner</Name>
       <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup;GetCopyToOutputDirectoryItems;SatelliteDllsProjectOutputGroup</IncludeOutputGroupsInVSIX>
       <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup</IncludeOutputGroupsInVSIXLocalOnly>
@@ -22,7 +22,7 @@
       <NgenArchitecture>All</NgenArchitecture>
       <NgenPriority>3</NgenPriority>
     </ProjectReference>
-    <ProjectReference Include="..\Microsoft.VisualStudio.Editors\Microsoft.VisualStudio.Editors.vbproj">
+    <ProjectReference Include="..\..\Microsoft.VisualStudio.Editors\Microsoft.VisualStudio.Editors.vbproj">
       <Name>Microsoft.VisualStudio.Editors</Name>
       <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup;GetCopyToOutputDirectoryItems;SatelliteDllsProjectOutputGroup</IncludeOutputGroupsInVSIX>
       <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup</IncludeOutputGroupsInVSIXLocalOnly>
@@ -32,7 +32,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Common\ProvideBindingRedirectionAttribute.cs">
+    <Compile Include="..\..\Common\ProvideBindingRedirectionAttribute.cs">
       <Link>ProvideBindingRedirectionAttribute.cs</Link>
     </Compile>
   </ItemGroup>
