@@ -17,8 +17,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
         public DontShowAgainMessageBox(string caption, string message, string checkboxText, bool initialStateOfCheckbox,
                                        string learnMoreText, string learnMoreUrl, IUserNotificationServices userNotificationServices)
         {
-            _userNotificationServices = userNotificationServices;
-
             InitializeComponent();
 
             DataContext = this;
@@ -47,13 +45,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
                     }
                     catch (Exception ex)
                     {
-                        _userNotificationServices.ShowError(ex.Message);
+                        userNotificationServices.ShowError(ex.Message);
                     }
                 });
             }
         }
-
-        private readonly IUserNotificationServices _userNotificationServices;
 
         //Strictly used for databinding, no notifications
         public string MessageText { get; }
