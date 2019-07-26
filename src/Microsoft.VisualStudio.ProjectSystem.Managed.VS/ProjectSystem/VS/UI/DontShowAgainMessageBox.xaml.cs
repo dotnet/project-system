@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
             DataContext = this;
             DialogCaption = caption;
             MessageText = message;
-            PreviewKeyDown += new KeyEventHandler(CloseOnESCkey);
+            PreviewKeyDown += CloseOnESCkey;
 
             DontShowAgainCheckBox.Visibility = Visibility.Collapsed;
             if (checkboxText != null)
@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
             {
                 LearnMore.Visibility = Visibility.Visible;
                 LearnMoreText = learnMoreText;
-                LearnMoreCommand = new DelegateCommand((parameter) =>
+                LearnMoreCommand = new DelegateCommand(_ =>
                 {
                     try
                     {
