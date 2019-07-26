@@ -12,9 +12,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         {
             var list = new ObservableList<NameValuePair>();
 
-            foreach (KeyValuePair<string, string> kvp in dictionary)
+            foreach ((string key, string value) in dictionary)
             {
-                list.Add(new NameValuePair(kvp.Key, kvp.Value, list));
+                list.Add(new NameValuePair(key, value, list));
             }
 
             return list;
