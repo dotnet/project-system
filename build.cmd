@@ -43,7 +43,7 @@ if /I "%1" == "/configuration"        set BuildConfiguration=%2                 
 call :Usage && exit /b 1
 
 :DoneParsing
-call "%Root%\build\Bootstrap\SetVSEnvironment.cmd" %Root% || exit /b 1
+call "%Root%\build\Bootstrap\SetVSEnvironment.cmd" || exit /b 1
 
 powershell -ExecutionPolicy ByPass -Command "& """%Root%build\Build.ps1""" -configuration %BuildConfiguration% -restore -pack:$true -build:%OptBuild% -rebuild:%OptRebuild% -deploy:%OptDeploy% -test:%OptTest% -integrationTest:%OptIntegrationTest% -log:%OptLog% -verbosity:%OptVerbosity% %PropRootSuffix% -ci:%OptCI% -ibc:$OptIbc -prepareMachine:%OptPrepareMachine% -sign:%OptSign%"
 
