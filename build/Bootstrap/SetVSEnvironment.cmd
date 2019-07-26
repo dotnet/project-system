@@ -4,9 +4,10 @@ REM Configures the build environment to be able to build the tree
 REM
 REM Downloads VSWhere, uses it to find a compatible Visual Studio and call a developer prompt to set the environment.
 
+set DownloadDirectory=%1artifacts\tmp\
 set RequiredVSVersion=16.0
 set DownloadUrl=https://github.com/microsoft/vswhere/releases/download/2.6.7/vswhere.exe
-set VSWhereExe=%TEMP%\vswhere.exe
+set VSWhereExe=%DownloadDirectory%vswhere.exe
 
 REM Are we already in Developer Command Prompt?
 if defined VSINSTALLDIR (
@@ -15,6 +16,8 @@ if defined VSINSTALLDIR (
 
 if not exist "%VSWhereExe%" (
   echo Downloading from %DownloadUrl% to %VSWhereExe% so that we can find Visual Studio
+
+  md %DownloadDirectory%
   bitsadmin.exe /transfer "VSWhere.exe" /dynamic /download /priority FOREGROUND %DownloadUrl% %VSWhereExe% > nul || (
     echo Failed to download, check your internet connection.
     exit /b 1
