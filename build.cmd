@@ -22,6 +22,7 @@ set OptIbc=$false
 if    "%1" == "" goto :DoneParsing
 if /I "%1" == "/?" call :Usage && exit /b 1
 if /I "%1" == "/build"                set OptBuild=$true  && set OptRebuild=$false  && shift && goto :ParseArguments
+if /I "%1" == "/no-build"             set OptBuild=$false && set OptRebuild=$false  && shift && goto :ParseArguments
 if /I "%1" == "/rebuild"              set OptBuild=$false && set OptRebuild=$true   && shift && goto :ParseArguments
 if /I "%1" == "/test"                 set OptTest=$true                             && shift && goto :ParseArguments
 if /I "%1" == "/no-test"              set OptTest=$false                            && shift && goto :ParseArguments
@@ -55,6 +56,7 @@ echo.
 echo   Build targets:
 echo     /build                    Perform a build (default)
 echo     /rebuild                  Perform a clean, then build
+echo     /no-build                 Don't build at all (useful if running tests)
 echo.
 echo   Test targets:
 echo     /[no-]test                Run (default) or skip unit tests
