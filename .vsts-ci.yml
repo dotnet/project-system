@@ -1,5 +1,22 @@
 # Responsible for producing the signed product build for insertion into the Visual Studio repository
 
+pr: none
+# Branches that trigger a build on commit
+trigger:
+  branches:
+    include:
+    - master
+    - dev15.0.x
+    - dev15.9.x
+    - dev16.0.x
+    - dev16.1.x
+    - dev16.2.x
+    - dev16.3.x
+  paths:
+    exclude: # don't trigger the CI if only a doc file was changed
+    - docs/*
+    - README.md
+
 resources:
 - repo: self
   clean: true
