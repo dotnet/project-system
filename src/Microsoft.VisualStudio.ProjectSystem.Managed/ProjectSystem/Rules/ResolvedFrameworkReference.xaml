@@ -23,6 +23,10 @@
                   DisplayName="Path"
                   ReadOnly="True" />
 
+  <StringProperty Name="TargetingPackVersion"
+                  DisplayName="Version"
+                  ReadOnly="True" />
+
   <StringProperty Name="Profile"
                   DisplayName="Profile"
                   ReadOnly="True" />
