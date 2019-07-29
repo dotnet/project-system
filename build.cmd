@@ -54,9 +54,8 @@ exit /b %ERRORLEVEL%
 echo Usage: %BatchFile% [options]
 echo.
 echo   Build targets:
-echo     /build                    Perform a build (default)
 echo     /rebuild                  Perform a clean, then build
-echo     /no-build                 Don't build at all (useful if running tests)
+echo     /[no]-build               Perform a build (default) or not
 echo.
 echo   Test targets:
 echo     /[no-]test                Run (default) or skip unit tests
