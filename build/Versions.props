@@ -16,7 +16,6 @@
     <!-- Toolset -->
     <RoslynToolsRepoToolsetVersion>1.0.0-beta-62705-01</RoslynToolsRepoToolsetVersion>
     <RoslynDependenciesProjectSystemOptimizationDataVersion>2.6.0-beta1-62205-02</RoslynDependenciesProjectSystemOptimizationDataVersion>
-    <VSWhereVersion>2.3.2</VSWhereVersion>
     <MicrosoftDotNetIBCMergeVersion>4.7.1-alpha-00001</MicrosoftDotNetIBCMergeVersion>
     <MicrosoftDiaSymReaderPdb2PdbVersion>1.1.0-beta1-62624-01</MicrosoftDiaSymReaderPdb2PdbVersion>
     <OpenCoverVersion>4.6.519</OpenCoverVersion>

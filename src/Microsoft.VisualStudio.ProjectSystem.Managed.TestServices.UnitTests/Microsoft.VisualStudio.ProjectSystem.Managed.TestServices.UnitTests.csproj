@@ -9,7 +9,7 @@
     <InternalsVisibleTo Include="DynamicProxyGenAssembly2" Key="$(MoqPublicKey)" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DeployTestDependencies\DeployTestDependencies.csproj" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\deploy\DeployTestDependencies\DeployTestDependencies.csproj" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.csproj" />
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj" />
   </ItemGroup>

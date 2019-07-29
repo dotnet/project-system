@@ -5,5 +5,5 @@
     <UseCommonOutputDirectory>false</UseCommonOutputDirectory>
   </PropertyGroup>
 
-  <Import Project="..\Directory.Build.props"/>
+  <Import Project="..\..\Directory.Build.props"/>
 </Project>

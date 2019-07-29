@@ -12,7 +12,7 @@
   
   <Target 
     Name="IntegrationTest" 
-    DependsOnTargets="GenerateRunSettings;ExecuteTests;CleanupTestResults;ReportTestResults" 
+    DependsOnTargets="GenerateRunSettings;PrepareVisualStudio;ExecuteTests;CleanupTestResults;ReportTestResults" 
     />
 
   <PropertyGroup>
@@ -70,6 +70,14 @@
       Lines="$(RunSettingsContents)"
       Overwrite="true" 
       />
+
+  </Target>
+
+  <Target Name="PrepareVisualStudio">
+
+    <!-- Want to avoid getting asked to sign in if the machine has never logged in -->
+    <Message Text="Turning off VS first launch dialog" />
+    <Exec Command='vsregedit.exe set "$(VSInstallDir.TrimEnd("\"))" $(VSSDKTargetPlatformRegRootSuffix) HKLM Profile DisableFirstLaunchDialog dword 1' />
 
   </Target>
 

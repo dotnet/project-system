@@ -30,6 +30,7 @@ namespace Microsoft.VisualStudio.Setup
 
             var swrPath = Path.Combine(
                 rootPath,
+                "src",
                 "setup",
                 "Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles",
                 "CommonFiles.swr");
