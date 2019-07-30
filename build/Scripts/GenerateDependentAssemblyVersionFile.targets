@@ -12,7 +12,7 @@
   -->
   
   <Import Project="..\Versions.props"/>
-  <Import Project="..\RepoToolset\ProjectLayout.props" />
+  <Import Project="..\RepoToolset\RepoLayout.props" />
 
   <Target Name="GenerateDependentAssemblyVersionsFile">
 
