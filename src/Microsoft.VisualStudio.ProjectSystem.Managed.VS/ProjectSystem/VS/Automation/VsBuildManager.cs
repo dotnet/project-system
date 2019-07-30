@@ -23,7 +23,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                                     BuildManagerEvents
     {
         private readonly IProjectThreadingService _threadingService;
-        private readonly IUnconfiguredProjectCommonServices _unconfiguredProjectServices;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="VSBuildManager"/> class.
@@ -33,9 +32,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         {
             AddEventSource(this);
             _threadingService = threadingService;
-            _unconfiguredProjectServices = unconfiguredProjectServices;
 
-            Project = new OrderPrecedenceImportCollection<VSLangProj.VSProject>(projectCapabilityCheckProvider: _unconfiguredProjectServices.Project);
+            Project = new OrderPrecedenceImportCollection<VSLangProj.VSProject>(projectCapabilityCheckProvider: unconfiguredProjectServices.Project);
         }
 
         [ImportMany(ExportContractNames.VsTypes.VSProject)]
