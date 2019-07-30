@@ -23,8 +23,6 @@ namespace Microsoft.VisualStudio.Shell
             _serviceProvider = serviceProvider;
         }
 
-        public object ComServices { get; private set; }
-
         public int QueryService(ref Guid guidService, ref Guid riid, out IntPtr ppvObject)
         {
             ppvObject = IntPtr.Zero;

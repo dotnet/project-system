@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using System;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
@@ -15,14 +17,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
         public DontShowAgainMessageBox(string caption, string message, string checkboxText, bool initialStateOfCheckbox,
                                        string learnMoreText, string learnMoreUrl, IUserNotificationServices userNotificationServices)
         {
-            _userNotificationServices = userNotificationServices;
-
             InitializeComponent();
 
             DataContext = this;
             DialogCaption = caption;
             MessageText = message;
-            PreviewKeyDown += new KeyEventHandler(CloseOnESCkey);
+            PreviewKeyDown += CloseOnESCkey;
 
             DontShowAgainCheckBox.Visibility = Visibility.Collapsed;
             if (checkboxText != null)
@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
             {
                 LearnMore.Visibility = Visibility.Visible;
                 LearnMoreText = learnMoreText;
-                LearnMoreCommand = new DelegateCommand((parameter) =>
+                LearnMoreCommand = new DelegateCommand(_ =>
                 {
                     try
                     {
@@ -45,13 +45,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
                     }
                     catch (Exception ex)
                     {
-                        _userNotificationServices.ShowError(ex.Message);
+                        userNotificationServices.ShowError(ex.Message);
                     }
                 });
             }
         }
-
-        private readonly IUserNotificationServices _userNotificationServices;
 
         //Strictly used for databinding, no notifications
         public string MessageText { get; }

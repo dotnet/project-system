@@ -104,8 +104,11 @@ function Build {
 
   if ($useCodecov) {
     $CodecovProj = Join-Path $PSScriptRoot 'Codecov.proj'
-    & $MsbuildExe $CodecovProj /m /nologo /clp:Summary /nodeReuse:$nodeReuse /warnaserror /v:diag /t:Codecov /p:Configuration=$configuration /p:UseCodecov=$useCodecov /p:NuGetPackageRoot=$NuGetPackageRoot $properties
+    & $MsbuildExe $CodecovProj /m /nologo /clp:Summary /nodeReuse:$nodeReuse /warnaserror /v:diag /p:Configuration=$configuration $properties
   }
+
+  $GenerateDependentAssemblyVersionsProj = Join-Path $PSScriptRoot 'Scripts\GenerateDependentAssemblyVersionFile.targets'
+  & $MsbuildExe $GenerateDependentAssemblyVersionsProj /m /nologo /clp:Summary /nodeReuse:$nodeReuse /warnaserror /p:Configuration=$configuration
 }
 
 function Stop-Processes() {
@@ -124,21 +127,6 @@ function Clear-NuGetCache() {
   if (Test-Path $nugetRoot) {
     Remove-Item $nugetRoot -Recurse -Force
   }
-}
-
-function GenerateDependentAssemblyVersionFile() {
-  $vsAssemblyName = "Microsoft.VisualStudio.Editors"
-  $visualStudioVersion = GetVersion("VisualStudioVersion")
-  $projectSystemAssemblyName = "Microsoft.VisualStudio.ProjectSystem.Managed"
-  $projectSystemVersion = GetVersion("ProjectSystemVersion")
-  $devDivInsertionFiles = Join-Path (Join-Path $ArtifactsDir $configuration) "DevDivInsertionFiles"
-  $dependentAssemblyVersionsCsv = Join-Path $devDivInsertionFiles "DependentAssemblyVersions.csv"
-  $csv =@"
-$vsAssemblyName,$visualStudioVersion.0
-$projectSystemAssemblyName,$projectSystemVersion.0
-"@
-  & mkdir -force $devDivInsertionFiles > $null
-  $csv > $dependentAssemblyVersionsCsv
 }
 
 try {
@@ -200,8 +188,6 @@ try {
 
   Build
 
-  GenerateDependentAssemblyVersionFile
-  
   exit $lastExitCode
 }
 catch {
