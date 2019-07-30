@@ -299,39 +299,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             propApplicationManifest = GetPropertyDescriptor("ApplicationManifest")
             propWin32ResourceFile = GetPropertyDescriptor("Win32ResourceFile")
 
-            obj = TryGetNonCommonPropertyValue(propApplicationIcon)
-            If Not PropertyControlData.IsSpecialValue(obj) Then
-
-                stApplicationIcon = TryCast(obj, String)
-
-                If (Trim(stApplicationIcon) = "") Then
-                    If (ProjectProperties.OutputType <> VSLangProj.prjOutputType.prjOutputTypeLibrary) Then
-                        stApplicationIcon = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_DefaultIconText
-                    Else
-                        '// ApplicationIcon can be empty for dlls
-                    End If
-                End If
-            End If
-
-            obj = TryGetNonCommonPropertyValue(propApplicationManifest)
-            If Not PropertyControlData.IsSpecialValue(obj) Then
-
-                stApplicationManifest = TryCast(obj, String)
-                stApplicationManifest = Trim(stApplicationManifest)
-
-                If String.Equals(stApplicationManifest, prjApplicationManifestValues.prjApplicationManifest_Default, StringComparison.OrdinalIgnoreCase) Then
-                    stApplicationManifest = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_DefaultManifestText
-                ElseIf String.Equals(stApplicationManifest, prjApplicationManifestValues.prjApplicationManifest_NoManifest, StringComparison.OrdinalIgnoreCase) Then
-                    stApplicationManifest = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_NoManifestText
-                ElseIf String.IsNullOrEmpty(stApplicationManifest) Then
-                    If (ProjectProperties.OutputType <> VSLangProj.prjOutputType.prjOutputTypeLibrary) Then
-                        stApplicationManifest = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_DefaultManifestText
-                    Else
-                        '// ApplicationManifest can be empty for dlls
-                    End If
-                End If
-            End If
-
             obj = TryGetNonCommonPropertyValue(propWin32ResourceFile)
             If Not PropertyControlData.IsSpecialValue(obj) Then
                 stWin32ResourceFile = TryCast(obj, String)
@@ -363,7 +330,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Win32ResourceRadioButton.Checked = False
 
             ElseIf (Not (IsNothing(stWin32ResourceFile)) AndAlso stWin32ResourceFile <> "") Then
-
                 Win32ResourceFile.Text = stWin32ResourceFile
                 EnableControl(Win32ResourceFile, Win32ResourceFileSupported())
                 EnableControl(Win32ResourceFileBrowse, Win32ResourceFileSupported())
@@ -380,26 +346,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 ApplicationManifest.Enabled = False
 
             Else
-
-                ApplicationIcon.Text = stApplicationIcon
-                EnableControl(ApplicationIconLabel, ApplicationIconSupported())
-                EnableControl(ApplicationIcon, ApplicationIconSupported())
-                EnableControl(AppIconBrowse, ApplicationIconSupported())
-                ManifestExplanationLabel.Enabled = True
-                IconRadioButton.Checked = True
-                If (ProjectProperties.OutputType <> VSLangProj.prjOutputType.prjOutputTypeLibrary) Then
-                    ApplicationManifest.Text = stApplicationManifest
-                    EnableControl(ApplicationManifestLabel, ApplicationManifestSupported())
-                    EnableControl(ApplicationManifest, ApplicationManifestSupported())
-                Else
-                    ApplicationManifest.Text = String.Empty
-                    ApplicationManifestLabel.Enabled = False
-                    ApplicationManifest.Enabled = False
-                End If
-                Win32ResourceFile.Text = ""
-                Win32ResourceFile.Enabled = False
-                Win32ResourceFileBrowse.Enabled = False
-                Win32ResourceRadioButton.Checked = False
+                IconResourceUpdate()
 
             End If
             Return True
@@ -439,7 +386,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <returns></returns>
         ''' <remarks></remarks>
         Protected Overridable Function ApplicationIconSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
-            Return SetIconAndWin32ResourceFile()
+            Return IconRadioButton.Checked
         End Function
 
         ''' <summary>
@@ -478,7 +425,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <returns></returns>
         ''' <remarks></remarks>
         Protected Overridable Function ApplicationManifestSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
-            Return SetIconAndWin32ResourceFile()
+            Return IconRadioButton.Checked
         End Function
 
         ''' <summary>
@@ -510,8 +457,64 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <returns></returns>
         ''' <remarks></remarks>
         Protected Overridable Function Win32ResourceSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
-            Return SetIconAndWin32ResourceFile()
+            Return Win32ResourceRadioButton.Checked
         End Function
+
+        Private Sub IconResourceUpdate()
+            Dim obj As Object = TryGetNonCommonPropertyValue(GetPropertyDescriptor("ApplicationIcon"))
+            Dim stApplicationIcon As String = Nothing
+            Dim stApplicationManifest As String = Nothing
+            If Not PropertyControlData.IsSpecialValue(obj) Then
+
+                stApplicationIcon = TryCast(obj, String)
+
+                If String.IsNullOrEmpty(Trim(stApplicationIcon)) Then
+                    If (ProjectProperties.OutputType <> VSLangProj.prjOutputType.prjOutputTypeLibrary) Then
+                        stApplicationIcon = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_DefaultIconText
+                    Else
+                        '// ApplicationIcon can be empty for dlls
+                    End If
+                End If
+            End If
+
+            obj = TryGetNonCommonPropertyValue(GetPropertyDescriptor("ApplicationManifest"))
+            If Not PropertyControlData.IsSpecialValue(obj) Then
+
+                stApplicationManifest = TryCast(obj, String)
+                stApplicationManifest = Trim(stApplicationManifest)
+
+                If String.Equals(stApplicationManifest, prjApplicationManifestValues.prjApplicationManifest_Default, StringComparison.OrdinalIgnoreCase) Then
+                    stApplicationManifest = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_DefaultManifestText
+                ElseIf String.Equals(stApplicationManifest, prjApplicationManifestValues.prjApplicationManifest_NoManifest, StringComparison.OrdinalIgnoreCase) Then
+                    stApplicationManifest = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_NoManifestText
+                ElseIf String.IsNullOrEmpty(stApplicationManifest) Then
+                    If (ProjectProperties.OutputType <> VSLangProj.prjOutputType.prjOutputTypeLibrary) Then
+                        stApplicationManifest = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_DefaultManifestText
+                    Else
+                        '// ApplicationManifest can be empty for dlls
+                    End If
+                End If
+            End If
+
+            ApplicationIcon.Text = stApplicationIcon
+            ManifestExplanationLabel.Enabled = True
+            IconRadioButton.Checked = True
+            Win32ResourceFile.Enabled = False
+            Win32ResourceFileBrowse.Enabled = False
+            Win32ResourceRadioButton.Checked = False
+            EnableControl(ApplicationIconLabel, ApplicationIconSupported())
+            EnableControl(ApplicationIcon, ApplicationIconSupported())
+            EnableControl(AppIconBrowse, ApplicationIconSupported())
+            If (ProjectProperties.OutputType <> VSLangProj.prjOutputType.prjOutputTypeLibrary) Then
+                ApplicationManifest.Text = stApplicationManifest
+                EnableControl(ApplicationManifestLabel, ApplicationManifestSupported())
+                EnableControl(ApplicationManifest, ApplicationManifestSupported())
+            Else
+                ApplicationManifest.Text = String.Empty
+                ApplicationManifestLabel.Enabled = False
+                ApplicationManifest.Enabled = False
+            End If
+        End Sub
 
         ''' <summary>
         ''' 
@@ -532,8 +535,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     ApplicationManifestLabel.Enabled = False
                     ApplicationManifest.Enabled = False
                 End If
-                Win32ResourceFile.Enabled = False
-                Win32ResourceFileBrowse.Enabled = False
+
+                IconResourceUpdate()
+
             ElseIf (Win32ResourceRadioButton.Checked = True) Then
                 ManifestExplanationLabel.Enabled = False
                 ApplicationIconLabel.Enabled = False
@@ -717,6 +721,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             PopulateIconList(False)
             PopulateManifestList(False)
             UpdateIconImage(False)
+            SetIconAndWin32ResourceFile()
         End Sub
 
         ''' <summary>
