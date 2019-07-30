@@ -22,6 +22,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 {
     public class TempPECompilerManagerTests : IDisposable
     {
+        private const int TestTimeoutMillisecondsDelay = 2000;
+
         private string? _lastIntermediateOutputPath;
         private readonly string _projectFolder = @"C:\MyProject";
         private string _intermediateOutputPath = "MyOutput";
@@ -385,7 +387,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             await actionThatCausesCompilation();
 
             // Sadly, we need a timeout
-            var delay = Task.Delay(TimeSpan.FromSeconds(1));
+            var delay = Task.Delay(TestTimeoutMillisecondsDelay);
 
             if (await Task.WhenAny(_compilationOccurredCompletionSource.Task, delay) == delay)
             {
