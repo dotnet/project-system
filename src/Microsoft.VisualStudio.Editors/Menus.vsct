@@ -10,7 +10,6 @@
 -->
 <CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <Extern href="stdidcmd.h"/>
-  <Extern href="msobtnid.h"/>
   <Extern href="virtkeys.h"/>
   <Extern href="vsshlids.h"/>
   <Extern href="SharedIds.h"/>
