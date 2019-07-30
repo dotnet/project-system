@@ -22,6 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         public bool WasNewlyCreated { get; private set; }
+
         public void InitializeNewProject()
         {
             WasNewlyCreated = true;

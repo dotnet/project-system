@@ -2,44 +2,36 @@
 
 #nullable disable
 
+using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+
+using Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages;
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 {
-    using System;
-    using System.ComponentModel;
-    using System.Diagnostics;
-    using System.Runtime.CompilerServices;
-
-    using Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages;
-
     internal class NameValuePair : INotifyPropertyChanged, IDataErrorInfo
     {
-        public ObservableList<NameValuePair> ParentCollection;
-        public bool HasValidationError { get; set; }
+        private readonly ObservableList<NameValuePair> _parentCollection;
 
-        public NameValuePair(ObservableList<NameValuePair> parentCollection = null) { ParentCollection = parentCollection; }
+        private string _name;
+        private string _value;
+
+        public bool HasValidationError { get; set; }
 
         public NameValuePair(string name, string value, ObservableList<NameValuePair> parentCollection = null)
         {
-            ParentCollection = parentCollection;
+            _parentCollection = parentCollection;
             Name = name;
             Value = value;
         }
 
-        public NameValuePair(NameValuePair nvPair, ObservableList<NameValuePair> parentCollection = null)
-        {
-            ParentCollection = parentCollection;
-            Name = nvPair.Name;
-            Value = nvPair.Value;
-        }
-
-        private string _name;
         public string Name
         {
             get { return _name; }
             set { NotifyPropertyChanged(ref _name, value); }
         }
 
-        private string _value;
         public string Value
         {
             get { return _value; }
@@ -48,21 +40,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public bool NotifyPropertyChanged<T>(ref T refProperty, T value, [CallerMemberName] string propertyName = null)
+        private void NotifyPropertyChanged<T>(ref T refProperty, T value, [CallerMemberName] string propertyName = null)
         {
             if (!Equals(refProperty, value))
             {
                 refProperty = value;
-                NotifyPropertyChanged(propertyName);
-                return true;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
-
-            return false;
-        }
-
-        public void NotifyPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #region IDataErrorInfo
@@ -71,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         {
             get
             {
-                Debug.Fail("Checking for EntireRow of NameValuePair is not supposed to be invoked");
+                System.Diagnostics.Debug.Fail("Checking for EntireRow of NameValuePair is not supposed to be invoked");
                 throw new NotImplementedException();
             }
         }
@@ -80,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         {
             get
             {
-                //Reset error condition
+                // Reset error condition
                 string error = null;
                 HasValidationError = false;
 
@@ -91,46 +75,47 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
                         error = PropertyPageResources.NameCannotBeEmpty;
                         HasValidationError = true;
                     }
+                    else if (IsNamePropertyDuplicate())
+                    {
+                        error = PropertyPageResources.DuplicateKey;
+                        HasValidationError = true;
+                    }
                     else
                     {
-                        if (IsNamePropertyDuplicate())
-                        {
-                            error = PropertyPageResources.DuplicateKey;
-                            HasValidationError = true;
-                        }
+                        // We are doing Row Validation - make sure that in addition to Name - Value is valid
+                        HasValidationError = IsValuePropertyEmpty();
                     }
-                    //We are doing Row Validation - make sure that in addition to Name - Value is valid
-                    if (!HasValidationError)
-                    { HasValidationError = IsValuePropertyEmpty(); }
                 }
-                if (propertyName.Equals("Value", StringComparison.OrdinalIgnoreCase))
+                else if (propertyName.Equals("Value", StringComparison.OrdinalIgnoreCase))
                 {
                     if (string.IsNullOrWhiteSpace(Value))
                     {
                         error = PropertyPageResources.ValueCannotBeEmpty;
                         HasValidationError = true;
                     }
-                    //We are doing Row Validation - make sure that in addition to Value - Name is valid
-                    if (!HasValidationError)
-                    { HasValidationError = IsNamePropertyEmpty() || IsNamePropertyDuplicate(); }
+                    else
+                    {
+                        // We are doing Row Validation - make sure that in addition to Value - Name is valid
+                        HasValidationError = IsNamePropertyEmpty() || IsNamePropertyDuplicate();
+                    }
                 }
-                SendNotificationAfterValidation();
+
+                _parentCollection?.RaiseValidationStatus(!HasValidationError);
                 return error;
             }
         }
 
-        private bool IsNamePropertyEmpty()
-        {
-            return string.IsNullOrWhiteSpace(Name);
-        }
+        private bool IsNamePropertyEmpty() => string.IsNullOrWhiteSpace(Name);
+
+        private bool IsValuePropertyEmpty() => string.IsNullOrWhiteSpace(Value);
 
         private bool IsNamePropertyDuplicate()
         {
-            if (ParentCollection != null)
+            if (_parentCollection != null)
             {
-                foreach (NameValuePair nvp in ParentCollection)
+                foreach (NameValuePair nvp in _parentCollection)
                 {
-                    if (!nvp.Equals(this))
+                    if (!ReferenceEquals(this, nvp))
                     {
                         if (string.Compare(nvp.Name, Name, StringComparison.OrdinalIgnoreCase) == 0)
                         {
@@ -139,24 +124,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
                     }
                 }
             }
+
             return false;
         }
 
-        private bool IsValuePropertyEmpty()
-        {
-            return string.IsNullOrWhiteSpace(Value);
-        }
-
-        private void SendNotificationAfterValidation()
-        {
-            if (ParentCollection != null)
-            {
-                ParentCollection.RaiseValidationStatus(!HasValidationError);
-            }
-        }
-
         #endregion
-
     }
-
 }
