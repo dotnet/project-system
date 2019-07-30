@@ -8,14 +8,14 @@
   <Import Project="RepoToolset\ProjectLayout.props" />
 
   <Target Name="Codecov">
-    <PropertyGroup Condition="'$(UseCodecov)' == 'true'">
+    <PropertyGroup>
       <_CodecovPath>$(NuGetPackageRoot)codecov\$(CodecovVersion)\tools\Codecov.exe</_CodecovPath>
 
       <_BranchName Condition="'$(_BranchName)' == ''">$(ghprbTargetBranch)</_BranchName>
       <_BranchName Condition="'$(_BranchName)' == ''">$(BranchName)</_BranchName>
     </PropertyGroup>
 
-    <ItemGroup Condition="'$(UseCodecov)' == 'true'">
+    <ItemGroup>
       <_CoverageReports Include="$(ArtifactsTestResultsDir)*.coverage" />
 
       <_CodecovArgs Include="-f;@(_CoverageReports)" />
@@ -28,8 +28,7 @@
       <_CodecovArgs Include="--flag;$(Configuration)" Condition="'$(Configuration)' != ''" />
     </ItemGroup>
 
-    <Exec Condition="'$(UseCodecov)' == 'true'"
-          Command="&quot;$(_CodecovPath)&quot; @(_CodecovArgs, ' ')" />
+    <Exec Command="&quot;$(_CodecovPath)&quot; @(_CodecovArgs, ' ')" />
   </Target>
 
   <Import Project="..\Packages.targets" />
