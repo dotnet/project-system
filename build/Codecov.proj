@@ -1,11 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
 <Project>
-  <PropertyGroup>
-    <RepoRoot>$(MSBuildThisFileDirectory)..\</RepoRoot>
-  </PropertyGroup>
-
   <Import Project="Versions.props" />
-  <Import Project="RepoToolset\ProjectLayout.props" />
+  <Import Project="RepoToolset\RepoLayout.props" />
 
   <Target Name="Codecov">
     <PropertyGroup>
