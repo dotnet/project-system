@@ -2,7 +2,7 @@
   <!-- 
    
    Generates DependentAssemblyVersions.csv that enables the Roslyn insertion tool to update various 
-   assembly verisons in the VS repository under src\ProductData.
+   assembly versions in the VS repository under src\ProductData.
    See: https://github.com/dotnet/roslyn-tools/tree/master/src/RoslynInsertionTool).
    
     $(VisualStudioVersion):         The version number of Microsoft.VisualStudio.Editors/Microsoft.VisualStudio.AppDesigner
@@ -19,8 +19,14 @@
     <PropertyGroup>
       <DependentAssemblyVersionsOutputDirectory>$(ArtifactsConfigurationDir)DevDivInsertionFiles\</DependentAssemblyVersionsOutputDirectory>
       <DependentAssemblyVersionsFilePath>$(DependentAssemblyVersionsOutputDirectory)DependentAssemblyVersions.csv</DependentAssemblyVersionsFilePath>
+      
+    <!-- 
+     We use individual version for AppDesigner/Editors, however Managed and Managed.VS share
+     the same variable in VS repository under src\ProductData\AssemblyVersions.tt 
+     -->
       <DependentAssemblyVersionsContents>
  <![CDATA[
+Microsoft.VisualStudio.AppDesigner,$(VisualStudioVersion).0
 Microsoft.VisualStudio.Editors,$(VisualStudioVersion).0
 Microsoft.VisualStudio.ProjectSystem.Managed,$(ProjectSystemVersion).0
  ]]>
