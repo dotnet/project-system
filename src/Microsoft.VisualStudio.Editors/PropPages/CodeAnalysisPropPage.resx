@@ -1,0 +1,507 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="RunAnalyzersDuringLiveAnalysis.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="RunAnalyzersDuringLiveAnalysis.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="RunAnalyzersDuringLiveAnalysis.Location" type="System.Drawing.Point, System.Drawing">
+    <value>41, 85</value>
+  </data>
+  <data name="RunAnalyzersDuringLiveAnalysis.Size" type="System.Drawing.Size, System.Drawing">
+    <value>120, 17</value>
+  </data>
+  <data name="RunAnalyzersDuringLiveAnalysis.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="RunAnalyzersDuringLiveAnalysis.Text" xml:space="preserve">
+    <value>Run on &amp;live analysis</value>
+  </data>
+  <data name="&gt;&gt;RunAnalyzersDuringLiveAnalysis.Name" xml:space="preserve">
+    <value>RunAnalyzersDuringLiveAnalysis</value>
+  </data>
+  <data name="&gt;&gt;RunAnalyzersDuringLiveAnalysis.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;RunAnalyzersDuringLiveAnalysis.Parent" xml:space="preserve">
+    <value>FxCopAnalyzersPanel</value>
+  </data>
+  <data name="&gt;&gt;RunAnalyzersDuringLiveAnalysis.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="RunAnalyzersDuringBuild.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="RunAnalyzersDuringBuild.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="RunAnalyzersDuringBuild.Location" type="System.Drawing.Point, System.Drawing">
+    <value>41, 62</value>
+  </data>
+  <data name="RunAnalyzersDuringBuild.Size" type="System.Drawing.Size, System.Drawing">
+    <value>86, 17</value>
+  </data>
+  <data name="RunAnalyzersDuringBuild.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="RunAnalyzersDuringBuild.Text" xml:space="preserve">
+    <value>Run on &amp;build</value>
+  </data>
+  <data name="&gt;&gt;RunAnalyzersDuringBuild.Name" xml:space="preserve">
+    <value>RunAnalyzersDuringBuild</value>
+  </data>
+  <data name="&gt;&gt;RunAnalyzersDuringBuild.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;RunAnalyzersDuringBuild.Parent" xml:space="preserve">
+    <value>FxCopAnalyzersPanel</value>
+  </data>
+  <data name="&gt;&gt;RunAnalyzersDuringBuild.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="RoslynAnalyzersLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="RoslynAnalyzersLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>31, 9</value>
+  </data>
+  <data name="RoslynAnalyzersLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>52, 13</value>
+  </data>
+  <data name="RoslynAnalyzersLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>15</value>
+  </data>
+  <data name="RoslynAnalyzersLabel.Text" xml:space="preserve">
+    <value>Analyzers</value>
+  </data>
+  <data name="&gt;&gt;RoslynAnalyzersLabel.Name" xml:space="preserve">
+    <value>RoslynAnalyzersLabel</value>
+  </data>
+  <data name="&gt;&gt;RoslynAnalyzersLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;RoslynAnalyzersLabel.Parent" xml:space="preserve">
+    <value>FxCopAnalyzersPanel</value>
+  </data>
+  <data name="&gt;&gt;RoslynAnalyzersLabel.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="RoslynAnalyzersLineLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>87, 16</value>
+  </data>
+  <data name="RoslynAnalyzersLineLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>350, 1</value>
+  </data>
+  <data name="RoslynAnalyzersLineLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="&gt;&gt;RoslynAnalyzersLineLabel.Name" xml:space="preserve">
+    <value>RoslynAnalyzersLineLabel</value>
+  </data>
+  <data name="&gt;&gt;RoslynAnalyzersLineLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;RoslynAnalyzersLineLabel.Parent" xml:space="preserve">
+    <value>FxCopAnalyzersPanel</value>
+  </data>
+  <data name="&gt;&gt;RoslynAnalyzersLineLabel.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="RoslynAnalyzersHelpLinkLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="RoslynAnalyzersHelpLinkLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>39, 36</value>
+  </data>
+  <data name="RoslynAnalyzersHelpLinkLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>236, 13</value>
+  </data>
+  <data name="RoslynAnalyzersHelpLinkLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="RoslynAnalyzersHelpLinkLabel.Text" xml:space="preserve">
+    <value>What are the benefits of source code analyzers?</value>
+  </data>
+  <data name="&gt;&gt;RoslynAnalyzersHelpLinkLabel.Name" xml:space="preserve">
+    <value>RoslynAnalyzersHelpLinkLabel</value>
+  </data>
+  <data name="&gt;&gt;RoslynAnalyzersHelpLinkLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;RoslynAnalyzersHelpLinkLabel.Parent" xml:space="preserve">
+    <value>FxCopAnalyzersPanel</value>
+  </data>
+  <data name="&gt;&gt;RoslynAnalyzersHelpLinkLabel.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="FxCopAnalyzersPackageNameTextBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>41, 135</value>
+  </data>
+  <data name="FxCopAnalyzersPackageNameTextBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="FxCopAnalyzersPackageNameTextBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>220, 20</value>
+  </data>
+  <data name="FxCopAnalyzersPackageNameTextBox.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="FxCopAnalyzersPackageNameTextBox.Text" xml:space="preserve">
+    <value>Microsoft.CodeAnalysis.FxCopAnalyzers</value>
+  </data>
+  <data name="&gt;&gt;FxCopAnalyzersPackageNameTextBox.Name" xml:space="preserve">
+    <value>FxCopAnalyzersPackageNameTextBox</value>
+  </data>
+  <data name="&gt;&gt;FxCopAnalyzersPackageNameTextBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;FxCopAnalyzersPackageNameTextBox.Parent" xml:space="preserve">
+    <value>FxCopAnalyzersPanel</value>
+  </data>
+  <data name="&gt;&gt;FxCopAnalyzersPackageNameTextBox.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="FxCopAnalyzersPackageNameLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="FxCopAnalyzersPackageNameLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>39, 115</value>
+  </data>
+  <data name="FxCopAnalyzersPackageNameLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 0, 2, 0</value>
+  </data>
+  <data name="FxCopAnalyzersPackageNameLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>175, 13</value>
+  </data>
+  <data name="FxCopAnalyzersPackageNameLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="FxCopAnalyzersPackageNameLabel.Text" xml:space="preserve">
+    <value>Recommended analyzer package:</value>
+  </data>
+  <data name="&gt;&gt;FxCopAnalyzersPackageNameLabel.Name" xml:space="preserve">
+    <value>FxCopAnalyzersPackageNameLabel</value>
+  </data>
+  <data name="&gt;&gt;FxCopAnalyzersPackageNameLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;FxCopAnalyzersPackageNameLabel.Parent" xml:space="preserve">
+    <value>FxCopAnalyzersPanel</value>
+  </data>
+  <data name="&gt;&gt;FxCopAnalyzersPackageNameLabel.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="InstalledVersionTextBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>41, 185</value>
+  </data>
+  <data name="InstalledVersionTextBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="InstalledVersionTextBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>87, 20</value>
+  </data>
+  <data name="InstalledVersionTextBox.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;InstalledVersionTextBox.Name" xml:space="preserve">
+    <value>InstalledVersionTextBox</value>
+  </data>
+  <data name="&gt;&gt;InstalledVersionTextBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;InstalledVersionTextBox.Parent" xml:space="preserve">
+    <value>FxCopAnalyzersPanel</value>
+  </data>
+  <data name="&gt;&gt;InstalledVersionTextBox.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="InstalledVersionLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="InstalledVersionLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>39, 164</value>
+  </data>
+  <data name="InstalledVersionLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 0, 2, 0</value>
+  </data>
+  <data name="InstalledVersionLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>90, 15</value>
+  </data>
+  <data name="InstalledVersionLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="InstalledVersionLabel.Text" xml:space="preserve">
+    <value>Installed Version:</value>
+  </data>
+  <data name="&gt;&gt;InstalledVersionLabel.Name" xml:space="preserve">
+    <value>InstalledVersionLabel</value>
+  </data>
+  <data name="&gt;&gt;InstalledVersionLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;InstalledVersionLabel.Parent" xml:space="preserve">
+    <value>FxCopAnalyzersPanel</value>
+  </data>
+  <data name="&gt;&gt;InstalledVersionLabel.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="InstallLatestVersionButton.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="InstallLatestVersionButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="InstallLatestVersionButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>140, 184</value>
+  </data>
+  <data name="InstallLatestVersionButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="InstallLatestVersionButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 22</value>
+  </data>
+  <data name="InstallLatestVersionButton.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="InstallLatestVersionButton.Text" xml:space="preserve">
+    <value>&amp;Install</value>
+  </data>
+  <data name="&gt;&gt;InstallLatestVersionButton.Name" xml:space="preserve">
+    <value>InstallLatestVersionButton</value>
+  </data>
+  <data name="&gt;&gt;InstallLatestVersionButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;InstallLatestVersionButton.Parent" xml:space="preserve">
+    <value>FxCopAnalyzersPanel</value>
+  </data>
+  <data name="&gt;&gt;InstallLatestVersionButton.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="InstallCustomVersionButton.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="InstallCustomVersionButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="InstallCustomVersionButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>233, 184</value>
+  </data>
+  <data name="InstallCustomVersionButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="InstallCustomVersionButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>28, 22</value>
+  </data>
+  <data name="InstallCustomVersionButton.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="InstallCustomVersionButton.Text" xml:space="preserve">
+    <value>&amp;...</value>
+  </data>
+  <data name="&gt;&gt;InstallCustomVersionButton.Name" xml:space="preserve">
+    <value>InstallCustomVersionButton</value>
+  </data>
+  <data name="&gt;&gt;InstallCustomVersionButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;InstallCustomVersionButton.Parent" xml:space="preserve">
+    <value>FxCopAnalyzersPanel</value>
+  </data>
+  <data name="&gt;&gt;InstallCustomVersionButton.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="UninstallAnalyzersButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="UninstallAnalyzersButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>140, 184</value>
+  </data>
+  <data name="UninstallAnalyzersButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 22</value>
+  </data>
+  <data name="UninstallAnalyzersButton.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="UninstallAnalyzersButton.Text" xml:space="preserve">
+    <value>&amp;Uninstall</value>
+  </data>
+  <data name="&gt;&gt;UninstallAnalyzersButton.Name" xml:space="preserve">
+    <value>UninstallAnalyzersButton</value>
+  </data>
+  <data name="&gt;&gt;UninstallAnalyzersButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;UninstallAnalyzersButton.Parent" xml:space="preserve">
+    <value>FxCopAnalyzersPanel</value>
+  </data>
+  <data name="&gt;&gt;UninstallAnalyzersButton.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="FxCopAnalyzersPanel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>-30, 0</value>
+  </data>
+  <data name="FxCopAnalyzersPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="FxCopAnalyzersPanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>448, 222</value>
+  </data>
+  <data name="FxCopAnalyzersPanel.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;FxCopAnalyzersPanel.Name" xml:space="preserve">
+    <value>FxCopAnalyzersPanel</value>
+  </data>
+  <data name="&gt;&gt;FxCopAnalyzersPanel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;FxCopAnalyzersPanel.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;FxCopAnalyzersPanel.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 13</value>
+  </data>
+  <data name="$this.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>359, 259</value>
+  </data>
+  <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
+    <value>418, 259</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>CodeAnalysisPropPage</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase, Microsoft.VisualStudio.AppDesigner, Version=42.42.42.42, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+</root>

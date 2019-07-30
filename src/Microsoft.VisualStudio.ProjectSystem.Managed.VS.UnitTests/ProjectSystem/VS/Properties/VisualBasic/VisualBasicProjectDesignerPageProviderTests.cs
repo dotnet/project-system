@@ -30,7 +30,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic
                VisualBasicProjectDesignerPage.Package,
                VisualBasicProjectDesignerPage.References,
                VisualBasicProjectDesignerPage.Debug,
-               VisualBasicProjectDesignerPage.Signing
+               VisualBasicProjectDesignerPage.Signing,
+               VisualBasicProjectDesignerPage.CodeAnalysis
             );
 
             Assert.Equal(expected, result);

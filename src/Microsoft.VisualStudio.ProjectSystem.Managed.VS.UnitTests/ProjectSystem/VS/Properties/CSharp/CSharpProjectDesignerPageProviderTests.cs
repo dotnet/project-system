@@ -30,7 +30,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.CSharp
                 CSharpProjectDesignerPage.BuildEvents,
                 CSharpProjectDesignerPage.Package,
                 CSharpProjectDesignerPage.Debug,
-                CSharpProjectDesignerPage.Signing
+                CSharpProjectDesignerPage.Signing,
+                CSharpProjectDesignerPage.CodeAnalysis
             );
 
             Assert.Equal(expected, result);

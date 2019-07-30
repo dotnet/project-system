@@ -1,0 +1,2 @@
+Microsoft.VisualStudio.Editors.PropertyPages.CodeAnalysisPropPageComClass
+Microsoft.VisualStudio.Editors.PropertyPages.CodeAnalysisPropPageComClass.New() -> Void

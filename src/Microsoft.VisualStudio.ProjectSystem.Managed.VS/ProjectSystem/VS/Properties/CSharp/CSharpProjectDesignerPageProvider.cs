@@ -44,6 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.CSharp
             }
 
             builder.Add(CSharpProjectDesignerPage.Signing);
+            builder.Add(CSharpProjectDesignerPage.CodeAnalysis);
 
             return Task.FromResult<IReadOnlyCollection<IPageMetadata>>(builder.ToImmutableAndFree());
         }
