@@ -21,6 +21,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 {
     public class DesignTimeInputsFileWatcherTests
     {
+        private const int TestTimeoutMillisecondsDelay = 1000;
+
         public static IEnumerable<object[]> GetTestCases()
         {
             return new[]
@@ -112,7 +114,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             watcher.FilesChanged((uint)fileChangeNotificationsToSend.Length, fileChangeNotificationsToSend, null);
 
             // The timeout here is annoying, but even though our test is "smart" and waits for data, unfortunately if the code breaks the test is more likely to hang than fail
-            if (await Task.WhenAny(finished.Task, Task.Delay(500)) != finished.Task)
+            if (await Task.WhenAny(finished.Task, Task.Delay(TestTimeoutMillisecondsDelay)) != finished.Task)
             {
                 throw new AssertActualExpectedException(fileChangeNotificationsExpected.Length, notificationCount, "Timed out after 500ms");
             }
