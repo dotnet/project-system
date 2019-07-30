@@ -6,6 +6,7 @@
     <StrongNameKeyId>Microsoft</StrongNameKeyId>
     <TargetFramework>net472</TargetFramework>
     <IsVsixProject>true</IsVsixProject>
+    <CreateVsixContainer>false</CreateVsixContainer>
     <!-- TODO: Function/Property doesn't return a value on all code paths (https://github.com/dotnet/project-system/issues/2592) -->
     <NoWarn>$(NoWarn);42353;42355;42105;NU5125</NoWarn>
 
@@ -223,6 +224,7 @@
     </EmbeddedResource>
     <EmbeddedResource Update="VSPackage.resx">
       <SubType>Designer</SubType>
+      <MergeWithCTO>true</MergeWithCTO>
     </EmbeddedResource>
     <EmbeddedResource Update="XmlToSchema\InputXmlForm.resx">
       <DependentUpon>InputXmlForm.vb</DependentUpon>
@@ -591,7 +593,7 @@
   </ItemGroup>
   <ItemGroup>
     <VSCTCompile Include="Menus.vsct">
-      <ResourceName>Menus.ctmenu</ResourceName>
+      <ResourceName>Menus.ctmenu</ResourceName>      
       <SubType>Designer</SubType>
     </VSCTCompile>
   </ItemGroup>
