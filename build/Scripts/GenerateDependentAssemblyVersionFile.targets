@@ -1,0 +1,40 @@
+<Project DefaultTargets="GenerateDependentAssemblyVersionsFile">
+  <!-- 
+   
+   Generates DependentAssemblyVersions.csv that enables the Roslyn insertion tool to update various 
+   assembly verisons in the VS repository under src\ProductData.
+   See: https://github.com/dotnet/roslyn-tools/tree/master/src/RoslynInsertionTool).
+   
+    $(VisualStudioVersion):         The version number of Microsoft.VisualStudio.Editors/Microsoft.VisualStudio.AppDesigner
+    $(ProjectSystemVersion):        The version number of Microsoft.VisualStudio.ProjectSystem.Managed/Microsoft.VisualStudio.ProjectSystem.Managed.VS
+    $(ArtifactsConfigurationDir):   The configured-based build output location.
+    
+  -->
+  
+  <Import Project="..\Versions.props"/>
+  <Import Project="..\RepoToolset\ProjectLayout.props" />
+
+  <Target Name="GenerateDependentAssemblyVersionsFile">
+
+    <PropertyGroup>
+      <DependentAssemblyVersionsOutputDirectory>$(ArtifactsConfigurationDir)DevDivInsertionFiles\</DependentAssemblyVersionsOutputDirectory>
+      <DependentAssemblyVersionsFilePath>$(DependentAssemblyVersionsOutputDirectory)DependentAssemblyVersions.csv</DependentAssemblyVersionsFilePath>
+      <DependentAssemblyVersionsContents>
+ <![CDATA[
+Microsoft.VisualStudio.Editors,$(VisualStudioVersion).0
+Microsoft.VisualStudio.ProjectSystem.Managed,$(ProjectSystemVersion).0
+ ]]>
+      </DependentAssemblyVersionsContents>
+    </PropertyGroup>
+
+    <MakeDir Directories="$(DependentAssemblyVersionsOutputDirectory)" />
+    
+    <WriteLinesToFile
+      File="$(DependentAssemblyVersionsFilePath)"
+      Lines="$(DependentAssemblyVersionsContents)"
+      Overwrite="true"
+      />
+    
+  </Target>
+  
+</Project>
