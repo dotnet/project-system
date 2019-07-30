@@ -17,8 +17,6 @@ using VSLangProj;
 
 using VSLangProj80;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 {
     /// <summary>
@@ -41,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         // Ideally this would sit on a simple wrapper over the top of project subscription service, however, CPS's internal ReferencesHostBridge, which populates VSLangProj.References,
         // already does the work to listen to the project subscription for reference adds/removes/changes and makes sure to publish the results in sync with the solution tree.
         // We just use its results.
-        private IUnconfiguredProjectVsServices _projectVsServices;
+        private IUnconfiguredProjectVsServices? _projectVsServices;
 
         [ImportingConstructor]
         public DesignTimeAssemblyResolution(IUnconfiguredProjectVsServices projectVsServices)
@@ -51,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             _projectVsServices = projectVsServices;
         }
 
-        public int GetTargetFramework(out string ppTargetFramework)
+        public int GetTargetFramework(out string? ppTargetFramework)
         {
             if (_projectVsServices == null)
             {
@@ -95,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 
             for (int i = 0; i < assemblyName.Length; i++)
             {
-                string resolvedPath = FindResolvedAssemblyPath(references, assemblyName[i]);
+                string? resolvedPath = FindResolvedAssemblyPath(references, assemblyName[i]);
                 if (resolvedPath != null)
                 {
                     assemblyPaths[resolvedReferencesCount] = new VsResolvedAssemblyPath()
@@ -111,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             return resolvedReferencesCount;
         }
 
-        private static string FindResolvedAssemblyPath(IDictionary<string, ResolvedReference> references, AssemblyName assemblyName)
+        private static string? FindResolvedAssemblyPath(IDictionary<string, ResolvedReference> references, AssemblyName assemblyName)
         {
             // NOTE: We mimic the behavior of the legacy project system when in "DTARUseReferencesFromProject" mode, it matches 
             // only on version, and only against currently referenced assemblies, nothing more. 
@@ -137,7 +135,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         {
             var resolvedReferences = new Dictionary<string, ResolvedReference>(StringComparer.Ordinal);
 
-            VSProject project = GetVSProject();
+            VSProject? project = GetVSProject();
             if (project != null)
             {
                 foreach (Reference3 reference in project.References.OfType<Reference3>())
@@ -153,13 +151,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             return resolvedReferences;
         }
 
-        private VSProject GetVSProject()
+        private VSProject? GetVSProject()
         {
-            Project project = _projectVsServices.VsHierarchy.GetProperty<Project>(VsHierarchyPropID.ExtObject);
-            if (project == null)
-                return null;
+            Project? project = _projectVsServices?.VsHierarchy.GetProperty<Project>(VsHierarchyPropID.ExtObject);
 
-            return project.Object as VSProject;
+            return project?.Object as VSProject;
         }
 
         private static bool TryParseAssemblyNames(string[] assemblyNames, out AssemblyName[] result)
@@ -186,7 +182,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             return true;
         }
 
-        private static Version TryParseVersionOrNull(string version)
+        private static Version? TryParseVersionOrNull(string version)
         {
             if (Version.TryParse(version, out Version result))
             {

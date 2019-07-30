@@ -202,7 +202,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             }
         }
 
-        public event EventHandler<DependencySubscriptionChangedEventArgs>? DependenciesChanged;
+        public event EventHandler<DependencySubscriptionChangedEventArgs> DependenciesChanged;
 
         protected override void Initialize()
         {

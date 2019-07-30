@@ -6,8 +6,6 @@ using System.Runtime.InteropServices;
 
 using Microsoft.VisualStudio.OLE.Interop;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint
 {
     /// <summary>
@@ -35,9 +33,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint
         public void Advise(object pUnkSink, out uint pdwCookie)
         {
             var sink = pUnkSink as TSinkType;
-            if (null == sink)
+
+            if (sink == null)
             {
                 Marshal.ThrowExceptionForHR(HResult.NoInterface);
+                pdwCookie = default;
+                return;
             }
 
             _sinks.Add(_nextCookie, sink);

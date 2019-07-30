@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders;
 using Microsoft.VisualStudio.Shell.Interop;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.SpecialFilesProviders
 {
     /// <summary>
@@ -24,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.SpecialFilesProviders
             _projectVsServices = projectVsServices;
         }
 
-        public async Task<string> GetFileAsync(SpecialFiles fileId, SpecialFileFlags flags)
+        public async Task<string?> GetFileAsync(SpecialFiles fileId, SpecialFileFlags flags)
         {
             await _projectVsServices.ThreadingService.SwitchToUIThread();
 

@@ -9,8 +9,6 @@ using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.Settings;
 using Microsoft.VisualStudio.Threading;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     [Export(typeof(IProjectSystemOptions))]

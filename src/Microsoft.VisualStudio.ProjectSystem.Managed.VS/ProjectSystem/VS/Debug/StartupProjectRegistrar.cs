@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.Shell.Interop;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
     /// <summary>
@@ -24,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private readonly ActiveConfiguredProject<DebuggerLaunchProviders> _launchProviders;
 
         private Guid _projectGuid;
-        private IDisposable _subscription;
+        private IDisposable? _subscription;
 
         /// <remarks>
         /// <see cref="UnconfiguredProject"/> must be imported in the constructor in order for scope of this class' export to be correct.
@@ -74,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             return Task.CompletedTask;
         }
 
-        internal async Task OnProjectChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e = null)
+        internal async Task OnProjectChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate>? e = null)
         {
             bool isDebuggable = await _launchProviders.Value.IsDebuggableAsync();
 

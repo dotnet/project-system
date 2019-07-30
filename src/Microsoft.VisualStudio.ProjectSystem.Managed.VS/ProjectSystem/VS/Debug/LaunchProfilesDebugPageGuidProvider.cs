@@ -4,8 +4,6 @@ using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
     [Export(typeof(IDebugPageGuidProvider))]

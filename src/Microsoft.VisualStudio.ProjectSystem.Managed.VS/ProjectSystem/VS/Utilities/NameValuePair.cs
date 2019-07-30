@@ -1,7 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-#nullable disable
-
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -12,27 +10,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 {
     internal class NameValuePair : INotifyPropertyChanged, IDataErrorInfo
     {
-        private readonly ObservableList<NameValuePair> _parentCollection;
+        private readonly ObservableList<NameValuePair>? _parentCollection;
 
-        private string _name;
-        private string _value;
+        private string? _name;
+        private string? _value;
 
         public bool HasValidationError { get; set; }
 
-        public NameValuePair(string name, string value, ObservableList<NameValuePair> parentCollection = null)
+        public NameValuePair(string? name, string? value, ObservableList<NameValuePair>? parentCollection = null)
         {
             _parentCollection = parentCollection;
             Name = name;
             Value = value;
         }
 
-        public string Name
+        public string? Name
         {
             get { return _name; }
             set { NotifyPropertyChanged(ref _name, value); }
         }
 
-        public string Value
+        public string? Value
         {
             get { return _value; }
             set { NotifyPropertyChanged(ref _value, value); }
@@ -40,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void NotifyPropertyChanged<T>(ref T refProperty, T value, [CallerMemberName] string propertyName = null)
+        private void NotifyPropertyChanged<T>(ref T refProperty, T value, [CallerMemberName] string? propertyName = null)
         {
             if (!Equals(refProperty, value))
             {
@@ -60,12 +58,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             }
         }
 
-        public string this[string propertyName]
+        public string? this[string propertyName]
         {
             get
             {
                 // Reset error condition
-                string error = null;
+                string? error = null;
                 HasValidationError = false;
 
                 if (propertyName.Equals("Name", StringComparison.OrdinalIgnoreCase))

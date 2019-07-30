@@ -6,8 +6,6 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 {
 
@@ -33,22 +31,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
     internal class VersionCompatibilityData
     {
         [JsonProperty(PropertyName = "supportedPreviewVersion")]
-        public Version SupportedPreviewVersion { get; set; }
+        public Version? SupportedPreviewVersion { get; set; }
 
         [JsonProperty(PropertyName = "openSupportedPreviewMessage")]
-        public string OpenSupportedPreviewMessage { get; set; }
+        public string? OpenSupportedPreviewMessage { get; set; }
 
         [JsonProperty(PropertyName = "supportedVersion")]
-        public Version SupportedVersion { get; set; }
+        public Version? SupportedVersion { get; set; }
 
         [JsonProperty(PropertyName = "openSupportedMessage")]
-        public string OpenSupportedMessage { get; set; }
+        public string? OpenSupportedMessage { get; set; }
 
         [JsonProperty(PropertyName = "unsupportedVersion")]
-        public Version UnsupportedVersion { get; set; }
+        public Version? UnsupportedVersion { get; set; }
 
         [JsonProperty(PropertyName = "openUnsupportedMessage")]
-        public string OpenUnsupportedMessage { get; set; }
+        public string? OpenUnsupportedMessage { get; set; }
 
         public static Dictionary<Version, VersionCompatibilityData> DeserializeVersionData(string versionDataString)
         {

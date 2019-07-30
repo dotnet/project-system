@@ -6,8 +6,6 @@ using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint;
 using VSLangProj;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 {
     /// <summary>
@@ -52,17 +50,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         /// <summary>
         /// Gets the project of which the selected item is a part.
         /// </summary>
-        public EnvDTE.Project ContainingProject => Project.FirstOrDefault()?.Value.Project;
+        public EnvDTE.Project? ContainingProject => Project.FirstOrDefault()?.Value.Project;
 
         /// <summary>
         /// Gets the top-level extensibility object.
         /// </summary>
-        public EnvDTE.DTE DTE => Project.FirstOrDefault()?.Value.DTE;
+        public EnvDTE.DTE? DTE => Project.FirstOrDefault()?.Value.DTE;
 
         /// <summary>
         /// Gets the immediate parent object of a given object.
         /// </summary>
-        public object Parent => Project.FirstOrDefault()?.Value;
+        public object? Parent => Project.FirstOrDefault()?.Value;
 
         /// <summary>
         /// Gets the temporary portable executable (PE) monikers for a project.
