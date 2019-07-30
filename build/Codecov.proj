@@ -1,6 +1,7 @@
 <Project DefaultTargets="CodeCov">
-  
+
   <Import Project="Versions.props" />
+  <Import Project="NuGet.props" />
   <Import Project="RepoToolset\RepoLayout.props" />
 
   <Target Name="Codecov">
