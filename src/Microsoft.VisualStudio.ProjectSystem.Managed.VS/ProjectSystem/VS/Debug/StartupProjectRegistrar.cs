@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private IDisposable _subscription;
 
         /// <remarks>
-        /// <see cref="UnconfiguredProject"/> must be imported in the contructor in order for scope of this class' export to be correct.
+        /// <see cref="UnconfiguredProject"/> must be imported in the constructor in order for scope of this class' export to be correct.
         /// </remarks>
         [ImportingConstructor]
         public StartupProjectRegistrar(
