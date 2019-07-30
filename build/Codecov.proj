@@ -1,4 +1,5 @@
-<Project>
+<Project DefaultTargets="CodeCov">
+  
   <Import Project="Versions.props" />
   <Import Project="RepoToolset\RepoLayout.props" />
 

@@ -104,7 +104,7 @@ function Build {
 
   if ($useCodecov) {
     $CodecovProj = Join-Path $PSScriptRoot 'Codecov.proj'
-    & $MsbuildExe $CodecovProj /m /nologo /clp:Summary /nodeReuse:$nodeReuse /warnaserror /v:diag /t:Codecov /p:Configuration=$configuration /p:NuGetPackageRoot=$NuGetPackageRoot $properties
+    & $MsbuildExe $CodecovProj /m /nologo /clp:Summary /nodeReuse:$nodeReuse /warnaserror /v:diag /p:Configuration=$configuration /p:NuGetPackageRoot=$NuGetPackageRoot $properties
   }
 
   $GenerateDependentAssemblyVersionsProj = Join-Path $PSScriptRoot 'Scripts\GenerateDependentAssemblyVersionFile.targets'
