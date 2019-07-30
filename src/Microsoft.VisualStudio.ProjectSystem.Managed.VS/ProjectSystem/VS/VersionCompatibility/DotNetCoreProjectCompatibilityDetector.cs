@@ -438,7 +438,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// <summary>
         /// Pings the server to download version compatibility information and stores this in a cached file in the users app data. If the cached file is
         /// less than 24 hours old, it uses that data. Otherwise it downloads from the server. If the download fails it will use the previously cached
-        ///  file, or if that file doesn't not exist, it uses the data baked into this class
+        /// file, or if that file doesn't not exist, it uses the data baked into this class
         /// </summary>
         private VersionCompatibilityData GetVersionCompatibilityData()
         {

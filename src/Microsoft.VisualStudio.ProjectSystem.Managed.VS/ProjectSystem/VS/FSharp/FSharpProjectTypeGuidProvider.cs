@@ -23,6 +23,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.FSharp
         {
             get { return ProjectType.LegacyFSharpGuid; }
         }
-
     }
 }

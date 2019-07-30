@@ -14,7 +14,6 @@ using ExportOrder = Microsoft.VisualStudio.ProjectSystem.OrderAttribute;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
-
     /// <summary>
     /// Handles the NoAction profile so that Ctrl-f5\F5 throws an error to the user
     /// </summary>

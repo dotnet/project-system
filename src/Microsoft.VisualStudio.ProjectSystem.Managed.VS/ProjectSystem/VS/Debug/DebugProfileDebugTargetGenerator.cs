@@ -15,7 +15,6 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
-
     /// <summary>
     /// Provides the set of debug profiles to populate the debugger dropdown.  The Property associated
     /// with this is the ActiveDebugProfile which contains the currently selected profile, and the DebugProfiles which
@@ -71,7 +70,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         private ILaunchSettingsProvider LaunchSettingProvider { get; }
         private IProjectThreadingService ProjectThreadingService { get; }
-
 
         /// <summary>
         /// This provides access to the class which creates the list of debugger values..

@@ -79,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             (
                 from profile in profiles.Profiles
                 let value = new EnumValue { Name = profile.Name, DisplayName = EscapeMnemonics(profile.Name) }
-                select ((IEnumValue)new PageEnumValue(value))).ToList()
+                select (IEnumValue)new PageEnumValue(value)).ToList()
             );
 
             return result;

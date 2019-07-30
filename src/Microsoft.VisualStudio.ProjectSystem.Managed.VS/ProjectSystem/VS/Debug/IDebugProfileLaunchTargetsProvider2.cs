@@ -9,7 +9,6 @@ using Microsoft.VisualStudio.ProjectSystem.Debug;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
-
     /// <summary>
     /// Optional interface that can be cast from IDebugProfileLaunchTargetsProvider for those implementations which need to distinguish
     /// calls to QueryDebugTargetsAsync that originate from IVsDebuggableProjectCfg:QueryDebugTargets, from calls that originate from 
@@ -25,4 +24,3 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsForDebugLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile);
     }
 }
-
