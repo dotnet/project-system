@@ -85,6 +85,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Failed to install the latest Microsoft.CodeAnalysis.FxCopAnalyzers package.
+        '''</summary>
+        Friend Shared ReadOnly Property FxCopAnalyzersInstallFailedMessage() As String
+            Get
+                Return ResourceManager.GetString("FxCopAnalyzersInstallFailedMessage", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Failed to uninstall Microsoft.CodeAnalysis.FxCopAnalyzers version &apos;{0}&apos;.
+        '''</summary>
+        Friend Shared ReadOnly Property FxCopAnalyzersUninstallFailedMessage() As String
+            Get
+                Return ResourceManager.GetString("FxCopAnalyzersUninstallFailedMessage", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Install other frameworks....
         '''</summary>
         Friend Shared ReadOnly Property InstallOtherFrameworks() As String
@@ -108,6 +126,24 @@ Namespace My.Resources
         Friend Shared ReadOnly Property LanguageVersionAutomaticallySelected() As String
             Get
                 Return ResourceManager.GetString("LanguageVersionAutomaticallySelected", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to (not installed).
+        '''</summary>
+        Friend Shared ReadOnly Property NotInstalledText() As String
+            Get
+                Return ResourceManager.GetString("NotInstalledText", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Restoring Packages....
+        '''</summary>
+        Friend Shared ReadOnly Property RestoringPackagesMessage() As String
+            Get
+                Return ResourceManager.GetString("RestoringPackagesMessage", resourceCulture)
             End Get
         End Property
     End Class
