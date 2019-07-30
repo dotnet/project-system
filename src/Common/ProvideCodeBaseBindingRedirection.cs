@@ -9,14 +9,14 @@ using Microsoft.VisualStudio.Shell;
 namespace Microsoft.VisualStudio
 {
     /// <summary>
-    ///     A <see cref="RegistrationAttribute"/> that provides binding redirects for the project system.
+    ///     A <see cref="RegistrationAttribute"/> that provides code-base binding redirects.
     /// </summary>
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
-    internal sealed class ProvideProjectSystemBindingRedirectionAttribute : RegistrationAttribute
+    internal sealed class ProvideCodeBaseBindingRedirectionAttribute : RegistrationAttribute
     {
         private readonly ProvideBindingRedirectionAttribute _redirectionAttribute;
 
-        public ProvideProjectSystemBindingRedirectionAttribute(string assemblyName)
+        public ProvideCodeBaseBindingRedirectionAttribute(string assemblyName)
         {
             // ProvideBindingRedirectionAttribute is sealed, so we can't inherit from it to provide defaults.
             // Instead, we'll do more of an aggregation pattern here.
