@@ -13,10 +13,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
     /// </summary>
     internal abstract class AbstractExtenderCATIDProvider : IExtenderCATIDProvider
     {
-        protected AbstractExtenderCATIDProvider()
-        {
-        }
-
         public string GetExtenderCATID(ExtenderCATIDType extenderCATIDType, IProjectTree treeNode)
         {
             // CPS's implementation of ExtenderCATIDType incorrectly treats the same "instances" as distinct items based 
