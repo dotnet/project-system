@@ -14,6 +14,7 @@
       https://pkgs.dev.azure.com/azure-public/vside/_packaging/vssdk/nuget/v3/index.json;
       https://dotnetfeed.blob.core.windows.net/dotnet-core/index.json;
       https://api.nuget.org/v3/index.json;
+      https://dotnet.myget.org/F/symreader-converter/api/v3/index.json;
     </RestoreSources>
   </PropertyGroup>
 
