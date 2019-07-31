@@ -103,10 +103,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
             XElement rule = LoadXamlRule(fullPath);
 
-            // Ignore XAML documents for other types such as ProjectSchemaDefinitions
-            if (rule.Name.LocalName != "Rule")
-                return;
-
             foreach (var property in GetProperties(rule))
             {
                 // Properties are visible by default
@@ -132,10 +128,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         {
             XElement rule = LoadXamlRule(fullPath);
 
-            // Ignore XAML documents for other types such as ProjectSchemaDefinitions
-            if (rule.Name.LocalName != "Rule")
-                return;
-
             foreach (var property in GetProperties(rule))
             {
                 string description = property.Attribute("Description")?.Value;
@@ -152,10 +144,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         public void RuleMustHaveAName(string ruleName, string fullPath)
         {
             XElement rule = LoadXamlRule(fullPath);
-
-            // Ignore XAML documents for other types such as ProjectSchemaDefinitions
-            if (rule.Name.LocalName != "Rule")
-                return;
 
             string name = rule.Attribute("Name")?.Value;
 
@@ -362,6 +350,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
             foreach (var fileName in Directory.EnumerateFiles(rulesPath, "*.xaml"))
             {
+                XElement rule = LoadXamlRule(fileName);
+
+                // Ignore XAML documents for non-Rule types (such as ProjectSchemaDefinitions)
+                if (rule.Name.LocalName != "Rule")
+                    continue;
+
                 yield return fileName;
             }
         }
@@ -389,7 +383,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             using var reader = XmlReader.Create(fileStream, settings);
             var root = XDocument.Load(reader).Root;
 
-            // Ignore XAML documents for other types such as ProjectSchemaDefinitions
+            // Ignore XAML documents for non-Rule types (such as ProjectSchemaDefinitions)
             if (root?.Name.LocalName != "Rule")
             {
                 return null;
