@@ -18,8 +18,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|Description">
-        <source>Location of the folder</source>
-        <target state="translated">Klasörün konumu</target>
+        <source>Location of the folder.</source>
+        <target state="needs-review-translation">Klasörün konumu</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FolderName|DisplayName">
@@ -28,8 +28,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FolderName|Description">
-        <source>Name of this folder</source>
-        <target state="translated">Bu klasörün adı</target>
+        <source>Name of this folder.</source>
+        <target state="needs-review-translation">Bu klasörün adı</target>
         <note />
       </trans-unit>
     </body>
