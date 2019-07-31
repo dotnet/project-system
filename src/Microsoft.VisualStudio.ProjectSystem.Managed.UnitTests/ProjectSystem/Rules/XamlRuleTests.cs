@@ -397,12 +397,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             }
         }
 
-        private void AssertXmlEqual(XmlDocument left, XmlDocument right)
+        private static void AssertXmlEqual(XmlDocument left, XmlDocument right)
         {
             AssertXmlEqual(left.DocumentElement, right.DocumentElement);
         }
 
-        private void AssertXmlEqual(XmlElement left, XmlElement right)
+        private static void AssertXmlEqual(XmlElement left, XmlElement right)
         {
             Assert.Equal(left.Name, right.Name, ignoreCase: true);
 
@@ -425,7 +425,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             }
         }
 
-        private void AssertAttributesEqual(XmlAttribute left, XmlAttribute right)
+        private static void AssertAttributesEqual(XmlAttribute left, XmlAttribute right)
         {
             Assert.Equal(left.Name, right.Name, ignoreCase: true);
 
