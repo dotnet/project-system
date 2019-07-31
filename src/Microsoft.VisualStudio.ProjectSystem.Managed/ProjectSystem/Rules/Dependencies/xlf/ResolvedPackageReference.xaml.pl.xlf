@@ -63,8 +63,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|DisplayName">
-        <source>PrivateAssets</source>
-        <target state="translated">Prywatne zasoby</target>
+        <source>Private Assets</source>
+        <target state="needs-review-translation">Prywatne zasoby</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|Description">
