@@ -60,6 +60,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             _fileChangeService = fileChangeService;
         }
 
+        /// <summary>
+        /// This is to allow unit tests to force completion of our source block rather than waiting for async work to complete
+        /// </summary>
+        internal bool AllowSourceBlockCompletion { get; set; }
+
         public override NamedIdentity DataSourceKey { get; } = new NamedIdentity(nameof(DesignTimeInputsFileWatcher));
 
         public override IComparable DataSourceVersion => _version;
@@ -79,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             base.Initialize();
 
             _broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<string[]>>(nameFormat: nameof(DesignTimeInputsFileWatcher) + "Broadcast {1}");
-            _publicBlock = _broadcastBlock.SafePublicize();
+            _publicBlock = AllowSourceBlockCompletion ? _broadcastBlock : _broadcastBlock.SafePublicize();
 
             _actionBlock = DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<DesignTimeInputs>>(ProcessDesignTimeInputs);
 
