@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 {
     internal class ObservableList<T> : ObservableCollection<T>
     {
-        public event EventHandler ValidationStatusChanged;
+        public event EventHandler? ValidationStatusChanged;
 
         private void OnItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {

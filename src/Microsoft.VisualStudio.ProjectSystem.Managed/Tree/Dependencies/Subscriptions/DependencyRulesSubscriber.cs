@@ -48,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             _treeTelemetryService = treeTelemetryService;
         }
 
-        public event EventHandler<DependencySubscriptionChangedEventArgs> DependenciesChanged;
+        public event EventHandler<DependencySubscriptionChangedEventArgs>? DependenciesChanged;
 
         public async Task InitializeSubscriberAsync(ICrossTargetSubscriptionsHost host, IProjectSubscriptionService subscriptionService)
         {

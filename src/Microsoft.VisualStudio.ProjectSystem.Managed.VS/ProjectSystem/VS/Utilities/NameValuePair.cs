@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             set { NotifyPropertyChanged(ref _value, value); }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         private void NotifyPropertyChanged<T>(ref T refProperty, T value, [CallerMemberName] string? propertyName = null)
         {

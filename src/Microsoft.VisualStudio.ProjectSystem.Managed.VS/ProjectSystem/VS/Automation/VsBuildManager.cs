@@ -40,12 +40,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         /// <summary>
         /// Occurs when a design time output moniker is deleted.
         /// </summary>
-        public event _dispBuildManagerEvents_DesignTimeOutputDeletedEventHandler DesignTimeOutputDeleted;
+        public event _dispBuildManagerEvents_DesignTimeOutputDeletedEventHandler? DesignTimeOutputDeleted;
 
         /// <summary>
         /// Occurs when a design time output moniker is dirty
         /// </summary>
-        public event _dispBuildManagerEvents_DesignTimeOutputDirtyEventHandler DesignTimeOutputDirty;
+        public event _dispBuildManagerEvents_DesignTimeOutputDirtyEventHandler? DesignTimeOutputDirty;
 
         /// <summary>
         /// Gets the project of which the selected item is a part.
