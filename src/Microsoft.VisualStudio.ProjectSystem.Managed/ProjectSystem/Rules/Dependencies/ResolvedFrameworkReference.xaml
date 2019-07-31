@@ -37,6 +37,13 @@
 
   <StringProperty Name="PrivateAssets"
                   Description="Assets that are private in this reference."
-                  DisplayName="Private Assets" />
+                  DisplayName="Private Assets">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  ItemType="FrameworkReference"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
 
 </Rule>
