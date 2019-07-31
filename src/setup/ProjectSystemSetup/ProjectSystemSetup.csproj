@@ -38,8 +38,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Compile Include="..\..\Common\ProvideBindingRedirectionAttribute.cs">
-      <Link>ProvideBindingRedirectionAttribute.cs</Link>
+    <Compile Include="..\..\Common\ProvideCodeBaseBindingRedirection.cs">
+      <Link>ProvideCodeBaseBindingRedirection.cs</Link>
     </Compile>
   </ItemGroup>
 </Project>

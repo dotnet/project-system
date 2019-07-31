@@ -12,6 +12,7 @@
       https://dotnet.myget.org/F/project-system-interop/api/v3/index.json;
       https://pkgs.dev.azure.com/azure-public/vside/_packaging/vs-impl/nuget/v3/index.json;
       https://pkgs.dev.azure.com/azure-public/vside/_packaging/vssdk/nuget/v3/index.json;
+      https://dotnetfeed.blob.core.windows.net/dotnet-core/index.json;
       https://api.nuget.org/v3/index.json;
     </RestoreSources>
   </PropertyGroup>
@@ -22,7 +23,7 @@
     <PackageReference Update="RoslynTools.RepoToolset"                                                Version="$(RoslynToolsRepoToolsetVersion)" />    
     <PackageReference Update="RoslynTools.ModifyVsixManifest"                                         Version="$(RoslynToolsModifyVsixManifestVersion)" />
     <PackageReference Update="RoslynTools.SignTool"                                                   Version="$(RoslynToolsSignToolVersion)" />
-    <PackageReference Update="XliffTasks"                                                             Version="$(XliffTasksVersion)" />
+    <PackageReference Update="XliffTasks"                                                             Version="1.0.0-beta.19380.4" />
     <PackageReference Update="RoslynDependencies.ProjectSystem.OptimizationData"                      Version="$(RoslynDependenciesProjectSystemOptimizationDataVersion)" />
     <PackageReference Update="Microsoft.DotNet.IBCMerge"                                              Version="[$(MicrosoftDotNetIBCMergeVersion)]" />
     <PackageReference Update="Microsoft.DiaSymReader.Pdb2Pdb"                                         Version="$(MicrosoftDiaSymReaderPdb2PdbVersion)" />
