@@ -135,7 +135,7 @@
     <BoolProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
                   ItemType="Reference"
-                  Persistence="AssemblyReference"
+                  Persistence="ProjectFile"
                   SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
