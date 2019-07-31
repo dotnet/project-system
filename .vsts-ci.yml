@@ -5,13 +5,16 @@ pr: none
 trigger:
   branches:
     include:
-    - master
-    - dev15.0.x
-    - dev15.9.x
-    - dev16.0.x
-    - dev16.1.x
-    - dev16.2.x
-    - dev16.3.x
+      - master
+      - dev15.0.x
+      - dev15.9.x
+      - dev16.0.x
+      - dev16.1.x
+      - dev16.2.x
+      - dev16.3.x
+    exclude:
+      - merges/*
+      - feature/*
   paths:
     exclude: # don't trigger the CI if only a doc file was changed
     - docs/*
