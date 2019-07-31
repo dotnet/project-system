@@ -434,19 +434,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             {
                 AssertXmlEqual(leftChildNodes[i], rightChildNodes[i]);
             }
-        }
 
-        private static void AssertAttributesEqual(XAttribute left, XAttribute right)
-        {
-            Assert.Equal(left.Name.LocalName, right.Name.LocalName, ignoreCase: true);
-
-            // ignore ItemType as we know they'll be different
-            if (left.Name.LocalName.Equals("ItemType", StringComparison.OrdinalIgnoreCase))
+            static void AssertAttributesEqual(XAttribute left, XAttribute right)
             {
-                return;
-            }
+                Assert.Equal(left.Name.LocalName, right.Name.LocalName, ignoreCase: true);
 
-            Assert.Equal(left.Value, right.Value, ignoreCase: true);
+                // ignore ItemType as we know they'll be different
+                if (left.Name.LocalName.Equals("ItemType", StringComparison.OrdinalIgnoreCase))
+                {
+                    return;
+                }
+
+                Assert.Equal(left.Value, right.Value, ignoreCase: true);
+            }
         }
     }
 }
