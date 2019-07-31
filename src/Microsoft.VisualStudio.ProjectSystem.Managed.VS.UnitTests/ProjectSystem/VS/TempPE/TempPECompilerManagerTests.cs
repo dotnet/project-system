@@ -22,6 +22,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 {
     public class TempPECompilerManagerTests : IDisposable
     {
+        private const int TestTimeoutMillisecondsDelay = 1000;
+
         private string? _lastIntermediateOutputPath;
         private readonly string _projectFolder = @"C:\MyProject";
         private string _intermediateOutputPath = "MyOutput";
@@ -183,6 +185,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         [Fact]
         public async Task SingleDesignTimeInput_Removed_ShouldntCompile()
         {
+            _manager.CompileSynchronously = false;
+
             var inputs = new DesignTimeInputs(new string[] { "File1.cs" }, new string[] { });
 
             await VerifyDLLsCompiled(0, () =>
@@ -208,9 +212,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             });
 
             Assert.Equal(2, _compilationResults.Count);
-            Assert.Contains("File2.cs", _compilationResults[0].SourceFiles);
-            Assert.DoesNotContain("File1.cs", _compilationResults[0].SourceFiles);
-            Assert.Equal(Path.Combine(TempPECompilerManager.GetOutputPath(_projectFolder, _intermediateOutputPath), "File2.cs.dll"), _compilationResults[0].OutputFileName);
+            Assert.Contains("File1.cs", _compilationResults[0].SourceFiles);
+            Assert.DoesNotContain("File2.cs", _compilationResults[0].SourceFiles);
+            Assert.Contains("File2.cs", _compilationResults[1].SourceFiles);
+            Assert.DoesNotContain("File1.cs", _compilationResults[1].SourceFiles);
+            Assert.Equal(Path.Combine(TempPECompilerManager.GetOutputPath(_projectFolder, _intermediateOutputPath), "File1.cs.dll"), _compilationResults[0].OutputFileName);
+            Assert.Equal(Path.Combine(TempPECompilerManager.GetOutputPath(_projectFolder, _intermediateOutputPath), "File2.cs.dll"), _compilationResults[1].OutputFileName);
         }
 
         [Fact]
@@ -340,7 +347,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                                       watcherMock.Object,
                                       compilerMock.Object,
                                       _fileSystem,
-                                      telemetryService);
+                                      telemetryService)
+            {
+                CompileSynchronously = true
+            };
         }
 
         private bool CompilationCallBack(string output, ISet<string> files)
@@ -385,14 +395,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             await actionThatCausesCompilation();
 
             // Sadly, we need a timeout
-            var delay = Task.Delay(TimeSpan.FromSeconds(1));
+            var delay = Task.Delay(TestTimeoutMillisecondsDelay);
 
             if (await Task.WhenAny(_compilationOccurredCompletionSource.Task, delay) == delay)
             {
                 var actualDLLs = _compilationResults.Count - initialComplations;
                 if (expectedDLLs != actualDLLs)
                 {
-                    throw new AssertActualExpectedException(expectedDLLs, actualDLLs, "Timed out after 1s");
+                    throw new AssertActualExpectedException(expectedDLLs, actualDLLs, $"Timed out after {TestTimeoutMillisecondsDelay}ms");
                 }
             }
         }
