@@ -82,7 +82,7 @@ function InstallToolset {
   }
 
   if (!(Test-Path $ToolsetBuildProj)) {
-    & $MsbuildExe $ToolsetRestoreProj /t:restore /m /nologo /clp:None /warnaserror /v:quiet /p:NuGetPackageRoot=$NuGetPackageRoot /p:BaseIntermediateOutputPath=$ToolsetDir /p:ExcludeRestorePackageImports=true $logCmd
+    & $MsbuildExe $ToolsetRestoreProj /t:restore /m /nologo /clp:None /warnaserror /v:quiet $logCmd
   }
 }
 
@@ -131,10 +131,8 @@ function Clear-NuGetCache() {
 
 try {
   $RepoRoot = Join-Path $PSScriptRoot "..\"
-  $ToolsRoot = Join-Path $RepoRoot ".tools"
   $ToolsetRestoreProj = Join-Path $PSScriptRoot "Toolset.proj"
   $ArtifactsDir = Join-Path $RepoRoot "artifacts"
-  $ToolsetDir = Join-Path $ArtifactsDir "toolset"
   $LogDir = Join-Path (Join-Path $ArtifactsDir $configuration) "log"
   $BinDir = Join-Path (Join-Path $ArtifactsDir $configuration) "bin"
   $VSSetupDir = Join-Path (Join-Path $ArtifactsDir $configuration) "VSSetup"
