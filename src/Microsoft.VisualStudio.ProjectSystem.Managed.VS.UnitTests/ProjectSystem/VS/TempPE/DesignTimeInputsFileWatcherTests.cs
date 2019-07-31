@@ -115,6 +115,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             // Send down our fake file changes
             watcher.FilesChanged((uint)fileChangeNotificationsToSend.Length, fileChangeNotificationsToSend, null);
 
+            source.SourceBlock.Complete();
+
+            await source.SourceBlock.Completion;
+
             watcher.SourceBlock.Complete();
 
             await watcher.SourceBlock.Completion;
@@ -122,7 +126,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             // The timeout here is annoying, but even though our test is "smart" and waits for data, unfortunately if the code breaks the test is more likely to hang than fail
             if (await Task.WhenAny(finished.Task, Task.Delay(TestTimeoutMillisecondsDelay)) != finished.Task)
             {
-                throw new AssertActualExpectedException(fileChangeNotificationsExpected.Length, notificationCount, "Timed out after 500ms");
+                throw new AssertActualExpectedException(fileChangeNotificationsExpected.Length, notificationCount, $"Timed out after {TestTimeoutMillisecondsDelay}ms");
             }
 
             // Observe the task in case of exceptions
