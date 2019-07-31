@@ -184,13 +184,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             var sourceType = dataSource?.Attribute("SourceType");
             var itemType = dataSource?.Attribute("ItemType");
 
-            if (sourceType != null)
+            if (sourceType?.Value == "Item")
             {
-                if (sourceType.Value == "Item")
-                {
-                    // An item type must be specified
-                    Assert.NotNull(itemType);
-                }
+                // An item type must be specified
+                Assert.NotNull(itemType);
             }
         }
 
