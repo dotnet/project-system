@@ -63,8 +63,7 @@
 
   <StringProperty Name="ExcludeAssets"
                   Description="Assets to exclude from this reference."
-                  DisplayName="Exclude Assets"
-                  Visible="True" />
+                  DisplayName="Exclude Assets" />
 
   <StringProperty Name="Identity"
                   Description="Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence)."
@@ -78,16 +77,14 @@
 
   <StringProperty Name="IncludeAssets"
                   Description="Assets to include from this reference."
-                  DisplayName="Include Assets"
-                  Visible="True" />
+                  DisplayName="Include Assets" />
 
   <BoolProperty Name="LinkLibraryDependencies"
                 Visible="False" />
 
   <StringProperty Name="PrivateAssets"
                   Description="Assets that are private in this reference."
-                  DisplayName="Private Assets"
-                  Visible="True" />
+                  DisplayName="Private Assets" />
 
   <StringProperty Name="Project"
                   Visible="False" />

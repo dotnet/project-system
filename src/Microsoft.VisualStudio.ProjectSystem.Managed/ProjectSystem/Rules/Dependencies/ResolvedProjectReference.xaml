@@ -65,8 +65,7 @@
 
   <StringProperty Name="ExcludeAssets"
                   Description="Assets to exclude from this reference."
-                  DisplayName="Exclude Assets"
-                  Visible="True" />
+                  DisplayName="Exclude Assets" />
 
   <EnumProperty Name="FileType"
                 ReadOnly="True"
@@ -95,8 +94,7 @@
 
   <StringProperty Name="IncludeAssets"
                   Description="Assets to include from this reference."
-                  DisplayName="Include Assets"
-                  Visible="True" />
+                  DisplayName="Include Assets" />
 
   <BoolProperty Name="IsWinMDFile"
                 Visible="false" />
@@ -111,8 +109,7 @@
 
   <StringProperty Name="PrivateAssets"
                   Description="Assets that are private in this reference."
-                  DisplayName="Private Assets"
-                  Visible="True" />
+                  DisplayName="Private Assets" />
 
   <StringProperty Name="Project"
                   Visible="False" />
