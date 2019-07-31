@@ -319,12 +319,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         {
             // Not all rules are embedded as manifests so we have to read the xaml files from the file system.
             string rulesPath = Path.Combine(RepoUtil.FindRepoRootPath(), "src", "Microsoft.VisualStudio.ProjectSystem.Managed", "ProjectSystem", "Rules");
-            Assert.True(Directory.Exists(rulesPath), "Couldn't find XAML rules folder: " + rulesPath);
 
             if (!string.IsNullOrEmpty(suffix))
             {
                 rulesPath = Path.Combine(rulesPath, suffix);
             }
+
+            Assert.True(Directory.Exists(rulesPath), "Couldn't find XAML rules folder: " + rulesPath);
 
             foreach (var fileName in Directory.EnumerateFiles(rulesPath, "*.xaml"))
             {
