@@ -385,10 +385,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             var settings = new XmlReaderSettings { XmlResolver = null };
             using var fileStream = File.OpenRead(filePath);
             using var reader = XmlReader.Create(fileStream, settings);
-            var doc = XDocument.Load(reader);
+            var root = XDocument.Load(reader).Root;
 
             // Ignore XAML documents for other types such as ProjectSchemaDefinitions
-            if (doc.Root.Name.LocalName != "Rule")
+            if (root?.Name.LocalName != "Rule")
             {
                 return null;
             }
@@ -396,7 +396,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             var namespaceManager = new XmlNamespaceManager(reader.NameTable);
             namespaceManager.AddNamespace("msb", "http://schemas.microsoft.com/build/2009/properties");
 
-            return doc.Root.XPathSelectElement(@"/msb:Rule/msb:Rule.DataSource/msb:DataSource", namespaceManager);
+            return root.XPathSelectElement(@"/msb:Rule/msb:Rule.DataSource/msb:DataSource", namespaceManager);
         }
 
         private static IEnumerable<XElement> GetProperties(XElement rule)
