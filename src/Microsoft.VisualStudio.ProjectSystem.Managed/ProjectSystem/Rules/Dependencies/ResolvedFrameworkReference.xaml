@@ -36,6 +36,7 @@
                   Visible="False" />
 
   <StringProperty Name="PrivateAssets"
+                  Description="Assets that are private in this reference."
                   DisplayName="Private Assets" />
 
 </Rule>
