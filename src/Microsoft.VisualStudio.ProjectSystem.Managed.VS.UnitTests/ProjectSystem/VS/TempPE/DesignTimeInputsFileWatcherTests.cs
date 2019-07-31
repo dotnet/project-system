@@ -87,6 +87,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             using DesignTimeInputsFileWatcher watcher = CreateDesignTimeInputsFileWatcher(fileChangeService, out ProjectValueDataSource<DesignTimeInputs> source);
 
+            watcher.AllowCompletion = true;
+
             // Send our input
             await source.SendAsync(new DesignTimeInputs(designTimeInputs, sharedDesignTimeInputs));
 
@@ -112,6 +114,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             // Send down our fake file changes
             watcher.FilesChanged((uint)fileChangeNotificationsToSend.Length, fileChangeNotificationsToSend, null);
+
+            watcher.SourceBlock.Complete();
+
+            await watcher.SourceBlock.Completion;
 
             // The timeout here is annoying, but even though our test is "smart" and waits for data, unfortunately if the code breaks the test is more likely to hang than fail
             if (await Task.WhenAny(finished.Task, Task.Delay(TestTimeoutMillisecondsDelay)) != finished.Task)
