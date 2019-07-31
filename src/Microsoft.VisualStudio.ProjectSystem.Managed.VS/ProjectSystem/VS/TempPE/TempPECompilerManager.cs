@@ -28,6 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         private readonly UnconfiguredProject _project;
         private readonly IActiveConfiguredProjectSubscriptionService _projectSubscriptionService;
         private readonly IActiveWorkspaceProjectContextHost _activeWorkspaceProjectContextHost;
+        private readonly IProjectThreadingService _threadingService;
         private readonly IDesignTimeInputsDataSource _inputsDataSource;
         private readonly IDesignTimeInputsFileWatcher _fileWatcher;
         private readonly ITempPECompiler _compiler;
@@ -61,6 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             _project = project;
             _projectSubscriptionService = projectSubscriptionService;
             _activeWorkspaceProjectContextHost = activeWorkspaceProjectContextHost;
+            _threadingService = threadingService;
             _inputsDataSource = inputsDataSource;
             _fileWatcher = fileWatcher;
             _compiler = compiler;
@@ -68,6 +70,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             _telemetryService = telemetryService;
             _scheduler = new TaskDelayScheduler(s_compilationDelayTime, threadingService, CancellationToken.None);
         }
+
+        /// <summary>
+        /// This is to allow unit tests to run the compilation synchronously rather than waiting for async work to complete
+        /// </summary>
+        internal bool CompileSynchronously { get; set; }
 
         protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
@@ -204,7 +211,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         {
             if (_filesToCompile.Count > 0)
             {
-                _scheduler.ScheduleAsyncTask(ProcessCompileQueueAsync, _project.Services.ProjectAsynchronousTasks.UnloadCancellationToken);
+                JoinableTask task = _scheduler.ScheduleAsyncTask(ProcessCompileQueueAsync, _project.Services.ProjectAsynchronousTasks.UnloadCancellationToken);
+                if (CompileSynchronously)
+                {
+                    _threadingService.ExecuteSynchronously(() => task.Task);
+                }
             }
         }
 
