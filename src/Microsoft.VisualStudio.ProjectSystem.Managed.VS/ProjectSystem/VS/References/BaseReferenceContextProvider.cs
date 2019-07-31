@@ -9,8 +9,6 @@ using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.Shell.Interop;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 {
     /// <summary>
@@ -46,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         /// <summary>
         /// Gets the next handler in the chain.
         /// </summary>
-        private IVsReferenceManagerUserAsync NextHandler => _nextHandler?.Value?.Value;
+        private IVsReferenceManagerUserAsync? NextHandler => _nextHandler.Value?.Value;
 
         /// <summary>
         /// Gets the collection of reference provider contexts that can handle individual reference type operations.
@@ -86,7 +84,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         /// </returns>
         public virtual Task<ExportLifetimeContext<object>> CreateProviderContextAsync()
         {
-            return NextHandler.CreateProviderContextAsync();
+            Assumes.NotNull(NextHandler);
+            return NextHandler!.CreateProviderContextAsync();
         }
 
         /// <summary>
@@ -98,7 +97,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         /// <returns>A task whose result changes the references.</returns>
         public virtual Task ChangeReferencesAsync(uint operation, object changedContext)
         {
-            return NextHandler.ChangeReferencesAsync(operation, changedContext);
+            Assumes.NotNull(NextHandler);
+            return NextHandler!.ChangeReferencesAsync(operation, changedContext);
         }
 
         #endregion

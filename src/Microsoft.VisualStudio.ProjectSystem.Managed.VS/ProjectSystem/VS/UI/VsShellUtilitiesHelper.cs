@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.VS.Interop;
 using Microsoft.VisualStudio.Shell.Interop;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
 {
     /// <summary>
@@ -28,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
         /// <summary>
         /// <see cref="IVsShellUtilitiesHelper.GetVSVersionAsync"/>
         /// </summary>
-        public async Task<Version> GetVSVersionAsync(IVsService<IVsAppId> vsAppIdService)
+        public async Task<Version?> GetVSVersionAsync(IVsService<IVsAppId> vsAppIdService)
         {
             await _threadingService.SwitchToUIThread();
 
@@ -53,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
             return null;
         }
 
-        public async Task<string> GetLocalAppDataFolderAsync(IVsService<IVsShell> vsShellService)
+        public async Task<string?> GetLocalAppDataFolderAsync(IVsService<IVsShell> vsShellService)
         {
             await _threadingService.SwitchToUIThread();
 

@@ -1,7 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
 {
     /// <summary>
@@ -10,6 +8,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
     /// </summary>
     internal interface IDialogServices
     {
-        bool DontShowAgainMessageBox(string caption, string message, string checkboxText, bool initialStateOfCheckbox, string learnMoreText, string learnMoreUrl);
+        bool DontShowAgainMessageBox(string caption, string message, string? checkboxText, bool initialStateOfCheckbox, string learnMoreText, string learnMoreUrl);
     }
 }

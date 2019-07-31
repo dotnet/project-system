@@ -9,8 +9,6 @@ using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 
 using RoslynRenamer = Microsoft.CodeAnalysis.Rename;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     [Export(typeof(IRoslynServices))]
@@ -30,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [ImportMany]
         protected OrderPrecedenceImportCollection<ISyntaxFactsService> SyntaxFactsServicesImpl { get; }
 
-        private ISyntaxFactsService SyntaxFactsService
+        private ISyntaxFactsService? SyntaxFactsService
         {
             get
             {

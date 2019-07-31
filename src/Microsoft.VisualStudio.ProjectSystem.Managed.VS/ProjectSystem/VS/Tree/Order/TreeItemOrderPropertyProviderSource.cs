@@ -5,8 +5,6 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks.Dataflow;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
 {
     /// <summary>

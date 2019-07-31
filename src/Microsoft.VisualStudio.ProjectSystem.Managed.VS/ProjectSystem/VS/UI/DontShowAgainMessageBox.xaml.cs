@@ -7,15 +7,13 @@ using System.Windows.Input;
 
 using Microsoft.VisualStudio.PlatformUI;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
 {
     internal partial class DontShowAgainMessageBox : DialogWindow
     {
 
-        public DontShowAgainMessageBox(string caption, string message, string checkboxText, bool initialStateOfCheckbox,
-                                       string learnMoreText, string learnMoreUrl, IUserNotificationServices userNotificationServices)
+        public DontShowAgainMessageBox(string caption, string message, string? checkboxText, bool initialStateOfCheckbox,
+                                       string? learnMoreText, string learnMoreUrl, IUserNotificationServices userNotificationServices)
         {
             InitializeComponent();
 
@@ -54,11 +52,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
         //Strictly used for databinding, no notifications
         public string MessageText { get; }
         public string DialogCaption { get; }
-        public string CheckboxText { get; }
+        public string? CheckboxText { get; }
         public static string OkButtonText => VSResources.OKButtonText;
-        public string LearnMoreText { get; private set; }
+        public string? LearnMoreText { get; private set; }
 
-        public ICommand LearnMoreCommand { get; set; }
+        public ICommand? LearnMoreCommand { get; set; }
 
         // No notifications required here either
         public bool CheckboxState { get; set; }

@@ -2,30 +2,32 @@
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal static class WpfHelper
     {
-        public static DataGridCell GetCell(DataGrid dataGrid, int row, int column)
+        public static DataGridCell? GetCell(DataGrid dataGrid, int row, int column)
         {
             DataGridRow rowContainer = GetRow(dataGrid, row);
 
             if (rowContainer != null)
             {
-                DataGridCellsPresenter presenter = GetVisualChild<DataGridCellsPresenter>(rowContainer);
+                DataGridCellsPresenter? presenter = GetVisualChild<DataGridCellsPresenter>(rowContainer);
 
-                // try to get the cell but it may possibly be virtualized
-                var cell = (DataGridCell)presenter.ItemContainerGenerator.ContainerFromIndex(column);
-                if (cell == null)
+                if (presenter != null)
                 {
-                    // now try to bring into view and retrieve the cell
-                    dataGrid.ScrollIntoView(rowContainer, dataGrid.Columns[column]);
-                    cell = (DataGridCell)presenter.ItemContainerGenerator.ContainerFromIndex(column);
+                    // try to get the cell but it may possibly be virtualized
+                    var cell = (DataGridCell)presenter.ItemContainerGenerator.ContainerFromIndex(column);
+                    if (cell == null)
+                    {
+                        // now try to bring into view and retrieve the cell
+                        dataGrid.ScrollIntoView(rowContainer, dataGrid.Columns[column]);
+                        cell = (DataGridCell)presenter.ItemContainerGenerator.ContainerFromIndex(column);
+                    }
+
+                    return cell;
                 }
-                return cell;
             }
             return null;
         }
@@ -42,9 +44,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             return row;
         }
 
-        public static T GetVisualChild<T>(Visual parent) where T : Visual
+        public static T? GetVisualChild<T>(Visual parent) where T : Visual
         {
-            var child = default(T);
+            T? child = null;
             int numVisuals = VisualTreeHelper.GetChildrenCount(parent);
             for (int i = 0; i < numVisuals; i++)
             {

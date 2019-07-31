@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Shell.Interop;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>
@@ -64,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public int OnAfterOpenProject(IVsHierarchy pHierarchy, int fAdded)
         {
-            UnconfiguredProjectTasksService tasksService = GetUnconfiguredProjectTasksServiceIfApplicable(pHierarchy);
+            UnconfiguredProjectTasksService? tasksService = GetUnconfiguredProjectTasksServiceIfApplicable(pHierarchy);
             tasksService?.OnProjectLoadedInHost();
 
             return HResult.OK;
@@ -72,13 +70,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public int PrioritizedOnAfterOpenProject(IVsHierarchy pHierarchy, int fAdded)
         {
-            UnconfiguredProjectTasksService tasksService = GetUnconfiguredProjectTasksServiceIfApplicable(pHierarchy);
+            UnconfiguredProjectTasksService? tasksService = GetUnconfiguredProjectTasksServiceIfApplicable(pHierarchy);
             tasksService?.OnPrioritizedProjectLoadedInHost();
 
             return HResult.OK;
         }
 
-        private static UnconfiguredProjectTasksService GetUnconfiguredProjectTasksServiceIfApplicable(IVsHierarchy hierarchy)
+        private static UnconfiguredProjectTasksService? GetUnconfiguredProjectTasksServiceIfApplicable(IVsHierarchy hierarchy)
         {
             if (hierarchy is IVsBrowseObjectContext context)
             {

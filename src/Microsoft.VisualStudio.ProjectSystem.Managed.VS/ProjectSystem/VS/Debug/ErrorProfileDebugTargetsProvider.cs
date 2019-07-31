@@ -10,11 +10,8 @@ using Microsoft.VisualStudio.ProjectSystem.Debug;
 
 using ExportOrder = Microsoft.VisualStudio.ProjectSystem.OrderAttribute;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
-
     /// <summary>
     /// Handles the NoAction profile so that Ctrl-f5\F5 throws an error to the user
     /// </summary>

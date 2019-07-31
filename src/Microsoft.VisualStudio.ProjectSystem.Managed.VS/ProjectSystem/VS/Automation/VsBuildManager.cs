@@ -6,8 +6,6 @@ using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint;
 using VSLangProj;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 {
     /// <summary>
@@ -23,7 +21,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                                     BuildManagerEvents
     {
         private readonly IProjectThreadingService _threadingService;
-        private readonly IUnconfiguredProjectCommonServices _unconfiguredProjectServices;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="VSBuildManager"/> class.
@@ -33,9 +30,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         {
             AddEventSource(this);
             _threadingService = threadingService;
-            _unconfiguredProjectServices = unconfiguredProjectServices;
 
-            Project = new OrderPrecedenceImportCollection<VSLangProj.VSProject>(projectCapabilityCheckProvider: _unconfiguredProjectServices.Project);
+            Project = new OrderPrecedenceImportCollection<VSLangProj.VSProject>(projectCapabilityCheckProvider: unconfiguredProjectServices.Project);
         }
 
         [ImportMany(ExportContractNames.VsTypes.VSProject)]
@@ -44,27 +40,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         /// <summary>
         /// Occurs when a design time output moniker is deleted.
         /// </summary>
-        public event _dispBuildManagerEvents_DesignTimeOutputDeletedEventHandler DesignTimeOutputDeleted;
+        public event _dispBuildManagerEvents_DesignTimeOutputDeletedEventHandler? DesignTimeOutputDeleted;
 
         /// <summary>
         /// Occurs when a design time output moniker is dirty
         /// </summary>
-        public event _dispBuildManagerEvents_DesignTimeOutputDirtyEventHandler DesignTimeOutputDirty;
+        public event _dispBuildManagerEvents_DesignTimeOutputDirtyEventHandler? DesignTimeOutputDirty;
 
         /// <summary>
         /// Gets the project of which the selected item is a part.
         /// </summary>
-        public EnvDTE.Project ContainingProject => Project.FirstOrDefault()?.Value.Project;
+        public EnvDTE.Project? ContainingProject => Project.FirstOrDefault()?.Value.Project;
 
         /// <summary>
         /// Gets the top-level extensibility object.
         /// </summary>
-        public EnvDTE.DTE DTE => Project.FirstOrDefault()?.Value.DTE;
+        public EnvDTE.DTE? DTE => Project.FirstOrDefault()?.Value.DTE;
 
         /// <summary>
         /// Gets the immediate parent object of a given object.
         /// </summary>
-        public object Parent => Project.FirstOrDefault()?.Value;
+        public object? Parent => Project.FirstOrDefault()?.Value;
 
         /// <summary>
         /// Gets the temporary portable executable (PE) monikers for a project.
