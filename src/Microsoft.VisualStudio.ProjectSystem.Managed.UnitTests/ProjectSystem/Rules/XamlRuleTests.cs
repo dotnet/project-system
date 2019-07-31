@@ -72,7 +72,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         }
 
         [Theory]
-        [MemberData(nameof(GetAllRules))]
+        [MemberData(nameof(GetDependenciesRules))]
+        [MemberData(nameof(GetItemRules))]
+        [MemberData(nameof(GetMiscellaneousRules))]
         public void NonVisiblePropertiesShouldntBeLocalized(string ruleName, string fullPath)
         {
             XElement rule = LoadXamlRule(fullPath);
@@ -91,7 +93,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         }
 
         [Theory]
-        [MemberData(nameof(GetAllRules))]
+        [MemberData(nameof(GetDependenciesRules))]
+        [MemberData(nameof(GetBrowseObjectItemRules))]
+        [MemberData(nameof(GetMiscellaneousRules))]
         public void VisiblePropertiesMustHaveDisplayName(string ruleName, string fullPath)
         {
             // The "DisplayName" property is localised, while "Name" is not.
@@ -234,7 +238,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         }
 
         [Theory]
-        [MemberData(nameof(GetAllItemRules))]
+        [MemberData(nameof(GetItemRules))]
         public void RuleNameMatchesFileName(string ruleName, string fullPath)
         {
             XElement rule = LoadXamlRule(fullPath);
@@ -249,7 +253,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         }
 
         [Theory]
-        [MemberData(nameof(GetAllItemRules))]
+        [MemberData(nameof(GetItemRules))]
         public void ItemTypesMustMatchFileNameRoot(string ruleName, string fullPath)
         {
             // If a rule is split between File and BrowseObject we need to trim the BrowseObject part off
@@ -308,25 +312,41 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
         public static IEnumerable<object[]> GetBrowseObjectItemRules()
         {
-            return GetRules("Items", false, true);
+            // Special case for Folder because it is both File and BrowseObject context (for now), but is named like a File.
+            return Project(GetRules("Items")
+                .Where(fileName => fileName.EndsWith(".BrowseObject.xaml", StringComparisons.Paths) ||
+                                   fileName.Equals("Folder.xaml", StringComparisons.Paths)));
         }
 
         public static IEnumerable<object[]> GetFileItemRules()
         {
-            return GetRules("Items", true, false);
+            return Project(GetRules("Items")
+                .Where(fileName => !fileName.EndsWith(".BrowseObject.xaml", StringComparisons.Paths)));
         }
 
-        public static IEnumerable<object[]> GetAllItemRules()
+        public static IEnumerable<object[]> GetItemRules()
         {
-            return GetRules("Items", true, true);
+            return Project(GetRules("Items"));
+        }
+
+        public static IEnumerable<object[]> GetDependenciesRules()
+        {
+            return Project(GetRules("Dependencies"));
+        }
+
+        public static IEnumerable<object[]> GetMiscellaneousRules()
+        {
+            return Project(GetRules(""));
         }
 
         public static IEnumerable<object[]> GetAllRules()
         {
-            return GetRules("", true, true);
+            return GetMiscellaneousRules()
+                .Concat(GetItemRules())
+                .Concat(GetDependenciesRules());
         }
 
-        public static IEnumerable<object[]> GetRules(string suffix, bool file, bool browseObject)
+        private static IEnumerable<string> GetRules(string suffix)
         {
             // Not all rules are embedded as manifests so we have to read the xaml files from the file system.
             string rulesPath = Path.Combine(RepoUtil.FindRepoRootPath(), "src", "Microsoft.VisualStudio.ProjectSystem.Managed", "ProjectSystem", "Rules");
@@ -340,21 +360,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
             foreach (var fileName in Directory.EnumerateFiles(rulesPath, "*.xaml"))
             {
-                if (fileName.EndsWith(".BrowseObject.xaml", StringComparisons.Paths) && !browseObject)
-                {
-                    continue;
-                }
-
-                // Special case for Folder because it is File and BrowseObject context (for now) but naming convention is like File
-                if ((!fileName.EndsWith(".BrowseObject.xaml", StringComparisons.Paths) && !file) ||
-                    (fileName.EndsWith("Folder.xaml", StringComparisons.Paths) && browseObject))
-                {
-                    continue;
-                }
-
-                // we return the rule name separately mainly to get a readable display in Test Explorer so failures can be diagnosed more easily
-                yield return new object[] { Path.GetFileNameWithoutExtension(fileName), fileName };
+                yield return fileName;
             }
+        }
+
+        /// <summary>Projects a XAML file name into the form used by unit tests theories.</summary>
+        private static IEnumerable<object[]> Project(IEnumerable<string> fileNames)
+        {
+            // we return the rule name separately mainly to get a readable display in Test Explorer so failures can be diagnosed more easily
+            return from fileName in fileNames
+                   select new object[] { Path.GetFileNameWithoutExtension(fileName), fileName };
         }
 
         private static XElement LoadXamlRule(string fullPath)
