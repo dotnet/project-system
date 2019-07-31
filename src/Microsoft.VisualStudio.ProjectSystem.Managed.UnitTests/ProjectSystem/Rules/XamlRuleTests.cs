@@ -347,7 +347,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
         private static XmlDocument LoadXamlRule(string fullPath)
         {
-            var rule = new XmlDocument() { XmlResolver = null };
+            var rule = new XmlDocument { XmlResolver = null };
             var settings = new XmlReaderSettings { XmlResolver = null };
             using (var fileStream = File.OpenRead(fullPath))
             using (var reader = XmlReader.Create(fileStream, settings))
@@ -368,7 +368,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
         private static XElement LoadDataSourceElement(string filePath)
         {
-            var settings = new XmlReaderSettings {XmlResolver = null};
+            var settings = new XmlReaderSettings { XmlResolver = null };
             using var fileStream = File.OpenRead(filePath);
             using var reader = XmlReader.Create(fileStream, settings);
             var doc = XDocument.Load(reader);
