@@ -119,8 +119,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
                 string displayName = property.Attribute("DisplayName")?.Value;
 
-                Assert.NotNull(displayName);
-                Assert.NotEqual("", displayName);
+                if (string.IsNullOrWhiteSpace(displayName))
+                {
+                    throw new Xunit.Sdk.XunitException($"Rule {ruleName} has visible property {property.Attribute("Name")} with no DisplayName value.");
+                }
             }
         }
 
@@ -138,9 +140,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             {
                 string description = property.Attribute("Description")?.Value;
 
-                if (description != null)
+                if (description?.EndsWith(".") == false)
                 {
-                    Assert.EndsWith(".", description);
+                    throw new Xunit.Sdk.XunitException($"Rule {ruleName} has visible property {property.Attribute("Name")} with description not ending in a period.");
                 }
             }
         }
