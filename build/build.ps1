@@ -103,11 +103,11 @@ function Build {
   }
 
   if ($useCodecov) {
-    $CodecovProj = Join-Path $PSScriptRoot 'Codecov.proj'
+    $CodecovProj = Join-Path $PSScriptRoot 'Scripts\Codecov.proj'
     & $MsbuildExe $CodecovProj /m /nologo /clp:Summary /nodeReuse:$nodeReuse /warnaserror /v:diag /p:Configuration=$configuration $properties
   }
 
-  $GenerateDependentAssemblyVersionsProj = Join-Path $PSScriptRoot 'Scripts\GenerateDependentAssemblyVersionFile.targets'
+  $GenerateDependentAssemblyVersionsProj = Join-Path $PSScriptRoot 'Scripts\GenerateDependentAssemblyVersionFile.proj'
   & $MsbuildExe $GenerateDependentAssemblyVersionsProj /m /nologo /clp:Summary /nodeReuse:$nodeReuse /warnaserror /p:Configuration=$configuration
 }
 
@@ -131,7 +131,7 @@ function Clear-NuGetCache() {
 
 try {
   $RepoRoot = Join-Path $PSScriptRoot "..\"
-  $ToolsetRestoreProj = Join-Path $PSScriptRoot "Toolset.proj"
+  $ToolsetRestoreProj = Join-Path $PSScriptRoot "Scripts\Toolset.proj"
   $ArtifactsDir = Join-Path $RepoRoot "artifacts"
   $LogDir = Join-Path (Join-Path $ArtifactsDir $configuration) "log"
   $BinDir = Join-Path (Join-Path $ArtifactsDir $configuration) "bin"
