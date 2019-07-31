@@ -83,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             {
                 var visibleAttribute = element.Attribute("Visible");
 
-                if (visibleAttribute != null && visibleAttribute.Value.Equals("false", StringComparison.OrdinalIgnoreCase))
+                if (visibleAttribute != null && visibleAttribute.Value.Equals("false", StringComparison.Ordinal))
                 {
                     Assert.Null(element.Attribute("DisplayName"));
                     Assert.Null(element.Attribute("Description"));
@@ -209,7 +209,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             foreach (XElement element in rule.Elements())
             {
                 // No need to define categories if they're not going to be used
-                Assert.False(element.Name.LocalName.Equals("Rule.Categories", StringComparison.OrdinalIgnoreCase));
+                Assert.False(element.Name.LocalName.Equals("Rule.Categories", StringComparison.Ordinal));
                 Assert.Null(element.Attribute("DisplayName"));
                 Assert.Null(element.Attribute("Description"));
                 Assert.Null(element.Attribute("Category"));
@@ -291,12 +291,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
                 // special case - Folder's Identity property is used by dependencies node
                 if (!ruleName.Equals("Folder", StringComparison.Ordinal))
                 {
-                    Assert.False(name.Equals("Identity", StringComparison.OrdinalIgnoreCase));
+                    Assert.False(name.Equals("Identity", StringComparison.Ordinal));
                 }
 
-                Assert.False(name.Equals("FileNameAndExtension", StringComparison.OrdinalIgnoreCase));
-                Assert.False(name.Equals("URL", StringComparison.OrdinalIgnoreCase));
-                Assert.False(name.Equals("Extension", StringComparison.OrdinalIgnoreCase));
+                Assert.False(name.Equals("FileNameAndExtension", StringComparison.Ordinal));
+                Assert.False(name.Equals("URL", StringComparison.Ordinal));
+                Assert.False(name.Equals("Extension", StringComparison.Ordinal));
             }
         }
 
@@ -434,7 +434,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
                 Assert.Equal(left.Name.LocalName, right.Name.LocalName, ignoreCase: true);
 
                 // ignore ItemType as we know they'll be different
-                if (left.Name.LocalName.Equals("ItemType", StringComparison.OrdinalIgnoreCase))
+                if (left.Name.LocalName.Equals("ItemType", StringComparison.Ordinal))
                 {
                     return;
                 }
