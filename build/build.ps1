@@ -131,7 +131,6 @@ function Clear-NuGetCache() {
 
 try {
   $RepoRoot = Join-Path $PSScriptRoot "..\"
-  $ToolsRoot = Join-Path $RepoRoot ".tools"
   $ToolsetRestoreProj = Join-Path $PSScriptRoot "Toolset.proj"
   $ArtifactsDir = Join-Path $RepoRoot "artifacts"
   $LogDir = Join-Path (Join-Path $ArtifactsDir $configuration) "log"
