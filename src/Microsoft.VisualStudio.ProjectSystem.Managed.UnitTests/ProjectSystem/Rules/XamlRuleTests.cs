@@ -350,12 +350,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         {
             var rule = new XmlDocument { XmlResolver = null };
             var settings = new XmlReaderSettings { XmlResolver = null };
-            using (var fileStream = File.OpenRead(fullPath))
-            using (var reader = XmlReader.Create(fileStream, settings))
-            {
-                rule.Load(reader);
-            }
-
+            using var fileStream = File.OpenRead(fullPath);
+            using var reader = XmlReader.Create(fileStream, settings);
+            rule.Load(reader);
             return rule.DocumentElement;
         }
 
