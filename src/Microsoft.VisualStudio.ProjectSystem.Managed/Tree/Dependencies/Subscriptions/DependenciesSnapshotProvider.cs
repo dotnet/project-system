@@ -28,9 +28,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
     {
         public const string DependencySubscriptionsHostContract = "DependencySubscriptionsHostContract";
 
-        public event EventHandler<ProjectRenamedEventArgs>? SnapshotRenamed;
-        public event EventHandler<SnapshotChangedEventArgs>? SnapshotChanged;
-        public event EventHandler<SnapshotProviderUnloadingEventArgs>? SnapshotProviderUnloading;
+        public event EventHandler<ProjectRenamedEventArgs> SnapshotRenamed;
+        public event EventHandler<SnapshotChangedEventArgs> SnapshotChanged;
+        public event EventHandler<SnapshotProviderUnloadingEventArgs> SnapshotProviderUnloading;
 
         private readonly TimeSpan _dependenciesUpdateThrottleInterval = TimeSpan.FromMilliseconds(250);
 

@@ -4,8 +4,6 @@ using System.Runtime.CompilerServices;
 
 using Microsoft.VisualStudio.Shell;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 {
     /// <summary>

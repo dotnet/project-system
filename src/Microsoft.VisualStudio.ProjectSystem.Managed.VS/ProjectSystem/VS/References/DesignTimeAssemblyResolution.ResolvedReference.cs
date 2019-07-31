@@ -2,15 +2,13 @@
 
 using System;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 {
     internal partial class DesignTimeAssemblyResolution
     {
         private readonly struct ResolvedReference
         {
-            public ResolvedReference(string resolvedPath, Version version)
+            public ResolvedReference(string resolvedPath, Version? version)
             {
                 Assumes.NotNull(resolvedPath);
 
@@ -23,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
                 get;
             }
 
-            public Version Version
+            public Version? Version
             {
                 get;
             }

@@ -2,8 +2,6 @@
 
 using System.Runtime.InteropServices;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     [Guid("9B164E40-C3A2-4363-9BC5-EB4039DEF653")]

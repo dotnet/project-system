@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         internal bool SolutionOpen { get; private set; }
         internal Version VisualStudioVersion { get; private set; }
         internal CompatibilityLevel CompatibilityLevelWarnedForCurrentSolution { get; set; } = CompatibilityLevel.Recommended;
-        internal VersionCompatibilityData CurrrentVersionCompatibilityData { get; private set; }
+        internal VersionCompatibilityData CurrentVersionCompatibilityData { get; private set; }
 
         [ImportingConstructor]
         public DotNetCoreProjectCompatibilityDetector(Lazy<IProjectServiceAccessor> projectAccessor,
@@ -438,16 +438,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// <summary>
         /// Pings the server to download version compatibility information and stores this in a cached file in the users app data. If the cached file is
         /// less than 24 hours old, it uses that data. Otherwise it downloads from the server. If the download fails it will use the previously cached
-        ///  file, or if that file doesn't not exist, it uses the data baked into this class
+        /// file, or if that file doesn't not exist, it uses the data baked into this class
         /// </summary>
         private VersionCompatibilityData GetVersionCompatibilityData()
         {
             // Do we need to update our cached data? Note that since the download could take a long time like tens of seconds we don't really want to
             // start showing messages to the user well after their project is opened and they are interacting with it. Thus we start a task to update the 
             // file, so that the next time we come here, we have updated data.
-            if (CurrrentVersionCompatibilityData != null && _timeCurVersionDataLastUpdatedUtc.AddHours(s_cacheFileValidHours) > DateTime.UtcNow)
+            if (CurrentVersionCompatibilityData != null && _timeCurVersionDataLastUpdatedUtc.AddHours(s_cacheFileValidHours) > DateTime.UtcNow)
             {
-                return CurrrentVersionCompatibilityData;
+                return CurrentVersionCompatibilityData;
             }
 
             try
@@ -490,7 +490,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             }
 
-            if (CurrrentVersionCompatibilityData == null)
+            if (CurrentVersionCompatibilityData == null)
             {
                 // Something failed or no remote file,  use the compatibility data we shipped with which does not have any warnings
                 UpdateInMemoryCachedData(new VersionCompatibilityData()
@@ -500,12 +500,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 });
             }
 
-            return CurrrentVersionCompatibilityData;
+            return CurrentVersionCompatibilityData;
         }
 
         private void UpdateInMemoryCachedData(VersionCompatibilityData newData)
         {
-            CurrrentVersionCompatibilityData = newData;
+            CurrentVersionCompatibilityData = newData;
             _timeCurVersionDataLastUpdatedUtc = DateTime.UtcNow;
         }
 

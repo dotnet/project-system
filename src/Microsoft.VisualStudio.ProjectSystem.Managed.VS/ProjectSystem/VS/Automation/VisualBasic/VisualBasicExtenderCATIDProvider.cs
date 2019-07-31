@@ -8,8 +8,6 @@ using VSLangProj;
 
 using BCLDebug = System.Diagnostics.Debug;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
 {
     [Export(typeof(IExtenderCATIDProvider))]

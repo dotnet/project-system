@@ -1,13 +1,11 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
-
-#nullable disable
 
 namespace Microsoft.VisualStudio.Shell.Interop
 {
@@ -60,7 +58,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
         /// <summary>
         ///     Gets the value of the specified property of the specified item if the hierarchy supports it, or returns a HRESULT if there was an error.
         /// </summary>
-        public static int GetProperty<T>(this IVsHierarchy hierarchy, HierarchyId item, VsHierarchyPropID property, T defaultValue, out T result)
+        public static int GetProperty<T>(this IVsHierarchy hierarchy, HierarchyId item, VsHierarchyPropID property, T defaultValue, [MaybeNull] out T result)
         {
             Requires.NotNull(hierarchy, nameof(hierarchy));
 
@@ -81,14 +79,14 @@ namespace Microsoft.VisualStudio.Shell.Interop
                 return HResult.OK;
             }
 
-            result = default;
+            result = default!;
             return hr;
         }
 
         /// <summary>
         /// Convenient way to get to the UnconfiguredProject from the hierarchy
         /// </summary>
-        public static UnconfiguredProject GetUnconfiguredProject(this IVsHierarchy hierarchy)
+        public static UnconfiguredProject? GetUnconfiguredProject(this IVsHierarchy hierarchy)
         {
             UIThreadHelper.VerifyOnUIThread();
 
@@ -96,7 +94,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
 
             if (context == null)
             {
-                EnvDTE.Project dteProject = hierarchy.GetDTEProject();
+                EnvDTE.Project? dteProject = hierarchy.GetDTEProject();
                 if (dteProject != null)
                 {
                     context = dteProject.Object as IVsBrowseObjectContext;
@@ -109,7 +107,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
         /// <summary>
         /// Returns EnvDTE.Project object for the hierarchy
         /// </summary>
-        public static EnvDTE.Project GetDTEProject(this IVsHierarchy hierarchy)
+        public static EnvDTE.Project? GetDTEProject(this IVsHierarchy hierarchy)
         {
             UIThreadHelper.VerifyOnUIThread();
             if (ErrorHandler.Succeeded(hierarchy.GetProperty(VSConstants.VSITEMID_ROOT, (int)__VSHPROPID.VSHPROPID_ExtObject, out object extObject)))
@@ -123,7 +121,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
         /// <summary>
         /// Returns the path to the project file. Assumes the hierarchy implements IVsProject. Returns null on failure
         /// </summary>
-        public static string GetProjectFilePath(this IVsHierarchy hierarchy)
+        public static string? GetProjectFilePath(this IVsHierarchy hierarchy)
         {
             if (ErrorHandler.Succeeded(((IVsProject)hierarchy).GetMkDocument(VSConstants.VSITEMID_ROOT, out string projectPath)))
             {
