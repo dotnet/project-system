@@ -356,7 +356,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 : (null, null);
         }
 
-        private bool CheckOutputs(BuildUpToDateCheckLogger logger, IDictionary<string, DateTime> timestampCache, State state)
+        private bool CheckInputsAndOutputs(BuildUpToDateCheckLogger logger, IDictionary<string, DateTime> timestampCache, State state)
         {
             // We assume there are fewer outputs than inputs, so perform a full scan of outputs to find the earliest
             (DateTime? outputTime, string? outputPath) = GetEarliestOutput(CollectOutputs(logger, state), timestampCache);
@@ -584,7 +584,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     // Short-lived cache of timestamp by path
                     var timestampCache = new Dictionary<string, DateTime>(StringComparers.Paths);
 
-                    if (!CheckOutputs(logger, timestampCache, state) ||
+                    if (!CheckInputsAndOutputs(logger, timestampCache, state) ||
                         !CheckMarkers(logger, timestampCache, state) ||
                         !CheckCopyToOutputDirectoryFiles(logger, timestampCache, state) ||
                         !CheckCopiedOutputFiles(logger, timestampCache, state))
