@@ -20,25 +20,25 @@ set OptNodeReuse=true
 :ParseArguments
 if    "%1" == ""                                                                                    goto :DoneParsing
 if /I "%1" == "/?"                                                                                  call :Usage && exit /b 1
-if /I "%1" == "/build"                set OptBuild=true&& set OptRebuild=false&&                    shift && goto :ParseArguments
-if /I "%1" == "/no-build"             set OptBuild=false&& set OptRebuild=false&&                   shift && goto :ParseArguments
-if /I "%1" == "/rebuild"              set OptBuild=false&& set OptRebuild=true&&                    shift && goto :ParseArguments
-if /I "%1" == "/test"                 set OptTest=true&&                                            shift && goto :ParseArguments
-if /I "%1" == "/no-test"              set OptTest=false&&                                           shift && goto :ParseArguments
-if /I "%1" == "/integration"          set OptIntegrationTest=true&&                                 shift && goto :ParseArguments
-if /I "%1" == "/no-integration"       set OptIntegrationTest=false&&                                shift && goto :ParseArguments
-if /I "%1" == "/deploy"               set OptDeploy=true&&                                          shift && goto :ParseArguments
-if /I "%1" == "/no-deploy"            set OptDeploy=false&&                                         shift && goto :ParseArguments
-if /I "%1" == "/diagnostic"           set OptDiagnostic=true&&                                      shift && goto :ParseArguments
-if /I "%1" == "/no-diagnostic"        set OptDiagnostic=false&&                                     shift && goto :ParseArguments
-if /I "%1" == "/sign"                 set OptSign=true&&                                            shift && goto :ParseArguments
-if /I "%1" == "/no-sign"              set OptSign=false&&                                           shift && goto :ParseArguments
-if /I "%1" == "/ci"                   set OptCI=true&& set OptNodeReuse=false&&                     shift && goto :ParseArguments
-if /I "%1" == "/no-ci"                set OptCI=false&& set OptNodeReuse=true&&                     shift && goto :ParseArguments
-if /I "%1" == "/ibc"                  set OptIbc=true&&                                             shift && goto :ParseArguments
-if /I "%1" == "/no-ibc"               set OptIbc=false&&                                            shift && goto :ParseArguments
-if /I "%1" == "/rootsuffix"           set RootSuffixCmdLine=/p:RootSuffix=%2&&                      shift && shift && goto :ParseArguments
-if /I "%1" == "/configuration"        set BuildConfiguration=%2&&                                   shift && shift && goto :ParseArguments
+if /I "%1" == "/build"                set "OptBuild=true"  && set "OptRebuild=false"                && shift && goto :ParseArguments
+if /I "%1" == "/no-build"             set "OptBuild=false" && set "OptRebuild=false"                && shift && goto :ParseArguments
+if /I "%1" == "/rebuild"              set "OptBuild=false" && set "OptRebuild=true"                 && shift && goto :ParseArguments
+if /I "%1" == "/test"                 set "OptTest=true"                                            && shift && goto :ParseArguments
+if /I "%1" == "/no-test"              set "OptTest=false"                                           && shift && goto :ParseArguments
+if /I "%1" == "/integration"          set "OptIntegrationTest=true"                                 && shift && goto :ParseArguments
+if /I "%1" == "/no-integration"       set "OptIntegrationTest=false"                                && shift && goto :ParseArguments
+if /I "%1" == "/deploy"               set "OptDeploy=true"                                          && shift && goto :ParseArguments
+if /I "%1" == "/no-deploy"            set "OptDeploy=false"                                         && shift && goto :ParseArguments
+if /I "%1" == "/diagnostic"           set "OptDiagnostic=true"                                      && shift && goto :ParseArguments
+if /I "%1" == "/no-diagnostic"        set "OptDiagnostic=false"                                     && shift && goto :ParseArguments
+if /I "%1" == "/sign"                 set "OptSign=true"                                            && shift && goto :ParseArguments
+if /I "%1" == "/no-sign"              set "OptSign=false"                                           && shift && goto :ParseArguments
+if /I "%1" == "/ci"                   set "OptCI=true"     && set "OptNodeReuse=false"              && shift && goto :ParseArguments
+if /I "%1" == "/no-ci"                set "OptCI=false"    && set "OptNodeReuse=true"               && shift && goto :ParseArguments
+if /I "%1" == "/ibc"                  set "OptIbc=true"                                             && shift && goto :ParseArguments
+if /I "%1" == "/no-ibc"               set "OptIbc=false"                                            && shift && goto :ParseArguments
+if /I "%1" == "/rootsuffix"           set "RootSuffixCmdLine=/p:RootSuffix=%2"                      && shift && shift && goto :ParseArguments
+if /I "%1" == "/configuration"        set "BuildConfiguration=%2"                                   && shift && shift && goto :ParseArguments
 
 call :Usage && exit /b 1
 :DoneParsing
