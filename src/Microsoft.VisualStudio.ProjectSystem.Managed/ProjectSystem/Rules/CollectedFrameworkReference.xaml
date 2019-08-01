@@ -15,7 +15,8 @@
                 SourceType="TargetResults" />
   </Rule.DataSource>
 
+  <!-- NuGet uses PrivateAssets to prevent framework references from being manifested in nuspec. -->
   <StringProperty Name="PrivateAssets"
-                  DisplayName="Private Assets" />
+                  Visible="False" />
 
 </Rule>
