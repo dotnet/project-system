@@ -604,8 +604,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
         }
 
-        public Task<bool> IsUpToDateCheckEnabledAsync(CancellationToken cancellationToken = default) =>
-            _projectSystemOptions.GetIsFastUpToDateCheckEnabledAsync(cancellationToken);
+        public Task<bool> IsUpToDateCheckEnabledAsync(CancellationToken cancellationToken = default)
+        {
+            return _projectSystemOptions.GetIsFastUpToDateCheckEnabledAsync(cancellationToken);
+        }
 
         internal readonly struct TestAccessor
         {
