@@ -265,7 +265,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             var itemChangedTime = DateTime.UtcNow.AddMinutes(-1);
 
             _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\BuiltOutputPath1", outputTime);
-            _buildUpToDateCheck.TestAccess.SetLastCheckTimeUtc(lastCheckTime);
+            _buildUpToDateCheck.TestAccess.SetLastCheckedAtUtc(lastCheckTime);
             _buildUpToDateCheck.TestAccess.SetLastItemChangedAtUtc(itemChangedTime);
 
             await AssertNotUpToDateAsync(
@@ -345,7 +345,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             var lastCheckTime   = DateTime.UtcNow.AddMinutes(-1);
 
             _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\BuiltOutputPath1", outputTime);
-            _buildUpToDateCheck.TestAccess.SetLastCheckTimeUtc(lastCheckTime);
+            _buildUpToDateCheck.TestAccess.SetLastCheckedAtUtc(lastCheckTime);
             _buildUpToDateCheck.TestAccess.SetLastItemChangedAtUtc(itemChangedTime);
 
             await AssertNotUpToDateAsync(
@@ -375,7 +375,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\BuiltOutputPath1", outputTime);
             _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\ItemPath1", inputTime);
-            _buildUpToDateCheck.TestAccess.SetLastCheckTimeUtc(lastCheckTime);
+            _buildUpToDateCheck.TestAccess.SetLastCheckedAtUtc(lastCheckTime);
             _buildUpToDateCheck.TestAccess.SetLastItemChangedAtUtc(itemChangedTime);
 
             await AssertNotUpToDateAsync(
@@ -432,7 +432,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             // Run check again (t4)
             await AssertNotUpToDateAsync(
-                $"Input 'C:\\Dev\\Solution\\Project\\ItemPath1' ({t2.ToLocalTime()}) has been modified since the last up-to-date check ({_buildUpToDateCheck.LastCheckTimeUtc.ToLocalTime()}), not up to date.",
+                $"Input 'C:\\Dev\\Solution\\Project\\ItemPath1' ({t2.ToLocalTime()}) has been modified since the last up-to-date check ({_buildUpToDateCheck.TestAccess.State.LastCheckedAtUtc.ToLocalTime()}), not up to date.",
                 "Outputs");
         }
 
@@ -458,7 +458,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\CustomOutputPath1", outputTime);
             _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\ItemPath1", inputTime);
-            _buildUpToDateCheck.TestAccess.SetLastCheckTimeUtc(lastCheckTime);
+            _buildUpToDateCheck.TestAccess.SetLastCheckedAtUtc(lastCheckTime);
             _buildUpToDateCheck.TestAccess.SetLastItemChangedAtUtc(itemChangeTime);
 
             await AssertNotUpToDateAsync(
@@ -528,7 +528,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\BuiltOutputPath1", outputTime);
             _fileSystem.AddFile("Analyzer1ResolvedPath", inputTime);
-            _buildUpToDateCheck.TestAccess.SetLastCheckTimeUtc(lastCheckTime);
+            _buildUpToDateCheck.TestAccess.SetLastCheckedAtUtc(lastCheckTime);
             _buildUpToDateCheck.TestAccess.SetLastItemChangedAtUtc(itemChangeTime);
 
             await AssertNotUpToDateAsync(
@@ -561,7 +561,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\BuiltOutputPath1", outputTime);
             _fileSystem.AddFile("Reference1ResolvedPath", inputTime);
-            _buildUpToDateCheck.TestAccess.SetLastCheckTimeUtc(lastCheckTime);
+            _buildUpToDateCheck.TestAccess.SetLastCheckedAtUtc(lastCheckTime);
             _buildUpToDateCheck.TestAccess.SetLastItemChangedAtUtc(itemChangeTime);
 
             await AssertNotUpToDateAsync(
@@ -588,7 +588,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\BuiltOutputPath1", outputTime);
             _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\Item1", inputTime);
             _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\Item2", outputTime);
-            _buildUpToDateCheck.TestAccess.SetLastCheckTimeUtc(lastCheckTime);
+            _buildUpToDateCheck.TestAccess.SetLastCheckedAtUtc(lastCheckTime);
             _buildUpToDateCheck.TestAccess.SetLastItemChangedAtUtc(itemChangeTime);
 
             await AssertNotUpToDateAsync(
@@ -621,7 +621,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             _fileSystem.AddFile(destinationPath, destinationTime);
             _fileSystem.AddFile(sourcePath, sourceTime);
-            _buildUpToDateCheck.TestAccess.SetLastCheckTimeUtc(lastCheckTime);
+            _buildUpToDateCheck.TestAccess.SetLastCheckedAtUtc(lastCheckTime);
             _buildUpToDateCheck.TestAccess.SetLastItemChangedAtUtc(itemChangeTime);
 
             await AssertNotUpToDateAsync(
@@ -689,7 +689,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             var sourceTime     = DateTime.UtcNow.AddMinutes(-2);
 
             _fileSystem.AddFile(sourcePath, sourceTime);
-            _buildUpToDateCheck.TestAccess.SetLastCheckTimeUtc(lastCheckTime);
+            _buildUpToDateCheck.TestAccess.SetLastCheckedAtUtc(lastCheckTime);
             _buildUpToDateCheck.TestAccess.SetLastItemChangedAtUtc(itemChangeTime);
 
             await AssertNotUpToDateAsync(
@@ -728,7 +728,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             _fileSystem.AddFile(destinationPath, destinationTime);
             _fileSystem.AddFile(sourcePath, sourceTime);
-            _buildUpToDateCheck.TestAccess.SetLastCheckTimeUtc(lastCheckTime);
+            _buildUpToDateCheck.TestAccess.SetLastCheckedAtUtc(lastCheckTime);
             _buildUpToDateCheck.TestAccess.SetLastItemChangedAtUtc(itemChangeTime);
 
             await AssertNotUpToDateAsync(
@@ -766,7 +766,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             var destinationTime = DateTime.UtcNow.AddMinutes(-2);
 
             _fileSystem.AddFile(destinationPath, destinationTime);
-            _buildUpToDateCheck.TestAccess.SetLastCheckTimeUtc(lastCheckTime);
+            _buildUpToDateCheck.TestAccess.SetLastCheckedAtUtc(lastCheckTime);
             _buildUpToDateCheck.TestAccess.SetLastItemChangedAtUtc(itemChangeTime);
 
             await AssertNotUpToDateAsync(
@@ -803,7 +803,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             var sourceTime     = DateTime.UtcNow.AddMinutes(-2);
 
             _fileSystem.AddFile(sourcePath, sourceTime);
-            _buildUpToDateCheck.TestAccess.SetLastCheckTimeUtc(lastCheckTime);
+            _buildUpToDateCheck.TestAccess.SetLastCheckedAtUtc(lastCheckTime);
             _buildUpToDateCheck.TestAccess.SetLastItemChangedAtUtc(itemChangeTime);
 
             await AssertNotUpToDateAsync(

@@ -26,6 +26,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             public DateTime LastItemChangedAtUtc { get; }
 
+            /// <summary>
+            /// Gets the time at which the last up-to-date check was made.
+            /// </summary>
+            /// <remarks>
+            /// This value is required in order to protect against a race condition described in
+            /// https://github.com/dotnet/project-system/issues/4014. Specifically, if source files are
+            /// modified during a compilation, but before that compilation's outputs are produced, then
+            /// the changed input file's timestamp will be earlier than the compilation output, making
+            /// it seem as though the compilation is up to date when in fact the input was not included
+            /// in that compilation. We use this property as a proxy for compilation start time, whereas
+            /// the outputs represent compilation end time.
+            /// </remarks>
+            public DateTime LastCheckedAtUtc { get; }
+
             public ImmutableHashSet<string> ItemTypes { get; }
             public ImmutableDictionary<string, ImmutableHashSet<(string path, string? link, CopyToOutputDirectoryType copyType)>> ItemsByItemType { get; }
             public ImmutableHashSet<string> CustomInputs { get; }
@@ -44,6 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 var emptyPathSet = ImmutableHashSet.Create(StringComparers.Paths);
 
                 LastItemChangedAtUtc = DateTime.MinValue;
+                LastCheckedAtUtc = DateTime.MinValue;
                 ItemTypes = ImmutableHashSet.Create(StringComparers.ItemTypes);
                 ItemsByItemType = ImmutableDictionary.Create<string, ImmutableHashSet<(string path, string? link, CopyToOutputDirectoryType copyType)>>(StringComparers.ItemTypes);
                 CustomInputs = emptyPathSet;
@@ -72,7 +87,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 ImmutableHashSet<string> analyzerReferences,
                 ImmutableHashSet<string> compilationReferences,
                 ImmutableHashSet<string> copyReferenceInputs,
-                DateTime lastItemChangedAtUtc)
+                DateTime lastItemChangedAtUtc,
+                DateTime lastCheckedAtUtc)
             {
                 MSBuildProjectFullPath = msBuildProjectFullPath;
                 MSBuildProjectDirectory = msBuildProjectDirectory;
@@ -91,6 +107,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 CompilationReferences = compilationReferences;
                 CopyReferenceInputs = copyReferenceInputs;
                 LastItemChangedAtUtc = lastItemChangedAtUtc;
+                LastCheckedAtUtc = lastCheckedAtUtc;
             }
 
             public State Update(
@@ -268,9 +285,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     analyzerReferences,
                     compilationReferences,
                     copyReferenceInputs,
-                    lastItemChangedAtUtc);
+                    lastItemChangedAtUtc,
+                    LastCheckedAtUtc);
             }
 
+            public State WithLastCheckedAtUtc(DateTime lastCheckedAtUtc)
+            {
+                return new State(
+                    MSBuildProjectFullPath,
+                    MSBuildProjectDirectory,
+                    MarkerFile,
+                    OutputRelativeOrFullPath,
+                    NewestImportInput,
+                    LastVersionSeen,
+                    IsDisabled,
+                    ItemTypes, ItemsByItemType, CustomInputs, CustomOutputs,
+                    BuiltOutputs,
+                    CopiedOutputFiles,
+                    AnalyzerReferences,
+                    CompilationReferences,
+                    CopyReferenceInputs,
+                    LastItemChangedAtUtc,
+                    lastCheckedAtUtc);
+            }
+
+            /// <summary>
+            /// For unit tests only.
+            /// </summary>
             internal State WithLastItemChangedAtUtc(DateTime lastItemChangedAtUtc)
             {
                 return new State(
@@ -287,7 +328,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     AnalyzerReferences,
                     CompilationReferences,
                     CopyReferenceInputs,
-                    lastItemChangedAtUtc);
+                    lastItemChangedAtUtc,
+                    LastCheckedAtUtc);
             }
         }
     }
