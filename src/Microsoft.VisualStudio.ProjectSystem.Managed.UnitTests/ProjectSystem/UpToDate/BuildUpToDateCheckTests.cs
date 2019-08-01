@@ -266,7 +266,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\BuiltOutputPath1", outputTime);
             _buildUpToDateCheck.TestAccess.SetLastCheckedAtUtc(lastCheckTime);
-            _buildUpToDateCheck.TestAccess.SetLastItemChangedAtUtc(itemChangedTime);
+            _buildUpToDateCheck.TestAccess.SetLastItemsChangedAtUtc(itemChangedTime);
 
             await AssertNotUpToDateAsync(
                 $"The inputs were changed more recently ({itemChangedTime.ToLocalTime()}) than the earliest output 'C:\\Dev\\Solution\\Project\\BuiltOutputPath1' ({outputTime.ToLocalTime()}), not up to date.",
@@ -346,7 +346,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\BuiltOutputPath1", outputTime);
             _buildUpToDateCheck.TestAccess.SetLastCheckedAtUtc(lastCheckTime);
-            _buildUpToDateCheck.TestAccess.SetLastItemChangedAtUtc(itemChangedTime);
+            _buildUpToDateCheck.TestAccess.SetLastItemsChangedAtUtc(itemChangedTime);
 
             await AssertNotUpToDateAsync(
                 "Input 'C:\\Dev\\Solution\\Project\\ItemPath1' does not exist, not up to date.",
@@ -376,7 +376,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\BuiltOutputPath1", outputTime);
             _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\ItemPath1", inputTime);
             _buildUpToDateCheck.TestAccess.SetLastCheckedAtUtc(lastCheckTime);
-            _buildUpToDateCheck.TestAccess.SetLastItemChangedAtUtc(itemChangedTime);
+            _buildUpToDateCheck.TestAccess.SetLastItemsChangedAtUtc(itemChangedTime);
 
             await AssertNotUpToDateAsync(
                 $"Input 'C:\\Dev\\Solution\\Project\\ItemPath1' is newer ({inputTime.ToLocalTime()}) than earliest output 'C:\\Dev\\Solution\\Project\\BuiltOutputPath1' ({outputTime.ToLocalTime()}), not up to date.",
@@ -413,7 +413,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             await SetupAsync(projectSnapshot, sourceSnapshot);
 
             await AssertNotUpToDateAsync(
-                $"The inputs were changed more recently ({_buildUpToDateCheck.TestAccess.State.LastItemChangedAtUtc.ToLocalTime()}) than the earliest output 'C:\\Dev\\Solution\\Project\\BuiltOutputPath1' ({t0.AddMinutes(-1).ToLocalTime()}), not up to date.",
+                $"The inputs were changed more recently ({_buildUpToDateCheck.TestAccess.State.LastItemsChangedAtUtc.ToLocalTime()}) than the earliest output 'C:\\Dev\\Solution\\Project\\BuiltOutputPath1' ({t0.AddMinutes(-1).ToLocalTime()}), not up to date.",
                 "Outputs");
 
             await Task.Delay(50);
@@ -459,7 +459,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\CustomOutputPath1", outputTime);
             _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\ItemPath1", inputTime);
             _buildUpToDateCheck.TestAccess.SetLastCheckedAtUtc(lastCheckTime);
-            _buildUpToDateCheck.TestAccess.SetLastItemChangedAtUtc(itemChangeTime);
+            _buildUpToDateCheck.TestAccess.SetLastItemsChangedAtUtc(itemChangeTime);
 
             await AssertNotUpToDateAsync(
                 $"Input 'C:\\Dev\\Solution\\Project\\ItemPath1' is newer ({inputTime.ToLocalTime()}) than earliest output 'C:\\Dev\\Solution\\Project\\CustomOutputPath1' ({outputTime.ToLocalTime()}), not up to date.",
@@ -529,7 +529,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\BuiltOutputPath1", outputTime);
             _fileSystem.AddFile("Analyzer1ResolvedPath", inputTime);
             _buildUpToDateCheck.TestAccess.SetLastCheckedAtUtc(lastCheckTime);
-            _buildUpToDateCheck.TestAccess.SetLastItemChangedAtUtc(itemChangeTime);
+            _buildUpToDateCheck.TestAccess.SetLastItemsChangedAtUtc(itemChangeTime);
 
             await AssertNotUpToDateAsync(
                 $"Input 'Analyzer1ResolvedPath' is newer ({inputTime.ToLocalTime()}) than earliest output 'C:\\Dev\\Solution\\Project\\BuiltOutputPath1' ({outputTime.ToLocalTime()}), not up to date.",
@@ -562,7 +562,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\BuiltOutputPath1", outputTime);
             _fileSystem.AddFile("Reference1ResolvedPath", inputTime);
             _buildUpToDateCheck.TestAccess.SetLastCheckedAtUtc(lastCheckTime);
-            _buildUpToDateCheck.TestAccess.SetLastItemChangedAtUtc(itemChangeTime);
+            _buildUpToDateCheck.TestAccess.SetLastItemsChangedAtUtc(itemChangeTime);
 
             await AssertNotUpToDateAsync(
                 $"Input 'Reference1ResolvedPath' is newer ({inputTime.ToLocalTime()}) than earliest output 'C:\\Dev\\Solution\\Project\\BuiltOutputPath1' ({outputTime.ToLocalTime()}), not up to date.",
@@ -589,7 +589,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\Item1", inputTime);
             _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\Item2", outputTime);
             _buildUpToDateCheck.TestAccess.SetLastCheckedAtUtc(lastCheckTime);
-            _buildUpToDateCheck.TestAccess.SetLastItemChangedAtUtc(itemChangeTime);
+            _buildUpToDateCheck.TestAccess.SetLastItemsChangedAtUtc(itemChangeTime);
 
             await AssertNotUpToDateAsync(
                 $"Input 'C:\\Dev\\Solution\\Project\\Item1' is newer ({inputTime.ToLocalTime()}) than earliest output 'C:\\Dev\\Solution\\Project\\BuiltOutputPath1' ({outputTime.ToLocalTime()}), not up to date.",
@@ -622,7 +622,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _fileSystem.AddFile(destinationPath, destinationTime);
             _fileSystem.AddFile(sourcePath, sourceTime);
             _buildUpToDateCheck.TestAccess.SetLastCheckedAtUtc(lastCheckTime);
-            _buildUpToDateCheck.TestAccess.SetLastItemChangedAtUtc(itemChangeTime);
+            _buildUpToDateCheck.TestAccess.SetLastItemsChangedAtUtc(itemChangeTime);
 
             await AssertNotUpToDateAsync(
                 new[]
@@ -690,7 +690,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             _fileSystem.AddFile(sourcePath, sourceTime);
             _buildUpToDateCheck.TestAccess.SetLastCheckedAtUtc(lastCheckTime);
-            _buildUpToDateCheck.TestAccess.SetLastItemChangedAtUtc(itemChangeTime);
+            _buildUpToDateCheck.TestAccess.SetLastItemsChangedAtUtc(itemChangeTime);
 
             await AssertNotUpToDateAsync(
                 new[]
@@ -729,7 +729,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _fileSystem.AddFile(destinationPath, destinationTime);
             _fileSystem.AddFile(sourcePath, sourceTime);
             _buildUpToDateCheck.TestAccess.SetLastCheckedAtUtc(lastCheckTime);
-            _buildUpToDateCheck.TestAccess.SetLastItemChangedAtUtc(itemChangeTime);
+            _buildUpToDateCheck.TestAccess.SetLastItemsChangedAtUtc(itemChangeTime);
 
             await AssertNotUpToDateAsync(
                 new[]
@@ -767,7 +767,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             _fileSystem.AddFile(destinationPath, destinationTime);
             _buildUpToDateCheck.TestAccess.SetLastCheckedAtUtc(lastCheckTime);
-            _buildUpToDateCheck.TestAccess.SetLastItemChangedAtUtc(itemChangeTime);
+            _buildUpToDateCheck.TestAccess.SetLastItemsChangedAtUtc(itemChangeTime);
 
             await AssertNotUpToDateAsync(
                 new[]
@@ -804,7 +804,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             _fileSystem.AddFile(sourcePath, sourceTime);
             _buildUpToDateCheck.TestAccess.SetLastCheckedAtUtc(lastCheckTime);
-            _buildUpToDateCheck.TestAccess.SetLastItemChangedAtUtc(itemChangeTime);
+            _buildUpToDateCheck.TestAccess.SetLastItemsChangedAtUtc(itemChangeTime);
 
             await AssertNotUpToDateAsync(
                 new[]

@@ -375,9 +375,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 Assumes.NotNull(outputPath);
 
-                if (outputTime < state.LastItemChangedAtUtc)
+                if (outputTime < state.LastItemsChangedAtUtc)
                 {
-                    return Fail(logger, "Outputs", "The inputs were changed more recently ({0}) than the earliest output '{1}' ({2}), not up to date.", state.LastItemChangedAtUtc, outputPath!, outputTime.Value);
+                    return Fail(logger, "Outputs", "The inputs were changed more recently ({0}) than the earliest output '{1}' ({2}), not up to date.", state.LastItemsChangedAtUtc, outputPath!, outputTime.Value);
                 }
 
                 // Search for an input that's either missing or newer than the earliest output.
@@ -638,9 +638,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 _check._state = _check._state.WithLastCheckedAtUtc(lastCheckedAtUtc);
             }
 
-            public void SetLastItemChangedAtUtc(DateTime lastItemChangedAtUtc)
+            public void SetLastItemsChangedAtUtc(DateTime lastItemsChangedAtUtc)
             {
-                _check._state = _check._state.WithLastItemChangedAtUtc(lastItemChangedAtUtc);
+                _check._state = _check._state.WithLastItemsChangedAtUtc(lastItemsChangedAtUtc);
             }
         }
 

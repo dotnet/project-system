@@ -24,7 +24,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             public IComparable? LastVersionSeen { get; }
             public bool IsDisabled { get; }
 
-            public DateTime LastItemChangedAtUtc { get; }
+            /// <summary>
+            /// Gets the time at which the set of items changed.
+            /// </summary>
+            /// <remarks>
+            /// This is not the last timestamp of the items themselves. It is time at which items were
+            /// last added or removed from the project.
+            /// </remarks>
+            public DateTime LastItemsChangedAtUtc { get; }
 
             /// <summary>
             /// Gets the time at which the last up-to-date check was made.
@@ -57,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 var emptyPathSet = ImmutableHashSet.Create(StringComparers.Paths);
 
-                LastItemChangedAtUtc = DateTime.MinValue;
+                LastItemsChangedAtUtc = DateTime.MinValue;
                 LastCheckedAtUtc = DateTime.MinValue;
                 ItemTypes = ImmutableHashSet.Create(StringComparers.ItemTypes);
                 ItemsByItemType = ImmutableDictionary.Create<string, ImmutableHashSet<(string path, string? link, CopyToOutputDirectoryType copyType)>>(StringComparers.ItemTypes);
@@ -87,7 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 ImmutableHashSet<string> analyzerReferences,
                 ImmutableHashSet<string> compilationReferences,
                 ImmutableHashSet<string> copyReferenceInputs,
-                DateTime lastItemChangedAtUtc,
+                DateTime lastItemsChangedAtUtc,
                 DateTime lastCheckedAtUtc)
             {
                 MSBuildProjectFullPath = msBuildProjectFullPath;
@@ -106,7 +113,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 AnalyzerReferences = analyzerReferences;
                 CompilationReferences = compilationReferences;
                 CopyReferenceInputs = copyReferenceInputs;
-                LastItemChangedAtUtc = lastItemChangedAtUtc;
+                LastItemsChangedAtUtc = lastItemsChangedAtUtc;
                 LastCheckedAtUtc = lastCheckedAtUtc;
             }
 
@@ -266,7 +273,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     itemsChanged = true;
                 }
 
-                DateTime lastItemChangedAtUtc = itemsChanged ? DateTime.UtcNow : LastItemChangedAtUtc;
+                DateTime lastItemsChangedAtUtc = itemsChanged ? DateTime.UtcNow : LastItemsChangedAtUtc;
 
                 return new State(
                     msBuildProjectFullPath,
@@ -285,7 +292,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     analyzerReferences,
                     compilationReferences,
                     copyReferenceInputs,
-                    lastItemChangedAtUtc,
+                    lastItemsChangedAtUtc,
                     LastCheckedAtUtc);
             }
 
@@ -305,14 +312,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     AnalyzerReferences,
                     CompilationReferences,
                     CopyReferenceInputs,
-                    LastItemChangedAtUtc,
+                    LastItemsChangedAtUtc,
                     lastCheckedAtUtc);
             }
 
             /// <summary>
             /// For unit tests only.
             /// </summary>
-            internal State WithLastItemChangedAtUtc(DateTime lastItemChangedAtUtc)
+            internal State WithLastItemsChangedAtUtc(DateTime lastItemsChangedAtUtc)
             {
                 return new State(
                     MSBuildProjectFullPath,
@@ -328,7 +335,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     AnalyzerReferences,
                     CompilationReferences,
                     CopyReferenceInputs,
-                    lastItemChangedAtUtc,
+                    lastItemsChangedAtUtc,
                     LastCheckedAtUtc);
             }
         }
