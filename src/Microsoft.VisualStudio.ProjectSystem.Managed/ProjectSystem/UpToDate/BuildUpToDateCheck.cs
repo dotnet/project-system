@@ -406,14 +406,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return true;
         }
 
-        // Reference assembly copy markers are strange. The property is always going to be present on
-        // references to SDK-based projects, regardless of whether or not those referenced projects
-        // will actually produce a marker. And an item always will be present in an SDK-based project,
-        // regardless of whether or not the project produces a marker. So, basically, we only check
-        // here if the project actually produced a marker and we only check it against references that
-        // actually produced a marker.
         private bool CheckMarkers(BuildUpToDateCheckLogger logger, IDictionary<string, DateTime> timestampCache, State state)
         {
+            // Reference assembly copy markers are strange. The property is always going to be present on
+            // references to SDK-based projects, regardless of whether or not those referenced projects
+            // will actually produce a marker. And an item always will be present in an SDK-based project,
+            // regardless of whether or not the project produces a marker. So, basically, we only check
+            // here if the project actually produced a marker and we only check it against references that
+            // actually produced a marker.
+
             if (string.IsNullOrWhiteSpace(state.MarkerFile) || !state.CopyReferenceInputs.Any())
             {
                 return true;
