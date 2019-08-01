@@ -54,11 +54,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private readonly ITelemetryService _telemetryService;
         private readonly IFileSystem _fileSystem;
 
+        private readonly object _stateLock = new object();
+
         private State _state = State.Empty;
 
         private IDisposable? _link;
-
-        internal DateTime LastCheckTimeUtc { get; private set; } = DateTime.MinValue;
 
         [ImportingConstructor]
         public BuildUpToDateCheck(
@@ -88,12 +88,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             return ExecuteUnderLockAsync(_ =>
             {
-                _link?.Dispose();
-                _link = null;
+                lock (_stateLock)
+                {
+                    _link?.Dispose();
+                    _link = null;
 
-                _state = State.Empty;
-
-                LastCheckTimeUtc = DateTime.MinValue;
+                    _state = State.Empty;
+                }
 
                 return Task.CompletedTask;
             });
@@ -141,11 +142,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         internal void OnChanged(IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectItemSchema>> e)
         {
-            _state = _state.Update(
-                jointRuleUpdate: e.Value.Item1,
-                sourceItemsUpdate: e.Value.Item2,
-                projectItemSchema: e.Value.Item3,
-                configuredProjectVersion: e.DataSourceVersions[ProjectDataSources.ConfiguredProjectVersion]);
+            lock (_stateLock)
+            {
+                if (_link == null)
+                {
+                    // We've been unloaded, so don't update the state (which will be empty)
+                    return;
+                }
+
+                _state = _state.Update(
+                    jointRuleUpdate: e.Value.Item1,
+                    sourceItemsUpdate: e.Value.Item2,
+                    projectItemSchema: e.Value.Item3,
+                    configuredProjectVersion: e.DataSourceVersions[ProjectDataSources.ConfiguredProjectVersion]);
+            }
         }
 
         private DateTime? GetTimestampUtc(string path, IDictionary<string, DateTime> timestampCache)
@@ -365,9 +375,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 Assumes.NotNull(outputPath);
 
-                if (outputTime < state.LastItemChangedAtUtc)
+                if (outputTime < state.LastItemsChangedAtUtc)
                 {
-                    return Fail(logger, "Outputs", "The inputs were changed more recently ({0}) than the earliest output '{1}' ({2}), not up to date.", state.LastItemChangedAtUtc, outputPath!, outputTime.Value);
+                    return Fail(logger, "Outputs", "The set of project items was changed more recently ({0}) than the earliest output '{1}' ({2}), not up to date.", state.LastItemsChangedAtUtc, outputPath!, outputTime.Value);
                 }
 
                 // Search for an input that's either missing or newer than the earliest output.
@@ -386,9 +396,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         return Fail(logger, "Outputs", "Input '{0}' is newer ({1}) than earliest output '{2}' ({3}), not up to date.", input, time.Value, outputPath!, outputTime.Value);
                     }
 
-                    if (time > LastCheckTimeUtc)
+                    if (time > _state.LastCheckedAtUtc)
                     {
-                        return Fail(logger, "Outputs", "Input '{0}' ({1}) has been modified since the last up-to-date check ({2}), not up to date.", input, time.Value, LastCheckTimeUtc);
+                        return Fail(logger, "Outputs", "Input '{0}' ({1}) has been modified since the last up-to-date check ({2}), not up to date.", input, time.Value, state.LastCheckedAtUtc);
                     }
                 }
 
@@ -406,14 +416,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return true;
         }
 
-        // Reference assembly copy markers are strange. The property is always going to be present on
-        // references to SDK-based projects, regardless of whether or not those referenced projects
-        // will actually produce a marker. And an item always will be present in an SDK-based project,
-        // regardless of whether or not the project produces a marker. So, basically, we only check
-        // here if the project actually produced a marker and we only check it against references that
-        // actually produced a marker.
         private bool CheckMarkers(BuildUpToDateCheckLogger logger, IDictionary<string, DateTime> timestampCache, State state)
         {
+            // Reference assembly copy markers are strange. The property is always going to be present on
+            // references to SDK-based projects, regardless of whether or not those referenced projects
+            // will actually produce a marker. And an item always will be present in an SDK-based project,
+            // regardless of whether or not the project produces a marker. So, basically, we only check
+            // here if the project actually produced a marker and we only check it against references that
+            // actually produced a marker.
+
             if (string.IsNullOrWhiteSpace(state.MarkerFile) || !state.CopyReferenceInputs.Any())
             {
                 return true;
@@ -598,8 +609,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
                 finally
                 {
-                    LastCheckTimeUtc = DateTime.UtcNow;
-                    logger.Verbose("Up to date check completed in {0:#,##0.#} ms", sw.Elapsed.TotalMilliseconds);
+                    lock (_stateLock)
+                    {
+                        _state = _state.WithLastCheckedAtUtc(DateTime.UtcNow);
+                    }
+
+                    logger.Verbose("Up to date check completed in {0:N1} ms", sw.Elapsed.TotalMilliseconds);
                 }
             }
         }
@@ -618,14 +633,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             public State State => _check._state;
 
-            public void SetLastCheckTimeUtc(DateTime lastCheckTimeUtc)
+            public void SetLastCheckedAtUtc(DateTime lastCheckedAtUtc)
             {
-                _check.LastCheckTimeUtc = lastCheckTimeUtc;
+                _check._state = _check._state.WithLastCheckedAtUtc(lastCheckedAtUtc);
             }
 
-            public void SetLastItemChangedAtUtc(DateTime lastItemChangedAtUtc)
+            public void SetLastItemsChangedAtUtc(DateTime lastItemsChangedAtUtc)
             {
-                _check._state = _check._state.WithLastItemChangedAtUtc(lastItemChangedAtUtc);
+                _check._state = _check._state.WithLastItemsChangedAtUtc(lastItemsChangedAtUtc);
             }
         }
 
