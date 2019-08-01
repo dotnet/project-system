@@ -15,13 +15,13 @@
 
   <StringProperty Name="FolderName"
                   Category="Misc"
-                  Description="Name of this folder"
+                  Description="Name of this folder."
                   DisplayName="Folder Name"
                   ReadOnly="true" />
 
   <StringProperty Name="FullPath"
                   Category="Misc"
-                  Description="Location of the folder"
+                  Description="Location of the folder."
                   DisplayName="Full Path"
                   ReadOnly="true" />
 

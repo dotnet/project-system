@@ -12,6 +12,11 @@
         <target state="new">Framework</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|PrivateAssets|Description">
+        <source>Assets that are private in this reference.</source>
+        <target state="new">Assets that are private in this reference.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|TargetingPackPath|DisplayName">
         <source>Path</source>
         <target state="new">Path</target>
