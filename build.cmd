@@ -5,49 +5,54 @@ set BatchFile=%0
 set Root=%~dp0
 
 set BuildConfiguration=Debug
-set PropRootSuffix=
-set OptBuild=$true
-set OptRebuild=$false
-set OptDeploy=$true
-set OptTest=$true
-set OptIntegrationTest=$false
-set OptLog=$false
-set OptVerbosity=minimal
-set OptCI=$false
-set OptPrepareMachine=$false
-set OptSign=$false
-set OptIbc=$false
+set RootSuffixCmdLine=
+set OptBuild=true
+set OptDiagnostic=false
+set OptRebuild=false
+set OptDeploy=true
+set OptTest=true
+set OptIntegrationTest=false
+set OptCI=false
+set OptSign=false
+set OptIbc=false
+set OptNodeReuse=true
 
 :ParseArguments
-if    "%1" == "" goto :DoneParsing
-if /I "%1" == "/?" call :Usage && exit /b 1
-if /I "%1" == "/build"                set OptBuild=$true  && set OptRebuild=$false  && shift && goto :ParseArguments
-if /I "%1" == "/no-build"             set OptBuild=$false && set OptRebuild=$false  && shift && goto :ParseArguments
-if /I "%1" == "/rebuild"              set OptBuild=$false && set OptRebuild=$true   && shift && goto :ParseArguments
-if /I "%1" == "/test"                 set OptTest=$true                             && shift && goto :ParseArguments
-if /I "%1" == "/no-test"              set OptTest=$false                            && shift && goto :ParseArguments
-if /I "%1" == "/integration"          set OptIntegrationTest=$true                  && shift && goto :ParseArguments
-if /I "%1" == "/no-integration"       set OptIntegrationTest=$false                 && shift && goto :ParseArguments
-if /I "%1" == "/deploy"               set OptDeploy=$true                           && shift && goto :ParseArguments
-if /I "%1" == "/no-deploy"            set OptDeploy=$false                          && shift && goto :ParseArguments
-if /I "%1" == "/diagnostic"           set OptLog=$true  && set OptVerbosity=normal  && shift && goto :ParseArguments
-if /I "%1" == "/no-diagnostic"        set OptLog=$false && set OptVerbosity=minimal && shift && goto :ParseArguments
-if /I "%1" == "/sign"                 set OptSign=$true                             && shift && goto :ParseArguments
-if /I "%1" == "/no-sign"              set OptSign=$false                            && shift && goto :ParseArguments
-if /I "%1" == "/ci"                   set OptCI=$true  && set PrepareMachine=$true  && shift && goto :ParseArguments
-if /I "%1" == "/no-ci"                set OptCI=$false && set PrepareMachine=$false && shift && goto :ParseArguments
-if /I "%1" == "/ibc"                  set OptIbc=$true                              && shift && goto :ParseArguments
-if /I "%1" == "/no-ibc"               set OptIbc=$false                             && shift && goto :ParseArguments
-if /I "%1" == "/rootsuffix"           set PropRootSuffix=/p:RootSuffix=%2           && shift && shift && goto :ParseArguments
-if /I "%1" == "/configuration"        set BuildConfiguration=%2                     && shift && shift && goto :ParseArguments
+if    "%1" == ""                                                                                    goto :DoneParsing
+if /I "%1" == "/?"                                                                                  call :Usage && exit /b 1
+if /I "%1" == "/build"                set OptBuild=true&& set OptRebuild=false&&                    shift && goto :ParseArguments
+if /I "%1" == "/no-build"             set OptBuild=false&& set OptRebuild=false&&                   shift && goto :ParseArguments
+if /I "%1" == "/rebuild"              set OptBuild=false&& set OptRebuild=true&&                    shift && goto :ParseArguments
+if /I "%1" == "/test"                 set OptTest=true&&                                            shift && goto :ParseArguments
+if /I "%1" == "/no-test"              set OptTest=false&&                                           shift && goto :ParseArguments
+if /I "%1" == "/integration"          set OptIntegrationTest=true&&                                 shift && goto :ParseArguments
+if /I "%1" == "/no-integration"       set OptIntegrationTest=false&&                                shift && goto :ParseArguments
+if /I "%1" == "/deploy"               set OptDeploy=true&&                                          shift && goto :ParseArguments
+if /I "%1" == "/no-deploy"            set OptDeploy=false&&                                         shift && goto :ParseArguments
+if /I "%1" == "/diagnostic"           set OptDiagnostic=true&&                                      shift && goto :ParseArguments
+if /I "%1" == "/no-diagnostic"        set OptDiagnostic=false&&                                     shift && goto :ParseArguments
+if /I "%1" == "/sign"                 set OptSign=true&&                                            shift && goto :ParseArguments
+if /I "%1" == "/no-sign"              set OptSign=false&&                                           shift && goto :ParseArguments
+if /I "%1" == "/ci"                   set OptCI=true&& set OptNodeReuse=false&&                     shift && goto :ParseArguments
+if /I "%1" == "/no-ci"                set OptCI=false&& set OptNodeReuse=true&&                     shift && goto :ParseArguments
+if /I "%1" == "/ibc"                  set OptIbc=true&&                                             shift && goto :ParseArguments
+if /I "%1" == "/no-ibc"               set OptIbc=false&&                                            shift && goto :ParseArguments
+if /I "%1" == "/rootsuffix"           set RootSuffixCmdLine=/p:RootSuffix=%2&&                      shift && shift && goto :ParseArguments
+if /I "%1" == "/configuration"        set BuildConfiguration=%2&&                                   shift && shift && goto :ParseArguments
 
 call :Usage && exit /b 1
-
 :DoneParsing
+
+REM The logging command-line needs to factor in build configuration, so calculate it after that's been determined
+if "%OptDiagnostic%" == "true" (
+    set LogCmdLine=/v:normal /bl:%Root%artifacts\%BuildConfiguration%\log\Build.binlog
+) else (
+    set LogCmdLine=/v:minimal
+)
+
 call "%Root%\build\Bootstrap\SetVSEnvironment.cmd" || exit /b 1
 
-powershell -ExecutionPolicy ByPass -Command "& """%Root%build\Build.ps1""" -configuration %BuildConfiguration% -restore -pack:$true -build:%OptBuild% -rebuild:%OptRebuild% -deploy:%OptDeploy% -test:%OptTest% -integrationTest:%OptIntegrationTest% -log:%OptLog% -verbosity:%OptVerbosity% %PropRootSuffix% -ci:%OptCI% -ibc:$OptIbc -prepareMachine:%OptPrepareMachine% -sign:%OptSign%"
-
+msbuild %Root%build\build.proj /m /warnaserror /nologo /clp:Summary /nodeReuse:%OptNodeReuse% /p:Configuration=%BuildConfiguration% /p:Build=%OptBuild% /p:Rebuild=%OptRebuild% /p:Deploy=%OptDeploy% /p:Test=%OptTest% /p:IntegrationTest=%OptIntegrationTest% /p:Sign=%OptSign% /p:CIBuild=%OptCI% /p:EnableIbc=%OptIbc% %LogCmdLine% %RootSuffixCmdLine%
 exit /b %ERRORLEVEL%
 
 :Usage

@@ -1,0 +1,100 @@
+<Project DefaultTargets="PrepareMachine;RestoreToolset;CallToolset;GenerateDependentAssemblyVersionsFile;UploadCodeCoverage">
+  
+  <Import Project="Versions.props"/>
+  <Import Project="NuGet.props"/>
+  <Import Project="RepoToolset\RepoLayout.props" />
+  
+  <PropertyGroup>
+        
+    <ToolsetBuildProjectFilePath>$(NuGetPackageRoot)RoslynTools.RepoToolset\$(RoslynToolsRepoToolsetVersion)\tools\Build.proj</ToolsetBuildProjectFilePath>
+    <IsCodeCoverageBuild Condition="'$(CODECOV_TOKEN)' != '' AND '$(Configuration)' == 'Debug'">true</IsCodeCoverageBuild>    
+  </PropertyGroup>
+
+  <Target 
+    Name="PrepareMachine" 
+    Condition="'$(CIBuild)' == 'true'">
+
+    <Message 
+      Text="Clearing '$(NuGetPackageRoot)'..."
+      Importance="high" />
+    
+    <!-- Clean nuget packages to unnecessary to avoid mismatching versions of SWIX Microbuild and VSSDK-->
+    <RemoveDir Directories="$(NuGetPackageRoot)" />
+
+    <!-- Always create these directories so that publish always succeeds despite where the failure is -->
+    <MakeDir Directories="$(ArtifactsBinDir);$(ArtifactsLogDir);$(ArtifactsTestResultsDir);$(VisualStudioSetupOutputPath)" />
+
+  </Target>
+  
+  <!-- Restore the toolset to the NuGet package cache -->
+  <Target 
+    Name="RestoreToolset" 
+    Condition="!Exists('$(ToolsetBuildProjectFilePath)')">
+
+    <Message
+      Text="Restoring toolset..."
+      Importance="high" 
+      />
+    
+    <MSBuild 
+      BuildInParallel="true"
+      Projects="Scripts\Toolset.proj"
+      Targets="Restore"
+      />
+    
+  </Target>
+
+  <!-- Delegate onto the toolset, which will restore, build, test, pack and sign our solution -->
+  <Target Name="CallToolset">
+
+    <PropertyGroup>
+      <ToolsetProperties>
+        SolutionPath=$(RepoRoot)ProjectSystem.sln;
+        NuGetPackageRoot=$(NuGetPackageRoot);
+        UseOpenCover=$(IsCodeCoverageBuild);
+        Configuration=$(Configuration);
+        QuietRestore=true;
+        Restore=true;
+        Pack=true;
+        CIBuild=$(CIBuild);
+        EnableIbc=$(EnableIbc);
+        Build=$(Build);
+        Rebuild=$(Rebuild);
+        Deploy=$(Deploy);
+        Test=$(Test);
+        Sign=$(Sign);
+        IntegrationTest=$(IntegrationTest);
+      </ToolsetProperties>      
+    </PropertyGroup>
+
+    <MSBuild
+      BuildInParallel="true"
+      Projects="$(ToolsetBuildProjectFilePath)"
+      Properties="$(ToolsetProperties)"
+      />
+    
+  </Target>
+
+  <!-- Generate insertion assets -->
+  <Target Name="GenerateDependentAssemblyVersionsFile">
+
+    <MSBuild
+      BuildInParallel="true"
+      Projects="Scripts\GenerateDependentAssemblyVersionFile.proj"
+      />
+
+  </Target>
+  
+  <!-- Push code coverage to https://codecov.io/ -->
+  <Target 
+    Name="UploadCodeCoverage"
+    Condition="'$(IsCodeCoverageBuild)' == 'true'">
+
+    <MSBuild
+      BuildInParallel="true"
+      Projects="Scripts\CodeCov.proj"
+      />
+    
+  </Target>
+  
+</Project>
