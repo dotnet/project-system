@@ -94,7 +94,7 @@
 
   <StringProperty Name="PrivateAssets"
                   Description="Assets that are private in this reference."
-                  DisplayName="PrivateAssets">
+                  DisplayName="Private Assets">
     <StringProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
                   ItemType="PackageReference"

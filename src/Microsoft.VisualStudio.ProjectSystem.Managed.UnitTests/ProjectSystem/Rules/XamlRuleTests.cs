@@ -18,6 +18,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 {
     public class XamlRuleTests
     {
+        private const string MSBuildNamespace = "http://schemas.microsoft.com/build/2009/properties";
+
         [Theory]
         [MemberData(nameof(GetFileItemRules))]
         public void FileRulesShouldMatchNone(string ruleName, string fullPath)
@@ -35,11 +37,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
             string noneFile = Path.Combine(fullPath, "..", "None.xaml");
 
-            XmlDocument none = LoadXamlRule(noneFile);
-            XmlDocument rule = LoadXamlRule(fullPath);
+            XElement none = LoadXamlRule(noneFile);
+            XElement rule = LoadXamlRule(fullPath);
 
             // First fix up the Name as we know they'll differ.
-            rule.DocumentElement.Attributes["Name"].Value = "None";
+            rule.Attribute("Name").Value = "None";
 
             AssertXmlEqual(none, rule);
         }
@@ -61,45 +63,47 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
             string noneFile = Path.Combine(fullPath, "..", "None.BrowseObject.xaml");
 
-            XmlDocument none = LoadXamlRule(noneFile);
-            XmlDocument rule = LoadXamlRule(fullPath);
+            XElement none = LoadXamlRule(noneFile);
+            XElement rule = LoadXamlRule(fullPath);
 
             // First fix up the Name and DisplayName as we know they'll differ.
-            rule.DocumentElement.Attributes["Name"].Value = "None";
-            rule.DocumentElement.Attributes["DisplayName"].Value = "General";
+            rule.Attribute("Name").Value = "None";
+            rule.Attribute("DisplayName").Value = "General";
 
             AssertXmlEqual(none, rule);
         }
 
         [Theory]
-        [MemberData(nameof(GetAllRules))]
+        [MemberData(nameof(GetDependenciesRules))]
+        [MemberData(nameof(GetItemRules))]
+        [MemberData(nameof(GetMiscellaneousRules))]
         public void NonVisiblePropertiesShouldntBeLocalized(string ruleName, string fullPath)
         {
-            XmlDocument rule = LoadXamlRule(fullPath);
+            XElement rule = LoadXamlRule(fullPath);
 
-            foreach (XmlNode node in rule.DocumentElement.ChildNodes)
+            foreach (XElement element in rule.Elements())
             {
-                if (node is XmlElement element && element.HasAttribute("Visible") && element.Attributes["Visible"].Value.Equals("false", StringComparison.OrdinalIgnoreCase))
+                var visibleAttribute = element.Attribute("Visible");
+
+                if (visibleAttribute != null && visibleAttribute.Value.Equals("false", StringComparison.Ordinal))
                 {
-                    Assert.False(element.HasAttribute("DisplayName"));
-                    Assert.False(element.HasAttribute("Description"));
-                    Assert.False(element.HasAttribute("Category"));
+                    Assert.Null(element.Attribute("DisplayName"));
+                    Assert.Null(element.Attribute("Description"));
+                    Assert.Null(element.Attribute("Category"));
                 }
             }
         }
 
         [Theory]
-        [MemberData(nameof(GetAllRules))]
+        [MemberData(nameof(GetDependenciesRules))]
+        [MemberData(nameof(GetBrowseObjectItemRules))]
+        [MemberData(nameof(GetMiscellaneousRules))]
         public void VisiblePropertiesMustHaveDisplayName(string ruleName, string fullPath)
         {
             // The "DisplayName" property is localised, while "Name" is not.
             // Visible properties without a "DisplayName" will appear in English in all locales.
 
-            XElement rule = LoadXamlRuleX(fullPath).Root;
-
-            // Ignore XAML documents for other types such as ProjectSchemaDefinitions
-            if (rule.Name.LocalName != "Rule")
-                return;
+            XElement rule = LoadXamlRule(fullPath);
 
             foreach (var property in GetProperties(rule))
             {
@@ -113,8 +117,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
                 string displayName = property.Attribute("DisplayName")?.Value;
 
-                Assert.NotNull(displayName);
-                Assert.NotEqual("", displayName);
+                if (string.IsNullOrWhiteSpace(displayName))
+                {
+                    throw new Xunit.Sdk.XunitException($"Rule {ruleName} has visible property {property.Attribute("Name")} with no DisplayName value.");
+                }
             }
         }
 
@@ -122,19 +128,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         [MemberData(nameof(GetAllRules))]
         public void PropertyDescriptionMustEndWithFullStop(string ruleName, string fullPath)
         {
-            XElement rule = LoadXamlRuleX(fullPath).Root;
-
-            // Ignore XAML documents for other types such as ProjectSchemaDefinitions
-            if (rule.Name.LocalName != "Rule")
-                return;
+            XElement rule = LoadXamlRule(fullPath);
 
             foreach (var property in GetProperties(rule))
             {
                 string description = property.Attribute("Description")?.Value;
 
-                if (description != null)
+                if (description?.EndsWith(".") == false)
                 {
-                    Assert.EndsWith(".", description);
+                    throw new Xunit.Sdk.XunitException($"Rule {ruleName} has visible property {property.Attribute("Name")} with description not ending in a period.");
                 }
             }
         }
@@ -143,11 +145,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         [MemberData(nameof(GetAllRules))]
         public void RuleMustHaveAName(string ruleName, string fullPath)
         {
-            XElement rule = LoadXamlRuleX(fullPath).Root;
-
-            // Ignore XAML documents for other types such as ProjectSchemaDefinitions
-            if (rule.Name.LocalName != "Rule")
-                return;
+            XElement rule = LoadXamlRule(fullPath);
 
             string name = rule.Attribute("Name")?.Value;
 
@@ -188,13 +186,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             var sourceType = dataSource?.Attribute("SourceType");
             var itemType = dataSource?.Attribute("ItemType");
 
-            if (sourceType != null)
+            if (sourceType?.Value == "Item")
             {
-                if (sourceType.Value == "Item")
-                {
-                    // An item type must be specified
-                    Assert.NotNull(itemType);
-                }
+                // An item type must be specified
+                Assert.NotNull(itemType);
             }
         }
 
@@ -208,18 +203,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
                 return;
             }
 
-            XmlDocument rule = LoadXamlRule(fullPath);
+            XElement rule = LoadXamlRule(fullPath);
 
-            foreach (XmlNode node in rule.DocumentElement.ChildNodes)
+            foreach (XElement element in rule.Elements())
             {
-                if (node is XmlElement element)
-                {
-                    // No need to define categories if they're not going to be used
-                    Assert.False(element.Name.Equals("Rule.Categories", StringComparison.OrdinalIgnoreCase));
-                    Assert.False(element.HasAttribute("DisplayName"));
-                    Assert.False(element.HasAttribute("Description"));
-                    Assert.False(element.HasAttribute("Category"));
-                }
+                // No need to define categories if they're not going to be used
+                Assert.False(element.Name.LocalName.Equals("Rule.Categories", StringComparison.Ordinal));
+                Assert.Null(element.Attribute("DisplayName"));
+                Assert.Null(element.Attribute("Description"));
+                Assert.Null(element.Attribute("Category"));
             }
         }
 
@@ -227,19 +219,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         [MemberData(nameof(GetBrowseObjectItemRules))]
         public void HidePropertyPagesForBrowseObjectRules(string ruleName, string fullPath)
         {
-            XmlDocument rule = LoadXamlRule(fullPath);
+            XElement rule = LoadXamlRule(fullPath);
+            XAttribute attribute = rule.Attribute("PropertyPagesHidden");
 
-            Assert.True(rule.DocumentElement.HasAttribute("PropertyPagesHidden"), "No PropertyPagesHidden attribute found on rule.");
-
-            var value = rule.DocumentElement.Attributes["PropertyPagesHidden"].Value;
-            Assert.Equal("true", value, ignoreCase: true);
+            Assert.NotNull(attribute);
+            Assert.Equal("true", attribute.Value, ignoreCase: true);
         }
 
         [Theory]
-        [MemberData(nameof(GetAllItemRules))]
+        [MemberData(nameof(GetItemRules))]
         public void RuleNameMatchesFileName(string ruleName, string fullPath)
         {
-            XmlDocument rule = LoadXamlRule(fullPath);
+            XElement rule = LoadXamlRule(fullPath);
 
             // If a rule is split between File and BrowseObject we need to trim the BrowseObject part off
             if (ruleName.IndexOf('.') > -1)
@@ -247,11 +238,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
                 ruleName = ruleName.Substring(0, ruleName.IndexOf('.'));
             }
 
-            Assert.Equal(ruleName, rule.DocumentElement.Attributes["Name"].Value);
+            Assert.Equal(ruleName, rule.Attribute("Name").Value);
         }
 
         [Theory]
-        [MemberData(nameof(GetAllItemRules))]
+        [MemberData(nameof(GetItemRules))]
         public void ItemTypesMustMatchFileNameRoot(string ruleName, string fullPath)
         {
             // If a rule is split between File and BrowseObject we need to trim the BrowseObject part off
@@ -260,19 +251,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
                 ruleName = ruleName.Substring(0, ruleName.IndexOf('.'));
             }
 
-            XmlDocument rule = LoadXamlRule(fullPath);
-            CheckItemName(rule.DocumentElement);
+            XElement rule = LoadXamlRule(fullPath);
 
-            void CheckItemName(XmlNode node)
+            foreach (var element in rule.Descendants())
             {
-                var itemTypeAtt = node.Attributes["ItemType"];
-                if (itemTypeAtt != null)
+                var attribute = element.Attribute("ItemType");
+
+                if (attribute != null)
                 {
-                    Assert.Equal(ruleName, itemTypeAtt.Value);
-                }
-                foreach (XmlNode child in node.ChildNodes)
-                {
-                    CheckItemName(child);
+                    Assert.Equal(ruleName, attribute.Value);
                 }
             }
         }
@@ -281,108 +268,184 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         [MemberData(nameof(GetFileItemRules))]
         public void FileRulesShouldntHaveFileInfo(string ruleName, string fullPath)
         {
-            XmlDocument rule = LoadXamlRule(fullPath);
-            foreach (XmlNode node in rule.DocumentElement.ChildNodes)
+            XElement rule = LoadXamlRule(fullPath);
+
+            foreach (XElement element in rule.Elements())
             {
+                var nameAttribute = element.Attribute("Name");
+                if (nameAttribute == null)
+                {
+                    continue;
+                }
+
+                var isStringProperty = element.Name.LocalName.Equals("StringProperty", StringComparison.Ordinal);
+
+                if (!isStringProperty)
+                {
+                    continue;
+                }
+
+                var name = nameAttribute.Value;
+
                 // special case - Folder's Identity property is used by dependencies node
                 if (!ruleName.Equals("Folder", StringComparison.Ordinal))
                 {
-                    Assert.False(node.Name.Equals("StringProperty", StringComparison.Ordinal) && node.Attributes["Name"].Value.Equals("Identity", StringComparison.OrdinalIgnoreCase));
+                    Assert.False(name.Equals("Identity", StringComparison.Ordinal));
                 }
-                Assert.False(node.Name.Equals("StringProperty", StringComparison.Ordinal) && node.Attributes["Name"].Value.Equals("FileNameAndExtension", StringComparison.OrdinalIgnoreCase));
-                Assert.False(node.Name.Equals("StringProperty", StringComparison.Ordinal) && node.Attributes["Name"].Value.Equals("URL", StringComparison.OrdinalIgnoreCase));
-                Assert.False(node.Name.Equals("StringProperty", StringComparison.Ordinal) && node.Attributes["Name"].Value.Equals("Extension", StringComparison.OrdinalIgnoreCase));
+
+                Assert.False(name.Equals("FileNameAndExtension", StringComparison.Ordinal));
+                Assert.False(name.Equals("URL", StringComparison.Ordinal));
+                Assert.False(name.Equals("Extension", StringComparison.Ordinal));
+            }
+        }
+
+        [Theory]
+        [MemberData(nameof(GetDependenciesRules))]
+        public void VisibleEditableResolvedDependenciesMustHaveDataSource(string ruleName, string fullPath)
+        {
+            // Resolved rules get their data from design time targets. Any editable properties need a
+            // property-level data source that specifies the storage for that property as the project file
+            // so that changes made in the properties pane are reflected in the project file and vice versa.
+
+            if (!ruleName.StartsWith("Resolved"))
+            {
+                return;
+            }
+
+            XElement rule = LoadXamlRule(fullPath);
+
+            var itemType = rule
+                 .Element(XName.Get("Rule.DataSource", MSBuildNamespace))
+                ?.Element(XName.Get("DataSource", MSBuildNamespace))
+                ?.Attribute("ItemType")?.Value;
+
+            Assert.NotNull(itemType);
+
+            foreach (var property in GetProperties(rule))
+            {
+                // Properties are visible and non-readonly by default
+                string visibleValue = property.Attribute("Visible")?.Value ?? "true";
+                string readOnlyValue = property.Attribute("ReadOnly")?.Value ?? "false";
+
+                Assert.True(bool.TryParse(visibleValue, out bool visible));
+                Assert.True(bool.TryParse(readOnlyValue, out bool readOnly));
+
+                if (!visible || readOnly)
+                {
+                    continue;
+                }
+
+                var dataSourceElementName = $"{property.Name.LocalName}.DataSource";
+
+                var dataSource = property
+                     .Element(XName.Get(dataSourceElementName, MSBuildNamespace))
+                    ?.Element(XName.Get("DataSource", MSBuildNamespace));
+
+                if (dataSource == null)
+                {
+                    throw new Xunit.Sdk.XunitException($"Resolved dependency rule {ruleName} has visible, non-readonly property {property.Attribute("Name")} with no {dataSourceElementName} value.");
+                }
+
+                Assert.Equal("False",        dataSource.Attribute("HasConfigurationCondition")?.Value, StringComparer.OrdinalIgnoreCase);
+                Assert.Equal("ProjectFile",  dataSource.Attribute("Persistence")?.Value,               StringComparer.Ordinal);
+                Assert.Equal("AfterContext", dataSource.Attribute("SourceOfDefaultValue")?.Value,      StringComparer.Ordinal);
+                Assert.Equal(itemType,       dataSource.Attribute("ItemType")?.Value,                  StringComparer.Ordinal);
             }
         }
 
         public static IEnumerable<object[]> GetBrowseObjectItemRules()
         {
-            return GetRules("Items", false, true);
+            // Special case for Folder because it is both File and BrowseObject context (for now), but is named like a File.
+            return Project(GetRules("Items")
+                .Where(fileName => fileName.EndsWith(".BrowseObject.xaml", StringComparisons.Paths) ||
+                                   fileName.Equals("Folder.xaml", StringComparisons.Paths)));
         }
 
         public static IEnumerable<object[]> GetFileItemRules()
         {
-            return GetRules("Items", true, false);
+            return Project(GetRules("Items")
+                .Where(fileName => !fileName.EndsWith(".BrowseObject.xaml", StringComparisons.Paths)));
         }
 
-        public static IEnumerable<object[]> GetAllItemRules()
+        public static IEnumerable<object[]> GetItemRules()
         {
-            return GetRules("Items", true, true);
+            return Project(GetRules("Items"));
+        }
+
+        public static IEnumerable<object[]> GetDependenciesRules()
+        {
+            return Project(GetRules("Dependencies"));
+        }
+
+        public static IEnumerable<object[]> GetMiscellaneousRules()
+        {
+            return Project(GetRules(""));
         }
 
         public static IEnumerable<object[]> GetAllRules()
         {
-            return GetRules("", true, true);
+            return GetMiscellaneousRules()
+                .Concat(GetItemRules())
+                .Concat(GetDependenciesRules());
         }
 
-        public static IEnumerable<object[]> GetRules(string suffix, bool file, bool browseObject)
+        private static IEnumerable<string> GetRules(string suffix)
         {
             // Not all rules are embedded as manifests so we have to read the xaml files from the file system.
             string rulesPath = Path.Combine(RepoUtil.FindRepoRootPath(), "src", "Microsoft.VisualStudio.ProjectSystem.Managed", "ProjectSystem", "Rules");
-            Assert.True(Directory.Exists(rulesPath), "Couldn't find XAML rules folder: " + rulesPath);
 
             if (!string.IsNullOrEmpty(suffix))
             {
                 rulesPath = Path.Combine(rulesPath, suffix);
             }
 
+            Assert.True(Directory.Exists(rulesPath), "Couldn't find XAML rules folder: " + rulesPath);
+
             foreach (var fileName in Directory.EnumerateFiles(rulesPath, "*.xaml"))
             {
-                if (fileName.EndsWith(".BrowseObject.xaml", StringComparisons.Paths) && !browseObject)
-                {
-                    continue;
-                }
+                XElement rule = LoadXamlRule(fileName);
 
-                // Special case for Folder because it is File and BrowseObject context (for now) but naming convention is like File
-                if ((!fileName.EndsWith(".BrowseObject.xaml", StringComparisons.Paths) && !file) ||
-                    (fileName.EndsWith("Folder.xaml", StringComparisons.Paths) && browseObject))
-                {
+                // Ignore XAML documents for non-Rule types (such as ProjectSchemaDefinitions)
+                if (rule.Name.LocalName != "Rule")
                     continue;
-                }
 
-                // we return the rule name separately mainly to get a readable display in Test Explorer so failures can be diagnosed more easily
-                yield return new object[] { Path.GetFileNameWithoutExtension(fileName), fileName };
+                yield return fileName;
             }
         }
 
-        private static XmlDocument LoadXamlRule(string fullPath)
+        /// <summary>Projects a XAML file name into the form used by unit tests theories.</summary>
+        private static IEnumerable<object[]> Project(IEnumerable<string> fileNames)
         {
-            var rule = new XmlDocument() { XmlResolver = null };
-            var settings = new XmlReaderSettings { XmlResolver = null };
-            using (var fileStream = File.OpenRead(fullPath))
-            using (var reader = XmlReader.Create(fileStream, settings))
-            {
-                rule.Load(reader);
-            }
-
-            return rule;
+            // we return the rule name separately mainly to get a readable display in Test Explorer so failures can be diagnosed more easily
+            return from fileName in fileNames
+                   select new object[] { Path.GetFileNameWithoutExtension(fileName), fileName };
         }
 
-        private static XDocument LoadXamlRuleX(string fullPath)
+        private static XElement LoadXamlRule(string fullPath)
         {
             var settings = new XmlReaderSettings { XmlResolver = null };
             using var fileStream = File.OpenRead(fullPath);
             using var reader = XmlReader.Create(fileStream, settings);
-            return XDocument.Load(reader);
+            return XDocument.Load(reader).Root;
         }
 
         private static XElement LoadDataSourceElement(string filePath)
         {
-            var settings = new XmlReaderSettings {XmlResolver = null};
+            var settings = new XmlReaderSettings { XmlResolver = null };
             using var fileStream = File.OpenRead(filePath);
             using var reader = XmlReader.Create(fileStream, settings);
-            var doc = XDocument.Load(reader);
+            var root = XDocument.Load(reader).Root;
 
-            // Ignore XAML documents for other types such as ProjectSchemaDefinitions
-            if (doc.Root.Name.LocalName != "Rule")
+            // Ignore XAML documents for non-Rule types (such as ProjectSchemaDefinitions)
+            if (root?.Name.LocalName != "Rule")
             {
                 return null;
             }
 
             var namespaceManager = new XmlNamespaceManager(reader.NameTable);
-            namespaceManager.AddNamespace("msb", "http://schemas.microsoft.com/build/2009/properties");
+            namespaceManager.AddNamespace("msb", MSBuildNamespace);
 
-            return doc.Root.XPathSelectElement(@"/msb:Rule/msb:Rule.DataSource/msb:DataSource", namespaceManager);
+            return root.XPathSelectElement(@"/msb:Rule/msb:Rule.DataSource/msb:DataSource", namespaceManager);
         }
 
         private static IEnumerable<XElement> GetProperties(XElement rule)
@@ -397,17 +460,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             }
         }
 
-        private void AssertXmlEqual(XmlDocument left, XmlDocument right)
+        private static void AssertXmlEqual(XElement left, XElement right)
         {
-            AssertXmlEqual(left.DocumentElement, right.DocumentElement);
-        }
+            Assert.Equal(left.Name.LocalName, right.Name.LocalName, ignoreCase: true);
 
-        private void AssertXmlEqual(XmlElement left, XmlElement right)
-        {
-            Assert.Equal(left.Name, right.Name, ignoreCase: true);
-
-            var leftAttributes = left.Attributes.OfType<XmlAttribute>().OrderBy(a => a.Name).ToArray();
-            var rightAttributes = right.Attributes.OfType<XmlAttribute>().OrderBy(a => a.Name).ToArray();
+            var leftAttributes = left.Attributes().OrderBy(a => a.Name.LocalName).ToArray();
+            var rightAttributes = right.Attributes().OrderBy(a => a.Name.LocalName).ToArray();
             Assert.Equal(leftAttributes.Length, rightAttributes.Length);
 
             for (int i = 0; i < leftAttributes.Length; i++)
@@ -415,27 +473,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
                 AssertAttributesEqual(leftAttributes[i], rightAttributes[i]);
             }
 
-            var leftChildNodes = left.ChildNodes.OfType<XmlElement>().OrderBy(a => a.Name).ToArray();
-            var rightChildNodes = right.ChildNodes.OfType<XmlElement>().OrderBy(a => a.Name).ToArray();
+            var leftChildNodes = left.Elements().OrderBy(a => a.Name.LocalName).ToArray();
+            var rightChildNodes = right.Elements().OrderBy(a => a.Name.LocalName).ToArray();
             Assert.Equal(leftChildNodes.Length, rightChildNodes.Length);
 
             for (int i = 0; i < leftChildNodes.Length; i++)
             {
                 AssertXmlEqual(leftChildNodes[i], rightChildNodes[i]);
             }
-        }
 
-        private void AssertAttributesEqual(XmlAttribute left, XmlAttribute right)
-        {
-            Assert.Equal(left.Name, right.Name, ignoreCase: true);
-
-            // ignore ItemType as we know they'll be different
-            if (left.Name.Equals("ItemType", StringComparison.OrdinalIgnoreCase))
+            static void AssertAttributesEqual(XAttribute left, XAttribute right)
             {
-                return;
-            }
+                Assert.Equal(left.Name.LocalName, right.Name.LocalName, ignoreCase: true);
 
-            Assert.Equal(left.Value, right.Value, ignoreCase: true);
+                // ignore ItemType as we know they'll be different
+                if (left.Name.LocalName.Equals("ItemType", StringComparison.Ordinal))
+                {
+                    return;
+                }
+
+                Assert.Equal(left.Value, right.Value, ignoreCase: true);
+            }
         }
     }
 }

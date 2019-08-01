@@ -40,7 +40,14 @@
 
   <BoolProperty Name="CopyLocalSatelliteAssemblies"
                 Description="Indicates whether the satellite assemblies of the reference target should be copied into this project's output directory."
-                DisplayName="Copy Local Satellite Assemblies" />
+                DisplayName="Copy Local Satellite Assemblies">
+    <BoolProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  ItemType="ProjectReference"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
 
   <StringProperty Name="Culture"
                   Description="The value of the culture field from the assembly metadata."
@@ -65,8 +72,14 @@
 
   <StringProperty Name="ExcludeAssets"
                   Description="Assets to exclude from this reference."
-                  DisplayName="Exclude Assets"
-                  Visible="True" />
+                  DisplayName="Exclude Assets">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  ItemType="ProjectReference"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
 
   <EnumProperty Name="FileType"
                 ReadOnly="True"
@@ -95,8 +108,14 @@
 
   <StringProperty Name="IncludeAssets"
                   Description="Assets to include from this reference."
-                  DisplayName="Include Assets"
-                  Visible="True" />
+                  DisplayName="Include Assets">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  ItemType="ProjectReference"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
 
   <BoolProperty Name="IsWinMDFile"
                 Visible="false" />
@@ -111,15 +130,28 @@
 
   <StringProperty Name="PrivateAssets"
                   Description="Assets that are private in this reference."
-                  DisplayName="Private Assets"
-                  Visible="True" />
+                  DisplayName="Private Assets">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  ItemType="ProjectReference"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
 
   <StringProperty Name="Project"
                   Visible="False" />
 
   <BoolProperty Name="ReferenceOutputAssembly"
                 Description="A value indicating whether the compiler should include a reference to the target project's primary output assembly."
-                DisplayName="Reference Output Assembly" />
+                DisplayName="Reference Output Assembly">
+    <BoolProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  ItemType="ProjectReference"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
 
   <StringProperty Name="RequiredTargetFramework"
                   Visible="False" />

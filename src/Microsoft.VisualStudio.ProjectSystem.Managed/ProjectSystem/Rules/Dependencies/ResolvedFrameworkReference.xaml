@@ -8,7 +8,7 @@
   
   <Rule.DataSource>
     <DataSource HasConfigurationCondition="False"
-                ItemType="_ResolvedFrameworkReference"
+                ItemType="FrameworkReference"
                 MSBuildTarget="ResolveFrameworkReferencesDesignTime"
                 Persistence="ResolvedReference"
                 SourceOfDefaultValue="AfterContext"
@@ -36,6 +36,14 @@
                   Visible="False" />
 
   <StringProperty Name="PrivateAssets"
-                  DisplayName="Private Assets" />
+                  Description="Assets that are private in this reference."
+                  DisplayName="Private Assets">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  ItemType="FrameworkReference"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
 
 </Rule>
