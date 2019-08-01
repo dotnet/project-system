@@ -377,7 +377,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 if (outputTime < state.LastItemsChangedAtUtc)
                 {
-                    return Fail(logger, "Outputs", "The inputs were changed more recently ({0}) than the earliest output '{1}' ({2}), not up to date.", state.LastItemsChangedAtUtc, outputPath!, outputTime.Value);
+                    return Fail(logger, "Outputs", "The set of project items was changed more recently ({0}) than the earliest output '{1}' ({2}), not up to date.", state.LastItemsChangedAtUtc, outputPath!, outputTime.Value);
                 }
 
                 // Search for an input that's either missing or newer than the earliest output.
