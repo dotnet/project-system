@@ -600,7 +600,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 finally
                 {
                     LastCheckTimeUtc = DateTime.UtcNow;
-                    logger.Verbose("Up to date check completed in {0:#,##0.#} ms", sw.Elapsed.TotalMilliseconds);
+                    logger.Verbose("Up to date check completed in {0:N1} ms", sw.Elapsed.TotalMilliseconds);
                 }
             }
         }
