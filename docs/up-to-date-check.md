@@ -1,6 +1,6 @@
 # Up-to-date Check
 
-The Project System's _Fast Up-to-date Check_ save developers time by quickly assessing whether a project needs to be
+The Project System's _Fast Up-to-date Check_ saves developers time by quickly assessing whether a project needs to be
 built or not. If not, Visual Studio can avoid a comparatively expensive call to MSBuild.
 
 At a superficial level, the check compares timestamps between the project's inputs and its outputs. For more
