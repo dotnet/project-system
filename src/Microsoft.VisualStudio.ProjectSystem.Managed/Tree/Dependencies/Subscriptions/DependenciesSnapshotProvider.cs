@@ -274,9 +274,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 return;
             }
 
-            // TODO remove ! when https://github.com/dotnet/roslyn/issues/36018 is fixed
             ITargetFramework targetFramework =
-                string.IsNullOrEmpty(e.TargetShortOrFullName) || TargetFramework.Any.Equals(e.TargetShortOrFullName!)
+                string.IsNullOrEmpty(e.TargetShortOrFullName) || TargetFramework.Any.Equals(e.TargetShortOrFullName)
                     ? TargetFramework.Any
                     : _targetFrameworkProvider.GetTargetFramework(e.TargetShortOrFullName) ?? TargetFramework.Any;
 
