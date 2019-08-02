@@ -324,13 +324,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
 #pragma warning disable RS0030 // symbol LoadedProject is banned
             using (UnconfiguredProjectAsynchronousTasksService.LoadedProject())
+#pragma warning restore RS0030 // symbol LoadedProject is banned
             {
                 base.Initialize();
 
                 // this.IsApplicable may take a project lock, so we can't do it inline with this method
                 // which is holding a private lock.  It turns out that doing it asynchronously isn't a problem anyway,
                 // so long as we guard against races with the Dispose method.
+#pragma warning disable RS0030 // symbol LoadedProjectAsync is banned
                 UnconfiguredProjectAsynchronousTasksService.LoadedProjectAsync(
+#pragma warning restore RS0030 // symbol LoadedProjectAsync is banned
                     async delegate
                     {
                         await TaskScheduler.Default.SwitchTo(alwaysYield: true);
@@ -359,13 +362,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                 e => OnDependenciesSnapshotChanged(_dependenciesSnapshotProvider, e),
                                 "DependenciesProjectTreeProviderSource {1}",
                                 skipIntermediateInputData: true);
-                            _snapshotEventListener = _dependenciesSnapshotProvider.SnapshotChangedSource.LinkTo(actionBlock, new DataflowLinkOptions() { PropagateCompletion = true });
+                            _snapshotEventListener = _dependenciesSnapshotProvider.SnapshotChangedSource.LinkTo(actionBlock, DataflowOption.PropagateCompletion);
                         }
 
                     },
                     registerFaultHandler: true);
             }
-#pragma warning restore RS0030 // symbol LoadedProject is banned
 
             IProjectTree CreateDependenciesFolder()
             {
