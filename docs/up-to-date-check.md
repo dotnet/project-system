@@ -6,6 +6,10 @@ built or not. If not, Visual Studio can avoid a comparatively expensive call to 
 At a superficial level, the check compares timestamps between the project's inputs and its outputs. For more
 information on how it works in detail, see [this document](repo/up-to-date-check-implementation.md).
 
+Note that the _fast_ up-to-date check is intended to speed up the majority of cases where a build is not required,
+yet it cannot reliably cover all cases correctly. Where necessary, it errs on the side of caution as triggering a
+redundant build is better than not triggering a required build.
+
 ## Customization
 
 For most projects the up-to-date check works automatically and you won't need to know or think about this feature.
