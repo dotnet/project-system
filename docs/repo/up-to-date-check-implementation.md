@@ -1,8 +1,6 @@
-# Up-to-date Check
+# Up-to-date Check Implementation
 
-If a project's outputs are up-to-date with its inputs, there's no need to run a build.
-
-The _Fast Up To Date Check_ attempts to perform a fast validation of whether a build is required.
+See [this documenent](../up-to-date-check.md) for more general information about the up-to-date check.
 
 The `IBuildUpToDateCheckProvider` interface (from CPS) has two members:
 
@@ -75,17 +73,3 @@ For each `_copiedOutputFiles` source/destination
 
 - [`BuildUpToDateCheck.cs`](https://github.com/dotnet/project-system/blob/master/src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/UpToDate/BuildUpToDateCheck.cs)
 - [`BuildUpToDateCheckTests.cs`](https://github.com/dotnet/project-system/blob/master/src/Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests/ProjectSystem/UpToDate/BuildUpToDateCheckTests.cs)
-
-## Debugging
-
-The `BuildUpToDateCheck` class uses a `BuildUpToDateCheckLogger` to log verbose and info level information that is very useful during debugging.
-
-The log level is obtained via `IProjectSystemOptions.GetFastUpToDateLoggingLevelAsync` which is user-controlled in Visual Studio via:
-
-> Tools | Options | Projects and Solutions | .NET Core
-
-![Projects and Solutions, .NET Core options](images/options.png)
-
-With a log level of info or verbose, you'll see messages prefixed with "FastUpToDate:" in the "Build" section of the "Output" pane in Visual Studio. These messages will explain why the project is considered up to date or not.
-
-Uncheck the check box to disable the fast up to date check and always call MSBuild.
