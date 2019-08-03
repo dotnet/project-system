@@ -411,9 +411,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         private void NotifyProfileCollectionChanged()
         {
             OnPropertyChanged(nameof(HasProfiles));
+            OnPropertyChanged(nameof(HasProfilesOrNotInitialized));
             OnPropertyChanged(nameof(NewProfileEnabled));
         }
 
+        private bool _debugTargetsCoreInitialized = false;
+        public bool HasProfilesOrNotInitialized 
+        { 
+            get 
+            {
+                return !_debugTargetsCoreInitialized || HasProfiles;
+            }
+        }
+
+        
         public bool HasProfiles
         {
             get
@@ -712,6 +723,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 {
                     _firstSnapshotCompleteSource.TrySetResult(true);
                 }
+
+                _debugTargetsCoreInitialized = true;
             }
         }
 
