@@ -50,7 +50,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     <see cref="OnceInitializedOnceDisposedAsync.DisposeAsync"/>.
         /// </summary>
         /// <param name="action">
-        ///     The action to execute under the lock.
+        ///     The action to execute under the lock. This action is passed a <see cref="CancellationToken"/> which is cancelled
+        ///     when either this object is disposed, or <paramref name="cancellationToken"/> is cancelled.
         /// </param>
         /// <param name="cancellationToken">
         ///     The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.
@@ -82,7 +83,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     <see cref="OnceInitializedOnceDisposedAsync.DisposeAsync"/>.
         /// </summary>
         /// <param name="action">
-        ///     The action to execute under the lock.
+        ///     The action to execute under the lock. This action is passed a <see cref="CancellationToken"/> which is cancelled
+        ///     when either this object is disposed, or <paramref name="cancellationToken"/> is cancelled.
         /// </param>
         /// <param name="cancellationToken">
         ///     The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.
