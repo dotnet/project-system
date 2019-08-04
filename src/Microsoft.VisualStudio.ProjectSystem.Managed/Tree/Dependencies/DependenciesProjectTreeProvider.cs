@@ -359,7 +359,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                 initialTreeCancellationToken);
 
                             ITargetBlock<SnapshotChangedEventArgs> actionBlock = DataflowBlockSlim.CreateActionBlock<SnapshotChangedEventArgs>(
-                                e => OnDependenciesSnapshotChanged(_dependenciesSnapshotProvider, e),
+                                OnDependenciesSnapshotChanged,
                                 "DependenciesProjectTreeProviderSource {1}",
                                 skipIntermediateInputData: true);
                             _snapshotEventListener = _dependenciesSnapshotProvider.SnapshotChangedSource.LinkTo(actionBlock, DataflowOption.PropagateCompletion);
@@ -412,7 +412,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             base.Dispose(disposing);
         }
 
-        private void OnDependenciesSnapshotChanged(object sender, SnapshotChangedEventArgs e)
+        private void OnDependenciesSnapshotChanged(SnapshotChangedEventArgs e)
         {
             IDependenciesSnapshot snapshot = e.Snapshot;
 
