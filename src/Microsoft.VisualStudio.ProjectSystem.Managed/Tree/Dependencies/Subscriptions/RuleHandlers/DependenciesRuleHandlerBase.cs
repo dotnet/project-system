@@ -33,9 +33,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         #region IDependenciesRuleHandler
 
-        public ImmutableHashSet<string> GetRuleNames(RuleHandlerType handlerType)
+        public ImmutableHashSet<string> GetRuleNames(RuleSource source)
         {
-            return handlerType == RuleHandlerType.Evaluation ?
+            return source == RuleSource.Evaluation ?
                 _evaluationRuleNames :
                 _designTimeBuildRuleNames;
         }

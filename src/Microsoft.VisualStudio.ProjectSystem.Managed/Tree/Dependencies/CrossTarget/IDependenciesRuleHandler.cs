@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         /// <summary>
         /// Gets the set of rule names this handler handles.
         /// </summary>
-        ImmutableHashSet<string> GetRuleNames(RuleHandlerType handlerType);
+        ImmutableHashSet<string> GetRuleNames(RuleSource source);
 
         /// <summary>
         /// Handles the specified set of changes to a rule, and applies them

@@ -56,8 +56,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             await InitializeAsync();
 
-            IReadOnlyCollection<string> watchedEvaluationRules = GetWatchedRules(RuleHandlerType.Evaluation);
-            IReadOnlyCollection<string> watchedDesignTimeBuildRules = GetWatchedRules(RuleHandlerType.DesignTimeBuild);
+            IReadOnlyCollection<string> watchedEvaluationRules = GetWatchedRules(RuleSource.Evaluation);
+            IReadOnlyCollection<string> watchedDesignTimeBuildRules = GetWatchedRules(RuleSource.DesignTimeBuild);
 
             SubscribeToConfiguredProject(
                 _commonServices.ActiveConfiguredProject, subscriptionService, watchedEvaluationRules, watchedDesignTimeBuildRules);
@@ -69,8 +69,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             _currentProjectContext = projectContext;
 
-            IReadOnlyCollection<string> watchedEvaluationRules = GetWatchedRules(RuleHandlerType.Evaluation);
-            IReadOnlyCollection<string> watchedDesignTimeBuildRules = GetWatchedRules(RuleHandlerType.DesignTimeBuild);
+            IReadOnlyCollection<string> watchedEvaluationRules = GetWatchedRules(RuleSource.Evaluation);
+            IReadOnlyCollection<string> watchedDesignTimeBuildRules = GetWatchedRules(RuleSource.DesignTimeBuild);
 
             // initialize telemetry with all rules for each target framework
             foreach (ITargetFramework targetFramework in projectContext.TargetFrameworks)
@@ -137,7 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             ITargetBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>>> actionBlockDesignTimeBuild =
                 DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>>>(
-                    e => OnProjectChangedAsync(e.Value.Item1, e.Value.Item2, e.Value.Item3, configuredProject, RuleHandlerType.DesignTimeBuild),
+                    e => OnProjectChangedAsync(e.Value.Item1, e.Value.Item2, e.Value.Item3, configuredProject, RuleSource.DesignTimeBuild),
                     new ExecutionDataflowBlockOptions()
                     {
                         NameFormat = "CrossTarget DesignTime Input: {1}"
@@ -145,7 +145,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             ITargetBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>>> actionBlockEvaluation =
                 DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>>>(
-                     e => OnProjectChangedAsync(e.Value.Item1, e.Value.Item2, e.Value.Item3, configuredProject, RuleHandlerType.Evaluation),
+                     e => OnProjectChangedAsync(e.Value.Item1, e.Value.Item2, e.Value.Item3, configuredProject, RuleSource.Evaluation),
                      new ExecutionDataflowBlockOptions()
                      {
                          NameFormat = "CrossTarget Evaluation Input: {1}"
@@ -166,10 +166,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 linkOptions: DataflowOption.PropagateCompletion));
         }
 
-        private IReadOnlyCollection<string> GetWatchedRules(RuleHandlerType handlerType)
+        private IReadOnlyCollection<string> GetWatchedRules(RuleSource source)
         {
             return new HashSet<string>(
-                _handlers.SelectMany(h => h.Value.GetRuleNames(handlerType)),
+                _handlers.SelectMany(h => h.Value.GetRuleNames(source)),
                 StringComparers.RuleNames);
         }
 
@@ -178,7 +178,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             IProjectCatalogSnapshot catalogSnapshot,
             IProjectCapabilitiesSnapshot capabilities,
             ConfiguredProject configuredProject,
-            RuleHandlerType handlerType)
+            RuleSource source)
         {
             if (IsDisposing || IsDisposed)
             {
@@ -196,7 +196,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     // Ensure the project's capabilities don't change during the update
                     using (ProjectCapabilitiesContext.CreateIsolatedContext(configuredProject, capabilities))
                     {
-                        await HandleAsync(projectUpdate, catalogSnapshot, handlerType);
+                        await HandleAsync(projectUpdate, catalogSnapshot, source);
                     }
                 });
             });
@@ -205,7 +205,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         private async Task HandleAsync(
             IProjectSubscriptionUpdate projectUpdate,
             IProjectCatalogSnapshot catalogSnapshot,
-            RuleHandlerType handlerType)
+            RuleSource source)
         {
             AggregateCrossTargetProjectContext? currentAggregateContext = await _host!.GetCurrentAggregateProjectContextAsync();
             if (currentAggregateContext == null || _currentProjectContext != currentAggregateContext)
@@ -235,7 +235,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             // Give each handler a chance to register dependency changes.
             foreach (Lazy<IDependenciesRuleHandler, IOrderPrecedenceMetadataView> handler in _handlers)
             {
-                ImmutableHashSet<string> handlerRules = handler.Value.GetRuleNames(handlerType);
+                ImmutableHashSet<string> handlerRules = handler.Value.GetRuleNames(source);
 
                 // Slice project changes to include only rules the handler claims an interest in.
                 var projectChanges = projectUpdate.ProjectChanges

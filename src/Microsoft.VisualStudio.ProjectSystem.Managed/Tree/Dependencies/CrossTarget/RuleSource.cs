@@ -2,7 +2,7 @@
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
-    internal enum RuleHandlerType
+    internal enum RuleSource
     {
         /// <summary>
         ///     The <see cref="IDependenciesRuleHandler"/> handles changes 
