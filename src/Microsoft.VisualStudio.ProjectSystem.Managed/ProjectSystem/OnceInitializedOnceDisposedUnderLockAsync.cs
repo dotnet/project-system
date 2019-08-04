@@ -112,22 +112,20 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             Requires.NotNull(action, nameof(action));
 
-            using (var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, DisposalToken))
+            using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, DisposalToken);
+            CancellationToken jointCancellationToken = source.Token;
+
+            try
             {
-                CancellationToken jointCancellationToken = source.Token;
+                T result = default!;
+                await _semaphore.ExecuteAsync(async () => { result = await action(jointCancellationToken); }, jointCancellationToken);
 
-                try
-                {
-                    T result = default!;
-                    await _semaphore.ExecuteAsync(async () => { result = await action(jointCancellationToken); }, jointCancellationToken);
-
-                    return result;
-                }
-                catch (Exception ex)
-                {
-                    if (!TryTranslateException(ex, cancellationToken, DisposalToken))
-                        throw;
-                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                if (!TryTranslateException(ex, cancellationToken, DisposalToken))
+                    throw;
             }
 
             throw Assumes.NotReachable();
