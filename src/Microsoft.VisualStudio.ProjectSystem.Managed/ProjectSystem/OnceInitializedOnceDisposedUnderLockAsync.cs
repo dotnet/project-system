@@ -133,6 +133,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private async Task ExecuteUnderLockCoreAsync(Func<CancellationToken, Task> action, CancellationToken cancellationToken = default)
         {
+            Requires.NotNull(action, nameof(action));
+
             using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, DisposalToken);
             CancellationToken jointCancellationToken = source.Token;
 
