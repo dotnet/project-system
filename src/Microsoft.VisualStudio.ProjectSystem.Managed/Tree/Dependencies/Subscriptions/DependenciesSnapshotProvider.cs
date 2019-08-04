@@ -441,7 +441,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
                 _currentAggregateProjectContext = newContext;
 
-                OnAggregateContextChanged(previousContext, newContext);
+                TryUpdateSnapshot(snapshot => snapshot.SetTargets(newContext.TargetFrameworks, newContext.ActiveTargetFramework));
 
                 return newContext;
             }
@@ -484,13 +484,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 }
 
                 return true;
-            }
-
-            void OnAggregateContextChanged(
-                AggregateCrossTargetProjectContext? oldContext,
-                AggregateCrossTargetProjectContext newContext)
-            {
-                TryUpdateSnapshot(snapshot => snapshot.SetTargets(newContext.TargetFrameworks, newContext.ActiveTargetFramework));
             }
         }
 
