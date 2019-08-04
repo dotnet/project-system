@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
           IProjectDependenciesSubTreeProviderInternal
     {
         private readonly ImmutableHashSet<string> _evaluationRuleNames;
-        private readonly ImmutableHashSet<string> _designTimeBuildRuleNames;
+        private readonly ImmutableHashSet<string> _jointRuleNames;
 
         protected string UnresolvedRuleName { get; }
         protected string ResolvedRuleName { get; }
@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             ResolvedRuleName = resolvedRuleName;
 
             _evaluationRuleNames = ImmutableStringHashSet.EmptyOrdinal.Add(unresolvedRuleName);
-            _designTimeBuildRuleNames = _evaluationRuleNames.Add(resolvedRuleName);
+            _jointRuleNames = _evaluationRuleNames.Add(resolvedRuleName);
         }
 
         #region IDependenciesRuleHandler
@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         {
             return source == RuleSource.Evaluation ?
                 _evaluationRuleNames :
-                _designTimeBuildRuleNames;
+                _jointRuleNames;
         }
 
         public abstract ImageMoniker ImplicitIcon { get; }

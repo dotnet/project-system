@@ -57,10 +57,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             await InitializeAsync();
 
             IReadOnlyCollection<string> watchedEvaluationRules = GetWatchedRules(RuleSource.Evaluation);
-            IReadOnlyCollection<string> watchedDesignTimeBuildRules = GetWatchedRules(RuleSource.DesignTimeBuild);
+            IReadOnlyCollection<string> watchedJointRules = GetWatchedRules(RuleSource.Joint);
 
             SubscribeToConfiguredProject(
-                _commonServices.ActiveConfiguredProject, subscriptionService, watchedEvaluationRules, watchedDesignTimeBuildRules);
+                _commonServices.ActiveConfiguredProject, subscriptionService, watchedEvaluationRules, watchedJointRules);
         }
 
         public void AddSubscriptions(AggregateCrossTargetProjectContext projectContext)
@@ -70,19 +70,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             _currentProjectContext = projectContext;
 
             IReadOnlyCollection<string> watchedEvaluationRules = GetWatchedRules(RuleSource.Evaluation);
-            IReadOnlyCollection<string> watchedDesignTimeBuildRules = GetWatchedRules(RuleSource.DesignTimeBuild);
+            IReadOnlyCollection<string> watchedJointRules = GetWatchedRules(RuleSource.Joint);
 
             // initialize telemetry with all rules for each target framework
             foreach (ITargetFramework targetFramework in projectContext.TargetFrameworks)
             {
                 _treeTelemetryService.InitializeTargetFrameworkRules(targetFramework, watchedEvaluationRules);
-                _treeTelemetryService.InitializeTargetFrameworkRules(targetFramework, watchedDesignTimeBuildRules);
+                _treeTelemetryService.InitializeTargetFrameworkRules(targetFramework, watchedJointRules);
             }
 
             foreach (ConfiguredProject configuredProject in projectContext.InnerConfiguredProjects)
             {
                 SubscribeToConfiguredProject(
-                    configuredProject, configuredProject.Services.ProjectSubscription, watchedEvaluationRules, watchedDesignTimeBuildRules);
+                    configuredProject, configuredProject.Services.ProjectSubscription, watchedEvaluationRules, watchedJointRules);
             }
         }
 
@@ -100,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             ConfiguredProject configuredProject,
             IProjectSubscriptionService subscriptionService,
             IReadOnlyCollection<string> watchedEvaluationRules,
-            IReadOnlyCollection<string> watchedDesignTimeBuildRules)
+            IReadOnlyCollection<string> watchedJointRules)
         {
             // Use intermediate buffer blocks for project rule data to allow subsequent blocks
             // to only observe specific rule name(s).
@@ -124,7 +124,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             _subscriptions.AddDisposable(
                 subscriptionService.JointRuleSource.SourceBlock.LinkTo(
                     intermediateBlockDesignTime,
-                    ruleNames: watchedDesignTimeBuildRules.Union(watchedEvaluationRules),
+                    ruleNames: watchedJointRules.Union(watchedEvaluationRules),
                     suppressVersionOnlyUpdates: true,
                     linkOptions: DataflowOption.PropagateCompletion));
 
@@ -137,7 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             ITargetBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>>> actionBlockDesignTimeBuild =
                 DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>>>(
-                    e => OnProjectChangedAsync(e.Value.Item1, e.Value.Item2, e.Value.Item3, configuredProject, RuleSource.DesignTimeBuild),
+                    e => OnProjectChangedAsync(e.Value.Item1, e.Value.Item2, e.Value.Item3, configuredProject, RuleSource.Joint),
                     new ExecutionDataflowBlockOptions()
                     {
                         NameFormat = "CrossTarget DesignTime Input: {1}"
