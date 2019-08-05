@@ -304,17 +304,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         }
 
         [Theory]
-        [MemberData(nameof(GetDependenciesRules))]
+        [MemberData(nameof(GetResolvedDependenciesRules))]
         public void VisibleEditableResolvedDependenciesMustHaveDataSource(string ruleName, string fullPath)
         {
             // Resolved rules get their data from design time targets. Any editable properties need a
             // property-level data source that specifies the storage for that property as the project file
             // so that changes made in the properties pane are reflected in the project file and vice versa.
-
-            if (!ruleName.StartsWith("Resolved"))
-            {
-                return;
-            }
 
             XElement rule = LoadXamlRule(fullPath);
 
@@ -374,6 +369,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         public static IEnumerable<object[]> GetItemRules()
         {
             return Project(GetRules("Items"));
+        }
+
+        public static IEnumerable<object[]> GetUnresolvedDependenciesRules()
+        {
+            return Project(GetRules("Dependencies")
+                .Where(fileName => fileName.IndexOf("Resolved", StringComparisons.Paths) == -1));
+        }
+
+        public static IEnumerable<object[]> GetResolvedDependenciesRules()
+        {
+            return Project(GetRules("Dependencies")
+                .Where(fileName => fileName.IndexOf("Resolved", StringComparisons.Paths) != -1));
         }
 
         public static IEnumerable<object[]> GetDependenciesRules()
