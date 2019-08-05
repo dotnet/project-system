@@ -17,17 +17,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         private readonly ImmutableHashSet<string> _evaluationRuleNames;
         private readonly ImmutableHashSet<string> _jointRuleNames;
 
-        protected string UnresolvedRuleName { get; }
+        protected string EvaluatedRuleName { get; }
         protected string ResolvedRuleName { get; }
 
         protected DependenciesRuleHandlerBase(
-            string unresolvedRuleName,
+            string evaluatedRuleName,
             string resolvedRuleName)
         {
-            UnresolvedRuleName = unresolvedRuleName;
+            EvaluatedRuleName = evaluatedRuleName;
             ResolvedRuleName = resolvedRuleName;
 
-            _evaluationRuleNames = ImmutableStringHashSet.EmptyOrdinal.Add(unresolvedRuleName);
+            _evaluationRuleNames = ImmutableStringHashSet.EmptyOrdinal.Add(evaluatedRuleName);
             _jointRuleNames = _evaluationRuleNames.Add(resolvedRuleName);
         }
 
@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             // We receive unresolved and resolved changes separately.
 
             // Process all unresolved changes.
-            if (changesByRuleName.TryGetValue(UnresolvedRuleName, out IProjectChangeDescription unresolvedChanges))
+            if (changesByRuleName.TryGetValue(EvaluatedRuleName, out IProjectChangeDescription unresolvedChanges))
             {
                 HandleChangesForRule(
                     resolved: false,
