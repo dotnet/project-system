@@ -85,6 +85,7 @@
   </StringProperty>
 
   <StringProperty Name="OriginalItemSpec"
+                  ReadOnly="True"
                   Visible="False" />
 
   <StringProperty Name="Path"
