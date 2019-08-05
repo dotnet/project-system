@@ -75,7 +75,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             // initialize telemetry with all rules for each target framework
             foreach (ITargetFramework targetFramework in projectContext.TargetFrameworks)
             {
-                _treeTelemetryService.InitializeTargetFrameworkRules(targetFramework, watchedEvaluationRules);
                 _treeTelemetryService.InitializeTargetFrameworkRules(targetFramework, watchedJointRules);
             }
 
@@ -124,7 +123,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             _subscriptions.AddDisposable(
                 subscriptionService.JointRuleSource.SourceBlock.LinkTo(
                     intermediateBlockDesignTime,
-                    ruleNames: watchedJointRules.Union(watchedEvaluationRules),
+                    ruleNames: watchedJointRules,
                     suppressVersionOnlyUpdates: true,
                     linkOptions: DataflowOption.PropagateCompletion));
 
