@@ -352,6 +352,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             }
         }
 
+        [Theory]
+        [MemberData(nameof(GetResolvedDependenciesRules))]
+        public void ResolvedDependenciesRulesMustHaveOriginalItemSpecProperty(string ruleName, string fullPath)
+        {
+            // All resolved dependency items have a corresponding 'original' item spec, which contains
+            // the value of the item produced by evaluation.
+
+            XElement rule = LoadXamlRule(fullPath, out var namespaceManager);
+
+            var property = rule.XPathSelectElement(@"/msb:Rule/msb:StringProperty[@Name=""OriginalItemSpec""]", namespaceManager);
+
+            Assert.NotNull(property);
+            Assert.Equal(3, property.Attributes().Count());
+            Assert.Equal("OriginalItemSpec", property.Attribute("Name")?.Value, StringComparer.Ordinal);
+            Assert.Equal("False", property.Attribute("Visible")?.Value, StringComparer.OrdinalIgnoreCase);
+            Assert.Equal("True", property.Attribute("ReadOnly")?.Value, StringComparer.OrdinalIgnoreCase);
+        }
+
         public static IEnumerable<object[]> GetBrowseObjectItemRules()
         {
             // Special case for Folder because it is both File and BrowseObject context (for now), but is named like a File.
