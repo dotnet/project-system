@@ -157,7 +157,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         [MemberData(nameof(GetAllRules))]
         public void TargetResultsDataSourcesMustSpecifyTheTarget(string ruleName, string fullPath)
         {
-            var dataSource = LoadDataSourceElement(fullPath);
+            var root = LoadXamlRule(fullPath, out var namespaceManager);
+
+            var dataSource = root.XPathSelectElement(@"/msb:Rule/msb:Rule.DataSource/msb:DataSource", namespaceManager);
 
             var sourceType = dataSource?.Attribute("SourceType");
             var msBuildTarget = dataSource?.Attribute("MSBuildTarget");
@@ -181,7 +183,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         [MemberData(nameof(GetAllRules))]
         public void ItemDataSourcesMustSpecifyTheItemType(string ruleName, string fullPath)
         {
-            var dataSource = LoadDataSourceElement(fullPath);
+            var root = LoadXamlRule(fullPath, out var namespaceManager);
+
+            var dataSource = root.XPathSelectElement(@"/msb:Rule/msb:Rule.DataSource/msb:DataSource", namespaceManager);
 
             var sourceType = dataSource?.Attribute("SourceType");
             var itemType = dataSource?.Attribute("ItemType");
@@ -421,25 +425,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
                    select new object[] { Path.GetFileNameWithoutExtension(fileName), fileName };
         }
 
-        private static XElement LoadXamlRule(string fullPath)
+        private static XElement LoadXamlRule(string filePath)
         {
-            var settings = new XmlReaderSettings { XmlResolver = null };
-            using var fileStream = File.OpenRead(fullPath);
-            using var reader = XmlReader.Create(fileStream, settings);
-            return XDocument.Load(reader).Root;
+            return LoadXamlRule(filePath, out _);
         }
 
-        private static XElement LoadDataSourceElement(string filePath)
+        private static XElement LoadXamlRule(string filePath, out XmlNamespaceManager namespaceManager)
         {
-            var settings = new XmlReaderSettings { XmlResolver = null };
+            var settings = new XmlReaderSettings {XmlResolver = null};
             using var fileStream = File.OpenRead(filePath);
             using var reader = XmlReader.Create(fileStream, settings);
             var root = XDocument.Load(reader).Root;
 
-            var namespaceManager = new XmlNamespaceManager(reader.NameTable);
+            namespaceManager = new XmlNamespaceManager(reader.NameTable);
             namespaceManager.AddNamespace("msb", MSBuildNamespace);
 
-            return root.XPathSelectElement(@"/msb:Rule/msb:Rule.DataSource/msb:DataSource", namespaceManager);
+            return root;
         }
 
         private static IEnumerable<XElement> GetProperties(XElement rule)
