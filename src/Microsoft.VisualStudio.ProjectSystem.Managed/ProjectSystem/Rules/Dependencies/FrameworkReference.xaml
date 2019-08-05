@@ -17,4 +17,8 @@
                   ReadOnly="True"
                   Visible="False" />
 
+  <BoolProperty Name="Visible"
+                ReadOnly="True"
+                Visible="False" />
+
 </Rule>

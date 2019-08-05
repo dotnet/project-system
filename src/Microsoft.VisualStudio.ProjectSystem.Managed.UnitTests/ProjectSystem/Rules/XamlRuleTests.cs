@@ -372,6 +372,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
         [Theory]
         [MemberData(nameof(GetDependenciesRules))]
+        public void DependenciesRulesMustHaveVisibleProperty(string ruleName, string fullPath)
+        {
+            XElement rule = LoadXamlRule(fullPath, out var namespaceManager);
+
+            var property = rule.XPathSelectElement(@"/msb:Rule/msb:BoolProperty[@Name=""Visible""]", namespaceManager);
+
+            Assert.NotNull(property);
+            Assert.Equal(3, property.Attributes().Count());
+            Assert.Equal("Visible", property.Attribute("Name")?.Value, StringComparer.Ordinal);
+            Assert.Equal("False", property.Attribute("Visible")?.Value, StringComparer.OrdinalIgnoreCase);
+            Assert.Equal("True", property.Attribute("ReadOnly")?.Value, StringComparer.OrdinalIgnoreCase);
+        }
+
+        [Theory]
+        [MemberData(nameof(GetDependenciesRules))]
         public void DependenciesRulesMustHaveIsImplicitlyDefinedProperty(string ruleName, string fullPath)
         {
             XElement rule = LoadXamlRule(fullPath, out var namespaceManager);
