@@ -436,12 +436,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             using var reader = XmlReader.Create(fileStream, settings);
             var root = XDocument.Load(reader).Root;
 
-            // Ignore XAML documents for non-Rule types (such as ProjectSchemaDefinitions)
-            if (root?.Name.LocalName != "Rule")
-            {
-                return null;
-            }
-
             var namespaceManager = new XmlNamespaceManager(reader.NameTable);
             namespaceManager.AddNamespace("msb", MSBuildNamespace);
 
