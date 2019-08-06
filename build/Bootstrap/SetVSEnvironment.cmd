@@ -11,7 +11,7 @@ if defined VSINSTALLDIR (
     exit /b 0
 )
 
-if not exist "%VSWhereExe%" (
+if not exist "%TEMP%\vswhere.exe" (
   echo Downloading VSWhere so that we can find Visual Studio...
   powershell -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest https://github.com/microsoft/vswhere/releases/download/2.6.7/vswhere.exe -OutFile $env:TEMP\vswhere.exe" || (
     echo Failed to download, check your internet connection.
