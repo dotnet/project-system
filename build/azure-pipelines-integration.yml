@@ -14,7 +14,7 @@ jobs:
         _configuration: Debug
   timeoutInMinutes: 60
   steps:
-    - script: $(Build.SourcesDirectory)\build.cmd /build /no-test /integration /diagnostic /ci /no-sign /deploy /configuration $(_configuration)
+    - script: $(Build.SourcesDirectory)\build.cmd /build /no-test /integration /diagnostic /ci /no-sign /deploy /no-clearnugetcache /configuration $(_configuration)
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\log'

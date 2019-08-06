@@ -16,6 +16,7 @@ set OptCI=false
 set OptSign=false
 set OptIbc=false
 set OptNodeReuse=true
+set OptClearNuGetCache=false
 
 :ParseArguments
 if    "%1" == ""                                                                                    goto :DoneParsing
@@ -37,6 +38,8 @@ if /I "%1" == "/ci"                   set "OptCI=true"     && set "OptNodeReuse=
 if /I "%1" == "/no-ci"                set "OptCI=false"    && set "OptNodeReuse=true"               && shift && goto :ParseArguments
 if /I "%1" == "/ibc"                  set "OptIbc=true"                                             && shift && goto :ParseArguments
 if /I "%1" == "/no-ibc"               set "OptIbc=false"                                            && shift && goto :ParseArguments
+if /I "%1" == "/clearnugetcache"      set "OptClearNuGetCache=true"                                 && shift && goto :ParseArguments
+if /I "%1" == "/no-clearnugetcache"   set "OptClearNuGetCache=false"                                && shift && goto :ParseArguments
 if /I "%1" == "/rootsuffix"           set "RootSuffixCmdLine=/p:RootSuffix=%2"                      && shift && shift && goto :ParseArguments
 if /I "%1" == "/configuration"        set "BuildConfiguration=%2"                                   && shift && shift && goto :ParseArguments
 
@@ -52,7 +55,7 @@ if "%OptDiagnostic%" == "true" (
 
 call "%Root%\build\Bootstrap\SetVSEnvironment.cmd" || exit /b 1
 
-msbuild %Root%build\build.proj /m /warnaserror /nologo /clp:Summary /nodeReuse:%OptNodeReuse% /p:Configuration=%BuildConfiguration% /p:Build=%OptBuild% /p:Rebuild=%OptRebuild% /p:Deploy=%OptDeploy% /p:Test=%OptTest% /p:IntegrationTest=%OptIntegrationTest% /p:Sign=%OptSign% /p:CIBuild=%OptCI% /p:EnableIbc=%OptIbc% %LogCmdLine% %RootSuffixCmdLine%
+msbuild %Root%build\build.proj /m /warnaserror /nologo /clp:Summary /nodeReuse:%OptNodeReuse% /p:Configuration=%BuildConfiguration% /p:Build=%OptBuild% /p:Rebuild=%OptRebuild% /p:Deploy=%OptDeploy% /p:Test=%OptTest% /p:IntegrationTest=%OptIntegrationTest% /p:Sign=%OptSign% /p:CIBuild=%OptCI% /p:EnableIbc=%OptIbc% /p:ClearNuGetCache=%OptClearNuGetCache% %LogCmdLine% %RootSuffixCmdLine%
 exit /b %ERRORLEVEL%
 
 :Usage
@@ -72,6 +75,7 @@ echo     /[no-]deploy              Deploy (default) or skip deploying Visual Stu
 echo     /[no-]sign                Sign (default) or skip signing build outputs
 echo     /[no-]ci                  Turns on (default) or turns off a continuous integration build
 echo     /[no-]ibc                 Turns on or turns off (default) IBC (OptProf) optimization data usage
+echo     /[no-]clearnugetcache     Clears or skips clearing (default) NuGet package cache
 echo     /rootsuffix ^<hive^>        Hive to use when deploying Visual Studio extensions (default is 'Exp')
 echo     /configuration ^<config^>   Use Debug (default) or Release build configuration
 goto :eof
