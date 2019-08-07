@@ -68,7 +68,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             ConsoleDebugTargetsProvider.GetExeAndArguments(true, exeIn, null, out string finalExePath, out string finalArguments);
             Assert.Equal(cmdExePath, finalExePath);
             Assert.Equal("/c \"\"c:\\foo\\bar.exe\"  & pause\"", finalArguments);
-
         }
 
         [Fact]
@@ -512,7 +511,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             {
                 debugger.ValidateSettings(executable, workingDir, profileName);
             });
-
         }
 
         [Fact]
@@ -632,13 +630,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                                                            IProjectThreadingService threadingService = null,
                                                            IVsDebugger10 debugger = null)
         {
-
             environment ??= Mock.Of<IEnvironmentHelper>();
             tokenReplacer ??= IDebugTokenReplacerFactory.Create();
             activeDebugFramework ??= IActiveDebugFrameworkServicesFactory.ImplementGetConfiguredProjectForActiveFrameworkAsync(configuredProject);
             threadingService ??= IProjectThreadingServiceFactory.Create();
             debugger ??= IVsDebugger10Factory.ImplementIsIntegratedConsoleEnabled(enabled: false);
-            
             
             return new ConsoleDebugTargetsProvider(project, tokenReplacer, fileSystem, environment, activeDebugFramework, properties, threadingService, IVsUIServiceFactory.Create<SVsShellDebugger, IVsDebugger10>(debugger));
         }

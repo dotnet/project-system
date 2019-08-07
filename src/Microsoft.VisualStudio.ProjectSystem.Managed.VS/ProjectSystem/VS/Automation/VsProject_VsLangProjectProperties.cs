@@ -39,7 +39,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             }
         }
 
-
         // Implementation of VsLangProj.ProjectProperties
         public prjOutputType OutputType
         {

@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using System;
 
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
@@ -13,8 +15,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         [Fact]
         public void Constructor_NullAsProject_ThrowsArgumentNull()
         {
-            var context = IWorkspaceProjectContextMockFactory.Create();
-
             Assert.Throws<ArgumentNullException>("project", () =>
             {
                 new AdditionalFilesItemHandler((UnconfiguredProject)null);
@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             return CreateInstance(null, null);
         }
 
-        private AdditionalFilesItemHandler CreateInstance(UnconfiguredProject project = null, IWorkspaceProjectContext context = null)
+        private static AdditionalFilesItemHandler CreateInstance(UnconfiguredProject project = null, IWorkspaceProjectContext context = null)
         {
             project ??= UnconfiguredProjectFactory.Create();
 

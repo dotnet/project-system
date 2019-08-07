@@ -27,8 +27,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 .Returns(treeAction);
 
             if (treeProviderAction != null)
+            {
                 mock.SetupGet(s => s.TreeProvider)
                     .Returns(treeProviderAction);
+            }
 
             return mock.Object;
         }

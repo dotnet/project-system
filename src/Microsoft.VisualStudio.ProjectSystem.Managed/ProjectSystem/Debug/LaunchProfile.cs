@@ -30,7 +30,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             DoNotPersist = data.InMemoryProfile;
         }
 
-
         /// <summary>
         /// Useful to create a mutable version from an existing immutable profile
         /// </summary>

@@ -186,7 +186,7 @@ Root (flags: {ProjectRoot})
             Assert.Same(icon, tree.Icon);
         }
 
-        private void AssertAreEquivalent(IProjectTree expected, IProjectTree actual)
+        private static void AssertAreEquivalent(IProjectTree expected, IProjectTree actual)
         {
             Assert.NotSame(expected, actual);
 
@@ -196,17 +196,17 @@ Root (flags: {ProjectRoot})
             Assert.Equal(expectedAsString, actualAsString);
         }
 
-        private ProjectRootImageProjectTreePropertiesProvider CreateInstance()
+        private static ProjectRootImageProjectTreePropertiesProvider CreateInstance()
         {
             return CreateInstance((IProjectImageProvider)null);
         }
 
-        private ProjectRootImageProjectTreePropertiesProvider CreateInstance(IProjectImageProvider imageProvider)
+        private static ProjectRootImageProjectTreePropertiesProvider CreateInstance(IProjectImageProvider imageProvider)
         {
             return CreateInstance((IProjectCapabilitiesService)null, imageProvider);
         }
 
-        private ProjectRootImageProjectTreePropertiesProvider CreateInstance(IProjectCapabilitiesService capabilities, IProjectImageProvider imageProvider)
+        private static ProjectRootImageProjectTreePropertiesProvider CreateInstance(IProjectCapabilitiesService capabilities, IProjectImageProvider imageProvider)
         {
             capabilities ??= IProjectCapabilitiesServiceFactory.Create();
             imageProvider ??= IProjectImageProviderFactory.Create();

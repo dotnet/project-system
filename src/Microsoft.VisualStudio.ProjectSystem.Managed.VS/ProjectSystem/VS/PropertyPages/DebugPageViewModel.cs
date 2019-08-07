@@ -41,8 +41,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 {
                     IUnconfiguredProjectVsServices _projectVsServices = Project.Services.ExportProvider.GetExportedValue<IUnconfiguredProjectVsServices>();
                     _projectThreadingService = _projectVsServices.ThreadingService;
-
                 }
+
                 return _projectThreadingService;
             }
         }

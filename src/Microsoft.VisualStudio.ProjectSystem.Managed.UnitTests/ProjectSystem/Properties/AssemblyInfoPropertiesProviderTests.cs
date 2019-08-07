@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
     public class AssemblyInfoPropertiesProviderTests
     {
-        private TestProjectFileOrAssemblyInfoPropertiesProvider CreateProviderForSourceFileValidation(
+        private static TestProjectFileOrAssemblyInfoPropertiesProvider CreateProviderForSourceFileValidation(
             string code,
             out Workspace workspace,
             Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata> interceptingProvider = null,
@@ -76,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             return new TestProjectFileOrAssemblyInfoPropertiesProvider(project, workspace: workspace, defaultProperties: defaultProperties, interceptingProvider: interceptingProvider);
         }
 
-        private TestProjectFileOrAssemblyInfoPropertiesProvider CreateProviderForProjectFileValidation(
+        private static TestProjectFileOrAssemblyInfoPropertiesProvider CreateProviderForProjectFileValidation(
             string code,
             string propertyName,
             string propertyValueInProjectFile,
@@ -94,7 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             return new TestProjectFileOrAssemblyInfoPropertiesProvider(project, workspace: workspace, defaultProperties: defaultProperties, interceptingProvider: interceptingProvider);
         }
 
-        private IProjectProperties CreateProjectProperties(Dictionary<string, string> additionalProps, bool saveInProjectFile)
+        private static IProjectProperties CreateProjectProperties(Dictionary<string, string> additionalProps, bool saveInProjectFile)
         {
             additionalProps ??= new Dictionary<string, string>();
 
@@ -182,7 +182,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         //Negative cases
         [InlineData(@"[assembly: System.Reflection.AssemblyDescriptionAttribute(""MyDescription"")]", "Product", "NewDescription",
                     @"[assembly: System.Reflection.AssemblyDescriptionAttribute(""MyDescription"")]")]
-        [InlineData(@"[assembly: System.Reflection.AssemblyDescriptionAttribute(""MyDescription"")]", "SomeRandomPropety", "NewDescription",
+        [InlineData(@"[assembly: System.Reflection.AssemblyDescriptionAttribute(""MyDescription"")]", "SomeRandomProperty", "NewDescription",
                     @"[assembly: System.Reflection.AssemblyDescriptionAttribute(""MyDescription"")]")]
         [InlineData(@"[assembly: System.Reflection.AssemblyDescriptionAttribute(""MyDescription"", ""MyDescription"")]", "Description", "NewDescription",
                     @"[assembly: System.Reflection.AssemblyDescriptionAttribute(""MyDescription"", ""MyDescription"")]")]

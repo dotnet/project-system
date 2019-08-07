@@ -7,7 +7,6 @@ using Microsoft.VisualStudio.Composition;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
-
     /// <summary>
     /// Interface definition which allows a launch settings provider to participate in the debug property page UI. The Set of 
     /// LaunchSettingUIProviders provides the set of entries for the debug dropdown command list.

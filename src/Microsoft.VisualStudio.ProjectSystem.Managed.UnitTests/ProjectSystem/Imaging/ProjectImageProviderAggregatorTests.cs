@@ -1,4 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
 using System;
 
 using Xunit;
@@ -16,7 +17,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
 
             Assert.Throws<ArgumentNullException>("key", () =>
             {
-
                 aggregator.GetProjectImage(null);
             });
         }
@@ -28,7 +28,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
 
             Assert.Throws<ArgumentException>("key", () =>
             {
-
                 aggregator.GetProjectImage(string.Empty);
             });
         }
@@ -110,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
             Assert.Same(moniker, result);
         }
 
-        private ProjectImageProviderAggregator CreateInstance(UnconfiguredProject project = null)
+        private static ProjectImageProviderAggregator CreateInstance(UnconfiguredProject project = null)
         {
             project ??= UnconfiguredProjectFactory.Create();
 

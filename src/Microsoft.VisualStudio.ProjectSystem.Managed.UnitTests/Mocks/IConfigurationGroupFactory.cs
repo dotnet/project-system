@@ -25,13 +25,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return group;
         }
 
-
         private class ConfigurationGroup<T> : List<T>, IConfigurationGroup<T>
         {
-            public ConfigurationGroup()
-            {
-            }
-
             public IReadOnlyCollection<string> VariantDimensionNames => throw new System.NotImplementedException();
         }
     }

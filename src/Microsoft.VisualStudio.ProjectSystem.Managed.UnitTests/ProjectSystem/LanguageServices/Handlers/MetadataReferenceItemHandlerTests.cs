@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -19,8 +21,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         [Fact]
         public void Constructor_NullAsProject_ThrowsArgumentNull()
         {
-            var context = IWorkspaceProjectContextMockFactory.Create();
-
             Assert.Throws<ArgumentNullException>("project", () =>
             {
                 new MetadataReferenceItemHandler((UnconfiguredProject)null);

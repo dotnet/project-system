@@ -15,7 +15,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
         {
             Assert.Throws<ArgumentNullException>("logger", () =>
             {
-
                 ProjectLoggerExtensions.BeginBatch((IProjectLogger)null);
             });
         }
@@ -31,7 +30,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
 
             Assert.Throws<ArgumentOutOfRangeException>("value", () =>
             {
-
                 batch.IndentLevel = indentLevel;
             });
         }

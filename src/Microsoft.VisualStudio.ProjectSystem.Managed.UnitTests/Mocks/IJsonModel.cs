@@ -6,12 +6,12 @@ using Newtonsoft.Json.Linq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    internal interface IJsonModel<T>
+    internal interface IJsonModel<out T>
     {
         T ToActualModel();
     }
 
-    internal class JsonModel<T> : IJsonModel<T>
+    internal abstract class JsonModel<T> : IJsonModel<T>
     {
         public T FromJson(string jsonString)
         {
@@ -20,9 +20,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return data.ToActualModel();
         }
 
-        public virtual T ToActualModel()
-        {
-            return default;
-        }
+        public abstract T ToActualModel();
     }
 }

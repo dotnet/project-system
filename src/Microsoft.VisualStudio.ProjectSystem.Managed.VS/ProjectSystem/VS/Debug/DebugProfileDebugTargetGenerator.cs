@@ -45,14 +45,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             ProjectThreadingService = threadingService;
         }
 
-        private readonly NamedIdentity _dataSourceKey = new NamedIdentity();
-        public override NamedIdentity DataSourceKey
-        {
-            get { return _dataSourceKey; }
-        }
+        public override NamedIdentity DataSourceKey { get; } = new NamedIdentity();
+
+        private int _dataSourceVersion;
 
         /// <inheritdoc/>
-        private int _dataSourceVersion;
         public override IComparable DataSourceVersion
         {
             get { return _dataSourceVersion; }
@@ -77,7 +74,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair> options)
             => Task.FromResult<IDynamicEnumValuesGenerator>(
                 new DebugProfileEnumValuesGenerator(LaunchSettingProvider, ProjectThreadingService));
-
 
         protected override void Initialize()
         {

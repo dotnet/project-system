@@ -64,7 +64,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 new Lazy<ILaunchSettingsSerializationProvider, IJsonSection>(() => lazyProvider.Value, mockIJsonSection.Object)
             };
             provider.SetSettingsProviderCollection(settingsProviders);
-
         }
 
         [Fact]

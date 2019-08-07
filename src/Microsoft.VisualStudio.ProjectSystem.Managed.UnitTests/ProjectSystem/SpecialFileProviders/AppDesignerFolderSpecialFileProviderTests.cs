@@ -112,7 +112,7 @@ Project (flags: {ProjectRoot}), FilePath: ""C:\Project\Project.csproj""
             Assert.Equal(expected, result);
         }
 
-        private ProjectProperties CreateProperties(string appDesignerFolderName)
+        private static ProjectProperties CreateProperties(string appDesignerFolderName)
         {
             return ProjectPropertiesFactory.Create(UnconfiguredProjectFactory.Create(), new[] {
                     new PropertyPageData { Category = AppDesigner.SchemaName, PropertyName = AppDesigner.FolderNameProperty, Value = appDesignerFolderName }

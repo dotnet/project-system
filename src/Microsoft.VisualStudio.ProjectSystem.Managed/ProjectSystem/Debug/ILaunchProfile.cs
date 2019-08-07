@@ -6,7 +6,6 @@ using System.Collections.Immutable;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
-
     /// <summary>
     /// Interface definition for a profile
     /// </summary>

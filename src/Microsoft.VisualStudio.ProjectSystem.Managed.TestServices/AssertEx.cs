@@ -1,7 +1,10 @@
-﻿using System;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+
+using Xunit.Sdk;
 
 #nullable disable
 
@@ -9,20 +12,19 @@ namespace Xunit
 {
     public static class AssertEx
     {
-        public static void CollectionLength<T>(IEnumerable<T> collection, int length)
+        public static void CollectionLength<T>(IEnumerable<T> collection, int expectedCount)
         {
-            var lengthArray = new Action<T>[length];
-            for (int i = 0; i < length; i++)
+            int actualCount = collection.Count();
+
+            if (actualCount != expectedCount)
             {
-                lengthArray[i] = delegate
-                { };
+                throw new CollectionException(collection, expectedCount, actualCount);
             }
-            Assert.Collection(collection, lengthArray);
         }
 
-        public static void CollectionLength(IEnumerable collection, int length)
+        public static void CollectionLength(IEnumerable collection, int expectedCount)
         {
-            CollectionLength(collection.Cast<object>(), length);
+            CollectionLength(collection.Cast<object>(), expectedCount);
         }
     }
 }

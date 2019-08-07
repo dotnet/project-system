@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private readonly UnconfiguredProject _unconfiguredProject;
 
         /// <summary>
-        /// When we implement WinForms support, we need to set this for VB winforms projects
+        /// When we implement WinForms support, we need to set this for VB WinForms projects
         /// </summary>
         private static bool SearchForEntryPointsInFormsOnly => false;
 

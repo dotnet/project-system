@@ -123,7 +123,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 }
 
                 return expandedString;
-
             });
         }
     }

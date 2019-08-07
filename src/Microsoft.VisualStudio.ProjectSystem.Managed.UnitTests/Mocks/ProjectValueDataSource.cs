@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
         }
 
-        public override NamedIdentity DataSourceKey { get; } = new NamedIdentity("DataSurce");
+        public override NamedIdentity DataSourceKey { get; } = new NamedIdentity("DataSource");
 
         public override IComparable DataSourceVersion
         {

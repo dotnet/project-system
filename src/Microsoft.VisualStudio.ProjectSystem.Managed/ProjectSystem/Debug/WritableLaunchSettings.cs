@@ -12,10 +12,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     internal class WritableLaunchSettings : IWritableLaunchSettings
     {
-        public WritableLaunchSettings()
-        {
-        }
-
         public WritableLaunchSettings(ILaunchSettings settings)
         {
             if (settings.Profiles != null)
@@ -56,6 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public IWritableLaunchProfile ActiveProfile { get; set; }
 
         public List<IWritableLaunchProfile> Profiles { get; } = new List<IWritableLaunchProfile>();
+
         public Dictionary<string, object> GlobalSettings { get; } = new Dictionary<string, object>(StringComparer.Ordinal);
 
         public ILaunchSettings ToLaunchSettings()

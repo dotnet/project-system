@@ -61,7 +61,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             });
         }
 
-
         [Theory]
         [InlineData(@"C:\Path\To\TemplateFile", true)]
         [InlineData(@"C:\Path\To\TemplateFile", false)]

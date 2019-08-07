@@ -133,7 +133,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             if (setValues != null)
             {
                 property.Setup(p => p.SetValueAsync(It.IsAny<object>()))
-                        .Callback<object>(obj => setValues.Add(obj))
+                        .Callback<object>(setValues.Add)
                         .ReturnsAsync(() => { });
             }
 

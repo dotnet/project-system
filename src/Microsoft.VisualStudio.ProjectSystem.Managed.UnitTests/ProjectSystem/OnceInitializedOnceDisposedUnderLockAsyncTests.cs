@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             var instance = CreateInstance();
 
-            bool result = default;
+            bool result = false;
             await instance.ExecuteUnderLockAsync(ct => 
             {
                 cancellationTokenSource.Cancel();
@@ -64,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             var instance = CreateInstance();
 
-            bool result = default;
+            bool result = false;
             await instance.ExecuteUnderLockAsync(ct =>
             {
                 cancellationTokenSource.Cancel();
@@ -380,7 +380,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             Assert.Equal(instance.DisposalToken, result.CancellationToken);
         }
 
-        private async Task AssertNoOverlap(Func<Task> firstAction, Func<Task> secondAction, AsyncManualResetEvent firstEntered, AsyncManualResetEvent firstRelease, AsyncManualResetEvent secondEntered)
+        private static async Task AssertNoOverlap(Func<Task> firstAction, Func<Task> secondAction, AsyncManualResetEvent firstEntered, AsyncManualResetEvent firstRelease, AsyncManualResetEvent secondEntered)
         {
             // Run first task and wait until we've entered it
             var firstTask = firstAction();

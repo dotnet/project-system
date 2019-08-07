@@ -318,7 +318,6 @@ Root (flags: {ProjectRoot})
             Verify(propertiesProvider, expectedTree, inputTree);
         }
 
-
         [Theory]
         [InlineData(@"
 Root (flags: {ProjectRoot})
@@ -586,7 +585,7 @@ Root (flags: {ProjectRoot})
             Verify(propertiesProvider, expectedTree, inputTree, folderName: "My Project", contentOnlyVisibleInShowAllFiles: true);
         }
 
-        internal void Verify(AppDesignerFolderProjectTreePropertiesProvider provider, IProjectTree expected, IProjectTree input, string folderName = null, bool? contentOnlyVisibleInShowAllFiles = null)
+        internal static void Verify(AppDesignerFolderProjectTreePropertiesProvider provider, IProjectTree expected, IProjectTree input, string folderName = null, bool? contentOnlyVisibleInShowAllFiles = null)
         {
             IImmutableDictionary<string, string> projectTreeSettings = ImmutableStringDictionary<string>.EmptyOrdinal;
             IImmutableDictionary<string, IProjectRuleSnapshot> ruleSnapshots = IProjectRuleSnapshotsFactory.Create();
@@ -604,7 +603,7 @@ Root (flags: {ProjectRoot})
             AssertAreEquivalent(expected, result);
         }
 
-        private void AssertAreEquivalent(IProjectTree expected, IProjectTree actual)
+        private static void AssertAreEquivalent(IProjectTree expected, IProjectTree actual)
         {
             Assert.NotSame(expected, actual);
 
@@ -614,17 +613,17 @@ Root (flags: {ProjectRoot})
             Assert.Equal(expectedAsString, actualAsString);
         }
 
-        private AppDesignerFolderProjectTreePropertiesProvider CreateInstance()
+        private static AppDesignerFolderProjectTreePropertiesProvider CreateInstance()
         {
             return CreateInstance((IProjectImageProvider)null, (IProjectDesignerService)null);
         }
 
-        private AppDesignerFolderProjectTreePropertiesProvider CreateInstance(IProjectDesignerService designerService)
+        private static AppDesignerFolderProjectTreePropertiesProvider CreateInstance(IProjectDesignerService designerService)
         {
             return CreateInstance((IProjectImageProvider)null, designerService);
         }
 
-        private AppDesignerFolderProjectTreePropertiesProvider CreateInstance(IProjectImageProvider imageProvider, IProjectDesignerService designerService)
+        private static AppDesignerFolderProjectTreePropertiesProvider CreateInstance(IProjectImageProvider imageProvider, IProjectDesignerService designerService)
         {
             return new AppDesignerFolderProjectTreePropertiesProvider(imageProvider ?? IProjectImageProviderFactory.Create(), designerService ?? IProjectDesignerServiceFactory.Create());
         }

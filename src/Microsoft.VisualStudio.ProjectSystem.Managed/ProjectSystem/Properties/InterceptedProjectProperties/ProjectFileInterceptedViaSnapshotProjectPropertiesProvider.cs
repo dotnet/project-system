@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+
 using Microsoft.Build.Execution;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties

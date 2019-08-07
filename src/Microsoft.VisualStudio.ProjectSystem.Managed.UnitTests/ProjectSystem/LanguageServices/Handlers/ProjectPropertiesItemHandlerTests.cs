@@ -13,14 +13,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         [Fact]
         public void Constructor_NullAsProject_ThrowsArgumentNull()
         {
-            var context = IWorkspaceProjectContextMockFactory.Create();
-
             Assert.Throws<ArgumentNullException>("project", () =>
             {
                 new ProjectPropertiesItemHandler((UnconfiguredProject)null);
             });
         }
-
 
         [Fact]
         public void Handle_WhenPropertyIsChanged_CallsSetProperty()

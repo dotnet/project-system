@@ -4,8 +4,6 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Microsoft.VisualStudio.Threading;
-
 using Xunit;
 
 #nullable disable
@@ -22,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             Assert.Throws<ObjectDisposedException>(() =>
             {
-                var ignored = service.IsImplicitlyActive;
+                _ = service.IsImplicitlyActive;
             });
         }
 
@@ -34,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             Assert.Throws<ObjectDisposedException>(() =>
             {
-                var ignored = service.ImplicitlyActive;
+                _ = service.ImplicitlyActive;
             });
         }
 

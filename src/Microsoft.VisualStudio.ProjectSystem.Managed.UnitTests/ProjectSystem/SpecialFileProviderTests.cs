@@ -397,7 +397,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
             Assert.Equal(expectedFilePath, filePath);
         }
 
-        private void AssertAreEquivalent(IProjectTree expected, IProjectTree actual)
+        private static void AssertAreEquivalent(IProjectTree expected, IProjectTree actual)
         {
             Assert.NotSame(expected, actual);
 

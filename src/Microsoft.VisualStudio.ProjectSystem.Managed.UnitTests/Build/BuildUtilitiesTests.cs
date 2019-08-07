@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.Build
 </Project>";
 
             var project = ProjectRootElementFactory.Create(projectXml);
-            var property = BuildUtilities.GetProperty(project, "NonExistantProperty");
+            var property = BuildUtilities.GetProperty(project, "NonExistentProperty");
             Assert.Null(property);
         }
 
