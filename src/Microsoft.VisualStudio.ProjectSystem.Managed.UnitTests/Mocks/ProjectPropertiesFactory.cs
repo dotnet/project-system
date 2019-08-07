@@ -9,8 +9,6 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class ProjectPropertiesFactory
@@ -22,12 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public static ProjectProperties Create(string category, string propertyName, string value)
         {
-            var data = new PropertyPageData()
-            {
-                Category = category,
-                PropertyName = propertyName,
-                Value = value,
-            };
+            var data = new PropertyPageData(category, propertyName, value);
 
             return Create(data);
         }
@@ -118,7 +111,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return rule.Object;
         }
 
-        private static IProperty CreateProperty(string name, object value, List<object> setValues = null)
+        private static IProperty CreateProperty(string name, object value, List<object>? setValues = null)
         {
             var property = new Mock<IProperty>();
             property.SetupGet(o => o.Name)

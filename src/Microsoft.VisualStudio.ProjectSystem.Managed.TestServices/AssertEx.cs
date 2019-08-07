@@ -6,8 +6,6 @@ using System.Linq;
 
 using Xunit.Sdk;
 
-#nullable disable
-
 namespace Xunit
 {
     public static class AssertEx

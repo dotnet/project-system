@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
     public class AppDesignerFolderSpecialFileProviderTests
@@ -115,11 +113,11 @@ Project (flags: {ProjectRoot}), FilePath: ""C:\Project\Project.csproj""
         private static ProjectProperties CreateProperties(string appDesignerFolderName)
         {
             return ProjectPropertiesFactory.Create(UnconfiguredProjectFactory.Create(), new[] {
-                    new PropertyPageData { Category = AppDesigner.SchemaName, PropertyName = AppDesigner.FolderNameProperty, Value = appDesignerFolderName }
+                    new PropertyPageData(AppDesigner.SchemaName, AppDesigner.FolderNameProperty, appDesignerFolderName)
                 });
         }
 
-        private AppDesignerFolderSpecialFileProvider CreateInstance(IPhysicalProjectTree physicalProjectTree = null, ProjectProperties properties = null)
+        private static AppDesignerFolderSpecialFileProvider CreateInstance(IPhysicalProjectTree? physicalProjectTree = null, ProjectProperties? properties = null)
         {
             physicalProjectTree ??= IPhysicalProjectTreeFactory.Create();
             properties ??= ProjectPropertiesFactory.CreateEmpty();

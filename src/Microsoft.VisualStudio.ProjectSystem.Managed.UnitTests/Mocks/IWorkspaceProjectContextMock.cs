@@ -2,8 +2,6 @@
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.LanguageServices.ProjectSystem
 {
     internal class IWorkspaceProjectContextMock : AbstractMock<IWorkspaceProjectContext>

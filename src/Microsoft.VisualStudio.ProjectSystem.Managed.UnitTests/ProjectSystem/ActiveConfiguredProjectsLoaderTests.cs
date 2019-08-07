@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     public class ActiveConfiguredProjectsLoaderTests
@@ -23,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var project = UnconfiguredProjectFactory.ImplementLoadConfiguredProjectAsync(configuration =>
             {
                 results.Add(configuration.Name);
-                return Task.FromResult<ConfiguredProject>(null);
+                return Task.FromResult<ConfiguredProject?>(null);
             });
 
             var loader = CreateInstance(project, out ProjectValueDataSource<IConfigurationGroup<ProjectConfiguration>> source);
@@ -44,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             UnconfiguredProject project = UnconfiguredProjectFactory.ImplementLoadConfiguredProjectAsync(configuration =>
             {
                 callCount++;
-                return Task.FromResult<ConfiguredProject>(null);
+                return Task.FromResult<ConfiguredProject?>(null);
             });
 
             var loader = CreateInstance(project, tasksService, out ProjectValueDataSource<IConfigurationGroup<ProjectConfiguration>> source);
@@ -66,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var project = UnconfiguredProjectFactory.ImplementLoadConfiguredProjectAsync(configuration =>
             {
                 results.Add(configuration.Name);
-                return Task.FromResult<ConfiguredProject>(null);
+                return Task.FromResult<ConfiguredProject?>(null);
             });
 
             var loader = CreateInstance(project, out var source);
@@ -100,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             UnconfiguredProject project = UnconfiguredProjectFactory.ImplementLoadConfiguredProjectAsync(configuration =>
             {
                 callCount++;
-                return Task.FromResult<ConfiguredProject>(null);
+                return Task.FromResult<ConfiguredProject?>(null);
             });
 
             var loader = CreateInstance(project, out ProjectValueDataSource<IConfigurationGroup<ProjectConfiguration>> source);
@@ -120,7 +118,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return CreateInstance(project, null, out source);
         }
 
-        private static ActiveConfiguredProjectsLoader CreateInstance(UnconfiguredProject project, IUnconfiguredProjectTasksService tasksService, out ProjectValueDataSource<IConfigurationGroup<ProjectConfiguration>> source)
+        private static ActiveConfiguredProjectsLoader CreateInstance(UnconfiguredProject project, IUnconfiguredProjectTasksService? tasksService, out ProjectValueDataSource<IConfigurationGroup<ProjectConfiguration>> source)
         {
             var services = IProjectCommonServicesFactory.CreateWithDefaultThreadingPolicy();
             source = ProjectValueDataSourceFactory.Create<IConfigurationGroup<ProjectConfiguration>>(services);
@@ -131,7 +129,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return loader;
         }
 
-        private static ActiveConfiguredProjectsLoader CreateInstance(UnconfiguredProject project, IActiveConfigurationGroupService activeConfigurationGroupService, IUnconfiguredProjectTasksService tasksService)
+        private static ActiveConfiguredProjectsLoader CreateInstance(UnconfiguredProject project, IActiveConfigurationGroupService activeConfigurationGroupService, IUnconfiguredProjectTasksService? tasksService)
         {
             tasksService ??= IUnconfiguredProjectTasksServiceFactory.ImplementLoadedProjectAsync<ConfiguredProject>(t => t());
 

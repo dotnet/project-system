@@ -6,8 +6,6 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal class ProjectTreeProvider : IProjectTreeProvider
@@ -52,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             throw new NotImplementedException();
         }
 
-        public IProjectTree FindByPath(IProjectTree root, string path)
+        public IProjectTree? FindByPath(IProjectTree root, string path)
         {
             Requires.NotNull(root, nameof(root));
             Requires.NotNullOrEmpty(path, nameof(path));

@@ -2,18 +2,16 @@
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class ConfiguredProjectFactory
     {
-        public static ConfiguredProject Create(IProjectCapabilitiesScope capabilities = null, ProjectConfiguration projectConfiguration = null, ConfiguredProjectServices services = null)
+        public static ConfiguredProject Create(IProjectCapabilitiesScope? capabilities = null, ProjectConfiguration? projectConfiguration = null, ConfiguredProjectServices? services = null)
         {
             var mock = new Mock<ConfiguredProject>();
-            mock.Setup(c => c.Capabilities).Returns(capabilities);
-            mock.Setup(c => c.ProjectConfiguration).Returns(projectConfiguration);
-            mock.Setup(c => c.Services).Returns(services);
+            mock.Setup(c => c.Capabilities).Returns(capabilities!);
+            mock.Setup(c => c.ProjectConfiguration).Returns(projectConfiguration!);
+            mock.Setup(c => c.Services).Returns(services!);
             return mock.Object;
         }
 

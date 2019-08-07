@@ -6,8 +6,6 @@ using System.Linq;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.CSharp
 {
     public class CSharpProjectConfigurationPropertiesTests
@@ -35,13 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.CSharp
         {
             var setValues = new List<object>();
             var project = UnconfiguredProjectFactory.Create();
-            var data = new PropertyPageData()
-            {
-                Category = ConfiguredBrowseObject.SchemaName,
-                PropertyName = ConfiguredBrowseObject.CodeAnalysisRuleSetProperty,
-                Value = "Blah",
-                SetValues = setValues
-            };
+            var data = new PropertyPageData(ConfiguredBrowseObject.SchemaName, ConfiguredBrowseObject.CodeAnalysisRuleSetProperty, "Blah", setValues);
 
             var projectProperties = ProjectPropertiesFactory.Create(project, data);
 
@@ -58,13 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.CSharp
         {
             var setValues = new List<object>();
             var project = UnconfiguredProjectFactory.Create();
-            var data = new PropertyPageData()
-            {
-                Category = ConfiguredBrowseObject.SchemaName,
-                PropertyName = ConfiguredBrowseObject.LangVersionProperty,
-                Value = "6",
-                SetValues = setValues
-            };
+            var data = new PropertyPageData(ConfiguredBrowseObject.SchemaName, ConfiguredBrowseObject.LangVersionProperty, "6", setValues);
 
             var projectProperties = ProjectPropertiesFactory.Create(project, data);
 
@@ -81,13 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.CSharp
         {
             var setValues = new List<object>();
             var project = UnconfiguredProjectFactory.Create();
-            var data = new PropertyPageData()
-            {
-                Category = ConfiguredBrowseObject.SchemaName,
-                PropertyName = ConfiguredBrowseObject.OutputPathProperty,
-                Value = "OldPath",
-                SetValues = setValues
-            };
+            var data = new PropertyPageData(ConfiguredBrowseObject.SchemaName, ConfiguredBrowseObject.OutputPathProperty, "OldPath", setValues);
 
             var projectProperties = ProjectPropertiesFactory.Create(project, data);
 

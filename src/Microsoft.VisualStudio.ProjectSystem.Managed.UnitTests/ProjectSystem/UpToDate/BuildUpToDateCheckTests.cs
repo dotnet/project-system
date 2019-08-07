@@ -20,8 +20,6 @@ using Moq;
 using Xunit;
 using Xunit.Abstractions;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 {
     public sealed class BuildUpToDateCheckTests : IDisposable
@@ -103,8 +101,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         public void Dispose() => _buildUpToDateCheck.Dispose();
 
         private async Task SetupAsync(
-            Dictionary<string, IProjectRuleSnapshotModel> projectSnapshot = null,
-            Dictionary<string, IProjectRuleSnapshotModel> sourceSnapshot = null)
+            Dictionary<string, IProjectRuleSnapshotModel>? projectSnapshot = null,
+            Dictionary<string, IProjectRuleSnapshotModel>? sourceSnapshot = null)
         {
             await _buildUpToDateCheck.LoadAsync();
 
@@ -112,8 +110,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         }
 
         private void BroadcastChange(
-            Dictionary<string, IProjectRuleSnapshotModel> projectSnapshot = null,
-            Dictionary<string, IProjectRuleSnapshotModel> sourceSnapshot = null,
+            Dictionary<string, IProjectRuleSnapshotModel>? projectSnapshot = null,
+            Dictionary<string, IProjectRuleSnapshotModel>? sourceSnapshot = null,
             bool disableFastUpToDateCheck = false)
         {
             projectSnapshot ??= new Dictionary<string, IProjectRuleSnapshotModel>();
@@ -143,7 +141,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             return;
 
-            static IProjectSubscriptionUpdate CreateUpdate(Dictionary<string, IProjectRuleSnapshotModel> snapshotBySchemaName)
+            static IProjectSubscriptionUpdate CreateUpdate(Dictionary<string, IProjectRuleSnapshotModel>? snapshotBySchemaName)
             {
                 var snapshots = ImmutableDictionary<string, IProjectRuleSnapshot>.Empty;
                 var changes = ImmutableDictionary<string, IProjectChangeDescription>.Empty;
@@ -819,12 +817,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         #region Test helpers
 
-        private Task AssertNotUpToDateAsync(string logMessage = null, string telemetryReason = null, BuildAction buildAction = BuildAction.Build)
+        private Task AssertNotUpToDateAsync(string? logMessage = null, string? telemetryReason = null, BuildAction buildAction = BuildAction.Build)
         {
             return AssertNotUpToDateAsync(logMessage == null ? null : new[] { logMessage }, telemetryReason, buildAction);
         }
 
-        private async Task AssertNotUpToDateAsync(IReadOnlyList<string> logMessages, string telemetryReason = null, BuildAction buildAction = BuildAction.Build)
+        private async Task AssertNotUpToDateAsync(IReadOnlyList<string>? logMessages, string? telemetryReason = null, BuildAction buildAction = BuildAction.Build)
         {
             var writer = new AssertWriter(_output);
 

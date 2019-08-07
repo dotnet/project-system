@@ -10,8 +10,6 @@ using Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint;
 
 using VSLangProj;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 {
     /// <summary>
@@ -91,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         {
             get
             {
-                Lazy<VSProjectEvents, IOrderPrecedenceMetadataView> vsprojectevent = VSProjectEventsImpl.FirstOrDefault();
+                Lazy<VSProjectEvents, IOrderPrecedenceMetadataView>? vsprojectevent = VSProjectEventsImpl.FirstOrDefault();
                 if (vsprojectevent != null)
                 {
                     return vsprojectevent.Value;
@@ -140,13 +138,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 
         #region IConnectionPointContainer
 
-        public void EnumConnectionPoints(out IEnumConnectionPoints ppEnum)
+        public void EnumConnectionPoints(out IEnumConnectionPoints? ppEnum)
         {
             ppEnum = null;
             (_vsProject as IConnectionPointContainer)?.EnumConnectionPoints(out ppEnum);
         }
 
-        public void FindConnectionPoint(ref Guid riid, out IConnectionPoint ppCP)
+        public void FindConnectionPoint(ref Guid riid, out IConnectionPoint? ppCP)
         {
             ppCP = null;
             (_vsProject as IConnectionPointContainer)?.FindConnectionPoint(ref riid, out ppCP);

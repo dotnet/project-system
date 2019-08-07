@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             _configuredProject = configuredProject;
         }
 
-        public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair> options)
+        public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair>? options)
         {
             return Task.FromResult<IDynamicEnumValuesGenerator>(new SupportedTargetFrameworksEnumValuesGenerator(_projectAccessor, _configuredProject));
         }

@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 using Microsoft.Build.Construction;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectProperties
 {
     internal abstract partial class AbstractBuildEventValueProvider
@@ -34,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             private string BuildEvent { get; }
             private string TargetName { get; }
 
-            public async Task<(bool success, string property)> TryGetPropertyAsync(IProjectProperties defaultProperties)
+            public async Task<(bool success, string? property)> TryGetPropertyAsync(IProjectProperties defaultProperties)
             {
                 // check if value already exists
                 string unevaluatedPropertyValue = await defaultProperties.GetUnevaluatedPropertyValueAsync(BuildEvent);
@@ -45,7 +43,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
 
                 return (false, null);
             }
-            public string GetProperty(ProjectRootElement projectXml)
+
+            public string? GetProperty(ProjectRootElement projectXml)
             {
                 return GetFromTargets(projectXml);
             }
@@ -72,8 +71,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             {
                 if (OnlyWhitespaceCharacters(unevaluatedPropertyValue))
                 {
-                    (bool success, ProjectTargetElement target) = FindTargetToRemove(projectXml);
-                    if (success)
+                    ProjectTargetElement? target = FindTargetToRemove(projectXml);
+
+                    if (target != null)
                     {
                         projectXml.RemoveChild(target);
                         return;
@@ -83,11 +83,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
                 SetParameter(projectXml, unevaluatedPropertyValue);
             }
 
-            private string GetFromTargets(ProjectRootElement projectXml)
+            private string? GetFromTargets(ProjectRootElement projectXml)
             {
-                (bool success, ProjectTaskElement execTask) = FindExecTaskInTargets(projectXml);
+                ProjectTaskElement? execTask = FindExecTaskInTargets(projectXml);
 
-                if (!success)
+                if (execTask == null)
                 {
                     return null;
                 }
@@ -104,44 +104,40 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
                 => string.IsNullOrWhiteSpace(unevaluatedPropertyValue) &&
                    !unevaluatedPropertyValue.Contains("\n");
 
-            private (bool success, ProjectTaskElement execTask) FindExecTaskInTargets(ProjectRootElement projectXml)
+            private ProjectTaskElement? FindExecTaskInTargets(ProjectRootElement projectXml)
             {
-                ProjectTaskElement execTask = projectXml.Targets
-                                    .Where(target =>
-                                        StringComparer.OrdinalIgnoreCase.Compare(GetTarget(target), BuildEvent) == 0 &&
-                                        StringComparer.OrdinalIgnoreCase.Compare(target.Name, TargetName) == 0)
-                                    .SelectMany(target => target.Tasks)
-                                    .Where(task => StringComparer.OrdinalIgnoreCase.Compare(task.Name, ExecTask) == 0)
-                                    .FirstOrDefault();
-                return (success: execTask != null, execTask);
+                return projectXml.Targets
+                    .Where(target =>
+                        StringComparer.OrdinalIgnoreCase.Compare(GetTarget(target), BuildEvent) == 0 &&
+                        StringComparer.OrdinalIgnoreCase.Compare(target.Name, TargetName) == 0)
+                    .SelectMany(target => target.Tasks)
+                    .FirstOrDefault(task => StringComparer.OrdinalIgnoreCase.Compare(task.Name, ExecTask) == 0);
             }
 
-            private (bool success, ProjectTargetElement target) FindTargetToRemove(ProjectRootElement projectXml)
+            private ProjectTargetElement? FindTargetToRemove(ProjectRootElement projectXml)
             {
-                ProjectTargetElement foundTarget = projectXml.Targets
-                                        .Where(target =>
-                                            StringComparer.OrdinalIgnoreCase.Compare(GetTarget(target), BuildEvent) == 0 &&
-                                            StringComparer.OrdinalIgnoreCase.Compare(target.Name, TargetName) == 0 &&
-                                            target.Children.Count == 1 &&
-                                            target.Tasks.Count == 1 &&
-                                            StringComparer.OrdinalIgnoreCase.Compare(target.Tasks.First().Name, ExecTask) == 0)
-                                        .FirstOrDefault();
-                return (success: foundTarget != null, target: foundTarget);
+                return projectXml.Targets
+                    .FirstOrDefault(target =>
+                        StringComparer.OrdinalIgnoreCase.Compare(GetTarget(target), BuildEvent) == 0 &&
+                        StringComparer.OrdinalIgnoreCase.Compare(target.Name, TargetName) == 0 &&
+                        target.Children.Count == 1 &&
+                        target.Tasks.Count == 1 &&
+                        StringComparer.OrdinalIgnoreCase.Compare(target.Tasks.First().Name, ExecTask) == 0);
             }
 
             private void SetParameter(ProjectRootElement projectXml, string unevaluatedPropertyValue)
             {
-                (bool success, ProjectTaskElement execTask) result = FindExecTaskInTargets(projectXml);
+                ProjectTaskElement? execTask = FindExecTaskInTargets(projectXml);
 
-                if (result.success == true)
+                if (execTask != null)
                 {
-                    SetExecParameter(result.execTask, unevaluatedPropertyValue);
+                    SetExecParameter(execTask, unevaluatedPropertyValue);
                 }
                 else
                 {
                     ProjectTargetElement target = projectXml.AddTarget(TargetName);
                     SetTargetDependencies(target);
-                    ProjectTaskElement execTask = target.AddTask(ExecTask);
+                    execTask = target.AddTask(ExecTask);
                     SetExecParameter(execTask, unevaluatedPropertyValue);
                 }
             }

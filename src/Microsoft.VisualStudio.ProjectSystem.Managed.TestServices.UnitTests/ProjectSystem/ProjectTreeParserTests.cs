@@ -4,8 +4,6 @@ using System;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     public class ProjectTreeParserTests
@@ -15,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             Assert.Throws<ArgumentNullException>("value", () =>
             {
-                new ProjectTreeParser((string)null);
+                new ProjectTreeParser(null!);
             });
         }
 

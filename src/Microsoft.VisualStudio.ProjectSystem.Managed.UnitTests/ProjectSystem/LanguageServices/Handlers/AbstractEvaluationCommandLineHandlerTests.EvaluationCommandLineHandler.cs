@@ -5,8 +5,6 @@ using System.Collections.Immutable;
 
 using Microsoft.VisualStudio.ProjectSystem.Logging;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
     public partial class AbstractEvaluationCommandLineHandlerTests

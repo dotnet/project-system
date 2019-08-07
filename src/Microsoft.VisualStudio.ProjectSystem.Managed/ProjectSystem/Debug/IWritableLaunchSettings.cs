@@ -2,8 +2,6 @@
 
 using System.Collections.Generic;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     /// <summary>
@@ -11,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     /// </summary>
     public interface IWritableLaunchSettings
     {
-        IWritableLaunchProfile ActiveProfile { get; set; }
+        IWritableLaunchProfile? ActiveProfile { get; set; }
 
         List<IWritableLaunchProfile> Profiles { get; }
 

@@ -9,8 +9,6 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
 {
     public class AssemblyOriginatorKeyFileValueProviderTests
@@ -24,8 +22,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
             string projectFullPath = $@"{projectFolder}\project.testproj";
             string keyFileName = "KeyFile.snk";
             string keyFileFullPath = $@"{projectFolder}\{keyFileName}";
-            var instancePropertiesMock = IProjectPropertiesFactory
-                .MockWithPropertiesAndValues(new Dictionary<string, string>() {
+            var instancePropertiesMock = IProjectPropertiesFactory.MockWithPropertiesAndValues(
+                new Dictionary<string, string?>
+                {
                     { AssemblyOriginatorKeyFilePropertyName, keyFileFullPath }
                 });
 

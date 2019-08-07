@@ -9,8 +9,6 @@ using Moq;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
     public abstract class EvaluationHandlerTestBase
@@ -32,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             Assert.Throws<ArgumentNullException>("version", () =>
             {
-                handler.Handle(null, projectChange, true, logger);
+                handler.Handle(null!, projectChange, true, logger);
             });
         }
 
@@ -44,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             Assert.Throws<ArgumentNullException>("projectChange", () =>
             {
-                handler.Handle(10, null, true, logger);
+                handler.Handle(10, null!, true, logger);
             });
         }
 
@@ -56,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             Assert.Throws<ArgumentNullException>("logger", () =>
             {
-                handler.Handle(10, projectChange, true, null);
+                handler.Handle(10, projectChange, true, null!);
             });
         }
 

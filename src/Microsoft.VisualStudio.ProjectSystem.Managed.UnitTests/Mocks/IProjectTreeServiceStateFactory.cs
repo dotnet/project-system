@@ -4,8 +4,6 @@ using System;
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IProjectTreeServiceStateFactory
@@ -15,15 +13,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return Mock.Of<IProjectTreeServiceState>();
         }
 
-        public static IProjectTreeServiceState ImplementTree(Func<IProjectTree> treeAction)
-        {
-            return ImplementTree(treeAction, null);
-        }
-
-        public static IProjectTreeServiceState ImplementTree(Func<IProjectTree> treeAction, Func<IProjectTreeProvider> treeProviderAction)
+        public static IProjectTreeServiceState ImplementTree(Func<IProjectTree?> treeAction, Func<IProjectTreeProvider>? treeProviderAction = null)
         {
             var mock = new Mock<IProjectTreeServiceState>();
-            mock.SetupGet(s => s.Tree)
+
+            mock.SetupGet<IProjectTree?>(s => s.Tree)
                 .Returns(treeAction);
 
             if (treeProviderAction != null)

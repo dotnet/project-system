@@ -4,8 +4,6 @@ using System.Collections.Immutable;
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     internal static class IProjectRuleSnapshotFactory
@@ -48,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     {
         public IImmutableDictionary<string, IImmutableDictionary<string, string>> Items { get; set; } = ImmutableDictionary<string, IImmutableDictionary<string, string>>.Empty;
         public IImmutableDictionary<string, string> Properties { get; set; } = ImmutableDictionary<string, string>.Empty;
-        public string RuleName { get; set; }
+        public string RuleName { get; set; } = "";
         public bool EvaluationSucceeded { get; set; } = true;
 
         public override IProjectRuleSnapshot ToActualModel()

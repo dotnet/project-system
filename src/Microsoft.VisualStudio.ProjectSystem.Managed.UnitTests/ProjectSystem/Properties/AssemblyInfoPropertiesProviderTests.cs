@@ -11,20 +11,18 @@ using Microsoft.VisualStudio.Workspaces;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     internal class TestProjectFileOrAssemblyInfoPropertiesProvider : AbstractProjectFileOrAssemblyInfoPropertiesProvider
     {
         public TestProjectFileOrAssemblyInfoPropertiesProvider(
-            UnconfiguredProject project = null,
-            Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata> interceptingProvider = null,
-            Workspace workspace = null,
-            IProjectThreadingService threadingService = null,
-            IProjectProperties defaultProperties = null,
-            IProjectInstancePropertiesProvider instanceProvider = null,
-            Func<ProjectId> getActiveProjectId = null)
+            UnconfiguredProject? project = null,
+            Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>? interceptingProvider = null,
+            Workspace? workspace = null,
+            IProjectThreadingService? threadingService = null,
+            IProjectProperties? defaultProperties = null,
+            IProjectInstancePropertiesProvider? instanceProvider = null,
+            Func<ProjectId>? getActiveProjectId = null)
             : this(workspace ?? WorkspaceFactory.Create(""),
                   project: project ?? UnconfiguredProjectFactory.Create(),
                   interceptingProvider: interceptingProvider,
@@ -38,11 +36,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public TestProjectFileOrAssemblyInfoPropertiesProvider(
             Workspace workspace,
             UnconfiguredProject project,
-            Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata> interceptingProvider = null,
-            IProjectThreadingService threadingService = null,
-            IProjectProperties defaultProperties = null,
-            IProjectInstancePropertiesProvider instanceProvider = null,
-            Func<ProjectId> getActiveProjectId = null)
+            Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>? interceptingProvider = null,
+            IProjectThreadingService? threadingService = null,
+            IProjectProperties? defaultProperties = null,
+            IProjectInstancePropertiesProvider? instanceProvider = null,
+            Func<ProjectId>? getActiveProjectId = null)
             : base(delegatedProvider: IProjectPropertiesProviderFactory.Create(defaultProperties ?? IProjectPropertiesFactory.MockWithProperty("").Object),
                   instanceProvider: instanceProvider ?? IProjectInstancePropertiesProviderFactory.Create(),
                   interceptingValueProviders: interceptingProvider == null ?
@@ -65,8 +63,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private static TestProjectFileOrAssemblyInfoPropertiesProvider CreateProviderForSourceFileValidation(
             string code,
             out Workspace workspace,
-            Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata> interceptingProvider = null,
-            Dictionary<string, string> additionalProps = null)
+            Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>? interceptingProvider = null,
+            Dictionary<string, string?>? additionalProps = null)
         {
             var language = code.Contains("[") ? LanguageNames.CSharp : LanguageNames.VisualBasic;
             workspace = WorkspaceFactory.Create(code, language);
@@ -81,22 +79,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             string propertyName,
             string propertyValueInProjectFile,
             out Workspace workspace,
-            Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata> interceptingProvider = null,
-            Dictionary<string, string> additionalProps = null)
+            Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>? interceptingProvider = null,
+            Dictionary<string, string?>? additionalProps = null)
         {
             var language = code.Contains("[") ? LanguageNames.CSharp : LanguageNames.VisualBasic;
             workspace = WorkspaceFactory.Create(code, language);
             var projectFilePath = workspace.CurrentSolution.Projects.First().FilePath;
             var project = UnconfiguredProjectFactory.Create(filePath: projectFilePath);
-            additionalProps ??= new Dictionary<string, string>();
+            additionalProps ??= new Dictionary<string, string?>();
             additionalProps[propertyName] = propertyValueInProjectFile;
             var defaultProperties = CreateProjectProperties(additionalProps, saveInProjectFile: true);
             return new TestProjectFileOrAssemblyInfoPropertiesProvider(project, workspace: workspace, defaultProperties: defaultProperties, interceptingProvider: interceptingProvider);
         }
 
-        private static IProjectProperties CreateProjectProperties(Dictionary<string, string> additionalProps, bool saveInProjectFile)
+        private static IProjectProperties CreateProjectProperties(Dictionary<string, string?>? additionalProps, bool saveInProjectFile)
         {
-            additionalProps ??= new Dictionary<string, string>();
+            additionalProps ??= new Dictionary<string, string?>();
 
             // Configure whether AssemblyInfo properties are generated in project file or not.
             var saveInProjectFileStr = saveInProjectFile.ToString();
@@ -208,13 +206,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [InlineData(@"[assembly: System.Reflection.AssemblyDescriptionAttribute(""MyDescription"", ""MyDescription"")]", "Description", "OldDescription", "", "")]
         public async Task ProjectFileProperties_SetPropertyValueAsync(string code, string propertyName, string existingPropertyValue, string propertyValueToSet, string expectedValue)
         {
-            var propertyValues = new Dictionary<string, string>();
+            var propertyValues = new Dictionary<string, string?>();
             var provider = CreateProviderForProjectFileValidation(code, propertyName, existingPropertyValue, out Workspace workspace, additionalProps: propertyValues);
             var projectFilePath = workspace.CurrentSolution.Projects.First().FilePath;
 
             var properties = provider.GetProperties(projectFilePath, null, null);
 
-            var propertyValue = await properties.GetEvaluatedPropertyValueAsync(propertyName);
+            string? propertyValue = await properties.GetEvaluatedPropertyValueAsync(propertyName);
             Assert.Equal(existingPropertyValue, propertyValue);
 
             await properties.SetPropertyValueAsync(propertyName, propertyValueToSet);
@@ -311,7 +309,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [InlineData("MyApp", "Product", "ExistingValue", "ExistingValue")]
         internal async Task ProjectFileProperties_DefaultValues_GetEvaluatedPropertyAsync(string assemblyName, string propertyName, string existingPropertyValue, string expectedValue)
         {
-            var additionalProps = new Dictionary<string, string>() { { "AssemblyName", assemblyName } };
+            var additionalProps = new Dictionary<string, string?>() { { "AssemblyName", assemblyName } };
 
             string code = "";
             var provider = CreateProviderForProjectFileValidation(code, propertyName, existingPropertyValue, out Workspace workspace, additionalProps: additionalProps);

@@ -8,8 +8,6 @@ using Microsoft.VisualStudio.Build;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 {
     public class TargetFrameworkProjectConfigurationDimensionProviderTests
@@ -113,7 +111,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 
             var project = UnconfiguredProjectFactory.Create();
             var property = BuildUtilities.GetProperty(rootElement, ConfigurationGeneral.TargetFrameworksProperty);
-            string expectedTFMs = property.Value;
+            string expectedTFMs = property!.Value;
 
             var args = new ProjectConfigurationDimensionValueChangedEventArgs(
                 project,

@@ -6,8 +6,6 @@ using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
     public class AdditionalFilesItemHandlerTests : CommandLineHandlerTestBase
@@ -17,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
             Assert.Throws<ArgumentNullException>("project", () =>
             {
-                new AdditionalFilesItemHandler((UnconfiguredProject)null);
+                new AdditionalFilesItemHandler(null!);
             });
         }
 
@@ -26,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             return CreateInstance(null, null);
         }
 
-        private static AdditionalFilesItemHandler CreateInstance(UnconfiguredProject project = null, IWorkspaceProjectContext context = null)
+        private static AdditionalFilesItemHandler CreateInstance(UnconfiguredProject? project = null, IWorkspaceProjectContext? context = null)
         {
             project ??= UnconfiguredProjectFactory.Create();
 

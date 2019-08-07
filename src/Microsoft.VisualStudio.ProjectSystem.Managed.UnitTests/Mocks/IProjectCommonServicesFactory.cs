@@ -2,8 +2,6 @@
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IProjectCommonServicesFactory
@@ -13,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return ImplementThreadingPolicy(null);
         }
 
-        public static IProjectCommonServices ImplementThreadingPolicy(IProjectThreadingService threadingService)
+        public static IProjectCommonServices ImplementThreadingPolicy(IProjectThreadingService? threadingService)
         {
             threadingService ??= IProjectThreadingServiceFactory.Create();
 

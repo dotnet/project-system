@@ -8,8 +8,6 @@ using Microsoft.VisualStudio.Collections;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     public class LaunchProfileTests

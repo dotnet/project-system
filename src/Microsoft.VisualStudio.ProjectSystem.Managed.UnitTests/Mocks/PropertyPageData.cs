@@ -2,34 +2,21 @@
 
 using System.Collections.Generic;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal class PropertyPageData
     {
-        public string Category
+        public PropertyPageData(string category, string propertyName, object value, List<object>? setValues = null)
         {
-            get;
-            set;
+            Category = category;
+            PropertyName = propertyName;
+            Value = value;
+            SetValues = setValues ?? new List<object>();
         }
 
-        public string PropertyName
-        {
-            get;
-            set;
-        }
-
-        public object Value
-        {
-            get;
-            set;
-        }
-
-        public List<object> SetValues
-        {
-            get;
-            set;
-        }
+        public string Category { get; }
+        public string PropertyName { get; }
+        public object Value { get; }
+        public List<object> SetValues { get; }
     }
 }

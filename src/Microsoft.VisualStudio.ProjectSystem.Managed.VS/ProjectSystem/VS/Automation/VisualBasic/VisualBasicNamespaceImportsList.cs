@@ -1,25 +1,24 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
 {
     [Export(typeof(VisualBasicNamespaceImportsList))]
     [AppliesTo(ProjectCapability.VisualBasic)]
-    internal class VisualBasicNamespaceImportsList : OnceInitializedOnceDisposed
+    internal class VisualBasicNamespaceImportsList : OnceInitializedOnceDisposed, IEnumerable<string>
     {
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
 
         private readonly object _lock = new object();
-        private List<string> _list;
-        private IDisposable _namespaceImportSubscriptionLink;
+        private readonly List<string> _list = new List<string>();
+        private IDisposable? _namespaceImportSubscriptionLink;
 
         private static readonly ImmutableHashSet<string> s_namespaceImportRule = Empty.OrdinalIgnoreCaseStringSet
             .Add(NamespaceImport.SchemaName);
@@ -33,30 +32,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
         /// <summary>
         /// For testing purpose only
         /// </summary>
+#pragma warning disable CS8618 // Non-nullable field '_activeConfiguredProjectSubscriptionService' is uninitialized
         internal VisualBasicNamespaceImportsList()
+#pragma warning restore CS8618 // Non-nullable field '_activeConfiguredProjectSubscriptionService' is uninitialized
         {
         }
 
         /// <summary>
         /// For testing purpose only
         /// </summary>
-        /// <param name="list"></param>
-        internal void SetList(List<string> list)
+        internal void SetList(IEnumerable<string> list)
         {
-            _list = list;
+            _list.Clear();
+            _list.AddRange(list);
         }
 
         internal int Count => _list.Count;
 
         /// <summary>
-        /// Returns an enumerator for the list of imports. If the list is changed while using the enumerator, the enumerator will throw an exception
-        /// to let the user know that the list has changed.
+        /// Returns an enumerator for the list of imports.
         /// </summary>
-        /// <returns></returns>
-        internal IEnumerator<string> GetEnumerator()
+        public IEnumerator<string> GetEnumerator()
         {
-            return _list.GetEnumerator();
+            lock (_lock)
+            {
+                return _list.ToList().GetEnumerator();
+            }
         }
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
 #pragma warning disable RS0030 // symbol ProjectAutoLoad is banned
         [ProjectAutoLoad(startAfter: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
@@ -163,8 +167,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
 
         protected override void Initialize()
         {
-            _list = new List<string>();
-
             //set up a subscription to listen for namespace import changes
             _namespaceImportSubscriptionLink = _activeConfiguredProjectSubscriptionService.ProjectRuleSource.SourceBlock.LinkToAction(
                 target: OnNamespaceImportChanged,

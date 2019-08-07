@@ -2,14 +2,11 @@
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IPhysicalProjectTreeFactory
     {
-
-        public static IPhysicalProjectTree Create(IProjectTreeProvider provider = null, IProjectTree currentTree = null, IProjectTreeService service = null)
+        public static IPhysicalProjectTree Create(IProjectTreeProvider? provider = null, IProjectTree? currentTree = null, IProjectTreeService? service = null)
         {
             currentTree ??= ProjectTreeParser.Parse("Project");
             provider ??= new ProjectTreeProvider();

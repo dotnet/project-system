@@ -6,8 +6,6 @@ using System.Threading;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.Threading.Tasks
 {
     public sealed class CancellationSeriesTests

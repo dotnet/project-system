@@ -4,8 +4,6 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IProjectChangeDescriptionFactory
@@ -30,19 +28,21 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public override IProjectChangeDescription ToActualModel()
         {
-            return new ActualModel
-            {
-                After = After,
-                Before = Before,
-                Difference = Difference
-            };
+            return new ActualModel(After, Before, Difference);
         }
 
-        private class ActualModel : IProjectChangeDescription
+        private sealed class ActualModel : IProjectChangeDescription
         {
-            public IProjectRuleSnapshot After { get; set; }
-            public IProjectRuleSnapshot Before { get; set; }
-            public IProjectChangeDiff Difference { get; set; }
+            public IProjectRuleSnapshot After { get; }
+            public IProjectRuleSnapshot Before { get; }
+            public IProjectChangeDiff Difference { get; }
+
+            public ActualModel(IProjectRuleSnapshot after, IProjectRuleSnapshot before, IProjectChangeDiff difference)
+            {
+                After = after;
+                Before = before;
+                Difference = difference;
+            }
         }
     }
 }

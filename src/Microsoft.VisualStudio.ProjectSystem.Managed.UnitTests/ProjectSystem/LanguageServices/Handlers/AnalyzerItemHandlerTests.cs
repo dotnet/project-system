@@ -6,8 +6,6 @@ using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
     public class AnalyzerItemHandlerTests : CommandLineHandlerTestBase
@@ -17,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
             Assert.Throws<ArgumentNullException>("project", () =>
             {
-                new AnalyzerItemHandler((UnconfiguredProject)null);
+                new AnalyzerItemHandler(null!);
             });
         }
 
@@ -26,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             return CreateInstance(null, null);
         }
 
-        private AnalyzerItemHandler CreateInstance(UnconfiguredProject project = null, IWorkspaceProjectContext context = null)
+        private static AnalyzerItemHandler CreateInstance(UnconfiguredProject? project = null, IWorkspaceProjectContext? context = null)
         {
             project ??= UnconfiguredProjectFactory.Create();
 

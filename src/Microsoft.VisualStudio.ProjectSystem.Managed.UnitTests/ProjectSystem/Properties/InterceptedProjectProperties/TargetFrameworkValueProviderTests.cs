@@ -8,8 +8,6 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
 {
     public class TargetFrameworkValueProviderTests
@@ -18,12 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
 
         private static InterceptedProjectPropertiesProviderBase CreateInstance(FrameworkName configuredTargetFramework)
         {
-            var data = new PropertyPageData()
-            {
-                Category = ConfigurationGeneral.SchemaName,
-                PropertyName = ConfigurationGeneral.TargetFrameworkMonikerProperty,
-                Value = configuredTargetFramework.FullName
-            };
+            var data = new PropertyPageData(ConfigurationGeneral.SchemaName, ConfigurationGeneral.TargetFrameworkMonikerProperty, configuredTargetFramework.FullName);
 
             var project = UnconfiguredProjectFactory.Create();
             var properties = ProjectPropertiesFactory.Create(project, data);
@@ -48,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
             var configuredTargetFramework = new FrameworkName(".NETFramework", new Version(4, 5));
             var expectedTargetFrameworkPropertyValue = (uint)0x40005;
             var provider = CreateInstance(configuredTargetFramework);
-            var properties = provider.GetCommonProperties(null);
+            var properties = provider.GetCommonProperties(null!);
             var propertyValueStr = await properties.GetEvaluatedPropertyValueAsync(TargetFrameworkPropertyName);
             Assert.True(uint.TryParse(propertyValueStr, out uint propertyValue));
             Assert.Equal(expectedTargetFrameworkPropertyValue, propertyValue);

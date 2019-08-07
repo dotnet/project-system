@@ -7,18 +7,16 @@ using System.Linq;
 
 using Newtonsoft.Json;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     internal class LaunchSettings : ILaunchSettings
     {
-        private readonly string _activeProfileName;
+        private readonly string? _activeProfileName;
 
         /// <summary>
         /// Represents the current set of launch settings. Creation from an existing set of profiles. 
         /// </summary>
-        public LaunchSettings(IEnumerable<ILaunchProfile> profiles, IDictionary<string, object> globalSettings, string activeProfile = null)
+        public LaunchSettings(IEnumerable<ILaunchProfile> profiles, IDictionary<string, object>? globalSettings, string? activeProfile = null)
         {
             Profiles = ImmutableList<ILaunchProfile>.Empty;
             foreach (ILaunchProfile profile in profiles)
@@ -30,10 +28,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             _activeProfileName = activeProfile;
         }
 
-        public LaunchSettings(LaunchSettingsData settingsData, string activeProfile = null)
+        public LaunchSettings(LaunchSettingsData settingsData, string? activeProfile = null)
         {
+            Requires.NotNull(settingsData.Profiles, nameof(settingsData.Profiles));
+
             Profiles = ImmutableList<ILaunchProfile>.Empty;
-            foreach (LaunchProfileData profile in settingsData.Profiles)
+            foreach (LaunchProfileData profile in settingsData.Profiles!)
             {
                 Profiles = Profiles.Add(new LaunchProfile(profile));
             }
@@ -88,8 +88,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             return o;
         }
 
-        private ILaunchProfile _activeProfile;
-        public ILaunchProfile ActiveProfile
+        private ILaunchProfile? _activeProfile;
+        public ILaunchProfile? ActiveProfile
         {
             get
             {

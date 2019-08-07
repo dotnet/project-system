@@ -3,8 +3,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     /// <summary>
@@ -26,9 +24,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         }
 
         /// <inheritdoc />
-        public virtual Task<string> OnSetPropertyValueAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string> dimensionalConditions = null)
+        public virtual Task<string?> OnSetPropertyValueAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
-            return Task.FromResult(unevaluatedPropertyValue);
+            return Task.FromResult<string?>(unevaluatedPropertyValue);
         }
     }
 }

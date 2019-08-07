@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.References
 {
     public class AlwaysAllowValidProjectReferenceCheckerTests
@@ -19,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.References
 
             Assert.Throws<ArgumentNullException>("referencedProject", () =>
             {
-                checker.CanAddProjectReferenceAsync((object)null);
+                checker.CanAddProjectReferenceAsync((object)null!);
             });
         }
 
@@ -30,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.References
 
             Assert.Throws<ArgumentNullException>("referencedProjects", () =>
             {
-                checker.CanAddProjectReferencesAsync((IImmutableSet<object>)null);
+                checker.CanAddProjectReferencesAsync((IImmutableSet<object>)null!);
             });
         }
 
@@ -52,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.References
 
             Assert.Throws<ArgumentNullException>("referencingProject", () =>
             {
-                checker.CanBeReferencedAsync((object)null);
+                checker.CanBeReferencedAsync((object)null!);
             });
         }
 
