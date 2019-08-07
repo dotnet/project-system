@@ -128,7 +128,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.References
             Assert.Equal(SupportedCheckResult.Supported, result);
         }
 
-        private IImmutableSet<object> CreateSet(int count)
+        private static IImmutableSet<object> CreateSet(int count)
         {
             var builder = ImmutableHashSet.CreateBuilder<object>();
 
@@ -140,7 +140,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.References
             return builder.ToImmutableHashSet();
         }
 
-        private AlwaysAllowValidProjectReferenceChecker CreateInstance()
+        private static AlwaysAllowValidProjectReferenceChecker CreateInstance()
         {
             return new AlwaysAllowValidProjectReferenceChecker();
         }

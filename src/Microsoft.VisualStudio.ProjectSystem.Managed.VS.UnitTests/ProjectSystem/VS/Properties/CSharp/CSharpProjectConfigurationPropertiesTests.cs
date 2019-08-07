@@ -99,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.CSharp
             Assert.Equal(setValues.Single(), testValue);
         }
 
-        private CSharpProjectConfigurationProperties CreateInstance(ProjectProperties projectProperties, IProjectThreadingService projectThreadingService)
+        private static CSharpProjectConfigurationProperties CreateInstance(ProjectProperties projectProperties, IProjectThreadingService projectThreadingService)
         {
             return new CSharpProjectConfigurationProperties(projectProperties, projectThreadingService);
         }

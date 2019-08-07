@@ -7,7 +7,7 @@ using Moq;
 
 namespace Microsoft.VisualStudio
 {
-    internal class IProjectServiceAccessorFactory
+    internal static class IProjectServiceAccessorFactory
     {
         public static IProjectServiceAccessor Create(IProjectCapabilitiesScope scope = null, ConfiguredProject configuredProject = null)
         {

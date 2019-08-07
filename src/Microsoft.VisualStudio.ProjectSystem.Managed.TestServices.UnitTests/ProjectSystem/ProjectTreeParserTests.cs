@@ -414,7 +414,7 @@ Root
             AssertThrows(input, ProjectTreeFormatError.IndentTooManyLevels);
         }
 
-        private void AssertProjectTree(string input, string expected, ProjectTreeWriterOptions options = ProjectTreeWriterOptions.Flags | ProjectTreeWriterOptions.FilePath | ProjectTreeWriterOptions.Visibility)
+        private static void AssertProjectTree(string input, string expected, ProjectTreeWriterOptions options = ProjectTreeWriterOptions.Flags | ProjectTreeWriterOptions.FilePath | ProjectTreeWriterOptions.Visibility)
         {
             // Remove the newlines from the start and end of input and expected so that 
             // it makes it easier inside the test to layout the repro.
@@ -429,7 +429,7 @@ Root
             Assert.Equal(expected, result, ignoreLineEndingDifferences: true);
         }
 
-        private void AssertThrows(string input, ProjectTreeFormatError error)
+        private static void AssertThrows(string input, ProjectTreeFormatError error)
         {
             input = input.Trim(new[] { '\n', '\r' });
 

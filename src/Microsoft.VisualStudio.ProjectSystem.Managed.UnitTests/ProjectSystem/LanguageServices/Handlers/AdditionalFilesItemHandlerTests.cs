@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             return CreateInstance(null, null);
         }
 
-        private AdditionalFilesItemHandler CreateInstance(UnconfiguredProject project = null, IWorkspaceProjectContext context = null)
+        private static AdditionalFilesItemHandler CreateInstance(UnconfiguredProject project = null, IWorkspaceProjectContext context = null)
         {
             project ??= UnconfiguredProjectFactory.Create();
 

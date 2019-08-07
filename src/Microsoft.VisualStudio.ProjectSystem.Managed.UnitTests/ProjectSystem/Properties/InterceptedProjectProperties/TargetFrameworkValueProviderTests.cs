@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
     {
         private const string TargetFrameworkPropertyName = "TargetFramework";
 
-        private InterceptedProjectPropertiesProviderBase CreateInstance(FrameworkName configuredTargetFramework)
+        private static InterceptedProjectPropertiesProviderBase CreateInstance(FrameworkName configuredTargetFramework)
         {
             var data = new PropertyPageData()
             {

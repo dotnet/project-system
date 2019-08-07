@@ -109,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
             Assert.Same(moniker, result);
         }
 
-        private ProjectImageProviderAggregator CreateInstance(UnconfiguredProject project = null)
+        private static ProjectImageProviderAggregator CreateInstance(UnconfiguredProject project = null)
         {
             project ??= UnconfiguredProjectFactory.Create();
 
