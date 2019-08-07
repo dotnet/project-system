@@ -22,9 +22,12 @@
     <!-- Too noisy due to https://github.com/dotnet/roslyn/issues/27819 -->
     <Rule Id="IDE0001" Action="None" />                       <!-- Simplify names                               System.Version version;                             Version version;                      -->
 
-     <!-- Naming styles is too noisy as it fires on all async tests -->     
+    <!-- Naming styles is too noisy as it fires on all async tests -->     
     <Rule Id="IDE1006" Action="None" />                       <!-- Naming styles                                Task Open()                                         Task OpenAsync()                      -->
     <Rule Id="IDE1006WithoutSuggestion" Action="None" />
+
+    <!-- Unused parameter rule fires on [MemberData] usage -->
+    <Rule Id="IDE0060" Action="None" />
      
      <!-- Dispose rules are too noisy for tests -->
     <Rule Id="IDE0067" Action="None" />
