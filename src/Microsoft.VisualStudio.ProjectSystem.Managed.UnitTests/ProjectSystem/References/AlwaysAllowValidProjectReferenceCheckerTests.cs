@@ -39,8 +39,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.References
         {
             var checker = CreateInstance();
 
-            var referencedProjects = ImmutableHashSet<object>.Empty;
-
             Assert.Throws<ArgumentException>("referencedProjects", () =>
             {
                 checker.CanAddProjectReferencesAsync(ImmutableHashSet<object>.Empty);

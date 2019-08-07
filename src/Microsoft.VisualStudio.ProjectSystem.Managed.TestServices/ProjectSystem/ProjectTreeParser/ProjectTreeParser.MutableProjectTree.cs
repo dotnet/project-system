@@ -24,7 +24,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             public Collection<MutableProjectTree> Children
             {
                 get;
-                private set;
             }
 
             public string Caption

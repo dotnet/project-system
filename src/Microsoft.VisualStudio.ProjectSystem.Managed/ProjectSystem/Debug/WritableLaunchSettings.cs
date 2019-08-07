@@ -12,10 +12,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     internal class WritableLaunchSettings : IWritableLaunchSettings
     {
-        public WritableLaunchSettings()
-        {
-        }
-
         public WritableLaunchSettings(ILaunchSettings settings)
         {
             if (settings.Profiles != null)

@@ -15,31 +15,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return Mock.Of<IProjectChangeDescription>();
         }
 
-        public static IProjectChangeDescription Implement(IProjectRuleSnapshot after = null,
-                                                  IProjectRuleSnapshot before = null,
-                                                  IProjectChangeDiff difference = null,
-                                                  MockBehavior mockBehavior = MockBehavior.Default)
-        {
-            var mock = new Mock<IProjectChangeDescription>(mockBehavior);
-
-            if (after != null)
-            {
-                mock.Setup(x => x.After).Returns(after);
-            }
-
-            if (before != null)
-            {
-                mock.Setup(x => x.Before).Returns(before);
-            }
-
-            if (difference != null)
-            {
-                mock.Setup(x => x.Difference).Returns(difference);
-            }
-
-            return mock.Object;
-        }
-
         public static IProjectChangeDescription FromJson(string jsonString)
         {
             var model = new IProjectChangeDescriptionModel();

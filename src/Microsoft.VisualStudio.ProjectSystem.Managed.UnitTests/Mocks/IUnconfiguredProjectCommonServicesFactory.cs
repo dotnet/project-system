@@ -8,13 +8,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IUnconfiguredProjectCommonServicesFactory
     {
-        public static IUnconfiguredProjectCommonServices Create()
-        {
-            var mock = new Mock<IUnconfiguredProjectCommonServices>();
-
-            return mock.Object;
-        }
-
         public static IUnconfiguredProjectCommonServices Create(UnconfiguredProject project = null, IProjectThreadingService threadingService = null,
                                                                 ConfiguredProject configuredProject = null, ProjectProperties projectProperties = null,
                                                                 IProjectAccessor projectAccessor = null)
@@ -42,11 +35,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
                     .Returns(projectAccessor);
 
             return mock.Object;
-        }
-
-        public static IUnconfiguredProjectCommonServices ImplementProject(UnconfiguredProject project)
-        {
-            return Create(project: project);
         }
     }
 }

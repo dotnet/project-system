@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.ProjectSystem;
@@ -96,7 +95,6 @@ namespace Microsoft.VisualStudio.Telemetry
 
         private static IUnconfiguredProjectVsServices CreateProjectServices(string version)
         {
-            var setValues = new List<object>();
             var project = UnconfiguredProjectFactory.Create();
             var data = new PropertyPageData()
             {
@@ -106,7 +104,6 @@ namespace Microsoft.VisualStudio.Telemetry
             };
 
             var projectProperties = ProjectPropertiesFactory.Create(project, data);
-            var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
 
             return IUnconfiguredProjectVsServicesFactory.Implement(projectProperties: () => projectProperties);
         }

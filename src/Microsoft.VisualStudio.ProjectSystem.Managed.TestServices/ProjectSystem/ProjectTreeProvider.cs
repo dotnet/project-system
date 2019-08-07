@@ -12,10 +12,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal class ProjectTreeProvider : IProjectTreeProvider
     {
-        public ProjectTreeProvider()
-        {
-        }
-
         public IReceivableSourceBlock<IProjectVersionedValue<IProjectTreeSnapshot>> Tree
         {
             get { throw new NotImplementedException(); }
