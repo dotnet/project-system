@@ -51,8 +51,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             get { return _dataSourceKey; }
         }
 
-        /// <inheritdoc/>
         private int _dataSourceVersion;
+
+        /// <inheritdoc/>
         public override IComparable DataSourceVersion
         {
             get { return _dataSourceVersion; }
