@@ -63,7 +63,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return model.FromJson(jsonString);
         }
 
-
         private static string GetDimensionName(int ordinal)
         {
             return ordinal switch

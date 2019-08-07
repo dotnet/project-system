@@ -21,6 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         private readonly IUnconfiguredProjectVsServices _unconfiguredProjectVsServices;
         private readonly ProjectProperties _properties;
         private readonly IVsFrameworkParser _frameworkParser;
+
         private const string _targetFrameworkProperty = "TargetFramework";
 
         [ImportingConstructor]

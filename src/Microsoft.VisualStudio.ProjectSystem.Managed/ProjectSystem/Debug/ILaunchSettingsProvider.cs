@@ -9,7 +9,6 @@ using Microsoft.VisualStudio.Composition;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
-
     /// <summary>
     /// Interface definition for the LaunchSettingsProvider.
     /// </summary>
@@ -64,4 +63,3 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         Task SetActiveProfileAsync(string profileName);
     }
 }
-

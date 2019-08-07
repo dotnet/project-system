@@ -18,7 +18,6 @@ using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
-
     /// <summary>
     /// The exported CPS debugger for all types of K projects (web, consoles, classlibraries). Defers to
     /// other types to get the DebugTarget information to launch.

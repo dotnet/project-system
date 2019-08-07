@@ -10,7 +10,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     public class LaunchSettingsTests
     {
-
         [Fact]
         public void LaunchSettings_CtorTests()
         {

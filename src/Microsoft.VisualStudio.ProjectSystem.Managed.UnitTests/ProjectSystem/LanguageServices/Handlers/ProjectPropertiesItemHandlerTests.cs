@@ -21,7 +21,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             });
         }
 
-
         [Fact]
         public void Handle_WhenPropertyIsChanged_CallsSetProperty()
         {

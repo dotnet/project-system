@@ -318,7 +318,6 @@ Root (flags: {ProjectRoot})
             Verify(propertiesProvider, expectedTree, inputTree);
         }
 
-
         [Theory]
         [InlineData(@"
 Root (flags: {ProjectRoot})

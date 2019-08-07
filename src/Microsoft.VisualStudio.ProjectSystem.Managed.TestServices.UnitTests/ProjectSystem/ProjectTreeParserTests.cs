@@ -15,7 +15,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             Assert.Throws<ArgumentNullException>("value", () =>
             {
-
                 new ProjectTreeParser((string)null);
             });
         }
@@ -25,7 +24,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             Assert.Throws<ArgumentException>("value", () =>
             {
-
                 new ProjectTreeParser("");
             });
         }
@@ -439,10 +437,8 @@ Root
 
             var exception = Assert.Throws<ProjectTreeFormatException>(() =>
             {
-
                 parser.Parse();
             });
-
 
             Assert.Equal(error, exception.ErrorId);
         }

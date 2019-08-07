@@ -43,7 +43,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             int callCount = 0;
             UnconfiguredProject project = UnconfiguredProjectFactory.ImplementLoadConfiguredProjectAsync(configuration =>
             {
-
                 callCount++;
                 return Task.FromResult<ConfiguredProject>(null);
             });
@@ -66,7 +65,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var results = new List<string>();
             var project = UnconfiguredProjectFactory.ImplementLoadConfiguredProjectAsync(configuration =>
             {
-
                 results.Add(configuration.Name);
                 return Task.FromResult<ConfiguredProject>(null);
             });
@@ -83,7 +81,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             Assert.Equal(new string[] { "Debug|AnyCPU" }, results);
         }
-
 
         [Fact]
         public void Dispose_WhenNotInitialized_DoesNotThrow()
@@ -102,7 +99,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             int callCount = 0;
             UnconfiguredProject project = UnconfiguredProjectFactory.ImplementLoadConfiguredProjectAsync(configuration =>
             {
-
                 callCount++;
                 return Task.FromResult<ConfiguredProject>(null);
             });

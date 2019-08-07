@@ -27,7 +27,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             Assert.Equal(expectedValue, appManifestValue);
         }
 
-
         [Theory]
         [InlineData(@"inp.man", "true", @"out.man", @"out.man", null)]
         [InlineData(@"C:\projectdir\foo.man", "true", @"C:\projectdir\bar.man", @"bar.man", null)]
@@ -54,4 +53,3 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         }
     }
 }
-

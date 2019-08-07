@@ -6,7 +6,6 @@ using System.Collections.Generic;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
-
     /// <summary>
     /// Interface definition for a writable launch profile
     /// </summary>

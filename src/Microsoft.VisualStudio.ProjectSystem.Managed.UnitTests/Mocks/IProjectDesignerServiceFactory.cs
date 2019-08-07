@@ -32,7 +32,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 .ReturnsAsync(action);
 
             return mock.Object;
-
         }
     }
 }

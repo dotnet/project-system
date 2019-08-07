@@ -44,6 +44,5 @@ namespace Microsoft.Build
 
             public override Encoding Encoding => Encoding.UTF8;
         }
-
     }
 }

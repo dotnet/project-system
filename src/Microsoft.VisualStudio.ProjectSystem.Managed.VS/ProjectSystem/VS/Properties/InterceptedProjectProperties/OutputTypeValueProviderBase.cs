@@ -35,7 +35,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             return DefaultGetValue;
         }
 
-
         public override async Task<string> OnSetPropertyValueAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string> dimensionalConditions = null)
         {
             string value = SetMap[unevaluatedPropertyValue];

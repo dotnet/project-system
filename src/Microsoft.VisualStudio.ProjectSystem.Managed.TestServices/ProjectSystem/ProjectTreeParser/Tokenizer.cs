@@ -29,10 +29,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public TokenType? Peek()
         {
             Token? token = PeekToken();
-            if (token == null)
-                return null;
 
-            return token.Value.TokenType;
+            return token?.TokenType;
         }
 
         public void Skip(TokenType expected)
@@ -170,8 +168,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         internal static FormatException FormatException(ProjectTreeFormatError errorId, string message)
         {
-            return new ProjectTreeFormatException(message,
-                                                  errorId);
+            return new ProjectTreeFormatException(message, errorId);
         }
     }
 }

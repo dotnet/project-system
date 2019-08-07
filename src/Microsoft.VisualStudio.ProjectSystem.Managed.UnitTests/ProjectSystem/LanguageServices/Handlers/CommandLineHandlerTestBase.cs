@@ -109,6 +109,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         }
 
         internal abstract ICommandLineHandler CreateInstance();
-
     }
 }

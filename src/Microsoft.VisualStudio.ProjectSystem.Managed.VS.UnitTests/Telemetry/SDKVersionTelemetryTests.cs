@@ -50,7 +50,6 @@ namespace Microsoft.VisualStudio.Telemetry
             Assert.False(success);
         }
 
-
         [Fact]
         public static async Task TestCreateComponentNoSDKVersionDefined()
         {

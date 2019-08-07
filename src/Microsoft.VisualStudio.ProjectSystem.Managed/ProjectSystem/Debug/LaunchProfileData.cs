@@ -10,7 +10,6 @@ using Newtonsoft.Json.Linq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
-
     /// <summary>
     /// Used to read in the profile data. Explicitly OptsIn for explicit json properties
     /// </summary>

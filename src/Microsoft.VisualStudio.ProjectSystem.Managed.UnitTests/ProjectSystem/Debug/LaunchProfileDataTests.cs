@@ -15,7 +15,6 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
-
     public class LaunchProfileDataTests
     {
         [Theory]

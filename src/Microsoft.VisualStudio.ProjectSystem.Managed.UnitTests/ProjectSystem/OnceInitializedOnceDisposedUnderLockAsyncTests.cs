@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             var instance = CreateInstance();
 
-            bool result = default;
+            bool result = false;
             await instance.ExecuteUnderLockAsync(ct => 
             {
                 cancellationTokenSource.Cancel();
@@ -64,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             var instance = CreateInstance();
 
-            bool result = default;
+            bool result = false;
             await instance.ExecuteUnderLockAsync(ct =>
             {
                 cancellationTokenSource.Cancel();

@@ -20,7 +20,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             Assert.Throws<ArgumentNullException>("path", () =>
             {
-
                 var result = storage.CreateFolderAsync((string)null);
             });
         }
@@ -32,7 +31,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             Assert.Throws<ArgumentException>("path", () =>
             {
-
                 var result = storage.CreateFolderAsync(string.Empty);
             });
         }
@@ -45,7 +43,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             Assert.Throws<InvalidOperationException>(() =>
             {
-
                 var result = storage.CreateFolderAsync("path");
             });
         }

@@ -10,6 +10,5 @@ namespace Microsoft.VisualStudio.ProjectSystem
     [SuppressMessage("Style", "IDE0016:Use 'throw' expression")]
     internal partial class SubProject
     {
-
     }
 }

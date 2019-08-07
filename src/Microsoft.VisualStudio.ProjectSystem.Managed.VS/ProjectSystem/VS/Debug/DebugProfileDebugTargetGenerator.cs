@@ -78,7 +78,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             => Task.FromResult<IDynamicEnumValuesGenerator>(
                 new DebugProfileEnumValuesGenerator(LaunchSettingProvider, ProjectThreadingService));
 
-
         protected override void Initialize()
         {
             IPropagatorBlock<ILaunchSettings, IProjectVersionedValue<IReadOnlyList<IEnumValue>>> debugProfilesBlock = DataflowBlockSlim.CreateTransformBlock<ILaunchSettings, IProjectVersionedValue<IReadOnlyList<IEnumValue>>>(

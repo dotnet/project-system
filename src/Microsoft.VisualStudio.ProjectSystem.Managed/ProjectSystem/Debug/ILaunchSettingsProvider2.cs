@@ -23,4 +23,3 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         Task<string> GetLaunchSettingsFilePathAsync();
     }
 }
-
