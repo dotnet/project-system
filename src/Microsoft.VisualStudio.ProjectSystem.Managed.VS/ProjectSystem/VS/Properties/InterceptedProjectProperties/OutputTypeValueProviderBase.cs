@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync();
             await configuration.OutputType.SetValueAsync(value);
 
-            // Since we have persisted the value of OutputType, we dont have to persist the incoming value
+            // Since we have persisted the value of OutputType, we don't have to persist the incoming value
             return null;
         }
     }

@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 CommandName = "Test",
                 ExecutablePath = "c:\\this\\is\\a\\exe\\path",
                 CommandLineArgs = "args",
-                WorkingDirectory = "c:\\wprking\\directory\\",
+                WorkingDirectory = "c:\\working\\directory\\",
                 LaunchBrowser = true,
                 LaunchUrl = "LaunchPage.html",
                 EnvironmentVariables = new Dictionary<string, string>() { { "var1", "Value1" }, { "var2", "Value2" } }.ToImmutableDictionary(),

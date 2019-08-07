@@ -182,7 +182,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         //Negative cases
         [InlineData(@"[assembly: System.Reflection.AssemblyDescriptionAttribute(""MyDescription"")]", "Product", "NewDescription",
                     @"[assembly: System.Reflection.AssemblyDescriptionAttribute(""MyDescription"")]")]
-        [InlineData(@"[assembly: System.Reflection.AssemblyDescriptionAttribute(""MyDescription"")]", "SomeRandomPropety", "NewDescription",
+        [InlineData(@"[assembly: System.Reflection.AssemblyDescriptionAttribute(""MyDescription"")]", "SomeRandomProperty", "NewDescription",
                     @"[assembly: System.Reflection.AssemblyDescriptionAttribute(""MyDescription"")]")]
         [InlineData(@"[assembly: System.Reflection.AssemblyDescriptionAttribute(""MyDescription"", ""MyDescription"")]", "Description", "NewDescription",
                     @"[assembly: System.Reflection.AssemblyDescriptionAttribute(""MyDescription"", ""MyDescription"")]")]

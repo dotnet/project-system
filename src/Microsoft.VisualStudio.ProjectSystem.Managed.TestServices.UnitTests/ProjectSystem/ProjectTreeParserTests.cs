@@ -113,7 +113,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [InlineData(@"Root (), icon:")]
         [InlineData(@"Root (), expandedIcon:")]
         [InlineData(@"Root (), Unrecognized:")]
-        [InlineData(@"Root (), Icon: {407FAC73-908A-4477-8176-A3128544AE4F 1}, unreognized:")]
+        [InlineData(@"Root (), Icon: {407FAC73-908A-4477-8176-A3128544AE4F 1}, unrecognized:")]
         public void Parse_UnrecognizedPropertyName_ThrowsFormat(string input)
         {
             AssertThrows(input, ProjectTreeFormatError.UnrecognizedPropertyName);
