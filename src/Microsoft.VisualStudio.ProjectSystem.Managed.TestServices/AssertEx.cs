@@ -26,5 +26,30 @@ namespace Xunit
         {
             CollectionLength(collection.Cast<object>(), expectedCount);
         }
+
+        public static void SequenceEqual<T>(IEnumerable<T> expected, IEnumerable<T> actual)
+        {
+            using IEnumerator<T> expectedEnumerator = expected.GetEnumerator();
+            using IEnumerator<T> actualEnumerator = actual.GetEnumerator();
+
+            while (true)
+            {
+                bool nextExpected = expectedEnumerator.MoveNext();
+                bool nextActual = actualEnumerator.MoveNext();
+
+                if (nextExpected && nextActual)
+                {
+                    Assert.Equal(expectedEnumerator.Current, actualEnumerator.Current);
+                }
+                else if (!nextExpected && !nextActual)
+                {
+                    return;
+                }
+                else
+                {
+                    throw new XunitException("Sequences have different lengths");
+                }
+            }
+        }
     }
 }
