@@ -19,8 +19,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
         protected ImmutablePropertyCollection(IEnumerable<T> items)
         {
+            // While the majority of elements (items, properties, metadata) are guaranteed to be unique,
+            // Target Frameworks are not, filter out duplicates - NuGet uses the int-based indexer anyway.
+
+#pragma warning disable IDE0039 // We want to cache the delegate
+            Func<T, string> keySelector = i => GetKeyForItem(i);
+#pragma warning restore IDE0039
+
             _items = ImmutableList.CreateRange(items);
-            _itemsByName = _items.ToImmutableDictionary(i => GetKeyForItem(i), StringComparers.ItemNames);
+            _itemsByName = items.Distinct(keySelector, StringComparers.ItemNames)
+                                .ToImmutableDictionary(keySelector, StringComparers.ItemNames);
         }
 
         public int Count
