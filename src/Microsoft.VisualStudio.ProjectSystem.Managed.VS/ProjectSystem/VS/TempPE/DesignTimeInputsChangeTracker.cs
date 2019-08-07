@@ -30,13 +30,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         private string? _latestOutputPath;
         private int _version;
 
-        /// <summary>
-        /// The block that sends out updates from this service.
-        /// </summary>
         private IBroadcastBlock<IProjectVersionedValue<DesignTimeInputsDelta>>? _broadcastBlock;
 
         /// <summary>
-        /// The public facade for the broadcast block.
+        /// The public facade for the broadcast block. We don't expose the broadcast block directly because we don't want to allow consumers to complete or fault us
         /// </summary>
         private IReceivableSourceBlock<IProjectVersionedValue<DesignTimeInputsDelta>>? _publicBlock;
 
