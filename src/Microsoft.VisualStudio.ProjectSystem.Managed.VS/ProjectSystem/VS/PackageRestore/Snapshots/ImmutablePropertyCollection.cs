@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         private readonly IReadOnlyList<T> _items;
         private readonly IReadOnlyDictionary<string, T> _itemsByName;
 
-        protected ImmutablePropertyCollection(IEnumerable<T> items)
+        protected ImmutablePropertyCollection(IEnumerable<T> items, Func<T, string> keyAccessor)
         {
             // Build a list, to maintain order for index-based lookup.
             var itemList = new List<T>();
@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             {
                 itemList.Add(item);
 
-                string key = GetKeyForItem(item);
+                string key = keyAccessor(item);
 
                 // While the majority of elements (items, properties, metadata) are guaranteed to be unique,
                 // Target Frameworks are not, filter out duplicates - NuGet uses the int-based indexer anyway.
@@ -59,8 +59,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         {
             return _items.GetEnumerator();
         }
-
-        protected abstract string GetKeyForItem(T item);
 
         public T? Item(object index)
         {
