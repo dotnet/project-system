@@ -4,8 +4,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 {
     internal class DesignTimeInputFileChange
     {
-        public readonly string File;
-        public readonly bool IgnoreFileWriteTime;
+        public string File { get; }
+        public bool IgnoreFileWriteTime { get; }
 
         public DesignTimeInputFileChange(string file, bool ignoreFileWriteTime)
         {

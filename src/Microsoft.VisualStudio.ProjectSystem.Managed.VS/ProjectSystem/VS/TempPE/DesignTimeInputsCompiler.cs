@@ -142,7 +142,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
                     if (token.IsCancellationRequested)
                     {
-                        LogTelemetry(true);
+                        LogTelemetry(cancelled: true);
                         return;
                     }
 
@@ -161,16 +161,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                             compileCount++;
                         }
                         // We remove the file if the compilation wasn't cancelled, regardless of whether it really happened or not.
-                        ThreadingTools.ApplyChangeOptimistically(ref _filesToCompile, fileName, (s, f) => s.Remove(f));
+                        ImmutableInterlocked.TryRemove(ref _filesToCompile, fileName, out _);
                     }
                     catch (OperationCanceledException)
                     {
-                        LogTelemetry(true);
+                        LogTelemetry(cancelled: true);
                         return;
                     }
                 }
 
-                LogTelemetry(false);
+                LogTelemetry(cancelled: false);
             });
 
             void LogTelemetry(bool cancelled)
@@ -205,7 +205,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             }
 
             // Remove the file from our todo list, in case it was in there.
-            ThreadingTools.ApplyChangeOptimistically(ref _filesToCompile, fileName, (s, f) => s.Remove(f));
+            ImmutableInterlocked.TryRemove(ref _filesToCompile, fileName, out _);
 
             string outputFileName = GetOutputFileName(fileName);
             // make sure the file is up to date
@@ -271,7 +271,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         {
             Assumes.NotNull(_state);
 
-            // All monikers are project relative paths by defintion (anything else is a link, and linked files can't be TempPE inputs), meaning 
+            // All monikers are project relative paths by definition (anything else is a link, and linked files can't be TempPE inputs), meaning 
             // the only invalid filename characters possible are path separators so we just replace them
             return Path.Combine(_state!.OutputPath, designTimeInput.Replace('\\', '.') + ".dll");
         }
@@ -312,7 +312,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             // plus Roslyn needs to call Contains on this quite a lot in order to ensure its only compiling the right files so we want that to be fast.
             // When it comes to compiling the files there is no difference between shared and normal design time inputs, we just track differently because
             // shared are included in every DLL.
-            var files = new HashSet<string>(_state!.AllSharedInputs.Length + 1, StringComparers.Paths);
+            var files = new HashSet<string>(_state!.AllSharedInputs.Count + 1, StringComparers.Paths);
             // All monikers are project relative paths by defintion (anything else is a link, and linked files can't be TempPE inputs) so we can convert
             // them to full paths using MakeRooted.
             files.AddRange(_state.AllSharedInputs.Select(_project.MakeRooted));
