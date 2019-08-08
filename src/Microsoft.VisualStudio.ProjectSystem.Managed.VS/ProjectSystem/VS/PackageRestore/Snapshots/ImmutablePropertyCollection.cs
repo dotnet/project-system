@@ -35,6 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         {
             get { return _items.Count; }
         }
+
         public IEnumerator<T> GetEnumerator()
         {
             return _items.GetEnumerator();
@@ -49,16 +50,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
         public T? Item(object index)
         {
-            if (index is string name)
+            return index switch
             {
-                return GetItemByName(name);
-            }
-            else if (index is int intIndex)
-            {
-                return GetItemByIndex(intIndex);
-            }
-
-            throw new ArgumentException(null, nameof(index));
+                string name => GetItemByName(name),
+                int intIndex => GetItemByIndex(intIndex),
+                _ => throw new ArgumentException(null, nameof(index))
+            };
         }
 
         private T? GetItemByName(string name)
