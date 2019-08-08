@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         [ImportingConstructor]
         public AppManifestSpecialFileProvider(IPhysicalProjectTree projectTree,
                                               [Import(ExportContractNames.ProjectItemProviders.SourceFiles)] IProjectItemProvider sourceItemsProvider,
-                                              [Import(AllowDefault = true)] Lazy<ICreateFileFromTemplateService> templateFileCreationService,
+                                              [Import(AllowDefault = true)] Lazy<ICreateFileFromTemplateService>? templateFileCreationService,
                                               IFileSystem fileSystem,
                                               ISpecialFilesManager specialFilesManager,
                                               ProjectProperties projectProperties)

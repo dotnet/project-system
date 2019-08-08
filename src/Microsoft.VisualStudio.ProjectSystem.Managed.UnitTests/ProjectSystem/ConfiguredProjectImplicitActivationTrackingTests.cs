@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     public class ConfiguredProjectImplicitActivationTrackingTests
@@ -337,7 +335,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return CreateInstance(null, tasksService, out _);
         }
 
-        private static ConfiguredProjectImplicitActivationTracking CreateInstance(ConfiguredProject project, IProjectAsynchronousTasksService tasksService, out ProjectValueDataSource<IConfigurationGroup<ProjectConfiguration>> source)
+        private static ConfiguredProjectImplicitActivationTracking CreateInstance(ConfiguredProject? project, IProjectAsynchronousTasksService? tasksService, out ProjectValueDataSource<IConfigurationGroup<ProjectConfiguration>> source)
         {
             project ??= ConfiguredProjectFactory.Create();
             var services = IProjectCommonServicesFactory.CreateWithDefaultThreadingPolicy();

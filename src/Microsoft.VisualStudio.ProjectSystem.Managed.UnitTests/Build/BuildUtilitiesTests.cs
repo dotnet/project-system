@@ -7,8 +7,6 @@ using Microsoft.Build.Construction;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.Build
 {
     public class BuildUtilitiesTests
@@ -163,7 +161,7 @@ namespace Microsoft.VisualStudio.Build
             BuildUtilities.AppendPropertyValue(project, "1;2", "MyProperty", "3");
             var property = BuildUtilities.GetProperty(project, "MyProperty");
             Assert.NotNull(property);
-            Assert.Equal("1;2;3", property.Value);
+            Assert.Equal("1;2;3", property!.Value);
         }
 
         [Fact]
@@ -180,7 +178,7 @@ namespace Microsoft.VisualStudio.Build
             BuildUtilities.AppendPropertyValue(project, "", "MyProperty", "1");
             var property = BuildUtilities.GetProperty(project, "MyProperty");
             Assert.NotNull(property);
-            Assert.Equal("1", property.Value);
+            Assert.Equal("1", property!.Value);
         }
 
         [Fact]
@@ -190,7 +188,7 @@ namespace Microsoft.VisualStudio.Build
             BuildUtilities.AppendPropertyValue(project, "1;2", "MyProperty", "3");
             var property = BuildUtilities.GetProperty(project, "MyProperty");
             Assert.NotNull(property);
-            Assert.Equal("1;2;3", property.Value);
+            Assert.Equal("1;2;3", property!.Value);
         }
 
         [Fact]
@@ -200,7 +198,7 @@ namespace Microsoft.VisualStudio.Build
             BuildUtilities.AppendPropertyValue(project, "", "MyProperty", "1");
             var property = BuildUtilities.GetProperty(project, "MyProperty");
             Assert.NotNull(property);
-            Assert.Equal("1", property.Value);
+            Assert.Equal("1", property!.Value);
         }
 
         [Fact]
@@ -217,7 +215,7 @@ namespace Microsoft.VisualStudio.Build
             BuildUtilities.AppendPropertyValue(project, "1", "MyProperty", "2", '|');
             var property = BuildUtilities.GetProperty(project, "MyProperty");
             Assert.NotNull(property);
-            Assert.Equal("1|2", property.Value);
+            Assert.Equal("1|2", property!.Value);
         }
 
         [Fact]
@@ -234,7 +232,7 @@ namespace Microsoft.VisualStudio.Build
             BuildUtilities.RemovePropertyValue(project, "1;2", "MyProperty", "2");
             var property = BuildUtilities.GetProperty(project, "MyProperty");
             Assert.NotNull(property);
-            Assert.Equal("1", property.Value);
+            Assert.Equal("1", property!.Value);
         }
 
         [Fact]
@@ -251,7 +249,7 @@ namespace Microsoft.VisualStudio.Build
             BuildUtilities.RemovePropertyValue(project, "1|2|3", "MyProperty", "2", '|');
             var property = BuildUtilities.GetProperty(project, "MyProperty");
             Assert.NotNull(property);
-            Assert.Equal("1|3", property.Value);
+            Assert.Equal("1|3", property!.Value);
         }
 
         [Fact]
@@ -268,7 +266,7 @@ namespace Microsoft.VisualStudio.Build
             BuildUtilities.RemovePropertyValue(project, "1", "MyProperty", "1");
             var property = BuildUtilities.GetProperty(project, "MyProperty");
             Assert.NotNull(property);
-            Assert.Equal(string.Empty, property.Value);
+            Assert.Equal(string.Empty, property!.Value);
         }
 
         [Fact]
@@ -278,7 +276,7 @@ namespace Microsoft.VisualStudio.Build
             BuildUtilities.RemovePropertyValue(project, "1;2", "MyProperty", "1");
             var property = BuildUtilities.GetProperty(project, "MyProperty");
             Assert.NotNull(property);
-            Assert.Equal("2", property.Value);
+            Assert.Equal("2", property!.Value);
         }
 
         [Fact]
@@ -288,7 +286,7 @@ namespace Microsoft.VisualStudio.Build
             Assert.Throws<ArgumentException>("valueToRemove", () => BuildUtilities.RemovePropertyValue(project, "", "MyProperty", "1"));
             var property = BuildUtilities.GetProperty(project, "MyProperty");
             Assert.NotNull(property);
-            Assert.Equal(string.Empty, property.Value);
+            Assert.Equal(string.Empty, property!.Value);
         }
 
         [Fact]
@@ -305,7 +303,7 @@ namespace Microsoft.VisualStudio.Build
             BuildUtilities.RenamePropertyValue(project, "1;2", "MyProperty", "2", "5");
             var property = BuildUtilities.GetProperty(project, "MyProperty");
             Assert.NotNull(property);
-            Assert.Equal("1;5", property.Value);
+            Assert.Equal("1;5", property!.Value);
         }
 
         [Fact]
@@ -322,7 +320,7 @@ namespace Microsoft.VisualStudio.Build
             BuildUtilities.RenamePropertyValue(project, "1|2|3", "MyProperty", "2", "5", '|');
             var property = BuildUtilities.GetProperty(project, "MyProperty");
             Assert.NotNull(property);
-            Assert.Equal("1|5|3", property.Value);
+            Assert.Equal("1|5|3", property!.Value);
         }
 
         [Fact]
@@ -332,7 +330,7 @@ namespace Microsoft.VisualStudio.Build
             BuildUtilities.RenamePropertyValue(project, "1;2", "MyProperty", "1", "3");
             var property = BuildUtilities.GetProperty(project, "MyProperty");
             Assert.NotNull(property);
-            Assert.Equal("3;2", property.Value);
+            Assert.Equal("3;2", property!.Value);
         }
 
         [Fact]
@@ -342,7 +340,7 @@ namespace Microsoft.VisualStudio.Build
             Assert.Throws<ArgumentException>("oldValue", () => BuildUtilities.RenamePropertyValue(project, "", "MyProperty", "1", "2"));
             var property = BuildUtilities.GetProperty(project, "MyProperty");
             Assert.NotNull(property);
-            Assert.Equal(string.Empty, property.Value);
+            Assert.Equal(string.Empty, property!.Value);
         }
     }
 }

@@ -7,8 +7,6 @@ using Microsoft.Build.Construction;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.Build
 {
     public static class MSBuildAssert

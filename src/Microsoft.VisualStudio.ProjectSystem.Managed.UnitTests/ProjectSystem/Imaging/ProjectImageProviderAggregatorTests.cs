@@ -4,8 +4,6 @@ using System;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Imaging
 {
     public class ProjectImageProviderAggregatorTests
@@ -17,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
 
             Assert.Throws<ArgumentNullException>("key", () =>
             {
-                aggregator.GetProjectImage(null);
+                aggregator.GetProjectImage(null!);
             });
         }
 
@@ -109,7 +107,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
             Assert.Same(moniker, result);
         }
 
-        private static ProjectImageProviderAggregator CreateInstance(UnconfiguredProject project = null)
+        private static ProjectImageProviderAggregator CreateInstance(UnconfiguredProject? project = null)
         {
             project ??= UnconfiguredProjectFactory.Create();
 

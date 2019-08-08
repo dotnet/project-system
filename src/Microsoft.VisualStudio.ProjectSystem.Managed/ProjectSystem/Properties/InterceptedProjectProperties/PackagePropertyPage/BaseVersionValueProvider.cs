@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.Text;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
 {
     internal abstract class BaseVersionValueProvider : InterceptingPropertyValueProviderBase
@@ -44,7 +42,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
             return version.ToString();
         }
 
-        public override async Task<string> OnSetPropertyValueAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string> dimensionalConditions = null)
+        public override async Task<string?> OnSetPropertyValueAsync(
+            string unevaluatedPropertyValue,
+            IProjectProperties defaultProperties,
+            IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
             // Don't set the new value if both of the following is true:
             //  1. There is no existing property entry AND

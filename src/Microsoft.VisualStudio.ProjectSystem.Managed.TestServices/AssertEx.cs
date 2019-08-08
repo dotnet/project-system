@@ -6,8 +6,6 @@ using System.Linq;
 
 using Xunit.Sdk;
 
-#nullable disable
-
 namespace Xunit
 {
     public static class AssertEx
@@ -25,6 +23,31 @@ namespace Xunit
         public static void CollectionLength(IEnumerable collection, int expectedCount)
         {
             CollectionLength(collection.Cast<object>(), expectedCount);
+        }
+
+        public static void SequenceEqual<T>(IEnumerable<T> expected, IEnumerable<T> actual)
+        {
+            using IEnumerator<T> expectedEnumerator = expected.GetEnumerator();
+            using IEnumerator<T> actualEnumerator = actual.GetEnumerator();
+
+            while (true)
+            {
+                bool nextExpected = expectedEnumerator.MoveNext();
+                bool nextActual = actualEnumerator.MoveNext();
+
+                if (nextExpected && nextActual)
+                {
+                    Assert.Equal(expectedEnumerator.Current, actualEnumerator.Current);
+                }
+                else if (!nextExpected && !nextActual)
+                {
+                    return;
+                }
+                else
+                {
+                    throw new XunitException("Sequences have different lengths");
+                }
+            }
         }
     }
 }

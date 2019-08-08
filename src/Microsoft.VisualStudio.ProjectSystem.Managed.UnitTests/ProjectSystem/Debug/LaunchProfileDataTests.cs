@@ -11,8 +11,6 @@ using Newtonsoft.Json.Linq;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     public class LaunchProfileDataTests
@@ -82,7 +80,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.Null(profile.LaunchBrowser);
             Assert.Null(profile.LaunchUrl);
             Assert.Null(profile.EnvironmentVariables);
-            Assert.True((bool)profile.OtherSettings["custom1"]);
+            Assert.NotNull(profile.OtherSettings);
+            Assert.True((bool)profile.OtherSettings!["custom1"]);
             Assert.Equal(124, profile.OtherSettings["custom2"]);
             Assert.Equal("mycustomVal", profile.OtherSettings["custom3"]);
             Assert.False(profile.InMemoryProfile);
@@ -94,7 +93,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.False(profile.LaunchBrowser);
             Assert.Null(profile.LaunchUrl);
             Assert.Null(profile.EnvironmentVariables);
-            Assert.Equal("some option in docker", profile.OtherSettings["dockerOption1"]);
+            Assert.NotNull(profile.OtherSettings);
+            Assert.Equal("some option in docker", profile.OtherSettings!["dockerOption1"]);
             Assert.Equal("Another option in docker", profile.OtherSettings["dockerOption2"]);
             Assert.False(profile.InMemoryProfile);
 
@@ -104,7 +104,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.Null(profile.ExecutablePath);
             Assert.True(profile.LaunchBrowser);
             Assert.Null(profile.LaunchUrl);
-            Assert.Equal("Development", profile.EnvironmentVariables["ASPNET_ENVIRONMENT"]);
+            Assert.NotNull(profile.EnvironmentVariables);
+            Assert.Equal("Development", profile.EnvironmentVariables!["ASPNET_ENVIRONMENT"]);
             Assert.Equal("c:\\Users\\billhie\\Documents\\projects\\WebApplication8\\src\\WebApplication8", profile.EnvironmentVariables["ASPNET_APPLICATIONBASE"]);
             Assert.Null(profile.OtherSettings);
             Assert.False(profile.InMemoryProfile);

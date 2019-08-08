@@ -2,13 +2,11 @@
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
     internal static class ISpecialFilesManagerFactory
     {
-        public static ISpecialFilesManager ImplementGetFile(string result)
+        public static ISpecialFilesManager ImplementGetFile(string? result)
         {
             var mock = new Mock<ISpecialFilesManager>();
             mock.Setup(m => m.GetFileAsync(It.IsAny<SpecialFiles>(), It.IsAny<SpecialFileFlags>()))

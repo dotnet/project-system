@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         private const int MaxEventCount = 10;
 
         private readonly UnconfiguredProject _project;
-        private readonly ITelemetryService _telemetryService;
+        private readonly ITelemetryService? _telemetryService;
         private readonly ISafeProjectGuidService _safeProjectGuidService;
         private readonly ConcurrentDictionary<ITargetFramework, TelemetryState> _telemetryStates =
             new ConcurrentDictionary<ITargetFramework, TelemetryState>();
@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [ImportingConstructor]
         public DependencyTreeTelemetryService(
             UnconfiguredProject project,
-            [Import(AllowDefault = true)] ITelemetryService telemetryService,
+            [Import(AllowDefault = true)] ITelemetryService? telemetryService,
             ISafeProjectGuidService safeProjectGuidService)
         {
             _project = project;
@@ -122,7 +122,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             if (hasUnresolvedDependency)
             {
-                _telemetryService.PostProperties(TelemetryEventName.TreeUpdatedUnresolved, new[]
+                _telemetryService!.PostProperties(TelemetryEventName.TreeUpdatedUnresolved, new[]
                 {
                     (TelemetryPropertyName.TreeUpdatedUnresolvedProject, (object)_projectId),
                     (TelemetryPropertyName.TreeUpdatedUnresolvedObservedAllRules, observedAllRules)
@@ -130,7 +130,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
             else
             {
-                _telemetryService.PostProperties(TelemetryEventName.TreeUpdatedResolved, new[]
+                _telemetryService!.PostProperties(TelemetryEventName.TreeUpdatedResolved, new[]
                 {
                     (TelemetryPropertyName.TreeUpdatedResolvedProject, (object)_projectId),
                     (TelemetryPropertyName.TreeUpdatedResolvedObservedAllRules, observedAllRules)
@@ -151,7 +151,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 }
                 else
                 {
-                    return _telemetryService.HashValue(_project.FullPath);
+                    return _telemetryService!.HashValue(_project.FullPath);
                 }
             }
         }

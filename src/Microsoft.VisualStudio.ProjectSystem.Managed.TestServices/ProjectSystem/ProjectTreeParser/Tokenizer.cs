@@ -4,8 +4,6 @@ using System;
 using System.Collections.Immutable;
 using System.Text;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal partial class Tokenizer

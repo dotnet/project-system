@@ -2,8 +2,6 @@
 
 using Newtonsoft.Json.Linq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal interface IJsonModel<out T>

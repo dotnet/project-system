@@ -4,8 +4,6 @@ using System.Collections.Immutable;
 
 using Microsoft.VisualStudio.Collections;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     internal static class WritableLaunchSettingsExtension

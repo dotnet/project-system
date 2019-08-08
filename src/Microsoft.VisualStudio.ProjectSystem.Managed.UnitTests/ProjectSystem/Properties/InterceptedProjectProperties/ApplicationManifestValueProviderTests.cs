@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     public class ApplicationManifestValueProviderTests
@@ -36,10 +34,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [InlineData(@"C:\projectdir\foo.man", null, @"DefaultManifest", null, null)]
         [InlineData(@"C:\projectdir\foo.man", null, "", null, null)]
         [InlineData(@"C:\projectdir\foo.man", null, null, null, null)]
-        public async Task SetApplicationManifest(string appManifestPropValue, string noManifestPropValue, string valueToSet, string expectedAppManifestValue, string expectedNoManifestValue)
+        public async Task SetApplicationManifest(string appManifestPropValue, string? noManifestPropValue, string? valueToSet, string? expectedAppManifestValue, string? expectedNoManifestValue)
         {
             var provider = new ApplicationManifestValueProvider(UnconfiguredProjectFactory.Create(filePath: @"C:\projectdir\proj.proj"));
-            var defaultProperties = IProjectPropertiesFactory.CreateWithPropertiesAndValues(new Dictionary<string, string>
+            var defaultProperties = IProjectPropertiesFactory.CreateWithPropertiesAndValues(new Dictionary<string, string?>
                                                                                             {
                                                                                                 { "ApplicationManifest", appManifestPropValue },
                                                                                                 { "NoWin32Manifest", noManifestPropValue }

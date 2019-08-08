@@ -7,8 +7,6 @@ using System.IO;
 
 using Microsoft.VisualStudio.Imaging;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging.FSharp
 {
     [Export(typeof(IProjectTreePropertiesProvider))]
@@ -36,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging.FSharp
             }
         }
 
-        private static ProjectImageMoniker GetIconForItem(string itemName)
+        private static ProjectImageMoniker? GetIconForItem(string itemName)
         {
             if (s_fileExtensionImageMap.TryGetValue(Path.GetExtension(itemName), out ProjectImageMoniker moniker))
             {

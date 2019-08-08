@@ -8,8 +8,6 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IProjectSubscriptionUpdateFactory
@@ -25,9 +23,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         public static IProjectSubscriptionUpdate Implement(
-                        IDictionary<string, IProjectRuleSnapshot> currentState = null,
-                        IDictionary<string, IProjectChangeDescription> projectChanges = null,
-                        MockBehavior mockBehavior = MockBehavior.Default)
+            IDictionary<string, IProjectRuleSnapshot>? currentState = null,
+            IDictionary<string, IProjectChangeDescription>? projectChanges = null,
+            MockBehavior mockBehavior = MockBehavior.Default)
         {
             var mock = new Mock<IProjectSubscriptionUpdate>(mockBehavior);
 
@@ -63,47 +61,58 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
     internal class IProjectSubscriptionUpdateModel : JsonModel<IProjectSubscriptionUpdate>
     {
-        public IImmutableDictionary<string, IProjectRuleSnapshotModel> CurrentState { get; set; }
-        public IImmutableDictionary<string, IProjectChangeDescriptionModel> ProjectChanges { get; set; }
-        public ProjectConfigurationModel ProjectConfiguration { get; set; }
+        public IImmutableDictionary<string, IProjectRuleSnapshotModel>? CurrentState { get; set; }
+        public IImmutableDictionary<string, IProjectChangeDescriptionModel>? ProjectChanges { get; set; }
+        public ProjectConfigurationModel? ProjectConfiguration { get; set; }
 
         public override IProjectSubscriptionUpdate ToActualModel()
         {
-            var model = new ActualModel();
+            IImmutableDictionary<string, IProjectRuleSnapshot> currentState;
+            IImmutableDictionary<string, IProjectChangeDescription> projectChanges;
+            ProjectConfiguration projectConfiguration;
 
             if (CurrentState != null)
             {
-                model.CurrentState = CurrentState.Select(x => new KeyValuePair<string, IProjectRuleSnapshot>(x.Key, x.Value))
-                                                 .ToImmutableDictionary();
+                currentState = CurrentState.Select(x => new KeyValuePair<string, IProjectRuleSnapshot>(x.Key, x.Value)).ToImmutableDictionary();
             }
             else
             {
-                model.CurrentState = ImmutableDictionary<string, IProjectRuleSnapshot>.Empty;
+                currentState = ImmutableDictionary<string, IProjectRuleSnapshot>.Empty;
             }
 
             if (ProjectChanges != null)
             {
-                model.ProjectChanges = ProjectChanges.Select(x => new KeyValuePair<string, IProjectChangeDescription>(x.Key, x.Value.ToActualModel()))
-                                                     .ToImmutableDictionary();
+                projectChanges = ProjectChanges.Select(x => new KeyValuePair<string, IProjectChangeDescription>(x.Key, x.Value.ToActualModel())).ToImmutableDictionary();
             }
             else
             {
-                model.ProjectChanges = ImmutableDictionary<string, IProjectChangeDescription>.Empty;
+                projectChanges = ImmutableDictionary<string, IProjectChangeDescription>.Empty;
             }
 
             if (ProjectConfiguration != null)
             {
-                model.ProjectConfiguration = ProjectConfiguration.ToActualModel();
+                projectConfiguration = ProjectConfiguration.ToActualModel();
+            }
+            else
+            {
+                projectConfiguration = ProjectConfigurationFactory.Create("TEST");
             }
 
-            return model;
+            return new ActualModel(currentState, projectChanges, projectConfiguration);
         }
 
         private class ActualModel : IProjectSubscriptionUpdate
         {
-            public IImmutableDictionary<string, IProjectRuleSnapshot> CurrentState { get; set; }
-            public IImmutableDictionary<string, IProjectChangeDescription> ProjectChanges { get; set; }
-            public ProjectConfiguration ProjectConfiguration { get; set; }
+            public IImmutableDictionary<string, IProjectRuleSnapshot> CurrentState { get; }
+            public IImmutableDictionary<string, IProjectChangeDescription> ProjectChanges { get; }
+            public ProjectConfiguration ProjectConfiguration { get; }
+
+            public ActualModel(IImmutableDictionary<string, IProjectRuleSnapshot> currentState, IImmutableDictionary<string, IProjectChangeDescription> projectChanges, ProjectConfiguration projectConfiguration)
+            {
+                CurrentState = currentState;
+                ProjectChanges = projectChanges;
+                ProjectConfiguration = projectConfiguration;
+            }
         }
     }
 }

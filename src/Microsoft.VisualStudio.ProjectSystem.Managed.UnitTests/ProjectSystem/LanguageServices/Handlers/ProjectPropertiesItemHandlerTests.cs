@@ -4,8 +4,6 @@ using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
     public class ProjectPropertiesItemHandlerTests : EvaluationHandlerTestBase
@@ -15,15 +13,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
             Assert.Throws<ArgumentNullException>("project", () =>
             {
-                new ProjectPropertiesItemHandler((UnconfiguredProject)null);
+                new ProjectPropertiesItemHandler(null!);
             });
         }
 
         [Fact]
         public void Handle_WhenPropertyIsChanged_CallsSetProperty()
         {
-            string nameResult = null;
-            string valueResult = null;
+            string? nameResult = null;
+            string? valueResult = null;
             var context = IWorkspaceProjectContextMockFactory.ImplementSetProperty((name, value) => { nameResult = name; valueResult = value; });
 
             var handler = CreateInstance(context: context);
@@ -155,7 +153,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             return CreateInstance(null, null);
         }
 
-        private ProjectPropertiesItemHandler CreateInstance(UnconfiguredProject project = null, IWorkspaceProjectContext context = null)
+        private static ProjectPropertiesItemHandler CreateInstance(UnconfiguredProject? project = null, IWorkspaceProjectContext? context = null)
         {
             project ??= UnconfiguredProjectFactory.Create();
 

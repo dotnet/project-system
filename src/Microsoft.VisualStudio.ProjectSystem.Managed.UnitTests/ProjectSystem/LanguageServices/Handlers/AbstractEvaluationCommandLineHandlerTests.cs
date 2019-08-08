@@ -8,8 +8,6 @@ using Microsoft.VisualStudio.ProjectSystem.Logging;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
     public partial class AbstractEvaluationCommandLineHandlerTests
@@ -25,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             
             Assert.Throws<ArgumentNullException>(() =>
             {
-                handler.ApplyProjectEvaluation((IComparable)null, difference, metadata, true, logger);
+                handler.ApplyProjectEvaluation(null!, difference, metadata, true, logger);
             });
         }
 
@@ -40,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                handler.ApplyProjectEvaluation(version, (IProjectChangeDiff)null, metadata, true, logger);
+                handler.ApplyProjectEvaluation(version, null!, metadata, true, logger);
             });
         }
 
@@ -55,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                handler.ApplyProjectEvaluation(version, difference, (ImmutableDictionary<string, IImmutableDictionary<string, string>>)null, true, logger);
+                handler.ApplyProjectEvaluation(version, difference, null!, true, logger);
             });
         }
 
@@ -70,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             
             Assert.Throws<ArgumentNullException>(() =>
             {
-                handler.ApplyProjectEvaluation(version, difference, metadata, true, (IProjectLogger)null);
+                handler.ApplyProjectEvaluation(version, difference, metadata, true, null!);
             });
         }
 
@@ -84,7 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                handler.ApplyProjectBuild((IComparable)null, difference, true, logger);
+                handler.ApplyProjectBuild(null!, difference, true, logger);
             });
         }
 
@@ -98,7 +96,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                handler.ApplyProjectBuild(version, (IProjectChangeDiff)null, true, logger);
+                handler.ApplyProjectBuild(version, null!, true, logger);
             });
         }
 
@@ -112,7 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                handler.ApplyProjectBuild(version, difference, true, (IProjectLogger)null);
+                handler.ApplyProjectBuild(version, difference, true, null!);
             });
         }
 
@@ -446,7 +444,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Assert.Single(handler.FileNames, @"C:\Project\Source.cs");
         }
 
-        private static void ApplyProjectEvaluation(AbstractEvaluationCommandLineHandler handler, IComparable version, IProjectChangeDiff difference, IImmutableDictionary<string, IImmutableDictionary<string, string>> metadata = null)
+        private static void ApplyProjectEvaluation(AbstractEvaluationCommandLineHandler handler, IComparable version, IProjectChangeDiff difference, IImmutableDictionary<string, IImmutableDictionary<string, string>>? metadata = null)
         {
             metadata ??= ImmutableDictionary<string, IImmutableDictionary<string, string>>.Empty;
             bool isActiveContext = true;
@@ -483,7 +481,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             return handler;
         }
 
-        private static EvaluationCommandLineHandler CreateInstance(string fullPath = null)
+        private static EvaluationCommandLineHandler CreateInstance(string? fullPath = null)
         {
             var project = UnconfiguredProjectFactory.ImplementFullPath(fullPath);
 

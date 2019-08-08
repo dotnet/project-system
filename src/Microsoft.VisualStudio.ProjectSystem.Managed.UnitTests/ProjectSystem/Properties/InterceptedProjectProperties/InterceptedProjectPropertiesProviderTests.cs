@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     public class InterceptedProjectPropertiesProviderTests
@@ -16,8 +14,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public async Task VerifyInterceptedPropertiesProviderAsync()
         {
-            var delegatePropertiesMock = IProjectPropertiesFactory
-                .MockWithPropertiesAndValues(new Dictionary<string, string>() {
+            var delegatePropertiesMock = IProjectPropertiesFactory.MockWithPropertiesAndValues(
+                new Dictionary<string, string?>
+                {
                     { MockPropertyName, "DummyValue" }
                 });
 
@@ -55,8 +54,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public async Task VerifyInterceptedViaSnapshotCommonPropertiesProviderAsync()
         {
-            var delegatePropertiesMock = IProjectPropertiesFactory
-                .MockWithPropertiesAndValues(new Dictionary<string, string>() {
+            var delegatePropertiesMock = IProjectPropertiesFactory.MockWithPropertiesAndValues(
+                new Dictionary<string, string?>
+                {
                     { MockPropertyName, "DummyValue" }
                 });
 
@@ -93,8 +93,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public async Task VerifyInterceptedViaSnapshotInstanceCommonPropertiesProviderAsync()
         {
-            var delegatePropertiesMock = IProjectPropertiesFactory
-                .MockWithPropertiesAndValues(new Dictionary<string, string>() {
+            var delegatePropertiesMock = IProjectPropertiesFactory.MockWithPropertiesAndValues(
+                new Dictionary<string, string?>
+                {
                     { MockPropertyName, "DummyValue" }
                 });
 

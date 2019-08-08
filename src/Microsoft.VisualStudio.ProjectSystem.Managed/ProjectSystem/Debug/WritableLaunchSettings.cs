@@ -6,8 +6,6 @@ using System.Linq;
 
 using Newtonsoft.Json;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     internal class WritableLaunchSettings : IWritableLaunchSettings
@@ -49,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
         }
 
-        public IWritableLaunchProfile ActiveProfile { get; set; }
+        public IWritableLaunchProfile? ActiveProfile { get; set; }
 
         public List<IWritableLaunchProfile> Profiles { get; } = new List<IWritableLaunchProfile>();
 

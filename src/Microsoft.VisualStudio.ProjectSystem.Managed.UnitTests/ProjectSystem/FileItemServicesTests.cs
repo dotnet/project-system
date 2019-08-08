@@ -5,8 +5,6 @@ using System.Collections.Immutable;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     public class FileItemServicesTests
@@ -16,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             Assert.Throws<ArgumentNullException>("basePath", () =>
             {
-                FileItemServices.GetLogicalFolderNames((string)null, "fullPath", ImmutableDictionary<string, string>.Empty);
+                FileItemServices.GetLogicalFolderNames(null!, "fullPath", ImmutableDictionary<string, string>.Empty);
             });
         }
 
@@ -25,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             Assert.Throws<ArgumentNullException>("fullPath", () =>
             {
-                FileItemServices.GetLogicalFolderNames("basePath", (string)null, ImmutableDictionary<string, string>.Empty);
+                FileItemServices.GetLogicalFolderNames("basePath", null!, ImmutableDictionary<string, string>.Empty);
             });
         }
 
@@ -34,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             Assert.Throws<ArgumentNullException>("metadata", () =>
             {
-                FileItemServices.GetLogicalFolderNames("basePath", "fullPath", (IImmutableDictionary<string, string>)null);
+                FileItemServices.GetLogicalFolderNames("basePath", "fullPath", null!);
             });
         }
 

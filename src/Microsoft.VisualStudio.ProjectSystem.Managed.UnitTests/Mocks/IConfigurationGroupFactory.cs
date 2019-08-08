@@ -3,8 +3,6 @@
 using System.Collections.Generic;
 using System.Linq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IConfigurationGroupFactory

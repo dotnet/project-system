@@ -2,8 +2,6 @@
 
 #pragma warning disable CA1200 // Avoid using cref tags with a prefix
 
-#nullable disable
-
 namespace Microsoft.VisualStudio
 {
     /// <summary>

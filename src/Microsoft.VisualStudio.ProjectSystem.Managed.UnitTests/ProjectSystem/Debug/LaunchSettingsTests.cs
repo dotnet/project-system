@@ -4,8 +4,6 @@ using System.Collections.Generic;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     public class LaunchSettingsTests
@@ -27,12 +25,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             };
 
             var settings = new LaunchSettings(profiles, null, null);
-            Assert.True(settings.ActiveProfile.Name == "abc");
+            Assert.True(settings.ActiveProfile!.Name == "abc");
             Assert.Equal(profiles.Count, settings.Profiles.Count);
             Assert.Empty(settings.GlobalSettings);
 
             settings = new LaunchSettings(profiles, null, "ghi");
-            Assert.True(settings.ActiveProfile.Name == "ghi");
+            Assert.True(settings.ActiveProfile!.Name == "ghi");
 
             // Test 
             settings = new LaunchSettings(profiles, globals, "foo");

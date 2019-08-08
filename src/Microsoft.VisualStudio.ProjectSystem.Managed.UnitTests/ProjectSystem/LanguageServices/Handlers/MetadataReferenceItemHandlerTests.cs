@@ -12,8 +12,6 @@ using Moq;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
     public class MetadataReferenceItemHandlerTests : CommandLineHandlerTestBase
@@ -23,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
             Assert.Throws<ArgumentNullException>("project", () =>
             {
-                new MetadataReferenceItemHandler((UnconfiguredProject)null);
+                new MetadataReferenceItemHandler(null!);
             });
         }
 
@@ -85,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             return CreateInstance(null, null);
         }
 
-        private MetadataReferenceItemHandler CreateInstance(UnconfiguredProject project = null, IWorkspaceProjectContext context = null)
+        private static MetadataReferenceItemHandler CreateInstance(UnconfiguredProject? project = null, IWorkspaceProjectContext? context = null)
         {
             project ??= UnconfiguredProjectFactory.Create();
 

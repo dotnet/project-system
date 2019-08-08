@@ -5,8 +5,6 @@ using System.Collections.Immutable;
 
 using static Microsoft.VisualStudio.ProjectSystem.Tokenizer;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     // Parses a string into a project tree
@@ -45,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             // We always start with the root, with zero indent
             MutableProjectTree root = ReadProjectItem();
-            MutableProjectTree current = root;
+            MutableProjectTree? current = root;
             do
             {
                 current = ReadNextProjectItem(current);
@@ -55,17 +53,17 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return root;
         }
 
-        private MutableProjectTree ReadNextProjectItem(MutableProjectTree current)
+        private MutableProjectTree? ReadNextProjectItem(MutableProjectTree current)
         {
             if (!TryReadNewLine())
                 return null;
 
-            MutableProjectTree parent = current;
+            MutableProjectTree? parent = current;
             int indent = ReadIndentLevel(out int previousIndentLevel);
 
             while (indent <= previousIndentLevel)
             {
-                parent = parent.Parent;
+                parent = parent?.Parent;
                 indent++;
             }
 

@@ -9,8 +9,6 @@ using Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     public class SpecialFileProviderTests
@@ -24,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             Assert.Throws<ArgumentNullException>("projectTree", () =>
             {
-                new SettingsFileSpecialFileProvider(null, sourceItemsProvider, null, fileSystem, specialFilesManager);
+                new SettingsFileSpecialFileProvider(null!, sourceItemsProvider, null, fileSystem, specialFilesManager);
             });
         }
 
@@ -37,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             Assert.Throws<ArgumentNullException>("sourceItemsProvider", () =>
             {
-                new SettingsFileSpecialFileProvider(projectTree, null, null, fileSystem, specialFilesManager);
+                new SettingsFileSpecialFileProvider(projectTree, null!, null, fileSystem, specialFilesManager);
             });
         }
 
@@ -50,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             Assert.Throws<ArgumentNullException>("fileSystem", () =>
             {
-                new SettingsFileSpecialFileProvider(projectTree, sourceItemsProvider, null, null, specialFilesManager);
+                new SettingsFileSpecialFileProvider(projectTree, sourceItemsProvider, null, null!, specialFilesManager);
             });
         }
 
@@ -215,7 +213,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
                                                        {
                                                            // Verify that file is created on disk.
                                                            Assert.Equal(expectedFilePath, path);
-                                                           return null;
+                                                           return null!;
                                                        });
 
             var specialFilesManager = ISpecialFilesManagerFactory.Create();
@@ -249,7 +247,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
                                                        {
                                                            // Verify that file is created on disk.
                                                            Assert.Equal(expectedFilePath, path);
-                                                           return null;
+                                                           return null!;
                                                        });
 
             var specialFilesManager = ISpecialFilesManagerFactory.Create();
@@ -296,7 +294,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
                                                            // Verify that file is created on disk.
                                                            Assert.False(fileExistsOnDisk);
                                                            Assert.Equal(expectedFilePath, path);
-                                                           return null;
+                                                           return null!;
                                                        });
 
             var specialFilesManager = ISpecialFilesManagerFactory.ImplementGetFile(@"C:\Foo\Properties");
@@ -332,7 +330,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
                                                        {
                                                            // Verify that file is created on disk.
                                                            Assert.False(true, "File system create shouldn't have been called directly.");
-                                                           return null;
+                                                           return null!;
                                                        });
             var templateProvider = new Lazy<ICreateFileFromTemplateService>(() => ICreateFileFromTemplateServiceFactory.Create());
             var specialFilesManager = ISpecialFilesManagerFactory.Create();
@@ -385,12 +383,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
             var fileSystem = IFileSystemFactory.Create(path => true);
             var specialFilesManager = ISpecialFilesManagerFactory.Create();
 
-            var properties = ProjectPropertiesFactory.Create(UnconfiguredProjectFactory.Create(), new PropertyPageData
-            {
-                Category = ConfigurationGeneralBrowseObject.SchemaName,
-                PropertyName = ConfigurationGeneralBrowseObject.ApplicationManifestProperty,
-                Value = appManifestPropertyValue
-            });
+            var properties = ProjectPropertiesFactory.Create(UnconfiguredProjectFactory.Create(), new PropertyPageData(ConfigurationGeneralBrowseObject.SchemaName, ConfigurationGeneralBrowseObject.ApplicationManifestProperty, appManifestPropertyValue));
             var provider = new AppManifestSpecialFileProvider(projectTree, sourceItemsProvider, null, fileSystem, specialFilesManager, properties);
             var filePath = await provider.GetFileAsync(SpecialFiles.AppSettings, SpecialFileFlags.CreateIfNotExist);
 

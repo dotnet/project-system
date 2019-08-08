@@ -5,8 +5,6 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IProjectInstancePropertiesProviderFactory
@@ -14,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public static IProjectInstancePropertiesProvider Create()
             => Mock.Of<IProjectInstancePropertiesProvider>();
 
-        public static IProjectInstancePropertiesProvider ImplementsGetItemTypeProperties(IProjectProperties projectProperties = null)
+        public static IProjectInstancePropertiesProvider ImplementsGetItemTypeProperties(IProjectProperties? projectProperties = null)
         {
             var mock = new Mock<IProjectInstancePropertiesProvider>();
 
@@ -24,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return mock.Object;
         }
 
-        public static IProjectInstancePropertiesProvider ImplementsGetCommonProperties(IProjectProperties projectProperties = null)
+        public static IProjectInstancePropertiesProvider ImplementsGetCommonProperties(IProjectProperties? projectProperties = null)
         {
             var mock = new Mock<IProjectInstancePropertiesProvider>();
 

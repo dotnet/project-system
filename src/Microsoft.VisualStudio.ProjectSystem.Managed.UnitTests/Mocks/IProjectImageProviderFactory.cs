@@ -4,8 +4,6 @@ using System;
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Imaging
 {
     internal static class IProjectImageProviderFactory
@@ -15,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
             return Mock.Of<IProjectImageProvider>();
         }
 
-        public static IProjectImageProvider ImplementGetProjectImage(Func<string, ProjectImageMoniker> action)
+        public static IProjectImageProvider ImplementGetProjectImage(Func<string, ProjectImageMoniker?> action)
         {
             var mock = new Mock<IProjectImageProvider>();
             mock.Setup(p => p.GetProjectImage(It.IsAny<string>()))
@@ -24,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
             return mock.Object;
         }
 
-        public static IProjectImageProvider ImplementGetProjectImage(string key, ProjectImageMoniker moniker)
+        public static IProjectImageProvider ImplementGetProjectImage(string key, ProjectImageMoniker? moniker)
         {
             return ImplementGetProjectImage(k => k == key ? moniker : null);
         }

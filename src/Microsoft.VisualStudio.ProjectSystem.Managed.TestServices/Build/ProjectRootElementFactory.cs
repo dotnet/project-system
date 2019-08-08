@@ -3,13 +3,11 @@
 using System.IO;
 using System.Xml;
 
-#nullable disable
-
 namespace Microsoft.Build.Construction
 {
     internal static class ProjectRootElementFactory
     {
-        public static ProjectRootElement Create(string xml = null)
+        public static ProjectRootElement Create(string? xml = null)
         {
             if (string.IsNullOrEmpty(xml))
                 xml = "<Project/>";

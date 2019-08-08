@@ -95,13 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         {
             var setValues = new List<object>();
             var project = UnconfiguredProjectFactory.Create();
-            var data = new PropertyPageData()
-            {
-                Category = ConfigurationGeneralBrowseObject.SchemaName,
-                PropertyName = ConfigurationGeneralBrowseObject.OutputTypeProperty,
-                Value = 4,
-                SetValues = setValues
-            };
+            var data = new PropertyPageData(ConfigurationGeneralBrowseObject.SchemaName, ConfigurationGeneralBrowseObject.OutputTypeProperty, 4, setValues);
 
             var projectProperties = ProjectPropertiesFactory.Create(project, data);
             var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
@@ -118,13 +112,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         {
             var setValues = new List<object>();
             var project = UnconfiguredProjectFactory.Create();
-            var data = new PropertyPageData()
-            {
-                Category = ConfigurationGeneralBrowseObject.SchemaName,
-                PropertyName = ConfigurationGeneralBrowseObject.OutputTypeProperty,
-                Value = 1,
-                SetValues = setValues
-            };
+            var data = new PropertyPageData(ConfigurationGeneralBrowseObject.SchemaName, ConfigurationGeneralBrowseObject.OutputTypeProperty, 1, setValues);
 
             var projectProperties = ProjectPropertiesFactory.Create(project, data);
             var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
@@ -141,13 +129,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         {
             var setValues = new List<object>();
             var project = UnconfiguredProjectFactory.Create();
-            var data = new PropertyPageData()
-            {
-                Category = ConfigurationGeneral.SchemaName,
-                PropertyName = ConfigurationGeneral.AssemblyNameProperty,
-                Value = "Blah",
-                SetValues = setValues
-            };
+            var data = new PropertyPageData(ConfigurationGeneral.SchemaName, ConfigurationGeneral.AssemblyNameProperty, "Blah", setValues);
 
             var projectProperties = ProjectPropertiesFactory.Create(project, data);
             var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
@@ -164,12 +146,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         public void FullPath()
         {
             var project = UnconfiguredProjectFactory.Create();
-            var data = new PropertyPageData()
-            {
-                Category = ConfigurationGeneral.SchemaName,
-                PropertyName = ConfigurationGeneral.ProjectDirProperty,
-                Value = "somepath",
-            };
+            var data = new PropertyPageData(ConfigurationGeneral.SchemaName, ConfigurationGeneral.ProjectDirProperty, "somepath");
 
             var projectProperties = ProjectPropertiesFactory.Create(project, data);
             var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
@@ -182,12 +159,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         public void AbsoluteProjectDirectory()
         {
             var project = UnconfiguredProjectFactory.Create();
-            var data = new PropertyPageData()
-            {
-                Category = ConfigurationGeneralBrowseObject.SchemaName,
-                PropertyName = ConfigurationGeneralBrowseObject.FullPathProperty,
-                Value = "testvalue",
-            };
+            var data = new PropertyPageData(ConfigurationGeneralBrowseObject.SchemaName, ConfigurationGeneralBrowseObject.FullPathProperty, "testvalue");
 
             var projectProperties = ProjectPropertiesFactory.Create(project, data);
             var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);

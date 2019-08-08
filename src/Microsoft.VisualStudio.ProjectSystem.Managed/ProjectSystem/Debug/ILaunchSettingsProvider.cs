@@ -3,9 +3,8 @@
 using System;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
-using Microsoft.VisualStudio.Composition;
 
-#nullable disable
+using Microsoft.VisualStudio.Composition;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
@@ -22,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Obsolete("Use ILaunchSettingsProvider2.GetLaunchSettingsFilePathAsync instead.")]
         string LaunchSettingsFile { get; }
 
-        ILaunchProfile ActiveProfile { get; }
+        ILaunchProfile? ActiveProfile { get; }
 
         // Replaces the current set of profiles with the contents of profiles. If changes were
         // made, the file will be checked out and updated. If the active profile is different, the
