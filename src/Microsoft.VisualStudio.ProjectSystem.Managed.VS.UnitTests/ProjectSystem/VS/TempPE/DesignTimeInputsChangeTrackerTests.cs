@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         private string? _lastIntermediateOutputPath;
         private readonly string _projectFolder = @"C:\MyProject";
         private string _intermediateOutputPath = "MyOutput";
-        private readonly DesignTimeInputsChangeTracker _manager;
+        private readonly DesignTimeInputsChangeTracker _changeTracker;
 
         private readonly List<DesignTimeInputsDelta> _outputProduced = new List<DesignTimeInputsDelta>();
         private readonly TaskCompletionSource<bool> _outputProducedSource = new TaskCompletionSource<bool>();
@@ -92,17 +92,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             });
 
             Assert.Equal(2, _outputProduced[0].ChangedInputs.Length);
-            Assert.Equal(2, _outputProduced[0].AllInputs.Length);
+            Assert.Equal(2, _outputProduced[0].AllInputs.Count);
             Assert.Single(_outputProduced[0].AllSharedInputs);
-            Assert.Equal("File1.cs", _outputProduced[0].ChangedInputs[0].File);
-            Assert.Equal("File2.cs", _outputProduced[0].ChangedInputs[1].File);
+            Assert.Contains("File1.cs", _outputProduced[0].ChangedInputs.Select(f => f.File));
+            Assert.Contains("File2.cs", _outputProduced[0].ChangedInputs.Select(f => f.File));
             Assert.False(_outputProduced[0].ChangedInputs[0].IgnoreFileWriteTime);
 
             Assert.Equal(2, _outputProduced[1].ChangedInputs.Length);
-            Assert.Equal(2, _outputProduced[1].AllInputs.Length);
+            Assert.Equal(2, _outputProduced[1].AllInputs.Count);
             Assert.Single(_outputProduced[1].AllSharedInputs);
-            Assert.Equal("File1.cs", _outputProduced[1].ChangedInputs[0].File);
-            Assert.Equal("File2.cs", _outputProduced[1].ChangedInputs[1].File);
+            Assert.Contains("File1.cs", _outputProduced[1].ChangedInputs.Select(f => f.File));
+            Assert.Contains("File2.cs", _outputProduced[1].ChangedInputs.Select(f => f.File));
             Assert.False(_outputProduced[1].ChangedInputs[0].IgnoreFileWriteTime);
         }
 
@@ -150,7 +150,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             Assert.False(_outputProduced[0].ChangedInputs[0].IgnoreFileWriteTime);
 
             Assert.Single(_outputProduced[1].ChangedInputs);
-            Assert.Equal(2, _outputProduced[1].AllInputs.Length);
+            Assert.Equal(2, _outputProduced[1].AllInputs.Count);
             Assert.Empty(_outputProduced[1].AllSharedInputs);
             Assert.Equal("File2.cs", _outputProduced[1].ChangedInputs[0].File);
             Assert.False(_outputProduced[1].ChangedInputs[0].IgnoreFileWriteTime);
@@ -169,17 +169,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             });
 
             Assert.Equal(2, _outputProduced[0].ChangedInputs.Length);
-            Assert.Equal(2, _outputProduced[0].AllInputs.Length);
+            Assert.Equal(2, _outputProduced[0].AllInputs.Count);
             Assert.Empty(_outputProduced[0].AllSharedInputs);
-            Assert.Equal("File1.cs", _outputProduced[0].ChangedInputs[0].File);
-            Assert.Equal("File2.cs", _outputProduced[0].ChangedInputs[1].File);
+            Assert.Contains("File1.cs", _outputProduced[0].ChangedInputs.Select(f => f.File));
+            Assert.Contains("File2.cs", _outputProduced[0].ChangedInputs.Select(f => f.File));
             Assert.False(_outputProduced[0].ChangedInputs[0].IgnoreFileWriteTime);
 
             Assert.Equal(2, _outputProduced[1].ChangedInputs.Length);
-            Assert.Equal(2, _outputProduced[1].AllInputs.Length);
+            Assert.Equal(2, _outputProduced[1].AllInputs.Count);
             Assert.Empty(_outputProduced[1].AllSharedInputs);
-            Assert.Equal("File1.cs", _outputProduced[1].ChangedInputs[0].File);
-            Assert.Equal("File2.cs", _outputProduced[1].ChangedInputs[1].File);
+            Assert.Contains("File1.cs", _outputProduced[1].ChangedInputs.Select(f => f.File));
+            Assert.Contains("File2.cs", _outputProduced[1].ChangedInputs.Select(f => f.File));
             Assert.True(_outputProduced[1].ChangedInputs[0].IgnoreFileWriteTime);
         }
 
@@ -236,7 +236,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                        services: ProjectServicesFactory.Create(
                            threadingService: threadingService)));
 
-            _manager = new DesignTimeInputsChangeTracker(unconfiguredProject,
+            _changeTracker = new DesignTimeInputsChangeTracker(unconfiguredProject,
                                       unconfiguredProjectServices,
                                       threadingService,
                                       projectSubscriptionService,
@@ -249,7 +249,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             // Create a block to receive the output
             var receiver = DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<DesignTimeInputsDelta>>(OutputProduced);
-            _manager.SourceBlock.LinkTo(receiver, DataflowOption.PropagateCompletion);
+            _changeTracker.SourceBlock.LinkTo(receiver, DataflowOption.PropagateCompletion);
         }
 
         private void OutputProduced(IProjectVersionedValue<DesignTimeInputsDelta> val)
@@ -269,8 +269,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             actionThatCausesCompilation();
 
             // complete out block so that it produces output
-            _manager.SourceBlock.Complete();
-            await _manager.SourceBlock.Completion;
+            _changeTracker.SourceBlock.Complete();
+            await _changeTracker.SourceBlock.Completion;
 
             // The timeout here is annoying, but even though our test is "smart" and waits for data, unfortunately if the code breaks the test is more likely to hang than fail
             var delay = Task.Delay(TestTimeoutMillisecondsDelay);
@@ -327,17 +327,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 var fullFilePath = Path.Combine(_projectFolder, file);
             }
 
-            _manager.ProcessDataflowChanges(new ProjectVersionedValue<Tuple<DesignTimeInputs, IProjectSubscriptionUpdate>>(new Tuple<DesignTimeInputs, IProjectSubscriptionUpdate>(inputs, subscriptionUpdate), ImmutableDictionary<NamedIdentity, IComparable>.Empty));
+            _changeTracker.ProcessDataflowChanges(new ProjectVersionedValue<Tuple<DesignTimeInputs, IProjectSubscriptionUpdate>>(new Tuple<DesignTimeInputs, IProjectSubscriptionUpdate>(inputs, subscriptionUpdate), ImmutableDictionary<NamedIdentity, IComparable>.Empty));
         }
 
         private void SendFileChange(params string[] files)
         {
-            _manager.ProcessFileChangeNotification(new ProjectVersionedValue<string[]>(files, ImmutableDictionary<NamedIdentity, IComparable>.Empty));
+            _changeTracker.ProcessFileChangeNotification(new ProjectVersionedValue<string[]>(files, ImmutableDictionary<NamedIdentity, IComparable>.Empty));
         }
 
         public void Dispose()
         {
-            _manager.Dispose();
+            _changeTracker.Dispose();
         }
     }
 }
