@@ -63,9 +63,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
         private T? GetItemByName(string name)
         {
-            if (_itemsByName.TryGetValue(name, out T value))
+            if (_itemsByName.TryGetValue(name, out T? item))
             {
-                return value;
+                return item;
             }
 
             return null;
