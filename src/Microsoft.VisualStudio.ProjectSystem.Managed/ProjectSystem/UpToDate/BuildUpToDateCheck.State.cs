@@ -241,9 +241,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
 
                 // TODO these are probably the same as the previous set, so merge them to avoid allocation
-                ImmutableHashSet<string> itemTypes = projectItemSchema.GetKnownItemTypes()
-                    .Where(itemType => projectItemSchema.GetItemType(itemType).UpToDateCheckInput)
-                    .ToImmutableHashSet(StringComparers.ItemTypes);
+                var itemTypes = projectItemSchema.GetKnownItemTypes()
+                                                 .Where(itemType => projectItemSchema.GetItemType(itemType).UpToDateCheckInput)
+                                                 .ToImmutableHashSet(StringComparers.ItemTypes);
 
                 ImmutableDictionary<string, ImmutableHashSet<(string path, string? link, CopyToOutputDirectoryType copyType)>>.Builder itemsByItemTypeBuilder;
                 bool itemTypesChanged = !ItemTypes.SetEquals(itemTypes);

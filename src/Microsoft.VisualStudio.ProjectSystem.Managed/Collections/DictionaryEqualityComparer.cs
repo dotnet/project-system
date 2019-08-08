@@ -47,7 +47,7 @@ namespace Microsoft.VisualStudio.Collections
         {
             int hashCode = 0;
 
-            ImmutableDictionary<TKey, TValue>? concreteDictionary1 = obj as ImmutableDictionary<TKey, TValue>;
+            var concreteDictionary1 = obj as ImmutableDictionary<TKey, TValue>;
             IEqualityComparer<TKey> keyComparer = concreteDictionary1 != null ? concreteDictionary1.KeyComparer : EqualityComparer<TKey>.Default;
             IEqualityComparer<TValue> valueComparer = concreteDictionary1 != null ? concreteDictionary1.ValueComparer : EqualityComparer<TValue>.Default;
 
