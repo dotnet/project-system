@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Interop
         Skipped = 0x0004,
         InternalPackage = 0x0010,
         ExternalPackage = 0x0020
-    };
+    }
 
     internal enum VSAPropID
     {
@@ -247,8 +247,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Interop
         VSAPROPID_CampaignId                            = -8646,     // VT_BSTR. The campaign id associated with this install.
         VSAPROPID_AppHostVersion                        = -8647,     // VT_BSTR. The AppId's host version, preferred by _DTE.Version property.
         VSAPROPID_SKUName                               = -8648,     // VT_BSTR. The SkuName, unlocalized and sent with Telemetry.
-        VSAPROPID_BranchName                            = -8649,     // VT_BSTR. The branch name of the build.
-    };
+        VSAPROPID_BranchName                            = -8649      // VT_BSTR. The branch name of the build.
+    }
 
     internal enum VSASKUEdition
     {
@@ -267,8 +267,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Interop
         BizApps = 1600,
         Community = 1800,
         TeamExplorer = 1400,
-        SQL = 9192,
-    };
+        SQL = 9192
+    }
 
     internal enum VSASubSKUEdition
     {
@@ -289,6 +289,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Interop
         SQLTools = 0x2000,
         VSWin = 0x4000,
         VSWinDesktop = 0x8000,
-        Team_Suite = Test | Developer | Architect,
-    };
+        Team_Suite = Test | Developer | Architect
+    }
 }

@@ -170,10 +170,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         public bool EnableASPXDebugging { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public bool EnableUnmanagedDebugging { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public prjStartAction StartAction { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public object get_Extender(string arg)
-        {
-            throw new System.NotImplementedException();
-        }
+        public object get_Extender(string arg) => throw new System.NotImplementedException();
         public string ExtenderCATID => throw new System.NotImplementedException();
         public prjWarningLevel WarningLevel { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public bool TreatWarningsAsErrors { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }

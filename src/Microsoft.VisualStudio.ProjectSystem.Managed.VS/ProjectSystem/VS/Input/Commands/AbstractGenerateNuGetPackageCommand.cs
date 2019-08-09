@@ -41,6 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         protected UnconfiguredProject Project { get; }
 
         protected abstract string GetCommandText();
+
         protected abstract bool ShouldHandle(IProjectTree node);
 
         protected override async Task<CommandStatusResult> GetCommandStatusAsync(IProjectTree node, bool focused, string commandText, CommandStatus progressiveStatus)

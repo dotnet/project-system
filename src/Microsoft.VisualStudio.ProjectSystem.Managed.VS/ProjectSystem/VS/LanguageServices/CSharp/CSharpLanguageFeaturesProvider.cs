@@ -72,7 +72,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices.CSharp
             return identifier;
         }
 
-
         /// <summary>
         ///     Makes a proper namespace from the specified name.
         /// </summary>

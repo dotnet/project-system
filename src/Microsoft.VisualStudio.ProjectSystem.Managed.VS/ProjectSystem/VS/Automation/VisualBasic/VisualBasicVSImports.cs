@@ -85,7 +85,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
         public void Remove(object index)
         {
             bool intIndexPresent = index is int indexInt && _importsList.IsPresent(indexInt);
-            bool stringIndexPresent = index is string removeImport && _importsList.IsPresent((string)removeImport);
+            bool stringIndexPresent = index is string removeImport && _importsList.IsPresent(removeImport);
+
             if (intIndexPresent || stringIndexPresent)
             {
                 string importRemoved = null;
@@ -103,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
                         {
                             importProjectItem = project.GetItems(ImportItemTypeName)
                                                        .OrderBy(i => i.EvaluatedInclude)
-                                                       .ElementAt((indexInt1 - 1));
+                                                       .ElementAt(indexInt1 - 1);
                         }
                         else
                         {

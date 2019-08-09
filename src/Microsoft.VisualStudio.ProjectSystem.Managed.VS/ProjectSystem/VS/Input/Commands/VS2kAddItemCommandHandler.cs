@@ -2,6 +2,7 @@
 
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+
 using Microsoft.VisualStudio.Input;
 using Microsoft.VisualStudio.Shell.Interop;
 
@@ -14,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     internal class VS2kAddItemCommandHandler : AbstractAddItemCommandHandler
     {
         private static readonly ImmutableDictionary<long, ImmutableArray<TemplateDetails>> s_templateDetails = ImmutableDictionary<long, ImmutableArray<TemplateDetails>>.Empty
-           //                      Command Id                                        Capabilities                                                        DirNamePackageGuid          DirNameResourceId                                       TemplateNameResourceId
+            //                     Command Id                                        Capabilities                                                        DirNamePackageGuid          DirNameResourceId                                       TemplateNameResourceId
             .CreateTemplateDetails(VisualStudioStandard2KCommandId.AddForm,          ProjectCapability.CSharp,       ProjectCapability.WindowsForms,     LegacyCSharpPackageGuid,    LegacyCSharpStringResourceIds.IDS_PROJECTITEMTYPE_STR,  LegacyCSharpStringResourceIds.IDS_TEMPLATE_NEWWFCWIN32FORM  )
             .CreateTemplateDetails(VisualStudioStandard2KCommandId.AddUserControl,   ProjectCapability.CSharp,       ProjectCapability.WindowsForms,     LegacyCSharpPackageGuid,    LegacyCSharpStringResourceIds.IDS_PROJECTITEMTYPE_STR,  LegacyCSharpStringResourceIds.IDS_TEMPLATE_NEWUSERCONTROL   )
             .CreateTemplateDetails(VisualStudioStandard2KCommandId.AddComponent,     ProjectCapability.CSharp,       ProjectCapability.WindowsForms,     LegacyCSharpPackageGuid,    LegacyCSharpStringResourceIds.IDS_PROJECTITEMTYPE_STR,  LegacyCSharpStringResourceIds.IDS_TEMPLATE_NEWWFCCOMPONENT  )
@@ -34,4 +35,3 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         }
     }
 }
-

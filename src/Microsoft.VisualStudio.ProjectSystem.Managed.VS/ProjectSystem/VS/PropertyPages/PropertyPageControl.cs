@@ -1,4 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
 using System;
 using System.Threading.Tasks;
 using System.Windows.Controls;
@@ -11,10 +12,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
     {
         private bool _isDirty;
         private bool _ignoreEvents;
-
-        public PropertyPageControl()
-        {
-        }
 
         public event EventHandler StatusChanged;
 
@@ -94,11 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         protected virtual void OnStatusChanged(EventArgs args)
         {
-            EventHandler handler = StatusChanged;
-            if (handler != null)
-            {
-                handler.Invoke(this, args);
-            }
+            StatusChanged?.Invoke(this, args);
         }
     }
 }

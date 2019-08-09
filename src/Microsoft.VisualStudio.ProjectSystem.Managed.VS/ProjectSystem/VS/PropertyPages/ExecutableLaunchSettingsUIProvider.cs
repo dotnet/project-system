@@ -28,31 +28,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// <summary>
         /// The name of the command that is written to the launchSettings.json file
         /// </summary>
-        public string CommandName
-        {
-            get
-            {
-                return LaunchSettingsProvider.RunExecutableCommandName;
-            }
-        }
+        public string CommandName => LaunchSettingsProvider.RunExecutableCommandName;
 
         /// <summary>
         /// The name to display in the dropdown for this command
         /// </summary>
-        public string FriendlyName
-        {
-            get
-            {
-                return PropertyPageResources.ProfileKindExecutableName;
-            }
-        }
+        public string FriendlyName => PropertyPageResources.ProfileKindExecutableName;
 
         /// <summary>
         /// Launch url is not supported
         /// </summary>
         public bool ShouldEnableProperty(string propertyName)
         {
-            return string.Equals(propertyName, UIProfilePropertyName.LaunchUrl, System.StringComparison.OrdinalIgnoreCase) ? false : true;
+            return !string.Equals(propertyName, UIProfilePropertyName.LaunchUrl, System.StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>
@@ -66,7 +54,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// </summary>
         public void ProfileSelected(IWritableLaunchSettings curSettings)
         {
-            return;
         }
     }
 }

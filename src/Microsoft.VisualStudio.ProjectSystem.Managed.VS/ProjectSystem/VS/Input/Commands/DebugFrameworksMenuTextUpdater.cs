@@ -26,9 +26,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     {
         [ImportingConstructor]
         public DebugFrameworkPropertyMenuTextUpdater(IStartupProjectHelper startupProjectHelper)
-                : base(ExecHandler, delegate
-                { }, QueryStatusHandler,
-                      new CommandID(new Guid(CommandGroup.ManagedProjectSystem), ManagedProjectSystemCommandId.DebugTargetMenuDebugFrameworkMenu))
+            : base(
+                ExecHandler, 
+                delegate { },
+                QueryStatusHandler,
+                new CommandID(new Guid(CommandGroup.ManagedProjectSystem), ManagedProjectSystemCommandId.DebugTargetMenuDebugFrameworkMenu))
         {
             StartupProjectHelper = startupProjectHelper;
         }
@@ -42,9 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         /// </summary>
         public static void ExecHandler(object sender, EventArgs e)
         {
-            return;
         }
-
 
         /// <summary>
         /// QueryStatus handler called to update the status of the menu items. Does some
@@ -53,12 +53,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         /// </summary>
         public static void QueryStatusHandler(object sender, EventArgs e)
         {
-            if (!(sender is DebugFrameworkPropertyMenuTextUpdater command))
+            if (sender is DebugFrameworkPropertyMenuTextUpdater command)
             {
-                return;
+                command.QueryStatus();
             }
-
-            command.QueryStatus();
         }
 
         public void QueryStatus()

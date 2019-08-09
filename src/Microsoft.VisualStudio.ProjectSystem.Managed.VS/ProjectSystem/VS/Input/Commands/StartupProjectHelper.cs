@@ -46,9 +46,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                 IVsSolution solution = _solution.Value;
 
                 var results = PooledArray<T>.GetInstance();
+
                 foreach (string projectName in startupProjects)
                 {
                     solution.GetProjectOfUniqueName(projectName, out IVsHierarchy hier);
+
                     if (hier != null && hier.IsCapabilityMatch(capabilityMatch))
                     {
                         string projectPath = hier.GetProjectFilePath();

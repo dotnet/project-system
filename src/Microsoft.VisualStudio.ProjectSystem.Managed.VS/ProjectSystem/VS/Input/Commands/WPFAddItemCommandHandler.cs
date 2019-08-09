@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+
 using Microsoft.VisualStudio.Input;
 using Microsoft.VisualStudio.Shell.Interop;
 
@@ -17,8 +18,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         private static readonly Guid s_wpfPackage = new Guid("{b3bae735-386c-4030-8329-ef48eeda4036}");
 
         private static readonly ImmutableDictionary<long, ImmutableArray<TemplateDetails>> s_templateDetails = ImmutableDictionary<long, ImmutableArray<TemplateDetails>>.Empty
-          //                       Command Id                             Capabilities                                          DirNamePackageGuid       DirNameResourceId                                         TemplateName  TemplateNameResourceId
-          //                                                                                                                                                                                                       PackageGuid
+            //                     Command Id                             Capabilities                                          DirNamePackageGuid       DirNameResourceId                                         TemplateName  TemplateNameResourceId
+            //                                                                                                                                                                                                     PackageGuid
             .CreateTemplateDetails(WPFCommandId.AddWPFWindow,             ProjectCapability.CSharp,      ProjectCapability.WPF, LegacyCSharpPackageGuid, LegacyCSharpStringResourceIds.IDS_TEMPLATE_DIRLOCALITEMS, s_wpfPackage, WPFTemplateNames.WPFWindow             )
             .CreateTemplateDetails(WPFCommandId.AddWPFWindow,             ProjectCapability.CSharp,      ProjectCapability.WPF, LegacyCSharpPackageGuid, LegacyCSharpStringResourceIds.IDS_TEMPLATE_DIRLOCALITEMS, s_wpfPackage, WPFTemplateNames.WPFWindow             )
             .CreateTemplateDetails(WPFCommandId.WPFWindow,                ProjectCapability.CSharp,      ProjectCapability.WPF, LegacyCSharpPackageGuid, LegacyCSharpStringResourceIds.IDS_TEMPLATE_DIRLOCALITEMS, s_wpfPackage, WPFTemplateNames.WPFWindow             )

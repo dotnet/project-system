@@ -37,12 +37,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 
         protected override Task<CommandStatusResult> GetCommandStatusAsync(IProjectTree node, bool focused, string commandText, CommandStatus progressiveStatus)
         {
-            if (!CanMove(node))
-            {
-                return GetCommandStatusResult.Handled(commandText, CommandStatus.Ninched);
-            }
-
-            return GetCommandStatusResult.Handled(commandText, CommandStatus.Enabled);
+            return GetCommandStatusResult.Handled(
+                commandText, 
+                CanMove(node) ? CommandStatus.Enabled : CommandStatus.Ninched);
         }
 
         protected override async Task<bool> TryHandleCommandAsync(IProjectTree node, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut)

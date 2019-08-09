@@ -42,4 +42,3 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         protected override string DefaultGetValue => "0";
     }
 }
-
