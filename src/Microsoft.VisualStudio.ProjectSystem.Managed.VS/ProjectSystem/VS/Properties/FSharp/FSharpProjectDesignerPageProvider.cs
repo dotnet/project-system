@@ -27,7 +27,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.FSharp
 
         public Task<IReadOnlyCollection<IPageMetadata>> GetPagesAsync()
         {
-            var builder = PooledArray<IPageMetadata>.GetInstance();
+            var builder = PooledArray<IPageMetadata>.GetInstance(capacity: 6);
+
             builder.Add(FSharpProjectDesignerPage.Application);
             builder.Add(FSharpProjectDesignerPage.Build);
             builder.Add(FSharpProjectDesignerPage.BuildEvents);
