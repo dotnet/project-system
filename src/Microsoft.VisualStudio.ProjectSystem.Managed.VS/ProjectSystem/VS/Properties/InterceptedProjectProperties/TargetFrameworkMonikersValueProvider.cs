@@ -24,7 +24,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
         public override async Task<string> OnGetEvaluatedPropertyValueAsync(string evaluatedPropertyValue, IProjectProperties defaultProperties)
         {
             ActiveConfiguredObjects<ConfiguredProject> configuredProjects = await _projectProvider.GetActiveConfiguredProjectsAsync();
+
+            if (configuredProjects == null)
+            {
+                return "";
+            }
+
             var builder = PooledArray<string>.GetInstance();
+
             foreach (ConfiguredProject configuredProject in configuredProjects.Objects)
             {
                 ProjectProperties projectProperties = configuredProject.Services.ExportProvider.GetExportedValue<ProjectProperties>();
