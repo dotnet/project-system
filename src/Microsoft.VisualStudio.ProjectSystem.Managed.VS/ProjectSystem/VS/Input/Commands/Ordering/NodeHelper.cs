@@ -1,10 +1,10 @@
-﻿using System;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using System;
 using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
-
-#nullable disable
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 {
@@ -39,16 +39,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         {
             UseWindow(configuredProject, serviceProvider, (hierarchy, window) =>
             {
-                // We need to unselect the item if it is already selected to re-select it correctly.
-                window.ExpandItem(hierarchy, itemId, EXPANDFLAGS.EXPF_UnSelectItem);
-                window.ExpandItem(hierarchy, itemId, EXPANDFLAGS.EXPF_SelectItem);
+                if (window != null)
+                {
+                    // We need to unselect the item if it is already selected to re-select it correctly.
+                    window.ExpandItem(hierarchy, itemId, EXPANDFLAGS.EXPF_UnSelectItem);
+                    window.ExpandItem(hierarchy, itemId, EXPANDFLAGS.EXPF_SelectItem);
+                }
             });
         }
 
         /// <summary>
         /// Callbacks with a hierarchy and hierarchy window for use.
         /// </summary>
-        private static void UseWindow(ConfiguredProject configuredProject, IServiceProvider serviceProvider, Action<IVsUIHierarchy, IVsUIHierarchyWindow> callback)
+        private static void UseWindow(ConfiguredProject configuredProject, IServiceProvider serviceProvider, Action<IVsUIHierarchy, IVsUIHierarchyWindow?> callback)
         {
             var hierarchy = (IVsUIHierarchy)configuredProject.UnconfiguredProject.Services.HostObject;
             callback(hierarchy, GetUIHierarchyWindow(serviceProvider, VSConstants.StandardToolWindows.SolutionExplorer));
@@ -62,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// The caller of this method can use predefined identifiers that map to tool windows if those tool windows
         /// are known to the caller. </param>
         /// <returns>A reference to an IVsUIHierarchyWindow interface, or <c>null</c> if the window isn't available, such as command line mode.</returns>
-        private static IVsUIHierarchyWindow GetUIHierarchyWindow(IServiceProvider serviceProvider, Guid persistenceSlot)
+        private static IVsUIHierarchyWindow? GetUIHierarchyWindow(IServiceProvider serviceProvider, Guid persistenceSlot)
         {
             Requires.NotNull(serviceProvider, nameof(serviceProvider));
 
@@ -71,13 +74,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
                 throw new ArgumentNullException(nameof(serviceProvider));
             }
 
-
 #pragma warning disable RS0030 // Do not used banned APIs
             IVsUIShell shell = serviceProvider.GetService<IVsUIShell, SVsUIShell>();
 #pragma warning restore RS0030 // Do not used banned APIs
 
-            object pvar = null;
-            IVsUIHierarchyWindow uiHierarchyWindow = null;
+            object? pvar = null;
+            IVsUIHierarchyWindow? uiHierarchyWindow = null;
 
             try
             {

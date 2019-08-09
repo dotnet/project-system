@@ -10,8 +10,6 @@ using VSLangProj;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic
 {
     public class MapDynamicEnumValuesProviderTests
@@ -21,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic
         {
             Assert.Throws<ArgumentNullException>("valueMap", () =>
             {
-                new MapDynamicEnumValuesProvider(null);
+                new MapDynamicEnumValuesProvider(null!);
             });
         }
 

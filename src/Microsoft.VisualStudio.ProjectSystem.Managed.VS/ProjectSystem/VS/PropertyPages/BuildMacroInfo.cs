@@ -5,8 +5,6 @@ using System.ComponentModel.Composition;
 
 using Microsoft.VisualStudio.Shell.Interop;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
     /// <summary>
@@ -16,8 +14,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
     [AppliesTo(ProjectCapability.DotNet)]
     internal class BuildMacroInfo : IVsBuildMacroInfo, IDisposable
     {
-        private IProjectThreadingService _threadingService;
-        private ActiveConfiguredProject<ConfiguredProject> _configuredProject;
+        private IProjectThreadingService? _threadingService;
+        private ActiveConfiguredProject<ConfiguredProject>? _configuredProject;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BuildMacroInfo"/> class.
@@ -39,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// <param name="bstrBuildMacroName">String containing the name of the macro.</param>
         /// <param name="pbstrBuildMacroValue">String containing the value or body of the macro.</param>
         /// <returns>If the method succeeds, it returns S_OK. If it fails, it returns an error code.</returns>
-        public int GetBuildMacroValue(string bstrBuildMacroName, out string pbstrBuildMacroValue)
+        public int GetBuildMacroValue(string bstrBuildMacroName, out string? pbstrBuildMacroValue)
         {
             if (_configuredProject == null)
             {
@@ -49,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
             pbstrBuildMacroValue = null;
             ProjectSystem.Properties.IProjectProperties commonProperties = _configuredProject.Value.Services.ProjectPropertiesProvider.GetCommonProperties();
-            pbstrBuildMacroValue = _threadingService.ExecuteSynchronously(() => commonProperties.GetEvaluatedPropertyValueAsync(bstrBuildMacroName));
+            pbstrBuildMacroValue = _threadingService?.ExecuteSynchronously(() => commonProperties.GetEvaluatedPropertyValueAsync(bstrBuildMacroName));
 
             if (pbstrBuildMacroValue == null)
             {

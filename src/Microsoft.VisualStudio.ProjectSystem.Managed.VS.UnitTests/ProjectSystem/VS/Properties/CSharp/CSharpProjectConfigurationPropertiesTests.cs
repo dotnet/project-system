@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.CSharp
         {
             Assert.Throws<ArgumentNullException>("projectProperties", () =>
             {
-                new CSharpProjectConfigurationProperties(null, null);
+                new CSharpProjectConfigurationProperties(null!, null!);
             });
         }
 
@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.CSharp
         {
             Assert.Throws<ArgumentNullException>("threadingService", () =>
             {
-                new CSharpProjectConfigurationProperties(ProjectPropertiesFactory.CreateEmpty(), null);
+                new CSharpProjectConfigurationProperties(ProjectPropertiesFactory.CreateEmpty(), null!);
             });
         }
 

@@ -69,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// <summary>
         /// This provides access to the class which creates the list of debugger values..
         /// </summary>
-        public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair> options)
+        public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair>? options)
             => Task.FromResult<IDynamicEnumValuesGenerator>(
                 new DebugProfileEnumValuesGenerator(LaunchSettingProvider, ProjectThreadingService));
 

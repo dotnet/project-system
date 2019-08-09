@@ -7,8 +7,6 @@ using Moq;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
 {
     public class VisualBasicNamespaceImportsListTests
@@ -40,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
             //IsPresent(string)
             Assert.Throws<ArgumentException>("bstrImport", () =>
             {
-                list.IsPresent(null);
+                list.IsPresent(null!);
             });
             Assert.Throws<ArgumentException>("bstrImport", () =>
             {

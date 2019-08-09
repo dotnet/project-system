@@ -6,8 +6,6 @@ using VSLangProj110;
 
 using VSLangProj80;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.CSharp
 {
     [Export(ExportContractNames.VsTypes.ConfiguredProjectPropertiesAutomationObject)]

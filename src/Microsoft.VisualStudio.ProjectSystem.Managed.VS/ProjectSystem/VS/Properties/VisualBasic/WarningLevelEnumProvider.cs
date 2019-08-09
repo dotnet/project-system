@@ -8,8 +8,6 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 using VSLangProj;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic
 {
     [ExportDynamicEnumValuesProvider("WarningLevelEnumProvider")]
@@ -25,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic
                 { nameof(prjWarningLevel.prjWarningLevel4), new PageEnumValue(new EnumValue {Name = "4" }) },
             };
 
-        public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair> options)
+        public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair>? options)
         {
             return Task.FromResult<IDynamicEnumValuesGenerator>(new MapDynamicEnumValuesProvider(_persistWarningLevelEnumValues));
         }

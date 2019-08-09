@@ -1,9 +1,8 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
 using System;
 using System.Threading.Tasks;
 using System.Windows.Controls;
-
-#nullable disable
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
@@ -12,13 +11,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         private bool _isDirty;
         private bool _ignoreEvents;
 
-        public PropertyPageControl()
-        {
-        }
+        public event EventHandler? StatusChanged;
 
-        public event EventHandler StatusChanged;
-
-        public PropertyPageViewModel ViewModel
+        public PropertyPageViewModel? ViewModel
         {
             get
             {
@@ -56,9 +51,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         public virtual void DetachViewModel()
         {
+            Assumes.NotNull(ViewModel);
+
             _ignoreEvents = true;
             IsDirty = false;
-            ViewModel.PropertyChanged -= ViewModel_PropertyChanged;
+            ViewModel!.PropertyChanged -= ViewModel_PropertyChanged;
 
             // Let the view model know we are done.
             ViewModel.ViewModelDetached();
@@ -83,10 +80,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             return result;
         }
 
-        protected virtual Task<int> OnApply() { return ViewModel.Save(); }
+        protected virtual Task<int> OnApply()
+        {
+            Assumes.NotNull(ViewModel);
+
+            return ViewModel!.Save();
+        }
+
         private void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (!_ignoreEvents && !ViewModel.IgnoreEvents)
+            Assumes.NotNull(ViewModel);
+
+            if (!_ignoreEvents && !ViewModel!.IgnoreEvents)
             {
                 IsDirty = true;
             }
@@ -94,11 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         protected virtual void OnStatusChanged(EventArgs args)
         {
-            EventHandler handler = StatusChanged;
-            if (handler != null)
-            {
-                handler.Invoke(this, args);
-            }
+            StatusChanged?.Invoke(this, args);
         }
     }
 }
