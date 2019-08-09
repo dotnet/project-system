@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     /// </summary>
     public sealed class Project : IEnumerable   
     {
-        private static readonly Guid _sdkProjectTypeGuid = Guid.Parse("9A19103F-16F7-4668-BE54-9A1E7A4F7556");
+        private static readonly Guid s_sdkProjectTypeGuid = Guid.Parse("9A19103F-16F7-4668-BE54-9A1E7A4F7556");
 
         private List<Project>? _referencedProjects;
         private List<PackageReference>? _packageReferences;
@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public string RelativeProjectFilePath => $"{ProjectName}\\{ProjectName}.csproj";
 
         public Guid ProjectGuid { get; } = Guid.NewGuid();
-        public object ProjectTypeGuid => _sdkProjectTypeGuid;
+        public object ProjectTypeGuid => s_sdkProjectTypeGuid;
 
         public ProjectTestExtension? Extension { get; set; }
 
