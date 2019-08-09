@@ -8,7 +8,7 @@
 
   <Import Project="..\Directory.Build.props"/>
   <Import Project="$(RepoToolsetDir)Settings.props" Condition="'$(RepoToolsetDir)' != ''" />
-  <Import Project="..\build\VisualStudio.XamlRules.props" />
+  <Import Project="..\build\scripts\VisualStudio.XamlRules.props" />
 
   <PropertyGroup>
     <_IsVisualStudioDeveloperBuild Condition="'$(OfficialBuild)' != 'true' AND '$(CIBuild)' != 'true' AND '$(BuildingInsideVisualStudio)' == 'true'">true</_IsVisualStudioDeveloperBuild>
