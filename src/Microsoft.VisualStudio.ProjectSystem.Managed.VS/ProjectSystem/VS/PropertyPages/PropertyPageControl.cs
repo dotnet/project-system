@@ -4,8 +4,6 @@ using System;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
     internal class PropertyPageControl : UserControl
@@ -13,9 +11,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         private bool _isDirty;
         private bool _ignoreEvents;
 
-        public event EventHandler StatusChanged;
+        public event EventHandler? StatusChanged;
 
-        public PropertyPageViewModel ViewModel
+        public PropertyPageViewModel? ViewModel
         {
             get
             {
@@ -53,9 +51,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         public virtual void DetachViewModel()
         {
+            Assumes.NotNull(ViewModel);
+
             _ignoreEvents = true;
             IsDirty = false;
-            ViewModel.PropertyChanged -= ViewModel_PropertyChanged;
+            ViewModel!.PropertyChanged -= ViewModel_PropertyChanged;
 
             // Let the view model know we are done.
             ViewModel.ViewModelDetached();
@@ -80,10 +80,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             return result;
         }
 
-        protected virtual Task<int> OnApply() { return ViewModel.Save(); }
+        protected virtual Task<int> OnApply()
+        {
+            Assumes.NotNull(ViewModel);
+
+            return ViewModel!.Save();
+        }
+
         private void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (!_ignoreEvents && !ViewModel.IgnoreEvents)
+            Assumes.NotNull(ViewModel);
+
+            if (!_ignoreEvents && !ViewModel!.IgnoreEvents)
             {
                 IsDirty = true;
             }

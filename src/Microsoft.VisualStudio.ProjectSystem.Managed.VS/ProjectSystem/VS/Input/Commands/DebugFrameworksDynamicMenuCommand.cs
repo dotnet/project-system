@@ -12,8 +12,6 @@ using Microsoft.VisualStudio.Input;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.Threading;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
     /// <summary>
@@ -48,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                 {
                     foreach (IActiveDebugFrameworkServices activeDebugFramework in activeDebugFrameworks)
                     {
-                        List<string> frameworks = await activeDebugFramework.GetProjectFrameworksAsync();
+                        List<string>? frameworks = await activeDebugFramework.GetProjectFrameworksAsync();
                         if (frameworks != null && cmdIndex >= 0 && cmdIndex < frameworks.Count)
                         {
                             await activeDebugFramework.SetActiveDebuggingFrameworkPropertyAsync(frameworks[cmdIndex]);
@@ -71,11 +69,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             if (activeDebugFrameworks.Length > 0)
             {
                 // See if the projects support at least two runtimes
-                List<string> frameworks = null;
-                string activeFramework = null;
+                List<string>? frameworks = null;
+                string? activeFramework = null;
                 ExecuteSynchronously(async () =>
                 {
-                    List<string> first = null;
+                    List<string>? first = null;
 
                     foreach (IActiveDebugFrameworkServices activeDebugFramework in activeDebugFrameworks)
                     {

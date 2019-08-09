@@ -6,8 +6,6 @@ using System.Windows.Controls;
 
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
     /// <summary>
@@ -48,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// <summary>
         /// No custom UI
         /// </summary>
-        public UserControl CustomUI { get { return null; } }
+        public UserControl? CustomUI => null;
 
         /// <summary>
         /// Called when the selected profile changes to a profile which matches this command. curSettings will contain 

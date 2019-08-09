@@ -9,8 +9,6 @@ using System.Linq;
 
 using Microsoft.VisualStudio.Text;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices.CSharp
 {
     /// <summary>

@@ -11,19 +11,17 @@ using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Shell.Interop;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
     public abstract partial class PropertyPage : UserControl, IPropertyPage, IVsDebuggerEvents
     {
-        private IPropertyPageSite _site = null;
+        private IPropertyPageSite? _site = null;
         private bool _isDirty = false;
         private readonly bool _ignoreEvents = false;
-        private IVsDebugger _debugger;
+        private IVsDebugger? _debugger;
         private uint _debuggerCookie;
         private bool _isActivated = false;
-        private IProjectThreadingService _threadHandling;
+        private IProjectThreadingService? _threadHandling;
 
         // WIN32 Constants
         private const int SW_HIDE = 0;
@@ -35,8 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             AutoScroll = false;
         }
 
-        internal UnconfiguredProject UnconfiguredProject { get; set; }
-
+        internal UnconfiguredProject? UnconfiguredProject { get; set; }
 
         /// <summary>
         /// Property. Gets or sets whether the page is dirty. Dirty status is pushed to owner property sheet
@@ -57,23 +54,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
-        public List<IVsBrowseObjectContext> ContextObjects { get; private set; }
-
-        /// <summary>
-        /// Helper to wait on async tasks
-        /// </summary>
-        private T WaitForAsync<T>(Func<Task<T>> asyncFunc)
-        {
-            return _threadHandling.ExecuteSynchronously(asyncFunc);
-        }
-
-        /// <summary>
-        /// Helper to wait on async tasks
-        /// </summary>
-        private void WaitForAsync(Func<Task> asyncFunc)
-        {
-            _threadHandling.ExecuteSynchronously(asyncFunc);
-        }
+        [Obsolete("This property is not used by the project system.")]
+        public List<IVsBrowseObjectContext>? ContextObjects { get; private set; }
 
         /// <summary>
         /// IPropertyPage
@@ -110,7 +92,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// </summary>
         public int Apply()
         {
-            return WaitForAsync(OnApply);
+            Assumes.NotNull(_threadHandling);
+
+            return _threadHandling!.ExecuteSynchronously(OnApply);
         }
 
         /// <summary>
@@ -120,7 +104,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             if (_isActivated)
             {
-                WaitForAsync(OnDeactivate);
+                Assumes.NotNull(_threadHandling);
+
+                _threadHandling!.ExecuteSynchronously(OnDeactivate);
                 UnadviseDebugger();
             }
 
@@ -194,7 +180,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// </summary>
         internal void SetObjects(bool isClosing)
         {
-            WaitForAsync(() => OnSetObjects(isClosing));
+            Assumes.NotNull(_threadHandling);
+
+            _threadHandling!.ExecuteSynchronously(() => OnSetObjects(isClosing));
         }
 
         /// <summary>
@@ -244,11 +232,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 pMsg[0].message = (uint)m.Msg;
                 pMsg[0].wParam = m.WParam;
                 pMsg[0].lParam = m.LParam;
-                // Returning S_OK indicates we handled the message ourselves
+                // Returning S_OK (0) indicates we handled the message ourselves
                 return HResult.OK;
             }
 
-            // Returning S_FALSE indicates we have not handled the message
+            // Returning S_FALSE (1) indicates we have not handled the message
             int result = 0;
             if (_site != null)
                 result = _site.TranslateAccelerator(pMsg);
@@ -322,8 +310,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                         // We need to save ThreadHandling because the appdesigner will call SetObjects with null, and then call
                         // Deactivate(). We need to run Async code during Deactivate() which requires ThreadHandling.
 
-                        IUnconfiguredProjectVsServices projectVsServices = UnconfiguredProject.Services.ExportProvider.GetExportedValue<IUnconfiguredProjectVsServices>();
-                        _threadHandling = projectVsServices.ThreadingService;
+                        if (UnconfiguredProject != null)
+                        {
+                            IUnconfiguredProjectVsServices projectVsServices = UnconfiguredProject.Services.ExportProvider.GetExportedValue<IUnconfiguredProjectVsServices>();
+                            _threadHandling = projectVsServices.ThreadingService;
+                        }
                     }
                 }
             }

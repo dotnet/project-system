@@ -11,8 +11,6 @@ using Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint;
 
 using VSLangProj;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
 {
     [Export(typeof(Imports))]
@@ -33,8 +31,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
         private readonly IUnconfiguredProjectVsServices _unconfiguredProjectVSServices;
         private readonly VisualBasicNamespaceImportsList _importsList;
 
-        public event _dispImportsEvents_ImportAddedEventHandler ImportAdded;
-        public event _dispImportsEvents_ImportRemovedEventHandler ImportRemoved;
+        public event _dispImportsEvents_ImportAddedEventHandler? ImportAdded;
+        public event _dispImportsEvents_ImportRemovedEventHandler? ImportRemoved;
 
         [ImportingConstructor]
         public VisualBasicVSImports(
@@ -89,12 +87,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
 
             if (intIndexPresent || stringIndexPresent)
             {
-                string importRemoved = null;
+                string? importRemoved = null;
                 _threadingService.ExecuteSynchronously(() =>
                 {
                     return _projectAccessor.OpenProjectForWriteAsync(ConfiguredProject, project =>
                     {
-                        Microsoft.Build.Evaluation.ProjectItem importProjectItem = null;
+                        Microsoft.Build.Evaluation.ProjectItem importProjectItem;
                         if (index is string removeImport1)
                         {
                             importProjectItem = project.GetItems(ImportItemTypeName)
@@ -109,7 +107,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
                         else
                         {
                             // Cannot reach this point, since index has to be Int or String
-                            System.Diagnostics.Debug.Assert(false, $"Parameter {nameof(index)} is neither an int nor a string");
+                            throw Assumes.NotReachable();
                         }
 
                         if (importProjectItem.IsImported)
@@ -122,7 +120,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
                     });
                 });
 
-                OnImportRemoved(importRemoved);
+                Assumes.NotNull(importRemoved);
+
+                OnImportRemoved(importRemoved!);
             }
             else if (index is string)
             {

@@ -7,8 +7,6 @@ using System.Windows;
 using Microsoft.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.Shell;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
     [ExcludeFromCodeCoverage]
@@ -36,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// </summary>
         private void OKButton_Click(object sender, RoutedEventArgs e)
         {
-            string newName = ProfileName?.Trim();
+            string? newName = ProfileName?.Trim();
 
             var notifyService = new UserNotificationServices(_serviceProvider, _threadingService);
 
@@ -44,13 +42,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             {
                 notifyService.ShowError(PropertyPageResources.ProfileNameRequired);
             }
-            else if (!_validator(newName))
+            else if (!_validator(newName!))
             {
                 notifyService.ShowError(PropertyPageResources.ProfileNameInvalid);
             }
             else
             {
-                ProfileName = newName;
+                ProfileName = newName!;
                 DialogResult = true;
             }
         }
