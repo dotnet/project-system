@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
     [ExportCommandGroup(CommandGroup.WPF)]
     [AppliesTo(ProjectCapability.DotNet)]
-    internal partial class WPFAddItemCommandHandler : AbstractAddItemCommandHandler
+    internal class WPFAddItemCommandHandler : AbstractAddItemCommandHandler
     {
         private static readonly Guid s_wpfPackage = new Guid("{b3bae735-386c-4030-8329-ef48eeda4036}");
 
