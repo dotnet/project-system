@@ -21,10 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             HasConfigurationCondition = hasConfigurationCondition;
         }
 
-        public string Name
-        {
-            get;
-        }
+        public string? Name => null;
 
         public bool HasConfigurationCondition
         {
