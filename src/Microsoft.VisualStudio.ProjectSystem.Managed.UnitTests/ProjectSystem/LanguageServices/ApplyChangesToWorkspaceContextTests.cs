@@ -13,8 +13,6 @@ using Moq;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     public class ApplyChangesToWorkspaceContextTests
@@ -64,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             Assert.Throws<ArgumentNullException>("context", () =>
             {
-                applyChangesToWorkspace.Initialize(null);
+                applyChangesToWorkspace.Initialize(null!);
             });
         }
 
@@ -85,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         [Fact]
         public void Initialize_InitializesHandlers()
         {
-            IWorkspaceProjectContext result = null;
+            IWorkspaceProjectContext? result = null;
             var handler = IWorkspaceContextHandlerFactory.ImplementInitialize((c) => { result = c; });
 
             var applyChangesToWorkspace = CreateInstance(handlers: handler);
@@ -349,8 +347,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             Assert.True(result.isActiveContext);
             Assert.NotNull(result.logger);
 
-            Assert.Single(result.added.MetadataReferences.Select(r => r.Reference), "Added.dll");
-            Assert.Single(result.removed.MetadataReferences.Select(r => r.Reference), "Removed.dll");
+            Assert.Single(result.added!.MetadataReferences.Select(r => r.Reference), "Added.dll");
+            Assert.Single(result.removed!.MetadataReferences.Select(r => r.Reference), "Removed.dll");
         }
 
         [Fact]
@@ -540,12 +538,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             Assert.True(context.LastDesignTimeBuildSucceeded);
         }
 
-        private static ApplyChangesToWorkspaceContext CreateInitializedInstance(ConfiguredProject project = null, ICommandLineParserService commandLineParser = null, IProjectLogger logger = null, params IWorkspaceContextHandler[] handlers)
+        private static ApplyChangesToWorkspaceContext CreateInitializedInstance(ConfiguredProject? project = null, ICommandLineParserService? commandLineParser = null, IProjectLogger? logger = null, params IWorkspaceContextHandler[] handlers)
         {
             return CreateInitializedInstance(out _, project, commandLineParser, logger, handlers);
         }
 
-        private static ApplyChangesToWorkspaceContext CreateInitializedInstance(out IWorkspaceProjectContext context, ConfiguredProject project = null, ICommandLineParserService commandLineParser = null, IProjectLogger logger = null, params IWorkspaceContextHandler[] handlers)
+        private static ApplyChangesToWorkspaceContext CreateInitializedInstance(out IWorkspaceProjectContext context, ConfiguredProject? project = null, ICommandLineParserService? commandLineParser = null, IProjectLogger? logger = null, params IWorkspaceContextHandler[] handlers)
         {
             var applyChangesToWorkspace = CreateInstance(project, commandLineParser, logger, handlers);
             context = IWorkspaceProjectContextMockFactory.Create();
@@ -555,7 +553,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             return applyChangesToWorkspace;
         }
 
-        private static ApplyChangesToWorkspaceContext CreateInstance(ConfiguredProject project = null, ICommandLineParserService commandLineParser = null, IProjectLogger logger = null, params IWorkspaceContextHandler[] handlers)
+        private static ApplyChangesToWorkspaceContext CreateInstance(ConfiguredProject? project = null, ICommandLineParserService? commandLineParser = null, IProjectLogger? logger = null, params IWorkspaceContextHandler[] handlers)
         {
             if (project == null)
             {

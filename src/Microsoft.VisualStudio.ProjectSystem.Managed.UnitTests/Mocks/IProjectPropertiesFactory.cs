@@ -8,8 +8,6 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IProjectPropertiesFactory
@@ -31,10 +29,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public static Mock<IProjectProperties> MockWithPropertyAndValue(string propertyName, string setValue)
         {
-            return MockWithPropertiesAndValues(new Dictionary<string, string>() { { propertyName, setValue } });
+            return MockWithPropertiesAndValues(new Dictionary<string, string?>() { { propertyName, setValue } });
         }
 
-        public static Mock<IProjectProperties> MockWithPropertiesAndValues(Dictionary<string, string> propertyNameAndValues)
+        public static Mock<IProjectProperties> MockWithPropertiesAndValues(Dictionary<string, string?> propertyNameAndValues)
         {
             var mock = MockWithProperties(propertyNameAndValues.Keys);
 
@@ -73,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public static IProjectProperties CreateWithPropertyAndValue(string propertyName, string setValue)
             => MockWithPropertyAndValue(propertyName, setValue).Object;
 
-        public static IProjectProperties CreateWithPropertiesAndValues(Dictionary<string, string> propertyNameAndValues)
+        public static IProjectProperties CreateWithPropertiesAndValues(Dictionary<string, string?> propertyNameAndValues)
             => MockWithPropertiesAndValues(propertyNameAndValues).Object;
     }
 }

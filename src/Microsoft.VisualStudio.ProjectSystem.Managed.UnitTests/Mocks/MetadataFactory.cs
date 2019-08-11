@@ -2,8 +2,6 @@
 
 using System.Collections.Immutable;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class MetadataFactory

@@ -8,16 +8,14 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IInterceptingPropertyValueProviderFactory
     {
         public static IInterceptingPropertyValueProvider Create(
-            Func<string, IProjectProperties, string> onGetEvaluatedPropertyValue = null,
-            Func<string, IProjectProperties, string> onGetUnevaluatedPropertyValue = null,
-            Func<string, IProjectProperties, IReadOnlyDictionary<string, string>, string> onSetPropertyValue = null)
+            Func<string, IProjectProperties, string>? onGetEvaluatedPropertyValue = null,
+            Func<string, IProjectProperties, string>? onGetUnevaluatedPropertyValue = null,
+            Func<string, IProjectProperties, IReadOnlyDictionary<string, string>, string?>? onSetPropertyValue = null)
         {
             var mock = new Mock<IInterceptingPropertyValueProvider>();
 
@@ -51,9 +49,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public static Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata> Create(
             string propertyName,
-            Func<string, IProjectProperties, string> onGetEvaluatedPropertyValue = null,
-            Func<string, IProjectProperties, string> onGetUnevaluatedPropertyValue = null,
-            Func<string, IProjectProperties, IReadOnlyDictionary<string, string>, string> onSetPropertyValue = null)
+            Func<string, IProjectProperties, string>? onGetEvaluatedPropertyValue = null,
+            Func<string, IProjectProperties, string>? onGetUnevaluatedPropertyValue = null,
+            Func<string, IProjectProperties, IReadOnlyDictionary<string, string>, string?>? onSetPropertyValue = null)
         {
             var mockMetadata = IInterceptingPropertyValueProviderMetadataFactory.Create(propertyName);
             var mockProvider = Create(onGetEvaluatedPropertyValue, onGetUnevaluatedPropertyValue, onSetPropertyValue);

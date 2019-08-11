@@ -32,19 +32,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint
 
         public void Advise(object pUnkSink, out uint pdwCookie)
         {
-            var sink = pUnkSink as TSinkType;
-
-            if (sink == null)
+            if (pUnkSink is TSinkType sink)
             {
-                Marshal.ThrowExceptionForHR(HResult.NoInterface);
-                pdwCookie = default;
+                _sinks.Add(_nextCookie, sink);
+                pdwCookie = _nextCookie;
+                _source.OnSinkAdded(sink);
+                _nextCookie += 1;
                 return;
             }
 
-            _sinks.Add(_nextCookie, sink);
-            pdwCookie = _nextCookie;
-            _source.OnSinkAdded(sink);
-            _nextCookie += 1;
+            Marshal.ThrowExceptionForHR(HResult.NoInterface);
+            pdwCookie = default;
         }
 
         public void EnumConnections(out IEnumConnections ppEnum)

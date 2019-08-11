@@ -2,13 +2,11 @@
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class ProjectServicesFactory
     {
-        public static ProjectServices Create(IProjectThreadingService threadingService = null, IProjectFaultHandlerService faultHandlerService = null, IProjectService projectService = null, IProjectLockService projectLockService = null)
+        public static ProjectServices Create(IProjectThreadingService? threadingService = null, IProjectFaultHandlerService? faultHandlerService = null, IProjectService? projectService = null, IProjectLockService? projectLockService = null)
         {
             threadingService ??= IProjectThreadingServiceFactory.Create();
             faultHandlerService ??= IProjectFaultHandlerServiceFactory.Create();
@@ -20,11 +18,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
             projectServices.Setup(u => u.FaultHandler)
                 .Returns(faultHandlerService);
 
-            projectServices.Setup(u => u.ProjectService)
+            projectServices.Setup<IProjectService?>(u => u.ProjectService)
                 .Returns(projectService);
 
             projectServices.Setup(u => u.ProjectLockService)
-                .Returns(projectLockService);
+                .Returns(projectLockService!);
 
             return projectServices.Object;
         }

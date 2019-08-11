@@ -7,8 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.IO
 {
     /// <summary>
@@ -21,7 +19,7 @@ namespace Microsoft.VisualStudio.IO
     {
         internal class FileData
         {
-            public string FileContents;
+            public string? FileContents;
             public DateTime LastWriteTimeUtc = DateTime.MaxValue;
             public Encoding FileEncoding = Encoding.Default;
 
@@ -46,8 +44,8 @@ namespace Microsoft.VisualStudio.IO
 
         private readonly HashSet<string> _folders = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-        private string _currentDirectory;
-        private string _tempFile;
+        private string? _currentDirectory;
+        private string? _tempFile;
 
         public Dictionary<string, FileData> Files { get; } = new Dictionary<string, FileData>(StringComparer.OrdinalIgnoreCase);
 
@@ -56,7 +54,7 @@ namespace Microsoft.VisualStudio.IO
             WriteAllText(path, "");
 
             // Caller does not check the return value.
-            return null;
+            return null!;
         }
 
         public void AddFile(string path, DateTime? lastWriteTime = null)
@@ -151,7 +149,7 @@ namespace Microsoft.VisualStudio.IO
 
         public string GetCurrentDirectory()
         {
-            return _currentDirectory;
+            return _currentDirectory!;
         }
 
         public string GetFullPath(string path)
@@ -195,7 +193,7 @@ namespace Microsoft.VisualStudio.IO
             {
                 throw new FileNotFoundException();
             }
-            return Files[path].FileContents;
+            return Files[path].FileContents!;
         }
 
         public void WriteAllText(string path, string content)
@@ -257,7 +255,7 @@ namespace Microsoft.VisualStudio.IO
 
         public string GetTempDirectoryOrFileName()
         {
-            return _tempFile;
+            return _tempFile!;
         }
 
         public void WriteAllBytes(string path, byte[] bytes)

@@ -6,19 +6,18 @@ using System.Linq;
 using Microsoft.Test.Apex.VisualStudio.Solution;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     [TestClass]
-    public class CreateProjectTests : TestBase
+    public sealed class CreateProjectTests : IntegrationTestBase
     {
         [TestMethod]
         public void CreateProject_CreateAndBuild()
         {
             var solution = VisualStudio.ObjectModel.Solution;
 
-            ProjectTestExtension consoleProject = default;
+            ProjectTestExtension consoleProject;
+
             using (Scope.Enter("Create Project"))
             {
                 consoleProject = solution.CreateProject(ProjectLanguage.CSharp, ProjectTemplate.NetCoreConsoleApp);
@@ -55,16 +54,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             using (Scope.Enter("Verify Build Succeeded"))
             {
-                var success = solution.BuildManager.Verify.ProjectBuilt(consoleProject);
-                success &= solution.BuildManager.Verify.Succeeded();
-                string[] errors = new string[] { };
+                var success = 
+                    solution.BuildManager.Verify.ProjectBuilt(consoleProject) &&
+                    solution.BuildManager.Verify.Succeeded();
+
                 if (!success)
                 {
                     VisualStudio.ObjectModel.Shell.ToolWindows.ErrorList.WaitForErrorListItems();
-                    errors = VisualStudio.ObjectModel.Shell.ToolWindows.ErrorList.Errors.Select(x => $"Description:'{x.Description}' Project:{x.ProjectName} Line:'{x.LineNumber}'").ToArray();
+                    var errors = VisualStudio.ObjectModel.Shell.ToolWindows.ErrorList.Errors.Select(x => $"Description:'{x.Description}' Project:{x.ProjectName} Line:'{x.LineNumber}'").ToArray();
+                    Assert.Fail($"project '{consoleProject.FileName}' failed to build.{Environment.NewLine}errors:{Environment.NewLine}{string.Join(Environment.NewLine, errors)}");
                 }
-                
-                Assert.IsTrue(success, $"project '{consoleProject.FileName}' failed to build.{Environment.NewLine}errors:{Environment.NewLine}{string.Join(Environment.NewLine, errors)}");
             }
         }
     }

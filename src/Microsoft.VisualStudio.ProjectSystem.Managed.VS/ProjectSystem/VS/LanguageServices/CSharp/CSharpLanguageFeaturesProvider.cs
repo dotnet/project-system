@@ -9,8 +9,6 @@ using System.Linq;
 
 using Microsoft.VisualStudio.Text;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices.CSharp
 {
     /// <summary>
@@ -71,7 +69,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices.CSharp
 
             return identifier;
         }
-
 
         /// <summary>
         ///     Makes a proper namespace from the specified name.

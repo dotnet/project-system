@@ -6,8 +6,6 @@ using VSLangProj;
 
 using VSLangProj110;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 {
     public partial class VSProject : VSLangProj.ProjectProperties
@@ -38,7 +36,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                 });
             }
         }
-
 
         // Implementation of VsLangProj.ProjectProperties
         public prjOutputType OutputType
@@ -108,7 +105,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             }
         }
 
-        public string ExtenderCATID => null;
+        public string? ExtenderCATID => null;
 
         public string AbsoluteProjectDirectory
         {

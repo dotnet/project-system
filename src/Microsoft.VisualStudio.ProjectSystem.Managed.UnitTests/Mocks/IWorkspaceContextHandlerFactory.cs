@@ -6,8 +6,6 @@ using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     internal static class IWorkspaceContextHandlerFactory

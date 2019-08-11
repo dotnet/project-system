@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,8 +9,6 @@ using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.LanguageServices;
 using Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem;
-
-#nullable disable
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             _unconfiguredProject = project;
         }
 
-        public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair> options)
+        public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair>? options)
         {
             return Task.FromResult<IDynamicEnumValuesGenerator>(new StartupObjectsEnumGenerator(_workspace, _unconfiguredProject));
         }
@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private readonly UnconfiguredProject _unconfiguredProject;
 
         /// <summary>
-        /// When we implement WinForms support, we need to set this for VB winforms projects
+        /// When we implement WinForms support, we need to set this for VB WinForms projects
         /// </summary>
         private static bool SearchForEntryPointsInFormsOnly => false;
 
@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public async Task<ICollection<IEnumValue>> GetListedValuesAsync()
         {
-            Project project = _workspace.CurrentSolution.Projects.Where(p => PathHelper.IsSamePath(p.FilePath, _unconfiguredProject.FullPath)).First();
+            Project project = _workspace.CurrentSolution.Projects.First(p => PathHelper.IsSamePath(p.FilePath, _unconfiguredProject.FullPath));
             Compilation compilation = await project.GetCompilationAsync();
 
             IEntryPointFinderService entryPointFinderService = project.LanguageServices.GetService<IEntryPointFinderService>();

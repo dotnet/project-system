@@ -4,8 +4,6 @@ using System;
 using System.Diagnostics;
 using System.Runtime.Serialization;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.Diagnostics
 {
     // To enable this for a process, add the following to the app.config for the project:

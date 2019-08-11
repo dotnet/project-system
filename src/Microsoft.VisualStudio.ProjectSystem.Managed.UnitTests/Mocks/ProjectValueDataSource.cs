@@ -5,14 +5,12 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal class ProjectValueDataSource<T> : ProjectValueDataSourceBase<T>
         where T : class
     {
-        private IBroadcastBlock<IProjectVersionedValue<T>> _broadcastBlock;
+        private IBroadcastBlock<IProjectVersionedValue<T>>? _broadcastBlock;
         private int _version;
 
         public ProjectValueDataSource(IProjectCommonServices services)
@@ -20,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
         }
 
-        public override NamedIdentity DataSourceKey { get; } = new NamedIdentity("DataSurce");
+        public override NamedIdentity DataSourceKey { get; } = new NamedIdentity("DataSource");
 
         public override IComparable DataSourceVersion
         {
@@ -33,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             {
                 EnsureInitialized(true);
 
-                return _broadcastBlock;
+                return _broadcastBlock!;
             }
         }
 
@@ -48,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             await SendAsync(value);
 
-            _broadcastBlock.Complete();
+            _broadcastBlock!.Complete();
 
             // Note, we have to wait for both the source *and* target block as 
             // the Completion of the source block doesn't mean that the target 

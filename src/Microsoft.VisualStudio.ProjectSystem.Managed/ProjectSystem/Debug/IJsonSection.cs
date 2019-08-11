@@ -3,8 +3,6 @@
 using System;
 using System.ComponentModel;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     /// <summary>

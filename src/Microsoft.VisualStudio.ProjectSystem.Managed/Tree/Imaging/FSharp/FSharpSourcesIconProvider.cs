@@ -1,11 +1,11 @@
-﻿using System;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 
 using Microsoft.VisualStudio.Imaging;
-
-#nullable disable
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging.FSharp
 {
@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging.FSharp
             }
         }
 
-        private static ProjectImageMoniker GetIconForItem(string itemName)
+        private static ProjectImageMoniker? GetIconForItem(string itemName)
         {
             if (s_fileExtensionImageMap.TryGetValue(Path.GetExtension(itemName), out ProjectImageMoniker moniker))
             {

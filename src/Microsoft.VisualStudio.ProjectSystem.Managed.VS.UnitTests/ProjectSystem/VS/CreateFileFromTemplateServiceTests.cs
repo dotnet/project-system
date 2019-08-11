@@ -11,8 +11,6 @@ using Microsoft.VisualStudio.Shell.Interop;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     public class CreateFileFromTemplateServiceTests
@@ -24,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             await Assert.ThrowsAsync<ArgumentNullException>("templateFile", () =>
             {
-                return service.CreateFileAsync(null, "ParentNode", "FileName");
+                return service.CreateFileAsync(null!, "ParentNode", "FileName");
             });
         }
 
@@ -35,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             await Assert.ThrowsAsync<ArgumentNullException>("parentDocumentMoniker", () =>
             {
-                return service.CreateFileAsync("SomeFile", null, "FileName");
+                return service.CreateFileAsync("SomeFile", null!, "FileName");
             });
         }
 
@@ -57,10 +55,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             await Assert.ThrowsAsync<ArgumentNullException>("fileName", async () =>
             {
-                await service.CreateFileAsync("SomeFile", "ParentNode", null);
+                await service.CreateFileAsync("SomeFile", "ParentNode", null!);
             });
         }
-
 
         [Theory]
         [InlineData(@"C:\Path\To\TemplateFile", true)]
@@ -102,12 +99,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             Assert.Equal(expectedResult, returnValue);
         }
 
-        private CreateFileFromTemplateService CreateInstance()
+        private static CreateFileFromTemplateService CreateInstance()
         {
             return CreateInstance(null, null, null);
         }
 
-        private CreateFileFromTemplateService CreateInstance(IUnconfiguredProjectVsServices projectVsServices, DTE2 dte, ProjectProperties properties)
+        private static CreateFileFromTemplateService CreateInstance(IUnconfiguredProjectVsServices? projectVsServices, DTE2? dte, ProjectProperties? properties)
         {
             projectVsServices ??= IUnconfiguredProjectVsServicesFactory.Create();
             dte ??= DTEFactory.Create();
@@ -116,15 +113,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return new CreateFileFromTemplateService(projectVsServices, IVsUIServiceFactory.Create<SDTE, DTE2>(dte), properties);
         }
 
-        private ProjectProperties CreateProperties()
+        private static ProjectProperties CreateProperties()
         {
             var properties = ProjectPropertiesFactory.Create(UnconfiguredProjectFactory.Create(),
-                        new PropertyPageData()
-                        {
-                            Category = ConfigurationGeneral.SchemaName,
-                            PropertyName = ConfigurationGeneral.TemplateLanguageProperty,
-                            Value = "CSharp"
-                        });
+                        new PropertyPageData(ConfigurationGeneral.SchemaName, ConfigurationGeneral.TemplateLanguageProperty, "CSharp"));
 
             return properties;
         }

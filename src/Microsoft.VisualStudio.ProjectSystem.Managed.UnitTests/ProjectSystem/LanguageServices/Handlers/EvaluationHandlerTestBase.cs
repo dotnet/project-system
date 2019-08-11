@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-
 using System;
 
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
@@ -9,8 +8,6 @@ using Microsoft.VisualStudio.ProjectSystem.Logging;
 using Moq;
 
 using Xunit;
-
-#nullable disable
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
@@ -33,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             Assert.Throws<ArgumentNullException>("version", () =>
             {
-                handler.Handle(null, projectChange, true, logger);
+                handler.Handle(null!, projectChange, true, logger);
             });
         }
 
@@ -45,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             Assert.Throws<ArgumentNullException>("projectChange", () =>
             {
-                handler.Handle(10, null, true, logger);
+                handler.Handle(10, null!, true, logger);
             });
         }
 
@@ -57,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             Assert.Throws<ArgumentNullException>("logger", () =>
             {
-                handler.Handle(10, projectChange, true, null);
+                handler.Handle(10, projectChange, true, null!);
             });
         }
 

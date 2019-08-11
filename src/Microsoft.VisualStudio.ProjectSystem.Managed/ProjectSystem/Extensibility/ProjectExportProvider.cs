@@ -21,17 +21,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Extensibility
             _projectServiceAccessor = serviceAccessor;
         }
 
-        /// <summary>
-        /// Returns the export for the given project without having to go to the 
-        /// UI thread. This is the preferred method for getting access to project specific
-        /// exports
-        /// </summary>
+        /// <inheritdoc />
         public T? GetExport<T>(string projectFilePath) where T : class
         {
-            if (string.IsNullOrEmpty(projectFilePath))
-            {
-                throw new ArgumentNullException(nameof(projectFilePath));
-            }
+            Requires.NotNullOrEmpty(projectFilePath, nameof(projectFilePath));
 
             IProjectService projectService = _projectServiceAccessor.GetProjectService();
 

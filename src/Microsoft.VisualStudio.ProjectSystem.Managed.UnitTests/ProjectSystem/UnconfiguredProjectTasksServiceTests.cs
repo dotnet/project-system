@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     public class UnconfiguredProjectTasksServiceTests
@@ -126,7 +124,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             Assert.Equal(1, callCount);
         }
 
-        private static UnconfiguredProjectTasksService CreateInstance(IProjectAsynchronousTasksService tasksService = null, ILoadedInHostListener loadedInHostListener = null)
+        private static UnconfiguredProjectTasksService CreateInstance(IProjectAsynchronousTasksService? tasksService = null, ILoadedInHostListener? loadedInHostListener = null)
         {
             tasksService ??= IProjectAsynchronousTasksServiceFactory.Create();
             loadedInHostListener  ??= ILoadedInHostListenerFactory.Create();

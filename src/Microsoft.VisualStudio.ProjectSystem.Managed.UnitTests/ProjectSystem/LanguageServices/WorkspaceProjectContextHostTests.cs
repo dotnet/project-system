@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     public class WorkspaceProjectContextHostTests
@@ -120,11 +118,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             await Assert.ThrowsAsync<ArgumentNullException>("action", () =>
             {
-                return instance.OpenContextForWriteAsync((Func<IWorkspaceProjectContextAccessor, Task>)null);
+                return instance.OpenContextForWriteAsync(null!);
             });
         }
 
-        private WorkspaceProjectContextHost CreateInstance(ConfiguredProject project = null, IProjectThreadingService threadingService = null, IUnconfiguredProjectTasksService tasksService = null, IProjectSubscriptionService projectSubscriptionService = null, IActiveEditorContextTracker activeWorkspaceProjectContextTracker = null, IWorkspaceProjectContextProvider workspaceProjectContextProvider = null, IApplyChangesToWorkspaceContext applyChangesToWorkspaceContext = null)
+        private static WorkspaceProjectContextHost CreateInstance(ConfiguredProject? project = null, IProjectThreadingService? threadingService = null, IUnconfiguredProjectTasksService? tasksService = null, IProjectSubscriptionService? projectSubscriptionService = null, IActiveEditorContextTracker? activeWorkspaceProjectContextTracker = null, IWorkspaceProjectContextProvider? workspaceProjectContextProvider = null, IApplyChangesToWorkspaceContext? applyChangesToWorkspaceContext = null)
         {
             project ??= ConfiguredProjectFactory.Create();
             threadingService ??= IProjectThreadingServiceFactory.Create();

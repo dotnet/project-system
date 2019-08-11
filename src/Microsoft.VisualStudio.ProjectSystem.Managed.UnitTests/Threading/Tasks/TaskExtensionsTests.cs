@@ -4,8 +4,6 @@ using System.Threading.Tasks;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.Threading.Tasks
 {
     public class TaskExtensionsTests

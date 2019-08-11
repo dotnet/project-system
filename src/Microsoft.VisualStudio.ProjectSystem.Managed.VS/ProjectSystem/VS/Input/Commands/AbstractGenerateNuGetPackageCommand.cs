@@ -9,8 +9,6 @@ using Microsoft.VisualStudio.Shell.Interop;
 
 using Task = System.Threading.Tasks.Task;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
     internal abstract class AbstractGenerateNuGetPackageCommand : AbstractSingleNodeProjectCommand, IVsUpdateSolutionEvents, IDisposable
@@ -18,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         private readonly IProjectThreadingService _threadingService;
         private readonly IVsService<IVsSolutionBuildManager2> _vsSolutionBuildManagerService;
         private readonly GeneratePackageOnBuildPropertyProvider _generatePackageOnBuildPropertyProvider;
-        private IVsSolutionBuildManager2 _buildManager;
+        private IVsSolutionBuildManager2? _buildManager;
         private uint _solutionEventsCookie;
 
         protected AbstractGenerateNuGetPackageCommand(
@@ -41,9 +39,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         protected UnconfiguredProject Project { get; }
 
         protected abstract string GetCommandText();
+
         protected abstract bool ShouldHandle(IProjectTree node);
 
-        protected override async Task<CommandStatusResult> GetCommandStatusAsync(IProjectTree node, bool focused, string commandText, CommandStatus progressiveStatus)
+        protected override async Task<CommandStatusResult> GetCommandStatusAsync(IProjectTree node, bool focused, string? commandText, CommandStatus progressiveStatus)
         {
             if (ShouldHandle(node))
             {
@@ -60,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             // Ensure build manager is initialized.
             await EnsureBuildManagerInitializedAsync();
 
-            ErrorHandler.ThrowOnFailure(_buildManager.QueryBuildManagerBusy(out int busy));
+            ErrorHandler.ThrowOnFailure(_buildManager!.QueryBuildManagerBusy(out int busy));
             return busy == 0;
         }
 
@@ -92,7 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
                 // Save documents before build.
                 var projectVsHierarchy = (IVsHierarchy)Project.Services.HostObject;
-                ErrorHandler.ThrowOnFailure(_buildManager.SaveDocumentsBeforeBuild(projectVsHierarchy, (uint)VSConstants.VSITEMID.Root, 0 /*docCookie*/));
+                ErrorHandler.ThrowOnFailure(_buildManager!.SaveDocumentsBeforeBuild(projectVsHierarchy, (uint)VSConstants.VSITEMID.Root, 0 /*docCookie*/));
 
                 // Enable generating package on build ("GeneratePackageOnBuild") for all projects being built.
                 _generatePackageOnBuildPropertyProvider.OverrideGeneratePackageOnBuild(true);

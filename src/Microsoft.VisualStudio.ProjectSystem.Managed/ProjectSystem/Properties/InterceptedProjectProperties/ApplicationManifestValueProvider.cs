@@ -58,7 +58,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <summary>
         /// Sets the application manifest property
         /// </summary>
-        public override async Task<string> OnSetPropertyValueAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string> dimensionalConditions = null)
+        public override async Task<string> OnSetPropertyValueAsync(
+            string unevaluatedPropertyValue,
+            IProjectProperties defaultProperties,
+            IReadOnlyDictionary<string, string> dimensionalConditions = null)
         {
             string returnValue = null;
 

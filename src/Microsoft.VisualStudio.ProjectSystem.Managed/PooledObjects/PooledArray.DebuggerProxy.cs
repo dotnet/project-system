@@ -2,8 +2,6 @@
 
 using System.Diagnostics;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.Buffers.PooledObjects
 {
     internal sealed partial class PooledArray<T>

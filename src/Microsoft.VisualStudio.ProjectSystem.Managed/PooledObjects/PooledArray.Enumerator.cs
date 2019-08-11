@@ -2,8 +2,6 @@
 
 using System.Collections.Generic;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.Buffers.PooledObjects
 {
     internal sealed partial class PooledArray<T>
@@ -34,7 +32,7 @@ namespace Microsoft.VisualStudio.Buffers.PooledObjects
             {
             }
 
-            object System.Collections.IEnumerator.Current => Current;
+            object System.Collections.IEnumerator.Current => Current!;
 
             public void Reset() => _index = -1;
         }

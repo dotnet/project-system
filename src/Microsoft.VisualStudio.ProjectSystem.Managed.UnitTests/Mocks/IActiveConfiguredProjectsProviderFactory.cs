@@ -4,13 +4,12 @@ using System.Collections.Immutable;
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     internal class IActiveConfiguredProjectsProviderFactory
     {
         private readonly Mock<IActiveConfiguredProjectsProvider> _mock;
+
         public IActiveConfiguredProjectsProviderFactory(MockBehavior mockBehavior = MockBehavior.Strict)
         {
             _mock = new Mock<IActiveConfiguredProjectsProvider>(mockBehavior);

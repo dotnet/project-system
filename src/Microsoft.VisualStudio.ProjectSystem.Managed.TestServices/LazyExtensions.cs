@@ -2,8 +2,6 @@
 
 using System;
 
-#nullable disable
-
 namespace Microsoft
 {
     public static class LazyExtensions

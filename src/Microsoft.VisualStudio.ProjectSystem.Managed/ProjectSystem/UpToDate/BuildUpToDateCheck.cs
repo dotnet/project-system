@@ -265,10 +265,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             if (state.CustomInputs.Count != 0)
             {
                 logger.Verbose("Adding " + UpToDateCheckInput.SchemaName + " inputs:");
-                // TODO remove pragmas when https://github.com/dotnet/roslyn/issues/37040 is fixed
-#pragma warning disable CS8622
                 foreach (string input in state.CustomInputs.Select(_configuredProject.UnconfiguredProject.MakeRooted))
-#pragma warning restore CS8622
                 {
                     logger.Verbose("    '{0}'", input);
                     yield return input;
@@ -282,10 +279,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 logger.Verbose("Adding " + UpToDateCheckOutput.SchemaName + " outputs:");
 
-                // TODO remove pragmas when https://github.com/dotnet/roslyn/issues/37040 is fixed
-#pragma warning disable CS8622
                 foreach (string output in state.CustomOutputs.Select(_configuredProject.UnconfiguredProject.MakeRooted))
-#pragma warning restore CS8622
                 {
                     logger.Verbose("    '{0}'", output);
                     yield return output;
@@ -296,10 +290,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 logger.Verbose("Adding " + UpToDateCheckBuilt.SchemaName + " outputs:");
 
-                // TODO remove pragmas when https://github.com/dotnet/roslyn/issues/37040 is fixed
-#pragma warning disable CS8622
                 foreach (string output in state.BuiltOutputs.Select(_configuredProject.UnconfiguredProject.MakeRooted))
-#pragma warning restore CS8622
                 {
                     logger.Verbose("    '{0}'", output);
                     yield return output;
@@ -318,10 +309,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 if (time > latest)
                 {
-                    // TODO remove pragmas when https://github.com/dotnet/roslyn/issues/37039 is fixed
-#pragma warning disable CS8629 // Nullable value type may be null
                     latest = time.Value;
-#pragma warning restore CS8629
                     latestPath = input;
                 }
             }
@@ -366,7 +354,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 : (null, null);
         }
 
-        private bool CheckOutputs(BuildUpToDateCheckLogger logger, IDictionary<string, DateTime> timestampCache, State state)
+        private bool CheckInputsAndOutputs(BuildUpToDateCheckLogger logger, IDictionary<string, DateTime> timestampCache, State state)
         {
             // We assume there are fewer outputs than inputs, so perform a full scan of outputs to find the earliest
             (DateTime? outputTime, string? outputPath) = GetEarliestOutput(CollectOutputs(logger, state), timestampCache);
@@ -595,7 +583,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     // Short-lived cache of timestamp by path
                     var timestampCache = new Dictionary<string, DateTime>(StringComparers.Paths);
 
-                    if (!CheckOutputs(logger, timestampCache, state) ||
+                    if (!CheckInputsAndOutputs(logger, timestampCache, state) ||
                         !CheckMarkers(logger, timestampCache, state) ||
                         !CheckCopyToOutputDirectoryFiles(logger, timestampCache, state) ||
                         !CheckCopiedOutputFiles(logger, timestampCache, state))
@@ -619,8 +607,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
         }
 
-        public Task<bool> IsUpToDateCheckEnabledAsync(CancellationToken cancellationToken = default) =>
-            _projectSystemOptions.GetIsFastUpToDateCheckEnabledAsync(cancellationToken);
+        public Task<bool> IsUpToDateCheckEnabledAsync(CancellationToken cancellationToken = default)
+        {
+            return _projectSystemOptions.GetIsFastUpToDateCheckEnabledAsync(cancellationToken);
+        }
 
         internal readonly struct TestAccessor
         {
