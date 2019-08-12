@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 throw new AssertFailedException($"ImageMoniker did not match.{Environment.NewLine}Expected: {S(expected)}{Environment.NewLine}Actual: {S(actualMoniker)}");
             }
 
-            string S(ImageMoniker a) => ManagedImageMonikers.ImageMonikerDebugDisplay(a);
+            static string S(ImageMoniker a) => ManagedImageMonikers.ImageMonikerDebugDisplay(a);
         }
 
         public static ImageMoniker ToImageMoniker(this ExportableImageMoniker actual)

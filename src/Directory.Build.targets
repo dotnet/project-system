@@ -2,7 +2,7 @@
 <Project>
   <Import Project="..\Directory.Build.targets" />
   <Import Project="$(RepoToolsetDir)Imports.targets" Condition="'$(RepoToolsetDir)' != ''" />
-  <Import Project="..\build\VisualStudio.XamlRules.targets"/>
+  <Import Project="..\build\import\VisualStudio.XamlRules.targets"/>
 
   <ItemGroup>
     <AdditionalFiles Include="$(MSBuildThisFileDirectory)\Common\BannedSymbols.txt" Condition="'$(BannedSymbolsOptOut)' != 'true'" />
