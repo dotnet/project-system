@@ -1,5 +1,5 @@
 @if not defined _echo @echo off
-setlocal enabledelayedexpansion
+setlocal enabledelayedexpansion 
 
 set BatchFile=%0
 set Root=%~dp0
