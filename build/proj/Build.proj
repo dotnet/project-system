@@ -1,7 +1,7 @@
 <Project DefaultTargets="ClearNuGetCache;PrepareMachine;RestoreToolset;CallToolset;GenerateDependentAssemblyVersionsFile;UploadCodeCoverage">
   
   <Import Project="..\Versions.props"/>
-  <Import Project="..\scripts\NuGet.props"/>
+  <Import Project="..\import\NuGet.props"/>
   <Import Project="..\RepoToolset\RepoLayout.props" />
   
   <PropertyGroup>
