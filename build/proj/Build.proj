@@ -1,6 +1,6 @@
 <Project DefaultTargets="ClearNuGetCache;PrepareMachine;RestoreToolset;CallToolset;GenerateDependentAssemblyVersionsFile;UploadCodeCoverage">
   
-  <Import Project="..\Versions.props"/>
+  <Import Project="..\import\Versions.props"/>
   <Import Project="..\import\NuGet.props"/>
   <Import Project="..\RepoToolset\RepoLayout.props" />
   
@@ -71,6 +71,7 @@
         Test=$(Test);
         Sign=$(Sign);
         IntegrationTest=$(IntegrationTest);
+        VersionsPropsPath=$(RepoRoot)build\import\Versions.props;
       </ToolsetProperties>      
     </PropertyGroup>
 

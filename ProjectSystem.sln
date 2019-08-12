@@ -40,19 +40,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{DD7EF107
 		build\azure-pipelines-integration.yml = build\azure-pipelines-integration.yml
 		build\azure-pipelines.yml = build\azure-pipelines.yml
 		build\SignToolData.json = build\SignToolData.json
-		build\Versions.props = build\Versions.props
+
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Rulesets", "Rulesets", "{E09AD054-22FC-4E70-8889-0F3DCF1267C7}"
 	ProjectSection(SolutionItems) = preProject
-		build\Default.ruleset = build\Default.ruleset
-		build\Test.ruleset = build\Test.ruleset
+		build\ruleset\Default.ruleset = build\ruleset\Default.ruleset
+		build\ruleset\Test.ruleset = build\ruleset\Test.ruleset
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencies", "{6A95E22E-6D85-4494-AEB5-FCD60A8E88A3}"
 	ProjectSection(SolutionItems) = preProject
 		src\HostAgnostic.props = src\HostAgnostic.props
-		build\Packages.targets = build\Packages.targets
+		build\import\Packages.targets = build\import\Packages.targets
+		build\import\Versions.props = build\import\Versions.props
 		src\VisualStudio.props = src\VisualStudio.props
 		src\VisualStudioDesigner.props = src\VisualStudioDesigner.props
 		src\VisualStudioIntegration.props = src\VisualStudioIntegration.props
