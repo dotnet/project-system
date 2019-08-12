@@ -1,5 +1,8 @@
+# Name: DotNet-Project-System
+# URL: https://dev.azure.com/devdiv/DevDiv/_build?definitionId=9675
+#
 # Responsible for producing the signed product build for insertion into the Visual Studio repository
-
+#
 # NOTE: triggers for this build are defined in the Web UI instead of here in the YAML file so they
 #       apply to all branches.
 
