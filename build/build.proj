@@ -1,7 +1,7 @@
 <Project DefaultTargets="ClearNuGetCache;PrepareMachine;RestoreToolset;CallToolset;GenerateDependentAssemblyVersionsFile;UploadCodeCoverage">
   
   <Import Project="Versions.props"/>
-  <Import Project="NuGet.props"/>
+  <Import Project="scripts\NuGet.props"/>
   <Import Project="RepoToolset\RepoLayout.props" />
   
   <PropertyGroup>
@@ -45,7 +45,7 @@
     
     <MSBuild 
       BuildInParallel="true"
-      Projects="Scripts\Toolset.proj"
+      Projects="scripts\Toolset.proj"
       Targets="Restore"
       />
     
@@ -87,7 +87,7 @@
 
     <MSBuild
       BuildInParallel="true"
-      Projects="Scripts\GenerateDependentAssemblyVersionFile.proj"
+      Projects="scripts\GenerateDependentAssemblyVersionFile.proj"
       />
 
   </Target>

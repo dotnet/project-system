@@ -41,8 +41,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{DD7EF107
 		build\azure-pipelines.yml = build\azure-pipelines.yml
 		build\SignToolData.json = build\SignToolData.json
 		build\Versions.props = build\Versions.props
-		build\VisualStudio.XamlRules.props = build\VisualStudio.XamlRules.props
-		build\VisualStudio.XamlRules.targets = build\VisualStudio.XamlRules.targets
+		build\scripts\VisualStudio.XamlRules.props = build\scripts\VisualStudio.XamlRules.props
+		build\scripts\VisualStudio.XamlRules.targets = build\scripts\VisualStudio.XamlRules.targets
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Rulesets", "Rulesets", "{E09AD054-22FC-4E70-8889-0F3DCF1267C7}"
