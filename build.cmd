@@ -55,7 +55,7 @@ if "%OptDiagnostic%" == "true" (
 
 call "%Root%\build\script\SetVSEnvironment.cmd" || exit /b 1
 
-msbuild %Root%build\build.proj /m /warnaserror /nologo /clp:Summary /nodeReuse:%OptNodeReuse% /p:Configuration=%BuildConfiguration% /p:Build=%OptBuild% /p:Rebuild=%OptRebuild% /p:Deploy=%OptDeploy% /p:Test=%OptTest% /p:IntegrationTest=%OptIntegrationTest% /p:Sign=%OptSign% /p:CIBuild=%OptCI% /p:EnableIbc=%OptIbc% /p:ClearNuGetCache=%OptClearNuGetCache% %LogCmdLine% %RootSuffixCmdLine%
+msbuild %Root%build\proj\Build.proj /m /warnaserror /nologo /clp:Summary /nodeReuse:%OptNodeReuse% /p:Configuration=%BuildConfiguration% /p:Build=%OptBuild% /p:Rebuild=%OptRebuild% /p:Deploy=%OptDeploy% /p:Test=%OptTest% /p:IntegrationTest=%OptIntegrationTest% /p:Sign=%OptSign% /p:CIBuild=%OptCI% /p:EnableIbc=%OptIbc% /p:ClearNuGetCache=%OptClearNuGetCache% %LogCmdLine% %RootSuffixCmdLine%
 exit /b %ERRORLEVEL%
 
 :Usage
