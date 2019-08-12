@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <!-- This project is needed to explicitly restore IBCMerge package during signed builds. This package 
        comes from a authenticated package source which isn't supported by <RestoreSources/>. -->
-  <Import Project="..\Versions.props" />
+  <Import Project="..\..\import\Versions.props" />
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>    
     <RestoreSources/>
@@ -10,5 +10,5 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.DotNet.IBCMerge" />
   </ItemGroup>
-  <Import Project="..\Packages.targets" />
+  <Import Project="..\..\import\Packages.targets" />
 </Project>

@@ -1,8 +1,8 @@
 <Project DefaultTargets="ClearNuGetCache;PrepareMachine;RestoreToolset;CallToolset;GenerateDependentAssemblyVersionsFile;UploadCodeCoverage">
   
-  <Import Project="Versions.props"/>
-  <Import Project="scripts\NuGet.props"/>
-  <Import Project="RepoToolset\RepoLayout.props" />
+  <Import Project="..\import\Versions.props"/>
+  <Import Project="..\import\NuGet.props"/>
+  <Import Project="..\import\RepoLayout.props" />
   
   <PropertyGroup>
         
@@ -45,7 +45,7 @@
     
     <MSBuild 
       BuildInParallel="true"
-      Projects="scripts\Toolset.proj"
+      Projects="Toolset.proj"
       Targets="Restore"
       />
     
@@ -71,6 +71,7 @@
         Test=$(Test);
         Sign=$(Sign);
         IntegrationTest=$(IntegrationTest);
+        VersionsPropsPath=$(RepoRoot)build\import\Versions.props;
       </ToolsetProperties>      
     </PropertyGroup>
 
@@ -87,7 +88,7 @@
 
     <MSBuild
       BuildInParallel="true"
-      Projects="scripts\GenerateDependentAssemblyVersionFile.proj"
+      Projects="GenerateDependentAssemblyVersionFile.proj"
       />
 
   </Target>
@@ -99,7 +100,7 @@
 
     <MSBuild
       BuildInParallel="true"
-      Projects="Scripts\CodeCov.proj"
+      Projects="CodeCov.proj"
       />
     
   </Target>
