@@ -36,10 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// <inheritdoc />
         public void RegisterSnapshotProvider(IDependenciesSnapshotProvider snapshotProvider)
         {
-            if (snapshotProvider == null)
-            {
-                return;
-            }
+            Requires.NotNull(snapshotProvider, nameof(snapshotProvider));
 
             lock (_snapshotProviders)
             {

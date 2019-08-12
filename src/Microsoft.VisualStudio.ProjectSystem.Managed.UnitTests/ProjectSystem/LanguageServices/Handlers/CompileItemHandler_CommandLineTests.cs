@@ -12,8 +12,6 @@ using Moq;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
     public class CompileItemHandler_CommandTests : CommandLineHandlerTestBase
@@ -21,11 +19,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         [Fact]
         public void Constructor_NullAsProject_ThrowsArgumentNull()
         {
-            var context = IWorkspaceProjectContextMockFactory.Create();
-
             Assert.Throws<ArgumentNullException>("project", () =>
             {
-                new CompileItemHandler((UnconfiguredProject)null);
+                new CompileItemHandler(null!);
             });
         }
 
@@ -85,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             return CreateInstance(null, null);
         }
 
-        private CompileItemHandler CreateInstance(UnconfiguredProject project = null, IWorkspaceProjectContext context = null)
+        private static CompileItemHandler CreateInstance(UnconfiguredProject? project = null, IWorkspaceProjectContext? context = null)
         {
             project ??= UnconfiguredProjectFactory.Create();
 

@@ -50,7 +50,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     <see cref="OnceInitializedOnceDisposedAsync.DisposeAsync"/>.
         /// </summary>
         /// <param name="action">
-        ///     The action to execute under the lock.
+        ///     The action to execute under the lock. This action is passed a <see cref="CancellationToken"/> which is cancelled
+        ///     when either this object is disposed, or <paramref name="cancellationToken"/> is cancelled.
         /// </param>
         /// <param name="cancellationToken">
         ///     The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.
@@ -82,7 +83,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     <see cref="OnceInitializedOnceDisposedAsync.DisposeAsync"/>.
         /// </summary>
         /// <param name="action">
-        ///     The action to execute under the lock.
+        ///     The action to execute under the lock. This action is passed a <see cref="CancellationToken"/> which is cancelled
+        ///     when either this object is disposed, or <paramref name="cancellationToken"/> is cancelled.
         /// </param>
         /// <param name="cancellationToken">
         ///     The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.
@@ -112,22 +114,20 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             Requires.NotNull(action, nameof(action));
 
-            using (var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, DisposalToken))
+            using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, DisposalToken);
+            CancellationToken jointCancellationToken = source.Token;
+
+            try
             {
-                CancellationToken jointCancellationToken = source.Token;
+                T result = default!;
+                await _semaphore.ExecuteAsync(async () => { result = await action(jointCancellationToken); }, jointCancellationToken);
 
-                try
-                {
-                    T result = default!;
-                    await _semaphore.ExecuteAsync(async () => { result = await action(jointCancellationToken); }, jointCancellationToken);
-
-                    return result;
-                }
-                catch (Exception ex)
-                {
-                    if (!TryTranslateException(ex, cancellationToken, DisposalToken))
-                        throw;
-                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                if (!TryTranslateException(ex, cancellationToken, DisposalToken))
+                    throw;
             }
 
             throw Assumes.NotReachable();
@@ -135,6 +135,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private async Task ExecuteUnderLockCoreAsync(Func<CancellationToken, Task> action, CancellationToken cancellationToken = default)
         {
+            Requires.NotNull(action, nameof(action));
+
             using var source = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, DisposalToken);
             CancellationToken jointCancellationToken = source.Token;
 

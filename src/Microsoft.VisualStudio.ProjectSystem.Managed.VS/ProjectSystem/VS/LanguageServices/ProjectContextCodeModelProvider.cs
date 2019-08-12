@@ -9,8 +9,6 @@ using EnvDTE;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {
     /// <summary>
@@ -43,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             });
         }
 
-        public FileCodeModel GetFileCodeModel(ProjectItem fileItem)
+        public FileCodeModel? GetFileCodeModel(ProjectItem fileItem)
         {
             Requires.NotNull(fileItem, nameof(fileItem));
 
@@ -63,8 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             });
         }
 
-
-        private async Task<FileCodeModel> GetFileCodeModelAsync(ProjectItem fileItem)
+        private async Task<FileCodeModel?> GetFileCodeModelAsync(ProjectItem fileItem)
         {
             await _threadingService.SwitchToUIThread();
 
@@ -72,13 +69,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             {
                 try
                 {
-                    return Task.FromResult(_codeModelFactory.GetFileCodeModel(accessor.Context, fileItem));
+                    return Task.FromResult<FileCodeModel?>(_codeModelFactory.GetFileCodeModel(accessor.Context, fileItem));
                 }
                 catch (NotImplementedException)
                 {   // Isn't a file that Roslyn knows about
                 }
 
-                return Task.FromResult<FileCodeModel>(null);
+                return Task.FromResult<FileCodeModel?>(null);
             });
         }
     }

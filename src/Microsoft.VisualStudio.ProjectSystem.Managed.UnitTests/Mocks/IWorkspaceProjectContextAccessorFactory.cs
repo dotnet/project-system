@@ -6,8 +6,6 @@ using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     internal static class IWorkspaceProjectContextAccessorFactory
@@ -22,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             return mock.Object;
         }
 
-        public static IWorkspaceProjectContextAccessor ImplementContext(IWorkspaceProjectContext context, string contextId = null)
+        public static IWorkspaceProjectContextAccessor ImplementContext(IWorkspaceProjectContext context, string? contextId = null)
         {
             var mock = new Mock<IWorkspaceProjectContextAccessor>();
 
@@ -30,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 .Returns(context);
 
             mock.Setup(c => c.ContextId)
-                .Returns(contextId);
+                .Returns(contextId!);
 
             return mock.Object;
         }

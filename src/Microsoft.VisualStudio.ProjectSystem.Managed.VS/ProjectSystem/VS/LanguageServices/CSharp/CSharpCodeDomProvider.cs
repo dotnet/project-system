@@ -6,8 +6,6 @@ using System.ComponentModel.Composition;
 using Microsoft.CSharp;
 using Microsoft.VisualStudio.Designer.Interfaces;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices.CSharp
 {
     /// <summary>

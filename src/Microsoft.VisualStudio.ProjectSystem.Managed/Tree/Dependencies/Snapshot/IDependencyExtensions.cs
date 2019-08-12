@@ -58,7 +58,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             public ProjectTreeFlags Flags => _model.Flags;
         }
 
-
         /// <summary>
         /// Returns id having full path instead of OriginalItemSpec
         /// </summary>

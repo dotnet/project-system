@@ -4,8 +4,6 @@ using System;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Logging
 {
     public class ProjectLoggingExtensionsTests
@@ -15,8 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
         {
             Assert.Throws<ArgumentNullException>("logger", () =>
             {
-
-                ProjectLoggerExtensions.BeginBatch((IProjectLogger)null);
+                ProjectLoggerExtensions.BeginBatch(null!);
             });
         }
 
@@ -31,7 +28,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
 
             Assert.Throws<ArgumentOutOfRangeException>("value", () =>
             {
-
                 batch.IndentLevel = indentLevel;
             });
         }
@@ -123,7 +119,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
                 set;
             }
 
-            public string Text
+            public string? Text
             {
                 get;
                 set;

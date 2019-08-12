@@ -5,8 +5,6 @@ using System.Collections.Generic;
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.Telemetry
 {
     internal static class ITelemetryServiceFactory
@@ -20,9 +18,9 @@ namespace Microsoft.VisualStudio.Telemetry
 
         public class TelemetryParameters
         {
-            public string EventName { get; set; }
+            public string? EventName { get; set; }
 
-            public IEnumerable<(string propertyName, object propertyValue)> Properties { get; set; }
+            public IEnumerable<(string propertyName, object propertyValue)>? Properties { get; set; }
         }
 
         public static ITelemetryService Create(TelemetryParameters callParameters)

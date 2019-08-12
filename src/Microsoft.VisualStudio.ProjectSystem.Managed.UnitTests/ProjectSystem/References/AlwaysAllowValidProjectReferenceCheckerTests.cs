@@ -6,13 +6,10 @@ using System.Threading.Tasks;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.References
 {
     public class AlwaysAllowValidProjectReferenceCheckerTests
     {
-
         [Fact]
         public void CanAddProjectReferenceAsync_NullAsReferencedProject_ThrowsArgumentNull()
         {
@@ -20,10 +17,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.References
 
             Assert.Throws<ArgumentNullException>("referencedProject", () =>
             {
-
-                checker.CanAddProjectReferenceAsync((object)null);
+                checker.CanAddProjectReferenceAsync((object)null!);
             });
-
         }
 
         [Fact]
@@ -33,8 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.References
 
             Assert.Throws<ArgumentNullException>("referencedProjects", () =>
             {
-
-                checker.CanAddProjectReferencesAsync((IImmutableSet<object>)null);
+                checker.CanAddProjectReferencesAsync((IImmutableSet<object>)null!);
             });
         }
 
@@ -43,11 +37,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.References
         {
             var checker = CreateInstance();
 
-            var referencedProjects = ImmutableHashSet<object>.Empty;
-
             Assert.Throws<ArgumentException>("referencedProjects", () =>
             {
-
                 checker.CanAddProjectReferencesAsync(ImmutableHashSet<object>.Empty);
             });
         }
@@ -59,8 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.References
 
             Assert.Throws<ArgumentNullException>("referencingProject", () =>
             {
-
-                checker.CanBeReferencedAsync((object)null);
+                checker.CanBeReferencedAsync((object)null!);
             });
         }
 
@@ -134,7 +124,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.References
             Assert.Equal(SupportedCheckResult.Supported, result);
         }
 
-        private IImmutableSet<object> CreateSet(int count)
+        private static IImmutableSet<object> CreateSet(int count)
         {
             var builder = ImmutableHashSet.CreateBuilder<object>();
 
@@ -146,7 +136,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.References
             return builder.ToImmutableHashSet();
         }
 
-        private AlwaysAllowValidProjectReferenceChecker CreateInstance()
+        private static AlwaysAllowValidProjectReferenceChecker CreateInstance()
         {
             return new AlwaysAllowValidProjectReferenceChecker();
         }

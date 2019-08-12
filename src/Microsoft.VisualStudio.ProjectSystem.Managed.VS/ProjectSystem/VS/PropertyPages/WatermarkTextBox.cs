@@ -4,8 +4,6 @@
 using System.Windows;
 using System.Windows.Controls;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
     /// <summary>
@@ -56,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         [Localizability(LocalizationCategory.Label, Modifiability = Modifiability.Modifiable, Readability = Readability.Readable)]
         public string Watermark
         {
-            get { return GetValue(WatermarkProperty) as string; }
+            get { return (string)GetValue(WatermarkProperty); }
             set { SetValue(WatermarkProperty, value); }
         }
 

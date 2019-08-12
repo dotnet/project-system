@@ -6,8 +6,6 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 {
     [Export(typeof(IProjectChangeHintReceiver))]
@@ -20,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 
         private ImmutableHashSet<string> _previousIncludes = ImmutableHashSet<string>.Empty;
         private OrderingMoveAction _action = OrderingMoveAction.NoOp;
-        private IProjectTree _target = null;
+        private IProjectTree? _target = null;
         private bool _isHinting = false;
 
         [ImportingConstructor]
@@ -37,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             {
                 IProjectChangeHint hint = addedFileHints.First();
                 ConfiguredProject configuredProject = hint.UnconfiguredProject.Services.ActiveConfiguredProjectProvider.ActiveConfiguredProject;
-                await OrderingHelper.Move(configuredProject, _accessor, _previousIncludes, _target, _action);
+                await OrderingHelper.Move(configuredProject, _accessor, _previousIncludes, _target!, _action);
             }
 
             // Reset everything because we are done.

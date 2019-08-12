@@ -5,8 +5,6 @@ using System.Collections.Generic;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     public sealed class SetDiffTests
@@ -33,8 +31,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [Fact]
         public void Constructor_WithNullValues_Throws()
         {
-            Assert.Throws<ArgumentNullException>(() => new SetDiff<int>(null, new[] {1, 2, 3}));
-            Assert.Throws<ArgumentNullException>(() => new SetDiff<int>(new[] {1, 2, 3}, null));
+            Assert.Throws<ArgumentNullException>(() => new SetDiff<int>(null!, new[] {1, 2, 3}));
+            Assert.Throws<ArgumentNullException>(() => new SetDiff<int>(new[] {1, 2, 3}, null!));
         }
     }
 }

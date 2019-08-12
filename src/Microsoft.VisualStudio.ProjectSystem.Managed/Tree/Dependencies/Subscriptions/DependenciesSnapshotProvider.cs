@@ -47,6 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         private readonly IUnconfiguredProjectTasksService _tasksService;
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
         private readonly IActiveProjectConfigurationRefreshService _activeProjectConfigurationRefreshService;
+        private readonly IBroadcastBlock<SnapshotChangedEventArgs> _snapshotChangedSource;
 
         [ImportMany] private readonly OrderPrecedenceImportCollection<IDependencyCrossTargetSubscriber> _dependencySubscribers;
         [ImportMany] private readonly OrderPrecedenceImportCollection<IProjectDependenciesSubTreeProvider> _subTreeProviders;
@@ -55,8 +56,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         private ImmutableArray<IDependencyCrossTargetSubscriber> _subscribers;
         private DependenciesSnapshot _currentSnapshot;
         private int _isInitialized;
-
-        private readonly IBroadcastBlock<SnapshotChangedEventArgs> _snapshotChangedSource;
 
         /// <summary>
         ///     Current <see cref="AggregateCrossTargetProjectContext"/>, which is an immutable map of
@@ -274,13 +273,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 return;
             }
 
-            // TODO remove ! when https://github.com/dotnet/roslyn/issues/36018 is fixed
             ITargetFramework targetFramework =
-                string.IsNullOrEmpty(e.TargetShortOrFullName) || TargetFramework.Any.Equals(e.TargetShortOrFullName!)
+                string.IsNullOrEmpty(e.TargetShortOrFullName) || TargetFramework.Any.Equals(e.TargetShortOrFullName)
                     ? TargetFramework.Any
                     : _targetFrameworkProvider.GetTargetFramework(e.TargetShortOrFullName) ?? TargetFramework.Any;
 
-            ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes = ImmutableDictionary<ITargetFramework, IDependenciesChanges>.Empty.Add(targetFramework, e.Changes);
+            ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes = ImmutableDictionary<ITargetFramework, IDependenciesChanges>
+                .Empty.Add(targetFramework, e.Changes);
 
             UpdateDependenciesSnapshot(changes, catalogs: null, targetFrameworks: default, activeTargetFramework: null, e.Token);
         }
@@ -442,7 +441,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
                 _currentAggregateProjectContext = newContext;
 
-                OnAggregateContextChanged(previousContext, newContext);
+                TryUpdateSnapshot(snapshot => snapshot.SetTargets(newContext.TargetFrameworks, newContext.ActiveTargetFramework));
 
                 return newContext;
             }
@@ -455,6 +454,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 Assumes.True(activeProjectConfiguration.IsCrossTargeting());
 
                 ITargetFramework? activeTargetFramework = _targetFrameworkProvider.GetTargetFramework(activeProjectConfiguration.Dimensions[ConfigurationGeneral.TargetFrameworkProperty]);
+
                 if (!previousContext.ActiveTargetFramework.Equals(activeTargetFramework))
                 {
                     // Active target framework is different.
@@ -484,13 +484,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 }
 
                 return true;
-            }
-
-            void OnAggregateContextChanged(
-                AggregateCrossTargetProjectContext? oldContext,
-                AggregateCrossTargetProjectContext newContext)
-            {
-                TryUpdateSnapshot(snapshot => snapshot.SetTargets(newContext.TargetFrameworks, newContext.ActiveTargetFramework));
             }
         }
 
@@ -526,9 +519,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     // Always publish the latest snapshot
                     IDependenciesSnapshot snapshot = _currentSnapshot;
 
-                    var events = new SnapshotChangedEventArgs(snapshot, ct);
-                    _snapshotChangedSource.Post(events);
-                    SnapshotChanged?.Invoke(this, events);
+                    var e = new SnapshotChangedEventArgs(snapshot, ct);
+                    _snapshotChangedSource.Post(e);
+                    SnapshotChanged?.Invoke(this, e);
 
                     return Task.CompletedTask;
                 }, token);

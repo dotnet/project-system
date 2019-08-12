@@ -117,6 +117,10 @@
     </StringProperty.DataSource>
   </StringProperty>
 
+  <StringProperty Name="IsImplicitlyDefined"
+                  ReadOnly="True"
+                  Visible="False" />
+
   <BoolProperty Name="IsWinMDFile"
                 Visible="false" />
 

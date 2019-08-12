@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             _unconfiguredProject = project;
         }
 
-        public override Task<string> OnSetPropertyValueAsync(
+        public override Task<string?> OnSetPropertyValueAsync(
             string unevaluatedPropertyValue,
             IProjectProperties defaultProperties,
             IReadOnlyDictionary<string, string>? dimensionalConditions = null)
@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 unevaluatedPropertyValue = relativePath;
             }
 
-            return Task.FromResult(unevaluatedPropertyValue);
+            return Task.FromResult<string?>(unevaluatedPropertyValue);
         }
     }
 }

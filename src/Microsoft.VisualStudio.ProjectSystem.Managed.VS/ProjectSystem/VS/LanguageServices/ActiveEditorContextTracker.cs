@@ -11,8 +11,6 @@ using Microsoft.VisualStudio.Threading;
 
 using HierarchyId = Microsoft.VisualStudio.Shell.HierarchyId;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {
     /// <summary>
@@ -27,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
     internal class ActiveEditorContextTracker : IActiveIntellisenseProjectProvider, IVsContainedLanguageProjectNameProvider, IActiveEditorContextTracker
     {
         private ImmutableList<string> _contexts = ImmutableList<string>.Empty;
-        private string _activeIntellisenseProjectContext;
+        private string? _activeIntellisenseProjectContext;
 
         [ImportingConstructor]
         public ActiveEditorContextTracker(UnconfiguredProject project) // For scoping
@@ -40,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             set { _activeIntellisenseProjectContext = value; }
         }
 
-        public int GetProjectName(uint itemid, out string pbstrProjectName)
+        public int GetProjectName(uint itemid, out string? pbstrProjectName)
         {
             if (itemid == HierarchyId.Nil || itemid == HierarchyId.Selection || itemid == HierarchyId.Empty)
             {

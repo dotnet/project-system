@@ -73,7 +73,7 @@
                 AutomationProperties.Name="{x:Static Member=local:PropertyPageResources.Profile}">
                 <ComboBox.IsEnabled>
                     <MultiBinding Converter="{StaticResource MultiValueBoolToBoolAnd}">
-                        <Binding Path="HasProfiles" Mode="OneWay"/>
+                        <Binding Path="HasProfilesOrNotInitialized" Mode="OneWay"/>
                         <Binding Path="EnvironmentVariablesValid" Mode="OneWay"/>
                         <Binding Path="DoesNotHaveErrors" Mode="OneWay"/>
                     </MultiBinding>
@@ -143,6 +143,13 @@
                         <Setter Property="AutomationProperties.Name" Value="{Binding Path=Name}"/>
                     </Style>
                 </ComboBox.ItemContainerStyle>
+                <ComboBox.IsEnabled>
+                    <MultiBinding Converter="{StaticResource MultiValueBoolToBoolAnd}">
+                        <Binding Path="HasProfilesOrNotInitialized" Mode="OneWay"/>
+                        <Binding Path="EnvironmentVariablesValid" Mode="OneWay"/>
+                        <Binding Path="DoesNotHaveErrors" Mode="OneWay"/>
+                    </MultiBinding>
+                </ComboBox.IsEnabled>
             </ComboBox>
             <Label 
                 Grid.Row="2"

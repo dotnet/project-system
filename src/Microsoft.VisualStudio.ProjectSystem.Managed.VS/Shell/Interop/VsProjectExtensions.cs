@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
         ///     The <see cref="IVsWindowFrame"/> that contains the editor; otherwise, <see langword="null"/> if it was opened
         ///     with an editor external of Visual Studio.
         /// </returns>
-        public static IVsWindowFrame OpenItemWithSpecific(this IVsProject4 project, HierarchyId id, Guid editorType)
+        public static IVsWindowFrame? OpenItemWithSpecific(this IVsProject4 project, HierarchyId id, Guid editorType)
         {
             Requires.NotNull(project, nameof(project));
             HResult hr = project.OpenItemWithSpecific(id, 0, ref editorType, "", VSConstants.LOGVIEWID_Primary, (IntPtr)(-1), out IVsWindowFrame frame);

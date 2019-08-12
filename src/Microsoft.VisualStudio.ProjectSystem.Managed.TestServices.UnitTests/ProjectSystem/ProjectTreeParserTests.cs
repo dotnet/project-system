@@ -4,8 +4,6 @@ using System;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     public class ProjectTreeParserTests
@@ -15,8 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             Assert.Throws<ArgumentNullException>("value", () =>
             {
-
-                new ProjectTreeParser((string)null);
+                new ProjectTreeParser(null!);
             });
         }
 
@@ -25,7 +22,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             Assert.Throws<ArgumentException>("value", () =>
             {
-
                 new ProjectTreeParser("");
             });
         }
@@ -113,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [InlineData(@"Root (), icon:")]
         [InlineData(@"Root (), expandedIcon:")]
         [InlineData(@"Root (), Unrecognized:")]
-        [InlineData(@"Root (), Icon: {407FAC73-908A-4477-8176-A3128544AE4F 1}, unreognized:")]
+        [InlineData(@"Root (), Icon: {407FAC73-908A-4477-8176-A3128544AE4F 1}, unrecognized:")]
         public void Parse_UnrecognizedPropertyName_ThrowsFormat(string input)
         {
             AssertThrows(input, ProjectTreeFormatError.UnrecognizedPropertyName);
@@ -416,7 +412,7 @@ Root
             AssertThrows(input, ProjectTreeFormatError.IndentTooManyLevels);
         }
 
-        private void AssertProjectTree(string input, string expected, ProjectTreeWriterOptions options = ProjectTreeWriterOptions.Flags | ProjectTreeWriterOptions.FilePath | ProjectTreeWriterOptions.Visibility)
+        private static void AssertProjectTree(string input, string expected, ProjectTreeWriterOptions options = ProjectTreeWriterOptions.Flags | ProjectTreeWriterOptions.FilePath | ProjectTreeWriterOptions.Visibility)
         {
             // Remove the newlines from the start and end of input and expected so that 
             // it makes it easier inside the test to layout the repro.
@@ -431,7 +427,7 @@ Root
             Assert.Equal(expected, result, ignoreLineEndingDifferences: true);
         }
 
-        private void AssertThrows(string input, ProjectTreeFormatError error)
+        private static void AssertThrows(string input, ProjectTreeFormatError error)
         {
             input = input.Trim(new[] { '\n', '\r' });
 
@@ -439,10 +435,8 @@ Root
 
             var exception = Assert.Throws<ProjectTreeFormatException>(() =>
             {
-
                 parser.Parse();
             });
-
 
             Assert.Equal(error, exception.ErrorId);
         }

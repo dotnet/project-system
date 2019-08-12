@@ -4,8 +4,6 @@ using System;
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.LanguageServices.ProjectSystem
 {
     internal static class IWorkspaceProjectContextFactoryFactory
@@ -15,12 +13,12 @@ namespace Microsoft.VisualStudio.LanguageServices.ProjectSystem
             return Mock.Of<IWorkspaceProjectContextFactory>();
         }
 
-        public static IWorkspaceProjectContextFactory ImplementCreateProjectContext(Func<string, string, string, Guid, object, string, IWorkspaceProjectContext> action)
+        public static IWorkspaceProjectContextFactory ImplementCreateProjectContext(Func<string, string, string, Guid, object, string, IWorkspaceProjectContext?> action)
         {
             var mock = new Mock<IWorkspaceProjectContextFactory>();
 
             mock.Setup(c => c.CreateProjectContext(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<object>(), It.IsAny<string>()))
-                .Returns(action);
+                .Returns(action!);
 
             return mock.Object;
         }

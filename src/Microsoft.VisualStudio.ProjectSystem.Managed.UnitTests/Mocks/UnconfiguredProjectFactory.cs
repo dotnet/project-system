@@ -3,41 +3,40 @@
 using System;
 using System.Text;
 using System.Threading.Tasks;
-using Moq;
 
-#nullable disable
+using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class UnconfiguredProjectFactory
     {
-        public static UnconfiguredProject ImplementFullPath(string fullPath)
+        public static UnconfiguredProject ImplementFullPath(string? fullPath)
         {
             return Create(filePath: fullPath);
         }
 
-        public static UnconfiguredProject Create(object hostObject = null, string filePath = null,
-                                                 IProjectConfigurationsService projectConfigurationsService = null,
-                                                 ConfiguredProject configuredProject = null, Encoding projectEncoding = null,
-                                                 IProjectAsynchronousTasksService projectAsynchronousTasksService = null,
-                                                 IProjectCapabilitiesScope scope = null)
+        public static UnconfiguredProject Create(object? hostObject = null, string? filePath = null,
+                                                 IProjectConfigurationsService? projectConfigurationsService = null,
+                                                 ConfiguredProject? configuredProject = null, Encoding? projectEncoding = null,
+                                                 IProjectAsynchronousTasksService? projectAsynchronousTasksService = null,
+                                                 IProjectCapabilitiesScope? scope = null)
         {
             var service = IProjectServiceFactory.Create();
 
 
             var unconfiguredProjectServices = new Mock<UnconfiguredProjectServices>();
             unconfiguredProjectServices.Setup(u => u.HostObject)
-                                       .Returns(hostObject);
+                                       .Returns(hostObject!);
 
             unconfiguredProjectServices.Setup(u => u.ProjectConfigurationsService)
-                                       .Returns(projectConfigurationsService);
+                                       .Returns(projectConfigurationsService!);
 
-            var activeConfiguredProjectProvider = IActiveConfiguredProjectProviderFactory.Create(getActiveConfiguredProject: () => configuredProject);
+            var activeConfiguredProjectProvider = IActiveConfiguredProjectProviderFactory.Create(getActiveConfiguredProject: () => configuredProject!);
             unconfiguredProjectServices.Setup(u => u.ActiveConfiguredProjectProvider)
                                        .Returns(activeConfiguredProjectProvider);
 
             unconfiguredProjectServices.Setup(u => u.ProjectAsynchronousTasks)
-                                       .Returns(projectAsynchronousTasksService);
+                                       .Returns(projectAsynchronousTasksService!);
 
             var project = new Mock<UnconfiguredProject>();
             project.Setup(u => u.ProjectService)
@@ -47,10 +46,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
                                .Returns(unconfiguredProjectServices.Object);
 
             project.SetupGet(u => u.FullPath)
-                                .Returns(filePath);
+                                .Returns(filePath!);
 
             project.Setup(u => u.Capabilities)
-                               .Returns(scope);
+                               .Returns(scope!);
 
             project.Setup(u => u.GetSuggestedConfiguredProjectAsync()).ReturnsAsync(configuredProject);
 
@@ -73,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return mock.Object;
         }
 
-        public static UnconfiguredProject ImplementLoadConfiguredProjectAsync(Func<ProjectConfiguration, Task<ConfiguredProject>> action)
+        public static UnconfiguredProject ImplementLoadConfiguredProjectAsync(Func<ProjectConfiguration, Task<ConfiguredProject?>> action)
         {
             var mock = new Mock<UnconfiguredProject>();
             mock.Setup(p => p.LoadConfiguredProjectAsync(It.IsAny<ProjectConfiguration>()))

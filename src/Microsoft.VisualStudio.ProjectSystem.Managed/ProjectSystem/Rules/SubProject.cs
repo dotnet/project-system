@@ -2,14 +2,11 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     [ExcludeFromCodeCoverage]
     [SuppressMessage("Style", "IDE0016:Use 'throw' expression")]
     internal partial class SubProject
     {
-
     }
 }

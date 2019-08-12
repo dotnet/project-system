@@ -10,5 +10,9 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\deploy\DeployIntegrationDependencies\DeployIntegrationDependencies.csproj" ReferenceOutputAssembly="false" />
+    <Compile Include="..\Microsoft.VisualStudio.ProjectSystem.Managed\Resources\ManagedImageMonikers.cs" Link="ManagedImageMonikers.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Configuration" />
   </ItemGroup>
 </Project>

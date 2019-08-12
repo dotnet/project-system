@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -10,8 +12,6 @@ using Moq;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
     public class MetadataReferenceItemHandlerTests : CommandLineHandlerTestBase
@@ -19,11 +19,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         [Fact]
         public void Constructor_NullAsProject_ThrowsArgumentNull()
         {
-            var context = IWorkspaceProjectContextMockFactory.Create();
-
             Assert.Throws<ArgumentNullException>("project", () =>
             {
-                new MetadataReferenceItemHandler((UnconfiguredProject)null);
+                new MetadataReferenceItemHandler(null!);
             });
         }
 
@@ -85,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             return CreateInstance(null, null);
         }
 
-        private MetadataReferenceItemHandler CreateInstance(UnconfiguredProject project = null, IWorkspaceProjectContext context = null)
+        private static MetadataReferenceItemHandler CreateInstance(UnconfiguredProject? project = null, IWorkspaceProjectContext? context = null)
         {
             project ??= UnconfiguredProjectFactory.Create();
 

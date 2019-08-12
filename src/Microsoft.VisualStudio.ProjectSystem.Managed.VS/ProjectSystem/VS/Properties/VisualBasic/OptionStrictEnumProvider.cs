@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic
 {
     [ExportDynamicEnumValuesProvider("OptionStrictEnumProvider")]
@@ -32,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic
                 { "1",  new PageEnumValue(new EnumValue {Name = "On" }) },
             };
 
-        public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair> options)
+        public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair>? options)
         {
             return Task.FromResult<IDynamicEnumValuesGenerator>(
                 new MapDynamicEnumValuesProvider(_persistOptionStrictEnumValues, _listedOptionStrictEnumValues));

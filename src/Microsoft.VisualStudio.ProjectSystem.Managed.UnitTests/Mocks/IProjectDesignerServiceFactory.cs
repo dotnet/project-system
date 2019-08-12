@@ -4,8 +4,6 @@ using System;
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     internal static class IProjectDesignerServiceFactory
@@ -32,7 +30,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 .ReturnsAsync(action);
 
             return mock.Object;
-
         }
     }
 }
