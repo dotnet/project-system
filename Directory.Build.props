@@ -46,7 +46,7 @@
     TODO: Import layout props so that design-time build executed before package restore is finished doesn't
     product artifacts into wrong obj directories. Remove once we can use a custom SDK (https://github.com/Microsoft/msbuild/issues/1493)
   -->
-  <Import Project="build\RepoToolset\ProjectLayout.props"/>
+  <Import Project="build\import\ProjectLayout.props"/>
 
   <!--
     Determine whether the project is WPF temp project.

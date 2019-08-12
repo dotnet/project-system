@@ -2,7 +2,7 @@
   
   <Import Project="..\import\Versions.props"/>
   <Import Project="..\import\NuGet.props"/>
-  <Import Project="..\RepoToolset\RepoLayout.props" />
+  <Import Project="..\import\RepoLayout.props" />
   
   <PropertyGroup>
         
