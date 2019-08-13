@@ -1,4 +1,7 @@
-# Responsible for validating pull requests against unit tests
+# Name: unit-tests
+# URL: https://dev.azure.com/dnceng/public/_build?definitionId=406
+#
+# Responsible for validating pull requests and commits to protected branches against unit tests.
 
 # Branches that trigger a build on commit
 trigger:

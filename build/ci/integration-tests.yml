@@ -1,4 +1,9 @@
-# NOTE we do not currently trigger builds. Once we stablise the integration tests we will enable this.
+# Name: integration-tests
+# URL: https://dev.azure.com/dnceng/public/_build?definitionId=417
+#
+# Responsible for validating manually triggered builds against VS integration tests. Once stabilized
+# will be triggered on pull requests and commits to protected branches.
+
 pr: none
 trigger: none
 

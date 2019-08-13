@@ -2,18 +2,17 @@
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
-    internal enum RuleHandlerType
+    internal enum RuleSource
     {
         /// <summary>
-        ///     The <see cref="IDependenciesRuleHandler"/> handles changes 
-        ///     to evaluation rules.
+        ///     Rule data sourced by evaluation.
         /// </summary>
         Evaluation,
 
         /// <summary>
-        ///     The <see cref="IDependenciesRuleHandler"/> handles changes 
-        ///     to design-time build rules.
+        ///     Rule data sourced by both evaluation and design-time build,
+        ///     joined by project version to ensure consistency.
         /// </summary>
-        DesignTimeBuild,
+        Joint
     }
 }

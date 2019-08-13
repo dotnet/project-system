@@ -29,7 +29,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         public const string DependencySubscriptionsHostContract = "DependencySubscriptionsHostContract";
 
         public event EventHandler<ProjectRenamedEventArgs>? SnapshotRenamed;
-        public event EventHandler<SnapshotChangedEventArgs>? SnapshotChanged;
         public event EventHandler<SnapshotProviderUnloadingEventArgs>? SnapshotProviderUnloading;
 
         private readonly TimeSpan _dependenciesUpdateThrottleInterval = TimeSpan.FromMilliseconds(250);
@@ -490,7 +489,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         /// <summary>
         /// Executes <paramref name="updateFunc"/> on the current snapshot within a lock.
         /// If a different snapshot object is returned, <see cref="CurrentSnapshot"/> is updated
-        /// and an invocation of <see cref="SnapshotChanged"/> is scheduled.
+        /// and the update is posted to <see cref="IDependenciesSnapshotProvider.SnapshotChangedSource"/>.
         /// </summary>
         private void TryUpdateSnapshot(Func<DependenciesSnapshot, DependenciesSnapshot> updateFunc, CancellationToken token = default)
         {
@@ -518,10 +517,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
                     // Always publish the latest snapshot
                     IDependenciesSnapshot snapshot = _currentSnapshot;
-
-                    var e = new SnapshotChangedEventArgs(snapshot, ct);
-                    _snapshotChangedSource.Post(e);
-                    SnapshotChanged?.Invoke(this, e);
+                    _snapshotChangedSource.Post(new SnapshotChangedEventArgs(snapshot, ct));
 
                     return Task.CompletedTask;
                 }, token);
