@@ -4,7 +4,6 @@
     <!-- 
       Components in this directory are versioned based on the VS version
     -->
-    <UseVisualStudioVersion>true</UseVisualStudioVersion>
   </PropertyGroup>
   
   <Import Project="..\Directory.Build.props"/>  
