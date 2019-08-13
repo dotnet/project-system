@@ -107,7 +107,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 if (_stopTelemetry)
                     return;
                 _stopTelemetry = !hasUnresolvedDependency || (++_eventCount >= MaxEventCount);
-                observedAllRules = ObservedAllRules();
+                observedAllRules = _telemetryStates.All(state => state.Value.ObservedAllRules());
             }
 
             if (_projectId == null)
@@ -133,8 +133,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
 
             return;
-
-            bool ObservedAllRules() => _telemetryStates.All(state => state.Value.ObservedAllRules());
 
             async Task<string> GetProjectIdAsync()
             {
