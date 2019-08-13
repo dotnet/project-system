@@ -18,6 +18,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     /// as a property of the telemetry event and can be used to determine if the
     /// 'resolved' event is fired too early (so sessions can be appropriately filtered).
     /// </summary>
+    /// <remarks>
+    /// Instantiated per unconfigured project.
+    /// </remarks>
     [Export(typeof(IDependencyTreeTelemetryService))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     internal class DependencyTreeTelemetryService : IDependencyTreeTelemetryService
@@ -27,10 +30,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         private readonly UnconfiguredProject _project;
         private readonly ITelemetryService? _telemetryService;
         private readonly ISafeProjectGuidService _safeProjectGuidService;
-        private readonly Dictionary<ITargetFramework, TelemetryState> _telemetryStates = new Dictionary<ITargetFramework, TelemetryState>();
         private readonly object _stateUpdateLock = new object();
+
+        /// <summary>
+        /// Holds data used for telemetry. If telemetry is disabled, or if required
+        /// information has been gathered, this field will be null.
+        /// </summary>
+        private Dictionary<ITargetFramework, TelemetryState>? _telemetryStates;
+
         private string? _projectId;
-        private bool _stopTelemetry = false;
         private int _eventCount = 0;
 
         [ImportingConstructor]
@@ -40,24 +48,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             ISafeProjectGuidService safeProjectGuidService)
         {
             _project = project;
-            _telemetryService = telemetryService;
             _safeProjectGuidService = safeProjectGuidService;
 
-            if (telemetryService == null)
+            if (telemetryService != null)
             {
-                _stopTelemetry = true;
+                _telemetryService = telemetryService;
+                _telemetryStates = new Dictionary<ITargetFramework, TelemetryState>();
             }
         }
 
         /// <inheritdoc />
         public void InitializeTargetFrameworkRules(ImmutableArray<ITargetFramework> targetFrameworks, IReadOnlyCollection<string> rules)
         {
-            if (_stopTelemetry)
+            if (_telemetryStates == null)
                 return;
 
             lock (_stateUpdateLock)
             {
-                if (_stopTelemetry)
+                if (_telemetryStates == null)
                     return;
 
                 foreach (ITargetFramework targetFramework in targetFrameworks)
@@ -78,12 +86,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <inheritdoc />
         public void ObserveTargetFrameworkRules(ITargetFramework targetFramework, IEnumerable<string> rules)
         {
-            if (_stopTelemetry)
+            if (_telemetryStates == null)
                 return;
 
             lock (_stateUpdateLock)
             {
-                if (_stopTelemetry)
+                if (_telemetryStates == null)
                     return;
 
                 if (_telemetryStates.TryGetValue(targetFramework, out TelemetryState telemetryState))
@@ -99,16 +107,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <inheritdoc />
         public async Task ObserveTreeUpdateCompletedAsync(bool hasUnresolvedDependency)
         {
-            if (_stopTelemetry)
+            if (_telemetryStates == null)
                 return;
 
             bool observedAllRules;
             lock (_stateUpdateLock)
             {
-                if (_stopTelemetry)
+                if (_telemetryStates == null)
                     return;
-                _stopTelemetry = !hasUnresolvedDependency || (++_eventCount >= MaxEventCount);
+
                 observedAllRules = _telemetryStates.All(state => state.Value.ObservedAllRules());
+
+                if (!hasUnresolvedDependency || (_eventCount++ == MaxEventCount))
+                {
+                    _telemetryStates = null;
+                }
             }
 
             _projectId ??= await GetProjectIdAsync();
