@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
@@ -28,8 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         private readonly UnconfiguredProject _project;
         private readonly ITelemetryService? _telemetryService;
         private readonly ISafeProjectGuidService _safeProjectGuidService;
-        private readonly ConcurrentDictionary<ITargetFramework, TelemetryState> _telemetryStates =
-            new ConcurrentDictionary<ITargetFramework, TelemetryState>();
+        private readonly Dictionary<ITargetFramework, TelemetryState> _telemetryStates = new Dictionary<ITargetFramework, TelemetryState>();
         private readonly object _stateUpdateLock = new object();
         private string? _projectId;
         private bool _stopTelemetry = false;
@@ -64,7 +62,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                 foreach (ITargetFramework targetFramework in targetFrameworks)
                 {
-                    TelemetryState telemetryState = _telemetryStates.GetOrAdd(targetFramework, _ => new TelemetryState());
+                    if (!_telemetryStates.TryGetValue(targetFramework, out TelemetryState telemetryState))
+                    {
+                        telemetryState = _telemetryStates[targetFramework] = new TelemetryState();
+                    }
 
                     foreach (string rule in rules)
                     {
@@ -151,13 +152,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </summary>
         private class TelemetryState
         {
-            private readonly ConcurrentDictionary<string, bool> _observedRules = new ConcurrentDictionary<string, bool>(StringComparers.RuleNames);
+            private readonly Dictionary<string, bool> _observedRules = new Dictionary<string, bool>(StringComparers.RuleNames);
 
-            public void InitializeRule(string rule) => _observedRules.TryAdd(rule, false);
+            public void InitializeRule(string rule)
+            {
+                if (!_observedRules.ContainsKey(rule))
+                {
+                    _observedRules[rule] = false;
+                }
+            }
 
-            public void ObserveRule(string rule) => _observedRules.TryUpdate(rule, true, false);
+            public void ObserveRule(string rule)
+            {
+                _observedRules[rule] = true;
+            }
 
-            public bool ObservedAllRules() => !_observedRules.IsEmpty && _observedRules.All(entry => entry.Value);
+            public bool ObservedAllRules()
+            {
+                return _observedRules.Count != 0 && _observedRules.All(entry => entry.Value);
+            }
         }
     }
 }
