@@ -37,9 +37,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 SendDesignTimeInputs(inputs);
             });
 
-            Assert.Single(_outputProduced[0].AllInputs);
-            Assert.Empty(_outputProduced[0].AllSharedInputs);
-            Assert.Contains("File1.cs", _outputProduced[0].AllInputs);
+            Assert.Single(_outputProduced[0].Inputs);
+            Assert.Empty(_outputProduced[0].SharedInputs);
+            Assert.Contains("File1.cs", _outputProduced[0].Inputs);
             Assert.Single(_outputProduced[0].ChangedInputs);
             Assert.Equal("File1.cs", _outputProduced[0].ChangedInputs[0].File);
             Assert.False(_outputProduced[0].ChangedInputs[0].IgnoreFileWriteTime);
@@ -67,14 +67,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             });
 
             Assert.Single(_outputProduced[0].ChangedInputs);
-            Assert.Single(_outputProduced[0].AllInputs);
-            Assert.Empty(_outputProduced[0].AllSharedInputs);
+            Assert.Single(_outputProduced[0].Inputs);
+            Assert.Empty(_outputProduced[0].SharedInputs);
             Assert.Equal("File1.cs", _outputProduced[0].ChangedInputs[0].File);
             Assert.False(_outputProduced[0].ChangedInputs[0].IgnoreFileWriteTime);
 
             Assert.Single(_outputProduced[1].ChangedInputs);
-            Assert.Single(_outputProduced[1].AllInputs);
-            Assert.Empty(_outputProduced[1].AllSharedInputs);
+            Assert.Single(_outputProduced[1].Inputs);
+            Assert.Empty(_outputProduced[1].SharedInputs);
             Assert.Equal("File1.cs", _outputProduced[1].ChangedInputs[0].File);
             Assert.False(_outputProduced[1].ChangedInputs[0].IgnoreFileWriteTime);
         }
@@ -92,15 +92,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             });
 
             Assert.Equal(2, _outputProduced[0].ChangedInputs.Length);
-            Assert.Equal(2, _outputProduced[0].AllInputs.Count);
-            Assert.Single(_outputProduced[0].AllSharedInputs);
+            Assert.Equal(2, _outputProduced[0].Inputs.Count);
+            Assert.Single(_outputProduced[0].SharedInputs);
             Assert.Contains("File1.cs", _outputProduced[0].ChangedInputs.Select(f => f.File));
             Assert.Contains("File2.cs", _outputProduced[0].ChangedInputs.Select(f => f.File));
             Assert.False(_outputProduced[0].ChangedInputs[0].IgnoreFileWriteTime);
 
             Assert.Equal(2, _outputProduced[1].ChangedInputs.Length);
-            Assert.Equal(2, _outputProduced[1].AllInputs.Count);
-            Assert.Single(_outputProduced[1].AllSharedInputs);
+            Assert.Equal(2, _outputProduced[1].Inputs.Count);
+            Assert.Single(_outputProduced[1].SharedInputs);
             Assert.Contains("File1.cs", _outputProduced[1].ChangedInputs.Select(f => f.File));
             Assert.Contains("File2.cs", _outputProduced[1].ChangedInputs.Select(f => f.File));
             Assert.False(_outputProduced[1].ChangedInputs[0].IgnoreFileWriteTime);
@@ -120,15 +120,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             // First update should include the file
             Assert.Single(_outputProduced[0].ChangedInputs);
-            Assert.Single(_outputProduced[0].AllInputs);
-            Assert.Empty(_outputProduced[0].AllSharedInputs);
+            Assert.Single(_outputProduced[0].Inputs);
+            Assert.Empty(_outputProduced[0].SharedInputs);
             Assert.Equal("File1.cs", _outputProduced[0].ChangedInputs[0].File);
             Assert.False(_outputProduced[0].ChangedInputs[0].IgnoreFileWriteTime);
 
             // Second shouldn't
             Assert.Empty(_outputProduced[1].ChangedInputs);
-            Assert.Empty(_outputProduced[1].AllInputs);
-            Assert.Empty(_outputProduced[1].AllSharedInputs);
+            Assert.Empty(_outputProduced[1].Inputs);
+            Assert.Empty(_outputProduced[1].SharedInputs);
         }
 
         [Fact]
@@ -144,14 +144,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             });
 
             Assert.Single(_outputProduced[0].ChangedInputs);
-            Assert.Single(_outputProduced[0].AllInputs);
-            Assert.Empty(_outputProduced[0].AllSharedInputs);
+            Assert.Single(_outputProduced[0].Inputs);
+            Assert.Empty(_outputProduced[0].SharedInputs);
             Assert.Equal("File1.cs", _outputProduced[0].ChangedInputs[0].File);
             Assert.False(_outputProduced[0].ChangedInputs[0].IgnoreFileWriteTime);
 
             Assert.Single(_outputProduced[1].ChangedInputs);
-            Assert.Equal(2, _outputProduced[1].AllInputs.Count);
-            Assert.Empty(_outputProduced[1].AllSharedInputs);
+            Assert.Equal(2, _outputProduced[1].Inputs.Count);
+            Assert.Empty(_outputProduced[1].SharedInputs);
             Assert.Equal("File2.cs", _outputProduced[1].ChangedInputs[0].File);
             Assert.False(_outputProduced[1].ChangedInputs[0].IgnoreFileWriteTime);
         }
@@ -169,15 +169,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             });
 
             Assert.Equal(2, _outputProduced[0].ChangedInputs.Length);
-            Assert.Equal(2, _outputProduced[0].AllInputs.Count);
-            Assert.Empty(_outputProduced[0].AllSharedInputs);
+            Assert.Equal(2, _outputProduced[0].Inputs.Count);
+            Assert.Empty(_outputProduced[0].SharedInputs);
             Assert.Contains("File1.cs", _outputProduced[0].ChangedInputs.Select(f => f.File));
             Assert.Contains("File2.cs", _outputProduced[0].ChangedInputs.Select(f => f.File));
             Assert.False(_outputProduced[0].ChangedInputs[0].IgnoreFileWriteTime);
 
             Assert.Equal(2, _outputProduced[1].ChangedInputs.Length);
-            Assert.Equal(2, _outputProduced[1].AllInputs.Count);
-            Assert.Empty(_outputProduced[1].AllSharedInputs);
+            Assert.Equal(2, _outputProduced[1].Inputs.Count);
+            Assert.Empty(_outputProduced[1].SharedInputs);
             Assert.Contains("File1.cs", _outputProduced[1].ChangedInputs.Select(f => f.File));
             Assert.Contains("File2.cs", _outputProduced[1].ChangedInputs.Select(f => f.File));
             Assert.True(_outputProduced[1].ChangedInputs[0].IgnoreFileWriteTime);
@@ -198,14 +198,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             });
 
             Assert.Single(_outputProduced[0].ChangedInputs);
-            Assert.Single(_outputProduced[0].AllInputs);
-            Assert.Empty(_outputProduced[0].AllSharedInputs);
+            Assert.Single(_outputProduced[0].Inputs);
+            Assert.Empty(_outputProduced[0].SharedInputs);
             Assert.Equal("File1.cs", _outputProduced[0].ChangedInputs[0].File);
             Assert.False(_outputProduced[0].ChangedInputs[0].IgnoreFileWriteTime);
 
             Assert.Single(_outputProduced[1].ChangedInputs);
-            Assert.Single(_outputProduced[1].AllInputs);
-            Assert.Single(_outputProduced[1].AllSharedInputs);
+            Assert.Single(_outputProduced[1].Inputs);
+            Assert.Single(_outputProduced[1].SharedInputs);
             Assert.Equal("File1.cs", _outputProduced[1].ChangedInputs[0].File);
             Assert.True(_outputProduced[1].ChangedInputs[0].IgnoreFileWriteTime);
         }

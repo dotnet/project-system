@@ -7,17 +7,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 {
     internal class DesignTimeInputsDelta
     {
-        public ImmutableHashSet<string> AllInputs { get; }
-        public ImmutableHashSet<string> AllSharedInputs { get; }
+        public ImmutableHashSet<string> Inputs { get; }
+        public ImmutableHashSet<string> SharedInputs { get; }
         public ImmutableArray<DesignTimeInputFileChange> ChangedInputs { get; }
-        public string OutputPath { get; }
+        public string TempPEOutputPath { get; }
 
-        public DesignTimeInputsDelta(ImmutableHashSet<string> allInputs, ImmutableHashSet<string> allSharedInputs, IEnumerable<DesignTimeInputFileChange> changedInputs, string outputPath)
+        public DesignTimeInputsDelta(ImmutableHashSet<string> inputs, ImmutableHashSet<string> sharedInputs, IEnumerable<DesignTimeInputFileChange> changedInputs, string tempPEOutputPath)
         {
-            AllInputs = allInputs;
-            AllSharedInputs = allSharedInputs;
+            Inputs = inputs;
+            SharedInputs = sharedInputs;
             ChangedInputs = ImmutableArray.CreateRange(changedInputs);
-            OutputPath = outputPath;
+            TempPEOutputPath = tempPEOutputPath;
         }
     }
 }
