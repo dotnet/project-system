@@ -101,68 +101,45 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             IReadOnlyCollection<string> watchedEvaluationRules,
             IReadOnlyCollection<string> watchedJointRules)
         {
-            // Use intermediate buffer blocks for project rule data to allow subsequent blocks
-            // to only observe specific rule name(s).
+            Subscribe(RuleSource.Evaluation, subscriptionService.ProjectRuleSource, watchedEvaluationRules);
+            Subscribe(RuleSource.Joint, subscriptionService.JointRuleSource, watchedJointRules);
 
-            var intermediateBlockDesignTime =
-                new BufferBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(
-                    new ExecutionDataflowBlockOptions()
-                    {
-                        NameFormat = "CrossTarget Intermediate DesignTime Input: {1}"
-                    });
+            void Subscribe(RuleSource source, IProjectValueDataSource<IProjectSubscriptionUpdate> dataSource, IReadOnlyCollection<string> ruleNames)
+            {
+                // Use intermediate buffer blocks for project rule data to allow subsequent blocks
+                // to only observe specific rule name(s).
 
-            var intermediateBlockEvaluation =
-                new BufferBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(
-                    new ExecutionDataflowBlockOptions()
-                    {
-                        NameFormat = "CrossTarget Intermediate Evaluation Input: {1}"
-                    });
+                var intermediateBlock =
+                    new BufferBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(
+                        new ExecutionDataflowBlockOptions()
+                        {
+                            NameFormat = string.Intern($"CrossTarget Intermediate {source} Input: {{1}}")
+                        });
 
-            _subscriptions ??= new DisposableBag();
+                var actionBlock =
+                    DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>>>(
+                        e => OnProjectChangedAsync(e.Value.Item1, e.Value.Item2, e.Value.Item3, configuredProject, source),
+                        new ExecutionDataflowBlockOptions()
+                        {
+                            NameFormat = string.Intern($"CrossTarget {source} Input: {{1}}")
+                        });
 
-            _subscriptions.AddDisposable(
-                subscriptionService.JointRuleSource.SourceBlock.LinkTo(
-                    intermediateBlockDesignTime,
-                    ruleNames: watchedJointRules,
-                    suppressVersionOnlyUpdates: true,
+                _subscriptions ??= new DisposableBag();
+
+                _subscriptions.AddDisposable(
+                    dataSource.SourceBlock.LinkTo(
+                        intermediateBlock,
+                        ruleNames: ruleNames,
+                        suppressVersionOnlyUpdates: true,
+                        linkOptions: DataflowOption.PropagateCompletion));
+
+                _subscriptions.AddDisposable(ProjectDataSources.SyncLinkTo(
+                    intermediateBlock.SyncLinkOptions(),
+                    subscriptionService.ProjectCatalogSource.SourceBlock.SyncLinkOptions(),
+                    configuredProject.Capabilities.SourceBlock.SyncLinkOptions(),
+                    actionBlock,
                     linkOptions: DataflowOption.PropagateCompletion));
-
-            _subscriptions.AddDisposable(
-                subscriptionService.ProjectRuleSource.SourceBlock.LinkTo(
-                    intermediateBlockEvaluation,
-                    ruleNames: watchedEvaluationRules,
-                    suppressVersionOnlyUpdates: true,
-                    linkOptions: DataflowOption.PropagateCompletion));
-
-            ITargetBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>>> actionBlockDesignTimeBuild =
-                DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>>>(
-                    e => OnProjectChangedAsync(e.Value.Item1, e.Value.Item2, e.Value.Item3, configuredProject, RuleSource.Joint),
-                    new ExecutionDataflowBlockOptions()
-                    {
-                        NameFormat = "CrossTarget DesignTime Input: {1}"
-                    });
-
-            ITargetBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>>> actionBlockEvaluation =
-                DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>>>(
-                     e => OnProjectChangedAsync(e.Value.Item1, e.Value.Item2, e.Value.Item3, configuredProject, RuleSource.Evaluation),
-                     new ExecutionDataflowBlockOptions()
-                     {
-                         NameFormat = "CrossTarget Evaluation Input: {1}"
-                     });
-
-            _subscriptions.AddDisposable(ProjectDataSources.SyncLinkTo(
-                intermediateBlockDesignTime.SyncLinkOptions(),
-                subscriptionService.ProjectCatalogSource.SourceBlock.SyncLinkOptions(),
-                configuredProject.Capabilities.SourceBlock.SyncLinkOptions(),
-                actionBlockDesignTimeBuild,
-                linkOptions: DataflowOption.PropagateCompletion));
-
-            _subscriptions.AddDisposable(ProjectDataSources.SyncLinkTo(
-                intermediateBlockEvaluation.SyncLinkOptions(),
-                subscriptionService.ProjectCatalogSource.SourceBlock.SyncLinkOptions(),
-                configuredProject.Capabilities.SourceBlock.SyncLinkOptions(),
-                actionBlockEvaluation,
-                linkOptions: DataflowOption.PropagateCompletion));
+            }
         }
 
         private IReadOnlyCollection<string> GetRuleNames(RuleSource source)
