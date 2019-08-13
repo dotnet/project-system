@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         /// Adds a value to be disposed of when this collection is disposed of.
         /// </summary>
         /// <param name="disposable">The value to be disposed of later. May be <c>null</c>.</param>
-        internal void AddDisposable(IDisposable? disposable)
+        public void AddDisposable(IDisposable? disposable)
         {
             if (disposable == null)
             {
@@ -82,7 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         /// <summary>
         /// Adds values to be disposed of when this collection is disposed of.
         /// </summary>
-        internal void AddDisposables(IEnumerable<IDisposable?> disposables)
+        public void AddDisposables(IEnumerable<IDisposable?> disposables)
         {
             Requires.NotNull(disposables, nameof(disposables));
 
@@ -96,7 +96,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         /// Removes a disposable value from the collection.
         /// </summary>
         /// <param name="disposable">The value to remove. May be <c>null</c>.</param>
-        internal void RemoveDisposable(IDisposable? disposable)
+        public void RemoveDisposable(IDisposable? disposable)
         {
             if (disposable == null)
             {
@@ -113,7 +113,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         /// Calls <see cref="IDisposable.Dispose"/> on all elements in a sequence,
         /// allowing the sequence itself or elements inside it to be null.
         /// </summary>
-        internal static void DisposeAllIfNotNull(IEnumerable<IDisposable?>? sequence, bool cacheSequence = false)
+        private static void DisposeAllIfNotNull(IEnumerable<IDisposable?>? sequence, bool cacheSequence = false)
         {
             if (sequence != null)
             {
