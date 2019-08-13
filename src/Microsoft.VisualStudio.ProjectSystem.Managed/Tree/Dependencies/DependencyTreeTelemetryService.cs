@@ -110,10 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 observedAllRules = _telemetryStates.All(state => state.Value.ObservedAllRules());
             }
 
-            if (_projectId == null)
-            {
-                _projectId = await GetProjectIdAsync();
-            }
+            _projectId ??= await GetProjectIdAsync();
 
             if (hasUnresolvedDependency)
             {
