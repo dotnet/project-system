@@ -15,6 +15,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     internal interface IDependencyTreeTelemetryService
     {
         /// <summary>
+        /// Gets a value indicating whether this telemetry service is active.
+        /// If not, then it will remain inactive and no methods need be called on it.
+        /// Note that an instance may become inactive during its lifetime.
+        /// </summary>
+        bool IsActive { get; }
+
+        /// <summary>
         /// Initialize telemetry state with the set of target frameworks and rules we expect to observe.
         /// </summary>
         void InitializeTargetFrameworkRules(ImmutableArray<ITargetFramework> targetFrameworks, IReadOnlyCollection<string> rules);

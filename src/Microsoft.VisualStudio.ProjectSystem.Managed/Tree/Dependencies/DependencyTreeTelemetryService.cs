@@ -58,6 +58,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         /// <inheritdoc />
+        public bool IsActive => _stateByFramework != null;
+
+        /// <inheritdoc />
         public void InitializeTargetFrameworkRules(ImmutableArray<ITargetFramework> targetFrameworks, IReadOnlyCollection<string> rules)
         {
             if (_stateByFramework == null)
