@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         /// If this disposable bag has already been disposed, <paramref name="disposable" /> will be disposed immediately.
         /// </remarks>
         /// <param name="disposable">The value to be included in this disposable bag.</param>
-        public void AddDisposable(IDisposable? disposable)
+        public void Add(IDisposable? disposable)
         {
             if (disposable == null)
             {
@@ -72,13 +72,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         /// <summary>
         /// Adds objects to this bag, to each be disposed when the bag itself is disposed.
         /// </summary>
-        public void AddDisposables(IEnumerable<IDisposable?> disposables)
+        public void Add(IEnumerable<IDisposable?> disposables)
         {
             Requires.NotNull(disposables, nameof(disposables));
 
             foreach (IDisposable? disposable in disposables)
             {
-                AddDisposable(disposable);
+                Add(disposable);
             }
         }
 
@@ -87,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         /// <paramref name="disposable"/> from being disposed along with the bag itself.
         /// </summary>
         /// <param name="disposable">The object to remove.</param>
-        public void RemoveDisposable(IDisposable? disposable)
+        public void Remove(IDisposable? disposable)
         {
             if (disposable == null)
             {

@@ -71,22 +71,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                 _applyChangesToWorkspaceContext = _applyChangesToWorkspaceContextFactory.CreateExport();
                 _applyChangesToWorkspaceContext.Value.Initialize(_contextAccessor.Context);
-                _disposables.AddDisposable(_applyChangesToWorkspaceContext);
+                _disposables.Add(_applyChangesToWorkspaceContext);
 
                 _evaluationProgressRegistration = _dataProgressTrackerService.RegisterForIntelliSense(_project, nameof(WorkspaceProjectContextHostInstance) + ".Evaluation");
-                _disposables.AddDisposable(_evaluationProgressRegistration);
+                _disposables.Add(_evaluationProgressRegistration);
 
                 _projectBuildProgressRegistration = _dataProgressTrackerService.RegisterForIntelliSense(_project, nameof(WorkspaceProjectContextHostInstance) + ".ProjectBuild");
-                _disposables.AddDisposable(_projectBuildProgressRegistration);
+                _disposables.Add(_projectBuildProgressRegistration);
 
                 // We avoid suppressing version updates, so that progress tracker doesn't
                 // think we're still "in progress" in the case of an empty change
-                _disposables.AddDisposable(_projectSubscriptionService.ProjectRuleSource.SourceBlock.LinkToAsyncAction(
+                _disposables.Add(_projectSubscriptionService.ProjectRuleSource.SourceBlock.LinkToAsyncAction(
                         target: e => OnProjectChangedAsync(e, evaluation: true),
                         suppressVersionOnlyUpdates: false,
                         ruleNames: _applyChangesToWorkspaceContext.Value.GetProjectEvaluationRules()));
 
-                _disposables.AddDisposable(_projectSubscriptionService.ProjectBuildRuleSource.SourceBlock.LinkToAsyncAction(
+                _disposables.Add(_projectSubscriptionService.ProjectBuildRuleSource.SourceBlock.LinkToAsyncAction(
                         target: e => OnProjectChangedAsync(e, evaluation: false),
                         suppressVersionOnlyUpdates: false,
                         ruleNames: _applyChangesToWorkspaceContext.Value.GetProjectBuildRules()));

@@ -50,15 +50,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                                     .Select(DropConfiguredProjectVersions),
                 includeSourceVersions: true);
 
-            disposables.AddDisposable(restoreConfiguredInputSource);
+            disposables.Add(restoreConfiguredInputSource);
 
             IProjectValueDataSource<IConfigurationGroup<ConfiguredProject>> activeConfiguredProjectsSource = _activeConfigurationGroupService.ActiveConfiguredProjectGroupSource;
-            disposables.AddDisposable(activeConfiguredProjectsSource.SourceBlock.LinkTo(restoreConfiguredInputSource, DataflowOption.PropagateCompletion));
+            disposables.Add(activeConfiguredProjectsSource.SourceBlock.LinkTo(restoreConfiguredInputSource, DataflowOption.PropagateCompletion));
 
             // Transform all restore data -> combined restore data
             DisposableValue<ISourceBlock<RestoreInfo>> mergeBlock = restoreConfiguredInputSource.SourceBlock
                                                                                                 .TransformWithNoDelta(update => update.Derive(MergeRestoreInputs));
-            disposables.AddDisposable(mergeBlock);
+            disposables.Add(mergeBlock);
 
             // Set the link up so that we publish changes to target block
             mergeBlock.Value.LinkTo(targetBlock, DataflowOption.PropagateCompletion);
