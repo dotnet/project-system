@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     /// </remarks>
     [Export(typeof(IDependencyTreeTelemetryService))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
-    internal class DependencyTreeTelemetryService : IDependencyTreeTelemetryService
+    internal sealed class DependencyTreeTelemetryService : IDependencyTreeTelemetryService
     {
         private const int MaxEventCount = 10;
 
@@ -166,7 +166,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <summary>
         /// Maintain state for a single target framework.
         /// </summary>
-        private class TelemetryState
+        private sealed class TelemetryState
         {
             private readonly Dictionary<string, bool> _observedRules = new Dictionary<string, bool>(StringComparers.RuleNames);
 
