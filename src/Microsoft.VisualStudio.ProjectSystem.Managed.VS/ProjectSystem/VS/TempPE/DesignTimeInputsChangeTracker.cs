@@ -6,7 +6,6 @@ using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
@@ -16,18 +15,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
     internal class DesignTimeInputsChangeTracker : ProjectValueDataSourceBase<DesignTimeInputsDelta>, IDesignTimeInputsChangeTracker
     {
         private readonly UnconfiguredProject _project;
-        private readonly IProjectThreadingService _threadingService;
         private readonly IActiveConfiguredProjectSubscriptionService _projectSubscriptionService;
         private readonly IDesignTimeInputsDataSource _inputsDataSource;
         private readonly IDesignTimeInputsFileWatcher _fileWatcher;
 
         private readonly DisposableBag _disposables = new DisposableBag();
 
-        private ITargetBlock<IProjectVersionedValue<Tuple<DesignTimeInputs, IProjectSubscriptionUpdate>>>? _inputsActionBlock;
-        private ITargetBlock<IProjectVersionedValue<string[]>>? _fileWatcherActionBlock;
-
-        private DesignTimeInputs? _latestDesignTimeInputs;
-        private string? _latestOutputPath;
+        private DesignTimeInputsDelta? _currentState;
         private int _version;
 
         private IBroadcastBlock<IProjectVersionedValue<DesignTimeInputsDelta>>? _broadcastBlock;
@@ -47,7 +41,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             : base(unconfiguredProjectServices, synchronousDisposal: true, registerDataSource: false)
         {
             _project = project;
-            _threadingService = threadingService;
             _projectSubscriptionService = projectSubscriptionService;
             _inputsDataSource = inputsDataSource;
             _fileWatcher = fileWatcher;
@@ -77,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             base.Initialize();
 
             // Create an action block to process the design time inputs and configuration general changes
-            _inputsActionBlock = DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<Tuple<DesignTimeInputs, IProjectSubscriptionUpdate>>>(ProcessDataflowChanges);
+            ITargetBlock<IProjectVersionedValue<Tuple<DesignTimeInputs, IProjectSubscriptionUpdate>>> inputsAction = DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<Tuple<DesignTimeInputs, IProjectSubscriptionUpdate>>>(ProcessDataflowChanges);
 
             _broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<DesignTimeInputsDelta>>(nameFormat: nameof(DesignTimeInputsChangeTracker) + "Broadcast {1}");
             _publicBlock = AllowSourceBlockCompletion ? _broadcastBlock : _broadcastBlock.SafePublicize();
@@ -87,13 +80,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                        linkOptions: DataflowOption.PropagateCompletion),
                    _projectSubscriptionService.ProjectRuleSource.SourceBlock.SyncLinkOptions(
                       linkOptions: DataflowOption.WithRuleNames(ConfigurationGeneral.SchemaName)),
-                   _inputsActionBlock,
+                   inputsAction,
                    DataflowOption.PropagateCompletion,
                    cancellationToken: _project.Services.ProjectAsynchronousTasks.UnloadCancellationToken);
 
             // Create an action block to process file change notifications
-            _fileWatcherActionBlock = DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<string[]>>(ProcessFileChangeNotification);
-            IDisposable watcherLink = _fileWatcher.SourceBlock.LinkTo(_fileWatcherActionBlock, DataflowOption.PropagateCompletion);
+            ITargetBlock<IProjectVersionedValue<string[]>> fileWatcherAction = DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<string[]>>(ProcessFileChangeNotification);
+            IDisposable watcherLink = _fileWatcher.SourceBlock.LinkTo(fileWatcherAction, DataflowOption.PropagateCompletion);
 
             _disposables.AddDisposable(projectLink);
             _disposables.AddDisposable(watcherLink);
@@ -103,52 +96,45 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         protected override void Dispose(bool disposing)
         {
-            if (_inputsActionBlock != null)
-            {
-                // This will stop our blocks taking any more input
-                _inputsActionBlock.Complete();
-                _fileWatcherActionBlock!.Complete();
-
-                _threadingService.ExecuteSynchronously(() => Task.WhenAll(_inputsActionBlock.Completion, _fileWatcherActionBlock.Completion));
-            }
-
             _disposables.Dispose();
         }
 
         internal void ProcessFileChangeNotification(IProjectVersionedValue<string[]> arg)
         {
+            // File changes don't change state, but it makes sense to run with the state at the time the update came in
+            DesignTimeInputsDelta? state = _currentState;
+
             // Ignore any file changes until we've received the first set of design time inputs (which shouldn't happen anyway)
             // That first update will send out all of the files so we're not losing anything
-            if (_latestDesignTimeInputs == null)
+            if (state == null)
             {
                 return;
             }
 
-            // Make sure the design time inputs don't change while we're processing this notification
-            DesignTimeInputs designTimeInputs = _latestDesignTimeInputs;
-
-            var changedFiles = new List<DesignTimeInputFileChange>();
+            var changedInputs = new List<DesignTimeInputFileChange>();
             foreach (string changedFile in arg.Value)
             {
                 string relativeFilePath = _project.MakeRelative(changedFile);
 
                 // if a shared input changes, we recompile everything
-                if (designTimeInputs.SharedInputs.Contains(relativeFilePath))
+                if (state.SharedInputs.Contains(relativeFilePath))
                 {
-                    foreach (string file in designTimeInputs.Inputs)
+                    foreach (string file in state.Inputs)
                     {
-                        changedFiles.Add(new DesignTimeInputFileChange(file, ignoreFileWriteTime: false));
+                        changedInputs.Add(new DesignTimeInputFileChange(file, ignoreFileWriteTime: false));
                     }
                     // Since we've just queued every file, we don't care about any other changed files in this set
                     break;
                 }
                 else
                 {
-                    changedFiles.Add(new DesignTimeInputFileChange(relativeFilePath, ignoreFileWriteTime: false));
+                    changedInputs.Add(new DesignTimeInputFileChange(relativeFilePath, ignoreFileWriteTime: false));
                 }
             }
 
-            PostToOutput(changedFiles);
+            // File changes don't get project state, so they don't update it.
+            var delta = new DesignTimeInputsDelta(state.Inputs, state.SharedInputs, changedInputs, state.TempPEOutputPath);
+            PostToOutput(delta);
         }
 
         internal void ProcessDataflowChanges(IProjectVersionedValue<Tuple<DesignTimeInputs, IProjectSubscriptionUpdate>> input)
@@ -156,12 +142,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             DesignTimeInputs inputs = input.Value.Item1;
             IProjectChangeDescription configChanges = input.Value.Item2.ProjectChanges[ConfigurationGeneral.SchemaName];
 
-            // This is the only method that changes _latestDesignTimeInputs, and dataflow will ensure that no calls overlap, so we're free to use it directly.
-            // The same is true for _latestOutputPath
+            // This can't change while we're running, but let's use a local so you don't have to take my word for it
+            DesignTimeInputsDelta? previousState = _currentState;
 
-            var changedFiles = new List<DesignTimeInputFileChange>();
+            var changedInputs = new List<DesignTimeInputFileChange>();
             // On the first call where we receive design time inputs we queue compilation of all of them, knowing that we'll only compile if the file write date requires it
-            if (_latestDesignTimeInputs == null)
+            if (previousState == null)
             {
                 AddAllInputsToQueue(false);
             }
@@ -171,7 +157,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
                 // If a new shared design time input is added, we need to recompile everything regardless of source file modified date
                 // because it could be an old file that is being promoted to a shared input
-                if (inputs.SharedInputs.Except(_latestDesignTimeInputs.SharedInputs, StringComparers.Paths).Any())
+                if (inputs.SharedInputs.Except(previousState.SharedInputs, StringComparers.Paths).Any())
                 {
                     AddAllInputsToQueue(true);
                 }
@@ -185,50 +171,45 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 else
                 {
                     // Otherwise we just queue any new design time inputs, and still do date checks
-                    foreach (string file in inputs.Inputs.Except(_latestDesignTimeInputs.Inputs, StringComparers.Paths))
+                    foreach (string file in inputs.Inputs.Except(previousState.Inputs, StringComparers.Paths))
                     {
-                        changedFiles.Add(new DesignTimeInputFileChange(file, ignoreFileWriteTime: false));
+                        changedInputs.Add(new DesignTimeInputFileChange(file, ignoreFileWriteTime: false));
                     }
                 }
             }
 
+            string tempPEOutputPath;
             // Make sure we have the up to date output path
             string basePath = configChanges.After.Properties[ConfigurationGeneral.ProjectDirProperty];
             string objPath = configChanges.After.Properties[ConfigurationGeneral.IntermediateOutputPathProperty];
             try
             {
-                _latestOutputPath = Path.Combine(basePath, objPath, "TempPE");
+                tempPEOutputPath = Path.Combine(basePath, objPath, "TempPE");
             }
             catch (ArgumentException)
             {
                 // if the path is bad, then we presume we wouldn't be able to act on any files anyway
                 // so we can just clear _latestDesignTimeInputs to ensure file changes aren't processed, and return.
                 // If the path is ever fixed this block will trigger again and all will be right with the world.
-                _latestDesignTimeInputs = null;
+                _currentState = null;
                 return;
             }
 
-            // Make sure we have the up to date list of inputs
-            _latestDesignTimeInputs = inputs;
-
-            PostToOutput(changedFiles);
+            // This is our only update to current state, and data flow protects us from overlaps. File changes don't update state
+            _currentState = new DesignTimeInputsDelta(inputs.Inputs, inputs.SharedInputs, changedInputs, tempPEOutputPath);
+            PostToOutput(_currentState);
 
             void AddAllInputsToQueue(bool ignoreFileWriteTime)
             {
                 foreach (string file in inputs.Inputs)
                 {
-                    changedFiles.Add(new DesignTimeInputFileChange(file, ignoreFileWriteTime));
+                    changedInputs.Add(new DesignTimeInputFileChange(file, ignoreFileWriteTime));
                 }
             }
         }
 
-        private void PostToOutput(List<DesignTimeInputFileChange> changedFiles)
+        private void PostToOutput(DesignTimeInputsDelta delta)
         {
-            Assumes.NotNull(_latestDesignTimeInputs);
-
-            // Nothing calls this method without setting _latestDesignTimeInputs
-            var delta = new DesignTimeInputsDelta(_latestDesignTimeInputs!.Inputs, _latestDesignTimeInputs.SharedInputs, changedFiles, _latestOutputPath!);
-
             _version++;
             ImmutableDictionary<NamedIdentity, IComparable> dataSources = ImmutableDictionary<NamedIdentity, IComparable>.Empty.Add(DataSourceKey, DataSourceVersion);
 

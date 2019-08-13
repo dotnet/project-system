@@ -93,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             // remove any items we have queued that aren't in the inputs any more
             foreach ((string file, _) in _filesToCompile)
             {
-                if (!_state.AllInputs.Contains(file))
+                if (!_state.Inputs.Contains(file))
                 {
                     ImmutableInterlocked.TryRemove(ref _filesToCompile, file, out _);
                 }
@@ -199,7 +199,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             }
 
             // Make sure we're not being asked to compile a random file
-            if (!_state.AllInputs.Contains(fileName, StringComparers.Paths))
+            if (!_state.Inputs.Contains(fileName, StringComparers.Paths))
             {
                 throw new ArgumentException("Can only get XML snippets for design time inputs", nameof(fileName));
             }
@@ -273,7 +273,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             // All monikers are project relative paths by definition (anything else is a link, and linked files can't be TempPE inputs), meaning 
             // the only invalid filename characters possible are path separators so we just replace them
-            return Path.Combine(_state!.OutputPath, designTimeInput.Replace('\\', '.') + ".dll");
+            return Path.Combine(_state!.TempPEOutputPath, designTimeInput.Replace('\\', '.') + ".dll");
         }
 
         private bool CompilationNeeded(HashSet<string> files, string outputFileName)
@@ -312,10 +312,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             // plus Roslyn needs to call Contains on this quite a lot in order to ensure its only compiling the right files so we want that to be fast.
             // When it comes to compiling the files there is no difference between shared and normal design time inputs, we just track differently because
             // shared are included in every DLL.
-            var files = new HashSet<string>(_state!.AllSharedInputs.Count + 1, StringComparers.Paths);
+            var files = new HashSet<string>(_state!.SharedInputs.Count + 1, StringComparers.Paths);
             // All monikers are project relative paths by defintion (anything else is a link, and linked files can't be TempPE inputs) so we can convert
             // them to full paths using MakeRooted.
-            files.AddRange(_state.AllSharedInputs.Select(_project.MakeRooted));
+            files.AddRange(_state.SharedInputs.Select(_project.MakeRooted));
             files.Add(_project.MakeRooted(moniker));
             return files;
         }
