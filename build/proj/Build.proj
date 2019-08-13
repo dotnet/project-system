@@ -5,7 +5,6 @@
   <Import Project="..\import\RepoLayout.props" />
   
   <PropertyGroup>
-        
     <ToolsetBuildProjectFilePath>$(NuGetPackageRoot)RoslynTools.RepoToolset\$(RoslynToolsRepoToolsetVersion)\tools\Build.proj</ToolsetBuildProjectFilePath>
     <IsCodeCoverageBuild Condition="'$(CODECOV_TOKEN)' != '' AND '$(Configuration)' == 'Debug'">true</IsCodeCoverageBuild>    
   </PropertyGroup>
@@ -72,6 +71,7 @@
         Sign=$(Sign);
         IntegrationTest=$(IntegrationTest);
         VersionsPropsPath=$(RepoRoot)build\import\Versions.props;
+        SignToolDataPath=$(RepoRoot)build\ci\SignToolData.json;
       </ToolsetProperties>      
     </PropertyGroup>
 
