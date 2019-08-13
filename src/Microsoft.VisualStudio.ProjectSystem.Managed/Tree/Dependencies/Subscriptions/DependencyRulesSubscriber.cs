@@ -56,11 +56,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             await InitializeAsync();
 
-            IReadOnlyCollection<string> watchedEvaluationRules = GetWatchedRules(RuleHandlerType.Evaluation);
-            IReadOnlyCollection<string> watchedDesignTimeBuildRules = GetWatchedRules(RuleHandlerType.DesignTimeBuild);
+            IReadOnlyCollection<string> watchedEvaluationRules = GetRuleNames(RuleSource.Evaluation);
+            IReadOnlyCollection<string> watchedJointRules = GetRuleNames(RuleSource.Joint);
 
             SubscribeToConfiguredProject(
-                _commonServices.ActiveConfiguredProject, subscriptionService, watchedEvaluationRules, watchedDesignTimeBuildRules);
+                _commonServices.ActiveConfiguredProject, subscriptionService, watchedEvaluationRules, watchedJointRules);
         }
 
         public void AddSubscriptions(AggregateCrossTargetProjectContext projectContext)
@@ -69,20 +69,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             _currentProjectContext = projectContext;
 
-            IReadOnlyCollection<string> watchedEvaluationRules = GetWatchedRules(RuleHandlerType.Evaluation);
-            IReadOnlyCollection<string> watchedDesignTimeBuildRules = GetWatchedRules(RuleHandlerType.DesignTimeBuild);
+            IReadOnlyCollection<string> watchedEvaluationRules = GetRuleNames(RuleSource.Evaluation);
+            IReadOnlyCollection<string> watchedJointRules = GetRuleNames(RuleSource.Joint);
 
             // initialize telemetry with all rules for each target framework
             foreach (ITargetFramework targetFramework in projectContext.TargetFrameworks)
             {
-                _treeTelemetryService.InitializeTargetFrameworkRules(targetFramework, watchedEvaluationRules);
-                _treeTelemetryService.InitializeTargetFrameworkRules(targetFramework, watchedDesignTimeBuildRules);
+                _treeTelemetryService.InitializeTargetFrameworkRules(targetFramework, watchedJointRules);
             }
 
             foreach (ConfiguredProject configuredProject in projectContext.InnerConfiguredProjects)
             {
                 SubscribeToConfiguredProject(
-                    configuredProject, configuredProject.Services.ProjectSubscription, watchedEvaluationRules, watchedDesignTimeBuildRules);
+                    configuredProject, configuredProject.Services.ProjectSubscription, watchedEvaluationRules, watchedJointRules);
             }
         }
 
@@ -100,77 +99,64 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             ConfiguredProject configuredProject,
             IProjectSubscriptionService subscriptionService,
             IReadOnlyCollection<string> watchedEvaluationRules,
-            IReadOnlyCollection<string> watchedDesignTimeBuildRules)
+            IReadOnlyCollection<string> watchedJointRules)
         {
-            // Use intermediate buffer blocks for project rule data to allow subsequent blocks
-            // to only observe specific rule name(s).
+            Subscribe(RuleSource.Evaluation, subscriptionService.ProjectRuleSource, watchedEvaluationRules);
+            Subscribe(RuleSource.Joint, subscriptionService.JointRuleSource, watchedJointRules);
 
-            var intermediateBlockDesignTime =
-                new BufferBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(
-                    new ExecutionDataflowBlockOptions()
-                    {
-                        NameFormat = "CrossTarget Intermediate DesignTime Input: {1}"
-                    });
+            void Subscribe(RuleSource source, IProjectValueDataSource<IProjectSubscriptionUpdate> dataSource, IReadOnlyCollection<string> ruleNames)
+            {
+                // Use intermediate buffer blocks for project rule data to allow subsequent blocks
+                // to only observe specific rule name(s).
 
-            var intermediateBlockEvaluation =
-                new BufferBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(
-                    new ExecutionDataflowBlockOptions()
-                    {
-                        NameFormat = "CrossTarget Intermediate Evaluation Input: {1}"
-                    });
+                var intermediateBlock =
+                    new BufferBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(
+                        new ExecutionDataflowBlockOptions()
+                        {
+                            NameFormat = string.Intern($"CrossTarget Intermediate {source} Input: {{1}}")
+                        });
 
-            _subscriptions ??= new DisposableBag();
+                var actionBlock =
+                    DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>>>(
+                        e => OnProjectChangedAsync(e.Value.Item1, e.Value.Item2, e.Value.Item3, configuredProject, source),
+                        new ExecutionDataflowBlockOptions()
+                        {
+                            NameFormat = string.Intern($"CrossTarget {source} Input: {{1}}")
+                        });
 
-            _subscriptions.AddDisposable(
-                subscriptionService.JointRuleSource.SourceBlock.LinkTo(
-                    intermediateBlockDesignTime,
-                    ruleNames: watchedDesignTimeBuildRules.Union(watchedEvaluationRules),
-                    suppressVersionOnlyUpdates: true,
+                _subscriptions ??= new DisposableBag();
+
+                _subscriptions.AddDisposable(
+                    dataSource.SourceBlock.LinkTo(
+                        intermediateBlock,
+                        ruleNames: ruleNames,
+                        suppressVersionOnlyUpdates: true,
+                        linkOptions: DataflowOption.PropagateCompletion));
+
+                _subscriptions.AddDisposable(ProjectDataSources.SyncLinkTo(
+                    intermediateBlock.SyncLinkOptions(),
+                    subscriptionService.ProjectCatalogSource.SourceBlock.SyncLinkOptions(),
+                    configuredProject.Capabilities.SourceBlock.SyncLinkOptions(),
+                    actionBlock,
                     linkOptions: DataflowOption.PropagateCompletion));
-
-            _subscriptions.AddDisposable(
-                subscriptionService.ProjectRuleSource.SourceBlock.LinkTo(
-                    intermediateBlockEvaluation,
-                    ruleNames: watchedEvaluationRules,
-                    suppressVersionOnlyUpdates: true,
-                    linkOptions: DataflowOption.PropagateCompletion));
-
-            ITargetBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>>> actionBlockDesignTimeBuild =
-                DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>>>(
-                    e => OnProjectChangedAsync(e.Value.Item1, e.Value.Item2, e.Value.Item3, configuredProject, RuleHandlerType.DesignTimeBuild),
-                    new ExecutionDataflowBlockOptions()
-                    {
-                        NameFormat = "CrossTarget DesignTime Input: {1}"
-                    });
-
-            ITargetBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>>> actionBlockEvaluation =
-                DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>>>(
-                     e => OnProjectChangedAsync(e.Value.Item1, e.Value.Item2, e.Value.Item3, configuredProject, RuleHandlerType.Evaluation),
-                     new ExecutionDataflowBlockOptions()
-                     {
-                         NameFormat = "CrossTarget Evaluation Input: {1}"
-                     });
-
-            _subscriptions.AddDisposable(ProjectDataSources.SyncLinkTo(
-                intermediateBlockDesignTime.SyncLinkOptions(),
-                subscriptionService.ProjectCatalogSource.SourceBlock.SyncLinkOptions(),
-                configuredProject.Capabilities.SourceBlock.SyncLinkOptions(),
-                actionBlockDesignTimeBuild,
-                linkOptions: DataflowOption.PropagateCompletion));
-
-            _subscriptions.AddDisposable(ProjectDataSources.SyncLinkTo(
-                intermediateBlockEvaluation.SyncLinkOptions(),
-                subscriptionService.ProjectCatalogSource.SourceBlock.SyncLinkOptions(),
-                configuredProject.Capabilities.SourceBlock.SyncLinkOptions(),
-                actionBlockEvaluation,
-                linkOptions: DataflowOption.PropagateCompletion));
+            }
         }
 
-        private IReadOnlyCollection<string> GetWatchedRules(RuleHandlerType handlerType)
+        private IReadOnlyCollection<string> GetRuleNames(RuleSource source)
         {
-            return new HashSet<string>(
-                _handlers.SelectMany(h => h.Value.GetRuleNames(handlerType)),
-                StringComparers.RuleNames);
+            var rules = new HashSet<string>(StringComparers.RuleNames);
+            
+            foreach (Lazy<IDependenciesRuleHandler, IOrderPrecedenceMetadataView> item in _handlers)
+            {
+                rules.Add(item.Value.EvaluatedRuleName);
+
+                if (source == RuleSource.Joint)
+                {
+                    rules.Add(item.Value.ResolvedRuleName);
+                }
+            }
+
+            return rules;
         }
 
         private async Task OnProjectChangedAsync(
@@ -178,7 +164,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             IProjectCatalogSnapshot catalogSnapshot,
             IProjectCapabilitiesSnapshot capabilities,
             ConfiguredProject configuredProject,
-            RuleHandlerType handlerType)
+            RuleSource source)
         {
             if (IsDisposing || IsDisposed)
             {
@@ -191,12 +177,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 // Ensure the project doesn't unload during the update
                 await _tasksService.LoadedProjectAsync(async () =>
                 {
-                    // TODO pass _tasksService.UnloadCancellationToken into handler to reduce redundant work on unload
+                    // TODO pass _tasksService.UnloadCancellationToken into HandleAsync to reduce redundant work on unload
 
                     // Ensure the project's capabilities don't change during the update
                     using (ProjectCapabilitiesContext.CreateIsolatedContext(configuredProject, capabilities))
                     {
-                        await HandleAsync(projectUpdate, catalogSnapshot, handlerType);
+                        await HandleAsync(projectUpdate, catalogSnapshot, source);
                     }
                 });
             });
@@ -205,9 +191,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         private async Task HandleAsync(
             IProjectSubscriptionUpdate projectUpdate,
             IProjectCatalogSnapshot catalogSnapshot,
-            RuleHandlerType handlerType)
+            RuleSource source)
         {
             AggregateCrossTargetProjectContext? currentAggregateContext = await _host!.GetCurrentAggregateProjectContextAsync();
+
             if (currentAggregateContext == null || _currentProjectContext != currentAggregateContext)
             {
                 return;
@@ -229,23 +216,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 return;
             }
 
+            if (!projectUpdate.ProjectChanges.Any(x => x.Value.Difference.AnyChanges))
+            {
+                return;
+            }
+
             // Create an object to track dependency changes.
             var changesBuilder = new CrossTargetDependenciesChangesBuilder();
 
             // Give each handler a chance to register dependency changes.
             foreach (Lazy<IDependenciesRuleHandler, IOrderPrecedenceMetadataView> handler in _handlers)
             {
-                ImmutableHashSet<string> handlerRules = handler.Value.GetRuleNames(handlerType);
-
-                // Slice project changes to include only rules the handler claims an interest in.
-                var projectChanges = projectUpdate.ProjectChanges
-                    .Where(x => handlerRules.Contains(x.Key))
-                    .ToImmutableDictionary();
-
-                if (projectChanges.Any(x => x.Value.Difference.AnyChanges))
-                {
-                    handler.Value.Handle(projectChanges, targetFrameworkToUpdate, changesBuilder);
-                }
+                handler.Value.Handle(projectUpdate.ProjectChanges, targetFrameworkToUpdate, changesBuilder);
             }
 
             ImmutableDictionary<ITargetFramework, IDependenciesChanges>? changes = changesBuilder.TryBuildChanges();
