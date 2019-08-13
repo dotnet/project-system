@@ -7,8 +7,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 {
     internal class DesignTimeInputs
     {
-        public readonly ImmutableHashSet<string> Inputs;
-        public readonly ImmutableHashSet<string> SharedInputs;
+        public ImmutableHashSet<string> Inputs { get; }
+        public ImmutableHashSet<string> SharedInputs { get; }
 
         public DesignTimeInputs(IEnumerable<string> inputs, IEnumerable<string> sharedInputs)
         {
