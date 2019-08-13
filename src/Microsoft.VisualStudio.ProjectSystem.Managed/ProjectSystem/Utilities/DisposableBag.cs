@@ -63,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         public void Dispose()
         {
             bool disposedThisTime = false;
-            var disposables = ImmutableHashSet.Create<IDisposable?>();
+            ImmutableHashSet<IDisposable?>? disposables = null;
             lock (this)
             {
                 if (!IsDisposed)
@@ -180,7 +180,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         /// Calls <see cref="IDisposable.Dispose"/> on all elements in a sequence,
         /// allowing the sequence itself or elements inside it to be null.
         /// </summary>
-        internal static void DisposeAllIfNotNull(IEnumerable<IDisposable?> sequence, bool cacheSequence = false)
+        internal static void DisposeAllIfNotNull(IEnumerable<IDisposable?>? sequence, bool cacheSequence = false)
         {
             if (sequence != null)
             {
