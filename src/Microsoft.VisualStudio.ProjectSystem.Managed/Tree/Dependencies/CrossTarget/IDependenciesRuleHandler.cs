@@ -22,9 +22,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
     internal interface IDependenciesRuleHandler
     {
         /// <summary>
-        /// Gets the set of rule names this handler handles.
+        /// Gets the rule name for dependency items returned via evaluation (eg: <c>PackageReference</c>).
         /// </summary>
-        ImmutableHashSet<string> GetRuleNames(RuleSource source);
+        string EvaluatedRuleName { get; }
+
+        /// <summary>
+        /// Gets the rule name for dependency items resolved by design-time builds (eg: <c>ResolvedPackageReference</c>).
+        /// </summary>
+        string ResolvedRuleName { get; }
 
         /// <summary>
         /// Handles the specified set of changes to a rule, and applies them

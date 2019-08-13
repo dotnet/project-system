@@ -144,9 +144,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         private IReadOnlyCollection<string> GetRuleNames(RuleSource source)
         {
-            return new HashSet<string>(
-                _handlers.SelectMany(h => h.Value.GetRuleNames(source)),
-                StringComparers.RuleNames);
+            var rules = new HashSet<string>(StringComparers.RuleNames);
+            
+            foreach (Lazy<IDependenciesRuleHandler, IOrderPrecedenceMetadataView> item in _handlers)
+            {
+                rules.Add(item.Value.EvaluatedRuleName);
+
+                if (source == RuleSource.Joint)
+                {
+                    rules.Add(item.Value.ResolvedRuleName);
+                }
+            }
+
+            return rules;
         }
 
         private async Task OnProjectChangedAsync(

@@ -14,31 +14,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         : IDependenciesRuleHandler,
           IProjectDependenciesSubTreeProviderInternal
     {
-        private readonly ImmutableHashSet<string> _evaluationRuleNames;
-        private readonly ImmutableHashSet<string> _jointRuleNames;
-
-        protected string EvaluatedRuleName { get; }
-        protected string ResolvedRuleName { get; }
+        public string EvaluatedRuleName { get; }
+        public string ResolvedRuleName { get; }
 
         protected DependenciesRuleHandlerBase(
             string evaluatedRuleName,
             string resolvedRuleName)
         {
+            Requires.NotNullOrWhiteSpace(evaluatedRuleName, nameof(evaluatedRuleName));
+            Requires.NotNullOrWhiteSpace(resolvedRuleName, nameof(resolvedRuleName));
+
             EvaluatedRuleName = evaluatedRuleName;
             ResolvedRuleName = resolvedRuleName;
-
-            _evaluationRuleNames = ImmutableStringHashSet.EmptyOrdinal.Add(evaluatedRuleName);
-            _jointRuleNames = _evaluationRuleNames.Add(resolvedRuleName);
         }
 
         #region IDependenciesRuleHandler
-
-        public ImmutableHashSet<string> GetRuleNames(RuleSource source)
-        {
-            return source == RuleSource.Evaluation ?
-                _evaluationRuleNames :
-                _jointRuleNames;
-        }
 
         public abstract ImageMoniker ImplicitIcon { get; }
 
