@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// Holds data used for telemetry. If telemetry is disabled, or if required
         /// information has been gathered, this field will be null.
         /// </summary>
-        private Dictionary<ITargetFramework, TelemetryState>? _telemetryStates;
+        private Dictionary<ITargetFramework, TelemetryState>? _stateByFramework;
 
         private string? _projectId;
         private int _eventCount = 0;
@@ -53,26 +53,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             if (telemetryService != null)
             {
                 _telemetryService = telemetryService;
-                _telemetryStates = new Dictionary<ITargetFramework, TelemetryState>();
+                _stateByFramework = new Dictionary<ITargetFramework, TelemetryState>();
             }
         }
 
         /// <inheritdoc />
         public void InitializeTargetFrameworkRules(ImmutableArray<ITargetFramework> targetFrameworks, IReadOnlyCollection<string> rules)
         {
-            if (_telemetryStates == null)
+            if (_stateByFramework == null)
                 return;
 
             lock (_stateUpdateLock)
             {
-                if (_telemetryStates == null)
+                if (_stateByFramework == null)
                     return;
 
                 foreach (ITargetFramework targetFramework in targetFrameworks)
                 {
-                    if (!_telemetryStates.TryGetValue(targetFramework, out TelemetryState telemetryState))
+                    if (!_stateByFramework.TryGetValue(targetFramework, out TelemetryState telemetryState))
                     {
-                        telemetryState = _telemetryStates[targetFramework] = new TelemetryState();
+                        telemetryState = _stateByFramework[targetFramework] = new TelemetryState();
                     }
 
                     foreach (string rule in rules)
@@ -86,15 +86,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <inheritdoc />
         public void ObserveTargetFrameworkRules(ITargetFramework targetFramework, IEnumerable<string> rules)
         {
-            if (_telemetryStates == null)
+            if (_stateByFramework == null)
                 return;
 
             lock (_stateUpdateLock)
             {
-                if (_telemetryStates == null)
+                if (_stateByFramework == null)
                     return;
 
-                if (_telemetryStates.TryGetValue(targetFramework, out TelemetryState telemetryState))
+                if (_stateByFramework.TryGetValue(targetFramework, out TelemetryState telemetryState))
                 {
                     foreach (string rule in rules)
                     {
@@ -107,20 +107,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <inheritdoc />
         public async Task ObserveTreeUpdateCompletedAsync(bool hasUnresolvedDependency)
         {
-            if (_telemetryStates == null)
+            if (_stateByFramework == null)
                 return;
 
             bool observedAllRules;
             lock (_stateUpdateLock)
             {
-                if (_telemetryStates == null)
+                if (_stateByFramework == null)
                     return;
 
-                observedAllRules = _telemetryStates.All(state => state.Value.ObservedAllRules());
+                observedAllRules = _stateByFramework.All(state => state.Value.ObservedAllRules());
 
                 if (!hasUnresolvedDependency || (_eventCount++ == MaxEventCount))
                 {
-                    _telemetryStates = null;
+                    _stateByFramework = null;
                 }
             }
 
