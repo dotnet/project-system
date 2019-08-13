@@ -7,7 +7,18 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
-    [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ZeroOrMore, ContractName = DependencyRulesSubscriber.DependencyRulesSubscriberContract)]
+    /// <summary>
+    /// Implementations of this interface add, update and remove <see cref="IDependencyModel"/> instances in response to
+    /// project rule changes. They use both evaluated items and items returned by targets called during design-time builds.
+    /// The latter are fully resolved with all item metadata, while the former contain just the information found in the
+    /// project file, which is enough to quickly populate the dependency tree while we wait for the slower design-time
+    /// build to complete and return richer item metadata.
+    /// </summary>
+    [ProjectSystemContract(
+        ProjectSystemContractScope.UnconfiguredProject,
+        ProjectSystemContractProvider.Private,
+        Cardinality = ImportCardinality.ZeroOrMore,
+        ContractName = DependencyRulesSubscriber.DependencyRulesSubscriberContract)]
     internal interface IDependenciesRuleHandler
     {
         /// <summary>
