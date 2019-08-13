@@ -3,56 +3,43 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
+using System.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Utilities
 {
     /// <summary>
-    /// A class that tracks a set of disposable objects and disposes them collectively.
+    /// Tracks a bag of distinct disposable objects which will be disposed when the bag itself is disposed.
     /// </summary>
-    internal sealed class DisposableBag : IDisposableObservable
+    internal sealed class DisposableBag : IDisposable
     {
         /// <summary>
-        /// The set of disposable blocks.
+        /// The set of disposable blocks. If <see langword="null" />, then this disposable bag has been disposed.
         /// </summary>
-        private ImmutableHashSet<IDisposable?> _disposables = ImmutableHashSet.Create<IDisposable?>();
-
-        /// <summary>
-        /// A value indicating whether this instance has been disposed.
-        /// </summary>
-        public bool IsDisposed { get; private set; }
+        private ImmutableHashSet<IDisposable?>? _disposables = ImmutableHashSet.Create<IDisposable?>();
 
         /// <summary>
         /// Disposes of all contained disposable items.
         /// </summary>
         public void Dispose()
         {
-            bool disposedThisTime = false;
-            ImmutableHashSet<IDisposable?>? disposables = null;
-            lock (this)
-            {
-                if (!IsDisposed)
-                {
-                    // Two related cancellation tokens both end up tending to call this method, at roughly the same time.
-                    // So to avoid deadlocks with those tokens themselves, it's imperative that we very carefully avoid
-                    // executing outside (even framework) code within this lock.
-                    disposedThisTime = true;
-                    IsDisposed = true;
-                    disposables = _disposables;
-                    _disposables = _disposables.Clear();
-                }
-            }
+            ImmutableHashSet<IDisposable?>? disposables = Interlocked.Exchange(ref _disposables, null);
 
-            if (disposedThisTime)
+            if (disposables != null)
             {
-                DisposeAllIfNotNull(disposables);
+                foreach (IDisposable? item in disposables)
+                {
+                    item?.Dispose();
+                }
             }
         }
 
         /// <summary>
-        /// Adds a value to be disposed of when this collection is disposed of.
+        /// Adds an object to this bag, to be disposed when the bag itself is disposed.
         /// </summary>
-        /// <param name="disposable">The value to be disposed of later. May be <c>null</c>.</param>
+        /// <remarks>
+        /// If this disposable bag has already been disposed, <paramref name="disposable" /> will be disposed immediately.
+        /// </remarks>
+        /// <param name="disposable">The value to be included in this disposable bag.</param>
         public void AddDisposable(IDisposable? disposable)
         {
             if (disposable == null)
@@ -61,17 +48,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
             }
 
             bool shouldDisposeArgument = false;
-            lock (this)
-            {
-                if (IsDisposed)
+
+            ImmutableInterlocked.Update(
+                ref _disposables,
+                (set, item) =>
                 {
-                    shouldDisposeArgument = true;
-                }
-                else
-                {
-                    _disposables = _disposables.Add(disposable);
-                }
-            }
+                    if (set == null)
+                    {
+                        shouldDisposeArgument = true;
+                        return null!;
+                    }
+
+                    return set.Add(item);
+                },
+                disposable);
 
             if (shouldDisposeArgument)
             {
@@ -80,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         }
 
         /// <summary>
-        /// Adds values to be disposed of when this collection is disposed of.
+        /// Adds objects to this bag, to each be disposed when the bag itself is disposed.
         /// </summary>
         public void AddDisposables(IEnumerable<IDisposable?> disposables)
         {
@@ -93,9 +83,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         }
 
         /// <summary>
-        /// Removes a disposable value from the collection.
+        /// Removes an object from the bag. If done before the bag is disposed, this will prevent
+        /// <paramref name="disposable"/> from being disposed along with the bag itself.
         /// </summary>
-        /// <param name="disposable">The value to remove. May be <c>null</c>.</param>
+        /// <param name="disposable">The object to remove.</param>
         public void RemoveDisposable(IDisposable? disposable)
         {
             if (disposable == null)
@@ -103,31 +94,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
                 return;
             }
 
-            lock (this)
-            {
-                _disposables = _disposables.Remove(disposable);
-            }
-        }
-
-        /// <summary>
-        /// Calls <see cref="IDisposable.Dispose"/> on all elements in a sequence,
-        /// allowing the sequence itself or elements inside it to be null.
-        /// </summary>
-        private static void DisposeAllIfNotNull(IEnumerable<IDisposable?>? sequence, bool cacheSequence = false)
-        {
-            if (sequence != null)
-            {
-                if (cacheSequence)
-                {
-                    // This makes us impervious to changes in the sequence generated by disposing elements of the sequence.
-                    sequence = sequence.ToList();
-                }
-
-                foreach (IDisposable? item in sequence)
-                {
-                    item?.Dispose();
-                }
-            }
+            ImmutableInterlocked.Update(
+                ref _disposables,
+                (set, item) => set?.Remove(item)!,
+                disposable);
         }
     }
 }
