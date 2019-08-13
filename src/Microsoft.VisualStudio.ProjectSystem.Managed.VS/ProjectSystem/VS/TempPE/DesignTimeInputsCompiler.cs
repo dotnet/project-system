@@ -20,7 +20,7 @@ using Microsoft.VisualStudio.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 {
-    internal class DesignTimeInputsCompiler : OnceInitializedOnceDisposedAsync
+    internal partial class DesignTimeInputsCompiler : OnceInitializedOnceDisposedAsync
     {
         private static readonly TimeSpan s_compilationDelayTime = TimeSpan.FromMilliseconds(500);
 
@@ -36,9 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         private ITargetBlock<IProjectVersionedValue<DesignTimeInputsDelta>>? _deltaActionBlock;
         private IDisposable? _changeTrackerLink;
 
-        private DesignTimeInputsDelta? _state;
-
-        private ImmutableDictionary<string, bool> _filesToCompile = ImmutableDictionary<string, bool>.Empty.WithComparers(StringComparers.Paths); // Key is filename, value is whether to ignore the last write time check
+        private readonly CompilationQueue _queue = new CompilationQueue();
         private CancellationTokenSource? _compilationCancellationSource;
 
         [ImportingConstructor]
@@ -81,29 +79,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             // Cancel any in-progress queue processing
             _compilationCancellationSource?.Cancel();
 
-            // Capture the latest state
-            _state = obj.Value;
+            DesignTimeInputsDelta delta = obj.Value;
 
             // add all of the changes to our queue
-            foreach (DesignTimeInputFileChange item in _state.ChangedInputs)
-            {
-                ImmutableInterlocked.TryAdd(ref _filesToCompile, item.File, item.IgnoreFileWriteTime);
-            }
-
-            // remove any items we have queued that aren't in the inputs any more
-            foreach ((string file, _) in _filesToCompile)
-            {
-                if (!_state.Inputs.Contains(file))
-                {
-                    ImmutableInterlocked.TryRemove(ref _filesToCompile, file, out _);
-                }
-            }
+            _queue.Update(delta.ChangedInputs, delta.Inputs, delta.SharedInputs, delta.TempPEOutputPath);
 
             // Create a cancellation source so we can cancel the compilation if another message comes through
             _compilationCancellationSource = CancellationTokenSource.CreateLinkedTokenSource(_project.Services.ProjectAsynchronousTasks.UnloadCancellationToken);
 
             JoinableTask task = _scheduler.ScheduleAsyncTask(ProcessCompileQueueAsync, _compilationCancellationSource.Token);
-            
+
             // For unit testing purposes, optionally block the thread until the task we scheduled is complete
             if (CompileSynchronously)
             {
@@ -129,48 +114,54 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         private Task ProcessCompileQueueAsync(CancellationToken token)
         {
             int compileCount = 0;
-            int initialQueueLength = _filesToCompile.Count;
+            int initialQueueLength = _queue.Count;
             var compileStopWatch = Stopwatch.StartNew();
             return _activeWorkspaceProjectContextHost.OpenContextForWriteAsync(async accessor =>
             {
-                while (_filesToCompile.Count > 0)
+                while (true)
                 {
                     if (IsDisposing || IsDisposed)
                     {
                         return;
                     }
 
+                    // we don't want to pop if we've been cancelled in the time it took to take the write lock, so check just in case.
+                    // this may be overkill
                     if (token.IsCancellationRequested)
-                    {
-                        LogTelemetry(cancelled: true);
-                        return;
-                    }
-
-                    // Grab the next file to compile off the queue
-                    (string fileName, bool ignoreFileWriteTime) = _filesToCompile.FirstOrDefault();
-                    if (fileName == null)
                     {
                         break;
                     }
 
-                    string outputFileName = GetOutputFileName(fileName);
+                    // Grab the next file to compile off the queue
+                    QueueItem? item = _queue.Pop();
+                    if (item == null)
+                    {
+                        break;
+                    }
+
+                    bool cancelled = false;
+                    string outputFileName = GetOutputFileName(item.FileName, item.TempPEOutputPath);
                     try
                     {
-                        if (await CompileDesignTimeInputAsync(accessor.Context, fileName, outputFileName, ignoreFileWriteTime, token))
+                        if (await CompileDesignTimeInputAsync(accessor.Context, item.FileName, outputFileName, item.SharedInputs, item.IgnoreFileWriteTime, token))
                         {
                             compileCount++;
                         }
-                        // We remove the file if the compilation wasn't cancelled, regardless of whether it really happened or not.
-                        ImmutableInterlocked.TryRemove(ref _filesToCompile, fileName, out _);
                     }
                     catch (OperationCanceledException)
                     {
-                        LogTelemetry(cancelled: true);
-                        return;
+                        cancelled = true;
+                    }
+
+                    if (cancelled || token.IsCancellationRequested)
+                    {
+                        // if the compilation was cancelled, we need to re-add the file so we catch it next time
+                        _queue.Push(item);
+                        break;
                     }
                 }
 
-                LogTelemetry(cancelled: false);
+                LogTelemetry(cancelled: token.IsCancellationRequested);
             });
 
             void LogTelemetry(bool cancelled)
@@ -190,28 +181,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         /// Gets the XML that describes a TempPE DLL, including building it if necessary
         /// </summary>
         /// <param name="fileName">A project relative path to a source file that is a design time input</param>
+        /// <param name="tempPEOutputPath">The path in which to place the TempPE DLL if one is created</param>
+        /// <param name="sharedInputs">The list of shared inputs to be included in the TempPE DLL</param>
         /// <returns>An XML description of the TempPE DLL for the specified file</returns>
-        public Task<string> GetDesignTimeInputXmlAsync(string fileName)
+        public Task<string> GetDesignTimeInputXmlAsync(string fileName, string tempPEOutputPath, ImmutableHashSet<string> sharedInputs)
         {
-            if (_state == null)
-            {
-                throw new InvalidOperationException("Can't get design time input information until project information has been received");
-            }
-
-            // Make sure we're not being asked to compile a random file
-            if (!_state.Inputs.Contains(fileName, StringComparers.Paths))
-            {
-                throw new ArgumentException("Can only get XML snippets for design time inputs", nameof(fileName));
-            }
-
             // Remove the file from our todo list, in case it was in there.
-            ImmutableInterlocked.TryRemove(ref _filesToCompile, fileName, out _);
+            // Note that other than this avoidance of unnecessary work, this method is stateless.
+            _queue.RemoveSpecific(fileName);
 
-            string outputFileName = GetOutputFileName(fileName);
+            string outputFileName = GetOutputFileName(fileName, tempPEOutputPath);
             // make sure the file is up to date
             return _activeWorkspaceProjectContextHost.OpenContextForWriteAsync(async accessor =>
             {
-                bool compiled = await CompileDesignTimeInputAsync(accessor.Context, fileName, outputFileName, ignoreFileWriteTime: false);
+                bool compiled = await CompileDesignTimeInputAsync(accessor.Context, fileName, outputFileName, sharedInputs, ignoreFileWriteTime: false);
 
                 if (compiled)
                 {
@@ -231,9 +214,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             });
         }
 
-        private async Task<bool> CompileDesignTimeInputAsync(IWorkspaceProjectContext context, string designTimeInput, string outputFileName, bool ignoreFileWriteTime, CancellationToken token = default)
+        private async Task<bool> CompileDesignTimeInputAsync(IWorkspaceProjectContext context, string designTimeInput, string outputFileName, ImmutableHashSet<string> sharedInputs, bool ignoreFileWriteTime, CancellationToken token = default)
         {
-            HashSet<string> filesToCompile = GetFilesToCompile(designTimeInput);
+            HashSet<string> filesToCompile = GetFilesToCompile(designTimeInput, sharedInputs);
+
+            if (token.IsCancellationRequested)
+            {
+                return false;
+            }
 
             if (ignoreFileWriteTime || CompilationNeeded(filesToCompile, outputFileName))
             {
@@ -267,13 +255,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             return false;
         }
 
-        private string GetOutputFileName(string designTimeInput)
+        private static string GetOutputFileName(string designTimeInput, string tempPEOutputPath)
         {
-            Assumes.NotNull(_state);
-
             // All monikers are project relative paths by definition (anything else is a link, and linked files can't be TempPE inputs), meaning 
             // the only invalid filename characters possible are path separators so we just replace them
-            return Path.Combine(_state!.TempPEOutputPath, designTimeInput.Replace('\\', '.') + ".dll");
+            return Path.Combine(tempPEOutputPath, designTimeInput.Replace('\\', '.') + ".dll");
         }
 
         private bool CompilationNeeded(HashSet<string> files, string outputFileName)
@@ -304,18 +290,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             return false;
         }
 
-        private HashSet<string> GetFilesToCompile(string moniker)
+        private HashSet<string> GetFilesToCompile(string moniker, ImmutableHashSet<string> sharedInputs)
         {
-            Assumes.NotNull(_state);
-
             // This is a HashSet because we allow files to be both inputs and shared inputs, and we don't want to compile the same file twice,
             // plus Roslyn needs to call Contains on this quite a lot in order to ensure its only compiling the right files so we want that to be fast.
             // When it comes to compiling the files there is no difference between shared and normal design time inputs, we just track differently because
             // shared are included in every DLL.
-            var files = new HashSet<string>(_state!.SharedInputs.Count + 1, StringComparers.Paths);
+            var files = new HashSet<string>(sharedInputs.Count + 1, StringComparers.Paths);
             // All monikers are project relative paths by defintion (anything else is a link, and linked files can't be TempPE inputs) so we can convert
             // them to full paths using MakeRooted.
-            files.AddRange(_state.SharedInputs.Select(_project.MakeRooted));
+            files.AddRange(sharedInputs.Select(_project.MakeRooted));
             files.Add(_project.MakeRooted(moniker));
             return files;
         }
