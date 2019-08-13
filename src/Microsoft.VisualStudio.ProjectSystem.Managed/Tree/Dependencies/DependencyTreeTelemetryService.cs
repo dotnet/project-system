@@ -51,9 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
         }
 
-        /// <summary>
-        /// Initialize telemetry state with the set of rules we expect to observe for target framework
-        /// </summary>
+        /// <inheritdoc />
         public void InitializeTargetFrameworkRules(ImmutableArray<ITargetFramework> targetFrameworks, IReadOnlyCollection<string> rules)
         {
             if (_stopTelemetry)
@@ -76,11 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
         }
 
-        /// <summary>
-        /// Indicate that a set of rules has been observed in either an Evaluation or Design Time pass.
-        /// This information is used when firing tree update telemetry events to indicate whether all rules
-        /// have been observed.
-        /// </summary>
+        /// <inheritdoc />
         public void ObserveTargetFrameworkRules(ITargetFramework targetFramework, IEnumerable<string> rules)
         {
             if (_stopTelemetry)
@@ -101,10 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
         }
 
-        /// <summary>
-        /// Fire telemetry when dependency tree completes an update
-        /// </summary>
-        /// <param name="hasUnresolvedDependency">indicates if the snapshot used for the update had any unresolved dependencies</param>
+        /// <inheritdoc />
         public async Task ObserveTreeUpdateCompletedAsync(bool hasUnresolvedDependency)
         {
             if (_stopTelemetry)
