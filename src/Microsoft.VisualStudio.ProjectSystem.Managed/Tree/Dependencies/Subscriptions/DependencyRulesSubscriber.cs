@@ -216,6 +216,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 return;
             }
 
+            if (!projectUpdate.ProjectChanges.Any(x => x.Value.Difference.AnyChanges))
+            {
+                return;
+            }
+
             // Create an object to track dependency changes.
             var changesBuilder = new CrossTargetDependenciesChangesBuilder();
 
