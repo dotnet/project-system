@@ -212,17 +212,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             // Give each handler a chance to register dependency changes.
             foreach (Lazy<IDependenciesRuleHandler, IOrderPrecedenceMetadataView> handler in _handlers)
             {
-                ImmutableHashSet<string> handlerRules = handler.Value.GetRuleNames(source);
-
-                // Slice project changes to include only rules the handler claims an interest in.
-                var projectChanges = projectUpdate.ProjectChanges
-                    .Where(x => handlerRules.Contains(x.Key))
-                    .ToImmutableDictionary();
-
-                if (projectChanges.Any(x => x.Value.Difference.AnyChanges))
-                {
-                    handler.Value.Handle(projectChanges, targetFrameworkToUpdate, changesBuilder);
-                }
+                handler.Value.Handle(projectUpdate.ProjectChanges, targetFrameworkToUpdate, changesBuilder);
             }
 
             ImmutableDictionary<ITargetFramework, IDependenciesChanges>? changes = changesBuilder.TryBuildChanges();
