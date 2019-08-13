@@ -5,8 +5,7 @@
    assembly versions in the VS repository under src\ProductData.
    See: https://github.com/dotnet/roslyn-tools/tree/master/src/RoslynInsertionTool).
    
-    $(VisualStudioVersion):         The version number of Microsoft.VisualStudio.Editors/Microsoft.VisualStudio.AppDesigner
-    $(ProjectSystemVersion):        The version number of Microsoft.VisualStudio.ProjectSystem.Managed/Microsoft.VisualStudio.ProjectSystem.Managed.VS
+    $(ProjectSystemVersion):        The version number of both Microsoft.VisualStudio.Editors/Microsoft.VisualStudio.AppDesigner and Microsoft.VisualStudio.ProjectSystem.Managed/Microsoft.VisualStudio.ProjectSystem.Managed.VS
     $(ArtifactsConfigurationDir):   The configured-based build output location.
     
   -->
@@ -26,8 +25,8 @@
      -->
       <DependentAssemblyVersionsContents>
  <![CDATA[
-Microsoft.VisualStudio.AppDesigner,$(VisualStudioVersion).0
-Microsoft.VisualStudio.Editors,$(VisualStudioVersion).0
+Microsoft.VisualStudio.AppDesigner,$(ProjectSystemVersion).0
+Microsoft.VisualStudio.Editors,$(ProjectSystemVersion).0
 Microsoft.VisualStudio.ProjectSystem.Managed,$(ProjectSystemVersion).0
  ]]>
       </DependentAssemblyVersionsContents>
