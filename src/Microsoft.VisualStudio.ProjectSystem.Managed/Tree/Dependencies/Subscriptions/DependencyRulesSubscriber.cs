@@ -56,8 +56,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             await InitializeAsync();
 
-            IReadOnlyCollection<string> watchedEvaluationRules = GetWatchedRules(RuleSource.Evaluation);
-            IReadOnlyCollection<string> watchedJointRules = GetWatchedRules(RuleSource.Joint);
+            IReadOnlyCollection<string> watchedEvaluationRules = GetRuleNames(RuleSource.Evaluation);
+            IReadOnlyCollection<string> watchedJointRules = GetRuleNames(RuleSource.Joint);
 
             SubscribeToConfiguredProject(
                 _commonServices.ActiveConfiguredProject, subscriptionService, watchedEvaluationRules, watchedJointRules);
@@ -69,8 +69,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             _currentProjectContext = projectContext;
 
-            IReadOnlyCollection<string> watchedEvaluationRules = GetWatchedRules(RuleSource.Evaluation);
-            IReadOnlyCollection<string> watchedJointRules = GetWatchedRules(RuleSource.Joint);
+            IReadOnlyCollection<string> watchedEvaluationRules = GetRuleNames(RuleSource.Evaluation);
+            IReadOnlyCollection<string> watchedJointRules = GetRuleNames(RuleSource.Joint);
 
             // initialize telemetry with all rules for each target framework
             foreach (ITargetFramework targetFramework in projectContext.TargetFrameworks)
@@ -165,7 +165,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 linkOptions: DataflowOption.PropagateCompletion));
         }
 
-        private IReadOnlyCollection<string> GetWatchedRules(RuleSource source)
+        private IReadOnlyCollection<string> GetRuleNames(RuleSource source)
         {
             return new HashSet<string>(
                 _handlers.SelectMany(h => h.Value.GetRuleNames(source)),
