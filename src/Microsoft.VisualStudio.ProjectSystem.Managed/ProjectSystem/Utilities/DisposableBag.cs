@@ -4,45 +4,18 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Utilities
 {
     /// <summary>
-    /// A class that tracks a set of disposable objects and a cancellation token for purposes
-    /// of managing the lifetime of a version-sync'd block join.
+    /// A class that tracks a set of disposable objects and disposes them collectively.
     /// </summary>
     internal sealed class DisposableBag : IDisposableObservable
     {
         /// <summary>
-        /// The source of the cancellation token exposed to the join.
-        /// </summary>
-        private readonly CancellationTokenSource _cts;
-
-        /// <summary>
-        /// The registration that automatically disposes this object when and if the cancellation token is ever canceled.
-        /// </summary>
-        private readonly CancellationTokenRegistration _autoDisposeRegistration;
-
-        /// <summary>
-        /// A token based on the <see cref="_cts"/>, so that it's accessible even after disposal.
-        /// </summary>
-        private readonly CancellationToken _cancellationToken;
-
-        /// <summary>
         /// The set of disposable blocks.
         /// </summary>
         private ImmutableHashSet<IDisposable?> _disposables = ImmutableHashSet.Create<IDisposable?>();
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DisposableBag"/> class.
-        /// </summary>
-        internal DisposableBag(CancellationToken cancellationToken = default)
-        {
-            _cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-            _cancellationToken = _cts.Token;
-            _autoDisposeRegistration = RegisterNoThrowOnDispose(Dispose, cancellationToken);
-        }
 
         /// <summary>
         /// A value indicating whether this instance has been disposed.
@@ -50,15 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         public bool IsDisposed { get; private set; }
 
         /// <summary>
-        /// Gets the cancellation token that signals the user has terminated the link.
-        /// </summary>
-        internal CancellationToken CancellationToken
-        {
-            get { return _cancellationToken; }
-        }
-
-        /// <summary>
-        /// Disposes of all contained links and signals the cancellation token.
+        /// Disposes of all contained disposable items.
         /// </summary>
         public void Dispose()
         {
@@ -78,20 +43,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
                 }
             }
 
-            // Because cancelling a CancellationTokenSource can cause arbitrary code to run when cancellation occurs -
-            // specifically the user can register a callback with CancellationToken.Register() - we cannot call Cancel
-            // on the token source while holding a lock, as this can cause deadlocks.
             if (disposedThisTime)
             {
-                _autoDisposeRegistration.Dispose();
-                _cts.Cancel();
-                _cts.Dispose();
                 DisposeAllIfNotNull(disposables);
             }
         }
 
         /// <summary>
-        /// Adds a value to be disposed of when this collection is disposed of or canceled.
+        /// Adds a value to be disposed of when this collection is disposed of.
         /// </summary>
         /// <param name="disposable">The value to be disposed of later. May be <c>null</c>.</param>
         internal void AddDisposable(IDisposable? disposable)
@@ -121,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         }
 
         /// <summary>
-        /// Adds values to be disposed of when this collection is disposed of or canceled.
+        /// Adds values to be disposed of when this collection is disposed of.
         /// </summary>
         internal void AddDisposables(IEnumerable<IDisposable?> disposables)
         {
@@ -147,32 +106,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
             lock (this)
             {
                 _disposables = _disposables.Remove(disposable);
-            }
-        }
-
-        /// <summary>
-        /// Registers a callback to be invoked when and if a token is canceled,
-        /// protecting against <see cref="ObjectDisposedException"/> in the event that the
-        /// <see cref="CancellationTokenSource"/> has already been disposed.
-        /// </summary>
-        internal static CancellationTokenRegistration RegisterNoThrowOnDispose(Action callback, CancellationToken token)
-        {
-            try
-            {
-                return token.Register(callback);
-            }
-            catch (ObjectDisposedException)
-            {
-                // The CancellationTokenSource has already been disposed.  It rejected the register.
-                // But now we know the CancellationToken is in its final state (either cancelled or not).
-                // So simulate the right behavior by invoking the callback or not, based on whether it was
-                // already canceled.
-                if (token.IsCancellationRequested)
-                {
-                    callback();
-                }
-
-                return new CancellationTokenRegistration();
             }
         }
 

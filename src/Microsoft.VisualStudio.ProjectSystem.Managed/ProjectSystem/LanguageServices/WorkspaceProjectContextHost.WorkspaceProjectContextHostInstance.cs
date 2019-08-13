@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                 _activeWorkspaceProjectContextTracker.RegisterContext(_contextAccessor.ContextId);
 
-                _disposables = new DisposableBag(CancellationToken.None);
+                _disposables = new DisposableBag();
 
                 _applyChangesToWorkspaceContext = _applyChangesToWorkspaceContextFactory.CreateExport();
                 _applyChangesToWorkspaceContext.Value.Initialize(_contextAccessor.Context);
