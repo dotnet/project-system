@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
@@ -53,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <summary>
         /// Initialize telemetry state with the set of rules we expect to observe for target framework
         /// </summary>
-        public void InitializeTargetFrameworkRules(ITargetFramework targetFramework, IEnumerable<string> rules)
+        public void InitializeTargetFrameworkRules(ImmutableArray<ITargetFramework> targetFrameworks, IReadOnlyCollection<string> rules)
         {
             if (_stopTelemetry)
                 return;
@@ -63,11 +64,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 if (_stopTelemetry)
                     return;
 
-                TelemetryState telemetryState = _telemetryStates.GetOrAdd(targetFramework, (key) => new TelemetryState());
-
-                foreach (string rule in rules)
+                foreach (ITargetFramework targetFramework in targetFrameworks)
                 {
-                    telemetryState.InitializeRule(rule);
+                    TelemetryState telemetryState = _telemetryStates.GetOrAdd(targetFramework, _ => new TelemetryState());
+
+                    foreach (string rule in rules)
+                    {
+                        telemetryState.InitializeRule(rule);
+                    }
                 }
             }
         }
