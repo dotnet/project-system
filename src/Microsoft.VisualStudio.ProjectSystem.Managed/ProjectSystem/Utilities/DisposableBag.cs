@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. 
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading;
@@ -10,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
     /// <summary>
     /// Tracks a bag of distinct disposable objects which will be disposed when the bag itself is disposed.
     /// </summary>
-    internal sealed class DisposableBag : IDisposable
+    internal sealed class DisposableBag : IDisposable, IEnumerable
     {
         /// <summary>
         /// The set of disposable blocks. If <see langword="null" />, then this disposable bag has been disposed.
@@ -99,5 +100,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
                 (set, item) => set?.Remove(item)!,
                 disposable);
         }
+
+        /// <summary>
+        /// Implemented only to allow collection initialization of this type.
+        /// </summary>
+        IEnumerator IEnumerable.GetEnumerator() => throw new NotSupportedException();
     }
 }
