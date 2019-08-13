@@ -154,18 +154,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <summary>
         /// Maintain state for a single target framework.
         /// </summary>
-        internal class TelemetryState
+        private class TelemetryState
         {
             private readonly ConcurrentDictionary<string, bool> _observedRules = new ConcurrentDictionary<string, bool>(StringComparers.RuleNames);
 
-            internal void InitializeRule(string rule) =>
-                _observedRules.TryAdd(rule, false);
+            public void InitializeRule(string rule) => _observedRules.TryAdd(rule, false);
 
-            internal void ObserveRule(string rule) =>
-                _observedRules.TryUpdate(rule, true, false);
+            public void ObserveRule(string rule) => _observedRules.TryUpdate(rule, true, false);
 
-            internal bool ObservedAllRules() =>
-                !_observedRules.IsEmpty && _observedRules.All(entry => entry.Value);
+            public bool ObservedAllRules() => !_observedRules.IsEmpty && _observedRules.All(entry => entry.Value);
         }
     }
 }
