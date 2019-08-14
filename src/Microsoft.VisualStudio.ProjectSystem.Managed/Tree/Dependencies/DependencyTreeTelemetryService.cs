@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,20 +18,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     /// as a property of the telemetry event and can be used to determine if the
     /// 'resolved' event is fired too early (so sessions can be appropriately filtered).
     /// </summary>
+    /// <remarks>
+    /// Instantiated per unconfigured project.
+    /// </remarks>
     [Export(typeof(IDependencyTreeTelemetryService))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
-    internal class DependencyTreeTelemetryService : IDependencyTreeTelemetryService
+    internal sealed class DependencyTreeTelemetryService : IDependencyTreeTelemetryService
     {
         private const int MaxEventCount = 10;
 
         private readonly UnconfiguredProject _project;
         private readonly ITelemetryService? _telemetryService;
         private readonly ISafeProjectGuidService _safeProjectGuidService;
-        private readonly ConcurrentDictionary<ITargetFramework, TelemetryState> _telemetryStates =
-            new ConcurrentDictionary<ITargetFramework, TelemetryState>();
         private readonly object _stateUpdateLock = new object();
+
+        /// <summary>
+        /// Holds data used for telemetry. If telemetry is disabled, or if required
+        /// information has been gathered, this field will be null.
+        /// </summary>
+        private Dictionary<ITargetFramework, TelemetryState>? _stateByFramework;
+
         private string? _projectId;
-        private bool _stopTelemetry = false;
         private int _eventCount = 0;
 
         [ImportingConstructor]
@@ -41,53 +48,56 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             ISafeProjectGuidService safeProjectGuidService)
         {
             _project = project;
-            _telemetryService = telemetryService;
             _safeProjectGuidService = safeProjectGuidService;
 
-            if (telemetryService == null)
+            if (telemetryService != null)
             {
-                _stopTelemetry = true;
+                _telemetryService = telemetryService;
+                _stateByFramework = new Dictionary<ITargetFramework, TelemetryState>();
             }
         }
 
-        /// <summary>
-        /// Initialize telemetry state with the set of rules we expect to observe for target framework
-        /// </summary>
-        public void InitializeTargetFrameworkRules(ITargetFramework targetFramework, IEnumerable<string> rules)
+        /// <inheritdoc />
+        public bool IsActive => _stateByFramework != null;
+
+        /// <inheritdoc />
+        public void InitializeTargetFrameworkRules(ImmutableArray<ITargetFramework> targetFrameworks, IReadOnlyCollection<string> rules)
         {
-            if (_stopTelemetry)
+            if (_stateByFramework == null)
                 return;
 
             lock (_stateUpdateLock)
             {
-                if (_stopTelemetry)
+                if (_stateByFramework == null)
                     return;
 
-                TelemetryState telemetryState = _telemetryStates.GetOrAdd(targetFramework, (key) => new TelemetryState());
-
-                foreach (string rule in rules)
+                foreach (ITargetFramework targetFramework in targetFrameworks)
                 {
-                    telemetryState.InitializeRule(rule);
+                    if (!_stateByFramework.TryGetValue(targetFramework, out TelemetryState telemetryState))
+                    {
+                        telemetryState = _stateByFramework[targetFramework] = new TelemetryState();
+                    }
+
+                    foreach (string rule in rules)
+                    {
+                        telemetryState.InitializeRule(rule);
+                    }
                 }
             }
         }
 
-        /// <summary>
-        /// Indicate that a set of rules has been observed in either an Evaluation or Design Time pass.
-        /// This information is used when firing tree update telemetry events to indicate whether all rules
-        /// have been observed.
-        /// </summary>
+        /// <inheritdoc />
         public void ObserveTargetFrameworkRules(ITargetFramework targetFramework, IEnumerable<string> rules)
         {
-            if (_stopTelemetry)
+            if (_stateByFramework == null)
                 return;
 
             lock (_stateUpdateLock)
             {
-                if (_stopTelemetry)
+                if (_stateByFramework == null)
                     return;
 
-                if (_telemetryStates.TryGetValue(targetFramework, out TelemetryState telemetryState))
+                if (_stateByFramework.TryGetValue(targetFramework, out TelemetryState telemetryState))
                 {
                     foreach (string rule in rules)
                     {
@@ -97,28 +107,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
         }
 
-        /// <summary>
-        /// Fire telemetry when dependency tree completes an update
-        /// </summary>
-        /// <param name="hasUnresolvedDependency">indicates if the snapshot used for the update had any unresolved dependencies</param>
+        /// <inheritdoc />
         public async Task ObserveTreeUpdateCompletedAsync(bool hasUnresolvedDependency)
         {
-            if (_stopTelemetry)
+            if (_stateByFramework == null)
                 return;
 
             bool observedAllRules;
             lock (_stateUpdateLock)
             {
-                if (_stopTelemetry)
+                if (_stateByFramework == null)
                     return;
-                _stopTelemetry = !hasUnresolvedDependency || (++_eventCount >= MaxEventCount);
-                observedAllRules = ObservedAllRules();
+
+                observedAllRules = _stateByFramework.All(state => state.Value.ObservedAllRules());
+
+                if (!hasUnresolvedDependency || (_eventCount++ == MaxEventCount))
+                {
+                    _stateByFramework = null;
+                }
             }
 
-            if (_projectId == null)
-            {
-                _projectId = await GetProjectIdAsync();
-            }
+            _projectId ??= await GetProjectIdAsync();
 
             if (hasUnresolvedDependency)
             {
@@ -139,8 +148,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             return;
 
-            bool ObservedAllRules() => _telemetryStates.All(state => state.Value.ObservedAllRules());
-
             async Task<string> GetProjectIdAsync()
             {
                 Guid projectGuid = await _safeProjectGuidService.GetProjectGuidAsync();
@@ -159,18 +166,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <summary>
         /// Maintain state for a single target framework.
         /// </summary>
-        internal class TelemetryState
+        private sealed class TelemetryState
         {
-            private readonly ConcurrentDictionary<string, bool> _observedRules = new ConcurrentDictionary<string, bool>(StringComparers.RuleNames);
+            private readonly Dictionary<string, bool> _observedRules = new Dictionary<string, bool>(StringComparers.RuleNames);
 
-            internal void InitializeRule(string rule) =>
-                _observedRules.TryAdd(rule, false);
+            public void InitializeRule(string rule)
+            {
+                if (!_observedRules.ContainsKey(rule))
+                {
+                    _observedRules[rule] = false;
+                }
+            }
 
-            internal void ObserveRule(string rule) =>
-                _observedRules.TryUpdate(rule, true, false);
+            public void ObserveRule(string rule)
+            {
+                _observedRules[rule] = true;
+            }
 
-            internal bool ObservedAllRules() =>
-                !_observedRules.IsEmpty && _observedRules.All(entry => entry.Value);
+            public bool ObservedAllRules()
+            {
+                return _observedRules.Count != 0 && _observedRules.All(entry => entry.Value);
+            }
         }
     }
 }
