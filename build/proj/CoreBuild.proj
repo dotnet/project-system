@@ -15,8 +15,7 @@
     RepoRoot                        Repository root, defaults to the directory containing the solution.
     
     VersionsPropsPath               Versions.props path, defaults to $(RepoRoot)build\Versions.props.
-    FixedVersionsPropsPath          FixedVersions.props path, defaults to $(RepoRoot)build\FixedVersions.props.
-                                    
+                     
     CIBuild                         "true" when building on CI server
     Restore                         "true" to restore toolset and solution
     Build                           "true" to build solution
@@ -41,7 +40,6 @@
     <_NormalizedRepoRoot>$([System.IO.Path]::GetFullPath('$(RepoRoot)'))</_NormalizedRepoRoot>
 
     <VersionsPropsPath Condition="'$(VersionsPropsPath)' == ''">$(_NormalizedRepoRoot)build\Versions.props</VersionsPropsPath>
-    <FixedVersionsPropsPath Condition="'$(FixedVersionsPropsPath)' == '' and Exists('$(_NormalizedRepoRoot)build\FixedVersions.props')">$(_NormalizedRepoRoot)build\FixedVersions.props</FixedVersionsPropsPath>
     <SignToolDataPath Condition="'$(SignToolDataPath)' == ''">$(_NormalizedRepoRoot)build\SignToolData.json</SignToolDataPath>
   </PropertyGroup>
 
@@ -71,7 +69,6 @@
       <_CommonProps Include="CIBuild=$(CIBuild)"/>
       <_CommonProps Include="RepoRoot=$(_NormalizedRepoRoot)"/>
       <_CommonProps Include="VersionsPropsPath=$(VersionsPropsPath)"/>
-      <_CommonProps Include="FixedVersionsPropsPath=$(FixedVersionsPropsPath)" Condition="'$(FixedVersionsPropsPath)' != ''"/>
     </ItemGroup>
 
     <ItemGroup>
