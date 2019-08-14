@@ -41,7 +41,6 @@
         NuGetPackageRoot=$(NuGetPackageRoot);
         UseOpenCover=$(IsCodeCoverageBuild);
         Configuration=$(Configuration);
-        QuietRestore=true;
         Restore=true;
         Pack=true;
         CIBuild=$(CIBuild);

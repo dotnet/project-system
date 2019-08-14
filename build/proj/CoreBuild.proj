@@ -20,7 +20,6 @@
                                     
     CIBuild                         "true" when building on CI server
     Restore                         "true" to restore toolset and solution
-    QuietRestore                    "true" to suppress Restore output.
     Build                           "true" to build solution
     Rebuild                         "true" to rebuild solution
     Deploy                          "true" to deploy assets (e.g. VSIXes)
@@ -80,11 +79,6 @@
       <_MSBuildCmd Condition="'$(MSBuildRuntimeType)' == 'Core'">"$(DotNetTool)" msbuild</_MSBuildCmd>
     </PropertyGroup>
 
-    <PropertyGroup>
-      <_QuietRestore>false</_QuietRestore>
-      <_QuietRestore Condition="'$(CIBuild)' != 'true' and '$(QuietRestore)' == 'true'">true</_QuietRestore>
-    </PropertyGroup>
-
     <ItemGroup>
       <_SolutionBuildTargets Include="Rebuild" Condition="'$(Rebuild)' == 'true'" />
       <_SolutionBuildTargets Include="Build" Condition="'$(Build)' == 'true' and '$(Rebuild)' != 'true'" />
@@ -129,17 +123,6 @@
     </PropertyGroup>
 
     <!--
-      Workaround for https://github.com/NuGet/Home/issues/4695.
-      We launch a new msbuild process to restore.
-    -->
-    <Message Text="Restoring packages ..." Importance="high" Condition="'$(Restore)' == 'true' and '$(_QuietRestore)' == 'true'" />
-
-    <MakeDir Directories="$(ArtifactsLogDir)" Condition="'$(Restore)' == 'true' and '$(_QuietRestore)' == 'true'" />
-
-    <Exec Command='$(_MSBuildCmd) "$(SolutionPath)" /bl:"$(ArtifactsLogDir)Restore.binlog" /nologo /m /v:quiet /t:Restore $(_SolutionBuildPropsCmdLine) /p:__BuildPhase=SolutionRestore'
-          Condition="'$(Restore)' == 'true' and '$(_QuietRestore)' == 'true'" StandardOutputImportance="normal" />
-
-    <!--
       Run solution restore separately from the other targets, in a different build phase.
       Since restore brings in new .props and .targets files we need to rerun evaluation.
       
@@ -150,7 +133,7 @@
              Properties="@(_SolutionBuildProps);__BuildPhase=SolutionRestore"
              Targets="Restore"
              BuildInParallel="true"
-             Condition="'$(Restore)' == 'true' and '$(_QuietRestore)' != 'true'"/>
+             Condition="'$(Restore)' == 'true'"/>
 
     <!--
       Build solution.
