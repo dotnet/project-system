@@ -11,10 +11,10 @@
     SolutionPath                    Path to the solution to build.
                                     
   Optional parameters:              
-    Configuration                   Build configuration: "Debug", "Release", etc.
-    RepoRoot                        Repository root, defaults to the directory containing the solution.
+    Configuration                   Required. Build configuration: "Debug", "Release", etc.
+    RepoRoot                        Required. Repository root, defaults to the directory containing the solution.
     
-    VersionsPropsPath               Versions.props path, defaults to $(RepoRoot)build\Versions.props.
+    VersionsPropsPath               Required. Versions.props path, defaults to $(RepoRoot)build\Versions.props.
                      
     CIBuild                         "true" when building on CI server
     Restore                         "true" to restore toolset and solution
@@ -27,20 +27,14 @@
     Pack                            "true" to build NuGet packages and VS insertion manifests
     Sign                            "true" to sign built binaries
     SignType                        "real" to send binaries to signing service, "test" to only validate signing configuration.
-    SignToolDataPath                SignToolData.json path.
+    SignToolDataPath                Required. SignToolData.json path.
   -->
 
   <!--
     Default values. 
   -->
   <PropertyGroup>
-    <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
-
-    <RepoRoot Condition="'$(RepoRoot)' == ''">$([System.IO.Path]::GetDirectoryName('$(SolutionPath)'))\</RepoRoot>
     <_NormalizedRepoRoot>$([System.IO.Path]::GetFullPath('$(RepoRoot)'))</_NormalizedRepoRoot>
-
-    <VersionsPropsPath Condition="'$(VersionsPropsPath)' == ''">$(_NormalizedRepoRoot)build\Versions.props</VersionsPropsPath>
-    <SignToolDataPath Condition="'$(SignToolDataPath)' == ''">$(_NormalizedRepoRoot)build\SignToolData.json</SignToolDataPath>
   </PropertyGroup>
 
   <PropertyGroup>
