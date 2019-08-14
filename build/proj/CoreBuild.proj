@@ -49,11 +49,6 @@
   </PropertyGroup>
 
   <Target Name="Execute">
-    <PropertyGroup>
-      <_MSBuildCmd Condition="'$(MSBuildRuntimeType)' != 'Core'">"$(MSBuildBinPath)\MSBuild.exe" /nodeReuse:false</_MSBuildCmd>
-      <_MSBuildCmd Condition="'$(MSBuildRuntimeType)' == 'Core'">"$(DotNetTool)" msbuild</_MSBuildCmd>
-    </PropertyGroup>
-
     <ItemGroup>
       <_SolutionBuildTargets Include="Rebuild" Condition="'$(Rebuild)' == 'true'" />
       <_SolutionBuildTargets Include="Build" Condition="'$(Build)' == 'true' and '$(Rebuild)' != 'true'" />
@@ -81,16 +76,6 @@
       <_SolutionBuildProps Include="@(_CommonProps)"/>
       <_SolutionBuildProps Include="__DeployProjectOutput=$(Deploy)" Condition="'$(Deploy)' != ''"/>
     </ItemGroup>
-
-    <ItemGroup>
-      <_SolutionBuildPropsArgs Include="@(_SolutionBuildProps->'/p:%(Identity)')" />
-      <_RestoreToolsPropArgs Include="@(_RestoreToolsProps->'/p:%(Identity)')" />
-    </ItemGroup>
-
-    <PropertyGroup>
-      <_SolutionBuildPropsCmdLine>@(_SolutionBuildPropsArgs, ' ')</_SolutionBuildPropsCmdLine>
-      <_RestoreToolsPropsCmdLine>@(_RestoreToolsPropArgs, ' ')</_RestoreToolsPropsCmdLine>
-    </PropertyGroup>
 
     <!--
       Run solution restore separately from the other targets, in a different build phase.
