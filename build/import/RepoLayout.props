@@ -4,7 +4,8 @@
      Properties describing the layout of the repo.
   -->
   <PropertyGroup>
-    <RepoRoot>$(MSBuildThisFileDirectory)..\..\</RepoRoot>
+    <_RepoRoot>$(MSBuildThisFileDirectory)..\..\</_RepoRoot>
+    <RepoRoot>$([System.IO.Path]::GetFullPath('$(_RepoRoot)'))</RepoRoot>
     <!-- Respect environment variable for the .NET install directory if set; otherwise, use the current default location -->
     <DotNetRoot Condition="'$(DotNetRoot)' == ''">$(DOTNET_INSTALL_DIR)</DotNetRoot>
     <DotNetRoot Condition="'$(DotNetRoot)' == ''">$(RepoRoot).dotnet\</DotNetRoot>

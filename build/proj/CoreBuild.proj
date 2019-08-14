@@ -30,13 +30,6 @@
     SignToolDataPath                Required. SignToolData.json path.
   -->
 
-  <!--
-    Default values. 
-  -->
-  <PropertyGroup>
-    <_NormalizedRepoRoot>$([System.IO.Path]::GetFullPath('$(RepoRoot)'))</_NormalizedRepoRoot>
-  </PropertyGroup>
-
   <PropertyGroup>
     <RealSign>false</RealSign>
     <RealSign Condition="'$(SignType)' == 'real'">true</RealSign>
@@ -56,7 +49,7 @@
     <ItemGroup>
       <_CommonProps Include="Configuration=$(Configuration)"/>
       <_CommonProps Include="CIBuild=$(CIBuild)"/>
-      <_CommonProps Include="RepoRoot=$(_NormalizedRepoRoot)"/>
+      <_CommonProps Include="RepoRoot=$(RepoRoot)"/>
       <_CommonProps Include="VersionsPropsPath=$(VersionsPropsPath)"/>
     </ItemGroup>
 
