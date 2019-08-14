@@ -86,7 +86,7 @@
       <_SolutionBuildTargets Include="Test" Condition="'$(Test)' == 'true'" />
       <_SolutionBuildTargets Include="IntegrationTest" Condition="'$(IntegrationTest)' == 'true'" />
       <_SolutionBuildTargets Include="PerformanceTest" Condition="'$(PerformanceTest)' == 'true'" />
-      <_SolutionBuildTargets Include="Pack" Condition="'$(Pack)' == 'true' and '$(Sign)' != 'true'" />
+      <_SolutionBuildTargets Include="Pack" Condition="'$(Pack)' == 'true'" />
     </ItemGroup>
 
     <ItemGroup>
@@ -143,15 +143,6 @@
              Targets="@(_SolutionBuildTargets)"
              BuildInParallel="true"
              Condition="'@(_SolutionBuildTargets)' != ''" />
-
-    <!--
-      Workaround for https://github.com/NuGet/Home/issues/6165.
-      Seems like nuget pack doesn't correctly close the stream created for .nupkg file thus keeping the file locked beyond the return of the task.
-      If signing, pack in a separate process to force it to close the files.
-    -->
-    <Message Text="Packaging ..." Importance="high" Condition="'$(Pack)' == 'true' and '$(Sign)' == 'true'" />
-    <Exec Command='$(_MSBuildCmd) "$(SolutionPath)" /nologo /m /v:minimal /t:Pack /p:NoBuild=true /bl:"$(ArtifactsLogDir)Pack.binlog" $(_SolutionBuildPropsCmdLine) /p:__BuildPhase=SolutionBuild'
-          Condition="'$(Pack)' == 'true' and '$(Sign)' == 'true'" />
 
     <!--
       Sign artifacts.
