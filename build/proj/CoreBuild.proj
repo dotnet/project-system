@@ -16,7 +16,6 @@
     
     VersionsPropsPath               Versions.props path, defaults to $(RepoRoot)build\Versions.props.
     FixedVersionsPropsPath          FixedVersions.props path, defaults to $(RepoRoot)build\FixedVersions.props.
-    DotNetPackageVersionPropsPath   Package version overrides.
                                     
     CIBuild                         "true" when building on CI server
     Restore                         "true" to restore toolset and solution
@@ -46,31 +45,9 @@
     <SignToolDataPath Condition="'$(SignToolDataPath)' == ''">$(_NormalizedRepoRoot)build\SignToolData.json</SignToolDataPath>
   </PropertyGroup>
 
-  <!-- 
-    Orchestrated build environment overrides:
-    
-    PB_SignType                    {''|'public'|'real'|'test'}    Disables signing if set to a value other than 'real' 
-    PB_SkipTests                   {''|'true'|'false'}            Disables tests if set to 'true'.
-    PB_RestoreSource               {''|URL}                       URL of pipe build package feed.
-    PB_PackageVersionPropsUrl      {''|URL}                       URL of package version overrides props file.
-    PB_PublishType                 {''|store1-store2-...-storeN}  List of stores where to publish assets to.
-    PB_PublishBlobFeedUrl          {''|URL}                       Target feed URL.
-    PB_PublishBlobFeedKey          {''|string}                    Account key.
-    PB_SigningOrchestrationConfig  {''|string}                    Path to output Json for orchestrated-type signing (produce manifest that can be consumed later.)
-    PB_IsStable                    {''|'true'|'false'}            If specified then NuGet package version suffixes used by the repo are overridden by the orchestrated build like so:
-                                                                  if 'true' then version suffixes have format '{base version}-{PB_VersionStamp}', 
-                                                                  if 'false' then version suffixes have format '{base version}-{PB_VersionStamp}-{build number}'
-    PB_VersionStamp                {''|string}                    NuGet package pre-release version label e.g. 'beta', 'preview1', etc. May be empty.
-  -->
   <PropertyGroup>
     <RealSign>false</RealSign>
-    <RealSign Condition="'$(SignType)' == 'real' or '$(PB_SignType)' == 'real'">true</RealSign>
-
-    <_PipeBuildPublishing>false</_PipeBuildPublishing>
-    <_PipeBuildPublishing Condition="$(PB_PublishType.Contains('blob'))">true</_PipeBuildPublishing>
-
-    <_PackageVersionOverridesPath Condition="'$(PB_PackageVersionPropsUrl)' != ''">$(ArtifactsToolsetDir)PackageVersionOverrides.props</_PackageVersionOverridesPath>
-    <DotNetPackageVersionPropsPath Condition="'$(DotNetPackageVersionPropsPath)' == ''">$(_PackageVersionOverridesPath)</DotNetPackageVersionPropsPath>
+    <RealSign Condition="'$(SignType)' == 'real'">true</RealSign>
   </PropertyGroup>
 
   <Target Name="Execute">
@@ -95,21 +72,17 @@
       <_CommonProps Include="RepoRoot=$(_NormalizedRepoRoot)"/>
       <_CommonProps Include="VersionsPropsPath=$(VersionsPropsPath)"/>
       <_CommonProps Include="FixedVersionsPropsPath=$(FixedVersionsPropsPath)" Condition="'$(FixedVersionsPropsPath)' != ''"/>
-      <_CommonProps Include="DotNetPackageVersionPropsPath=$(DotNetPackageVersionPropsPath)"/>
     </ItemGroup>
 
     <ItemGroup>
       <_RestoreToolsProps Include="@(_CommonProps)"/>
       <_RestoreToolsProps Include="BaseIntermediateOutputPath=$(ArtifactsToolsetDir)Common"/>
       <_RestoreToolsProps Include="ExcludeRestorePackageImports=true"/>
-      <_RestoreToolsProps Include="UsingPipeBuildPublishing=$(_PipeBuildPublishing)"/>
-      <_RestoreToolsProps Include="ExternalRestoreSources=$(PB_RestoreSource)" Condition="'$(PB_RestoreSource)' != ''"/>
     </ItemGroup>
 
     <ItemGroup>
       <_SolutionBuildProps Include="@(_CommonProps)"/>
       <_SolutionBuildProps Include="__DeployProjectOutput=$(Deploy)" Condition="'$(Deploy)' != ''"/>
-      <_SolutionBuildProps Include="__ExternalRestoreSources=$(PB_RestoreSource)" Condition="'$(PB_RestoreSource)' != ''"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -148,7 +121,7 @@
       Sign artifacts.
     -->
     <MSBuild Projects="Sign.proj"
-             Properties="@(_CommonProps);RealSign=$(RealSign);ConfigFile=$(SignToolDataPath);OutputConfigFile=$(PB_SigningOrchestrationConfig)"
+             Properties="@(_CommonProps);RealSign=$(RealSign);ConfigFile=$(SignToolDataPath)"
              Targets="Sign"
              Condition="'$(Sign)' == 'true'"/>
 
@@ -166,9 +139,5 @@
              Targets="Pack"
              Condition="'$(Pack)' == 'true'"/>
 
-    <MSBuild Projects="OrchestratedBuild.Publish.proj"
-             Properties="@(_CommonProps);ExpectedFeedUrl=$(PB_PublishBlobFeedUrl);AccountKey=$(PB_PublishBlobFeedKey)"
-             Targets="Publish"
-             Condition="$(_PipeBuildPublishing)"/>
   </Target>
 </Project>
