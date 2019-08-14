@@ -1,4 +1,4 @@
-<Project DefaultTargets="ClearNuGetCache;PrepareMachine;CoreBuild;GenerateDependentAssemblyVersionsFile;UploadCodeCoverage">
+<Project DefaultTargets="ClearNuGetCache;PrepareMachine;CoreBuild;UploadCodeCoverage">
   
   <Import Project="..\import\Versions.props"/>
   <Import Project="..\import\NuGet.props"/>
@@ -64,16 +64,6 @@
     
   </Target>
 
-  <!-- Generate insertion assets -->
-  <Target Name="GenerateDependentAssemblyVersionsFile">
-
-    <MSBuild
-      BuildInParallel="true"
-      Projects="GenerateDependentAssemblyVersionFile.proj"
-      />
-
-  </Target>
-  
   <!-- Push code coverage to https://codecov.io/ -->
   <Target 
     Name="UploadCodeCoverage"
