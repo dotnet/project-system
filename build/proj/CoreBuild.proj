@@ -1,5 +1,5 @@
 <!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
-<Project DefaultTargets="Execute" TreatAsLocalProperty="Sign;Test;IntegrationTest;PerformanceTest">
+<Project DefaultTargets="Execute">
 
   <Import Project="..\import\Versions.props"/>
   <Import Project="..\import\NuGet.props"/>
@@ -66,11 +66,6 @@
   <PropertyGroup>
     <RealSign>false</RealSign>
     <RealSign Condition="'$(SignType)' == 'real' or '$(PB_SignType)' == 'real'">true</RealSign>
-
-    <Sign Condition="'$(PB_SignType)' != '' and '$(PB_SignType)' != 'real'">false</Sign>
-    <Test Condition="'$(PB_SkipTests)' == 'true'">false</Test>
-    <IntegrationTest Condition="'$(PB_SkipTests)' == 'true'">false</IntegrationTest>
-    <PerformanceTest Condition="'$(PB_SkipTests)' == 'true'">false</PerformanceTest>
 
     <_PipeBuildPublishing>false</_PipeBuildPublishing>
     <_PipeBuildPublishing Condition="$(PB_PublishType.Contains('blob'))">true</_PipeBuildPublishing>
