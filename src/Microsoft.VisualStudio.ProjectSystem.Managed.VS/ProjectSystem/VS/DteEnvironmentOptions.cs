@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             if (properties != null)
             {
-                return ((T)properties.Item(option).Value);
+                return (T)properties.Item(option).Value;
             }
 
             return defaultValue;

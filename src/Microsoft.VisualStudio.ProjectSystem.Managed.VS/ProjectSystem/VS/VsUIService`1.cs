@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private readonly JoinableTaskContext _joinableTaskContext;
 
         [ImportingConstructor]
-        public VsUIService([Import(typeof(SVsServiceProvider))]IServiceProvider serviceProvider, JoinableTaskContext joinableTaskContext)
+        public VsUIService([Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider, JoinableTaskContext joinableTaskContext)
         {
             Requires.NotNull(serviceProvider, nameof(serviceProvider));
             Requires.NotNull(joinableTaskContext, nameof(joinableTaskContext));
