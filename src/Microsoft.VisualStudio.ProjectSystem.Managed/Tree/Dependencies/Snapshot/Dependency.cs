@@ -244,7 +244,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public override bool Equals(object obj)
             => obj is IDependency other && Equals(other);
 
-        public bool Equals(IDependency other)
+        public bool Equals(IDependency? other)
             => StringComparer.OrdinalIgnoreCase.Equals(Id, other?.Id);
 
         public override string ToString()

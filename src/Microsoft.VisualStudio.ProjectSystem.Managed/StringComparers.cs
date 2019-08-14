@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio
     /// </remarks>
     internal static class StringComparers
     {
-        public static IEqualityComparer<string> WorkspaceProjectContextIds => StringComparer.Ordinal;
+        public static IEqualityComparer<string?> WorkspaceProjectContextIds => StringComparer.Ordinal;
         public static IEqualityComparer<string> Paths => StringComparer.OrdinalIgnoreCase;
         public static IEqualityComparer<string> PropertyNames => StringComparer.OrdinalIgnoreCase;
         public static IEqualityComparer<string> PropertyLiteralValues => StringComparer.OrdinalIgnoreCase;

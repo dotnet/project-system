@@ -83,12 +83,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                 // These strings must match what is used in the template exactly, including localized versions. Rather than relying on
                 // our localizations being the same as the VS repository localizations we just load the right strings using the same
                 // resource IDs as the templates themselves use.
-                string dirName = _vsShell.Value.LoadPackageString(result.DirNamePackageGuid, result.DirNameResourceId);
-                string templateName = _vsShell.Value.LoadPackageString(result.TemplateNamePackageGuid, result.TemplateNameResourceId);
+                string dirName = _vsShell.Value!.LoadPackageString(result.DirNamePackageGuid, result.DirNameResourceId);
+                string templateName = _vsShell.Value!.LoadPackageString(result.TemplateNamePackageGuid, result.TemplateNameResourceId);
 
                 string strFilter = string.Empty;
                 Guid addItemTemplateGuid = Guid.Empty;  // Let the dialog ask the hierarchy itself
-                HResult res = _addItemDialog.Value.AddProjectItemDlg(node.GetHierarchyId(),
+                HResult res = _addItemDialog.Value!.AddProjectItemDlg(node.GetHierarchyId(),
                                                                     ref addItemTemplateGuid,
                                                                     _projectVsServices.VsProject,
                                                                     (uint)uiFlags,

@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     ///     Provides an implementation of <see cref="IVsUIService{T}"/> that calls into Visual Studio's <see cref="IServiceProvider"/>.
     /// </summary>
     [Export(typeof(IVsUIService<>))]
-    internal class VsUIService<T> : IVsUIService<T>
+    internal class VsUIService<T> : IVsUIService<T> where T : class
     {
         private readonly Lazy<T> _value;
         private readonly JoinableTaskContext _joinableTaskContext;
@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _joinableTaskContext = joinableTaskContext;
         }
 
-        public T Value
+        public T? Value
         {
             get
             {

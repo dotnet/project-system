@@ -156,7 +156,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         /// <inheritdoc />
-        public IProjectTree? FindByPath(IProjectTree root, string path)
+        public IProjectTree? FindByPath(IProjectTree? root, string path)
         {
             if (root == null)
             {

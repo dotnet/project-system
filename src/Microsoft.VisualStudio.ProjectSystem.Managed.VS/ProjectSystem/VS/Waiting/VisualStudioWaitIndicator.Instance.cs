@@ -121,7 +121,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
             public async Task InitializeAsync()
             {
                 await _threadingService.SwitchToUIThread();
-                _threadedWaitDialogFactory = await _threadedWaitDialogFactoryService.GetValueAsync();
+
+                IVsThreadedWaitDialogFactory? factory = await _threadedWaitDialogFactoryService.GetValueAsync();
+
+                _threadedWaitDialogFactory = factory!; // assume this service is available
             }
         }
     }

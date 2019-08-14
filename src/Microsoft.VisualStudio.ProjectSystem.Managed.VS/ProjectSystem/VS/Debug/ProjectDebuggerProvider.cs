@@ -200,9 +200,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 // The debugger needs to be called on the UI thread
                 await ThreadingService.SwitchToUIThread();
 
-                IVsDebugger4 shellDebugger = await _vsDebuggerService.GetValueAsync();
+                IVsDebugger4? shellDebugger = await _vsDebuggerService.GetValueAsync();
                 var launchResults = new VsDebugTargetProcessInfo[launchSettingsNative.Length];
-                shellDebugger.LaunchDebugTargets4((uint)launchSettingsNative.Length, launchSettingsNative, launchResults);
+                shellDebugger!.LaunchDebugTargets4((uint)launchSettingsNative.Length, launchSettingsNative, launchResults);
                 return launchResults;
             }
             finally

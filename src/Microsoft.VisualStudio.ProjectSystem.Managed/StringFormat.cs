@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio
             Arguments = s_zeroArgumentArray;
         }
 
-        public StringFormat(string format, object argument)
+        public StringFormat(string format, object? argument)
         {
             Format = format;
             Argument1 = argument;
@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio
             Arguments = s_oneArgumentArray;
         }
 
-        public StringFormat(string format, object argument1, object argument2)
+        public StringFormat(string format, object? argument1, object? argument2)
         {
             Format = format;
             Argument1 = argument1;
@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio
             Arguments = s_twoArgumentArray;
         }
 
-        public StringFormat(string format, object argument1, object argument2, object argument3)
+        public StringFormat(string format, object? argument1, object? argument2, object? argument3)
         {
             Format = format;
             Argument1 = argument1;
@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio
             Arguments = s_threeArgumentArray;
         }
 
-        public StringFormat(string format, object[] arguments)
+        public StringFormat(string format, object?[] arguments)
         {
             Format = format;
             Argument1 = null;
@@ -69,7 +69,7 @@ namespace Microsoft.VisualStudio
 
         public object? Argument3 { get; }
 
-        public object[] Arguments { get; }
+        public object?[] Arguments { get; }
 
         public string Format { get; }
 
