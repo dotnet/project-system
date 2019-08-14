@@ -1,5 +1,5 @@
 <!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
-<Project DefaultTargets="Restore;Execute;Sign;GenerateVSManifest">
+<Project DefaultTargets="Restore;Build;Sign;GenerateVSManifest">
 
   <Import Project="..\import\Versions.props"/>
   <Import Project="..\import\NuGet.props"/>
@@ -68,7 +68,7 @@
     
   </Target>
 
-  <Target Name="Execute">
+  <Target Name="Build">
     <ItemGroup>
       <_SolutionBuildTargets Include="Rebuild" Condition="'$(Rebuild)' == 'true'" />
       <_SolutionBuildTargets Include="Build" Condition="'$(Build)' == 'true' and '$(Rebuild)' != 'true'" />
@@ -79,9 +79,6 @@
       <_SolutionBuildTargets Include="Pack" Condition="'$(Pack)' == 'true'" />
     </ItemGroup>
 
-    <!--
-      Build solution.
-    -->
     <MSBuild Projects="$(SolutionPath)"
              Properties="@(_SolutionBuildProps);__BuildPhase=SolutionBuild"
              Targets="@(_SolutionBuildTargets)"
