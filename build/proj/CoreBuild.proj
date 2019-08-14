@@ -31,15 +31,15 @@
   -->
 
   <ItemGroup>
-    <_CommonProps Include="Configuration=$(Configuration)"/>
-    <_CommonProps Include="CIBuild=$(CIBuild)"/>
-    <_CommonProps Include="RepoRoot=$(RepoRoot)"/>
-    <_CommonProps Include="VersionsPropsPath=$(VersionsPropsPath)"/>
+    <CommonBuildProperty Include="Configuration=$(Configuration)"/>
+    <CommonBuildProperty Include="CIBuild=$(CIBuild)"/>
+    <CommonBuildProperty Include="RepoRoot=$(RepoRoot)"/>
+    <CommonBuildProperty Include="VersionsPropsPath=$(VersionsPropsPath)"/>
   </ItemGroup>
   
   <ItemGroup>
-    <_SolutionBuildProps Include="@(_CommonProps)"/>
-    <_SolutionBuildProps Include="__DeployProjectOutput=$(Deploy)" Condition="'$(Deploy)' != ''"/>
+    <SolutionRestoreAndBuildProperty Include="@(CommonBuildProperty)"/>
+    <SolutionRestoreAndBuildProperty Include="__DeployProjectOutput=$(Deploy)" Condition="'$(Deploy)' != ''"/>
   </ItemGroup>
 
   <Target 
@@ -53,9 +53,10 @@
       Note: msbuild caches the metaproject for the solution (see https://github.com/Microsoft/msbuild/issues/1695)
       We invalidate the cache by changing the value of __BuildPhase property.
     -->
+    
     <MSBuild 
       Projects="$(SolutionPath)"
-      Properties="@(_SolutionBuildProps);__BuildPhase=SolutionRestore"
+      Properties="@(SolutionRestoreAndBuildProperty);__BuildPhase=SolutionRestore"
       Targets="Restore"
       BuildInParallel="true"
       />
@@ -64,20 +65,19 @@
 
   <Target Name="Build">
     <ItemGroup>
-      <_SolutionBuildTargets Include="Rebuild" Condition="'$(Rebuild)' == 'true'" />
-      <_SolutionBuildTargets Include="Build" Condition="'$(Build)' == 'true' and '$(Rebuild)' != 'true'" />
-      <!-- Deploy target is set up to chain after Build so that F5 in VS works. -->
-      <_SolutionBuildTargets Include="Test" Condition="'$(Test)' == 'true'" />
-      <_SolutionBuildTargets Include="IntegrationTest" Condition="'$(IntegrationTest)' == 'true'" />
-      <_SolutionBuildTargets Include="PerformanceTest" Condition="'$(PerformanceTest)' == 'true'" />
-      <_SolutionBuildTargets Include="Pack" Condition="'$(Pack)' == 'true'" />
+      <SolutionBuildTarget Include="Rebuild" Condition="'$(Rebuild)' == 'true'" />
+      <SolutionBuildTarget Include="Build" Condition="'$(Build)' == 'true' and '$(Rebuild)' != 'true'" />
+      <SolutionBuildTarget Include="Test" Condition="'$(Test)' == 'true'" />
+      <SolutionBuildTarget Include="IntegrationTest" Condition="'$(IntegrationTest)' == 'true'" />
+      <SolutionBuildTarget Include="PerformanceTest" Condition="'$(PerformanceTest)' == 'true'" />
+      <SolutionBuildTarget Include="Pack" Condition="'$(Pack)' == 'true'" />
     </ItemGroup>
 
     <MSBuild Projects="$(SolutionPath)"
-             Properties="@(_SolutionBuildProps);__BuildPhase=SolutionBuild"
-             Targets="@(_SolutionBuildTargets)"
+             Properties="@(SolutionRestoreAndBuildProperty);__BuildPhase=SolutionBuild"
+             Targets="@(SolutionBuildTarget)"
              BuildInParallel="true"
-             Condition="'@(_SolutionBuildTargets)' != ''" />
+             Condition="'@(SolutionBuildTarget)' != ''" />
 
   </Target>
 
@@ -91,13 +91,11 @@
     </PropertyGroup>
 
     <MSBuild Projects="Sign.proj"
-             Properties="@(_CommonProps);RealSign=$(RealSign);ConfigFile=$(SignToolDataPath)"
+             Properties="@(CommonBuildProperty);RealSign=$(RealSign);ConfigFile=$(SignToolDataPath)"
              Targets="Sign"
              />
     
   </Target>
-    
-    
 
   <Target
     Name="GenerateVSManifest"
@@ -106,7 +104,7 @@
     <!-- Because multiple projects can contribute to a single insertion component we package them in a separate phase.
          Also due to insertion manifests containing hashes of references VSIXes, so we need to run this after signing  -->
     <MSBuild Projects="$(NuGetPackageRoot)RoslynTools.RepoToolset\$(RoslynToolsRepoToolsetVersion)\tools\VisualStudio.Insertion.proj"
-             Properties="@(_CommonProps)"
+             Properties="@(CommonBuildProperty)"
              Targets="Pack"
              />
     
