@@ -1,19 +1,11 @@
 <!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 <Project DefaultTargets="Restore;Build;GenerateDependentAssemblyVersionsFile;Sign;GenerateVSManifest" LocalProperty="SolutionPath">
 
-  <Import Project="..\import\Versions.props"/>
-  <Import Project="..\import\NuGet.props"/>
-  <Import Project="..\import\RepoLayout.props" />
-
   <!--
-  
   Required parameters:
-    SolutionPath                    Path to the solution to build.
+    Configuration                   Build configuration: "Debug", "Release", etc.
                                     
   Optional parameters:              
-    Configuration                   Required. Build configuration: "Debug", "Release", etc.
-    RepoRoot                        Required. Repository root, defaults to the directory containing the solution.
-    
     CIBuild                         "true" when building on CI server
     Restore                         "true" to restore toolset and solution
     Build                           "true" to build solution
@@ -26,6 +18,10 @@
     Sign                            "true" to sign built binaries
     SignType                        "real" to send binaries to signing service, "test" to only validate signing configuration.
   -->
+  
+  <Import Project="..\import\Versions.props"/>
+  <Import Project="..\import\NuGet.props"/>
+  <Import Project="..\import\RepoLayout.props" />
 
   <PropertyGroup>
     <SolutionPath>$(RepoRoot)ProjectSystem.sln</SolutionPath>
