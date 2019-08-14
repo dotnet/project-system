@@ -1,8 +1,17 @@
 <!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 <Project>
+  <PropertyGroup>
+    <IsUnitTestProject>false</IsUnitTestProject>
+    <IsUnitTestProject Condition="$(MSBuildProjectName.EndsWith('.UnitTests')) or $(MSBuildProjectName.EndsWith('.Tests'))">true</IsUnitTestProject>    
+    <IsIntegrationTestProject>false</IsIntegrationTestProject>
+    <IsIntegrationTestProject Condition="$(MSBuildProjectName.EndsWith('.IntegrationTests'))">true</IsIntegrationTestProject>
+    <IsTestProject>false</IsTestProject>
+    <IsTestProject Condition="'$(IsUnitTestProject)' == 'true' or '$(IsIntegrationTestProject)' == 'true' or '$(IsPerformanceTestProject)' == 'true'">true</IsTestProject>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(OutDirName)' == ''">
-    <OutDirName Condition="$(MSBuildProjectName.EndsWith('.UnitTests'))">UnitTests</OutDirName>
-    <OutDirName Condition="$(MSBuildProjectName.EndsWith('.IntegrationTests'))">IntegrationTests</OutDirName>
+    <OutDirName Condition="$(IsUnitTestProject)">UnitTests</OutDirName>
+    <OutDirName Condition="$(IsIntegrationTestProject)">IntegrationTests</OutDirName>
     <OutDirName Condition="'$(OutDirName)' == ''">Dlls</OutDirName>
   </PropertyGroup>
 

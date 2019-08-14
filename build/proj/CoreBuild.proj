@@ -1,5 +1,10 @@
 <!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 <Project DefaultTargets="Execute" TreatAsLocalProperty="Sign;Test;IntegrationTest;PerformanceTest">
+
+  <Import Project="..\import\Versions.props"/>
+  <Import Project="..\import\NuGet.props"/>
+  <Import Project="..\import\RepoLayout.props" />
+
   <!--
   
   Required parameters:
@@ -42,8 +47,8 @@
     <SignToolDataPath Condition="'$(SignToolDataPath)' == ''">$(_NormalizedRepoRoot)build\SignToolData.json</SignToolDataPath>
   </PropertyGroup>
 
-  <Import Project="BuildTasks.props"/>
-  <Import Project="RepoLayout.props"/>
+  <!--<Import Project="BuildTasks.props"/>-->
+  <!--<Import Project="RepoLayout.props"/>-->
 
   <!-- 
     Orchestrated build environment overrides:
@@ -69,7 +74,7 @@
     <Test Condition="'$(PB_SkipTests)' == 'true'">false</Test>
     <IntegrationTest Condition="'$(PB_SkipTests)' == 'true'">false</IntegrationTest>
     <PerformanceTest Condition="'$(PB_SkipTests)' == 'true'">false</PerformanceTest>
-    
+
     <_PipeBuildPublishing>false</_PipeBuildPublishing>
     <_PipeBuildPublishing Condition="$(PB_PublishType.Contains('blob'))">true</_PipeBuildPublishing>
 
@@ -77,8 +82,8 @@
     <DotNetPackageVersionPropsPath Condition="'$(DotNetPackageVersionPropsPath)' == ''">$(_PackageVersionOverridesPath)</DotNetPackageVersionPropsPath>
   </PropertyGroup>
 
-  <UsingTask TaskName="RoslynTools.DownloadFile" AssemblyFile="$(RoslynToolsBuildTasksAssembly)" />
-  <UsingTask TaskName="RoslynTools.RewriteOrchestratedBuildPackageVersions" AssemblyFile="$(RoslynToolsBuildTasksAssembly)" />
+  <!--<UsingTask TaskName="RoslynTools.DownloadFile" AssemblyFile="$(RoslynToolsBuildTasksAssembly)" />
+  <UsingTask TaskName="RoslynTools.RewriteOrchestratedBuildPackageVersions" AssemblyFile="$(RoslynToolsBuildTasksAssembly)" />-->
 
   <Target Name="Execute">
     <PropertyGroup>
@@ -135,26 +140,29 @@
     </PropertyGroup>
 
     <!-- Download version overrides. -->
+    <!--
     <DownloadFile Uri="$(PB_PackageVersionPropsUrl)" 
                   DestinationPath="$(_PackageVersionOverridesPath)" 
                   Condition="'$(Restore)' == 'true' and '$(PB_PackageVersionPropsUrl)' != ''"
                   Overwrite="true"
                   Retries="3" />
 
+    -->
     <!-- Replace -PackageVersion with -Version -->
+    <!--
     <RewriteOrchestratedBuildPackageVersions File="$(_PackageVersionOverridesPath)" 
-                                             Condition="'$(Restore)' == 'true' and '$(PB_PackageVersionPropsUrl)' != ''" />
+                                             Condition="'$(Restore)' == 'true' and '$(PB_PackageVersionPropsUrl)' != ''" />-->
 
     <!--
       Workaround for https://github.com/NuGet/Home/issues/4695.
       We launch a new msbuild process to restore.
     -->
     <Message Text="Restoring packages ..." Importance="high" Condition="'$(Restore)' == 'true' and '$(_QuietRestore)' == 'true'" />
-    
+
     <MakeDir Directories="$(ArtifactsLogDir)" Condition="'$(Restore)' == 'true' and '$(_QuietRestore)' == 'true'" />
-    
-    <Exec Command='$(_MSBuildCmd) "$(MSBuildProjectDirectory)\Tools.proj" /bl:"$(ArtifactsLogDir)RestoreRepoTools.binlog" /nologo /m /v:quiet /t:Restore $(_RestoreToolsPropsCmdLine)'
-          Condition="'$(Restore)' == 'true' and '$(_QuietRestore)' == 'true'" StandardOutputImportance="normal" />
+
+    <!--<Exec Command='$(_MSBuildCmd) "$(MSBuildProjectDirectory)\Tools.proj" /bl:"$(ArtifactsLogDir)RestoreRepoTools.binlog" /nologo /m /v:quiet /t:Restore $(_RestoreToolsPropsCmdLine)'
+          Condition="'$(Restore)' == 'true' and '$(_QuietRestore)' == 'true'" StandardOutputImportance="normal" />-->
 
     <Exec Command='$(_MSBuildCmd) "$(SolutionPath)" /bl:"$(ArtifactsLogDir)Restore.binlog" /nologo /m /v:quiet /t:Restore $(_SolutionBuildPropsCmdLine) /p:__BuildPhase=SolutionRestore'
           Condition="'$(Restore)' == 'true' and '$(_QuietRestore)' == 'true'" StandardOutputImportance="normal" />
@@ -164,7 +172,7 @@
     -->
     <MSBuild Projects="Tools.proj"
              Targets="Restore"
-             Properties="@(_RestoreToolsProps)" 
+             Properties="@(_RestoreToolsProps)"
              Condition="'$(Restore)' == 'true' and '$(_QuietRestore)' != 'true'"/>
 
     <!--
@@ -215,7 +223,7 @@
       These need to be calculated using signed VSIXes.
       Hence we need to run this task after both signing.
     -->
-    <MSBuild Projects="VisualStudio.Insertion.proj"
+    <MSBuild Projects="$(NuGetPackageRoot)RoslynTools.RepoToolset\$(RoslynToolsRepoToolsetVersion)\tools\VisualStudio.Insertion.proj"
              Properties="@(_CommonProps)"
              Targets="Pack"
              Condition="'$(Pack)' == 'true'"/>
