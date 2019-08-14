@@ -13,7 +13,6 @@
     Deploy                          "true" to deploy assets (e.g. VSIXes)
     Test                            "true" to run tests
     IntegrationTest                 "true" to run integration tests
-    PerformanceTest                 "true" to run performance tests
     Pack                            "true" to build NuGet packages and VS insertion manifests
     Sign                            "true" to sign built binaries
     SignType                        "real" to send binaries to signing service, "test" to only validate signing configuration.
@@ -66,7 +65,6 @@
       <SolutionBuildTarget Include="Build" Condition="'$(Build)' == 'true' and '$(Rebuild)' != 'true'" />
       <SolutionBuildTarget Include="Test" Condition="'$(Test)' == 'true'" />
       <SolutionBuildTarget Include="IntegrationTest" Condition="'$(IntegrationTest)' == 'true'" />
-      <SolutionBuildTarget Include="PerformanceTest" Condition="'$(PerformanceTest)' == 'true'" />
       <SolutionBuildTarget Include="Pack" Condition="'$(Pack)' == 'true'" />
     </ItemGroup>
 
