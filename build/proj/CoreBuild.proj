@@ -1,5 +1,5 @@
 <!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
-<Project DefaultTargets="Execute">
+<Project DefaultTargets="Restore;Execute">
 
   <Import Project="..\import\Versions.props"/>
   <Import Project="..\import\NuGet.props"/>
@@ -35,6 +35,44 @@
     <RealSign Condition="'$(SignType)' == 'real'">true</RealSign>
   </PropertyGroup>
 
+  <ItemGroup>
+    <_CommonProps Include="Configuration=$(Configuration)"/>
+    <_CommonProps Include="CIBuild=$(CIBuild)"/>
+    <_CommonProps Include="RepoRoot=$(RepoRoot)"/>
+    <_CommonProps Include="VersionsPropsPath=$(VersionsPropsPath)"/>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <_SolutionBuildProps Include="@(_CommonProps)"/>
+    <_SolutionBuildProps Include="__DeployProjectOutput=$(Deploy)" Condition="'$(Deploy)' != ''"/>
+  </ItemGroup>
+
+  <Target 
+    Name="Restore" 
+    Condition="'$(Restore)' == 'true'">
+
+    <ItemGroup>
+      <_RestoreToolsProps Include="@(_CommonProps)"/>
+      <_RestoreToolsProps Include="BaseIntermediateOutputPath=$(ArtifactsToolsetDir)Common"/>
+      <_RestoreToolsProps Include="ExcludeRestorePackageImports=true"/>
+    </ItemGroup>
+    
+    <!--
+      Run solution restore separately from the other targets, in a different build phase.
+      Since restore brings in new .props and .targets files we need to rerun evaluation.
+      
+      Note: msbuild caches the metaproject for the solution (see https://github.com/Microsoft/msbuild/issues/1695)
+      We invalidate the cache by changing the value of __BuildPhase property.
+    -->
+    <MSBuild 
+      Projects="$(SolutionPath)"
+      Properties="@(_SolutionBuildProps);__BuildPhase=SolutionRestore"
+      Targets="Restore"
+      BuildInParallel="true"
+      />
+    
+  </Target>
+
   <Target Name="Execute">
     <ItemGroup>
       <_SolutionBuildTargets Include="Rebuild" Condition="'$(Rebuild)' == 'true'" />
@@ -45,37 +83,6 @@
       <_SolutionBuildTargets Include="PerformanceTest" Condition="'$(PerformanceTest)' == 'true'" />
       <_SolutionBuildTargets Include="Pack" Condition="'$(Pack)' == 'true'" />
     </ItemGroup>
-
-    <ItemGroup>
-      <_CommonProps Include="Configuration=$(Configuration)"/>
-      <_CommonProps Include="CIBuild=$(CIBuild)"/>
-      <_CommonProps Include="RepoRoot=$(RepoRoot)"/>
-      <_CommonProps Include="VersionsPropsPath=$(VersionsPropsPath)"/>
-    </ItemGroup>
-
-    <ItemGroup>
-      <_RestoreToolsProps Include="@(_CommonProps)"/>
-      <_RestoreToolsProps Include="BaseIntermediateOutputPath=$(ArtifactsToolsetDir)Common"/>
-      <_RestoreToolsProps Include="ExcludeRestorePackageImports=true"/>
-    </ItemGroup>
-
-    <ItemGroup>
-      <_SolutionBuildProps Include="@(_CommonProps)"/>
-      <_SolutionBuildProps Include="__DeployProjectOutput=$(Deploy)" Condition="'$(Deploy)' != ''"/>
-    </ItemGroup>
-
-    <!--
-      Run solution restore separately from the other targets, in a different build phase.
-      Since restore brings in new .props and .targets files we need to rerun evaluation.
-      
-      Note: msbuild caches the metaproject for the solution (see https://github.com/Microsoft/msbuild/issues/1695)
-      We invalidate the cache by changing the value of __BuildPhase property.
-    -->
-    <MSBuild Projects="$(SolutionPath)"
-             Properties="@(_SolutionBuildProps);__BuildPhase=SolutionRestore"
-             Targets="Restore"
-             BuildInParallel="true"
-             Condition="'$(Restore)' == 'true'"/>
 
     <!--
       Build solution.
