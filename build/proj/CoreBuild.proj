@@ -136,19 +136,8 @@
 
     <MakeDir Directories="$(ArtifactsLogDir)" Condition="'$(Restore)' == 'true' and '$(_QuietRestore)' == 'true'" />
 
-    <!--<Exec Command='$(_MSBuildCmd) "$(MSBuildProjectDirectory)\Tools.proj" /bl:"$(ArtifactsLogDir)RestoreRepoTools.binlog" /nologo /m /v:quiet /t:Restore $(_RestoreToolsPropsCmdLine)'
-          Condition="'$(Restore)' == 'true' and '$(_QuietRestore)' == 'true'" StandardOutputImportance="normal" />-->
-
     <Exec Command='$(_MSBuildCmd) "$(SolutionPath)" /bl:"$(ArtifactsLogDir)Restore.binlog" /nologo /m /v:quiet /t:Restore $(_SolutionBuildPropsCmdLine) /p:__BuildPhase=SolutionRestore'
           Condition="'$(Restore)' == 'true' and '$(_QuietRestore)' == 'true'" StandardOutputImportance="normal" />
-
-    <!--
-      Restore built-in tools.
-    -->
-    <MSBuild Projects="Tools.proj"
-             Targets="Restore"
-             Properties="@(_RestoreToolsProps)"
-             Condition="'$(Restore)' == 'true' and '$(_QuietRestore)' != 'true'"/>
 
     <!--
       Run solution restore separately from the other targets, in a different build phase.
