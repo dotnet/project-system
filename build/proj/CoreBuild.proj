@@ -1,5 +1,5 @@
 <!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
-<Project DefaultTargets="Restore;Build;GenerateDependentAssemblyVersionsFile;Sign;GenerateVSManifest">
+<Project DefaultTargets="Restore;Build;GenerateDependentAssemblyVersionsFile;Sign;GenerateVSManifest" LocalProperty="SolutionPath">
 
   <Import Project="..\import\Versions.props"/>
   <Import Project="..\import\NuGet.props"/>
@@ -14,8 +14,6 @@
     Configuration                   Required. Build configuration: "Debug", "Release", etc.
     RepoRoot                        Required. Repository root, defaults to the directory containing the solution.
     
-    VersionsPropsPath               Required. Versions.props path, defaults to $(RepoRoot)build\Versions.props.
-                     
     CIBuild                         "true" when building on CI server
     Restore                         "true" to restore toolset and solution
     Build                           "true" to build solution
@@ -27,14 +25,17 @@
     Pack                            "true" to build NuGet packages and VS insertion manifests
     Sign                            "true" to sign built binaries
     SignType                        "real" to send binaries to signing service, "test" to only validate signing configuration.
-    SignToolDataPath                Required. SignToolData.json path.
   -->
+
+  <PropertyGroup>
+    <SolutionPath>$(RepoRoot)ProjectSystem.sln</SolutionPath>
+  </PropertyGroup>
 
   <ItemGroup>
     <CommonBuildProperty Include="Configuration=$(Configuration)"/>
     <CommonBuildProperty Include="CIBuild=$(CIBuild)"/>
     <CommonBuildProperty Include="RepoRoot=$(RepoRoot)"/>
-    <CommonBuildProperty Include="VersionsPropsPath=$(VersionsPropsPath)"/>
+    <CommonBuildProperty Include="VersionsPropsPath=$(RepoRoot)build\import\Versions.props"/>
   </ItemGroup>
   
   <ItemGroup>
@@ -101,7 +102,7 @@
     </PropertyGroup>
 
     <MSBuild Projects="Sign.proj"
-             Properties="@(CommonBuildProperty);RealSign=$(RealSign);ConfigFile=$(SignToolDataPath)"
+             Properties="@(CommonBuildProperty);RealSign=$(RealSign);ConfigFile=$(RepoRoot)build\ci\SignToolData.json"
              Targets="Sign"
              />
     

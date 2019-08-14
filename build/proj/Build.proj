@@ -37,8 +37,6 @@
 
     <PropertyGroup>
       <CoreBuildProperties>
-        SolutionPath=$(RepoRoot)ProjectSystem.sln;
-        NuGetPackageRoot=$(NuGetPackageRoot);
         UseOpenCover=$(IsCodeCoverageBuild);
         Configuration=$(Configuration);
         Restore=true;
@@ -51,8 +49,6 @@
         Test=$(Test);
         Sign=$(Sign);
         IntegrationTest=$(IntegrationTest);
-        VersionsPropsPath=$(RepoRoot)build\import\Versions.props;
-        SignToolDataPath=$(RepoRoot)build\ci\SignToolData.json;
       </CoreBuildProperties>      
     </PropertyGroup>
 
