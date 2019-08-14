@@ -46,12 +46,6 @@
     Name="Restore" 
     Condition="'$(Restore)' == 'true'">
 
-    <ItemGroup>
-      <_RestoreToolsProps Include="@(_CommonProps)"/>
-      <_RestoreToolsProps Include="BaseIntermediateOutputPath=$(ArtifactsToolsetDir)Common"/>
-      <_RestoreToolsProps Include="ExcludeRestorePackageImports=true"/>
-    </ItemGroup>
-    
     <!--
       Run solution restore separately from the other targets, in a different build phase.
       Since restore brings in new .props and .targets files we need to rerun evaluation.
