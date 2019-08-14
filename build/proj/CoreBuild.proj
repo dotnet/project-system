@@ -1,5 +1,5 @@
 <!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
-<Project DefaultTargets="Restore;Execute">
+<Project DefaultTargets="Restore;Execute;GenerateVSManifest">
 
   <Import Project="..\import\Versions.props"/>
   <Import Project="..\import\NuGet.props"/>
@@ -101,19 +101,20 @@
              Targets="Sign"
              Condition="'$(Sign)' == 'true'"/>
 
-    <!--
-      Since multiple projects may contribute to a single insertion component
-      we need to package them in a separate phase.
-      
-      TODO: the sign tool needs to support vsman files:      
-      Insertion manifests (vsman files) contain hashes of the referenced VSIXes.
-      These need to be calculated using signed VSIXes.
-      Hence we need to run this task after both signing.
-    -->
+
+
+  </Target>
+
+  <Target
+    Name="GenerateVSManifest"
+    Condition="'$(Pack)' == 'true'">
+
+    <!-- Because multiple projects can contribute to a single insertion component we package them in a separate phase.
+         Also due to insertion manifests containing hashes of references VSIXes, so we need to run this after signing  -->
     <MSBuild Projects="$(NuGetPackageRoot)RoslynTools.RepoToolset\$(RoslynToolsRepoToolsetVersion)\tools\VisualStudio.Insertion.proj"
              Properties="@(_CommonProps)"
              Targets="Pack"
-             Condition="'$(Pack)' == 'true'"/>
-
+             />
+    
   </Target>
 </Project>
