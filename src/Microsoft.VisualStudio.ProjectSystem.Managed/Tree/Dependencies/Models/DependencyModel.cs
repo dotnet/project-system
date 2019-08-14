@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         protected DependencyModel(
             string path,
-            string? originalItemSpec,
+            string originalItemSpec,
             ProjectTreeFlags flags,
             bool isResolved,
             bool isImplicit,
@@ -30,9 +30,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             bool isVisible = true)
         {
             Requires.NotNullOrEmpty(path, nameof(path));
+            Requires.NotNullOrEmpty(originalItemSpec, nameof(originalItemSpec));
 
             Path = path;
-            OriginalItemSpec = originalItemSpec ?? path;
+            OriginalItemSpec = originalItemSpec;
             Properties = properties ?? ImmutableStringDictionary<string>.EmptyOrdinal;
             Caption = path;
             Flags = flags;
