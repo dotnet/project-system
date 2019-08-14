@@ -3,12 +3,10 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.Threading;
+
 using Xunit;
 
 using IAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider;
-
-#nullable disable
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
@@ -21,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             Assert.Throws<ArgumentNullException>("serviceProvider", () =>
             {
-                return new VsService<string, string>((IAsyncServiceProvider)null, joinableTaskContext);
+                return new VsService<string, string>(null!, joinableTaskContext);
             });
         }
 
@@ -32,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             Assert.Throws<ArgumentNullException>("joinableTaskContext", () =>
             {
-                return new VsService<string, string>(serviceProvider, (JoinableTaskContext)null);
+                return new VsService<string, string>(serviceProvider, null!);
             });
         }
 
@@ -75,7 +73,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     return input;
 
                 return null;
-
             });
 
             var service = CreateInstance<string, object>(serviceProvider: serviceProvider, threadingService: threadingService);
@@ -102,7 +99,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             Assert.Same(result1, result2);
         }
 
-        private VsService<TService, TInterface> CreateInstance<TService, TInterface>(IAsyncServiceProvider serviceProvider = null, IProjectThreadingService threadingService = null)
+        private static VsService<TService, TInterface> CreateInstance<TService, TInterface>(
+            IAsyncServiceProvider? serviceProvider = null,
+            IProjectThreadingService? threadingService = null)
+            where TService : class
+            where TInterface : class
         {
             serviceProvider ??= IAsyncServiceProviderFactory.Create();
             threadingService ??= IProjectThreadingServiceFactory.Create();

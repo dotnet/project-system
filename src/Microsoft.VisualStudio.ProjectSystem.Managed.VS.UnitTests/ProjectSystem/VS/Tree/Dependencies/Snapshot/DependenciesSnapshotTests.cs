@@ -11,8 +11,6 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     public sealed class DependenciesSnapshotTests
@@ -20,13 +18,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         [Fact]
         public void Constructor_WhenRequiredParamsNotProvided_ShouldThrow()
         {
-            Assert.Throws<ArgumentNullException>("projectPath", () => new DependenciesSnapshot(projectPath: null, null, null));
-            Assert.Throws<ArgumentNullException>("activeTargetFramework", () => new DependenciesSnapshot("path", activeTargetFramework: null, null));
-            Assert.Throws<ArgumentNullException>("dependenciesByTargetFramework", () => new DependenciesSnapshot("path", TargetFramework.Any, null));
+            var path = "path";
+            var tfm = TargetFramework.Any;
+            var dic = ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot>.Empty;
+
+            Assert.Throws<ArgumentNullException>("projectPath",                   () => new DependenciesSnapshot(null!, tfm,   dic));
+            Assert.Throws<ArgumentNullException>("activeTargetFramework",         () => new DependenciesSnapshot(path,  null!, dic));
+            Assert.Throws<ArgumentNullException>("dependenciesByTargetFramework", () => new DependenciesSnapshot(path,  tfm,   null!));
         }
 
         [Fact]
-        public void Constructor_ThrowsIfActiveTargetframeworkNotEmptyAndNotInDependenciesByTargetFramework()
+        public void Constructor_ThrowsIfActiveTargetFrameworkNotEmptyAndNotInDependenciesByTargetFramework()
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = new TargetFramework("tfm1");

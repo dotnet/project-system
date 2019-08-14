@@ -4,8 +4,6 @@ using System.Xml.Linq;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.FSharp
 {
     public class FSharpProjectSelectorTests

@@ -4,8 +4,6 @@ using Microsoft.VisualStudio.Imaging;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     public class DependencyIconSetTests

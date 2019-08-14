@@ -4,8 +4,6 @@ using Microsoft.VisualStudio.Shell.Interop;
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
 {
     internal static class IProjectOutputWindowPaneProviderFactory

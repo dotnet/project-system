@@ -164,7 +164,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 
             for (int i = 0; i < assemblyNames.Length; i++)
             {
-                string assemblyName = assemblyNames[i];
+                string? assemblyName = assemblyNames[i];
 
                 if (string.IsNullOrEmpty(assemblyName))
                     return false;

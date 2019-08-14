@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Security.Permissions;
 
 using Microsoft.VisualStudio.OLE.Interop;
 
@@ -9,8 +10,6 @@ using Moq.Protected;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
     public class PropertyPageTests
@@ -18,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         [Fact]
         public void GetPageInfoAndHelp()
         {
-            Castle.DynamicProxy.Generators.AttributesToAvoidReplicating.Add(typeof(System.Security.Permissions.UIPermissionAttribute));
+            Castle.DynamicProxy.Generators.AttributesToAvoidReplicating.Add(typeof(UIPermissionAttribute));
 
             var page = new Mock<PropertyPage>();
             page.Protected().Setup<string>("PropertyPageName").Returns("MyPage");
@@ -38,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         [Fact]
         public void MoveTest()
         {
-            Castle.DynamicProxy.Generators.AttributesToAvoidReplicating.Add(typeof(System.Security.Permissions.UIPermissionAttribute));
+            Castle.DynamicProxy.Generators.AttributesToAvoidReplicating.Add(typeof(UIPermissionAttribute));
 
             var rect = new RECT[] { new RECT() { left = 25, top = 25 } };
             var page = new Mock<PropertyPage>()
@@ -56,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                Move(null);
+                Move(null!);
             });
         }
 
@@ -71,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         private static void Move(RECT[] x)
         {
-            Castle.DynamicProxy.Generators.AttributesToAvoidReplicating.Add(typeof(System.Security.Permissions.UIPermissionAttribute));
+            Castle.DynamicProxy.Generators.AttributesToAvoidReplicating.Add(typeof(UIPermissionAttribute));
 
             var page = new Mock<PropertyPage>()
             {

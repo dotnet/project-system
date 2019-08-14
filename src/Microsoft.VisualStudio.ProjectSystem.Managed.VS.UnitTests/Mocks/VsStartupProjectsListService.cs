@@ -2,16 +2,10 @@
 
 using System;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.Shell.Interop
 {
     internal class VsStartupProjectsListService : IVsStartupProjectsListService
     {
-        public VsStartupProjectsListService()
-        {
-        }
-
         public Guid? ProjectGuid
         {
             get;

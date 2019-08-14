@@ -6,8 +6,6 @@ using Microsoft.VisualStudio.ProjectSystem.VS;
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.Shell.Interop
 {
     // Named with an _ instead of IVsProjectFactory to avoid collisions with the actual IVsProjectFactory
@@ -42,7 +40,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
                 .Returns(hr);
         }
 
-        public static void ImplementOpenItemWithSpecific(this IVsProject4 project, Guid editorType, Guid logicalView, IVsWindowFrame frame)
+        public static void ImplementOpenItemWithSpecific(this IVsProject4 project, Guid editorType, Guid logicalView, IVsWindowFrame? frame)
         {
             var mock = Mock.Get(project);
             mock.Setup(h => h.OpenItemWithSpecific(It.IsAny<uint>(), It.IsAny<uint>(), ref editorType, It.IsAny<string>(), ref logicalView, It.IsAny<IntPtr>(), out frame))

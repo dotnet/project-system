@@ -7,8 +7,6 @@ using Microsoft.VisualStudio.Shell.Interop;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
 {
     public class ProjectOutputWindowProjectLoggerTests
@@ -92,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
         [InlineData("Text with a placeholder {0}")] // Make we don't call String.Format
         public void WriteLine1_WhenEnabled_LogsToOutputPane(string text)
         {
-            string result = null;
+            string? result = null;
             var pane = IVsOutputWindowPaneFactory.ImplementOutputStringThreadSafe((t) => { result = t; });
             var logger = CreateEnabledLogger(pane);
 
@@ -108,10 +106,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
         [InlineData("{0}",          null,                   "")]
         [InlineData("{0}",          "Hello",                "Hello")]
         [InlineData("{0} World!",   "Hello",                "Hello World!")]
-        public void WriteLine2_WhenEnabled_LogsToOutputPane(string format, object argument, string expected)
+        public void WriteLine2_WhenEnabled_LogsToOutputPane(string format, object? argument, string expected)
         {   // Not looking for exhaustive tests, just enough to indicate we're calling string.Format
 
-            string result = null;
+            string? result = null;
             var pane = IVsOutputWindowPaneFactory.ImplementOutputStringThreadSafe((text) => { result = text; });
             var logger = CreateEnabledLogger(pane);
 
@@ -128,10 +126,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
         [InlineData("{0}",              "Hello",     "Hello",              "Hello")]
         [InlineData("{0} {1}!",         "Hello",     "World",              "Hello World!")]
         [InlineData("{0} {1}!",         "1",         "2",                  "1 2!")]
-        public void WriteLine3_WhenEnabled_LogsToOutputPane(string format, object argument1, object argument2, string expected)
+        public void WriteLine3_WhenEnabled_LogsToOutputPane(string format, object? argument1, object? argument2, string expected)
         {   // Not looking for exhaustive tests, just enough to indicate we're calling string.Format
 
-            string result = null;
+            string? result = null;
             var pane = IVsOutputWindowPaneFactory.ImplementOutputStringThreadSafe((text) => { result = text; });
             var logger = CreateEnabledLogger(pane);
 
@@ -149,10 +147,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
         [InlineData("{0} {1}!",          "Hello",     "World",      "World",            "Hello World!")]
         [InlineData("{0} {1} {2}!",      "Hello",     "Again",      "World",            "Hello Again World!")]
         [InlineData("{0} {1} {2}!",      "1",         "2",          "3",                "1 2 3!")]
-        public void WriteLine4_WhenEnabled_LogsToOutputPane(string format, object argument1, object argument2, object argument3, string expected)
+        public void WriteLine4_WhenEnabled_LogsToOutputPane(string format, object? argument1, object? argument2, object? argument3, string expected)
         {   // Not looking for exhaustive tests, just enough to indicate we're calling string.Format
 
-            string result = null;
+            string? result = null;
             var pane = IVsOutputWindowPaneFactory.ImplementOutputStringThreadSafe((text) => { result = text; });
             var logger = CreateEnabledLogger(pane);
 
@@ -162,16 +160,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
         }
 
         [Theory] // Format               Arguments                                          Expected
-        [InlineData("",                  new object[] { null },                             "")]
-        [InlineData("{0}",               new object[] { null },                             "")]
-        [InlineData("{0}{1}",            new object[] { null, null },                       "")]
-        [InlineData("{0}{1}{2}",         new object[] { null, null, null },                 "")]
-        [InlineData("{0}{1}{2}{3}",      new object[] { null, null, null, null },           "")]
-        [InlineData("{0} {1} {2} {3}!",  new object[] { "Why", "Hello", "Again", "World"},  "Why Hello Again World!")]
-        public void WriteLine5_WhenEnabled_LogsToOutputPane(string format, object[] arguments, string expected)
+        [InlineData("",                  new object?[] { null },                             "")]
+        [InlineData("{0}",               new object?[] { null },                             "")]
+        [InlineData("{0}{1}",            new object?[] { null, null },                       "")]
+        [InlineData("{0}{1}{2}",         new object?[] { null, null, null },                 "")]
+        [InlineData("{0}{1}{2}{3}",      new object?[] { null, null, null, null },           "")]
+        [InlineData("{0} {1} {2} {3}!",  new object?[] { "Why", "Hello", "Again", "World"},  "Why Hello Again World!")]
+        public void WriteLine5_WhenEnabled_LogsToOutputPane(string format, object?[] arguments, string expected)
         {   // Not looking for exhaustive tests, just enough to indicate we're calling string.Format
 
-            string result = null;
+            string? result = null;
             var pane = IVsOutputWindowPaneFactory.ImplementOutputStringThreadSafe((text) => { result = text; });
             var logger = CreateEnabledLogger(pane);
 
@@ -183,69 +181,64 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
         [Fact]
         public void WriteLine2_WhenEnabledWithNullFormat_ThrowsArgumentNull()
         {
-            string result = null;
+            string? result = null;
             var pane = IVsOutputWindowPaneFactory.ImplementOutputStringThreadSafe((text) => { result = text; });
             var logger = CreateEnabledLogger(pane);
 
             Assert.Throws<ArgumentNullException>("format", () =>
             {
-
-                logger.WriteLine((string)null, new object());
+                logger.WriteLine(format: null!, (object?)null!);
             });
         }
 
         [Fact]
         public void WriteLine3_WhenEnabledWithNullFormat_ThrowsArgumentNull()
         {
-            string result = null;
+            string? result = null;
             var pane = IVsOutputWindowPaneFactory.ImplementOutputStringThreadSafe((text) => { result = text; });
             var logger = CreateEnabledLogger(pane);
 
             Assert.Throws<ArgumentNullException>("format", () =>
             {
-
-                logger.WriteLine((string)null, new object(), new object());
+                logger.WriteLine(format: null!, null, null);
             });
         }
 
         [Fact]
         public void WriteLine4_WhenEnabledWithNullFormat_ThrowsArgumentNull()
         {
-            string result = null;
+            string? result = null;
             var pane = IVsOutputWindowPaneFactory.ImplementOutputStringThreadSafe((text) => { result = text; });
             var logger = CreateEnabledLogger(pane);
 
             Assert.Throws<ArgumentNullException>("format", () =>
             {
-
-                logger.WriteLine((string)null, new object(), new object(), new object());
+                logger.WriteLine(format: null!, null, null, null);
             });
         }
 
         [Fact]
         public void WriteLine5_WhenEnabledWithNullFormat_ThrowsArgumentNull()
         {
-            string result = null;
+            string? result = null;
             var pane = IVsOutputWindowPaneFactory.ImplementOutputStringThreadSafe((text) => { result = text; });
             var logger = CreateEnabledLogger(pane);
 
             Assert.Throws<ArgumentNullException>("format", () =>
             {
-
-                logger.WriteLine((string)null, new object(), new object(), new object(), new object());
+                logger.WriteLine(format: null!, null, null, null, null);
             });
         }
 
         [Fact]
         public void WriteLine2_WhenEnabledWithInvalidFormat_ThrowsFormat()
         {
-            string result = null;
+            string? result = null;
             var pane = IVsOutputWindowPaneFactory.ImplementOutputStringThreadSafe((text) => { result = text; });
             var logger = CreateEnabledLogger(pane);
 
             Assert.Throws<FormatException>(() =>
             {
-
                 logger.WriteLine("{0}{1}", new object());
             });
         }
@@ -253,13 +246,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
         [Fact]
         public void WriteLine3_WhenEnabledWithInvalidFormat_ThrowsFormat()
         {
-            string result = null;
+            string? result = null;
             var pane = IVsOutputWindowPaneFactory.ImplementOutputStringThreadSafe((text) => { result = text; });
             var logger = CreateEnabledLogger(pane);
 
             Assert.Throws<FormatException>(() =>
             {
-
                 logger.WriteLine("{0}{1}{2}", new object(), new object());
             });
         }
@@ -267,13 +259,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
         [Fact]
         public void WriteLine4_WhenEnabledWithInvalidFormat_ThrowsFormat()
         {
-            string result = null;
+            string? result = null;
             var pane = IVsOutputWindowPaneFactory.ImplementOutputStringThreadSafe((text) => { result = text; });
             var logger = CreateEnabledLogger(pane);
 
             Assert.Throws<FormatException>(() =>
             {
-
                 logger.WriteLine("{0}{1}{2}{4}", new object(), new object(), new object());
             });
         }
@@ -281,13 +272,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
         [Fact]
         public void WriteLine5_WhenEnabledWithInvalidFormat_ThrowsFormat()
         {
-            string result = null;
+            string? result = null;
             var pane = IVsOutputWindowPaneFactory.ImplementOutputStringThreadSafe((text) => { result = text; });
             var logger = CreateEnabledLogger(pane);
 
             Assert.Throws<FormatException>(() =>
             {
-
                 logger.WriteLine("{0}{1}{2}{4}{5}", new object(), new object(), new object(), new object());
             });
         }
@@ -295,7 +285,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
         [Fact]
         public void WriteLine2_WhenDisabledWithInvalidFormat_DoesNothing()
         {
-            string result = null;
+            string? result = null;
             var pane = IVsOutputWindowPaneFactory.ImplementOutputStringThreadSafe((text) => { result = text; });
             var logger = CreateDisabledLogger(pane);
 
@@ -305,7 +295,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
         [Fact]
         public void WriteLine3_WhenDisabledWithInvalidFormat_DoesNothing()
         {
-            string result = null;
+            string? result = null;
             var pane = IVsOutputWindowPaneFactory.ImplementOutputStringThreadSafe((text) => { result = text; });
             var logger = CreateDisabledLogger(pane);
 
@@ -315,7 +305,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
         [Fact]
         public void WriteLine4_WhenDisabledWithInvalidFormat_DoesNothing()
         {
-            string result = null;
+            string? result = null;
             var pane = IVsOutputWindowPaneFactory.ImplementOutputStringThreadSafe((text) => { result = text; });
             var logger = CreateDisabledLogger(pane);
 
@@ -325,7 +315,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
         [Fact]
         public void WriteLine5_WhenDisabledWithInvalidFormat_DoesNothing()
         {
-            string result = null;
+            string? result = null;
             var pane = IVsOutputWindowPaneFactory.ImplementOutputStringThreadSafe((text) => { result = text; });
             var logger = CreateDisabledLogger(pane);
 
@@ -351,7 +341,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
             return CreateInstance(options: options, outputWindowProvider: outputWindowProvider);
         }
 
-        private static ProjectOutputWindowProjectLogger CreateInstance(IProjectThreadingService threadingService = null, IProjectSystemOptions options = null, IProjectOutputWindowPaneProvider outputWindowProvider = null)
+        private static ProjectOutputWindowProjectLogger CreateInstance(
+            IProjectThreadingService? threadingService = null,
+            IProjectSystemOptions? options = null,
+            IProjectOutputWindowPaneProvider? outputWindowProvider = null)
         {
             threadingService ??= IProjectThreadingServiceFactory.Create();
             options ??= IProjectSystemOptionsFactory.Create();

@@ -2,8 +2,6 @@
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal static class IUserNotificationServicesFactory
@@ -11,16 +9,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public static IUserNotificationServices Create()
         {
             return Mock.Of<IUserNotificationServices>();
-        }
-
-        public static IUserNotificationServices Implement(bool confirmRename)
-        {
-            var mock = new Mock<IUserNotificationServices>();
-
-            mock.Setup(h => h.Confirm(It.IsAny<string>()))
-                .Returns(confirmRename);
-
-            return mock.Object;
         }
     }
 }

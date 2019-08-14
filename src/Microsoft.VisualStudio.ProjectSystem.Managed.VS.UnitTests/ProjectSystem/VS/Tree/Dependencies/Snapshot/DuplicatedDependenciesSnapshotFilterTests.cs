@@ -6,8 +6,6 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     public sealed class DuplicatedDependenciesSnapshotFilterTests
@@ -45,9 +43,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var filter = new DuplicatedDependenciesSnapshotFilter();
 
             filter.BeforeAddOrUpdate(
-                null,
+                null!,
                 dependency,
-                null,
+                null!,
                 null,
                 context);
 
@@ -93,9 +91,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var filter = new DuplicatedDependenciesSnapshotFilter();
 
             filter.BeforeAddOrUpdate(
-                null,
+                null!,
                 dependency,
-                null,
+                null!,
                 null,
                 context);
 
@@ -104,7 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             // The filtered dependency had its caption changed to its alias
             var dependencyAfter = context.GetResult(filter);
-            dependencyAfter.AssertEqualTo(
+            dependencyAfter!.AssertEqualTo(
                 new TestDependency { ClonePropertiesFrom = dependency, Caption = dependency.Alias });
 
             // The other dependency had its caption changed to its alias
@@ -149,9 +147,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var filter = new DuplicatedDependenciesSnapshotFilter();
 
             filter.BeforeAddOrUpdate(
-                null,
+                null!,
                 dependency,
-                null,
+                null!,
                 null,
                 context);
 
@@ -160,7 +158,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             // The filtered dependency had its caption changed to its alias
             var dependencyAfter = context.GetResult(filter);
-            dependencyAfter.AssertEqualTo(
+            dependencyAfter!.AssertEqualTo(
                 new TestDependency { ClonePropertiesFrom = dependency, Caption = dependency.Alias });
         }
 
@@ -201,9 +199,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var filter = new DuplicatedDependenciesSnapshotFilter();
 
             filter.BeforeAddOrUpdate(
-                null,
+                null!,
                 dependency,
-                null,
+                null!,
                 null,
                 context);
 

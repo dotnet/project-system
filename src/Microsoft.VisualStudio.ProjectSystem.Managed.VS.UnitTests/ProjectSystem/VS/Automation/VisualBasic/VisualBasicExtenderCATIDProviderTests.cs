@@ -6,8 +6,6 @@ using VSLangProj;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
 {
     public class VisualBasicExtenderCATIDProviderTests
@@ -17,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
         {
             var provider = CreateInstance();
 
-            var result = provider.GetExtenderCATID(ExtenderCATIDType.Unknown, (IProjectTree)null);
+            var result = provider.GetExtenderCATID(ExtenderCATIDType.Unknown, treeNode: null);
 
             Assert.Null(result);
         }
@@ -36,12 +34,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
         [InlineData(ExtenderCATIDType.AutomationFolderProperties,         PrjBrowseObjectCATID.prjCATIDVBFolderBrowseObject)]
         [InlineData(ExtenderCATIDType.FolderBrowseObject,                 PrjBrowseObjectCATID.prjCATIDVBFolderBrowseObject)]
         [InlineData(ExtenderCATIDType.ConfigurationBrowseObject,          PrjBrowseObjectCATID.prjCATIDVBConfig)]
-
         public void GetExtenderCATID_ReturnsCorrectCadId(ExtenderCATIDType input, string expected)
         {
             var provider = CreateInstance();
 
-            var result = provider.GetExtenderCATID(input, (IProjectTree)null);
+            var result = provider.GetExtenderCATID(input, treeNode: null);
 
             Assert.Equal(expected, result);
         }

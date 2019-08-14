@@ -5,8 +5,6 @@ using Microsoft.VisualStudio.Imaging.Interop;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     public sealed class DependencyIconSetCacheTests

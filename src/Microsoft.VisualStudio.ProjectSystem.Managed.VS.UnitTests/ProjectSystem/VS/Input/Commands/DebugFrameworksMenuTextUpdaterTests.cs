@@ -11,8 +11,6 @@ using Moq;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
     public class DebugFrameworkMenuTextUpdaterTests
@@ -20,7 +18,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         [Fact]
         public void Exec_DoesNothing()
         {
-            var command = new DebugFrameworkPropertyMenuTextUpdater(null);
+            var startupHelper = new Mock<IStartupProjectHelper>();
+            var command = new DebugFrameworkPropertyMenuTextUpdater(startupHelper.Object);
             DebugFrameworkPropertyMenuTextUpdater.ExecHandler(command, EventArgs.Empty);
             Assert.True(command.Visible);
             Assert.Equal("", command.Text);

@@ -12,8 +12,6 @@ using VSLangProj80;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 {
     public class DesignTimeAssemblyResolutionTests
@@ -35,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             var hierarchy = IVsHierarchyFactory.ImplementGetProperty(VSConstants.E_INVALIDARG);
             var resolution = CreateInstance(hierarchy);
 
-            resolution.GetTargetFramework(out string result);
+            resolution.GetTargetFramework(out string? result);
 
             Assert.Null(result);
         }
@@ -57,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             var hierarchy = IVsHierarchyFactory.ImplementGetProperty(VSConstants.DISP_E_MEMBERNOTFOUND);
             var resolution = CreateInstance(hierarchy);
 
-            resolution.GetTargetFramework(out string result);
+            resolution.GetTargetFramework(out string? result);
 
             Assert.Null(result);
         }
@@ -84,7 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             var hierarchy = IVsHierarchyFactory.ImplementGetProperty(input);
             var resolution = CreateInstance(hierarchy);
 
-            var hr = resolution.GetTargetFramework(out string result);
+            var hr = resolution.GetTargetFramework(out string? result);
 
             Assert.Equal(input, result);
             Assert.Equal(VSConstants.S_OK, hr);
@@ -95,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         {
             var resolution = CreateInstance();
 
-            var result = resolution.ResolveAssemblyPathInTargetFx((string[])null, 1, new VsResolvedAssemblyPath[1], out uint resolvedAssemblyPaths);
+            var result = resolution.ResolveAssemblyPathInTargetFx((string[]?)null, 1, new VsResolvedAssemblyPath[1], out uint resolvedAssemblyPaths);
 
             Assert.Equal(VSConstants.E_INVALIDARG, result);
             Assert.Equal(0u, resolvedAssemblyPaths);
@@ -117,7 +115,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         {
             var resolution = CreateInstance();
 
-            var result = resolution.ResolveAssemblyPathInTargetFx(new string[] { "mscorlib" }, 1, (VsResolvedAssemblyPath[])null, out uint resolvedAssemblyPaths);
+            var result = resolution.ResolveAssemblyPathInTargetFx(new string[] { "mscorlib" }, 1, (VsResolvedAssemblyPath[]?)null, out uint resolvedAssemblyPaths);
 
             Assert.Equal(VSConstants.E_INVALIDARG, result);
             Assert.Equal(0u, resolvedAssemblyPaths);
@@ -215,11 +213,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         [InlineData("System, Bar")]
         [InlineData("System, Version=NotAVersion")]
         [InlineData("System, PublicKeyToken=ABC")]
-        public void ResolveAssemblyPathInTargetFx_InvalidNameAsAssemblySpec_ReturnsE_INVALIDARG(string input)
+        public void ResolveAssemblyPathInTargetFx_InvalidNameAsAssemblySpec_ReturnsE_INVALIDARG(string? input)
         {
             var resolution = CreateInstance();
 
-            var result = resolution.ResolveAssemblyPathInTargetFx(new string[] { input }, 1, new VsResolvedAssemblyPath[1], out uint resolvedAssemblyPaths);
+            var result = resolution.ResolveAssemblyPathInTargetFx(new string?[] { input }, 1, new VsResolvedAssemblyPath[1], out uint resolvedAssemblyPaths);
 
             Assert.Equal(VSConstants.E_INVALIDARG, result);
             Assert.Equal(0u, resolvedAssemblyPaths);
@@ -292,7 +290,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             return CreateInstance(hierarchy);
         }
 
-        private static DesignTimeAssemblyResolution CreateInstance(IVsHierarchy hierarchy = null)
+        private static DesignTimeAssemblyResolution CreateInstance(IVsHierarchy? hierarchy = null)
         {
             hierarchy ??= IVsHierarchyFactory.Create();
 

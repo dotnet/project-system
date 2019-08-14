@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 return block;
             }
 
-            private IProjectVersionedValue<T> DropConfiguredProjectVersion(IProjectVersionedValue<T> data)
+            private static IProjectVersionedValue<T> DropConfiguredProjectVersion(IProjectVersionedValue<T> data)
             {
                 return new ProjectVersionedValue<T>(data.Value, data.DataSourceVersions.Remove(ProjectDataSources.ConfiguredProjectIdentity)
                                                                                        .Remove(ProjectDataSources.ConfiguredProjectVersion));

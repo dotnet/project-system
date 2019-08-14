@@ -2,13 +2,11 @@
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal static class IVsUIServiceFactory
     {
-        public static IVsUIService<T> Create<T>(T value)
+        public static IVsUIService<T> Create<T>(T value) where T : class
         {
             var mock = new Mock<IVsUIService<T>>();
             mock.SetupGet(s => s.Value)
@@ -17,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return mock.Object;
         }
 
-        public static IVsUIService<TService, TInterface> Create<TService, TInterface>(TInterface value)
+        public static IVsUIService<TService, TInterface> Create<TService, TInterface>(TInterface? value) where TService : class where TInterface : class
         {
             var mock = new Mock<IVsUIService<TService, TInterface>>();
             mock.SetupGet(s => s.Value)

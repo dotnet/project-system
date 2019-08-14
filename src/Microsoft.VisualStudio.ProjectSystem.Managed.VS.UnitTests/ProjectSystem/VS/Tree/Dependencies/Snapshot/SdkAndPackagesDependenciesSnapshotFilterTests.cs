@@ -1,12 +1,11 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
+
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.RuleHandlers;
 
 using Xunit;
-
-#nullable disable
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
@@ -60,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             filter.BeforeAddOrUpdate(
                 targetFramework,
                 sdkDependency,
-                null,
+                null!,
                 null,
                 context);
 
@@ -69,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             // Dependency should be accepted, but converted to resolved state
             Assert.NotNull(acceptedDependency);
             Assert.NotSame(sdkDependency, acceptedDependency);
-            acceptedDependency.AssertEqualTo(
+            acceptedDependency!.AssertEqualTo(
                 sdkDependency.ToResolved(
                     schemaName: ResolvedSdkReference.SchemaName,
                     dependencyIDs: dependencyIDs));
@@ -110,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             filter.BeforeAddOrUpdate(
                 targetFramework,
                 sdkDependency,
-                null,
+                null!,
                 null,
                 context);
 
@@ -157,7 +156,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             filter.BeforeAddOrUpdate(
                 targetFramework,
                 packageDependency,
-                null,
+                null!,
                 null,
                 context);
 

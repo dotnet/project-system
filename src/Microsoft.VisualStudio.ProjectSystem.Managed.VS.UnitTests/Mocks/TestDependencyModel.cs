@@ -9,19 +9,18 @@ using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal class TestDependencyModel : IDependencyModel
     {
+#pragma warning disable CS8618 // Non-nullable property is uninitialized
         public string ProviderType { get; set; }
         public string Name { get; set; }
         public string Caption { get; set; }
         public string OriginalItemSpec { get; set; }
         public string Path { get; set; }
         public string SchemaName { get; set; }
-        public string SchemaItemType { get; set; }
+        public string? SchemaItemType { get; set; }
         public string Version => throw new NotImplementedException();
         public bool Resolved { get; set; } = false;
         public bool TopLevel { get; set; } = true;
@@ -36,6 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public IImmutableList<string> DependencyIDs { get; set; } = ImmutableList<string>.Empty;
         public ProjectTreeFlags Flags { get; set; } = ProjectTreeFlags.Empty;
         public string Id { get; set; }
+#pragma warning restore CS8618 // Non-nullable property is uninitialized
 
         public bool Matches(IDependency dependency, ITargetFramework tfm)
         {

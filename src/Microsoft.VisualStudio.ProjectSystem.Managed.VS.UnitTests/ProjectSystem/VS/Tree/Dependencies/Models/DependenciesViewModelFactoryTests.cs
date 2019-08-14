@@ -8,8 +8,6 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     public class DependenciesViewModelFactoryTests
@@ -81,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var result = factory.CreateRootViewModel("MyProvider1", hasUnresolvedDependency: false);
 
             Assert.NotNull(result);
-            Assert.Equal("ZzzDependencyRoot", result.Caption);
+            Assert.Equal("ZzzDependencyRoot", result!.Caption);
             Assert.Equal(KnownMonikers.AboutBox, result.Icon);
         }
 

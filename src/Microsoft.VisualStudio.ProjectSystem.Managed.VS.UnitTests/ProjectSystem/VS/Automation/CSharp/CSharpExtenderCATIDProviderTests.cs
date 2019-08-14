@@ -6,8 +6,6 @@ using VSLangProj;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.CSharp
 {
     public class CSharpExtenderCATIDProviderTests
@@ -17,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.CSharp
         {
             var provider = CreateInstance();
 
-            var result = provider.GetExtenderCATID(ExtenderCATIDType.Unknown, (IProjectTree)null);
+            var result = provider.GetExtenderCATID(ExtenderCATIDType.Unknown, treeNode: null);
 
             Assert.Null(result);
         }
@@ -40,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.CSharp
         {
             var provider = CreateInstance();
 
-            var result = provider.GetExtenderCATID(input, (IProjectTree)null);
+            var result = provider.GetExtenderCATID(input, treeNode: null);
 
             Assert.Equal(expected, result);
         }

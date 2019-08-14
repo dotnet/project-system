@@ -8,8 +8,6 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
     public abstract class AbstractOpenProjectDesignerCommandTests
@@ -21,8 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
             Assert.Throws<ArgumentNullException>("nodes", () =>
             {
-
-                command.GetCommandStatusAsync((IImmutableSet<IProjectTree>)null, GetCommandId(), true, "commandText", CommandStatus.Enabled);
+                command.GetCommandStatusAsync(null!, GetCommandId(), true, "commandText", CommandStatus.Enabled);
             });
         }
 
@@ -187,6 +184,6 @@ Root (flags: {ProjectRoot})
 
         internal abstract long GetCommandId();
 
-        internal abstract AbstractOpenProjectDesignerCommand CreateInstance(IProjectDesignerService designerService = null);
+        internal abstract AbstractOpenProjectDesignerCommand CreateInstance(IProjectDesignerService? designerService = null);
     }
 }

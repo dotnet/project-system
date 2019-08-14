@@ -9,8 +9,6 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal static class IMockDependenciesViewModelFactory
@@ -22,8 +20,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public static IDependenciesViewModelFactory Implement(
             ImageMoniker? getDependenciesRootIcon = null,
-            IEnumerable<IDependencyModel> createRootViewModel = null,
-            IEnumerable<IDependencyModel> createTargetViewModel = null,
+            IEnumerable<IDependencyModel>? createRootViewModel = null,
+            IEnumerable<IDependencyModel>? createTargetViewModel = null,
             MockBehavior mockBehavior = MockBehavior.Strict)
         {
             var mock = new Mock<IDependenciesViewModelFactory>(mockBehavior);

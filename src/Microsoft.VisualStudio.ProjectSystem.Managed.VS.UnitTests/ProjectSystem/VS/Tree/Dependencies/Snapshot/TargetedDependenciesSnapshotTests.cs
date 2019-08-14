@@ -11,8 +11,6 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     public sealed class TargetedDependenciesSnapshotTests
@@ -20,9 +18,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         [Fact]
         public void Constructor_WhenRequiredParamsNotProvided_ShouldThrow()
         {
-            Assert.Throws<ArgumentNullException>("projectPath", () => new TargetedDependenciesSnapshot(projectPath: null, null, null, null));
-            Assert.Throws<ArgumentNullException>("targetFramework", () => new TargetedDependenciesSnapshot("path", targetFramework: null, null, null));
-            Assert.Throws<ArgumentNullException>("dependenciesWorld", () => new TargetedDependenciesSnapshot("path", TargetFramework.Any, null, dependenciesWorld: null));
+            var path = "path";
+            var tfm = TargetFramework.Any;
+            var deps = ImmutableDictionary<string, IDependency>.Empty;
+
+            Assert.Throws<ArgumentNullException>("projectPath",       () => new TargetedDependenciesSnapshot(null!, tfm,   null, deps));
+            Assert.Throws<ArgumentNullException>("targetFramework",   () => new TargetedDependenciesSnapshot(path,  null!, null, deps));
+            Assert.Throws<ArgumentNullException>("dependenciesWorld", () => new TargetedDependenciesSnapshot(path,  tfm,   null, null!));
         }
 
         [Fact]
@@ -705,28 +707,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         {
             private enum FilterAction { Reject, Accept }
 
-            private readonly Dictionary<string, (FilterAction, IDependency)> _beforeAdd    = new Dictionary<string, (FilterAction, IDependency)>(StringComparer.OrdinalIgnoreCase);
-            private readonly Dictionary<string, (FilterAction, IDependency)> _beforeRemove = new Dictionary<string, (FilterAction, IDependency)>(StringComparer.OrdinalIgnoreCase);
+            private readonly Dictionary<string, (FilterAction, IDependency?)> _beforeAdd    = new Dictionary<string, (FilterAction, IDependency?)>(StringComparer.OrdinalIgnoreCase);
+            private readonly Dictionary<string, (FilterAction, IDependency?)> _beforeRemove = new Dictionary<string, (FilterAction, IDependency?)>(StringComparer.OrdinalIgnoreCase);
 
-            public TestDependenciesSnapshotFilter BeforeAddAccept(string id, IDependency dependency = null)
+            public TestDependenciesSnapshotFilter BeforeAddAccept(string id, IDependency? dependency = null)
             {
                 _beforeAdd.Add(id, (FilterAction.Accept, dependency));
                 return this;
             }
 
-            public TestDependenciesSnapshotFilter BeforeAddReject(string id, IDependency addOrUpdate = null)
+            public TestDependenciesSnapshotFilter BeforeAddReject(string id, IDependency? addOrUpdate = null)
             {
                 _beforeAdd.Add(id, (FilterAction.Reject, addOrUpdate));
                 return this;
             }
 
-            public TestDependenciesSnapshotFilter BeforeRemoveAccept(string id, IDependency addOrUpdate = null)
+            public TestDependenciesSnapshotFilter BeforeRemoveAccept(string id, IDependency? addOrUpdate = null)
             {
                 _beforeRemove.Add(id, (FilterAction.Accept, addOrUpdate));
                 return this;
             }
 
-            public TestDependenciesSnapshotFilter BeforeRemoveReject(string id, IDependency addOrUpdate = null)
+            public TestDependenciesSnapshotFilter BeforeRemoveReject(string id, IDependency? addOrUpdate = null)
             {
                 _beforeRemove.Add(id, (FilterAction.Reject, addOrUpdate));
                 return this;
@@ -736,23 +738,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 ITargetFramework targetFramework,
                 IDependency dependency,
                 IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
-                IImmutableSet<string> projectItemSpecs,
+                IImmutableSet<string>? projectItemSpecs,
                 IAddDependencyContext context)
             {
-                if (_beforeAdd.TryGetValue(dependency.Id, out (FilterAction, IDependency) info))
+                if (_beforeAdd.TryGetValue(dependency.Id, out (FilterAction Action, IDependency? Dependency) info))
                 {
-                    if (info.Item1 == FilterAction.Reject)
+                    if (info.Action == FilterAction.Reject)
                     {
                         context.Reject();
 
-                        if (info.Item2 != null)
+                        if (info.Dependency != null)
                         {
-                            context.AddOrUpdate(info.Item2);
+                            context.AddOrUpdate(info.Dependency);
                         }
                     }
-                    else if (info.Item1 == FilterAction.Accept)
+                    else if (info.Action == FilterAction.Accept)
                     {
-                        context.Accept(info.Item2 ?? dependency);
+                        context.Accept(info.Dependency ?? dependency);
                     }
                     else
                     {
@@ -770,24 +772,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 IDependency dependency,
                 IRemoveDependencyContext context)
             {
-                if (_beforeRemove.TryGetValue(dependency.Id, out (FilterAction, IDependency) info))
+                if (_beforeRemove.TryGetValue(dependency.Id, out (FilterAction Action, IDependency? Dependency) info))
                 {
-                    if (info.Item1 == FilterAction.Reject)
+                    if (info.Action == FilterAction.Reject)
                     {
                         context.Reject();
 
-                        if (info.Item2 != null)
+                        if (info.Dependency != null)
                         {
-                            context.AddOrUpdate(info.Item2);
+                            context.AddOrUpdate(info.Dependency);
                         }
                     }
-                    else if (info.Item1 == FilterAction.Accept)
+                    else if (info.Action == FilterAction.Accept)
                     {
                         context.Accept();
 
-                        if (info.Item2 != null)
+                        if (info.Dependency != null)
                         {
-                            context.AddOrUpdate(info.Item2);
+                            context.AddOrUpdate(info.Dependency);
                         }
                     }
                     else

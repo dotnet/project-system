@@ -2,8 +2,6 @@
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 {
     public class ReferenceContextProviderTests

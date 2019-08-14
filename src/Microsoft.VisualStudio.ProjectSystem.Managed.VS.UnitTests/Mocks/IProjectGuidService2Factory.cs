@@ -6,8 +6,6 @@ using Moq;
 
 #pragma warning disable RS0030 // Symbol IProjectGuidService2 is banned
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal static class IProjectGuidService2Factory

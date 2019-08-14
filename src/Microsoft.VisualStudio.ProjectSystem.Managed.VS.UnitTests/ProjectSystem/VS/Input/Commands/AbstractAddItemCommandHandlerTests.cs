@@ -5,10 +5,10 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.Shell.Interop;
-using Moq;
-using Xunit;
 
-#nullable disable
+using Moq;
+
+using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
             Assert.Throws<ArgumentNullException>("nodes", () =>
             {
-                command.GetCommandStatusAsync((IImmutableSet<IProjectTree>)null, TestAddItemCommand.CommandId, true, "commandText", CommandStatus.Enabled);
+                command.GetCommandStatusAsync(null!, TestAddItemCommand.CommandId, true, "commandText", CommandStatus.Enabled);
             });
         }
 
@@ -201,7 +201,12 @@ Root (flags: {ProjectRoot})
             Assert.True(result);
         }
 
-        internal AbstractAddItemCommandHandler CreateInstance(IPhysicalProjectTree projectTree = null, IUnconfiguredProjectVsServices projectVsServices = null, IProjectTreeProvider provider = null, IVsAddProjectItemDlg addItemDialog = null, string capability = null)
+        internal static AbstractAddItemCommandHandler CreateInstance(
+            IPhysicalProjectTree? projectTree = null,
+            IUnconfiguredProjectVsServices? projectVsServices = null,
+            IProjectTreeProvider? provider = null,
+            IVsAddProjectItemDlg? addItemDialog = null,
+            string? capability = null)
         {
             var configuredProject = ConfiguredProjectFactory.Create(IProjectCapabilitiesScopeFactory.Create(new string[] { capability ?? TestAddItemCommand.Capability }));
             projectTree ??= IPhysicalProjectTreeFactory.Create(provider);

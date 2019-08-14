@@ -10,8 +10,6 @@ using Moq.Protected;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
     public class PropertyPageControlTests

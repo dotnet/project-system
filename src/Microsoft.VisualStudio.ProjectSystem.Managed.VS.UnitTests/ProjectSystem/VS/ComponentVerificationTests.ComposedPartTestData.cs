@@ -6,8 +6,6 @@ using Microsoft.VisualStudio.Composition;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     public partial class ComponentVerificationTests

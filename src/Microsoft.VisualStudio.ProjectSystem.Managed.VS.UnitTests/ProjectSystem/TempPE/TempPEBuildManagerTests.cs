@@ -9,7 +9,6 @@ using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.ProjectSystem.VS.Automation;
 using Microsoft.VisualStudio.ProjectSystem.VS.TempPE;
-using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Threading.Tasks;
 using Xunit;
 

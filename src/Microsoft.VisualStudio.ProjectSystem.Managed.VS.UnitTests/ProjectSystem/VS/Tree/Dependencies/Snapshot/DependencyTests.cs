@@ -9,8 +9,6 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     public class DependencyTests
@@ -23,31 +21,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             Assert.Throws<ArgumentNullException>("dependencyModel", () =>
             {
-                new Dependency(null, targetFramework, containingProjectPath);
+                new Dependency(null!, targetFramework, containingProjectPath);
             });
 
             Assert.Throws<ArgumentNullException>("ProviderType", () =>
             {
-                var dependencyModel = new TestDependencyModel { ProviderType = null, Id = "Id" };
+                var dependencyModel = new TestDependencyModel { ProviderType = null!, Id = "Id" };
                 new Dependency(dependencyModel, targetFramework, containingProjectPath);
             });
 
             Assert.Throws<ArgumentNullException>("Id", () =>
             {
-                var dependencyModel = new TestDependencyModel { ProviderType = "providerType", Id = null };
+                var dependencyModel = new TestDependencyModel { ProviderType = "providerType", Id = null! };
                 new Dependency(dependencyModel, targetFramework, containingProjectPath);
             });
 
             Assert.Throws<ArgumentNullException>("targetFramework", () =>
             {
                 var dependencyModel = new TestDependencyModel { ProviderType = "providerType", Id = "id" };
-                new Dependency(dependencyModel, null, containingProjectPath);
+                new Dependency(dependencyModel, null!, containingProjectPath);
             });
 
             Assert.Throws<ArgumentNullException>("containingProjectPath", () =>
             {
                 var dependencyModel = new TestDependencyModel { ProviderType = "providerType", Id = "id" };
-                new Dependency(dependencyModel, targetFramework: targetFramework, containingProjectPath: null);
+                new Dependency(dependencyModel, targetFramework: targetFramework, containingProjectPath: null!);
             });
         }
 
@@ -366,12 +364,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         [Fact]
         public void GetID_ThrowsForInvalidArguments()
         {
-            Assert.Throws<ArgumentNullException>(() => Dependency.GetID(null, "providerType", "modelId"));
-            Assert.Throws<ArgumentNullException>(() => Dependency.GetID(TargetFramework.Any, null, "modelId"));
-            Assert.Throws<ArgumentNullException>(() => Dependency.GetID(TargetFramework.Any, "providerType", null));
+            var tfm = TargetFramework.Any;
+            var type = "providerType";
+            var modelId = "modelId";
 
-            Assert.Throws<ArgumentException>(() => Dependency.GetID(TargetFramework.Any, "", "modelId"));
-            Assert.Throws<ArgumentException>(() => Dependency.GetID(TargetFramework.Any, "providerType", ""));
+            Assert.Throws<ArgumentNullException>(() => Dependency.GetID(null!, type,  modelId));
+            Assert.Throws<ArgumentNullException>(() => Dependency.GetID(tfm,   null!, modelId));
+            Assert.Throws<ArgumentNullException>(() => Dependency.GetID(tfm,   type,  null!));
+
+            Assert.Throws<ArgumentException>(() => Dependency.GetID(tfm, "",   modelId));
+            Assert.Throws<ArgumentException>(() => Dependency.GetID(tfm, type, ""));
         }
 
         [Theory]

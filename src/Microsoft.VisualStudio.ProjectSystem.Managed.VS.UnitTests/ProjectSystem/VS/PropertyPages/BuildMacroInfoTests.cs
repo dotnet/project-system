@@ -4,8 +4,6 @@ using Moq;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
     public class BuildMacroInfoTests
@@ -22,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             var configuredProject = ConfiguredProjectFactory.Create(services: configuredProjectServices);
 
             var buildMacroInfo = CreateInstance(configuredProject);
-            int retVal = buildMacroInfo.GetBuildMacroValue(macroName, out string macroValue);
+            int retVal = buildMacroInfo.GetBuildMacroValue(macroName, out string? macroValue);
             Assert.Equal(expectedRetVal, retVal);
             Assert.Equal(expectedValue, macroValue);
         }
@@ -38,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             Assert.Equal(VSConstants.E_UNEXPECTED, result);
         }
 
-        private static BuildMacroInfo CreateInstance(ConfiguredProject configuredProject = null)
+        private static BuildMacroInfo CreateInstance(ConfiguredProject? configuredProject = null)
         {
             configuredProject ??= ConfiguredProjectFactory.Create();
 

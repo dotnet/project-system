@@ -6,8 +6,6 @@ using Microsoft.VisualStudio.ProjectSystem.Imaging;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging.CSharp
 {
     public class CSharpProjectImageProviderTests
@@ -25,11 +23,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging.CSharp
 
             Assert.Throws<ArgumentNullException>("key", () =>
             {
-
-                provider.GetProjectImage((string)null);
+                provider.GetProjectImage(null!);
             });
         }
-
 
         [Fact]
         public void GetProjectImage_EmptyAsKey_ThrowsArgument()
@@ -38,7 +34,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging.CSharp
 
             Assert.Throws<ArgumentException>("key", () =>
             {
-
                 provider.GetProjectImage(string.Empty);
             });
         }

@@ -7,8 +7,6 @@ using Microsoft.VisualStudio.Input;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 {
     public class MoveUpCommandTests : AbstractMoveCommandTests

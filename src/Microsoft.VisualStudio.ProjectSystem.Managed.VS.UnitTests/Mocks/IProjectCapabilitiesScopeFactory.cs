@@ -5,13 +5,11 @@ using System.Linq;
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal static class IProjectCapabilitiesScopeFactory
     {
-        public static IProjectCapabilitiesScope Create(IEnumerable<string> capabilities = null)
+        public static IProjectCapabilitiesScope Create(IEnumerable<string>? capabilities = null)
         {
             capabilities ??= Enumerable.Empty<string>();
             var snapshot = new Mock<IProjectCapabilitiesSnapshot>();

@@ -105,7 +105,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
                 return null;
             }
 
-            private IEnumerable<uint> GetIdsForFiles(IVsHierarchy projectHierarchy, IEnumerable<string> filePaths)
+            private static IEnumerable<uint> GetIdsForFiles(IVsHierarchy projectHierarchy, IEnumerable<string> filePaths)
             {
                 foreach (string filePath in filePaths)
                 {

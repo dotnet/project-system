@@ -6,16 +6,14 @@ using Microsoft.VisualStudio.Shell;
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal static class SVsServiceProviderFactory
     {
-        public static SVsServiceProvider Create(object service = null)
+        public static SVsServiceProvider Create(object? service = null)
         {
             var mock = new Mock<SVsServiceProvider>();
-            mock.Setup(s => s.GetService(It.IsAny<Type>())).Returns(service);
+            mock.Setup<object?>(s => s.GetService(It.IsAny<Type>())).Returns(service);
             return mock.Object;
         }
     }

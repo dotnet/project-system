@@ -3,11 +3,9 @@
 using Microsoft.VisualStudio.ProjectSystem.VS.UI;
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio
 {
-    internal class IDialogServicesFactory
+    internal static class IDialogServicesFactory
     {
         public static IDialogServices Create()
         {

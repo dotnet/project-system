@@ -4,30 +4,14 @@ using System;
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio
 {
     internal static class IServiceProviderFactory
     {
-        public static IServiceProvider Create() => Mock.Of<IServiceProvider>();
-
-        public static IServiceProvider Create(Type type, object instance)
-        {
-            return ImplementGetService(t =>
-            {
-
-                if (t == type)
-                    return instance;
-
-                return null;
-            });
-        }
-
-        public static IServiceProvider ImplementGetService(Func<Type, object> func)
+        public static IServiceProvider ImplementGetService(Func<Type, object?> func)
         {
             var mock = new Mock<IServiceProvider>();
-            mock.Setup(sp => sp.GetService(It.IsAny<Type>()))
+            mock.Setup(sp => (object?)sp.GetService(It.IsAny<Type>()))
                 .Returns(func);
 
             return mock.Object;

@@ -6,16 +6,14 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal static class IDependenciesSnapshotFactory
     {
         public static IDependenciesSnapshot Implement(
-            Dictionary<ITargetFramework, ITargetedDependenciesSnapshot> dependenciesByTarget = null,
+            Dictionary<ITargetFramework, ITargetedDependenciesSnapshot>? dependenciesByTarget = null,
             bool? hasUnresolvedDependency = null,
-            ITargetFramework activeTarget = null,
+            ITargetFramework? activeTarget = null,
             MockBehavior mockBehavior = MockBehavior.Default)
         {
             var mock = new Mock<IDependenciesSnapshot>(mockBehavior);

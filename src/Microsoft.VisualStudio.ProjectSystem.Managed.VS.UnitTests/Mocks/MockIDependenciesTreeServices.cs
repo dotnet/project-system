@@ -9,8 +9,6 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.TreeView;
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal class MockIDependenciesTreeServices : IDependenciesTreeServices
@@ -18,10 +16,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public IProjectTree CreateTree(
             string caption,
             IProjectPropertiesContext itemContext,
-            IPropertySheet propertySheet = null,
-            IRule browseObjectProperties = null,
-            ProjectImageMoniker icon = null,
-            ProjectImageMoniker expandedIcon = null,
+            IPropertySheet? propertySheet = null,
+            IRule? browseObjectProperties = null,
+            ProjectImageMoniker? icon = null,
+            ProjectImageMoniker? expandedIcon = null,
             bool visible = true,
             ProjectTreeFlags? flags = default)
         {
@@ -40,10 +38,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public IProjectTree CreateTree(
             string caption,
-            string filePath,
-            IRule browseObjectProperties = null,
-            ProjectImageMoniker icon = null,
-            ProjectImageMoniker expandedIcon = null,
+            string? filePath,
+            IRule? browseObjectProperties = null,
+            ProjectImageMoniker? icon = null,
+            ProjectImageMoniker? expandedIcon = null,
             bool visible = true,
             ProjectTreeFlags? flags = default)
         {
@@ -60,11 +58,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             };
         }
 
-        public Task<IRule> GetBrowseObjectRuleAsync(IDependency dependency, IProjectCatalogSnapshot catalogs)
+        public Task<IRule?> GetBrowseObjectRuleAsync(IDependency dependency, IProjectCatalogSnapshot? catalogs)
         {
             var mockRule = new Mock<IRule>(MockBehavior.Strict);
             mockRule.Setup(x => x.Name).Returns(dependency.SchemaItemType);
-            return Task.FromResult(mockRule.Object);
+            return Task.FromResult<IRule?>(mockRule.Object);
         }
     }
 }

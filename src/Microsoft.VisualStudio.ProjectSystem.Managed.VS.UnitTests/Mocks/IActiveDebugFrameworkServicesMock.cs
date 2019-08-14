@@ -4,8 +4,6 @@ using System.Collections.Generic;
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     internal class IActiveDebugFrameworkServicesMock : AbstractMock<IActiveDebugFrameworkServices>
@@ -15,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
         }
 
-        public IActiveDebugFrameworkServicesMock ImplementGetActiveDebuggingFrameworkPropertyAsync(string activeFramework)
+        public IActiveDebugFrameworkServicesMock ImplementGetActiveDebuggingFrameworkPropertyAsync(string? activeFramework)
         {
             Setup(x => x.GetActiveDebuggingFrameworkPropertyAsync())
                         .ReturnsAsync(activeFramework);
@@ -23,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             return this;
         }
 
-        public IActiveDebugFrameworkServicesMock ImplementGetConfiguredProjectForActiveFrameworkAsync(ConfiguredProject project)
+        public IActiveDebugFrameworkServicesMock ImplementGetConfiguredProjectForActiveFrameworkAsync(ConfiguredProject? project)
         {
             Setup(x => x.GetConfiguredProjectForActiveFrameworkAsync())
                         .ReturnsAsync(project);
@@ -31,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             return this;
         }
 
-        public IActiveDebugFrameworkServicesMock ImplementGetProjectFrameworksAsync(List<string> frameworks)
+        public IActiveDebugFrameworkServicesMock ImplementGetProjectFrameworksAsync(List<string>? frameworks)
         {
             Setup(x => x.GetProjectFrameworksAsync())
                         .ReturnsAsync(frameworks);

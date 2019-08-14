@@ -7,8 +7,6 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     public sealed class DependencyModelTests
@@ -17,15 +15,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             public override string ProviderType => "someProvider";
 
-            public override DependencyIconSet IconSet => null;
+            public override DependencyIconSet IconSet => new DependencyIconSet(Icon, ExpandedIcon, UnresolvedIcon, UnresolvedExpandedIcon);
 
             public TestableDependencyModel(
                 string path, 
-                string originalItemSpec, 
+                string? originalItemSpec, 
                 ProjectTreeFlags flags, 
                 bool resolved, 
                 bool isImplicit, 
-                IImmutableDictionary<string, string> properties)
+                IImmutableDictionary<string, string>? properties)
                 : base(path, originalItemSpec, flags, resolved, isImplicit, properties)
             {
             }
@@ -36,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             Assert.Throws<ArgumentNullException>("path", () =>
             {
-                new TestableDependencyModel(null, "", ProjectTreeFlags.Empty, false, false, null);
+                new TestableDependencyModel(null!, "", ProjectTreeFlags.Empty, false, false, null);
             });
         }
 

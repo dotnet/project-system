@@ -6,13 +6,12 @@ using System.Collections.Immutable;
 
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.Threading;
+
 using Moq;
 
 using Xunit;
 
 #pragma warning disable VSSDK005 // Avoid instantiating JoinableTaskContext
-
-#nullable disable
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {

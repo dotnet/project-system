@@ -5,8 +5,6 @@ using System.Threading.Tasks.Dataflow;
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
     internal static class IPackageRestoreUnconfiguredInputDataSourceFactory
@@ -25,6 +23,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             public PackageRestoreUnconfiguredDataSource(IReceivableSourceBlock<IProjectVersionedValue<PackageRestoreUnconfiguredInput>> sourceBlock)
             {
                 SourceBlock = sourceBlock;
+                DataSourceKey = new NamedIdentity();
+                DataSourceVersion = 1;
             }
 
             public IReceivableSourceBlock<IProjectVersionedValue<PackageRestoreUnconfiguredInput>> SourceBlock { get; }
@@ -33,13 +33,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
             public IComparable DataSourceVersion { get; }
 
-            ISourceBlock<IProjectVersionedValue<object>> IProjectValueDataSource.SourceBlock { get; }
+            ISourceBlock<IProjectVersionedValue<object>> IProjectValueDataSource.SourceBlock => SourceBlock;
 
-            public IDisposable Join()
+            public IDisposable? Join()
             {
                 return null;
             }
         }
-
     }
 }

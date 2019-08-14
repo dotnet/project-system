@@ -4,8 +4,6 @@ using System;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices.CSharp
 {
     public class CSharpLanguageFeaturesProviderTests
@@ -23,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices.CSharp
 
             Assert.Throws<ArgumentNullException>("name", () =>
             {
-                provider.MakeProperIdentifier((string)null);
+                provider.MakeProperIdentifier(null!);
             });
         }
 
@@ -45,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices.CSharp
 
             Assert.Throws<ArgumentNullException>("name", () =>
             {
-                provider.MakeProperNamespace((string)null);
+                provider.MakeProperNamespace(null!);
             });
         }
 
@@ -60,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices.CSharp
             });
         }
 
-        [Theory] // Input                                           // Expected
+        [Theory]    // Input                                        // Expected
         [InlineData("_" ,                                           "_")]
         [InlineData("_._",                                           "_._")]
         [InlineData("A" ,                                           "A")]
@@ -99,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices.CSharp
 
             Assert.Throws<ArgumentNullException>("namespaceNames", () =>
             {
-                provider.ConcatNamespaces((string[])null);
+                provider.ConcatNamespaces(null!);
             });
         }
 
@@ -121,11 +119,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices.CSharp
 
             Assert.Throws<ArgumentException>("namespaceNames", () =>
             {
-                provider.ConcatNamespaces(new string[] { null });
+                provider.ConcatNamespaces(new string[] { null! });
             });
         }
 
-        [Theory]         // Input                                                                    // Expected
+        [Theory]            // Input                                                                    // Expected
         [InlineData(new[] { "" },                                                                       "")]
         [InlineData(new[] { "A" },                                                                      "A")]
         [InlineData(new[] { "A", "B"},                                                                  "A.B")]

@@ -6,8 +6,6 @@ using EnvDTE80;
 
 using Moq;
 
-#nullable disable
-
 namespace EnvDTE
 {
     internal static class ProjectFactory

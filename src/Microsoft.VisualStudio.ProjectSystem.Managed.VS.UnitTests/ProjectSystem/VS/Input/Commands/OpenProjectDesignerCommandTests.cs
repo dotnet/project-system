@@ -7,8 +7,6 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
     public class OpenProjectDesignerCommandTests : AbstractOpenProjectDesignerCommandTests
@@ -18,8 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         {
             Assert.Throws<ArgumentNullException>("designerService", () =>
             {
-
-                new OpenProjectDesignerCommand((IProjectDesignerService)null);
+                new OpenProjectDesignerCommand(null!);
             });
         }
 
@@ -28,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             return VisualStudioStandard97CommandId.Open;
         }
 
-        internal override AbstractOpenProjectDesignerCommand CreateInstance(IProjectDesignerService designerService = null)
+        internal override AbstractOpenProjectDesignerCommand CreateInstance(IProjectDesignerService? designerService = null)
         {
             designerService ??= IProjectDesignerServiceFactory.Create();
 

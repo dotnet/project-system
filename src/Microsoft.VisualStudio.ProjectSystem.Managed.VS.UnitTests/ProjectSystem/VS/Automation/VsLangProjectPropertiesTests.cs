@@ -12,8 +12,6 @@ using VSLangProj110;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 {
     public class VSProject_VSLangProjectPropertiesTests
@@ -22,8 +20,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         public void NotNull()
         {
             var unconfiguredProjectMock = new Mock<UnconfiguredProject>();
-            unconfiguredProjectMock.Setup(p => p.Capabilities)
-                                   .Returns((IProjectCapabilitiesScope)null);
+            unconfiguredProjectMock.SetupGet<IProjectCapabilitiesScope?>(p => p.Capabilities)
+                                   .Returns((IProjectCapabilitiesScope?)null);
 
             var vsproject = CreateInstance(
                                 Mock.Of<VSLangProj.VSProject>(),
@@ -54,17 +52,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             Assert.Equal(events, vsproject.Events);
         }
 
-
         [Fact]
         public void ImportsAndEventsAsNonNull()
         {
             var imports = Mock.Of<Imports>();
-            var importsImpl = new OrderPrecedenceImportCollection<Imports>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, (UnconfiguredProject)null)
+            var importsImpl = new OrderPrecedenceImportCollection<Imports>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, (UnconfiguredProject?)null)
             {
                 new Lazy<Imports, IOrderPrecedenceMetadataView>(() => imports, IOrderPrecedenceMetadataViewFactory.Create("VisualBasic"))
             };
             var events = Mock.Of<VSProjectEvents>();
-            var vsProjectEventsImpl = new OrderPrecedenceImportCollection<VSProjectEvents>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, (UnconfiguredProject)null)
+            var vsProjectEventsImpl = new OrderPrecedenceImportCollection<VSProjectEvents>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, (UnconfiguredProject?)null)
             {
                 new Lazy<VSProjectEvents, IOrderPrecedenceMetadataView>(() => events, IOrderPrecedenceMetadataViewFactory.Create("VisualBasic"))
             };
@@ -72,8 +69,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             var innerVSProjectMock = new Mock<VSLangProj.VSProject>();
 
             var unconfiguredProjectMock = new Mock<UnconfiguredProject>();
-            unconfiguredProjectMock.Setup(p => p.Capabilities)
-                                   .Returns((IProjectCapabilitiesScope)null);
+            unconfiguredProjectMock.SetupGet<IProjectCapabilitiesScope?>(p => p.Capabilities)
+                                   .Returns((IProjectCapabilitiesScope?)null);
 
             var vsproject = new VSProjectTestImpl(
                                 innerVSProjectMock.Object,
@@ -180,18 +177,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         }
 
         private static VSProject CreateInstance(
-            VSLangProj.VSProject vsproject = null,
-            IProjectThreadingService threadingService = null,
-            ActiveConfiguredProject<ProjectProperties> projectProperties = null,
-            UnconfiguredProject project = null,
-            BuildManager buildManager = null)
+            VSLangProj.VSProject vsproject,
+            IProjectThreadingService threadingService,
+            ActiveConfiguredProject<ProjectProperties> projectProperties,
+            UnconfiguredProject? project = null,
+            BuildManager? buildManager = null)
         {
             if (project == null)
             {
                 project = UnconfiguredProjectFactory.Create();
             }
 
-            return new VSProject(vsproject, threadingService, projectProperties, project, buildManager);
+            return new VSProject(vsproject, threadingService, projectProperties, project, buildManager!);
         }
 
         internal class VSProjectTestImpl : VSProject

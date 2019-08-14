@@ -2,9 +2,8 @@
 
 using System;
 using System.Threading;
-using Moq;
 
-#nullable disable
+using Moq;
 
 namespace NuGet.SolutionRestoreManager
 {

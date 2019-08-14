@@ -8,8 +8,6 @@ using Moq;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     public sealed class UnsupportedProjectsSnapshotFilterTests
@@ -61,9 +59,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider);
 
                 filter.BeforeAddOrUpdate(
-                    null,
+                    null!,
                     dependency,
-                    null,
+                    null!,
                     null,
                     context);
 
@@ -104,15 +102,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider.Object);
 
             filter.BeforeAddOrUpdate(
-                null,
+                null!,
                 dependency,
-                null,
+                null!,
                 null,
                 context);
 
             // Accepts unresolved version
             var acceptedDependency = context.GetResult(filter);
-            acceptedDependency.AssertEqualTo(
+            acceptedDependency!.AssertEqualTo(
                 dependency.ToUnresolved(ProjectReference.SchemaName));
 
             // No other changes made
@@ -136,7 +134,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             };
 
             var aggregateSnapshotProvider = new Mock<IAggregateDependenciesSnapshotProvider>(MockBehavior.Strict);
-            aggregateSnapshotProvider.Setup(x => x.GetSnapshot(dependency)).Returns((ITargetedDependenciesSnapshot) null);
+            aggregateSnapshotProvider.Setup(x => x.GetSnapshot(dependency)).Returns((ITargetedDependenciesSnapshot?) null);
 
             var worldBuilder = ImmutableDictionary<string, IDependency>.Empty.ToBuilder();
 
@@ -145,9 +143,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider.Object);
 
             filter.BeforeAddOrUpdate(
-                null,
+                null!,
                 dependency,
-                null,
+                null!,
                 null,
                 context);
 
@@ -188,9 +186,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider.Object);
 
             filter.BeforeAddOrUpdate(
-                null,
+                null!,
                 dependency,
-                null,
+                null!,
                 null,
                 context);
 

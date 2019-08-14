@@ -4,8 +4,6 @@ using System.Collections.Immutable;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 {
     public sealed class MetadataExtensionsTests
@@ -42,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         public void TryGetStringProperty_WhenNotFound()
         {
             var dic = ImmutableDictionary<string, string>.Empty;
-            Assert.False(dic.TryGetStringProperty("key", out string value));
+            Assert.False(dic.TryGetStringProperty("key", out string? value));
             Assert.Null(value);
         }
 
@@ -50,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         public void TryGetStringProperty_WhenFound()
         {
             var dic = ImmutableDictionary<string, string>.Empty.Add("key", "value");
-            Assert.True(dic.TryGetStringProperty("key", out string value));
+            Assert.True(dic.TryGetStringProperty("key", out string? value));
             Assert.Equal("value", value);
         }
 
