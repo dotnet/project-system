@@ -72,11 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             IReadOnlyCollection<string> watchedEvaluationRules = GetRuleNames(RuleSource.Evaluation);
             IReadOnlyCollection<string> watchedJointRules = GetRuleNames(RuleSource.Joint);
 
-            // initialize telemetry with all rules for each target framework
-            foreach (ITargetFramework targetFramework in projectContext.TargetFrameworks)
-            {
-                _treeTelemetryService.InitializeTargetFrameworkRules(targetFramework, watchedJointRules);
-            }
+            _treeTelemetryService.InitializeTargetFrameworkRules(projectContext.TargetFrameworks, watchedJointRules);
 
             foreach (ConfiguredProject configuredProject in projectContext.InnerConfiguredProjects)
             {
