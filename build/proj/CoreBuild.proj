@@ -68,11 +68,12 @@
       <SolutionBuildTarget Include="Pack" Condition="'$(Pack)' == 'true'" />
     </ItemGroup>
 
-    <MSBuild Projects="$(SolutionPath)"
-             Properties="@(SolutionRestoreAndBuildProperty);__BuildPhase=SolutionBuild"
-             Targets="@(SolutionBuildTarget)"
-             BuildInParallel="true"
-             Condition="'@(SolutionBuildTarget)' != ''" />
+    <MSBuild 
+      Projects="$(SolutionPath)"
+      Properties="@(SolutionRestoreAndBuildProperty);__BuildPhase=SolutionBuild"
+      Targets="@(SolutionBuildTarget)"
+      BuildInParallel="true"
+      Condition="'@(SolutionBuildTarget)' != ''" />
 
   </Target>
 
@@ -80,8 +81,8 @@
   <Target Name="GenerateDependentAssemblyVersionsFile">
 
     <MSBuild
-      BuildInParallel="true"
       Projects="GenerateDependentAssemblyVersionFile.proj"
+      BuildInParallel="true"
       />
 
   </Target>
@@ -95,10 +96,11 @@
       <RealSign Condition="'$(SignType)' == 'real'">true</RealSign>
     </PropertyGroup>
 
-    <MSBuild Projects="Sign.proj"
-             Properties="@(CommonBuildProperty);RealSign=$(RealSign);ConfigFile=$(RepoRoot)build\ci\SignToolData.json"
-             Targets="Sign"
-             />
+    <MSBuild 
+      Projects="Sign.proj"
+      Properties="@(CommonBuildProperty);RealSign=$(RealSign);ConfigFile=$(RepoRoot)build\ci\SignToolData.json"
+      Targets="Sign"
+      />
     
   </Target>
 
@@ -108,10 +110,11 @@
 
     <!-- Because multiple projects can contribute to a single insertion component we package them in a separate phase.
          Also due to insertion manifests containing hashes of references VSIXes, so we need to run this after signing  -->
-    <MSBuild Projects="$(NuGetPackageRoot)RoslynTools.RepoToolset\$(RoslynToolsRepoToolsetVersion)\tools\VisualStudio.Insertion.proj"
-             Properties="@(CommonBuildProperty)"
-             Targets="Pack"
-             />
+    <MSBuild 
+      Projects="$(NuGetPackageRoot)RoslynTools.RepoToolset\$(RoslynToolsRepoToolsetVersion)\tools\VisualStudio.Insertion.proj"
+      Properties="@(CommonBuildProperty)"
+      Targets="Pack"
+      />
     
   </Target>
 </Project>
