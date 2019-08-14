@@ -47,9 +47,6 @@
     <SignToolDataPath Condition="'$(SignToolDataPath)' == ''">$(_NormalizedRepoRoot)build\SignToolData.json</SignToolDataPath>
   </PropertyGroup>
 
-  <!--<Import Project="BuildTasks.props"/>-->
-  <!--<Import Project="RepoLayout.props"/>-->
-
   <!-- 
     Orchestrated build environment overrides:
     
@@ -81,9 +78,6 @@
     <_PackageVersionOverridesPath Condition="'$(PB_PackageVersionPropsUrl)' != ''">$(ArtifactsToolsetDir)PackageVersionOverrides.props</_PackageVersionOverridesPath>
     <DotNetPackageVersionPropsPath Condition="'$(DotNetPackageVersionPropsPath)' == ''">$(_PackageVersionOverridesPath)</DotNetPackageVersionPropsPath>
   </PropertyGroup>
-
-  <!--<UsingTask TaskName="RoslynTools.DownloadFile" AssemblyFile="$(RoslynToolsBuildTasksAssembly)" />
-  <UsingTask TaskName="RoslynTools.RewriteOrchestratedBuildPackageVersions" AssemblyFile="$(RoslynToolsBuildTasksAssembly)" />-->
 
   <Target Name="Execute">
     <PropertyGroup>
@@ -138,20 +132,6 @@
       <_SolutionBuildPropsCmdLine>@(_SolutionBuildPropsArgs, ' ')</_SolutionBuildPropsCmdLine>
       <_RestoreToolsPropsCmdLine>@(_RestoreToolsPropArgs, ' ')</_RestoreToolsPropsCmdLine>
     </PropertyGroup>
-
-    <!-- Download version overrides. -->
-    <!--
-    <DownloadFile Uri="$(PB_PackageVersionPropsUrl)" 
-                  DestinationPath="$(_PackageVersionOverridesPath)" 
-                  Condition="'$(Restore)' == 'true' and '$(PB_PackageVersionPropsUrl)' != ''"
-                  Overwrite="true"
-                  Retries="3" />
-
-    -->
-    <!-- Replace -PackageVersion with -Version -->
-    <!--
-    <RewriteOrchestratedBuildPackageVersions File="$(_PackageVersionOverridesPath)" 
-                                             Condition="'$(Restore)' == 'true' and '$(PB_PackageVersionPropsUrl)' != ''" />-->
 
     <!--
       Workaround for https://github.com/NuGet/Home/issues/4695.
