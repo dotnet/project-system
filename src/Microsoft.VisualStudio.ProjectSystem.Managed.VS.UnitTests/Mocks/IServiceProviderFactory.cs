@@ -11,8 +11,8 @@ namespace Microsoft.VisualStudio
         public static IServiceProvider ImplementGetService(Func<Type, object?> func)
         {
             var mock = new Mock<IServiceProvider>();
-            mock.Setup(sp => (object?)sp.GetService(It.IsAny<Type>()))
-                .Returns(func);
+            mock.Setup(sp => sp.GetService(It.IsAny<Type>()))
+                .Returns(func!);
 
             return mock.Object;
         }
