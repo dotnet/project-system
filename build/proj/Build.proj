@@ -32,7 +32,7 @@
 
   </Target>
   
-  <!-- Delegate onto the toolset, which will restore, build, test, pack and sign our solution -->
+  <!-- Delegate onto CoreBuild.proj, which will will actually restore, build, test, pack and sign our solution -->
   <Target Name="CoreBuild">
 
     <PropertyGroup>
