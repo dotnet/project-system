@@ -191,7 +191,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.Equal(dependency1, dependency2);
             Assert.NotEqual(dependency1, dependency3);
             Assert.False(dependency1.Equals(other: null));
-            Assert.Equal(dependency1.GetHashCode(), dependency2.GetHashCode());
+            Assert.Equal(dependency1!.GetHashCode(), dependency2.GetHashCode());
             Assert.NotEqual(dependency1.GetHashCode(), dependency3.GetHashCode());
         }
 
