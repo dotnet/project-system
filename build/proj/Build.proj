@@ -1,4 +1,4 @@
-<Project DefaultTargets="ClearNuGetCache;PrepareMachine;RestoreToolset;CallToolset;GenerateDependentAssemblyVersionsFile;UploadCodeCoverage">
+<Project DefaultTargets="ClearNuGetCache;PrepareMachine;CoreBuild;UploadCodeCoverage">
   
   <Import Project="..\import\Versions.props"/>
   <Import Project="..\import\NuGet.props"/>
@@ -32,34 +32,13 @@
 
   </Target>
   
-  <!-- Restore the toolset to the NuGet package cache -->
-  <Target 
-    Name="RestoreToolset" 
-    Condition="!Exists('$(ToolsetBuildProjectFilePath)')">
-
-    <Message
-      Text="Restoring toolset..."
-      Importance="high" 
-      />
-    
-    <MSBuild 
-      BuildInParallel="true"
-      Projects="Toolset.proj"
-      Targets="Restore"
-      />
-    
-  </Target>
-
-  <!-- Delegate onto the toolset, which will restore, build, test, pack and sign our solution -->
-  <Target Name="CallToolset">
+  <!-- Delegate onto CoreBuild.proj, which will will actually restore, build, test, pack and sign our solution -->
+  <Target Name="CoreBuild">
 
     <PropertyGroup>
-      <ToolsetProperties>
-        SolutionPath=$(RepoRoot)ProjectSystem.sln;
-        NuGetPackageRoot=$(NuGetPackageRoot);
+      <CoreBuildProperties>
         UseOpenCover=$(IsCodeCoverageBuild);
         Configuration=$(Configuration);
-        QuietRestore=true;
         Restore=true;
         Pack=true;
         CIBuild=$(CIBuild);
@@ -70,29 +49,17 @@
         Test=$(Test);
         Sign=$(Sign);
         IntegrationTest=$(IntegrationTest);
-        VersionsPropsPath=$(RepoRoot)build\import\Versions.props;
-        SignToolDataPath=$(RepoRoot)build\ci\SignToolData.json;
-      </ToolsetProperties>      
+      </CoreBuildProperties>      
     </PropertyGroup>
 
     <MSBuild
       BuildInParallel="true"
-      Projects="$(ToolsetBuildProjectFilePath)"
-      Properties="$(ToolsetProperties)"
+      Projects="CoreBuild.proj"
+      Properties="$(CoreBuildProperties)"
       />
     
   </Target>
 
-  <!-- Generate insertion assets -->
-  <Target Name="GenerateDependentAssemblyVersionsFile">
-
-    <MSBuild
-      BuildInParallel="true"
-      Projects="GenerateDependentAssemblyVersionFile.proj"
-      />
-
-  </Target>
-  
   <!-- Push code coverage to https://codecov.io/ -->
   <Target 
     Name="UploadCodeCoverage"
