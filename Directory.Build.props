@@ -9,8 +9,6 @@
 
     <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
 
-    <RepoRoot>$(MSBuildThisFileDirectory)</RepoRoot>
-
     <!--  
       RepoToolset props and targets are conditionally imported based on whether RepoToolsetDir is set or not
       to allow VS to load packages and perform automatic package restore. 
