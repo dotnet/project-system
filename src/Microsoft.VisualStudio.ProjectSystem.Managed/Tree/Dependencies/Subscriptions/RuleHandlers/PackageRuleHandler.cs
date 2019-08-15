@@ -53,17 +53,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             {
                 caseInsensitiveUnresolvedChanges.AddRange(unresolvedChanges.After.Items.Keys);
 
-                if (unresolvedChanges.Difference.AnyChanges)
-                {
-                    HandleChangesForRule(
-                        resolved: false,
-                        projectChange: unresolvedChanges,
-                        unresolvedChanges: null);
-                }
+                HandleChangesForRule(
+                    resolved: false,
+                    projectChange: unresolvedChanges,
+                    unresolvedChanges: null);
             }
 
-            if (changesByRuleName.TryGetValue(ResolvedRuleName, out IProjectChangeDescription resolvedChanges)
-                && resolvedChanges.Difference.AnyChanges)
+            if (changesByRuleName.TryGetValue(ResolvedRuleName, out IProjectChangeDescription resolvedChanges))
             {
                 HandleChangesForRule(
                     resolved: true,
