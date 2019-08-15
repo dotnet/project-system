@@ -17,9 +17,7 @@
   <Target Name="Sign">
 
     <PropertyGroup>
-      <!-- VS2019 and later place msbuild.exe under "MSBuild\Current", while VS2017 places it under "MSBuild\15.0". -->
-      <_MSBuildExePath Condition="Exists('$(VSINSTALLDIR)\MSBuild\Current\Bin\msbuild.exe')">$(VSINSTALLDIR)\MSBuild\Current\Bin\msbuild.exe</_MSBuildExePath>
-      <_MSBuildExePath Condition="'$(_MSBuildExePath)' == ''">$(VSINSTALLDIR)\MSBuild\15.0\Bin\msbuild.exe</_MSBuildExePath>
+      <_MSBuildExePath>$(VSINSTALLDIR)\MSBuild\$(MSBuildToolsVersion)\Bin\msbuild.exe</_MSBuildExePath>
     </PropertyGroup>
 
     <ItemGroup>
