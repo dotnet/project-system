@@ -55,9 +55,6 @@ From within [Visual Studio 2019](https://visualstudio.microsoft.com/downloads/),
 
 Inside Visual Studio, you can build, run tests and deploy.
 
-__NOTE:__ To workaround a bug preventing Visual Studio from restoring this repro, run `build.cmd` once from a Visual Studio Developer Prompt, as called out above.
-
-
 ## Debugging/Deploying
 
 By default when you build inside Visual Studio or the command-line, the project system and other binaries gets deployed to the _Exp_ experimental instance of Visual Studio. They will automatically _override_ any binaries that come with Visual Studio when you launch that instance.
