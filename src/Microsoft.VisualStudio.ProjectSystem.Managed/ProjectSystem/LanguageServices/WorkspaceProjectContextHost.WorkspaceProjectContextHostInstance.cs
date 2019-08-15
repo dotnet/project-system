@@ -67,29 +67,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                 _activeWorkspaceProjectContextTracker.RegisterContext(_contextAccessor.ContextId);
 
-                _disposables = new DisposableBag(CancellationToken.None);
-
                 _applyChangesToWorkspaceContext = _applyChangesToWorkspaceContextFactory.CreateExport();
                 _applyChangesToWorkspaceContext.Value.Initialize(_contextAccessor.Context);
-                _disposables.AddDisposable(_applyChangesToWorkspaceContext);
 
                 _evaluationProgressRegistration = _dataProgressTrackerService.RegisterForIntelliSense(_project, nameof(WorkspaceProjectContextHostInstance) + ".Evaluation");
-                _disposables.AddDisposable(_evaluationProgressRegistration);
 
                 _projectBuildProgressRegistration = _dataProgressTrackerService.RegisterForIntelliSense(_project, nameof(WorkspaceProjectContextHostInstance) + ".ProjectBuild");
-                _disposables.AddDisposable(_projectBuildProgressRegistration);
 
-                // We avoid suppressing version updates, so that progress tracker doesn't
-                // think we're still "in progress" in the case of an empty change
-                _disposables.AddDisposable(_projectSubscriptionService.ProjectRuleSource.SourceBlock.LinkToAsyncAction(
+                _disposables = new DisposableBag
+                {
+                    _applyChangesToWorkspaceContext,
+                    _evaluationProgressRegistration,
+                    _projectBuildProgressRegistration,
+                    
+                    // We avoid suppressing version updates, so that progress tracker doesn't
+                    // think we're still "in progress" in the case of an empty change
+                    _projectSubscriptionService.ProjectRuleSource.SourceBlock.LinkToAsyncAction(
                         target: e => OnProjectChangedAsync(e, evaluation: true),
                         suppressVersionOnlyUpdates: false,
-                        ruleNames: _applyChangesToWorkspaceContext.Value.GetProjectEvaluationRules()));
+                        ruleNames: _applyChangesToWorkspaceContext.Value.GetProjectEvaluationRules()),
 
-                _disposables.AddDisposable(_projectSubscriptionService.ProjectBuildRuleSource.SourceBlock.LinkToAsyncAction(
+                    _projectSubscriptionService.ProjectBuildRuleSource.SourceBlock.LinkToAsyncAction(
                         target: e => OnProjectChangedAsync(e, evaluation: false),
                         suppressVersionOnlyUpdates: false,
-                        ruleNames: _applyChangesToWorkspaceContext.Value.GetProjectBuildRules()));
+                        ruleNames: _applyChangesToWorkspaceContext.Value.GetProjectBuildRules())
+                };
             }
 
             protected override async Task DisposeCoreUnderLockAsync(bool initialized)

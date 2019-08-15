@@ -406,14 +406,6 @@
       <SubType>Designer</SubType>
     </XamlPropertyRule>
 
-    <Compile Update="ProjectSystem\Rules\SubProject.cs">
-      <DependentUpon>SubProject.xaml</DependentUpon>
-    </Compile>
-    <XamlPropertyRule Include="ProjectSystem\Rules\SubProject.xaml">
-      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
-    </XamlPropertyRule>
-
     <Compile Update="ProjectSystem\Rules\UpToDateCheckBuilt.cs">
       <DependentUpon>UpToDateCheckBuilt.xaml</DependentUpon>
     </Compile>
