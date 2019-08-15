@@ -77,15 +77,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
                 if (isResolved)
                 {
-                    isTopLevel = isImplicitlyDefined ||
-                        (dependencyType == DependencyType.Package && unresolvedChanges?.Contains(name) == true);
-
                     if (target == null ||
                         targetFrameworkProvider.GetTargetFramework(target)?.Equals(targetFramework) != true)
                     {
                         metadata = default;
                         return false;
                     }
+
+                    isTopLevel = isImplicitlyDefined ||
+                        (dependencyType == DependencyType.Package && unresolvedChanges?.Contains(name) == true);
 
                 }
                 else
