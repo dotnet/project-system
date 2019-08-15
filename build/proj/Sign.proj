@@ -2,8 +2,6 @@
 <Project DefaultTargets="Sign">
   <!--
     Required parameters:
-      VersionsPropsPath             Versions.props path. 
-      FixedVersionsPropsPath        FixedVersions.props path.
       ConfigFile                    SigntToolData.json path.
       RealSign                      "true" to send binaries to the signing service, "false" to only validate signing configuration.
     Optional parameters:
@@ -12,20 +10,16 @@
                                     SignTool will attempt to unpack all zips provided and match on checksums for any missing files.
   -->
 
-  <Import Project="BuildStep.props" />
+  <Import Project="..\import\Versions.props" />
+  <Import Project="..\import\NuGet.props" />
+  <Import Project="..\import\RepoLayout.props" />
 
   <Target Name="Sign">
-    <Exec Command='"$(MSBuildProjectDirectory)\vswhere.exe" -latest -prerelease -property installationPath -requires Microsoft.Component.MSBuild'
-          Condition="'$(RealSign)' == 'true'"
-          ConsoleToMsBuild="true"
-          StandardErrorImportance="high">
-      <Output TaskParameter="ConsoleOutput" PropertyName="_VsInstallDir" />
-    </Exec>
 
     <PropertyGroup>
       <!-- VS2019 and later place msbuild.exe under "MSBuild\Current", while VS2017 places it under "MSBuild\15.0". -->
-      <_MSBuildExePath Condition="Exists('$(_VsInstallDir)\MSBuild\Current\Bin\msbuild.exe')">$(_VsInstallDir)\MSBuild\Current\Bin\msbuild.exe</_MSBuildExePath>
-      <_MSBuildExePath Condition="'$(_MSBuildExePath)' == ''">$(_VsInstallDir)\MSBuild\15.0\Bin\msbuild.exe</_MSBuildExePath>
+      <_MSBuildExePath Condition="Exists('$(VSINSTALLDIR)\MSBuild\Current\Bin\msbuild.exe')">$(VSINSTALLDIR)\MSBuild\Current\Bin\msbuild.exe</_MSBuildExePath>
+      <_MSBuildExePath Condition="'$(_MSBuildExePath)' == ''">$(VSINSTALLDIR)\MSBuild\15.0\Bin\msbuild.exe</_MSBuildExePath>
     </PropertyGroup>
 
     <ItemGroup>
