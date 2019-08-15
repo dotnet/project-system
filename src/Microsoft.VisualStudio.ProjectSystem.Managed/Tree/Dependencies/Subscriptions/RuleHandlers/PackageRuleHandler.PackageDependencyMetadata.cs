@@ -6,6 +6,7 @@ using System.Collections.Immutable;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.Text;
+using Microsoft.VisualStudio.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.RuleHandlers
 {
@@ -13,6 +14,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
     {
         private readonly struct PackageDependencyMetadata
         {
+            private static readonly InternPool<string> s_targetFrameworkInternPool = new InternPool<string>(StringComparer.Ordinal);
+
             private readonly DependencyType _dependencyType;
 
             public string Target { get; }
@@ -113,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     properties);
                 return true;
 
-                static string GetTargetFromDependencyId(string dependencyId) => new LazyStringSplit(dependencyId, '/').First();
+                static string GetTargetFromDependencyId(string dependencyId) => s_targetFrameworkInternPool.Intern(new LazyStringSplit(dependencyId, '/').First());
             }
 
             public IDependencyModel CreateDependencyModel()
