@@ -61,36 +61,45 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             void HandleChangesForRule(bool resolved, IProjectChangeDescription projectChange, Func<string, bool> shouldProcess)
             {
-                foreach (string removedItem in projectChange.Difference.RemovedItems)
+                if (projectChange.Difference.RemovedItems.Count != 0)
                 {
-                    string dependencyId = resolved
-                        ? projectChange.Before.GetProjectItemProperties(removedItem)!.GetStringProperty(ResolvedAssemblyReference.OriginalItemSpecProperty) ?? removedItem
-                        : removedItem;
-
-                    if (shouldProcess(dependencyId))
+                    foreach (string removedItem in projectChange.Difference.RemovedItems)
                     {
-                        changesBuilder.Removed(targetFramework, ProviderType, removedItem);
+                        string dependencyId = resolved
+                            ? projectChange.Before.GetProjectItemProperties(removedItem)!.GetStringProperty(ResolvedAssemblyReference.OriginalItemSpecProperty) ?? removedItem
+                            : removedItem;
+
+                        if (shouldProcess(dependencyId))
+                        {
+                            changesBuilder.Removed(targetFramework, ProviderType, removedItem);
+                        }
                     }
                 }
 
-                foreach (string changedItem in projectChange.Difference.ChangedItems)
+                if (projectChange.Difference.ChangedItems.Count != 0)
                 {
-                    IDependencyModel model = CreateDependencyModelForRule(changedItem, projectChange.After);
-                    if (shouldProcess(model.Id))
+                    foreach (string changedItem in projectChange.Difference.ChangedItems)
                     {
-                        // For changes we try to add new dependency. If it is a resolved dependency, it would just override
-                        // old one with new properties. If it is unresolved dependency, it would be added only when there no
-                        // resolved version in the snapshot.
-                        changesBuilder.Added(targetFramework, model);
+                        IDependencyModel model = CreateDependencyModelForRule(changedItem, projectChange.After);
+                        if (shouldProcess(model.Id))
+                        {
+                            // For changes we try to add new dependency. If it is a resolved dependency, it would just override
+                            // old one with new properties. If it is unresolved dependency, it would be added only when there no
+                            // resolved version in the snapshot.
+                            changesBuilder.Added(targetFramework, model);
+                        }
                     }
                 }
 
-                foreach (string addedItem in projectChange.Difference.AddedItems)
+                if (projectChange.Difference.AddedItems.Count != 0)
                 {
-                    IDependencyModel model = CreateDependencyModelForRule(addedItem, projectChange.After);
-                    if (shouldProcess(model.Id))
+                    foreach (string addedItem in projectChange.Difference.AddedItems)
                     {
-                        changesBuilder.Added(targetFramework, model);
+                        IDependencyModel model = CreateDependencyModelForRule(addedItem, projectChange.After);
+                        if (shouldProcess(model.Id))
+                        {
+                            changesBuilder.Added(targetFramework, model);
+                        }
                     }
                 }
 

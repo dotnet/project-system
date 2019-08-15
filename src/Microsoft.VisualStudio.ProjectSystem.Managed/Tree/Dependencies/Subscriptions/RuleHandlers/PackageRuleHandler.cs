@@ -80,49 +80,58 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             {
                 Requires.NotNull(targetFramework, nameof(targetFramework));
 
-                foreach (string removedItem in projectChange.Difference.RemovedItems)
+                if (projectChange.Difference.RemovedItems.Count != 0)
                 {
-                    if (PackageDependencyMetadata.TryGetMetadata(
-                        removedItem,
-                        resolved,
-                        properties: projectChange.Before.GetProjectItemProperties(removedItem) ?? ImmutableDictionary<string, string>.Empty,
-                        unresolvedChanges,
-                        targetFramework,
-                        _targetFrameworkProvider,
-                        out PackageDependencyMetadata metadata))
+                    foreach (string removedItem in projectChange.Difference.RemovedItems)
                     {
-                        changesBuilder.Removed(targetFramework, ProviderTypeString, metadata.OriginalItemSpec);
+                        if (PackageDependencyMetadata.TryGetMetadata(
+                            removedItem,
+                            resolved,
+                            properties: projectChange.Before.GetProjectItemProperties(removedItem) ?? ImmutableDictionary<string, string>.Empty,
+                            unresolvedChanges,
+                            targetFramework,
+                            _targetFrameworkProvider,
+                            out PackageDependencyMetadata metadata))
+                        {
+                            changesBuilder.Removed(targetFramework, ProviderTypeString, metadata.OriginalItemSpec);
+                        }
                     }
                 }
 
-                foreach (string changedItem in projectChange.Difference.ChangedItems)
+                if (projectChange.Difference.ChangedItems.Count != 0)
                 {
-                    if (PackageDependencyMetadata.TryGetMetadata(
-                        changedItem,
-                        resolved,
-                        properties: projectChange.After.GetProjectItemProperties(changedItem) ?? ImmutableDictionary<string, string>.Empty,
-                        unresolvedChanges,
-                        targetFramework,
-                        _targetFrameworkProvider,
-                        out PackageDependencyMetadata metadata))
+                    foreach (string changedItem in projectChange.Difference.ChangedItems)
                     {
-                        changesBuilder.Removed(targetFramework, ProviderTypeString, metadata.OriginalItemSpec);
-                        changesBuilder.Added(targetFramework, metadata.CreateDependencyModel());
+                        if (PackageDependencyMetadata.TryGetMetadata(
+                            changedItem,
+                            resolved,
+                            properties: projectChange.After.GetProjectItemProperties(changedItem) ?? ImmutableDictionary<string, string>.Empty,
+                            unresolvedChanges,
+                            targetFramework,
+                            _targetFrameworkProvider,
+                            out PackageDependencyMetadata metadata))
+                        {
+                            changesBuilder.Removed(targetFramework, ProviderTypeString, metadata.OriginalItemSpec);
+                            changesBuilder.Added(targetFramework, metadata.CreateDependencyModel());
+                        }
                     }
                 }
 
-                foreach (string addedItem in projectChange.Difference.AddedItems)
+                if (projectChange.Difference.AddedItems.Count != 0)
                 {
-                    if (PackageDependencyMetadata.TryGetMetadata(
-                        addedItem,
-                        resolved,
-                        properties: projectChange.After.GetProjectItemProperties(addedItem) ?? ImmutableDictionary<string, string>.Empty,
-                        unresolvedChanges,
-                        targetFramework,
-                        _targetFrameworkProvider,
-                        out PackageDependencyMetadata metadata))
+                    foreach (string addedItem in projectChange.Difference.AddedItems)
                     {
-                        changesBuilder.Added(targetFramework, metadata.CreateDependencyModel());
+                        if (PackageDependencyMetadata.TryGetMetadata(
+                            addedItem,
+                            resolved,
+                            properties: projectChange.After.GetProjectItemProperties(addedItem) ?? ImmutableDictionary<string, string>.Empty,
+                            unresolvedChanges,
+                            targetFramework,
+                            _targetFrameworkProvider,
+                            out PackageDependencyMetadata metadata))
+                        {
+                            changesBuilder.Added(targetFramework, metadata.CreateDependencyModel());
+                        }
                     }
                 }
             }
