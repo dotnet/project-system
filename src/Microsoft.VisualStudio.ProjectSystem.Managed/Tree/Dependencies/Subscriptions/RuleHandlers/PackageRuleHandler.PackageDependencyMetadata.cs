@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 string itemSpec,
                 bool isResolved,
                 IImmutableDictionary<string, string> properties,
-                HashSet<string>? unresolvedChanges,
+                HashSet<string>? evaluatedItemSpecs,
                 ITargetFramework targetFramework,
                 ITargetFrameworkProvider targetFrameworkProvider,
                 out PackageDependencyMetadata metadata)
@@ -87,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     }
 
                     isTopLevel = isImplicitlyDefined ||
-                        (dependencyType == DependencyType.Package && unresolvedChanges?.Contains(name) == true);
+                        (dependencyType == DependencyType.Package && evaluatedItemSpecs?.Contains(name) == true);
 
                     originalItemSpec = isTopLevel ? name : itemSpec;
                 }

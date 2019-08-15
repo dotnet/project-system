@@ -47,16 +47,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             ITargetFramework targetFramework,
             CrossTargetDependenciesChangesBuilder changesBuilder)
         {
-            var caseInsensitiveUnresolvedChanges = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            var evaluatedItemSpecs = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
             if (changesByRuleName.TryGetValue(EvaluatedRuleName, out IProjectChangeDescription unresolvedChanges))
             {
-                caseInsensitiveUnresolvedChanges.AddRange(unresolvedChanges.After.Items.Keys);
+                evaluatedItemSpecs.AddRange(unresolvedChanges.After.Items.Keys);
 
                 HandleChangesForRule(
                     resolved: false,
                     projectChange: unresolvedChanges,
-                    unresolvedChanges: null);
+                    evaluatedItemSpecs: null);
             }
 
             if (changesByRuleName.TryGetValue(ResolvedRuleName, out IProjectChangeDescription resolvedChanges))
@@ -64,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 HandleChangesForRule(
                     resolved: true,
                     projectChange: resolvedChanges,
-                    unresolvedChanges: caseInsensitiveUnresolvedChanges);
+                    evaluatedItemSpecs: evaluatedItemSpecs);
             }
 
             return;
@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             void HandleChangesForRule(
                 bool resolved,
                 IProjectChangeDescription projectChange,
-                HashSet<string>? unresolvedChanges)
+                HashSet<string>? evaluatedItemSpecs)
             {
                 Requires.NotNull(targetFramework, nameof(targetFramework));
 
@@ -84,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                             removedItem,
                             resolved,
                             properties: projectChange.Before.GetProjectItemProperties(removedItem) ?? ImmutableDictionary<string, string>.Empty,
-                            unresolvedChanges,
+                            evaluatedItemSpecs,
                             targetFramework,
                             _targetFrameworkProvider,
                             out PackageDependencyMetadata metadata))
@@ -102,7 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                             changedItem,
                             resolved,
                             properties: projectChange.After.GetProjectItemProperties(changedItem) ?? ImmutableDictionary<string, string>.Empty,
-                            unresolvedChanges,
+                            evaluatedItemSpecs,
                             targetFramework,
                             _targetFrameworkProvider,
                             out PackageDependencyMetadata metadata))
@@ -121,7 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                             addedItem,
                             resolved,
                             properties: projectChange.After.GetProjectItemProperties(addedItem) ?? ImmutableDictionary<string, string>.Empty,
-                            unresolvedChanges,
+                            evaluatedItemSpecs,
                             targetFramework,
                             _targetFrameworkProvider,
                             out PackageDependencyMetadata metadata))
