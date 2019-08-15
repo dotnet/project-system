@@ -9,8 +9,6 @@ using Microsoft.VisualStudio.Shell.Interop;
 
 using Task = System.Threading.Tasks.Task;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
     /// <summary>
@@ -45,7 +43,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         {
             Guid projectDesignerGuid = _projectVsServices.VsHierarchy.GetGuidProperty(VsHierarchyPropID.ProjectDesignerEditor);
 
-            IVsWindowFrame frame = _projectVsServices.VsProject.OpenItemWithSpecific(HierarchyId.Root, projectDesignerGuid);
+            IVsWindowFrame? frame = _projectVsServices.VsProject.OpenItemWithSpecific(HierarchyId.Root, projectDesignerGuid);
+
             if (frame != null)
             {   // Opened within Visual Studio
 

@@ -7,13 +7,11 @@ using System.Threading.Tasks;
 using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IProjectAccessorFactory
     {
-        public static IProjectAccessor Create(string xml = null)
+        public static IProjectAccessor Create(string? xml = null)
         {
             var rootElement = ProjectRootElementFactory.Create(xml);
 

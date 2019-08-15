@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         [ImportingConstructor]
         public SettingsFileSpecialFileProvider(IPhysicalProjectTree projectTree,
                                                [Import(ExportContractNames.ProjectItemProviders.SourceFiles)] IProjectItemProvider sourceItemsProvider,
-                                               [Import(AllowDefault = true)] Lazy<ICreateFileFromTemplateService> templateFileCreationService,
+                                               [Import(AllowDefault = true)] Lazy<ICreateFileFromTemplateService>? templateFileCreationService,
                                                IFileSystem fileSystem,
                                                ISpecialFilesManager specialFilesManager)
             : base(projectTree, sourceItemsProvider, templateFileCreationService, fileSystem, specialFilesManager)

@@ -1,13 +1,11 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Windows.Controls;
-using Microsoft.VisualStudio.Composition;
 
-#nullable disable
+using Microsoft.VisualStudio.Composition;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
-
     /// <summary>
     /// Interface definition which allows a launch settings provider to participate in the debug property page UI. The Set of 
     /// LaunchSettingUIProviders provides the set of entries for the debug dropdown command list.
@@ -41,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// null if there are no custom controls but still want to add a new command to the list. Example is the Executable and Project
         /// commands. Neither provide custom controls (though arguable executable should).
         /// </summary>
-        UserControl CustomUI { get; }
+        UserControl? CustomUI { get; }
 
         /// <summary>
         /// Called when the selected profile changes to a profile which matches this command. curSettings will contain 

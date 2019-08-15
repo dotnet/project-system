@@ -17,8 +17,8 @@
                   ReadOnly="True"
                   Visible="False" />
 
-  <StringProperty Name="PrivateAssets"
-                  Description="Assets that are private in this reference."
-                  DisplayName="Private Assets" />
+  <BoolProperty Name="Visible"
+                ReadOnly="True"
+                Visible="False" />
 
 </Rule>

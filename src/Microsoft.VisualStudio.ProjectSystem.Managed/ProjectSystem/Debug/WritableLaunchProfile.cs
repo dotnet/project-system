@@ -10,7 +10,6 @@ using Microsoft.VisualStudio.Collections;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
-
     /// <summary>
     /// Represents one launch profile read from the launchSettings file.
     /// </summary>

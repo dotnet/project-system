@@ -2,10 +2,9 @@
 
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+
 using Microsoft.VisualStudio.Input;
 using Microsoft.VisualStudio.Shell.Interop;
-
-#nullable disable
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
@@ -14,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     internal class VS97AddItemCommandHandler : AbstractAddItemCommandHandler
     {
         private static readonly ImmutableDictionary<long, ImmutableArray<TemplateDetails>> s_templateDetails = ImmutableDictionary<long, ImmutableArray<TemplateDetails>>.Empty
-           //                      Command Id                                Capability                      DirNamePackageGuid          DirNameResourceId                                       TemplateNameResourceId
+            //                     Command Id                                Capability                      DirNamePackageGuid          DirNameResourceId                                       TemplateNameResourceId
             .CreateTemplateDetails(VisualStudioStandard97CommandId.AddClass, ProjectCapability.CSharp,       LegacyCSharpPackageGuid,    LegacyCSharpStringResourceIds.IDS_PROJECTITEMTYPE_STR,  LegacyCSharpStringResourceIds.IDS_TEMPLATE_NEWCSharpCLASS )
 
             .CreateTemplateDetails(VisualStudioStandard97CommandId.AddClass, ProjectCapability.VisualBasic,  LegacyVBPackageGuid,        LegacyVBStringResourceIds.IDS_VSDIR_VBPROJECTFILES,     LegacyVBStringResourceIds.IDS_VSDIR_ITEM_CLASS            );
@@ -28,4 +27,3 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         }
     }
 }
-

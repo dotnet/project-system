@@ -7,8 +7,6 @@ using System.Threading.Tasks.Dataflow;
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IProjectTreeProviderFactory
@@ -36,16 +34,16 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return mock.Object;
         }
 
-        public static IProjectTreeProvider ImplementFindByPath(Func<IProjectTree, string, IProjectTree> action)
+        public static IProjectTreeProvider ImplementFindByPath(Func<IProjectTree, string, IProjectTree?> action)
         {
             var mock = new Mock<IProjectTreeProvider>();
-            mock.Setup(p => p.FindByPath(It.IsAny<IProjectTree>(), It.IsAny<string>()))
+            mock.Setup<IProjectTree?>(p => p.FindByPath(It.IsAny<IProjectTree>(), It.IsAny<string>()))
                 .Returns(action);
 
             return mock.Object;
         }
 
-        public static IProjectTreeProvider Create(string addNewItemDirectoryReturn = null, Func<IProjectTree, string, IProjectTree> findByPathAction = null)
+        public static IProjectTreeProvider Create(string? addNewItemDirectoryReturn = null, Func<IProjectTree, string, IProjectTree>? findByPathAction = null)
         {
             var mock = new Mock<IProjectTreeProvider>();
 
@@ -66,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                     return Task.CompletedTask;
                 });
 
-            mock.Setup(t => t.GetAddNewItemDirectory(It.IsAny<IProjectTree>())).Returns(addNewItemDirectoryReturn);
+            mock.Setup<string?>(t => t.GetAddNewItemDirectory(It.IsAny<IProjectTree>())).Returns(addNewItemDirectoryReturn);
 
             mock.Setup(p => p.FindByPath(It.IsAny<IProjectTree>(), It.IsAny<string>()))
                 .Returns(findByPathAction);

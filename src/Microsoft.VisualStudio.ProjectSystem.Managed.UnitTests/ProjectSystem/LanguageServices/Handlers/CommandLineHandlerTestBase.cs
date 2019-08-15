@@ -9,8 +9,6 @@ using Moq;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
     public abstract class CommandLineHandlerTestBase
@@ -25,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             Assert.Throws<ArgumentNullException>("version", () =>
             {
-                handler.Handle(null, added, removed, true, logger);
+                handler.Handle(null!, added, removed, true, logger);
             });
         }
 
@@ -38,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             Assert.Throws<ArgumentNullException>("added", () =>
             {
-                handler.Handle(10, null, removed, true, logger);
+                handler.Handle(10, null!, removed, true, logger);
             });
         }
 
@@ -51,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             Assert.Throws<ArgumentNullException>("removed", () =>
             {
-                handler.Handle(10, added, null, true, logger);
+                handler.Handle(10, added, null!, true, logger);
             });
         }
 
@@ -64,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             Assert.Throws<ArgumentNullException>("logger", () =>
             {
-                handler.Handle(10, added, removed, true, null);
+                handler.Handle(10, added, removed, true, null!);
             });
         }
 
@@ -89,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             Assert.Throws<ArgumentNullException>("context", () =>
             {
-                handler.Initialize(null);
+                handler.Initialize(null!);
             });
         }
 
@@ -109,6 +107,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         }
 
         internal abstract ICommandLineHandler CreateInstance();
-
     }
 }

@@ -2,13 +2,11 @@
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IProjectServiceFactory
     {
-        public static IProjectService Create(ProjectServices services = null, IProjectCapabilitiesScope scope = null, ConfiguredProject configuredProject = null)
+        public static IProjectService Create(ProjectServices? services = null, IProjectCapabilitiesScope? scope = null, ConfiguredProject? configuredProject = null)
         {
             var mock = new Mock<IProjectService>();
 

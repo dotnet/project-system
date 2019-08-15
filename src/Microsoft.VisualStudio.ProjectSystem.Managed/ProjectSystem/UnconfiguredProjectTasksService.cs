@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
         private readonly IProjectAsynchronousTasksService _tasksService;
         private readonly IProjectThreadingService _threadingService;
-        private readonly ILoadedInHostListener _loadedInHostListener;
+        private readonly ILoadedInHostListener? _loadedInHostListener;
         private readonly TaskCompletionSource<object?> _projectLoadedInHost = new TaskCompletionSource<object?>();
         private readonly TaskCompletionSource<object?> _prioritizedProjectLoadedInHost = new TaskCompletionSource<object?>();
         private readonly JoinableTaskCollection _prioritizedTasks;
@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public UnconfiguredProjectTasksService(
             [Import(ExportContractNames.Scopes.UnconfiguredProject)]IProjectAsynchronousTasksService tasksService,
             IProjectThreadingService threadingService,
-            [Import(AllowDefault = true)] ILoadedInHostListener loadedInHostListener)
+            [Import(AllowDefault = true)] ILoadedInHostListener? loadedInHostListener)
         {
             _prioritizedTasks = threadingService.JoinableTaskContext.CreateCollection();
             _prioritizedTasks.DisplayName = "PrioritizedProjectLoadedInHostTasks";

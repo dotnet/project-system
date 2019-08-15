@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
-using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
-using Xunit;
 
-#nullable disable
+using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+
+using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             return CreateInstance(null, null);
         }
 
-        private DynamicItemHandler CreateInstance(UnconfiguredProject project = null, IWorkspaceProjectContext context = null)
+        private static DynamicItemHandler CreateInstance(UnconfiguredProject? project = null, IWorkspaceProjectContext? context = null)
         {
             project ??= UnconfiguredProjectFactory.Create();
 

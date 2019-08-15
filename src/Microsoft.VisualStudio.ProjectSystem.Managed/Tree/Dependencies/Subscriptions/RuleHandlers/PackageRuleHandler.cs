@@ -12,8 +12,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.RuleHandlers
 {
-    [Export(DependencyRulesSubscriber.DependencyRulesSubscriberContract,
-            typeof(IDependenciesRuleHandler))]
+    [Export(DependencyRulesSubscriber.DependencyRulesSubscriberContract, typeof(IDependenciesRuleHandler))]
     [Export(typeof(IProjectDependenciesSubTreeProvider))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     internal sealed partial class PackageRuleHandler : DependenciesRuleHandlerBase
@@ -50,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         {
             var caseInsensitiveUnresolvedChanges = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-            if (changesByRuleName.TryGetValue(UnresolvedRuleName, out IProjectChangeDescription unresolvedChanges))
+            if (changesByRuleName.TryGetValue(EvaluatedRuleName, out IProjectChangeDescription unresolvedChanges))
             {
                 caseInsensitiveUnresolvedChanges.AddRange(unresolvedChanges.After.Items.Keys);
 

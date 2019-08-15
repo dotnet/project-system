@@ -7,8 +7,6 @@ using Microsoft.VisualStudio.Input;
 using Microsoft.VisualStudio.ProjectSystem.Input;
 using Microsoft.VisualStudio.Shell;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 {
     [ProjectCommand(CommandGroup.FSharpProject, FSharpProjectCommandId.MoveUp)]

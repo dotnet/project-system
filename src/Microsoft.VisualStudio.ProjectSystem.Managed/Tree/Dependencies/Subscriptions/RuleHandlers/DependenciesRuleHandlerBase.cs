@@ -14,31 +14,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         : IDependenciesRuleHandler,
           IProjectDependenciesSubTreeProviderInternal
     {
-        private readonly ImmutableHashSet<string> _evaluationRuleNames;
-        private readonly ImmutableHashSet<string> _designTimeBuildRuleNames;
-
-        protected string UnresolvedRuleName { get; }
-        protected string ResolvedRuleName { get; }
+        public string EvaluatedRuleName { get; }
+        public string ResolvedRuleName { get; }
 
         protected DependenciesRuleHandlerBase(
-            string unresolvedRuleName,
+            string evaluatedRuleName,
             string resolvedRuleName)
         {
-            UnresolvedRuleName = unresolvedRuleName;
-            ResolvedRuleName = resolvedRuleName;
+            Requires.NotNullOrWhiteSpace(evaluatedRuleName, nameof(evaluatedRuleName));
+            Requires.NotNullOrWhiteSpace(resolvedRuleName, nameof(resolvedRuleName));
 
-            _evaluationRuleNames = ImmutableStringHashSet.EmptyOrdinal.Add(unresolvedRuleName);
-            _designTimeBuildRuleNames = _evaluationRuleNames.Add(resolvedRuleName);
+            EvaluatedRuleName = evaluatedRuleName;
+            ResolvedRuleName = resolvedRuleName;
         }
 
         #region IDependenciesRuleHandler
-
-        public ImmutableHashSet<string> GetRuleNames(RuleHandlerType handlerType)
-        {
-            return handlerType == RuleHandlerType.Evaluation ?
-                _evaluationRuleNames :
-                _designTimeBuildRuleNames;
-        }
 
         public abstract ImageMoniker ImplicitIcon { get; }
 
@@ -50,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             // We receive unresolved and resolved changes separately.
 
             // Process all unresolved changes.
-            if (changesByRuleName.TryGetValue(UnresolvedRuleName, out IProjectChangeDescription unresolvedChanges))
+            if (changesByRuleName.TryGetValue(EvaluatedRuleName, out IProjectChangeDescription unresolvedChanges))
             {
                 HandleChangesForRule(
                     resolved: false,

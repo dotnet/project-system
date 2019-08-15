@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IUnconfiguredProjectTasksServiceFactory

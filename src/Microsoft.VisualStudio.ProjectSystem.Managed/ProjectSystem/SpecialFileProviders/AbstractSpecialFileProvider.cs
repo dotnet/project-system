@@ -25,13 +25,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         /// this might not exist, in which case we provide a default implementation for adding
         /// a file.
         /// </summary>
-        private readonly Lazy<ICreateFileFromTemplateService> _templateFileCreationService;
+        private readonly Lazy<ICreateFileFromTemplateService>? _templateFileCreationService;
 
         protected readonly IPhysicalProjectTree _projectTree;
 
         protected AbstractSpecialFileProvider(IPhysicalProjectTree projectTree,
                                            [Import(ExportContractNames.ProjectItemProviders.SourceFiles)] IProjectItemProvider sourceItemsProvider,
-                                           [Import(AllowDefault = true)] Lazy<ICreateFileFromTemplateService> templateFileCreationService,
+                                           [Import(AllowDefault = true)] Lazy<ICreateFileFromTemplateService>? templateFileCreationService,
                                            IFileSystem fileSystem,
                                            ISpecialFilesManager specialFileManager)
         {

@@ -3,8 +3,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     /// <summary>
@@ -26,6 +24,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <summary>
         /// Validate and/or transform the given unevaluated property value to be written back to the project file.
         /// </summary>
-        Task<string> OnSetPropertyValueAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string> dimensionalConditions = null);
+        Task<string?> OnSetPropertyValueAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null);
     }
 }

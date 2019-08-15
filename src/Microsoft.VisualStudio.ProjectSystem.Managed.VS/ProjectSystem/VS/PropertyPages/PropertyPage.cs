@@ -11,21 +11,17 @@ using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Shell.Interop;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
-    public abstract partial class PropertyPage : UserControl,
-       IPropertyPage,
-       IVsDebuggerEvents
+    public abstract partial class PropertyPage : UserControl, IPropertyPage, IVsDebuggerEvents
     {
-        private IPropertyPageSite _site = null;
+        private IPropertyPageSite? _site = null;
         private bool _isDirty = false;
         private readonly bool _ignoreEvents = false;
-        private IVsDebugger _debugger;
+        private IVsDebugger? _debugger;
         private uint _debuggerCookie;
         private bool _isActivated = false;
-        private IProjectThreadingService _threadHandling;
+        private IProjectThreadingService? _threadHandling;
 
         // WIN32 Constants
         private const int SW_HIDE = 0;
@@ -37,14 +33,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             AutoScroll = false;
         }
 
-        internal UnconfiguredProject UnconfiguredProject { get; set; }
+        internal UnconfiguredProject? UnconfiguredProject { get; set; }
 
-
-        ///--------------------------------------------------------------------------------------------
         /// <summary>
         /// Property. Gets or sets whether the page is dirty. Dirty status is pushed to owner property sheet
         /// </summary>
-        ///--------------------------------------------------------------------------------------------
         protected bool IsDirty
         {
             get { return _isDirty; }
@@ -54,43 +47,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 if (value != _isDirty && !_ignoreEvents)
                 {
                     _isDirty = value;
+                    
                     // If dirty, this causes Apply to be called
-                    if (_site != null)
-                        _site.OnStatusChange((uint)(_isDirty ? PROPPAGESTATUS.PROPPAGESTATUS_DIRTY : PROPPAGESTATUS.PROPPAGESTATUS_CLEAN));
+                    _site?.OnStatusChange((uint)(_isDirty ? PROPPAGESTATUS.PROPPAGESTATUS_DIRTY : PROPPAGESTATUS.PROPPAGESTATUS_CLEAN));
                 }
             }
         }
 
-        public List<IVsBrowseObjectContext> ContextObjects { get; private set; }
+        [Obsolete("This property is not used by the project system.")]
+        public List<IVsBrowseObjectContext>? ContextObjects { get; private set; }
 
-        /// <summary>
-        /// Helper to wait on async tasks
-        /// </summary>
-        private T WaitForAsync<T>(Func<Task<T>> asyncFunc)
-        {
-            return _threadHandling.ExecuteSynchronously(asyncFunc);
-        }
-
-        /// <summary>
-        /// Helper to wait on async tasks
-        /// </summary>
-        private void WaitForAsync(Func<Task> asyncFunc)
-        {
-            _threadHandling.ExecuteSynchronously(asyncFunc);
-        }
-
-        ///--------------------------------------------------------------------------------------------
         /// <summary>
         /// IPropertyPage
         /// This is called before our form is shown but after SetObjects is called.
         /// This is the place from which the form can populate itself using the information available
         /// in CPS.
         /// </summary>
-        ///--------------------------------------------------------------------------------------------
         public void Activate(IntPtr hWndParent, RECT[] pRect, int bModal)
         {
             AdviseDebugger();
             SuspendLayout();
+
             // Initialization can cause some events to be fired when we change some values
             // so we use this flag (_ignoreEvents) to notify IsDirty to ignore
             // any changes that happen during initialization
@@ -108,31 +85,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
             ResumeLayout();
             _isActivated = true;
-
         }
 
-        ///--------------------------------------------------------------------------------------------
         /// <summary>
-        /// IPropertyPage
         /// This is where the information entered in the form should be saved in CPS
         /// </summary>
-        ///--------------------------------------------------------------------------------------------
         public int Apply()
         {
-            return WaitForAsync(OnApply);
+            Assumes.NotNull(_threadHandling);
+
+            return _threadHandling!.ExecuteSynchronously(OnApply);
         }
 
-        ///--------------------------------------------------------------------------------------------
         /// <summary>
-        /// IPropertyPage
         /// Called when the page is deactivated
         /// </summary>
-        ///--------------------------------------------------------------------------------------------
         public void Deactivate()
         {
             if (_isActivated)
             {
-                WaitForAsync(OnDeactivate);
+                Assumes.NotNull(_threadHandling);
+
+                _threadHandling!.ExecuteSynchronously(OnDeactivate);
                 UnadviseDebugger();
             }
 
@@ -140,41 +114,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             Dispose(true);
         }
 
-        ///--------------------------------------------------------------------------------------------
         /// <summary>
-        /// IPropertyPage
         /// Returns a struct describing our property page
         /// </summary>
-        ///--------------------------------------------------------------------------------------------
         public void GetPageInfo(PROPPAGEINFO[] pPageInfo)
         {
-            var info = new PROPPAGEINFO
-            {
-                cb = (uint)Marshal.SizeOf(typeof(PROPPAGEINFO)),
-                dwHelpContext = 0,
-                pszDocString = null,
-                pszHelpFile = null,
-                pszTitle = PropertyPageName
-            };
-            // set the size to 0 so the host doesn't use scroll bars
-            // we want to do that within our own container.
-            info.SIZE.cx = 0;
-            info.SIZE.cy = 0;
             if (pPageInfo != null && pPageInfo.Length > 0)
-                pPageInfo[0] = info;
+            {
+                pPageInfo[0] = new PROPPAGEINFO
+                {
+                    cb = (uint)Marshal.SizeOf(typeof(PROPPAGEINFO)),
+                    dwHelpContext = 0,
+                    pszDocString = null,
+                    pszHelpFile = null,
+                    pszTitle = PropertyPageName,
+                    // set the size to 0 so the host doesn't use scroll bars
+                    // we want to do that within our own container.
+                    SIZE = {cx = 0, cy = 0}
+                };
+            }
         }
 
-        ///--------------------------------------------------------------------------------------------
         /// <summary>
-        /// IPropertyPage
         /// Returns the help context
         /// </summary>
-        ///--------------------------------------------------------------------------------------------
         public void Help(string pszHelpDir)
         {
             return;
         }
-
 
         public int IsPageDirty()
         {
@@ -184,12 +151,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             return HResult.False;
         }
 
-        ///--------------------------------------------------------------------------------------------
         /// <summary>
         /// IPropertyPage
         ///  Called when the page is moved or sized
         /// </summary>
-        ///--------------------------------------------------------------------------------------------
         public new void Move(RECT[] pRect)
         {
             if (pRect == null || pRect.Length <= 0)
@@ -201,11 +166,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             Size = new Size(r.right - r.left, r.bottom - r.top);
         }
 
-        ///--------------------------------------------------------------------------------------------
         /// <summary>
         /// Notification that debug mode changed
         /// </summary>
-        ///--------------------------------------------------------------------------------------------
         public int OnModeChange(DBGMODE dbgmodeNew)
         {
             Enabled = (dbgmodeNew == DBGMODE.DBGMODE_Design);
@@ -217,26 +180,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// </summary>
         internal void SetObjects(bool isClosing)
         {
-            WaitForAsync(() => OnSetObjects(isClosing));
+            Assumes.NotNull(_threadHandling);
+
+            _threadHandling!.ExecuteSynchronously(() => OnSetObjects(isClosing));
         }
 
-        ///--------------------------------------------------------------------------------------------
         /// <summary>
         /// IPropertyPage
         /// Site for our page
         /// </summary>
-        ///--------------------------------------------------------------------------------------------
         public void SetPageSite(IPropertyPageSite pPageSite)
         {
             _site = pPageSite;
         }
 
-        ///--------------------------------------------------------------------------------------------
         /// <summary>
         /// IPropertyPage
         /// Show/Hide the page
         /// </summary>
-        ///--------------------------------------------------------------------------------------------
         public void Show(uint nCmdShow)
         {
             if (nCmdShow != SW_HIDE)
@@ -249,12 +210,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
-        ///--------------------------------------------------------------------------------------------
         /// <summary>
         /// IPropertyPage
         /// Handles mnemonics
         /// </summary>
-        ///--------------------------------------------------------------------------------------------
         public int TranslateAccelerator(MSG[] pMsg)
         {
             if (pMsg == null)
@@ -273,23 +232,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 pMsg[0].message = (uint)m.Msg;
                 pMsg[0].wParam = m.WParam;
                 pMsg[0].lParam = m.LParam;
-                // Returning S_OK indicates we handled the message ourselves
+                // Returning S_OK (0) indicates we handled the message ourselves
                 return HResult.OK;
             }
 
-
-            // Returning S_FALSE indicates we have not handled the message
+            // Returning S_FALSE (1) indicates we have not handled the message
             int result = 0;
             if (_site != null)
                 result = _site.TranslateAccelerator(pMsg);
             return result;
         }
 
-        ///--------------------------------------------------------------------------------------------
         /// <summary>
         /// Initialize and listen to debug mode changes
         /// </summary>
-        ///--------------------------------------------------------------------------------------------
         internal void AdviseDebugger()
         {
             if (_site is System.IServiceProvider sp)
@@ -307,20 +263,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
-        ///--------------------------------------------------------------------------------------------
         /// <summary>
         /// Quit listening to debug mode changes
         /// </summary>
-        ///--------------------------------------------------------------------------------------------
         private void UnadviseDebugger()
         {
-            if (_debuggerCookie != 0 && _debugger != null)
+            if (_debuggerCookie != 0)
             {
-                _debugger.UnadviseDebuggerEvents(_debuggerCookie);
+                _debugger?.UnadviseDebuggerEvents(_debuggerCookie);
             }
             _debugger = null;
             _debuggerCookie = 0;
         }
+
         protected abstract Task<int> OnApply();
         protected abstract Task OnDeactivate();
         protected abstract Task OnSetObjects(bool isClosing);
@@ -334,7 +289,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 // do nothing
                 if (_threadHandling != null)
                 {
-                    SetObjects(true);
+                    SetObjects(isClosing: true);
                 }
                 return;
             }
@@ -355,13 +310,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                         // We need to save ThreadHandling because the appdesigner will call SetObjects with null, and then call
                         // Deactivate(). We need to run Async code during Deactivate() which requires ThreadHandling.
 
-                        IUnconfiguredProjectVsServices projectVsServices = UnconfiguredProject.Services.ExportProvider.GetExportedValue<IUnconfiguredProjectVsServices>();
-                        _threadHandling = projectVsServices.ThreadingService;
+                        if (UnconfiguredProject != null)
+                        {
+                            IUnconfiguredProjectVsServices projectVsServices = UnconfiguredProject.Services.ExportProvider.GetExportedValue<IUnconfiguredProjectVsServices>();
+                            _threadHandling = projectVsServices.ThreadingService;
+                        }
                     }
                 }
             }
 
-            OnSetObjects(false);
+            Task noWait = OnSetObjects(isClosing: false);
         }
     }
 }

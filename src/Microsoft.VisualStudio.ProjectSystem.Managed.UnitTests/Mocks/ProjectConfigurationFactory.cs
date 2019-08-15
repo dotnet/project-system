@@ -4,8 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class ProjectConfigurationFactory
@@ -63,7 +61,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return model.FromJson(jsonString);
         }
 
-
         private static string GetDimensionName(int ordinal)
         {
             return ordinal switch
@@ -79,24 +76,27 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
     internal class ProjectConfigurationModel : JsonModel<ProjectConfiguration>
     {
-        public IImmutableDictionary<string, string> Dimensions { get; set; }
-
-        public string Name { get; set; }
+        public IImmutableDictionary<string, string>? Dimensions { get; set; }
+        public string? Name { get; set; }
 
         public override ProjectConfiguration ToActualModel()
         {
-            return new ActualModel
-            {
-                Dimensions = Dimensions,
-                Name = Name
-            };
+            Assumes.NotNull(Dimensions);
+            Assumes.NotNull(Name);
+
+            return new ActualModel(Dimensions!, Name!);
         }
 
         private class ActualModel : ProjectConfiguration
         {
-            public IImmutableDictionary<string, string> Dimensions { get; set; }
+            public IImmutableDictionary<string, string> Dimensions { get; }
+            public string Name { get; }
 
-            public string Name { get; set; }
+            public ActualModel(IImmutableDictionary<string, string> dimensions, string name)
+            {
+                Dimensions = dimensions;
+                Name = name;
+            }
 
             public bool Equals(ProjectConfiguration other)
             {

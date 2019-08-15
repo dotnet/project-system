@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal partial class ProjectTreeParser
@@ -49,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                     throw new NotImplementedException();
                 }
 
-                public Task<string> GetPropertyValueAsync(string propertyName)
+                public Task<string?> GetPropertyValueAsync(string propertyName)
                 {
                     if (propertyName == "SubType")
                     {

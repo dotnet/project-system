@@ -8,8 +8,6 @@ using Microsoft.VisualStudio.ProjectSystem;
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.LanguageServices.ProjectSystem
 {
     internal static class IWorkspaceProjectContextMockFactory
@@ -39,7 +37,7 @@ namespace Microsoft.VisualStudio.LanguageServices.ProjectSystem
             return new IWorkspaceProjectContextMock().Object;
         }
 
-        public static IWorkspaceProjectContext CreateForDynamicFiles(UnconfiguredProject project, Action<string> addDynamicFile = null)
+        public static IWorkspaceProjectContext CreateForDynamicFiles(UnconfiguredProject project, Action<string>? addDynamicFile = null)
         {
             var context = new IWorkspaceProjectContextMock();
 
@@ -55,7 +53,7 @@ namespace Microsoft.VisualStudio.LanguageServices.ProjectSystem
             return context.Object;
         }
 
-        public static IWorkspaceProjectContext CreateForSourceFiles(UnconfiguredProject project, Action<string> addSourceFile = null, Action<string> removeSourceFile = null)
+        public static IWorkspaceProjectContext CreateForSourceFiles(UnconfiguredProject project, Action<string>? addSourceFile = null, Action<string>? removeSourceFile = null)
         {
             var context = new IWorkspaceProjectContextMock();
 
@@ -71,13 +69,13 @@ namespace Microsoft.VisualStudio.LanguageServices.ProjectSystem
             if (removeSourceFile != null)
             {
                 context.Setup(c => c.RemoveSourceFile(It.IsAny<string>()))
-                    .Callback<string>(p1 => removeSourceFile(p1));
+                    .Callback(removeSourceFile);
             }
 
             return context.Object;
         }
 
-        public static IWorkspaceProjectContext CreateForMetadataReferences(UnconfiguredProject project, Action<string> addMetadataReference = null, Action<string> removeMetadataReference = null)
+        public static IWorkspaceProjectContext CreateForMetadataReferences(UnconfiguredProject project, Action<string>? addMetadataReference = null, Action<string>? removeMetadataReference = null)
         {
             var context = new Mock<IWorkspaceProjectContext>();
 
@@ -93,7 +91,7 @@ namespace Microsoft.VisualStudio.LanguageServices.ProjectSystem
             if (removeMetadataReference != null)
             {
                 context.Setup(c => c.RemoveMetadataReference(It.IsAny<string>()))
-                    .Callback<string>(p1 => removeMetadataReference(p1));
+                    .Callback(removeMetadataReference);
             }
 
             return context.Object;

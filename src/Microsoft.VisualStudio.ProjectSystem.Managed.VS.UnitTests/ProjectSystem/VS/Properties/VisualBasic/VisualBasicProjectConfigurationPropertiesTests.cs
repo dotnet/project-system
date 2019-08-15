@@ -6,8 +6,6 @@ using System.Linq;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic
 {
     public class VisualBasicProjectConfigurationPropertiesTests
@@ -17,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic
         {
             Assert.Throws<ArgumentNullException>("projectProperties", () =>
             {
-                new VisualBasicProjectConfigurationProperties(null, null);
+                new VisualBasicProjectConfigurationProperties(null!, null!);
             });
         }
 
@@ -26,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic
         {
             Assert.Throws<ArgumentNullException>("threadingService", () =>
             {
-                new VisualBasicProjectConfigurationProperties(ProjectPropertiesFactory.CreateEmpty(), null);
+                new VisualBasicProjectConfigurationProperties(ProjectPropertiesFactory.CreateEmpty(), null!);
             });
         }
 
@@ -35,13 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic
         {
             var setValues = new List<object>();
             var project = UnconfiguredProjectFactory.Create();
-            var data = new PropertyPageData()
-            {
-                Category = ConfiguredBrowseObject.SchemaName,
-                PropertyName = ConfiguredBrowseObject.CodeAnalysisRuleSetProperty,
-                Value = "Blah",
-                SetValues = setValues
-            };
+            var data = new PropertyPageData(ConfiguredBrowseObject.SchemaName, ConfiguredBrowseObject.CodeAnalysisRuleSetProperty, "Blah", setValues);
 
             var projectProperties = ProjectPropertiesFactory.Create(project, data);
 
@@ -58,13 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic
         {
             var setValues = new List<object>();
             var project = UnconfiguredProjectFactory.Create();
-            var data = new PropertyPageData()
-            {
-                Category = ConfiguredBrowseObject.SchemaName,
-                PropertyName = ConfiguredBrowseObject.LangVersionProperty,
-                Value = "9",
-                SetValues = setValues
-            };
+            var data = new PropertyPageData(ConfiguredBrowseObject.SchemaName, ConfiguredBrowseObject.LangVersionProperty, "9", setValues);
 
             var projectProperties = ProjectPropertiesFactory.Create(project, data);
 
@@ -81,13 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic
         {
             var setValues = new List<object>();
             var project = UnconfiguredProjectFactory.Create();
-            var data = new PropertyPageData()
-            {
-                Category = ConfiguredBrowseObject.SchemaName,
-                PropertyName = ConfiguredBrowseObject.OutputPathProperty,
-                Value = "OldPath",
-                SetValues = setValues
-            };
+            var data = new PropertyPageData(ConfiguredBrowseObject.SchemaName, ConfiguredBrowseObject.OutputPathProperty, "OldPath", setValues);
 
             var projectProperties = ProjectPropertiesFactory.Create(project, data);
 
@@ -99,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic
             Assert.Equal(setValues.Single(), testValue);
         }
 
-        private VisualBasicProjectConfigurationProperties CreateInstance(ProjectProperties projectProperties, IProjectThreadingService projectThreadingService)
+        private static VisualBasicProjectConfigurationProperties CreateInstance(ProjectProperties projectProperties, IProjectThreadingService projectThreadingService)
         {
             return new VisualBasicProjectConfigurationProperties(projectProperties, projectThreadingService);
         }

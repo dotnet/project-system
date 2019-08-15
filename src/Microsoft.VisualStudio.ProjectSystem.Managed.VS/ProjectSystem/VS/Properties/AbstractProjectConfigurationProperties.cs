@@ -4,8 +4,6 @@ using VSLangProj;
 
 using VSLangProj80;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
     public abstract class AbstractProjectConfigurationProperties : ProjectConfigurationProperties3
@@ -147,7 +145,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             }
         }
 
-        public object ExtenderNames => null;
+        public object? ExtenderNames => null;
         public string __id => throw new System.NotImplementedException();
         public bool DebugSymbols { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public bool DefineDebug { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
@@ -170,10 +168,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         public bool EnableASPXDebugging { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public bool EnableUnmanagedDebugging { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public prjStartAction StartAction { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public object get_Extender(string arg)
-        {
-            throw new System.NotImplementedException();
-        }
+        public object get_Extender(string arg) => throw new System.NotImplementedException();
         public string ExtenderCATID => throw new System.NotImplementedException();
         public prjWarningLevel WarningLevel { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public bool TreatWarningsAsErrors { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }

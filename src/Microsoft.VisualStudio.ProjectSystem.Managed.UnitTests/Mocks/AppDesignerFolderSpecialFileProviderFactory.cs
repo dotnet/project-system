@@ -4,13 +4,11 @@ using System.Threading;
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
     internal static class AppDesignerFolderSpecialFileProviderFactory
     {
-        public static AppDesignerFolderSpecialFileProvider ImplementGetFile(string result)
+        public static AppDesignerFolderSpecialFileProvider ImplementGetFile(string? result)
         {
             var mock = new Mock<AppDesignerFolderSpecialFileProvider>();
             mock.Setup(m => m.GetFileAsync(It.IsAny<SpecialFiles>(), It.IsAny<SpecialFileFlags>(), It.IsAny<CancellationToken>()))

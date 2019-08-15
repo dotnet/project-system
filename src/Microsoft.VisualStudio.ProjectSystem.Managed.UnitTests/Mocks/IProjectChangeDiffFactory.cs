@@ -3,8 +3,6 @@
 using System;
 using System.Collections.Immutable;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IProjectChangeDiffFactory
@@ -60,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return new ProjectChangeDiff();
         }
 
-        public static IProjectChangeDiff Create(IImmutableSet<string> addedItems = null, IImmutableSet<string> removedItems = null, IImmutableSet<string> changedItems = null, IImmutableDictionary<string, string> renamedItems = null)
+        public static IProjectChangeDiff Create(IImmutableSet<string>? addedItems = null, IImmutableSet<string>? removedItems = null, IImmutableSet<string>? changedItems = null, IImmutableDictionary<string, string>? renamedItems = null)
         {
             return new ProjectChangeDiff(addedItems, removedItems, changedItems, renamedItems);
         }

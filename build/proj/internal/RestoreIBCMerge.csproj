@@ -1,0 +1,14 @@
+﻿<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- This project is needed to explicitly restore IBCMerge package during signed builds. This package 
+       comes from a authenticated package source which isn't supported by <RestoreSources/>. -->
+  <Import Project="..\..\import\Versions.props" />
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>    
+    <RestoreSources/>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.DotNet.IBCMerge" />
+  </ItemGroup>
+  <Import Project="..\..\import\Packages.targets" />
+</Project>

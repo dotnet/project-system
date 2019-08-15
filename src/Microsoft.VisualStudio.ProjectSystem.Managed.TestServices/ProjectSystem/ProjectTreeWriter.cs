@@ -4,8 +4,6 @@ using System;
 using System.Linq;
 using System.Text;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal class ProjectTreeWriter

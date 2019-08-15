@@ -3,8 +3,6 @@
 using System.Collections.Generic;
 using System.Linq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IConfigurationGroupFactory
@@ -25,13 +23,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return group;
         }
 
-
         private class ConfigurationGroup<T> : List<T>, IConfigurationGroup<T>
         {
-            public ConfigurationGroup()
-            {
-            }
-
             public IReadOnlyCollection<string> VariantDimensionNames => throw new System.NotImplementedException();
         }
     }

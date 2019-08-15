@@ -12,11 +12,6 @@
         <target state="new">Framework</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|PrivateAssets|Description">
-        <source>Assets that are private in this reference.</source>
-        <target state="new">Assets that are private in this reference.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|TargetingPackPath|DisplayName">
         <source>Path</source>
         <target state="new">Path</target>
@@ -25,11 +20,6 @@
       <trans-unit id="StringProperty|Profile|DisplayName">
         <source>Profile</source>
         <target state="new">Profile</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|PrivateAssets|DisplayName">
-        <source>Private Assets</source>
-        <target state="new">Private Assets</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|TargetingPackVersion|DisplayName">

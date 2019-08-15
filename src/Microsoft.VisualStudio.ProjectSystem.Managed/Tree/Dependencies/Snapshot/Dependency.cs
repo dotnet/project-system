@@ -152,18 +152,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         private readonly string _containingProjectPath;
         private string? _fullPath;
 
-        public string Id
-        {
-            get
-            {
-                if (_id == null)
-                {
-                    _id = GetID(TargetFramework, ProviderType, _modelId);
-                }
-
-                return _id;
-            }
-        }
+        public string Id => _id ??= GetID(TargetFramework, ProviderType, _modelId);
 
         public string ProviderType { get; }
         public string Name { get; }
@@ -176,12 +165,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             {
                 // Avoid calculating this unless absolutely needed as 
                 // we have a lot of Dependency instances floating around
-                if (_fullPath == null)
-                {
-                    _fullPath = GetFullPath();
-                }
-
-                return _fullPath;
+                return _fullPath ??= GetFullPath();
 
                 string GetFullPath()
                 {

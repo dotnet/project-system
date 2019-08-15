@@ -5,8 +5,6 @@ using Microsoft.VisualStudio.ProjectSystem.Configuration;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
     public class ProjectFilePathAndDisplayNameEvaluationHandlerTests : EvaluationHandlerTestBase
@@ -123,7 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             return CreateInstance(null, null);
         }
 
-        private ProjectFilePathAndDisplayNameEvaluationHandler CreateInstance(ProjectConfiguration configuration = null, IImplicitlyActiveDimensionProvider implicitlyActiveDimensionProvider = null, IWorkspaceProjectContext context = null)
+        private static ProjectFilePathAndDisplayNameEvaluationHandler CreateInstance(ProjectConfiguration? configuration = null, IImplicitlyActiveDimensionProvider? implicitlyActiveDimensionProvider = null, IWorkspaceProjectContext? context = null)
         {
             var project = ConfiguredProjectFactory.ImplementProjectConfiguration(configuration ?? ProjectConfigurationFactory.Create("Debug|AnyCPU"));
             implicitlyActiveDimensionProvider ??= IImplicitlyActiveDimensionProviderFactory.Create();

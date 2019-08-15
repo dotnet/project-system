@@ -1,6 +1,6 @@
-﻿using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-#nullable disable
+using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             return CreateInstance(null, null);
         }
 
-        private AnalyzerConfigItemHandler CreateInstance(UnconfiguredProject project = null, IWorkspaceProjectContext context = null)
+        private static AnalyzerConfigItemHandler CreateInstance(UnconfiguredProject? project = null, IWorkspaceProjectContext? context = null)
         {
             project ??= UnconfiguredProjectFactory.Create();
 

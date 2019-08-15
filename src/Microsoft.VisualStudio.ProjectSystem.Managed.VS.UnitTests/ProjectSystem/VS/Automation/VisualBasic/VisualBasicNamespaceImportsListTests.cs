@@ -2,13 +2,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 using Moq;
 
 using Xunit;
-
-#nullable disable
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
 {
@@ -41,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
             //IsPresent(string)
             Assert.Throws<ArgumentException>("bstrImport", () =>
             {
-                list.IsPresent(null);
+                list.IsPresent(null!);
             });
             Assert.Throws<ArgumentException>("bstrImport", () =>
             {
@@ -78,59 +75,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
         [Fact]
         public void UpdateNamespaceImportListTest()
         {
+            IEnumerable<(string[] names, string[] expected)> updates = new []
+            {
+                (new [] { "A", "B", "C", "D" },      new [] { "A", "B", "C", "D" }),      // Initial add
+                (new [] { "A", "B", "C" },           new [] { "A", "B", "C" }),           // Remove from the end
+                (new [] { "B", "C" },                new [] { "B", "C" }),                // Remove from the beginning
+                (new [] { "A", "B", "C" },           new [] { "A", "B", "C" }),           // Add at the beginning
+                (new [] { "A", "B", "C", "E" },      new [] { "A", "B", "C", "E" }),      // Add at the end
+                (new [] { "A", "B", "C", "D", "E" }, new [] { "A", "B", "C", "D", "E" }), // Add in the middle
+                (new [] { "A", "B", "D", "E" },      new [] { "A", "B", "D", "E" }),      // Remove from the middle
+                (new [] { "F", "C", "B", "E" },      new [] { "B", "C", "E", "F" }),      // Addition and deletion in jumbled order with the same no of elements as before
+            };
+
             var list = VisualBasicNamespaceImportsListFactory.CreateInstance();
-            var dataList = new List<string>();
-            list.SetList(dataList);
 
-            // Initial add
-            list.OnNamespaceImportChanged(
-                IProjectVersionedValueFactory.Create(GetProjectSubscriptionUpdate("A", "B", "C", "D")));
-            VerifyList(dataList, "A", "B", "C", "D");
+            foreach (var (names, expected) in updates)
+            {
+                var json = ConstructNamespaceImportChangeJson(names);
+                var projectSubscriptionUpdate = IProjectSubscriptionUpdateFactory.FromJson(json);
+                var projectVersionedValue = IProjectVersionedValueFactory.Create(projectSubscriptionUpdate);
 
-            // Remove from the end
-            list.OnNamespaceImportChanged(
-                IProjectVersionedValueFactory.Create(GetProjectSubscriptionUpdate("A", "B", "C")));
-            VerifyList(dataList, "A", "B", "C");
+                list.OnNamespaceImportChanged(projectVersionedValue);
 
-            // Remove from the beginning
-            list.OnNamespaceImportChanged(
-                IProjectVersionedValueFactory.Create(GetProjectSubscriptionUpdate("B", "C")));
-            VerifyList(dataList, "B", "C");
+                AssertEx.SequenceEqual(expected, list);
+            }
 
-            // Add at the beginning
-            list.OnNamespaceImportChanged(
-                IProjectVersionedValueFactory.Create(GetProjectSubscriptionUpdate("A", "B", "C")));
-            VerifyList(dataList, "A", "B", "C");
+            return;
 
-            // Add at the end
-            list.OnNamespaceImportChanged(
-                IProjectVersionedValueFactory.Create(GetProjectSubscriptionUpdate("A", "B", "C", "E")));
-            VerifyList(dataList, "A", "B", "C", "E");
-
-            // Add in the middle
-            list.OnNamespaceImportChanged(
-                IProjectVersionedValueFactory.Create(GetProjectSubscriptionUpdate("A", "B", "C", "D", "E")));
-            VerifyList(dataList, "A", "B", "C", "D", "E");
-
-            // Remove from the middle
-            list.OnNamespaceImportChanged(
-                IProjectVersionedValueFactory.Create(GetProjectSubscriptionUpdate("A", "B", "D", "E")));
-            VerifyList(dataList, "A", "B", "D", "E");
-
-            // Addition and Deletion in jumbled order with the same no of elements as before
-            list.OnNamespaceImportChanged(
-                IProjectVersionedValueFactory.Create(GetProjectSubscriptionUpdate("F", "C", "B", "E")));
-            VerifyList(dataList, "B", "C", "E", "F");
-        }
-
-        private static IProjectSubscriptionUpdate GetProjectSubscriptionUpdate(params string[] importNames)
-        {
-            return IProjectSubscriptionUpdateFactory.FromJson(ConstructNamespaceImportChangeJson(importNames));
-        }
-
-        private static string ConstructNamespaceImportChangeJson(string[] importNames)
-        {
-            var json = @"{
+            static string ConstructNamespaceImportChangeJson(string[] importNames)
+            {
+                var json = @"{
     ""ProjectChanges"": {
         ""NamespaceImport"": {
             ""Difference"": {
@@ -139,29 +113,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
             ""After"": {
                 ""Items"": {";
 
-            for (int i = 0; i < importNames.Length; i++)
-            {
-                json += @"                   """ + importNames[i] + @""" : {}";
-                if (i != importNames.Length - 1)
+                for (int i = 0; i < importNames.Length; i++)
                 {
-                    json += ",";
+                    json += @"                   """ + importNames[i] + @""" : {}";
+                    if (i != importNames.Length - 1)
+                    {
+                        json += ",";
+                    }
                 }
-            }
 
-            json += @"                }
-                                   }
-                               }
-                           }
-                       }";
-            return json;
-        }
-
-        private static void VerifyList(List<string> list, params string[] expected)
-        {
-            Assert.Equal(list.Count, expected.Count());
-            for (int i = 0; i < list.Count; i++)
-            {
-                Assert.True(string.Compare(list[i], expected[i]) == 0);
+                json += @"                }
+               }
+           }
+       }
+   }";
+                return json;
             }
         }
     }

@@ -1,9 +1,9 @@
-﻿using Microsoft.Build.Execution;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using Microsoft.Build.Execution;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 using Moq;
-
-#nullable disable
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public static IProjectInstancePropertiesProvider Create()
             => Mock.Of<IProjectInstancePropertiesProvider>();
 
-        public static IProjectInstancePropertiesProvider ImplementsGetItemTypeProperties(IProjectProperties projectProperties = null)
+        public static IProjectInstancePropertiesProvider ImplementsGetItemTypeProperties(IProjectProperties? projectProperties = null)
         {
             var mock = new Mock<IProjectInstancePropertiesProvider>();
 
@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return mock.Object;
         }
 
-        public static IProjectInstancePropertiesProvider ImplementsGetCommonProperties(IProjectProperties projectProperties = null)
+        public static IProjectInstancePropertiesProvider ImplementsGetCommonProperties(IProjectProperties? projectProperties = null)
         {
             var mock = new Mock<IProjectInstancePropertiesProvider>();
 

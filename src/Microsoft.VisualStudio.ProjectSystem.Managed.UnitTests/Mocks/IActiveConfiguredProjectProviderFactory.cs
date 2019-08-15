@@ -4,22 +4,22 @@ using System;
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IActiveConfiguredProjectProviderFactory
     {
-        public static IActiveConfiguredProjectProvider ImplementActiveProjectConfiguration(Func<ProjectConfiguration> action)
+        public static IActiveConfiguredProjectProvider ImplementActiveProjectConfiguration(Func<ProjectConfiguration?> action)
         {
             var mock = new Mock<IActiveConfiguredProjectProvider>();
-            mock.SetupGet(p => p.ActiveProjectConfiguration)
+            mock.SetupGet<ProjectConfiguration?>(p => p.ActiveProjectConfiguration)
                 .Returns(action);
 
             return mock.Object;
         }
 
-        public static IActiveConfiguredProjectProvider Create(Func<ProjectConfiguration> getActiveProjectConfiguration = null, Func<ConfiguredProject> getActiveConfiguredProject = null)
+        public static IActiveConfiguredProjectProvider Create(
+            Func<ProjectConfiguration>? getActiveProjectConfiguration = null,
+            Func<ConfiguredProject>? getActiveConfiguredProject = null)
         {
             var mock = new Mock<IActiveConfiguredProjectProvider>();
             mock.SetupGet(p => p.ActiveProjectConfiguration)

@@ -2,8 +2,6 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     [ExcludeFromCodeCoverage]

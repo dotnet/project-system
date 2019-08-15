@@ -21,8 +21,6 @@ using Microsoft.VisualStudio.Threading;
 
 using Task = System.Threading.Tasks.Task;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>
@@ -50,16 +48,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private readonly IVsService<IVsSolution> _vsSolutionService;
         private readonly IVsService<IVsAppId> _vsAppIdService;
         private readonly IVsService<IVsShell> _vsShellService;
-        private RemoteCacheFile _versionDataCacheFile;
+        private RemoteCacheFile? _versionDataCacheFile;
         private uint _solutionCookie = VSConstants.VSCOOKIE_NIL;
         private DateTime _timeCurVersionDataLastUpdatedUtc = DateTime.MinValue; // Tracks how often we meed to look for new data
-        private IVsSolution _vsSolution;
+        private IVsSolution? _vsSolution;
 
         // These are internal for unit testing
         internal bool SolutionOpen { get; private set; }
-        internal Version VisualStudioVersion { get; private set; }
+        internal Version? VisualStudioVersion { get; private set; }
         internal CompatibilityLevel CompatibilityLevelWarnedForCurrentSolution { get; set; } = CompatibilityLevel.Recommended;
-        internal VersionCompatibilityData CurrentVersionCompatibilityData { get; private set; }
+        internal VersionCompatibilityData? CurrentVersionCompatibilityData { get; private set; }
 
         [ImportingConstructor]
         public DotNetCoreProjectCompatibilityDetector(Lazy<IProjectServiceAccessor> projectAccessor,
@@ -91,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             await _threadHandling.Value.SwitchToUIThread();
 
             // Initialize our cache file
-            string appDataFolder = await _shellUtilitiesHelper.Value.GetLocalAppDataFolderAsync(_vsShellService);
+            string? appDataFolder = await _shellUtilitiesHelper.Value.GetLocalAppDataFolderAsync(_vsShellService);
             if (appDataFolder != null)
             {
                 _versionDataCacheFile = new RemoteCacheFile(Path.Combine(appDataFolder, s_versionDataFilename), s_versionCompatibilityDownloadFwlink,
@@ -114,7 +112,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 _threadHandling.Value.RunAndForget(async () =>
                 {
                     // First make sure that the cache file exists
-                    if (_versionDataCacheFile.ReadCacheFile() is null)
+                    if (_versionDataCacheFile != null && _versionDataCacheFile.ReadCacheFile() is null)
                     {
                         await _versionDataCacheFile.TryToUpdateCacheFileAsync();
                     }
@@ -182,7 +180,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 return true;
             }
 
-            ISettingsManager settings = await _settingsManagerService?.GetValueAsync();
+            if (_settingsManagerService == null)
+            {
+                return false;
+            }
+
+            ISettingsManager settings = await _settingsManagerService.GetValueAsync();
             return settings.GetValueOrDefault<bool>(s_usePreviewSdkSettingKey);
         }
 
@@ -292,11 +295,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                         string msg;
                         if (compatData.OpenSupportedPreviewMessage is object && isPreviewSDKInUse)
                         {
-                            msg = string.Format(compatData.OpenSupportedPreviewMessage, compatData.SupportedVersion.Major, compatData.SupportedVersion.Minor);
+                            msg = string.Format(compatData.OpenSupportedPreviewMessage, compatData.SupportedVersion!.Major, compatData.SupportedVersion.Minor);
                         }
                         else
                         {
-                            msg = string.Format(compatData.OpenSupportedMessage, compatData.SupportedVersion.Major, compatData.SupportedVersion.Minor);
+                            msg = string.Format(compatData.OpenSupportedMessage, compatData.SupportedVersion!.Major, compatData.SupportedVersion.Minor);
                         }
 
                         suppressPrompt = _dialogServices.Value.DontShowAgainMessageBox(caption, msg, VSResources.DontShowAgain, false, VSResources.LearnMore, s_supportedLearnMoreFwlink);
@@ -315,7 +318,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     }
                     else
                     {
-                        msg = string.Format(compatData.OpenUnsupportedMessage, compatData.SupportedVersion.Major, compatData.SupportedVersion.Minor);
+                        msg = string.Format(compatData.OpenUnsupportedMessage, compatData.SupportedVersion!.Major, compatData.SupportedVersion.Minor);
                     }
 
                     _dialogServices.Value.DontShowAgainMessageBox(caption, msg, null, false, VSResources.LearnMore, s_unsupportedLearnMoreFwlink);
@@ -390,43 +393,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 return CompatibilityLevel.Recommended;
             }
 
-            return GetCompatibilityLevelFromPreview(version, compatData.SupportedPreviewVersion, compatData.SupportedVersion, compatData.UnsupportedVersion, isPreviewSDKInUse);
-        }
-
-        private static CompatibilityLevel GetCompatibilityLevelFromPreview(Version version, Version supportedPreviewVersion, Version supportedVersion, Version unsupportedVersion, bool isPreviewSDKInUse)
-        {
             // Version is less than the supported preview version and the user wants to use preview SDKs
-            if (supportedPreviewVersion is object && isPreviewSDKInUse && version <= supportedPreviewVersion)
+            if (compatData.SupportedPreviewVersion is object && isPreviewSDKInUse && version <= compatData.SupportedPreviewVersion)
             {
                 return CompatibilityLevel.Recommended;
             }
 
-            return GetCompatibilityLevelFromSupported(version, supportedVersion, unsupportedVersion);
-        }
-
-        private static CompatibilityLevel GetCompatibilityLevelFromSupported(Version version, Version supportedVersion, Version unsupportedVersion)
-        {
             // A supported version exists and the version is less than the supported version
-            if (supportedVersion is object && version < supportedVersion)
+            if (compatData.SupportedVersion is object && version < compatData.SupportedVersion)
             {
                 return CompatibilityLevel.Recommended;
             }
 
             // The version is not unsupported and exactly matches the supported version
-            if (supportedVersion is object && unsupportedVersion is object &&
-                version == supportedVersion && version < unsupportedVersion)
+            if (compatData.SupportedVersion is object && compatData.UnsupportedVersion is object &&
+                version == compatData.SupportedVersion && version < compatData.UnsupportedVersion)
             {
                 return CompatibilityLevel.Supported;
             }
 
             // Supported version is null or not recommended check unsupported version
-            return GetCompatibilityLevelForUnsupported(version, unsupportedVersion);
-        }
-
-        private static CompatibilityLevel GetCompatibilityLevelForUnsupported(Version version, Version unsupportedVersion)
-        {
-            // UnsupportedVersion cannot be null if we've made it here
-            if (version < unsupportedVersion)
+            if (version < compatData.UnsupportedVersion)
             {
                 return CompatibilityLevel.Recommended;
             }
@@ -453,7 +440,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             try
             {
                 // Try the cache file
-                Dictionary<Version, VersionCompatibilityData> versionCompatData = GetCompatibilityDataFromCacheFile();
+                Dictionary<Version, VersionCompatibilityData>? versionCompatData = GetCompatibilityDataFromCacheFile();
 
                 // See if the cache file needs refreshing and if so, kick off a task to do so
                 if (_versionDataCacheFile != null && _versionDataCacheFile.CacheFileIsStale())
@@ -465,7 +452,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     });
                 }
 
-                if (versionCompatData != null)
+                if (versionCompatData != null && VisualStudioVersion != null)
                 {
                     // First try to match exactly on our VS version and if that fails, match on just major, minor
                     if (versionCompatData.TryGetValue(VisualStudioVersion, out VersionCompatibilityData compatData) || versionCompatData.TryGetValue(new Version(VisualStudioVersion.Major, VisualStudioVersion.Minor), out compatData))
@@ -481,7 +468,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                             compatData.OpenUnsupportedMessage = VSResources.NotSupportedDotNetCoreProject;
                         }
 
-                        UpdateInMemoryCachedData(compatData);
+                        CurrentVersionCompatibilityData = compatData;
+                        _timeCurVersionDataLastUpdatedUtc = DateTime.UtcNow;
                     }
                 }
             }
@@ -493,30 +481,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             if (CurrentVersionCompatibilityData == null)
             {
                 // Something failed or no remote file,  use the compatibility data we shipped with which does not have any warnings
-                UpdateInMemoryCachedData(new VersionCompatibilityData()
+                CurrentVersionCompatibilityData = new VersionCompatibilityData
                 {
                     OpenSupportedMessage = VSResources.PartialSupportedDotNetCoreProject,
                     OpenUnsupportedMessage = VSResources.NotSupportedDotNetCoreProject
-                });
+                };
+                _timeCurVersionDataLastUpdatedUtc = DateTime.UtcNow;
             }
 
             return CurrentVersionCompatibilityData;
         }
 
-        private void UpdateInMemoryCachedData(VersionCompatibilityData newData)
-        {
-            CurrentVersionCompatibilityData = newData;
-            _timeCurVersionDataLastUpdatedUtc = DateTime.UtcNow;
-        }
-
         /// <summary>
         /// If the cached file exists reads the data and returns it
         /// </summary>
-        private Dictionary<Version, VersionCompatibilityData> GetCompatibilityDataFromCacheFile()
+        private Dictionary<Version, VersionCompatibilityData>? GetCompatibilityDataFromCacheFile()
         {
             try
             {
-                string data = _versionDataCacheFile?.ReadCacheFile();
+                string? data = _versionDataCacheFile?.ReadCacheFile();
                 if (data != null)
                 {
                     return VersionCompatibilityData.DeserializeVersionData(data);

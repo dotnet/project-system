@@ -4,8 +4,6 @@ using System.Collections.Immutable;
 
 using static Microsoft.VisualStudio.ProjectSystem.Tokenizer;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class Delimiters

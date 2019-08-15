@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
     internal abstract class OutputTypeValueProviderBase : InterceptingPropertyValueProviderBase
@@ -35,14 +33,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             return DefaultGetValue;
         }
 
-
-        public override async Task<string> OnSetPropertyValueAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string> dimensionalConditions = null)
+        public override async Task<string?> OnSetPropertyValueAsync(
+            string unevaluatedPropertyValue,
+            IProjectProperties defaultProperties,
+            IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
             string value = SetMap[unevaluatedPropertyValue];
             ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync();
             await configuration.OutputType.SetValueAsync(value);
 
-            // Since we have persisted the value of OutputType, we dont have to persist the incoming value
+            // Since we have persisted the value of OutputType, we don't have to persist the incoming value
             return null;
         }
     }

@@ -86,8 +86,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
         }
 
-        public ITargetFramework? GetNearestFramework(ITargetFramework targetFramework,
-                                                    IEnumerable<ITargetFramework> otherFrameworks)
+        public ITargetFramework? GetNearestFramework(
+            ITargetFramework targetFramework,
+            IEnumerable<ITargetFramework> otherFrameworks)
         {
             if (targetFramework?.FrameworkName == null || otherFrameworks == null)
             {
@@ -109,7 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 return null;
             }
 
-            return others.FirstOrDefault((x, nearest) => nearest.Equals(x.FrameworkName), nearestFrameworkName);
+            return others.FirstOrDefault((other, nearest) => nearest.Equals(other.FrameworkName), nearestFrameworkName);
         }
     }
 }

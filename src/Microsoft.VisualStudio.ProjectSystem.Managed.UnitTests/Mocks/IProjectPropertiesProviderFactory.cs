@@ -4,13 +4,11 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IProjectPropertiesProviderFactory
     {
-        public static IProjectPropertiesProvider Create(IProjectProperties props = null, IProjectProperties commonProps = null)
+        public static IProjectPropertiesProvider Create(IProjectProperties? props = null, IProjectProperties? commonProps = null)
         {
             var mock = new Mock<IProjectPropertiesProvider>();
 

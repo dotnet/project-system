@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
     public class OutputTypeExValueProviderTests
@@ -23,15 +21,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         {
             var properties = ProjectPropertiesFactory.Create(
                 UnconfiguredProjectFactory.Create(),
-                new PropertyPageData()
-                {
-                    Category = ConfigurationGeneral.SchemaName,
-                    PropertyName = ConfigurationGeneral.OutputTypeProperty,
-                    Value = outputTypePropertyValue
-                });
+                new PropertyPageData(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutputTypeProperty, outputTypePropertyValue));
             var provider = new OutputTypeExValueProvider(properties);
 
-            var actualPropertyValue = await provider.OnGetEvaluatedPropertyValueAsync(string.Empty, null);
+            var actualPropertyValue = await provider.OnGetEvaluatedPropertyValueAsync(string.Empty, null!);
             Assert.Equal(expectedMappedValue, actualPropertyValue);
         }
 
@@ -46,15 +39,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             var setValues = new List<object>();
             var properties = ProjectPropertiesFactory.Create(
                 UnconfiguredProjectFactory.Create(),
-                new PropertyPageData()
-                {
-                    Category = ConfigurationGeneral.SchemaName,
-                    PropertyName = ConfigurationGeneral.OutputTypeProperty,
-                    Value = "InitialValue",
-                    SetValues = setValues
-                });
+                new PropertyPageData(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutputTypeProperty, "InitialValue", setValues));
             var provider = new OutputTypeExValueProvider(properties);
-            await provider.OnSetPropertyValueAsync(incomingValue, null);
+            await provider.OnSetPropertyValueAsync(incomingValue, null!);
 
             Assert.Equal(setValues.Single(), expectedOutputTypeValue);
         }
@@ -65,18 +52,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             var setValues = new List<object>();
             var properties = ProjectPropertiesFactory.Create(
                 UnconfiguredProjectFactory.Create(),
-                new PropertyPageData()
-                {
-                    Category = ConfigurationGeneral.SchemaName,
-                    PropertyName = ConfigurationGeneral.OutputTypeProperty,
-                    Value = "InitialValue",
-                    SetValues = setValues
-                });
+                new PropertyPageData(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutputTypeProperty, "InitialValue", setValues));
             var provider = new OutputTypeExValueProvider(properties);
 
             await Assert.ThrowsAsync<KeyNotFoundException>(async () =>
             {
-                await provider.OnSetPropertyValueAsync("InvalidValue", null);
+                await provider.OnSetPropertyValueAsync("InvalidValue", null!);
             });
         }
     }

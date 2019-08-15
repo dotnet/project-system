@@ -2,8 +2,6 @@
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Logging
 {
     internal static class IProjectLoggerFactory

@@ -9,8 +9,6 @@ using Microsoft.VisualStudio.Build;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 {
     public class ConfigurationProjectConfigurationDimensionProviderTests
@@ -107,7 +105,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             await provider.OnDimensionValueChangedAsync(args);
             var property = BuildUtilities.GetProperty(rootElement, Configurations);
             Assert.NotNull(property);
-            Assert.Equal("Debug;Release;CustomConfiguration", property.Value);
+            Assert.Equal("Debug;Release;CustomConfiguration", property!.Value);
 
             // On ChangeEventStage.Before the property should be added
             args = new ProjectConfigurationDimensionValueChangedEventArgs(
@@ -119,7 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             await provider.OnDimensionValueChangedAsync(args);
             property = BuildUtilities.GetProperty(rootElement, Configurations);
             Assert.NotNull(property);
-            Assert.Equal("Debug;Release;CustomConfiguration;CustomConfig", property.Value);
+            Assert.Equal("Debug;Release;CustomConfiguration;CustomConfig", property!.Value);
         }
 
         [Fact]
@@ -142,7 +140,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             await provider.OnDimensionValueChangedAsync(args);
             var property = BuildUtilities.GetProperty(rootElement, Configurations);
             Assert.NotNull(property);
-            Assert.Equal("Debug;Release;CustomConfiguration", property.Value);
+            Assert.Equal("Debug;Release;CustomConfiguration", property!.Value);
 
             // On ChangeEventStage.Before the property should be removed
             args = new ProjectConfigurationDimensionValueChangedEventArgs(
@@ -154,7 +152,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             await provider.OnDimensionValueChangedAsync(args);
             property = BuildUtilities.GetProperty(rootElement, Configurations);
             Assert.NotNull(property);
-            Assert.Equal("Debug;Release", property.Value);
+            Assert.Equal("Debug;Release", property!.Value);
         }
 
         [Fact]
@@ -176,7 +174,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             await Assert.ThrowsAsync<ArgumentException>(() => provider.OnDimensionValueChangedAsync(args));
             var property = BuildUtilities.GetProperty(rootElement, Configurations);
             Assert.NotNull(property);
-            Assert.Equal("Debug;Release;CustomConfiguration", property.Value);
+            Assert.Equal("Debug;Release;CustomConfiguration", property!.Value);
         }
 
         [Fact]
@@ -200,7 +198,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             await provider.OnDimensionValueChangedAsync(args);
             var property = BuildUtilities.GetProperty(rootElement, Configurations);
             Assert.NotNull(property);
-            Assert.Equal("Debug;Release;CustomConfiguration", property.Value);
+            Assert.Equal("Debug;Release;CustomConfiguration", property!.Value);
 
             // On ChangeEventStage.Before the property should be renamed
             args = new ProjectConfigurationDimensionValueChangedEventArgs(
@@ -213,7 +211,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             await provider.OnDimensionValueChangedAsync(args);
             property = BuildUtilities.GetProperty(rootElement, Configurations);
             Assert.NotNull(property);
-            Assert.Equal("Debug;Release;RenamedConfiguration", property.Value);
+            Assert.Equal("Debug;Release;RenamedConfiguration", property!.Value);
         }
 
         [Fact]
@@ -236,7 +234,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             await Assert.ThrowsAsync<ArgumentException>(() => provider.OnDimensionValueChangedAsync(args));
             var property = BuildUtilities.GetProperty(rootElement, Configurations);
             Assert.NotNull(property);
-            Assert.Equal("Debug;Release;CustomConfiguration", property.Value);
+            Assert.Equal("Debug;Release;CustomConfiguration", property!.Value);
         }
 
         [Theory]

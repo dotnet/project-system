@@ -10,8 +10,6 @@ using Xunit;
 
 using StringReader = System.IO.StringReader;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     public class ProjectReloadInterceptorTests

@@ -4,11 +4,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Microsoft.VisualStudio.Threading;
-
 using Xunit;
-
-#nullable disable
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
@@ -22,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             Assert.Throws<ObjectDisposedException>(() =>
             {
-                var ignored = service.IsImplicitlyActive;
+                _ = service.IsImplicitlyActive;
             });
         }
 
@@ -34,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             Assert.Throws<ObjectDisposedException>(() =>
             {
-                var ignored = service.ImplicitlyActive;
+                _ = service.ImplicitlyActive;
             });
         }
 
@@ -339,7 +335,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return CreateInstance(null, tasksService, out _);
         }
 
-        private static ConfiguredProjectImplicitActivationTracking CreateInstance(ConfiguredProject project, IProjectAsynchronousTasksService tasksService, out ProjectValueDataSource<IConfigurationGroup<ProjectConfiguration>> source)
+        private static ConfiguredProjectImplicitActivationTracking CreateInstance(ConfiguredProject? project, IProjectAsynchronousTasksService? tasksService, out ProjectValueDataSource<IConfigurationGroup<ProjectConfiguration>> source)
         {
             project ??= ConfiguredProjectFactory.Create();
             var services = IProjectCommonServicesFactory.CreateWithDefaultThreadingPolicy();

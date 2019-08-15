@@ -7,8 +7,6 @@ using Microsoft.VisualStudio.IO;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     public class PhysicalProjectTreeStorageTests
@@ -20,8 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             Assert.Throws<ArgumentNullException>("path", () =>
             {
-
-                var result = storage.CreateFolderAsync((string)null);
+                storage.CreateFolderAsync((string?)null!);
             });
         }
 
@@ -32,8 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             Assert.Throws<ArgumentException>("path", () =>
             {
-
-                var result = storage.CreateFolderAsync(string.Empty);
+                storage.CreateFolderAsync(string.Empty);
             });
         }
 
@@ -45,15 +41,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             Assert.Throws<InvalidOperationException>(() =>
             {
-
-                var result = storage.CreateFolderAsync("path");
+                storage.CreateFolderAsync("path");
             });
         }
 
         [Fact]
         public async Task CreateFolderAsync_CreatesFolderOnDisk()
         {
-            string result = null;
+            string? result = null;
             var project = UnconfiguredProjectFactory.Create(filePath: @"C:\Root.csproj");
             var fileSystem = IFileSystemFactory.ImplementCreateDirectory((path) => { result = path; });
 
@@ -67,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [Fact]
         public async Task CreateFolderAsync_IncludesFolderInProject()
         {
-            string result = null;
+            string? result = null;
             var project = UnconfiguredProjectFactory.Create(filePath: @"C:\Root.csproj");
             var folderManager = IFolderManagerFactory.IncludeFolderInProjectAsync((path, recursive) => { result = path; return Task.CompletedTask; });
 
@@ -111,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public async Task CreateFolderAsync_ValueAsPath_IsCalculatedRelativeToProjectDirectory(string projectPath, string input, string expected)
         {
             var project = UnconfiguredProjectFactory.Create(filePath: projectPath);
-            string result = null;
+            string? result = null;
             var treeProvider = IProjectTreeProviderFactory.ImplementFindByPath((root, path) => { result = path; return null; });
             var currentTree = ProjectTreeParser.Parse(projectPath);
 
@@ -122,7 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             Assert.Equal(expected, result);
         }
 
-        private PhysicalProjectTreeStorage CreateInstance(IProjectTreeService treeService = null, IProjectTreeProvider treeProvider = null, IFileSystem fileSystem = null, IFolderManager folderManager = null, UnconfiguredProject project = null)
+        private static PhysicalProjectTreeStorage CreateInstance(IProjectTreeService? treeService = null, IProjectTreeProvider? treeProvider = null, IFileSystem? fileSystem = null, IFolderManager? folderManager = null, UnconfiguredProject? project = null)
         {
             treeService ??= IProjectTreeServiceFactory.Create(ProjectTreeParser.Parse("Root"));
             treeProvider ??= IProjectTreeProviderFactory.Create();

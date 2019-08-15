@@ -4,9 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-#nullable disable
+using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
@@ -24,10 +23,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             public Collection<MutableProjectTree> Children
             {
                 get;
-                private set;
             }
 
-            public string Caption
+            public string? Caption
             {
                 get;
                 set;
@@ -39,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 set;
             }
 
-            public string SubType
+            public string? SubType
             {
                 get;
                 set;
@@ -50,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 get { return Flags.Contains(ProjectTreeFlags.Common.Folder); }
             }
 
-            public string FilePath
+            public string? FilePath
             {
                 get;
                 set;
@@ -62,13 +60,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 set;
             }
 
-            public MutableProjectTree Parent
+            public MutableProjectTree? Parent
             {
                 get;
                 set;
             }
 
-            IProjectTree IProjectTree.Parent
+            IProjectTree? IProjectTree.Parent
             {
                 get { return Parent; }
             }
@@ -83,13 +81,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 get { return Children; }
             }
 
-            public ProjectImageMoniker Icon
+            public ProjectImageMoniker? Icon
             {
                 get;
                 set;
             }
 
-            public ProjectImageMoniker ExpandedIcon
+            public ProjectImageMoniker? ExpandedIcon
             {
                 get;
                 set;
@@ -99,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             {
                 get
                 {
-                    return new IntPtr(Caption.GetHashCode());
+                    return new IntPtr(Caption!.GetHashCode());
                 }
             }
 
@@ -244,7 +242,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 return subtree != null;
             }
 
-            public IProjectTree SetProperties(string caption = null, string filePath = null, IRule browseObjectProperties = null, ProjectImageMoniker icon = null, ProjectImageMoniker expandedIcon = null, bool? visible = default, ProjectTreeFlags? flags = default, IProjectPropertiesContext context = null, IPropertySheet propertySheet = null, bool? isLinked = default, bool resetFilePath = false, bool resetBrowseObjectProperties = false, bool resetIcon = false, bool resetExpandedIcon = false)
+            public IProjectTree SetProperties(string? caption = null, string? filePath = null, IRule? browseObjectProperties = null, ProjectImageMoniker? icon = null, ProjectImageMoniker? expandedIcon = null, bool? visible = default, ProjectTreeFlags? flags = default, IProjectPropertiesContext? context = null, IPropertySheet? propertySheet = null, bool? isLinked = default, bool resetFilePath = false, bool resetBrowseObjectProperties = false, bool resetIcon = false, bool resetExpandedIcon = false)
             {
                 if (caption != null)
                     Caption = caption;
@@ -268,7 +266,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 return this;
             }
 
-            public IProjectTree2 SetProperties(string caption = null, string filePath = null, IRule browseObjectProperties = null, ProjectImageMoniker icon = null, ProjectImageMoniker expandedIcon = null, bool? visible = null, ProjectTreeFlags? flags = null, IProjectPropertiesContext context = null, IPropertySheet propertySheet = null, bool? isLinked = null, bool resetFilePath = false, bool resetBrowseObjectProperties = false, bool resetIcon = false, bool resetExpandedIcon = false, int? displayOrder = null)
+            public IProjectTree2 SetProperties(string? caption = null, string? filePath = null, IRule? browseObjectProperties = null, ProjectImageMoniker? icon = null, ProjectImageMoniker? expandedIcon = null, bool? visible = null, ProjectTreeFlags? flags = null, IProjectPropertiesContext? context = null, IPropertySheet? propertySheet = null, bool? isLinked = null, bool resetFilePath = false, bool resetBrowseObjectProperties = false, bool resetIcon = false, bool resetExpandedIcon = false, int? displayOrder = null)
             {
                 throw new NotImplementedException();
             }

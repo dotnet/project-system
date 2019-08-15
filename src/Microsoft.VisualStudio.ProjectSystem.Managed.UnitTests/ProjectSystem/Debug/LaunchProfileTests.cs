@@ -8,8 +8,6 @@ using Microsoft.VisualStudio.Collections;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     public class LaunchProfileTests
@@ -23,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 ExecutablePath = "c:\\this\\is\\a\\exe\\path",
                 CommandName = null,
                 CommandLineArgs = "args",
-                WorkingDirectory = "c:\\wprking\\directory\\",
+                WorkingDirectory = "c:\\working\\directory\\",
                 LaunchBrowser = true,
                 LaunchUrl = "LaunchPage.html",
                 EnvironmentVariables = new Dictionary<string, string>() { { "var1", "Value1" }, { "var2", "Value2" } },

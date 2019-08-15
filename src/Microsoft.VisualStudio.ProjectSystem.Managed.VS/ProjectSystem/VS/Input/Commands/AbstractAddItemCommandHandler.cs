@@ -2,14 +2,13 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.ProjectSystem.Input;
 using Microsoft.VisualStudio.Shell.Interop;
-using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
-
-#nullable disable
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
@@ -26,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         private readonly IVsUIService<IVsAddProjectItemDlg> _addItemDialog;
         private readonly IVsUIService<IVsShell> _vsShell;
 
-        public AbstractAddItemCommandHandler(ConfiguredProject configuredProject, IPhysicalProjectTree projectTree, IUnconfiguredProjectVsServices projectVsServices, IVsUIService<IVsAddProjectItemDlg> addItemDialog, IVsUIService<SVsShell, IVsShell> vsShell)
+        protected AbstractAddItemCommandHandler(ConfiguredProject configuredProject, IPhysicalProjectTree projectTree, IUnconfiguredProjectVsServices projectVsServices, IVsUIService<IVsAddProjectItemDlg> addItemDialog, IVsUIService<SVsShell, IVsShell> vsShell)
         {
             _configuredProject = configuredProject;
             _projectTree = projectTree;
@@ -70,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                 return false;
             }
 
-            if (TryGetTemplateDetails(commandId, out TemplateDetails result))
+            if (TryGetTemplateDetails(commandId, out TemplateDetails? result))
             {
                 __VSADDITEMFLAGS uiFlags = __VSADDITEMFLAGS.VSADDITEM_AddNewItems |
                                            __VSADDITEMFLAGS.VSADDITEM_SuggestTemplateName |
@@ -107,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             return false;
         }
 
-        private bool TryGetTemplateDetails(long commandId, out TemplateDetails result)
+        private bool TryGetTemplateDetails(long commandId, [NotNullWhen(returnValue: true)] out TemplateDetails? result)
         {
             IProjectCapabilitiesScope capabilities = _configuredProject.Capabilities;
 
@@ -122,6 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                     }
                 }
             }
+
             result = null;
             return false;
         }

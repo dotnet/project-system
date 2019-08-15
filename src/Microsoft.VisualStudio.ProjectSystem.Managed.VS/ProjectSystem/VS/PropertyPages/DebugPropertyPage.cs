@@ -5,8 +5,6 @@ using System.Runtime.InteropServices;
 
 using Microsoft.VisualStudio.Shell;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
     [Guid("0273C280-1882-4ED0-9308-52914672E3AA")]

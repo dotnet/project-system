@@ -11,8 +11,6 @@ using Moq.Protected;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     public class WorkspaceProjectContextProviderTests
@@ -24,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             await Assert.ThrowsAsync<ArgumentNullException>(() =>
             {
-                return provider.CreateProjectContextAsync((ConfiguredProject)null);
+                return provider.CreateProjectContextAsync(null!);
             });
         }
 
@@ -35,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             await Assert.ThrowsAsync<ArgumentNullException>("accessor", () =>
             {
-                return provider.ReleaseProjectContextAsync((IWorkspaceProjectContextAccessor)null);
+                return provider.ReleaseProjectContextAsync(null!);
             });
         }
 
@@ -110,7 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             var projectGuidService = ISafeProjectGuidServiceFactory.ImplementGetProjectGuidAsync(new Guid(guid));
 
-            string result = null;
+            string? result = null;
             var workspaceProjectContextFactory = IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContext((_, id, ___, ____, ______, _______) => { result = id; return null; });
             var provider = CreateInstance(workspaceProjectContextFactory: workspaceProjectContextFactory, projectGuidService: projectGuidService);
 
@@ -138,9 +136,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             var hostObject = new object();
             var unconfiguredProject = UnconfiguredProjectFactory.Create(hostObject);
 
-            string languageNameResult = null, projectFilePathResult = null, binOutputPathResult = null;
+            string? languageNameResult = null, projectFilePathResult = null, binOutputPathResult = null;
             Guid? projectGuidResult = null;
-            object hierarchyResult = null;
+            object? hierarchyResult = null;
             var workspaceProjectContextFactory = IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContext((languageName, _, projectFilePath, guid, hierarchy, binOutputPath) => 
             {
                 languageNameResult = languageName;
@@ -159,7 +157,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             Assert.Equal("CSharp", languageNameResult);
             Assert.Equal("C:\\Project\\Project.csproj", projectFilePathResult);
             Assert.Equal("C:\\Target.dll", binOutputPathResult);
-            Assert.Equal(projectGuid, projectGuidResult.Value);
+            Assert.Equal(projectGuid, projectGuidResult!.Value);
             Assert.Equal(hostObject, hierarchyResult);
         }
 
@@ -216,7 +214,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             await provider.ReleaseProjectContextAsync(accessor);
         }
 
-        private static WorkspaceProjectContextProvider CreateInstance(UnconfiguredProject project = null, IProjectThreadingService threadingService = null, IWorkspaceProjectContextFactory workspaceProjectContextFactory = null, ISafeProjectGuidService projectGuidService = null, IProjectRuleSnapshot projectRuleSnapshot = null)
+        private static WorkspaceProjectContextProvider CreateInstance(UnconfiguredProject? project = null, IProjectThreadingService? threadingService = null, IWorkspaceProjectContextFactory? workspaceProjectContextFactory = null, ISafeProjectGuidService? projectGuidService = null, IProjectRuleSnapshot? projectRuleSnapshot = null)
         {
             projectRuleSnapshot ??= IProjectRuleSnapshotFactory.FromJson(
 @"{

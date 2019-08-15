@@ -5,8 +5,6 @@ using System.ComponentModel.Design;
 
 using Microsoft.VisualStudio.Shell;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
     /// <summary>
@@ -29,6 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         /// if the command is not handled (index is out of range)
         /// </summary>
         public abstract bool ExecCommand(int cmdIndex, EventArgs e);
+
         public abstract bool QueryStatusCommand(int cmdIndex, EventArgs e);
 
         /// <summary>
@@ -125,4 +124,3 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         }
     }
 }
-

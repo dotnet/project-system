@@ -5,8 +5,6 @@ using System.Collections.Generic;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.Text
 {
     public sealed class LazyStringSplitTests
@@ -54,7 +52,7 @@ namespace Microsoft.VisualStudio.Text
         [Fact]
         public void Constructor_WithNullInput_Throws()
         {
-            Assert.Throws<ArgumentNullException>(() => new LazyStringSplit(null, ' '));
+            Assert.Throws<ArgumentNullException>(() => new LazyStringSplit(null!, ' '));
         }
     }
 }

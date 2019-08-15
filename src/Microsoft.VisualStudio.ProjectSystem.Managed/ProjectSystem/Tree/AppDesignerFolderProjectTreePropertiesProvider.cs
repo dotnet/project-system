@@ -21,12 +21,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree
     {
         private static readonly ProjectTreeFlags s_defaultFolderFlags = ProjectTreeFlags.Create(ProjectTreeFlags.Common.AppDesignerFolder | ProjectTreeFlags.Common.BubbleUp);
 
-        private readonly IProjectDesignerService _designerService;
+        private readonly IProjectDesignerService? _designerService;
 
         [ImportingConstructor]
         public AppDesignerFolderProjectTreePropertiesProvider(
             [Import(typeof(ProjectImageProviderAggregator))]IProjectImageProvider imageProvider,
-            [Import(AllowDefault = true)] IProjectDesignerService designerService)
+            [Import(AllowDefault = true)] IProjectDesignerService? designerService)
             : base(imageProvider)
         {
             _designerService = designerService;

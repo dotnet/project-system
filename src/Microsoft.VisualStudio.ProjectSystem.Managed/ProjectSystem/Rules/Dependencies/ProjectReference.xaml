@@ -79,6 +79,10 @@
                   Description="Assets to include from this reference."
                   DisplayName="Include Assets" />
 
+  <StringProperty Name="IsImplicitlyDefined"
+                  ReadOnly="True"
+                  Visible="False" />
+
   <BoolProperty Name="LinkLibraryDependencies"
                 Visible="False" />
 

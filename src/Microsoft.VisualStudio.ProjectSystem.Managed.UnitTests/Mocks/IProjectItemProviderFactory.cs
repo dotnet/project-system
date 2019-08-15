@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IProjectItemProviderFactory
@@ -46,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                        }
                    }
 
-                   return Task.FromResult<IProjectItem>(null);
+                   return Task.FromResult<IProjectItem?>(null);
                });
 
             return mock.Object;

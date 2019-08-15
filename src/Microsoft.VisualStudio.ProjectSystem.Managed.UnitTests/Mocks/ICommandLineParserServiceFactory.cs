@@ -7,8 +7,6 @@ using Microsoft.CodeAnalysis.CSharp;
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     internal static class ICommandLineParserServiceFactory

@@ -4,8 +4,6 @@ using System.ComponentModel.Composition;
 
 using VSLangProj110;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic
 {
     [Export(ExportContractNames.VsTypes.ConfiguredProjectPropertiesAutomationObject)]

@@ -22,22 +22,15 @@ using Newtonsoft.Json.Linq;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     public class LaunchSettingsProviderTests
     {
-        internal LaunchSettingsUnderTest GetLaunchSettingsProvider(IFileSystem fileSystem, string appDesignerFolder = @"c:\test\Project1\Properties", string activeProfile = "")
+        internal static LaunchSettingsUnderTest GetLaunchSettingsProvider(IFileSystem? fileSystem, string? appDesignerFolder = @"c:\test\Project1\Properties", string activeProfile = "")
         {
             var activeProfileValue = new Mock<IEnumValue>();
             activeProfileValue.Setup(s => s.Name).Returns(activeProfile);
-            var debuggerData = new PropertyPageData()
-            {
-                Category = ProjectDebugger.SchemaName,
-                PropertyName = ProjectDebugger.ActiveDebugProfileProperty,
-                Value = activeProfileValue.Object
-            };
+            var debuggerData = new PropertyPageData(ProjectDebugger.SchemaName, ProjectDebugger.ActiveDebugProfileProperty, activeProfileValue.Object);
 
             var specialFilesManager = ActiveConfiguredProjectFactory.ImplementValue(() => AppDesignerFolderSpecialFileProviderFactory.ImplementGetFile(appDesignerFolder));
             var project = UnconfiguredProjectFactory.Create(filePath: @"c:\test\Project1\Project1.csproj");
@@ -48,9 +41,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             return provider;
         }
 
-        internal void SetJsonSerializationProviders(LaunchSettingsUnderTest provider)
+        internal static void SetJsonSerializationProviders(LaunchSettingsUnderTest provider)
         {
-            var mockMetadata = new Mock<IOrderPrecedenceMetadataView>();
             var mockIJsonSection = new Mock<IJsonSection>();
             mockIJsonSection.Setup(s => s.JsonSection).Returns("iisSettings");
             mockIJsonSection.Setup(s => s.SerializationType).Returns(typeof(IISSettingsData));
@@ -59,12 +51,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 var mockSerializer = new Mock<ILaunchSettingsSerializationProvider>();
                 return mockSerializer.Object;
             }, mockIJsonSection.Object, true);
-            var settingsProviders = new OrderPrecedenceImportCollection<ILaunchSettingsSerializationProvider, IJsonSection>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, (UnconfiguredProject)null)
+            var settingsProviders = new OrderPrecedenceImportCollection<ILaunchSettingsSerializationProvider, IJsonSection>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, (UnconfiguredProject?)null)
             {
                 new Lazy<ILaunchSettingsSerializationProvider, IJsonSection>(() => lazyProvider.Value, mockIJsonSection.Object)
             };
             provider.SetSettingsProviderCollection(settingsProviders);
-
         }
 
         [Fact]
@@ -107,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             using var provider = GetLaunchSettingsProvider(moqFS);
             await provider.UpdateProfilesAsyncTest(null);
             Assert.Single(provider.CurrentSnapshot.Profiles);
-            Assert.Equal("Project", provider.CurrentSnapshot.ActiveProfile.CommandName);
+            Assert.Equal("Project", provider.CurrentSnapshot.ActiveProfile!.CommandName);
         }
 
         [Fact]
@@ -120,7 +111,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             await provider.UpdateProfilesAsyncTest(null);
             Assert.Equal(4, provider.CurrentSnapshot.Profiles.Count);
             Assert.Empty(provider.CurrentSnapshot.GlobalSettings);
-            Assert.Equal("IIS Express", provider.CurrentSnapshot.ActiveProfile.Name);
+            Assert.Equal("IIS Express", provider.CurrentSnapshot.ActiveProfile!.Name);
         }
 
         [Fact]
@@ -134,7 +125,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // on disk doesn't affect active profile
             using var provider2 = GetLaunchSettingsProvider(moqFS, activeProfile: "web");
             await provider2.UpdateProfilesAsyncTest(null);
-            Assert.Equal("web", provider2.CurrentSnapshot.ActiveProfile.Name);
+            Assert.Equal("web", provider2.CurrentSnapshot.ActiveProfile!.Name);
         }
 
         [Fact]
@@ -149,7 +140,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             await provider.UpdateProfilesAsyncTest("Docker");
             Assert.Equal(4, provider.CurrentSnapshot.Profiles.Count);
             Assert.Empty(provider.CurrentSnapshot.GlobalSettings);
-            Assert.Equal("Docker", provider.CurrentSnapshot.ActiveProfile.Name);
+            Assert.Equal("Docker", provider.CurrentSnapshot.ActiveProfile!.Name);
         }
 
         [Fact]
@@ -164,7 +155,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             await provider.UpdateProfilesAsyncTest("Docker");
             Assert.Equal(4, provider.CurrentSnapshot.Profiles.Count);
             Assert.Empty(provider.CurrentSnapshot.GlobalSettings);
-            Assert.Equal("IIS Express", provider.CurrentSnapshot.ActiveProfile.Name);
+            Assert.Equal("IIS Express", provider.CurrentSnapshot.ActiveProfile!.Name);
         }
 
         [Fact]
@@ -176,7 +167,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             await provider.UpdateProfilesAsyncTest("Docker");
             Assert.Single(provider.CurrentSnapshot.Profiles);
-            Assert.Equal(LaunchSettingsProvider.ErrorProfileCommandName, provider.CurrentSnapshot.ActiveProfile.CommandName);
+            Assert.Equal(LaunchSettingsProvider.ErrorProfileCommandName, provider.CurrentSnapshot.ActiveProfile!.CommandName);
             Assert.True(((IPersistOption)provider.CurrentSnapshot.ActiveProfile).DoNotPersist);
         }
 
@@ -304,7 +295,7 @@ return provider.ReadSettingsFileFromDiskTestAsync();
 
             var launchSettings = await provider.ReadSettingsFileFromDiskTestAsync();
 
-            Assert.Equal(4, launchSettings.Profiles.Count);
+            Assert.Equal(4, launchSettings.Profiles!.Count);
         }
 
         [Fact]
@@ -329,9 +320,9 @@ return provider.ReadSettingsFileFromDiskTestAsync();
 
             var launchSettings = await provider.ReadSettingsFileFromDiskTestAsync();
 
-            AssertEx.CollectionLength(launchSettings.Profiles, 2);
+            AssertEx.CollectionLength(launchSettings.Profiles!, 2);
             Assert.Single(launchSettings.OtherSettings);
-            Assert.True(launchSettings.OtherSettings["iisSettings"] is JObject);
+            Assert.True(launchSettings.OtherSettings!["iisSettings"] is JObject);
         }
 
         [Fact]
@@ -346,9 +337,9 @@ return provider.ReadSettingsFileFromDiskTestAsync();
 
             var launchSettings = await provider.ReadSettingsFileFromDiskTestAsync();
 
-            AssertEx.CollectionLength(launchSettings.Profiles, 2);
+            AssertEx.CollectionLength(launchSettings.Profiles!, 2);
             Assert.Single(launchSettings.OtherSettings);
-            Assert.True(launchSettings.OtherSettings["iisSettings"] is IISSettingsData);
+            Assert.True(launchSettings.OtherSettings!["iisSettings"] is IISSettingsData);
         }
 
         [Fact]
@@ -494,7 +485,7 @@ return provider.ReadSettingsFileFromDiskTestAsync();
             // Setup SCC to verify it is called before modifying the file
             var mockScc = new Mock<ISourceCodeControlIntegration>(MockBehavior.Strict);
             mockScc.Setup(m => m.CanChangeProjectFilesAsync(It.IsAny<IReadOnlyCollection<string>>())).Returns(Task.FromResult(true));
-            var sccProviders = new OrderPrecedenceImportCollection<ISourceCodeControlIntegration>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, (UnconfiguredProject)null)
+            var sccProviders = new OrderPrecedenceImportCollection<ISourceCodeControlIntegration>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, (UnconfiguredProject?)null)
                 {
                     mockScc.Object
                 };
@@ -510,7 +501,7 @@ return provider.ReadSettingsFileFromDiskTestAsync();
             Assert.Single(provider.CurrentSnapshot.GlobalSettings);
 
             // Verify the activeProfile is set to the first one since no existing snapshot
-            Assert.Equal("IIS Express", provider.CurrentSnapshot.ActiveProfile.Name);
+            Assert.Equal("IIS Express", provider.CurrentSnapshot.ActiveProfile!.Name);
 
             mockScc.Verify();
         }
@@ -541,7 +532,7 @@ return provider.ReadSettingsFileFromDiskTestAsync();
             await provider.UpdateAndSaveSettingsAsync(testSettings.Object);
 
             // Verify the activeProfile hasn't changed
-            Assert.Equal("bar", provider.CurrentSnapshot.ActiveProfile.Name);
+            Assert.Equal("bar", provider.CurrentSnapshot.ActiveProfile!.Name);
         }
 
         [Fact]
@@ -568,7 +559,7 @@ return provider.ReadSettingsFileFromDiskTestAsync();
             testSettings.Setup(m => m.GlobalSettings).Returns(() => ImmutableStringDictionary<object>.EmptyOrdinal);
 
             var mockScc = new Mock<ISourceCodeControlIntegration>(MockBehavior.Strict);
-            var sccProviders = new OrderPrecedenceImportCollection<ISourceCodeControlIntegration>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, (UnconfiguredProject)null)
+            var sccProviders = new OrderPrecedenceImportCollection<ISourceCodeControlIntegration>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, (UnconfiguredProject?)null)
                 {
                     mockScc.Object
                 };
@@ -814,7 +805,7 @@ return provider.ReadSettingsFileFromDiskTestAsync();
 
             // Check snapshot
             Assert.Single(provider.CurrentSnapshot.GlobalSettings);
-            Assert.False(provider.CurrentSnapshot.GlobalSettings.TryGetValue("iisSettings", out object updatedSettings));
+            Assert.False(provider.CurrentSnapshot.GlobalSettings.TryGetValue("iisSettings", out _));
         }
 
         private readonly string JsonString1 = @"{
@@ -891,9 +882,14 @@ return provider.ReadSettingsFileFromDiskTestAsync();
     internal class LaunchSettingsUnderTest : LaunchSettingsProvider
     {
         // ECan pass null for all and a default will be created
-        public LaunchSettingsUnderTest(UnconfiguredProject project, IUnconfiguredProjectServices projectServices,
-                                      IFileSystem fileSystem, IUnconfiguredProjectCommonServices commonProjectServices,
-                                      IActiveConfiguredProjectSubscriptionService projectSubscriptionService, ActiveConfiguredProject<AppDesignerFolderSpecialFileProvider> appDesignerFolderSpecialFileProvider, IProjectFaultHandlerService projectFaultHandler = null)
+        public LaunchSettingsUnderTest(
+            UnconfiguredProject project,
+            IUnconfiguredProjectServices projectServices,
+            IFileSystem fileSystem,
+            IUnconfiguredProjectCommonServices commonProjectServices,
+            IActiveConfiguredProjectSubscriptionService? projectSubscriptionService,
+            ActiveConfiguredProject<AppDesignerFolderSpecialFileProvider> appDesignerFolderSpecialFileProvider,
+            IProjectFaultHandlerService? projectFaultHandler = null)
           : base(project, projectServices, fileSystem, commonProjectServices, projectSubscriptionService, appDesignerFolderSpecialFileProvider, projectFaultHandler)
         {
             // Block the code from setting up one on the real file system. Since we block, it we need to set up the fileChange scheduler manually
@@ -911,7 +907,7 @@ return provider.ReadSettingsFileFromDiskTestAsync();
         public Task UpdateAndSaveSettingsInternalAsyncTest(ILaunchSettings curSettings, bool persistToDisk) { return UpdateAndSaveSettingsInternalAsync(curSettings, persistToDisk); }
 
         public DateTime LastSettingsFileSyncTimeTest { get { return LastSettingsFileSyncTime; } set { LastSettingsFileSyncTime = value; } }
-        public Task UpdateProfilesAsyncTest(string activeProfile) { return UpdateProfilesAsync(activeProfile); }
+        public Task UpdateProfilesAsyncTest(string? activeProfile) { return UpdateProfilesAsync(activeProfile); }
         public void SetIgnoreFileChanges(bool value) { IgnoreFileChanges = value; }
         public Task<bool> SettingsFileHasChangedAsyncTest() { return SettingsFileHasChangedAsync(); }
         public Task LaunchSettingsFile_ChangedTest() => HandleLaunchSettingsFileChangedAsync();
@@ -932,7 +928,7 @@ return provider.ReadSettingsFileFromDiskTestAsync();
     internal class ServerBindingData
     {
         [JsonProperty(PropertyName = "applicationUrl")]
-        public string ApplicationUrl { get; set; }
+        public string? ApplicationUrl { get; set; }
 
         [JsonProperty(PropertyName = "sslPort")]
         public int SSLPort { get; set; }
@@ -951,11 +947,11 @@ return provider.ReadSettingsFileFromDiskTestAsync();
         public bool AnonymousAuthentication { get; set; } = DefaultAnonymousAuth;
 
         [JsonProperty(PropertyName = "iis")]
-        public ServerBindingData IISBindingData { get; set; }
+        public ServerBindingData? IISBindingData { get; set; }
 
 
         [JsonProperty(PropertyName = "iisExpress")]
-        public ServerBindingData IISExpressBindingData { get; set; }
+        public ServerBindingData? IISExpressBindingData { get; set; }
 
         public bool DoNotPersist { get; set; }
     }

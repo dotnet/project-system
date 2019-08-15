@@ -5,8 +5,6 @@ using System.IO;
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.IO
 {
     internal static class IFileSystemFactory
@@ -25,8 +23,10 @@ namespace Microsoft.VisualStudio.IO
             return mock.Object;
         }
 
-        public static IFileSystem Create(Func<string, bool> existsFunc, Func<string, FileStream> createFunc = null,
-                                         Func<string, string> readAllTextFunc = null)
+        public static IFileSystem Create(
+            Func<string, bool> existsFunc,
+            Func<string, FileStream>? createFunc = null,
+            Func<string, string>? readAllTextFunc = null)
         {
             var mock = new Mock<IFileSystem>();
 

@@ -8,8 +8,6 @@ using Microsoft.VisualStudio.Threading;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     public class OnceInitializedOnceDisposedUnderLockAsyncTests
@@ -21,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                instance.ExecuteUnderLockAsync((Func<CancellationToken, Task>)null, CancellationToken.None);
+                instance.ExecuteUnderLockAsync(null!, CancellationToken.None);
             });
         }
 
@@ -32,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                instance.ExecuteUnderLockAsync((Func<CancellationToken, Task<string>>)null, CancellationToken.None);
+                instance.ExecuteUnderLockAsync<string>(null!, CancellationToken.None);
             });
         }
 
@@ -43,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             var instance = CreateInstance();
 
-            bool result = default;
+            bool result = false;
             await instance.ExecuteUnderLockAsync(ct => 
             {
                 cancellationTokenSource.Cancel();
@@ -64,14 +62,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             var instance = CreateInstance();
 
-            bool result = default;
+            bool result = false;
             await instance.ExecuteUnderLockAsync(ct =>
             {
                 cancellationTokenSource.Cancel();
 
                 result = ct.IsCancellationRequested;
 
-                return Task.FromResult<string>(null);
+                return Task.FromResult<string?>(null);
 
             }, cancellationTokenSource.Token);
 
@@ -101,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var instance = CreateInstance();
 
             bool called = false;
-            var result = instance.ExecuteUnderLockAsync(ct => { called = true; return Task.FromResult<string>(null); }, cancellationToken);
+            var result = instance.ExecuteUnderLockAsync(ct => { called = true; return Task.FromResult<string?>(null); }, cancellationToken);
 
             var exception = await Assert.ThrowsAnyAsync<OperationCanceledException>(() => result);
             Assert.False(called);
@@ -125,7 +123,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var instance = CreateInstance();
 
             int callCount = 0;
-            await instance.ExecuteUnderLockAsync((ct) => { callCount++; return Task.FromResult<string>(null); }, CancellationToken.None);
+            await instance.ExecuteUnderLockAsync((ct) => { callCount++; return Task.FromResult<string?>(null); }, CancellationToken.None);
 
             Assert.Equal(1, callCount);
         }
@@ -177,7 +175,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             Task secondAction() => Task.Run(() => instance.ExecuteUnderLockAsync((ct) =>
             {
                 secondEntered.Set();
-                return Task.FromResult<string>(null);
+                return Task.FromResult<string?>(null);
 
             }, CancellationToken.None));
 
@@ -203,7 +201,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             Task secondAction() => Task.Run(() => instance.ExecuteUnderLockAsync((ct) =>
             {
                 secondEntered.Set();
-                return Task.FromResult<string>(null);
+                return Task.FromResult<string?>(null);
 
             }, CancellationToken.None));
 
@@ -272,7 +270,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                     await instance.ExecuteUnderLockAsync((___) =>
                     {
                         callCount++;
-                        return Task.FromResult<string>(null);
+                        return Task.FromResult<string?>(null);
                     });
 
                     return string.Empty;
@@ -291,7 +289,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var firstRelease = new AsyncManualResetEvent();
             var disposeEntered = new AsyncManualResetEvent();
 
-            ConcreteOnceInitializedOnceDisposedUnderLockAsync instance = null;
+            ConcreteOnceInitializedOnceDisposedUnderLockAsync? instance = null;
 
             Task firstAction() => instance.ExecuteUnderLockAsync(async (ct) =>
             {
@@ -318,7 +316,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var firstRelease = new AsyncManualResetEvent();
             var disposeEntered = new AsyncManualResetEvent();
 
-            ConcreteOnceInitializedOnceDisposedUnderLockAsync instance = null;
+            ConcreteOnceInitializedOnceDisposedUnderLockAsync? instance = null;
 
             Task firstAction() => instance.ExecuteUnderLockAsync(async (ct) =>
             {
@@ -366,7 +364,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         [Fact]
-        public async Task ExecuteUnderLockAsyncOfT_WhenDisposed_ThrowsOperationCancellated()
+        public async Task ExecuteUnderLockAsyncOfT_WhenDisposed_ThrowsOperationCancelled()
         {
             var instance = CreateInstance();
 
@@ -374,13 +372,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             var result = await Assert.ThrowsAnyAsync<OperationCanceledException>(() =>
             {
-                return instance.ExecuteUnderLockAsync((ct) => { return Task.FromResult<string>(null); }, CancellationToken.None);
+                return instance.ExecuteUnderLockAsync((ct) => { return Task.FromResult<string?>(null); }, CancellationToken.None);
             });
 
             Assert.Equal(instance.DisposalToken, result.CancellationToken);
         }
 
-        private async Task AssertNoOverlap(Func<Task> firstAction, Func<Task> secondAction, AsyncManualResetEvent firstEntered, AsyncManualResetEvent firstRelease, AsyncManualResetEvent secondEntered)
+        private static async Task AssertNoOverlap(Func<Task> firstAction, Func<Task> secondAction, AsyncManualResetEvent firstEntered, AsyncManualResetEvent firstRelease, AsyncManualResetEvent secondEntered)
         {
             // Run first task and wait until we've entered it
             var firstTask = firstAction();
@@ -398,7 +396,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             await Task.WhenAll(firstTask, secondTask);
         }
 
-        private static ConcreteOnceInitializedOnceDisposedUnderLockAsync CreateInstance(Func<Task> disposed = null)
+        private static ConcreteOnceInitializedOnceDisposedUnderLockAsync CreateInstance(Func<Task>? disposed = null)
         {
             var threadingService = IProjectThreadingServiceFactory.Create();
 
@@ -409,7 +407,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             private readonly Func<Task> _disposed;
 
-            public ConcreteOnceInitializedOnceDisposedUnderLockAsync(JoinableTaskContextNode joinableTaskContextNode, Func<Task> disposed) 
+            public ConcreteOnceInitializedOnceDisposedUnderLockAsync(JoinableTaskContextNode joinableTaskContextNode, Func<Task>? disposed) 
                 : base(joinableTaskContextNode)
             {
                 if (disposed == null)

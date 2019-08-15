@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Xunit;
-
-#nullable disable
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
@@ -14,8 +14,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public async Task VerifyInterceptedPropertiesProviderAsync()
         {
-            var delegatePropertiesMock = IProjectPropertiesFactory
-                .MockWithPropertiesAndValues(new Dictionary<string, string>() {
+            var delegatePropertiesMock = IProjectPropertiesFactory.MockWithPropertiesAndValues(
+                new Dictionary<string, string?>
+                {
                     { MockPropertyName, "DummyValue" }
                 });
 
@@ -53,8 +54,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public async Task VerifyInterceptedViaSnapshotCommonPropertiesProviderAsync()
         {
-            var delegatePropertiesMock = IProjectPropertiesFactory
-                .MockWithPropertiesAndValues(new Dictionary<string, string>() {
+            var delegatePropertiesMock = IProjectPropertiesFactory.MockWithPropertiesAndValues(
+                new Dictionary<string, string?>
+                {
                     { MockPropertyName, "DummyValue" }
                 });
 
@@ -91,8 +93,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public async Task VerifyInterceptedViaSnapshotInstanceCommonPropertiesProviderAsync()
         {
-            var delegatePropertiesMock = IProjectPropertiesFactory
-                .MockWithPropertiesAndValues(new Dictionary<string, string>() {
+            var delegatePropertiesMock = IProjectPropertiesFactory.MockWithPropertiesAndValues(
+                new Dictionary<string, string?>
+                {
                     { MockPropertyName, "DummyValue" }
                 });
 

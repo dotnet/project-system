@@ -1,12 +1,11 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
 using System;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
 
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-
-#nullable disable
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {

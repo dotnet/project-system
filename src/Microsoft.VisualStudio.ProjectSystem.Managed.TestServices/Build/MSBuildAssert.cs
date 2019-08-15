@@ -7,8 +7,6 @@ using Microsoft.Build.Construction;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.Build
 {
     public static class MSBuildAssert
@@ -38,12 +36,7 @@ namespace Microsoft.Build
         // force it into thinking it is to make comparison easier.
         private class StringWriterWithUtf8Encoding : StringWriter
         {
-            public StringWriterWithUtf8Encoding()
-            {
-            }
-
             public override Encoding Encoding => Encoding.UTF8;
         }
-
     }
 }

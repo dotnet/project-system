@@ -413,12 +413,7 @@
   <Target Name="CollectResolvedCompilationReferencesDesignTime" DependsOnTargets="CompileDesignTime" Returns="@(ReferencePathWithRefAssemblies)" />
 
   <!-- This target collects all the extra inputs for the up to date check. -->
-  <Target Name="CollectUpToDateCheckInputDesignTime" DependsOnTargets="CompileDesignTime" Returns="@(UpToDateCheckInput)">
-    <ItemGroup>
-      <!-- MSBuild additional compile file, such as the file input cache file -->
-      <UpToDateCheckInput Include="@(CustomAdditionalCompileInputs)"/>
-    </ItemGroup>
-  </Target>
+  <Target Name="CollectUpToDateCheckInputDesignTime" DependsOnTargets="CompileDesignTime" Returns="@(UpToDateCheckInput)" />
 
   <!-- This target collects all the extra outputs for the up to date check. -->
   <Target Name="CollectUpToDateCheckOutputDesignTime" DependsOnTargets="CompileDesignTime" Returns="@(UpToDateCheckOutput)" />

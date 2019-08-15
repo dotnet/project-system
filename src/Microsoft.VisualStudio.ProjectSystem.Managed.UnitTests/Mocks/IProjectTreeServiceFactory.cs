@@ -2,15 +2,14 @@
 
 using System;
 using System.Threading;
-using Moq;
 
-#nullable disable
+using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IProjectTreeServiceFactory
     {
-        public static IProjectTreeService Create(IProjectTree tree, IProjectTreeProvider treeProvider = null)
+        public static IProjectTreeService Create(IProjectTree tree, IProjectTreeProvider? treeProvider = null)
         {
             var mock = new Mock<IProjectTreeService>();
 
@@ -33,10 +32,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return Mock.Of<IProjectTreeService>();
         }
 
-        public static IProjectTreeService ImplementCurrentTree(Func<IProjectTreeServiceState> action)
+        public static IProjectTreeService ImplementCurrentTree(Func<IProjectTreeServiceState?> action)
         {
             var mock = new Mock<IProjectTreeService>();
-            mock.SetupGet(s => s.CurrentTree)
+            mock.SetupGet<IProjectTreeServiceState?>(s => s.CurrentTree)
                 .Returns(action);
 
             return mock.Object;

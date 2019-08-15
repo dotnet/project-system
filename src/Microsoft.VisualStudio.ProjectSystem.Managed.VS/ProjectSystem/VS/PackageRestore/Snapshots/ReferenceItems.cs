@@ -12,10 +12,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
     internal class ReferenceItems : ImmutablePropertyCollection<IVsReferenceItem>, IVsReferenceItems
     {
         public ReferenceItems(IEnumerable<IVsReferenceItem> items) 
-            : base(items)
+            : base(items, item => item.Name)
         {
         }
-
-        protected override string GetKeyForItem(IVsReferenceItem value) => value.Name;
     }
 }

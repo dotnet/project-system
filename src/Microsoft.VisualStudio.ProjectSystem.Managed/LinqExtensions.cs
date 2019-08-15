@@ -50,5 +50,30 @@ namespace Microsoft.VisualStudio
 
             return default!;
         }
+
+        /// <summary>
+        ///     Returns distinct elements from a sequence by using a specified key selector and <see cref="IEqualityComparer{T}"/> to compare values.
+        /// </summary>
+        public static IEnumerable<TSource> Distinct<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
+        {
+            return DistinctIterator(source, keySelector, comparer);
+        }
+
+        private static IEnumerable<TSource> DistinctIterator<TSource, TKey>(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
+        {
+            HashSet<TKey>? set = null;
+            foreach (TSource element in source)
+            {
+                // Avoid allocating unless needed
+                set ??= new HashSet<TKey>(comparer);
+
+                TKey key = keySelector(element);
+
+                if (set.Add(key))
+                {
+                    yield return element;
+                }
+            }
+        }
     }
 }

@@ -8,8 +8,6 @@ using Microsoft.VisualStudio.Build;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 {
     public class PlatformProjectConfigurationDimensionProviderTests
@@ -77,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             await provider.OnDimensionValueChangedAsync(args);
             var property = BuildUtilities.GetProperty(rootElement, Platforms);
             Assert.NotNull(property);
-            Assert.Equal("AnyCPU;x64;x86", property.Value);
+            Assert.Equal("AnyCPU;x64;x86", property!.Value);
 
             // On ChangeEventStage.Before the property should be added
             args = new ProjectConfigurationDimensionValueChangedEventArgs(
@@ -89,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             await provider.OnDimensionValueChangedAsync(args);
             property = BuildUtilities.GetProperty(rootElement, Platforms);
             Assert.NotNull(property);
-            Assert.Equal("AnyCPU;x64;x86;ARM", property.Value);
+            Assert.Equal("AnyCPU;x64;x86;ARM", property!.Value);
         }
 
         [Fact]
@@ -111,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             await provider.OnDimensionValueChangedAsync(args);
             var property = BuildUtilities.GetProperty(rootElement, Platforms);
             Assert.NotNull(property);
-            Assert.Equal("AnyCPU;x64;x86", property.Value);
+            Assert.Equal("AnyCPU;x64;x86", property!.Value);
 
             // On ChangeEventStage.Before the property should be removed
             args = new ProjectConfigurationDimensionValueChangedEventArgs(
@@ -123,7 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             await provider.OnDimensionValueChangedAsync(args);
             property = BuildUtilities.GetProperty(rootElement, Platforms);
             Assert.NotNull(property);
-            Assert.Equal("AnyCPU;x64", property.Value);
+            Assert.Equal("AnyCPU;x64", property!.Value);
         }
 
         [Fact]
@@ -146,7 +144,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             await provider.OnDimensionValueChangedAsync(args);
             var property = BuildUtilities.GetProperty(rootElement, Platforms);
             Assert.NotNull(property);
-            Assert.Equal("AnyCPU;x64;x86", property.Value);
+            Assert.Equal("AnyCPU;x64;x86", property!.Value);
 
             // On ChangeEventStage.Before the property should be renamed
             args = new ProjectConfigurationDimensionValueChangedEventArgs(
@@ -159,7 +157,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             await provider.OnDimensionValueChangedAsync(args);
             property = BuildUtilities.GetProperty(rootElement, Platforms);
             Assert.NotNull(property);
-            Assert.Equal("AnyCPU;x64;x86", property.Value);
+            Assert.Equal("AnyCPU;x64;x86", property!.Value);
         }
 
         [Theory]

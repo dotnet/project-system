@@ -32,11 +32,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         event EventHandler<ProjectRenamedEventArgs> SnapshotRenamed;
 
         /// <summary>
-        /// Raised when the project's dependencies snapshot changed.
-        /// </summary>
-        event EventHandler<SnapshotChangedEventArgs> SnapshotChanged;
-
-        /// <summary>
         /// Raised when the project and its snapshot provider are unloading.
         /// </summary>
         event EventHandler<SnapshotProviderUnloadingEventArgs> SnapshotProviderUnloading;

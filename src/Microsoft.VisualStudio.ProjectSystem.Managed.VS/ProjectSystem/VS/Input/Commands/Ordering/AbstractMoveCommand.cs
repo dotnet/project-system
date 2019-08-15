@@ -7,8 +7,6 @@ using Microsoft.Build.Evaluation;
 using Microsoft.VisualStudio.ProjectSystem.Input;
 using Microsoft.VisualStudio.Shell;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 {
     internal abstract class AbstractMoveCommand : AbstractSingleNodeProjectCommand
@@ -35,14 +33,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 
         protected abstract bool TryMove(Project project, IProjectTree node);
 
-        protected override Task<CommandStatusResult> GetCommandStatusAsync(IProjectTree node, bool focused, string commandText, CommandStatus progressiveStatus)
+        protected override Task<CommandStatusResult> GetCommandStatusAsync(IProjectTree node, bool focused, string? commandText, CommandStatus progressiveStatus)
         {
-            if (!CanMove(node))
-            {
-                return GetCommandStatusResult.Handled(commandText, CommandStatus.Ninched);
-            }
-
-            return GetCommandStatusResult.Handled(commandText, CommandStatus.Enabled);
+            return GetCommandStatusResult.Handled(
+                commandText, 
+                CanMove(node) ? CommandStatus.Enabled : CommandStatus.Ninched);
         }
 
         protected override async Task<bool> TryHandleCommandAsync(IProjectTree node, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut)

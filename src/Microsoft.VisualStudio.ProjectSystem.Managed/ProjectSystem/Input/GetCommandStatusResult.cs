@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Input
             get { return CommandStatusResult.Unhandled.AsTask(); }
         }
 
-        public static Task<CommandStatusResult> Handled(string commandText, CommandStatus status)
+        public static Task<CommandStatusResult> Handled(string? commandText, CommandStatus status)
         {
             return new CommandStatusResult(true, commandText, status | CommandStatus.Supported).AsTask();
         }

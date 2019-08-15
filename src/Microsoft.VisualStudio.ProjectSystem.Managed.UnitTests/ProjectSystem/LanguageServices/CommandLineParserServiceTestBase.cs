@@ -5,8 +5,6 @@ using System.Linq;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     public abstract class CommandLineParserServiceTestBase
@@ -18,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             Assert.Throws<ArgumentNullException>("arguments", () =>
             {
-                service.Parse(null, @"C:\Project");
+                service.Parse(null!, @"C:\Project");
             });
         }
 
@@ -31,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             Assert.Throws<ArgumentNullException>("baseDirectory", () =>
             {
-                service.Parse(arguments, null);
+                service.Parse(arguments, null!);
             });
         }
 

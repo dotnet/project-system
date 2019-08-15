@@ -7,6 +7,9 @@ using System.Windows.Forms;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
+    /// <summary>
+    /// Hosts a WPF implementation of a property page UI within the WinForms based property page infrastructure.
+    /// </summary>
     internal abstract partial class WpfBasedPropertyPage : PropertyPage
     {
         private PropertyPageElementHost? _host;
@@ -29,14 +32,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 _control?.DetachViewModel();
                 return;
             }
-            else
-            {
-                //viewModel can be non-null when the configuration is changed.
-                if (_control == null)
-                {
-                    _control = CreatePropertyPageControl();
-                }
-            }
+
+            //viewModel can be non-null when the configuration is changed.
+            _control ??= CreatePropertyPageControl();
 
             _viewModel = CreatePropertyPageViewModel();
             _viewModel.Project = UnconfiguredProject;
@@ -69,25 +67,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 Dock = DockStyle.Fill
             };
 
-            if (_control == null)
-            {
-                _control = CreatePropertyPageControl();
-            }
+            _control ??= CreatePropertyPageControl();
 
-            var viewer = new ScrollViewer
+            _host.Child = new ScrollViewer
             {
                 VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
                 HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
                 Focusable = false,
+                Content = _control
             };
-
-            viewer.Content = _control;
-            _host.Child = viewer;
 
             wpfHostPanel.Dock = DockStyle.Fill;
             wpfHostPanel.Controls.Add(_host);
 
             ResumeLayout(true);
+
             _control.StatusChanged += OnControlStatusChanged;
         }
 

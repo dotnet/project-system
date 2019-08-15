@@ -4,8 +4,6 @@ using System.Linq;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.FSharp
 {
     public class FSharpCommandLineParserServiceTests : CommandLineParserServiceTestBase

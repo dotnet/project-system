@@ -9,8 +9,6 @@ using Microsoft.VisualStudio.ProjectSystem.Configuration;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     public class ActiveConfiguredProjectsProviderTests
@@ -48,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             var result = await provider.GetActiveProjectConfigurationsAsync();
 
-            Assert.Empty(result.DimensionNames);
+            Assert.Empty(result!.DimensionNames);
         }
 
         [Fact]
@@ -58,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             var result = await provider.GetActiveConfiguredProjectsAsync();
 
-            Assert.Empty(result.DimensionNames);
+            Assert.Empty(result!.DimensionNames);
         }
 
         [Theory] // ActiveConfiguration                 Configurations
@@ -81,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             var result = await provider.GetActiveProjectConfigurationsAsync();
 
-            Assert.Single(result.Objects);
+            Assert.Single(result!.Objects);
             Assert.Equal(activeConfiguration, result.Objects[0].Name);
         }
 
@@ -100,7 +98,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var result = await provider.GetActiveProjectConfigurationsAsync();
 
             var activeConfigs = ProjectConfigurationFactory.CreateMany(expected.Split(';'));
-            Assert.Equal(activeConfigs.OrderBy(c => c.Name), result.Objects.OrderBy(c => c.Name));
+
+            Assert.NotNull(result);
+            Assert.Equal(activeConfigs.OrderBy(c => c.Name), result!.Objects.OrderBy(c => c.Name));
             Assert.Equal(new[] { "TargetFramework" }, result.DimensionNames);
         }
 
@@ -124,12 +124,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             var result = await provider.GetActiveConfiguredProjectsAsync();
 
-            Assert.Single(result.Objects);
+            Assert.NotNull(result);
+            Assert.Single(result!.Objects);
             Assert.Equal(activeConfiguration, result.Objects[0].ProjectConfiguration.Name);
             Assert.Empty(result.DimensionNames);
         }
 
-        private ActiveConfiguredProjectsProvider CreateInstance(string activeConfiguration, string configurations, params string[] dimensionNames)
+        private static ActiveConfiguredProjectsProvider CreateInstance(string activeConfiguration, string configurations, params string[] dimensionNames)
         {
             var activeConfig = ProjectConfigurationFactory.Create(activeConfiguration);
             var configs = ProjectConfigurationFactory.CreateMany(configurations.Split(';'));
@@ -138,7 +139,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var services = IUnconfiguredProjectServicesFactory.Create(activeConfiguredProjectProvider: activeConfiguredProjectProvider, projectConfigurationsService: configurationsService);
             var project = UnconfiguredProjectFactory.ImplementLoadConfiguredProjectAsync((projectConfiguration) =>
             {
-                return Task.FromResult(ConfiguredProjectFactory.ImplementProjectConfiguration(projectConfiguration));
+                return Task.FromResult<ConfiguredProject?>(ConfiguredProjectFactory.ImplementProjectConfiguration(projectConfiguration));
             });
 
             var dimensionProviders = dimensionNames.Select(name => IActiveConfiguredProjectsDimensionProviderFactory.ImplementDimensionName(name));
@@ -146,7 +147,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return CreateInstance(services: services, project: project, dimensionProviders: dimensionProviders);
         }
 
-        private ActiveConfiguredProjectsProvider CreateInstance(IUnconfiguredProjectServices services = null, UnconfiguredProject project = null, IEnumerable<IActiveConfiguredProjectsDimensionProvider> dimensionProviders = null)
+        private static ActiveConfiguredProjectsProvider CreateInstance(IUnconfiguredProjectServices? services = null, UnconfiguredProject? project = null, IEnumerable<IActiveConfiguredProjectsDimensionProvider>? dimensionProviders = null)
         {
             services ??= IUnconfiguredProjectServicesFactory.Create();
             project ??= UnconfiguredProjectFactory.Create();

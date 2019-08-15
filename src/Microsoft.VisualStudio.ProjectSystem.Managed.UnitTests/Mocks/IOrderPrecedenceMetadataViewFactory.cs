@@ -2,17 +2,15 @@
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IOrderPrecedenceMetadataViewFactory
     {
-        public static IOrderPrecedenceMetadataView Create(string appliesTo, int orderPrecedence = 0)
+        public static IOrderPrecedenceMetadataView Create(string? appliesTo, int orderPrecedence = 0)
         {
             var mock = new Mock<IOrderPrecedenceMetadataView>();
             mock.SetupGet(v => v.AppliesTo)
-                .Returns(appliesTo);
+                .Returns(appliesTo!);
 
             mock.SetupGet(v => v.OrderPrecedence)
                 .Returns(orderPrecedence);
