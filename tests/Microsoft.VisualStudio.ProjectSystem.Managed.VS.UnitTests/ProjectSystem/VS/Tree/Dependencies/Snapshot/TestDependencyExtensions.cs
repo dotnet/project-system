@@ -27,7 +27,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Xunit.Assert.Equal(actual.DependencyIDs, expected.DependencyIDs);
             Xunit.Assert.Equal(actual.Flags, expected.Flags);
             Xunit.Assert.Equal(actual.Id, expected.Id);
-            Xunit.Assert.Equal(actual.Alias, expected.Alias);
             Xunit.Assert.Equal(actual.TargetFramework, expected.TargetFramework);
         }
     }

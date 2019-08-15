@@ -214,18 +214,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         public ITargetFramework TargetFramework { get; }
 
-        public string Alias
-        {
-            get
-            {
-                string path = OriginalItemSpec ?? Path;
-
-                return string.IsNullOrEmpty(path) || path.Equals(Caption, StringComparison.OrdinalIgnoreCase)
-                    ? Caption
-                    : string.Concat(Caption, " (", path, ")");
-            }
-        }
-
         public IDependency SetProperties(
             string? caption = null,
             bool? resolved = null,

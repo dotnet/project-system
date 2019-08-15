@@ -153,29 +153,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.Equal(expectedId, dependency.Id);
         }
 
-        [Theory]
-        [InlineData(@"SomeDependency", @"", @"SomeDependency", @"SomeDependency")]
-        [InlineData(null, @"SomeDependency", @"SomeDependency", @"SomeDependency")]
-        [InlineData(null, null, @"SomeDependency", @"SomeDependency")]
-        [InlineData(@"SomeOriginalItemSpec", @"", @"SomeDependency", @"SomeDependency (SomeOriginalItemSpec)")]
-        public void Dependency_Alias(string originalItemSpec, string path, string caption, string expectedAlias)
-        {
-            var dependencyModel = new TestDependencyModel
-            {
-                ProviderType = "providerType",
-                Id = "someId",
-                OriginalItemSpec = originalItemSpec,
-                Path = path,
-                Caption = caption
-            };
-
-            var targetFramework = new TargetFramework("tfm");
-
-            var dependency = new Dependency(dependencyModel, targetFramework, @"C:\Foo\Project.csproj");
-
-            Assert.Equal(expectedAlias, dependency.Alias);
-        }
-
         [Fact]
         public void Dependency_EqualsAndGetHashCode()
         {

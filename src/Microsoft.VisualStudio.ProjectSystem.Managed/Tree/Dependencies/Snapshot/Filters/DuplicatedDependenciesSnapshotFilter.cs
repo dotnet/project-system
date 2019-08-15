@@ -68,16 +68,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                 if (matchingDependency != null)
                 {
                     // Change the matching dependency's alias too
-                    context.AddOrUpdate(matchingDependency.SetProperties(caption: matchingDependency.Alias));
+                    context.AddOrUpdate(matchingDependency.SetProperties(caption: GetAlias(matchingDependency)));
                 }
 
                 // Use the alias for the caption
-                context.Accept(dependency.SetProperties(caption: dependency.Alias));
+                context.Accept(dependency.SetProperties(caption: GetAlias(dependency)));
             }
             else
             {
                 // Accept without changes
                 context.Accept(dependency);
+            }
+
+            return;
+
+            static string GetAlias(IDependency dependency)
+            {
+                string path = dependency.OriginalItemSpec ?? dependency.Path;
+
+                return string.IsNullOrEmpty(path) || path.Equals(dependency.Caption, StringComparison.OrdinalIgnoreCase)
+                    ? dependency.Caption
+                    : string.Concat(dependency.Caption, " (", path, ")");
             }
         }
     }
