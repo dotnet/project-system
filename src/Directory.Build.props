@@ -16,7 +16,7 @@
   </PropertyGroup>
 
   <Import Project="..\Directory.Build.props"/>
-  <Import Project="$(RepoToolsetDir)Settings.props" Condition="'$(ExcludeRestorePackageImports)' != 'true'" />
+  <Import Project="$(RepoToolsetDir)Settings.props" Condition="'$(ExcludeRestorePackageImports)' != 'true' AND Exists('$(RepoToolsetDir)Settings.props')" />
   <Import Project="..\build\import\VisualStudio.XamlRules.props" />
 
   <PropertyGroup>
