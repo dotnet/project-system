@@ -2,7 +2,7 @@
 <Project DefaultTargets="Sign">
   <!--
     Required parameters:
-      ConfigFile                    SigntToolData.json path.
+      ConfigFile                    SignToolData.json path.
       RealSign                      "true" to send binaries to the signing service, "false" to only validate signing configuration.
     Optional parameters:
       OutputConfigFile              If specified, output a manifest similar to SignToolData.json but with checksums of all relevant files included 
