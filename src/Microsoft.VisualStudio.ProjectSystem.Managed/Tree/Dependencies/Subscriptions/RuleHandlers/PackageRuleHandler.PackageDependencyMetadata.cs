@@ -64,6 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 Requires.NotNull(targetFrameworkProvider, nameof(targetFrameworkProvider));
 
                 bool isTopLevel;
+                string originalItemSpec;
 
                 int slashIndex = itemSpec.IndexOf('/');
                 string? target = slashIndex == -1 ? null : s_targetFrameworkInternPool.Intern(itemSpec.Substring(0, slashIndex));
@@ -77,6 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
                 if (isResolved)
                 {
+                    // We have design-time build data
                     if (target == null ||
                         targetFrameworkProvider.GetTargetFramework(target)?.Equals(targetFramework) != true)
                     {
@@ -87,15 +89,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     isTopLevel = isImplicitlyDefined ||
                         (dependencyType == DependencyType.Package && unresolvedChanges?.Contains(name) == true);
 
+                    originalItemSpec = isTopLevel ? name : itemSpec;
                 }
                 else
                 {
+                    // We only have evaluation data
                     isTopLevel = true;
+                    originalItemSpec = itemSpec;
                 }
-
-                string originalItemSpec = isResolved && isTopLevel
-                    ? name
-                    : itemSpec;
 
                 metadata = new PackageDependencyMetadata(
                     dependencyType,
