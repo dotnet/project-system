@@ -12,16 +12,6 @@
         <target state="translated">套件屬性</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Description|DisplayName">
-        <source>Description</source>
-        <target state="translated">說明</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Description|Description">
-        <source>Dependency description.</source>
-        <target state="translated">相依性描述。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
         <target state="translated">版本</target>
@@ -85,11 +75,6 @@
       <trans-unit id="BoolProperty|GeneratePathProperty|Description">
         <source>Indicates whether to generate an MSBuild property with the location of the package's root directory. The generated property name is in the form of 'Pkg[PackageID]', where '[PackageID]' is the ID of the package with any periods '.' replaced with underscores '_'.</source>
         <target state="translated">表示是否要以套件根目錄的位置產生 MSBuild 屬性。產生屬性的名稱格式為 'Pkg[PackageID]'，其中 '[PackageID]' 是套件的識別碼，所有句點 '.' 均會替換為底線 '_'。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Name|DisplayName">
-        <source>Name</source>
-        <target state="new">Name</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Path|DisplayName">

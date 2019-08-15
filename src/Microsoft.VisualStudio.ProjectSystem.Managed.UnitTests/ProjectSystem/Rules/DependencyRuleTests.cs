@@ -109,6 +109,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             Assert.Equal("True", property.Attribute("ReadOnly")?.Value, StringComparer.OrdinalIgnoreCase);
         }
 
+        [Theory]
+        [MemberData(nameof(GetUnresolvedDependenciesRules))]
+        public void UnresolvedDependenciesRulesMustNotHaveOriginalItemSpec(string ruleName, string fullPath)
+        {
+            XElement rule = LoadXamlRule(fullPath, out var namespaceManager);
+
+            var property = rule.XPathSelectElement(@"/msb:Rule/msb:StringProperty[@Name=""OriginalItemSpec""]", namespaceManager);
+
+            Assert.Null(property);
+        }
+
         public static IEnumerable<object[]> GetUnresolvedDependenciesRules()
         {
             return Project(GetRules("Dependencies")
