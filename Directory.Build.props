@@ -9,8 +9,6 @@
 
     <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
 
-    <RestoreSources>$(RestoreSources);https://dotnet.myget.org/F/roslyn-tools/api/v3/index.json</RestoreSources>
-    
     <RepoRoot>$(MSBuildThisFileDirectory)</RepoRoot>
 
     <!--  
