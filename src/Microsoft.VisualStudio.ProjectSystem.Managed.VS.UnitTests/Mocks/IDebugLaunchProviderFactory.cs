@@ -4,8 +4,6 @@ using System;
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     public static class IDebugLaunchProviderFactory

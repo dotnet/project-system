@@ -6,13 +6,11 @@ using Moq;
 
 using IOleAsyncServiceProvider = Microsoft.VisualStudio.Shell.Interop.IAsyncServiceProvider;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.Shell.Interop
 {
     internal static class IOleAsyncServiceProviderFactory
     {
-        public static IOleAsyncServiceProvider ImplementQueryServiceAsync(object service, Guid clsid)
+        public static IOleAsyncServiceProvider ImplementQueryServiceAsync(object? service, Guid clsid)
         {
             var mock = new Mock<IOleAsyncServiceProvider>();
 

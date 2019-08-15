@@ -11,8 +11,6 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.TreeView
 {
     public sealed class DependenciesTreeViewProviderTests
@@ -655,7 +653,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.TreeView
 
             // Assert
             Assert.NotNull(resultTree);
-            Assert.Equal("level3Child32", resultTree.Caption);
+            Assert.Equal("level3Child32", resultTree!.Caption);
         }
 
         [Fact]
@@ -786,8 +784,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.TreeView
         }
 
         private static DependenciesTreeViewProvider CreateProvider(
-            IEnumerable<IDependencyModel> rootModels = null,
-            IEnumerable<IDependencyModel> targetModels = null)
+            IEnumerable<IDependencyModel>? rootModels = null,
+            IEnumerable<IDependencyModel>? targetModels = null)
         {
             var treeServices = new MockIDependenciesTreeServices();
 

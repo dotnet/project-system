@@ -4,8 +4,6 @@ using System;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.CSharp
 {
     public class CSharpProjectTypeGuidProviderTests

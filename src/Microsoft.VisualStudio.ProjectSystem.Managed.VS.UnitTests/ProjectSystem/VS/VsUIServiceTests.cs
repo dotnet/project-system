@@ -6,10 +6,10 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.Threading;
-using Xunit;
 
-#nullable disable
+using Microsoft.VisualStudio.Threading;
+
+using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             Assert.Throws<ArgumentNullException>("serviceProvider", () =>
             {
-                return new VsUIService<string, string>((IServiceProvider)null, joinableTaskContext);
+                return new VsUIService<string, string>(null!, joinableTaskContext);
             });
         }
 
@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             Assert.Throws<ArgumentNullException>("joinableTaskContext", () =>
             {
-                return new VsUIService<string, string>(serviceProvider, (JoinableTaskContext)null);
+                return new VsUIService<string, string>(serviceProvider, null!);
             });
         }
 
@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             {
                 return Task.Run(() =>
                 {
-                    var value = service.Value;
+                    _ = service.Value;
                 });
             });
 
@@ -76,7 +76,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     return input;
 
                 return null;
-
             });
 
             var service = CreateInstance<string, object>(serviceProvider: serviceProvider);
@@ -102,7 +101,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             Assert.Same(result1, result2);
         }
 
-        private VsUIService<TService, TInterface> CreateInstance<TService, TInterface>(IServiceProvider serviceProvider = null, JoinableTaskContext joinableTaskContext = null)
+        private static VsUIService<TService, TInterface> CreateInstance<TService, TInterface>(
+            IServiceProvider? serviceProvider = null,
+            JoinableTaskContext? joinableTaskContext = null)
+            where TService : class
+            where TInterface : class
         {
             serviceProvider ??= SVsServiceProviderFactory.Create();
             joinableTaskContext ??= new JoinableTaskContext();

@@ -10,22 +10,17 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 {
     public class OrderingHelperTests
     {
         private static void AssertEqualProject(string expected, Project project)
         {
-            var actual = string.Empty;
-            using (var writer = new StringWriter())
-            {
-                project.Save(writer);
-                actual = writer.ToString();
-            }
+            using var writer = new StringWriter();
 
-            Assert.Equal(expected, actual);
+            project.Save(writer);
+
+            Assert.Equal(expected, writer.ToString());
         }
 
         private static (string tempPath, string testPropsFile) CreateTempPropsFilePath()

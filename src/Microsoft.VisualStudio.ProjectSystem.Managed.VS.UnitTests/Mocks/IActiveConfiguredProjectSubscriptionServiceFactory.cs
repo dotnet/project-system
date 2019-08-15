@@ -2,8 +2,6 @@
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     public static class IActiveConfiguredProjectSubscriptionServiceFactory

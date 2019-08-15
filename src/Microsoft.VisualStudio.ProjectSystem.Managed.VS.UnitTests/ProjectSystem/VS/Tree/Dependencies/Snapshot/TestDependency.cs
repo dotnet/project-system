@@ -6,8 +6,6 @@ using System.Diagnostics;
 
 using Microsoft.VisualStudio.Imaging;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     [DebuggerDisplay("{" + nameof(Id) + ",nq}")]
@@ -46,6 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             }
         }
 
+#pragma warning disable CS8618 // Non-nullable property is uninitialized
         public string ProviderType { get; set; }
         public string Name { get; set; }
         public string Caption { get; set; }
@@ -66,14 +65,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public string Alias { get; set; }
         public ITargetFramework TargetFramework { get; set; }
         public DependencyIconSet IconSet { get; set; } = s_defaultIconSet;
+#pragma warning restore CS8618 // Non-nullable property is uninitialized
 
         public IDependency SetProperties(
-            string caption = null,
+            string? caption = null,
             bool? resolved = null,
             ProjectTreeFlags? flags = null,
-            string schemaName = null,
+            string? schemaName = null,
             ImmutableArray<string> dependencyIDs = default,
-            DependencyIconSet iconSet = null,
+            DependencyIconSet? iconSet = null,
             bool? isImplicit = null)
         {
             return new TestDependency
@@ -98,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public override bool Equals(object obj)
             => obj is IDependency other && Equals(other);
 
-        public bool Equals(IDependency other)
+        public bool Equals(IDependency? other)
             => other != null && other.Id.Equals(Id, StringComparison.OrdinalIgnoreCase);
     }
 }

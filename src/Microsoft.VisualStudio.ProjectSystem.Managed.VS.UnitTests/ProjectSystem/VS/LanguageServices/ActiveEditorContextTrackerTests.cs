@@ -6,8 +6,6 @@ using Microsoft.VisualStudio.Shell;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {
     public class ActiveEditorContextTrackerTests
@@ -19,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
             Assert.Throws<ArgumentNullException>("contextId", () =>
             {
-                instance.IsActiveEditorContext((string)null);
+                instance.IsActiveEditorContext(null!);
             });
         }
 
@@ -41,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
             Assert.Throws<ArgumentNullException>("contextId", () =>
             {
-                instance.UnregisterContext((string)null);
+                instance.UnregisterContext(null!);
             });
         }
 
@@ -65,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             var instance = CreateInstance();
 
-            int result = instance.GetProjectName(itemid, out string projectNameResult);
+            int result = instance.GetProjectName(itemid, out string? projectNameResult);
 
             Assert.Equal(VSConstants.E_INVALIDARG, result);
             Assert.Null(projectNameResult);
@@ -195,7 +193,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
             instance.ActiveIntellisenseProjectContext = activeIntellisenseProjectContextId;
 
-            instance.GetProjectName(HierarchyId.Root, out string result);
+            instance.GetProjectName(HierarchyId.Root, out string? result);
 
             Assert.Equal(activeIntellisenseProjectContextId, result);
         }
@@ -210,7 +208,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             instance.RegisterContext("FirstContextId");
             instance.RegisterContext(contextId);
 
-            instance.GetProjectName(HierarchyId.Root, out string result);
+            instance.GetProjectName(HierarchyId.Root, out string? result);
 
             Assert.Equal("FirstContextId", result);
         }
@@ -231,14 +229,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             // Now explicitly set to null
             instance.ActiveIntellisenseProjectContext = null;
 
-            instance.GetProjectName(HierarchyId.Root, out string result);
+            instance.GetProjectName(HierarchyId.Root, out string? result);
 
             Assert.Equal("FirstContextId", result);
         }
 
         private static ActiveEditorContextTracker CreateInstance()
         {
-            return new ActiveEditorContextTracker((UnconfiguredProject)null);
+            return new ActiveEditorContextTracker((UnconfiguredProject?)null);
         }
     }
 }

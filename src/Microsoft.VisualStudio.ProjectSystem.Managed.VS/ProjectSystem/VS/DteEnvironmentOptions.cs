@@ -25,11 +25,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public T GetOption<T>(string category, string page, string option, T defaultValue)
         {
-            EnvDTE.Properties? properties = _dte.Value.Properties[category, page];
+            EnvDTE.Properties? properties = _dte.Value!.Properties[category, page];
 
             if (properties != null)
             {
-                return ((T)properties.Item(option).Value);
+                return (T)properties.Item(option).Value;
             }
 
             return defaultValue;

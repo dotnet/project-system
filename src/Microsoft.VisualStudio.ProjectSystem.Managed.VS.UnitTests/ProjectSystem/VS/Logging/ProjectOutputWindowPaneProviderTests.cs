@@ -6,8 +6,6 @@ using Microsoft.VisualStudio.Shell.Interop;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
 {
     public class ProjectOutputWindowPaneProviderTests
@@ -61,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
             Assert.Equal(1, callCount);
         }
 
-        private static ProjectOutputWindowPaneProvider CreateInstance(IProjectThreadingService threadingService = null, IVsOutputWindow outputWindow = null)
+        private static ProjectOutputWindowPaneProvider CreateInstance(IProjectThreadingService? threadingService = null, IVsOutputWindow? outputWindow = null)
         {
             threadingService ??= IProjectThreadingServiceFactory.Create();
 

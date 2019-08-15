@@ -9,8 +9,6 @@ using Microsoft.VisualStudio.Shell.Interop;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 {
     public class LanguageServiceErrorListProviderTests
@@ -65,7 +63,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             Assert.Equal(1, callCount);
         }
 
-
         [Fact]
         public async Task AddMessageAsync_NullAsTask_ThrowsArgumentNull()
         {
@@ -73,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
             await Assert.ThrowsAsync<ArgumentNullException>("error", () =>
             {
-                return provider.AddMessageAsync((TargetGeneratedError)null);
+                return provider.AddMessageAsync(null!);
             });
         }
 
@@ -100,7 +97,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
             Assert.Equal(AddMessageResult.NotHandled, result);
         }
-
 
         [Fact]
         public async Task AddMessageAsync_ArgsWithNoCodeAsTask_ReturnsNotHandled()
@@ -219,7 +215,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         [InlineData("This is an error message\r\n",                 "CS1000")]
         [InlineData("This is an error message.\r\n",                "BC1000")]
         [InlineData("This is an error message.\r\n.And another",    "BC1000\r\n")]
-        public async Task AddMessageAsync_BuildErrorAsTask_CallsReportErrorSettingErrorMessageAndCode(string errorMessage, string code)
+        public async Task AddMessageAsync_BuildErrorAsTask_CallsReportErrorSettingErrorMessageAndCode(string? errorMessage, string code)
         {
             string errorMessageResult = "NotSet";
             string errorIdResult = "NotSet";
@@ -318,7 +314,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         [InlineData(@"C:\Foo\..\MyProject.csproj",              @"C:\MyProject.csproj",                 @"C:\MyProject.csproj")]
         [InlineData(@"C:\Foo\Foo.txt",                          @"C:\Bar\MyProject.csproj",             @"C:\Foo\Foo.txt")]
         [InlineData(@"Foo.txt",                                 @"C:\Bar\MyProject.csproj",             @"C:\Bar\Foo.txt")]
-        public async Task AddMessageAsync_BuildErrorAsTask_CallsReportErrorSettingFileName(string file, string projectFile, string expectedFileName)
+        public async Task AddMessageAsync_BuildErrorAsTask_CallsReportErrorSettingFileName(string? file, string? projectFile, string expectedFileName)
         {
             string fileNameResult = "NotSet";
             var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, int iEndLine, int iEndColumn, string bstrFileName) =>
@@ -344,12 +340,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             return new TargetGeneratedError("Test", new BuildErrorEventArgs(null, "Code", "File", 1, 1, 1, 1, "Message", "HelpKeyword", "Sender"));
         }
 
-        private static LanguageServiceErrorListProvider CreateInstance()
-        {
-            return CreateInstance(null);
-        }
-
-        private static LanguageServiceErrorListProvider CreateInstance(IActiveWorkspaceProjectContextHost projectContextHost)
+        private static LanguageServiceErrorListProvider CreateInstance(IActiveWorkspaceProjectContextHost? projectContextHost = null)
         {
             projectContextHost ??= IActiveWorkspaceProjectContextHostFactory.Create();
 

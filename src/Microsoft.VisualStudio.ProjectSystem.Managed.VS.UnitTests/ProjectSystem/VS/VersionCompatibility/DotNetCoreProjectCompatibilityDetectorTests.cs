@@ -11,8 +11,6 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Moq;
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.VersionCompatibility
 {
     public class DotNetCoreProjectCompatibilityDetectorTests
@@ -161,8 +159,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.VersionCompatibility
 
 
         private static DotNetCoreProjectCompatibilityDetector CreateCompatibilityDetector(out IDialogServices dialogServices,
-                                                                                          string versionDataString = null,
-                                                                                          Version vsVersion = null,
+                                                                                          string? versionDataString = null,
+                                                                                          Version? vsVersion = null,
                                                                                           bool isSolutionOpen = false,
                                                                                           bool hasNewProjects = false,
                                                                                           bool usingPreviewSDK = false,

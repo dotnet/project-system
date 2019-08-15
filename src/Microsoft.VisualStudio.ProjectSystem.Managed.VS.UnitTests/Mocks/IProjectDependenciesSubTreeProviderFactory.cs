@@ -7,15 +7,13 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal static class IProjectDependenciesSubTreeProviderFactory
     {
         public static IProjectDependenciesSubTreeProvider Implement(
-            string providerType = null,
-            IDependencyModel createRootDependencyNode = null,
+            string? providerType = null,
+            IDependencyModel? createRootDependencyNode = null,
             MockBehavior mockBehavior = MockBehavior.Strict)
         {
             var mock = new Mock<IProjectDependenciesSubTreeProvider>(mockBehavior);
@@ -34,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         public static IProjectDependenciesSubTreeProviderInternal ImplementInternal(
-            string providerType = null,
+            string? providerType = null,
             ImageMoniker implicitIcon = default,
             MockBehavior mockBehavior = MockBehavior.Strict)
         {

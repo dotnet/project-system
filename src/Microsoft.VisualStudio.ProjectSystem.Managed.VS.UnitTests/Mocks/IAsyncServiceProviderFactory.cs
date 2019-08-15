@@ -6,8 +6,6 @@ using Moq;
 
 using IAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal static class IAsyncServiceProviderFactory
@@ -17,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return Mock.Of<IAsyncServiceProvider>();
         }
 
-        public static IAsyncServiceProvider ImplementGetServiceAsync(Func<Type, object> action)
+        public static IAsyncServiceProvider ImplementGetServiceAsync(Func<Type, object?> action)
         {
             var mock = new Mock<IAsyncServiceProvider>();
 
