@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             private readonly DependencyType _dependencyType;
 
-            public string Target { get; }
+            public string? Target { get; }
             public string ItemSpec { get; }
             public string OriginalItemSpec { get; }
             public string Name { get; }
@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             private PackageDependencyMetadata(
                 DependencyType dependencyType,
-                string target,
+                string? target,
                 string itemSpec,
                 string originalItemSpec,
                 string name,
@@ -65,7 +65,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
                 bool isTopLevel;
 
-                string target = GetTargetFromDependencyId(itemSpec);
+                int slashIndex = itemSpec.IndexOf('/');
+                string? target = slashIndex == -1 ? null : s_targetFrameworkInternPool.Intern(itemSpec.Substring(0, slashIndex));
 
                 DependencyType dependencyType = properties.GetEnumProperty<DependencyType>(ProjectItemMetadata.Type)
                     ?? (isResolved ? DependencyType.Unknown : DependencyType.Package);
@@ -79,21 +80,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     isTopLevel = isImplicitlyDefined ||
                         (dependencyType == DependencyType.Package && unresolvedChanges?.Contains(name) == true);
 
-                    bool isTarget = itemSpec.IndexOf('/') == -1;
-
-                    if (isTarget)
+                    if (target == null ||
+                        targetFrameworkProvider.GetTargetFramework(target)?.Equals(targetFramework) != true)
                     {
                         metadata = default;
                         return false;
                     }
 
-                    ITargetFramework? packageTargetFramework = targetFrameworkProvider.GetTargetFramework(target);
-
-                    if (packageTargetFramework?.Equals(targetFramework) != true)
-                    {
-                        metadata = default;
-                        return false;
-                    }
                 }
                 else
                 {
@@ -115,8 +108,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     isTopLevel,
                     properties);
                 return true;
-
-                static string GetTargetFromDependencyId(string dependencyId) => s_targetFrameworkInternPool.Intern(new LazyStringSplit(dependencyId, '/').First());
             }
 
             public IDependencyModel CreateDependencyModel()
@@ -175,6 +166,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             {
                 if (Properties.TryGetValue(ProjectItemMetadata.Dependencies, out string dependencies) && !string.IsNullOrWhiteSpace(dependencies))
                 {
+                    Assumes.NotNull(Target);
+
                     var dependenciesItemSpecs = new HashSet<string>(StringComparers.ItemNames);
                     var dependencyIds = new LazyStringSplit(dependencies, ';');
 
