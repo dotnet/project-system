@@ -11,8 +11,6 @@ using Moq;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.CSharp
 {
     public class RenamerTests : RenamerTestsBase

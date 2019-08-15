@@ -60,14 +60,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             await _joinableTaskContext.Factory.SwitchToMainThreadAsync(cancellationToken);
 
-            return _settingsManager.Value.GetValueOrDefault(name, defaultValue);
+            return _settingsManager.Value!.GetValueOrDefault(name, defaultValue);
         }
 
         private async Task SetSettingValueAsync(string name, object value, CancellationToken cancellationToken)
         {
             await _joinableTaskContext.Factory.SwitchToMainThreadAsync(cancellationToken);
 
-            await _settingsManager.Value.SetValueAsync(name, value, isMachineLocal:false);
+            await _settingsManager.Value!.SetValueAsync(name, value, isMachineLocal:false);
         }
 
         private bool IsEnvironmentVariableEnabled(string variable, ref bool? result)

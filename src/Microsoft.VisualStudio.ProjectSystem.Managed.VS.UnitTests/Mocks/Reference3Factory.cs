@@ -4,8 +4,6 @@ using Moq;
 
 using VSLangProj;
 
-#nullable disable
-
 namespace VSLangProj80
 {
     internal static class Reference3Factory
@@ -19,16 +17,21 @@ namespace VSLangProj80
             return mock.Object;
         }
 
-        public static Reference3 CreateAssemblyReference(string name, string version = null, string path = null, prjReferenceType type = prjReferenceType.prjReferenceTypeAssembly, __PROJECTREFERENCETYPE refType = __PROJECTREFERENCETYPE.PROJREFTYPE_ASSEMBLY)
+        public static Reference3 CreateAssemblyReference(
+            string name,
+            string? version = null,
+            string? path = null,
+            prjReferenceType type = prjReferenceType.prjReferenceTypeAssembly,
+            __PROJECTREFERENCETYPE refType = __PROJECTREFERENCETYPE.PROJREFTYPE_ASSEMBLY)
         {
             var mock = new Mock<Reference3>();
             mock.SetupGet(r => r.Name)
                 .Returns(name);
 
-            mock.SetupGet(r => r.Version)
+            mock.SetupGet<string?>(r => r.Version)
                 .Returns(version);
 
-            mock.SetupGet(r => r.Path)
+            mock.SetupGet<string?>(r => r.Path)
                 .Returns(path);
 
             mock.SetupGet(r => r.Resolved)

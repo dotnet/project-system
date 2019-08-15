@@ -2,20 +2,18 @@
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.Shell.Interop
 {
     internal static class IVsTaskFactory
     {
-        public static IVsTask FromResult(object result)
+        public static IVsTask FromResult(object? result)
         {
             var mock = new Mock<IVsTask>();
 
             mock.Setup(t => t.IsCompleted)
                 .Returns(true);
             mock.Setup(t => t.GetResult())
-                .Returns(result);
+                .Returns(result!);
 
             return mock.Object;
         }

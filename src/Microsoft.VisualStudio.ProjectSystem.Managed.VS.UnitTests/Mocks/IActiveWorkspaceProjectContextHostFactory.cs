@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     internal static class IActiveWorkspaceProjectContextHostFactory
@@ -54,8 +52,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             {
                 return action(_accessor);
             }
-
-
         }
     }
 }

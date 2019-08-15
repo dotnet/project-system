@@ -10,8 +10,6 @@ using Microsoft.VisualStudio.Composition.Reflection;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     public partial class ComponentVerificationTests
@@ -24,7 +22,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             var part = ComponentComposition.Instance.FindComposedPart(type);
 
-            foreach ((ImportDefinitionBinding import, IReadOnlyList<ExportDefinitionBinding> exports) in part.SatisfyingExports)
+            Assert.NotNull(part);
+
+            foreach ((ImportDefinitionBinding import, IReadOnlyList<ExportDefinitionBinding> exports) in part!.SatisfyingExports)
             {
                 var importingProperty = import.ImportingMember as PropertyInfo;
                 if (importingProperty == null)  // We don't verify ImportingConstructor, only check properties.
@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 ExportDefinitionBinding exportBinding = exports.SingleOrDefault();
                 if (exportBinding != null)
                 {
-                    string appliesTo = GetAppliesToMetadata(exportBinding.ExportDefinition);
+                    string? appliesTo = GetAppliesToMetadata(exportBinding.ExportDefinition);
                     if (!string.IsNullOrEmpty(appliesTo) && !ContainsExpression(appliesTo))
                     {
                         // If the consumer imports metadata, we assume it will be checked.
@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                             // of the consumed component can be inferred from the capability of the consumer.
                             foreach (ExportDefinition exportDefinition in part.Definition.ExportDefinitions.Select(p => p.Value))
                             {
-                                string requiredAppliesTo = GetAppliesToMetadata(exportDefinition);
+                                string? requiredAppliesTo = GetAppliesToMetadata(exportDefinition);
                                 if (requiredAppliesTo == null ||
                                     !ContainsExpression(requiredAppliesTo))
                                 {
@@ -81,9 +81,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             var definition = ComponentComposition.Instance.FindComposablePartDefinition(type);
 
+            Assert.NotNull(definition);
+
             // Gather the appliesTo metadata from all exports of the same part.
             var appliesToMetadata = new List<string>();
-            foreach (KeyValuePair<MemberRef, ExportDefinition> exportDefinitionPair in definition.ExportDefinitions)
+            foreach (KeyValuePair<MemberRef, ExportDefinition> exportDefinitionPair in definition!.ExportDefinitions)
             {
                 ExportDefinition exportDefinition = exportDefinitionPair.Value;
                 exportDefinition.Metadata.TryGetValue(nameof(AppliesToAttribute.AppliesTo), out object metadata);
@@ -105,7 +107,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             var definition = ComponentComposition.Instance.FindComposablePartDefinition(type);
 
-            foreach (KeyValuePair<MemberRef, ExportDefinition> export in definition.ExportDefinitions)
+            Assert.NotNull(definition);
+
+            foreach (KeyValuePair<MemberRef, ExportDefinition> export in definition!.ExportDefinitions)
             {
                 var contractsRequiringMetadata = ComponentComposition.Instance.ContractsRequiringAppliesTo;
 
@@ -148,7 +152,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var contracts = ComponentComposition.Instance.Contracts;
             var definition = ComponentComposition.Instance.FindComposablePartDefinition(type);
 
-            foreach (ImportDefinitionBinding import in definition.Imports)
+            Assert.NotNull(definition);
+
+            foreach (ImportDefinitionBinding import in definition!.Imports)
             {
                 ImportDefinition importDefinition = import.ImportDefinition;
                 if (contracts.TryGetValue(importDefinition.ContractName, out ComponentComposition.ContractMetadata contractMetadata))
@@ -169,7 +175,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             var definition = ComponentComposition.Instance.FindComposablePartDefinition(type);
 
-            foreach (ImportDefinitionBinding import in definition.Imports)
+            Assert.NotNull(definition);
+
+            foreach (ImportDefinitionBinding import in definition!.Imports)
             {
                 ImportDefinition importDefinition = import.ImportDefinition;
                 if (importDefinition.ExportFactorySharingBoundaries.Count > 0)
@@ -202,7 +210,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             var definition = ComponentComposition.Instance.FindComposablePartDefinition(type);
 
-            foreach (ImportDefinitionBinding import in definition.Imports)
+            Assert.NotNull(definition);
+
+            foreach (ImportDefinitionBinding import in definition!.Imports)
             {
                 ImportDefinition importDefinition = import.ImportDefinition;
                 if (!CheckContractHasMetadata(GetContractName(importDefinition), definition, ComponentComposition.Instance.Contracts, ComponentComposition.Instance.InterfaceNames))
@@ -220,7 +230,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             var definition = ComponentComposition.Instance.FindComposablePartDefinition(type);
 
-            foreach (KeyValuePair<MemberRef, ExportDefinition> export in definition.ExportDefinitions)
+            Assert.NotNull(definition);
+
+            foreach (KeyValuePair<MemberRef, ExportDefinition> export in definition!.ExportDefinitions)
             {
                 ExportDefinition exportDefinition = export.Value;
                 if (!CheckContractHasMetadata(exportDefinition.ContractName, definition, ComponentComposition.Instance.Contracts, ComponentComposition.Instance.InterfaceNames))
@@ -241,7 +253,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return !interfaceNames.Contains(contractName);
         }
 
-        private string GetContractName(ImportDefinition import)
+        private static string GetContractName(ImportDefinition import)
         {
             if (import.Metadata.TryGetValue("System.ComponentModel.Composition.GenericContractName", out var value))
             {
@@ -255,7 +267,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// Check whether a capability is not a simple string, but a complex expression.
         /// We don't have built-in logic to check whether one expression can infer another one today, so we don't do validation when an expression is being used.
         /// </summary>
-        private static bool ContainsExpression(string capability)
+        private static bool ContainsExpression(string? capability)
         {
             return capability != null && capability.IndexOfAny(new char[] { '&', '|', '!' }) >= 0;
         }
@@ -283,7 +295,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// Get AppliesTo metadata from an export.
         /// </summary>
         /// <returns>returns null if the metadata cannot be found.</returns>
-        private static string GetAppliesToMetadata(ExportDefinition exportDefinition)
+        private static string? GetAppliesToMetadata(ExportDefinition exportDefinition)
         {
             if (exportDefinition.Metadata.TryGetValue(nameof(AppliesToAttribute.AppliesTo), out object appliesToMetadata))
             {

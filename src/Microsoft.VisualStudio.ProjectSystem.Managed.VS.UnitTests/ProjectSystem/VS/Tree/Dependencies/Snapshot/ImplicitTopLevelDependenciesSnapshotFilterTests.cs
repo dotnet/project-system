@@ -8,8 +8,6 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     public sealed class ImplicitTopLevelDependenciesSnapshotFilterTests : DependenciesSnapshotFilterTestsBase
@@ -138,7 +136,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 implicitIcon: implicitIcon);
 
             filter.BeforeAddOrUpdate(
-                null,
+                null!,
                 dependency,
                 new Dictionary<string, IProjectDependenciesSubTreeProvider> { { providerType, subTreeProvider } },
                 ImmutableHashSet<string>.Empty,
@@ -149,8 +147,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             // Returns changed dependency
             Assert.NotNull(acceptedDependency);
             Assert.NotSame(dependency, acceptedDependency);
-
-            acceptedDependency.AssertEqualTo(
+            acceptedDependency!.AssertEqualTo(
                 new TestDependency
                 {
                     ClonePropertiesFrom = dependency,

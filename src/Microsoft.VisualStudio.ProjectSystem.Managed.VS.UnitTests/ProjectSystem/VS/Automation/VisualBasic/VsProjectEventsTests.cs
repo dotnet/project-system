@@ -8,8 +8,6 @@ using VSLangProj;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
 {
     public class VsProjectEventsTests
@@ -31,11 +29,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
                               .Returns(projectEventsMock.Object);
 
             var unconfiguredProjectMock = new Mock<UnconfiguredProject>();
-            unconfiguredProjectMock.Setup(p => p.Capabilities)
-                                   .Returns((IProjectCapabilitiesScope)null);
+            unconfiguredProjectMock.SetupGet<IProjectCapabilitiesScope?>(p => p.Capabilities)
+                              .Returns((IProjectCapabilitiesScope?)null);
 
             var importEvents = Mock.Of<ImportsEvents>();
-            var importsEventsImpl = new OrderPrecedenceImportCollection<ImportsEvents>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, (UnconfiguredProject)null)
+            var importsEventsImpl = new OrderPrecedenceImportCollection<ImportsEvents>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, (UnconfiguredProject?)null)
             {
                 new Lazy<ImportsEvents, IOrderPrecedenceMetadataView>(() => importEvents, IOrderPrecedenceMetadataViewFactory.Create("VisualBasic"))
             };
@@ -49,9 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
             Assert.Equal(importEvents, vsProjectEvents.ImportsEvents);
         }
 
-        private VSProjectEventsTestImpl GetVSProjectEvents(
-            VSLangProj.VSProject vsproject = null,
-            UnconfiguredProject project = null)
+        private static VSProjectEventsTestImpl GetVSProjectEvents(VSLangProj.VSProject vsproject, UnconfiguredProject project)
         {
             return new VSProjectEventsTestImpl(vsproject, project);
         }

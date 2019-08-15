@@ -6,8 +6,6 @@ using Moq;
 
 #pragma warning disable RS0030 // This is the one place where IProjectGuidService is allowed to be referenced
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal static class IProjectGuidServiceFactory

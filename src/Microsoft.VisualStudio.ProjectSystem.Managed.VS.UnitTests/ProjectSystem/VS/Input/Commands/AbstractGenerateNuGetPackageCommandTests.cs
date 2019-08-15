@@ -9,8 +9,6 @@ using Microsoft.VisualStudio.Shell.Interop;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
     public abstract class AbstractGenerateNuGetPackageCommandTests
@@ -18,37 +16,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         [Fact]
         public void Constructor_NullAsUnconfiguredProject_ThrowsArgumentNull()
         {
-            Assert.Throws<ArgumentNullException>(() => CreateInstanceCore(null, IProjectThreadingServiceFactory.Create(), IVsServiceFactory.Create<SVsSolutionBuildManager, IVsSolutionBuildManager2>(null), CreateGeneratePackageOnBuildPropertyProvider()));
+            Assert.Throws<ArgumentNullException>(() => CreateInstanceCore(null!, IProjectThreadingServiceFactory.Create(), IVsServiceFactory.Create<SVsSolutionBuildManager, IVsSolutionBuildManager2>(null), CreateGeneratePackageOnBuildPropertyProvider()));
         }
 
         [Fact]
         public void Constructor_NullAsProjectThreadingServiceFactory_ThrowsArgumentNull()
         {
-            Assert.Throws<ArgumentNullException>(() => CreateInstanceCore(UnconfiguredProjectFactory.Create(), null, IVsServiceFactory.Create<SVsSolutionBuildManager, IVsSolutionBuildManager2>(null), CreateGeneratePackageOnBuildPropertyProvider()));
+            Assert.Throws<ArgumentNullException>(() => CreateInstanceCore(UnconfiguredProjectFactory.Create(), null!, IVsServiceFactory.Create<SVsSolutionBuildManager, IVsSolutionBuildManager2>(null), CreateGeneratePackageOnBuildPropertyProvider()));
         }
 
         [Fact]
         public void Constructor_NullAsSVsServiceProvider_ThrowsArgumentNull()
         {
-            Assert.Throws<ArgumentNullException>(() => CreateInstanceCore(UnconfiguredProjectFactory.Create(), IProjectThreadingServiceFactory.Create(), null, CreateGeneratePackageOnBuildPropertyProvider()));
+            Assert.Throws<ArgumentNullException>(() => CreateInstanceCore(UnconfiguredProjectFactory.Create(), IProjectThreadingServiceFactory.Create(), null!, CreateGeneratePackageOnBuildPropertyProvider()));
         }
 
         [Fact]
         public void Constructor_NullAsGeneratePackageOnBuildPropertyProvider_ThrowsArgumentNull()
         {
-            Assert.Throws<ArgumentNullException>(() => CreateInstanceCore(UnconfiguredProjectFactory.Create(), IProjectThreadingServiceFactory.Create(), IVsServiceFactory.Create<SVsSolutionBuildManager, IVsSolutionBuildManager2>(null), null));
+            Assert.Throws<ArgumentNullException>(() => CreateInstanceCore(UnconfiguredProjectFactory.Create(), IProjectThreadingServiceFactory.Create(), IVsServiceFactory.Create<SVsSolutionBuildManager, IVsSolutionBuildManager2>(null), null!));
         }
 
         [Fact]
         public async Task TryHandleCommandAsync_InvokesBuild()
         {
             bool buildStarted = false, buildCancelled = false, buildCompleted = false;
-            void onUpdateSolutionBegin()
-            { buildStarted = true; }
-            void onUpdateSolutionCancel()
-            { buildCancelled = true; }
-            void onUpdateSolutionDone()
-            { buildCompleted = true; }
+
+            void onUpdateSolutionBegin() => buildStarted = true;
+            void onUpdateSolutionCancel() => buildCancelled = true;
+            void onUpdateSolutionDone() => buildCompleted = true;
 
             var solutionEventsListener = IVsUpdateSolutionEventsFactory.Create(onUpdateSolutionBegin, onUpdateSolutionCancel, onUpdateSolutionDone);
             var command = CreateInstance(solutionEventsListener: solutionEventsListener);
@@ -71,12 +67,10 @@ Root (flags: {ProjectRoot})
         public async Task TryHandleCommandAsync_OnBuildCancelled()
         {
             bool buildStarted = false, buildCancelled = false, buildCompleted = false;
-            void onUpdateSolutionBegin()
-            { buildStarted = true; }
-            void onUpdateSolutionCancel()
-            { buildCancelled = true; }
-            void onUpdateSolutionDone()
-            { buildCompleted = true; }
+
+            void onUpdateSolutionBegin() => buildStarted = true;
+            void onUpdateSolutionCancel() => buildCancelled = true;
+            void onUpdateSolutionDone() => buildCompleted = true;
 
             var solutionEventsListener = IVsUpdateSolutionEventsFactory.Create(onUpdateSolutionBegin, onUpdateSolutionCancel, onUpdateSolutionDone);
             var command = CreateInstance(solutionEventsListener: solutionEventsListener, cancelBuild: true);
@@ -127,12 +121,11 @@ Root (flags: {ProjectRoot})
             var nodes = ImmutableHashSet.Create(tree.Root);
 
             bool buildStarted = false, buildCancelled = false, buildCompleted = false;
-            void onUpdateSolutionBegin()
-            { buildStarted = true; }
-            void onUpdateSolutionCancel()
-            { buildCancelled = true; }
-            void onUpdateSolutionDone()
-            { buildCompleted = true; }
+
+            void onUpdateSolutionBegin() => buildStarted = true;
+            void onUpdateSolutionCancel() => buildCancelled = true;
+            void onUpdateSolutionDone() => buildCompleted = true;
+
             var solutionEventsListener = IVsUpdateSolutionEventsFactory.Create(onUpdateSolutionBegin, onUpdateSolutionCancel, onUpdateSolutionDone);
 
             var command = CreateInstance(solutionEventsListener: solutionEventsListener, isBuilding: true);
@@ -148,9 +141,9 @@ Root (flags: {ProjectRoot})
         internal abstract long GetCommandId();
 
         internal AbstractGenerateNuGetPackageCommand CreateInstance(
-            GeneratePackageOnBuildPropertyProvider generatePackageOnBuildPropertyProvider = null,
-            IVsSolutionBuildManager2 buildManager = null,
-            IVsUpdateSolutionEvents solutionEventsListener = null,
+            GeneratePackageOnBuildPropertyProvider? generatePackageOnBuildPropertyProvider = null,
+            IVsSolutionBuildManager2? buildManager = null,
+            IVsUpdateSolutionEvents? solutionEventsListener = null,
             bool isBuilding = false,
             bool cancelBuild = false)
         {
@@ -164,7 +157,7 @@ Root (flags: {ProjectRoot})
             return CreateInstanceCore(project, threadingService, serviceProvider, generatePackageOnBuildPropertyProvider);
         }
 
-        private static GeneratePackageOnBuildPropertyProvider CreateGeneratePackageOnBuildPropertyProvider(IProjectService projectService = null)
+        private static GeneratePackageOnBuildPropertyProvider CreateGeneratePackageOnBuildPropertyProvider(IProjectService? projectService = null)
         {
             projectService ??= IProjectServiceFactory.Create();
             return new GeneratePackageOnBuildPropertyProvider(projectService);

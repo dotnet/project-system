@@ -1,15 +1,16 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-
 using Moq;
-
-#nullable disable
 
 namespace Microsoft.VisualStudio.Shell.Interop
 {
     internal static class IVsSolutionBuildManager2Factory
     {
-        public static IVsSolutionBuildManager2 Create(IVsUpdateSolutionEvents solutionEventsListener = null, IVsHierarchy hierarchyToBuild = null, bool isBuilding = false, bool cancelBuild = false)
+        public static IVsSolutionBuildManager2 Create(
+            IVsUpdateSolutionEvents? solutionEventsListener = null,
+            IVsHierarchy? hierarchyToBuild = null,
+            bool isBuilding = false,
+            bool cancelBuild = false)
         {
             var buildManager = new Mock<IVsSolutionBuildManager2>();
 
@@ -24,7 +25,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
             {
                 int onBuildStartedWithReturn()
                 {
-                    solutionEventsListener.UpdateSolution_Begin(It.IsAny<int>());
+                    solutionEventsListener!.UpdateSolution_Begin(It.IsAny<int>());
 
                     if (cancelBuild)
                     {

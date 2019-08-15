@@ -4,8 +4,6 @@ using System;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
     public class ProjectDesignerPageMetadataTests
@@ -15,7 +13,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         {
             Assert.Throws<ArgumentException>("pageGuid", () =>
             {
-
                 new ProjectDesignerPageMetadata(Guid.Empty, 0, hasConfigurationCondition: false);
             });
         }

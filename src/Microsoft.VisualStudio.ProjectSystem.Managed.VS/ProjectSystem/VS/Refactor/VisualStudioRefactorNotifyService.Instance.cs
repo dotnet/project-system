@@ -80,8 +80,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
 
             private async Task<Project?> TryGetProjectFromPathAsync(string projectPath)
             {
-                DTE dte = await _dte.GetValueAsync();
-                foreach (Project project in dte.Solution.Projects)
+                DTE? dte = await _dte.GetValueAsync();
+
+                foreach (Project project in dte!.Solution.Projects)
                 {
                     if (StringComparers.Paths.Equals(project.FullName, projectPath))
                     {
@@ -94,8 +95,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
 
             private async Task<IVsHierarchy?> TryGetIVsHierarchyAsync(Project project)
             {
-                IVsSolution solutionService = await _solutionService.GetValueAsync();
-                if (solutionService.GetProjectOfUniqueName(project.UniqueName, out IVsHierarchy projectHierarchy) == HResult.OK)
+                IVsSolution? solutionService = await _solutionService.GetValueAsync();
+
+                if (solutionService!.GetProjectOfUniqueName(project.UniqueName, out IVsHierarchy projectHierarchy) == HResult.OK)
                 {
                     return projectHierarchy;
                 }
@@ -103,7 +105,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
                 return null;
             }
 
-            private IEnumerable<uint> GetIdsForFiles(IVsHierarchy projectHierarchy, IEnumerable<string> filePaths)
+            private static IEnumerable<uint> GetIdsForFiles(IVsHierarchy projectHierarchy, IEnumerable<string> filePaths)
             {
                 foreach (string filePath in filePaths)
                 {

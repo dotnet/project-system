@@ -4,15 +4,13 @@ using Microsoft.VisualStudio.Shell.Interop;
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal class IUnconfiguredProjectVsServicesMock : AbstractMock<IUnconfiguredProjectVsServices>
     {
-        public IUnconfiguredProjectVsServicesMock ImplementVsHierarchy(IVsHierarchy hierarchy)
+        public IUnconfiguredProjectVsServicesMock ImplementVsHierarchy(IVsHierarchy? hierarchy)
         {
-            SetupGet(m => m.VsHierarchy)
+            SetupGet<IVsHierarchy?>(m => m.VsHierarchy)
                 .Returns(hierarchy);
 
             return this;
@@ -34,9 +32,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return this;
         }
 
-        public IUnconfiguredProjectVsServicesMock ImplementActiveConfiguredProjectProperties(ProjectProperties projectProperties)
+        public IUnconfiguredProjectVsServicesMock ImplementActiveConfiguredProjectProperties(ProjectProperties? projectProperties)
         {
-            SetupGet(m => m.ActiveConfiguredProjectProperties)
+            SetupGet<ProjectProperties?>(m => m.ActiveConfiguredProjectProperties)
                 .Returns(projectProperties);
 
             return this;

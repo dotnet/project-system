@@ -5,11 +5,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices;
-using Xunit;
-
-#nullable disable
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
@@ -55,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             Configuration = CompositionConfiguration.Create(catalog);
             Contracts = CollectContractMetadata(ContractAssemblies.Union(BuildInAssemblies));
             ContractsRequiringAppliesTo = CollectContractsRequiringAppliesTo(catalog);
-            InterfaceNames = CollectIntefaceNames(ContractAssemblies);
+            InterfaceNames = CollectInterfaceNames(ContractAssemblies);
         }
 
         public ComposableCatalog Catalog
@@ -83,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             get;
         }
 
-        public ComposedPart FindComposedPart(Type type)
+        public ComposedPart? FindComposedPart(Type type)
         {
             foreach (ComposedPart part in Configuration.Parts)
             {
@@ -96,7 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return null;
         }
 
-        public ComposablePartDefinition FindComposablePartDefinition(Type type)
+        public ComposablePartDefinition? FindComposablePartDefinition(Type type)
         {
             foreach (ComposablePartDefinition part in Catalog.Parts)
             {
@@ -109,7 +107,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return null;
         }
 
-        private IDictionary<string, ISet<Type>> CollectContractsRequiringAppliesTo(ComposableCatalog catalog)
+        private static IDictionary<string, ISet<Type>> CollectContractsRequiringAppliesTo(ComposableCatalog catalog)
         {
             var contractsRequiringAppliesTo = new Dictionary<string, ISet<Type>>();
 
@@ -134,7 +132,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return contractsRequiringAppliesTo;
         }
 
-        private ISet<string> CollectIntefaceNames(IEnumerable<Assembly> assemblies)
+        private static ISet<string> CollectInterfaceNames(IEnumerable<Assembly> assemblies)
         {
             var interfaceNames = new HashSet<string>();
             foreach (Assembly assembly in assemblies)
@@ -151,7 +149,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return interfaceNames;
         }
 
-        private Dictionary<string, ContractMetadata> CollectContractMetadata(IEnumerable<Assembly> assemblies)
+        private static Dictionary<string, ContractMetadata> CollectContractMetadata(IEnumerable<Assembly> assemblies)
         {
             Requires.NotNull(assemblies, nameof(assemblies));
             var contracts = new Dictionary<string, ContractMetadata>(StringComparer.Ordinal);
@@ -163,15 +161,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return contracts;
         }
 
-        private void ReadContractMetadata(Dictionary<string, ContractMetadata> contracts, Assembly contractAssembly)
+        private static void ReadContractMetadata(Dictionary<string, ContractMetadata> contracts, Assembly contractAssembly)
         {
             Requires.NotNull(contracts, nameof(contracts));
             Requires.NotNull(contractAssembly, nameof(contractAssembly));
             foreach (ProjectSystemContractAttribute assemblyAttribute in contractAssembly.GetCustomAttributes<ProjectSystemContractAttribute>())
             {
-                if (assemblyAttribute.ContractName != null || assemblyAttribute.ContractType != null)
+                var contractName = assemblyAttribute.ContractName;
+                var contractType = assemblyAttribute.ContractType;
+
+                if (contractName != null || contractType != null)
                 {
-                    AddContractMetadata(contracts, assemblyAttribute.ContractName ?? assemblyAttribute.ContractType.FullName, assemblyAttribute.Scope, assemblyAttribute.Provider, assemblyAttribute.Cardinality);
+                    AddContractMetadata(contracts, contractName ?? contractType.FullName, assemblyAttribute.Scope, assemblyAttribute.Provider, assemblyAttribute.Cardinality);
                 }
             }
 
@@ -188,7 +189,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
         }
 
-        private Type[] GetTypes(Assembly assembly)
+        private static Type[] GetTypes(Assembly assembly)
         {
             try
             {
@@ -212,13 +213,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     message += "\n";
                 }
 
-                Assert.False(true, message);
+                throw new Xunit.Sdk.XunitException(message);
             }
-
-            return null;
         }
 
-        private bool IsIgnorable(Exception exception)
+        private static bool IsIgnorable(Exception exception)
         {
             if (exception is FileNotFoundException fileNotFound)
             {
@@ -228,7 +227,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return false;
         }
 
-        private void AddContractMetadata(Dictionary<string, ContractMetadata> contracts, string name, ProjectSystemContractScope scope, ProjectSystemContractProvider provider, ImportCardinality cardinality)
+        private static void AddContractMetadata(Dictionary<string, ContractMetadata> contracts, string name, ProjectSystemContractScope scope, ProjectSystemContractProvider provider, ImportCardinality cardinality)
         {
             Requires.NotNull(contracts, nameof(contracts));
             Requires.NotNullOrEmpty(name, nameof(name));

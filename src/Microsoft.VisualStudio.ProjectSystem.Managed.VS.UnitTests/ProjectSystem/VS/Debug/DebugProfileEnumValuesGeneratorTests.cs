@@ -12,19 +12,17 @@ using Moq;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
-    public class DebugProfileEnumValuesGenerator_Tests
+    public class DebugProfileEnumValuesGeneratorTests
     {
-        private readonly List<ILaunchProfile> _profiles = new List<ILaunchProfile>() {
-            {new LaunchProfile() { Name="Profile1", LaunchBrowser=true}},
-            {new LaunchProfile() { Name = "MyCommand"} },
-            {new LaunchProfile() { Name = "Foo"} },
-            {new LaunchProfile() { Name="Bar"} },
-            {new LaunchProfile() { Name="Foo & Bar"} }
-
+        private readonly List<ILaunchProfile> _profiles = new List<ILaunchProfile>
+        {
+            new LaunchProfile { Name = "Profile1", LaunchBrowser = true },
+            new LaunchProfile { Name = "MyCommand" },
+            new LaunchProfile { Name = "Foo" },
+            new LaunchProfile { Name = "Bar" },
+            new LaunchProfile { Name = "Foo & Bar" }
         };
 
         [Fact]

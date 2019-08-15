@@ -3,13 +3,11 @@
 using System.Threading;
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal static class IVsServiceFactory
     {
-        public static IVsService<T> Create<T>(T value)
+        public static IVsService<T> Create<T>(T value) where T : class
         {
             var mock = new Mock<IVsService<T>>();
             mock.Setup(s => s.GetValueAsync(It.IsAny<CancellationToken>()))
@@ -18,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return mock.Object;
         }
 
-        public static IVsService<TService, TInterface> Create<TService, TInterface>(TInterface value)
+        public static IVsService<TService, TInterface> Create<TService, TInterface>(TInterface? value) where TService : class where TInterface : class
         {
             var mock = new Mock<IVsService<TService, TInterface>>();
             mock.Setup(s => s.GetValueAsync(It.IsAny<CancellationToken>()))

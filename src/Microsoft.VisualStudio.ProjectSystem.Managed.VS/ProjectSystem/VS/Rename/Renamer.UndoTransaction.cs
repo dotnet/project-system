@@ -35,8 +35,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
             private async Task StartUndoAsync(CancellationToken token = default)
             {
-                DTE dte = await _dte.GetValueAsync(token);
-                if (dte.UndoContext.IsOpen)
+                DTE? dte = await _dte.GetValueAsync(token);
+                if (dte!.UndoContext.IsOpen)
                 {
                     _shouldClose = false;
                 }
@@ -49,8 +49,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 {
                     _threadingService.ExecuteSynchronously(async () =>
                     {
-                        DTE dte = await _dte.GetValueAsync();
-                        dte.UndoContext.Close();
+                        DTE? dte = await _dte.GetValueAsync();
+                        dte!.UndoContext.Close();
                     });
                 }
             }

@@ -8,8 +8,6 @@ using Microsoft.VisualStudio.ProjectSystem.References;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
 {
     public class TreeItemOrderPropertyProviderTests
@@ -28,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
         [InlineData("Misc.txt", "Content", false, "X:\\Project\\Misc.txt", int.MaxValue)] // unknown type
         [InlineData("ordered.fsproj", null, false, "X:\\Project\\ordered.fsproj", int.MaxValue)] // hidden file
         [InlineData("Debug", null, true, null, 0)] // unknown folder
-        public void VerifySimpleOrderedUnderProjectRoot(string itemName, string itemType, bool isFolder, string rootedPath, int expectedOrder)
+        public void VerifySimpleOrderedUnderProjectRoot(string itemName, string? itemType, bool isFolder, string? rootedPath, int expectedOrder)
         {
             var orderedItems = _simpleOrderFile
                 .Select(p => new ProjectItemIdentity(p.type, p.include))
@@ -61,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
         [InlineData("Misc.txt", "Content", false, "X:\\Project\\Misc.txt", int.MaxValue)] // unknown type
         [InlineData("ordered.fsproj", null, false, "X:\\Project\\ordered.fsproj", int.MaxValue)] // hidden file
         [InlineData("Debug", null, true, null, 0)] // unknown folder
-        public void VerifySimpleOrderedUnderProjectRootDuplicate(string itemName, string itemType, bool isFolder, string rootedPath, int expectedOrder)
+        public void VerifySimpleOrderedUnderProjectRootDuplicate(string itemName, string? itemType, bool isFolder, string? rootedPath, int expectedOrder)
         {
             var orderedItems = _simpleOrderFileDuplicate
                 .Select(p => new ProjectItemIdentity(p.type, p.include))
@@ -83,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
         [MemberData(nameof(TestTreeItems))]
         public void VerifyOrderIncreasesMonotonically(
             List<(string type, string include)> orderedFileInput,
-            List<(string itemName, string itemType, bool isFolder, bool isUnderProjectRoot, string rootedPath)> solutionTree)
+            List<(string itemName, string? itemType, bool isFolder, bool isUnderProjectRoot, string? rootedPath)> solutionTree)
         {
             var orderedItems = orderedFileInput
                 .Select(p => new ProjectItemIdentity(p.type, p.include))
@@ -125,7 +123,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
                             ("Compile", "Customer.fs"),
                             ("Compile", "Program.fs")
                         },
-                        new List<(string itemName, string itemType, bool isFolder, bool isUnderProjectRoot, string rootedPath)>
+                        new List<(string itemName, string? itemType, bool isFolder, bool isUnderProjectRoot, string? rootedPath)>
                         {
                             // unknown folders and their nested items
                             ("Debug", null, true, true, "X:\\Project\\Debug"),
@@ -156,7 +154,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
                             ("Content", "Bio.png"),
                             ("Compile", "Program.fs"),
                         },
-                        new List<(string itemName, string itemType, bool isFolder, bool isUnderProjectRoot, string rootedPath)>
+                        new List<(string itemName, string? itemType, bool isFolder, bool isUnderProjectRoot, string? rootedPath)>
                         {
                             // rootedPath is set to null for folders as we never get any metadata for folders in reality.
 
@@ -201,7 +199,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
         [InlineData("Order.fs",   "Compile", false, "X:\\Project\\Tables\\Order.fs", 3)]
         [InlineData("Common.fs",  "Compile", false, "X:\\Project\\Tables\\Common.fs", 4)] // duplicate and out of alphabetical order
         [InlineData("Program.fs", "Compile", false, "X:\\Project\\Program.fs", 5)]
-        public void VerifyOrderingWithDuplicateFiles(string itemName, string itemType, bool isFolder, string rootedPath, int expectedOrder)
+        public void VerifyOrderingWithDuplicateFiles(string itemName, string itemType, bool isFolder, string? rootedPath, int expectedOrder)
         {
             var orderedItems = _orderedWithDups
                 .Select(p => new ProjectItemIdentity(p.type, p.include))
@@ -222,12 +220,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
             Assert.Equal(expectedOrder, values.DisplayOrder);
         }
 
-        private readonly List<(string type, string include, string linkPath)> _orderedWithLinkPaths = new List<(string type, string include, string linkPath)>
+        private readonly List<(string type, string include, string? linkPath)> _orderedWithLinkPaths = new List<(string type, string include, string? linkPath)>
         {
-            ("Compile", "Common.fs", "Tables/Test.fs"),
-            ("Compile", "Tables\\Order.fs", null),
+            ("Compile", "Common.fs",         "Tables/Test.fs"),
+            ("Compile", "Tables\\Order.fs",  null),
             ("Compile", "Tables\\Common.fs", null),
-            ("Compile", "Program.fs", null)
+            ("Compile", "Program.fs",        null)
         };
 
         [Theory]
@@ -236,7 +234,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
         [InlineData("Order.fs", "Compile", false, "X:\\Project\\Tables\\Order.fs", null, 3)]
         [InlineData("Common.fs", "Compile", false, "X:\\Project\\Tables\\Common.fs", null, 4)] // duplicate and out of alphabetical order
         [InlineData("Program.fs", "Compile", false, "X:\\Project\\Program.fs", null, 5)]
-        public void VerifyOrderingWithLinkPaths(string itemName, string itemType, bool isFolder, string rootedPath, string linkPath, int expectedOrder)
+        public void VerifyOrderingWithLinkPaths(string itemName, string itemType, bool isFolder, string? rootedPath, string? linkPath, int expectedOrder)
         {
             var orderedItems = _orderedWithLinkPaths
                 .Select(p => new ProjectItemIdentity(p.type, p.include, p.linkPath))
@@ -245,7 +243,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
             var provider = new TreeItemOrderPropertyProvider(orderedItems, UnconfiguredProjectFactory.Create(filePath: "X:\\Project\\"));
 
             bool isUnderProjectRoot = rootedPath?.Contains("Tables") != true;
-            var metadata = rootedPath == null ? null : new Dictionary<string, string> { { "FullPath", rootedPath }, { "Link", linkPath } }.ToImmutableDictionary();
+            var metadata = rootedPath == null ? null : new Dictionary<string, string> { { "FullPath", rootedPath }, { "Link", linkPath ?? "" } }.ToImmutableDictionary();
 
             var context = GetContext(itemName, itemType, isFolder,
                 isUnderProjectRoot ? ProjectTreeFlags.ProjectRoot : ProjectTreeFlags.Empty,
@@ -258,11 +256,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
         }
 
         private static IProjectTreeCustomizablePropertyContext GetContext(
-            string itemName = null,
-            string itemType = null,
+            string? itemName = null,
+            string? itemType = null,
             bool isFolder = false,
             ProjectTreeFlags flags = default,
-            IImmutableDictionary<string, string> metadata = null)
+            IImmutableDictionary<string, string>? metadata = null)
             => IProjectTreeCustomizablePropertyContextFactory.Implement(
                 itemName: itemName,
                 itemType: itemType,
