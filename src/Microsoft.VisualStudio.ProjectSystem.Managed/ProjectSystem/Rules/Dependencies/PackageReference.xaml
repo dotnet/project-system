@@ -14,22 +14,9 @@
                 SourceType="TargetResults" />
   </Rule.DataSource>
 
-  <StringProperty Name="Description"
-                  Description="Dependency description."
-                  DisplayName="Description"
-                  ReadOnly="True" />
-
   <StringProperty Name="ExcludeAssets"
                   Description="Assets to exclude from this reference."
                   DisplayName="Excluded assets" />
-
-  <StringProperty Name="FrameworkName"
-                  ReadOnly="True"
-                  Visible="False" />
-
-  <StringProperty Name="FrameworkVersion"
-                  ReadOnly="True"
-                  Visible="False" />
 
   <BoolProperty Name="GeneratePathProperty"
                 Description="Indicates whether to generate an MSBuild property with the location of the package's root directory. The generated property name is in the form of 'Pkg[PackageID]', where '[PackageID]' is the ID of the package with any periods '.' replaced with underscores '_'."
@@ -43,10 +30,6 @@
                   ReadOnly="True"
                   Visible="False" />
 
-  <StringProperty Name="Name"
-                  ReadOnly="True"
-                  DisplayName="Name" />
-
   <StringProperty Name="NoWarn"
                   Description="Comma-delimited list of warnings that should be suppressed for this package."
                   DisplayName="Suppress warnings" />
@@ -59,18 +42,6 @@
   <StringProperty Name="PrivateAssets"
                   Description="Assets that are private in this reference."
                   DisplayName="Private assets" />
-
-  <StringProperty Name="RuntimeIdentifier"
-                  ReadOnly="True"
-                  Visible="False" />
-
-  <StringProperty Name="TargetFramework"
-                  ReadOnly="True"
-                  Visible="False" />
-
-  <StringProperty Name="Type"
-                  ReadOnly="True"
-                  Visible="False" />
 
   <StringProperty Name="Version"
                   Description="Version of dependency."

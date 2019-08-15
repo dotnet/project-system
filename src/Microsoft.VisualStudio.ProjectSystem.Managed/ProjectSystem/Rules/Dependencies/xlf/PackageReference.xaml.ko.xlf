@@ -12,16 +12,6 @@
         <target state="translated">패키지 속성</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Description|DisplayName">
-        <source>Description</source>
-        <target state="translated">설명</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Description|Description">
-        <source>Dependency description.</source>
-        <target state="translated">종속성 설명입니다.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
         <target state="translated">버전</target>
@@ -85,11 +75,6 @@
       <trans-unit id="BoolProperty|GeneratePathProperty|Description">
         <source>Indicates whether to generate an MSBuild property with the location of the package's root directory. The generated property name is in the form of 'Pkg[PackageID]', where '[PackageID]' is the ID of the package with any periods '.' replaced with underscores '_'.</source>
         <target state="translated">패키지의 루트 디렉터리 위치를 사용하여 MSBuild 속성을 생성할지 여부를 제어합니다. 생성된 속성 이름은 'Pkg[PackageID]' 형식입니다. 여기서 '[PackageID]'는 패키지의 ID이고 마침표 '.'는 밑줄 '_'로 바뀝니다.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Name|DisplayName">
-        <source>Name</source>
-        <target state="new">Name</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Path|DisplayName">

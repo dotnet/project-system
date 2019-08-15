@@ -12,16 +12,6 @@
         <target state="translated">Propriétés du package</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Description|DisplayName">
-        <source>Description</source>
-        <target state="translated">Description</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Description|Description">
-        <source>Dependency description.</source>
-        <target state="translated">Description de la dépendance.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
         <target state="translated">Version</target>
@@ -85,11 +75,6 @@
       <trans-unit id="BoolProperty|GeneratePathProperty|Description">
         <source>Indicates whether to generate an MSBuild property with the location of the package's root directory. The generated property name is in the form of 'Pkg[PackageID]', where '[PackageID]' is the ID of the package with any periods '.' replaced with underscores '_'.</source>
         <target state="translated">Indique s'il faut générer une propriété MSBuild avec l'emplacement du répertoire racine du package. Le nom de la propriété générée est au format 'Pkg[PackageID]', où '[PackageID]' est l'ID du package avec tous les points '.' remplacés par des traits de soulignement '_'.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Name|DisplayName">
-        <source>Name</source>
-        <target state="new">Name</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Path|DisplayName">
