@@ -122,14 +122,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
                 _subscriptions ??= new DisposableBag();
 
-                _subscriptions.AddDisposable(
+                _subscriptions.Add(
                     dataSource.SourceBlock.LinkTo(
                         intermediateBlock,
                         ruleNames: ruleNames,
                         suppressVersionOnlyUpdates: true,
                         linkOptions: DataflowOption.PropagateCompletion));
 
-                _subscriptions.AddDisposable(ProjectDataSources.SyncLinkTo(
+                _subscriptions.Add(ProjectDataSources.SyncLinkTo(
                     intermediateBlock.SyncLinkOptions(),
                     subscriptionService.ProjectCatalogSource.SourceBlock.SyncLinkOptions(),
                     configuredProject.Capabilities.SourceBlock.SyncLinkOptions(),
