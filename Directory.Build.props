@@ -3,10 +3,6 @@
   <Import Project="build\import\NuGet.props"/>
   <Import Project="build\import\Versions.props"/>
 
-  <ItemGroup>
-    <PackageReference Include="RoslynTools.RepoToolset" />
-  </ItemGroup>
-
   <PropertyGroup>
     <!-- Workaround for https://github.com/dotnet/sdk/issues/2288 -->
     <LanguageTargets Condition="'$(MSBuildProjectExtension)' == '.proj'">$(MSBuildToolsPath)\Microsoft.Common.targets</LanguageTargets>
