@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 ITargetFrameworkProvider targetFrameworkProvider,
                 out PackageDependencyMetadata metadata)
             {
-                Requires.NotNull(itemSpec, nameof(itemSpec));
+                Requires.NotNullOrEmpty(itemSpec, nameof(itemSpec));
                 Requires.NotNull(properties, nameof(properties));
                 Requires.NotNull(targetFramework, nameof(targetFramework));
                 Requires.NotNull(targetFrameworkProvider, nameof(targetFrameworkProvider));
@@ -113,18 +113,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     properties);
                 return true;
 
-                static string GetTargetFromDependencyId(string dependencyId)
-                {
-                    string? firstPart = new LazyStringSplit(dependencyId, '/').FirstOrDefault();
-
-                    if (firstPart == null)
-                    {
-                        // should never happen
-                        throw new ArgumentException(nameof(dependencyId));
-                    }
-
-                    return firstPart;
-                }
+                static string GetTargetFromDependencyId(string dependencyId) => new LazyStringSplit(dependencyId, '/').First();
             }
 
             public IDependencyModel CreateDependencyModel()
