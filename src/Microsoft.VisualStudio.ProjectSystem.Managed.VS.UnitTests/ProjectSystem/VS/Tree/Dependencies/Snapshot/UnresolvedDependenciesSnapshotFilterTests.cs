@@ -6,8 +6,6 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     public sealed class UnresolvedDependenciesSnapshotFilterTests
@@ -25,9 +23,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var filter = new UnresolvedDependenciesSnapshotFilter();
 
             filter.BeforeAddOrUpdate(
-                null,
+                null!,
                 unresolvedDependency,
-                null,
+                null!,
                 null,
                 context);
 
@@ -50,9 +48,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var filter = new UnresolvedDependenciesSnapshotFilter();
 
             filter.BeforeAddOrUpdate(
-                null,
+                null!,
                 unresolvedDependency,
-                null,
+                null!,
                 null,
                 context);
 
@@ -75,9 +73,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var filter = new UnresolvedDependenciesSnapshotFilter();
 
             filter.BeforeAddOrUpdate(
-                null,
+                null!,
                 resolvedDependency,
-                null,
+                null!,
                 null,
                 context);
 

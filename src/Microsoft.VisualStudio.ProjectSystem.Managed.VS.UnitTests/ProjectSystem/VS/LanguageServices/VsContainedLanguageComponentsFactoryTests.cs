@@ -10,8 +10,6 @@ using Xunit;
 
 using IOleAsyncServiceProvider = Microsoft.VisualStudio.Shell.Interop.IAsyncServiceProvider;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {
     public class VsContainedLanguageComponentsFactoryTests
@@ -23,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             var project = IVsProject_Factory.ImplementIsDocumentInProject(HResult.Fail);
 
-            var factory = CreateInstance(project: project);
+            var factory = CreateInstance(project);
 
             var result = factory.GetContainedLanguageFactoryForFile("FilePath", out var hierarchyResult, out var itemIdResult, out var containedLanguageFactoryResult);
 
@@ -35,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             var project = IVsProject_Factory.ImplementIsDocumentInProject(found: false);
 
-            var factory = CreateInstance(project: project);
+            var factory = CreateInstance(project);
 
             var result = factory.GetContainedLanguageFactoryForFile("FilePath", out var hierarchyResult, out var itemIdResult, out var containedLanguageFactoryResult);
 
@@ -51,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             var project = IVsProject_Factory.ImplementIsDocumentInProject(found: true);
             var properties = ProjectPropertiesFactory.Create(ConfigurationGeneral.SchemaName, ConfigurationGeneral.LanguageServiceIdProperty, languageServiceId);
 
-            var factory = CreateInstance(project: project, properties: properties);
+            var factory = CreateInstance(project, properties: properties);
 
             var result = factory.GetContainedLanguageFactoryForFile("FilePath", out var hierarchyResult, out var itemIdResult, out var containedLanguageFactoryResult);
 
@@ -64,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             var project = IVsProject_Factory.ImplementIsDocumentInProject(found: true);
             var properties = ProjectPropertiesFactory.Create(ConfigurationGeneral.SchemaName, ConfigurationGeneral.LanguageServiceIdProperty, LanguageServiceId);
 
-            var factory = CreateInstance((IVsContainedLanguageFactory)null, project: project, properties: properties);
+            var factory = CreateInstance(project, containedLanguageFactory: null!, properties: properties);
 
             var result = factory.GetContainedLanguageFactoryForFile("FilePath", out var hierarchyResult, out var itemIdResult, out var containedLanguageFactoryResult);
 
@@ -79,7 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             var properties = ProjectPropertiesFactory.Create(ConfigurationGeneral.SchemaName, ConfigurationGeneral.LanguageServiceIdProperty, LanguageServiceId);
             var containedLanguageFactory = IVsContainedLanguageFactoryFactory.Create();
             
-            var factory = CreateInstance(containedLanguageFactory, hierarchy: hierarchy, project: project, properties: properties);
+            var factory = CreateInstance(project, containedLanguageFactory: containedLanguageFactory, hierarchy: hierarchy, properties: properties);
 
             var result = factory.GetContainedLanguageFactoryForFile("FilePath", out var hierarchyResult, out var itemIdResult, out var containedLanguageFactoryResult);
 
@@ -97,7 +95,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             Assert.Equal((uint)VSConstants.VSITEMID.Nil, itemid);
         }
 
-        private static VsContainedLanguageComponentsFactory CreateInstance(IVsContainedLanguageFactory containedLanguageFactory = null, IVsHierarchy hierarchy = null, IVsProject4 project = null, ProjectProperties properties = null, IActiveWorkspaceProjectContextHost projectContextHost = null)
+        private static VsContainedLanguageComponentsFactory CreateInstance(
+            IVsProject4 project,
+            IVsContainedLanguageFactory? containedLanguageFactory = null,
+            IVsHierarchy? hierarchy = null,
+            ProjectProperties? properties = null,
+            IActiveWorkspaceProjectContextHost? projectContextHost = null)
         {
             var serviceProvider = IOleAsyncServiceProviderFactory.ImplementQueryServiceAsync(containedLanguageFactory, new Guid(LanguageServiceId));
 
@@ -110,7 +113,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             return CreateInstance(serviceProvider, projectVsServices.Object, projectContextHost);
         }
 
-        private static VsContainedLanguageComponentsFactory CreateInstance(IOleAsyncServiceProvider serviceProvider = null, IUnconfiguredProjectVsServices projectVsServices = null, IActiveWorkspaceProjectContextHost projectContextHost = null)
+        private static VsContainedLanguageComponentsFactory CreateInstance(
+            IOleAsyncServiceProvider? serviceProvider = null,
+            IUnconfiguredProjectVsServices? projectVsServices = null,
+            IActiveWorkspaceProjectContextHost? projectContextHost = null)
         {
             projectVsServices ??= IUnconfiguredProjectVsServicesFactory.Create();
             projectContextHost ??= IActiveWorkspaceProjectContextHostFactory.Create();

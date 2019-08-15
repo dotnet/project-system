@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                 _buildManager = await _vsSolutionBuildManagerService.GetValueAsync();
 
                 // Register for solution build events.
-                _buildManager.AdviseUpdateSolutionEvents(this, out _solutionEventsCookie);
+                _buildManager!.AdviseUpdateSolutionEvents(this, out _solutionEventsCookie);
             }
         }
 

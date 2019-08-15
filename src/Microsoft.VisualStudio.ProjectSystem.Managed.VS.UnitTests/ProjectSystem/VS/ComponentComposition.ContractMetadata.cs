@@ -2,8 +2,6 @@
 
 using Microsoft.VisualStudio.Composition;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal partial class ComponentComposition
@@ -16,6 +14,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             public ImportCardinality? Cardinality { get; set; }
         }
-
     }
 }

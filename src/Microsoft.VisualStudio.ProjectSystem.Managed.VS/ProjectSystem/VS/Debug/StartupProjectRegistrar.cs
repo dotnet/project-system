@@ -76,19 +76,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             bool isDebuggable = await _launchProviders.Value.IsDebuggableAsync();
 
-            IVsStartupProjectsListService startupProjectsListService = await _startupProjectsListService.GetValueAsync();
+            IVsStartupProjectsListService? startupProjectsListService = await _startupProjectsListService.GetValueAsync();
 
             Assumes.Present(startupProjectsListService);
 
             if (isDebuggable)
             {
                 // If we're already registered, the service no-ops
-                startupProjectsListService.AddProject(ref _projectGuid);
+                startupProjectsListService!.AddProject(ref _projectGuid);
             }
             else
             {
                 // If we're already unregistered, the service no-ops
-                startupProjectsListService.RemoveProject(ref _projectGuid);
+                startupProjectsListService!.RemoveProject(ref _projectGuid);
             }
         }
 

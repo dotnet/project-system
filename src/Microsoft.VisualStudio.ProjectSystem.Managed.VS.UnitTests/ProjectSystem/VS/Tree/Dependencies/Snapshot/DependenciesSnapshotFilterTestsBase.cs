@@ -4,15 +4,13 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     public abstract class DependenciesSnapshotFilterTestsBase
     {
         private protected abstract IDependenciesSnapshotFilter CreateFilter();
 
-        private protected void VerifyUnchangedOnAdd(IDependency dependency, IImmutableSet<string> projectItemSpecs = null)
+        private protected void VerifyUnchangedOnAdd(IDependency dependency, IImmutableSet<string>? projectItemSpecs = null)
         {
             var worldBuilder = new[] { dependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
 
@@ -21,9 +19,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var filter = CreateFilter();
 
             filter.BeforeAddOrUpdate(
-                null,
+                null!,
                 dependency,
-                null,
+                null!,
                 projectItemSpecs,
                 context);
 

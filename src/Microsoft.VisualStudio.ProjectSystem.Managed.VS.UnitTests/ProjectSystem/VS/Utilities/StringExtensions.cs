@@ -5,15 +5,13 @@ using System.Xml;
 
 using Microsoft.Build.Construction;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 {
     public static class StringExtensions
     {
         public static ProjectRootElement AsProjectRootElement(this string @string)
         {
-            var stringReader = new System.IO.StringReader(@string);
+            var stringReader = new StringReader(@string);
             var xmlReader = new XmlTextReader(stringReader)
             {
                 DtdProcessing = DtdProcessing.Prohibit

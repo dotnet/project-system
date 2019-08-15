@@ -7,8 +7,6 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
     public class PostBuildEventValueProviderTests
@@ -624,7 +622,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 ".AsProjectRootElement();
 
             const string expected = "echo %DATE%";
-            string actual = systemUnderTest.GetProperty(root);
+            string? actual = systemUnderTest.GetProperty(root);
             Assert.Equal(expected, actual);
         }
 
@@ -643,7 +641,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 ".AsProjectRootElement();
 
             const string expected = "echo %25DATE%";
-            string actual = systemUnderTest.GetProperty(root);
+            string? actual = systemUnderTest.GetProperty(root);
             Assert.Equal(expected, actual);
         }
 

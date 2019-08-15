@@ -4,13 +4,14 @@ using System;
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.Shell.Interop
 {
     internal static class IVsUpdateSolutionEventsFactory
     {
-        public static IVsUpdateSolutionEvents Create(Action onUpdateSolutionBegin = null, Action onUpdateSolutionCancel = null, Action onUpdateSolutionDone = null)
+        public static IVsUpdateSolutionEvents Create(
+            Action? onUpdateSolutionBegin = null,
+            Action? onUpdateSolutionCancel = null,
+            Action? onUpdateSolutionDone = null)
         {
             var solutionEventsListener = new Mock<IVsUpdateSolutionEvents>();
 

@@ -11,8 +11,6 @@ using Xunit;
 
 using Task = System.Threading.Tasks.Task;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
     public class ProjectDesignerServiceTests
@@ -40,7 +38,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
             Assert.Throws<InvalidOperationException>(() =>
             {
-
                 designerService.ShowProjectDesignerAsync();
             });
         }
@@ -59,7 +56,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
             await Assert.ThrowsAsync<COMException>(() =>
             {
-
                 return designerService.ShowProjectDesignerAsync();
             });
         }
@@ -78,7 +74,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
             await Assert.ThrowsAsync<COMException>(() =>
             {
-
                 return designerService.ShowProjectDesignerAsync();
             });
         }
@@ -102,7 +97,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
             await Assert.ThrowsAsync<COMException>(() =>
             {
-
                 return designerService.ShowProjectDesignerAsync();
             });
         }
@@ -119,7 +113,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             hierarchy.ImplementGetGuid(VsHierarchyPropID.ProjectDesignerEditor, result: editorGuid);
 
             var project = (IVsProject4)hierarchy;
-            project.ImplementOpenItemWithSpecific(editorGuid, VSConstants.LOGVIEWID_Primary, (IVsWindowFrame)null);
+            project.ImplementOpenItemWithSpecific(editorGuid, VSConstants.LOGVIEWID_Primary, (IVsWindowFrame?)null);
 
             var projectVsServices = IUnconfiguredProjectVsServicesFactory.Implement(() => hierarchy, () => project);
 
@@ -148,7 +142,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
             await Assert.ThrowsAsync<COMException>(() =>
             {
-
                 return designerService.ShowProjectDesignerAsync();
             });
         }
@@ -179,10 +172,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
         private static ProjectDesignerService CreateInstance(IVsProjectDesignerPageService vsProjectDesignerPageService)
         {
-            return CreateInstance((IUnconfiguredProjectVsServices)null, vsProjectDesignerPageService);
+            return CreateInstance((IUnconfiguredProjectVsServices?)null, vsProjectDesignerPageService);
         }
 
-        private static ProjectDesignerService CreateInstance(IUnconfiguredProjectVsServices projectVsServices, IVsProjectDesignerPageService vsProjectDesignerPageService)
+        private static ProjectDesignerService CreateInstance(IUnconfiguredProjectVsServices? projectVsServices, IVsProjectDesignerPageService? vsProjectDesignerPageService)
         {
             projectVsServices ??= IUnconfiguredProjectVsServicesFactory.Create();
             vsProjectDesignerPageService ??= IVsProjectDesignerPageServiceFactory.Create();

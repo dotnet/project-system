@@ -4,13 +4,11 @@
 
 using System.Composition;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal partial class ComponentComposition
     {
-        // These components soley exist so that the MEF composition for 
+        // These components solely exist so that the MEF composition for 
         // these tests can see the "scopes" that used within CPS.
 
         [Export]
@@ -18,8 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             [Import]
             [SharingBoundary(ExportContractNames.Scopes.ProjectService)]
-
-            private ExportFactory<IProjectService> ProjectServiceFactory { get; set; }
+            private ExportFactory<IProjectService>? ProjectServiceFactory { get; set; }
         }
 
         [Export(typeof(IProjectService))]
@@ -28,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             [Import]
             [SharingBoundary(ExportContractNames.Scopes.UnconfiguredProject)]
-            private ExportFactory<UnconfiguredProject> UnconfiguredProjectFactory { get; set; }
+            private ExportFactory<UnconfiguredProject>? UnconfiguredProjectFactory { get; set; }
         }
 
         [Export(typeof(ProjectSystem.UnconfiguredProject))]
@@ -37,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             [Import]
             [SharingBoundary(ExportContractNames.Scopes.ConfiguredProject)]
-            private ExportFactory<ProjectSystem.ConfiguredProject> ConfiguredProjectFactory { get; set; }
+            private ExportFactory<ProjectSystem.ConfiguredProject>? ConfiguredProjectFactory { get; set; }
         }
 
         [Export(typeof(ProjectSystem.ConfiguredProject))]

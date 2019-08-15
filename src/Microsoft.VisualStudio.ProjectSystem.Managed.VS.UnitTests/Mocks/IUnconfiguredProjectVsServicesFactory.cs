@@ -6,8 +6,6 @@ using Microsoft.VisualStudio.Shell.Interop;
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal static class IUnconfiguredProjectVsServicesFactory
@@ -17,12 +15,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return Mock.Of<IUnconfiguredProjectVsServices>();
         }
 
-        public static IUnconfiguredProjectVsServices Implement(Func<IVsHierarchy> hierarchyCreator = null,
-                                                               Func<IVsProject4> projectCreator = null,
-                                                               Func<IProjectThreadingService> threadingServiceCreator = null,
-                                                               Func<ProjectProperties> projectProperties = null,
-                                                               Func<ConfiguredProject> configuredProjectCreator = null,
-                                                               Func<UnconfiguredProject> unconfiguredProjectCreator = null)
+        public static IUnconfiguredProjectVsServices Implement(Func<IVsHierarchy>? hierarchyCreator = null,
+                                                               Func<IVsProject4>? projectCreator = null,
+                                                               Func<IProjectThreadingService>? threadingServiceCreator = null,
+                                                               Func<ProjectProperties>? projectProperties = null,
+                                                               Func<ConfiguredProject>? configuredProjectCreator = null,
+                                                               Func<UnconfiguredProject>? unconfiguredProjectCreator = null)
         {
             var mock = new Mock<IUnconfiguredProjectVsServices>();
             if (hierarchyCreator != null)

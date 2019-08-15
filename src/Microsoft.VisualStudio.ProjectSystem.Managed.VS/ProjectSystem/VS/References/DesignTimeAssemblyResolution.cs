@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             return _projectVsServices.VsHierarchy.GetProperty(VsHierarchyPropID.TargetFrameworkMoniker, defaultValue: null, result: out ppTargetFramework);
         }
 
-        public int ResolveAssemblyPathInTargetFx(string[] prgAssemblySpecs, uint cAssembliesToResolve, VsResolvedAssemblyPath[] prgResolvedAssemblyPaths, out uint pcResolvedAssemblyPaths)
+        public int ResolveAssemblyPathInTargetFx(string?[]? prgAssemblySpecs, uint cAssembliesToResolve, VsResolvedAssemblyPath[]? prgResolvedAssemblyPaths, out uint pcResolvedAssemblyPaths)
         {
             if (prgAssemblySpecs == null || cAssembliesToResolve == 0 || prgResolvedAssemblyPaths == null || cAssembliesToResolve != prgAssemblySpecs.Length || cAssembliesToResolve != prgResolvedAssemblyPaths.Length)
             {
@@ -84,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             return HResult.OK;
         }
 
-        private uint ResolveReferences(string[] originalNames, AssemblyName[] assemblyName, [In, Out]VsResolvedAssemblyPath[] assemblyPaths)
+        private uint ResolveReferences(string?[] originalNames, AssemblyName[] assemblyName, [In, Out]VsResolvedAssemblyPath[] assemblyPaths)
         {
             Assumes.True(originalNames.Length == assemblyName.Length && originalNames.Length == assemblyPaths.Length);
 
@@ -158,13 +158,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             return project?.Object as VSProject;
         }
 
-        private static bool TryParseAssemblyNames(string[] assemblyNames, out AssemblyName[] result)
+        private static bool TryParseAssemblyNames(string?[] assemblyNames, out AssemblyName[] result)
         {
             result = new AssemblyName[assemblyNames.Length];
 
             for (int i = 0; i < assemblyNames.Length; i++)
             {
-                string assemblyName = assemblyNames[i];
+                string? assemblyName = assemblyNames[i];
 
                 if (string.IsNullOrEmpty(assemblyName))
                     return false;

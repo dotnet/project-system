@@ -3,19 +3,11 @@
   <Import Project="build\import\NuGet.props"/>
   <Import Project="build\import\Versions.props"/>
 
-  <ItemGroup>
-    <PackageReference Include="RoslynTools.RepoToolset" />
-  </ItemGroup>
-
   <PropertyGroup>
     <!-- Workaround for https://github.com/dotnet/sdk/issues/2288 -->
     <LanguageTargets Condition="'$(MSBuildProjectExtension)' == '.proj'">$(MSBuildToolsPath)\Microsoft.Common.targets</LanguageTargets>
 
     <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
-
-    <RestoreSources>$(RestoreSources);https://dotnet.myget.org/F/roslyn-tools/api/v3/index.json</RestoreSources>
-    
-    <RepoRoot>$(MSBuildThisFileDirectory)</RepoRoot>
 
     <!--  
       RepoToolset props and targets are conditionally imported based on whether RepoToolsetDir is set or not

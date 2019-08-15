@@ -6,8 +6,6 @@ using EnvDTE;
 
 using Moq;
 
-#nullable disable
-
 namespace EnvDTE80
 {
     internal static class DTEFactory

@@ -30,9 +30,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
         {
             await _threadingService.SwitchToUIThread();
 
-            IVsAppId vsAppId = await vsAppIdService.GetValueAsync();
+            IVsAppId? vsAppId = await vsAppIdService.GetValueAsync();
 
-            if (ErrorHandler.Succeeded(vsAppId.GetProperty((int)VSAPropID.VSAPROPID_ProductSemanticVersion, out object oVersion)) &&
+            if (ErrorHandler.Succeeded(vsAppId!.GetProperty((int)VSAPropID.VSAPROPID_ProductSemanticVersion, out object oVersion)) &&
                 oVersion is string semVersion)
             {
                 // This is a semantic version string. We only care about the non-semantic version part
@@ -55,9 +55,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
         {
             await _threadingService.SwitchToUIThread();
 
-            IVsShell shell = await vsShellService.GetValueAsync();
+            IVsShell? shell = await vsShellService.GetValueAsync();
 
-            if (ErrorHandler.Succeeded(shell.GetProperty((int)__VSSPROPID4.VSSPROPID_LocalAppDataDir, out object objDataFolder)) && objDataFolder is string appDataFolder)
+            if (ErrorHandler.Succeeded(shell!.GetProperty((int)__VSSPROPID4.VSSPROPID_LocalAppDataDir, out object objDataFolder)) && objDataFolder is string appDataFolder)
             {
                 return appDataFolder;
             }

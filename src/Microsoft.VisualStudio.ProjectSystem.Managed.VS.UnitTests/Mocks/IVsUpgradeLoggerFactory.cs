@@ -4,8 +4,6 @@ using System.Collections.Generic;
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.Shell.Interop
 {
     internal static class IVsUpgradeLoggerFactory
@@ -15,13 +13,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
             var mock = new Mock<IVsUpgradeLogger>();
 
             mock.Setup(pl => pl.LogMessage(It.IsAny<uint>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Callback<uint, string, string, string>((level, project, file, message) => messages.Add(new LogMessage
-                {
-                    Level = level,
-                    File = file,
-                    Project = project,
-                    Message = message
-                }));
+                .Callback<uint, string, string, string>((level, project, file, message) => messages.Add(new LogMessage(level, project, file, message)));
 
             return mock.Object;
         }
@@ -29,10 +21,18 @@ namespace Microsoft.VisualStudio.Shell.Interop
 
     internal class LogMessage
     {
-        public uint Level { get; set; }
-        public string Project { get; set; }
-        public string File { get; set; }
-        public string Message { get; set; }
+        public uint Level { get; }
+        public string Project { get; }
+        public string File { get; }
+        public string Message { get; }
+
+        public LogMessage(uint level, string project, string file, string message)
+        {
+            Level = level;
+            Project = project;
+            File = file;
+            Message = message;
+        }
 
         public override bool Equals(object obj)
         {

@@ -8,8 +8,6 @@ using EnvDTE;
 
 using Moq;
 
-#nullable disable
-
 namespace VSLangProj
 {
     internal static class VSProjectFactory
@@ -34,67 +32,28 @@ namespace VSLangProj
                 _references = references;
             }
 
-            public Reference Item(object index)
-            {
-                throw new NotImplementedException();
-            }
-
             public IEnumerator GetEnumerator()
             {
                 return _references.GetEnumerator();
             }
 
-            public Reference Find(string bstrIdentity)
-            {
-                throw new NotImplementedException();
-            }
+            public Reference Item(object index) => throw new NotImplementedException();
 
-            public Reference Add(string bstrPath)
-            {
-                throw new NotImplementedException();
-            }
+            public Reference Find(string bstrIdentity) => throw new NotImplementedException();
 
-            public Reference AddActiveX(string bstrTypeLibGuid, int lMajorVer = 0, int lMinorVer = 0, int lLocaleId = 0, string bstrWrapperTool = "")
-            {
-                throw new NotImplementedException();
-            }
+            public Reference Add(string bstrPath) => throw new NotImplementedException();
 
-            public Reference AddProject(Project pProject)
-            {
-                throw new NotImplementedException();
-            }
+            public Reference AddActiveX(string bstrTypeLibGuid, int lMajorVer = 0, int lMinorVer = 0, int lLocaleId = 0, string bstrWrapperTool = "") => throw new NotImplementedException();
 
-            public DTE DTE
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-            }
+            public Reference AddProject(Project pProject) => throw new NotImplementedException();
 
-            public object Parent
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-            }
+            public DTE DTE => throw new NotImplementedException();
 
-            public Project ContainingProject
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-            }
+            public object Parent => throw new NotImplementedException();
 
-            public int Count
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-            }
+            public Project ContainingProject => throw new NotImplementedException();
+
+            public int Count => throw new NotImplementedException();
         }
     }
 }

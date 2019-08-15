@@ -12,24 +12,17 @@ using Moq;
 
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal static class ITargetedDependenciesSnapshotFactory
     {
-        public static ITargetedDependenciesSnapshot Create()
-        {
-            return Mock.Of<ITargetedDependenciesSnapshot>();
-        }
-
         public static ITargetedDependenciesSnapshot Implement(
-            string projectPath = null,
-            ITargetFramework targetFramework = null,
-            IEnumerable<IDependency> dependenciesWorld = null,
+            string? projectPath = null,
+            ITargetFramework? targetFramework = null,
+            IEnumerable<IDependency>? dependenciesWorld = null,
             bool? hasUnresolvedDependency = null,
-            IProjectCatalogSnapshot catalogs = null,
-            IEnumerable<IDependency> topLevelDependencies = null,
+            IProjectCatalogSnapshot? catalogs = null,
+            IEnumerable<IDependency>? topLevelDependencies = null,
             bool? checkForUnresolvedDependencies = null,
             MockBehavior mockBehavior = MockBehavior.Default)
         {
@@ -45,12 +38,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         public static Mock<ITargetedDependenciesSnapshot> ImplementMock(
-            string projectPath = null,
-            ITargetFramework targetFramework = null,
-            IEnumerable<IDependency> dependenciesWorld = null,
+            string? projectPath = null,
+            ITargetFramework? targetFramework = null,
+            IEnumerable<IDependency>? dependenciesWorld = null,
             bool? hasUnresolvedDependency = null,
-            IProjectCatalogSnapshot catalogs = null,
-            IEnumerable<IDependency> topLevelDependencies = null,
+            IProjectCatalogSnapshot? catalogs = null,
+            IEnumerable<IDependency>? topLevelDependencies = null,
             bool? checkForUnresolvedDependencies = null,
             MockBehavior mockBehavior = MockBehavior.Default)
         {

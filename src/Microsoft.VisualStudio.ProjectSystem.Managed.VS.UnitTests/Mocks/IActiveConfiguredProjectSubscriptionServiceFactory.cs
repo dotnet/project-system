@@ -2,13 +2,11 @@
 
 using Moq;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     public static class IActiveConfiguredProjectSubscriptionServiceFactory
     {
-        public static IActiveConfiguredProjectSubscriptionService Create(IProjectValueDataSource<IProjectSubscriptionUpdate> sourceItemsRuleSource = null)
+        public static IActiveConfiguredProjectSubscriptionService Create(IProjectValueDataSource<IProjectSubscriptionUpdate>? sourceItemsRuleSource = null)
         {
             var mock = new Mock<IActiveConfiguredProjectSubscriptionService>();
 

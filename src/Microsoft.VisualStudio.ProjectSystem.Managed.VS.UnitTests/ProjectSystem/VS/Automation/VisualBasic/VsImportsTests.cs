@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-
 using EnvDTE;
 
 using Moq;
@@ -8,8 +7,6 @@ using Moq;
 using VSLangProj;
 
 using Xunit;
-
-#nullable disable
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
 {
@@ -89,13 +86,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
             Assert.Equal(2, vsimports.Count);
         }
 
-        private VisualBasicVSImports CreateInstance(
-            VSLangProj.VSProject vsProject = null,
-            IProjectThreadingService threadingService = null,
-            ActiveConfiguredProject<ConfiguredProject> activeConfiguredProject = null,
-            IProjectAccessor projectAccessor = null,
-            IUnconfiguredProjectVsServices vsServices = null,
-            VisualBasicNamespaceImportsList importList = null)
+        private static VisualBasicVSImports CreateInstance(
+            VSLangProj.VSProject vsProject,
+            IProjectThreadingService threadingService,
+            ActiveConfiguredProject<ConfiguredProject> activeConfiguredProject,
+            IProjectAccessor projectAccessor,
+            IUnconfiguredProjectVsServices vsServices,
+            VisualBasicNamespaceImportsList importList)
         {
             return new VisualBasicVSImports(vsProject, threadingService, activeConfiguredProject, projectAccessor, vsServices, importList);
         }
