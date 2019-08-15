@@ -51,10 +51,6 @@
                   Description="Comma-delimited list of warnings that should be suppressed for this package."
                   DisplayName="Suppress warnings" />
 
-  <StringProperty Name="OriginalItemSpec"
-                  ReadOnly="True"
-                  Visible="False" />
-
   <StringProperty Name="Path"
                   Description="Location of the package being referenced."
                   ReadOnly="True"
