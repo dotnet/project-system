@@ -98,9 +98,8 @@
     </PropertyGroup>
 
     <MSBuild 
-      Projects="$(ToolsetPath)Sign.proj"
+      Projects="Sign.proj"
       Properties="@(CommonBuildProperty);RealSign=$(RealSign);ConfigFile=$(RepoRoot)build\ci\SignToolData.json"
-      Targets="Sign"
       />
     
   </Target>
