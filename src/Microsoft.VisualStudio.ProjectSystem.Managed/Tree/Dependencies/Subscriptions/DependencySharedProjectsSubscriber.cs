@@ -5,10 +5,12 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
@@ -20,9 +22,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
     [AppliesTo(ProjectCapability.DependenciesTree)]
     internal class DependencySharedProjectsSubscriber : OnceInitializedOnceDisposed, IDependencyCrossTargetSubscriber
     {
-        private readonly List<IDisposable> _subscriptionLinks = new List<IDisposable>();
         private readonly IUnconfiguredProjectTasksService _tasksService;
         private readonly IDependenciesSnapshotProvider _dependenciesSnapshotProvider;
+        private DisposableBag? _subscriptions;
         private ICrossTargetSubscriptionsHost? _host;
 
         [ImportingConstructor]
@@ -56,12 +58,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         public void ReleaseSubscriptions()
         {
-            foreach (IDisposable link in _subscriptionLinks)
-            {
-                link.Dispose();
-            }
+            // Prevent double-dispose
+            DisposableBag? value = Interlocked.Exchange(ref _subscriptions, null);
 
-            _subscriptionLinks.Clear();
+            value?.Dispose();
         }
 
         private void SubscribeToConfiguredProject(IProjectSubscriptionService subscriptionService)
@@ -76,7 +76,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                         NameFormat = "Dependencies Shared Projects Input: {1}"
                     });
 
-            _subscriptionLinks.Add(
+            if (_subscriptions == null)
+            {
+                // Prevent double-initialization and potentially losing subscriptions
+                Interlocked.CompareExchange(ref _subscriptions, new DisposableBag(), null);
+            }
+
+            _subscriptions!.Add(
                 subscriptionService.ProjectRuleSource.SourceBlock.LinkTo(
                     intermediateBlock,
                     ruleNames: ConfigurationGeneral.SchemaName,
@@ -91,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                         NameFormat = "Dependencies Shared Projects Input: {1}"
                     });
 
-            _subscriptionLinks.Add(ProjectDataSources.SyncLinkTo(
+            _subscriptions.Add(ProjectDataSources.SyncLinkTo(
                 intermediateBlock.SyncLinkOptions(),
                 subscriptionService.SharedFoldersSource.SourceBlock.SyncLinkOptions(),
                 subscriptionService.ProjectCatalogSource.SourceBlock.SyncLinkOptions(),
