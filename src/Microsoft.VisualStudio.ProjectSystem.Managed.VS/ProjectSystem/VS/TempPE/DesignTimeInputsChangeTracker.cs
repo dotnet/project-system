@@ -88,8 +88,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             ITargetBlock<IProjectVersionedValue<string[]>> fileWatcherAction = DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<string[]>>(ProcessFileChangeNotification);
             IDisposable watcherLink = _fileWatcher.SourceBlock.LinkTo(fileWatcherAction, DataflowOption.PropagateCompletion);
 
-            _disposables.AddDisposable(projectLink);
-            _disposables.AddDisposable(watcherLink);
+            _disposables.Add(projectLink);
+            _disposables.Add(watcherLink);
 
             JoinUpstreamDataSources(_inputsDataSource, _projectSubscriptionService.ProjectRuleSource, _fileWatcher);
         }
