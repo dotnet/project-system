@@ -114,7 +114,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
                 ITargetBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>>> actionBlock =
                     DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>>>(
-                        e => OnProjectChangedAsync(e.Value.Item1, e.Value.Item2, e.Value.Item3, configuredProject),
+                        e => OnProjectChangedAsync(e.DataSourceVersions, e.Value.Item1, e.Value.Item2, e.Value.Item3, configuredProject, source),
                         new ExecutionDataflowBlockOptions()
                         {
                             NameFormat = string.Intern($"CrossTarget {source} Input: {{1}}")
@@ -156,10 +156,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         }
 
         private async Task OnProjectChangedAsync(
+            IImmutableDictionary<NamedIdentity, IComparable> versions,
             IProjectSubscriptionUpdate projectUpdate,
             IProjectCatalogSnapshot catalogSnapshot,
             IProjectCapabilitiesSnapshot capabilities,
-            ConfiguredProject configuredProject)
+            ConfiguredProject configuredProject,
+            RuleSource source)
         {
             if (IsDisposing || IsDisposed)
             {
@@ -177,15 +179,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     // Ensure the project's capabilities don't change during the update
                     using (ProjectCapabilitiesContext.CreateIsolatedContext(configuredProject, capabilities))
                     {
-                        await HandleAsync(projectUpdate, catalogSnapshot);
+                        await HandleAsync(versions, projectUpdate, catalogSnapshot, source);
                     }
                 });
             });
         }
 
         private async Task HandleAsync(
+            IImmutableDictionary<NamedIdentity, IComparable> versions,
             IProjectSubscriptionUpdate projectUpdate,
-            IProjectCatalogSnapshot catalogSnapshot)
+            IProjectCatalogSnapshot catalogSnapshot,
+            RuleSource source)
         {
             AggregateCrossTargetProjectContext? currentAggregateContext = await _host!.GetCurrentAggregateProjectContextAsync();
 
@@ -221,7 +225,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             // Give each handler a chance to register dependency changes.
             foreach (Lazy<IDependenciesRuleHandler, IOrderPrecedenceMetadataView> handler in _handlers)
             {
-                handler.Value.Handle(projectUpdate.ProjectChanges, targetFrameworkToUpdate, changesBuilder);
+                handler.Value.Handle(versions, projectUpdate.ProjectChanges, source, targetFrameworkToUpdate, changesBuilder);
             }
 
             ImmutableDictionary<ITargetFramework, IDependenciesChanges>? changes = changesBuilder.TryBuildChanges();

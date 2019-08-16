@@ -32,7 +32,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         public abstract ImageMoniker ImplicitIcon { get; }
 
         public virtual void Handle(
+            IImmutableDictionary<NamedIdentity, IComparable> versions,
             IImmutableDictionary<string, IProjectChangeDescription> changesByRuleName,
+            RuleSource source,
             ITargetFramework targetFramework,
             CrossTargetDependenciesChangesBuilder changesBuilder)
         {
