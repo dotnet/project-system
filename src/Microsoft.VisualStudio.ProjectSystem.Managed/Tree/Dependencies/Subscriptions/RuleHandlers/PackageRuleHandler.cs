@@ -46,11 +46,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             ITargetFramework targetFramework,
             CrossTargetDependenciesChangesBuilder changesBuilder)
         {
-            IProjectChangeDescription unresolvedChanges = changesByRuleName[EvaluatedRuleName];
+            IProjectChangeDescription evaluatedChanges = changesByRuleName[EvaluatedRuleName];
 
             HandleChangesForRule(
                 resolved: false,
-                projectChange: unresolvedChanges,
+                projectChange: evaluatedChanges,
                 isEvaluatedItemSpec: null);
 
             if (changesByRuleName.TryGetValue(ResolvedRuleName, out IProjectChangeDescription resolvedChanges))
@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 HandleChangesForRule(
                     resolved: true,
                     projectChange: resolvedChanges,
-                    isEvaluatedItemSpec: unresolvedChanges.After.Items.ContainsKey);
+                    isEvaluatedItemSpec: evaluatedChanges.After.Items.ContainsKey);
             }
 
             return;

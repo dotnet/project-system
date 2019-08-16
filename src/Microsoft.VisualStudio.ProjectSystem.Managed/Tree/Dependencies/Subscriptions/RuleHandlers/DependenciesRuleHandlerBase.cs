@@ -39,11 +39,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             // We receive evaluated and resolved project data separately, each as its own rule.
 
             // We always have evaluated data.
-            IProjectChangeDescription unresolvedChanges = changesByRuleName[EvaluatedRuleName];
+            IProjectChangeDescription evaluatedChanges = changesByRuleName[EvaluatedRuleName];
 
             HandleChangesForRule(
                 resolved: false,
-                projectChange: unresolvedChanges,
+                projectChange: evaluatedChanges,
                 shouldProcess: dependencyId => true);
 
             // We only have resolved data if the update came via the JointRule data source.
@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 HandleChangesForRule(
                     resolved: true,
                     projectChange: resolvedChanges,
-                    shouldProcess: unresolvedChanges.After.Items.ContainsKey);
+                    shouldProcess: evaluatedChanges.After.Items.ContainsKey);
             }
 
             return;
