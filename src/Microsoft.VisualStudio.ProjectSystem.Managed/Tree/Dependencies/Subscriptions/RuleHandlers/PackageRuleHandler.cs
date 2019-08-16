@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         if (PackageDependencyMetadata.TryGetMetadata(
                             removedItem,
                             resolved,
-                            properties: projectChange.Before.GetProjectItemProperties(removedItem) ?? ImmutableDictionary<string, string>.Empty,
+                            properties: projectChange.Before.GetProjectItemProperties(removedItem)!,
                             isEvaluatedItemSpec,
                             targetFramework,
                             _targetFrameworkProvider,
@@ -90,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         if (PackageDependencyMetadata.TryGetMetadata(
                             changedItem,
                             resolved,
-                            properties: projectChange.After.GetProjectItemProperties(changedItem) ?? ImmutableDictionary<string, string>.Empty,
+                            properties: projectChange.After.GetProjectItemProperties(changedItem)!,
                             isEvaluatedItemSpec,
                             targetFramework,
                             _targetFrameworkProvider,
@@ -109,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         if (PackageDependencyMetadata.TryGetMetadata(
                             addedItem,
                             resolved,
-                            properties: projectChange.After.GetProjectItemProperties(addedItem) ?? ImmutableDictionary<string, string>.Empty,
+                            properties: projectChange.After.GetProjectItemProperties(addedItem)!,
                             isEvaluatedItemSpec,
                             targetFramework,
                             _targetFrameworkProvider,
