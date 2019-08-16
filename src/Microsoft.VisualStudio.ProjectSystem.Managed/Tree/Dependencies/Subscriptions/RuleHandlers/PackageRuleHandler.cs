@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 
@@ -47,16 +46,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             ITargetFramework targetFramework,
             CrossTargetDependenciesChangesBuilder changesBuilder)
         {
-            var evaluatedItemSpecs = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-
             if (changesByRuleName.TryGetValue(EvaluatedRuleName, out IProjectChangeDescription unresolvedChanges))
             {
-                evaluatedItemSpecs.AddRange(unresolvedChanges.After.Items.Keys);
-
                 HandleChangesForRule(
                     resolved: false,
                     projectChange: unresolvedChanges,
-                    evaluatedItemSpecs: null);
+                    isEvaluatedItemSpec: null);
             }
 
             if (changesByRuleName.TryGetValue(ResolvedRuleName, out IProjectChangeDescription resolvedChanges))
@@ -64,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 HandleChangesForRule(
                     resolved: true,
                     projectChange: resolvedChanges,
-                    evaluatedItemSpecs: evaluatedItemSpecs);
+                    isEvaluatedItemSpec: unresolvedChanges!.After.Items.ContainsKey);
             }
 
             return;
@@ -72,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             void HandleChangesForRule(
                 bool resolved,
                 IProjectChangeDescription projectChange,
-                HashSet<string>? evaluatedItemSpecs)
+                Func<string, bool>? isEvaluatedItemSpec)
             {
                 Requires.NotNull(targetFramework, nameof(targetFramework));
 
@@ -84,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                             removedItem,
                             resolved,
                             properties: projectChange.Before.GetProjectItemProperties(removedItem) ?? ImmutableDictionary<string, string>.Empty,
-                            evaluatedItemSpecs,
+                            isEvaluatedItemSpec,
                             targetFramework,
                             _targetFrameworkProvider,
                             out PackageDependencyMetadata metadata))
@@ -102,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                             changedItem,
                             resolved,
                             properties: projectChange.After.GetProjectItemProperties(changedItem) ?? ImmutableDictionary<string, string>.Empty,
-                            evaluatedItemSpecs,
+                            isEvaluatedItemSpec,
                             targetFramework,
                             _targetFrameworkProvider,
                             out PackageDependencyMetadata metadata))
@@ -121,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                             addedItem,
                             resolved,
                             properties: projectChange.After.GetProjectItemProperties(addedItem) ?? ImmutableDictionary<string, string>.Empty,
-                            evaluatedItemSpecs,
+                            isEvaluatedItemSpec,
                             targetFramework,
                             _targetFrameworkProvider,
                             out PackageDependencyMetadata metadata))

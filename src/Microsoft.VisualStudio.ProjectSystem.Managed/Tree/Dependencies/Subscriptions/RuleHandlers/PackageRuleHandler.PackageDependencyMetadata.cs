@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 string itemSpec,
                 bool isResolved,
                 IImmutableDictionary<string, string> properties,
-                HashSet<string>? evaluatedItemSpecs,
+                Func<string, bool>? isEvaluatedItemSpec,
                 ITargetFramework targetFramework,
                 ITargetFrameworkProvider targetFrameworkProvider,
                 out PackageDependencyMetadata metadata)
@@ -69,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
                     Requires.NotNull(targetFramework, nameof(targetFramework));
                     Requires.NotNull(targetFrameworkProvider, nameof(targetFrameworkProvider));
-                    Requires.NotNull(evaluatedItemSpecs, nameof(evaluatedItemSpecs));
+                    Requires.NotNull(isEvaluatedItemSpec, nameof(isEvaluatedItemSpec));
 
                     DependencyType dependencyType = properties.GetEnumProperty<DependencyType>(ProjectItemMetadata.Type) ?? DependencyType.Unknown;
 
@@ -93,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     string name = properties.GetStringProperty(ProjectItemMetadata.Name) ?? itemSpec;
 
                     bool isTopLevel = isImplicitlyDefined ||
-                        (dependencyType == DependencyType.Package && evaluatedItemSpecs!.Contains(name));
+                        (dependencyType == DependencyType.Package && isEvaluatedItemSpec!(name));
 
                     string originalItemSpec = isTopLevel ? name : itemSpec;
 
