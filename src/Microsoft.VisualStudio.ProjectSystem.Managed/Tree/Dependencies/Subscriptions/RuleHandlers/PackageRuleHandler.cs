@@ -63,13 +63,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             return;
 
-            void HandleChangesForRule(
-                bool resolved,
-                IProjectChangeDescription projectChange,
-                Func<string, bool>? isEvaluatedItemSpec)
+            void HandleChangesForRule(bool resolved, IProjectChangeDescription projectChange, Func<string, bool>? isEvaluatedItemSpec)
             {
-                Requires.NotNull(targetFramework, nameof(targetFramework));
-
                 if (projectChange.Difference.RemovedItems.Count != 0)
                 {
                     foreach (string removedItem in projectChange.Difference.RemovedItems)
