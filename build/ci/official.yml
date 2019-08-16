@@ -117,10 +117,3 @@ steps:
     publishLocation: FilePath
     TargetPath: '$(DropRoot)\$(TeamName)\$(Build.SourceBranchName)'
   condition: succeededOrFailed()
-
-- task: MicroBuildUploadVstsDropFolder@1
-  inputs:
-    DropFolder: 'artifacts\$(BuildConfiguration)\bin\IntegrationTests'
-    DropName: Tests/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber)/$(Build.BuildId)/IntegrationTests
-  displayName: Publish integration tests to VSTS drop
-  condition: succeeded()
