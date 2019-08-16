@@ -12,16 +12,6 @@
         <target state="translated">パッケージのプロパティ</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Description|DisplayName">
-        <source>Description</source>
-        <target state="translated">説明</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Description|Description">
-        <source>Dependency description.</source>
-        <target state="translated">依存関係の説明。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
         <target state="translated">バージョン</target>
@@ -85,11 +75,6 @@
       <trans-unit id="BoolProperty|GeneratePathProperty|Description">
         <source>Indicates whether to generate an MSBuild property with the location of the package's root directory. The generated property name is in the form of 'Pkg[PackageID]', where '[PackageID]' is the ID of the package with any periods '.' replaced with underscores '_'.</source>
         <target state="translated">MSBuild プロパティをパッケージのルート ディレクトリーの場所に生成するかどうかを示します。生成されるプロパティ名は 'Pkg[PackageID]' という形式になります。'[PackageID]' はパッケージの ID で、ピリオド (.) はアンダースコア (_) に置き換えられます。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Name|DisplayName">
-        <source>Name</source>
-        <target state="new">Name</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Path|DisplayName">
