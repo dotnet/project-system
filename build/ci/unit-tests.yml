@@ -94,7 +94,7 @@ jobs:
 - job: Spanish
   pool:
     name: NetCorePublic-Pool
-    queue: BuildPool.Windows.10.Amd64.ES.VS2017.Open
+    queue: BuildPool.Windows.Amd64.VS2019.Pre.ES.Open
   variables:
     _configuration: Debug
   timeoutInMinutes: 20
