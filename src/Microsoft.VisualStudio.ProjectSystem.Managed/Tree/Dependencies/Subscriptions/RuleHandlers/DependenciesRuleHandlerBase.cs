@@ -36,20 +36,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             ITargetFramework targetFramework,
             CrossTargetDependenciesChangesBuilder changesBuilder)
         {
-            // We receive unresolved and resolved changes separately.
+            // We receive evaluated and resolved project data separately, each as its own rule.
 
-            // Process all unresolved changes.
-            if (changesByRuleName.TryGetValue(EvaluatedRuleName, out IProjectChangeDescription unresolvedChanges))
-            {
-                HandleChangesForRule(
-                    resolved: false,
-                    projectChange: unresolvedChanges,
-                    shouldProcess: dependencyId => true);
-            }
+            // We always have evaluated data.
+            IProjectChangeDescription unresolvedChanges = changesByRuleName[EvaluatedRuleName];
 
-            // Process only resolved changes that have a corresponding unresolved item.
-            if (unresolvedChanges != null &&
-                changesByRuleName.TryGetValue(ResolvedRuleName, out IProjectChangeDescription resolvedChanges))
+            HandleChangesForRule(
+                resolved: false,
+                projectChange: unresolvedChanges,
+                shouldProcess: dependencyId => true);
+
+            // We only have resolved data if the update came via the JointRule data source.
+            if (changesByRuleName.TryGetValue(ResolvedRuleName, out IProjectChangeDescription resolvedChanges))
             {
                 HandleChangesForRule(
                     resolved: true,
