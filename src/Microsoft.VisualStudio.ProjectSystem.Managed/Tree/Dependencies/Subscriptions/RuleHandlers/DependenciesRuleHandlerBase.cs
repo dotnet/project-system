@@ -78,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 {
                     foreach (string changedItem in projectChange.Difference.ChangedItems)
                     {
-                        IDependencyModel model = CreateDependencyModelForRule(changedItem, projectChange.After);
+                        IDependencyModel model = CreateDependencyModelForRule(changedItem, projectChange.After, resolved);
                         if (shouldProcess(model.Id))
                         {
                             // For changes we try to add new dependency. If it is a resolved dependency, it would just override
@@ -93,34 +93,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 {
                     foreach (string addedItem in projectChange.Difference.AddedItems)
                     {
-                        IDependencyModel model = CreateDependencyModelForRule(addedItem, projectChange.After);
+                        IDependencyModel model = CreateDependencyModelForRule(addedItem, projectChange.After, resolved);
                         if (shouldProcess(model.Id))
                         {
                             changesBuilder.Added(targetFramework, model);
                         }
                     }
                 }
-
-                return;
-
-                IDependencyModel CreateDependencyModelForRule(string itemSpec, IProjectRuleSnapshot projectRuleSnapshot)
-                {
-                    IImmutableDictionary<string, string> properties = projectRuleSnapshot.GetProjectItemProperties(itemSpec)!;
-
-                    string originalItemSpec = resolved
-                        ? properties.GetStringProperty(ResolvedAssemblyReference.OriginalItemSpecProperty) ?? itemSpec
-                        : itemSpec;
-
-                    bool isImplicit = properties.GetBoolProperty(ProjectItemMetadata.IsImplicitlyDefined) ?? false;
-
-                    return CreateDependencyModel(
-                        itemSpec,
-                        originalItemSpec,
-                        resolved,
-                        isImplicit,
-                        properties);
-                }
             }
+        }
+
+        private IDependencyModel CreateDependencyModelForRule(string itemSpec, IProjectRuleSnapshot projectRuleSnapshot, bool isResolved)
+        {
+            IImmutableDictionary<string, string> properties = projectRuleSnapshot.GetProjectItemProperties(itemSpec)!;
+
+            string originalItemSpec = isResolved
+                ? properties.GetStringProperty(ResolvedAssemblyReference.OriginalItemSpecProperty) ?? itemSpec
+                : itemSpec;
+
+            bool isImplicit = properties.GetBoolProperty(ProjectItemMetadata.IsImplicitlyDefined) ?? false;
+
+            return CreateDependencyModel(
+                itemSpec,
+                originalItemSpec,
+                isResolved,
+                isImplicit,
+                properties);
         }
 
         protected virtual IDependencyModel CreateDependencyModel(
