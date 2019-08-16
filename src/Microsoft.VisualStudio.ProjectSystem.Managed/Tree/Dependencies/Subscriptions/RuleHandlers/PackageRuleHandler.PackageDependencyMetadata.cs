@@ -60,25 +60,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             {
                 Requires.NotNullOrEmpty(itemSpec, nameof(itemSpec));
                 Requires.NotNull(properties, nameof(properties));
-                Requires.NotNull(targetFramework, nameof(targetFramework));
-                Requires.NotNull(targetFrameworkProvider, nameof(targetFrameworkProvider));
-
-                bool isTopLevel;
-                string originalItemSpec;
-
-                int slashIndex = itemSpec.IndexOf('/');
-                string? target = slashIndex == -1 ? null : s_targetFrameworkInternPool.Intern(itemSpec.Substring(0, slashIndex));
-
-                DependencyType dependencyType = properties.GetEnumProperty<DependencyType>(ProjectItemMetadata.Type)
-                    ?? (isResolved ? DependencyType.Unknown : DependencyType.Package);
-
-                string name = properties.GetStringProperty(ProjectItemMetadata.Name) ?? itemSpec;
 
                 bool isImplicitlyDefined = properties.GetBoolProperty(ProjectItemMetadata.IsImplicitlyDefined) ?? false;
 
                 if (isResolved)
                 {
                     // We have design-time build data
+
+                    Requires.NotNull(targetFramework, nameof(targetFramework));
+                    Requires.NotNull(targetFrameworkProvider, nameof(targetFrameworkProvider));
+                    Requires.NotNull(evaluatedItemSpecs, nameof(evaluatedItemSpecs));
+
+                    DependencyType dependencyType = properties.GetEnumProperty<DependencyType>(ProjectItemMetadata.Type) ?? DependencyType.Unknown;
+
+                    if (dependencyType == DependencyType.Target)
+                    {
+                        // Disregard items of type 'Target' from design-time build
+                        metadata = default;
+                        return false;
+                    }
+
+                    int slashIndex = itemSpec.IndexOf('/');
+                    string? target = slashIndex == -1 ? null : s_targetFrameworkInternPool.Intern(itemSpec.Substring(0, slashIndex));
+
                     if (target == null ||
                         targetFrameworkProvider.GetTargetFramework(target)?.Equals(targetFramework) != true)
                     {
@@ -86,28 +90,42 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         return false;
                     }
 
-                    isTopLevel = isImplicitlyDefined ||
-                        (dependencyType == DependencyType.Package && evaluatedItemSpecs?.Contains(name) == true);
+                    string name = properties.GetStringProperty(ProjectItemMetadata.Name) ?? itemSpec;
 
-                    originalItemSpec = isTopLevel ? name : itemSpec;
+                    bool isTopLevel = isImplicitlyDefined ||
+                        (dependencyType == DependencyType.Package && evaluatedItemSpecs!.Contains(name));
+
+                    string originalItemSpec = isTopLevel ? name : itemSpec;
+
+                    metadata = new PackageDependencyMetadata(
+                        dependencyType,
+                        target,
+                        itemSpec,
+                        originalItemSpec,
+                        name,
+                        isResolved: true,
+                        isImplicitlyDefined,
+                        isTopLevel,
+                        properties);
                 }
                 else
                 {
                     // We only have evaluation data
-                    isTopLevel = true;
-                    originalItemSpec = itemSpec;
+
+                    System.Diagnostics.Debug.Assert(itemSpec.IndexOf('/') == -1);
+
+                    metadata = new PackageDependencyMetadata(
+                        dependencyType: DependencyType.Package,
+                        target: null,
+                        itemSpec,
+                        originalItemSpec: itemSpec,
+                        name: itemSpec,
+                        isResolved: false,
+                        isImplicitlyDefined,
+                        isTopLevel: true,
+                        properties);
                 }
 
-                metadata = new PackageDependencyMetadata(
-                    dependencyType,
-                    target,
-                    itemSpec,
-                    originalItemSpec,
-                    name,
-                    isResolved,
-                    isImplicitlyDefined,
-                    isTopLevel,
-                    properties);
                 return true;
             }
 
@@ -190,6 +208,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 Diagnostic,
                 Package,
                 Assembly,
+                Target,
                 FrameworkAssembly,
                 AnalyzerAssembly
             }
