@@ -135,6 +135,7 @@
 "DisplayName"="#1300"
 "EditorTrustLevel"=dword:00000001
 "Package"="{67909B06-91E9-4F3E-AB50-495046BE9A9A}"
+"DeferUntilIntellisenseIsReady"=dword:00000001
 @="Project Designer"
 
 [$RootKey$\Editors\{04b8ab82-a572-4fef-95ce-5222444b6b64}\LogicalViews]
@@ -145,6 +146,7 @@
 "DisplayName"="#1200"
 "EditorTrustLevel"=dword:00000001
 "Package"="{67909B06-91E9-4F3E-AB50-495046BE9A9A}"
+"DeferUntilIntellisenseIsReady"=dword:00000001
 @="SettingsDesignerEditorFactory"
 
 [$RootKey$\Editors\{6D2695F9-5365-4A78-89ED-F205C045BFE6}\Extensions]
@@ -157,6 +159,7 @@
 "DisplayName"="#1400"
 "EditorTrustLevel"=dword:00000001
 "Package"="{67909B06-91E9-4F3E-AB50-495046BE9A9A}"
+"DeferUntilIntellisenseIsReady"=dword:00000001
 @="Project Designer Property Page Host"
 
 [$RootKey$\Editors\{ff4d6aca-9352-4a5f-821e-f4d6ebdcab11}]
@@ -164,6 +167,7 @@
 "DisplayName"="#1100"
 "EditorTrustLevel"=dword:00000001
 "Package"="{67909B06-91E9-4F3E-AB50-495046BE9A9A}"
+"DeferUntilIntellisenseIsReady"=dword:00000001
 @="Managed Resources Editor"
 
 [$RootKey$\Editors\{ff4d6aca-9352-4a5f-821e-f4d6ebdcab11}\Extensions]
