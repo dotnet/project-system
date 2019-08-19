@@ -18,35 +18,31 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters;
 using Microsoft.VisualStudio.Threading;
-using Microsoft.VisualStudio.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions
 {
     [Export(DependencySubscriptionsHostContract, typeof(ICrossTargetSubscriptionsHost))]
     [Export(typeof(IDependenciesSnapshotProvider))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
-    internal sealed class DependenciesSnapshotProvider : OnceInitializedOnceDisposedAsync, ICrossTargetSubscriptionsHost, IDependenciesSnapshotProvider
+    internal sealed partial class DependenciesSnapshotProvider : OnceInitializedOnceDisposedAsync, ICrossTargetSubscriptionsHost, IDependenciesSnapshotProvider
     {
         public const string DependencySubscriptionsHostContract = "DependencySubscriptionsHostContract";
 
         public event EventHandler<ProjectRenamedEventArgs>? SnapshotRenamed;
         public event EventHandler<SnapshotProviderUnloadingEventArgs>? SnapshotProviderUnloading;
 
-        private readonly TimeSpan _dependenciesUpdateThrottleInterval = TimeSpan.FromMilliseconds(250);
-
         private readonly SemaphoreSlim _contextUpdateGate = new SemaphoreSlim(initialCount: 1);
-        private readonly object _snapshotLock = new object();
         private readonly object _subscribersLock = new object();
         private readonly object _linksLock = new object();
 
+        private readonly SnapshotUpdater _snapshot;
+
         private readonly ITargetFrameworkProvider _targetFrameworkProvider;
         private readonly IUnconfiguredProjectCommonServices _commonServices;
-        private readonly ITaskDelayScheduler _dependenciesUpdateScheduler;
         private readonly Lazy<IAggregateCrossTargetProjectContextProvider> _contextProvider;
         private readonly IUnconfiguredProjectTasksService _tasksService;
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
         private readonly IActiveProjectConfigurationRefreshService _activeProjectConfigurationRefreshService;
-        private readonly IBroadcastBlock<SnapshotChangedEventArgs> _snapshotChangedSource;
 
         [ImportMany] private readonly OrderPrecedenceImportCollection<IDependencyCrossTargetSubscriber> _dependencySubscribers;
         [ImportMany] private readonly OrderPrecedenceImportCollection<IProjectDependenciesSubTreeProvider> _subTreeProviders;
@@ -54,7 +50,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         private DisposableBag _evaluationSubscriptionLinks = new DisposableBag();
         private ImmutableArray<IDependencyCrossTargetSubscriber> _subscribers;
-        private DependenciesSnapshot _currentSnapshot;
         private int _isInitialized;
 
         /// <summary>
@@ -97,8 +92,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             _activeProjectConfigurationRefreshService = activeProjectConfigurationRefreshService;
             _targetFrameworkProvider = targetFrameworkProvider;
 
-            _currentSnapshot = DependenciesSnapshot.CreateEmpty(_commonServices.Project.FullPath);
-
             _dependencySubscribers = new OrderPrecedenceImportCollection<IDependencyCrossTargetSubscriber>(
                 projectCapabilityCheckProvider: commonServices.Project);
 
@@ -110,21 +103,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast,
                 projectCapabilityCheckProvider: commonServices.Project);
 
-            _dependenciesUpdateScheduler = new TaskDelayScheduler(
-                _dependenciesUpdateThrottleInterval,
-                commonServices.ThreadingService,
-                tasksService.UnloadCancellationToken);
-
-            _snapshotChangedSource = DataflowBlockSlim.CreateBroadcastBlock<SnapshotChangedEventArgs>("DependenciesSnapshot {1}", skipIntermediateInputData: true);
+            _snapshot = new SnapshotUpdater(commonServices, tasksService.UnloadCancellationToken);
 
             aggregateSnapshotProvider.RegisterSnapshotProvider(this);
         }
 
         /// <inheritdoc />
-        public IDependenciesSnapshot CurrentSnapshot => _currentSnapshot;
+        public IDependenciesSnapshot CurrentSnapshot => _snapshot.Current;
 
         /// <inheritdoc />
-        IReceivableSourceBlock<SnapshotChangedEventArgs> IDependenciesSnapshotProvider.SnapshotChangedSource => _snapshotChangedSource;
+        IReceivableSourceBlock<SnapshotChangedEventArgs> IDependenciesSnapshotProvider.SnapshotChangedSource => _snapshot.Source;
 
         private ImmutableArray<IDependencyCrossTargetSubscriber> Subscribers
         {
@@ -220,10 +208,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             _commonServices.Project.ProjectUnloading -= OnUnconfiguredProjectUnloadingAsync;
             _commonServices.Project.ProjectRenamed -= OnUnconfiguredProjectRenamedAsync;
 
-            _dependenciesUpdateScheduler.Dispose();
-
             _contextUpdateGate.Dispose();
-            _snapshotChangedSource.Complete();
+            _snapshot.Dispose();
 
             if (initialized)
             {
@@ -305,10 +291,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         {
             IImmutableSet<string>? projectItemSpecs = GetProjectItemSpecsFromSnapshot();
 
-            TryUpdateSnapshot(
-                snapshot => DependenciesSnapshot.FromChanges(
+            _snapshot.TryUpdate(
+                previousSnapshot => DependenciesSnapshot.FromChanges(
                     _commonServices.Project.FullPath,
-                    snapshot,
+                    previousSnapshot,
                     changesByTargetFramework,
                     catalogs,
                     targetFrameworks,
@@ -455,7 +441,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
                 _currentAggregateProjectContext = newContext;
 
-                TryUpdateSnapshot(snapshot => snapshot.SetTargets(newContext.TargetFrameworks, newContext.ActiveTargetFramework));
+                _snapshot.TryUpdate(previousSnapshot => previousSnapshot.SetTargets(newContext.TargetFrameworks, newContext.ActiveTargetFramework));
 
                 return newContext;
 
@@ -521,43 +507,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     return Task.CompletedTask;
                 });
             }
-        }
-
-        /// <summary>
-        /// Executes <paramref name="updateFunc"/> on the current snapshot within a lock.
-        /// If a different snapshot object is returned, <see cref="CurrentSnapshot"/> is updated
-        /// and the update is posted to <see cref="IDependenciesSnapshotProvider.SnapshotChangedSource"/>.
-        /// </summary>
-        private void TryUpdateSnapshot(Func<DependenciesSnapshot, DependenciesSnapshot> updateFunc, CancellationToken token = default)
-        {
-            lock (_snapshotLock)
-            {
-                DependenciesSnapshot updatedSnapshot = updateFunc(_currentSnapshot);
-
-                if (ReferenceEquals(_currentSnapshot, updatedSnapshot))
-                {
-                    return;
-                }
-
-                _currentSnapshot = updatedSnapshot;
-            }
-
-            // Conflate rapid snapshot updates by debouncing events over a short window.
-            // This reduces the frequency of tree updates with minimal perceived latency.
-            _dependenciesUpdateScheduler.ScheduleAsyncTask(
-                ct =>
-                {
-                    if (ct.IsCancellationRequested || IsDisposing || IsDisposed)
-                    {
-                        return Task.FromCanceled(ct);
-                    }
-
-                    // Always publish the latest snapshot
-                    IDependenciesSnapshot snapshot = _currentSnapshot;
-                    _snapshotChangedSource.Post(new SnapshotChangedEventArgs(snapshot, ct));
-
-                    return Task.CompletedTask;
-                }, token);
         }
 
         private void SubscribeToConfiguredProjectEvaluation(
