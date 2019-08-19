@@ -1,8 +1,10 @@
-// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint;
+using Microsoft.VisualStudio.ProjectSystem.VS.TempPE;
+
 using VSLangProj;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
@@ -29,12 +31,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         {
             AddEventSource(this);
             _threadingService = threadingService;
-
             Project = new OrderPrecedenceImportCollection<VSLangProj.VSProject>(projectCapabilityCheckProvider: unconfiguredProjectServices.Project);
+            DesignTimeInputsBuildManagerBridge = new OrderPrecedenceImportCollection<IDesignTimeInputsBuildManagerBridge>(projectCapabilityCheckProvider: unconfiguredProjectServices.Project);
         }
 
         [ImportMany(ExportContractNames.VsTypes.VSProject)]
         internal OrderPrecedenceImportCollection<VSLangProj.VSProject> Project { get; }
+
+        [ImportMany]
+        internal OrderPrecedenceImportCollection<IDesignTimeInputsBuildManagerBridge> DesignTimeInputsBuildManagerBridge { get; }
 
         /// <summary>
         /// Occurs when a design time output moniker is deleted.
@@ -68,6 +73,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         {
             get
             {
+                _threadingService.VerifyOnUIThread();
+
+                IDesignTimeInputsBuildManagerBridge? bridge = DesignTimeInputsBuildManagerBridge.FirstOrDefault()?.Value;
+                if (bridge != null)
+                {
+                    return bridge.GetTempPEMonikers();
+                }
+
                 throw new NotImplementedException();
             }
         }
@@ -77,6 +90,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         /// </summary>
         public string BuildDesignTimeOutput(string bstrOutputMoniker)
         {
+            _threadingService.VerifyOnUIThread();
+
+            IDesignTimeInputsBuildManagerBridge? bridge = DesignTimeInputsBuildManagerBridge.FirstOrDefault()?.Value;
+            if (bridge != null)
+            {
+                return _threadingService.ExecuteSynchronously(() => bridge.GetDesignTimeInputXmlAsync(bstrOutputMoniker));
+            }
+
             throw new NotImplementedException();
         }
 
