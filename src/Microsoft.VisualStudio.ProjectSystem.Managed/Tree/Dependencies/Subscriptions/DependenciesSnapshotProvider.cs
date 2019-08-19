@@ -404,7 +404,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 DisposeAndClearSubscriptions();
 
                 // Add subscriptions for the configured projects in the new project context.
-                await AddSubscriptionsAsync(newProjectContext);
+                await AddSubscriptionsAsync();
             }
 
             return;
@@ -498,6 +498,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
                 return true;
             }
+
+            Task AddSubscriptionsAsync()
+            {
+                return _tasksService.LoadedProjectAsync(() =>
+                {
+                    lock (_linksLock)
+                    {
+                        foreach (ConfiguredProject configuredProject in newProjectContext.InnerConfiguredProjects)
+                        {
+                            SubscribeToConfiguredProjectEvaluation(
+                                configuredProject.Services.ProjectSubscription,
+                                OnConfiguredProjectEvaluatedAsync);
+                        }
+
+                        foreach (IDependencyCrossTargetSubscriber subscriber in Subscribers)
+                        {
+                            subscriber.AddSubscriptions(newProjectContext);
+                        }
+                    }
+
+                    return Task.CompletedTask;
+                });
+            }
         }
 
         /// <summary>
@@ -535,31 +558,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
                     return Task.CompletedTask;
                 }, token);
-        }
-
-        private Task AddSubscriptionsAsync(AggregateCrossTargetProjectContext newProjectContext)
-        {
-            Requires.NotNull(newProjectContext, nameof(newProjectContext));
-
-            return _tasksService.LoadedProjectAsync(() =>
-            {
-                lock (_linksLock)
-                {
-                    foreach (ConfiguredProject configuredProject in newProjectContext.InnerConfiguredProjects)
-                    {
-                        SubscribeToConfiguredProjectEvaluation(
-                            configuredProject.Services.ProjectSubscription,
-                            OnConfiguredProjectEvaluatedAsync);
-                    }
-
-                    foreach (IDependencyCrossTargetSubscriber subscriber in Subscribers)
-                    {
-                        subscriber.AddSubscriptions(newProjectContext);
-                    }
-                }
-
-                return Task.CompletedTask;
-            });
         }
 
         private void SubscribeToConfiguredProjectEvaluation(
