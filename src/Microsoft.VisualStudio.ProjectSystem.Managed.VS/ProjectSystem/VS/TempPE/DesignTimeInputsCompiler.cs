@@ -192,21 +192,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             // This means we get a nicer experience for the user once they start using designers, without wasted cycles compiling things just because a project is loaded
             await InitializeAsync();
 
+            int initialQueueLength = _queue.Count;
+
             // Remove the file from our todo list, in case it was in there.
             // Note that other than this avoidance of unnecessary work, this method is stateless.
             _queue.RemoveSpecific(fileName);
 
             string outputFileName = GetOutputFileName(fileName, tempPEOutputPath);
             // make sure the file is up to date
-            bool compiled = await _activeWorkspaceProjectContextHost.OpenContextForWriteAsync(async accessor =>
+            bool compiled = await _activeWorkspaceProjectContextHost.OpenContextForWriteAsync(accessor =>
             {
-                return await CompileDesignTimeInputAsync(accessor.Context, fileName, outputFileName, sharedInputs, ignoreFileWriteTime: false);
-
+                return CompileDesignTimeInputAsync(accessor.Context, fileName, outputFileName, sharedInputs, ignoreFileWriteTime: false);
             });
 
             if (compiled)
             {
-                _telemetryService.PostEvent(TelemetryEventName.TempPECompileOnDemand);
+                _telemetryService.PostProperties(TelemetryEventName.TempPECompileOnDemand, new[]
+                {
+                    ( TelemetryPropertyName.TempPEInitialQueueLength, (object)initialQueueLength)
+                });
             }
 
             return $@"<root>
