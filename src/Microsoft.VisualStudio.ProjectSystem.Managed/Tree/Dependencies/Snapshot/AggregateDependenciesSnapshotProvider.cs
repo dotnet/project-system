@@ -7,7 +7,6 @@ using System.Linq;
 using System.Threading.Tasks.Dataflow;
 
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
-using Microsoft.VisualStudio.ProjectSystem.VS.Extensibility;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
@@ -17,15 +16,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
     internal sealed class AggregateDependenciesSnapshotProvider : IAggregateDependenciesSnapshotProvider
     {
         private readonly Dictionary<string, IDependenciesSnapshotProvider> _snapshotProviders = new Dictionary<string, IDependenciesSnapshotProvider>(StringComparer.OrdinalIgnoreCase);
-        private readonly IProjectExportProvider _projectExportProvider;
         private readonly ITargetFrameworkProvider _targetFrameworkProvider;
 
         [ImportingConstructor]
-        public AggregateDependenciesSnapshotProvider(
-            IProjectExportProvider projectExportProvider,
-            ITargetFrameworkProvider targetFrameworkProvider)
+        public AggregateDependenciesSnapshotProvider(ITargetFrameworkProvider targetFrameworkProvider)
         {
-            _projectExportProvider = projectExportProvider;
             _targetFrameworkProvider = targetFrameworkProvider;
         }
 
