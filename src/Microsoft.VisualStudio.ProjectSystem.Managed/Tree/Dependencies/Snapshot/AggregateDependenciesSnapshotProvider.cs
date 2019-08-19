@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks.Dataflow;
@@ -15,13 +16,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
     [AppliesTo(ProjectCapability.DependenciesTree)]
     internal sealed class AggregateDependenciesSnapshotProvider : IAggregateDependenciesSnapshotProvider
     {
-        private readonly Dictionary<string, IDependenciesSnapshotProvider> _snapshotProviderByPath = new Dictionary<string, IDependenciesSnapshotProvider>(StringComparer.OrdinalIgnoreCase);
+        /// <summary>
+        /// Even though the collection is immutable we still lock to ensure synchronized event subscription and unsubscription.
+        /// Because <see cref="AggregateDependenciesSnapshotProvider"/> is in global scope, this is a global lock.
+        /// </summary>
+        private readonly object _lock = new object();
+
         private readonly ITargetFrameworkProvider _targetFrameworkProvider;
+
+        /// <summary>
+        /// Immutable map from project path to snapshot provider.
+        /// </summary>
+        /// <remarks>
+        /// Modifications of this collection are locked by <see cref="_lock"/>, however we still use an immutable collection
+        /// here so that read-only calls from <see cref="GetSnapshot(string)"/>, <see cref="GetSnapshot(IDependency)"/> and
+        /// <see cref="GetSnapshots"/> don't need to take a global lock.
+        /// </remarks>
+        private ImmutableDictionary<string, IDependenciesSnapshotProvider> _snapshotProviderByPath;
 
         [ImportingConstructor]
         public AggregateDependenciesSnapshotProvider(ITargetFrameworkProvider targetFrameworkProvider)
         {
             _targetFrameworkProvider = targetFrameworkProvider;
+
+            _snapshotProviderByPath = ImmutableDictionary<string, IDependenciesSnapshotProvider>.Empty.WithComparers(StringComparer.OrdinalIgnoreCase);
         }
 
         /// <inheritdoc />
@@ -37,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             var unregister = new DisposableBag();
 
-            lock (_snapshotProviderByPath)
+            lock (_lock)
             {
                 snapshotProvider.SnapshotRenamed += OnSnapshotRenamed;
                 snapshotProvider.SnapshotProviderUnloading += OnSnapshotProviderUnloading;
@@ -52,16 +70,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                         actionBlock,
                         DataflowOption.PropagateCompletion));
 
-                _snapshotProviderByPath[snapshotProvider.CurrentSnapshot.ProjectPath] = snapshotProvider;
+                _snapshotProviderByPath = _snapshotProviderByPath.SetItem(snapshotProvider.CurrentSnapshot.ProjectPath, snapshotProvider);
             }
 
             unregister.Add(new DisposableDelegate(
                 () =>
                 {
-                    lock (_snapshotProviderByPath)
+                    lock (_lock)
                     {
                         string projectPath = snapshotProvider.CurrentSnapshot.ProjectPath;
-                        _snapshotProviderByPath.Remove(projectPath);
+                        _snapshotProviderByPath = _snapshotProviderByPath.Remove(projectPath);
                         snapshotProvider.SnapshotRenamed -= OnSnapshotRenamed;
                         snapshotProvider.SnapshotProviderUnloading -= OnSnapshotProviderUnloading;
                     }
@@ -79,15 +97,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             void OnSnapshotRenamed(object sender, ProjectRenamedEventArgs e)
             {
-                lock (_snapshotProviderByPath)
+                if (string.IsNullOrEmpty(e.OldFullPath))
+                {
+                    return;
+                }
+
+                lock (_lock)
                 {
                     // Remove and re-add provider with new project path
-                    if (!string.IsNullOrEmpty(e.OldFullPath)
-                        && _snapshotProviderByPath.TryGetValue(e.OldFullPath, out IDependenciesSnapshotProvider provider)
-                        && _snapshotProviderByPath.Remove(e.OldFullPath)
-                        && !string.IsNullOrEmpty(e.NewFullPath))
+                    if (_snapshotProviderByPath.TryGetValue(e.OldFullPath, out IDependenciesSnapshotProvider provider))
                     {
-                        _snapshotProviderByPath[e.NewFullPath] = provider;
+                        _snapshotProviderByPath = _snapshotProviderByPath.Remove(e.OldFullPath);
+
+                        if (!string.IsNullOrEmpty(e.NewFullPath))
+                        {
+                            _snapshotProviderByPath = _snapshotProviderByPath.SetItem(e.NewFullPath, provider);
+                        }
                     }
                 }
             }
@@ -98,12 +123,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         {
             Requires.NotNullOrEmpty(projectFilePath, nameof(projectFilePath));
 
-            lock (_snapshotProviderByPath)
-            {
-                _snapshotProviderByPath.TryGetValue(projectFilePath, out IDependenciesSnapshotProvider? provider);
+            _snapshotProviderByPath.TryGetValue(projectFilePath, out IDependenciesSnapshotProvider? provider);
 
-                return provider?.CurrentSnapshot;
-            }
+            return provider?.CurrentSnapshot;
         }
 
         /// <inheritdoc />
@@ -130,10 +152,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// <inheritdoc />
         public IReadOnlyCollection<IDependenciesSnapshot> GetSnapshots()
         {
-            lock (_snapshotProviderByPath)
-            {
-                return _snapshotProviderByPath.Values.Select(provider => provider.CurrentSnapshot).ToList();
-            }
+            return _snapshotProviderByPath.Values.Select(provider => provider.CurrentSnapshot).ToList();
         }
     }
 }
