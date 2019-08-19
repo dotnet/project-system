@@ -574,9 +574,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         {
             lock (_linksLock)
             {
-                foreach (IDependencyCrossTargetSubscriber subscriber in Subscribers)
+                if (!_subscribers.IsDefault)
                 {
-                    subscriber.ReleaseSubscriptions();
+                    foreach (IDependencyCrossTargetSubscriber subscriber in _subscribers)
+                    {
+                        subscriber.ReleaseSubscriptions();
+                    }
                 }
 
                 _evaluationSubscriptionLinks.Dispose();
