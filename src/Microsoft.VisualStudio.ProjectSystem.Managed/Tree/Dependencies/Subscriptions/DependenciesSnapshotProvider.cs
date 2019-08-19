@@ -166,6 +166,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 }
 
                 return _subscribers;
+
+                void OnSubscriberDependenciesChanged(object sender, DependencySubscriptionChangedEventArgs e)
+                {
+                    if (IsDisposing || IsDisposed)
+                    {
+                        return;
+                    }
+
+                    UpdateDependenciesSnapshot(e.Changes, e.Catalogs, e.TargetFrameworks, e.ActiveTarget, CancellationToken.None);
+                }
             }
         }
 
@@ -259,6 +269,44 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                             }
                         }));
             }
+
+            return;
+
+            Task OnUnconfiguredProjectUnloadingAsync(object sender, EventArgs args)
+            {
+                // If our project unloads, we have no more work to do. Notify listeners and clean everything up.
+
+                SnapshotProviderUnloading?.Invoke(this, new SnapshotProviderUnloadingEventArgs(this));
+
+                DisposeCore();
+
+                return Task.CompletedTask;
+            }
+
+            Task OnUnconfiguredProjectRenamedAsync(object sender, ProjectRenamedEventArgs e)
+            {
+                SnapshotRenamed?.Invoke(this, e);
+
+                return Task.CompletedTask;
+            }
+
+            void OnSubtreeProviderDependenciesChanged(object sender, DependenciesChangedEventArgs e)
+            {
+                if (IsDisposing || IsDisposed || !e.Changes.AnyChanges())
+                {
+                    return;
+                }
+
+                ITargetFramework targetFramework =
+                    string.IsNullOrEmpty(e.TargetShortOrFullName) || TargetFramework.Any.Equals(e.TargetShortOrFullName)
+                        ? TargetFramework.Any
+                        : _targetFrameworkProvider.GetTargetFramework(e.TargetShortOrFullName) ?? TargetFramework.Any;
+
+                ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes = ImmutableDictionary<ITargetFramework, IDependenciesChanges>
+                    .Empty.Add(targetFramework, e.Changes);
+
+                UpdateDependenciesSnapshot(changes, catalogs: null, targetFrameworks: default, activeTargetFramework: null, e.Token);
+            }
         }
 
         /// <inheritdoc />
@@ -277,52 +325,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 _subscriptions.Dispose();
                 _disposables.Dispose();
             }
-        }
-
-        private Task OnUnconfiguredProjectUnloadingAsync(object sender, EventArgs args)
-        {
-            // If our project unloads, we have no more work to do. Notify listeners and clean everything up.
-
-            SnapshotProviderUnloading?.Invoke(this, new SnapshotProviderUnloadingEventArgs(this));
-
-            DisposeCore();
-
-            return Task.CompletedTask;
-        }
-
-        private Task OnUnconfiguredProjectRenamedAsync(object sender, ProjectRenamedEventArgs e)
-        {
-            SnapshotRenamed?.Invoke(this, e);
-
-            return Task.CompletedTask;
-        }
-
-        private void OnSubscriberDependenciesChanged(object sender, DependencySubscriptionChangedEventArgs e)
-        {
-            if (IsDisposing || IsDisposed)
-            {
-                return;
-            }
-
-            UpdateDependenciesSnapshot(e.Changes, e.Catalogs, e.TargetFrameworks, e.ActiveTarget, CancellationToken.None);
-        }
-
-        private void OnSubtreeProviderDependenciesChanged(object sender, DependenciesChangedEventArgs e)
-        {
-            if (IsDisposing || IsDisposed || !e.Changes.AnyChanges())
-            {
-                return;
-            }
-
-            ITargetFramework targetFramework =
-                string.IsNullOrEmpty(e.TargetShortOrFullName) || TargetFramework.Any.Equals(e.TargetShortOrFullName)
-                    ? TargetFramework.Any
-                    : _targetFrameworkProvider.GetTargetFramework(e.TargetShortOrFullName) ?? TargetFramework.Any;
-
-            ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes = ImmutableDictionary<ITargetFramework, IDependenciesChanges>
-                .Empty.Add(targetFramework, e.Changes);
-
-            UpdateDependenciesSnapshot(changes, catalogs: null, targetFrameworks: default, activeTargetFramework: null, e.Token);
         }
 
         private void UpdateDependenciesSnapshot(
