@@ -13,6 +13,7 @@ using Microsoft.Build.Execution;
 using Microsoft.VisualStudio.Build;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters;
@@ -37,7 +38,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         private readonly object _snapshotLock = new object();
         private readonly object _subscribersLock = new object();
         private readonly object _linksLock = new object();
-        private readonly List<IDisposable> _evaluationSubscriptionLinks = new List<IDisposable>();
 
         private readonly ITargetFrameworkProvider _targetFrameworkProvider;
         private readonly IUnconfiguredProjectCommonServices _commonServices;
@@ -52,6 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         [ImportMany] private readonly OrderPrecedenceImportCollection<IProjectDependenciesSubTreeProvider> _subTreeProviders;
         [ImportMany] private readonly OrderPrecedenceImportCollection<IDependenciesSnapshotFilter> _snapshotFilters;
 
+        private DisposableBag _evaluationSubscriptionLinks = new DisposableBag();
         private ImmutableArray<IDependencyCrossTargetSubscriber> _subscribers;
         private DependenciesSnapshot _currentSnapshot;
         private int _isInitialized;
@@ -226,7 +227,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             if (initialized)
             {
-                DisposeAndClearSubscriptions();
+                DisposeAndReleaseSubscriptions();
             }
 
             return Task.CompletedTask;
@@ -401,7 +402,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             if (newProjectContext != null)
             {
                 // Dispose existing subscriptions.
-                DisposeAndClearSubscriptions();
+                DisposeAndReleaseSubscriptions();
 
                 // Add subscriptions for the configured projects in the new project context.
                 await AddSubscriptionsAsync();
@@ -569,7 +570,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     ruleNames: ConfigurationGeneral.SchemaName));
         }
 
-        private void DisposeAndClearSubscriptions()
+        private void DisposeAndReleaseSubscriptions()
         {
             lock (_linksLock)
             {
@@ -578,12 +579,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     subscriber.ReleaseSubscriptions();
                 }
 
-                foreach (IDisposable link in _evaluationSubscriptionLinks)
-                {
-                    link.Dispose();
-                }
-
-                _evaluationSubscriptionLinks.Clear();
+                _evaluationSubscriptionLinks.Dispose();
+                _evaluationSubscriptionLinks = new DisposableBag();
             }
         }
     }
