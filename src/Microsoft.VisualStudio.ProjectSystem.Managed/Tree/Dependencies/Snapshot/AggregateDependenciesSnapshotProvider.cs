@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
     [AppliesTo(ProjectCapability.DependenciesTree)]
     internal sealed class AggregateDependenciesSnapshotProvider : IAggregateDependenciesSnapshotProvider
     {
-        private readonly Dictionary<string, IDependenciesSnapshotProvider> _snapshotProviders = new Dictionary<string, IDependenciesSnapshotProvider>(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, IDependenciesSnapshotProvider> _snapshotProviderByPath = new Dictionary<string, IDependenciesSnapshotProvider>(StringComparer.OrdinalIgnoreCase);
         private readonly ITargetFrameworkProvider _targetFrameworkProvider;
 
         [ImportingConstructor]
@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             var unregister = new DisposableBag();
 
-            lock (_snapshotProviders)
+            lock (_snapshotProviderByPath)
             {
                 snapshotProvider.SnapshotRenamed += OnSnapshotRenamed;
                 snapshotProvider.SnapshotProviderUnloading += OnSnapshotProviderUnloading;
@@ -52,16 +52,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                         actionBlock,
                         DataflowOption.PropagateCompletion));
 
-                _snapshotProviders[snapshotProvider.CurrentSnapshot.ProjectPath] = snapshotProvider;
+                _snapshotProviderByPath[snapshotProvider.CurrentSnapshot.ProjectPath] = snapshotProvider;
             }
 
             unregister.Add(new DisposableDelegate(
                 () =>
                 {
-                    lock (_snapshotProviders)
+                    lock (_snapshotProviderByPath)
                     {
                         string projectPath = snapshotProvider.CurrentSnapshot.ProjectPath;
-                        _snapshotProviders.Remove(projectPath);
+                        _snapshotProviderByPath.Remove(projectPath);
                         snapshotProvider.SnapshotRenamed -= OnSnapshotRenamed;
                         snapshotProvider.SnapshotProviderUnloading -= OnSnapshotProviderUnloading;
                     }
@@ -79,15 +79,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             void OnSnapshotRenamed(object sender, ProjectRenamedEventArgs e)
             {
-                lock (_snapshotProviders)
+                lock (_snapshotProviderByPath)
                 {
                     // Remove and re-add provider with new project path
                     if (!string.IsNullOrEmpty(e.OldFullPath)
-                        && _snapshotProviders.TryGetValue(e.OldFullPath, out IDependenciesSnapshotProvider provider)
-                        && _snapshotProviders.Remove(e.OldFullPath)
+                        && _snapshotProviderByPath.TryGetValue(e.OldFullPath, out IDependenciesSnapshotProvider provider)
+                        && _snapshotProviderByPath.Remove(e.OldFullPath)
                         && !string.IsNullOrEmpty(e.NewFullPath))
                     {
-                        _snapshotProviders[e.NewFullPath] = provider;
+                        _snapshotProviderByPath[e.NewFullPath] = provider;
                     }
                 }
             }
@@ -98,9 +98,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         {
             Requires.NotNullOrEmpty(projectFilePath, nameof(projectFilePath));
 
-            lock (_snapshotProviders)
+            lock (_snapshotProviderByPath)
             {
-                _snapshotProviders.TryGetValue(projectFilePath, out IDependenciesSnapshotProvider? provider);
+                _snapshotProviderByPath.TryGetValue(projectFilePath, out IDependenciesSnapshotProvider? provider);
 
                 return provider?.CurrentSnapshot;
             }
@@ -130,9 +130,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// <inheritdoc />
         public IReadOnlyCollection<IDependenciesSnapshot> GetSnapshots()
         {
-            lock (_snapshotProviders)
+            lock (_snapshotProviderByPath)
             {
-                return _snapshotProviders.Values.Select(provider => provider.CurrentSnapshot).ToList();
+                return _snapshotProviderByPath.Values.Select(provider => provider.CurrentSnapshot).ToList();
             }
         }
     }
