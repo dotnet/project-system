@@ -135,12 +135,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     {
                         if (_subscribers.IsDefault)
                         {
-                            foreach (Lazy<IDependencyCrossTargetSubscriber, IOrderPrecedenceMetadataView> subscriber in _dependencySubscribers)
-                            {
-                                subscriber.Value.DependenciesChanged += OnSubscriberDependenciesChanged;
-                            }
-
                             _subscribers = _dependencySubscribers.ToImmutableValueArray();
+
+                            foreach (IDependencyCrossTargetSubscriber subscriber in _subscribers)
+                            {
+                                subscriber.DependenciesChanged += OnSubscriberDependenciesChanged;
+                            }
                         }
                     }
                 }
@@ -239,9 +239,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             SnapshotProviderUnloading?.Invoke(this, new SnapshotProviderUnloadingEventArgs(this));
 
-            foreach (Lazy<IDependencyCrossTargetSubscriber, IOrderPrecedenceMetadataView> subscriber in _dependencySubscribers)
+            lock (_subscribersLock)
             {
-                subscriber.Value.DependenciesChanged -= OnSubscriberDependenciesChanged;
+                if (!_subscribers.IsDefault)
+                {
+                    foreach (IDependencyCrossTargetSubscriber subscriber in _subscribers)
+                    {
+                        subscriber.DependenciesChanged -= OnSubscriberDependenciesChanged;
+                    }
+                }
+
+                _subscribers = default;
             }
 
             foreach (Lazy<IProjectDependenciesSubTreeProvider, IOrderPrecedenceMetadataView> provider in _subTreeProviders)
