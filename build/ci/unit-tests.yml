@@ -70,7 +70,7 @@ jobs:
     _configuration: Debug
   timeoutInMinutes: 240
   steps:
-    - script: $(Build.SourcesDirectory)\build\script\CIRestore.cmd -configuration $(_configuration) -prepareMachine
+    - script: $(Build.SourcesDirectory)\build.cmd /build /ci /configuration ${{ parameters.configuration }}
     - task: RichCodeNavIndexer@0
       continueOnError: true
       inputs:
