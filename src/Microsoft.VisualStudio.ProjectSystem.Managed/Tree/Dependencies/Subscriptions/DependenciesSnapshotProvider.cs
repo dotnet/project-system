@@ -437,7 +437,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         ProjectConfiguration activeProjectConfiguration = _commonServices.ActiveConfiguredProject.ProjectConfiguration;
                         IImmutableSet<ProjectConfiguration> knownProjectConfigurations = await _commonServices.Project.Services.ProjectConfigurationsService.GetKnownProjectConfigurationsAsync();
                         if (knownProjectConfigurations.All(c => c.IsCrossTargeting()) &&
-                            HasMatchingTargetFrameworks(previousContext, activeProjectConfiguration, knownProjectConfigurations))
+                            HasMatchingTargetFrameworks(activeProjectConfiguration, knownProjectConfigurations))
                         {
                             // No change
                             return null;
@@ -457,46 +457,45 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 TryUpdateSnapshot(snapshot => snapshot.SetTargets(newContext.TargetFrameworks, newContext.ActiveTargetFramework));
 
                 return newContext;
-            }
 
-            bool HasMatchingTargetFrameworks(
-                AggregateCrossTargetProjectContext previousContext,
-                ProjectConfiguration activeProjectConfiguration,
-                IReadOnlyCollection<ProjectConfiguration> knownProjectConfigurations)
-            {
-                Assumes.True(activeProjectConfiguration.IsCrossTargeting());
-
-                ITargetFramework? activeTargetFramework = _targetFrameworkProvider.GetTargetFramework(activeProjectConfiguration.Dimensions[ConfigurationGeneral.TargetFrameworkProperty]);
-
-                if (!previousContext.ActiveTargetFramework.Equals(activeTargetFramework))
+                bool HasMatchingTargetFrameworks(
+                    ProjectConfiguration activeProjectConfiguration,
+                    IReadOnlyCollection<ProjectConfiguration> knownProjectConfigurations)
                 {
-                    // Active target framework is different.
-                    return false;
-                }
+                    Assumes.True(activeProjectConfiguration.IsCrossTargeting());
 
-                var targetFrameworkMonikers = knownProjectConfigurations
-                    .Select(c => c.Dimensions[ConfigurationGeneral.TargetFrameworkProperty])
-                    .Distinct()
-                    .ToList();
+                    ITargetFramework? activeTargetFramework = _targetFrameworkProvider.GetTargetFramework(activeProjectConfiguration.Dimensions[ConfigurationGeneral.TargetFrameworkProperty]);
 
-                if (targetFrameworkMonikers.Count != previousContext.TargetFrameworks.Length)
-                {
-                    // Different number of target frameworks.
-                    return false;
-                }
-
-                foreach (string targetFrameworkMoniker in targetFrameworkMonikers)
-                {
-                    ITargetFramework? targetFramework = _targetFrameworkProvider.GetTargetFramework(targetFrameworkMoniker);
-
-                    if (targetFramework == null || !previousContext.TargetFrameworks.Contains(targetFramework))
+                    if (!previousContext.ActiveTargetFramework.Equals(activeTargetFramework))
                     {
-                        // Differing TargetFramework
+                        // Active target framework is different.
                         return false;
                     }
-                }
 
-                return true;
+                    var targetFrameworkMonikers = knownProjectConfigurations
+                        .Select(c => c.Dimensions[ConfigurationGeneral.TargetFrameworkProperty])
+                        .Distinct()
+                        .ToList();
+
+                    if (targetFrameworkMonikers.Count != previousContext.TargetFrameworks.Length)
+                    {
+                        // Different number of target frameworks.
+                        return false;
+                    }
+
+                    foreach (string targetFrameworkMoniker in targetFrameworkMonikers)
+                    {
+                        ITargetFramework? targetFramework = _targetFrameworkProvider.GetTargetFramework(targetFrameworkMoniker);
+
+                        if (targetFramework == null || !previousContext.TargetFrameworks.Contains(targetFramework))
+                        {
+                            // Differing TargetFramework
+                            return false;
+                        }
+                    }
+
+                    return true;
+                }
             }
 
             Task AddSubscriptionsAsync()
