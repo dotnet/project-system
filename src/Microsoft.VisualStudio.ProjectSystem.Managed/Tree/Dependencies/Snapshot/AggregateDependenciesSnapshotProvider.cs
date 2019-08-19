@@ -93,23 +93,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             lock (_snapshotProviders)
             {
-                IDependenciesSnapshotProvider? snapshotProvider;
+                _snapshotProviders.TryGetValue(projectFilePath, out (IDependenciesSnapshotProvider Provider, IDisposable Subscription) entry);
 
-                if (_snapshotProviders.TryGetValue(projectFilePath, out (IDependenciesSnapshotProvider Provider, IDisposable Subscription) entry))
-                {
-                    snapshotProvider = entry.Provider;
-                }
-                else
-                {
-                    snapshotProvider = _projectExportProvider.GetExport<IDependenciesSnapshotProvider>(projectFilePath);
-
-                    if (snapshotProvider != null)
-                    {
-                        RegisterSnapshotProvider(snapshotProvider);
-                    }
-                }
-
-                return snapshotProvider?.CurrentSnapshot;
+                return entry.Provider?.CurrentSnapshot;
             }
         }
 
