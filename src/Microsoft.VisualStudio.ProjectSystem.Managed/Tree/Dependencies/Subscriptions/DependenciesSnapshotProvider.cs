@@ -32,8 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         public event EventHandler<SnapshotProviderUnloadingEventArgs>? SnapshotProviderUnloading;
 
         private readonly SemaphoreSlim _contextUpdateGate = new SemaphoreSlim(initialCount: 1);
-        private readonly object _subscribersLock = new object();
-        private readonly object _linksLock = new object();
+        private readonly object _lock = new object();
 
         private readonly SnapshotUpdater _snapshot;
 
@@ -43,14 +42,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         private readonly IUnconfiguredProjectTasksService _tasksService;
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
         private readonly IActiveProjectConfigurationRefreshService _activeProjectConfigurationRefreshService;
+        private readonly IAggregateDependenciesSnapshotProvider _aggregateSnapshotProvider;
 
         [ImportMany] private readonly OrderPrecedenceImportCollection<IDependencyCrossTargetSubscriber> _dependencySubscribers;
         [ImportMany] private readonly OrderPrecedenceImportCollection<IProjectDependenciesSubTreeProvider> _subTreeProviders;
         [ImportMany] private readonly OrderPrecedenceImportCollection<IDependenciesSnapshotFilter> _snapshotFilters;
 
+        /// <summary>
+        /// Disposable items to be disposed when this provider is no longer in use.
+        /// </summary>
+        private readonly DisposableBag _disposables;
+
+        /// <summary>
+        /// Disposable items related to the current subscriptions. This collection may be replaced
+        /// from time to time (e.g. when target frameworks change).
+        /// </summary>
         private DisposableBag _subscriptions = new DisposableBag();
+
+        /// <summary>
+        /// Lazily populated set of subscribers. May be <see cref="ImmutableArray{T}.IsDefault" /> if <see cref="Subscribers"/>
+        /// has not been called, though once initialized it will not revert to default state.
+        /// </summary>
         private ImmutableArray<IDependencyCrossTargetSubscriber> _subscribers;
+
         private int _isInitialized;
+        private bool _isDisposed;
 
         /// <summary>
         ///     Current <see cref="AggregateCrossTargetProjectContext"/>, which is an immutable map of
@@ -91,6 +107,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
             _activeProjectConfigurationRefreshService = activeProjectConfigurationRefreshService;
             _targetFrameworkProvider = targetFrameworkProvider;
+            _aggregateSnapshotProvider = aggregateSnapshotProvider;
 
             _dependencySubscribers = new OrderPrecedenceImportCollection<IDependencyCrossTargetSubscriber>(
                 projectCapabilityCheckProvider: commonServices.Project);
@@ -105,7 +122,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             _snapshot = new SnapshotUpdater(commonServices, tasksService.UnloadCancellationToken);
 
-            aggregateSnapshotProvider.RegisterSnapshotProvider(this);
+            _disposables = new DisposableBag { _snapshot, _contextUpdateGate };
         }
 
         /// <inheritdoc />
@@ -120,8 +137,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             {
                 if (_subscribers.IsDefault)
                 {
-                    lock (_subscribersLock)
+                    lock (_lock)
                     {
+                        if (_isDisposed)
+                        {
+                            throw new ObjectDisposedException(nameof(DependenciesSnapshotProvider));
+                        }
+
                         if (_subscribers.IsDefault)
                         {
                             _subscribers = _dependencySubscribers.ToImmutableValueArray();
@@ -130,6 +152,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                             {
                                 subscriber.DependenciesChanged += OnSubscriberDependenciesChanged;
                             }
+
+                            _disposables.Add(new DisposableDelegate(
+                                () =>
+                                {
+                                    foreach (IDependencyCrossTargetSubscriber subscriber in _subscribers)
+                                    {
+                                        subscriber.DependenciesChanged -= OnSubscriberDependenciesChanged;
+                                    }
+                                }));
                         }
                     }
                 }
@@ -151,15 +182,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             Task AddInitialSubscriptionsAsync()
             {
-                // This host object subscribes to configured project evaluation data for its own purposes.
-                SubscribeToConfiguredProjectEvaluation(
-                    _activeConfiguredProjectSubscriptionService,
-                    OnActiveConfiguredProjectEvaluatedAsync);
+                lock (_lock)
+                {
+                    // This host object subscribes to configured project evaluation data for its own purposes.
+                    SubscribeToConfiguredProjectEvaluation(
+                        _activeConfiguredProjectSubscriptionService,
+                        OnActiveConfiguredProjectEvaluatedAsync);
 
-                // Each of the host's subscribers are initialized.
-                return Task.WhenAll(
-                    Subscribers.Select(
-                        subscriber => subscriber.InitializeSubscriberAsync(this, _activeConfiguredProjectSubscriptionService)));
+                    // Each of the host's subscribers are initialized.
+                    return Task.WhenAll(
+                        Subscribers.Select(
+                            subscriber => subscriber.InitializeSubscriberAsync(this, _activeConfiguredProjectSubscriptionService)));
+                }
             }
 
             async Task OnActiveConfiguredProjectEvaluatedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
@@ -193,56 +227,65 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         {
             await UpdateProjectContextAndSubscriptionsAsync();
 
-            _commonServices.Project.ProjectUnloading += OnUnconfiguredProjectUnloadingAsync;
-            _commonServices.Project.ProjectRenamed += OnUnconfiguredProjectRenamedAsync;
-
-            foreach (Lazy<IProjectDependenciesSubTreeProvider, IOrderPrecedenceMetadataView> provider in _subTreeProviders)
+            lock (_lock)
             {
-                provider.Value.DependenciesChanged += OnSubtreeProviderDependenciesChanged;
+                if (_isDisposed)
+                {
+                    throw new ObjectDisposedException(nameof(DependenciesSnapshotProvider));
+                }
+
+                IDisposable unregister = _aggregateSnapshotProvider.RegisterSnapshotProvider(this);
+
+                _disposables.Add(unregister);
+
+                _commonServices.Project.ProjectUnloading += OnUnconfiguredProjectUnloadingAsync;
+                _commonServices.Project.ProjectRenamed += OnUnconfiguredProjectRenamedAsync;
+
+                foreach (Lazy<IProjectDependenciesSubTreeProvider, IOrderPrecedenceMetadataView> provider in _subTreeProviders)
+                {
+                    provider.Value.DependenciesChanged += OnSubtreeProviderDependenciesChanged;
+                }
+
+                _disposables.Add(
+                    new DisposableDelegate(
+                        () =>
+                        {
+                            _commonServices.Project.ProjectUnloading -= OnUnconfiguredProjectUnloadingAsync;
+                            _commonServices.Project.ProjectRenamed -= OnUnconfiguredProjectRenamedAsync;
+
+                            foreach (Lazy<IProjectDependenciesSubTreeProvider, IOrderPrecedenceMetadataView> provider in _subTreeProviders)
+                            {
+                                provider.Value.DependenciesChanged -= OnSubtreeProviderDependenciesChanged;
+                            }
+                        }));
             }
         }
 
         /// <inheritdoc />
         protected override Task DisposeCoreAsync(bool initialized)
         {
-            _commonServices.Project.ProjectUnloading -= OnUnconfiguredProjectUnloadingAsync;
-            _commonServices.Project.ProjectRenamed -= OnUnconfiguredProjectRenamedAsync;
-
-            _contextUpdateGate.Dispose();
-            _snapshot.Dispose();
-
-            if (initialized)
-            {
-                DisposeAndReleaseSubscriptions();
-            }
+            DisposeCore();
 
             return Task.CompletedTask;
         }
 
+        private void DisposeCore()
+        {
+            lock (_lock)
+            {
+                _isDisposed = true;
+                _subscriptions.Dispose();
+                _disposables.Dispose();
+            }
+        }
+
         private Task OnUnconfiguredProjectUnloadingAsync(object sender, EventArgs args)
         {
-            _commonServices.Project.ProjectUnloading -= OnUnconfiguredProjectUnloadingAsync;
-            _commonServices.Project.ProjectRenamed -= OnUnconfiguredProjectRenamedAsync;
+            // If our project unloads, we have no more work to do. Notify listeners and clean everything up.
 
             SnapshotProviderUnloading?.Invoke(this, new SnapshotProviderUnloadingEventArgs(this));
 
-            lock (_subscribersLock)
-            {
-                if (!_subscribers.IsDefault)
-                {
-                    foreach (IDependencyCrossTargetSubscriber subscriber in _subscribers)
-                    {
-                        subscriber.DependenciesChanged -= OnSubscriberDependenciesChanged;
-                    }
-                }
-
-                _subscribers = default;
-            }
-
-            foreach (Lazy<IProjectDependenciesSubTreeProvider, IOrderPrecedenceMetadataView> provider in _subTreeProviders)
-            {
-                provider.Value.DependenciesChanged -= OnSubtreeProviderDependenciesChanged;
-            }
+            DisposeCore();
 
             return Task.CompletedTask;
         }
@@ -387,11 +430,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             if (newProjectContext != null)
             {
-                // Dispose existing subscriptions.
-                DisposeAndReleaseSubscriptions();
+                // The context changed, so update a few things.
+                await _tasksService.LoadedProjectAsync(() =>
+                {
+                    lock (_lock)
+                    {
+                        if (_isDisposed)
+                        {
+                            throw new ObjectDisposedException(nameof(DependenciesSnapshotProvider));
+                        }
 
-                // Add subscriptions for the configured projects in the new project context.
-                await AddSubscriptionsAsync();
+                        // Dispose existing subscriptions.
+                        _subscriptions.Dispose();
+                        _subscriptions = new DisposableBag();
+
+                        // Add subscriptions for the configured projects in the new project context.
+                        AddSubscriptions();
+                    }
+
+                    return Task.CompletedTask;
+                });
             }
 
             return;
@@ -485,27 +543,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 }
             }
 
-            Task AddSubscriptionsAsync()
+            void AddSubscriptions()
             {
-                return _tasksService.LoadedProjectAsync(() =>
+                foreach (ConfiguredProject configuredProject in newProjectContext.InnerConfiguredProjects)
                 {
-                    lock (_linksLock)
+                    SubscribeToConfiguredProjectEvaluation(
+                        configuredProject.Services.ProjectSubscription,
+                        OnConfiguredProjectEvaluatedAsync);
+                }
+
+                foreach (IDependencyCrossTargetSubscriber subscriber in Subscribers)
+                {
+                    subscriber.AddSubscriptions(newProjectContext);
+                }
+
+                _subscriptions.Add(new DisposableDelegate(
+                    () =>
                     {
-                        foreach (ConfiguredProject configuredProject in newProjectContext.InnerConfiguredProjects)
+                        foreach (IDependencyCrossTargetSubscriber subscriber in _subscribers)
                         {
-                            SubscribeToConfiguredProjectEvaluation(
-                                configuredProject.Services.ProjectSubscription,
-                                OnConfiguredProjectEvaluatedAsync);
+                            subscriber.ReleaseSubscriptions();
                         }
-
-                        foreach (IDependencyCrossTargetSubscriber subscriber in Subscribers)
-                        {
-                            subscriber.AddSubscriptions(newProjectContext);
-                        }
-                    }
-
-                    return Task.CompletedTask;
-                });
+                    }));
             }
         }
 
@@ -517,23 +576,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 subscriptionService.ProjectRuleSource.SourceBlock.LinkToAsyncAction(
                     action,
                     ruleNames: ConfigurationGeneral.SchemaName));
-        }
-
-        private void DisposeAndReleaseSubscriptions()
-        {
-            lock (_linksLock)
-            {
-                if (!_subscribers.IsDefault)
-                {
-                    foreach (IDependencyCrossTargetSubscriber subscriber in _subscribers)
-                    {
-                        subscriber.ReleaseSubscriptions();
-                    }
-                }
-
-                _subscriptions.Dispose();
-                _subscriptions = new DisposableBag();
-            }
         }
     }
 }
