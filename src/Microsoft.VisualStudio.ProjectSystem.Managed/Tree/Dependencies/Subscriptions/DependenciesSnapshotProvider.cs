@@ -119,8 +119,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             aggregateSnapshotProvider.RegisterSnapshotProvider(this);
         }
 
+        /// <inheritdoc />
         public IDependenciesSnapshot CurrentSnapshot => _currentSnapshot;
 
+        /// <inheritdoc />
         IReceivableSourceBlock<SnapshotChangedEventArgs> IDependenciesSnapshotProvider.SnapshotChangedSource => _snapshotChangedSource;
 
         private ImmutableArray<IDependencyCrossTargetSubscriber> Subscribers
@@ -197,6 +199,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             }
         }
 
+        /// <inheritdoc />
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
             await UpdateProjectContextAndSubscriptionsAsync();
@@ -210,6 +213,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             }
         }
 
+        /// <inheritdoc />
         protected override Task DisposeCoreAsync(bool initialized)
         {
             _commonServices.Project.ProjectUnloading -= OnUnconfiguredProjectUnloadingAsync;
@@ -338,6 +342,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             }
         }
 
+        /// <inheritdoc />
         public async Task<AggregateCrossTargetProjectContext?> GetCurrentAggregateProjectContextAsync()
         {
             if (IsDisposing || IsDisposed)
@@ -350,6 +355,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             return _currentAggregateProjectContext;
         }
 
+        /// <inheritdoc />
         public ConfiguredProject? GetConfiguredProject(ITargetFramework target)
         {
             return _currentAggregateProjectContext!.GetInnerConfiguredProject(target);
