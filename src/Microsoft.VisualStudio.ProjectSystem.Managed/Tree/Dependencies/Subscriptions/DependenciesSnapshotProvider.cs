@@ -48,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         [ImportMany] private readonly OrderPrecedenceImportCollection<IProjectDependenciesSubTreeProvider> _subTreeProviders;
         [ImportMany] private readonly OrderPrecedenceImportCollection<IDependenciesSnapshotFilter> _snapshotFilters;
 
-        private DisposableBag _evaluationSubscriptionLinks = new DisposableBag();
+        private DisposableBag _subscriptions = new DisposableBag();
         private ImmutableArray<IDependencyCrossTargetSubscriber> _subscribers;
         private int _isInitialized;
 
@@ -513,7 +513,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             IProjectSubscriptionService subscriptionService,
             Func<IProjectVersionedValue<IProjectSubscriptionUpdate>, Task> action)
         {
-            _evaluationSubscriptionLinks.Add(
+            _subscriptions.Add(
                 subscriptionService.ProjectRuleSource.SourceBlock.LinkToAsyncAction(
                     action,
                     ruleNames: ConfigurationGeneral.SchemaName));
@@ -531,8 +531,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     }
                 }
 
-                _evaluationSubscriptionLinks.Dispose();
-                _evaluationSubscriptionLinks = new DisposableBag();
+                _subscriptions.Dispose();
+                _subscriptions = new DisposableBag();
             }
         }
     }
