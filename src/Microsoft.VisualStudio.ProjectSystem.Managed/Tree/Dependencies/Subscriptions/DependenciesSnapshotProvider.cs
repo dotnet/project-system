@@ -427,32 +427,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         private async Task UpdateProjectContextAndSubscriptionsAsync()
         {
             // Prevent concurrent project context updates.
-            AggregateCrossTargetProjectContext newProjectContext
-                = await _contextUpdateGate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, TryUpdateCurrentAggregateProjectContextAsync);
-
-            if (newProjectContext != null)
-            {
-                // The context changed, so update a few things.
-                await _tasksService.LoadedProjectAsync(() =>
+            await _contextUpdateGate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, async () =>
                 {
-                    lock (_lock)
+                    AggregateCrossTargetProjectContext? newProjectContext = await TryUpdateCurrentAggregateProjectContextAsync();
+
+                    if (newProjectContext != null)
                     {
-                        if (_isDisposed)
+                        _snapshot.TryUpdate(previousSnapshot => previousSnapshot.SetTargets(newProjectContext.TargetFrameworks, newProjectContext.ActiveTargetFramework));
+
+                        // The context changed, so update a few things.
+                        await _tasksService.LoadedProjectAsync(() =>
                         {
-                            throw new ObjectDisposedException(nameof(DependenciesSnapshotProvider));
-                        }
+                            lock (_lock)
+                            {
+                                if (_isDisposed)
+                                {
+                                    throw new ObjectDisposedException(nameof(DependenciesSnapshotProvider));
+                                }
 
-                        // Dispose existing subscriptions.
-                        _subscriptions.Dispose();
-                        _subscriptions = new DisposableBag();
+                                // Dispose existing subscriptions.
+                                _subscriptions.Dispose();
+                                _subscriptions = new DisposableBag();
 
-                        // Add subscriptions for the configured projects in the new project context.
-                        AddSubscriptions();
+                                // Add subscriptions for the configured projects in the new project context.
+                                AddSubscriptions(newProjectContext);
+                            }
+
+                            return Task.CompletedTask;
+                        });
                     }
-
-                    return Task.CompletedTask;
                 });
-            }
 
             return;
 
@@ -501,8 +505,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
                 _currentAggregateProjectContext = newContext;
 
-                _snapshot.TryUpdate(previousSnapshot => previousSnapshot.SetTargets(newContext.TargetFrameworks, newContext.ActiveTargetFramework));
-
                 return newContext;
 
                 bool HasMatchingTargetFrameworks(
@@ -545,7 +547,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 }
             }
 
-            void AddSubscriptions()
+            void AddSubscriptions(AggregateCrossTargetProjectContext newProjectContext)
             {
                 foreach (ConfiguredProject configuredProject in newProjectContext.InnerConfiguredProjects)
                 {
