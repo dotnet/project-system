@@ -61,3 +61,21 @@ jobs:
     pool: 
       name: NetCorePublic-Pool
       queue: BuildPool.Windows.Amd64.VS2019.Pre.ES.Open
+
+- job: RichNav
+  pool:
+    name: NetCorePublic-Pool
+    queue: BuildPool.Windows.10.Amd64.VS2019.Pre.Open
+  variables:
+    _configuration: Debug
+  timeoutInMinutes: 240
+  steps:
+    - script: $(Build.SourcesDirectory)\build\script\CIRestore.cmd -configuration $(_configuration) -prepareMachine
+    - task: RichCodeNavIndexer@0
+      continueOnError: true
+      inputs:
+        serviceConnection: 'rich-nav'
+        nugetServiceConnection: 'rich-nav-nuget'
+        githubServiceConnection: 'dotnet'
+        languages: 'csharp'
+        serviceEndpoint: 'https://prod.richnav.vsengsaas.visualstudio.com'
