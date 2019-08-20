@@ -84,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             Assumes.NotNull(Dimensions);
             Assumes.NotNull(Name);
 
-            return new ActualModel(Dimensions!, Name!);
+            return new ActualModel(Dimensions, Name);
         }
 
         private class ActualModel : ProjectConfiguration

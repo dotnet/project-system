@@ -147,7 +147,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             foreach (ExportLifetimeContext<IWorkspaceContextHandler> handler in _handlers)
             {
-                handler.Value.Initialize(_context!);
+                handler.Value.Initialize(_context);
             }
         }
 
@@ -162,7 +162,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             bool succeeded = snapshot.IsEvaluationSucceeded();
 
-            if (_context!.LastDesignTimeBuildSucceeded != succeeded)
+            if (_context.LastDesignTimeBuildSucceeded != succeeded)
             {
                 _logger.WriteLine(succeeded ? "Last design-time build succeeded, turning semantic errors back on." : "Last design-time build failed, turning semantic errors off.");
                 _context.LastDesignTimeBuildSucceeded = succeeded;
@@ -176,7 +176,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             // We just pass all options to Roslyn
             string commandlineArguments = string.Join(" ", snapshot.Items.Keys);
 
-            _context!.SetOptions(commandlineArguments);
+            _context.SetOptions(commandlineArguments);
         }
 
         private Task ProcessCommandLineAsync(IComparable version, IProjectChangeDiff differences, bool isActiveContext, CancellationToken cancellationToken)

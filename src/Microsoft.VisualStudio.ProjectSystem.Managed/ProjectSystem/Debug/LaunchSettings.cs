@@ -30,10 +30,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         public LaunchSettings(LaunchSettingsData settingsData, string? activeProfile = null)
         {
-            Requires.NotNull(settingsData.Profiles, nameof(settingsData.Profiles));
+            Requires.NotNull(settingsData.Profiles!, nameof(settingsData.Profiles));
 
             Profiles = ImmutableList<ILaunchProfile>.Empty;
-            foreach (LaunchProfileData profile in settingsData.Profiles!)
+            foreach (LaunchProfileData profile in settingsData.Profiles)
             {
                 Profiles = Profiles.Add(new LaunchProfile(profile));
             }

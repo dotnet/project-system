@@ -122,7 +122,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
 
                 Assumes.NotNull(importRemoved);
 
-                OnImportRemoved(importRemoved!);
+                OnImportRemoved(importRemoved);
             }
             else if (index is string)
             {

@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
             _ignoreEvents = true;
             IsDirty = false;
-            ViewModel!.PropertyChanged -= ViewModel_PropertyChanged;
+            ViewModel.PropertyChanged -= ViewModel_PropertyChanged;
 
             // Let the view model know we are done.
             ViewModel.ViewModelDetached();
@@ -84,14 +84,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             Assumes.NotNull(ViewModel);
 
-            return ViewModel!.Save();
+            return ViewModel.Save();
         }
 
         private void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             Assumes.NotNull(ViewModel);
 
-            if (!_ignoreEvents && !ViewModel!.IgnoreEvents)
+            if (!_ignoreEvents && !ViewModel.IgnoreEvents)
             {
                 IsDirty = true;
             }
