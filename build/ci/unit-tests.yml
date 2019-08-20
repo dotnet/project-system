@@ -62,12 +62,6 @@ jobs:
       name: NetCorePublic-Pool
       queue: BuildPool.Windows.Amd64.VS2019.Pre.ES.Open
 
-- task: UseDotNet@2
-  displayName: 'Use .NET Core sdk'
-  inputs:
-    packageType: sdk
-    version: 2.1.503
-
 - job: RichNav
   pool:
     name: NetCorePublic-Pool
@@ -77,6 +71,11 @@ jobs:
   timeoutInMinutes: 240
   steps:
     - script: $(Build.SourcesDirectory)\build.cmd /no-build /no-test /no-deploy
+    - task: UseDotNet@2
+        displayName: 'Use .NET Core sdk'
+        inputs:
+            packageType: sdk
+            version: 2.1.503
     - task: RichCodeNavIndexer@0
       continueOnError: true
       inputs:
