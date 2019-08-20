@@ -7,13 +7,11 @@
                                     
   Optional parameters:              
     CIBuild                         "true" when building on CI server
-    Restore                         "true" to restore toolset and solution
     Build                           "true" to build solution
     Rebuild                         "true" to rebuild solution
     Deploy                          "true" to deploy assets (e.g. VSIXes)
     Test                            "true" to run tests
     IntegrationTest                 "true" to run integration tests
-    Pack                            "true" to build NuGet packages and VS insertion manifests
     Sign                            "true" to sign built binaries
     SignType                        "real" to send binaries to signing service, "test" to only validate signing configuration.
   -->
@@ -25,6 +23,7 @@
   <PropertyGroup>
     <SolutionPath>$(RepoRoot)ProjectSystem.sln</SolutionPath>
     <ToolsetPath>$(NuGetPackageRoot)RoslynTools.RepoToolset\$(RoslynToolsRepoToolsetVersion)\tools\</ToolsetPath>
+    <BuildOrRebuild Condition="'$(Build)' == 'true' or '$(Rebuild)' == 'true'">true</BuildOrRebuild>
   </PropertyGroup>
 
   <ItemGroup>
@@ -39,9 +38,7 @@
     <SolutionRestoreAndBuildProperty Include="__DeployProjectOutput=$(Deploy)" Condition="'$(Deploy)' != ''"/>
   </ItemGroup>
 
-  <Target 
-    Name="Restore" 
-    Condition="'$(Restore)' == 'true'">
+  <Target Name="Restore">
 
     <!--
       Run solution restore separately from the other targets, in a different build phase.
@@ -66,7 +63,7 @@
       <SolutionBuildTarget Include="Build" Condition="'$(Build)' == 'true' and '$(Rebuild)' != 'true'" />
       <SolutionBuildTarget Include="Test" Condition="'$(Test)' == 'true'" />
       <SolutionBuildTarget Include="IntegrationTest" Condition="'$(IntegrationTest)' == 'true'" />
-      <SolutionBuildTarget Include="Pack" Condition="'$(Pack)' == 'true'" />
+      <SolutionBuildTarget Include="Pack" Condition="'$(BuildOrRebuild)' == 'true'" />
     </ItemGroup>
 
     <MSBuild 
@@ -79,7 +76,9 @@
   </Target>
 
   <!-- Generate insertion assets -->
-  <Target Name="GenerateDependentAssemblyVersionsFile">
+  <Target 
+    Name="GenerateDependentAssemblyVersionsFile"
+    Condition="'$(BuildOrRebuild)' == 'true'">
 
     <MSBuild
       Projects="GenerateDependentAssemblyVersionFile.proj"
@@ -106,7 +105,7 @@
 
   <Target
     Name="GenerateVSManifest"
-    Condition="'$(Pack)' == 'true'">
+    Condition="'$(BuildOrRebuild)' == 'true'">
 
     <!-- Because multiple projects can contribute to a single insertion component we package them in a separate phase.
          Also due to insertion manifests containing hashes of references VSIXes, so we need to run this after signing  -->
