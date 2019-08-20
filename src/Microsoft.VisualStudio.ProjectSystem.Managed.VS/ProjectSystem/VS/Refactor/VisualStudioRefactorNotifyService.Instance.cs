@@ -82,11 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
             private async Task<Project?> TryGetProjectFromPathAsync(string projectPath)
             {
                 DTE? dte = await _dte.GetValueAsync();
-
-                if (dte is null)
-                {
-                    return null;
-                }
+                Assumes.NotNull(dte);
 
                 foreach (Project project in dte.Solution.Projects)
                 {
