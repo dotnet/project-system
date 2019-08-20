@@ -30,14 +30,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         public event EventHandler<ProjectRenamedEventArgs>? SnapshotRenamed;
         public event EventHandler<SnapshotProviderUnloadingEventArgs>? SnapshotProviderUnloading;
 
-#pragma warning disable IDE0069 // Field is not disposed
         private readonly SemaphoreSlim _contextUpdateGate = new SemaphoreSlim(initialCount: 1);
-#pragma warning restore IDE0069 // Field is not disposed
         private readonly object _lock = new object();
 
-#pragma warning disable IDE0069 // Field is not disposed
         private readonly SnapshotUpdater _snapshot;
-#pragma warning restore IDE0069 // Field is not disposed
         private readonly ContextTracker _context;
 
         private readonly ITargetFrameworkProvider _targetFrameworkProvider;
