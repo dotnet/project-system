@@ -51,8 +51,6 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <CodeAnalysisRuleSet Condition="'$(IsTestProject)' == 'true'">$(RepoRoot)build\ruleset\Test.ruleset</CodeAnalysisRuleSet>
-
     <TestArchitectures>x86</TestArchitectures>
 
     <!-- Use IBC optimization data if available -->
