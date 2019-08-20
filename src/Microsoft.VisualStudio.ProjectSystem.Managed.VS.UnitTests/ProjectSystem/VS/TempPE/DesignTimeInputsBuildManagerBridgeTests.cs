@@ -14,58 +14,97 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 {
-    public class DesignTimeInputsBuildManagerBridgeTests
+    public class DesignTimeInputsBuildManagerBridgeTests : IDisposable
     {
+        private readonly TestBuildManager _buildManager;
+        private readonly TestDesignTimeInputsBuildManagerBridge _bridge;
+        private string? _lastCompiledFile;
+        private string? _lastOutputPath;
+        private ImmutableHashSet<string>? _lastSharedInputs;
+
         [Fact]
         public async Task ChangedFile_FiresTempPEDirty()
         {
-            var mgr = new TestBuildManager();
-            using var bridge = new TestDesignTimeInputsBuildManagerBridge(mgr);
-
-            await bridge.TestProcessAsync(new DesignTimeInputsDelta(
+            await _bridge.TestProcessAsync(new DesignTimeInputsDelta(
                 ImmutableHashSet.CreateRange(new string[] { "Resources1.Designer.cs" }),
                 ImmutableHashSet<string>.Empty,
                 new DesignTimeInputFileChange[] { new DesignTimeInputFileChange("Resources1.Designer.cs", false) },
-                ""));
+                "C:\\TempPE"));
 
             // One file should have been added
-            Assert.Single(mgr.DirtyItems);
-            Assert.Equal("Resources1.Designer.cs", mgr.DirtyItems.First());
-            Assert.Empty(mgr.DeletedItems);
+            Assert.Single(_buildManager.DirtyItems);
+            Assert.Equal("Resources1.Designer.cs", _buildManager.DirtyItems.First());
+            Assert.Empty(_buildManager.DeletedItems);
         }
 
         [Fact]
         public async Task RemovedFile_FiresTempPEDeleted()
         {
-            var mgr = new TestBuildManager();
-            using var bridge = new TestDesignTimeInputsBuildManagerBridge(mgr);
-
-            await bridge.TestProcessAsync(new DesignTimeInputsDelta(
+            await _bridge.TestProcessAsync(new DesignTimeInputsDelta(
                 ImmutableHashSet.CreateRange(new string[] { "Resources1.Designer.cs" }),
                 ImmutableHashSet<string>.Empty,
                 Array.Empty<DesignTimeInputFileChange>(),
                 ""));
 
-            await bridge.TestProcessAsync(new DesignTimeInputsDelta(
+            await _bridge.TestProcessAsync(new DesignTimeInputsDelta(
                ImmutableHashSet<string>.Empty,
                ImmutableHashSet<string>.Empty,
                Array.Empty<DesignTimeInputFileChange>(),
                ""));
 
             // One file should have been added
-            Assert.Empty(mgr.DirtyItems);
-            Assert.Single(mgr.DeletedItems);
-            Assert.Equal("Resources1.Designer.cs", mgr.DeletedItems.First());
+            Assert.Empty(_buildManager.DirtyItems);
+            Assert.Single(_buildManager.DeletedItems);
+            Assert.Equal("Resources1.Designer.cs", _buildManager.DeletedItems.First());
+        }
+
+        [Fact]
+        public async Task GetDesignTimeInputXmlAsync_HasCorrectArguments()
+        {
+            await _bridge.TestProcessAsync(new DesignTimeInputsDelta(
+                ImmutableHashSet.CreateRange(new string[] { "Resources1.Designer.cs" }),
+                ImmutableHashSet<string>.Empty,
+                new DesignTimeInputFileChange[] { new DesignTimeInputFileChange("Resources1.Designer.cs", false) },
+                "C:\\TempPE"));
+
+            await _bridge.GetDesignTimeInputXmlAsync("Resources1.Designer.cs");
+
+            Assert.Equal("Resources1.Designer.cs", _lastCompiledFile);
+            Assert.Equal("C:\\TempPE", _lastOutputPath);
+            Assert.Equal(ImmutableHashSet<string>.Empty, _lastSharedInputs);
+        }
+
+        public DesignTimeInputsBuildManagerBridgeTests()
+        {
+            var threadingService = IProjectThreadingServiceFactory.Create();
+
+            var changeTracker = Mock.Of<IDesignTimeInputsChangeTracker>();
+
+            var compilerMock = new Mock<IDesignTimeInputsCompiler>();
+            compilerMock.Setup(c => c.GetDesignTimeInputXmlAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ImmutableHashSet<string>>()))
+                .Callback<string, string, ImmutableHashSet<string>>((file, outputPath, sharedInputs) =>
+                {
+                    _lastCompiledFile = file;
+                    _lastOutputPath = outputPath;
+                    _lastSharedInputs = sharedInputs;
+                });
+
+
+            _buildManager = new TestBuildManager();
+
+            _bridge = new TestDesignTimeInputsBuildManagerBridge(threadingService, changeTracker, compilerMock.Object, _buildManager);
+            _bridge.SkipInitialization = true;
+        }
+
+        public void Dispose()
+        {
+            ((IDisposable)_bridge).Dispose();
         }
 
         internal class TestDesignTimeInputsBuildManagerBridge : DesignTimeInputsBuildManagerBridge
         {
-            public TestDesignTimeInputsBuildManagerBridge(VSBuildManager buildManager)
-                : base(IProjectThreadingServiceFactory.Create(),
-                       IUnconfiguredProjectCommonServicesFactory.Create(threadingService: IProjectThreadingServiceFactory.Create()),
-                       Mock.Of<IDesignTimeInputsChangeTracker>(),
-                       Mock.Of<IDesignTimeInputsCompiler>(),
-                       buildManager)
+            public TestDesignTimeInputsBuildManagerBridge(IProjectThreadingService threadingService, IDesignTimeInputsChangeTracker designTimeInputsChangeTracker, IDesignTimeInputsCompiler designTimeInputsCompiler, VSBuildManager buildManager)
+                : base(threadingService, designTimeInputsChangeTracker, designTimeInputsCompiler, buildManager)
             {
             }
 

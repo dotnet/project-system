@@ -16,20 +16,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
     internal class DesignTimeInputsBuildManagerBridge : UnconfiguredProjectHostBridge<IProjectVersionedValue<DesignTimeInputsDelta>, IProjectVersionedValue<DesignTimeInputsDelta>, IProjectVersionedValue<DesignTimeInputsDelta>>, IDesignTimeInputsBuildManagerBridge
     {
-        private readonly IUnconfiguredProjectCommonServices _unconfiguredProjectServices;
+        private readonly IProjectThreadingService _threadingService;
         private readonly IDesignTimeInputsChangeTracker _designTimeInputsChangeTracker;
         private readonly IDesignTimeInputsCompiler _designTimeInputsCompiler;
         private readonly VSBuildManager _buildManager;
 
+        /// <summary>
+        /// For unit testing purposes, to avoid having to mock all of CPS
+        /// </summary>
+        internal bool SkipInitialization { get; set; }
+
         [ImportingConstructor]
         public DesignTimeInputsBuildManagerBridge(IProjectThreadingService threadingService,
-                                                  IUnconfiguredProjectCommonServices unconfiguredProjectServices,
                                                   IDesignTimeInputsChangeTracker designTimeInputsChangeTracker,
                                                   IDesignTimeInputsCompiler designTimeInputsCompiler,
                                                   VSBuildManager buildManager)
              : base(threadingService.JoinableTaskContext)
         {
-            _unconfiguredProjectServices = unconfiguredProjectServices;
+            _threadingService = threadingService;
             _designTimeInputsChangeTracker = designTimeInputsChangeTracker;
             _designTimeInputsCompiler = designTimeInputsCompiler;
             _buildManager = buildManager;
@@ -41,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         public string[] GetTempPEMonikers()
         {
             // Not using use the ThreadingService property because unit tests
-            _unconfiguredProjectServices.ThreadingService.VerifyOnUIThread();
+            _threadingService.VerifyOnUIThread();
 
             Initialize();
 
@@ -54,9 +58,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         public async Task<string> GetDesignTimeInputXmlAsync(string file)
         {
             // Not using use the ThreadingService property because unit tests
-            await _unconfiguredProjectServices.ThreadingService.SwitchToUIThread();
+            await _threadingService.SwitchToUIThread();
 
-            await InitializeAsync();
+            if (!SkipInitialization)
+            {
+                await InitializeAsync();
+            }
 
             DesignTimeInputsDelta value = AppliedValue.Value;
 
