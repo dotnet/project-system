@@ -1,0 +1,46 @@
+﻿<Project>
+
+  <Target Name="ExtractWindowsPdb" BeforeTargets="Test">
+
+    <PropertyGroup>
+      <_RunOnCore>false</_RunOnCore>
+      <_RunOnCore Condition="$(TargetFramework.StartsWith('netcoreapp'))">true</_RunOnCore>
+      <_UseOpenCover>$(UseOpenCover)</_UseOpenCover>
+      <_UseOpenCover Condition="'$(_RunOnCore)' == 'true'">false</_UseOpenCover>
+
+      <_TargetFileNameNoExt>$([System.IO.Path]::GetFileNameWithoutExtension('$(TargetFileName)'))</_TargetFileNameNoExt>
+      <_TargetExtractedPdb>$(TargetDir)$(_TargetFileNameNoExt).ppdb</_TargetExtractedPdb>
+      <_SkipPdbConversion>false</_SkipPdbConversion>
+      <_SkipPdbConversion Condition="'$(_UseOpenCover)' != 'true'">true</_SkipPdbConversion>
+      <_SkipPdbConversion Condition="Exists($(_TargetExtractedPdb))">true</_SkipPdbConversion>
+    </PropertyGroup>
+
+    <!-- Extract PDBs from binaries -->
+    <ItemGroup Condition="'$(_SkipPdbConversion)' != 'true'">
+      <_BinariesInTestDirectory Include="$(TargetDir)*.dll" />
+      <_BinariesInTestDirectory Update="@(_BinariesInTestDirectory)" IntermediatePdb="%(RootDir)%(Directory)%(Filename).ppdb" />
+    </ItemGroup>
+
+    <PropertyGroup Condition="'$(_SkipPdbConversion)' != 'true'">
+      <_PdbConverterPath>$(NuGetPackageRoot)microsoft.diasymreader.pdb2pdb\$(MicrosoftDiaSymReaderPdb2PdbVersion)\tools\Pdb2Pdb.exe</_PdbConverterPath>
+    </PropertyGroup>
+
+    <Exec Command="&quot;$(_PdbConverterPath)&quot; &quot;@(_BinariesInTestDirectory)&quot; /out &quot;%(IntermediatePdb)&quot; /extract"
+          Condition="'$(_SkipPdbConversion)' != 'true' AND !Exists(%(IntermediatePdb))"
+          ContinueOnError="true"
+          IgnoreExitCode="true" />
+
+    <!-- Convert portable PDBs to Windows PDBs for OpenCover -->
+    <ItemGroup Condition="'$(_SkipPdbConversion)' != 'true'">
+      <_PortablePdb Include="$(TargetDir)*.ppdb" />
+      <_PortablePdb Update="@(_PortablePdb)" Binary="%(RootDir)%(Directory)%(Filename).dll" OutputPdb="%(RootDir)%(Directory)%(Filename).pdb" />
+    </ItemGroup>
+
+    <Exec Command="&quot;$(_PdbConverterPath)&quot; &quot;%(Binary)&quot; /pdb &quot;@(_PortablePdb)&quot; /out &quot;%(OutputPdb)&quot;"
+          Condition="'$(_SkipPdbConversion)' != 'true' AND !Exists(%(OutputPdb))"
+          ContinueOnError="true"
+          IgnoreExitCode="true" />
+
+  </Target>
+
+</Project>
