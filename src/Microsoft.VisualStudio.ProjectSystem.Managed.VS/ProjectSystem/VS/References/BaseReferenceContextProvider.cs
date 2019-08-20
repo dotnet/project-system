@@ -85,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         public virtual Task<ExportLifetimeContext<object>> CreateProviderContextAsync()
         {
             Assumes.NotNull(NextHandler);
-            return NextHandler!.CreateProviderContextAsync();
+            return NextHandler.CreateProviderContextAsync();
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         public virtual Task ChangeReferencesAsync(uint operation, object changedContext)
         {
             Assumes.NotNull(NextHandler);
-            return NextHandler!.ChangeReferencesAsync(operation, changedContext);
+            return NextHandler.ChangeReferencesAsync(operation, changedContext);
         }
 
         #endregion
