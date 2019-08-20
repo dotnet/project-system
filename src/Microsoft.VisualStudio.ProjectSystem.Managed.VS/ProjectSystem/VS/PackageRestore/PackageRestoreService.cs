@@ -63,6 +63,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
         protected override PackageRestoreServiceInstance CreateInstance()
         {
+            Assumes.NotNull(_broadcastBlock);
+
             return new PackageRestoreServiceInstance(
                 _project,
                 _dataSource,
@@ -71,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 _solutionRestoreService,
                 _fileSystem,
                 _logger,
-                _broadcastBlock!);
+                _broadcastBlock);
         }
 
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)

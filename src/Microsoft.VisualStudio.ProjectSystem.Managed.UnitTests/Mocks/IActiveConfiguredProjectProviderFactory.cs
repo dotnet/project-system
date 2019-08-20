@@ -18,14 +18,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         public static IActiveConfiguredProjectProvider Create(
-            Func<ProjectConfiguration>? getActiveProjectConfiguration = null,
-            Func<ConfiguredProject>? getActiveConfiguredProject = null)
+            Func<ProjectConfiguration?>? getActiveProjectConfiguration = null,
+            Func<ConfiguredProject?>? getActiveConfiguredProject = null)
         {
             var mock = new Mock<IActiveConfiguredProjectProvider>();
-            mock.SetupGet(p => p.ActiveProjectConfiguration)
+            mock.SetupGet<ProjectConfiguration?>(p => p.ActiveProjectConfiguration)
                 .Returns(getActiveProjectConfiguration);
 
-            mock.SetupGet(p => p.ActiveConfiguredProject)
+            mock.SetupGet<ConfiguredProject?>(p => p.ActiveConfiguredProject)
                 .Returns(getActiveConfiguredProject);
 
             return mock.Object;

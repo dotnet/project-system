@@ -104,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             ImmutableHashSet<string> previousIncludes = await OrderingHelper.GetAllEvaluatedIncludes(_configuredProject, _accessor);
             PasteItemsResult result = await PasteHandler.PasteItemsAsync(items, effect);
 
-            await OrderingHelper.Move(_configuredProject, _accessor, previousIncludes, _dropTarget!, OrderingMoveAction.MoveToTop);
+            await OrderingHelper.Move(_configuredProject, _accessor, previousIncludes, _dropTarget, OrderingMoveAction.MoveToTop);
 
             return result;
         }

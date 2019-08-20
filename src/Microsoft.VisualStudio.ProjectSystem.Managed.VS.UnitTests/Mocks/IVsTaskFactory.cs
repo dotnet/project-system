@@ -12,8 +12,8 @@ namespace Microsoft.VisualStudio.Shell.Interop
 
             mock.Setup(t => t.IsCompleted)
                 .Returns(true);
-            mock.Setup(t => t.GetResult())
-                .Returns(result!);
+            mock.Setup<object?>(t => t.GetResult())
+                .Returns(result);
 
             return mock.Object;
         }

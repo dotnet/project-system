@@ -39,8 +39,6 @@
       <CoreBuildProperties>
         UseOpenCover=$(IsCodeCoverageBuild);
         Configuration=$(Configuration);
-        Restore=true;
-        Pack=true;
         CIBuild=$(CIBuild);
         EnableIbc=$(EnableIbc);
         Build=$(Build);
