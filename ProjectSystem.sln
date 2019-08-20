@@ -36,10 +36,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{DD7EF107-AAD4-4C43-8A58-0DC1BC614ADE}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
-		.vsts-ci.yml = .vsts-ci.yml
-		build\azure-pipelines-integration.yml = build\azure-pipelines-integration.yml
-		build\azure-pipelines.yml = build\azure-pipelines.yml
-		build\SignToolData.json = build\SignToolData.json
+		build\ci\official.yml = build\ci\official.yml
+		build\ci\integration-tests.yml = build\ci\integration-tests.yml
+		build\ci\unit-tests.yml = build\ci\unit-tests.yml
+		build\ci\unit-tests-template.yml = build\ci\unit-tests-template.yml
+		build\ci\SignToolData.json = build\ci\SignToolData.json
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ruleset", "ruleset", "{E09AD054-22FC-4E70-8889-0F3DCF1267C7}"
