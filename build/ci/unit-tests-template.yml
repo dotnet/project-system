@@ -5,6 +5,8 @@ jobs:
   timeoutInMinutes: 20
   steps:
     - script: $(Build.SourcesDirectory)\build.cmd /build /test /ci /sign /diagnostic /clearnugetcache /no-deploy /no-integration /no-ibc /configuration ${{ parameters.configuration }}
+      displayName: Build ProjectSystem.sln
+
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.SourcesDirectory)\artifacts\${{ parameters.configuration }}\log'
