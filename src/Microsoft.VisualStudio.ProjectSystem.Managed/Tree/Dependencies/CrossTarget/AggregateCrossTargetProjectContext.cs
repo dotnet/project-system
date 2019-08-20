@@ -52,8 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         public ConfiguredProject? GetInnerConfiguredProject(ITargetFramework target)
         {
-            // TODO remove ! when https://github.com/dotnet/roslyn/issues/36018 is fixed
-            return _configuredProjectByTargetFramework.FirstOrDefault((x, t) => t.Equals(x.Key!), target).Value;
+            return _configuredProjectByTargetFramework.FirstOrDefault((x, t) => t.Equals(x.Key), target).Value;
         }
     }
 }
