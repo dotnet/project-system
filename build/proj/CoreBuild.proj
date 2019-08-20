@@ -24,6 +24,7 @@
   <PropertyGroup>
     <SolutionPath>$(RepoRoot)ProjectSystem.sln</SolutionPath>
     <ToolsetPath>$(NuGetPackageRoot)RoslynTools.RepoToolset\$(RoslynToolsRepoToolsetVersion)\tools\</ToolsetPath>
+    <BuildOrRebuild Condition="'$(Build)' == 'true' or '$(Rebuild)' == 'true'">true</BuildOrRebuild>
   </PropertyGroup>
 
   <ItemGroup>
@@ -77,7 +78,9 @@
   </Target>
 
   <!-- Generate insertion assets -->
-  <Target Name="GenerateDependentAssemblyVersionsFile">
+  <Target 
+    Name="GenerateDependentAssemblyVersionsFile"
+    Condition="'$(BuildOrRebuild)' == 'true'">
 
     <MSBuild
       Projects="GenerateDependentAssemblyVersionFile.proj"
@@ -104,7 +107,7 @@
 
   <Target
     Name="GenerateVSManifest"
-    Condition="'$(Build)' == 'true' or '$(Rebuild)' == 'true'">
+    Condition="'$(BuildOrRebuild)' == 'true'">
 
     <!-- Because multiple projects can contribute to a single insertion component we package them in a separate phase.
          Also due to insertion manifests containing hashes of references VSIXes, so we need to run this after signing  -->
