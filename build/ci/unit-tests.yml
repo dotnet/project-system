@@ -72,9 +72,10 @@ jobs:
   steps:
     - script: $(Build.SourcesDirectory)\build.cmd /no-build /no-test /no-deploy
     - task: UseDotNet@2
-        inputs:
-            packageType: sdk
-            version: 2.1.503
+      displayName: 'Use .NET Core sdk'
+      inputs:
+        packageType: sdk
+        version: 2.1.503
     - task: RichCodeNavIndexer@0
       continueOnError: true
       inputs:
