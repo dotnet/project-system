@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
@@ -315,7 +316,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             ITargetFramework? activeTargetFramework,
             CancellationToken token)
         {
-            IImmutableSet<string>? projectItemSpecs = GetProjectItemSpecsFromSnapshot();
+            IImmutableSet<string>? projectItemSpecs = GetProjectItemSpecs(catalogs?.Project.ProjectInstance.Items);
 
             _snapshot.TryUpdate(
                 previousSnapshot => DependenciesSnapshot.FromChanges(
@@ -333,18 +334,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             return;
 
             // Gets the set of items defined directly the project, and not included by imports.
-            IImmutableSet<string>? GetProjectItemSpecsFromSnapshot()
+            static IImmutableSet<string>? GetProjectItemSpecs(IEnumerable<ProjectItemInstance>? projectItems)
             {
                 // We don't have catalog snapshot, we're likely updating because one of our project 
                 // dependencies changed. Just return 'no data'
-                if (catalogs == null)
+                if (projectItems == null)
                 {
                     return null;
                 }
 
                 ImmutableHashSet<string>.Builder itemSpecs = ImmutableHashSet.CreateBuilder(StringComparer.OrdinalIgnoreCase);
 
-                foreach (ProjectItemInstance item in catalogs.Project.ProjectInstance.Items)
+                foreach (ProjectItemInstance item in projectItems)
                 {
                     if (item.IsImported())
                     {
