@@ -52,7 +52,6 @@
 
   <PropertyGroup>
     <CodeAnalysisRuleSet Condition="'$(IsTestProject)' == 'true'">$(RepoRoot)build\ruleset\Test.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRuleSet Condition="'$(IsTestProject)' != 'true'">$(RepoRoot)build\ruleset\Default.ruleset</CodeAnalysisRuleSet>
 
     <TestArchitectures>x86</TestArchitectures>
 
