@@ -24,13 +24,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
 
             var unconfiguredProjectServices = new Mock<UnconfiguredProjectServices>();
-            unconfiguredProjectServices.Setup(u => u.HostObject)
-                                       .Returns(hostObject!);
+            unconfiguredProjectServices.SetupGet<object?>(u => u.HostObject)
+                                       .Returns(hostObject);
 
-            unconfiguredProjectServices.Setup(u => u.ProjectConfigurationsService)
-                                       .Returns(projectConfigurationsService!);
+            unconfiguredProjectServices.SetupGet<IProjectConfigurationsService?>(u => u.ProjectConfigurationsService)
+                                       .Returns(projectConfigurationsService);
 
-            var activeConfiguredProjectProvider = IActiveConfiguredProjectProviderFactory.Create(getActiveConfiguredProject: () => configuredProject!);
+            var activeConfiguredProjectProvider = IActiveConfiguredProjectProviderFactory.Create(getActiveConfiguredProject: () => configuredProject);
             unconfiguredProjectServices.Setup(u => u.ActiveConfiguredProjectProvider)
                                        .Returns(activeConfiguredProjectProvider);
 
@@ -41,8 +41,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             project.Setup(u => u.Services)
                                .Returns(unconfiguredProjectServices.Object);
 
-            project.SetupGet(u => u.FullPath)
-                                .Returns(filePath!);
+            project.SetupGet<string?>(u => u.FullPath)
+                                .Returns(filePath);
 
             project.Setup(u => u.Capabilities)
                                .Returns(scope!);
