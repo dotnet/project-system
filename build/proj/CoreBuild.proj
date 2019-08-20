@@ -7,7 +7,6 @@
                                     
   Optional parameters:              
     CIBuild                         "true" when building on CI server
-    Restore                         "true" to restore toolset and solution
     Build                           "true" to build solution
     Rebuild                         "true" to rebuild solution
     Deploy                          "true" to deploy assets (e.g. VSIXes)
@@ -39,9 +38,7 @@
     <SolutionRestoreAndBuildProperty Include="__DeployProjectOutput=$(Deploy)" Condition="'$(Deploy)' != ''"/>
   </ItemGroup>
 
-  <Target 
-    Name="Restore" 
-    Condition="'$(Restore)' == 'true'">
+  <Target Name="Restore">
 
     <!--
       Run solution restore separately from the other targets, in a different build phase.
