@@ -32,7 +32,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\src\Common\ProvideCodeBaseBindingRedirection.cs">
+    <Compile Include="..\Common\ProvideCodeBaseBindingRedirection.cs">
       <Link>ProvideCodeBaseBindingRedirection.cs</Link>
     </Compile>
   </ItemGroup>
