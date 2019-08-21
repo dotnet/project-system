@@ -71,10 +71,4 @@
     <None Include="$(MSBuildThisFileDirectory)Common\Test\App.config" CopyToOutputDirectory="PreserveNewest" Condition="'$(IsUnitTestProject)' == 'true'" />
     <None Include="$(MSBuildThisFileDirectory)Common\Integration\App.config" CopyToOutputDirectory="PreserveNewest" Condition="'$(IsIntegrationTestProject)' == 'true'" />
   </ItemGroup>
-  
-  <ItemGroup>
-    <SuppressFromVsix Include="Microsoft.VSDesigner.dll"/>
-    <SuppressFromVsix Include="Microsoft.VisualStudio.DataTools.Interop.dll"/>
-    <SuppressFromVsix Include="Microsoft.VisualStudio.XmlEditor.dll"/>
-  </ItemGroup>
 </Project>

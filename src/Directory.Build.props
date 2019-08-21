@@ -55,10 +55,4 @@
     
     <NoWarn>$(NoWarn);NU5125</NoWarn>
   </PropertyGroup>
-
-  <ItemGroup>
-    <SuppressFromVsix Include="Microsoft.VSDesigner.dll"/>
-    <SuppressFromVsix Include="Microsoft.VisualStudio.DataTools.Interop.dll"/>
-    <SuppressFromVsix Include="Microsoft.VisualStudio.XmlEditor.dll"/>
-  </ItemGroup>
 </Project>

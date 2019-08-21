@@ -6,16 +6,7 @@
 
   <ItemGroup>
     <AdditionalFiles Include="$(MSBuildThisFileDirectory)\..\src\Common\BannedSymbols.txt" Condition="'$(BannedSymbolsOptOut)' != 'true'" />
-  </ItemGroup> 
-  
-  <!-- 
-    Defining this target will disable the new SDK behavior of implicit transitive project
-    references. This is a fine feature in general but the current implementation breaks VSIX 
-    construction by including a number of projects that should not be included. 
-    https://github.com/dotnet/sdk/issues/1366
-  -->
-  <Target Name="IncludeTransitiveProjectReferences" >
-  </Target>
+  </ItemGroup>
   
   <!-- 
     With UseCommonOutputDirectory turned on, any copy-local projects/references break
