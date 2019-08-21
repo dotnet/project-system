@@ -5,7 +5,7 @@
     <PublishOutputToSymStore>false</PublishOutputToSymStore>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\Common\ThrowingTraceListener.cs" Link="Diagnostics\ThrowingTraceListener.cs" />
+    <Compile Include="..\..\src\Common\ThrowingTraceListener.cs" Link="Diagnostics\ThrowingTraceListener.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Moq" />

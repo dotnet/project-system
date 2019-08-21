@@ -6,11 +6,11 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\Common\ThrowingTraceListener.cs" Link="Diagnostics\ThrowingTraceListener.cs" />
+    <Compile Include="..\..\src\Common\ThrowingTraceListener.cs" Link="Diagnostics\ThrowingTraceListener.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\deploy\DeployIntegrationDependencies\DeployIntegrationDependencies.csproj" ReferenceOutputAssembly="false" />
-    <Compile Include="..\Microsoft.VisualStudio.ProjectSystem.Managed\Resources\ManagedImageMonikers.cs" Link="ManagedImageMonikers.cs" />
+    <ProjectReference Include="..\DeployIntegrationDependencies\DeployIntegrationDependencies.csproj" ReferenceOutputAssembly="false" />
+    <Compile Include="..\..\src\Microsoft.VisualStudio.ProjectSystem.Managed\Resources\ManagedImageMonikers.cs" Link="ManagedImageMonikers.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Configuration" />

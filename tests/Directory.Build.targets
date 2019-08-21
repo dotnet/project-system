@@ -5,7 +5,7 @@
   <Import Project="..\build\import\VisualStudio.XamlRules.targets"/>
 
   <ItemGroup>
-    <AdditionalFiles Include="$(MSBuildThisFileDirectory)\Common\BannedSymbols.txt" Condition="'$(BannedSymbolsOptOut)' != 'true'" />
+    <AdditionalFiles Include="$(MSBuildThisFileDirectory)\..\src\Common\BannedSymbols.txt" Condition="'$(BannedSymbolsOptOut)' != 'true'" />
   </ItemGroup> 
   
   <!-- 
