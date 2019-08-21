@@ -223,9 +223,9 @@ dotnet_diagnostic.CA1824.severity = none
 dotnet_diagnostic.CA2200.severity = none
 
 # Microsoft.NetCore.Analyzers
-dotnet_diagnostic.CA2000.severity = none    # Dispose objects before losing scope (Noisy - replaced with IDE0067, IDE0068, IDE0069)
+dotnet_diagnostic.CA2000.severity = none        # Dispose objects before losing scope (Noisy - replaced with IDE0067, IDE0068, IDE0069)
 dotnet_diagnostic.CA1820.severity = warning
-dotnet_diagnostic.CA5360.severity = none    # https://github.com/dotnet/roslyn-analyzers/issues/2683
+dotnet_diagnostic.CA5360.severity = none        # https://github.com/dotnet/roslyn-analyzers/issues/2683
 
 # Microsoft.CodeQuality.Analyzers
 dotnet_diagnostic.CA1000.severity = none
@@ -236,7 +236,7 @@ dotnet_diagnostic.CA1018.severity = none
 dotnet_diagnostic.CA1028.severity = none
 dotnet_diagnostic.CA1030.severity = none
 dotnet_diagnostic.CA1032.severity = none
-dotnet_diagnostic.CA1033.severity = none    # Interface methods should be callable by child types
+dotnet_diagnostic.CA1033.severity = none        # Interface methods should be callable by child types
 dotnet_diagnostic.CA1034.severity = none
 dotnet_diagnostic.CA1036.severity = error
 dotnet_diagnostic.CA1040.severity = none
@@ -247,7 +247,7 @@ dotnet_diagnostic.CA1052.severity = none
 dotnet_diagnostic.CA1054.severity = none
 dotnet_diagnostic.CA1055.severity = none
 dotnet_diagnostic.CA1056.severity = none
-dotnet_diagnostic.CA1060.severity = none    # Move P/Invokes to NativeMethods class
+dotnet_diagnostic.CA1060.severity = none        # Move P/Invokes to NativeMethods class
 dotnet_diagnostic.CA1062.severity = none
 dotnet_diagnostic.CA1063.severity = warning
 dotnet_diagnostic.CA1064.severity = none
@@ -255,7 +255,7 @@ dotnet_diagnostic.CA1065.severity = none
 dotnet_diagnostic.CA1066.severity = none
 dotnet_diagnostic.CA1067.severity = warning
 dotnet_diagnostic.CA1068.severity = warning
-dotnet_diagnostic.CA1031.severity = none    # Do not catch general exception types
+dotnet_diagnostic.CA1031.severity = none        # Do not catch general exception types
 dotnet_diagnostic.CA1303.severity = none
 dotnet_diagnostic.CA1304.severity = none
 dotnet_diagnostic.CA1707.severity = none
@@ -270,7 +270,7 @@ dotnet_diagnostic.CA1724.severity = none
 dotnet_diagnostic.CA1815.severity = none
 dotnet_diagnostic.CA2007.severity = none
 dotnet_diagnostic.CA2211.severity = none
-dotnet_diagnostic.CA2213.severity = none    # https://github.com/dotnet/roslyn-analyzers/issues/1796
+dotnet_diagnostic.CA2213.severity = none        # https://github.com/dotnet/roslyn-analyzers/issues/1796
 dotnet_diagnostic.CA2218.severity = none
 dotnet_diagnostic.CA2222.severity = none
 dotnet_diagnostic.CA2224.severity = none
@@ -280,7 +280,7 @@ dotnet_diagnostic.CA2231.severity = none
 dotnet_diagnostic.CA2234.severity = none
 
 # Microsoft.NetFramework.Analyzers
-dotnet_diagnostic.CA2153.severity = error   # Do not catch CorruptedStateExceptions
+dotnet_diagnostic.CA2153.severity = error       # Do not catch CorruptedStateExceptions
 dotnet_diagnostic.CA2235.severity = error
 dotnet_diagnostic.CA3075.severity = error
 
@@ -299,7 +299,7 @@ dotnet_diagnostic.RS1010.severity = none
 dotnet_diagnostic.RS1011.severity = none
 dotnet_diagnostic.RS1012.severity = none
 dotnet_diagnostic.RS1013.severity = none
-dotnet_diagnostic.RS1014.severity = warning # DoNotIgnoreReturnValueOnImmutableObjectMethodInvocation
+dotnet_diagnostic.RS1014.severity = warning     # DoNotIgnoreReturnValueOnImmutableObjectMethodInvocation
 dotnet_diagnostic.RS1015.severity = none
 dotnet_diagnostic.RS1016.severity = none
 dotnet_diagnostic.RS1017.severity = none
@@ -330,8 +330,8 @@ dotnet_diagnostic.RS0026.severity = error
 dotnet_diagnostic.RS0027.severity = error
 dotnet_diagnostic.RS0030.severity = error
 dotnet_diagnostic.RS0031.severity = error
-dotnet_diagnostic.RS0033.severity = none    # Importing constructor should be [Obsolete]
-dotnet_diagnostic.RS0034.severity = none    # Style rule that enforces public MEF constructor marked with [ImportingConstructor]
+dotnet_diagnostic.RS0033.severity = none        # Importing constructor should be [Obsolete]
+dotnet_diagnostic.RS0034.severity = none        # Style rule that enforces public MEF constructor marked with [ImportingConstructor]
 
 # System.Collections.Immutable.Analyzers
 dotnet_diagnostic.RS0012.severity = warning
@@ -364,24 +364,24 @@ dotnet_diagnostic.RS0018.severity = warning
 dotnet_diagnostic.RS0010.severity = warning
 
 # Microsoft.CodeAnalysis.CSharp.Features
-                                                                    # Name:                                         Before:                                             After:                                
-dotnet_diagnostic.IDE0001.severity = error                          # Simplify names                                System.Version version;                             Version version;                      
-dotnet_diagnostic.IDE0002.severity = error                          # Simplify (member access)                      System.Version.Equals("1", "2");                    Version.Equals("1", "2");             
-dotnet_diagnostic.IDE0005.severity = error                          # Using directive is unnecessary                using System.Text;                                                                        
-dotnet_diagnostic.IDE0030.severity = error                          # Use coalesce expression (nullable)            int? y = x.HasValue ? x.Value : 0                   int? y = x ?? 0;                      
+                                                # Name:                                         Before:                                             After:
+dotnet_diagnostic.IDE0001.severity = error      # Simplify names                                System.Version version;                             Version version;
+dotnet_diagnostic.IDE0002.severity = error      # Simplify (member access)                      System.Version.Equals("1", "2");                    Version.Equals("1", "2");
+dotnet_diagnostic.IDE0005.severity = error      # Using directive is unnecessary                using System.Text;
+dotnet_diagnostic.IDE0030.severity = error      # Use coalesce expression (nullable)            int? y = x.HasValue ? x.Value : 0                   int? y = x ?? 0;
 dotnet_diagnostic.IDE0030WithoutSuggestion.severity = error
-dotnet_diagnostic.IDE1006.severity = error                          # Naming styles                                 Task Open()                                         Task OpenAsync()                      
+dotnet_diagnostic.IDE1006.severity = error      # Naming styles                                 Task Open()                                         Task OpenAsync()
 dotnet_diagnostic.IDE1006WithoutSuggestion.severity = suggestion
 
 # Microsoft.VisualStudio.Threading.Analyzers
-dotnet_diagnostic.VSTHRD200.severity = none                         # Naming styles                                 Task Open()                                         Task OpenAsync()                      
-dotnet_diagnostic.VSTHRD010.severity = none                         # Visual Studio service should be used on main thread explicitly.
-dotnet_diagnostic.VSTHRD103.severity = none                         # Call async methods when in an async method.
-dotnet_diagnostic.VSTHRD108.severity = none                         # Thread affinity checks should be unconditional.
-dotnet_diagnostic.VSTHRD003.severity = none                         # Avoid awaiting or returning a Task representing work that was not started within your context as that can lead to deadlocks
+dotnet_diagnostic.VSTHRD200.severity = none     # Naming styles                                 Task Open()                                         Task OpenAsync()
+dotnet_diagnostic.VSTHRD010.severity = none     # Visual Studio service should be used on main thread explicitly.
+dotnet_diagnostic.VSTHRD103.severity = none     # Call async methods when in an async method.
+dotnet_diagnostic.VSTHRD108.severity = none     # Thread affinity checks should be unconditional.
+dotnet_diagnostic.VSTHRD003.severity = none     # Avoid awaiting or returning a Task representing work that was not started within your context as that can lead to deadlocks
 
 # Microsoft.VisualStudio.SDK.Analyzers
-dotnet_diagnostic.VSSDK006.severity = none                          # Check whether the result of GetService calls is null 
+dotnet_diagnostic.VSSDK006.severity = none      # Check whether the result of GetService calls is null  
 
 # Dotnet code analysis settings for test projects:
 [src/*Tests/**.{cs,vb}]
@@ -395,7 +395,7 @@ dotnet_diagnostic.CA2000.severity = none
 dotnet_diagnostic.CA2009.severity = none
 
 # System.Runtime.Analyzers
-dotnet_diagnostic.CA1825.severity = none    # Avoid zero length allocations - suppress for non-shipping/test projects (originally RS0007)
+dotnet_diagnostic.CA1825.severity = none        # Avoid zero length allocations - suppress for non-shipping/test projects (originally RS0007)
 
 # Microsoft.Composition.Analyzers
 dotnet_diagnostic.RS0006.severity = none
@@ -415,9 +415,9 @@ dotnet_diagnostic.VSTHRD001.severity = none     # Await JoinableTaskFactory.Swit
 dotnet_diagnostic.VSTHRD002.severity = none     # Synchronously waiting on tasks or awaiters may cause deadlocks. Use JoinableTaskFactory.Run instead.
 dotnet_diagnostic.VSTHRD010.severity = none     # Visual Studio service should be used on main thread explicitly.
 dotnet_diagnostic.VSTHRD103.severity = none     # Synchronously blocks. Await ThrowsAsync instead.
-dotnet_diagnostic.VSTHRD110.severity = none     # Observe result of async calls 
+dotnet_diagnostic.VSTHRD110.severity = none     # Observe result of async calls
 dotnet_diagnostic.VSTHRD200.severity = none     # Naming stylesNaming styles:  Before: Task Open()  After: Task OpenAsync()
 
 # xunit.analyzers
-dotnet_diagnostic.xUnit1026.severity = none     # Theory methods must use all parameters 
+dotnet_diagnostic.xUnit1026.severity = none     # Theory methods must use all parameters
 dotnet_diagnostic.xUnit1004.severity = none     # Test methods should not be skipped
