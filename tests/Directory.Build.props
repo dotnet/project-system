@@ -17,7 +17,6 @@
 
   <Import Project="..\Directory.Build.props"/>
   <Import Project="$(RepoToolsetDir)Settings.props" Condition="'$(ExcludeRestorePackageImports)' != 'true' AND Exists('$(RepoToolsetDir)Settings.props')" />
-  <Import Project="..\build\import\VisualStudio.XamlRules.props" />
 
   <PropertyGroup>
     <_IsVisualStudioDeveloperBuild Condition="'$(OfficialBuild)' != 'true' AND '$(CIBuild)' != 'true' AND '$(BuildingInsideVisualStudio)' == 'true'">true</_IsVisualStudioDeveloperBuild>
@@ -61,9 +60,6 @@
 
     <UseCommonOutputDirectory Condition="'$(UseCommonOutputDirectory)' == ''">true</UseCommonOutputDirectory>
 
-    <!-- Prevent vsix manifests from being copied to the shared output directory, makes build more deterministic -->
-    <CopyVsixManifestToOutput>false</CopyVsixManifestToOutput>
-    
     <NoWarn>$(NoWarn);NU5125</NoWarn>
   </PropertyGroup>
 
