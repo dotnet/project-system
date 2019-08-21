@@ -16,51 +16,12 @@
   </PropertyGroup>
 
   <Import Project="..\Directory.Build.props"/>
-  <Import Project="$(RepoToolsetDir)Settings.props" Condition="'$(ExcludeRestorePackageImports)' != 'true' AND Exists('$(RepoToolsetDir)Settings.props')" />
-
-  <PropertyGroup>
-    <_IsVisualStudioDeveloperBuild Condition="'$(OfficialBuild)' != 'true' AND '$(CIBuild)' != 'true' AND '$(BuildingInsideVisualStudio)' == 'true'">true</_IsVisualStudioDeveloperBuild>
-
-    <!-- Code Coverage doesn't currently work for portable/embedded PDBs - force to full inside Visual Studio builds -->
-    <DebugType Condition="'$(_IsVisualStudioDeveloperBuild)' == 'true'">full</DebugType>
-  </PropertyGroup>
-  
-  <PropertyGroup>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Language)' == 'C#'">
-    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
-    <LangVersion>8.0</LangVersion>
-    <!-- New name -->
-    <Nullable>enable</Nullable>
-    
-    <!-- Old name while we wait for new name to be everywhere -->
-    <NullableContextOptions>enable</NullableContextOptions>
-    <Features>strict</Features>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Language)' == 'VB'">
-    <!-- Build machines only have Visual Studio 15.5 (which comes with VB 15.3) -->
-    <LangVersion>15.3</LangVersion>
-    <!-- The default is Embed -->
-    <VBRuntime>Default</VBRuntime>
-    <RemoveIntegerChecks>true</RemoveIntegerChecks>
-    <Features>strict</Features>
-  </PropertyGroup>
 
   <PropertyGroup>
     <CodeAnalysisRuleSet Condition="'$(IsTestProject)' == 'true'">$(RepoRoot)build\ruleset\Test.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRuleSet Condition="'$(IsTestProject)' != 'true'">$(RepoRoot)build\ruleset\Default.ruleset</CodeAnalysisRuleSet>
 
     <TestArchitectures>x86</TestArchitectures>
-
-    <!-- Use IBC optimization data if available -->
-    <IbcOptimizationDataDir Condition="$(EnableIbc) == 'true'">$(NuGetPackageRoot)\RoslynDependencies.ProjectSystem.OptimizationData\$(RoslynDependenciesProjectSystemOptimizationDataVersion)\content\OptimizationData\</IbcOptimizationDataDir>
-
-    <UseCommonOutputDirectory Condition="'$(UseCommonOutputDirectory)' == ''">true</UseCommonOutputDirectory>
-
-    <NoWarn>$(NoWarn);NU5125</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
