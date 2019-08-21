@@ -1,25 +1,8 @@
 <!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 <Project>
   <Import Project="..\Directory.Build.targets" />
-  <Import Project="$(RepoToolsetDir)Imports.targets" Condition="'$(ExcludeRestorePackageImports)' != 'true' AND Exists('$(RepoToolsetDir)Imports.targets')" />
-
-  <ItemGroup>
-    <AdditionalFiles Include="$(MSBuildThisFileDirectory)\..\src\Common\BannedSymbols.txt" Condition="'$(BannedSymbolsOptOut)' != 'true'" />
-  </ItemGroup>
   
-  <!-- 
-    With UseCommonOutputDirectory turned on, any copy-local projects/references break
-    csproj's up-to-date check because they aren't copied to the output directory. 
-    Turn it off. 
-  -->
-  <ItemDefinitionGroup Condition="'$(UseCommonOutputDirectory)' == 'true'">
-    <Reference>
-      <Private>false</Private>
-    </Reference>
-
-    <ProjectReference>
-      <Private>false</Private>
-    </ProjectReference>
-  </ItemDefinitionGroup>
-
+  <Import Project="..\build\import\UnitTests.targets" Condition="$(IsUnitTestProject) == 'true'" />
+  <Import Project="..\build\import\IntegrationTests.targets" Condition="$(IsIntegrationTestProject) == 'true'"/>
+  <Import Project="..\build\import\Coverage.targets" />
 </Project>
