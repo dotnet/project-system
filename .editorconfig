@@ -384,7 +384,7 @@ dotnet_diagnostic.VSTHRD003.severity = none     # Avoid awaiting or returning a 
 dotnet_diagnostic.VSSDK006.severity = none      # Check whether the result of GetService calls is null  
 
 # Dotnet code analysis settings for test projects:
-[src/*Tests/**.{cs,vb}]
+[tests/**.{cs,vb}]
 # Microsoft.CodeQuality.Analyzers
 # For tests, the ConfigureAwait(true) is good enough. Either they are already running on a thread pool
 # thread where ConfigureAwait(false) does nothing, or we're running the workload from an STA thread
