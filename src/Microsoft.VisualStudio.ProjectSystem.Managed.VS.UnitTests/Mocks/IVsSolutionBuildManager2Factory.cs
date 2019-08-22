@@ -39,8 +39,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
                     return VSConstants.S_OK;
                 }
 
-                uint dwFlags = (uint)(VSSOLNBUILDUPDATEFLAGS.SBF_SUPPRESS_SAVEBEFOREBUILD_QUERY | VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD);
-                buildManager.Setup(b => b.StartSimpleUpdateProjectConfiguration(hierarchyToBuild, It.IsAny<IVsHierarchy>(), It.IsAny<string>(), dwFlags, It.IsAny<uint>(), It.IsAny<int>()))
+                buildManager.Setup(b => b.StartSimpleUpdateProjectConfiguration(hierarchyToBuild, It.IsAny<IVsHierarchy>(), It.IsAny<string>(), It.IsAny<uint>(), It.IsAny<uint>(), It.IsAny<int>()))
                     .Returns(onBuildStartedWithReturn);
             }
 
