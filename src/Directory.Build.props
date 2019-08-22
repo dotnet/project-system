@@ -8,7 +8,6 @@
   </PropertyGroup>
 
   <Import Project="..\Directory.Build.props"/>
-  <Import Project="..\build\import\VisualStudio.XamlRules.props" />
 
   <PropertyGroup>
     <CodeAnalysisRuleSet>$(RepoRoot)build\ruleset\Default.ruleset</CodeAnalysisRuleSet>
