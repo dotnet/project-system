@@ -82,6 +82,7 @@
   
   <PropertyGroup>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <MinimumVisualStudioVersion>16.0</MinimumVisualStudioVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Language)' == 'C#'">
