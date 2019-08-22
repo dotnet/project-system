@@ -3,8 +3,6 @@
   <Import Project="..\Directory.Build.props"/>
 
   <PropertyGroup>
-    <CodeAnalysisRuleSet>$(RepoRoot)build\ruleset\Default.ruleset</CodeAnalysisRuleSet>
-
     <!-- Prevent vsix manifests from being copied to the shared output directory, makes build more deterministic -->
     <CopyVsixManifestToOutput>false</CopyVsixManifestToOutput>
   </PropertyGroup>
