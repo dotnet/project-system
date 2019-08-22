@@ -96,8 +96,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                 // Enable generating package on build ("GeneratePackageOnBuild") for all projects being built.
                 _generatePackageOnBuildPropertyProvider.OverrideGeneratePackageOnBuild(true);
 
-                // Kick off the build.
-                uint dwFlags = (uint)(VSSOLNBUILDUPDATEFLAGS.SBF_SUPPRESS_SAVEBEFOREBUILD_QUERY | VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD);
+                // Because packaging is part of a build we need to force a build even if the project is up to date so we ensure a package is always created
+                uint dwFlags = (uint)(VSSOLNBUILDUPDATEFLAGS.SBF_SUPPRESS_SAVEBEFOREBUILD_QUERY | VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD | VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_FORCE_UPDATE);
                 ErrorHandler.ThrowOnFailure(_buildManager.StartSimpleUpdateProjectConfiguration(projectVsHierarchy, null, null, dwFlags, 0, 0));
             }
 
