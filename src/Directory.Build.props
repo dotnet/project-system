@@ -1,80 +1,11 @@
 <!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 <Project>
-  <PropertyGroup>
-    <IsUnitTestProject>false</IsUnitTestProject>
-    <IsUnitTestProject Condition="$(MSBuildProjectName.EndsWith('.UnitTests')) or $(MSBuildProjectName.EndsWith('.Tests'))">true</IsUnitTestProject>    
-    <IsIntegrationTestProject>false</IsIntegrationTestProject>
-    <IsIntegrationTestProject Condition="$(MSBuildProjectName.EndsWith('.IntegrationTests'))">true</IsIntegrationTestProject>
-    <IsTestProject>false</IsTestProject>
-    <IsTestProject Condition="'$(IsUnitTestProject)' == 'true' or '$(IsIntegrationTestProject)' == 'true'">true</IsTestProject>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(OutDirName)' == ''">
-    <OutDirName Condition="$(IsUnitTestProject)">UnitTests</OutDirName>
-    <OutDirName Condition="$(IsIntegrationTestProject)">IntegrationTests</OutDirName>
-    <OutDirName Condition="'$(OutDirName)' == ''">Dlls</OutDirName>
-  </PropertyGroup>
-
   <Import Project="..\Directory.Build.props"/>
-  <Import Project="$(RepoToolsetDir)Settings.props" Condition="'$(ExcludeRestorePackageImports)' != 'true' AND Exists('$(RepoToolsetDir)Settings.props')" />
-  <Import Project="..\build\import\VisualStudio.XamlRules.props" />
 
   <PropertyGroup>
-    <_IsVisualStudioDeveloperBuild Condition="'$(OfficialBuild)' != 'true' AND '$(CIBuild)' != 'true' AND '$(BuildingInsideVisualStudio)' == 'true'">true</_IsVisualStudioDeveloperBuild>
-
-    <!-- Code Coverage doesn't currently work for portable/embedded PDBs - force to full inside Visual Studio builds -->
-    <DebugType Condition="'$(_IsVisualStudioDeveloperBuild)' == 'true'">full</DebugType>
-  </PropertyGroup>
-  
-  <PropertyGroup>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Language)' == 'C#'">
-    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
-    <LangVersion>8.0</LangVersion>
-    <!-- New name -->
-    <Nullable>enable</Nullable>
-    
-    <!-- Old name while we wait for new name to be everywhere -->
-    <NullableContextOptions>enable</NullableContextOptions>
-    <Features>strict</Features>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Language)' == 'VB'">
-    <!-- Build machines only have Visual Studio 15.5 (which comes with VB 15.3) -->
-    <LangVersion>15.3</LangVersion>
-    <!-- The default is Embed -->
-    <VBRuntime>Default</VBRuntime>
-    <RemoveIntegerChecks>true</RemoveIntegerChecks>
-    <Features>strict</Features>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <CodeAnalysisRuleSet Condition="'$(IsTestProject)' == 'true'">$(RepoRoot)build\ruleset\Test.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRuleSet Condition="'$(IsTestProject)' != 'true'">$(RepoRoot)build\ruleset\Default.ruleset</CodeAnalysisRuleSet>
-
-    <TestArchitectures>x86</TestArchitectures>
-
-    <!-- Use IBC optimization data if available -->
-    <IbcOptimizationDataDir Condition="$(EnableIbc) == 'true'">$(NuGetPackageRoot)\RoslynDependencies.ProjectSystem.OptimizationData\$(RoslynDependenciesProjectSystemOptimizationDataVersion)\content\OptimizationData\</IbcOptimizationDataDir>
-
-    <UseCommonOutputDirectory Condition="'$(UseCommonOutputDirectory)' == ''">true</UseCommonOutputDirectory>
+    <CodeAnalysisRuleSet>$(RepoRoot)build\ruleset\Default.ruleset</CodeAnalysisRuleSet>
 
     <!-- Prevent vsix manifests from being copied to the shared output directory, makes build more deterministic -->
     <CopyVsixManifestToOutput>false</CopyVsixManifestToOutput>
-    
-    <NoWarn>$(NoWarn);NU5125</NoWarn>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)Common\Test\App.config" CopyToOutputDirectory="PreserveNewest" Condition="'$(IsUnitTestProject)' == 'true'" />
-    <None Include="$(MSBuildThisFileDirectory)Common\Integration\App.config" CopyToOutputDirectory="PreserveNewest" Condition="'$(IsIntegrationTestProject)' == 'true'" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <SuppressFromVsix Include="Microsoft.VSDesigner.dll"/>
-    <SuppressFromVsix Include="Microsoft.VisualStudio.DataTools.Interop.dll"/>
-    <SuppressFromVsix Include="Microsoft.VisualStudio.XmlEditor.dll"/>
-  </ItemGroup>
 </Project>

@@ -94,7 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             Assumes.NotNull(_threadHandling);
 
-            return _threadHandling!.ExecuteSynchronously(OnApply);
+            return _threadHandling.ExecuteSynchronously(OnApply);
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             {
                 Assumes.NotNull(_threadHandling);
 
-                _threadHandling!.ExecuteSynchronously(OnDeactivate);
+                _threadHandling.ExecuteSynchronously(OnDeactivate);
                 UnadviseDebugger();
             }
 
@@ -182,7 +182,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             Assumes.NotNull(_threadHandling);
 
-            _threadHandling!.ExecuteSynchronously(() => OnSetObjects(isClosing));
+            _threadHandling.ExecuteSynchronously(() => OnSetObjects(isClosing));
         }
 
         /// <summary>

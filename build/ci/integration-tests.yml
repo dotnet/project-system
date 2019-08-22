@@ -20,6 +20,8 @@ jobs:
   timeoutInMinutes: 60
   steps:
     - script: $(Build.SourcesDirectory)\build.cmd /build /no-test /integration /diagnostic /ci /no-sign /deploy /no-clearnugetcache /configuration $(_configuration)
+      displayName: Build ProjectSystem.sln
+
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\log'
@@ -27,6 +29,7 @@ jobs:
         publishLocation: Container
       continueOnError: true
       condition: failed()
+
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\tmp'
@@ -34,6 +37,7 @@ jobs:
         publishLocation: Container
       continueOnError: true
       condition: failed()
+
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\bin'
@@ -41,6 +45,7 @@ jobs:
         publishLocation: Container
       continueOnError: true
       condition: failed()
+
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\VSSetup'
@@ -48,6 +53,7 @@ jobs:
         publishLocation: Container
       continueOnError: true
       condition: failed()
+
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(_configuration)\TestResults'
@@ -55,6 +61,7 @@ jobs:
         publishLocation: Container
       continueOnError: true
       condition: failed()
+
     - task: PublishTestResults@2
       inputs:
         testRunner: 'VSTest'

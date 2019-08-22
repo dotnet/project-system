@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -81,10 +82,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
             private async Task<Project?> TryGetProjectFromPathAsync(string projectPath)
             {
                 DTE? dte = await _dte.GetValueAsync();
+                Assumes.NotNull(dte);
 
-                foreach (Project project in dte!.Solution.Projects)
+                foreach (Project project in dte.Solution.Projects)
                 {
-                    if (StringComparers.Paths.Equals(project.FullName, projectPath))
+                    string? fullName = null;
+                    try
+                    {
+                        fullName = project.FullName;
+                    }
+                    catch (Exception)
+                    {
+                        // DTE COM calls can fail for any number of valid reasions.
+                        continue;
+                    }
+
+                    if (StringComparers.Paths.Equals(fullName, projectPath))
                     {
                         return project;
                     }

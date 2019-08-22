@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Input
 
         private static long[] GetCommandIds(AbstractProjectCommand command)
         {
-            var attribute = (ProjectCommandAttribute)Attribute.GetCustomAttribute(command.GetType(), typeof(ProjectCommandAttribute));
+            var attribute = (ProjectCommandAttribute?)Attribute.GetCustomAttribute(command.GetType(), typeof(ProjectCommandAttribute));
 
             // All ProjectCommand's should be marked with [ProjectCommandAttribute]
             Assumes.NotNull(attribute);

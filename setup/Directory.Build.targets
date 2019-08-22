@@ -1,0 +1,13 @@
+<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Project>
+  <Import Project="..\Directory.Build.targets" />
+
+  <!-- 
+    Defining this target will disable the new SDK behavior of implicit transitive project
+    references. This is a fine feature in general but the current implementation breaks VSIX 
+    construction by including a number of projects that should not be included. 
+    https://github.com/dotnet/sdk/issues/1366
+  -->
+  <Target Name="IncludeTransitiveProjectReferences" >
+  </Target>
+</Project>

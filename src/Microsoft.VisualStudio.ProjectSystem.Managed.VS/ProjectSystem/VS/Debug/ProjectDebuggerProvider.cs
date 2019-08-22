@@ -170,17 +170,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             Assumes.NotNull(activeProfile);
 
-            IDebugProfileLaunchTargetsProvider? targetProfile = GetLaunchTargetsProvider(activeProfile!);
+            IDebugProfileLaunchTargetsProvider? targetProfile = GetLaunchTargetsProvider(activeProfile);
             if (targetProfile != null)
             {
-                await targetProfile.OnBeforeLaunchAsync(launchOptions, activeProfile!);
+                await targetProfile.OnBeforeLaunchAsync(launchOptions, activeProfile);
             }
 
             await DoLaunchAsync(targets.ToArray());
 
             if (targetProfile != null)
             {
-                await targetProfile.OnAfterLaunchAsync(launchOptions, activeProfile!);
+                await targetProfile.OnAfterLaunchAsync(launchOptions, activeProfile);
             }
         }
 
