@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
     [ExportSpecialFileProvider(SpecialFiles.AppSettings)]
     [AppliesTo(ProjectCapability.DotNet + " & " + ProjectCapability.AppSettings)]
-    internal class SettingsFileSpecialFileProvider : AbstractSpecialFileProvider
+    internal class SettingsFileSpecialFileProvider : AbstractFindByNameSpecialFileProvider
     {
         [ImportingConstructor]
         public SettingsFileSpecialFileProvider(IPhysicalProjectTree projectTree,

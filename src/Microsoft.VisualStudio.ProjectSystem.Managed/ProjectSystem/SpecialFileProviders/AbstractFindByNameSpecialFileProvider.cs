@@ -12,9 +12,9 @@ using Microsoft.VisualStudio.IO;
 namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
     /// <summary>
-    /// Base type for special file providers.
+    /// Base type for special file providers that find their file by name.
     /// </summary>
-    internal abstract class AbstractSpecialFileProvider : ISpecialFileProvider
+    internal abstract class AbstractFindByNameSpecialFileProvider : ISpecialFileProvider
     {
         private readonly IProjectItemProvider _sourceItemsProvider;
         private readonly IFileSystem _fileSystem;
@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 
         protected readonly IPhysicalProjectTree _projectTree;
 
-        protected AbstractSpecialFileProvider(IPhysicalProjectTree projectTree,
+        protected AbstractFindByNameSpecialFileProvider(IPhysicalProjectTree projectTree,
                                            [Import(ExportContractNames.ProjectItemProviders.SourceFiles)] IProjectItemProvider sourceItemsProvider,
                                            [Import(AllowDefault = true)] Lazy<ICreateFileFromTemplateService>? templateFileCreationService,
                                            IFileSystem fileSystem,

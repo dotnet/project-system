@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
     [ExportSpecialFileProvider(SpecialFiles.AppConfig)]
     [AppliesTo(ProjectCapability.DotNet)]
-    internal class AppConfigFileSpecialFileProvider : AbstractSpecialFileProvider
+    internal class AppConfigFileSpecialFileProvider : AbstractFindByNameSpecialFileProvider
     {
         [ImportingConstructor]
         public AppConfigFileSpecialFileProvider(IPhysicalProjectTree projectTree,
