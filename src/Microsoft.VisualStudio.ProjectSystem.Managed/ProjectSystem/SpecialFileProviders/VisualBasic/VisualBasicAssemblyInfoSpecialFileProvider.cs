@@ -9,10 +9,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders.VisualBasic
 {
     [ExportSpecialFileProvider(SpecialFiles.AssemblyInfo)]
     [AppliesTo(ProjectCapability.VisualBasic)]
-    internal class BasicAssemblyInfoSpecialFileProvider : AbstractFindByNameSpecialFileProvider
+    internal class VisualBasicAssemblyInfoSpecialFileProvider : AbstractFindByNameSpecialFileProvider
     {
         [ImportingConstructor]
-        public BasicAssemblyInfoSpecialFileProvider(IPhysicalProjectTree projectTree,
+        public VisualBasicAssemblyInfoSpecialFileProvider(IPhysicalProjectTree projectTree,
                                                     [Import(ExportContractNames.ProjectItemProviders.SourceFiles)] IProjectItemProvider sourceItemsProvider,
                                                     [Import(AllowDefault = true)] Lazy<ICreateFileFromTemplateService>? templateFileCreationService,
                                                     IFileSystem fileSystem,
