@@ -9,14 +9,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
     [ExportSpecialFileProvider(SpecialFiles.AppSettings)]
     [AppliesTo(ProjectCapability.DotNet + " & " + ProjectCapability.AppSettings)]
-    internal class SettingsFileSpecialFileProvider : AbstractSpecialFileProvider
+    internal class AppSettingsSpecialFileProvider : AbstractFindByNameSpecialFileProvider
     {
         [ImportingConstructor]
-        public SettingsFileSpecialFileProvider(IPhysicalProjectTree projectTree,
-                                               [Import(ExportContractNames.ProjectItemProviders.SourceFiles)] IProjectItemProvider sourceItemsProvider,
-                                               [Import(AllowDefault = true)] Lazy<ICreateFileFromTemplateService>? templateFileCreationService,
-                                               IFileSystem fileSystem,
-                                               ISpecialFilesManager specialFilesManager)
+        public AppSettingsSpecialFileProvider(
+            IPhysicalProjectTree projectTree,
+            [Import(ExportContractNames.ProjectItemProviders.SourceFiles)] IProjectItemProvider sourceItemsProvider,
+            [Import(AllowDefault = true)] Lazy<ICreateFileFromTemplateService>? templateFileCreationService,
+            IFileSystem fileSystem,
+            ISpecialFilesManager specialFilesManager)
             : base(projectTree, sourceItemsProvider, templateFileCreationService, fileSystem, specialFilesManager)
         {
         }
