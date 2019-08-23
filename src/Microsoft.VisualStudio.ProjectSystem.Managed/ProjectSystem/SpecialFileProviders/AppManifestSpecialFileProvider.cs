@@ -18,12 +18,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         private const string DefaultManifestValue = "DefaultManifest";
 
         [ImportingConstructor]
-        public AppManifestSpecialFileProvider(IPhysicalProjectTree projectTree,
-                                              [Import(ExportContractNames.ProjectItemProviders.SourceFiles)] IProjectItemProvider sourceItemsProvider,
-                                              [Import(AllowDefault = true)] Lazy<ICreateFileFromTemplateService>? templateFileCreationService,
-                                              IFileSystem fileSystem,
-                                              ISpecialFilesManager specialFilesManager,
-                                              ProjectProperties projectProperties)
+        public AppManifestSpecialFileProvider(
+            IPhysicalProjectTree projectTree,
+            [Import(ExportContractNames.ProjectItemProviders.SourceFiles)] IProjectItemProvider sourceItemsProvider,
+            [Import(AllowDefault = true)] Lazy<ICreateFileFromTemplateService>? templateFileCreationService,
+            IFileSystem fileSystem,
+            ISpecialFilesManager specialFilesManager,
+            ProjectProperties projectProperties)
             : base(projectTree, sourceItemsProvider, templateFileCreationService, fileSystem, specialFilesManager)
         {
             _projectProperties = projectProperties;

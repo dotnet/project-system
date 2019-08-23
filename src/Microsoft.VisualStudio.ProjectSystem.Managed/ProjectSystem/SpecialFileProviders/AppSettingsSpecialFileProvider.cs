@@ -12,11 +12,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
     internal class AppSettingsSpecialFileProvider : AbstractFindByNameSpecialFileProvider
     {
         [ImportingConstructor]
-        public AppSettingsSpecialFileProvider(IPhysicalProjectTree projectTree,
-                                               [Import(ExportContractNames.ProjectItemProviders.SourceFiles)] IProjectItemProvider sourceItemsProvider,
-                                               [Import(AllowDefault = true)] Lazy<ICreateFileFromTemplateService>? templateFileCreationService,
-                                               IFileSystem fileSystem,
-                                               ISpecialFilesManager specialFilesManager)
+        public AppSettingsSpecialFileProvider(
+            IPhysicalProjectTree projectTree,
+            [Import(ExportContractNames.ProjectItemProviders.SourceFiles)] IProjectItemProvider sourceItemsProvider,
+            [Import(AllowDefault = true)] Lazy<ICreateFileFromTemplateService>? templateFileCreationService,
+            IFileSystem fileSystem,
+            ISpecialFilesManager specialFilesManager)
             : base(projectTree, sourceItemsProvider, templateFileCreationService, fileSystem, specialFilesManager)
         {
         }
