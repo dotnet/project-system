@@ -1,0 +1,27 @@
+<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Project>
+  
+  <Import Project="VisualStudio.props"/>
+
+  <ItemGroup>
+    <Reference Include="System.Configuration" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Test.Apex.VisualStudio" />
+    <PackageReference Include="Microsoft.VisualStudio.Composition" />
+    <PackageReference Include="MSTest.TestFramework" />
+    <PackageReference Include="MSTest.TestAdapter" />
+
+    <!-- Provides vstest.console.exe -->
+    <PackageReference Include="Microsoft.TestPlatform" GeneratePathProperty="true" ExcludeAssets="all" />
+
+    <!-- 
+    The MediaRecorder package is not defined correctly and does not deploy the VSTestVideoRecorder.exe 
+    it requires. Instead, avoid deploying any of its binaries and just run it directly from package 
+    folder so that it can probe for its exe.
+    -->
+    <PackageReference Include="Microsoft.DevDiv.Validation.MediaRecorder" GeneratePathProperty="true" ExcludeAssets="All" />
+  </ItemGroup>
+
+</Project>

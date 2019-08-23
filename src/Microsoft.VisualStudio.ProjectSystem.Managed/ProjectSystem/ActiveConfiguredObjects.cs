@@ -4,8 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
@@ -42,6 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             Requires.NotNull(dimensionNames, nameof(dimensionNames));
             Requires.NotNull(objects, nameof(objects));
+
             if (objects.Count == 0)
                 throw new ArgumentException(null, nameof(objects));
 

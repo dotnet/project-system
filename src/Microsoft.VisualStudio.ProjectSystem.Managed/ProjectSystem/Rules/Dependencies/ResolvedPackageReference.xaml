@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="ResolvedPackageReference"
+      Description="Package Properties"
+      DisplayName="Package"
+      PageTemplate="generic"
+      xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource HasConfigurationCondition="False"
+                ItemType="PackageReference"
+                MSBuildTarget="ResolvePackageDependenciesDesignTime"
+                Persistence="ResolvedReference"
+                SourceOfDefaultValue="AfterContext"
+                SourceType="TargetResults" />
+  </Rule.DataSource>
+
+  <StringListProperty Name="Dependencies"
+                      Separator=";"
+                      Visible="false">
+    <StringListProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  ItemType="PackageReference"
+                  Persistence="ResolvedReference"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringListProperty.DataSource>
+  </StringListProperty>
+
+  <StringProperty Name="Description"
+                  Description="Dependency description."
+                  DisplayName="Description"
+                  ReadOnly="True" />
+
+  <StringProperty Name="ExcludeAssets"
+                  Description="Assets to exclude from this reference."
+                  DisplayName="ExcludeAssets">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  ItemType="PackageReference"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <StringProperty Name="FrameworkName"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="FrameworkVersion"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="IncludeAssets"
+                  Description="Assets to include from this reference."
+                  DisplayName="IncludeAssets">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  ItemType="PackageReference"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <StringProperty Name="IsImplicitlyDefined"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <BoolProperty Name="IsTopLevelDependency"
+                ReadOnly="True"
+                Visible="False" />
+
+  <StringProperty Name="Name"
+                  ReadOnly="True"
+                  DisplayName="Name" />
+
+  <StringProperty Name="NoWarn"
+                  Description="Comma-delimited list of warnings that should be suppressed for this package."
+                  DisplayName="NoWarn"
+                  Visible="True">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  ItemType="PackageReference"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <StringProperty Name="OriginalItemSpec"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="Path"
+                  Description="Location of the package being referenced."
+                  ReadOnly="True"
+                  DisplayName="Path" />
+
+  <StringProperty Name="PrivateAssets"
+                  Description="Assets that are private in this reference."
+                  DisplayName="Private Assets">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  ItemType="PackageReference"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <StringProperty Name="RuntimeIdentifier"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="TargetFramework"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="Type"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="Version"
+                  Description="Version of dependency."
+                  DisplayName="Version"
+                  ReadOnly="True">
+    <StringProperty.DataSource>
+      <DataSource PersistenceStyle="Attribute"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <BoolProperty Name="Visible"
+                ReadOnly="True"
+                Visible="False" />
+
+</Rule>

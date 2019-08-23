@@ -9,8 +9,6 @@ using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 {
     /// <summary>
@@ -26,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         private readonly IActiveWorkspaceProjectContextHost _projectContextHost;
 
         /// <remarks>
-        /// <see cref="UnconfiguredProject"/> must be imported in the contructor in order for scope of this class' export to be correct.
+        /// <see cref="UnconfiguredProject"/> must be imported in the constructor in order for scope of this class' export to be correct.
         /// </remarks>
         [ImportingConstructor]
         public LanguageServiceErrorListProvider(UnconfiguredProject project, IActiveWorkspaceProjectContextHost projectContextHost)
@@ -107,7 +105,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         /// <param name="result">The extracted details, or <c>null</c> if <paramref name="eventArgs"/> was <c>null</c> or of an unrecognized type.</param>
         internal static bool TryExtractErrorListDetails(BuildEventArgs eventArgs, out ErrorListDetails result)
         {
-
             if (eventArgs is BuildErrorEventArgs errorMessage)
             {
                 result = new ErrorListDetails()

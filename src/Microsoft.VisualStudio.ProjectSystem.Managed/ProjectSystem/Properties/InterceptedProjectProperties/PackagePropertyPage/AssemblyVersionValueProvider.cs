@@ -3,14 +3,13 @@
 using System;
 using System.Threading.Tasks;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
 {
     [ExportInterceptingPropertyValueProvider(AssemblyVersionPropertyName, ExportInterceptingPropertyValueProviderFile.ProjectFile)]
     internal sealed class AssemblyVersionValueProvider : BaseVersionValueProvider
     {
         private static readonly Version s_defaultAssemblyVersion = new Version(1, 0, 0, 0);
+
         private const string AssemblyVersionPropertyName = "AssemblyVersion";
 
         protected override string PropertyName => AssemblyVersionPropertyName;
@@ -19,6 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
         {
             // Default semantic/package version just has 3 fields, we need to append an additional Revision field with value "0".
             Version defaultVersion = await base.GetDefaultVersionAsync(defaultProperties);
+
             if (ReferenceEquals(defaultVersion, DefaultVersion))
             {
                 return s_defaultAssemblyVersion;

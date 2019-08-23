@@ -2782,6 +2782,11 @@ app.config 檔的新值是 '{1}'
 #  represent the first part of that filter
 #</note>
       </trans-unit>
+      <trans-unit id="PPG_CodeAnalysisTitle">
+        <source>Code Analysis</source>
+        <target state="new">Code Analysis</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -3,8 +3,6 @@
 using System;
 using Microsoft.VisualStudio.Composition;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Logging
 {
     /// <summary>

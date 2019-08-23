@@ -4,8 +4,6 @@ using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>
@@ -22,7 +20,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             _tasksService = tasksService;
 
+#pragma warning disable RS0030 // IProjectGuidService is banned
             ProjectGuidServices = new OrderPrecedenceImportCollection<IProjectGuidService>(projectCapabilityCheckProvider: project);
+#pragma warning restore RS0030
         }
 
         [ImportMany]
@@ -35,8 +35,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             await _tasksService.PrioritizedProjectLoadedInHost;
 
-#pragma warning disable RS0030 // This is the one place where IProjectGuidService is allowed to be referenced
-            IProjectGuidService projectGuidService = ProjectGuidServices.FirstOrDefault()?.Value;
+#pragma warning disable RS0030 // IProjectGuidService is banned
+            IProjectGuidService? projectGuidService = ProjectGuidServices.FirstOrDefault()?.Value;
             if (projectGuidService == null)
                 return Guid.Empty;
 

@@ -12,8 +12,6 @@ using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     /// <summary>
@@ -31,8 +29,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private readonly ConfiguredProject _project;
         private readonly IProjectLogger _logger;
         private readonly ExportFactory<IWorkspaceContextHandler>[] _workspaceContextHandlerFactories;
-        private IWorkspaceProjectContext _context;
-        private ExportLifetimeContext<IWorkspaceContextHandler>[] _handlers;
+        private IWorkspaceProjectContext? _context;
+        private ExportLifetimeContext<IWorkspaceContextHandler>[] _handlers = Array.Empty<ExportLifetimeContext<IWorkspaceContextHandler>>();
 
         [ImportingConstructor]
         public ApplyChangesToWorkspaceContext(ConfiguredProject project, IProjectLogger logger, [ImportMany]ExportFactory<IWorkspaceContextHandler>[] workspaceContextHandlerFactories)
@@ -91,6 +89,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             return ProcessProjectEvaluationHandlersAsync(version, update, isActiveContext, cancellationToken);
         }
 
+        public Task ApplyProjectEndBatchAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool isActiveContext, CancellationToken cancellationToken)
+        {
+            Requires.NotNull(update, nameof(update));
+
+            VerifyInitializedAndNotDisposed();
+
+            if (update.Value.ProjectChanges.TryGetValue(ProjectBuildRuleName, out IProjectChangeDescription projectChange) &&
+                projectChange.Difference.AnyChanges)
+            {
+                IComparable version = GetConfiguredProjectVersion(update);
+
+                ProcessProjectUpdateHandlers(version, update, isActiveContext, cancellationToken);
+            }
+
+            return Task.CompletedTask;
+        }
+
         public IEnumerable<string> GetProjectEvaluationRules()
         {
             VerifyInitializedAndNotDisposed();
@@ -120,11 +135,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             }
 
             _context = null;
-            _handlers = null;
+            _handlers = Array.Empty<ExportLifetimeContext<IWorkspaceContextHandler>>();
         }
 
         protected override void Initialize()
         {
+            Assumes.NotNull(_context);
+
             _handlers = _workspaceContextHandlerFactories.Select(h => h.CreateExport())
                                                          .ToArray();
 
@@ -136,6 +153,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         private void ProcessProjectBuildFailure(IProjectRuleSnapshot snapshot)
         {
+            Assumes.NotNull(_context);
+
             // If 'CompileDesignTime' didn't run due to a preceding failed target, or a failure in itself, IsEvaluationSucceeded returns false.
             //
             // We still forward those 'removes' of references, sources, etc onto Roslyn to avoid duplicate/incorrect results when the next
@@ -152,6 +171,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         private void ProcessOptions(IProjectRuleSnapshot snapshot)
         {
+            Assumes.NotNull(_context);
+
             // We just pass all options to Roslyn
             string commandlineArguments = string.Join(" ", snapshot.Items.Keys);
 
@@ -160,13 +181,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         private Task ProcessCommandLineAsync(IComparable version, IProjectChangeDiff differences, bool isActiveContext, CancellationToken cancellationToken)
         {
-            ICommandLineParserService parser = CommandLineParsers.FirstOrDefault()?.Value;
+            ICommandLineParserService? parser = CommandLineParsers.FirstOrDefault()?.Value;
 
             Assumes.Present(parser);
 
             string baseDirectory = Path.GetDirectoryName(_project.UnconfiguredProject.FullPath);
 
-            BuildOptions added = parser.Parse(differences.AddedItems, baseDirectory);
+            BuildOptions added = parser!.Parse(differences.AddedItems, baseDirectory);
             BuildOptions removed = parser.Parse(differences.RemovedItems, baseDirectory);
 
             return ProcessCommandLineHandlersAsync(version, added, removed, isActiveContext, cancellationToken);
@@ -204,6 +225,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             }
 
             return Task.CompletedTask;
+        }
+
+        private void ProcessProjectUpdateHandlers(IComparable version, IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool isActiveContext, CancellationToken cancellationToken)
+        {
+            foreach (ExportLifetimeContext<IWorkspaceContextHandler> handler in _handlers)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                if (handler.Value is IProjectUpdatedHandler evaluationHandler &&
+                    update.Value.ProjectChanges.TryGetValue(evaluationHandler.ProjectEvaluationRule, out IProjectChangeDescription projectChange) &&
+                    projectChange.Difference.AnyChanges)
+                {
+                    evaluationHandler.HandleProjectUpdate(version, projectChange, isActiveContext, _logger);
+                }
+            }
         }
 
         private static IComparable GetConfiguredProjectVersion(IProjectVersionedValue<IProjectSubscriptionUpdate> update)

@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                 if (subTreeProviderByProviderType.TryGetValue(dependency.ProviderType, out IProjectDependenciesSubTreeProvider provider) &&
                     provider is IProjectDependenciesSubTreeProviderInternal internalProvider)
                 {
-                    ImageMoniker implicitIcon = internalProvider.GetImplicitIcon();
+                    ImageMoniker implicitIcon = internalProvider.ImplicitIcon;
 
                     DependencyIconSet implicitIconSet = DependencyIconSetCache.Instance.GetOrAddIconSet(
                         implicitIcon,

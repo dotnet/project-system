@@ -23,19 +23,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
     {
         public const string ProviderTypeString = "ProjectDependency";
 
-        private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
-            icon: KnownMonikers.Application,
-            expandedIcon: KnownMonikers.Application,
-            unresolvedIcon: ManagedImageMonikers.ApplicationWarning,
-            unresolvedExpandedIcon: ManagedImageMonikers.ApplicationWarning);
-
         private static readonly SubTreeRootDependencyModel s_rootModel = new SubTreeRootDependencyModel(
             ProviderTypeString,
             Resources.ProjectsNodeName,
-            s_iconSet,
+            new DependencyIconSet(
+                icon: KnownMonikers.Application,
+                expandedIcon: KnownMonikers.Application,
+                unresolvedIcon: ManagedImageMonikers.ApplicationWarning,
+                unresolvedExpandedIcon: ManagedImageMonikers.ApplicationWarning),
             DependencyTreeFlags.ProjectSubTreeRootNode);
 
         public override string ProviderType => ProviderTypeString;
+
+        public override ImageMoniker ImplicitIcon => ManagedImageMonikers.ApplicationPrivate;
 
         [ImportingConstructor]
         public ProjectRuleHandler(
@@ -88,8 +88,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 isImplicit,
                 properties);
         }
-
-        public override ImageMoniker GetImplicitIcon() => ManagedImageMonikers.ApplicationPrivate;
 
         /// <summary>
         /// When some other project's snapshot changed we need to check if our snapshot has a top level

@@ -123,7 +123,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                         continue;
                     }
 
-                    IDependenciesSnapshot? updatedSnapshot = _aggregateSnapshotProvider.GetSnapshot(nodeProjectPath);
+                    IDependenciesSnapshot? updatedSnapshot = _aggregateSnapshotProvider.GetSnapshot(nodeProjectPath!);
 
                     IDependency? updatedDependency = updatedSnapshot?.FindDependency(existingDependencyId);
 
@@ -139,7 +139,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                         continue;
                     }
 
-                    if (!viewProvider.ShouldApplyChanges(nodeProjectPath, snapshot.ProjectPath, updatedDependency))
+                    if (!viewProvider.ShouldApplyChanges(nodeProjectPath!, snapshot.ProjectPath, updatedDependency))
                     {
                         continue;
                     }
@@ -147,7 +147,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                     using var scope = new GraphTransactionScope();
                     if (viewProvider.ApplyChanges(
                         graphContext,
-                        nodeProjectPath,
+                        nodeProjectPath!,
                         updatedDependency,
                         inputGraphNode,
                         updatedSnapshot!.DependenciesByTargetFramework[updatedDependency.TargetFramework]))

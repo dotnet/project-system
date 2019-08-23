@@ -4,15 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using NuGet.SolutionRestoreManager;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
     internal static partial class RestoreComparer
     {
-        private class ProjectRestoreInfoEqualityComparer : EqualityComparer<IVsProjectRestoreInfo2>
+        private class ProjectRestoreInfoEqualityComparer : EqualityComparer<IVsProjectRestoreInfo2?>
         {
-            public override bool Equals(IVsProjectRestoreInfo2 x, IVsProjectRestoreInfo2 y)
+            public override bool Equals(IVsProjectRestoreInfo2? x, IVsProjectRestoreInfo2? y)
             {
                 if (x is null || y is null)
                     return x == y;
@@ -35,8 +33,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 return xToolReferences.SequenceEqual(yToolReferences, ReferenceItems);
             }
 
-            public override int GetHashCode(IVsProjectRestoreInfo2 obj)
+            public override int GetHashCode(IVsProjectRestoreInfo2? obj)
             {
+                if (obj == null)
+                    return 0;
+
                 return obj.GetHashCode();
             }
         }

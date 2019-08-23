@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+
 using Microsoft.Build.Execution;
 
 #nullable disable
@@ -30,13 +31,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public override IProjectProperties GetCommonProperties()
         {
-            var defaultProperties = base.GetCommonProperties();
+            IProjectProperties defaultProperties = base.GetCommonProperties();
             return InterceptProperties(defaultProperties);
         }
 
         public override IProjectProperties GetCommonProperties(ProjectInstance projectInstance)
         {
-            var defaultProperties = base.GetCommonProperties(projectInstance);
+            IProjectProperties defaultProperties = base.GetCommonProperties(projectInstance);
             return InterceptProperties(defaultProperties);
         }
     }

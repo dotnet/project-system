@@ -4,8 +4,6 @@ using System.ComponentModel.Composition;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     [ExportInterceptingPropertyValueProvider("TargetFramework", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
@@ -23,6 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         {
             ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync();
             string targetFrameworkMoniker = (string)await configuration.TargetFrameworkMoniker.GetValueAsync();
+
             if (targetFrameworkMoniker != null)
             {
                 var targetFramework = new FrameworkName(targetFrameworkMoniker);

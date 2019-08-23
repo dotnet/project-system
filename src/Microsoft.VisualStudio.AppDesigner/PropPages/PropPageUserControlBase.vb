@@ -2804,9 +2804,9 @@ NextControl:
         '''   uses the information already in the PropertyControlData for the page.
         ''' </summary>
         ''' <remarks></remarks>
-        Protected Overridable Sub EnableAllControls(_enabled As Boolean)
+        Protected Overridable Sub EnableAllControls(enabled As Boolean)
             For Each _controlData As PropertyControlData In ControlData
-                _controlData.EnableControls(_enabled)
+                _controlData.EnableControls(enabled)
             Next _controlData
         End Sub
 

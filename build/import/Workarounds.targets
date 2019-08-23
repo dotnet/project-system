@@ -1,0 +1,18 @@
+<Project>
+  
+  <!-- Both xunit.runner.console and xunit.runner.visualstudio carry the same file, 
+       remove it to avoid double-write. 
+  -->
+  <PropertyGroup>
+    <PrepareForBuildDependsOn>RemoveDuplicateXUnitAbstractions;$(PrepareForBuildDependsOn)</PrepareForBuildDependsOn>
+  </PropertyGroup>
+
+  <Target Name="RemoveDuplicateXUnitAbstractions">
+
+    <ItemGroup>
+      <None Remove="@(None)" Condition="'%(Filename)%(Extension)' == 'xunit.abstractions.dll'" />
+    </ItemGroup>
+
+  </Target>
+  
+</Project>

@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.ProjectSystem.VS;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>

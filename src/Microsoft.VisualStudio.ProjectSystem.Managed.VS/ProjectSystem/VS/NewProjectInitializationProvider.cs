@@ -2,8 +2,6 @@
 
 using System.ComponentModel.Composition;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>
@@ -22,6 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         public bool WasNewlyCreated { get; private set; }
+
         public void InitializeNewProject()
         {
             WasNewlyCreated = true;

@@ -1,22 +1,20 @@
 <!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 <Project>
-  <Import Project="build\NuGet.props"/>
-  <Import Project="build\Versions.props"/>
-  <Import Project="build\RepoToolset\RestoreSources.props"/>
+  <PropertyGroup>
+    <IsUnitTestProject Condition="'$(IsUnitTestProject)' == ''">false</IsUnitTestProject>
+    <IsIntegrationTestProject Condition="'$(IsIntegrationTestProject)' == ''">false</IsIntegrationTestProject>
+    <IsTestProject Condition="'$(IsTestProject)' == ''">false</IsTestProject>
+    <OutDirName Condition="'$(OutDirName)' == ''">Dlls</OutDirName>
+  </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="RoslynTools.RepoToolset" />
-  </ItemGroup>
+  <Import Project="build\import\NuGet.props"/>
+  <Import Project="build\import\Versions.props"/>
 
   <PropertyGroup>
     <!-- Workaround for https://github.com/dotnet/sdk/issues/2288 -->
     <LanguageTargets Condition="'$(MSBuildProjectExtension)' == '.proj'">$(MSBuildToolsPath)\Microsoft.Common.targets</LanguageTargets>
 
     <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
-
-    <RestoreSources>$(RestoreSources);https://dotnet.myget.org/F/roslyn-tools/api/v3/index.json</RestoreSources>
-    
-    <RepoRoot>$(MSBuildThisFileDirectory)</RepoRoot>
 
     <!--  
       RepoToolset props and targets are conditionally imported based on whether RepoToolsetDir is set or not
@@ -43,19 +41,11 @@
     <ForceGenerationOfBindingRedirects>true</ForceGenerationOfBindingRedirects>
   </PropertyGroup>
 
-  <!-- Workaround https://github.com/dotnet/sdk/issues/1510 -->
-  <Target Name="WorkaroundConflictResolution" AfterTargets="_ComputeActiveTFMFileDependencies"
-          Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
-    <ItemGroup>
-      <_ActiveTFMFileDependencies Remove="@(_ActiveTFMFileDependencies->WithMetadataValue('FileGroup', 'RuntimeTarget'))" />
-    </ItemGroup>
-  </Target>
-
   <!-- 
     TODO: Import layout props so that design-time build executed before package restore is finished doesn't
     product artifacts into wrong obj directories. Remove once we can use a custom SDK (https://github.com/Microsoft/msbuild/issues/1493)
   -->
-  <Import Project="build\RepoToolset\ProjectLayout.props"/>
+  <Import Project="build\import\ProjectLayout.props"/>
 
   <!--
     Determine whether the project is WPF temp project.
@@ -81,4 +71,46 @@
   -->
   <Import Project="$(_WpfTempProjectNuGetFileNameNoExt).props" Condition="'$(_WpfTempProjectNuGetFileNameNoExt)' != '' and Exists('$(_WpfTempProjectNuGetFileNameNoExt).props')"/>
 
+  <Import Project="$(RepoToolsetDir)Settings.props" Condition="'$(ExcludeRestorePackageImports)' != 'true' AND Exists('$(RepoToolsetDir)Settings.props')" />
+
+  <PropertyGroup>
+    <_IsVisualStudioDeveloperBuild Condition="'$(OfficialBuild)' != 'true' AND '$(CIBuild)' != 'true' AND '$(BuildingInsideVisualStudio)' == 'true'">true</_IsVisualStudioDeveloperBuild>
+
+    <!-- Code Coverage doesn't currently work for portable/embedded PDBs - force to full inside Visual Studio builds -->
+    <DebugType Condition="'$(_IsVisualStudioDeveloperBuild)' == 'true'">full</DebugType>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <MinimumVisualStudioVersion>16.0</MinimumVisualStudioVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Language)' == 'C#'">
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <LangVersion>8.0</LangVersion>
+    <!-- New name -->
+    <Nullable>enable</Nullable>
+    
+    <!-- Old name while we wait for new name to be everywhere -->
+    <NullableContextOptions>enable</NullableContextOptions>
+    <Features>strict</Features>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Language)' == 'VB'">
+    <!-- Build machines only have Visual Studio 15.5 (which comes with VB 15.3) -->
+    <LangVersion>15.3</LangVersion>
+    <!-- The default is Embed -->
+    <VBRuntime>Default</VBRuntime>
+    <RemoveIntegerChecks>true</RemoveIntegerChecks>
+    <Features>strict</Features>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Use IBC optimization data if available -->
+    <IbcOptimizationDataDir Condition="$(EnableIbc) == 'true'">$(NuGetPackageRoot)\RoslynDependencies.ProjectSystem.OptimizationData\$(RoslynDependenciesProjectSystemOptimizationDataVersion)\content\OptimizationData\</IbcOptimizationDataDir>
+
+    <UseCommonOutputDirectory Condition="'$(UseCommonOutputDirectory)' == ''">true</UseCommonOutputDirectory>
+     
+    <NoWarn>$(NoWarn);NU5125</NoWarn>
+  </PropertyGroup>
 </Project>

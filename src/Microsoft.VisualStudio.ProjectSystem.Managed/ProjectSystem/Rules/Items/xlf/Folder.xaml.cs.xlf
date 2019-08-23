@@ -18,8 +18,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|Description">
-        <source>Location of the folder</source>
-        <target state="translated">Umístění složky</target>
+        <source>Location of the folder.</source>
+        <target state="needs-review-translation">Umístění složky</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FolderName|DisplayName">
@@ -28,8 +28,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FolderName|Description">
-        <source>Name of this folder</source>
-        <target state="translated">Název této složky</target>
+        <source>Name of this folder.</source>
+        <target state="needs-review-translation">Název této složky</target>
         <note />
       </trans-unit>
     </body>

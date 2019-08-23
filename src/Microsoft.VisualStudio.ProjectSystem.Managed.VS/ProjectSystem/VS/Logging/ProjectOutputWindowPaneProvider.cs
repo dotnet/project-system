@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
 {
     [Export(typeof(IProjectOutputWindowPaneProvider))]
@@ -18,26 +16,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
 
         private readonly IProjectThreadingService _threadingService;
         private readonly IVsUIService<IVsOutputWindow> _outputWindow;
-        private readonly AsyncLazy<IVsOutputWindowPane> _outputWindowPane;
+        private readonly AsyncLazy<IVsOutputWindowPane?> _outputWindowPane;
 
         [ImportingConstructor]
         public ProjectOutputWindowPaneProvider(IProjectThreadingService threadingService, IVsUIService<SVsOutputWindow, IVsOutputWindow> outputWindow)
         {
             _threadingService = threadingService;
             _outputWindow = outputWindow;
-            _outputWindowPane = new AsyncLazy<IVsOutputWindowPane>(CreateOutputWindowPaneAsync, threadingService.JoinableTaskFactory);
+            _outputWindowPane = new AsyncLazy<IVsOutputWindowPane?>(CreateOutputWindowPaneAsync, threadingService.JoinableTaskFactory);
         }
 
-        public Task<IVsOutputWindowPane> GetOutputWindowPaneAsync()
+        public Task<IVsOutputWindowPane?> GetOutputWindowPaneAsync()
         {
             return _outputWindowPane.GetValueAsync();
         }
 
-        private async Task<IVsOutputWindowPane> CreateOutputWindowPaneAsync()
+        private async Task<IVsOutputWindowPane?> CreateOutputWindowPaneAsync()
         {
             await _threadingService.SwitchToUIThread();
 
-            IVsOutputWindow outputWindow = _outputWindow.Value;
+            IVsOutputWindow? outputWindow = _outputWindow.Value;
             if (outputWindow == null)
                 return null;    // Command-line build
 

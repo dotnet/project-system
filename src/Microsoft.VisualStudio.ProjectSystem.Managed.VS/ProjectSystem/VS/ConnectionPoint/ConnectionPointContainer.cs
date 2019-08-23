@@ -6,8 +6,6 @@ using System.Runtime.InteropServices;
 
 using Microsoft.VisualStudio.OLE.Interop;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint
 {
     /// <summary>

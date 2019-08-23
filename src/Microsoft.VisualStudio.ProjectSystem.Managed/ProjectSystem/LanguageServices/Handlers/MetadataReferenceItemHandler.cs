@@ -8,8 +8,6 @@ using System.ComponentModel.Composition;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
     /// <summary>
@@ -116,8 +114,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             if (aliases.IsDefaultOrEmpty)
             {
                 return s_listWithGlobalAlias;
-
             }
+
             return aliases;
         }
 

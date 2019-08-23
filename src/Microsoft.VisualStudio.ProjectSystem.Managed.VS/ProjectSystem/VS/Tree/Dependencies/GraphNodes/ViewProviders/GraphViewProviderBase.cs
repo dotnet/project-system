@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 using Microsoft.VisualStudio.GraphModel;
@@ -119,7 +120,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
         public virtual bool MatchSearchResults(
             IDependency topLevelDependency,
             Dictionary<string, HashSet<IDependency>> searchResultsPerContext,
-            out HashSet<IDependency>? topLevelDependencyMatches)
+            [NotNullWhen(returnValue: true)] out HashSet<IDependency>? topLevelDependencyMatches)
         {
             topLevelDependencyMatches = null;
             return false;

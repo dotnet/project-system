@@ -6,8 +6,6 @@ using System.Runtime.InteropServices;
 
 using Microsoft.VisualStudio.OLE.Interop;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint
 {
     /// <summary>
@@ -34,16 +32,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint
 
         public void Advise(object pUnkSink, out uint pdwCookie)
         {
-            var sink = pUnkSink as TSinkType;
-            if (null == sink)
+            if (pUnkSink is TSinkType sink)
             {
-                Marshal.ThrowExceptionForHR(HResult.NoInterface);
+                _sinks.Add(_nextCookie, sink);
+                pdwCookie = _nextCookie;
+                _source.OnSinkAdded(sink);
+                _nextCookie += 1;
+                return;
             }
 
-            _sinks.Add(_nextCookie, sink);
-            pdwCookie = _nextCookie;
-            _source.OnSinkAdded(sink);
-            _nextCookie += 1;
+            Marshal.ThrowExceptionForHR(HResult.NoInterface);
+            pdwCookie = default;
         }
 
         public void EnumConnections(out IEnumConnections ppEnum)

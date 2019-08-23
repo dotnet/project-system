@@ -288,6 +288,24 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Renaming Type.
+        /// </summary>
+        internal static string Renaming_Type {
+            get {
+                return ResourceManager.GetString("Renaming_Type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Renaming Type from &apos;{0}&apos; to &apos;{1}&apos;.
+        /// </summary>
+        internal static string Renaming_Type_from_0_to_1 {
+            get {
+                return ResourceManager.GetString("Renaming_Type_from_0_to_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The metadata on &apos;DotNetCliToolReference&apos; item &apos;{0}&apos; is inconsistent between target frameworks. Only the first one will be restored..
         /// </summary>
         internal static string Restore_DuplicateToolReferenceItems {

@@ -12,8 +12,6 @@ using Microsoft.VisualStudio.Threading;
 
 using Task = System.Threading.Tasks.Task;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
     /// <summary>
@@ -37,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             _listedValues = new AsyncLazy<ICollection<IEnumValue>>(delegate
             {
-                ILaunchSettings curSnapshot = profileProvider.CurrentSnapshot;
+                ILaunchSettings? curSnapshot = profileProvider.CurrentSnapshot;
                 if (curSnapshot != null)
                 {
                     return Task.FromResult(GetEnumeratorEnumValues(curSnapshot));
@@ -79,13 +77,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             (
                 from profile in profiles.Profiles
                 let value = new EnumValue { Name = profile.Name, DisplayName = EscapeMnemonics(profile.Name) }
-                select ((IEnumValue)new PageEnumValue(value))).ToList()
+                select (IEnumValue)new PageEnumValue(value)).ToList()
             );
 
             return result;
         }
 
-        private static string EscapeMnemonics(string text)
+        private static string? EscapeMnemonics(string text)
         {
             return text?.Replace("&", "&&");
         }

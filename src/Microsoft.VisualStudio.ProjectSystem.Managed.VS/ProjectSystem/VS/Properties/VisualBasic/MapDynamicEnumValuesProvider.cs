@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic
 {
     /// <summary>
@@ -17,11 +15,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic
     internal class MapDynamicEnumValuesProvider : IDynamicEnumValuesGenerator
     {
         private readonly IDictionary<string, IEnumValue> _valueMap;
-        private readonly ICollection<IEnumValue> _getValues;
+        private readonly ICollection<IEnumValue>? _getValues;
 
         public MapDynamicEnumValuesProvider(
             IDictionary<string, IEnumValue> valueMap,
-            ICollection<IEnumValue> getValues = null)
+            ICollection<IEnumValue>? getValues = null)
         {
             Requires.NotNull(valueMap, nameof(valueMap));
 
@@ -36,17 +34,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic
             return Task.FromResult(_getValues ?? _valueMap.Values);
         }
 
-        public Task<IEnumValue> TryCreateEnumValueAsync(string userSuppliedValue)
+        public Task<IEnumValue?> TryCreateEnumValueAsync(string userSuppliedValue)
         {
-            if (_valueMap != null)
+            if (_valueMap.TryGetValue(userSuppliedValue, out IEnumValue? value))
             {
-                if (_valueMap.TryGetValue(userSuppliedValue, out IEnumValue value))
-                {
-                    return Task.FromResult(value);
-                }
+                return Task.FromResult<IEnumValue?>(value);
             }
 
-            return Task.FromResult<IEnumValue>(null);
+            return Task.FromResult<IEnumValue?>(null);
         }
     }
 }

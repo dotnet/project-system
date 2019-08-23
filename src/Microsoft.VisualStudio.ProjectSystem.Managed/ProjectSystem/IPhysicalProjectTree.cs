@@ -2,8 +2,6 @@
 
 using Microsoft.VisualStudio.Composition;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
@@ -23,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <summary>
         ///     Gets the most recently published tree, or <see langword="null"/> if it has not yet be published.
         /// </summary>
-        IProjectTree CurrentTree
+        IProjectTree? CurrentTree
         {
             get;
         }

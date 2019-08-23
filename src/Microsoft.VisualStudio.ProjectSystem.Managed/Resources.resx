@@ -146,8 +146,8 @@
   <data name="FrameworkAssembliesNodeName" xml:space="preserve">
     <value>Framework Assemblies</value>
   </data>
-  <data name="NuGetPackagesNodeName" xml:space="preserve">
-    <value>NuGet</value>
+  <data name="PackagesNodeName" xml:space="preserve">
+    <value>Packages</value>
   </data>
   <data name="ProjectsNodeName" xml:space="preserve">
     <value>Projects</value>

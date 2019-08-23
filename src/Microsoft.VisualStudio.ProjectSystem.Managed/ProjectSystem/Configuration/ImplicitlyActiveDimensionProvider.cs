@@ -8,8 +8,6 @@ using System.Linq;
 
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 {
     /// <summary>

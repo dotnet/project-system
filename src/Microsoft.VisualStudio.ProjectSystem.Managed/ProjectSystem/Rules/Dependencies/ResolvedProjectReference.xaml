@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="ResolvedProjectReference"
+      Description="Reference Properties"
+      DisplayName="Resolved Project Reference"
+      PageTemplate="generic"
+      xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource HasConfigurationCondition="False"
+                ItemType="ProjectReference"
+                MSBuildTarget="ResolveProjectReferencesDesignTime"
+                Persistence="ResolvedReference"
+                SourceOfDefaultValue="AfterContext"
+                SourceType="TargetResults" />
+  </Rule.DataSource>
+
+  <StringListProperty Name="Aliases"
+                      Description="A comma-delimited list of aliases to this reference."
+                      DisplayName="Aliases"
+                      Separator=",">
+    <StringListProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  ItemType="ProjectReference"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringListProperty.DataSource>
+  </StringListProperty>
+
+  <BoolProperty Name="CopyLocal"
+                Description="Indicates whether the reference will be copied to the output directory."
+                DisplayName="Copy Local">
+    <BoolProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  ItemType="ProjectReference"
+                  PersistedName="Private"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+
+  <BoolProperty Name="CopyLocalSatelliteAssemblies"
+                Description="Indicates whether the satellite assemblies of the reference target should be copied into this project's output directory."
+                DisplayName="Copy Local Satellite Assemblies">
+    <BoolProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  ItemType="ProjectReference"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+
+  <StringProperty Name="Culture"
+                  Description="The value of the culture field from the assembly metadata."
+                  DisplayName="Culture"
+                  ReadOnly="True" />
+
+  <StringProperty Name="Description"
+                  Description="The value of the Title field from the assembly metadata."
+                  DisplayName="Description"
+                  ReadOnly="True" />
+
+  <BoolProperty Name="EmbedInteropTypes"
+                Description="Indicates whether types defined in this assembly will be embedded into the target assembly."
+                DisplayName="Embed Interop Types">
+    <BoolProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  ItemType="ProjectReference"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+
+  <StringProperty Name="ExcludeAssets"
+                  Description="Assets to exclude from this reference."
+                  DisplayName="Exclude Assets">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  ItemType="ProjectReference"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <EnumProperty Name="FileType"
+                ReadOnly="True"
+                Visible="False">
+    <EnumValue Name="Assembly" />
+    <EnumValue Name="ActiveX" />
+    <EnumValue Name="Native Assembly" />
+  </EnumProperty>
+
+  <StringProperty Name="FusionName"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="HintPath"
+                  Visible="false" />
+
+  <StringProperty Name="Identity"
+                  Description="Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence)."
+                  DisplayName="Identity"
+                  ReadOnly="True">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="{}{Identity}"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <StringProperty Name="IncludeAssets"
+                  Description="Assets to include from this reference."
+                  DisplayName="Include Assets">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  ItemType="ProjectReference"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <StringProperty Name="IsImplicitlyDefined"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <BoolProperty Name="IsWinMDFile"
+                Visible="false" />
+
+  <StringProperty Name="Name"
+                  ReadOnly="True"
+                  Visible="false" />
+
+  <StringProperty Name="OriginalItemSpec"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="PrivateAssets"
+                  Description="Assets that are private in this reference."
+                  DisplayName="Private Assets">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  ItemType="ProjectReference"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <StringProperty Name="Project"
+                  Visible="False" />
+
+  <BoolProperty Name="ReferenceOutputAssembly"
+                Description="A value indicating whether the compiler should include a reference to the target project's primary output assembly."
+                DisplayName="Reference Output Assembly">
+    <BoolProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  ItemType="ProjectReference"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+
+  <StringProperty Name="RequiredTargetFramework"
+                  Visible="False" />
+
+  <StringProperty Name="ResolvedPath"
+                  Description="Location of the file being referenced."
+                  DisplayName="Path"
+                  ReadOnly="True">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="Identity"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <StringProperty Name="RuntimeVersion"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="SDKIdentity"
+                  Visible="false" />
+
+  <BoolProperty Name="SpecificVersion"
+                Visible="False" />
+
+  <BoolProperty Name="StrongName"
+                ReadOnly="True"
+                Visible="False" />
+
+  <StringProperty Name="Version"
+                  Description="Version of reference."
+                  DisplayName="Version"
+                  ReadOnly="True" />
+
+  <BoolProperty Name="Visible"
+                ReadOnly="True"
+                Visible="False" />
+
+  <BoolProperty Name="WinMDFile"
+                ReadOnly="True"
+                Visible="false" />
+
+</Rule>

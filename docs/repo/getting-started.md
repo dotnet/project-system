@@ -1,7 +1,7 @@
 # Getting Started
 
 #### Prerequisites
-- [Visual Studio 2019](https://visualstudio.microsoft.com/downloads/)
+- [Visual Studio 16.3 Preview 2 or higher](https://visualstudio.microsoft.com/vs/preview/)
 - GitHub account
 - Basic Git experience: https://try.github.io/
 
@@ -54,9 +54,6 @@ This builds, runs tests and deploys to an experimental instance of Visual Studio
 From within [Visual Studio 2019](https://visualstudio.microsoft.com/downloads/), open _ProjectSystem.sln_.
 
 Inside Visual Studio, you can build, run tests and deploy.
-
-__NOTE:__ To workaround a bug preventing Visual Studio from restoring this repro, run `build.cmd` once from a Visual Studio Developer Prompt, as called out above.
-
 
 ## Debugging/Deploying
 

@@ -3,8 +3,6 @@
 using System;
 using System.Threading.Tasks.Dataflow;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>

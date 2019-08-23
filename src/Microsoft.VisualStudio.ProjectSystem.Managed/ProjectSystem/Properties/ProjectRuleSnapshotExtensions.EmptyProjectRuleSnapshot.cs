@@ -3,8 +3,6 @@
 using System;
 using System.Collections.Immutable;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     internal static partial class ProjectRuleSnapshotExtensions

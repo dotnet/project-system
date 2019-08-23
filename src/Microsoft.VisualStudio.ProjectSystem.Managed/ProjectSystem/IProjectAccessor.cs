@@ -8,8 +8,6 @@ using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
 using Microsoft.VisualStudio.Composition;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>

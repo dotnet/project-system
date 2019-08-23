@@ -1,8 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
@@ -42,16 +39,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public static bool IsFolder(this ProjectTreeFlags flags)
         {
             return flags.HasFlag(ProjectTreeFlags.Common.Folder);
-        }
-
-        /// <summary>
-        ///     Returns a value indicating whether the specified flags exist.
-        /// </summary>
-        public static bool Contains(this ProjectTreeFlags source, ProjectTreeFlags flags)
-        {
-            ProjectTreeFlags newFlags = source.Except(flags);
-
-            return ((source.Count - newFlags.Count)) == flags.Count;
         }
     }
 }

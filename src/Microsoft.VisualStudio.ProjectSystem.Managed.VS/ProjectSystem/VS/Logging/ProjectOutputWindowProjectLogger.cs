@@ -6,8 +6,6 @@ using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
 using Microsoft.VisualStudio.Shell.Interop;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
 {
     /// <summary>
@@ -44,9 +42,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
                 // as via build), then we'll need to implement a better queueing mechanism.
                 _threadingService.RunAndForget(async () =>
                 {
-                    IVsOutputWindowPane pane = await _outputWindowProvider.GetOutputWindowPaneAsync();
+                    IVsOutputWindowPane? pane = await _outputWindowProvider.GetOutputWindowPaneAsync();
 
-                    pane.OutputStringNoPump(text);
+                    pane?.OutputStringNoPump(text);
 
                 }, options: ForkOptions.HideLocks | ForkOptions.StartOnMainThread,
                    configuredProject: null);    // Not tied to one particular project

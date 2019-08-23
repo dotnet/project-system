@@ -4,8 +4,6 @@ using System.Collections.Generic;
 
 using NuGet.SolutionRestoreManager;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
     /// <summary>
@@ -14,10 +12,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
     internal class ReferenceProperties : ImmutablePropertyCollection<IVsReferenceProperty>, IVsReferenceProperties
     {
         public ReferenceProperties(IEnumerable<IVsReferenceProperty> items)
-            : base(items)
+            : base(items, item => item.Name)
         {
         }
-
-        protected override string GetKeyForItem(IVsReferenceProperty value) => value.Name;
     }
 }

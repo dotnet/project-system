@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.Build.Construction;
 using Microsoft.VisualStudio.Threading;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.CSharp
 {
     /// <summary>

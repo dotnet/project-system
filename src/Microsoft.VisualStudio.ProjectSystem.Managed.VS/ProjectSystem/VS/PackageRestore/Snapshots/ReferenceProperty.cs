@@ -3,8 +3,6 @@
 using System.Diagnostics;
 using NuGet.SolutionRestoreManager;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
     /// <summary>
@@ -16,7 +14,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         public ReferenceProperty(string name, string value)
         {
             Requires.NotNullOrEmpty(name, nameof(name));
-            Requires.NotNull(value, nameof(value));
 
             Name = name;
             Value = value;

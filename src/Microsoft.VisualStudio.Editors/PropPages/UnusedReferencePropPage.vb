@@ -178,9 +178,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Enable/disable remove button and set whether there 
         ''' are changes to apply (IsDirty).
         ''' </summary>
-        ''' <param name="_enabled">Enable or disable</param>
+        ''' <param name="enabled">Enable or disable</param>
         ''' <remarks>Use when proppage is on a PropPageHostDialog</remarks>
-        Private Sub EnableRemoveRefs(_enabled As Boolean)
+        Private Sub EnableRemoveRefs(enabled As Boolean)
 
             If ParentForm IsNot Nothing Then
                 Debug.Assert(TypeOf ParentForm Is PropPageHostDialog, "Unused references list should be on host dialog")
@@ -188,10 +188,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Dim RemoveButton As Button = CType(ParentForm, PropPageHostDialog).OK
 
                 ' Enable/Disable group
-                RemoveButton.Enabled = _enabled
+                RemoveButton.Enabled = enabled
 
                 ' indicate if we have references to remove on apply()
-                If (_enabled) Then
+                If (enabled) Then
                     SetDirty(Me)
                     RemoveButton.DialogResult = DialogResult.OK
                 Else

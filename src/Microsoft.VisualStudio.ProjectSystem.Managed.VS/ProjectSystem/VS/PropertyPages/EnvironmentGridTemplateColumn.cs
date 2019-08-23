@@ -5,22 +5,19 @@ using System.Windows.Controls;
 
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
     internal class EnvironmentDataGridTemplateColumn : DataGridTemplateColumn
     {
-        protected override object PrepareCellForEdit(FrameworkElement frameworkElement, RoutedEventArgs routedEventArgs)
+        protected override object? PrepareCellForEdit(FrameworkElement frameworkElement, RoutedEventArgs routedEventArgs)
         {
             if (frameworkElement is ContentPresenter contentPresenter)
             {
-                TextBox textBox = WpfHelper.GetVisualChild<TextBox>(contentPresenter);
-                if (textBox != null)
-                {
-                    textBox.SelectAll();
-                }
+                TextBox? textBox = WpfHelper.GetVisualChild<TextBox>(contentPresenter);
+
+                textBox?.SelectAll();
             }
+
             return null;
         }
     }

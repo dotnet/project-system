@@ -2,8 +2,6 @@
 
 using System.Threading.Tasks;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.Threading
 {
     /// <summary>

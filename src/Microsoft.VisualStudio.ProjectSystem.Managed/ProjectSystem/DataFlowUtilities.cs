@@ -6,8 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
@@ -40,7 +38,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     </para>
         ///     <paramref name="target"/> is <see langword="null"/>.
         /// </exception>
-        public static IDisposable LinkToAction(this ISourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> source, Action<IProjectVersionedValue<IProjectSubscriptionUpdate>> target, bool suppressVersionOnlyUpdates = true, params string[] ruleNames)
+        public static IDisposable LinkToAction(
+            this ISourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> source,
+            Action<IProjectVersionedValue<IProjectSubscriptionUpdate>> target,
+            bool suppressVersionOnlyUpdates = true,
+            params string[] ruleNames)
         {
             Requires.NotNull(source, nameof(source));
             Requires.NotNull(target, nameof(target));
@@ -77,7 +79,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     </para>
         ///     <paramref name="target"/> is <see langword="null"/>.
         /// </exception>
-        public static IDisposable LinkToAction(this ISourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> source, Action<IProjectVersionedValue<IProjectSubscriptionUpdate>> target, bool suppressVersionOnlyUpdates = true, IEnumerable<string> ruleNames = null)
+        public static IDisposable LinkToAction(
+            this ISourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> source,
+            Action<IProjectVersionedValue<IProjectSubscriptionUpdate>> target,
+            bool suppressVersionOnlyUpdates = true,
+            IEnumerable<string>? ruleNames = null)
         {
             Requires.NotNull(source, nameof(source));
             Requires.NotNull(target, nameof(target));
@@ -114,7 +120,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     </para>
         ///     <paramref name="target"/> is <see langword="null"/>.
         /// </exception>
-        public static IDisposable LinkToAsyncAction(this ISourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> source, Func<IProjectVersionedValue<IProjectSubscriptionUpdate>, Task> target, bool suppressVersionOnlyUpdates = true, params string[] ruleNames)
+        public static IDisposable LinkToAsyncAction(
+            this ISourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> source,
+            Func<IProjectVersionedValue<IProjectSubscriptionUpdate>, Task> target,
+            bool suppressVersionOnlyUpdates = true,
+            params string[] ruleNames)
         {
             Requires.NotNull(source, nameof(source));
             Requires.NotNull(target, nameof(target));
@@ -151,7 +161,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     </para>
         ///     <paramref name="target"/> is <see langword="null"/>.
         /// </exception>
-        public static IDisposable LinkToAsyncAction(this ISourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> source, Func<IProjectVersionedValue<IProjectSubscriptionUpdate>, Task> target, bool suppressVersionOnlyUpdates = true, IEnumerable<string> ruleNames = null)
+        public static IDisposable LinkToAsyncAction(
+            this ISourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> source,
+            Func<IProjectVersionedValue<IProjectSubscriptionUpdate>, Task> target,
+            bool suppressVersionOnlyUpdates = true,
+            IEnumerable<string>? ruleNames = null)
         {
             Requires.NotNull(source, nameof(source));
             Requires.NotNull(target, nameof(target));
@@ -232,7 +246,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     </para>
         ///     <paramref name="transform"/> is <see langword="null"/>.
         /// </exception>
-        public static DisposableValue<ISourceBlock<TOut>> Transform<TInput, TOut>(this ISourceBlock<IProjectVersionedValue<TInput>> source, Func<IProjectVersionedValue<TInput>, TOut> transform)
+        public static DisposableValue<ISourceBlock<TOut>> Transform<TInput, TOut>(
+            this ISourceBlock<IProjectVersionedValue<TInput>> source,
+            Func<IProjectVersionedValue<TInput>, TOut> transform)
         {
             Requires.NotNull(source, nameof(source));
             Requires.NotNull(transform, nameof(transform));
@@ -271,7 +287,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     </para>
         ///     <paramref name="transform"/> is <see langword="null"/>.
         /// </exception>
-        public static DisposableValue<ISourceBlock<TOut>> TransformWithNoDelta<TInput, TOut>(this ISourceBlock<IProjectVersionedValue<TInput>> source, Func<IProjectVersionedValue<TInput>, TOut> transform)
+        public static DisposableValue<ISourceBlock<TOut>> TransformWithNoDelta<TInput, TOut>(
+            this ISourceBlock<IProjectVersionedValue<TInput>> source,
+            Func<IProjectVersionedValue<TInput>, TOut> transform)
         {
             Requires.NotNull(source, nameof(source));
             Requires.NotNull(transform, nameof(transform));
@@ -314,7 +332,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     </para>
         ///     <paramref name="transform"/> is <see langword="null"/>.
         /// </exception>
-        public static DisposableValue<ISourceBlock<TOut>> TransformWithNoDelta<TOut>(this ISourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> source, Func<IProjectVersionedValue<IProjectSubscriptionUpdate>, TOut> transform, bool suppressVersionOnlyUpdates, IEnumerable<string> ruleNames = null)
+        public static DisposableValue<ISourceBlock<TOut>> TransformWithNoDelta<TOut>(
+            this ISourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> source,
+            Func<IProjectVersionedValue<IProjectSubscriptionUpdate>, TOut> transform,
+            bool suppressVersionOnlyUpdates,
+            IEnumerable<string>? ruleNames = null)
         {
             Requires.NotNull(source, nameof(source));
             Requires.NotNull(transform, nameof(transform));
@@ -351,7 +373,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             {
                 SynchronizationContext currentSynchronizationContext = SynchronizationContext.Current;
                 using ExecutionContext copy = context.CreateCopy();
-                Task result = null;
+                Task? result = null;
                 ExecutionContext.Run(
                     copy,
                     state =>
@@ -360,7 +382,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                         result = function(input);
                     },
                     null);
-                return result;
+                return result!;
             };
         }
     }

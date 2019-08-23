@@ -15,8 +15,6 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Task = System.Threading.Tasks.Task;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.Packaging
 {
     [Guid(PackageGuid)]
@@ -45,8 +43,8 @@ namespace Microsoft.VisualStudio.Packaging
                                                   ProjectCapability.LanguageService + "; " +
                                                   ProjectCapability.DotNet;
 
-        private IDotNetCoreProjectCompatibilityDetector _dotNetCoreCompatibilityDetector;
-        private IVsRegisterProjectSelector _projectSelectorService;
+        private IDotNetCoreProjectCompatibilityDetector? _dotNetCoreCompatibilityDetector;
+        private IVsRegisterProjectSelector? _projectSelectorService;
         private uint _projectSelectorCookie = VSConstants.VSCOOKIE_NIL;
 
         public ManagedProjectSystemPackage()
@@ -66,7 +64,7 @@ namespace Microsoft.VisualStudio.Packaging
             var componentModel = (IComponentModel)(await GetServiceAsync(typeof(SComponentModel)));
             Lazy<DebugFrameworksDynamicMenuCommand> debugFrameworksCmd = componentModel.DefaultExportProvider.GetExport<DebugFrameworksDynamicMenuCommand>();
 
-            var mcs = (await GetServiceAsync(typeof(IMenuCommandService))) as OleMenuCommandService;
+            var mcs = (OleMenuCommandService)await GetServiceAsync(typeof(IMenuCommandService));
             mcs.AddCommand(debugFrameworksCmd.Value);
 
             Lazy<DebugFrameworkPropertyMenuTextUpdater> debugFrameworksMenuTextUpdater = componentModel.DefaultExportProvider.GetExport<DebugFrameworkPropertyMenuTextUpdater>();

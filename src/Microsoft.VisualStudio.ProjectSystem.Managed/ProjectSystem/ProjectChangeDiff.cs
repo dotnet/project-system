@@ -2,8 +2,6 @@
 
 using System.Collections.Immutable;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
@@ -11,7 +9,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
     /// </summary>
     internal class ProjectChangeDiff : IProjectChangeDiff
     {
-        public ProjectChangeDiff(IImmutableSet<string> addedItems = null, IImmutableSet<string> removedItems = null, IImmutableSet<string> changedItems = null, IImmutableDictionary<string, string> renamedItems = null)
+        public ProjectChangeDiff(
+            IImmutableSet<string>? addedItems = null,
+            IImmutableSet<string>? removedItems = null,
+            IImmutableSet<string>? changedItems = null,
+            IImmutableDictionary<string, string>? renamedItems = null)
         {
             AddedItems = addedItems ?? ImmutableStringHashSet.EmptyOrdinal;
             RemovedItems = removedItems ?? ImmutableStringHashSet.EmptyOrdinal;

@@ -4,8 +4,6 @@ using System.Threading;
 
 using Microsoft.VisualStudio.Composition;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>
@@ -19,6 +17,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     /// </typeparam>
     [ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface IVsService<TService, TInterface> : IVsService<TInterface>
+        where TService : class
+        where TInterface : class
     {
     }
 }

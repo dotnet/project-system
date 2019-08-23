@@ -166,6 +166,16 @@ Um das Projekt zu debuggen, fügen Sie dieser Projektmappe ein ausführbares Pro
         <target state="new">User Control (Windows Forms) Designer</target>
         <note />
       </trans-unit>
+      <trans-unit id="Renaming_Type">
+        <source>Renaming Type</source>
+        <target state="new">Renaming Type</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Renaming_Type_from_0_to_1">
+        <source>Renaming Type from '{0}' to '{1}'</source>
+        <target state="new">Renaming Type from '{0}' to '{1}'</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -1,0 +1,66 @@
+<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Project>
+  <PropertyGroup>
+    <BannedSymbolsOptOut Condition="$(IsTestProject)">true</BannedSymbolsOptOut>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <!-- Framework -->
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    
+    <!-- Toolset -->
+    <PackageReference Include="MicroBuild.Core" ExcludeAssets="All" />
+    <PackageReference Include="MicroBuild.Core.Sentinel" ExcludeAssets="All" />
+    <PackageReference Include="MicroBuild.Plugins.SwixBuild" ExcludeAssets="All"/>
+    <PackageReference Include="Microsoft.Net.Compilers" />
+    <PackageReference Include="XliffTasks" />
+    <PackageReference Include="RoslynTools.SignTool" />
+    <PackageReference Include="RoslynTools.RepoToolset" ExcludeAssets="all" />
+    <PackageReference Include="Codecov" ExcludeAssets="all" />
+    <PackageReference Include="OpenCover" ExcludeAssets="all" />
+    <PackageReference Include="Microsoft.DiaSymReader.Pdb2Pdb" ExcludeAssets="all" />
+    
+    <!-- CPS -->
+    <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.SDK" />
+    <PackageReference Include="Microsoft.VisualStudio.Validation" />
+    <PackageReference Include="Microsoft.VisualStudio.Threading" />
+    <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.Analyzers" />
+    
+    <!-- Roslyn -->
+    <PackageReference Include="Microsoft.VisualStudio.LanguageServices" />
+    <PackageReference Include="Microsoft.CodeAnalysis" />
+    
+    <!-- Analyzers-->
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" />
+    <PackageReference Include="Microsoft.CodeQuality.Analyzers" />
+    <PackageReference Include="Microsoft.NetCore.Analyzers" />
+    <PackageReference Include="Microsoft.NetFramework.Analyzers" />
+    <PackageReference Include="Roslyn.Diagnostics.Analyzers" />
+
+    <!-- MSBuild -->
+    <PackageReference Include="Microsoft.Build" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" />
+    <PackageReference Include="Microsoft.Build.Tasks.Core" />
+    <PackageReference Include="Microsoft.Build.Engine" />
+
+    <!-- 3rd party -->
+    <PackageReference Include="Newtonsoft.Json" />
+
+    <!-- Host-Agnostic Visual Studio -->
+    <PackageReference Include="Microsoft.VisualStudio.Imaging.Interop.14.0.DesignTime" />
+    <PackageReference Include="Microsoft.VisualStudio.ImageCatalog" />
+    <PackageReference Include="StreamJsonRpc" />
+    
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(IsUnitTestProject)' == 'true'" >
+    <PackageReference Include="Moq" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+    <PackageReference Include="xunit.runner.console" />
+    <PackageReference Include="xunit.analyzers" />
+  </ItemGroup>
+</Project>

@@ -9,8 +9,6 @@ using EnvDTE80;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>
@@ -50,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             await _projectVsServices.ThreadingService.SwitchToUIThread();
 
-            string templateFilePath = ((Solution2)_dte.Value.Solution).GetProjectItemTemplate(templateFile, templateLanguage);
+            string templateFilePath = ((Solution2)_dte.Value!.Solution).GetProjectItemTemplate(templateFile, templateLanguage);
 
             if (templateFilePath != null)
             {

@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     /// <summary>
@@ -39,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             _projectGuidService = projectGuidService;
         }
 
-        public async Task<IWorkspaceProjectContextAccessor> CreateProjectContextAsync(ConfiguredProject project)
+        public async Task<IWorkspaceProjectContextAccessor?> CreateProjectContextAsync(ConfiguredProject project)
         {
             Requires.NotNull(project, nameof(project));
 
@@ -49,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             object hostObject = _project.Services.HostObject;
 
-            IWorkspaceProjectContext context = await CreateProjectContextHandlingFaultAsync(data, hostObject);
+            IWorkspaceProjectContext? context = await CreateProjectContextHandlingFaultAsync(data, hostObject);
             if (context == null)
                 return null;
 
@@ -73,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             }
         }
 
-        private async Task<IWorkspaceProjectContext> CreateProjectContextHandlingFaultAsync(ProjectContextInitData data, object hostObject)
+        private async Task<IWorkspaceProjectContext?> CreateProjectContextHandlingFaultAsync(ProjectContextInitData data, object hostObject)
         {
             // TODO: https://github.com/dotnet/project-system/issues/353.
             await _threadingService.SwitchToUIThread();

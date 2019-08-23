@@ -2,14 +2,12 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
-
     /// <summary>
     /// Interface definition used by the ProjectDebugger to decide how to launch a profile. The order
     /// of the imports is important in that this determines the order which profiles will be tested

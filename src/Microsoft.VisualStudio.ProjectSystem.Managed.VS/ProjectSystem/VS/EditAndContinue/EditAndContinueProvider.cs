@@ -14,16 +14,14 @@ using ENC_BREAKSTATE_REASON = Microsoft.VisualStudio.LanguageServices.Implementa
 using IVsENCRebuildableProjectCfg2 = Microsoft.VisualStudio.LanguageServices.Implementation.EditAndContinue.Interop.IVsENCRebuildableProjectCfg2;
 using IVsENCRebuildableProjectCfg4 = Microsoft.VisualStudio.LanguageServices.Implementation.EditAndContinue.Interop.IVsENCRebuildableProjectCfg4;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.EditAndContinue
 {
     [ExportProjectNodeComService(typeof(IVsENCRebuildableProjectCfg), typeof(IVsENCRebuildableProjectCfg2), typeof(IVsENCRebuildableProjectCfg4))]
     [AppliesTo(ProjectCapability.EditAndContinue)]
     internal class EditAndContinueProvider : IVsENCRebuildableProjectCfg, IVsENCRebuildableProjectCfg2, IVsENCRebuildableProjectCfg4, IDisposable
     {
-        private IActiveWorkspaceProjectContextHost _projectContextHost;
-        private IProjectThreadingService _threadingService;
+        private IActiveWorkspaceProjectContextHost? _projectContextHost;
+        private IProjectThreadingService? _threadingService;
 
         [ImportingConstructor]
         public EditAndContinueProvider(IActiveWorkspaceProjectContextHost projectContextHost, IProjectThreadingService threadingService)
@@ -119,6 +117,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.EditAndContinue
 
         private int Invoke(Func<IVsENCRebuildableProjectCfg2, HResult> action)
         {
+            if (_threadingService == null || _projectContextHost == null)
+            {
+                throw new ObjectDisposedException(nameof(EditAndContinueProvider));
+            }
+
             return _threadingService.ExecuteSynchronously(async () =>
             {
                 await _threadingService.SwitchToUIThread();
@@ -140,7 +143,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.EditAndContinue
 
         // NOTE: Managed ENC always calls through IVsENCRebuildableProjectCfg2/IVsENCRebuildableProjectCfg4.
         // We implement IVsENCRebuildableProjectCfg as this used to sniff the project for EnC support.
-        int IVsENCRebuildableProjectCfg.ENCRebuild(object in_pProgram, out object out_ppSnapshot)
+        int IVsENCRebuildableProjectCfg.ENCRebuild(object in_pProgram, out object? out_ppSnapshot)
         {
             out_ppSnapshot = null;
             return HResult.NotImplemented;

@@ -10,11 +10,8 @@ using Microsoft.Build.Evaluation;
 using Microsoft.VisualStudio.Build;
 using Microsoft.VisualStudio.ProjectSystem.Build;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
-
     /// <summary>
     ///     Implementation of <see cref="IProjectGuidStorageProvider"/> that avoids persisting the 
     ///     project GUID property to the project file if isn't already present in the file.
@@ -40,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             // We use the construction model to avoid evaluating during asynchronous project load
             return _projectAccessor.OpenProjectXmlForReadAsync(_project, projectXml =>
             {
-                ProjectPropertyElement property = FindProjectGuidProperty(projectXml);
+                ProjectPropertyElement? property = FindProjectGuidProperty(projectXml);
                 if (property != null)
                 {
                     _isPersistedInProject = true;

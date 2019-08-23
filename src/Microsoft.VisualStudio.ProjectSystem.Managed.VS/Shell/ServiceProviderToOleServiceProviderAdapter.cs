@@ -7,8 +7,6 @@ using Microsoft.VisualStudio.ProjectSystem.VS;
 
 using IOleServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.Shell
 {
     // Adapts an IServiceProvider to an OLE IServiceProvider
@@ -22,8 +20,6 @@ namespace Microsoft.VisualStudio.Shell
 
             _serviceProvider = serviceProvider;
         }
-
-        public object ComServices { get; private set; }
 
         public int QueryService(ref Guid guidService, ref Guid riid, out IntPtr ppvObject)
         {

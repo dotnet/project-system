@@ -3,8 +3,6 @@
 using System;
 using System.ComponentModel.Composition;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.FSharp
 {
     /// <summary>
@@ -23,6 +21,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.FSharp
         {
             get { return ProjectType.LegacyFSharpGuid; }
         }
-
     }
 }

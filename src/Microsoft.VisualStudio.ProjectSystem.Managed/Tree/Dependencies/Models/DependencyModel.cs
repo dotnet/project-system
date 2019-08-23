@@ -82,20 +82,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public string Id => OriginalItemSpec;
 
-        public override int GetHashCode()
-        {
-            return unchecked(
-                StringComparer.OrdinalIgnoreCase.GetHashCode(Id) +
-                StringComparers.DependencyProviderTypes.GetHashCode(ProviderType));
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj is IDependencyModel other &&
-                   other.Id.Equals(Id, StringComparison.OrdinalIgnoreCase) &&
-                   StringComparers.DependencyProviderTypes.Equals(other.ProviderType, ProviderType);
-        }
-
         public override string ToString() => $"{ProviderType}-{Id}";
     }
 }

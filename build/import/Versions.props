@@ -1,0 +1,24 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectSystemVersion>16.3.0</ProjectSystemVersion>
+    <VersionBase>$(ProjectSystemVersion)</VersionBase>
+    <PreReleaseVersionLabel>beta1</PreReleaseVersionLabel>
+    <SuppressNETCoreSdkPreviewMessage>true</SuppressNETCoreSdkPreviewMessage>
+
+    <!-- Opt-in and out of repo features -->
+    <UsingToolVSSDK>true</UsingToolVSSDK>
+    <UsingToolIbcOptimization>true</UsingToolIbcOptimization>
+    <UsingToolXUnit>false</UsingToolXUnit>
+    <UsingToolMicrosoftNetCompilers>false</UsingToolMicrosoftNetCompilers>
+
+    <!-- Toolset -->
+    <RoslynToolsRepoToolsetVersion>1.0.0-beta-62705-01</RoslynToolsRepoToolsetVersion>
+    <RoslynToolsModifyVsixManifestVersion>1.0.0-beta-62327-02</RoslynToolsModifyVsixManifestVersion>
+    <RoslynToolsSignToolVersion>1.0.0-beta-62414-01</RoslynToolsSignToolVersion>
+    <RoslynDependenciesProjectSystemOptimizationDataVersion>2.6.0-beta1-62205-02</RoslynDependenciesProjectSystemOptimizationDataVersion>
+    <MicrosoftDotNetIBCMergeVersion>4.7.1-alpha-00001</MicrosoftDotNetIBCMergeVersion>
+    <MicrosoftDiaSymReaderPdb2PdbVersion>1.1.0-beta1-62624-01</MicrosoftDiaSymReaderPdb2PdbVersion>
+    <MicroBuildPluginsSwixBuildVersion>1.0.147</MicroBuildPluginsSwixBuildVersion>
+    <CodecovVersion>1.1.0</CodecovVersion>
+  </PropertyGroup>
+</Project>

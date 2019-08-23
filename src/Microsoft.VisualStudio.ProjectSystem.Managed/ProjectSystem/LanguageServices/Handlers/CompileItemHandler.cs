@@ -8,8 +8,7 @@ using System.IO;
 using System.Linq;
 
 using Microsoft.VisualStudio.ProjectSystem.Logging;
-
-#nullable disable
+using Microsoft.VisualStudio.ProjectSystem.Rename;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
@@ -18,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     ///     to the compiler during design-time builds.
     /// </summary>
     [Export(typeof(IWorkspaceContextHandler))]
-    internal partial class CompileItemHandler : AbstractEvaluationCommandLineHandler, IProjectEvaluationHandler, ICommandLineHandler
+    internal class CompileItemHandler : AbstractEvaluationCommandLineHandler, IProjectEvaluationHandler, ICommandLineHandler, IProjectUpdatedHandler
     {
         private readonly UnconfiguredProject _project;
 
@@ -28,6 +27,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
             _project = project;
         }
+
+        [ImportMany]
+        private readonly IEnumerable<IFileRenameHandler> _fileRenameHandlers = null!;
 
         public string ProjectEvaluationRule
         {
@@ -59,9 +61,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             ApplyProjectBuild(version, difference, isActiveContext, logger);
         }
 
+        public void HandleProjectUpdate(IComparable version, IProjectChangeDescription projectChange, bool isActiveContext, IProjectLogger logger)
+        {
+            Requires.NotNull(version, nameof(version));
+            Requires.NotNull(projectChange, nameof(projectChange));
+            Requires.NotNull(logger, nameof(logger));
+
+            VerifyInitialized();
+
+            foreach ((string original, string renamed) in projectChange.Difference.RenamedItems)
+            {
+                HandleItemRename(original, renamed, logger);
+            }
+        }
+
         protected override void AddToContext(string fullPath, IImmutableDictionary<string, string> metadata, bool isActiveContext, IProjectLogger logger)
         {
-            string[] folderNames = FileItemServices.GetLogicalFolderNames(Path.GetDirectoryName(_project.FullPath), fullPath, metadata);
+            string[]? folderNames = FileItemServices.GetLogicalFolderNames(Path.GetDirectoryName(_project.FullPath), fullPath, metadata);
 
             logger.WriteLine("Adding source file '{0}'", fullPath);
             Context.AddSourceFile(fullPath, isInCurrentContext: isActiveContext, folderNames: folderNames);
@@ -73,10 +89,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Context.RemoveSourceFile(fullPath);
         }
 
+        protected override void HandleItemRename(string fullPathBefore, string fullPathAfter, IProjectLogger logger)
+        {
+            logger.WriteLine("Handling rename of source file '{0}' to {1}", fullPathBefore, fullPathAfter);
+            foreach (IFileRenameHandler fileRenameHandler in _fileRenameHandlers)
+            {
+                fileRenameHandler.HandleRename(fullPathBefore, fullPathAfter);
+            }
+        }
+
         private IProjectChangeDiff ConvertToProjectDiff(BuildOptions added, BuildOptions removed)
         {
-            var addedSet = ImmutableHashSet.ToImmutableHashSet(GetFilePaths(added), StringComparers.Paths);
-            var removedSet = ImmutableHashSet.ToImmutableHashSet(GetFilePaths(removed), StringComparers.Paths);
+            var addedSet = GetFilePaths(added).ToImmutableHashSet(StringComparers.Paths);
+            var removedSet = GetFilePaths(removed).ToImmutableHashSet(StringComparers.Paths);
 
             return new ProjectChangeDiff(addedSet, removedSet);
         }

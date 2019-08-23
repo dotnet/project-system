@@ -164,34 +164,34 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
 #Region "Enable / disable controls helpers"
-        Protected Overrides Sub EnableAllControls(_enabled As Boolean)
-            MyBase.EnableAllControls(_enabled)
+        Protected Overrides Sub EnableAllControls(enabled As Boolean)
+            MyBase.EnableAllControls(enabled)
 
-            GetPropertyControlData(VsProjPropId.VBPROJPROPID_DocumentationFile).EnableControls(_enabled)
-            AdvancedOptionsButton.Enabled = _enabled
-            GetPropertyControlData(VsProjPropId.VBPROJPROPID_OutputPath).EnableControls(_enabled)
-            GetPropertyControlData(VsProjPropId.VBPROJPROPID_RegisterForComInterop).EnableControls(_enabled AndAlso RegisterForComInteropSupported())
+            GetPropertyControlData(VsProjPropId.VBPROJPROPID_DocumentationFile).EnableControls(enabled)
+            AdvancedOptionsButton.Enabled = enabled
+            GetPropertyControlData(VsProjPropId.VBPROJPROPID_OutputPath).EnableControls(enabled)
+            GetPropertyControlData(VsProjPropId.VBPROJPROPID_RegisterForComInterop).EnableControls(enabled AndAlso RegisterForComInteropSupported())
 
-            EnableDisableWarningControls(_enabled)
+            EnableDisableWarningControls(enabled)
         End Sub
 
-        Private Sub EnableDisableWarningControls(_enabled As Boolean)
-            GetPropertyControlData(VsProjPropId.VBPROJPROPID_WarningLevel).EnableControls(_enabled) 'DisableAllWarningsCheckBox
-            GetPropertyControlData(VsProjPropId.VBPROJPROPID_TreatWarningsAsErrors).EnableControls(_enabled AndAlso Not DisableAllWarnings())
+        Private Sub EnableDisableWarningControls(enabled As Boolean)
+            GetPropertyControlData(VsProjPropId.VBPROJPROPID_WarningLevel).EnableControls(enabled) 'DisableAllWarningsCheckBox
+            GetPropertyControlData(VsProjPropId.VBPROJPROPID_TreatWarningsAsErrors).EnableControls(enabled AndAlso Not DisableAllWarnings())
 
-            EnableDisableGridView(_enabled)
+            EnableDisableGridView(enabled)
         End Sub
 
-        Private Sub EnableDisableGridView(_enabled As Boolean)
+        Private Sub EnableDisableGridView(enabled As Boolean)
 
             If GetPropertyControlData(VsProjPropId2.VBPROJPROPID_NoWarn).IsMissing _
             OrElse GetPropertyControlData(VsProjPropId80.VBPROJPROPID_TreatSpecificWarningsAsErrors).IsMissing Then
                 'Not much sense in having the grid enabled if these properties aren't supported by the flavor
-                _enabled = False
+                enabled = False
             End If
 
             Dim NotifyColumn As DataGridViewComboBoxColumn = CType(WarningsGridView.Columns.Item(NotifyColumnIndex), DataGridViewComboBoxColumn)
-            If _enabled AndAlso DisableAllWarningsCheckBox.CheckState = CheckState.Unchecked AndAlso WarningsAsErrorCheckBox.CheckState = CheckState.Unchecked Then
+            If enabled AndAlso DisableAllWarningsCheckBox.CheckState = CheckState.Unchecked AndAlso WarningsAsErrorCheckBox.CheckState = CheckState.Unchecked Then
                 For Each column As DataGridViewColumn In WarningsGridView.Columns
                     column.DefaultCellStyle.BackColor = WarningsGridView.DefaultCellStyle.BackColor
                 Next

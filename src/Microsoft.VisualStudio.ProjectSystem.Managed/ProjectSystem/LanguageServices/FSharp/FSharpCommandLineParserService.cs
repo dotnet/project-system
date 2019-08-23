@@ -9,8 +9,6 @@ using System.IO;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.Text;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.FSharp
 {
     [Export(typeof(ICommandLineParserService))]
@@ -22,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.FSharp
         private const string LongReferencePrefix = "--reference:";
 
         [ImportMany]
-        private readonly IEnumerable<Action<string, ImmutableArray<CommandLineSourceFile>, ImmutableArray<CommandLineReference>, ImmutableArray<string>>> _handlers = null;
+        private readonly IEnumerable<Action<string, ImmutableArray<CommandLineSourceFile>, ImmutableArray<CommandLineReference>, ImmutableArray<string>>> _handlers = null!;
 
         [ImportingConstructor]
         public FSharpCommandLineParserService()
@@ -102,7 +100,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.FSharp
                     handler?.Invoke(binPath, fscAdded.SourceFiles, fscAdded.MetadataReferences, fscAdded.CompileOptions);
                 }
             }
-            return;
         }
     }
 }

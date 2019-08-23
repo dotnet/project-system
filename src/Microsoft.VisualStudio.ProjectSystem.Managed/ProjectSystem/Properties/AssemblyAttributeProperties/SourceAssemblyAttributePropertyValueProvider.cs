@@ -9,8 +9,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Editing;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     /// <summary>
@@ -19,13 +17,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     internal class SourceAssemblyAttributePropertyValueProvider
     {
         private readonly string _assemblyAttributeFullName;
-        private readonly Func<ProjectId> _getActiveProjectId;
+        private readonly Func<ProjectId?> _getActiveProjectId;
         private readonly Workspace _workspace;
         private readonly IProjectThreadingService _threadingService;
 
         public SourceAssemblyAttributePropertyValueProvider(
             string assemblyAttributeFullName,
-            Func<ProjectId> getActiveProjectId,
+            Func<ProjectId?> getActiveProjectId,
             Workspace workspace,
             IProjectThreadingService threadingService)
         {
@@ -35,9 +33,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             _threadingService = threadingService;
         }
 
-        private Project GetActiveProject()
+        private Project? GetActiveProject()
         {
-            ProjectId activeProjectId = _getActiveProjectId();
+            ProjectId? activeProjectId = _getActiveProjectId();
             if (activeProjectId == null)
             {
                 return null;
@@ -49,15 +47,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <summary>
         /// Gets the value of the property from the source assembly attribute.
         /// </summary>
-        public async Task<string> GetPropertyValueAsync()
+        public async Task<string?> GetPropertyValueAsync()
         {
-            Project project = GetActiveProject();
+            Project? project = GetActiveProject();
             if (project == null)
             {
                 return null;
             }
 
-            AttributeData attribute = await GetAttributeAsync(_assemblyAttributeFullName, project);
+            AttributeData? attribute = await GetAttributeAsync(_assemblyAttributeFullName, project);
 
             return attribute?.ConstructorArguments.FirstOrDefault().Value?.ToString();
         }
@@ -69,13 +67,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <returns></returns>
         public async Task SetPropertyValueAsync(string value)
         {
-            Project project = GetActiveProject();
+            Project? project = GetActiveProject();
             if (project == null)
             {
                 return;
             }
 
-            AttributeData attribute = await GetAttributeAsync(_assemblyAttributeFullName, project);
+            AttributeData? attribute = await GetAttributeAsync(_assemblyAttributeFullName, project);
             if (attribute == null)
             {
                 return;
@@ -112,7 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <summary>
         /// Get the attribute corresponding to the given property from the given project.
         /// </summary>
-        private static async Task<AttributeData> GetAttributeAsync(string assemblyAttributeFullName, Project project)
+        private static async Task<AttributeData?> GetAttributeAsync(string assemblyAttributeFullName, Project project)
         {
             Compilation compilation = await project.GetCompilationAsync();
             ImmutableArray<AttributeData> assemblyAttributes = compilation.Assembly.GetAttributes();

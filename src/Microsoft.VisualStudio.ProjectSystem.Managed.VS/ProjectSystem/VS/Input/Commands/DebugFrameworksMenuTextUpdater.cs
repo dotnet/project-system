@@ -13,8 +13,6 @@ using Microsoft.VisualStudio.Shell;
 
 using Task = System.Threading.Tasks.Task;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
     /// <summary>
@@ -26,9 +24,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     {
         [ImportingConstructor]
         public DebugFrameworkPropertyMenuTextUpdater(IStartupProjectHelper startupProjectHelper)
-                : base(ExecHandler, delegate
-                { }, QueryStatusHandler,
-                      new CommandID(new Guid(CommandGroup.ManagedProjectSystem), ManagedProjectSystemCommandId.DebugTargetMenuDebugFrameworkMenu))
+            : base(
+                ExecHandler, 
+                delegate { },
+                QueryStatusHandler,
+                new CommandID(new Guid(CommandGroup.ManagedProjectSystem), ManagedProjectSystemCommandId.DebugTargetMenuDebugFrameworkMenu))
         {
             StartupProjectHelper = startupProjectHelper;
         }
@@ -42,9 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         /// </summary>
         public static void ExecHandler(object sender, EventArgs e)
         {
-            return;
         }
-
 
         /// <summary>
         /// QueryStatus handler called to update the status of the menu items. Does some
@@ -53,12 +51,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         /// </summary>
         public static void QueryStatusHandler(object sender, EventArgs e)
         {
-            if (!(sender is DebugFrameworkPropertyMenuTextUpdater command))
+            if (sender is DebugFrameworkPropertyMenuTextUpdater command)
             {
-                return;
+                command.QueryStatus();
             }
-
-            command.QueryStatus();
         }
 
         public void QueryStatus()
@@ -66,11 +62,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             ImmutableArray<IActiveDebugFrameworkServices> activeDebugFrameworks = StartupProjectHelper.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles);
             if (activeDebugFrameworks.Length > 0)
             {
-                string activeFramework = null;
-                List<string> frameworks = null;
+                string? activeFramework = null;
+                List<string>? frameworks = null;
                 ExecuteSynchronously(async () =>
                 {
-                    List<string> first = null;
+                    List<string>? first = null;
 
                     foreach (IActiveDebugFrameworkServices activeDebugFramework in activeDebugFrameworks)
                     {
@@ -101,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                 {
                     // If no active framework or the current active property doesn't match any of the frameworks, then
                     // set it to the first one.
-                    if (!string.IsNullOrEmpty(activeFramework) && frameworks.Contains(activeFramework))
+                    if (!string.IsNullOrEmpty(activeFramework) && frameworks.Contains(activeFramework!))
                     {
                         Text = string.Format(VSResources.DebugFrameworkMenuText, activeFramework);
                     }

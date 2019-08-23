@@ -93,8 +93,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' version.
         ''' </summary>
         Private Sub SetupLangVersionLinkLabel()
-            Dim link = New LinkLabel.Link
-            link.LinkData = My.Resources.Strings.CantSelectLanguageVersionFWLink
+            Dim link = New LinkLabel.Link With {
+                .LinkData = My.Resources.Strings.CantSelectLanguageVersionFWLink
+            }
             lnkLabel.Links.Add(link)
             lnkLabel.TabStop = True
         End Sub

@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectProperties
 {
     internal abstract partial class AbstractBuildEventValueProvider : InterceptingPropertyValueProviderBase
@@ -29,19 +27,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             string evaluatedPropertyValue,
             IProjectProperties defaultProperties)
         {
-            (bool success, string property) = await _helper.TryGetPropertyAsync(defaultProperties);
+            (bool success, string? property) = await _helper.TryGetPropertyAsync(defaultProperties);
+
             if (success)
             {
-                return property;
+                return property!;
             }
 
             return await _projectAccessor.OpenProjectXmlForReadAsync(_unconfiguredProject, projectXml => _helper.GetProperty(projectXml));
         }
 
-        public override async Task<string> OnSetPropertyValueAsync(
+        public override async Task<string?> OnSetPropertyValueAsync(
             string unevaluatedPropertyValue,
             IProjectProperties defaultProperties,
-            IReadOnlyDictionary<string, string> dimensionalConditions = null)
+            IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
             if (await _helper.TrySetPropertyAsync(unevaluatedPropertyValue, defaultProperties))
             {

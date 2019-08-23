@@ -1,20 +1,20 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
 using System;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Forms;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
+    /// <summary>
+    /// Hosts a WPF implementation of a property page UI within the WinForms based property page infrastructure.
+    /// </summary>
     internal abstract partial class WpfBasedPropertyPage : PropertyPage
     {
-#pragma warning disable CA2213 // WPF Controls implement IDisposable 
-        private PropertyPageElementHost _host;
-#pragma warning restore CA2213
-        private PropertyPageControl _control;
-        private PropertyPageViewModel _viewModel;
+        private PropertyPageElementHost? _host;
+        private PropertyPageControl? _control;
+        private PropertyPageViewModel? _viewModel;
 
         protected WpfBasedPropertyPage()
         {
@@ -29,17 +29,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             if (isClosing)
             {
-                _control.DetachViewModel();
+                _control?.DetachViewModel();
                 return;
             }
-            else
-            {
-                //viewModel can be non-null when the configuration is changed.
-                if (_control == null)
-                {
-                    _control = CreatePropertyPageControl();
-                }
-            }
+
+            //viewModel can be non-null when the configuration is changed.
+            _control ??= CreatePropertyPageControl();
 
             _viewModel = CreatePropertyPageViewModel();
             _viewModel.Project = UnconfiguredProject;
@@ -49,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         protected override Task<int> OnApply()
         {
-            return _control.Apply();
+            return _control?.Apply() ?? Task.FromResult((int)HResult.Fail);
         }
 
         protected override Task OnDeactivate()
@@ -72,33 +67,49 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 Dock = DockStyle.Fill
             };
 
-            if (_control == null)
-            {
-                _control = CreatePropertyPageControl();
-            }
+            _control ??= CreatePropertyPageControl();
 
-            var viewer = new ScrollViewer
+            _host.Child = new ScrollViewer
             {
                 VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
                 HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
                 Focusable = false,
+                Content = _control
             };
-
-            viewer.Content = _control;
-            _host.Child = viewer;
 
             wpfHostPanel.Dock = DockStyle.Fill;
             wpfHostPanel.Controls.Add(_host);
 
             ResumeLayout(true);
+
             _control.StatusChanged += OnControlStatusChanged;
         }
 
         private void OnControlStatusChanged(object sender, EventArgs e)
         {
+            if (_control == null)
+            {
+                return;
+            }
+
             if (IsDirty != _control.IsDirty)
             {
                 IsDirty = _control.IsDirty;
+            }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            try
+            {
+                if (disposing)
+                {
+                    _host?.Dispose();
+                }
+            }
+            finally
+            {
+                base.Dispose(disposing);
             }
         }
     }

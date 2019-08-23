@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.IO;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 {
     internal class RemoteCacheFile
@@ -36,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         /// <summary>
         /// If the cached file exists reads the data and returns it as a string
         /// </summary>
-        public string ReadCacheFile()
+        public string? ReadCacheFile()
         {
             try
             {
@@ -56,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         /// <summary>
         /// Downloads from the downloadUri to the cached file. 
         /// </summary>
-        public async Task TryToUpdateCacheFileAsync(Action callBackOnSuccess = null)
+        public async Task TryToUpdateCacheFileAsync(Action? callBackOnSuccess = null)
         {
             try
             {

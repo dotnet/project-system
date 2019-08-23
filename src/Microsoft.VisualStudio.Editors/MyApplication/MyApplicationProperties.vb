@@ -1388,15 +1388,20 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <remarks></remarks>
         Friend Shared Function IsMySubMainSupported(Hierarchy As IVsHierarchy) As Boolean
             Try
-                Dim obj As Object = Nothing
-                If Hierarchy IsNot Nothing Then
-                    VSErrorHandler.ThrowOnFailure(Hierarchy.GetProperty(VSITEMID.ROOT, __VSHPROPID.VSHPROPID_BrowseObject, obj))
+                ' Query the MyType and OutputType properties from the project properties
+                Dim project As Project = EnvDTEProject(Hierarchy)
+
+                If project Is Nothing Then
+                    Return False
                 End If
-                Dim props3 As VSLangProj80.VBProjectProperties3 = TryCast(obj, VSLangProj80.VBProjectProperties3)
-                If props3 IsNot Nothing Then
+
+                Dim myTypeProperty As [Property] = GetProjectProperty(project, NameOf(VSLangProj80.VBProjectProperties3.MyType))
+                Dim outputTypeProperty As [Property] = GetProjectProperty(project, NameOf(VSLangProj80.VBProjectProperties3.OutputType))
+
+                If myTypeProperty IsNot Nothing AndAlso outputTypeProperty IsNot Nothing Then
                     Return MyApplicationProperties.ApplicationTypeFromOutputType(
-                                CUInt(props3.OutputType),
-                                props3.MyType) = ApplicationTypes.WindowsApp
+                        CUInt(outputTypeProperty.Value),
+                        CType(myTypeProperty.Value, String)) = ApplicationTypes.WindowsApp
                 End If
             Catch ex As Exception When ReportWithoutCrash(ex, NameOf(IsMySubMainSupported), NameOf(MyApplicationProperties))
             End Try

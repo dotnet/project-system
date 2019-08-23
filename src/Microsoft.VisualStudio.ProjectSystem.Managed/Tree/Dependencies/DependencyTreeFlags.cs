@@ -2,8 +2,6 @@
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     /// <summary>

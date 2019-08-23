@@ -2,8 +2,6 @@
 
 using System;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Logging
 {
     /// <summary>
@@ -70,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
         /// <exception cref="FormatException">
         ///     The format specification in <paramref name="format"/> is invalid.
         /// </exception>
-        public static void WriteLine(this IProjectLogger logger, string format, object argument)
+        public static void WriteLine(this IProjectLogger logger, string format, object? argument)
         {
             Requires.NotNull(logger, nameof(logger));
 
@@ -93,7 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
         /// <exception cref="FormatException">
         ///     The format specification in <paramref name="format"/> is invalid.
         /// </exception>
-        public static void WriteLine(this IProjectLogger logger, string format, object argument1, object argument2)
+        public static void WriteLine(this IProjectLogger logger, string format, object? argument1, object? argument2)
         {
             Requires.NotNull(logger, nameof(logger));
 
@@ -116,7 +114,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
         /// <exception cref="FormatException">
         ///     The format specification in <paramref name="format"/> is invalid.
         /// </exception>
-        public static void WriteLine(this IProjectLogger logger, string format, object argument1, object argument2, object argument3)
+        public static void WriteLine(this IProjectLogger logger, string format, object? argument1, object? argument2, object? argument3)
         {
             Requires.NotNull(logger, nameof(logger));
 
@@ -139,7 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
         /// <exception cref="FormatException">
         ///     The format specification in <paramref name="format"/> is invalid.
         /// </exception>
-        public static void WriteLine(this IProjectLogger logger, string format, params object[] arguments)
+        public static void WriteLine(this IProjectLogger logger, string format, params object?[] arguments)
         {
             Requires.NotNull(logger, nameof(logger));
 

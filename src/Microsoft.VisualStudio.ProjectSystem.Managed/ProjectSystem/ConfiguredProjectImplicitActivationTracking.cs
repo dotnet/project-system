@@ -10,8 +10,6 @@ using System.Threading.Tasks.Dataflow;
 
 using Microsoft.VisualStudio.Threading.Tasks;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
@@ -25,8 +23,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private readonly IProjectAsynchronousTasksService _tasksService;
         private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
         private readonly ITargetBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>> _targetBlock;
-        private TaskCompletionSource<object> _isImplicitlyActiveSource = new TaskCompletionSource<object>();
-        private IDisposable _subscription;
+        private TaskCompletionSource<object?> _isImplicitlyActiveSource = new TaskCompletionSource<object?>();
+        private IDisposable? _subscription;
 
         [ImportingConstructor]
         public ConfiguredProjectImplicitActivationTracking(ConfiguredProject project, IActiveConfigurationGroupService activeConfigurationGroupService, [Import(ExportContractNames.Scopes.ConfiguredProject)]IProjectAsynchronousTasksService tasksService)
@@ -133,7 +131,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private Task OnImplicitlyDeactivated()
         {
-            var source = new TaskCompletionSource<object>();
+            var source = new TaskCompletionSource<object?>();
 
             // Make sure the writes in constructor don't 
             // move to after we publish the value

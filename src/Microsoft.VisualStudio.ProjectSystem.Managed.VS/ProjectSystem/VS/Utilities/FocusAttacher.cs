@@ -3,8 +3,6 @@
 using System.Windows;
 using System.Windows.Controls;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 {
     public class FocusAttacher

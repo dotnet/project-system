@@ -9,4 +9,15 @@
                 Persistence="ProjectFile"
                 SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
+
+  <StringProperty Name="FullPath"
+                  ReadOnly="true"
+                  Visible="false">
+    <StringProperty.DataSource>
+      <DataSource ItemType="PotentialEditorConfigFiles"
+                  PersistedName="FullPath"
+                  Persistence="Intrinsic"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
 </Rule>

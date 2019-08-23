@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.Threading;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     /// <summary>
@@ -32,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         public async Task PublishAsync(CancellationToken cancellationToken = default)
         {
             // The active configuration can change multiple times during initialization in cases where we've incorrectly
-            // guessed the configuration via our IProjectConfigurationDimensionsProvider3 implementationt.
+            // guessed the configuration via our IProjectConfigurationDimensionsProvider3 implementation.
             // Wait until that has been determined before we publish the wrong configuration.
             await _tasksService.PrioritizedProjectLoadedInHost.WithCancellation(cancellationToken);
 

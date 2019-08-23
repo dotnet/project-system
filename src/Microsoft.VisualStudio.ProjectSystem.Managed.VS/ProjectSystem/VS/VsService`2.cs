@@ -11,8 +11,6 @@ using Microsoft.VisualStudio.Threading;
 
 using IAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>
@@ -20,6 +18,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     /// </summary>
     [Export(typeof(IVsService<,>))]
     internal class VsService<TService, TInterface> : VsService<TInterface>, IVsService<TService, TInterface>
+        where TService : class
+        where TInterface : class
     {
         [ImportingConstructor]
         public VsService([Import(typeof(SAsyncServiceProvider))]IAsyncServiceProvider serviceProvider, JoinableTaskContext joinableTaskContext)

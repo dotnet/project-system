@@ -157,7 +157,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         {
             bool activeChanged = !activeTargetFramework.Equals(ActiveTargetFramework);
 
-            var map = DependenciesByTargetFramework;
+            ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot> map = DependenciesByTargetFramework;
 
             var diff = new SetDiff<ITargetFramework>(map.Keys, targetFrameworks);
 
@@ -234,7 +234,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 // if found - return, if not - try regular Id in the DependenciesWorld
                 foreach ((ITargetFramework _, ITargetedDependenciesSnapshot targetedDependencies) in DependenciesByTargetFramework)
                 {
-                    IDependency dependency = targetedDependencies.TopLevelDependencies
+                    IDependency? dependency = targetedDependencies.TopLevelDependencies
                         .FirstOrDefault((x, id) => x.TopLevelIdEquals(id), dependencyId);
 
                     if (dependency != null)

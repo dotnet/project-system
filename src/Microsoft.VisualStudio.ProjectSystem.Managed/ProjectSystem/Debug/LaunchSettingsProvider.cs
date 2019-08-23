@@ -32,51 +32,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     [AppliesTo(ProjectCapability.LaunchProfiles)]
     internal class LaunchSettingsProvider : OnceInitializedOnceDisposed, ILaunchSettingsProvider2
     {
-        private readonly UnconfiguredProject _project;
-        private readonly ActiveConfiguredProject<AppDesignerFolderSpecialFileProvider> _appDesignerSpecialFileProvider;
-        private readonly IProjectFaultHandlerService _projectFaultHandler;
-        private readonly AsyncLazy<string> _launchSettingsFilePath;
-
-        [ImportingConstructor]
-        public LaunchSettingsProvider(UnconfiguredProject project, IUnconfiguredProjectServices projectServices,
-                                      IFileSystem fileSystem, IUnconfiguredProjectCommonServices commonProjectServices,
-                                      IActiveConfiguredProjectSubscriptionService projectSubscriptionService,
-                                      ActiveConfiguredProject<AppDesignerFolderSpecialFileProvider> appDesignerSpecialFileProvider,
-                                      IProjectFaultHandlerService projectFaultHandler)
-        {
-            _project = project;
-            ProjectServices = projectServices;
-            FileManager = fileSystem;
-            CommonProjectServices = commonProjectServices;
-            JsonSerializationProviders = new OrderPrecedenceImportCollection<ILaunchSettingsSerializationProvider, IJsonSection>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst,
-                                                                                                                    project);
-            SourceControlIntegrations = new OrderPrecedenceImportCollection<ISourceCodeControlIntegration>(projectCapabilityCheckProvider: project);
-
-            ProjectSubscriptionService = projectSubscriptionService;
-            _appDesignerSpecialFileProvider = appDesignerSpecialFileProvider;
-            _projectFaultHandler = projectFaultHandler;
-            _launchSettingsFilePath = new AsyncLazy<string>(GetLaunchSettingsFilePathNoCacheAsync, commonProjectServices.ThreadingService.JoinableTaskFactory);
-        }
-
-        private IUnconfiguredProjectServices ProjectServices { get; }
-        private IUnconfiguredProjectCommonServices CommonProjectServices { get; }
-        private IActiveConfiguredProjectSubscriptionService ProjectSubscriptionService { get; }
-
-        [ImportMany]
-        protected OrderPrecedenceImportCollection<ILaunchSettingsSerializationProvider, IJsonSection> JsonSerializationProviders { get; set; }
-
-        [ImportMany]
-        protected OrderPrecedenceImportCollection<ISourceCodeControlIntegration> SourceControlIntegrations { get; set; }
-
-        // The source for our dataflow
-        private IReceivableSourceBlock<ILaunchSettings> _changedSourceBlock;
-        protected IBroadcastBlock<ILaunchSettings> _broadcastBlock;
-
-        protected IFileSystem FileManager { get; set; }
-
-        // Used to track our errors so we can flush them later
-        public const string ErrorOwnerString = nameof(LaunchSettingsProvider);
-
         public const string LaunchSettingsFilename = @"launchSettings.json";
         public const string ProfilesSectionName = "profiles";
 
@@ -89,6 +44,51 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         // These are used internally to loop in debuggers to handle F5 when there are errors in
         // the launch settings file or when there are no profiles specified (like class libraries)
         public const string ErrorProfileCommandName = "ErrorProfile";
+
+        private readonly UnconfiguredProject _project;
+        private readonly ActiveConfiguredProject<AppDesignerFolderSpecialFileProvider> _appDesignerSpecialFileProvider;
+        private readonly IProjectFaultHandlerService _projectFaultHandler;
+        private readonly AsyncLazy<string> _launchSettingsFilePath;
+        private readonly IUnconfiguredProjectServices _projectServices;
+        private readonly IUnconfiguredProjectCommonServices _commonProjectServices;
+        private readonly IActiveConfiguredProjectSubscriptionService _projectSubscriptionService;
+        private readonly IFileSystem _fileSystem;
+        private readonly TaskCompletionSource<bool> _firstSnapshotCompletionSource = new TaskCompletionSource<bool>();
+        private SequentialTaskExecutor _sequentialTaskQueue = new SequentialTaskExecutor();
+        private IReceivableSourceBlock<ILaunchSettings> _changedSourceBlock;
+        private IBroadcastBlock<ILaunchSettings> _broadcastBlock;
+        private ILaunchSettings _currentSnapshot;
+        private IDisposable _projectRuleSubscriptionLink;
+
+        [ImportingConstructor]
+        public LaunchSettingsProvider(
+            UnconfiguredProject project,
+            IUnconfiguredProjectServices projectServices,
+            IFileSystem fileSystem,
+            IUnconfiguredProjectCommonServices commonProjectServices,
+            IActiveConfiguredProjectSubscriptionService projectSubscriptionService,
+            ActiveConfiguredProject<AppDesignerFolderSpecialFileProvider> appDesignerSpecialFileProvider,
+            IProjectFaultHandlerService projectFaultHandler)
+        {
+            _project = project;
+            _projectServices = projectServices;
+            _fileSystem = fileSystem;
+            _commonProjectServices = commonProjectServices;
+            JsonSerializationProviders = new OrderPrecedenceImportCollection<ILaunchSettingsSerializationProvider, IJsonSection>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst,
+                                                                                                                    project);
+            SourceControlIntegrations = new OrderPrecedenceImportCollection<ISourceCodeControlIntegration>(projectCapabilityCheckProvider: project);
+
+            _projectSubscriptionService = projectSubscriptionService;
+            _appDesignerSpecialFileProvider = appDesignerSpecialFileProvider;
+            _projectFaultHandler = projectFaultHandler;
+            _launchSettingsFilePath = new AsyncLazy<string>(GetLaunchSettingsFilePathNoCacheAsync, commonProjectServices.ThreadingService.JoinableTaskFactory);
+        }
+
+        [ImportMany]
+        protected OrderPrecedenceImportCollection<ILaunchSettingsSerializationProvider, IJsonSection> JsonSerializationProviders { get; set; }
+
+        [ImportMany]
+        protected OrderPrecedenceImportCollection<ISourceCodeControlIntegration> SourceControlIntegrations { get; set; }
 
         protected SimpleFileWatcher FileWatcher { get; set; }
 
@@ -104,18 +104,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         protected int WaitForFirstSnapshotDelay = 5000; // 5 seconds
 
-        private readonly TaskCompletionSource<bool> _firstSnapshotCompletionSource = new TaskCompletionSource<bool>();
-
-        protected IDisposable ProjectRuleSubscriptionLink { get; set; }
-
-        private SequentialTaskExecutor _sequentialTaskQueue = new SequentialTaskExecutor();
-
         [Obsolete("Use GetLaunchSettingsFilePathAsync instead.")]
         public string LaunchSettingsFile
         {
             get
             {
-                return CommonProjectServices.ThreadingService.ExecuteSynchronously(() =>
+                return _commonProjectServices.ThreadingService.ExecuteSynchronously(() =>
                 {
                     return GetLaunchSettingsFilePathAsync();
                 });
@@ -149,8 +143,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// <summary>
         /// IDebugProfileProvider
         /// Access to the current set of profile information
-        /// </summary>
-        private ILaunchSettings _currentSnapshot;
+        /// </summary>        
         public ILaunchSettings CurrentSnapshot
         {
             get
@@ -183,7 +176,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             // Subscribe to changes to the broadcast block using the idle scheduler. This should filter out a lot of the intermediates
             // states that files can be in.
-            if (ProjectSubscriptionService != null)
+            if (_projectSubscriptionService != null)
             {
                 // The use of AsyncLazy with dataflow can allow state stored in the execution context to leak through. The downstream affect is
                 // calls to say, get properties, may fail. To avoid this, we capture the execution context here, and it will be reapplied when
@@ -192,9 +185,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                             DataflowUtilities.CaptureAndApplyExecutionContext<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCapabilitiesSnapshot>>>(ProjectRuleBlock_ChangedAsync));
                 StandardRuleDataflowLinkOptions evaluationLinkOptions = DataflowOption.WithRuleNames(ProjectDebugger.SchemaName);
 
-                ProjectRuleSubscriptionLink = ProjectDataSources.SyncLinkTo(
-                    ProjectSubscriptionService.ProjectRuleSource.SourceBlock.SyncLinkOptions(evaluationLinkOptions),
-                    CommonProjectServices.Project.Capabilities.SourceBlock.SyncLinkOptions(),
+                _projectRuleSubscriptionLink = ProjectDataSources.SyncLinkTo(
+                    _projectSubscriptionService.ProjectRuleSource.SourceBlock.SyncLinkOptions(evaluationLinkOptions),
+                    _commonProjectServices.Project.Capabilities.SourceBlock.SyncLinkOptions(),
                     projectChangesBlock,
                     linkOptions: DataflowOption.PropagateCompletion);
             }
@@ -218,7 +211,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     // Updates need to be sequenced
                     await _sequentialTaskQueue.ExecuteTask(async () =>
                     {
-                        using (ProjectCapabilitiesContext.CreateIsolatedContext(CommonProjectServices.Project, projectSnapshot.Value.Item2))
+                        using (ProjectCapabilitiesContext.CreateIsolatedContext(_commonProjectServices.Project, projectSnapshot.Value.Item2))
                         {
                             await UpdateActiveProfileInSnapshotAsync(activeProfile);
                         }
@@ -257,7 +250,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 // If no active profile specified, try to get one
                 if (activeProfile == null)
                 {
-                    ProjectDebugger props = await CommonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync();
+                    ProjectDebugger props = await _commonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync();
                     if (await props.ActiveDebugProfile.GetValueAsync() is IEnumValue activeProfileVal)
                     {
                         activeProfile = activeProfileVal.Name;
@@ -270,7 +263,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 // won't be called on F5 and the user will see a poor error message
                 if (launchSettingData.Profiles.Count == 0)
                 {
-                    launchSettingData.Profiles.Add(new LaunchProfileData() { Name = Path.GetFileNameWithoutExtension(CommonProjectServices.Project.FullPath), CommandName = RunProjectCommandName });
+                    launchSettingData.Profiles.Add(new LaunchProfileData() { Name = Path.GetFileNameWithoutExtension(_commonProjectServices.Project.FullPath), CommandName = RunProjectCommandName });
                 }
 
                 // If we have a previous snapshot merge in in-memory profiles
@@ -365,7 +358,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             string fileName = await GetLaunchSettingsFilePathAsync();
 
-            return !FileManager.FileExists(fileName) || FileManager.LastFileWriteTime(fileName) != LastSettingsFileSyncTime;
+            return !_fileSystem.FileExists(fileName) || _fileSystem.LastFileWriteTime(fileName) != LastSettingsFileSyncTime;
         }
 
         /// <summary>
@@ -377,7 +370,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             CurrentSnapshot = newSnapshot;
             if (ensureProfileProperty)
             {
-                ProjectDebugger props = await CommonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync();
+                ProjectDebugger props = await _commonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync();
                 if (await props.ActiveDebugProfile.GetValueAsync() is IEnumValue activeProfileVal)
                 {
                     if (newSnapshot.ActiveProfile?.Name != null && !string.Equals(newSnapshot.ActiveProfile?.Name, activeProfileVal.Name))
@@ -414,7 +407,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             string fileName = await GetLaunchSettingsFilePathAsync();
 
             LaunchSettingsData settings;
-            if (FileManager.FileExists(fileName))
+            if (_fileSystem.FileExists(fileName))
             {
                 settings = await ReadSettingsFileFromDiskAsync();
             }
@@ -440,7 +433,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             string fileName = await GetLaunchSettingsFilePathAsync();
 
-            string jsonString = FileManager.ReadAllText(fileName);
+            string jsonString = _fileSystem.ReadAllText(fileName);
 
             // Since the sections in the settings file are extensible we iterate through each one and have the appropriate provider
             // serialize their section. Unfortunately, this means the data is string to object which is messy to deal with
@@ -472,7 +465,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
 
             // Remember the time we are sync'd to
-            LastSettingsFileSyncTime = FileManager.LastFileWriteTime(fileName);
+            LastSettingsFileSyncTime = _fileSystem.LastFileWriteTime(fileName);
             return launchSettingsData;
         }
 
@@ -524,10 +517,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 string jsonString = JsonConvert.SerializeObject(serializationData, Formatting.Indented, settings);
 
                 IgnoreFileChanges = true;
-                FileManager.WriteAllText(fileName, jsonString);
+                _fileSystem.WriteAllText(fileName, jsonString);
 
                 // Update the last write time
-                LastSettingsFileSyncTime = FileManager.LastFileWriteTime(fileName);
+                LastSettingsFileSyncTime = _fileSystem.LastFileWriteTime(fileName);
             }
             finally
             {
@@ -611,7 +604,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
                 // Only do something if the file is truly different than what we synced. Here, we want to
                 // throttle.
-                if (!FileManager.FileExists(fileName) || FileManager.LastFileWriteTime(fileName) != LastSettingsFileSyncTime)
+                if (!_fileSystem.FileExists(fileName) || _fileSystem.LastFileWriteTime(fileName) != LastSettingsFileSyncTime)
                 {
                     return FileChangeScheduler.ScheduleAsyncTask(token =>
                     {
@@ -639,7 +632,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             string parentPath = Path.GetDirectoryName(fileName);
 
-            FileManager.CreateDirectory(parentPath);
+            _fileSystem.CreateDirectory(parentPath);
         }
 
         /// <summary>
@@ -665,12 +658,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 FileChangeScheduler?.Dispose();
 
                 // Create our scheduler for processing file changes
-                FileChangeScheduler = new TaskDelayScheduler(FileChangeProcessingDelay, CommonProjectServices.ThreadingService,
-                    ProjectServices.ProjectAsynchronousTasks.UnloadCancellationToken);
+                FileChangeScheduler = new TaskDelayScheduler(FileChangeProcessingDelay, _commonProjectServices.ThreadingService,
+                    _projectServices.ProjectAsynchronousTasks.UnloadCancellationToken);
 
                 try
                 {
-                    FileWatcher = new SimpleFileWatcher(Path.GetDirectoryName(CommonProjectServices.Project.FullPath),
+                    FileWatcher = new SimpleFileWatcher(Path.GetDirectoryName(_commonProjectServices.Project.FullPath),
                                                         true,
                                                         NotifyFilters.FileName | NotifyFilters.Size | NotifyFilters.LastWrite,
                                                         LaunchSettingsFilename,
@@ -711,10 +704,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     _broadcastBlock = null;
                 }
 
-                if (ProjectRuleSubscriptionLink != null)
+                if (_projectRuleSubscriptionLink != null)
                 {
-                    ProjectRuleSubscriptionLink.Dispose();
-                    ProjectRuleSubscriptionLink = null;
+                    _projectRuleSubscriptionLink.Dispose();
+                    _projectRuleSubscriptionLink = null;
                 }
             }
         }
@@ -916,7 +909,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         public async Task SetActiveProfileAsync(string profileName)
         {
-            ProjectDebugger props = await CommonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync();
+            ProjectDebugger props = await _commonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync();
             await props.ActiveDebugProfile.SetValueAsync(profileName);
         }
 
@@ -929,7 +922,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             string folder = await _appDesignerSpecialFileProvider.Value.GetFileAsync(SpecialFiles.AppDesigner, SpecialFileFlags.FullPath);
 
             if (folder == null)  // AppDesigner capability not present, or the project has set AppDesignerFolder to empty
-                folder = Path.GetDirectoryName(CommonProjectServices.Project.FullPath);
+                folder = Path.GetDirectoryName(_commonProjectServices.Project.FullPath);
 
             return Path.Combine(folder, LaunchSettingsFilename);
         }

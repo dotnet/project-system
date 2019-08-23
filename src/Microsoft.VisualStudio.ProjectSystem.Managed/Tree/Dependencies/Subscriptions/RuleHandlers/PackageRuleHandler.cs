@@ -12,41 +12,35 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.RuleHandlers
 {
-    [Export(DependencyRulesSubscriber.DependencyRulesSubscriberContract,
-            typeof(IDependenciesRuleHandler))]
+    [Export(DependencyRulesSubscriber.DependencyRulesSubscriberContract, typeof(IDependenciesRuleHandler))]
     [Export(typeof(IProjectDependenciesSubTreeProvider))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     internal sealed partial class PackageRuleHandler : DependenciesRuleHandlerBase
     {
         public const string ProviderTypeString = "NuGetDependency";
 
-        private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
-            icon: ManagedImageMonikers.NuGetGrey,
-            expandedIcon: ManagedImageMonikers.NuGetGrey,
-            unresolvedIcon: ManagedImageMonikers.NuGetGreyWarning,
-            unresolvedExpandedIcon: ManagedImageMonikers.NuGetGreyWarning);
-
         private static readonly SubTreeRootDependencyModel s_rootModel = new SubTreeRootDependencyModel(
             ProviderTypeString,
-            Resources.NuGetPackagesNodeName,
-            s_iconSet,
+            Resources.PackagesNodeName,
+            new DependencyIconSet(
+                icon: ManagedImageMonikers.NuGetGrey,
+                expandedIcon: ManagedImageMonikers.NuGetGrey,
+                unresolvedIcon: ManagedImageMonikers.NuGetGreyWarning,
+                unresolvedExpandedIcon: ManagedImageMonikers.NuGetGreyWarning),
             DependencyTreeFlags.NuGetSubTreeRootNode);
+
+        private readonly ITargetFrameworkProvider _targetFrameworkProvider;
 
         [ImportingConstructor]
         public PackageRuleHandler(ITargetFrameworkProvider targetFrameworkProvider)
             : base(PackageReference.SchemaName, ResolvedPackageReference.SchemaName)
         {
-            TargetFrameworkProvider = targetFrameworkProvider;
+            _targetFrameworkProvider = targetFrameworkProvider;
         }
-
-        private ITargetFrameworkProvider TargetFrameworkProvider { get; }
 
         public override string ProviderType => ProviderTypeString;
 
-        public override ImageMoniker GetImplicitIcon()
-        {
-            return ManagedImageMonikers.NuGetGreyPrivate;
-        }
+        public override ImageMoniker ImplicitIcon => ManagedImageMonikers.NuGetGreyPrivate;
 
         public override void Handle(
             IImmutableDictionary<string, IProjectChangeDescription> changesByRuleName,
@@ -55,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         {
             var caseInsensitiveUnresolvedChanges = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-            if (changesByRuleName.TryGetValue(UnresolvedRuleName, out IProjectChangeDescription unresolvedChanges))
+            if (changesByRuleName.TryGetValue(EvaluatedRuleName, out IProjectChangeDescription unresolvedChanges))
             {
                 caseInsensitiveUnresolvedChanges.AddRange(unresolvedChanges.After.Items.Keys);
 
@@ -95,10 +89,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 if (PackageDependencyMetadata.TryGetMetadata(
                     removedItem,
                     resolved,
-                    properties: projectChange.Before.GetProjectItemProperties(removedItem),
+                    properties: projectChange.Before.GetProjectItemProperties(removedItem) ?? ImmutableDictionary<string, string>.Empty,
                     unresolvedChanges,
                     targetFramework,
-                    TargetFrameworkProvider,
+                    _targetFrameworkProvider,
                     out PackageDependencyMetadata metadata))
                 {
                     changesBuilder.Removed(targetFramework, ProviderTypeString, metadata.OriginalItemSpec);
@@ -110,10 +104,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 if (PackageDependencyMetadata.TryGetMetadata(
                     changedItem,
                     resolved,
-                    properties: projectChange.After.GetProjectItemProperties(changedItem),
+                    properties: projectChange.After.GetProjectItemProperties(changedItem) ?? ImmutableDictionary<string, string>.Empty,
                     unresolvedChanges,
                     targetFramework,
-                    TargetFrameworkProvider,
+                    _targetFrameworkProvider,
                     out PackageDependencyMetadata metadata))
                 {
                     changesBuilder.Removed(targetFramework, ProviderTypeString, metadata.OriginalItemSpec);
@@ -126,10 +120,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 if (PackageDependencyMetadata.TryGetMetadata(
                     addedItem,
                     resolved,
-                    properties: projectChange.After.GetProjectItemProperties(addedItem),
+                    properties: projectChange.After.GetProjectItemProperties(addedItem) ?? ImmutableDictionary<string, string>.Empty,
                     unresolvedChanges,
                     targetFramework,
-                    TargetFrameworkProvider,
+                    _targetFrameworkProvider,
                     out PackageDependencyMetadata metadata))
                 {
                     changesBuilder.Added(targetFramework, metadata.CreateDependencyModel());

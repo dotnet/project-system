@@ -141,6 +141,9 @@
   <data name="PPG_CompileTitle" xml:space="preserve">
     <value>Compile</value>
   </data>
+  <data name="PPG_CodeAnalysisTitle" xml:space="preserve">
+    <value>Code Analysis</value>
+  </data>
   <data name="PPG_DebugTitle" xml:space="preserve">
     <value>Debug</value>
   </data>

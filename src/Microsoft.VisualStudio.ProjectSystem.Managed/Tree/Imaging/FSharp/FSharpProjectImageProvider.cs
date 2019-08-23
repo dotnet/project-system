@@ -5,8 +5,6 @@ using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.Imaging;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging.FSharp
 {
     /// <summary>
@@ -21,18 +19,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging.FSharp
         {
         }
 
-        public ProjectImageMoniker GetProjectImage(string key)
+        public ProjectImageMoniker? GetProjectImage(string key)
         {
             Requires.NotNullOrEmpty(key, nameof(key));
 
-            switch (key)
-            {
-                case ProjectImageKey.ProjectRoot:
-                    return KnownMonikers.FSProjectNode.ToProjectSystemType();
-
-                default:
-                    return null;
-            }
+            return key == ProjectImageKey.ProjectRoot ?
+                KnownMonikers.FSProjectNode.ToProjectSystemType() :
+                null;
         }
     }
 }

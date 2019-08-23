@@ -1,12 +1,11 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 
 using Microsoft.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.Shell;
-
-#nullable disable
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
@@ -30,12 +29,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             _threadingService = threadingService;
         }
 
-        //------------------------------------------------------------------------------
-        // Validate the name is valid
-        //------------------------------------------------------------------------------
+        /// <summary>
+        /// Validate the name is valid
+        /// </summary>
         private void OKButton_Click(object sender, RoutedEventArgs e)
         {
-            string newName = ProfileName?.Trim();
+            string? newName = ProfileName?.Trim();
 
             var notifyService = new UserNotificationServices(_serviceProvider, _threadingService);
 
@@ -43,33 +42,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             {
                 notifyService.ShowError(PropertyPageResources.ProfileNameRequired);
             }
-            else if (!_validator(newName))
+            else if (!_validator(newName!))
             {
                 notifyService.ShowError(PropertyPageResources.ProfileNameInvalid);
             }
             else
             {
-                ProfileName = newName;
+                ProfileName = newName!;
                 DialogResult = true;
             }
         }
 
-        //------------------------------------------------------------------------------
-        // Returns the name of the current product we are instantiated in from the appropriate resource
-        // Used for dialog title binding
-        //------------------------------------------------------------------------------
-        public static string DialogCaption
-        {
-            get
-            {
-                return PropertyPageResources.NewProfileCaption;
-            }
-        }
+        /// <summary>
+        /// Returns the name of the current product we are instantiated in from the appropriate resource
+        /// Used for dialog title binding
+        /// </summary>
+        public static string DialogCaption => PropertyPageResources.NewProfileCaption;
 
-        //------------------------------------------------------------------------------
-        // Called when window loads. Use it to set focus on the text box correctly.
-        //------------------------------------------------------------------------------
         private delegate void SetFocusCallback();
+
+        /// <summary>
+        /// Called when window loads. Use it to set focus on the text box correctly.
+        /// </summary>
         private void GetProfileNameDialogWindow_Loaded(object sender, RoutedEventArgs e)
         {
             // We need to schedule this to occur later after databinding has completed, otherwise

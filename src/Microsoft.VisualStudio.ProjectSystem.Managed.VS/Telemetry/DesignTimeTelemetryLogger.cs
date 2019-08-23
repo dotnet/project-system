@@ -7,8 +7,6 @@ using System.Linq;
 using Microsoft.Build.Framework;
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.Telemetry
 {
     internal sealed class DesignTimeTelemetryLogger : ILogger
@@ -25,7 +23,7 @@ namespace Microsoft.VisualStudio.Telemetry
 
         public LoggerVerbosity Verbosity { get; set; }
 
-        public string Parameters { get; set; }
+        public string? Parameters { get; set; }
 
         public void Initialize(IEventSource eventSource)
         {

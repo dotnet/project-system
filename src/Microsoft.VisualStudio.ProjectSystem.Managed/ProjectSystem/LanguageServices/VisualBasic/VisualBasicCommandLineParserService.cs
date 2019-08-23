@@ -5,8 +5,6 @@ using System.ComponentModel.Composition;
 
 using Microsoft.CodeAnalysis.VisualBasic;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.VisualBasic
 {
     [Export(typeof(ICommandLineParserService))]

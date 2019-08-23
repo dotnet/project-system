@@ -4,8 +4,6 @@ using System.ComponentModel.Composition;
 
 using Microsoft.VisualStudio.ProjectSystem.Imaging;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Tree
 {
     /// <summary>
@@ -48,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree
 
         private void SetImage(IProjectTreeCustomizablePropertyValues propertyValues, string imageKey)
         {
-            ProjectImageMoniker icon = _imageProvider.GetProjectImage(imageKey);
+            ProjectImageMoniker? icon = _imageProvider.GetProjectImage(imageKey);
 
             if (icon != null)
             {

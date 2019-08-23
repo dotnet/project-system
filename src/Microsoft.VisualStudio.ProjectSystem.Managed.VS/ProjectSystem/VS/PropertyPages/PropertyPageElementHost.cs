@@ -1,4 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
 using System;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
@@ -6,18 +7,16 @@ using System.Windows.Forms.Integration;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
     internal class PropertyPageElementHost : ElementHost
     {
-        private const int _wm_KEYFIRST = 0x0100;
-        private const int _wm_KEYLAST = 0x0108;
+        private const int WM_KEYFIRST = 0x0100;
+        private const int WM_KEYLAST = 0x0108;
 
         public override bool PreProcessMessage(ref Message msg)
         {
-            if (msg.Msg >= _wm_KEYFIRST && msg.Msg <= _wm_KEYLAST)
+            if (msg.Msg >= WM_KEYFIRST && msg.Msg <= WM_KEYLAST)
             {
                 var filterKeys = (IVsFilterKeys2)ServiceProvider.GlobalProvider.GetService(typeof(SVsFilterKeys));
                 var oleMSG = new OLE.Interop.MSG() { hwnd = msg.HWnd, lParam = msg.LParam, wParam = msg.WParam, message = (uint)msg.Msg };

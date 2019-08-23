@@ -18,8 +18,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|Description">
-        <source>Location of the folder</source>
-        <target state="translated">Расположение файла</target>
+        <source>Location of the folder.</source>
+        <target state="needs-review-translation">Расположение файла</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FolderName|DisplayName">
@@ -28,8 +28,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FolderName|Description">
-        <source>Name of this folder</source>
-        <target state="translated">Имя этой папки</target>
+        <source>Name of this folder.</source>
+        <target state="needs-review-translation">Имя этой папки</target>
         <note />
       </trans-unit>
     </body>

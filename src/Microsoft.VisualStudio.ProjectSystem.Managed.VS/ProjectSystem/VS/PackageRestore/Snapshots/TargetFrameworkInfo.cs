@@ -3,8 +3,6 @@
 using System.Diagnostics;
 using NuGet.SolutionRestoreManager;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
     /// <summary>
@@ -15,13 +13,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
     {
         public TargetFrameworkInfo(string targetFrameworkMoniker, IVsReferenceItems frameworkReferences, IVsReferenceItems packageDownloads, IVsReferenceItems projectReferences, IVsReferenceItems packageReferences, IVsProjectProperties properties)
         {
-            Requires.NotNull(targetFrameworkMoniker, nameof(targetFrameworkMoniker));
-            Requires.NotNull(frameworkReferences, nameof(frameworkReferences));
-            Requires.NotNull(packageDownloads, nameof(packageDownloads));
-            Requires.NotNull(projectReferences, nameof(projectReferences));
-            Requires.NotNull(packageReferences, nameof(packageReferences));
-            Requires.NotNull(properties, nameof(properties));
-
             TargetFrameworkMoniker = targetFrameworkMoniker;
             FrameworkReferences = frameworkReferences;
             PackageDownloads = packageDownloads;

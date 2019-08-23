@@ -13,8 +13,6 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
 using Task = System.Threading.Tasks.Task;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.Telemetry
 {
     [Export(typeof(IBuildLoggerProviderAsync))]
@@ -22,7 +20,7 @@ namespace Microsoft.VisualStudio.Telemetry
     internal sealed class DesignTimeTelemetryLoggerProvider : IBuildLoggerProviderAsync
     {
         [Import]
-        private ITelemetryService TelemetryService { get; set; }
+        private ITelemetryService? TelemetryService { get; set; }
 
         public Task<IImmutableSet<ILogger>> GetLoggersAsync(IReadOnlyList<string> targets, IImmutableDictionary<string, string> properties, CancellationToken cancellationToken)
         {
@@ -30,7 +28,7 @@ namespace Microsoft.VisualStudio.Telemetry
 
             if (properties.GetBoolProperty("DesignTimeBuild") == true)
             {
-                loggers = loggers.Add(new DesignTimeTelemetryLogger(TelemetryService));
+                loggers = loggers.Add(new DesignTimeTelemetryLogger(TelemetryService!));
             }
 
             return Task.FromResult(loggers);

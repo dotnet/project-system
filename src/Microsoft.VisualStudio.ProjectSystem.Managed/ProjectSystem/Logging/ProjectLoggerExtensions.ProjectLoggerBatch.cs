@@ -5,8 +5,6 @@ using System.Text;
 
 using Microsoft.VisualStudio.Text;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Logging
 {
     internal partial class ProjectLoggerExtensions
@@ -14,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
         private class ProjectLoggerBatch : IProjectLoggerBatch
         {
             private readonly IProjectLogger _logger;
-            private StringBuilder _builder;
+            private StringBuilder? _builder;
             private int _indentLevel;
 
             internal ProjectLoggerBatch(IProjectLogger logger)
@@ -45,41 +43,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
             {
                 if (IsEnabled)
                 {
-                    Init();
-                    WriteNewLineIfNeeded();
-                    WriteIndent();
-                    Write(format);
+                    if (_builder == null)
+                        _builder = new StringBuilder();
+
+                    // Need to factor in that when we eventually write to the logger
+                    // it's going to append a new line to the string we write, so we 
+                    // only append the new line just before we write another string.
+                    if (_builder.Length != 0)
+                    {
+                        _builder.AppendLine();
+                    }
+
+                    _builder.Append(' ', 4 * _indentLevel);
+                    _builder.AppendFormat(format);
                 }
-            }
-
-            private void Init()
-            {
-                if (_builder == null)
-                    _builder = new StringBuilder();
-            }
-
-            private void WriteNewLineIfNeeded()
-            {
-                // Need to factor in that when we eventually write to the logger
-                // it's going to append a new line to the string we write, so we 
-                // only append the new line just before we write another string.
-                if (_builder.Length != 0)
-                {
-                    _builder.AppendLine();
-                }
-            }
-
-            private void WriteIndent()
-            {
-                for (int i = 0; i < _indentLevel; i++)
-                {
-                    _builder.Append("    ");
-                }
-            }
-
-            private void Write(in StringFormat format)
-            {
-                _builder.AppendFormat(format);
             }
 
             public void Dispose()

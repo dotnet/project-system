@@ -7,13 +7,11 @@ using System.ComponentModel.Composition;
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
-    ///<summary>
+    /// <summary>
     /// OutputTypeEx acts as a converter for the MSBuild OutputType value expressed as <see cref="VSLangProj110.prjOutputTypeEx"/>.
-    ///</summary>
+    /// </summary>
     [ExportInterceptingPropertyValueProvider("OutputTypeEx", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
     internal sealed class OutputTypeExValueProvider : OutputTypeValueProviderBase
     {

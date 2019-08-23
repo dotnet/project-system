@@ -1,3 +1,4 @@
+; TODO generate this file https://github.com/dotnet/project-system/issues/68
 
 [$RootKey$]
 
@@ -122,12 +123,19 @@
 "InprocServer32"="$System$\mscoree.dll"
 "ThreadingModel"="Both"
 
+[$RootKey$\CLSID\{c02f393c-8a1e-480d-aa82-6a75d693559d}]
+"Assembly"="Microsoft.VisualStudio.Editors,version=15.0.0.0,publicKeyToken=b03f5f7f11d50a3a,culture=neutral"
+"Class"="Microsoft.VisualStudio.Editors.PropertyPages.CodeAnalysisPropPageComClass"
+"InprocServer32"="$System$\mscoree.dll"
+"ThreadingModel"="Both"
+
 [$RootKey$\Editors]
 
 [$RootKey$\Editors\{04b8ab82-a572-4fef-95ce-5222444b6b64}]
 "DisplayName"="#1300"
 "EditorTrustLevel"=dword:00000001
 "Package"="{67909B06-91E9-4F3E-AB50-495046BE9A9A}"
+"DeferUntilIntellisenseIsReady"=dword:00000001
 @="Project Designer"
 
 [$RootKey$\Editors\{04b8ab82-a572-4fef-95ce-5222444b6b64}\LogicalViews]
@@ -138,6 +146,7 @@
 "DisplayName"="#1200"
 "EditorTrustLevel"=dword:00000001
 "Package"="{67909B06-91E9-4F3E-AB50-495046BE9A9A}"
+"DeferUntilIntellisenseIsReady"=dword:00000001
 @="SettingsDesignerEditorFactory"
 
 [$RootKey$\Editors\{6D2695F9-5365-4A78-89ED-F205C045BFE6}\Extensions]
@@ -150,6 +159,7 @@
 "DisplayName"="#1400"
 "EditorTrustLevel"=dword:00000001
 "Package"="{67909B06-91E9-4F3E-AB50-495046BE9A9A}"
+"DeferUntilIntellisenseIsReady"=dword:00000001
 @="Project Designer Property Page Host"
 
 [$RootKey$\Editors\{ff4d6aca-9352-4a5f-821e-f4d6ebdcab11}]
@@ -157,6 +167,7 @@
 "DisplayName"="#1100"
 "EditorTrustLevel"=dword:00000001
 "Package"="{67909B06-91E9-4F3E-AB50-495046BE9A9A}"
+"DeferUntilIntellisenseIsReady"=dword:00000001
 @="Managed Resources Editor"
 
 [$RootKey$\Editors\{ff4d6aca-9352-4a5f-821e-f4d6ebdcab11}\Extensions]
@@ -225,7 +236,7 @@
 @="#1100"
 
 [$RootKey$\Menus]
-"{67909B06-91E9-4F3E-AB50-495046BE9A9A}"=",1, 29"
+"{67909B06-91E9-4F3E-AB50-495046BE9A9A}"=",Menus.ctmenu, 30"
 
 [$RootKey$\Packages]
 
@@ -234,10 +245,6 @@
 "Class"="Microsoft.VisualStudio.Editors.VBPackage"
 "InprocServer32"="$System$\mscoree.dll"
 @="Visual Studio Settings and Project Designers Package"
-
-[$RootKey$\Packages\{67909B06-91E9-4F3E-AB50-495046BE9A9A}\SatelliteDll]
-"DllName"="Microsoft.VisualStudio.EditorsUI.DLL"
-"Path"="$ShellFolder$\Common7\IDE"
 
 [$RootKey$\Projects]
 
@@ -285,6 +292,7 @@
 [$RootKey$\ToolsOptionsPages\Projects]
 
 [$RootKey$\ToolsOptionsPages\Projects\NETCore]
+@="#1500"
 "Package"="{67909B06-91E9-4F3E-AB50-495046BE9A9A}"
 "Page"="{2E6DB64B-DA09-4B9F-A334-37A86FECDA6A}"
-@="#1500"
+"Keywords"="#1600"

@@ -8,8 +8,6 @@ using System.IO;
 
 using Microsoft.VisualStudio.ProjectSystem.Logging;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
     /// <summary>
@@ -81,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             if (!_paths.Contains(fullPath))
             {
-                string[] folderNames = FileItemServices.GetLogicalFolderNames(Path.GetDirectoryName(_project.FullPath), fullPath, metadata);
+                string[]? folderNames = FileItemServices.GetLogicalFolderNames(Path.GetDirectoryName(_project.FullPath), fullPath, metadata);
 
                 logger.WriteLine("Adding dynamic file '{0}'", fullPath);
                 Context.AddDynamicFile(fullPath, folderNames);

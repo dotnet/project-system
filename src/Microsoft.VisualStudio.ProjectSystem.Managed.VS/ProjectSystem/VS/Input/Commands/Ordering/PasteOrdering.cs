@@ -5,8 +5,6 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 {
     /// <summary>
@@ -23,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         private readonly ConfiguredProject _configuredProject;
         private readonly IProjectAccessor _accessor;
 
-        private IProjectTree _dropTarget;
+        private IProjectTree? _dropTarget;
 
         [ImportingConstructor]
         public PasteOrdering(UnconfiguredProject unconfiguredProject, IProjectAccessor accessor)

@@ -3,8 +3,6 @@
 using System;
 using System.Diagnostics;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
     internal partial class AbstractEvaluationCommandLineHandler

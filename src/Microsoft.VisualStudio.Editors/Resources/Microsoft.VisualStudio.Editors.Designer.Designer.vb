@@ -1002,6 +1002,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Code Analysis.
+        '''</summary>
+        Friend Shared ReadOnly Property PPG_CodeAnalysisTitle() As String
+            Get
+                Return ResourceManager.GetString("PPG_CodeAnalysisTitle", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to (None).
         '''</summary>
         Friend Shared ReadOnly Property PPG_ComboBoxSelect_None() As String

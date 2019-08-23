@@ -8,8 +8,6 @@ using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Threading;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>
@@ -17,6 +15,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     /// </summary>
     [Export(typeof(IVsUIService<,>))]
     internal class VsUIService<TService, TInterface> : VsUIService<TInterface>, IVsUIService<TService, TInterface>
+        where TService : class
+        where TInterface : class
     {
         [ImportingConstructor]
         public VsUIService([Import(typeof(SVsServiceProvider))]IServiceProvider serviceProvider, JoinableTaskContext joinableTaskContext)

@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.Threading;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>
@@ -18,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     ///     The type of the service to retrieve and return from <see cref="GetValueAsync"/>.
     /// </typeparam>
     [ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
-    internal interface IVsService<T>
+    internal interface IVsService<T> where T : class
     {
         /// <summary>
         ///     Gets the service object associated with <typeparamref name="T"/>.
@@ -33,13 +31,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// </value>
         /// <remarks>
         ///     Note that cancelling <paramref name="cancellationToken"/> will not cancel the 
-        ///     creation of the service, but will result in an expediant cancellation of the 
+        ///     creation of the service, but will result in an expedient cancellation of the 
         ///     returned <see cref="Task"/>, and a dis-joining of any <see cref="JoinableTask"/> 
         ///     that may have occurred as a result of this call.
         /// </remarks>
         /// <exception cref="OperationCanceledException">
         ///     The result is awaited and <paramref name="cancellationToken"/> is cancelled.
         /// </exception>
-        Task<T> GetValueAsync(CancellationToken cancellationToken = default);
+        Task<T?> GetValueAsync(CancellationToken cancellationToken = default);
     }
 }

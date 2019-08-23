@@ -11,11 +11,8 @@ using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
-
     /// <summary>
     /// Provides the set of debug profiles to populate the debugger dropdown.  The Property associated
     /// with this is the ActiveDebugProfile which contains the currently selected profile, and the DebugProfiles which
@@ -27,13 +24,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     [ExportMetadata("Name", "DebugProfileProvider")]
     internal class DebugProfileDebugTargetGenerator : ProjectValueDataSourceBase<IReadOnlyList<IEnumValue>>, IDynamicEnumValuesProvider, IDynamicDebugTargetsGenerator
     {
-        private IReceivableSourceBlock<IProjectVersionedValue<IReadOnlyList<IEnumValue>>> _publicBlock;
+        private IReceivableSourceBlock<IProjectVersionedValue<IReadOnlyList<IEnumValue>>>? _publicBlock;
 
         // Represents the link to the launch profiles
-        private IDisposable _launchProfileProviderLink;
+        private IDisposable? _launchProfileProviderLink;
 
         // Represents the link to our source provider
-        private IDisposable _debugProviderLink;
+        private IDisposable? _debugProviderLink;
 
         [ImportingConstructor]
         public DebugProfileDebugTargetGenerator(
@@ -46,14 +43,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             ProjectThreadingService = threadingService;
         }
 
-        private readonly NamedIdentity _dataSourceKey = new NamedIdentity();
-        public override NamedIdentity DataSourceKey
-        {
-            get { return _dataSourceKey; }
-        }
+        public override NamedIdentity DataSourceKey { get; } = new NamedIdentity();
+
+        private int _dataSourceVersion;
 
         /// <inheritdoc/>
-        private int _dataSourceVersion;
         public override IComparable DataSourceVersion
         {
             get { return _dataSourceVersion; }
@@ -65,21 +59,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             get
             {
                 EnsureInitialized();
-                return _publicBlock;
+                return _publicBlock!;
             }
         }
 
         private ILaunchSettingsProvider LaunchSettingProvider { get; }
         private IProjectThreadingService ProjectThreadingService { get; }
 
-
         /// <summary>
         /// This provides access to the class which creates the list of debugger values..
         /// </summary>
-        public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair> options)
+        public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair>? options)
             => Task.FromResult<IDynamicEnumValuesGenerator>(
                 new DebugProfileEnumValuesGenerator(LaunchSettingProvider, ProjectThreadingService));
-
 
         protected override void Initialize()
         {

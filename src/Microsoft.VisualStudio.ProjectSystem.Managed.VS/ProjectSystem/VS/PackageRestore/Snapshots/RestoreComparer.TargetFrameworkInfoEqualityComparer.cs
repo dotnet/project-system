@@ -4,15 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using NuGet.SolutionRestoreManager;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
     internal static partial class RestoreComparer
     {
-        private class TargetFrameworkInfoEqualityComparer : EqualityComparer<IVsTargetFrameworkInfo2>
+        private class TargetFrameworkInfoEqualityComparer : EqualityComparer<IVsTargetFrameworkInfo2?>
         {
-            public override bool Equals(IVsTargetFrameworkInfo2 x, IVsTargetFrameworkInfo2 y)
+            public override bool Equals(IVsTargetFrameworkInfo2? x, IVsTargetFrameworkInfo2? y)
             {
                 if (x is null || y is null)
                     return x == y;
@@ -50,8 +48,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 return xPackageReferences.SequenceEqual(yPackageReferences, ReferenceItems);
             }
 
-            public override int GetHashCode(IVsTargetFrameworkInfo2 obj)
+            public override int GetHashCode(IVsTargetFrameworkInfo2? obj)
             {
+                if (obj == null)
+                    return 0;
+
                 return obj.TargetFrameworkMoniker.GetHashCode();
             }
         }

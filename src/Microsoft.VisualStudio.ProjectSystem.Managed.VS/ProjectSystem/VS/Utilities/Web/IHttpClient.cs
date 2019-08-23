@@ -4,8 +4,6 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Composition;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 {
     [ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]

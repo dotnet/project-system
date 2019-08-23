@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 
 using Microsoft.Build.Framework.XamlTypes;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     /// <summary>
@@ -30,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             _configuredProject = configuredProject;
         }
 
-        public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair> options)
+        public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair>? options)
         {
             return Task.FromResult<IDynamicEnumValuesGenerator>(new SupportedTargetFrameworksEnumValuesGenerator(_projectAccessor, _configuredProject));
         }
