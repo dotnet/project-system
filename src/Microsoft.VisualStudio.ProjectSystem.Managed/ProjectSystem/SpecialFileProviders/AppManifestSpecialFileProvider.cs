@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
     [ExportSpecialFileProvider(SpecialFiles.AppManifest)]
     [AppliesTo(ProjectCapability.DotNet)]
-    internal class AppManifestSpecialFileProvider : AbstractSpecialFileProvider
+    internal class AppManifestSpecialFileProvider : AbstractFindByNameSpecialFileProvider
     {
         private readonly ProjectProperties _projectProperties;
 
@@ -18,12 +18,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         private const string DefaultManifestValue = "DefaultManifest";
 
         [ImportingConstructor]
-        public AppManifestSpecialFileProvider(IPhysicalProjectTree projectTree,
-                                              [Import(ExportContractNames.ProjectItemProviders.SourceFiles)] IProjectItemProvider sourceItemsProvider,
-                                              [Import(AllowDefault = true)] Lazy<ICreateFileFromTemplateService>? templateFileCreationService,
-                                              IFileSystem fileSystem,
-                                              ISpecialFilesManager specialFilesManager,
-                                              ProjectProperties projectProperties)
+        public AppManifestSpecialFileProvider(
+            IPhysicalProjectTree projectTree,
+            [Import(ExportContractNames.ProjectItemProviders.SourceFiles)] IProjectItemProvider sourceItemsProvider,
+            [Import(AllowDefault = true)] Lazy<ICreateFileFromTemplateService>? templateFileCreationService,
+            IFileSystem fileSystem,
+            ISpecialFilesManager specialFilesManager,
+            ProjectProperties projectProperties)
             : base(projectTree, sourceItemsProvider, templateFileCreationService, fileSystem, specialFilesManager)
         {
             _projectProperties = projectProperties;
@@ -43,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
                 !appManifestProperty.Equals(DefaultManifestValue, StringComparison.InvariantCultureIgnoreCase) &&
                 !appManifestProperty.Equals(NoManifestValue, StringComparison.InvariantCultureIgnoreCase))
             {
-                return _projectTree.TreeProvider.FindByPath(_projectTree.CurrentTree, appManifestProperty);
+                return ProjectTree.TreeProvider.FindByPath(ProjectTree.CurrentTree, appManifestProperty);
             }
 
             return await base.FindFileAsync(specialFileName);
