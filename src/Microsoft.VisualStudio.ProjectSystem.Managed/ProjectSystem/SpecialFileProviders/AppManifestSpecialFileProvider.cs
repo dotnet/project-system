@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
                 !appManifestProperty.Equals(DefaultManifestValue, StringComparison.InvariantCultureIgnoreCase) &&
                 !appManifestProperty.Equals(NoManifestValue, StringComparison.InvariantCultureIgnoreCase))
             {
-                return _projectTree.TreeProvider.FindByPath(_projectTree.CurrentTree, appManifestProperty);
+                return ProjectTree.TreeProvider.FindByPath(ProjectTree.CurrentTree, appManifestProperty);
             }
 
             return await base.FindFileAsync(specialFileName);
