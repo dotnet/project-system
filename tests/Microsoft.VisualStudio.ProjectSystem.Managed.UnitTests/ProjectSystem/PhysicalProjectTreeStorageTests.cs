@@ -147,9 +147,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var project = UnconfiguredProjectFactory.Create(filePath: projectPath);
             string? result = null;
             var treeProvider = IProjectTreeProviderFactory.ImplementFindByPath((root, path) => { result = path; return null; });
-            var currentTree = ProjectTreeParser.Parse(projectPath);
+            var projectTreeService = IProjectTreeServiceFactory.Create(treeProvider: treeProvider);
 
-            var storage = CreateInstance(treeProvider: treeProvider, project: project);
+            var storage = CreateInstance(projectTreeService: projectTreeService, project: project);
 
             await storage.CreateFileAsync(input);
 
@@ -177,26 +177,24 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var project = UnconfiguredProjectFactory.Create(filePath: projectPath);
             string? result = null;
             var treeProvider = IProjectTreeProviderFactory.ImplementFindByPath((root, path) => { result = path; return null; });
-            var currentTree = ProjectTreeParser.Parse(projectPath);
+            var projectTreeService = IProjectTreeServiceFactory.Create(treeProvider: treeProvider);
 
-            var storage = CreateInstance(treeProvider: treeProvider, project: project);
+            var storage = CreateInstance(projectTreeService: projectTreeService, project: project);
 
             await storage.CreateFolderAsync(input);
 
             Assert.Equal(expected, result);
         }
 
-        private static PhysicalProjectTreeStorage CreateInstance(IProjectTreeService? treeService = null, IProjectTreeProvider? treeProvider = null, IProjectItemProvider? sourceItemsProvider = null, IFileSystem? fileSystem = null, IFolderManager? folderManager = null, UnconfiguredProject? project = null)
+        private static PhysicalProjectTreeStorage CreateInstance(IProjectTreeService? projectTreeService = null, IProjectItemProvider? sourceItemsProvider = null, IFileSystem? fileSystem = null, IFolderManager? folderManager = null, UnconfiguredProject? project = null)
         {
-            treeService ??= IProjectTreeServiceFactory.Create(ProjectTreeParser.Parse("Root"));
-            treeProvider ??= IProjectTreeProviderFactory.Create();
+            projectTreeService ??= IProjectTreeServiceFactory.Create(ProjectTreeParser.Parse("Root"));
             fileSystem ??= IFileSystemFactory.Create();
             folderManager ??= IFolderManagerFactory.Create();
             sourceItemsProvider ??= IProjectItemProviderFactory.Create();
             project ??= UnconfiguredProjectFactory.Create();
 
-            return new PhysicalProjectTreeStorage(new Lazy<IProjectTreeService>(() => treeService),
-                                                  new Lazy<IProjectTreeProvider>(() => treeProvider),
+            return new PhysicalProjectTreeStorage(new Lazy<IProjectTreeService>(() => projectTreeService),
                                                   new Lazy<IFileSystem>(() => fileSystem),
                                                   ActiveConfiguredProjectFactory.ImplementValue(() => folderManager),
                                                   ActiveConfiguredProjectFactory.ImplementValue(() => sourceItemsProvider),

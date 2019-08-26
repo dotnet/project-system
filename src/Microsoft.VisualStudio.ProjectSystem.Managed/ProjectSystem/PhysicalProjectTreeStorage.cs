@@ -15,19 +15,16 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private readonly ActiveConfiguredProject<IFolderManager> _folderManager;
         private readonly ActiveConfiguredProject<IProjectItemProvider> _sourceItemProvider;
         private readonly Lazy<IProjectTreeService> _treeService;
-        private readonly Lazy<IProjectTreeProvider> _treeProvider;
         private readonly UnconfiguredProject _unconfiguredProject;
 
         [ImportingConstructor]
         public PhysicalProjectTreeStorage([Import(ExportContractNames.ProjectTreeProviders.PhysicalProjectTreeService)]Lazy<IProjectTreeService> treeService,
-                                          [Import(ExportContractNames.ProjectTreeProviders.PhysicalViewTree)]Lazy<IProjectTreeProvider> treeProvider,
                                           Lazy<IFileSystem> fileSystem,
                                           ActiveConfiguredProject<IFolderManager> folderManager,
                                           [Import(ExportContractNames.ProjectItemProviders.SourceFiles)]ActiveConfiguredProject<IProjectItemProvider> sourceItemProvider,
                                           UnconfiguredProject project)
         {
             _treeService = treeService;
-            _treeProvider = treeProvider;
             _sourceItemProvider = sourceItemProvider;
             _fileSystem = fileSystem;
             _folderManager = folderManager;
@@ -65,9 +62,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             await addToProject(fullPath);
 
-            await _treeService.Value.PublishLatestTreeAsync(waitForFileSystemUpdates);
+            IProjectTreeServiceState state = await _treeService.Value.PublishLatestTreeAsync(waitForFileSystemUpdates);
 
-            return _treeProvider.Value.FindByPath(_treeService.Value.CurrentTree.Tree, fullPath);
+            return state.TreeProvider.FindByPath(state.Tree, fullPath);
         }
     }
 }
