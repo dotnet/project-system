@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             var designTimeInputs = new List<string>();
             var designTimeSharedInputs = new List<string>();
 
-            foreach ((string itemName, IImmutableDictionary<string, string> metadata) in currentState["Compile"].Items)
+            foreach ((string itemName, IImmutableDictionary<string, string> metadata) in currentState.GetSnapshotOrEmpty(Compile.SchemaName).Items)
             {
                 (bool designTime, bool designTimeShared) = GetDesignTimePropsForItem(metadata);
 
