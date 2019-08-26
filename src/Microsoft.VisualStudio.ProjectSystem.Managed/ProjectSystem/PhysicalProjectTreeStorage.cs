@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _unconfiguredProject = project;
         }
 
-        public async Task<IProjectItem?> CreateFileAsync(string path)
+        public async Task<IProjectItem?> CreateEmpyFileAsync(string path)
         {
             Requires.NotNullOrEmpty(path, nameof(path));
 
