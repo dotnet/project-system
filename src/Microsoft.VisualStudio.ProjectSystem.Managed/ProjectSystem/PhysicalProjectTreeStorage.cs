@@ -13,6 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
         private readonly Lazy<IFileSystem> _fileSystem;
         private readonly ActiveConfiguredProject<IFolderManager> _folderManager;
+        private readonly ActiveConfiguredProject<IProjectItemProvider> _sourceItemProvider;
         private readonly Lazy<IProjectTreeService> _treeService;
         private readonly Lazy<IProjectTreeProvider> _treeProvider;
         private readonly UnconfiguredProject _unconfiguredProject;
@@ -22,34 +23,52 @@ namespace Microsoft.VisualStudio.ProjectSystem
                                           [Import(ExportContractNames.ProjectTreeProviders.PhysicalViewTree)]Lazy<IProjectTreeProvider> treeProvider,
                                           Lazy<IFileSystem> fileSystem,
                                           ActiveConfiguredProject<IFolderManager> folderManager,
+                                          [Import(ExportContractNames.ProjectItemProviders.SourceFiles)]ActiveConfiguredProject<IProjectItemProvider> sourceItemProvider,
                                           UnconfiguredProject project)
         {
             _treeService = treeService;
             _treeProvider = treeProvider;
+            _sourceItemProvider = sourceItemProvider;
             _fileSystem = fileSystem;
             _folderManager = folderManager;
             _unconfiguredProject = project;
         }
 
-        public Task<IProjectTree> CreateFolderAsync(string path)
+        public async Task<IProjectItem?> CreateFileAsync(string path)
         {
             Requires.NotNullOrEmpty(path, nameof(path));
 
+            return await AddToProjectAsync(path, waitForFileSystemUpdates: true, async fullPath =>
+            {
+                using (_fileSystem.Value.Create(fullPath)) { }
+
+                await _sourceItemProvider.Value.AddAsync(fullPath);
+
+            }) as IProjectItem;
+        }
+
+        public Task<IProjectTree?> CreateFolderAsync(string path)
+        {
+            Requires.NotNullOrEmpty(path, nameof(path));
+
+            return AddToProjectAsync(path, waitForFileSystemUpdates: false, async fullPath =>
+            {
+                _fileSystem.Value.CreateDirectory(fullPath);
+
+                await _folderManager.Value.IncludeFolderInProjectAsync(fullPath, recursive: false);
+            });
+        }
+
+        private async Task<IProjectTree?> AddToProjectAsync(string path, bool waitForFileSystemUpdates, Func<string, Task> addToProject)
+        {
             if (_treeService.Value.CurrentTree == null)
                 throw new InvalidOperationException("Physical project tree has not yet been published.");
 
             string fullPath = _unconfiguredProject.MakeRooted(path);
 
-            return AddToProjectAsync(fullPath);
-        }
+            await addToProject(fullPath);
 
-        private async Task<IProjectTree> AddToProjectAsync(string fullPath)
-        {
-            _fileSystem.Value.CreateDirectory(fullPath);
-
-            await _folderManager.Value.IncludeFolderInProjectAsync(fullPath, recursive: false);
-
-            await _treeService.Value.PublishLatestTreeAsync();
+            await _treeService.Value.PublishLatestTreeAsync(waitForFileSystemUpdates);
 
             return _treeProvider.Value.FindByPath(_treeService.Value.CurrentTree.Tree, fullPath);
         }

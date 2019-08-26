@@ -14,6 +14,15 @@ namespace Microsoft.VisualStudio.IO
             return Mock.Of<IFileSystem>();
         }
 
+        public static IFileSystem ImplementCreate(Func<string, Stream> action)
+        {
+            var mock = new Mock<IFileSystem>();
+            mock.Setup(f => f.Create(It.IsAny<string>()))
+                .Returns(action);
+
+            return mock.Object;
+        }
+
         public static IFileSystem ImplementCreateDirectory(Action<string> action)
         {
             var mock = new Mock<IFileSystem>();

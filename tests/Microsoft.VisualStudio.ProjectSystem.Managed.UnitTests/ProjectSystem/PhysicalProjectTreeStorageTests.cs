@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.IO;
 using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.IO;
@@ -11,6 +12,28 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     public class PhysicalProjectTreeStorageTests
     {
+        [Fact]
+        public async Task CreateFileAsync_NullAsPath_ThrowsArgumentNull()
+        {
+            var storage = CreateInstance();
+
+            await Assert.ThrowsAsync<ArgumentNullException>("path", () =>
+            {
+                return storage.CreateFileAsync((string?)null!);
+            });
+        }
+
+        [Fact]
+        public async Task CreateFileAsync_EmptyAsPath_ThrowsArgument()
+        {
+            var storage = CreateInstance();
+
+            await Assert.ThrowsAsync<ArgumentException>("path", () =>
+            {
+                return storage.CreateFileAsync(string.Empty);
+            });
+        }
+
         [Fact]
         public void CreateFolderAsync_NullAsPath_ThrowsArgumentNull()
         {
@@ -46,6 +69,20 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         [Fact]
+        public async Task CreateFileAsync_CreatesFileOnDisk()
+        {
+            string? result = null;
+            var project = UnconfiguredProjectFactory.Create(filePath: @"C:\Project\Project.csproj");
+            var fileSystem = IFileSystemFactory.ImplementCreate((path) => { result = path; return new MemoryStream(); });
+
+            var storage = CreateInstance(fileSystem: fileSystem, project: project);
+
+            await storage.CreateFileAsync(@"Properties\File.cs");
+
+            Assert.Equal(@"C:\Project\Properties\File.cs", result);
+        }
+
+        [Fact]
         public async Task CreateFolderAsync_CreatesFolderOnDisk()
         {
             string? result = null;
@@ -57,6 +94,20 @@ namespace Microsoft.VisualStudio.ProjectSystem
             await storage.CreateFolderAsync("Folder");
 
             Assert.Equal(@"C:\Folder", result);
+        }
+
+        [Fact]
+        public async Task CreateFileAsync_AddsFileToProject()
+        {
+            string? result = null;
+            var project = UnconfiguredProjectFactory.Create(filePath: @"C:\Project.csproj");
+
+            var sourceItemsProvider = IProjectItemProviderFactory.AddItemAsync(path => { result = path; return null!; });
+            var storage = CreateInstance(sourceItemsProvider: sourceItemsProvider, project: project);
+
+            await storage.CreateFileAsync("File.cs");
+
+            Assert.Equal(@"C:\File.cs", result);
         }
 
         [Fact]
@@ -85,6 +136,36 @@ namespace Microsoft.VisualStudio.ProjectSystem
             await storage.CreateFolderAsync("Folder");
 
             Assert.False(result);
+        }
+
+        [Theory]
+        [InlineData(@"C:\Project.csproj",           @"Properties\File.cs",                   @"C:\Properties\File.cs")]
+        [InlineData(@"C:\Projects\Project.csproj",  @"Properties\File.cs",                   @"C:\Projects\Properties\File.cs")]
+        [InlineData(@"C:\Projects\Project.csproj",  @"..\Properties\File.cs",                @"C:\Properties\File.cs")]
+        [InlineData(@"C:\Projects\Project.csproj",  @"C:\Properties\File.cs",                @"C:\Properties\File.cs")]
+        [InlineData(@"C:\Projects\Project.csproj",  @"D:\Properties\File.cs",                @"D:\Properties\File.cs")]
+        [InlineData(@"C:\Project.csproj",           @"Properties\Folder\File.cs",            @"C:\Properties\Folder\File.cs")]
+        [InlineData(@"C:\Projects\Project.csproj",  @"Properties\Folder\File.cs",            @"C:\Projects\Properties\Folder\File.cs")]
+        [InlineData(@"C:\Projects\Project.csproj",  @"..\Properties\Folder\File.cs",         @"C:\Properties\Folder\File.cs")]
+        [InlineData(@"C:\Projects\Project.csproj",  @"C:\Properties\Folder\File.cs",         @"C:\Properties\Folder\File.cs")]
+        [InlineData(@"C:\Projects\Project.csproj",  @"D:\Properties\Folder\File.cs",         @"D:\Properties\Folder\File.cs")]
+        [InlineData(@"C:\Project.csproj",           @"Folder With Spaces\File.cs",           @"C:\Folder With Spaces\File.cs")]
+        [InlineData(@"C:\Projects\Project.csproj",  @"Folder With Spaces\Folder\File.cs",    @"C:\Projects\Folder With Spaces\Folder\File.cs")]
+        [InlineData(@"C:\Projects\Project.csproj",  @"..\Folder With Spaces\Folder\File.cs", @"C:\Folder With Spaces\Folder\File.cs")]
+        [InlineData(@"C:\Projects\Project.csproj",  @"C:\Folder With Spaces\Folder\File.cs", @"C:\Folder With Spaces\Folder\File.cs")]
+        [InlineData(@"C:\Projects\Project.csproj",  @"D:\Folder With Spaces\Folder\File.cs", @"D:\Folder With Spaces\Folder\File.cs")]
+        public async Task CreateFileAsync_ValueAsPath_IsCalculatedRelativeToProjectDirectory(string projectPath, string input, string expected)
+        {
+            var project = UnconfiguredProjectFactory.Create(filePath: projectPath);
+            string? result = null;
+            var treeProvider = IProjectTreeProviderFactory.ImplementFindByPath((root, path) => { result = path; return null; });
+            var currentTree = ProjectTreeParser.Parse(projectPath);
+
+            var storage = CreateInstance(treeProvider: treeProvider, project: project);
+
+            await storage.CreateFileAsync(input);
+
+            Assert.Equal(expected, result);
         }
 
         [Theory]
@@ -117,18 +198,20 @@ namespace Microsoft.VisualStudio.ProjectSystem
             Assert.Equal(expected, result);
         }
 
-        private static PhysicalProjectTreeStorage CreateInstance(IProjectTreeService? treeService = null, IProjectTreeProvider? treeProvider = null, IFileSystem? fileSystem = null, IFolderManager? folderManager = null, UnconfiguredProject? project = null)
+        private static PhysicalProjectTreeStorage CreateInstance(IProjectTreeService? treeService = null, IProjectTreeProvider? treeProvider = null, IProjectItemProvider? sourceItemsProvider = null, IFileSystem? fileSystem = null, IFolderManager? folderManager = null, UnconfiguredProject? project = null)
         {
             treeService ??= IProjectTreeServiceFactory.Create(ProjectTreeParser.Parse("Root"));
             treeProvider ??= IProjectTreeProviderFactory.Create();
             fileSystem ??= IFileSystemFactory.Create();
             folderManager ??= IFolderManagerFactory.Create();
+            sourceItemsProvider ??= IProjectItemProviderFactory.Create();
             project ??= UnconfiguredProjectFactory.Create();
 
             return new PhysicalProjectTreeStorage(new Lazy<IProjectTreeService>(() => treeService),
                                                   new Lazy<IProjectTreeProvider>(() => treeProvider),
                                                   new Lazy<IFileSystem>(() => fileSystem),
                                                   ActiveConfiguredProjectFactory.ImplementValue(() => folderManager),
+                                                  ActiveConfiguredProjectFactory.ImplementValue(() => sourceItemsProvider),
                                                   project);
         }
     }
