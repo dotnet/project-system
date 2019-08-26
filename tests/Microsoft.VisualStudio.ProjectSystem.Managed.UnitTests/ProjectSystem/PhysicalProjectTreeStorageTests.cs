@@ -194,7 +194,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             sourceItemsProvider ??= IProjectItemProviderFactory.Create();
             project ??= UnconfiguredProjectFactory.Create();
 
-            return new PhysicalProjectTreeStorage(new Lazy<IProjectTreeService>(() => projectTreeService),
+            return new PhysicalProjectTreeStorage(projectTreeService,
                                                   new Lazy<IFileSystem>(() => fileSystem),
                                                   ActiveConfiguredProjectFactory.ImplementValue(() => folderManager),
                                                   ActiveConfiguredProjectFactory.ImplementValue(() => sourceItemsProvider),
