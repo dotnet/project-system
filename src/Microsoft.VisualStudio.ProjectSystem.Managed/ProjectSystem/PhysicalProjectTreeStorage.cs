@@ -61,9 +61,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private async Task<IProjectTree?> AddToProjectAsync(string path, bool waitForFileSystemUpdates, Func<string, Task> addToProject)
         {
-            if (_treeService.Value.CurrentTree == null)
-                throw new InvalidOperationException("Physical project tree has not yet been published.");
-
             string fullPath = _unconfiguredProject.MakeRooted(path);
 
             await addToProject(fullPath);

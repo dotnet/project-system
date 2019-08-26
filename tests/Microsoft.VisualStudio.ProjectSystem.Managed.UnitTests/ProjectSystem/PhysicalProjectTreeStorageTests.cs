@@ -57,18 +57,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         [Fact]
-        public void CreateFolderAsync_WhenTreeNotPublished_ThrowsInvalidOperation()
-        {
-            var treeService = IProjectTreeServiceFactory.ImplementCurrentTree(() => null);
-            var storage = CreateInstance(treeService: treeService);
-
-            Assert.Throws<InvalidOperationException>(() =>
-            {
-                storage.CreateFolderAsync("path");
-            });
-        }
-
-        [Fact]
         public async Task CreateFileAsync_CreatesFileOnDisk()
         {
             string? result = null;
