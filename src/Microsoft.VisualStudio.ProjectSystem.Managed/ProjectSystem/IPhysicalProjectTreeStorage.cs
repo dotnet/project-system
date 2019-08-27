@@ -25,9 +25,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <param name="path">
         ///     The path of the folder to create, can be relative to the project directory.
         /// </param>
-        /// <returns>
-        ///     The created <see cref="IProjectItem"/>.
-        /// </returns>
         /// <remarks>
         ///     This method will automatically publish the resulting tree to <see cref="IProjectTreeService.CurrentTree"/>.
         /// </remarks>
@@ -60,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <exception cref="NotSupportedException">
         ///     <paramref name="path"/> contains a colon character (:) that is not part of a drive label ("C:\").
         /// </exception>
-        Task<IProjectItem?> CreateEmptyFileAsync(string path);
+        Task CreateEmptyFileAsync(string path);
 
         /// <summary>
         ///     Creates a folder on disk, adding it add to the physical project tree.
@@ -68,9 +65,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <param name="path">
         ///     The path of the folder to create, can be relative to the project directory.
         /// </param>
-        /// <returns>
-        ///     The created <see cref="IProjectTree"/>.
-        /// </returns>
         /// <remarks>
         ///     This method will automatically publish the resulting tree to <see cref="IProjectTreeService.CurrentTree"/>.
         /// </remarks>
@@ -103,6 +97,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <exception cref="NotSupportedException">
         ///     <paramref name="path"/> contains a colon character (:) that is not part of a drive label ("C:\").
         /// </exception>
-        Task<IProjectTree?> CreateFolderAsync(string path);
+        Task CreateFolderAsync(string path);
     }
 }

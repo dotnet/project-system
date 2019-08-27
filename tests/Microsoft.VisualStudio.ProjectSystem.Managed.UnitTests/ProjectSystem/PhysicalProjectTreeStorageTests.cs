@@ -35,24 +35,24 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         [Fact]
-        public void CreateFolderAsync_NullAsPath_ThrowsArgumentNull()
+        public async Task CreateFolderAsync_NullAsPath_ThrowsArgumentNull()
         {
             var storage = CreateInstance();
 
-            Assert.Throws<ArgumentNullException>("path", () =>
+            await Assert.ThrowsAsync<ArgumentNullException>("path", async () =>
             {
-                storage.CreateFolderAsync((string?)null!);
+                await storage.CreateFolderAsync((string?)null!);
             });
         }
 
         [Fact]
-        public void CreateFolderAsync_EmptyAsPath_ThrowsArgument()
+        public async Task CreateFolderAsync_EmptyAsPath_ThrowsArgument()
         {
             var storage = CreateInstance();
 
-            Assert.Throws<ArgumentException>("path", () =>
+            await Assert.ThrowsAsync<ArgumentException>("path", async () =>
             {
-                storage.CreateFolderAsync(string.Empty);
+                await storage.CreateFolderAsync(string.Empty);
             });
         }
 
@@ -146,10 +146,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var project = UnconfiguredProjectFactory.Create(filePath: projectPath);
             string? result = null;
-            var treeProvider = IProjectTreeProviderFactory.ImplementFindByPath((root, path) => { result = path; return null; });
-            var projectTreeService = IProjectTreeServiceFactory.Create(treeProvider: treeProvider);
+            var fileSystem = IFileSystemFactory.ImplementCreate(path => { result = path; return new MemoryStream(); });
 
-            var storage = CreateInstance(projectTreeService: projectTreeService, project: project);
+            var storage = CreateInstance(fileSystem: fileSystem, project: project);
 
             await storage.CreateEmptyFileAsync(input);
 
@@ -176,10 +175,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var project = UnconfiguredProjectFactory.Create(filePath: projectPath);
             string? result = null;
-            var treeProvider = IProjectTreeProviderFactory.ImplementFindByPath((root, path) => { result = path; return null; });
-            var projectTreeService = IProjectTreeServiceFactory.Create(treeProvider: treeProvider);
+            var fileSystem = IFileSystemFactory.ImplementCreateDirectory(path => { result = path; });
 
-            var storage = CreateInstance(projectTreeService: projectTreeService, project: project);
+            var storage = CreateInstance(fileSystem: fileSystem, project: project);
 
             await storage.CreateFolderAsync(input);
 

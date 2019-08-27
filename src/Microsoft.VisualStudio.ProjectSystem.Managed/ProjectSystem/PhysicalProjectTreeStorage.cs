@@ -31,40 +31,30 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _unconfiguredProject = project;
         }
 
-        public async Task<IProjectItem?> CreateEmptyFileAsync(string path)
+        public async Task CreateEmptyFileAsync(string path)
         {
             Requires.NotNullOrEmpty(path, nameof(path));
 
-            return await AddToProjectAsync(path, waitForFileSystemUpdates: true, fullPath =>
-            {
-                using (_fileSystem.Value.Create(fullPath)) { }
-
-                return _sourceItemProvider.Value.AddAsync(fullPath);
-
-            }) as IProjectItem;
-        }
-
-        public Task<IProjectTree?> CreateFolderAsync(string path)
-        {
-            Requires.NotNullOrEmpty(path, nameof(path));
-
-            return AddToProjectAsync(path, waitForFileSystemUpdates: false, fullPath =>
-            {
-                _fileSystem.Value.CreateDirectory(fullPath);
-
-                return _folderManager.Value.IncludeFolderInProjectAsync(fullPath, recursive: false);
-            });
-        }
-
-        private async Task<IProjectTree?> AddToProjectAsync(string path, bool waitForFileSystemUpdates, Func<string, Task> addToProject)
-        {
             string fullPath = _unconfiguredProject.MakeRooted(path);
 
-            await addToProject(fullPath);
+            using (_fileSystem.Value.Create(fullPath)) { }
 
-            IProjectTreeServiceState state = await _treeService.PublishLatestTreeAsync(waitForFileSystemUpdates);
+            await _sourceItemProvider.Value.AddAsync(fullPath);
 
-            return state.TreeProvider.FindByPath(state.Tree, fullPath);
+            await _treeService.PublishLatestTreeAsync(waitForFileSystemUpdates: true);
+        }
+
+        public async Task CreateFolderAsync(string path)
+        {
+            Requires.NotNullOrEmpty(path, nameof(path));
+
+            string fullPath = _unconfiguredProject.MakeRooted(path);
+
+            _fileSystem.Value.CreateDirectory(fullPath);
+
+            await _folderManager.Value.IncludeFolderInProjectAsync(fullPath, recursive: false);
+
+            await _treeService.PublishLatestTreeAsync(waitForFileSystemUpdates: false);
         }
     }
 }
