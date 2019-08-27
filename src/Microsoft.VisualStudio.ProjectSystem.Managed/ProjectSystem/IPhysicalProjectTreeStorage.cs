@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <exception cref="NotSupportedException">
         ///     <paramref name="path"/> contains a colon character (:) that is not part of a drive label ("C:\").
         /// </exception>
-        Task<IProjectItem?> CreateEmpyFileAsync(string path);
+        Task<IProjectItem?> CreateEmptyFileAsync(string path);
 
         /// <summary>
         ///     Creates a folder on disk, adding it add to the physical project tree.
