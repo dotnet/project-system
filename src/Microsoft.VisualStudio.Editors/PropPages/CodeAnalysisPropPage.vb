@@ -1,10 +1,8 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-Imports System.Diagnostics
 Imports System.Threading
 Imports System.Windows.Forms
 Imports Microsoft.VisualStudio.ComponentModelHost
-Imports Microsoft.VisualStudio.ProjectSystem
 Imports Microsoft.VisualStudio.Shell
 Imports Microsoft.VisualStudio.Shell.Interop
 Imports NuGet.VisualStudio

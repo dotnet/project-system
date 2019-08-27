@@ -319,7 +319,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 }
             }
 
-            Task noWait = OnSetObjects(isClosing: false);
+            _ = OnSetObjects(isClosing: false);
         }
     }
 }
