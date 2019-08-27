@@ -35,11 +35,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             Requires.NotNullOrEmpty(path, nameof(path));
 
-            return await AddToProjectAsync(path, waitForFileSystemUpdates: true, async fullPath =>
+            return await AddToProjectAsync(path, waitForFileSystemUpdates: true, fullPath =>
             {
                 using (_fileSystem.Value.Create(fullPath)) { }
 
-                await _sourceItemProvider.Value.AddAsync(fullPath);
+                return _sourceItemProvider.Value.AddAsync(fullPath);
 
             }) as IProjectItem;
         }
@@ -48,11 +48,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             Requires.NotNullOrEmpty(path, nameof(path));
 
-            return AddToProjectAsync(path, waitForFileSystemUpdates: false, async fullPath =>
+            return AddToProjectAsync(path, waitForFileSystemUpdates: false, fullPath =>
             {
                 _fileSystem.Value.CreateDirectory(fullPath);
 
-                await _folderManager.Value.IncludeFolderInProjectAsync(fullPath, recursive: false);
+                return _folderManager.Value.IncludeFolderInProjectAsync(fullPath, recursive: false);
             });
         }
 
