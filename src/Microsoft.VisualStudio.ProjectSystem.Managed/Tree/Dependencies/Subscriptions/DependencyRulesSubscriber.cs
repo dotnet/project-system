@@ -112,9 +112,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                             NameFormat = string.Intern($"CrossTarget Intermediate {source} Input: {{1}}")
                         });
 
-                var actionBlock =
+                ITargetBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>>> actionBlock =
                     DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>>>(
-                        e => OnProjectChangedAsync(e.Value.Item1, e.Value.Item2, e.Value.Item3, configuredProject, source),
+                        e => OnProjectChangedAsync(e.Value.Item1, e.Value.Item2, e.Value.Item3, configuredProject),
                         new ExecutionDataflowBlockOptions()
                         {
                             NameFormat = string.Intern($"CrossTarget {source} Input: {{1}}")
@@ -159,8 +159,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             IProjectSubscriptionUpdate projectUpdate,
             IProjectCatalogSnapshot catalogSnapshot,
             IProjectCapabilitiesSnapshot capabilities,
-            ConfiguredProject configuredProject,
-            RuleSource source)
+            ConfiguredProject configuredProject)
         {
             if (IsDisposing || IsDisposed)
             {
@@ -178,7 +177,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     // Ensure the project's capabilities don't change during the update
                     using (ProjectCapabilitiesContext.CreateIsolatedContext(configuredProject, capabilities))
                     {
-                        await HandleAsync(projectUpdate, catalogSnapshot, source);
+                        await HandleAsync(projectUpdate, catalogSnapshot);
                     }
                 });
             });
@@ -186,8 +185,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         private async Task HandleAsync(
             IProjectSubscriptionUpdate projectUpdate,
-            IProjectCatalogSnapshot catalogSnapshot,
-            RuleSource source)
+            IProjectCatalogSnapshot catalogSnapshot)
         {
             AggregateCrossTargetProjectContext? currentAggregateContext = await _host!.GetCurrentAggregateProjectContextAsync();
 
