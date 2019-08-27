@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     internal interface IPhysicalProjectTreeStorage
     {
         /// <summary>
-        ///     Creates a zeroed file on disk, adding it add to the physical project tree.
+        ///     Creates a zero-byte file on disk, adding it add to the physical project tree.
         /// </summary>
         /// <param name="path">
         ///     The path of the folder to create, can be relative to the project directory.
