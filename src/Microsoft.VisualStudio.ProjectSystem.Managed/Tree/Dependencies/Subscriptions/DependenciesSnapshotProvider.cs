@@ -174,18 +174,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             Task AddInitialSubscriptionsAsync()
             {
-                lock (_lock)
-                {
-                    // This host object subscribes to configured project evaluation data for its own purposes.
-                    SubscribeToConfiguredProjectEvaluation(
-                        _activeConfiguredProjectSubscriptionService,
-                        OnActiveConfiguredProjectEvaluatedAsync);
+                // This host object subscribes to configured project evaluation data for its own purposes.
+                SubscribeToConfiguredProjectEvaluation(
+                    _activeConfiguredProjectSubscriptionService,
+                    OnActiveConfiguredProjectEvaluatedAsync);
 
-                    // Each of the host's subscribers are initialized.
-                    return Task.WhenAll(
-                        Subscribers.Select(
-                            subscriber => subscriber.InitializeSubscriberAsync(this, _activeConfiguredProjectSubscriptionService)));
-                }
+                // Each of the host's subscribers are initialized.
+                return Task.WhenAll(
+                    Subscribers.Select(
+                        subscriber => subscriber.InitializeSubscriberAsync(this, _activeConfiguredProjectSubscriptionService)));
             }
 
             async Task OnActiveConfiguredProjectEvaluatedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
