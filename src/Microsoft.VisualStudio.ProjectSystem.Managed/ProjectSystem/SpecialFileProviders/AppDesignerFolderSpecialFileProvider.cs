@@ -1,82 +1,55 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
     /// <summary>
-    ///     Provides a <see cref="ISpecialFileProvider"/> that handles the AppDesigner, 
+    ///     Provides a <see cref="ISpecialFileProvider"/> that handles the AppDesigner folder;
     ///     called "Properties" in C# and "My Project" in Visual Basic.
     /// </summary>
     [ExportSpecialFileProvider(SpecialFiles.AppDesigner)]
     [Export(typeof(AppDesignerFolderSpecialFileProvider))]
+    [Export(typeof(IAppDesignerFolderSpecialFileProvider))]
     [AppliesTo(ProjectCapability.AppDesigner)]
-    internal class AppDesignerFolderSpecialFileProvider : ISpecialFileProvider
+    internal class AppDesignerFolderSpecialFileProvider : AbstractSpecialFileProvider, IAppDesignerFolderSpecialFileProvider
     {
-        private readonly Lazy<IPhysicalProjectTree> _projectTree;
+        private readonly IPhysicalProjectTree _projectTree;
         private readonly ProjectProperties _properties;
 
-#pragma warning disable CS8618
-        // For unit tests
-        protected AppDesignerFolderSpecialFileProvider() { }
-#pragma warning restore CS8618
-
         [ImportingConstructor]
-        public AppDesignerFolderSpecialFileProvider(Lazy<IPhysicalProjectTree> projectTree, ProjectProperties properties)
+        public AppDesignerFolderSpecialFileProvider(IPhysicalProjectTree projectTree, ProjectProperties properties)
+            : base(projectTree.TreeService)
         {
             _projectTree = projectTree;
             _properties = properties;
         }
 
-        public virtual async Task<string?> GetFileAsync(SpecialFiles fileId, SpecialFileFlags flags, CancellationToken cancellationToken = default)
+        protected override Task<string?> FindFileAsync(IProjectTreeProvider provider, IProjectTree root)
         {
-            // Make sure at least have a tree before we start searching it
-            await _projectTree.Value.TreeService.PublishAnyNonLoadingTreeAsync(cancellationToken);
-
-            string? path = FindAppDesignerFolder();
-            if (path == null)
-            {
-                // Not found, let's find the default path and create it if needed
-                path = await GetDefaultAppDesignerFolderPathAsync();
-
-                if (path != null && (flags & SpecialFileFlags.CreateIfNotExist) == SpecialFileFlags.CreateIfNotExist)
-                {
-                    await _projectTree.Value.TreeStorage.CreateFolderAsync(path);
-                }
-            }
-
-            // We always return the default path, regardless of whether we created it or it exists, as per contract
-            return path;
-        }
-
-        private string? FindAppDesignerFolder()
-        {
-            IProjectTree? root = _projectTree.Value.CurrentTree;
-
             IProjectTree? folder = root?.GetSelfAndDescendentsBreadthFirst().FirstOrDefault(child => child.Flags.HasFlag(ProjectTreeFlags.Common.AppDesignerFolder));
 
             if (folder == null)
-                return null;
+                return Task.FromResult<string?>(null);
 
-            return _projectTree.Value.TreeProvider.GetRootedAddNewItemDirectory(folder);
+            return Task.FromResult(provider.GetRootedAddNewItemDirectory(folder));
         }
 
-        private async Task<string?> GetDefaultAppDesignerFolderPathAsync()
+        protected override Task CreateFileAsync(string path)
         {
-            IProjectTree? currentTree = _projectTree.Value.CurrentTree;
+            return _projectTree.TreeStorage.CreateFolderAsync(path);
+        }
 
-            if (currentTree == null)
-                return null;
+        protected override async Task<string?> GetDefaultFileAsync(IProjectTreeProvider provider, IProjectTree root)
+        {
+            string? rootPath = provider.GetRootedAddNewItemDirectory(root);
 
-            string? rootPath = _projectTree.Value.TreeProvider.GetRootedAddNewItemDirectory(currentTree);
+            Assumes.NotNull(rootPath);
 
             string folderName = await GetDefaultAppDesignerFolderNameAsync();
-
             if (string.IsNullOrEmpty(folderName))
                 return null; // Developer has set the AppDesigner path to empty
 

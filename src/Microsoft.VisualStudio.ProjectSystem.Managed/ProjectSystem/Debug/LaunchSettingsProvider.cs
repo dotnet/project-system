@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public const string ErrorProfileCommandName = "ErrorProfile";
 
         private readonly UnconfiguredProject _project;
-        private readonly ActiveConfiguredProject<AppDesignerFolderSpecialFileProvider> _appDesignerSpecialFileProvider;
+        private readonly ActiveConfiguredProject<IAppDesignerFolderSpecialFileProvider> _appDesignerSpecialFileProvider;
         private readonly IProjectFaultHandlerService _projectFaultHandler;
         private readonly AsyncLazy<string> _launchSettingsFilePath;
         private readonly IUnconfiguredProjectServices _projectServices;
@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             IFileSystem fileSystem,
             IUnconfiguredProjectCommonServices commonProjectServices,
             IActiveConfiguredProjectSubscriptionService projectSubscriptionService,
-            ActiveConfiguredProject<AppDesignerFolderSpecialFileProvider> appDesignerSpecialFileProvider,
+            ActiveConfiguredProject<IAppDesignerFolderSpecialFileProvider> appDesignerSpecialFileProvider,
             IProjectFaultHandlerService projectFaultHandler)
         {
             _project = project;
