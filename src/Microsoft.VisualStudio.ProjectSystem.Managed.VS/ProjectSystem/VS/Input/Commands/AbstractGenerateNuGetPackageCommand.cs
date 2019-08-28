@@ -112,13 +112,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
         public int UpdateSolution_Done(int fSucceeded, int fModified, int fCancelCommand)
         {
-            _generatePackageOnBuildPropertyProvider.OverrideGeneratePackageOnBuild(false);
+            _generatePackageOnBuildPropertyProvider.OverrideGeneratePackageOnBuild(null);
             return HResult.OK;
         }
 
         public int UpdateSolution_Cancel()
         {
-            _generatePackageOnBuildPropertyProvider.OverrideGeneratePackageOnBuild(false);
+            _generatePackageOnBuildPropertyProvider.OverrideGeneratePackageOnBuild(null);
             return HResult.OK;
         }
 
