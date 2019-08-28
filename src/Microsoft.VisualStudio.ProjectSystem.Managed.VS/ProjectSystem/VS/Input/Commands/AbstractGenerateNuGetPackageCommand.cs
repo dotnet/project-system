@@ -100,7 +100,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
                 // We tell the Solution Build Manager to Package, which will call the Pack target, which will build if necessary.
                 uint[] buildFlags = new[] { VSConstants.VS_BUILDABLEPROJECTCFGOPTS_PACKAGE };
-                ErrorHandler.ThrowOnFailure(_buildManager.StartUpdateSpecificProjectConfigurations(1, new[] { projectVsHierarchy }, null, null, buildFlags, null, dwFlags, 0));
+                ErrorHandler.ThrowOnFailure(_buildManager.StartUpdateSpecificProjectConfigurations(cProjs: 1,
+                                                                                                   rgpHier: new[] { projectVsHierarchy },
+                                                                                                   rgpcfg: null,
+                                                                                                   rgdwCleanFlags: null,
+                                                                                                   rgdwBuildFlags: buildFlags,
+                                                                                                   rgdwDeployFlags: null,
+                                                                                                   dwFlags: dwFlags,
+                                                                                                   fSuppressUI: 0));
             }
 
             return true;
