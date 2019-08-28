@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         [Fact]
         public async Task ChangedFile_FiresTempPEDirty()
         {
-            await _bridge.TestProcessAsync(new DesignTimeInputsDelta(
+            await _bridge.ApplyAsync(new DesignTimeInputsDelta(
                 ImmutableHashSet.CreateRange(new string[] { "Resources1.Designer.cs" }),
                 ImmutableHashSet<string>.Empty,
                 new DesignTimeInputFileChange[] { new DesignTimeInputFileChange("Resources1.Designer.cs", false) },
@@ -40,13 +40,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         [Fact]
         public async Task RemovedFile_FiresTempPEDeleted()
         {
-            await _bridge.TestProcessAsync(new DesignTimeInputsDelta(
+            await _bridge.ApplyAsync(new DesignTimeInputsDelta(
                 ImmutableHashSet.CreateRange(new string[] { "Resources1.Designer.cs" }),
                 ImmutableHashSet<string>.Empty,
                 Array.Empty<DesignTimeInputFileChange>(),
                 ""));
 
-            await _bridge.TestProcessAsync(new DesignTimeInputsDelta(
+            await _bridge.ApplyAsync(new DesignTimeInputsDelta(
                ImmutableHashSet<string>.Empty,
                ImmutableHashSet<string>.Empty,
                Array.Empty<DesignTimeInputFileChange>(),
@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         [Fact]
         public async Task GetDesignTimeInputXmlAsync_HasCorrectArguments()
         {
-            await _bridge.TestProcessAsync(new DesignTimeInputsDelta(
+            await _bridge.ApplyAsync(new DesignTimeInputsDelta(
                 ImmutableHashSet.CreateRange(new string[] { "Resources1.Designer.cs" }),
                 ImmutableHashSet<string>.Empty,
                 new DesignTimeInputFileChange[] { new DesignTimeInputFileChange("Resources1.Designer.cs", false) },
@@ -108,7 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             {
             }
 
-            public Task TestProcessAsync(DesignTimeInputsDelta delta)
+            public Task ApplyAsync(DesignTimeInputsDelta delta)
             {
                 var input = IProjectVersionedValueFactory.Create(delta);
 

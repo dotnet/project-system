@@ -109,15 +109,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             return Task.CompletedTask;
         }
 
-        protected override Task DisposeCoreAsync(bool initialized)
-        {
-            if (initialized)
-            {
-                _designTimeInputsCompiler.Dispose();
-            }
-            return base.DisposeCoreAsync(initialized);
-        }
-
         /// <summary>
         /// This method is where we tell data flow which blocks we're interested in receiving updates for
         /// </summary>
