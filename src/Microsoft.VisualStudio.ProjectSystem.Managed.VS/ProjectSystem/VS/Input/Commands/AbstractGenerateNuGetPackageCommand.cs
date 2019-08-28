@@ -93,12 +93,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                 var projectVsHierarchy = (IVsHierarchy)Project.Services.HostObject;
                 ErrorHandler.ThrowOnFailure(_buildManager!.SaveDocumentsBeforeBuild(projectVsHierarchy, (uint)VSConstants.VSITEMID.Root, 0 /*docCookie*/));
 
-                // Enable generating package on build ("GeneratePackageOnBuild") for all projects being built.
-                _generatePackageOnBuildPropertyProvider.OverrideGeneratePackageOnBuild(true);
+                // Turn off "GeneratePackageOnBuild" because otherwise the Pack target will not do a build, even if there is no built output
+                _generatePackageOnBuildPropertyProvider.OverrideGeneratePackageOnBuild(false);
 
-                // Kick off the build.
                 uint dwFlags = (uint)(VSSOLNBUILDUPDATEFLAGS.SBF_SUPPRESS_SAVEBEFOREBUILD_QUERY | VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD);
-                ErrorHandler.ThrowOnFailure(_buildManager.StartSimpleUpdateProjectConfiguration(projectVsHierarchy, null, null, dwFlags, 0, 0));
+
+                // We tell the Solution Build Manager to Package, which will call the Pack target, which will build if necessary.
+                uint[] buildFlags = new[] { VSConstants.VS_BUILDABLEPROJECTCFGOPTS_PACKAGE };
+                ErrorHandler.ThrowOnFailure(_buildManager.StartUpdateSpecificProjectConfigurations(1, new[] { projectVsHierarchy }, null, null, buildFlags, null, dwFlags, 0));
             }
 
             return true;
