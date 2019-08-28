@@ -1,0 +1,45 @@
+# EditorConfig is awesome:http://EditorConfig.org
+
+[*.cs]
+# We allow usage of "var" inside tests as it reduces churn as we remove/rename types
+csharp_style_var_for_built_in_types = true:none
+csharp_style_var_elsewhere = true:none
+
+# Dotnet code analysis settings:
+[*.{cs,vb}]
+# Microsoft.CodeQuality.Analyzers
+# For tests, the ConfigureAwait(true) is good enough. Either they are already running on a thread pool
+# thread where ConfigureAwait(false) does nothing, or we're running the workload from an STA thread
+# where we want to marshal the continuations back to it.
+dotnet_diagnostic.CA2007.severity = none
+dotnet_diagnostic.CA1822.severity = none
+dotnet_diagnostic.CA2000.severity = none
+dotnet_diagnostic.CA2009.severity = none
+
+# System.Runtime.Analyzers
+dotnet_diagnostic.CA1825.severity = none        # Avoid zero length allocations - suppress for non-shipping/test projects (originally RS0007)
+
+# Microsoft.Composition.Analyzers
+dotnet_diagnostic.RS0006.severity = none
+dotnet_diagnostic.RS0023.severity = none
+
+# Microsoft.CodeAnalysis.CSharp.Features
+dotnet_diagnostic.IDE0001.severity = none       # Too noisy due to https://github.com/dotnet/roslyn/issues/27819
+dotnet_diagnostic.IDE1006.severity = none       # Naming styles is too noisy as it fires on all async tests
+dotnet_diagnostic.IDE1006WithoutSuggestion.severity = none
+dotnet_diagnostic.IDE0060.severity = none       # Unused parameter rule fires on [MemberData] usage
+dotnet_diagnostic.IDE0067.severity = none	    # Noisy in tests
+dotnet_diagnostic.IDE0068.severity = none       # Noisy in tests
+dotnet_diagnostic.IDE0068.severity = none       # Noisy in tests
+
+# Microsoft.VisualStudio.Threading.Analyzers
+dotnet_diagnostic.VSTHRD001.severity = none     # Await JoinableTaskFactory.SwitchToMainThreadAsync() to switch to the UI thread instead of APIs that can deadlock or require specifying a priority.
+dotnet_diagnostic.VSTHRD002.severity = none     # Synchronously waiting on tasks or awaiters may cause deadlocks. Use JoinableTaskFactory.Run instead.
+dotnet_diagnostic.VSTHRD010.severity = none     # Visual Studio service should be used on main thread explicitly.
+dotnet_diagnostic.VSTHRD103.severity = none     # Synchronously blocks. Await ThrowsAsync instead.
+dotnet_diagnostic.VSTHRD110.severity = none     # Observe result of async calls
+dotnet_diagnostic.VSTHRD200.severity = none     # Naming stylesNaming styles:  Before: Task Open()  After: Task OpenAsync()
+
+# xunit.analyzers
+dotnet_diagnostic.xUnit1026.severity = none     # Theory methods must use all parameters
+dotnet_diagnostic.xUnit1004.severity = none     # Test methods should not be skipped
