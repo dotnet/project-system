@@ -73,12 +73,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         {
             get
             {
-                _threadingService.VerifyOnUIThread();
-
                 IDesignTimeInputsBuildManagerBridge? bridge = DesignTimeInputsBuildManagerBridge.FirstOrDefault()?.Value;
                 if (bridge != null)
                 {
-                    return bridge.GetTempPEMonikers();
+                    return _threadingService.ExecuteSynchronously(async () =>
+                    {
+                        await _threadingService.SwitchToUIThread();
+
+                        return bridge.GetTempPEMonikers();
+                    });
                 }
 
                 throw new NotImplementedException();
@@ -90,14 +93,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         /// </summary>
         public string BuildDesignTimeOutput(string bstrOutputMoniker)
         {
-            _threadingService.VerifyOnUIThread();
-
             IDesignTimeInputsBuildManagerBridge? bridge = DesignTimeInputsBuildManagerBridge.FirstOrDefault()?.Value;
             if (bridge != null)
             {
-                return _threadingService.ExecuteSynchronously(() => bridge.GetDesignTimeInputXmlAsync(bstrOutputMoniker));
-            }
+                return _threadingService.ExecuteSynchronously(async () =>
+                {
+                    await _threadingService.SwitchToUIThread();
 
+                    return await bridge.GetDesignTimeInputXmlAsync(bstrOutputMoniker);
+                });
+            }
             throw new NotImplementedException();
         }
 
