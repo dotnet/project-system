@@ -28,8 +28,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             /// Gets the time at which the set of items changed.
             /// </summary>
             /// <remarks>
+            /// <para>
             /// This is not the last timestamp of the items themselves. It is time at which items were
             /// last added or removed from the project.
+            /// </para>
+            /// <para>
+            /// This property is not updated until after the first query occurs. Until that time it will
+            /// equal <see cref="DateTime.MinValue"/> which represents the fact that we do not know when
+            /// the set of items was last changed, so we cannot base any decisions on this data property.
+            /// </para>
             /// </remarks>
             public DateTime LastItemsChangedAtUtc { get; }
 
@@ -273,7 +280,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     itemsChanged = true;
                 }
 
-                DateTime lastItemsChangedAtUtc = itemsChanged ? DateTime.UtcNow : LastItemsChangedAtUtc;
+                // NOTE when we previously had zero item types, we can surmise that the project has just been loaded. In such
+                // a case it is not correct to assume that the items changed, and so we do not update the timestamp.
+                // See https://github.com/dotnet/project-system/issues/5386
+                DateTime lastItemsChangedAtUtc = itemsChanged && ItemTypes.Count != 0 ? DateTime.UtcNow : LastItemsChangedAtUtc;
 
                 return new State(
                     msBuildProjectFullPath,
