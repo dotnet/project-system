@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 
@@ -58,10 +57,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         public void ReleaseSubscriptions()
         {
-            // Prevent double-dispose
-            DisposableBag? value = Interlocked.Exchange(ref _subscriptions, null);
-
-            value?.Dispose();
+            _subscriptions?.Dispose();
+            _subscriptions = null;
         }
 
         private void SubscribeToConfiguredProject(IProjectSubscriptionService subscriptionService)
@@ -79,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             if (_subscriptions == null)
             {
                 // Prevent double-initialization and potentially losing subscriptions
-                Interlocked.CompareExchange(ref _subscriptions, new DisposableBag(), null);
+                _subscriptions = new DisposableBag();
             }
 
             _subscriptions!.Add(
