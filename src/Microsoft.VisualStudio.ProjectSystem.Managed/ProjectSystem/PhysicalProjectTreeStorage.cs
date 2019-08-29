@@ -9,49 +9,50 @@ using Microsoft.VisualStudio.IO;
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     [Export(typeof(IPhysicalProjectTreeStorage))]
-    internal class PhysicalProjectTreeStorage : IPhysicalProjectTreeStorage
+    internal partial class PhysicalProjectTreeStorage : IPhysicalProjectTreeStorage
     {
+        private readonly UnconfiguredProject _project;
+        private readonly IProjectTreeService _treeService;
         private readonly Lazy<IFileSystem> _fileSystem;
-        private readonly ActiveConfiguredProject<IFolderManager> _folderManager;
-        private readonly Lazy<IProjectTreeService> _treeService;
-        private readonly Lazy<IProjectTreeProvider> _treeProvider;
-        private readonly UnconfiguredProject _unconfiguredProject;
+        private readonly ActiveConfiguredProject<ConfiguredImports> _configuredImports;
 
         [ImportingConstructor]
-        public PhysicalProjectTreeStorage([Import(ExportContractNames.ProjectTreeProviders.PhysicalProjectTreeService)]Lazy<IProjectTreeService> treeService,
-                                          [Import(ExportContractNames.ProjectTreeProviders.PhysicalViewTree)]Lazy<IProjectTreeProvider> treeProvider,
-                                          Lazy<IFileSystem> fileSystem,
-                                          ActiveConfiguredProject<IFolderManager> folderManager,
-                                          UnconfiguredProject project)
+        public PhysicalProjectTreeStorage(
+            UnconfiguredProject project,
+            [Import(ExportContractNames.ProjectTreeProviders.PhysicalProjectTreeService)]IProjectTreeService treeService,
+            Lazy<IFileSystem> fileSystem,
+            ActiveConfiguredProject<ConfiguredImports> configuredImports)
         {
+            _project = project;
             _treeService = treeService;
-            _treeProvider = treeProvider;
             _fileSystem = fileSystem;
-            _folderManager = folderManager;
-            _unconfiguredProject = project;
+            _configuredImports = configuredImports;
         }
 
-        public Task<IProjectTree> CreateFolderAsync(string path)
+        public async Task CreateEmptyFileAsync(string path)
         {
             Requires.NotNullOrEmpty(path, nameof(path));
 
-            if (_treeService.Value.CurrentTree == null)
-                throw new InvalidOperationException("Physical project tree has not yet been published.");
+            string fullPath = _project.MakeRooted(path);
 
-            string fullPath = _unconfiguredProject.MakeRooted(path);
+            using (_fileSystem.Value.Create(fullPath)) { }
 
-            return AddToProjectAsync(fullPath);
+            await _configuredImports.Value.SourceItemsProvider.AddAsync(fullPath);
+
+            await _treeService.PublishLatestTreeAsync(waitForFileSystemUpdates: true);
         }
 
-        private async Task<IProjectTree> AddToProjectAsync(string fullPath)
+        public async Task CreateFolderAsync(string path)
         {
+            Requires.NotNullOrEmpty(path, nameof(path));
+
+            string fullPath = _project.MakeRooted(path);
+
             _fileSystem.Value.CreateDirectory(fullPath);
 
-            await _folderManager.Value.IncludeFolderInProjectAsync(fullPath, recursive: false);
+            await _configuredImports.Value.FolderManager.IncludeFolderInProjectAsync(fullPath, recursive: false);
 
-            await _treeService.Value.PublishLatestTreeAsync();
-
-            return _treeProvider.Value.FindByPath(_treeService.Value.CurrentTree.Tree, fullPath);
+            await _treeService.PublishLatestTreeAsync(waitForFileSystemUpdates: false);
         }
     }
 }
