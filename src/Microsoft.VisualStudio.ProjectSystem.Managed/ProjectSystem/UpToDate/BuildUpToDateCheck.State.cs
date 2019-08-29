@@ -294,6 +294,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     copyReferenceInputs,
                     lastItemsChangedAtUtc,
                     LastCheckedAtUtc);
+
+                static CopyToOutputDirectoryType GetCopyType(IImmutableDictionary<string, string> itemMetadata)
+                {
+                    if (itemMetadata.TryGetValue(CopyToOutputDirectory, out string value))
+                    {
+                        if (string.Equals(value, Always, StringComparison.OrdinalIgnoreCase))
+                        {
+                            return CopyToOutputDirectoryType.CopyAlways;
+                        }
+
+                        if (string.Equals(value, PreserveNewest, StringComparison.OrdinalIgnoreCase))
+                        {
+                            return CopyToOutputDirectoryType.CopyIfNewer;
+                        }
+                    }
+
+                    return CopyToOutputDirectoryType.CopyNever;
+                }
+
+                static string? GetLink(IImmutableDictionary<string, string> itemMetadata)
+                {
+                    return itemMetadata.TryGetValue(Link, out string link) ? link : null;
+                }
             }
 
             public State WithLastCheckedAtUtc(DateTime lastCheckedAtUtc)

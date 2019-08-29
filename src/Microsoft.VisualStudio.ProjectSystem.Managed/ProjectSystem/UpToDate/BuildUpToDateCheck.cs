@@ -119,27 +119,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return Task.CompletedTask;
         }
 
-        private static string? GetLink(IImmutableDictionary<string, string> itemMetadata) =>
-            itemMetadata.TryGetValue(Link, out string link) ? link : null;
-
-        private static CopyToOutputDirectoryType GetCopyType(IImmutableDictionary<string, string> itemMetadata)
-        {
-            if (itemMetadata.TryGetValue(CopyToOutputDirectory, out string value))
-            {
-                if (string.Equals(value, Always, StringComparison.OrdinalIgnoreCase))
-                {
-                    return CopyToOutputDirectoryType.CopyAlways;
-                }
-
-                if (string.Equals(value, PreserveNewest, StringComparison.OrdinalIgnoreCase))
-                {
-                    return CopyToOutputDirectoryType.CopyIfNewer;
-                }
-            }
-
-            return CopyToOutputDirectoryType.CopyNever;
-        }
-
         internal void OnChanged(IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectItemSchema>> e)
         {
             lock (_stateLock)
