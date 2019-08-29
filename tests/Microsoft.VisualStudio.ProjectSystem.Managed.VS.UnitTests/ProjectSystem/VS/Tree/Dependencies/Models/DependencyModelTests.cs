@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             public TestableDependencyModel(
                 string path, 
-                string? originalItemSpec, 
+                string originalItemSpec, 
                 ProjectTreeFlags flags, 
                 bool resolved, 
                 bool isImplicit, 
@@ -39,17 +39,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void Constructor_WhenOptionalValuesNotProvided_ShouldSetDefaults()
+        public void Constructor_NullProperties_SetsEmptyCollection()
         {
             var model = new TestableDependencyModel(
                 path: "somePath",
-                originalItemSpec: null,
+                originalItemSpec: "originalItemSpec",
                 flags: ProjectTreeFlags.Empty,
                 resolved: false,
                 isImplicit: false,
                 properties: null);
 
-            Assert.Equal("somePath", model.OriginalItemSpec);
             Assert.Equal(ImmutableStringDictionary<string>.EmptyOrdinal, model.Properties);
         }
 
