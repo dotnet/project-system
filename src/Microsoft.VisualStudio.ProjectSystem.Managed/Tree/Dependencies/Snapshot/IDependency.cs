@@ -22,12 +22,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         string FullPath { get; }
 
         /// <summary>
-        /// Alias is used to de-dupe tree nodes in the CPS tree. If there are several nodes in the same
-        /// folder with the same name, we replace them all with: <c>Alias = "Caption (OriginalItemSpec)"</c>.
-        /// </summary>
-        string Alias { get; }
-
-        /// <summary>
         /// Gets the set of icons to use for this dependency based on its state (e.g. resolved, expanded).
         /// </summary>
         DependencyIconSet IconSet { get; }

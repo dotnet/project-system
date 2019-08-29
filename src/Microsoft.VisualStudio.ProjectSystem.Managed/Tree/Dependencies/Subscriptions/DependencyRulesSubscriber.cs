@@ -238,7 +238,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         changes));
             }
 
-            // record all the rules that have occurred
+            // Record all the rules that have occurred
             _treeTelemetryService.ObserveTargetFrameworkRules(targetFrameworkToUpdate, projectUpdate.ProjectChanges.Keys);
         }
 

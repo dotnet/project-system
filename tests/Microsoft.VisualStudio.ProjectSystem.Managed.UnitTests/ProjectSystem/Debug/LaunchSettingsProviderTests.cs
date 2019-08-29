@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             activeProfileValue.Setup(s => s.Name).Returns(activeProfile);
             var debuggerData = new PropertyPageData(ProjectDebugger.SchemaName, ProjectDebugger.ActiveDebugProfileProperty, activeProfileValue.Object);
 
-            var specialFilesManager = ActiveConfiguredProjectFactory.ImplementValue(() => AppDesignerFolderSpecialFileProviderFactory.ImplementGetFile(appDesignerFolder));
+            var specialFilesManager = ActiveConfiguredProjectFactory.ImplementValue(() => IAppDesignerFolderSpecialFileProviderFactory.ImplementGetFile(appDesignerFolder));
             var project = UnconfiguredProjectFactory.Create(filePath: @"c:\test\Project1\Project1.csproj");
             var properties = ProjectPropertiesFactory.Create(project, new[] { debuggerData });
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project, IProjectThreadingServiceFactory.Create(), null, properties);
@@ -888,7 +888,7 @@ return provider.ReadSettingsFileFromDiskTestAsync();
             IFileSystem fileSystem,
             IUnconfiguredProjectCommonServices commonProjectServices,
             IActiveConfiguredProjectSubscriptionService? projectSubscriptionService,
-            ActiveConfiguredProject<AppDesignerFolderSpecialFileProvider> appDesignerFolderSpecialFileProvider,
+            ActiveConfiguredProject<IAppDesignerFolderSpecialFileProvider> appDesignerFolderSpecialFileProvider,
             IProjectFaultHandlerService? projectFaultHandler = null)
           : base(project, projectServices, fileSystem, commonProjectServices, projectSubscriptionService, appDesignerFolderSpecialFileProvider, projectFaultHandler)
         {

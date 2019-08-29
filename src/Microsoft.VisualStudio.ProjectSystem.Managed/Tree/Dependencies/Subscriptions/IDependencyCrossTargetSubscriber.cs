@@ -48,11 +48,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         /// <summary>
         ///     Requests this subscriber to create subscriptions based on the target frameworks specified in <paramref name="projectContext"/>.
         /// </summary>
+        /// <remarks>
+        ///     The caller is responsible for synchronizing calls to this and <see cref="ReleaseSubscriptions"/>.
+        /// </remarks>
         void AddSubscriptions(AggregateCrossTargetProjectContext projectContext);
 
         /// <summary>
         ///     Requests this subscriber to release all previously created subscriptions.
         /// </summary>
+        /// <remarks>
+        ///     The caller is responsible for synchronizing calls to this and <see cref="AddSubscriptions"/>.
+        /// </remarks>
         void ReleaseSubscriptions();
     }
 

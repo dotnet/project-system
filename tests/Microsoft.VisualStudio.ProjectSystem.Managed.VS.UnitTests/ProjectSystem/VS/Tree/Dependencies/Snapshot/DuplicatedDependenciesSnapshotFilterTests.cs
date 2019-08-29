@@ -65,12 +65,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             //   -> Changes caption for both to match alias
 
             const string providerType = "provider";
-            const string caption = "caption1";
+            const string caption = "caption";
 
             var dependency = new TestDependency
             {
-                Id = "dependency1",
-                Alias = "dependency1 (dependency1ItemSpec)",
+                Id = "id1",
+                OriginalItemSpec = "originalItemSpec1",
                 ProviderType = providerType,
                 Caption = caption,
                 TopLevel = true
@@ -80,8 +80,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             {
                 ClonePropertiesFrom = dependency, // clone, with changes
 
-                Id = "dependency2",
-                Alias = "dependency2 (dependency2ItemSpec)"
+                Id = "id2",
+                OriginalItemSpec = "originalItemSpec2"
             };
 
             var worldBuilder = new IDependency[] { dependency, otherDependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
@@ -103,12 +103,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             // The filtered dependency had its caption changed to its alias
             var dependencyAfter = context.GetResult(filter);
             dependencyAfter!.AssertEqualTo(
-                new TestDependency { ClonePropertiesFrom = dependency, Caption = dependency.Alias });
+                new TestDependency { ClonePropertiesFrom = dependency, Caption = "caption (originalItemSpec1)" });
 
             // The other dependency had its caption changed to its alias
             Assert.True(context.TryGetDependency(otherDependency.Id, out IDependency otherDependencyAfter));
             otherDependencyAfter.AssertEqualTo(
-                new TestDependency { ClonePropertiesFrom = otherDependency, Caption = otherDependency.Alias });
+                new TestDependency { ClonePropertiesFrom = otherDependency, Caption = "caption (originalItemSpec2)" });
         }
 
         [Fact]
@@ -124,8 +124,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             var dependency = new TestDependency
             {
-                Id = "dependency1",
-                Alias = "dependency1 (dependency1ItemSpec)",
+                Id = "id1",
+                OriginalItemSpec = "originalItemSpec1",
                 ProviderType = providerType,
                 Caption = caption,
                 TopLevel = true
@@ -135,9 +135,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             {
                 ClonePropertiesFrom = dependency,
 
-                Id = "dependency2",
-                OriginalItemSpec = "dependency2ItemSpec",
-                Caption = $"{caption} (dependency2ItemSpec)" // caption already includes alias
+                Id = "id2",
+                OriginalItemSpec = "originalItemSpec2",
+                Caption = $"{caption} (originalItemSpec2)" // caption already includes alias
             };
 
             var worldBuilder = new IDependency[] { dependency, otherDependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
@@ -159,7 +159,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             // The filtered dependency had its caption changed to its alias
             var dependencyAfter = context.GetResult(filter);
             dependencyAfter!.AssertEqualTo(
-                new TestDependency { ClonePropertiesFrom = dependency, Caption = dependency.Alias });
+                new TestDependency { ClonePropertiesFrom = dependency, Caption = "caption (originalItemSpec1)" });
+
+            // The other dependency had its caption changed to its alias
+            Assert.True(context.TryGetDependency(otherDependency.Id, out IDependency otherDependencyAfter));
+            otherDependencyAfter.AssertEqualTo(
+                new TestDependency { ClonePropertiesFrom = otherDependency, Caption = "caption (originalItemSpec2)" });
         }
 
         [Fact]
