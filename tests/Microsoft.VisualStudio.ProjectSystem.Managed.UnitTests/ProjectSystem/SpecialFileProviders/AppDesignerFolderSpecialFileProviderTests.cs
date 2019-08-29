@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.Threading.Tasks;
 
 using Xunit;
@@ -122,7 +121,7 @@ Project (flags: {ProjectRoot}), FilePath: ""C:\Project\Project.csproj""
             physicalProjectTree ??= IPhysicalProjectTreeFactory.Create();
             properties ??= ProjectPropertiesFactory.CreateEmpty();
 
-            return new AppDesignerFolderSpecialFileProvider(new Lazy<IPhysicalProjectTree>(() => physicalProjectTree), properties);
+            return new AppDesignerFolderSpecialFileProvider(physicalProjectTree, properties);
         }
     }
 }
