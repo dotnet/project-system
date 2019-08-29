@@ -9,25 +9,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Xunit.Assert.NotNull(actual);
             Xunit.Assert.NotNull(expected);
 
-            Xunit.Assert.Equal(actual.ProviderType, expected.ProviderType);
-            Xunit.Assert.Equal(actual.Name, expected.Name);
-            Xunit.Assert.Equal(actual.Caption, expected.Caption);
-            Xunit.Assert.Equal(actual.OriginalItemSpec, expected.OriginalItemSpec);
-            Xunit.Assert.Equal(actual.Path, expected.Path);
-            Xunit.Assert.Equal(actual.FullPath, expected.FullPath);
-            Xunit.Assert.Equal(actual.SchemaName, expected.SchemaName);
-            Xunit.Assert.Equal(actual.SchemaItemType, expected.SchemaItemType);
-            Xunit.Assert.Equal(actual.Resolved, expected.Resolved);
-            Xunit.Assert.Equal(actual.TopLevel, expected.TopLevel);
-            Xunit.Assert.Equal(actual.Implicit, expected.Implicit);
-            Xunit.Assert.Equal(actual.Visible, expected.Visible);
-            Xunit.Assert.Equal(actual.Priority, expected.Priority);
-            Xunit.Assert.Equal(actual.IconSet, expected.IconSet);
-            Xunit.Assert.Equal(actual.Properties, expected.Properties);
-            Xunit.Assert.Equal(actual.DependencyIDs, expected.DependencyIDs);
-            Xunit.Assert.Equal(actual.Flags, expected.Flags);
-            Xunit.Assert.Equal(actual.Id, expected.Id);
-            Xunit.Assert.Equal(actual.TargetFramework, expected.TargetFramework);
+            Xunit.Assert.Equal(expected.ProviderType, actual.ProviderType);
+            Xunit.Assert.Equal(expected.Name, actual.Name);
+            Xunit.Assert.Equal(expected.Caption, actual.Caption);
+            Xunit.Assert.Equal(expected.OriginalItemSpec, actual.OriginalItemSpec);
+            Xunit.Assert.Equal(expected.Path, actual.Path);
+            Xunit.Assert.Equal(expected.FullPath, actual.FullPath);
+            Xunit.Assert.Equal(expected.SchemaName, actual.SchemaName);
+            Xunit.Assert.Equal(expected.SchemaItemType, actual.SchemaItemType);
+            Xunit.Assert.Equal(expected.Resolved, actual.Resolved);
+            Xunit.Assert.Equal(expected.TopLevel, actual.TopLevel);
+            Xunit.Assert.Equal(expected.Implicit, actual.Implicit);
+            Xunit.Assert.Equal(expected.Visible, actual.Visible);
+            Xunit.Assert.Equal(expected.Priority, actual.Priority);
+            Xunit.Assert.Equal(expected.IconSet, actual.IconSet);
+            Xunit.Assert.Equal(expected.Properties, actual.Properties);
+            Xunit.Assert.Equal(expected.DependencyIDs, actual.DependencyIDs);
+            Xunit.Assert.Equal(expected.Flags, actual.Flags);
+            Xunit.Assert.Equal(expected.Id, actual.Id);
+            Xunit.Assert.Equal(expected.TargetFramework, actual.TargetFramework);
         }
     }
 }
