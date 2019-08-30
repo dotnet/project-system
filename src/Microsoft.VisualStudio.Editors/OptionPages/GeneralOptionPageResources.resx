@@ -126,6 +126,9 @@
   <data name="General_FastUpToDateCheck_LogLevel_Info" xml:space="preserve">
     <value>Info</value>
   </data>
+  <data name="General_FastUpToDateCheck_LogLevel_Minimal" xml:space="preserve">
+    <value>Minimal</value>
+  </data>
   <data name="General_FastUpToDateCheck_LogLevel_None" xml:space="preserve">
     <value>None</value>
   </data>

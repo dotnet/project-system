@@ -8,9 +8,10 @@ Const Microsoft.VisualStudio.Editors.PropertyPages.ChildPageSite.NestingCharacte
 Const Microsoft.VisualStudio.Editors.SettingsDesigner.PublicSettingsSingleFileGenerator.SingleFileGeneratorName = "PublicSettingsSingleFileGenerator" -> String
 Const Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator.SingleFileGeneratorName = "SettingsSingleFileGenerator" -> String
 LogLevel
-LogLevel.Info = 1 -> LogLevel
+LogLevel.Info = 2 -> LogLevel
+LogLevel.Minimal = 1 -> LogLevel
 LogLevel.None = 0 -> LogLevel
-LogLevel.Verbose = 2 -> LogLevel
+LogLevel.Verbose = 3 -> LogLevel
 Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerEditorFactory (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
 Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerEditorFactory.Close() -> Integer (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
 Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerEditorFactory.MapLogicalView(ByRef rguidLogicalView As System.Guid, ByRef pbstrPhysicalView As String) -> Integer (forwarded, contained in Microsoft.VisualStudio.AppDesigner)

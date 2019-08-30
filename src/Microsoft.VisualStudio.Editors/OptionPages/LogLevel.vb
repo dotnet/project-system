@@ -2,6 +2,7 @@
 
 Public Enum LogLevel
     None
+    Minimal
     Info
     Verbose
 End Enum
