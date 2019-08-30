@@ -13,63 +13,59 @@ using Microsoft.Build.Execution;
 using Microsoft.VisualStudio.Build;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters;
 using Microsoft.VisualStudio.Threading;
-using Microsoft.VisualStudio.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions
 {
     [Export(DependencySubscriptionsHostContract, typeof(ICrossTargetSubscriptionsHost))]
     [Export(typeof(IDependenciesSnapshotProvider))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
-    internal sealed class DependenciesSnapshotProvider : OnceInitializedOnceDisposedAsync, ICrossTargetSubscriptionsHost, IDependenciesSnapshotProvider
+    internal sealed partial class DependenciesSnapshotProvider : OnceInitializedOnceDisposedAsync, ICrossTargetSubscriptionsHost, IDependenciesSnapshotProvider
     {
         public const string DependencySubscriptionsHostContract = "DependencySubscriptionsHostContract";
 
         public event EventHandler<ProjectRenamedEventArgs>? SnapshotRenamed;
         public event EventHandler<SnapshotProviderUnloadingEventArgs>? SnapshotProviderUnloading;
 
-        private readonly TimeSpan _dependenciesUpdateThrottleInterval = TimeSpan.FromMilliseconds(250);
-
         private readonly SemaphoreSlim _contextUpdateGate = new SemaphoreSlim(initialCount: 1);
-        private readonly object _snapshotLock = new object();
-        private readonly object _subscribersLock = new object();
-        private readonly object _linksLock = new object();
-        private readonly List<IDisposable> _evaluationSubscriptionLinks = new List<IDisposable>();
+        private readonly object _lock = new object();
+
+        private readonly SnapshotUpdater _snapshot;
+        private readonly ContextTracker _context;
 
         private readonly ITargetFrameworkProvider _targetFrameworkProvider;
         private readonly IUnconfiguredProjectCommonServices _commonServices;
-        private readonly ITaskDelayScheduler _dependenciesUpdateScheduler;
-        private readonly Lazy<IAggregateCrossTargetProjectContextProvider> _contextProvider;
         private readonly IUnconfiguredProjectTasksService _tasksService;
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
-        private readonly IActiveProjectConfigurationRefreshService _activeProjectConfigurationRefreshService;
-        private readonly IBroadcastBlock<SnapshotChangedEventArgs> _snapshotChangedSource;
+        private readonly IAggregateDependenciesSnapshotProvider _aggregateSnapshotProvider;
 
         [ImportMany] private readonly OrderPrecedenceImportCollection<IDependencyCrossTargetSubscriber> _dependencySubscribers;
         [ImportMany] private readonly OrderPrecedenceImportCollection<IProjectDependenciesSubTreeProvider> _subTreeProviders;
         [ImportMany] private readonly OrderPrecedenceImportCollection<IDependenciesSnapshotFilter> _snapshotFilters;
 
-        private ImmutableArray<IDependencyCrossTargetSubscriber> _subscribers;
-        private DependenciesSnapshot _currentSnapshot;
-        private int _isInitialized;
+        /// <summary>
+        /// Disposable items to be disposed when this provider is no longer in use.
+        /// </summary>
+        private readonly DisposableBag _disposables;
 
         /// <summary>
-        ///     Current <see cref="AggregateCrossTargetProjectContext"/>, which is an immutable map of
-        ///     configured project to target framework.
+        /// Disposable items related to the current subscriptions. This collection may be replaced
+        /// from time to time (e.g. when target frameworks change).
         /// </summary>
-        /// <remarks>
-        /// <para>
-        ///     Updates of this field are serialized within a lock, but reads are free threaded as any
-        ///     potential race can only be handled outside this class.
-        /// </para>
-        /// <para>
-        ///     Value is null before initialization, and not null after.
-        /// </para>
-        /// </remarks>
-        private AggregateCrossTargetProjectContext? _currentAggregateProjectContext;
+        private DisposableBag _subscriptions = new DisposableBag();
+
+        /// <summary>
+        /// Lazily populated set of subscribers. May be <see cref="ImmutableArray{T}.IsDefault" /> if <see cref="Subscribers"/>
+        /// has not been called, though once initialized it will not revert to default state.
+        /// </summary>
+        private ImmutableArray<IDependencyCrossTargetSubscriber> _subscribers;
+
+        private int _isInitialized;
+        private bool _isDisposed;
 
         [ImportingConstructor]
         public DependenciesSnapshotProvider(
@@ -82,21 +78,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider)
             : base(commonServices.ThreadingService.JoinableTaskContext)
         {
-            Requires.NotNull(contextProvider, nameof(contextProvider));
             Requires.NotNull(tasksService, nameof(tasksService));
             Requires.NotNull(activeConfiguredProjectSubscriptionService, nameof(activeConfiguredProjectSubscriptionService));
-            Requires.NotNull(activeProjectConfigurationRefreshService, nameof(activeProjectConfigurationRefreshService));
             Requires.NotNull(targetFrameworkProvider, nameof(targetFrameworkProvider));
             Requires.NotNull(aggregateSnapshotProvider, nameof(aggregateSnapshotProvider));
 
             _commonServices = commonServices;
-            _contextProvider = contextProvider;
             _tasksService = tasksService;
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
-            _activeProjectConfigurationRefreshService = activeProjectConfigurationRefreshService;
             _targetFrameworkProvider = targetFrameworkProvider;
-
-            _currentSnapshot = DependenciesSnapshot.CreateEmpty(_commonServices.Project.FullPath);
+            _aggregateSnapshotProvider = aggregateSnapshotProvider;
 
             _dependencySubscribers = new OrderPrecedenceImportCollection<IDependencyCrossTargetSubscriber>(
                 projectCapabilityCheckProvider: commonServices.Project);
@@ -109,19 +100,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast,
                 projectCapabilityCheckProvider: commonServices.Project);
 
-            _dependenciesUpdateScheduler = new TaskDelayScheduler(
-                _dependenciesUpdateThrottleInterval,
-                commonServices.ThreadingService,
-                tasksService.UnloadCancellationToken);
+            _context = new ContextTracker(targetFrameworkProvider, commonServices, contextProvider, activeProjectConfigurationRefreshService);
 
-            _snapshotChangedSource = DataflowBlockSlim.CreateBroadcastBlock<SnapshotChangedEventArgs>("DependenciesSnapshot {1}", skipIntermediateInputData: true);
+            _snapshot = new SnapshotUpdater(commonServices, tasksService.UnloadCancellationToken);
 
-            aggregateSnapshotProvider.RegisterSnapshotProvider(this);
+            _disposables = new DisposableBag { _snapshot, _contextUpdateGate };
         }
 
-        public IDependenciesSnapshot CurrentSnapshot => _currentSnapshot;
+        /// <inheritdoc />
+        public IDependenciesSnapshot CurrentSnapshot => _snapshot.Current;
 
-        IReceivableSourceBlock<SnapshotChangedEventArgs> IDependenciesSnapshotProvider.SnapshotChangedSource => _snapshotChangedSource;
+        /// <inheritdoc />
+        IReceivableSourceBlock<SnapshotChangedEventArgs> IDependenciesSnapshotProvider.SnapshotChangedSource => _snapshot.Source;
 
         private ImmutableArray<IDependencyCrossTargetSubscriber> Subscribers
         {
@@ -129,21 +119,45 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             {
                 if (_subscribers.IsDefault)
                 {
-                    lock (_subscribersLock)
+                    lock (_lock)
                     {
+                        if (_isDisposed)
+                        {
+                            throw new ObjectDisposedException(nameof(DependenciesSnapshotProvider));
+                        }
+
                         if (_subscribers.IsDefault)
                         {
-                            foreach (Lazy<IDependencyCrossTargetSubscriber, IOrderPrecedenceMetadataView> subscriber in _dependencySubscribers)
+                            _subscribers = _dependencySubscribers.ToImmutableValueArray();
+
+                            foreach (IDependencyCrossTargetSubscriber subscriber in _subscribers)
                             {
-                                subscriber.Value.DependenciesChanged += OnSubscriberDependenciesChanged;
+                                subscriber.DependenciesChanged += OnSubscriberDependenciesChanged;
                             }
 
-                            _subscribers = _dependencySubscribers.ToImmutableValueArray();
+                            _disposables.Add(new DisposableDelegate(
+                                () =>
+                                {
+                                    foreach (IDependencyCrossTargetSubscriber subscriber in _subscribers)
+                                    {
+                                        subscriber.DependenciesChanged -= OnSubscriberDependenciesChanged;
+                                    }
+                                }));
                         }
                     }
                 }
 
                 return _subscribers;
+
+                void OnSubscriberDependenciesChanged(object sender, DependencySubscriptionChangedEventArgs e)
+                {
+                    if (IsDisposing || IsDisposed)
+                    {
+                        return;
+                    }
+
+                    UpdateDependenciesSnapshot(e.Changes, e.Catalogs, e.TargetFrameworks, e.ActiveTarget, CancellationToken.None);
+                }
             }
         }
 
@@ -197,90 +211,99 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             }
         }
 
+        /// <inheritdoc />
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
             await UpdateProjectContextAndSubscriptionsAsync();
 
-            _commonServices.Project.ProjectUnloading += OnUnconfiguredProjectUnloadingAsync;
-            _commonServices.Project.ProjectRenamed += OnUnconfiguredProjectRenamedAsync;
-
-            foreach (Lazy<IProjectDependenciesSubTreeProvider, IOrderPrecedenceMetadataView> provider in _subTreeProviders)
+            lock (_lock)
             {
-                provider.Value.DependenciesChanged += OnSubtreeProviderDependenciesChanged;
+                if (_isDisposed)
+                {
+                    throw new ObjectDisposedException(nameof(DependenciesSnapshotProvider));
+                }
+
+                IDisposable unregister = _aggregateSnapshotProvider.RegisterSnapshotProvider(this);
+
+                _disposables.Add(unregister);
+
+                _commonServices.Project.ProjectUnloading += OnUnconfiguredProjectUnloadingAsync;
+                _commonServices.Project.ProjectRenamed += OnUnconfiguredProjectRenamedAsync;
+
+                foreach (Lazy<IProjectDependenciesSubTreeProvider, IOrderPrecedenceMetadataView> provider in _subTreeProviders)
+                {
+                    provider.Value.DependenciesChanged += OnSubtreeProviderDependenciesChanged;
+                }
+
+                _disposables.Add(
+                    new DisposableDelegate(
+                        () =>
+                        {
+                            _commonServices.Project.ProjectUnloading -= OnUnconfiguredProjectUnloadingAsync;
+                            _commonServices.Project.ProjectRenamed -= OnUnconfiguredProjectRenamedAsync;
+
+                            foreach (Lazy<IProjectDependenciesSubTreeProvider, IOrderPrecedenceMetadataView> provider in _subTreeProviders)
+                            {
+                                provider.Value.DependenciesChanged -= OnSubtreeProviderDependenciesChanged;
+                            }
+                        }));
+            }
+
+            return;
+
+            Task OnUnconfiguredProjectUnloadingAsync(object sender, EventArgs args)
+            {
+                // If our project unloads, we have no more work to do. Notify listeners and clean everything up.
+
+                SnapshotProviderUnloading?.Invoke(this, new SnapshotProviderUnloadingEventArgs(this));
+
+                DisposeCore();
+
+                return Task.CompletedTask;
+            }
+
+            Task OnUnconfiguredProjectRenamedAsync(object sender, ProjectRenamedEventArgs e)
+            {
+                SnapshotRenamed?.Invoke(this, e);
+
+                return Task.CompletedTask;
+            }
+
+            void OnSubtreeProviderDependenciesChanged(object sender, DependenciesChangedEventArgs e)
+            {
+                if (IsDisposing || IsDisposed || !e.Changes.AnyChanges())
+                {
+                    return;
+                }
+
+                ITargetFramework targetFramework =
+                    string.IsNullOrEmpty(e.TargetShortOrFullName) || TargetFramework.Any.Equals(e.TargetShortOrFullName)
+                        ? TargetFramework.Any
+                        : _targetFrameworkProvider.GetTargetFramework(e.TargetShortOrFullName) ?? TargetFramework.Any;
+
+                ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes = ImmutableDictionary<ITargetFramework, IDependenciesChanges>
+                    .Empty.Add(targetFramework, e.Changes);
+
+                UpdateDependenciesSnapshot(changes, catalogs: null, targetFrameworks: default, activeTargetFramework: null, e.Token);
             }
         }
 
+        /// <inheritdoc />
         protected override Task DisposeCoreAsync(bool initialized)
         {
-            _commonServices.Project.ProjectUnloading -= OnUnconfiguredProjectUnloadingAsync;
-            _commonServices.Project.ProjectRenamed -= OnUnconfiguredProjectRenamedAsync;
-
-            _dependenciesUpdateScheduler.Dispose();
-
-            _contextUpdateGate.Dispose();
-            _snapshotChangedSource.Complete();
-
-            if (initialized)
-            {
-                DisposeAndClearSubscriptions();
-            }
+            DisposeCore();
 
             return Task.CompletedTask;
         }
 
-        private Task OnUnconfiguredProjectUnloadingAsync(object sender, EventArgs args)
+        private void DisposeCore()
         {
-            _commonServices.Project.ProjectUnloading -= OnUnconfiguredProjectUnloadingAsync;
-            _commonServices.Project.ProjectRenamed -= OnUnconfiguredProjectRenamedAsync;
-
-            SnapshotProviderUnloading?.Invoke(this, new SnapshotProviderUnloadingEventArgs(this));
-
-            foreach (Lazy<IDependencyCrossTargetSubscriber, IOrderPrecedenceMetadataView> subscriber in _dependencySubscribers)
+            lock (_lock)
             {
-                subscriber.Value.DependenciesChanged -= OnSubscriberDependenciesChanged;
+                _isDisposed = true;
+                _subscriptions.Dispose();
+                _disposables.Dispose();
             }
-
-            foreach (Lazy<IProjectDependenciesSubTreeProvider, IOrderPrecedenceMetadataView> provider in _subTreeProviders)
-            {
-                provider.Value.DependenciesChanged -= OnSubtreeProviderDependenciesChanged;
-            }
-
-            return Task.CompletedTask;
-        }
-
-        private Task OnUnconfiguredProjectRenamedAsync(object sender, ProjectRenamedEventArgs e)
-        {
-            SnapshotRenamed?.Invoke(this, e);
-
-            return Task.CompletedTask;
-        }
-
-        private void OnSubscriberDependenciesChanged(object sender, DependencySubscriptionChangedEventArgs e)
-        {
-            if (IsDisposing || IsDisposed)
-            {
-                return;
-            }
-
-            UpdateDependenciesSnapshot(e.Changes, e.Catalogs, e.TargetFrameworks, e.ActiveTarget, CancellationToken.None);
-        }
-
-        private void OnSubtreeProviderDependenciesChanged(object sender, DependenciesChangedEventArgs e)
-        {
-            if (IsDisposing || IsDisposed || !e.Changes.AnyChanges())
-            {
-                return;
-            }
-
-            ITargetFramework targetFramework =
-                string.IsNullOrEmpty(e.TargetShortOrFullName) || TargetFramework.Any.Equals(e.TargetShortOrFullName)
-                    ? TargetFramework.Any
-                    : _targetFrameworkProvider.GetTargetFramework(e.TargetShortOrFullName) ?? TargetFramework.Any;
-
-            ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes = ImmutableDictionary<ITargetFramework, IDependenciesChanges>
-                .Empty.Add(targetFramework, e.Changes);
-
-            UpdateDependenciesSnapshot(changes, catalogs: null, targetFrameworks: default, activeTargetFramework: null, e.Token);
         }
 
         private void UpdateDependenciesSnapshot(
@@ -290,12 +313,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             ITargetFramework? activeTargetFramework,
             CancellationToken token)
         {
-            IImmutableSet<string>? projectItemSpecs = GetProjectItemSpecsFromSnapshot();
+            IImmutableSet<string>? projectItemSpecs = GetProjectItemSpecs(catalogs?.Project.ProjectInstance.Items);
 
-            TryUpdateSnapshot(
-                snapshot => DependenciesSnapshot.FromChanges(
+            _snapshot.TryUpdate(
+                previousSnapshot => DependenciesSnapshot.FromChanges(
                     _commonServices.Project.FullPath,
-                    snapshot,
+                    previousSnapshot,
                     changesByTargetFramework,
                     catalogs,
                     targetFrameworks,
@@ -308,18 +331,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             return;
 
             // Gets the set of items defined directly the project, and not included by imports.
-            IImmutableSet<string>? GetProjectItemSpecsFromSnapshot()
+            static IImmutableSet<string>? GetProjectItemSpecs(IEnumerable<ProjectItemInstance>? projectItems)
             {
                 // We don't have catalog snapshot, we're likely updating because one of our project 
                 // dependencies changed. Just return 'no data'
-                if (catalogs == null)
+                if (projectItems == null)
                 {
                     return null;
                 }
 
                 ImmutableHashSet<string>.Builder itemSpecs = ImmutableHashSet.CreateBuilder(StringComparer.OrdinalIgnoreCase);
 
-                foreach (ProjectItemInstance item in catalogs.Project.ProjectInstance.Items)
+                foreach (ProjectItemInstance item in projectItems)
                 {
                     if (item.IsImported())
                     {
@@ -338,6 +361,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             }
         }
 
+        /// <inheritdoc />
         public async Task<AggregateCrossTargetProjectContext?> GetCurrentAggregateProjectContextAsync()
         {
             if (IsDisposing || IsDisposed)
@@ -347,12 +371,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             await EnsureInitializedAsync();
 
-            return _currentAggregateProjectContext;
+            return _context.Current;
         }
 
+        /// <inheritdoc />
         public ConfiguredProject? GetConfiguredProject(ITargetFramework target)
         {
-            return _currentAggregateProjectContext!.GetInnerConfiguredProject(target);
+            return _context.Current!.GetInnerConfiguredProject(target);
         }
 
         private Task OnConfiguredProjectEvaluatedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
@@ -381,199 +406,73 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         private async Task UpdateProjectContextAndSubscriptionsAsync()
         {
             // Prevent concurrent project context updates.
-            AggregateCrossTargetProjectContext newProjectContext
-                = await _contextUpdateGate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, TryUpdateCurrentAggregateProjectContextAsync);
+            await _contextUpdateGate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, async () =>
+                {
+                    AggregateCrossTargetProjectContext? newProjectContext = await _context.TryUpdateCurrentAggregateProjectContextAsync();
 
-            if (newProjectContext != null)
-            {
-                // Dispose existing subscriptions.
-                DisposeAndClearSubscriptions();
+                    if (newProjectContext != null)
+                    {
+                        _snapshot.TryUpdate(previousSnapshot => previousSnapshot.SetTargets(newProjectContext.TargetFrameworks, newProjectContext.ActiveTargetFramework));
 
-                // Add subscriptions for the configured projects in the new project context.
-                await AddSubscriptionsAsync(newProjectContext);
-            }
+                        // The context changed, so update a few things.
+                        await _tasksService.LoadedProjectAsync(() =>
+                        {
+                            lock (_lock)
+                            {
+                                if (_isDisposed)
+                                {
+                                    throw new ObjectDisposedException(nameof(DependenciesSnapshotProvider));
+                                }
+
+                                // Dispose existing subscriptions.
+                                _subscriptions.Dispose();
+                                _subscriptions = new DisposableBag();
+
+                                // Add subscriptions for the configured projects in the new project context.
+                                AddSubscriptions(newProjectContext);
+                            }
+
+                            return Task.CompletedTask;
+                        });
+                    }
+                });
 
             return;
 
-            async Task<AggregateCrossTargetProjectContext?> TryUpdateCurrentAggregateProjectContextAsync()
+
+            void AddSubscriptions(AggregateCrossTargetProjectContext newProjectContext)
             {
-                AggregateCrossTargetProjectContext? previousContext = _currentAggregateProjectContext;
-
-                // Check if we have already computed the project context.
-                if (previousContext != null)
+                foreach (ConfiguredProject configuredProject in newProjectContext.InnerConfiguredProjects)
                 {
-                    // For non-cross targeting projects, we can use the current project context if the TargetFramework hasn't changed.
-                    // For cross-targeting projects, we need to verify that the current project context matches latest frameworks targeted by the project.
-                    // If not, we create a new one and dispose the current one.
-                    ConfigurationGeneral projectProperties = await _commonServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync();
+                    SubscribeToConfiguredProjectEvaluation(
+                        configuredProject.Services.ProjectSubscription,
+                        OnConfiguredProjectEvaluatedAsync);
+                }
 
-                    if (!previousContext.IsCrossTargeting)
+                foreach (IDependencyCrossTargetSubscriber subscriber in Subscribers)
+                {
+                    subscriber.AddSubscriptions(newProjectContext);
+                }
+
+                _subscriptions.Add(new DisposableDelegate(
+                    () =>
                     {
-                        string newTargetFrameworkName = (string)await projectProperties.TargetFramework.GetValueAsync();
-                        ITargetFramework? newTargetFramework = _targetFrameworkProvider.GetTargetFramework(newTargetFrameworkName);
-                        if (previousContext.ActiveTargetFramework.Equals(newTargetFramework))
+                        foreach (IDependencyCrossTargetSubscriber subscriber in _subscribers)
                         {
-                            // No change
-                            return null;
+                            subscriber.ReleaseSubscriptions();
                         }
-                    }
-                    else
-                    {
-                        // Check if the current project context is up-to-date for the current active and known project configurations.
-                        ProjectConfiguration activeProjectConfiguration = _commonServices.ActiveConfiguredProject.ProjectConfiguration;
-                        IImmutableSet<ProjectConfiguration> knownProjectConfigurations = await _commonServices.Project.Services.ProjectConfigurationsService.GetKnownProjectConfigurationsAsync();
-                        if (knownProjectConfigurations.All(c => c.IsCrossTargeting()) &&
-                            HasMatchingTargetFrameworks(previousContext, activeProjectConfiguration, knownProjectConfigurations))
-                        {
-                            // No change
-                            return null;
-                        }
-                    }
-                }
-
-                // Force refresh the CPS active project configuration (needs UI thread).
-                await _commonServices.ThreadingService.SwitchToUIThread();
-                await _activeProjectConfigurationRefreshService.RefreshActiveProjectConfigurationAsync();
-
-                // Create new project context.
-                AggregateCrossTargetProjectContext newContext = await _contextProvider.Value.CreateProjectContextAsync();
-
-                _currentAggregateProjectContext = newContext;
-
-                TryUpdateSnapshot(snapshot => snapshot.SetTargets(newContext.TargetFrameworks, newContext.ActiveTargetFramework));
-
-                return newContext;
+                    }));
             }
-
-            bool HasMatchingTargetFrameworks(
-                AggregateCrossTargetProjectContext previousContext,
-                ProjectConfiguration activeProjectConfiguration,
-                IReadOnlyCollection<ProjectConfiguration> knownProjectConfigurations)
-            {
-                Assumes.True(activeProjectConfiguration.IsCrossTargeting());
-
-                ITargetFramework? activeTargetFramework = _targetFrameworkProvider.GetTargetFramework(activeProjectConfiguration.Dimensions[ConfigurationGeneral.TargetFrameworkProperty]);
-
-                if (!previousContext.ActiveTargetFramework.Equals(activeTargetFramework))
-                {
-                    // Active target framework is different.
-                    return false;
-                }
-
-                var targetFrameworkMonikers = knownProjectConfigurations
-                    .Select(c => c.Dimensions[ConfigurationGeneral.TargetFrameworkProperty])
-                    .Distinct()
-                    .ToList();
-
-                if (targetFrameworkMonikers.Count != previousContext.TargetFrameworks.Length)
-                {
-                    // Different number of target frameworks.
-                    return false;
-                }
-
-                foreach (string targetFrameworkMoniker in targetFrameworkMonikers)
-                {
-                    ITargetFramework? targetFramework = _targetFrameworkProvider.GetTargetFramework(targetFrameworkMoniker);
-
-                    if (targetFramework == null || !previousContext.TargetFrameworks.Contains(targetFramework))
-                    {
-                        // Differing TargetFramework
-                        return false;
-                    }
-                }
-
-                return true;
-            }
-        }
-
-        /// <summary>
-        /// Executes <paramref name="updateFunc"/> on the current snapshot within a lock.
-        /// If a different snapshot object is returned, <see cref="CurrentSnapshot"/> is updated
-        /// and the update is posted to <see cref="IDependenciesSnapshotProvider.SnapshotChangedSource"/>.
-        /// </summary>
-        private void TryUpdateSnapshot(Func<DependenciesSnapshot, DependenciesSnapshot> updateFunc, CancellationToken token = default)
-        {
-            lock (_snapshotLock)
-            {
-                DependenciesSnapshot updatedSnapshot = updateFunc(_currentSnapshot);
-
-                if (ReferenceEquals(_currentSnapshot, updatedSnapshot))
-                {
-                    return;
-                }
-
-                _currentSnapshot = updatedSnapshot;
-            }
-
-            // Conflate rapid snapshot updates by debouncing events over a short window.
-            // This reduces the frequency of tree updates with minimal perceived latency.
-            _dependenciesUpdateScheduler.ScheduleAsyncTask(
-                ct =>
-                {
-                    if (ct.IsCancellationRequested || IsDisposing || IsDisposed)
-                    {
-                        return Task.FromCanceled(ct);
-                    }
-
-                    // Always publish the latest snapshot
-                    IDependenciesSnapshot snapshot = _currentSnapshot;
-                    _snapshotChangedSource.Post(new SnapshotChangedEventArgs(snapshot, ct));
-
-                    return Task.CompletedTask;
-                }, token);
-        }
-
-        private Task AddSubscriptionsAsync(AggregateCrossTargetProjectContext newProjectContext)
-        {
-            Requires.NotNull(newProjectContext, nameof(newProjectContext));
-
-            return _tasksService.LoadedProjectAsync(() =>
-            {
-                lock (_linksLock)
-                {
-                    foreach (ConfiguredProject configuredProject in newProjectContext.InnerConfiguredProjects)
-                    {
-                        SubscribeToConfiguredProjectEvaluation(
-                            configuredProject.Services.ProjectSubscription,
-                            OnConfiguredProjectEvaluatedAsync);
-                    }
-
-                    foreach (IDependencyCrossTargetSubscriber subscriber in Subscribers)
-                    {
-                        subscriber.AddSubscriptions(newProjectContext);
-                    }
-                }
-
-                return Task.CompletedTask;
-            });
         }
 
         private void SubscribeToConfiguredProjectEvaluation(
             IProjectSubscriptionService subscriptionService,
             Func<IProjectVersionedValue<IProjectSubscriptionUpdate>, Task> action)
         {
-            _evaluationSubscriptionLinks.Add(
+            _subscriptions.Add(
                 subscriptionService.ProjectRuleSource.SourceBlock.LinkToAsyncAction(
                     action,
                     ruleNames: ConfigurationGeneral.SchemaName));
-        }
-
-        private void DisposeAndClearSubscriptions()
-        {
-            lock (_linksLock)
-            {
-                foreach (IDependencyCrossTargetSubscriber subscriber in Subscribers)
-                {
-                    subscriber.ReleaseSubscriptions();
-                }
-
-                foreach (IDisposable link in _evaluationSubscriptionLinks)
-                {
-                    link.Dispose();
-                }
-
-                _evaluationSubscriptionLinks.Clear();
-            }
         }
     }
 }
