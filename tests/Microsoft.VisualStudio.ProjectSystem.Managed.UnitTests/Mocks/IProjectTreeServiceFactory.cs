@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IProjectTreeServiceFactory
     {
-        public static IProjectTreeService Create(IProjectTree tree, IProjectTreeProvider? treeProvider = null)
+        public static IProjectTreeService Create(IProjectTree? tree = null, IProjectTreeProvider? treeProvider = null)
         {
             var mock = new Mock<IProjectTreeService>();
 
@@ -19,6 +19,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 .ReturnsAsync(treeState);
 
             mock.Setup(s => s.PublishAnyNonNullTreeAsync(It.IsAny<CancellationToken>()))
+                .ReturnsAsync(treeState);
+
+            mock.Setup(s => s.PublishLatestTreeAsync(It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(treeState);
 
             mock.SetupGet(s => s.CurrentTree)

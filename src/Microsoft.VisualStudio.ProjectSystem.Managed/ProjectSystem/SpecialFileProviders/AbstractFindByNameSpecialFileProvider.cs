@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Immutable;
-using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,8 +28,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 
         protected AbstractFindByNameSpecialFileProvider(
             IPhysicalProjectTree projectTree,
-            [Import(ExportContractNames.ProjectItemProviders.SourceFiles)] IProjectItemProvider sourceItemsProvider,
-            [Import(AllowDefault = true)] Lazy<ICreateFileFromTemplateService>? templateFileCreationService,
+            IProjectItemProvider sourceItemsProvider,
+            Lazy<ICreateFileFromTemplateService>? templateFileCreationService,
             IFileSystem fileSystem,
             ISpecialFilesManager specialFileManager)
         {

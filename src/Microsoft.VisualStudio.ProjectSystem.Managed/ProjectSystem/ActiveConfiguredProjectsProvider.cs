@@ -128,7 +128,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public async Task<ActiveConfiguredObjects<ProjectConfiguration>?> GetActiveProjectConfigurationsAsync()
         {
-            ProjectConfiguration activeSolutionConfiguration = _services.ActiveConfiguredProjectProvider.ActiveProjectConfiguration;
+            ProjectConfiguration? activeSolutionConfiguration = _services.ActiveConfiguredProjectProvider.ActiveProjectConfiguration;
 
             if (activeSolutionConfiguration == null)
             {

@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -12,6 +13,15 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public static IProjectItemProvider Create()
         {
             return Mock.Of<IProjectItemProvider>();
+        }
+
+        public static IProjectItemProvider AddItemAsync(Func<string, IProjectItem> action)
+        {
+            var mock = new Mock<IProjectItemProvider>();
+            mock.Setup(p => p.AddAsync(It.IsAny<string>()))
+                .ReturnsAsync(action);
+
+            return mock.Object;
         }
 
         public static IProjectItemProvider CreateWithAdd(IProjectTree inputTree)

@@ -13,12 +13,20 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return Mock.Of<IProjectTreeServiceState>();
         }
 
-        public static IProjectTreeServiceState ImplementTree(Func<IProjectTree?> treeAction, Func<IProjectTreeProvider>? treeProviderAction = null)
+        public static IProjectTreeServiceState ImplementTreeProvider(Func<IProjectTreeProvider>? action)
+        {
+            return ImplementTree(null, action);
+        }
+
+        public static IProjectTreeServiceState ImplementTree(Func<IProjectTree?>? treeAction = null, Func<IProjectTreeProvider>? treeProviderAction = null)
         {
             var mock = new Mock<IProjectTreeServiceState>();
 
-            mock.SetupGet<IProjectTree?>(s => s.Tree)
-                .Returns(treeAction);
+            if (treeAction != null)
+            {
+                mock.SetupGet<IProjectTree?>(s => s.Tree)
+                    .Returns(treeAction);
+            }
 
             if (treeProviderAction != null)
             {
