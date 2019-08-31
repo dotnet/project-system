@@ -404,6 +404,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             var t0 = DateTime.UtcNow.AddMinutes(-1);
 
+            _fileSystem.AddFile(_msBuildProjectFullPath, t0);
             _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\ItemPath1", t0);
             _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\BuiltOutputPath1", t0.AddMinutes(-1));
 
@@ -411,7 +412,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             await SetupAsync(projectSnapshot, sourceSnapshot);
 
             await AssertNotUpToDateAsync(
-                $"The set of project items was changed more recently ({_buildUpToDateCheck.TestAccess.State.LastItemsChangedAtUtc.ToLocalTime()}) than the earliest output 'C:\\Dev\\Solution\\Project\\BuiltOutputPath1' ({t0.AddMinutes(-1).ToLocalTime()}), not up to date.",
+                $"Input '{_msBuildProjectFullPath}' is newer ({t0.ToLocalTime()}) than earliest output 'C:\\Dev\\Solution\\Project\\BuiltOutputPath1' ({t0.AddMinutes(-1).ToLocalTime()}), not up to date.",
                 "Outputs");
 
             await Task.Delay(50);
@@ -432,6 +433,50 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             await AssertNotUpToDateAsync(
                 $"Input 'C:\\Dev\\Solution\\Project\\ItemPath1' ({t2.ToLocalTime()}) has been modified since the last up-to-date check ({_buildUpToDateCheck.TestAccess.State.LastCheckedAtUtc.ToLocalTime()}), not up to date.",
                 "Outputs");
+        }
+
+        [Fact]
+        public async Task InitialItemDataDoesNotUpdateLastItemsChangedAtUtc()
+        {
+            // This test covers a false negative described in https://github.com/dotnet/project-system/issues/5386
+            // where the initial snapshot of items sets LastItemsChangedAtUtc, so if a project is up to date when
+            // it is loaded, then the items are considered changed *after* the last build, but MSBuild's up-to-date
+            // check will determine the project doesn't require a rebuild and so the output timestamps won't update.
+            // This previously left the project in a state where it would be considered out of date endlessly.
+
+            var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                [UpToDateCheckBuilt.SchemaName] = SimpleItems("BuiltOutputPath1")
+            };
+
+            var sourceSnapshot1 = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                [Compile.SchemaName] = SimpleItems("ItemPath1")
+            };
+
+            var sourceSnapshot2 = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                [Compile.SchemaName] = SimpleItems("ItemPath1", "ItemPath2")
+            };
+
+            await _buildUpToDateCheck.LoadAsync();
+
+            Assert.Equal(DateTime.MinValue, _buildUpToDateCheck.TestAccess.State.LastItemsChangedAtUtc);
+
+            // Initial change does NOT set LastItemsChangedAtUtc
+            BroadcastChange(projectSnapshot, sourceSnapshot1);
+
+            Assert.Equal(DateTime.MinValue, _buildUpToDateCheck.TestAccess.State.LastItemsChangedAtUtc);
+
+            // Broadcasting an update with no change to items does NOT set LastItemsChangedAtUtc
+            BroadcastChange();
+
+            Assert.Equal(DateTime.MinValue, _buildUpToDateCheck.TestAccess.State.LastItemsChangedAtUtc);
+
+            // Broadcasting changed items DOES set LastItemsChangedAtUtc
+            BroadcastChange(projectSnapshot, sourceSnapshot2);
+
+            Assert.NotEqual(DateTime.MinValue, _buildUpToDateCheck.TestAccess.State.LastItemsChangedAtUtc);
         }
 
         [Fact]
