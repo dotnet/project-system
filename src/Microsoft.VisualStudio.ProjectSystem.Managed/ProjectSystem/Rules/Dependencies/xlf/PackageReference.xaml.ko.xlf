@@ -62,11 +62,6 @@
         <target state="needs-review-translation">이 패키지에 대해 표시하지 않는, 쉼표로 구분된 경고 목록</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Path|Description">
-        <source>Location of the package being referenced.</source>
-        <target state="translated">참조되는 패키지의 위치입니다.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="BoolProperty|GeneratePathProperty|DisplayName">
         <source>Generate path property</source>
         <target state="translated">경로 속성 생성</target>
@@ -75,11 +70,6 @@
       <trans-unit id="BoolProperty|GeneratePathProperty|Description">
         <source>Indicates whether to generate an MSBuild property with the location of the package's root directory. The generated property name is in the form of 'Pkg[PackageID]', where '[PackageID]' is the ID of the package with any periods '.' replaced with underscores '_'.</source>
         <target state="translated">패키지의 루트 디렉터리 위치를 사용하여 MSBuild 속성을 생성할지 여부를 제어합니다. 생성된 속성 이름은 'Pkg[PackageID]' 형식입니다. 여기서 '[PackageID]'는 패키지의 ID이고 마침표 '.'는 밑줄 '_'로 바뀝니다.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Path|DisplayName">
-        <source>Path</source>
-        <target state="new">Path</target>
         <note />
       </trans-unit>
     </body>

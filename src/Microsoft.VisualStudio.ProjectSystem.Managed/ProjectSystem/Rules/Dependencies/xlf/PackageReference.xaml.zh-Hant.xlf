@@ -62,11 +62,6 @@
         <target state="needs-review-translation">不應對此套件顯示的警告清單 (以逗點分隔)</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Path|Description">
-        <source>Location of the package being referenced.</source>
-        <target state="translated">目前參考的套件位置。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="BoolProperty|GeneratePathProperty|DisplayName">
         <source>Generate path property</source>
         <target state="translated">產生路徑屬性</target>
@@ -75,11 +70,6 @@
       <trans-unit id="BoolProperty|GeneratePathProperty|Description">
         <source>Indicates whether to generate an MSBuild property with the location of the package's root directory. The generated property name is in the form of 'Pkg[PackageID]', where '[PackageID]' is the ID of the package with any periods '.' replaced with underscores '_'.</source>
         <target state="translated">表示是否要以套件根目錄的位置產生 MSBuild 屬性。產生屬性的名稱格式為 'Pkg[PackageID]'，其中 '[PackageID]' 是套件的識別碼，所有句點 '.' 均會替換為底線 '_'。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Path|DisplayName">
-        <source>Path</source>
-        <target state="new">Path</target>
         <note />
       </trans-unit>
     </body>
