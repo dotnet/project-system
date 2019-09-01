@@ -62,11 +62,6 @@
         <target state="needs-review-translation">Durch Trennzeichen getrennte Liste von Warnungen, die für dieses Paket unterdrückt werden sollen</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Path|Description">
-        <source>Location of the package being referenced.</source>
-        <target state="translated">Speicherort des Pakets, auf das verwiesen wird.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="BoolProperty|GeneratePathProperty|DisplayName">
         <source>Generate path property</source>
         <target state="translated">Pfadeigenschaft generieren</target>
@@ -75,11 +70,6 @@
       <trans-unit id="BoolProperty|GeneratePathProperty|Description">
         <source>Indicates whether to generate an MSBuild property with the location of the package's root directory. The generated property name is in the form of 'Pkg[PackageID]', where '[PackageID]' is the ID of the package with any periods '.' replaced with underscores '_'.</source>
         <target state="translated">Gibt an, ob eine MSBuild-Eigenschaft mit dem Speicherort des Stammverzeichnisses des Pakets generiert werden soll. Der Name der generierten Eigenschaft weist das Format "Pkg[Paket-ID]" auf, wobei "[Paket-ID]" der ID des Pakets entspricht. Hierbei müssen Punkte (.) jedoch durch Unterstriche (_) ersetzt werden.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Path|DisplayName">
-        <source>Path</source>
-        <target state="new">Path</target>
         <note />
       </trans-unit>
     </body>
