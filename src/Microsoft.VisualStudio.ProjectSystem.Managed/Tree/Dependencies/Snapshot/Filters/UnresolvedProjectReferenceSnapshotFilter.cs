@@ -7,21 +7,19 @@ using System.ComponentModel.Composition;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters
 {
     /// <summary>
-    /// Changes resolved top level project dependencies to unresolved if:
-    ///     - dependent project has any unresolved dependencies in a snapshot for given target framework
-    /// This helps to bubble up error status (yellow icon) for project dependencies.
+    /// Marks project references as unresolved where the referenced project contains a visible unresolved dependency.
     /// </summary>
     [Export(typeof(IDependenciesSnapshotFilter))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     [Order(Order)]
-    internal sealed class UnsupportedProjectsSnapshotFilter : DependenciesSnapshotFilterBase
+    internal sealed class UnresolvedProjectReferenceSnapshotFilter : DependenciesSnapshotFilterBase
     {
         public const int Order = 120;
 
         private readonly IAggregateDependenciesSnapshotProvider _aggregateSnapshotProvider;
 
         [ImportingConstructor]
-        public UnsupportedProjectsSnapshotFilter(IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider)
+        public UnresolvedProjectReferenceSnapshotFilter(IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider)
         {
             _aggregateSnapshotProvider = aggregateSnapshotProvider;
         }
