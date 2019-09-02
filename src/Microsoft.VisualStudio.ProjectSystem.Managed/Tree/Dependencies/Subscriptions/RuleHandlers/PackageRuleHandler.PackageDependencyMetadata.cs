@@ -69,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
                     Requires.NotNull(targetFramework, nameof(targetFramework));
                     Requires.NotNull(targetFrameworkProvider, nameof(targetFrameworkProvider));
-                    Requires.NotNull(isEvaluatedItemSpec, nameof(isEvaluatedItemSpec));
+                    Requires.NotNull(isEvaluatedItemSpec!, nameof(isEvaluatedItemSpec));
 
                     DependencyType dependencyType = properties.GetEnumProperty<DependencyType>(ProjectItemMetadata.Type) ?? DependencyType.Unknown;
 
@@ -93,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     string name = properties.GetStringProperty(ProjectItemMetadata.Name) ?? itemSpec;
 
                     bool isTopLevel = isImplicitlyDefined ||
-                        (dependencyType == DependencyType.Package && isEvaluatedItemSpec!(name));
+                        (dependencyType == DependencyType.Package && isEvaluatedItemSpec(name));
 
                     string originalItemSpec = isTopLevel ? name : itemSpec;
 
