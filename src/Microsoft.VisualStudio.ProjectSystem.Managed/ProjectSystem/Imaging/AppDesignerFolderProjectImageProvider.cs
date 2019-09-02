@@ -3,19 +3,18 @@
 using System.ComponentModel.Composition;
 
 using Microsoft.VisualStudio.Imaging;
-using Microsoft.VisualStudio.ProjectSystem.Imaging;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging.FSharp
+namespace Microsoft.VisualStudio.ProjectSystem.Imaging
 {
     /// <summary>
-    ///     Provides F# project images.
+    ///     Provides the AppDesigner folder image.
     /// </summary>
     [Export(typeof(IProjectImageProvider))]
-    [AppliesTo(ProjectCapability.FSharp)]
-    internal class FSharpProjectImageProvider : IProjectImageProvider
+    [AppliesTo(ProjectCapability.AppDesigner)]
+    internal class AppDesignerFolderProjectImageProvider : IProjectImageProvider
     {
         [ImportingConstructor]
-        public FSharpProjectImageProvider()
+        public AppDesignerFolderProjectImageProvider()
         {
         }
 
@@ -23,8 +22,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging.FSharp
         {
             Requires.NotNullOrEmpty(key, nameof(key));
 
-            return key == ProjectImageKey.ProjectRoot ?
-                KnownMonikers.FSProjectNode.ToProjectSystemType() :
+            return key == ProjectImageKey.AppDesignerFolder ?
+                KnownMonikers.Property.ToProjectSystemType() :
                 null;
         }
     }
