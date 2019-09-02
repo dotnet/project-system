@@ -1,7 +1,0 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
-  <ItemGroup>
-    <None Include="**/*.md" />
-  </ItemGroup>
-
-</Project>
