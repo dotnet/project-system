@@ -2,18 +2,16 @@
 
 using System;
 
-using Microsoft.VisualStudio.ProjectSystem.Imaging;
-
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging.VisualBasic
+namespace Microsoft.VisualStudio.ProjectSystem.Imaging.FSharp
 {
-    public class VisualBasicProjectImageProviderTests
+    public class FSharpProjectImageProviderTests
     {
         [Fact]
         public void Constructor_DoesNotThrow()
         {
-            new VisualBasicProjectImageProvider();
+            new FSharpProjectImageProvider();
         }
 
         [Fact]
@@ -50,8 +48,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging.VisualBasic
 
         [Theory]
         [InlineData(ProjectImageKey.ProjectRoot)]
-        [InlineData(ProjectImageKey.SharedProjectRoot)]
-        [InlineData(ProjectImageKey.SharedItemsImportFile)]
         public void GetProjectImage_RecognizedKeyAsKey_ReturnsNonNull(string key)
         {
             var provider = CreateInstance();
@@ -61,9 +57,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging.VisualBasic
             Assert.NotNull(result);
         }
 
-        private static VisualBasicProjectImageProvider CreateInstance()
+        private static FSharpProjectImageProvider CreateInstance()
         {
-            return new VisualBasicProjectImageProvider();
+            return new FSharpProjectImageProvider();
         }
     }
 }

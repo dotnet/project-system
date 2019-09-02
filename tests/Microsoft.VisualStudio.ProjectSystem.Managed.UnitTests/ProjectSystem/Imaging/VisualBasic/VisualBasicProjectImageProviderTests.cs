@@ -2,18 +2,16 @@
 
 using System;
 
-using Microsoft.VisualStudio.ProjectSystem.Imaging;
-
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging.CSharp
+namespace Microsoft.VisualStudio.ProjectSystem.Imaging.VisualBasic
 {
-    public class CSharpProjectImageProviderTests
+    public class VisualBasicProjectImageProviderTests
     {
         [Fact]
         public void Constructor_DoesNotThrow()
         {
-            new CSharpProjectImageProvider();
+            new VisualBasicProjectImageProvider();
         }
 
         [Fact]
@@ -61,9 +59,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging.CSharp
             Assert.NotNull(result);
         }
 
-        private static CSharpProjectImageProvider CreateInstance()
+        private static VisualBasicProjectImageProvider CreateInstance()
         {
-            return new CSharpProjectImageProvider();
+            return new VisualBasicProjectImageProvider();
         }
     }
 }

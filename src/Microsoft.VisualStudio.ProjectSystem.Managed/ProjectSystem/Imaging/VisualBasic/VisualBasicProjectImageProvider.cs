@@ -3,19 +3,18 @@
 using System.ComponentModel.Composition;
 
 using Microsoft.VisualStudio.Imaging;
-using Microsoft.VisualStudio.ProjectSystem.Imaging;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging.CSharp
+namespace Microsoft.VisualStudio.ProjectSystem.Imaging.VisualBasic
 {
     /// <summary>
-    ///     Provides C# project images.
+    ///     Provides Visual Basic project images.
     /// </summary>
     [Export(typeof(IProjectImageProvider))]
-    [AppliesTo(ProjectCapability.CSharp)]
-    internal class CSharpProjectImageProvider : IProjectImageProvider
+    [AppliesTo(ProjectCapability.VisualBasic)]
+    internal class VisualBasicProjectImageProvider : IProjectImageProvider
     {
         [ImportingConstructor]
-        public CSharpProjectImageProvider()
+        public VisualBasicProjectImageProvider()
         {
         }
 
@@ -26,11 +25,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging.CSharp
             switch (key)
             {
                 case ProjectImageKey.ProjectRoot:
-                    return KnownMonikers.CSProjectNode.ToProjectSystemType();
+                    return KnownMonikers.VBProjectNode.ToProjectSystemType();
 
                 case ProjectImageKey.SharedItemsImportFile:
                 case ProjectImageKey.SharedProjectRoot:
-                    return KnownMonikers.CSSharedProject.ToProjectSystemType();
+                    return KnownMonikers.VBSharedProject.ToProjectSystemType();
 
                 default:
                     return null;
