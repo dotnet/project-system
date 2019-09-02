@@ -7,10 +7,13 @@ using System.ComponentModel.Composition;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters
 {
     /// <summary>
-    /// Filter does not allow unresolved dependency rule to override resolved one in the snapshot. 
-    /// When project changes and old resolved dependency cannot be resolved anymore, only removed
-    /// resolved dependency rule can delete old dependency (not unresolved rule).
+    /// Prohibits the unresolved dependency rule (evaluation) from overriding the corresponding 
+    /// resolved rule (design-time build) in the snapshot. 
     /// </summary>
+    /// <remarks>
+    /// Once resolved, a dependency cannot revert to unresolved state. It will only appear as
+    /// unresolved again if it is first removed.
+    /// </remarks>
     [Export(typeof(IDependenciesSnapshotFilter))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     [Order(Order)]
