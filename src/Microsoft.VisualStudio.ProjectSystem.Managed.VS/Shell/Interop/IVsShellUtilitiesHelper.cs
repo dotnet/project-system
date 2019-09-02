@@ -3,10 +3,10 @@
 using System;
 using System.Threading.Tasks;
 
+using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Interop;
-using Microsoft.VisualStudio.Shell.Interop;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
+namespace Microsoft.VisualStudio.Shell.Interop
 {
     internal interface IVsShellUtilitiesHelper
     {
