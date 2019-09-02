@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             private readonly DependencyType _dependencyType;
 
-            public string? Target { get; }
+            public string? TargetFrameworkName { get; }
             public string ItemSpec { get; }
             public string OriginalItemSpec { get; }
             public string Name { get; }
@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             private PackageDependencyMetadata(
                 DependencyType dependencyType,
-                string? target,
+                string? targetFrameworkName,
                 string itemSpec,
                 string originalItemSpec,
                 string name,
@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 IImmutableDictionary<string, string> properties)
             {
                 _dependencyType = dependencyType;
-                Target = target;
+                TargetFrameworkName = targetFrameworkName;
                 ItemSpec = itemSpec;
                 OriginalItemSpec = originalItemSpec;
                 Name = name;
@@ -81,10 +81,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     }
 
                     int slashIndex = itemSpec.IndexOf('/');
-                    string? target = slashIndex == -1 ? null : s_targetFrameworkInternPool.Intern(itemSpec.Substring(0, slashIndex));
+                    string? targetFrameworkName = slashIndex == -1 ? null : s_targetFrameworkInternPool.Intern(itemSpec.Substring(0, slashIndex));
 
-                    if (target == null ||
-                        targetFrameworkProvider.GetTargetFramework(target)?.Equals(targetFramework) != true)
+                    if (targetFrameworkName == null ||
+                        targetFrameworkProvider.GetTargetFramework(targetFrameworkName)?.Equals(targetFramework) != true)
                     {
                         metadata = default;
                         return false;
@@ -99,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
                     metadata = new PackageDependencyMetadata(
                         dependencyType,
-                        target,
+                        targetFrameworkName,
                         itemSpec,
                         originalItemSpec,
                         name,
@@ -116,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
                     metadata = new PackageDependencyMetadata(
                         dependencyType: DependencyType.Package,
-                        target: null,
+                        targetFrameworkName: null,
                         itemSpec,
                         originalItemSpec: itemSpec,
                         name: itemSpec,
@@ -185,7 +185,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             {
                 if (Properties.TryGetValue(ProjectItemMetadata.Dependencies, out string dependencies) && !string.IsNullOrWhiteSpace(dependencies))
                 {
-                    Assumes.NotNull(Target);
+                    Assumes.NotNull(TargetFrameworkName);
 
                     var dependenciesItemSpecs = new HashSet<string>(StringComparers.ItemNames);
                     var dependencyIds = new LazyStringSplit(dependencies, ';');
@@ -193,7 +193,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     // store only unique dependency IDs
                     foreach (string dependencyId in dependencyIds)
                     {
-                        dependenciesItemSpecs.Add($"{Target}/{dependencyId}");
+                        dependenciesItemSpecs.Add($"{TargetFrameworkName}/{dependencyId}");
                     }
 
                     return dependenciesItemSpecs;
