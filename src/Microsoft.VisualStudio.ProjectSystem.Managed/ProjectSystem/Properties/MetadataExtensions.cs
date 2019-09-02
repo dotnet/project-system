@@ -4,9 +4,7 @@ using System;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 
-using Microsoft.VisualStudio.ProjectSystem.Properties;
-
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
+namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     internal static class MetadataExtensions
     {

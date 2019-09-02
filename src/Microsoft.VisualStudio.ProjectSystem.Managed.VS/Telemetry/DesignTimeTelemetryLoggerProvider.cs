@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.Build.Framework;
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Build;
-using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
+using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 using Task = System.Threading.Tasks.Task;
 
