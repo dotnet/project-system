@@ -26,6 +26,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             IImmutableSet<string>? projectItemSpecs,
             IAddDependencyContext context)
         {
+            // Only apply to top-level dependencies
+            if (!dependency.TopLevel)
+            {
+                context.Accept(dependency);
+                return;
+            }
+
             IDependency? matchingDependency = null;
             bool shouldApplyAlias = false;
 
