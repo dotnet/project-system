@@ -22,6 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                                     BuildManagerEvents
     {
         private readonly IProjectThreadingService _threadingService;
+        private readonly IUnconfiguredProjectCommonServices _unconfiguredProjectServices;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="VSBuildManager"/> class.
@@ -31,15 +32,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         {
             AddEventSource(this);
             _threadingService = threadingService;
+            _unconfiguredProjectServices = unconfiguredProjectServices;
             Project = new OrderPrecedenceImportCollection<VSLangProj.VSProject>(projectCapabilityCheckProvider: unconfiguredProjectServices.Project);
-            DesignTimeInputsBuildManagerBridge = new OrderPrecedenceImportCollection<IDesignTimeInputsBuildManagerBridge>(projectCapabilityCheckProvider: unconfiguredProjectServices.Project);
         }
 
         [ImportMany(ExportContractNames.VsTypes.VSProject)]
         internal OrderPrecedenceImportCollection<VSLangProj.VSProject> Project { get; }
 
-        [ImportMany]
-        internal OrderPrecedenceImportCollection<IDesignTimeInputsBuildManagerBridge> DesignTimeInputsBuildManagerBridge { get; }
+        [Import]
+        internal Lazy<IDesignTimeInputsBuildManagerBridge, IAppliesToMetadataView>? DesignTimeInputsBuildManagerBridge { get; }
 
         /// <summary>
         /// Occurs when a design time output moniker is deleted.
@@ -73,9 +74,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         {
             get
             {
-                IDesignTimeInputsBuildManagerBridge? bridge = DesignTimeInputsBuildManagerBridge.FirstOrDefault()?.Value;
-                if (bridge != null)
+                if (DesignTimeInputsBuildManagerBridge?.AppliesTo(_unconfiguredProjectServices.Project.Capabilities) == true)
                 {
+                    IDesignTimeInputsBuildManagerBridge bridge = DesignTimeInputsBuildManagerBridge.Value;
+
                     return _threadingService.ExecuteSynchronously(async () =>
                     {
                         await _threadingService.SwitchToUIThread();
@@ -93,9 +95,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         /// </summary>
         public string BuildDesignTimeOutput(string bstrOutputMoniker)
         {
-            IDesignTimeInputsBuildManagerBridge? bridge = DesignTimeInputsBuildManagerBridge.FirstOrDefault()?.Value;
-            if (bridge != null)
+            if (DesignTimeInputsBuildManagerBridge?.AppliesTo(_unconfiguredProjectServices.Project.Capabilities) == true)
             {
+                IDesignTimeInputsBuildManagerBridge bridge = DesignTimeInputsBuildManagerBridge.Value;
+
                 return _threadingService.ExecuteSynchronously(async () =>
                 {
                     await _threadingService.SwitchToUIThread();
@@ -103,6 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                     return await bridge.GetDesignTimeInputXmlAsync(bstrOutputMoniker);
                 });
             }
+
             throw new NotImplementedException();
         }
 
@@ -123,9 +127,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         /// </summary>
         internal virtual void OnDesignTimeOutputDeleted(string outputMoniker)
         {
-            _threadingService.VerifyOnUIThread();
+            _threadingService.ExecuteSynchronously(async () =>
+            {
+                await _threadingService.SwitchToUIThread();
 
-            DesignTimeOutputDeleted?.Invoke(outputMoniker);
+                DesignTimeOutputDeleted?.Invoke(outputMoniker);
+            });
         }
 
         /// <summary>
@@ -133,9 +140,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         /// </summary>
         internal virtual void OnDesignTimeOutputDirty(string outputMoniker)
         {
-            _threadingService.VerifyOnUIThread();
+            _threadingService.ExecuteSynchronously(async () =>
+            {
+                await _threadingService.SwitchToUIThread();
 
-            DesignTimeOutputDirty?.Invoke(outputMoniker);
+                DesignTimeOutputDirty?.Invoke(outputMoniker);
+            });
         }
     }
 }
