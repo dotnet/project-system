@@ -128,7 +128,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim StringValue As String = Trim(control.Text)
 
             'DLL Baseaddress must be &Hxxxxxxxx format
-            If String.Compare(VBStrings.Left(StringValue, 2), "&H", StringComparison.OrdinalIgnoreCase) = 0 AndAlso IsNumeric(StringValue) Then
+            If String.Equals(VBStrings.Left(StringValue, 2), "&H", StringComparison.OrdinalIgnoreCase) AndAlso IsNumeric(StringValue) Then
                 Try
                     Dim LongValue As ULong = CULng(StringValue)
                     If LongValue < UInteger.MaxValue Then
@@ -179,7 +179,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     '// Need to special case pdb-only because it's stored in the property without the dash but it's
                     '// displayed in the dialog with a dash.
 
-                    If (String.Compare(stValue, "pdbonly", StringComparison.OrdinalIgnoreCase) <> 0) Then
+                    If Not String.Equals(stValue, "pdbonly", StringComparison.OrdinalIgnoreCase) Then
                         DebugInfoComboBox.Text = stValue
                     Else
                         DebugInfoComboBox.Text = "pdb-only"
@@ -234,7 +234,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If StringValue = "" Then
                 DllBaseTextbox.Text = DEFAULT_DLLBASEADDRESS
 
-            ElseIf String.Compare(VBStrings.Left(StringValue, 2), "&H", StringComparison.OrdinalIgnoreCase) = 0 AndAlso IsNumeric(StringValue) Then
+            ElseIf String.Equals(VBStrings.Left(StringValue, 2), "&H", StringComparison.OrdinalIgnoreCase) AndAlso IsNumeric(StringValue) Then
                 Dim LongValue As ULong = CULng(StringValue)
                 If LongValue < UInteger.MaxValue Then
                     'Reformat into clean

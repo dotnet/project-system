@@ -89,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
                     while (trackingIndex < oldListCount && trackingIndex < newListCount)
                     {
                         string incomingItem = sortedItems.ElementAt(trackingIndex);
-                        if (string.Compare(_list[trackingIndex], incomingItem, StringComparison.OrdinalIgnoreCase) == 0)
+                        if (string.Equals(_list[trackingIndex], incomingItem, StringComparison.OrdinalIgnoreCase))
                         {
                             trackingIndex++;
                             continue;
@@ -161,7 +161,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
 
             lock (_lock)
             {
-                return _list.Any(l => string.Compare(bstrImport, l, StringComparison.OrdinalIgnoreCase) == 0);
+                return _list.Any(l => string.Equals(bstrImport, l, StringComparison.OrdinalIgnoreCase));
             }
         }
 

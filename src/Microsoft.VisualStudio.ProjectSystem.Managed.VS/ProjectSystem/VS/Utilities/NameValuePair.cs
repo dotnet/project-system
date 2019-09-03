@@ -115,7 +115,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
                 {
                     if (!ReferenceEquals(this, nvp))
                     {
-                        if (string.Compare(nvp.Name, Name, StringComparison.OrdinalIgnoreCase) == 0)
+                        if (string.Equals(nvp.Name, Name, StringComparison.OrdinalIgnoreCase))
                         {
                             return true;
                         }

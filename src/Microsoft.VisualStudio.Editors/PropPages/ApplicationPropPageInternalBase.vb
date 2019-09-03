@@ -246,7 +246,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Else
                 Dim frameworkName As New FrameworkName(currentTarget.Moniker)
 
-                If String.Compare(frameworkName.Identifier, ".NETFramework", StringComparison.Ordinal) = 0 Then
+                If String.Equals(frameworkName.Identifier, ".NETFramework", StringComparison.Ordinal) Then
                     bindingRedirectsCheckBox.Visible = True
                 Else
                     bindingRedirectsCheckBox.Visible = False

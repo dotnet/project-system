@@ -196,8 +196,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Extension = GetResourceFileExtension(NewResource)
                 End If
 
-                If String.Compare(Extension, EXT_TIF, StringComparison.OrdinalIgnoreCase) = 0 OrElse
-                    String.Compare(Extension, EXT_TIFF, StringComparison.OrdinalIgnoreCase) = 0 Then
+                If String.Equals(Extension, EXT_TIF, StringComparison.OrdinalIgnoreCase) OrElse
+                   String.Equals(Extension, EXT_TIFF, StringComparison.OrdinalIgnoreCase) Then
 
                     Message = My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantAddFileToDeviceProject_1Arg, Extension)
                     HelpID = HelpIDs.Err_CantAddFileToDeviceProject

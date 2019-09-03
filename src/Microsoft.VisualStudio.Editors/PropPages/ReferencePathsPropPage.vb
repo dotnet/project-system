@@ -265,7 +265,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'Enable/Disable Add/UpdateFolder buttons
             Dim HasFolderEntry As Boolean = (Len(FolderText) > 0)
             AddFolder.Enabled = HasFolderEntry
-            UpdateFolder.Enabled = HasFolderEntry AndAlso (SelectedCount = 1) AndAlso String.Compare(FolderText, DirectCast(ReferencePath.SelectedItem, String), StringComparison.OrdinalIgnoreCase) <> 0
+            UpdateFolder.Enabled = HasFolderEntry AndAlso (SelectedCount = 1) AndAlso Not String.Equals(FolderText, DirectCast(ReferencePath.SelectedItem, String), StringComparison.OrdinalIgnoreCase)
 
             'Enable/Disable MoveUp/MoveDown buttons
             MoveUp.Enabled = (SelectedCount = 1) AndAlso (ItemIndices.Item(0) > 0)
