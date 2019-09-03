@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             HandleChangesForRule(
                 resolved: false,
                 projectChange: evaluatedChanges,
-                shouldProcess: dependencyId => true);
+                isEvaluatedItemSpec: null);
 
             // We only have resolved data if the update came via the JointRule data source.
             if (changesByRuleName.TryGetValue(ResolvedRuleName, out IProjectChangeDescription resolvedChanges))
@@ -54,12 +54,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 HandleChangesForRule(
                     resolved: true,
                     projectChange: resolvedChanges,
-                    shouldProcess: evaluatedChanges.After.Items.ContainsKey);
+                    isEvaluatedItemSpec: evaluatedChanges.After.Items.ContainsKey);
             }
 
             return;
 
-            void HandleChangesForRule(bool resolved, IProjectChangeDescription projectChange, Func<string, bool> shouldProcess)
+            void HandleChangesForRule(bool resolved, IProjectChangeDescription projectChange, Func<string, bool>? isEvaluatedItemSpec)
             {
                 if (projectChange.Difference.RemovedItems.Count != 0)
                 {
@@ -69,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                             ? projectChange.Before.GetProjectItemProperties(removedItem)!.GetStringProperty(ProjectItemMetadata.OriginalItemSpec) ?? removedItem
                             : removedItem;
 
-                        if (shouldProcess(dependencyId))
+                        if (isEvaluatedItemSpec == null || isEvaluatedItemSpec(dependencyId))
                         {
                             changesBuilder.Removed(targetFramework, ProviderType, removedItem);
                         }
@@ -81,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     foreach (string changedItem in projectChange.Difference.ChangedItems)
                     {
                         IDependencyModel model = CreateDependencyModelForRule(changedItem, projectChange.After, resolved);
-                        if (shouldProcess(model.Id))
+                        if (isEvaluatedItemSpec == null || isEvaluatedItemSpec(model.Id))
                         {
                             // For changes we try to add new dependency. If it is a resolved dependency, it would just override
                             // old one with new properties. If it is unresolved dependency, it would be added only when there no
@@ -96,7 +96,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     foreach (string addedItem in projectChange.Difference.AddedItems)
                     {
                         IDependencyModel model = CreateDependencyModelForRule(addedItem, projectChange.After, resolved);
-                        if (shouldProcess(model.Id))
+                        if (isEvaluatedItemSpec == null || isEvaluatedItemSpec(model.Id))
                         {
                             changesBuilder.Added(targetFramework, model);
                         }
