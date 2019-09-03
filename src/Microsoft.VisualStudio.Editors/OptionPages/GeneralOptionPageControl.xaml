@@ -8,7 +8,7 @@
             <StackPanel Orientation="Vertical">
                 <CheckBox x:Name="FastUpToDateCheck" x:Uid="General_FastUpToDateCheck" Content="{x:Static r:GeneralOptionPageResources.General_FastUpToDateCheck}" Margin="0" />
                 <StackPanel Orientation="Horizontal">
-                    <Label Content="{x:Static r:GeneralOptionPageResources.General_FastUpToDateCheck_LogLevel}" Margin="0" />
+                    <TextBlock Text="{x:Static r:GeneralOptionPageResources.General_FastUpToDateCheck_LogLevel}" Margin="0" VerticalAlignment="Center" MinWidth="128" />
                     <ComboBox x:Name="FastUpToDateLogLevel" ItemsSource="{x:Static local:GeneralOptionPageControl.FastUpToDateLogLevelItemSource}" x:Uid="General_LogLevel" VerticalContentAlignment="Center" Margin="0"/>
                 </StackPanel>
             </StackPanel>
