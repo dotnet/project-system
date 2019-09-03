@@ -24,7 +24,7 @@
   <!--<Extern href="msobtnid.h" xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" />-->
 
   <!-- This command is associated with the DebugTargetHandlerPackage as we want this package to handle our commands placed on the
-       debug (play button) menu contoller. It will redirect through code to our implementation of IVsProjectCfgDebugTargetSelection
+       debug (play button) menu controller. It will redirect through code to our implementation of IVsProjectCfgDebugTargetSelection
   -->
   <Commands package="guidDebugTargetHandlerPackage">
     <Buttons>

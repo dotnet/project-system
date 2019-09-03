@@ -11,6 +11,7 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
 
         Public Shared ReadOnly FastUpToDateLogLevelItemSource As String() = {
             My.Resources.GeneralOptionPageResources.General_FastUpToDateCheck_LogLevel_None,
+            My.Resources.GeneralOptionPageResources.General_FastUpToDateCheck_LogLevel_Minimal,
             My.Resources.GeneralOptionPageResources.General_FastUpToDateCheck_LogLevel_Info,
             My.Resources.GeneralOptionPageResources.General_FastUpToDateCheck_LogLevel_Verbose
         }

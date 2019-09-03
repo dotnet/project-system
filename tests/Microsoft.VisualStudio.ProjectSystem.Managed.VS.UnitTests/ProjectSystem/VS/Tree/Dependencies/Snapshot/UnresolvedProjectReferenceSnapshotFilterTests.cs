@@ -10,7 +10,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
-    public sealed class UnsupportedProjectsSnapshotFilterTests
+    public sealed class UnresolvedProjectReferenceSnapshotFilterTests
     {
         [Fact]
         public void BeforeAddOrUpdate_WhenDependencyNotRecognized_ShouldDoNothing()
@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
                 var context = new AddDependencyContext(worldBuilder);
 
-                var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider);
+                var filter = new UnresolvedProjectReferenceSnapshotFilter(aggregateSnapshotProvider);
 
                 filter.BeforeAddOrUpdate(
                     null!,
@@ -99,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             var context = new AddDependencyContext(worldBuilder);
 
-            var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider.Object);
+            var filter = new UnresolvedProjectReferenceSnapshotFilter(aggregateSnapshotProvider.Object);
 
             filter.BeforeAddOrUpdate(
                 null!,
@@ -140,7 +140,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             var context = new AddDependencyContext(worldBuilder);
 
-            var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider.Object);
+            var filter = new UnresolvedProjectReferenceSnapshotFilter(aggregateSnapshotProvider.Object);
 
             filter.BeforeAddOrUpdate(
                 null!,
@@ -183,7 +183,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             var context = new AddDependencyContext(worldBuilder);
 
-            var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider.Object);
+            var filter = new UnresolvedProjectReferenceSnapshotFilter(aggregateSnapshotProvider.Object);
 
             filter.BeforeAddOrUpdate(
                 null!,

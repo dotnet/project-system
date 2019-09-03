@@ -154,7 +154,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         private bool Fail(BuildUpToDateCheckLogger logger, string reason, string message, params object[] values)
         {
-            logger.Info(message, values);
+            logger.Minimal(message, values);
             _telemetryService.PostProperty(TelemetryEventName.UpToDateCheckFail, TelemetryPropertyName.UpToDateCheckFailReason, reason);
             return false;
         }

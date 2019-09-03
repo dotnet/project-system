@@ -21,6 +21,9 @@
     <SupportedOutputTypes Condition="'$(SupportedOutputTypes)' == ''">Exe;WinExe;Library</SupportedOutputTypes>
 
     <SuppressOutOfDateMessageOnBuild Condition="'$(SuppressOutOfDateMessageOnBuild)' == ''">true</SuppressOutOfDateMessageOnBuild>
+
+    <!-- Tells CPS which target to run for the Package solution build type -->
+    <PackageAction Condition="'$(PackageAction)' == ''">Pack</PackageAction>
   </PropertyGroup>
 
 

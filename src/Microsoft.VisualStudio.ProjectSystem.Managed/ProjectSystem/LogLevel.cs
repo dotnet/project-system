@@ -5,6 +5,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     internal enum LogLevel
     {
         None,
+        Minimal,
         Info,
         Verbose
     }
