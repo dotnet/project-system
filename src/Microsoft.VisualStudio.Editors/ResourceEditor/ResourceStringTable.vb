@@ -541,7 +541,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Dim Exception As Exception = Nothing
 
             ' we should ignore the problem if it is the original value, or the cursor will be locked inside such cell
-            If String.Compare(CStr(e.FormattedValue), originalValue, StringComparison.Ordinal) = 0 OrElse
+            If String.Equals(CStr(e.FormattedValue), originalValue, StringComparison.Ordinal) OrElse
                 ValidateCell(e.RowIndex, e.ColumnIndex, CStr(e.FormattedValue), Exception) Then
                 'Validation succeeded
                 e.Cancel = False

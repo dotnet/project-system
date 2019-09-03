@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel
 Imports System.Runtime.Versioning
@@ -110,7 +110,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Dim frameworkName As New FrameworkName(moniker)
 
                     ' Filter out frameworks with a different identifier since they are not applicable to the current project type
-                    If String.Compare(frameworkName.Identifier, currentFrameworkName.Identifier, StringComparison.OrdinalIgnoreCase) = 0 Then
+                    If String.Equals(frameworkName.Identifier, currentFrameworkName.Identifier, StringComparison.OrdinalIgnoreCase) Then
 
                         If isWebProject Then
 
@@ -133,8 +133,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                         ' Use DTAR to get the display name corresponding to the moniker
                         Dim displayName As String = ""
-                        If String.Compare(frameworkName.Identifier, ".NETStandard", StringComparison.Ordinal) = 0 OrElse
-                           String.Compare(frameworkName.Identifier, ".NETCoreApp", StringComparison.Ordinal) = 0 Then
+                        If String.Equals(frameworkName.Identifier, ".NETStandard", StringComparison.Ordinal) OrElse
+                           String.Equals(frameworkName.Identifier, ".NETCoreApp", StringComparison.Ordinal) Then
                             displayName = CStr(supportedTargetFrameworksDescriptor.Converter?.ConvertTo(moniker, GetType(String)))
                         Else
                             VSErrorHandler.ThrowOnFailure(vsFrameworkMultiTargeting.GetDisplayNameForTargetFx(moniker, displayName))

@@ -472,7 +472,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     '// convert to the one with the space for this specific case
 
                     '// Convert the no-space to one with a space
-                    If (String.Compare(strPlatform, "AnyCPU", StringComparison.Ordinal) = 0) Then
+                    If (String.Equals(strPlatform, "AnyCPU", StringComparison.Ordinal)) Then
                         strPlatform = "Any CPU"
                     End If
 
@@ -486,7 +486,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                             '// platform target to the user.
 
                             Dim stValue As String = TryCast(value, String)
-                            If (String.Compare(Trim(stValue), "Itanium", StringComparison.Ordinal) = 0) Then
+                            If (String.Equals(Trim(stValue), "Itanium", StringComparison.Ordinal)) Then
                                 cboPlatformTarget.Items.Add("Itanium")
                                 cboPlatformTarget.SelectedItem = stValue
                             Else
@@ -581,9 +581,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                                 If (Path.IsPathRooted(stOutputPath)) Then
                                     '// stOutputPath is an Absolute path so check to see if its within the project path
 
-                                    If (String.Compare(Path.GetFullPath(stProjectDirectory),
-                                                       VisualBasic.Left(Path.GetFullPath(stOutputPath), Len(stProjectDirectory)),
-                                                       StringComparison.Ordinal) = 0) Then
+                                    If (String.Equals(Path.GetFullPath(stProjectDirectory),
+                                                      VisualBasic.Left(Path.GetFullPath(stOutputPath), Len(stProjectDirectory)),
+                                                      StringComparison.Ordinal)) Then
 
                                         '// The output path is within the project so suggest the output directory (or suggest just the filename
                                         '// which will put it in the default location
@@ -971,7 +971,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                 If (Not (IsNothing(rgConstants))) Then
                     For Each stTemp In rgConstants
-                        If (String.Compare(Trim(stTemp), stSymbol, StringComparison.Ordinal) = 0) Then
+                        If (String.Equals(Trim(stTemp), stSymbol, StringComparison.Ordinal)) Then
                             bFound = True
                             Exit For
                         End If
@@ -1009,7 +1009,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                 If (Not (IsNothing(rgConstants))) Then
                     For Each stTemp In rgConstants
-                        If (String.Compare(Trim(stTemp), stSymbol, StringComparison.Ordinal) = 0) Then
+                        If (String.Equals(Trim(stTemp), stSymbol, StringComparison.Ordinal)) Then
                             Return True
                         End If
                     Next
@@ -1035,7 +1035,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                 If (Not (IsNothing(rgConstants))) Then
                     For Each stTemp In rgConstants
-                        If (String.Compare(Trim(stTemp), stSymbol, StringComparison.Ordinal) <> 0) Then
+                        If (String.Equals(Trim(stTemp), stSymbol, StringComparison.Ordinal)) Then
                             If (stNewConstants <> "") Then
                                 stNewConstants += ";"
                             End If

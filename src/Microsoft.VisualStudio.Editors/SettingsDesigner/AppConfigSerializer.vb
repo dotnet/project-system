@@ -112,7 +112,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     ' (by comparing the serialized values of the corresponding SerializedConnectionStrings)
                     Dim serializedValueInSettings As String = ExistingSettings.Item(cs.Name).SerializedValue
                     Dim serializedValueInAppConfig As String = SettingsValueSerializer.Serialize(scs, Globalization.CultureInfo.InvariantCulture)
-                    Dim valueChanged As Boolean = String.Compare(serializedValueInSettings, serializedValueInAppConfig, StringComparison.Ordinal) <> 0
+                    Dim valueChanged As Boolean = Not String.Equals(serializedValueInSettings, serializedValueInAppConfig, StringComparison.Ordinal)
                     If valueChanged Then
                         ' Yep! Ask the user what (s)he wants to do...
                         Dim Instance As DesignTimeSettingInstance = ExistingSettings.Item(cs.Name)

@@ -231,7 +231,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                     projectItem.FileCount > 0 Then
 
                     Dim itemFileName As String = Path.GetFileName(projectItem.FileNames(1))
-                    If String.Compare(fileName, itemFileName, StringComparison.OrdinalIgnoreCase) = 0 Then
+                    If String.Equals(fileName, itemFileName, StringComparison.OrdinalIgnoreCase) Then
                         Return projectItem
                     End If
                 End If

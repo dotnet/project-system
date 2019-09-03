@@ -117,9 +117,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Public Overrides Function ConvertFrom(context As ITypeDescriptorContext, culture As CultureInfo, value As Object) As Object
                 If TypeOf (value) Is String Then
                     Dim strValue As String = CStr(value)
-                    If String.Compare(strValue, _linkedDisplayValue, StringComparison.OrdinalIgnoreCase) = 0 Then
+                    If String.Equals(strValue, _linkedDisplayValue, StringComparison.OrdinalIgnoreCase) Then
                         Return ResourcePersistenceMode.Linked
-                    ElseIf String.Compare(strValue, _embeddedDisplayValue, StringComparison.OrdinalIgnoreCase) = 0 Then
+                    ElseIf String.Equals(strValue, _embeddedDisplayValue, StringComparison.OrdinalIgnoreCase) Then
                         Return ResourcePersistenceMode.Embedded
                     End If
                 End If
@@ -2630,7 +2630,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             'Note that we compare against the original NewName, not the trimmed version (so that if there are actually
             '  blanks in the Name in the file, just moving through the cells will not cause validation to occur, and so that
             '  we will notice if the original Name had blanks and the user now removes them).
-            If OldName <> "" AndAlso 0 = String.Compare(NewName, OldName, StringComparison.OrdinalIgnoreCase) Then
+            If OldName <> "" AndAlso String.Equals(NewName, OldName, StringComparison.OrdinalIgnoreCase) Then
                 'No change in Name - nothing to do
                 NewFormattedName = NewName
                 Return True

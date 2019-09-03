@@ -1077,7 +1077,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     'CONSIDER: Shouldn't this be cached and applied by 'Apply' button?
                     Dim theVSProject As VSLangProj.VSProject = CType(DTEProject.Object, VSLangProj.VSProject)
                     Dim item As EnvDTE.ProjectItem = theVSProject.AddWebReference(url)
-                    If String.Compare(item.Name, newName, StringComparison.Ordinal) <> 0 Then
+                    If Not String.Equals(item.Name, newName, StringComparison.Ordinal) Then
                         item.Name = newName
                     End If
                     PopulateReferenceList()

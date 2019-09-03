@@ -3387,7 +3387,7 @@ NextControl:
             End If
 
             ' Remove the project directory path
-            If String.Compare(BasePath, Strings.Left(DirectoryPath, Len(BasePath)), StringComparison.OrdinalIgnoreCase) = 0 Then
+            If String.Equals(BasePath, Strings.Left(DirectoryPath, Len(BasePath)), StringComparison.OrdinalIgnoreCase) Then
                 Dim ch As Char = CChar(Mid(DirectoryPath, Len(BasePath), 1))
                 If ch = Path.DirectorySeparatorChar OrElse ch = Path.AltDirectorySeparatorChar Then
                     RelativePath = Mid(DirectoryPath, Len(BasePath) + 1)
@@ -3473,7 +3473,7 @@ NextControl:
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function IsVBProject() As Boolean
-            Return String.Compare(ProjectLanguage, EnvDTE.CodeModelLanguageConstants.vsCMLanguageVB, StringComparison.OrdinalIgnoreCase) = 0
+            Return String.Equals(ProjectLanguage, EnvDTE.CodeModelLanguageConstants.vsCMLanguageVB, StringComparison.OrdinalIgnoreCase)
         End Function
 
         ''' <summary>
@@ -3482,7 +3482,7 @@ NextControl:
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function IsCSProject() As Boolean
-            Return String.Compare(ProjectLanguage, EnvDTE.CodeModelLanguageConstants.vsCMLanguageCSharp, StringComparison.OrdinalIgnoreCase) = 0
+            Return String.Equals(ProjectLanguage, EnvDTE.CodeModelLanguageConstants.vsCMLanguageCSharp, StringComparison.OrdinalIgnoreCase)
         End Function
 
 #End Region

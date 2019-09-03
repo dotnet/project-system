@@ -211,7 +211,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim StringValue As String = Trim(control.Text)
 
             'DLL Baseaddress must be 0xNNNNNNNN format
-            If String.Compare(VBStrings.Left(StringValue, 2), "0x", StringComparison.OrdinalIgnoreCase) = 0 Then
+            If String.Equals(VBStrings.Left(StringValue, 2), "0x", StringComparison.OrdinalIgnoreCase) Then
                 StringValue = "&h" + Mid(StringValue, 3)
                 If IsNumeric(StringValue) Then
                     Dim LongValue As ULong
