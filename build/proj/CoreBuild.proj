@@ -1,5 +1,5 @@
 <!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
-<Project DefaultTargets="Restore;Build;GenerateDependentAssemblyVersionsFile;Sign;GenerateVSManifest" LocalProperty="SolutionPath">
+<Project DefaultTargets="LogInitialMessage;Restore;Build;GenerateDependentAssemblyVersionsFile;Sign;GenerateVSManifest" LocalProperty="SolutionPath">
 
   <!--
   Required parameters:
@@ -21,7 +21,8 @@
   <Import Project="..\import\RepoLayout.props" />
 
   <PropertyGroup>
-    <SolutionPath>$(RepoRoot)ProjectSystem.sln</SolutionPath>
+    <SolutionFileName>ProjectSystem.sln</SolutionFileName>
+    <SolutionPath>$(RepoRoot)$(SolutionFileName)</SolutionPath>
     <ToolsetPath>$(NuGetPackageRoot)RoslynTools.RepoToolset\$(RoslynToolsRepoToolsetVersion)\tools\</ToolsetPath>
     <BuildOrRebuild Condition="'$(Build)' == 'true' or '$(Rebuild)' == 'true'">true</BuildOrRebuild>
   </PropertyGroup>
@@ -37,6 +38,14 @@
     <SolutionRestoreAndBuildProperty Include="@(CommonBuildProperty)"/>
     <SolutionRestoreAndBuildProperty Include="__DeployProjectOutput=$(Deploy)" Condition="'$(Deploy)' != ''"/>
   </ItemGroup>
+
+  <Target Name="LogInitialMessage">
+
+    <Message
+      Text="Building $(SolutionFileName) [$(Configuration)]...%0a"
+      Importance="high" />
+
+  </Target>
 
   <Target Name="Restore">
 
