@@ -41,6 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
         }
 
+        public void Minimal(string message, params object[] values) => Log(LogLevel.Minimal, message, values);
         public void Info(string message, params object[] values) => Log(LogLevel.Info, message, values);
         public void Verbose(string message, params object[] values) => Log(LogLevel.Verbose, message, values);
     }

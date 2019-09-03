@@ -5,7 +5,7 @@ Imports System.Runtime.InteropServices
 Imports Microsoft.VisualStudio.Settings
 
 Namespace Microsoft.VisualStudio.Editors.OptionPages
-    Public NotInheritable Class GeneralOptions
+    Friend NotInheritable Class GeneralOptions
         <Guid("9B164E40-C3A2-4363-9BC5-EB4039DEF653")>
         Private Class SVsSettingsPersistenceManager
         End Class

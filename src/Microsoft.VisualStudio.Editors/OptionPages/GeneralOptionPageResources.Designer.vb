@@ -92,6 +92,15 @@ Namespace My.Resources
         End Property
 
         '''<summary>
+        '''  Looks up a localized string similar to Minimal.
+        '''</summary>
+        Friend Shared ReadOnly Property General_FastUpToDateCheck_LogLevel_Minimal() As String
+            Get
+                Return ResourceManager.GetString("General_FastUpToDateCheck_LogLevel_Minimal", resourceCulture)
+            End Get
+        End Property
+
+        '''<summary>
         '''  Looks up a localized string similar to None.
         '''</summary>
         Friend Shared ReadOnly Property General_FastUpToDateCheck_LogLevel_None() As String
