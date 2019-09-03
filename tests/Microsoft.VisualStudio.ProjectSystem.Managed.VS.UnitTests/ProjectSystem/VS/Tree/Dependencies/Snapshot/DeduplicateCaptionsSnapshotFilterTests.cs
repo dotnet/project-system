@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
-    public sealed class DuplicatedDependenciesSnapshotFilterTests
+    public sealed class DeduplicateCaptionsSnapshotFilterTests
     {
         [Fact]
         public void BeforeAddOrUpdate_NoDuplicate_ShouldNotUpdateCaption()
@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             var context = new AddDependencyContext(worldBuilder);
 
-            var filter = new DuplicatedDependenciesSnapshotFilter();
+            var filter = new DeduplicateCaptionsSnapshotFilter();
 
             filter.BeforeAddOrUpdate(
                 null!,
@@ -88,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             var context = new AddDependencyContext(worldBuilder);
 
-            var filter = new DuplicatedDependenciesSnapshotFilter();
+            var filter = new DeduplicateCaptionsSnapshotFilter();
 
             filter.BeforeAddOrUpdate(
                 null!,
@@ -144,7 +144,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             var context = new AddDependencyContext(worldBuilder);
 
-            var filter = new DuplicatedDependenciesSnapshotFilter();
+            var filter = new DeduplicateCaptionsSnapshotFilter();
 
             filter.BeforeAddOrUpdate(
                 null!,
@@ -201,7 +201,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             var context = new AddDependencyContext(worldBuilder);
 
-            var filter = new DuplicatedDependenciesSnapshotFilter();
+            var filter = new DeduplicateCaptionsSnapshotFilter();
 
             filter.BeforeAddOrUpdate(
                 null!,

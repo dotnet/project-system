@@ -8,14 +8,13 @@ using System.ComponentModel.Composition;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters
 {
     /// <summary>
-    /// If there are several top level dependencies with same captions and same provider type,
-    /// we need to change their captions, to avoid collision. To de-dupe captions we change captions 
-    /// for all such nodes to Alias which is "Caption (OriginalItemSpec)".
+    /// Deduplicates captions of top-level dependencies from the same provider. This is done by
+    /// appending the <see cref="IDependencyModel.OriginalItemSpec"/> to the caption in parentheses.
     /// </summary>
     [Export(typeof(IDependenciesSnapshotFilter))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     [Order(Order)]
-    internal sealed class DuplicatedDependenciesSnapshotFilter : DependenciesSnapshotFilterBase
+    internal sealed class DeduplicateCaptionsSnapshotFilter : DependenciesSnapshotFilterBase
     {
         public const int Order = 101;
 
@@ -26,6 +25,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             IImmutableSet<string>? projectItemSpecs,
             IAddDependencyContext context)
         {
+            // Only apply to top-level dependencies
+            if (!dependency.TopLevel)
+            {
+                context.Accept(dependency);
+                return;
+            }
+
             IDependency? matchingDependency = null;
             bool shouldApplyAlias = false;
 
