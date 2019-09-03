@@ -19,82 +19,58 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
     [Export(typeof(IDependencyCrossTargetSubscriber))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
-    internal class DependencySharedProjectsSubscriber : OnceInitializedOnceDisposed, IDependencyCrossTargetSubscriber
+    internal sealed class DependencySharedProjectsSubscriber : DependencyRulesSubscriberBase
     {
-        private readonly IUnconfiguredProjectTasksService _tasksService;
         private readonly IDependenciesSnapshotProvider _dependenciesSnapshotProvider;
-        private DisposableBag? _subscriptions;
-        private ICrossTargetSubscriptionsHost? _host;
 
         [ImportingConstructor]
         public DependencySharedProjectsSubscriber(
+            IUnconfiguredProjectCommonServices commonServices,
             IUnconfiguredProjectTasksService tasksService,
             IDependenciesSnapshotProvider dependenciesSnapshotProvider)
-            : base(synchronousDisposal: true)
+            : base(tasksService, commonServices.ThreadingService.JoinableTaskContext)
         {
-            _tasksService = tasksService;
             _dependenciesSnapshotProvider = dependenciesSnapshotProvider;
         }
 
-        public Task InitializeSubscriberAsync(ICrossTargetSubscriptionsHost host, IProjectSubscriptionService subscriptionService)
+        protected override void AddSubscriptionsInternal(AggregateCrossTargetProjectContext projectContext)
         {
-            _host = host;
-
-            SubscribeToConfiguredProject(subscriptionService);
-
-            return Task.CompletedTask;
-        }
-
-        public void AddSubscriptions(AggregateCrossTargetProjectContext projectContext)
-        {
-            Requires.NotNull(projectContext, nameof(projectContext));
-
             foreach (ConfiguredProject configuredProject in projectContext.InnerConfiguredProjects)
             {
-                SubscribeToConfiguredProject(configuredProject.Services.ProjectSubscription);
+                InitializeSubscriber(configuredProject.Services.ProjectSubscription);
             }
         }
 
-        public void ReleaseSubscriptions()
-        {
-            _subscriptions?.Dispose();
-            _subscriptions = null;
-        }
-
-        private void SubscribeToConfiguredProject(IProjectSubscriptionService subscriptionService)
+        protected override void InitializeSubscriber(IProjectSubscriptionService subscriptionService)
         {
             // Use an intermediate buffer block for project rule data to allow subsequent blocks
             // to only observe specific rule name(s).
 
             var intermediateBlock =
                 new BufferBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(
-                    new ExecutionDataflowBlockOptions()
+                    new ExecutionDataflowBlockOptions
                     {
                         NameFormat = "Dependencies Shared Projects Input: {1}"
                     });
 
-            if (_subscriptions == null)
-            {
-                // Prevent double-initialization and potentially losing subscriptions
-                _subscriptions = new DisposableBag();
-            }
+            ITargetBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSharedFoldersSnapshot, IProjectCatalogSnapshot>>> actionBlock =
+                DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSharedFoldersSnapshot, IProjectCatalogSnapshot>>>(
+                    e => OnProjectChangedAsync(e.Value),
+                    new ExecutionDataflowBlockOptions
+                    {
+                        NameFormat = "Dependencies Shared Projects Input: {1}"
+                    });
 
-            _subscriptions!.Add(
+            Subscriptions ??= new DisposableBag();
+
+            Subscriptions!.Add(
                 subscriptionService.ProjectRuleSource.SourceBlock.LinkTo(
                     intermediateBlock,
                     ruleNames: ConfigurationGeneral.SchemaName,
                     suppressVersionOnlyUpdates: false,
                     linkOptions: DataflowOption.PropagateCompletion));
 
-            ITargetBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSharedFoldersSnapshot, IProjectCatalogSnapshot>>> actionBlock =
-                DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSharedFoldersSnapshot, IProjectCatalogSnapshot>>>(
-                    e => OnProjectChangedAsync(e.Value),
-                    new ExecutionDataflowBlockOptions()
-                    {
-                        NameFormat = "Dependencies Shared Projects Input: {1}"
-                    });
-
-            _subscriptions.Add(ProjectDataSources.SyncLinkTo(
+            Subscriptions.Add(ProjectDataSources.SyncLinkTo(
                 intermediateBlock.SyncLinkOptions(),
                 subscriptionService.SharedFoldersSource.SourceBlock.SyncLinkOptions(),
                 subscriptionService.ProjectCatalogSource.SourceBlock.SyncLinkOptions(),
@@ -109,9 +85,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 return;
             }
 
-            EnsureInitialized();
+            await InitializeAsync();
 
-            await _tasksService.LoadedProjectAsync(() =>
+            await TasksService.LoadedProjectAsync(() =>
             {
                 return HandleAsync(e);
             });
@@ -119,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         private async Task HandleAsync(Tuple<IProjectSubscriptionUpdate, IProjectSharedFoldersSnapshot, IProjectCatalogSnapshot> e)
         {
-            AggregateCrossTargetProjectContext? currentAggregateContext = await _host!.GetCurrentAggregateProjectContextAsync();
+            AggregateCrossTargetProjectContext? currentAggregateContext = await Host!.GetCurrentAggregateProjectContextAsync();
             if (currentAggregateContext == null)
             {
                 return;
@@ -145,13 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
             if (changes != null)
             {
-                DependenciesChanged?.Invoke(
-                    this,
-                    new DependencySubscriptionChangedEventArgs(
-                        currentAggregateContext.TargetFrameworks,
-                        currentAggregateContext.ActiveTargetFramework,
-                        catalogs,
-                        changes));
+                RaiseDependenciesChanged(changes, currentAggregateContext, catalogs);
             }
         }
 
@@ -202,20 +172,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                         ProjectRuleHandler.ProviderTypeString,
                         dependencyId: removedSharedImportPath);
                 }
-            }
-        }
-
-        public event EventHandler<DependencySubscriptionChangedEventArgs>? DependenciesChanged;
-
-        protected override void Initialize()
-        {
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                ReleaseSubscriptions();
             }
         }
     }

@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 
@@ -17,18 +16,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 {
     [Export(typeof(IDependencyCrossTargetSubscriber))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
-    internal sealed class DependencyRulesSubscriber : OnceInitializedOnceDisposedUnderLockAsync, IDependencyCrossTargetSubscriber
+    internal sealed class DependencyRulesSubscriber : DependencyRulesSubscriberBase
     {
         public const string DependencyRulesSubscriberContract = "DependencyRulesSubscriberContract";
 
-#pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked correctly by the IDisposeable analyzer
-        private DisposableBag? _subscriptions;
-#pragma warning restore CA2213
         private readonly IUnconfiguredProjectCommonServices _commonServices;
-        private readonly IUnconfiguredProjectTasksService _tasksService;
         private readonly IDependencyTreeTelemetryService _treeTelemetryService;
-        private ICrossTargetSubscriptionsHost? _host;
-        private AggregateCrossTargetProjectContext? _currentProjectContext;
 
         [ImportMany(DependencyRulesSubscriberContract)]
         private readonly OrderPrecedenceImportCollection<IDependenciesRuleHandler> _handlers;
@@ -38,24 +31,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             IUnconfiguredProjectCommonServices commonServices,
             IUnconfiguredProjectTasksService tasksService,
             IDependencyTreeTelemetryService treeTelemetryService)
-            : base(commonServices.ThreadingService.JoinableTaskContext)
+            : base(tasksService, commonServices.ThreadingService.JoinableTaskContext)
         {
             _handlers = new OrderPrecedenceImportCollection<IDependenciesRuleHandler>(
                 projectCapabilityCheckProvider: commonServices.Project);
 
             _commonServices = commonServices;
-            _tasksService = tasksService;
             _treeTelemetryService = treeTelemetryService;
         }
 
-        public event EventHandler<DependencySubscriptionChangedEventArgs>? DependenciesChanged;
-
-        public async Task InitializeSubscriberAsync(ICrossTargetSubscriptionsHost host, IProjectSubscriptionService subscriptionService)
+        protected override void InitializeSubscriber(IProjectSubscriptionService subscriptionService)
         {
-            _host = host;
-
-            await InitializeAsync();
-
             IReadOnlyCollection<string> watchedEvaluationRules = GetRuleNames(RuleSource.Evaluation);
             IReadOnlyCollection<string> watchedJointRules = GetRuleNames(RuleSource.Joint);
 
@@ -63,12 +49,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 _commonServices.ActiveConfiguredProject, subscriptionService, watchedEvaluationRules, watchedJointRules);
         }
 
-        public void AddSubscriptions(AggregateCrossTargetProjectContext projectContext)
+        protected override void AddSubscriptionsInternal(AggregateCrossTargetProjectContext projectContext)
         {
-            Requires.NotNull(projectContext, nameof(projectContext));
-
-            _currentProjectContext = projectContext;
-
             IReadOnlyCollection<string> watchedEvaluationRules = GetRuleNames(RuleSource.Evaluation);
             IReadOnlyCollection<string> watchedJointRules = GetRuleNames(RuleSource.Joint);
 
@@ -79,16 +61,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 SubscribeToConfiguredProject(
                     configuredProject, configuredProject.Services.ProjectSubscription, watchedEvaluationRules, watchedJointRules);
             }
-        }
-
-        public void ReleaseSubscriptions()
-        {
-            _currentProjectContext = null;
-
-            // We can't re-use the DisposableBag after disposing it, so null it out
-            // to ensure we create a new one the next time we go to add subscriptions.
-            _subscriptions?.Dispose();
-            _subscriptions = null;
         }
 
         private void SubscribeToConfiguredProject(
@@ -107,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
                 var intermediateBlock =
                     new BufferBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(
-                        new ExecutionDataflowBlockOptions()
+                        new ExecutionDataflowBlockOptions
                         {
                             NameFormat = string.Intern($"CrossTarget Intermediate {source} Input: {{1}}")
                         });
@@ -115,21 +87,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 ITargetBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>>> actionBlock =
                     DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>>>(
                         e => OnProjectChangedAsync(e.DataSourceVersions, e.Value.Item1, e.Value.Item2, e.Value.Item3, configuredProject, source),
-                        new ExecutionDataflowBlockOptions()
+                        new ExecutionDataflowBlockOptions
                         {
                             NameFormat = string.Intern($"CrossTarget {source} Input: {{1}}")
                         });
 
-                _subscriptions ??= new DisposableBag();
+                Subscriptions ??= new DisposableBag();
 
-                _subscriptions.Add(
+                Subscriptions.Add(
                     dataSource.SourceBlock.LinkTo(
                         intermediateBlock,
                         ruleNames: ruleNames,
                         suppressVersionOnlyUpdates: true,
                         linkOptions: DataflowOption.PropagateCompletion));
 
-                _subscriptions.Add(ProjectDataSources.SyncLinkTo(
+                Subscriptions.Add(ProjectDataSources.SyncLinkTo(
                     intermediateBlock.SyncLinkOptions(),
                     subscriptionService.ProjectCatalogSource.SourceBlock.SyncLinkOptions(),
                     configuredProject.Capabilities.SourceBlock.SyncLinkOptions(),
@@ -141,7 +113,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         private IReadOnlyCollection<string> GetRuleNames(RuleSource source)
         {
             var rules = new HashSet<string>(StringComparers.RuleNames);
-            
+
             foreach (Lazy<IDependenciesRuleHandler, IOrderPrecedenceMetadataView> item in _handlers)
             {
                 rules.Add(item.Value.EvaluatedRuleName);
@@ -172,7 +144,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             await ExecuteUnderLockAsync(async token =>
             {
                 // Ensure the project doesn't unload during the update
-                await _tasksService.LoadedProjectAsync(async () =>
+                await TasksService.LoadedProjectAsync(async () =>
                 {
                     // TODO pass _tasksService.UnloadCancellationToken into HandleAsync to reduce redundant work on unload
 
@@ -191,9 +163,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             IProjectCatalogSnapshot catalogSnapshot,
             RuleSource source)
         {
-            AggregateCrossTargetProjectContext? currentAggregateContext = await _host!.GetCurrentAggregateProjectContextAsync();
+            AggregateCrossTargetProjectContext? currentAggregateContext = await Host!.GetCurrentAggregateProjectContextAsync();
 
-            if (currentAggregateContext == null || _currentProjectContext != currentAggregateContext)
+            if (currentAggregateContext == null || CurrentProjectContext != currentAggregateContext)
             {
                 return;
             }
@@ -233,29 +205,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             if (changes != null)
             {
                 // Notify subscribers of a change in dependency data
-                DependenciesChanged?.Invoke(
-                    this,
-                    new DependencySubscriptionChangedEventArgs(
-                        currentAggregateContext.TargetFrameworks,
-                        currentAggregateContext.ActiveTargetFramework,
-                        catalogSnapshot,
-                        changes));
+                RaiseDependenciesChanged(changes, currentAggregateContext, catalogSnapshot);
             }
 
             // Record all the rules that have occurred
             _treeTelemetryService.ObserveTargetFrameworkRules(targetFrameworkToUpdate, projectUpdate.ProjectChanges.Keys);
-        }
-
-        protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
-        {
-            return Task.CompletedTask;
-        }
-
-        protected override Task DisposeCoreUnderLockAsync(bool initialized)
-        {
-            ReleaseSubscriptions();
-
-            return Task.CompletedTask;
         }
     }
 }
