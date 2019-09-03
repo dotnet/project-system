@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
     [AppliesTo(ProjectCapability.Pack)]
     internal class GeneratePackageOnBuildPropertyProvider : StaticGlobalPropertiesProviderBase
     {
-        private bool _overrideGeneratePackageOnBuild;
+        private bool? _overrideGeneratePackageOnBuild;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TargetFrameworkGlobalBuildPropertyProvider"/> class.
@@ -24,10 +24,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
         internal GeneratePackageOnBuildPropertyProvider(IProjectService projectService)
             : base(projectService.Services)
         {
-            _overrideGeneratePackageOnBuild = false;
         }
 
-        public void OverrideGeneratePackageOnBuild(bool value)
+        /// <summary>
+        /// Overrides the value of GeneratePackageOnBuild to the value specified, or resets to the project property value if <c>null</c> is passed in.
+        /// </summary>
+        public void OverrideGeneratePackageOnBuild(bool? value)
         {
             _overrideGeneratePackageOnBuild = value;
         }
@@ -40,9 +42,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
         {
             IImmutableDictionary<string, string> properties = Empty.PropertiesMap;
 
-            if (_overrideGeneratePackageOnBuild)
+            if (_overrideGeneratePackageOnBuild.HasValue)
             {
-                properties = properties.Add(ConfigurationGeneralBrowseObject.GeneratePackageOnBuildProperty, "true");
+                properties = properties.Add(ConfigurationGeneralBrowseObject.GeneratePackageOnBuildProperty, _overrideGeneratePackageOnBuild.Value ? "true" : "false");
             }
 
             return Task.FromResult(properties);

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.ProjectSystem.Build;
@@ -93,12 +94,45 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                 var projectVsHierarchy = (IVsHierarchy)Project.Services.HostObject;
                 ErrorHandler.ThrowOnFailure(_buildManager!.SaveDocumentsBeforeBuild(projectVsHierarchy, (uint)VSConstants.VSITEMID.Root, 0 /*docCookie*/));
 
-                // Enable generating package on build ("GeneratePackageOnBuild") for all projects being built.
-                _generatePackageOnBuildPropertyProvider.OverrideGeneratePackageOnBuild(true);
+                // We need to make sure dependencies are built so they can go into the package
+                ErrorHandler.ThrowOnFailure(_buildManager.CalculateProjectDependencies());
 
-                // Kick off the build.
+                // Assembly our list of projects to build
+                var projects = new List<IVsHierarchy>
+                {
+                    projectVsHierarchy
+                };
+
+                // First we find out how many dependent projects there are
+                uint[] dependencyCounts = new uint[1];
+                ErrorHandler.ThrowOnFailure(_buildManager.GetProjectDependencies(projectVsHierarchy, 0, null, dependencyCounts));
+
+                if (dependencyCounts[0] > 0)
+                {
+                    // Get all of the dependent projects, and add them to our list
+                    var projectsArray = new IVsHierarchy[dependencyCounts[0]];
+                    ErrorHandler.ThrowOnFailure(_buildManager.GetProjectDependencies(projectVsHierarchy, dependencyCounts[0], projectsArray, dependencyCounts));
+                    projects.AddRange(projectsArray);
+                }
+
+                // Turn off "GeneratePackageOnBuild" because otherwise the Pack target will not do a build, even if there is no built output
+                _generatePackageOnBuildPropertyProvider.OverrideGeneratePackageOnBuild(false);
+
                 uint dwFlags = (uint)(VSSOLNBUILDUPDATEFLAGS.SBF_SUPPRESS_SAVEBEFOREBUILD_QUERY | VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD);
-                ErrorHandler.ThrowOnFailure(_buildManager.StartSimpleUpdateProjectConfiguration(projectVsHierarchy, null, null, dwFlags, 0, 0));
+
+                uint[] buildFlags = new uint[projects.Count];
+                // We tell the Solution Build Manager to Package our project, which will call the Pack target, which will build if necessary.
+                // Any dependent projects will just do a normal build
+                buildFlags[0] = VSConstants.VS_BUILDABLEPROJECTCFGOPTS_PACKAGE;
+                
+                ErrorHandler.ThrowOnFailure(_buildManager.StartUpdateSpecificProjectConfigurations(cProjs: (uint)projects.Count,
+                                                                                                   rgpHier: projects.ToArray(),
+                                                                                                   rgpcfg: null,
+                                                                                                   rgdwCleanFlags: null,
+                                                                                                   rgdwBuildFlags: buildFlags,
+                                                                                                   rgdwDeployFlags: null,
+                                                                                                   dwFlags: dwFlags,
+                                                                                                   fSuppressUI: 0));
             }
 
             return true;
@@ -112,13 +146,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
         public int UpdateSolution_Done(int fSucceeded, int fModified, int fCancelCommand)
         {
-            _generatePackageOnBuildPropertyProvider.OverrideGeneratePackageOnBuild(false);
+            _generatePackageOnBuildPropertyProvider.OverrideGeneratePackageOnBuild(null);
             return HResult.OK;
         }
 
         public int UpdateSolution_Cancel()
         {
-            _generatePackageOnBuildPropertyProvider.OverrideGeneratePackageOnBuild(false);
+            _generatePackageOnBuildPropertyProvider.OverrideGeneratePackageOnBuild(null);
             return HResult.OK;
         }
 
