@@ -1,25 +1,27 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Threading.Tasks.Dataflow;
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.RuleHandlers;
 
+using EventData = System.Tuple<
+    Microsoft.VisualStudio.ProjectSystem.IProjectSubscriptionUpdate,
+    Microsoft.VisualStudio.ProjectSystem.IProjectSharedFoldersSnapshot,
+    Microsoft.VisualStudio.ProjectSystem.Properties.IProjectCatalogSnapshot,
+    Microsoft.VisualStudio.ProjectSystem.IProjectCapabilitiesSnapshot>;
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
     [Export(typeof(IDependencyCrossTargetSubscriber))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
-    internal sealed class DependencySharedProjectsSubscriber : DependencyRulesSubscriberBase
+    internal sealed class DependencySharedProjectsSubscriber : DependencyRulesSubscriberBase<EventData>
     {
         private readonly IDependenciesSnapshotProvider _dependenciesSnapshotProvider;
 
@@ -28,90 +30,39 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             IUnconfiguredProjectCommonServices commonServices,
             IUnconfiguredProjectTasksService tasksService,
             IDependenciesSnapshotProvider dependenciesSnapshotProvider)
-            : base(tasksService, commonServices.ThreadingService.JoinableTaskContext)
+            : base(commonServices, tasksService)
         {
             _dependenciesSnapshotProvider = dependenciesSnapshotProvider;
         }
 
-        protected override void AddSubscriptionsInternal(AggregateCrossTargetProjectContext projectContext)
+        protected override void SubscribeToConfiguredProject(
+            ConfiguredProject configuredProject,
+            IProjectSubscriptionService subscriptionService)
         {
-            foreach (ConfiguredProject configuredProject in projectContext.InnerConfiguredProjects)
-            {
-                InitializeSubscriber(configuredProject.Services.ProjectSubscription);
-            }
-        }
-
-        protected override void InitializeSubscriber(IProjectSubscriptionService subscriptionService)
-        {
-            // Use an intermediate buffer block for project rule data to allow subsequent blocks
-            // to only observe specific rule name(s).
-
-            var intermediateBlock =
-                new BufferBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(
-                    new ExecutionDataflowBlockOptions
-                    {
-                        NameFormat = "Dependencies Shared Projects Input: {1}"
-                    });
-
-            ITargetBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSharedFoldersSnapshot, IProjectCatalogSnapshot>>> actionBlock =
-                DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSharedFoldersSnapshot, IProjectCatalogSnapshot>>>(
-                    e => OnProjectChangedAsync(e.Value),
-                    new ExecutionDataflowBlockOptions
-                    {
-                        NameFormat = "Dependencies Shared Projects Input: {1}"
-                    });
-
-            Subscriptions ??= new DisposableBag();
-
-            Subscriptions!.Add(
-                subscriptionService.ProjectRuleSource.SourceBlock.LinkTo(
-                    intermediateBlock,
-                    ruleNames: ConfigurationGeneral.SchemaName,
-                    suppressVersionOnlyUpdates: false,
+            Subscribe(
+                configuredProject,
+                subscriptionService.ProjectRuleSource,
+                ruleNames: new [] { ConfigurationGeneral.SchemaName },
+                "Dependencies Shared Projects Input: {1}",
+                blocks => ProjectDataSources.SyncLinkTo(
+                    blocks.Intermediate.SyncLinkOptions(),
+                    subscriptionService.SharedFoldersSource.SourceBlock.SyncLinkOptions(),
+                    subscriptionService.ProjectCatalogSource.SourceBlock.SyncLinkOptions(),
+                    configuredProject.Capabilities.SourceBlock.SyncLinkOptions(),
+                    blocks.Action,
                     linkOptions: DataflowOption.PropagateCompletion));
-
-            Subscriptions.Add(ProjectDataSources.SyncLinkTo(
-                intermediateBlock.SyncLinkOptions(),
-                subscriptionService.SharedFoldersSource.SourceBlock.SyncLinkOptions(),
-                subscriptionService.ProjectCatalogSource.SourceBlock.SyncLinkOptions(),
-                actionBlock,
-                linkOptions: DataflowOption.PropagateCompletion));
         }
 
-        private async Task OnProjectChangedAsync(Tuple<IProjectSubscriptionUpdate, IProjectSharedFoldersSnapshot, IProjectCatalogSnapshot> e)
+        protected override IProjectCapabilitiesSnapshot GetCapabilitiesSnapshot(EventData e) => e.Item4;
+        protected override IProjectSubscriptionUpdate GetProjectSubscriptionUpdate(EventData e) => e.Item1;
+
+        protected override void Handle(
+            AggregateCrossTargetProjectContext currentAggregateContext,
+            ITargetFramework targetFrameworkToUpdate,
+            EventData e)
         {
-            if (IsDisposing || IsDisposed)
-            {
-                return;
-            }
-
-            await InitializeAsync();
-
-            await TasksService.LoadedProjectAsync(() =>
-            {
-                return HandleAsync(e);
-            });
-        }
-
-        private async Task HandleAsync(Tuple<IProjectSubscriptionUpdate, IProjectSharedFoldersSnapshot, IProjectCatalogSnapshot> e)
-        {
-            AggregateCrossTargetProjectContext? currentAggregateContext = await Host!.GetCurrentAggregateProjectContextAsync();
-            if (currentAggregateContext == null)
-            {
-                return;
-            }
-
-            IProjectSubscriptionUpdate projectUpdate = e.Item1;
             IProjectSharedFoldersSnapshot sharedProjectsUpdate = e.Item2;
             IProjectCatalogSnapshot catalogs = e.Item3;
-
-            // Get the target framework to update for this change.
-            ITargetFramework? targetFrameworkToUpdate = currentAggregateContext.GetProjectFramework(projectUpdate.ProjectConfiguration);
-
-            if (targetFrameworkToUpdate == null)
-            {
-                return;
-            }
 
             var changesBuilder = new CrossTargetDependenciesChangesBuilder();
 
