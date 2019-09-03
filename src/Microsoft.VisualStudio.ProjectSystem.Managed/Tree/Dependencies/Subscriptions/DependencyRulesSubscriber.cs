@@ -98,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     dataSource.SourceBlock.LinkTo(
                         intermediateBlock,
                         ruleNames: ruleNames,
-                        suppressVersionOnlyUpdates: true,
+                        suppressVersionOnlyUpdates: false,
                         linkOptions: DataflowOption.PropagateCompletion));
 
                 Subscriptions.Add(ProjectDataSources.SyncLinkTo(
