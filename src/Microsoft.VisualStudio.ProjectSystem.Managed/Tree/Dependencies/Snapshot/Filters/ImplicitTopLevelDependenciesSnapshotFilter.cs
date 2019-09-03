@@ -9,11 +9,11 @@ using Microsoft.VisualStudio.Imaging.Interop;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters
 {
     /// <summary>
-    /// Changes resolved top level project dependencies to unresolved if:
-    ///     - dependent project does not have targets supporting given target framework in current project
-    ///     - dependent project has any unresolved dependencies in a snapshot for given target framework
-    /// This helps to bubble up error status (yellow icon) for project dependencies.
+    /// Changes explicit, resolved, top-level project dependencies to implicit if they are not present in the set of known project item specs.
     /// </summary>
+    /// <remarks>
+    /// Only applies to dependencies whose providers implement <see cref="IProjectDependenciesSubTreeProviderInternal"/>.
+    /// </remarks>
     [Export(typeof(IDependenciesSnapshotFilter))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     [Order(Order)]
@@ -28,43 +28,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             IImmutableSet<string>? projectItemSpecs,
             IAddDependencyContext context)
         {
-            // The check for SharedProjectDependency is needed because a SharedProject is not a dependency reference
-            if (!dependency.TopLevel
-                || dependency.Implicit
-                || !dependency.Resolved
-                || !dependency.Flags.Contains(DependencyTreeFlags.GenericDependency)
-                || dependency.Flags.Contains(DependencyTreeFlags.SharedProjectFlags))
+            if (projectItemSpecs != null                                              // must have data
+                && dependency.TopLevel                                                // top-level
+                && !dependency.Implicit                                               // explicit
+                && dependency.Resolved                                                // resolved
+                && dependency.Flags.Contains(DependencyTreeFlags.GenericDependency)   // generic dependency
+                && !dependency.Flags.Contains(DependencyTreeFlags.SharedProjectFlags) // except for shared projects
+                && !projectItemSpecs.Contains(dependency.OriginalItemSpec)            // is not a known item spec
+                && subTreeProviderByProviderType.TryGetValue(dependency.ProviderType, out IProjectDependenciesSubTreeProvider provider)
+                && provider is IProjectDependenciesSubTreeProviderInternal internalProvider)
             {
-                context.Accept(dependency);
-                return;
-            }
+                // Obtain custom implicit icon
+                ImageMoniker implicitIcon = internalProvider.ImplicitIcon;
 
-            if (projectItemSpecs == null)
-            {
-                // No data, so don't update
-                context.Accept(dependency);
-                return;
-            }
+                // Obtain a pooled icon set with this implicit icon
+                DependencyIconSet implicitIconSet = DependencyIconSetCache.Instance.GetOrAddIconSet(
+                    implicitIcon,
+                    implicitIcon,
+                    dependency.IconSet.UnresolvedIcon,
+                    dependency.IconSet.UnresolvedExpandedIcon);
 
-            if (!projectItemSpecs.Contains(dependency.OriginalItemSpec))
-            {
-                // It is an implicit dependency
-                if (subTreeProviderByProviderType.TryGetValue(dependency.ProviderType, out IProjectDependenciesSubTreeProvider provider) &&
-                    provider is IProjectDependenciesSubTreeProviderInternal internalProvider)
-                {
-                    ImageMoniker implicitIcon = internalProvider.ImplicitIcon;
-
-                    DependencyIconSet implicitIconSet = DependencyIconSetCache.Instance.GetOrAddIconSet(
-                        implicitIcon,
-                        implicitIcon,
-                        dependency.IconSet.UnresolvedIcon,
-                        dependency.IconSet.UnresolvedExpandedIcon);
-
-                    context.Accept(dependency.SetProperties(
+                context.Accept(
+                    dependency.SetProperties(
                         iconSet: implicitIconSet,
                         isImplicit: true));
-                    return;
-                }
+                return;
             }
 
             context.Accept(dependency);
