@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 
 using Microsoft.VisualStudio.Imaging.Interop;
@@ -41,88 +40,67 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         public override ImageMoniker ImplicitIcon => ManagedImageMonikers.NuGetGreyPrivate;
 
-        public override void Handle(
-            IImmutableDictionary<NamedIdentity, IComparable> versions,
-            IImmutableDictionary<string, IProjectChangeDescription> changesByRuleName,
-            RuleSource source,
+        protected override void HandleAddedItem(
+            string addedItem,
+            bool resolved,
+            IProjectChangeDescription projectChange,
+            CrossTargetDependenciesChangesBuilder changesBuilder,
             ITargetFramework targetFramework,
-            CrossTargetDependenciesChangesBuilder changesBuilder)
+            Func<string, bool>? isEvaluatedItemSpec)
         {
-            IProjectChangeDescription evaluatedChanges = changesByRuleName[EvaluatedRuleName];
-
-            HandleChangesForRule(
-                resolved: false,
-                projectChange: evaluatedChanges,
-                isEvaluatedItemSpec: null);
-
-            if (changesByRuleName.TryGetValue(ResolvedRuleName, out IProjectChangeDescription resolvedChanges))
+            if (PackageDependencyMetadata.TryGetMetadata(
+                addedItem,
+                resolved,
+                properties: projectChange.After.GetProjectItemProperties(addedItem)!,
+                isEvaluatedItemSpec,
+                targetFramework,
+                _targetFrameworkProvider,
+                out PackageDependencyMetadata metadata))
             {
-                HandleChangesForRule(
-                    resolved: true,
-                    projectChange: resolvedChanges,
-                    isEvaluatedItemSpec: evaluatedChanges.After.Items.ContainsKey);
+                changesBuilder.Added(targetFramework, metadata.CreateDependencyModel());
             }
+        }
 
-            return;
-
-            void HandleChangesForRule(bool resolved, IProjectChangeDescription projectChange, Func<string, bool>? isEvaluatedItemSpec)
+        protected override void HandleChangedItem(
+            string changedItem,
+            bool resolved,
+            IProjectChangeDescription projectChange,
+            CrossTargetDependenciesChangesBuilder changesBuilder,
+            ITargetFramework targetFramework,
+            Func<string, bool>? isEvaluatedItemSpec)
+        {
+            if (PackageDependencyMetadata.TryGetMetadata(
+                changedItem,
+                resolved,
+                properties: projectChange.After.GetProjectItemProperties(changedItem)!,
+                isEvaluatedItemSpec,
+                targetFramework,
+                _targetFrameworkProvider,
+                out PackageDependencyMetadata metadata))
             {
-                if (projectChange.Difference.RemovedItems.Count != 0)
-                {
-                    foreach (string removedItem in projectChange.Difference.RemovedItems)
-                    {
-                        if (PackageDependencyMetadata.TryGetMetadata(
-                            removedItem,
-                            resolved,
-                            properties: projectChange.Before.GetProjectItemProperties(removedItem)!,
-                            isEvaluatedItemSpec,
-                            targetFramework,
-                            _targetFrameworkProvider,
-                            out PackageDependencyMetadata metadata))
-                        {
-                            changesBuilder.Removed(targetFramework, ProviderTypeString, metadata.OriginalItemSpec);
-                        }
-                    }
-                }
+                changesBuilder.Removed(targetFramework, ProviderTypeString, metadata.OriginalItemSpec);
+                changesBuilder.Added(targetFramework, metadata.CreateDependencyModel());
+            }
+        }
 
-                if (projectChange.Difference.ChangedItems.Count != 0)
-                {
-                    foreach (string changedItem in projectChange.Difference.ChangedItems)
-                    {
-                        if (PackageDependencyMetadata.TryGetMetadata(
-                            changedItem,
-                            resolved,
-                            properties: projectChange.After.GetProjectItemProperties(changedItem)!,
-                            isEvaluatedItemSpec,
-                            targetFramework,
-                            _targetFrameworkProvider,
-                            out PackageDependencyMetadata metadata))
-                        {
-                            changesBuilder.Removed(targetFramework, ProviderTypeString, metadata.OriginalItemSpec);
-                            changesBuilder.Added(targetFramework, metadata.CreateDependencyModel());
-                        }
-                    }
-                }
-
-                if (projectChange.Difference.AddedItems.Count != 0)
-                {
-                    foreach (string addedItem in projectChange.Difference.AddedItems)
-                    {
-                        if (PackageDependencyMetadata.TryGetMetadata(
-                            addedItem,
-                            resolved,
-                            properties: projectChange.After.GetProjectItemProperties(addedItem)!,
-                            isEvaluatedItemSpec,
-                            targetFramework,
-                            _targetFrameworkProvider,
-                            out PackageDependencyMetadata metadata))
-                        {
-                            changesBuilder.Added(targetFramework, metadata.CreateDependencyModel());
-                        }
-                    }
-                }
-
-                System.Diagnostics.Debug.Assert(evaluatedChanges.Difference.RenamedItems.Count == 0, "Project rule diff should not contain renamed items");
+        protected override void HandleRemovedItem(
+            string removedItem,
+            bool resolved,
+            IProjectChangeDescription projectChange,
+            CrossTargetDependenciesChangesBuilder changesBuilder,
+            ITargetFramework targetFramework,
+            Func<string, bool>? isEvaluatedItemSpec)
+        {
+            if (PackageDependencyMetadata.TryGetMetadata(
+                removedItem,
+                resolved,
+                properties: projectChange.Before.GetProjectItemProperties(removedItem)!,
+                isEvaluatedItemSpec,
+                targetFramework,
+                _targetFrameworkProvider,
+                out PackageDependencyMetadata metadata))
+            {
+                changesBuilder.Removed(targetFramework, ProviderTypeString, metadata.OriginalItemSpec);
             }
         }
 

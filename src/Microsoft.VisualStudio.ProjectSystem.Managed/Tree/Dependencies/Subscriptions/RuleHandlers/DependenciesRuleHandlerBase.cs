@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         public abstract ImageMoniker ImplicitIcon { get; }
 
-        public virtual void Handle(
+        public void Handle(
             IImmutableDictionary<NamedIdentity, IComparable> versions,
             IImmutableDictionary<string, IProjectChangeDescription> changesByRuleName,
             RuleSource source,
@@ -65,14 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 {
                     foreach (string removedItem in projectChange.Difference.RemovedItems)
                     {
-                        string dependencyId = resolved
-                            ? projectChange.Before.GetProjectItemProperties(removedItem)!.GetStringProperty(ProjectItemMetadata.OriginalItemSpec) ?? removedItem
-                            : removedItem;
-
-                        if (isEvaluatedItemSpec == null || isEvaluatedItemSpec(dependencyId))
-                        {
-                            changesBuilder.Removed(targetFramework, ProviderType, removedItem);
-                        }
+                        HandleRemovedItem(removedItem, resolved, projectChange, changesBuilder, targetFramework, isEvaluatedItemSpec);
                     }
                 }
 
@@ -80,14 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 {
                     foreach (string changedItem in projectChange.Difference.ChangedItems)
                     {
-                        IDependencyModel model = CreateDependencyModelForRule(changedItem, projectChange.After, resolved);
-                        if (isEvaluatedItemSpec == null || isEvaluatedItemSpec(model.Id))
-                        {
-                            // For changes we try to add new dependency. If it is a resolved dependency, it would just override
-                            // old one with new properties. If it is unresolved dependency, it would be added only when there no
-                            // resolved version in the snapshot.
-                            changesBuilder.Added(targetFramework, model);
-                        }
+                        HandleChangedItem(changedItem, resolved, projectChange, changesBuilder, targetFramework, isEvaluatedItemSpec);
                     }
                 }
 
@@ -95,15 +81,63 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 {
                     foreach (string addedItem in projectChange.Difference.AddedItems)
                     {
-                        IDependencyModel model = CreateDependencyModelForRule(addedItem, projectChange.After, resolved);
-                        if (isEvaluatedItemSpec == null || isEvaluatedItemSpec(model.Id))
-                        {
-                            changesBuilder.Added(targetFramework, model);
-                        }
+                        HandleAddedItem(addedItem, resolved, projectChange, changesBuilder, targetFramework, isEvaluatedItemSpec);
                     }
                 }
 
                 System.Diagnostics.Debug.Assert(evaluatedChanges.Difference.RenamedItems.Count == 0, "Project rule diff should not contain renamed items");
+            }
+        }
+
+        protected virtual void HandleAddedItem(
+            string addedItem,
+            bool resolved,
+            IProjectChangeDescription projectChange,
+            CrossTargetDependenciesChangesBuilder changesBuilder,
+            ITargetFramework targetFramework,
+            Func<string, bool>? isEvaluatedItemSpec)
+        {
+            IDependencyModel model = CreateDependencyModelForRule(addedItem, projectChange.After, resolved);
+            if (isEvaluatedItemSpec == null || isEvaluatedItemSpec(model.Id))
+            {
+                changesBuilder.Added(targetFramework, model);
+            }
+        }
+
+        protected virtual void HandleRemovedItem(
+            string removedItem,
+            bool resolved,
+            IProjectChangeDescription projectChange,
+            CrossTargetDependenciesChangesBuilder changesBuilder,
+            ITargetFramework targetFramework,
+            Func<string, bool>? isEvaluatedItemSpec)
+        {
+            string dependencyId = resolved
+                ? projectChange.Before.GetProjectItemProperties(removedItem)!.GetStringProperty(ProjectItemMetadata.OriginalItemSpec) ?? removedItem
+                : removedItem;
+
+            if (isEvaluatedItemSpec == null || isEvaluatedItemSpec(dependencyId))
+            {
+                changesBuilder.Removed(targetFramework, ProviderType, removedItem);
+            }
+        }
+
+        protected virtual void HandleChangedItem(
+            string changedItem,
+            bool resolved,
+            IProjectChangeDescription projectChange,
+            CrossTargetDependenciesChangesBuilder changesBuilder,
+            ITargetFramework targetFramework,
+            Func<string, bool>? isEvaluatedItemSpec)
+        {
+            IDependencyModel model = CreateDependencyModelForRule(changedItem, projectChange.After, resolved);
+
+            if (isEvaluatedItemSpec == null || isEvaluatedItemSpec(model.Id))
+            {
+                // For changes we try to add new dependency. If it is a resolved dependency, it would just override
+                // old one with new properties. If it is unresolved dependency, it would be added only when there no
+                // resolved version in the snapshot.
+                changesBuilder.Added(targetFramework, model);
             }
         }
 
