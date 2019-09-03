@@ -7,11 +7,6 @@ Const Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.SW_SH
 Const Microsoft.VisualStudio.Editors.PropertyPages.ChildPageSite.NestingCharacter = ":" -> String (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
 Const Microsoft.VisualStudio.Editors.SettingsDesigner.PublicSettingsSingleFileGenerator.SingleFileGeneratorName = "PublicSettingsSingleFileGenerator" -> String
 Const Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator.SingleFileGeneratorName = "SettingsSingleFileGenerator" -> String
-LogLevel
-LogLevel.Info = 2 -> LogLevel
-LogLevel.Minimal = 1 -> LogLevel
-LogLevel.None = 0 -> LogLevel
-LogLevel.Verbose = 3 -> LogLevel
 Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerEditorFactory (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
 Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerEditorFactory.Close() -> Integer (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
 Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerEditorFactory.MapLogicalView(ByRef rguidLogicalView As System.Guid, ByRef pbstrPhysicalView As String) -> Integer (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
@@ -277,12 +272,6 @@ Microsoft.VisualStudio.Editors.MyApplication.MyApplicationProperties.SingleInsta
 Microsoft.VisualStudio.Editors.MyApplication.MyApplicationProperties.SingleInstance(value As Boolean) -> Void
 Microsoft.VisualStudio.Editors.MyApplication.MyApplicationProperties.SplashScreen() -> String
 Microsoft.VisualStudio.Editors.MyApplication.MyApplicationProperties.SplashScreen(value As String) -> Void
-Microsoft.VisualStudio.Editors.OptionPages.GeneralOptions
-Microsoft.VisualStudio.Editors.OptionPages.GeneralOptions.FastUpToDateCheckEnabled() -> Boolean
-Microsoft.VisualStudio.Editors.OptionPages.GeneralOptions.FastUpToDateCheckEnabled(Value As Boolean) -> Void
-Microsoft.VisualStudio.Editors.OptionPages.GeneralOptions.FastUpToDateLogLevel() -> LogLevel
-Microsoft.VisualStudio.Editors.OptionPages.GeneralOptions.FastUpToDateLogLevel(Value As LogLevel) -> Void
-Microsoft.VisualStudio.Editors.OptionPages.GeneralOptions.New(serviceProvider As System.IServiceProvider) -> Void
 Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
 Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.ChangeSelection(ConfigIndex As Integer, PlatformIndex As Integer, FireNotifications As Boolean) -> Void (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
 Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.ChangeSelection(ConfigName As String, ConfigSelectionType As Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.SelectionTypes, PlatformName As String, PlatformSelectionType As Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.SelectionTypes, PreferExactMatch As Boolean, FireNotifications As Boolean) -> Void (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
