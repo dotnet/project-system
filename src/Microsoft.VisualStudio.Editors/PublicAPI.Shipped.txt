@@ -773,7 +773,6 @@ MustOverride Microsoft.VisualStudio.Editors.ApplicationDesigner.CustomViewProvid
 MustOverride Microsoft.VisualStudio.Editors.PropertyPages.PropPageBase.ControlType() -> System.Type (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
 MustOverride Microsoft.VisualStudio.Editors.PropertyPages.PropPageBase.CreateControl() -> System.Windows.Forms.Control (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
 MustOverride Microsoft.VisualStudio.Editors.PropertyPages.PropPageBase.Title() -> String (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
-My.Resources.GeneralOptionPageResources
 Overloads Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageInfo.Dispose() -> Void (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
 Overloads Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageInfo.Dispose(disposing As Boolean) -> Void (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
 Overloads Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageSite.Dispose() -> Void (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
@@ -1075,15 +1074,6 @@ Shared Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.IsVC() -> Boole
 Shared Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.IsVSTO() -> Boolean (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
 Shared Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.ProductSKU() -> Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASKUEdition (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
 Shared Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.ProductSubSKU() -> Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASubSKUEdition (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
-Shared My.Resources.GeneralOptionPageResources.Culture() -> System.Globalization.CultureInfo
-Shared My.Resources.GeneralOptionPageResources.Culture(Value As System.Globalization.CultureInfo) -> Void
-Shared My.Resources.GeneralOptionPageResources.General_FastUpToDateCheck() -> String
-Shared My.Resources.GeneralOptionPageResources.General_FastUpToDateCheck_LogLevel() -> String
-Shared My.Resources.GeneralOptionPageResources.General_FastUpToDateCheck_LogLevel_Info() -> String
-Shared My.Resources.GeneralOptionPageResources.General_FastUpToDateCheck_LogLevel_None() -> String
-Shared My.Resources.GeneralOptionPageResources.General_FastUpToDateCheck_LogLevel_Verbose() -> String
-Shared My.Resources.GeneralOptionPageResources.General_FastUpToDateCheck_Title() -> String
-Shared My.Resources.GeneralOptionPageResources.ResourceManager() -> System.Resources.ResourceManager
 Shared ReadOnly Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.PropPageBackColor -> System.Drawing.Color (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
 XamlGeneratedNamespace.GeneratedInternalTypeHelper
 XamlGeneratedNamespace.GeneratedInternalTypeHelper.New() -> Void
