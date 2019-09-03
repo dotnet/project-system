@@ -4,7 +4,7 @@ using System.Collections.Immutable;
 
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
+namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     public sealed class MetadataExtensionsTests
     {
