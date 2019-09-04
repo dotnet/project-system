@@ -403,10 +403,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         /// Determines whether the current project context object is out of date based on the project's target frameworks.
         /// If so, a new one is created and subscriptions are updated accordingly.
         /// </summary>
-        private async Task UpdateProjectContextAndSubscriptionsAsync()
+        private Task UpdateProjectContextAndSubscriptionsAsync()
         {
             // Prevent concurrent project context updates.
-            await _contextUpdateGate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, async () =>
+            return _contextUpdateGate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, async () =>
             {
                 AggregateCrossTargetProjectContext? newProjectContext = await _context.TryUpdateCurrentAggregateProjectContextAsync();
 
@@ -436,9 +436,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     });
                 }
             });
-
-            return;
-
 
             void AddSubscriptions(AggregateCrossTargetProjectContext newProjectContext)
             {
