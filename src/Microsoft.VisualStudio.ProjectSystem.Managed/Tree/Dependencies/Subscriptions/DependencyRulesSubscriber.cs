@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             IUnconfiguredProjectCommonServices commonServices,
             IUnconfiguredProjectTasksService tasksService,
             IDependencyTreeTelemetryService treeTelemetryService)
-            : base(commonServices, tasksService)
+            : base(commonServices.ThreadingService, tasksService)
         {
             _handlers = new OrderPrecedenceImportCollection<IDependenciesRuleHandler>(
                 projectCapabilityCheckProvider: commonServices.Project);

@@ -182,7 +182,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 // Each of the host's subscribers are initialized.
                 return Task.WhenAll(
                     Subscribers.Select(
-                        subscriber => subscriber.InitializeSubscriberAsync(this, _activeConfiguredProjectSubscriptionService)));
+                        subscriber => subscriber.InitializeSubscriberAsync(this)));
             }
 
             async Task OnActiveConfiguredProjectEvaluatedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
