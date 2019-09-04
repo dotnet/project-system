@@ -6,6 +6,7 @@ using System.Collections.Immutable;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.Text;
+using Microsoft.VisualStudio.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.RuleHandlers
 {
@@ -13,9 +14,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
     {
         private readonly struct PackageDependencyMetadata
         {
+            private static readonly InternPool<string> s_targetFrameworkInternPool = new InternPool<string>(StringComparer.Ordinal);
+
             private readonly DependencyType _dependencyType;
 
-            public string Target { get; }
+            public string? TargetFrameworkName { get; }
             public string ItemSpec { get; }
             public string OriginalItemSpec { get; }
             public string Name { get; }
@@ -26,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             private PackageDependencyMetadata(
                 DependencyType dependencyType,
-                string target,
+                string? targetFrameworkName,
                 string itemSpec,
                 string originalItemSpec,
                 string name,
@@ -36,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 IImmutableDictionary<string, string> properties)
             {
                 _dependencyType = dependencyType;
-                Target = target;
+                TargetFrameworkName = targetFrameworkName;
                 ItemSpec = itemSpec;
                 OriginalItemSpec = originalItemSpec;
                 Name = name;
@@ -50,81 +53,80 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 string itemSpec,
                 bool isResolved,
                 IImmutableDictionary<string, string> properties,
-                HashSet<string>? unresolvedChanges,
+                Func<string, bool>? isEvaluatedItemSpec,
                 ITargetFramework targetFramework,
                 ITargetFrameworkProvider targetFrameworkProvider,
                 out PackageDependencyMetadata metadata)
             {
-                Requires.NotNull(itemSpec, nameof(itemSpec));
+                Requires.NotNullOrEmpty(itemSpec, nameof(itemSpec));
                 Requires.NotNull(properties, nameof(properties));
-                Requires.NotNull(targetFramework, nameof(targetFramework));
-                Requires.NotNull(targetFrameworkProvider, nameof(targetFrameworkProvider));
-
-                bool isTopLevel;
-
-                string target = GetTargetFromDependencyId(itemSpec);
-
-                DependencyType dependencyType = properties.GetEnumProperty<DependencyType>(ProjectItemMetadata.Type)
-                    ?? (isResolved ? DependencyType.Unknown : DependencyType.Package);
-
-                string name = properties.GetStringProperty(ProjectItemMetadata.Name) ?? itemSpec;
 
                 bool isImplicitlyDefined = properties.GetBoolProperty(ProjectItemMetadata.IsImplicitlyDefined) ?? false;
 
                 if (isResolved)
                 {
-                    isTopLevel = isImplicitlyDefined ||
-                        (dependencyType == DependencyType.Package && unresolvedChanges?.Contains(name) == true);
+                    // We have design-time build data
 
-                    bool isTarget = itemSpec.IndexOf('/') == -1;
+                    Requires.NotNull(targetFramework, nameof(targetFramework));
+                    Requires.NotNull(targetFrameworkProvider, nameof(targetFrameworkProvider));
+                    Requires.NotNull(isEvaluatedItemSpec!, nameof(isEvaluatedItemSpec));
 
-                    if (isTarget)
+                    DependencyType dependencyType = properties.GetEnumProperty<DependencyType>(ProjectItemMetadata.Type) ?? DependencyType.Unknown;
+
+                    if (dependencyType == DependencyType.Target)
+                    {
+                        // Disregard items of type 'Target' from design-time build
+                        metadata = default;
+                        return false;
+                    }
+
+                    int slashIndex = itemSpec.IndexOf('/');
+                    string? targetFrameworkName = slashIndex == -1 ? null : s_targetFrameworkInternPool.Intern(itemSpec.Substring(0, slashIndex));
+
+                    if (targetFrameworkName == null ||
+                        targetFrameworkProvider.GetTargetFramework(targetFrameworkName)?.Equals(targetFramework) != true)
                     {
                         metadata = default;
                         return false;
                     }
 
-                    ITargetFramework? packageTargetFramework = targetFrameworkProvider.GetTargetFramework(target);
+                    string name = properties.GetStringProperty(ProjectItemMetadata.Name) ?? itemSpec;
 
-                    if (packageTargetFramework?.Equals(targetFramework) != true)
-                    {
-                        metadata = default;
-                        return false;
-                    }
+                    bool isTopLevel = isImplicitlyDefined ||
+                        (dependencyType == DependencyType.Package && isEvaluatedItemSpec(name));
+
+                    string originalItemSpec = isTopLevel ? name : itemSpec;
+
+                    metadata = new PackageDependencyMetadata(
+                        dependencyType,
+                        targetFrameworkName,
+                        itemSpec,
+                        originalItemSpec,
+                        name,
+                        isResolved: true,
+                        isImplicitlyDefined,
+                        isTopLevel,
+                        properties);
                 }
                 else
                 {
-                    isTopLevel = true;
+                    // We only have evaluation data
+
+                    System.Diagnostics.Debug.Assert(itemSpec.IndexOf('/') == -1);
+
+                    metadata = new PackageDependencyMetadata(
+                        dependencyType: DependencyType.Package,
+                        targetFrameworkName: null,
+                        itemSpec,
+                        originalItemSpec: itemSpec,
+                        name: itemSpec,
+                        isResolved: false,
+                        isImplicitlyDefined,
+                        isTopLevel: true,
+                        properties);
                 }
 
-                string originalItemSpec = isResolved && isTopLevel
-                    ? name
-                    : itemSpec;
-
-                metadata = new PackageDependencyMetadata(
-                    dependencyType,
-                    target,
-                    itemSpec,
-                    originalItemSpec,
-                    name,
-                    isResolved,
-                    isImplicitlyDefined,
-                    isTopLevel,
-                    properties);
                 return true;
-
-                static string GetTargetFromDependencyId(string dependencyId)
-                {
-                    string? firstPart = new LazyStringSplit(dependencyId, '/').FirstOrDefault();
-
-                    if (firstPart == null)
-                    {
-                        // should never happen
-                        throw new ArgumentException(nameof(dependencyId));
-                    }
-
-                    return firstPart;
-                }
             }
 
             public IDependencyModel CreateDependencyModel()
@@ -183,13 +185,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             {
                 if (Properties.TryGetValue(ProjectItemMetadata.Dependencies, out string dependencies) && !string.IsNullOrWhiteSpace(dependencies))
                 {
+                    Assumes.NotNull(TargetFrameworkName);
+
                     var dependenciesItemSpecs = new HashSet<string>(StringComparers.ItemNames);
                     var dependencyIds = new LazyStringSplit(dependencies, ';');
 
                     // store only unique dependency IDs
                     foreach (string dependencyId in dependencyIds)
                     {
-                        dependenciesItemSpecs.Add($"{Target}/{dependencyId}");
+                        dependenciesItemSpecs.Add($"{TargetFrameworkName}/{dependencyId}");
                     }
 
                     return dependenciesItemSpecs;
@@ -204,6 +208,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 Diagnostic,
                 Package,
                 Assembly,
+                Target,
                 FrameworkAssembly,
                 AnalyzerAssembly
             }

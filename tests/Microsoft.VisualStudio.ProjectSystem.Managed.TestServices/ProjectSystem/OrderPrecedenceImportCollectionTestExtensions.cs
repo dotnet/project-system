@@ -5,7 +5,7 @@ using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    internal static class OrderPrecedenceImportCollectionExtensions
+    internal static class OrderPrecedenceImportCollectionTestExtensions
     {
         public static void Add<T>(this OrderPrecedenceImportCollection<T, INamedExportMetadataView> collection, string name, T item)
         {

@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 
 using Microsoft.VisualStudio.Imaging.Interop;
@@ -42,92 +40,67 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         public override ImageMoniker ImplicitIcon => ManagedImageMonikers.NuGetGreyPrivate;
 
-        public override void Handle(
-            IImmutableDictionary<string, IProjectChangeDescription> changesByRuleName,
-            ITargetFramework targetFramework,
-            CrossTargetDependenciesChangesBuilder changesBuilder)
-        {
-            var caseInsensitiveUnresolvedChanges = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-
-            if (changesByRuleName.TryGetValue(EvaluatedRuleName, out IProjectChangeDescription unresolvedChanges))
-            {
-                caseInsensitiveUnresolvedChanges.AddRange(unresolvedChanges.After.Items.Keys);
-
-                if (unresolvedChanges.Difference.AnyChanges)
-                {
-                    HandleChangesForRule(
-                        unresolvedChanges,
-                        changesBuilder,
-                        targetFramework,
-                        resolved: false);
-                }
-            }
-
-            if (changesByRuleName.TryGetValue(ResolvedRuleName, out IProjectChangeDescription resolvedChanges)
-                && resolvedChanges.Difference.AnyChanges)
-            {
-                HandleChangesForRule(
-                    resolvedChanges,
-                    changesBuilder,
-                    targetFramework,
-                    resolved: true,
-                    unresolvedChanges: caseInsensitiveUnresolvedChanges);
-            }
-        }
-
-        private void HandleChangesForRule(
+        protected override void HandleAddedItem(
+            string addedItem,
+            bool resolved,
             IProjectChangeDescription projectChange,
             CrossTargetDependenciesChangesBuilder changesBuilder,
             ITargetFramework targetFramework,
-            bool resolved,
-            HashSet<string>? unresolvedChanges = null)
+            Func<string, bool>? isEvaluatedItemSpec)
         {
-            Requires.NotNull(targetFramework, nameof(targetFramework));
-
-            foreach (string removedItem in projectChange.Difference.RemovedItems)
+            if (PackageDependencyMetadata.TryGetMetadata(
+                addedItem,
+                resolved,
+                properties: projectChange.After.GetProjectItemProperties(addedItem)!,
+                isEvaluatedItemSpec,
+                targetFramework,
+                _targetFrameworkProvider,
+                out PackageDependencyMetadata metadata))
             {
-                if (PackageDependencyMetadata.TryGetMetadata(
-                    removedItem,
-                    resolved,
-                    properties: projectChange.Before.GetProjectItemProperties(removedItem) ?? ImmutableDictionary<string, string>.Empty,
-                    unresolvedChanges,
-                    targetFramework,
-                    _targetFrameworkProvider,
-                    out PackageDependencyMetadata metadata))
-                {
-                    changesBuilder.Removed(targetFramework, ProviderTypeString, metadata.OriginalItemSpec);
-                }
+                changesBuilder.Added(targetFramework, metadata.CreateDependencyModel());
             }
+        }
 
-            foreach (string changedItem in projectChange.Difference.ChangedItems)
+        protected override void HandleChangedItem(
+            string changedItem,
+            bool resolved,
+            IProjectChangeDescription projectChange,
+            CrossTargetDependenciesChangesBuilder changesBuilder,
+            ITargetFramework targetFramework,
+            Func<string, bool>? isEvaluatedItemSpec)
+        {
+            if (PackageDependencyMetadata.TryGetMetadata(
+                changedItem,
+                resolved,
+                properties: projectChange.After.GetProjectItemProperties(changedItem)!,
+                isEvaluatedItemSpec,
+                targetFramework,
+                _targetFrameworkProvider,
+                out PackageDependencyMetadata metadata))
             {
-                if (PackageDependencyMetadata.TryGetMetadata(
-                    changedItem,
-                    resolved,
-                    properties: projectChange.After.GetProjectItemProperties(changedItem) ?? ImmutableDictionary<string, string>.Empty,
-                    unresolvedChanges,
-                    targetFramework,
-                    _targetFrameworkProvider,
-                    out PackageDependencyMetadata metadata))
-                {
-                    changesBuilder.Removed(targetFramework, ProviderTypeString, metadata.OriginalItemSpec);
-                    changesBuilder.Added(targetFramework, metadata.CreateDependencyModel());
-                }
+                changesBuilder.Removed(targetFramework, ProviderTypeString, metadata.OriginalItemSpec);
+                changesBuilder.Added(targetFramework, metadata.CreateDependencyModel());
             }
+        }
 
-            foreach (string addedItem in projectChange.Difference.AddedItems)
+        protected override void HandleRemovedItem(
+            string removedItem,
+            bool resolved,
+            IProjectChangeDescription projectChange,
+            CrossTargetDependenciesChangesBuilder changesBuilder,
+            ITargetFramework targetFramework,
+            Func<string, bool>? isEvaluatedItemSpec)
+        {
+            if (PackageDependencyMetadata.TryGetMetadata(
+                removedItem,
+                resolved,
+                properties: projectChange.Before.GetProjectItemProperties(removedItem)!,
+                isEvaluatedItemSpec,
+                targetFramework,
+                _targetFrameworkProvider,
+                out PackageDependencyMetadata metadata))
             {
-                if (PackageDependencyMetadata.TryGetMetadata(
-                    addedItem,
-                    resolved,
-                    properties: projectChange.After.GetProjectItemProperties(addedItem) ?? ImmutableDictionary<string, string>.Empty,
-                    unresolvedChanges,
-                    targetFramework,
-                    _targetFrameworkProvider,
-                    out PackageDependencyMetadata metadata))
-                {
-                    changesBuilder.Added(targetFramework, metadata.CreateDependencyModel());
-                }
+                changesBuilder.Removed(targetFramework, ProviderTypeString, metadata.OriginalItemSpec);
             }
         }
 

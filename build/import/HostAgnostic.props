@@ -59,8 +59,11 @@
 
   <ItemGroup Condition="'$(IsUnitTestProject)' == 'true'" >
     <PackageReference Include="Moq" />
-    <PackageReference Include="xunit.runner.visualstudio" />
-    <PackageReference Include="xunit.runner.console" />
     <PackageReference Include="xunit.analyzers" />
+    <PackageReference Include="xunit.assert" />
+    <PackageReference Include="xunit.extensibility.core" />
+    <PackageReference Include="xunit.runner.console" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+    <InternalsVisibleTo Include="DynamicProxyGenAssembly2" Key="$(MoqPublicKey)" />
   </ItemGroup>
 </Project>

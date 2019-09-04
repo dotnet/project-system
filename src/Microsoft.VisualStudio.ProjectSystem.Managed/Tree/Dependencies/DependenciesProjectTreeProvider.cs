@@ -431,24 +431,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             try
             {
-                await SubmitTreeUpdateAsync(
-                    async (treeSnapshot, configuredProjectExports, cancellationToken) =>
-                    {
-                        IProjectTree dependenciesNode = treeSnapshot.Value.Tree;
-
-                        if (!cancellationToken.IsCancellationRequested)
-                        {
-                            dependenciesNode = await viewProvider.BuildTreeAsync(dependenciesNode, snapshot, cancellationToken);
-
-                            if (_treeTelemetryService.IsActive)
-                            {
-                                await _treeTelemetryService.ObserveTreeUpdateCompletedAsync(snapshot.HasVisibleUnresolvedDependency);
-                            }
-                        }
-
-                        return new TreeUpdateResult(dependenciesNode);
-                    },
-                    _treeUpdateCancellationSeries.CreateNext(e.Token));
+                await SubmitTreeUpdateAsync(UpdateTreeAsync, _treeUpdateCancellationSeries.CreateNext(e.Token));
             }
             catch (OperationCanceledException)
             {
@@ -458,6 +441,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 // We do not expect any exception when we call SubmitTreeUpdateAsync, but we don't want to leak an exception here.
                 // Because it will fail the dataflow block and stops updating the project tree silently.
                 _ = ProjectFaultHandlerService.ReportFaultAsync(ex, UnconfiguredProject);
+            }
+
+            return;
+
+            async Task<TreeUpdateResult> UpdateTreeAsync(
+                IProjectVersionedValue<IProjectTreeSnapshot> treeSnapshot,
+                ConfiguredProjectExports configuredProjectExports,
+                CancellationToken cancellationToken)
+            {
+                IProjectTree dependenciesNode = treeSnapshot.Value.Tree;
+
+                if (!cancellationToken.IsCancellationRequested)
+                {
+                    dependenciesNode = await viewProvider.BuildTreeAsync(dependenciesNode, snapshot, cancellationToken);
+
+                    if (_treeTelemetryService.IsActive)
+                    {
+                        await _treeTelemetryService.ObserveTreeUpdateCompletedAsync(snapshot.HasVisibleUnresolvedDependency);
+                    }
+                }
+
+                return new TreeUpdateResult(dependenciesNode);
             }
         }
 
