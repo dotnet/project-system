@@ -64,7 +64,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         /// </summary>
         private ImmutableArray<IDependencyCrossTargetSubscriber> _subscribers;
 
-        private int _isInitialized;
         private bool _isDisposed;
 
         [ImportingConstructor]
@@ -192,22 +191,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     return;
                 }
 
-                await EnsureInitializedAsync();
+                await InitializeAsync();
 
                 await OnConfiguredProjectEvaluatedAsync(e);
-            }
-        }
-
-        /// <summary>
-        /// Workaround for CPS bug 375276 which causes double entry on InitializeAsync and exception
-        /// "InvalidOperationException: The value factory has called for the value on the same instance".
-        /// https://dev.azure.com/devdiv/DevDiv/_workitems/edit/375276
-        /// </summary>
-        private async Task EnsureInitializedAsync()
-        {
-            if (Interlocked.Exchange(ref _isInitialized, 1) == 0)
-            {
-                await InitializeAsync();
             }
         }
 
@@ -369,7 +355,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 return null;
             }
 
-            await EnsureInitializedAsync();
+            await InitializeAsync();
 
             return _context.Current;
         }
