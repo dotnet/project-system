@@ -1697,7 +1697,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                                     'The file have been copied into the project.  We should check whether there is an old item linking to it
                                     If File.Exists(FinalPathAndFileName) Then
                                         Resource.SetLink(FinalPathAndFileName)
-                                        If String.Compare(Resource.AbsoluteLinkPathAndFileName, currentPath, StringComparison.Ordinal) = 0 Then
+                                        If String.Equals(Resource.AbsoluteLinkPathAndFileName, currentPath, StringComparison.Ordinal) Then
                                             ' It was the file which was already in the project ... we always add a new item...
                                             ResourcesReadyToAdd.Add(Resource)
                                         Else
@@ -5425,7 +5425,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                 Dim codeModel As CodeModel = Project.CodeModel
                 ' NOTE: VB will append the custom setting after the RootNamespace (which is done by compiler), but other language does not...
-                If codeModel IsNot Nothing AndAlso String.Compare(codeModel.Language, CodeModelLanguageConstants.vsCMLanguageVB, StringComparison.OrdinalIgnoreCase) = 0 Then
+                If codeModel IsNot Nothing AndAlso String.Equals(codeModel.Language, CodeModelLanguageConstants.vsCMLanguageVB, StringComparison.OrdinalIgnoreCase) Then
                     'Build up the qualified name
                     Return CombineNamespaces(CombineNamespaces(RootNamespace, CustomToolNamespace), ClassName)
                 Else

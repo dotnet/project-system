@@ -465,7 +465,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             For Each Resource As Resource In _resourcesHash.Values
                 If Resource.IsLink Then
                     Dim linkFileInfo As New FileInfo(Resource.AbsoluteLinkPathAndFileName)
-                    If String.Compare(FileFullPath, linkFileInfo.FullName, StringComparison.OrdinalIgnoreCase) = 0 Then
+                    If String.Equals(FileFullPath, linkFileInfo.FullName, StringComparison.OrdinalIgnoreCase) Then
                         Return Resource
                     End If
                 End If

@@ -142,7 +142,7 @@ namespace Microsoft.VisualStudio.Build
             bool valueFound = false;
             foreach (string value in GetPropertyValues(evaluatedPropertyValue, delimiter))
             {
-                if (string.Compare(value, valueToRemove, StringComparison.Ordinal) != 0)
+                if (!string.Equals(value, valueToRemove, StringComparison.Ordinal))
                 {
                     if (newValue.Length != 0)
                     {
@@ -194,7 +194,7 @@ namespace Microsoft.VisualStudio.Build
                     value.Append(delimiter);
                 }
 
-                if (string.Compare(propertyValue, oldValue, StringComparison.Ordinal) == 0)
+                if (string.Equals(propertyValue, oldValue, StringComparison.Ordinal))
                 {
                     value.Append(newValue);
                     valueFound = true;

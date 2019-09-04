@@ -927,8 +927,8 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
             ' If the 2 paths have different root paths, return Path. 
             ' It's harder to deal with UNC root path in the algorithm.
-            If String.Compare(IO.Path.GetPathRoot(BaseDirectory), IO.Path.GetPathRoot(Path),
-                    StringComparison.OrdinalIgnoreCase) <> 0 Then
+            If Not String.Equals(IO.Path.GetPathRoot(BaseDirectory), IO.Path.GetPathRoot(Path),
+                    StringComparison.OrdinalIgnoreCase) Then
                 Return RemoveEndingSeparator(Path)
             End If
 
@@ -1574,7 +1574,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Dim frameworkName As FrameworkName = Nothing
             If TryGetTargetFrameworkMoniker(hierarchy, frameworkName) Then
                 ' Verify that we are targeting .NET
-                If String.Compare(frameworkName.Identifier, ".NETFramework", StringComparison.OrdinalIgnoreCase) <> 0 Then
+                If Not String.Equals(frameworkName.Identifier, ".NETFramework", StringComparison.OrdinalIgnoreCase) Then
                     Return False
                 End If
 
@@ -1610,7 +1610,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <returns>Value indicating whether the specified framework is .Net Core</returns>
         Friend Function IsTargetingDotNetCore(frameworkIdentifier As String) As Boolean
 
-            Return String.Compare(frameworkIdentifier, ".NETCoreApp", StringComparison.OrdinalIgnoreCase) = 0
+            Return String.Equals(frameworkIdentifier, ".NETCoreApp", StringComparison.OrdinalIgnoreCase)
 
         End Function
 

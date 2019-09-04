@@ -44,7 +44,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return True
             End If
 
-            Return String.Compare(stringValue, "AnyCPU", StringComparison.Ordinal) = 0
+            Return String.Equals(stringValue, "AnyCPU", StringComparison.Ordinal)
 
         End Function
 

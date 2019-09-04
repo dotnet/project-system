@@ -743,7 +743,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         Dim FileName As String = DirectCast(AppDesignerItems(Index - PropertyPages.Length), String)
 
                         .EditFlags = CUInt(_VSRDTFLAGS.RDT_DontAddToMRU)
-                        If String.Compare(VisualBasic.Right(FileName, 5), ".resx", StringComparison.OrdinalIgnoreCase) = 0 Then
+                        If String.Equals(VisualBasic.Right(FileName, 5), ".resx", StringComparison.OrdinalIgnoreCase) Then
                             'Add .resx file with a known editor so user config cannot change
                             .EditorGuid = New Guid(My.Resources.Designer.ResourceEditorFactory_GUID)
                             .EditorCaption = My.Resources.Designer.APPDES_ResourceTabTitle
@@ -760,7 +760,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                             Else
                                 .CustomViewProvider = New SpecialFileCustomViewProvider(Me, DesignerPanel, __PSFFILEID2.PSFFILEID_AssemblyResource, My.Resources.Designer.APPDES_ClickHereCreateResx)
                             End If
-                        ElseIf String.Compare(VisualBasic.Right(FileName, 9), ".settings", StringComparison.OrdinalIgnoreCase) = 0 Then
+                        ElseIf String.Equals(VisualBasic.Right(FileName, 9), ".settings", StringComparison.OrdinalIgnoreCase) Then
                             'Add .settings file with a known editor so user config cannot change
                             .EditorGuid = New Guid(My.Resources.Designer.SettingsDesignerEditorFactory_GUID)
                             .EditorCaption = My.Resources.Designer.APPDES_SettingsTabTitle

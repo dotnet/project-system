@@ -386,7 +386,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <remarks></remarks>
             Private Sub OnFileChanged(FullDirectoryPath As String, FileName As String)
                 Debug.Assert(Not String.IsNullOrEmpty(FileName))
-                Debug.Assert(0 = String.Compare(Path.GetDirectoryName(FullDirectoryPath), _directoryPath, StringComparison.OrdinalIgnoreCase))
+                Debug.Assert(String.Equals(Path.GetDirectoryName(FullDirectoryPath), _directoryPath, StringComparison.OrdinalIgnoreCase))
                 Debug.Assert(Path.IsPathRooted(FullDirectoryPath))
 
                 Dim FileNameThatChanged As String = NormalizeFileName(FileName)
