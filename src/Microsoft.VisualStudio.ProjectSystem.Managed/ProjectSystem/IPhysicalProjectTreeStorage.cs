@@ -20,10 +20,21 @@ namespace Microsoft.VisualStudio.ProjectSystem
     internal interface IPhysicalProjectTreeStorage
     {
         /// <summary>
+        ///     Adds a file to the physical project tree.
+        /// </summary>
+        /// <param name="path">
+        ///     The path of the file to create, can be relative to the project directory.
+        /// </param>
+        /// <remarks>
+        ///     This method will automatically publish the resulting tree to <see cref="IProjectTreeService.CurrentTree"/>.
+        /// </remarks>
+        Task AddFileAsync(string path);
+
+        /// <summary>
         ///     Creates a zero-byte file on disk, adding it add to the physical project tree.
         /// </summary>
         /// <param name="path">
-        ///     The path of the folder to create, can be relative to the project directory.
+        ///     The path of the file to create, can be relative to the project directory.
         /// </param>
         /// <remarks>
         ///     This method will automatically publish the resulting tree to <see cref="IProjectTreeService.CurrentTree"/>.

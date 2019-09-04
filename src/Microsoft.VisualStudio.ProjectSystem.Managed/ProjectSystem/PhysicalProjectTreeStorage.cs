@@ -29,6 +29,17 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _configuredImports = configuredImports;
         }
 
+        public async Task AddFileAsync(string path)
+        {
+            Requires.NotNullOrEmpty(path, nameof(path));
+
+            string fullPath = _project.MakeRooted(path);
+
+            await _configuredImports.Value.SourceItemsProvider.AddAsync(fullPath);
+
+            await _treeService.PublishLatestTreeAsync(waitForFileSystemUpdates: false);
+        }
+
         public async Task CreateEmptyFileAsync(string path)
         {
             Requires.NotNullOrEmpty(path, nameof(path));
