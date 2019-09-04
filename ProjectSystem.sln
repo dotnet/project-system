@@ -21,8 +21,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.Proj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualStudioEditorsSetup", "setup\VisualStudioEditorsSetup\VisualStudioEditorsSetup.csproj", "{49705330-A4F5-47EA-BB10-3B783CE91AEA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.Managed.TestServices", "tests\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.csproj", "{23BCBC90-ED65-4EE3-8AF1-DD7CAEFDBEE9}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.UnitTests", "tests\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.UnitTests\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.UnitTests.csproj", "{369DCA0F-A079-4D0C-8B32-53879199B681}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.IntegrationTests", "tests\Microsoft.VisualStudio.ProjectSystem.IntegrationTests\Microsoft.VisualStudio.ProjectSystem.IntegrationTests.csproj", "{FB209C68-77C0-4EE9-BCA9-0B3D5721C436}"
@@ -41,8 +39,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1FF0293B-680
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "docs", "docs\docs.shproj", "{FF972A03-384A-4B2D-A254-F21CF000DAB9}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.VisualStudio.ProjectSystem.Managed.TestServices", "tests\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.shproj", "{02578366-DFA9-4827-93F7-08E2AE5CE6A4}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		tests\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.projitems*{02578366-dfa9-4827-93f7-08e2ae5ce6a4}*SharedItemsImports = 13
 		build\build.projitems*{41d1fa55-b719-4e8d-9d79-f7610004d496}*SharedItemsImports = 13
 		docs\docs.projitems*{ff972a03-384a-4b2d-a254-f21cf000dab9}*SharedItemsImports = 13
 	EndGlobalSection
@@ -84,10 +85,6 @@ Global
 		{49705330-A4F5-47EA-BB10-3B783CE91AEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49705330-A4F5-47EA-BB10-3B783CE91AEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49705330-A4F5-47EA-BB10-3B783CE91AEA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{23BCBC90-ED65-4EE3-8AF1-DD7CAEFDBEE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{23BCBC90-ED65-4EE3-8AF1-DD7CAEFDBEE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{23BCBC90-ED65-4EE3-8AF1-DD7CAEFDBEE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{23BCBC90-ED65-4EE3-8AF1-DD7CAEFDBEE9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{369DCA0F-A079-4D0C-8B32-53879199B681}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{369DCA0F-A079-4D0C-8B32-53879199B681}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{369DCA0F-A079-4D0C-8B32-53879199B681}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -121,12 +118,12 @@ Global
 		{1C5666EA-24A4-4EC2-B8FB-FAEDF6B14697} = {1FF0293B-6808-4BB1-8370-1FE222986654}
 		{469B50E9-FE67-459E-8AFA-44CBE523DBF6} = {7349958E-C619-481F-BB2A-8A4CA2E349D9}
 		{49705330-A4F5-47EA-BB10-3B783CE91AEA} = {AC8DB8AE-AC9F-4503-83C6-255B66C318C6}
-		{23BCBC90-ED65-4EE3-8AF1-DD7CAEFDBEE9} = {7349958E-C619-481F-BB2A-8A4CA2E349D9}
 		{369DCA0F-A079-4D0C-8B32-53879199B681} = {7349958E-C619-481F-BB2A-8A4CA2E349D9}
 		{FB209C68-77C0-4EE9-BCA9-0B3D5721C436} = {7349958E-C619-481F-BB2A-8A4CA2E349D9}
 		{46C756B9-2D8E-4453-8F06-42BBE25D1805} = {AC8DB8AE-AC9F-4503-83C6-255B66C318C6}
 		{892500A5-BF6B-4FD5-A7B9-5EEA20EB775F} = {7349958E-C619-481F-BB2A-8A4CA2E349D9}
 		{C16993CC-6063-4447-AE16-BE671AFDE08A} = {7349958E-C619-481F-BB2A-8A4CA2E349D9}
+		{02578366-DFA9-4827-93F7-08E2AE5CE6A4} = {7349958E-C619-481F-BB2A-8A4CA2E349D9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6B652C28-D1FD-4885-A0CA-4704C54E78E7}
