@@ -12,7 +12,10 @@
     <ProjectReference Include="..\..\src\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Moq" />
     <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.assert" />
+    <PackageReference Include="xunit.extensibility.core" />
     <PackageReference Include="xunit.runner.visualstudio" />
     <PackageReference Include="xunit.runner.console" />
   </ItemGroup>

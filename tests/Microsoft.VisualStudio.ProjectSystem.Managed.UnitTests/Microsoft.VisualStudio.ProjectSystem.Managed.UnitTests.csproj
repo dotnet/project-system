@@ -13,6 +13,9 @@
     <InternalsVisibleTo Include="DynamicProxyGenAssembly2" Key="$(MoqPublicKey)" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Moq" />
+    <PackageReference Include="xunit.assert" />
+    <PackageReference Include="xunit.extensibility.core" />
     <ProjectReference Include="..\DeployTestDependencies\DeployTestDependencies.csproj" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\..\src\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj" />
  </ItemGroup>
