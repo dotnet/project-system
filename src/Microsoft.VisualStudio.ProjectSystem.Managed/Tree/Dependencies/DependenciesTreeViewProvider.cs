@@ -370,6 +370,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             ProjectTreeFlags filteredFlags = FilterFlags(viewModel.Flags);
 
+            Assumes.NotNull(filePath);
+
             return isProjectItem
                 ? CreateProjectItemTreeNode()
                 : CreateProjectTreeNode();
@@ -393,7 +395,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             IProjectTree CreateProjectItemTreeNode()
             {
-                Requires.NotNull(filePath, nameof(filePath));
+                Assumes.NotNull(filePath);
 
                 var itemContext = ProjectPropertiesContext.GetContext(
                     _commonServices.Project,

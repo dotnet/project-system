@@ -172,7 +172,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             void applyChanges(IProjectVersionedValue<IProjectSubscriptionUpdate> _, bool __, CancellationToken cancellationToken)
             {
                 // Dispose the instance underneath us
-                instance.Dispose();
+                instance!.Dispose();
 
                 cancellationToken.ThrowIfCancellationRequested();
             }

@@ -291,7 +291,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             ConcreteOnceInitializedOnceDisposedUnderLockAsync? instance = null;
 
-            Task firstAction() => instance.ExecuteUnderLockAsync(async (ct) =>
+            Task firstAction() => instance!.ExecuteUnderLockAsync(async (ct) =>
             {
                 firstEntered.Set();
                 await firstRelease.WaitAsync();
@@ -304,7 +304,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 return Task.CompletedTask;
             });
 
-            Task disposeAction() => Task.Run(instance.DisposeAsync);
+            Task disposeAction() => Task.Run(instance!.DisposeAsync);
 
             await AssertNoOverlap(firstAction, disposeAction, firstEntered, firstRelease, disposeEntered);
         }
@@ -318,7 +318,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             ConcreteOnceInitializedOnceDisposedUnderLockAsync? instance = null;
 
-            Task firstAction() => instance.ExecuteUnderLockAsync(async (ct) =>
+            Task firstAction() => instance!.ExecuteUnderLockAsync(async (ct) =>
             {
                 firstEntered.Set();
                 await firstRelease.WaitAsync();
@@ -333,7 +333,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 return Task.CompletedTask;
             });
 
-            Task disposeAction() => Task.Run(instance.DisposeAsync);
+            Task disposeAction() => Task.Run(instance!.DisposeAsync);
 
             await AssertNoOverlap(firstAction, disposeAction, firstEntered, firstRelease, disposeEntered);
         }
