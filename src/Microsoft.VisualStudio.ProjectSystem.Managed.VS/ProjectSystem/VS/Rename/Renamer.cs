@@ -15,6 +15,8 @@ using Microsoft.VisualStudio.ProjectSystem.Refactor;
 using Microsoft.VisualStudio.ProjectSystem.Rename;
 using Microsoft.VisualStudio.ProjectSystem.Waiting;
 
+using DTE = EnvDTE.DTE;
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 {
     [Export(typeof(IFileRenameHandler))]
@@ -24,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly IUnconfiguredProjectTasksService _unconfiguredProjectTasksService;
         private readonly Workspace _workspace;
-        private readonly IVsService<Shell.Interop.SDTE, EnvDTE.DTE> _dte;
+        private readonly IVsUIService<DTE> _dte;
         private readonly IUserNotificationServices _userNotificationServices;
         private readonly IEnvironmentOptions _environmentOptions;
         private readonly IRoslynServices _roslynServices;
@@ -34,21 +36,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         [ImportingConstructor]
         internal Renamer(IUnconfiguredProjectVsServices projectVsServices,
                          IUnconfiguredProjectTasksService unconfiguredProjectTasksService,
-                         VisualStudioWorkspace workspace,
-                         IVsService<Shell.Interop.SDTE, EnvDTE.DTE> dte,
-                         IEnvironmentOptions environmentOptions,
-                         IUserNotificationServices userNotificationServices,
-                         IRoslynServices roslynServices,
-                         IWaitIndicator waitService,
-                         IRefactorNotifyService refactorNotifyService)
-            : this(projectVsServices, unconfiguredProjectTasksService, workspace as Workspace, dte, environmentOptions, userNotificationServices, roslynServices, waitService, refactorNotifyService)
-        {
-        }
-
-        internal Renamer(IUnconfiguredProjectVsServices projectVsServices,
-                         IUnconfiguredProjectTasksService unconfiguredProjectTasksService,
-                         Workspace workspace,
-                         IVsService<Shell.Interop.SDTE, EnvDTE.DTE> dte,
+                         [Import(typeof(VisualStudioWorkspace))]Workspace workspace,
+                         IVsUIService<Shell.Interop.SDTE, DTE> dte,
                          IEnvironmentOptions environmentOptions,
                          IUserNotificationServices userNotificationServices,
                          IRoslynServices roslynServices,
@@ -132,10 +121,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
                         IEnumerable<ProjectChanges> changes = renamedSolution.GetChanges(solution).GetProjectChanges();
 
-                        using UndoScope undo = await UndoScope.CreateAsync(_dte, _projectVsServices.ThreadingService, renameOperationName, token);
+                        DTE? dte = _dte.Value;
+
+                        Assumes.NotNull(dte);
+
+                        using var undo = UndoScope.Create(dte, renameOperationName);
 
                         // Notify other VS features that symbol is about to be renamed
-                        await NotifyBeforeRename(newName, rqName, changes);
+                        NotifyBeforeRename(newName, rqName, changes);
 
                         // Try and apply the changes to the current solution
                         token.ThrowIfCancellationRequested();
@@ -144,8 +137,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                         if (applyChangesSucceeded)
                         {
                             // Notify other VS features that symbol has been renamed
-                            await NotifyAfterRename(newName, rqName, changes);
+                            NotifyAfterRename(newName, rqName, changes);
                         }
+
                         return applyChangesSucceeded;
                     });
                 });
@@ -177,25 +171,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             }
         }
 
-        private async Task NotifyAfterRename(string newName, string rqName, IEnumerable<ProjectChanges> changes)
+        private void NotifyAfterRename(string newName, string rqName, IEnumerable<ProjectChanges> changes)
         {
             foreach (ProjectChanges change in changes)
             {
                 Project project = change.NewProject;
                 string projectPath = project.FilePath;
                 string[] filePaths = change.GetChangedDocuments().Select(x => project.GetDocument(x).FilePath).ToArray();
-                await _refactorNotifyService.OnAfterGlobalSymbolRenamedAsync(projectPath, filePaths, rqName, newName);
+                _refactorNotifyService.OnAfterGlobalSymbolRenamed(projectPath, filePaths, rqName, newName);
             }
         }
 
-        private async Task NotifyBeforeRename(string newName, string rqName, IEnumerable<ProjectChanges> changes)
+        private void NotifyBeforeRename(string newName, string rqName, IEnumerable<ProjectChanges> changes)
         {
             foreach (ProjectChanges change in changes)
             {
                 Project project = change.NewProject;
                 string projectPath = project.FilePath;
                 string[] filePaths = change.GetChangedDocuments().Select(x => project.GetDocument(x).FilePath).ToArray();
-                await _refactorNotifyService.OnBeforeGlobalSymbolRenamedAsync(projectPath, filePaths, rqName, newName);
+                _refactorNotifyService.OnBeforeGlobalSymbolRenamed(projectPath, filePaths, rqName, newName);
             }
         }
 
@@ -255,7 +249,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
         private static Document? GetDocument(Func<Project?> getProject, string oldFilePath, string newFilePath)
         {
-            var project = getProject();
+            Project? project = getProject();
             if (project is null)
                 return null;
 
@@ -311,7 +305,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
             string newName = Path.GetFileNameWithoutExtension(newFileName);
 
-            var solution = getProject()?.Solution;
+            Solution? solution = getProject()?.Solution;
             if (solution is null)
                 return null;
 
