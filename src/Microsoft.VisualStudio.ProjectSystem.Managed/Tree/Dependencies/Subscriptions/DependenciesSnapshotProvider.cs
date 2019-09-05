@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         [ImportingConstructor]
         public DependenciesSnapshotProvider(
             IUnconfiguredProjectCommonServices commonServices,
-            Lazy<IAggregateCrossTargetProjectContextProvider> contextProvider,
+            Lazy<AggregateCrossTargetProjectContextProvider> contextProvider,
             IUnconfiguredProjectTasksService tasksService,
             IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
             IActiveProjectConfigurationRefreshService activeProjectConfigurationRefreshService,

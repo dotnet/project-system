@@ -739,7 +739,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 IDependency dependency,
                 IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
                 IImmutableSet<string>? projectItemSpecs,
-                IAddDependencyContext context)
+                AddDependencyContext context)
             {
                 if (_beforeAdd.TryGetValue(dependency.Id, out (FilterAction Action, IDependency? Dependency) info))
                 {
@@ -770,7 +770,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             public void BeforeRemove(
                 ITargetFramework targetFramework,
                 IDependency dependency,
-                IRemoveDependencyContext context)
+                RemoveDependencyContext context)
             {
                 if (_beforeRemove.TryGetValue(dependency.Id, out (FilterAction Action, IDependency? Dependency) info))
                 {

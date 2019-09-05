@@ -6,16 +6,17 @@ using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.Composition;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
     /// <summary>
-    ///     Implementation of <see cref="IAggregateCrossTargetProjectContextProvider"/> that creates an 
-    ///     <see cref="AggregateCrossTargetProjectContext"/> based on the unique TargetFramework 
-    ///     configurations of an <see cref="UnconfiguredProject"/>.
+    ///     Creates <see cref="AggregateCrossTargetProjectContext"/> instances based on the 
+    ///     current <see cref="UnconfiguredProject"/>.
     /// </summary>
-    [Export(typeof(IAggregateCrossTargetProjectContextProvider))]
-    internal class AggregateCrossTargetProjectContextProvider : IAggregateCrossTargetProjectContextProvider
+    [Export(typeof(AggregateCrossTargetProjectContextProvider))]
+    [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
+    internal class AggregateCrossTargetProjectContextProvider
     {
         private readonly IUnconfiguredProjectCommonServices _commonServices;
         private readonly IActiveConfiguredProjectsProvider _activeConfiguredProjectsProvider;
@@ -32,6 +33,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             _targetFrameworkProvider = targetFrameworkProvider;
         }
 
+        /// <summary>
+        ///     Creates a <see cref="AggregateCrossTargetProjectContext"/>.
+        /// </summary>
+        /// <returns>
+        ///     The created <see cref="AggregateCrossTargetProjectContext"/>.
+        /// </returns>
         public async Task<AggregateCrossTargetProjectContext> CreateProjectContextAsync()
         {
             // Get the set of active configured projects ignoring target framework.

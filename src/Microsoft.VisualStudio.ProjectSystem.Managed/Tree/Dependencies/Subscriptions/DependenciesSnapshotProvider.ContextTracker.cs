@@ -20,13 +20,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         {
             private readonly ITargetFrameworkProvider _targetFrameworkProvider;
             private readonly IUnconfiguredProjectCommonServices _commonServices;
-            private readonly Lazy<IAggregateCrossTargetProjectContextProvider> _contextProvider;
+            private readonly Lazy<AggregateCrossTargetProjectContextProvider> _contextProvider;
             private readonly IActiveProjectConfigurationRefreshService _activeProjectConfigurationRefreshService;
 
             public ContextTracker(
                 ITargetFrameworkProvider targetFrameworkProvider,
                 IUnconfiguredProjectCommonServices commonServices,
-                Lazy<IAggregateCrossTargetProjectContextProvider> contextProvider,
+                Lazy<AggregateCrossTargetProjectContextProvider> contextProvider,
                 IActiveProjectConfigurationRefreshService activeProjectConfigurationRefreshService)
             {
                 Requires.NotNull(targetFrameworkProvider, nameof(targetFrameworkProvider));
