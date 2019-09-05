@@ -19,7 +19,7 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ActiveDebugProfile|Description">
         <source>Specifies the profile to use for debugging.</source>
-        <target state="needs-review-translation">Hata ayıklama için kullanılacak profili belirtir</target>
+        <target state="translated">Hata ayıklama için kullanılacak profili belirtir.</target>
         <note />
       </trans-unit>
     </body>

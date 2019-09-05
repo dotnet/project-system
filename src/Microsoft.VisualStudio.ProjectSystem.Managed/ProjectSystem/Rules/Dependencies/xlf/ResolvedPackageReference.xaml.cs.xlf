@@ -4,77 +4,77 @@
     <body>
       <trans-unit id="Rule|ResolvedPackageReference|DisplayName">
         <source>Package</source>
-        <target state="translated">Balíček</target>
+        <target state="new">Package</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedPackageReference|Description">
         <source>Package Properties</source>
-        <target state="translated">Vlastnosti balíčku</target>
+        <target state="new">Package Properties</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Description|DisplayName">
         <source>Description</source>
-        <target state="translated">Popis</target>
+        <target state="new">Description</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Description|Description">
         <source>Dependency description.</source>
-        <target state="translated">Popis závislosti</target>
+        <target state="new">Dependency description.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
-        <target state="translated">Verze</target>
+        <target state="new">Version</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|Description">
         <source>Version of dependency.</source>
-        <target state="translated">Verze závislosti</target>
+        <target state="new">Version of dependency.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|DisplayName">
         <source>NoWarn</source>
-        <target state="translated">NoWarn</target>
+        <target state="new">NoWarn</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|Description">
         <source>Comma-delimited list of warnings that should be suppressed for this package.</source>
-        <target state="needs-review-translation">Seznam upozornění oddělených čárkou, která by se měla u tohoto balíčku potlačit</target>
+        <target state="new">Comma-delimited list of warnings that should be suppressed for this package.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|DisplayName">
         <source>IncludeAssets</source>
-        <target state="translated">IncludeAssets</target>
+        <target state="new">IncludeAssets</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|Description">
         <source>Assets to include from this reference.</source>
-        <target state="needs-review-translation">Prostředky zahrnuté z tohoto odkazu</target>
+        <target state="new">Assets to include from this reference.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
         <source>ExcludeAssets</source>
-        <target state="translated">ExcludeAssets</target>
+        <target state="new">ExcludeAssets</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|Description">
         <source>Assets to exclude from this reference.</source>
-        <target state="needs-review-translation">Prostředky vyloučené z tohoto odkazu</target>
+        <target state="new">Assets to exclude from this reference.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|DisplayName">
         <source>Private Assets</source>
-        <target state="needs-review-translation">PrivateAssets</target>
+        <target state="new">Private Assets</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|Description">
         <source>Assets that are private in this reference.</source>
-        <target state="needs-review-translation">Soukromé prostředky v tomto odkazu</target>
+        <target state="new">Assets that are private in this reference.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Path|Description">
         <source>Location of the package being referenced.</source>
-        <target state="translated">Umístění odkazovaného balíčku</target>
+        <target state="new">Location of the package being referenced.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Name|DisplayName">

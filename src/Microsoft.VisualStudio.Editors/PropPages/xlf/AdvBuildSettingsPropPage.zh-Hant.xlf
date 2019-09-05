@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="zh-Hant" original="../AdvBuildSettingsPropPage.resx">
+  <file datatype="xml" source-language="en" target-language="zh-HANT" original="../AdvBuildSettingsPropPage.resx">
     <body>
       <trans-unit id="lblLanguageVersion.Text">
         <source>&amp;Language version:</source>
@@ -69,7 +69,7 @@
       </trans-unit>
       <trans-unit id="lnkLabel.Text">
         <source>Why can't I select a different C# version?</source>
-        <target state="new">Why can't I select a different C# version?</target>
+        <target state="translated">為什麼無法選取其他 C# 版本?</target>
         <note />
       </trans-unit>
     </body>

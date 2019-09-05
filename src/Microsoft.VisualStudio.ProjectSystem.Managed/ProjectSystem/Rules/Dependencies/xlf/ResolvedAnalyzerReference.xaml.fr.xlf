@@ -4,22 +4,22 @@
     <body>
       <trans-unit id="Rule|ResolvedAnalyzerReference|DisplayName">
         <source>Resolved Analyzer Reference</source>
-        <target state="translated">Référence de l'analyseur résolue</target>
+        <target state="new">Resolved Analyzer Reference</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedAnalyzerReference|Description">
         <source>Analyzer Properties</source>
-        <target state="translated">Propriétés de l'analyseur</target>
+        <target state="new">Analyzer Properties</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|DisplayName">
         <source>Path</source>
-        <target state="translated">Chemin d'accès</target>
+        <target state="new">Path</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|Description">
         <source>Location of the analyzer assembly.</source>
-        <target state="translated">Emplacement de l'assembly analyseur.</target>
+        <target state="new">Location of the analyzer assembly.</target>
         <note />
       </trans-unit>
     </body>

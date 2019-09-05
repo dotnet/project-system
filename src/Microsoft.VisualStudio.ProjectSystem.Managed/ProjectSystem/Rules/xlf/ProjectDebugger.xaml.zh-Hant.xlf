@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="zh-Hant" original="../ProjectDebugger.xaml">
+  <file datatype="xml" source-language="en" target-language="zh-HANT" original="../ProjectDebugger.xaml">
     <body>
       <trans-unit id="Rule|ProjectDebugger|DisplayName">
         <source>Start</source>
@@ -19,7 +19,7 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ActiveDebugProfile|Description">
         <source>Specifies the profile to use for debugging.</source>
-        <target state="needs-review-translation">指定要使用於偵錯的設定檔</target>
+        <target state="translated">指定要用於偵錯的設定檔。</target>
         <note />
       </trans-unit>
     </body>

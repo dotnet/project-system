@@ -69,7 +69,7 @@
       </trans-unit>
       <trans-unit id="lnkLabel.Text">
         <source>Why can't I select a different C# version?</source>
-        <target state="new">Why can't I select a different C# version?</target>
+        <target state="translated">Dlaczego nie mogę wybrać innej wersji języka C#?</target>
         <note />
       </trans-unit>
     </body>

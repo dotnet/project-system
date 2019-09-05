@@ -4,32 +4,32 @@
     <body>
       <trans-unit id="Rule|ComReference|DisplayName">
         <source>COM Reference</source>
-        <target state="translated">Riferimento COM</target>
+        <target state="new">COM Reference</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ComReference|Description">
         <source>COM Reference Properties</source>
-        <target state="translated">Proprietà del riferimento COM</target>
+        <target state="new">COM Reference Properties</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Guid|DisplayName">
         <source>CLSID</source>
-        <target state="translated">CLSID</target>
+        <target state="new">CLSID</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Guid|Description">
         <source>The GUID of the COM server.</source>
-        <target state="translated">GUID del server COM.</target>
+        <target state="new">The GUID of the COM server.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Lcid|DisplayName">
         <source>Locale</source>
-        <target state="translated">Impostazioni locali</target>
+        <target state="new">Locale</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Lcid|Description">
         <source>The LCID of the COM server.</source>
-        <target state="translated">LCID del server COM.</target>
+        <target state="new">The LCID of the COM server.</target>
         <note />
       </trans-unit>
       <trans-unit id="IntProperty|VersionMajor|DisplayName">

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="zh-Hant" original="../ConfigurationGeneral.xaml">
+  <file datatype="xml" source-language="en" target-language="zh-HANT" original="../ConfigurationGeneral.xaml">
     <body>
       <trans-unit id="Rule|ConfigurationGeneral|DisplayName">
         <source>General</source>
@@ -84,7 +84,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
         <source>Whether the compiler should optimize output.</source>
-        <target state="needs-review-translation">編譯器是否應將輸出最佳化?</target>
+        <target state="translated">編譯器是否應將輸出最佳化。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|TargetRuntime.AppHost|DisplayName">
@@ -114,47 +114,47 @@
       </trans-unit>
       <trans-unit id="StringListProperty|AvailablePlatforms|DisplayName">
         <source>Available Platforms</source>
-        <target state="new">Available Platforms</target>
+        <target state="translated">可用的平台</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|BaseIntermediateOutputPath|DisplayName">
         <source>Base Intermediate Output Path</source>
-        <target state="new">Base Intermediate Output Path</target>
+        <target state="translated">基底中繼輸出路徑</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Name|DisplayName">
         <source>Name</source>
-        <target state="new">Name</target>
+        <target state="translated">名稱</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|DisplayName">
         <source>Optimize</source>
-        <target state="new">Optimize</target>
+        <target state="translated">最佳化</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|OutputName|DisplayName">
         <source>Output Name</source>
-        <target state="new">Output Name</target>
+        <target state="translated">輸出名稱</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|OutputPath|DisplayName">
         <source>Output Path</source>
-        <target state="new">Output Path</target>
+        <target state="translated">輸出路徑</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|OutputType|DisplayName">
         <source>Output Type</source>
-        <target state="new">Output Type</target>
+        <target state="translated">輸出類型</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|TargetPath|DisplayName">
         <source>Target Path</source>
-        <target state="new">Target Path</target>
+        <target state="translated">目標路徑</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|AssemblyName|DisplayName">
         <source>Assembly Name</source>
-        <target state="new">Assembly Name</target>
+        <target state="translated">組件名稱</target>
         <note />
       </trans-unit>
     </body>

@@ -19,7 +19,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|Description">
         <source>Location of the folder.</source>
-        <target state="needs-review-translation">Lokalizacja folderu</target>
+        <target state="translated">Lokalizacja folderu.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FolderName|DisplayName">
@@ -29,7 +29,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|FolderName|Description">
         <source>Name of this folder.</source>
-        <target state="needs-review-translation">Nazwa tego folderu</target>
+        <target state="translated">Nazwa tego folderu.</target>
         <note />
       </trans-unit>
     </body>

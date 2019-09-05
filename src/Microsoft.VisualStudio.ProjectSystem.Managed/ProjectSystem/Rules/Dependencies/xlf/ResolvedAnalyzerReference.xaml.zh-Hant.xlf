@@ -1,25 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="zh-Hant" original="../ResolvedAnalyzerReference.xaml">
+  <file datatype="xml" source-language="en" target-language="zh-HANT" original="../ResolvedAnalyzerReference.xaml">
     <body>
       <trans-unit id="Rule|ResolvedAnalyzerReference|DisplayName">
         <source>Resolved Analyzer Reference</source>
-        <target state="translated">已解析的分析器參考</target>
+        <target state="new">Resolved Analyzer Reference</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedAnalyzerReference|Description">
         <source>Analyzer Properties</source>
-        <target state="translated">分析器屬性</target>
+        <target state="new">Analyzer Properties</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|DisplayName">
         <source>Path</source>
-        <target state="translated">路徑</target>
+        <target state="new">Path</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|Description">
         <source>Location of the analyzer assembly.</source>
-        <target state="translated">分析器組件的位置。</target>
+        <target state="new">Location of the analyzer assembly.</target>
         <note />
       </trans-unit>
     </body>

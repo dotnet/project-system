@@ -59,12 +59,12 @@
       </trans-unit>
       <trans-unit id="FrameworkNodeName">
         <source>Frameworks</source>
-        <target state="new">Frameworks</target>
+        <target state="translated">Çerçeveler</target>
         <note />
       </trans-unit>
       <trans-unit id="PackagesNodeName">
         <source>Packages</source>
-        <target state="new">Packages</target>
+        <target state="translated">Paketler</target>
         <note />
       </trans-unit>
     </body>

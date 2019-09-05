@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="zh-Hant" original="../VSResources.resx">
+  <file datatype="xml" source-language="en" target-language="zh-HANT" original="../VSResources.resx">
     <body>
       <trans-unit id="ImportsFromTargetCannotBeDeleted">
         <source>{0} - Import comes fom target file. This import cannot be removed.</source>
@@ -148,32 +148,32 @@ In order to debug this project, add an executable project to this solution which
       </trans-unit>
       <trans-unit id="XprojNotSupported">
         <source>Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/en-us/dotnet/core/migration/.</source>
-        <target state="new">Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/en-us/dotnet/core/migration/.</target>
+        <target state="translated">已不再支援 .xproj 專案檔。如需移轉到 csproj 的詳細資料，請參閱 https://docs.microsoft.com/zh-tw/dotnet/core/migration/。</target>
         <note />
       </trans-unit>
       <trans-unit id="WindowsFormEditor_DisplayName">
         <source>Form (Windows Forms) Designer</source>
-        <target state="new">Form (Windows Forms) Designer</target>
+        <target state="translated">表單 (Windows Forms) 設計工具</target>
         <note />
       </trans-unit>
       <trans-unit id="ComponentEditor_DisplayName">
         <source>Component (Windows Forms) Designer</source>
-        <target state="new">Component (Windows Forms) Designer</target>
+        <target state="translated">元件 (Windows Forms) 設計工具</target>
         <note />
       </trans-unit>
       <trans-unit id="UserControlEditor_DisplayName">
         <source>User Control (Windows Forms) Designer</source>
-        <target state="new">User Control (Windows Forms) Designer</target>
+        <target state="translated">使用者控制項 (Windows Forms) 設計工具</target>
         <note />
       </trans-unit>
       <trans-unit id="Renaming_Type">
         <source>Renaming Type</source>
-        <target state="new">Renaming Type</target>
+        <target state="translated">正在將類型重新命名</target>
         <note />
       </trans-unit>
       <trans-unit id="Renaming_Type_from_0_to_1">
         <source>Renaming Type from '{0}' to '{1}'</source>
-        <target state="new">Renaming Type from '{0}' to '{1}'</target>
+        <target state="translated">正在將類型從 '{0}' 重新命名為 '{1}'</target>
         <note />
       </trans-unit>
     </body>
