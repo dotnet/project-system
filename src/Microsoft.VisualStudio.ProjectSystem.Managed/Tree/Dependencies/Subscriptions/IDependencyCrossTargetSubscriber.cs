@@ -42,8 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         ///     Called once, when this subscriber is first loaded into its <paramref name="host"/>.
         /// </summary>
         /// <param name="host">The object that's hosting this subscriber.</param>
-        /// <param name="subscriptionService">An object that provides access to project data.</param>
-        Task InitializeSubscriberAsync(ICrossTargetSubscriptionsHost host, IProjectSubscriptionService subscriptionService);
+        Task InitializeSubscriberAsync(ICrossTargetSubscriptionsHost host);
 
         /// <summary>
         ///     Requests this subscriber to create subscriptions based on the target frameworks specified in <paramref name="projectContext"/>.
