@@ -32,9 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         public abstract ImageMoniker ImplicitIcon { get; }
 
         public void Handle(
-            IImmutableDictionary<NamedIdentity, IComparable> versions,
             IImmutableDictionary<string, IProjectChangeDescription> changesByRuleName,
-            RuleSource source,
             ITargetFramework targetFramework,
             CrossTargetDependenciesChangesBuilder changesBuilder)
         {
@@ -98,6 +96,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             Func<string, bool>? isEvaluatedItemSpec)
         {
             IDependencyModel model = CreateDependencyModelForRule(addedItem, projectChange.After, resolved);
+
             if (isEvaluatedItemSpec == null || isEvaluatedItemSpec(model.Id))
             {
                 changesBuilder.Added(targetFramework, model);
@@ -166,8 +165,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             bool isImplicit,
             IImmutableDictionary<string, string> properties)
         {
-            // Should be overridden by subclasses, unless they override and replace 'Handle'.
-            // Not 'abstract' because a subclass could replace 'Handle', in which case they don't need this method.
+            // Should be overridden by subclasses, unless they override 'HandleAddedItem', 'HandleRemovedItem'
+            // and 'HandleChangedItem' to not use this method.
             throw new NotImplementedException();
         }
 
