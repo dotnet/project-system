@@ -9,47 +9,47 @@
       </trans-unit>
       <trans-unit id="InstallLatestVersionButton.Text">
         <source>&amp;Install</source>
-        <target state="new">&amp;Install</target>
+        <target state="translated">&amp;Instaluj</target>
         <note />
       </trans-unit>
       <trans-unit id="InstalledVersionLabel.Text">
         <source>Installed Version:</source>
-        <target state="new">Installed Version:</target>
+        <target state="translated">Zainstalowana wersja:</target>
         <note />
       </trans-unit>
       <trans-unit id="UninstallAnalyzersButton.Text">
         <source>&amp;Uninstall</source>
-        <target state="new">&amp;Uninstall</target>
+        <target state="translated">&amp;Odinstaluj</target>
         <note />
       </trans-unit>
       <trans-unit id="FxCopAnalyzersPackageNameLabel.Text">
         <source>Recommended analyzer package:</source>
-        <target state="new">Recommended analyzer package:</target>
+        <target state="translated">Zalecany pakiet analizatora:</target>
         <note />
       </trans-unit>
       <trans-unit id="FxCopAnalyzersPackageNameTextBox.Text">
         <source>Microsoft.CodeAnalysis.FxCopAnalyzers</source>
-        <target state="new">Microsoft.CodeAnalysis.FxCopAnalyzers</target>
+        <target state="translated">Microsoft.CodeAnalysis.FxCopAnalyzers</target>
         <note />
       </trans-unit>
       <trans-unit id="RoslynAnalyzersLabel.Text">
         <source>Analyzers</source>
-        <target state="new">Analyzers</target>
+        <target state="translated">Analizatory</target>
         <note />
       </trans-unit>
       <trans-unit id="RoslynAnalyzersHelpLinkLabel.Text">
         <source>What are the benefits of source code analyzers?</source>
-        <target state="new">What are the benefits of source code analyzers?</target>
+        <target state="translated">Jakie są zalety analizatorów kodu źródłowego?</target>
         <note />
       </trans-unit>
       <trans-unit id="RunAnalyzersDuringLiveAnalysis.Text">
         <source>Run on &amp;live analysis</source>
-        <target state="new">Run on &amp;live analysis</target>
+        <target state="translated">Uruchom podczas &amp;analizy na żywo</target>
         <note />
       </trans-unit>
       <trans-unit id="RunAnalyzersDuringBuild.Text">
         <source>Run on &amp;build</source>
-        <target state="new">Run on &amp;build</target>
+        <target state="translated">Uruchom podczas &amp;kompilowania</target>
         <note />
       </trans-unit>
     </body>
