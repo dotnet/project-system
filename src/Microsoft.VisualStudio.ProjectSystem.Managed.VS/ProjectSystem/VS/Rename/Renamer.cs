@@ -36,20 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         [ImportingConstructor]
         internal Renamer(IUnconfiguredProjectVsServices projectVsServices,
                          IUnconfiguredProjectTasksService unconfiguredProjectTasksService,
-                         VisualStudioWorkspace workspace,
-                         IVsUIService<Shell.Interop.SDTE, DTE> dte,
-                         IEnvironmentOptions environmentOptions,
-                         IUserNotificationServices userNotificationServices,
-                         IRoslynServices roslynServices,
-                         IWaitIndicator waitService,
-                         IRefactorNotifyService refactorNotifyService)
-            : this(projectVsServices, unconfiguredProjectTasksService, workspace as Workspace, dte, environmentOptions, userNotificationServices, roslynServices, waitService, refactorNotifyService)
-        {
-        }
-
-        internal Renamer(IUnconfiguredProjectVsServices projectVsServices,
-                         IUnconfiguredProjectTasksService unconfiguredProjectTasksService,
-                         Workspace workspace,
+                         [Import(typeof(VisualStudioWorkspace))]Workspace workspace,
                          IVsUIService<Shell.Interop.SDTE, DTE> dte,
                          IEnvironmentOptions environmentOptions,
                          IUserNotificationServices userNotificationServices,
