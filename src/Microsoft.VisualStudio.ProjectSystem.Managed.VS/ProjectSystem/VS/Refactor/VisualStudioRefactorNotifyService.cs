@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Threading.Tasks;
 
 using EnvDTE;
 
@@ -17,19 +16,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
     [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
     internal class VisualStudioRefactorNotifyService : IRefactorNotifyService
     {
-        private readonly IVsService<SDTE, DTE> _dte;
-        private readonly IVsService<SVsSolution, IVsSolution> _solutionService;
+        private readonly IVsUIService<DTE> _dte;
+        private readonly IVsUIService<IVsSolution> _solution;
 
         [ImportingConstructor]
-        public VisualStudioRefactorNotifyService(IVsService<SDTE, DTE> dte, IVsService<SVsSolution, IVsSolution> solutionService)
+        public VisualStudioRefactorNotifyService(IVsUIService<SDTE, DTE> dte, IVsUIService<SVsSolution, IVsSolution> solution)
         {
             _dte = dte;
-            _solutionService = solutionService;
+            _solution = solution;
         }
 
-        public async Task OnBeforeGlobalSymbolRenamedAsync(string projectPath, IEnumerable<string> filePaths, string rqName, string newName)
+        public void OnBeforeGlobalSymbolRenamed(string projectPath, IEnumerable<string> filePaths, string rqName, string newName)
         {
-            IVsHierarchy? projectHierarchy = await GetProjectHierarchy(projectPath);
+            IVsHierarchy? projectHierarchy = GetProjectHierarchy(projectPath);
             if (projectHierarchy == null)
             {
                 return;
@@ -50,9 +49,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
                                                        promptContinueOnFail: 1);
         }
 
-        public async Task OnAfterGlobalSymbolRenamedAsync(string projectPath, IEnumerable<string> filePaths, string rqName, string newName)
+        public void OnAfterGlobalSymbolRenamed(string projectPath, IEnumerable<string> filePaths, string rqName, string newName)
         {
-            IVsHierarchy? projectHierarchy = await GetProjectHierarchy(projectPath);
+            IVsHierarchy? projectHierarchy = GetProjectHierarchy(projectPath);
             if (projectHierarchy == null)
             {
                 return;
@@ -72,20 +71,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
                                                  lpszNewName: newName);
         }
 
-        private async Task<IVsHierarchy?> GetProjectHierarchy(string projectPath)
+        private  IVsHierarchy? GetProjectHierarchy(string projectPath)
         {
-            Project? project = await TryGetProjectFromPathAsync(projectPath);
+            Project? project = TryGetProjectFromPath(projectPath);
             if (project == null)
             {
                 return null;
             }
 
-            return await TryGetIVsHierarchyAsync(project);
+            return TryGetIVsHierarchy(project);
         }
 
-        private async Task<Project?> TryGetProjectFromPathAsync(string projectPath)
+        private Project? TryGetProjectFromPath(string projectPath)
         {
-            DTE? dte = await _dte.GetValueAsync();
+            DTE? dte = _dte.Value;
             Assumes.NotNull(dte);
 
             foreach (Project project in dte.Solution.Projects)
@@ -110,11 +109,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
             return null;
         }
 
-        private async Task<IVsHierarchy?> TryGetIVsHierarchyAsync(Project project)
+        private  IVsHierarchy? TryGetIVsHierarchy(Project project)
         {
-            IVsSolution? solutionService = await _solutionService.GetValueAsync();
+            IVsSolution? solution =  _solution.Value;
 
-            if (solutionService!.GetProjectOfUniqueName(project.UniqueName, out IVsHierarchy projectHierarchy) == HResult.OK)
+            if (solution!.GetProjectOfUniqueName(project.UniqueName, out IVsHierarchy projectHierarchy) == HResult.OK)
             {
                 return projectHierarchy;
             }
