@@ -27,10 +27,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         [ImportingConstructor]
         public DependencySharedProjectsSubscriber(
-            IUnconfiguredProjectCommonServices commonServices,
+            IProjectThreadingService threadingService,
             IUnconfiguredProjectTasksService tasksService,
             IDependenciesSnapshotProvider dependenciesSnapshotProvider)
-            : base(commonServices, tasksService)
+            : base(threadingService, tasksService)
         {
             _dependenciesSnapshotProvider = dependenciesSnapshotProvider;
         }

@@ -17,7 +17,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
     /// </summary>
     internal abstract class DependencyRulesSubscriberBase<T> : OnceInitializedOnceDisposedUnderLockAsync, IDependencyCrossTargetSubscriber
     {
-        private readonly IUnconfiguredProjectCommonServices _commonServices;
         private readonly IUnconfiguredProjectTasksService _tasksService;
 
         private ICrossTargetSubscriptionsHost? _host;
@@ -26,26 +25,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         public event EventHandler<DependencySubscriptionChangedEventArgs>? DependenciesChanged;
 
         protected DependencyRulesSubscriberBase(
-            IUnconfiguredProjectCommonServices commonServices,
+            IProjectThreadingService threadingService,
             IUnconfiguredProjectTasksService tasksService)
-            : base(commonServices.ThreadingService.JoinableTaskContext)
+            : base(threadingService.JoinableTaskContext)
         {
-            _commonServices = commonServices;
             _tasksService = tasksService;
         }
 
-        public async Task InitializeSubscriberAsync(ICrossTargetSubscriptionsHost host, IProjectSubscriptionService subscriptionService)
+        public async Task InitializeSubscriberAsync(ICrossTargetSubscriptionsHost host)
         {
             _host = host;
 
             await InitializeAsync();
-
-            SubscribeToConfiguredProject(_commonServices.ActiveConfiguredProject, subscriptionService);
         }
 
         public virtual void AddSubscriptions(AggregateCrossTargetProjectContext projectContext)
         {
             Requires.NotNull(projectContext, nameof(projectContext));
+            Assumes.True(IsInitialized);
 
             foreach (ConfiguredProject configuredProject in projectContext.InnerConfiguredProjects)
             {
@@ -109,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 return;
             }
 
-            await InitializeAsync();
+            Assumes.True(IsInitialized);
 
             // Ensure updates don't overlap and that we aren't disposed during the update without cleaning up properly
             await ExecuteUnderLockAsync(async token =>
