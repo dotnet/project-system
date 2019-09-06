@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="Rule|AnalyzerReference|DisplayName">
         <source>Analyzer Reference</source>
-        <target state="new">Analyzer Reference</target>
+        <target state="translated">Référence de l'analyseur</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|AnalyzerReference|Description">
         <source>Analyzer Properties</source>
-        <target state="new">Analyzer Properties</target>
+        <target state="translated">Propriétés de l'analyseur</target>
         <note />
       </trans-unit>
     </body>

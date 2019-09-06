@@ -4,22 +4,22 @@
     <body>
       <trans-unit id="Rule|ResolvedAnalyzerReference|DisplayName">
         <source>Resolved Analyzer Reference</source>
-        <target state="new">Resolved Analyzer Reference</target>
+        <target state="translated">Vyhodnocený odkaz na analyzátor</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedAnalyzerReference|Description">
         <source>Analyzer Properties</source>
-        <target state="new">Analyzer Properties</target>
+        <target state="translated">Vlastnosti analyzátoru</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|DisplayName">
         <source>Path</source>
-        <target state="new">Path</target>
+        <target state="translated">Cesta</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|Description">
         <source>Location of the analyzer assembly.</source>
-        <target state="new">Location of the analyzer assembly.</target>
+        <target state="translated">Umístění sestavení analyzátoru</target>
         <note />
       </trans-unit>
     </body>

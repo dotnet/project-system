@@ -4,142 +4,142 @@
     <body>
       <trans-unit id="Rule|ProjectReference|DisplayName">
         <source>Project Reference</source>
-        <target state="new">Project Reference</target>
+        <target state="translated">Proje Başvurusu</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ProjectReference|Description">
         <source>Reference Properties</source>
-        <target state="new">Reference Properties</target>
+        <target state="translated">Başvuru Özellikleri</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ReferenceOutputAssembly|DisplayName">
         <source>Reference Output Assembly</source>
-        <target state="new">Reference Output Assembly</target>
+        <target state="translated">Başvuru Çıkış Derlemesi</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ReferenceOutputAssembly|Description">
         <source>A value indicating whether the compiler should include a reference to the target project's primary output assembly.</source>
-        <target state="new">A value indicating whether the compiler should include a reference to the target project's primary output assembly.</target>
+        <target state="translated">Derleyicinin hedef projenin birincil çıkış derlemesine bir başvuru içermesinin gerekli olup olmadığını gösteren bir değer.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocalSatelliteAssemblies|DisplayName">
         <source>Copy Local Satellite Assemblies</source>
-        <target state="new">Copy Local Satellite Assemblies</target>
+        <target state="translated">Yerel Uydu Derlemelerini Kopyala</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocalSatelliteAssemblies|Description">
         <source>Indicates whether the satellite assemblies of the reference target should be copied into this project's output directory.</source>
-        <target state="new">Indicates whether the satellite assemblies of the reference target should be copied into this project's output directory.</target>
+        <target state="translated">Başvuru hedefinin uydu derlemelerinin bu projenin çıkış dizinine kopyalanmasının gerekli olup olmadığını gösterir.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocal|DisplayName">
         <source>Copy Local</source>
-        <target state="new">Copy Local</target>
+        <target state="translated">Yereli Kopyala</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocal|Description">
         <source>Indicates whether the reference will be copied to the output directory.</source>
-        <target state="new">Indicates whether the reference will be copied to the output directory.</target>
+        <target state="translated">Başvurunun çıkış dizinine kopyalanıp kopyalanmayacağını gösterir.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|DisplayName">
         <source>Include Assets</source>
-        <target state="new">Include Assets</target>
+        <target state="translated">Varlıkları Dahil Et</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|Description">
         <source>Assets to include from this reference.</source>
-        <target state="new">Assets to include from this reference.</target>
+        <target state="translated">Bu başvurudan eklenecek varlıklar.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
         <source>Exclude Assets</source>
-        <target state="new">Exclude Assets</target>
+        <target state="translated">Varlıkları Dışla</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|Description">
         <source>Assets to exclude from this reference.</source>
-        <target state="new">Assets to exclude from this reference.</target>
+        <target state="translated">Bu başvuruya dahil edilmeyecek varlıklar.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|DisplayName">
         <source>Private Assets</source>
-        <target state="new">Private Assets</target>
+        <target state="translated">Özel Varlıklar</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|Description">
         <source>Assets that are private in this reference.</source>
-        <target state="new">Assets that are private in this reference.</target>
+        <target state="translated">Bu başvuruda özel olan varlıklar.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|DisplayName">
         <source>Aliases</source>
-        <target state="new">Aliases</target>
+        <target state="translated">Diğer Adlar</target>
         <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|Description">
         <source>A comma-delimited list of aliases to this reference.</source>
-        <target state="new">A comma-delimited list of aliases to this reference.</target>
+        <target state="translated">Bu başvurunun diğer adlarına yönelik virgülle ayrılmış bir liste.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Culture|DisplayName">
         <source>Culture</source>
-        <target state="new">Culture</target>
+        <target state="translated">Kültür</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Culture|Description">
         <source>The value of the culture field from the assembly metadata.</source>
-        <target state="new">The value of the culture field from the assembly metadata.</target>
+        <target state="translated">Derleme meta verilerindeki kültür alanının değeri.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Description|DisplayName">
         <source>Description</source>
-        <target state="new">Description</target>
+        <target state="translated">Açıklama</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Description|Description">
         <source>The value of the Title field from the assembly metadata.</source>
-        <target state="new">The value of the Title field from the assembly metadata.</target>
+        <target state="translated">Bütünleştirilmiş kod meta verisinin Title (Başlık) alanının değeri.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|EmbedInteropTypes|DisplayName">
         <source>Embed Interop Types</source>
-        <target state="new">Embed Interop Types</target>
+        <target state="translated">Birlikte Çalışma Türlerini Ekle</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|EmbedInteropTypes|Description">
         <source>Indicates whether types defined in this assembly will be embedded into the target assembly.</source>
-        <target state="new">Indicates whether types defined in this assembly will be embedded into the target assembly.</target>
+        <target state="translated">Bu bütünleştirilmiş kodda tanımlanan türlerin hedef bütünleştirilmiş koda katıştırılıp katıştırılmayacağını belirtir.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Identity|DisplayName">
         <source>Identity</source>
-        <target state="new">Identity</target>
+        <target state="translated">Kimlik</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Identity|Description">
         <source>Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).</source>
-        <target state="new">Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).</target>
+        <target state="translated">Başvurulan bütünleştirilmiş kodun güvenlik kimliği (bkz. System.Reflection.Assembly.Evidence veya System.Security.Policy.Evidence).</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|DisplayName">
         <source>Path</source>
-        <target state="new">Path</target>
+        <target state="translated">Yol</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|Description">
         <source>Location of the file being referenced.</source>
-        <target state="new">Location of the file being referenced.</target>
+        <target state="translated">Başvurulan dosyanın konumu.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
-        <target state="new">Version</target>
+        <target state="translated">Sürüm</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|Description">
         <source>Version of reference.</source>
-        <target state="new">Version of reference.</target>
+        <target state="translated">Başvurunun sürümü.</target>
         <note />
       </trans-unit>
     </body>
