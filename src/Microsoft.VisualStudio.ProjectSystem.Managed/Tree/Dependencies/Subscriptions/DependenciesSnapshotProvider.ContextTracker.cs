@@ -106,6 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     ProjectConfiguration activeProjectConfiguration,
                     IReadOnlyCollection<ProjectConfiguration> knownProjectConfigurations)
                 {
+                    Assumes.NotNull(previousContext);
                     Assumes.True(activeProjectConfiguration.IsCrossTargeting());
 
                     ITargetFramework? activeTargetFramework = _targetFrameworkProvider.GetTargetFramework(activeProjectConfiguration.Dimensions[ConfigurationGeneral.TargetFrameworkProperty]);

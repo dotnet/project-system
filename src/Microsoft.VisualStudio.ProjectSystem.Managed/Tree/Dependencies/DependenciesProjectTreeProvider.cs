@@ -454,7 +454,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                 if (!cancellationToken.IsCancellationRequested)
                 {
-                    dependenciesNode = await viewProvider.BuildTreeAsync(dependenciesNode, snapshot, cancellationToken);
+                    dependenciesNode = await viewProvider!.BuildTreeAsync(dependenciesNode, snapshot, cancellationToken);
 
                     if (_treeTelemetryService.IsActive)
                     {
