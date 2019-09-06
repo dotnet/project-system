@@ -29,7 +29,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|Description">
         <source>Assets to include from this reference.</source>
-        <target state="needs-review-translation">Bu başvurudan eklenecek varlıklar</target>
+        <target state="translated">Bu başvurudan eklenecek varlıklar.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
@@ -39,7 +39,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|Description">
         <source>Assets to exclude from this reference.</source>
-        <target state="needs-review-translation">Bu başvurudan dışlanacak varlıklar</target>
+        <target state="translated">Bu başvuruya dahil edilmeyecek varlıklar.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|DisplayName">
@@ -49,7 +49,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|Description">
         <source>Assets that are private in this reference.</source>
-        <target state="needs-review-translation">Bu başvuruda özel olan varlıklar</target>
+        <target state="translated">Bu başvuruda özel olan varlıklar.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|DisplayName">
@@ -59,7 +59,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|Description">
         <source>Comma-delimited list of warnings that should be suppressed for this package.</source>
-        <target state="needs-review-translation">Bu paket için gizlenmesi gereken virgülle ayrılmış uyarı listesi</target>
+        <target state="translated">Bu paket için gizlenmesi gereken virgülle ayrılmış uyarı listesi.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Path|Description">
@@ -79,7 +79,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|Path|DisplayName">
         <source>Path</source>
-        <target state="new">Path</target>
+        <target state="translated">Yol</target>
         <note />
       </trans-unit>
     </body>

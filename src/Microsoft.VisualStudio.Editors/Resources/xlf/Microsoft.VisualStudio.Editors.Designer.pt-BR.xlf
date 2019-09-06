@@ -2675,7 +2675,7 @@ Deseja atualizar o valor no arquivo .settings?</target>
       </trans-unit>
       <trans-unit id="PPG_WinMDObj">
         <source>Windows Runtime Component</source>
-        <target state="translated">Componente do Tempo de Execução do Windows</target>
+        <target state="translated">Componente do Windows Runtime</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AppContainerExe">
@@ -2784,7 +2784,7 @@ Deseja atualizar o valor no arquivo .settings?</target>
       </trans-unit>
       <trans-unit id="PPG_CodeAnalysisTitle">
         <source>Code Analysis</source>
-        <target state="new">Code Analysis</target>
+        <target state="translated">Análise de Código</target>
         <note />
       </trans-unit>
     </body>

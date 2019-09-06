@@ -4,27 +4,27 @@
     <body>
       <trans-unit id="Rule|ResolvedFrameworkReference|Description">
         <source>Framework Properties</source>
-        <target state="new">Framework Properties</target>
+        <target state="translated">架構屬性</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedFrameworkReference|DisplayName">
         <source>Framework</source>
-        <target state="new">Framework</target>
+        <target state="translated">架構</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|TargetingPackPath|DisplayName">
         <source>Path</source>
-        <target state="new">Path</target>
+        <target state="translated">路徑</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Profile|DisplayName">
         <source>Profile</source>
-        <target state="new">Profile</target>
+        <target state="translated">設定檔</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|TargetingPackVersion|DisplayName">
         <source>Version</source>
-        <target state="new">Version</target>
+        <target state="translated">版本</target>
         <note />
       </trans-unit>
     </body>
