@@ -12,6 +12,8 @@ using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 {
+    [Export(typeof(IDesignTimeInputsChangeTracker))]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
     internal class DesignTimeInputsChangeTracker : ProjectValueDataSourceBase<DesignTimeInputsDelta>, IDesignTimeInputsChangeTracker
     {
         private readonly UnconfiguredProject _project;

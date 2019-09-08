@@ -20,7 +20,9 @@ using Microsoft.VisualStudio.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 {
-    internal partial class DesignTimeInputsCompiler : OnceInitializedOnceDisposedAsync
+    [Export(typeof(IDesignTimeInputsCompiler))]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
+    internal partial class DesignTimeInputsCompiler : OnceInitializedOnceDisposedAsync, IDesignTimeInputsCompiler
     {
         private static readonly TimeSpan s_compilationDelayTime = TimeSpan.FromMilliseconds(500);
 
@@ -184,24 +186,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         /// <param name="tempPEOutputPath">The path in which to place the TempPE DLL if one is created</param>
         /// <param name="sharedInputs">The list of shared inputs to be included in the TempPE DLL</param>
         /// <returns>An XML description of the TempPE DLL for the specified file</returns>
-        public Task<string> GetDesignTimeInputXmlAsync(string fileName, string tempPEOutputPath, ImmutableHashSet<string> sharedInputs)
+        public async Task<string> GetDesignTimeInputXmlAsync(string fileName, string tempPEOutputPath, ImmutableHashSet<string> sharedInputs)
         {
+            // A call to this method indicates that the TempPE system is in use for real, so we use it as a trigger for starting background compilation of things
+            // This means we get a nicer experience for the user once they start using designers, without wasted cycles compiling things just because a project is loaded
+            await InitializeAsync();
+
+            int initialQueueLength = _queue.Count;
+
             // Remove the file from our todo list, in case it was in there.
             // Note that other than this avoidance of unnecessary work, this method is stateless.
             _queue.RemoveSpecific(fileName);
 
             string outputFileName = GetOutputFileName(fileName, tempPEOutputPath);
             // make sure the file is up to date
-            return _activeWorkspaceProjectContextHost.OpenContextForWriteAsync(async accessor =>
+            bool compiled = await _activeWorkspaceProjectContextHost.OpenContextForWriteAsync(accessor =>
             {
-                bool compiled = await CompileDesignTimeInputAsync(accessor.Context, fileName, outputFileName, sharedInputs, ignoreFileWriteTime: false);
+                return CompileDesignTimeInputAsync(accessor.Context, fileName, outputFileName, sharedInputs, ignoreFileWriteTime: false);
+            });
 
-                if (compiled)
+            if (compiled)
+            {
+                _telemetryService.PostProperties(TelemetryEventName.TempPECompileOnDemand, new[]
                 {
-                    _telemetryService.PostEvent(TelemetryEventName.TempPECompileOnDemand);
-                }
+                    ( TelemetryPropertyName.TempPEInitialQueueLength, (object)initialQueueLength)
+                });
+            }
 
-                return $@"<root>
+            return $@"<root>
   <Application private_binpath = ""{Path.GetDirectoryName(outputFileName)}""/>
   <Assembly
     codebase = ""{Path.GetFileName(outputFileName)}""
@@ -211,7 +223,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
     replaceable = ""True""
   />
 </root>";
-            });
         }
 
         private async Task<bool> CompileDesignTimeInputAsync(IWorkspaceProjectContext context, string designTimeInput, string outputFileName, ImmutableHashSet<string> sharedInputs, bool ignoreFileWriteTime, CancellationToken token = default)
