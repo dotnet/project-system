@@ -23,6 +23,11 @@ namespace Moq
             return mock.Returns((T1 arg1) => { action(arg1); return Task.CompletedTask; });
         }
 
+        public static IReturnsResult<TMock> ReturnsAsync<TMock, T1, T2>(this IReturns<TMock, Task> mock, Action<T1, T2> action) where TMock : class
+        {
+            return mock.Returns((T1 arg1, T2 arg2) => { action(arg1, arg2); return Task.CompletedTask; });
+        }
+
         public static IReturnsThrows<TMock, TReturn> Returns<TMock, TReturn, TOut, TResult>(this IReturns<TMock, TReturn> valueFunction, FuncWithOut<TOut, TResult> action)
               where TMock : class
         {

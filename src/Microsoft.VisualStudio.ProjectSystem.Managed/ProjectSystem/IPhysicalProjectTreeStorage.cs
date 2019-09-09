@@ -20,14 +20,27 @@ namespace Microsoft.VisualStudio.ProjectSystem
     internal interface IPhysicalProjectTreeStorage
     {
         /// <summary>
-        ///     Adds a file to the physical project tree.
+        ///     Adds an existing file to the physical project tree.
         /// </summary>
         /// <param name="path">
-        ///     The path of the file to create, can be relative to the project directory.
+        ///     The path of the file to add, can be relative to the project directory.
         /// </param>
         /// <remarks>
         ///     This method will automatically publish the resulting tree to <see cref="IProjectTreeService.CurrentTree"/>.
         /// </remarks>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="path"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        ///     <paramref name="path"/> is an empty string (""), contains only white space, or contains one or more invalid characters.
+        ///     <para>
+        ///         -or-
+        ///     </para>
+        ///     <paramref name="path"/> is prefixed with, or contains, only a colon character (:).
+        /// </exception>
+        /// <exception cref="NotSupportedException">
+        ///     <paramref name="path"/> contains a colon character (:) that is not part of a drive label ("C:\").
+        /// </exception>
         Task AddFileAsync(string path);
 
         /// <summary>
@@ -109,5 +122,29 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     <paramref name="path"/> contains a colon character (:) that is not part of a drive label ("C:\").
         /// </exception>
         Task CreateFolderAsync(string path);
+
+        /// <summary>
+        ///     Adds an existing folder to the physical project tree.
+        /// </summary>
+        /// <param name="path">
+        ///     The path of the folder to add, can be relative to the project directory.
+        /// </param>
+        /// <remarks>
+        ///     This method will automatically publish the resulting tree to <see cref="IProjectTreeService.CurrentTree"/>.
+        /// </remarks>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="path"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        ///     <paramref name="path"/> is an empty string (""), contains only white space, or contains one or more invalid characters.
+        ///     <para>
+        ///         -or-
+        ///     </para>
+        ///     <paramref name="path"/> is prefixed with, or contains, only a colon character (:).
+        /// </exception>
+        /// <exception cref="NotSupportedException">
+        ///     <paramref name="path"/> contains a colon character (:) that is not part of a drive label ("C:\").
+        /// </exception>
+        Task AddFolderAsync(string path);
     }
 }

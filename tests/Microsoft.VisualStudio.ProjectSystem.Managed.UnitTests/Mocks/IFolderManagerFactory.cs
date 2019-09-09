@@ -14,6 +14,16 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return Mock.Of<IFolderManager>();
         }
 
+        public static IFolderManager IncludeFolderInProjectAsync(Action<string, bool> action)
+        {
+            var mock = new Mock<IFolderManager>();
+
+            mock.Setup(m => m.IncludeFolderInProjectAsync(It.IsAny<string>(), It.IsAny<bool>()))
+                .ReturnsAsync(action);
+
+            return mock.Object;
+        }
+
         public static IFolderManager IncludeFolderInProjectAsync(Func<string, bool, Task> action)
         {
             var mock = new Mock<IFolderManager>();
