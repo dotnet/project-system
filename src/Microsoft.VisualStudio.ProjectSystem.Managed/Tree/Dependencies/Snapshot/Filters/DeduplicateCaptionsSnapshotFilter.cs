@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             IDependency dependency,
             IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
             IImmutableSet<string>? projectItemSpecs,
-            IAddDependencyContext context)
+            AddDependencyContext context)
         {
             // Only apply to top-level dependencies
             if (!dependency.TopLevel)

@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             IDependency dependency,
             IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
             IImmutableSet<string>? projectItemSpecs,
-            IAddDependencyContext context)
+            AddDependencyContext context)
         {
             // TODO should this verify that the existing one is actually resolved?
             if (!dependency.Resolved && context.Contains(dependency.Id))
