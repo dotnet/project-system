@@ -29,6 +29,17 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _configuredImports = configuredImports;
         }
 
+        public async Task AddFileAsync(string path)
+        {
+            Requires.NotNullOrEmpty(path, nameof(path));
+
+            string fullPath = _project.MakeRooted(path);
+
+            await _configuredImports.Value.SourceItemsProvider.AddAsync(fullPath);
+
+            await _treeService.PublishLatestTreeAsync(waitForFileSystemUpdates: false);
+        }
+
         public async Task CreateEmptyFileAsync(string path)
         {
             Requires.NotNullOrEmpty(path, nameof(path));
@@ -42,13 +53,22 @@ namespace Microsoft.VisualStudio.ProjectSystem
             await _treeService.PublishLatestTreeAsync(waitForFileSystemUpdates: true);
         }
 
-        public async Task CreateFolderAsync(string path)
+        public Task CreateFolderAsync(string path)
         {
             Requires.NotNullOrEmpty(path, nameof(path));
 
             string fullPath = _project.MakeRooted(path);
 
             _fileSystem.Value.CreateDirectory(fullPath);
+
+            return AddFolderAsync(fullPath);
+        }
+
+        public async Task AddFolderAsync(string path)
+        {
+            Requires.NotNullOrEmpty(path, nameof(path));
+
+            string fullPath = _project.MakeRooted(path);
 
             await _configuredImports.Value.FolderManager.IncludeFolderInProjectAsync(fullPath, recursive: false);
 
