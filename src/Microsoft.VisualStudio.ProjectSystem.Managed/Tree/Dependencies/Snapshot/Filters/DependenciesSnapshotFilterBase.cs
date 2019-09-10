@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             IDependency dependency,
             IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
             IImmutableSet<string>? projectItemSpecs,
-            IAddDependencyContext context)
+            AddDependencyContext context)
         {
             context.Accept(dependency);
         }
@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
         public virtual void BeforeRemove(
             ITargetFramework targetFramework,
             IDependency dependency,
-            IRemoveDependencyContext context)
+            RemoveDependencyContext context)
         {
             context.Accept();
         }
