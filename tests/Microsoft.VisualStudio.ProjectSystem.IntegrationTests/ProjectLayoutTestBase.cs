@@ -179,12 +179,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private string CreateRootPath()
         {
-            string name;
             string rootPath;
 
             do
             {
-                name = "IntegrationTest_" + Guid.NewGuid().ToString("N").Substring(0, 12);
+                var name = "IntegrationTest_" + Guid.NewGuid().ToString("N").Substring(0, 12);
                 rootPath = Path.Combine(Path.GetTempPath(), name);
             }
             while (Directory.Exists(rootPath));
