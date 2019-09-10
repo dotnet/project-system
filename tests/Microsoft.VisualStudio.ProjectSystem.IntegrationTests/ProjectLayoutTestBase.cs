@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
         }
 
-        private void VerifyDependenciesNode(SolutionExplorerItemTestExtension actualDependencies, Node[] nodes)
+        private static void VerifyDependenciesNode(SolutionExplorerItemTestExtension actualDependencies, Node[] nodes)
         {
             var expectDependencies = new Node("Dependencies", ManagedImageMonikers.ReferenceGroup)
             {
