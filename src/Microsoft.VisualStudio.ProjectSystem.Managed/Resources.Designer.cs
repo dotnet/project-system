@@ -176,5 +176,16 @@ namespace Microsoft.VisualStudio {
                 return ResourceManager.GetString("SdkNodeName", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A file or folder with the name &apos;{0}&apos; already exists on disk at this location. Please choose another name.
+        ///
+        ///If this file or folder does not appear in Solution Explorer, then it is not currently part of your project. To view files which exist on disk, but are not in the project, select Show All Files from the Project menu..
+        /// </summary>
+        internal static string SpecialFileProvider_FileOrFolderAlreadyExists {
+            get {
+                return ResourceManager.GetString("SpecialFileProvider_FileOrFolderAlreadyExists", resourceCulture);
+            }
+        }
     }
 }

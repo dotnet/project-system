@@ -67,6 +67,15 @@
         <target state="new">Packages</target>
         <note />
       </trans-unit>
+      <trans-unit id="SpecialFileProvider_FileOrFolderAlreadyExists">
+        <source>A file or folder with the name '{0}' already exists on disk at this location. Please choose another name.
+
+If this file or folder does not appear in Solution Explorer, then it is not currently part of your project. To view files which exist on disk, but are not in the project, select Show All Files from the Project menu.</source>
+        <target state="new">A file or folder with the name '{0}' already exists on disk at this location. Please choose another name.
+
+If this file or folder does not appear in Solution Explorer, then it is not currently part of your project. To view files which exist on disk, but are not in the project, select Show All Files from the Project menu.</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>
