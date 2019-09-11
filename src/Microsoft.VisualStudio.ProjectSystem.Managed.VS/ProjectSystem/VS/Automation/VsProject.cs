@@ -66,37 +66,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 
         public bool WorkOffline { get => _vsProject.WorkOffline; set => _vsProject.WorkOffline = value; }
 
-        public Imports Imports
-        {
-            get
-            {
-                Lazy<Imports, IOrderPrecedenceMetadataView> imports = ImportsImpl.FirstOrDefault();
-                if (imports != null)
-                {
-                    return imports.Value;
-                }
-                else
-                {
-                    return _vsProject.Imports;
-                }
-            }
-        }
+        public Imports Imports => ImportsImpl.FirstOrDefault()?.Value ?? _vsProject.Imports;
 
-        public VSProjectEvents Events
-        {
-            get
-            {
-                Lazy<VSProjectEvents, IOrderPrecedenceMetadataView>? vsprojectevent = VSProjectEventsImpl.FirstOrDefault();
-                if (vsprojectevent != null)
-                {
-                    return vsprojectevent.Value;
-                }
-                else
-                {
-                    return _vsProject.Events;
-                }
-            }
-        }
+        public VSProjectEvents Events => VSProjectEventsImpl.FirstOrDefault()?.Value ?? _vsProject.Events;
 
         public ProjectItem CreateWebReferencesFolder()
         {
