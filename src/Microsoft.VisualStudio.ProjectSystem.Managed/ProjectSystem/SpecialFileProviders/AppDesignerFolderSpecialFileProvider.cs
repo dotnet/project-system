@@ -16,43 +16,39 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
     [AppliesTo(ProjectCapability.AppDesigner)]
     internal class AppDesignerFolderSpecialFileProvider : AbstractSpecialFileProvider, IAppDesignerFolderSpecialFileProvider
     {
-        private readonly IPhysicalProjectTree _projectTree;
         private readonly ProjectProperties _properties;
 
         [ImportingConstructor]
         public AppDesignerFolderSpecialFileProvider(IPhysicalProjectTree projectTree, ProjectProperties properties)
-            : base(projectTree.TreeService)
+            : base(projectTree, isFolder: true)
         {
-            _projectTree = projectTree;
             _properties = properties;
         }
 
-        protected override Task<string?> FindFileAsync(IProjectTreeProvider provider, IProjectTree root)
+        protected override async Task<IProjectTree?> FindFileAsync(IProjectTreeProvider provider, IProjectTree root)
         {
-            IProjectTree? folder = root?.GetSelfAndDescendentsBreadthFirst().FirstOrDefault(child => child.Flags.HasFlag(ProjectTreeFlags.Common.AppDesignerFolder));
-
+            // First look for the actual AppDesigner folder
+            IProjectTree? folder = FindAppDesignerFolder(root);
             if (folder == null)
-                return Task.FromResult<string?>(null);
+            {
+                // Otherwise, find a location that is a candidate
+                folder = await FindAppDesignerFolderCandidateAsync(provider, root);
+            }
 
-            return Task.FromResult(provider.GetRootedAddNewItemDirectory(folder));
-        }
-
-        protected override Task CreateFileAsync(string path)
-        {
-            return _projectTree.TreeStorage.CreateFolderAsync(path);
+            return folder;
         }
 
         protected override async Task<string?> GetDefaultFileAsync(IProjectTreeProvider provider, IProjectTree root)
         {
-            string? rootPath = provider.GetRootedAddNewItemDirectory(root);
-
-            Assumes.NotNull(rootPath);
+            string? projectPath = provider.GetRootedAddNewItemDirectory(root);
+            if (projectPath == null)  // Root has DisableAddItem
+                return null;
 
             string folderName = await GetDefaultAppDesignerFolderNameAsync();
             if (string.IsNullOrEmpty(folderName))
                 return null; // Developer has set the AppDesigner path to empty
 
-            return Path.Combine(rootPath, folderName);
+            return Path.Combine(projectPath, folderName);
         }
 
         private async Task<string> GetDefaultAppDesignerFolderNameAsync()
@@ -60,6 +56,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             AppDesigner general = await _properties.GetAppDesignerPropertiesAsync();
 
             return (string)await general.FolderName.GetValueAsync();
+        }
+
+        private IProjectTree? FindAppDesignerFolder(IProjectTree root)
+        {
+            return root.GetSelfAndDescendentsBreadthFirst()
+                       .FirstOrDefault(child => child.Flags.HasFlag(ProjectTreeFlags.Common.AppDesignerFolder));
+        }
+
+        private async Task<IProjectTree?> FindAppDesignerFolderCandidateAsync(IProjectTreeProvider provider, IProjectTree root)
+        {
+            string? path = await GetDefaultFileAsync(provider, root);
+            if (path == null)
+                return null;
+
+            return provider.FindByPath(root, path);
         }
     }
 }

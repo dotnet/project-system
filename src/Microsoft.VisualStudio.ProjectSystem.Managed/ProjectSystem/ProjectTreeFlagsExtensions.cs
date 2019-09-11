@@ -34,6 +34,15 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         /// <summary>
         ///     Returns a value indicating whether the specified flags indicates that 
+        ///     the file or folder is missing on disk.
+        /// </summary>
+        public static bool IsMissingOnDisk(this ProjectTreeFlags flags)
+        {
+            return !flags.HasFlag(ProjectTreeFlags.Common.FileSystemEntity);
+        }
+
+        /// <summary>
+        ///     Returns a value indicating whether the specified flags indicates that 
         ///     the node is a folder.
         /// </summary>
         public static bool IsFolder(this ProjectTreeFlags flags)

@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System.IO;
 using System.Threading.Tasks;
 
 using Xunit;
@@ -85,6 +86,23 @@ Project (flags: {ProjectRoot}), FilePath: ""C:\Project\Project.csproj""
             Assert.Equal(expected, result);
         }
 
+        [Fact]
+        public async Task GetFile_WhenTreeWithAppDesignerFolder_ReturnsPathIfCreateIfNotExist()
+        {
+            var tree = ProjectTreeParser.Parse(@"
+Project (flags: {ProjectRoot}), FilePath: ""C:\Project\Project.csproj""
+    My Project (flags: {Folder AppDesignerFolder BubbleUp})");
+
+            var treeProvider = new ProjectTreeProvider();
+            var physicalProjectTree = IPhysicalProjectTreeFactory.Create(provider: treeProvider, currentTree: tree);
+
+            var provider = CreateInstance(physicalProjectTree);
+
+            var result = await provider.GetFileAsync(SpecialFiles.AppDesigner, SpecialFileFlags.CreateIfNotExist);
+
+            Assert.Equal(@"C:\Project\My Project", result);
+        }
+
         [Theory]    // AppDesignerFolder        // Expected return
         [InlineData(@"Properties",              @"C:\Project\Properties")]
         [InlineData(@"My Project",              @"C:\Project\My Project")]
@@ -94,7 +112,7 @@ Project (flags: {ProjectRoot}), FilePath: ""C:\Project\Project.csproj""
         {
             var tree = ProjectTreeParser.Parse(@"
 Project (flags: {ProjectRoot}), FilePath: ""C:\Project\Project.csproj""
-    Properties (flags: {Folder})
+    Properties (flags: {FileSystemEntity Folder})
 ");
 
             var treeProvider = new ProjectTreeProvider();
@@ -109,6 +127,135 @@ Project (flags: {ProjectRoot}), FilePath: ""C:\Project\Project.csproj""
             Assert.Equal(expected, result);
         }
 
+        [Fact]
+        public async Task GetFileAsync_WhenTreeWithFileSameName_ReturnsDefaultAppDesignerFolder()
+        {
+            var tree = ProjectTreeParser.Parse(@"
+Project (flags: {ProjectRoot}), FilePath: ""C:\Project\Project.csproj""
+    Properties (flags: {FileSystemEntity FileOnDisk})
+");
+
+            var treeProvider = new ProjectTreeProvider();
+            var physicalProjectTree = IPhysicalProjectTreeFactory.Create(provider: treeProvider, currentTree: tree);
+
+            var projectProperties = CreateProperties(appDesignerFolderName: "Properties");
+
+            var provider = CreateInstance(physicalProjectTree, projectProperties);
+
+            var result = await provider.GetFileAsync(SpecialFiles.AppDesigner, SpecialFileFlags.FullPath);
+
+            Assert.Equal(@"C:\Project\Properties", result);
+        }
+
+        [Fact]
+        public async Task GetFileAsync_WhenTreeWithFileSameName_ThrowsIfCreateIfNotExist()
+        {
+            var tree = ProjectTreeParser.Parse(@"
+Project (flags: {ProjectRoot}), FilePath: ""C:\Project\Project.csproj""
+    Properties (flags: {FileSystemEntity FileOnDisk}), FilePath: ""C:\Project\Properties""
+");
+
+            var treeProvider = new ProjectTreeProvider();
+            var physicalProjectTree = IPhysicalProjectTreeFactory.Create(provider: treeProvider, currentTree: tree);
+
+            var projectProperties = CreateProperties(appDesignerFolderName: "Properties");
+
+            var provider = CreateInstance(physicalProjectTree, projectProperties);
+
+            await Assert.ThrowsAsync<IOException>(() =>
+            {
+                return provider.GetFileAsync(SpecialFiles.AppDesigner, SpecialFileFlags.CreateIfNotExist);
+            });
+        }
+
+        [Fact]
+        public async Task GetFileAsync_WhenTreeWithExcludedFolder_IsAddedToProjectIfCreateIfNotExist()
+        {
+            var tree = ProjectTreeParser.Parse(@"
+Project (flags: {ProjectRoot}), FilePath: ""C:\Project\Project.csproj""
+    Properties (flags: {FileSystemEntity Folder IncludeInProjectCandidate}), FilePath: ""C:\Project\Properties""
+");
+            int callCount = 0;
+            var storage = IPhysicalProjectTreeStorageFactory.ImplementAddFolderAsync(path => callCount++);
+            var physicalProjectTree = IPhysicalProjectTreeFactory.Create(currentTree: tree, storage: storage);
+
+            var provider = CreateInstance(physicalProjectTree);
+
+            await provider.GetFileAsync(SpecialFiles.AppDesigner, SpecialFileFlags.CreateIfNotExist);
+
+            Assert.Equal(1, callCount);
+        }
+
+        [Fact]
+        public async Task GetFileAsync_WhenTreeWithExistentAppDesignerFolder_ReturnsPathIfCreateIfNotExist()
+        {
+            var tree = ProjectTreeParser.Parse(@"
+Project (flags: {ProjectRoot}), FilePath: ""C:\Project\Project.csproj""
+    Properties (flags: {FileSystemEntity Folder AppDesignerFolder})
+");
+
+            var physicalProjectTree = IPhysicalProjectTreeFactory.Create(currentTree: tree);
+
+            var provider = CreateInstance(physicalProjectTree);
+
+            string? result = await provider.GetFileAsync(SpecialFiles.AppDesigner, SpecialFileFlags.CreateIfNotExist);
+
+            Assert.Equal(@"C:\Project\Properties", result);
+        }
+
+        [Fact]
+        public async Task GetFileAsync_WhenTreeWithNoAppDesignerFolder_IsCreatedIfCreateIfNotExist()
+        {
+            var tree = ProjectTreeParser.Parse(@"
+Project (flags: {ProjectRoot}), FilePath: ""C:\Project\Project.csproj""");
+
+            int callCount = 0;
+            var storage = IPhysicalProjectTreeStorageFactory.ImplementCreateFolderAsync(path => callCount++);
+            var physicalProjectTree = IPhysicalProjectTreeFactory.Create(currentTree: tree, storage: storage);
+
+            var projectProperties = CreateProperties(appDesignerFolderName: "Properties");
+
+            var provider = CreateInstance(physicalProjectTree, projectProperties);
+
+            await provider.GetFileAsync(SpecialFiles.AppDesigner, SpecialFileFlags.CreateIfNotExist);
+
+            Assert.Equal(1, callCount);
+        }
+
+        [Fact]
+        public async Task GetFileAsync_WhenTreeWithMissingAppDesignerFolder_IsCreatedIfCreateIfNotExist()
+        {
+            var tree = ProjectTreeParser.Parse(@"
+Project (flags: {ProjectRoot}), FilePath: ""C:\Project\Project.csproj""
+    Properties (flags: {Folder AppDesignerFolder})
+");
+            int callCount = 0;
+            var storage = IPhysicalProjectTreeStorageFactory.ImplementCreateFolderAsync(path => callCount++);
+            var physicalProjectTree = IPhysicalProjectTreeFactory.Create(currentTree: tree, storage: storage);
+
+            var provider = CreateInstance(physicalProjectTree);
+
+            await provider.GetFileAsync(SpecialFiles.AppDesigner, SpecialFileFlags.CreateIfNotExist);
+
+            Assert.Equal(1, callCount);
+        }
+
+        [Fact]
+        public async Task GetFileAsync_WhenRootMarkedWithDisableAddItemFolder_ReturnsNull()
+        {   // Mimics an extension turning on DisableAddItem flag for our parent
+
+            var tree = ProjectTreeParser.Parse(@"
+Project (flags: {ProjectRoot DisableAddItemFolder}), FilePath: ""C:\Project\Project.csproj""
+");
+            var physicalProjectTree = IPhysicalProjectTreeFactory.Create(currentTree: tree);
+
+            var provider = CreateInstance(physicalProjectTree);
+
+            var result = await provider.GetFileAsync(SpecialFiles.AppDesigner, SpecialFileFlags.CreateIfNotExist);
+
+            Assert.Null(result);
+        }
+
         private static ProjectProperties CreateProperties(string appDesignerFolderName)
         {
             return ProjectPropertiesFactory.Create(UnconfiguredProjectFactory.Create(), new[] {
@@ -119,7 +266,7 @@ Project (flags: {ProjectRoot}), FilePath: ""C:\Project\Project.csproj""
         private static AppDesignerFolderSpecialFileProvider CreateInstance(IPhysicalProjectTree? physicalProjectTree = null, ProjectProperties? properties = null)
         {
             physicalProjectTree ??= IPhysicalProjectTreeFactory.Create();
-            properties ??= ProjectPropertiesFactory.CreateEmpty();
+            properties ??= CreateProperties(appDesignerFolderName: "Properties");
 
             return new AppDesignerFolderSpecialFileProvider(physicalProjectTree, properties);
         }

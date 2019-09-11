@@ -158,4 +158,9 @@
   <data name="FrameworkNodeName" xml:space="preserve">
     <value>Frameworks</value>
   </data>
+  <data name="SpecialFileProvider_FileOrFolderAlreadyExists" xml:space="preserve">
+    <value>A file or folder with the name '{0}' already exists on disk at this location. Please choose another name.
+
+If this file or folder does not appear in Solution Explorer, then it is not currently part of your project. To view files which exist on disk, but are not in the project, select Show All Files from the Project menu.</value>
+  </data>
 </root>
