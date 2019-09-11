@@ -16,6 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
     internal class DesignTimeInputsBuildManagerBridge : UnconfiguredProjectHostBridge<IProjectVersionedValue<DesignTimeInputsDelta>, IProjectVersionedValue<DesignTimeInputsDelta>, IProjectVersionedValue<DesignTimeInputsDelta>>, IDesignTimeInputsBuildManagerBridge
     {
+        private readonly UnconfiguredProject _project;
         private readonly IProjectThreadingService _threadingService;
         private readonly IDesignTimeInputsChangeTracker _designTimeInputsChangeTracker;
         private readonly IDesignTimeInputsCompiler _designTimeInputsCompiler;
@@ -27,12 +28,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         internal bool SkipInitialization { get; set; }
 
         [ImportingConstructor]
-        public DesignTimeInputsBuildManagerBridge(IProjectThreadingService threadingService,
+        public DesignTimeInputsBuildManagerBridge(UnconfiguredProject project,
+                                                  IProjectThreadingService threadingService,
                                                   IDesignTimeInputsChangeTracker designTimeInputsChangeTracker,
                                                   IDesignTimeInputsCompiler designTimeInputsCompiler,
                                                   VSBuildManager buildManager)
              : base(threadingService.JoinableTaskContext)
         {
+            _project = project;
             _threadingService = threadingService;
             _designTimeInputsChangeTracker = designTimeInputsChangeTracker;
             _designTimeInputsCompiler = designTimeInputsCompiler;
@@ -49,13 +52,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             Initialize();
 
-            return AppliedValue.Value.Inputs.ToArray();
+            return AppliedValue.Value.Inputs.Select(_project.MakeRelative).ToArray();
         }
 
         /// <summary>
         /// Gets the XML that describes a TempPE DLL, including building it if necessary
         /// </summary>
-        public async Task<string> GetDesignTimeInputXmlAsync(string file)
+        public async Task<string> GetDesignTimeInputXmlAsync(string relativeFileName)
         {
             // Not using use the ThreadingService property because unit tests
             await _threadingService.SwitchToUIThread();
@@ -67,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             DesignTimeInputsDelta value = AppliedValue.Value;
 
-            return await _designTimeInputsCompiler.GetDesignTimeInputXmlAsync(file, value.TempPEOutputPath, value.SharedInputs);
+            return await _designTimeInputsCompiler.GetDesignTimeInputXmlAsync(relativeFileName, value.TempPEOutputPath, value.SharedInputs);
         }
 
         /// <summary>
@@ -87,14 +90,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             foreach (DesignTimeInputFileChange change in delta.ChangedInputs)
             {
-                _buildManager.OnDesignTimeOutputDirty(change.File);
+                _buildManager.OnDesignTimeOutputDirty(_project.MakeRelative(change.File));
             }
 
             if (removedFiles != null)
             {
                 foreach (string item in removedFiles)
                 {
-                    _buildManager.OnDesignTimeOutputDeleted(item);
+                    _buildManager.OnDesignTimeOutputDeleted(_project.MakeRelative(item));
                 }
             }
         }

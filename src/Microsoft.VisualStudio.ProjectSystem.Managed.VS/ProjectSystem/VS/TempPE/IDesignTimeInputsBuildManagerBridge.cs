@@ -20,6 +20,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         /// <summary>
         /// Gets the XML that describes a TempPE DLL, including building it if necessary
         /// </summary>
-        Task<string> GetDesignTimeInputXmlAsync(string file);
+        Task<string> GetDesignTimeInputXmlAsync(string relativeFileName);
     }
 }
