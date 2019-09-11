@@ -40,15 +40,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 
         protected override async Task<string?> GetDefaultFileAsync(IProjectTreeProvider provider, IProjectTree root)
         {
-            string? projectFolder = GetFilePath(provider, root);
-            if (projectFolder == null)  // Root has DisableAddItem
+            string? projectPath = provider.GetRootedAddNewItemDirectory(root);
+            if (projectPath == null)  // Root has DisableAddItem
                 return null;
 
             string folderName = await GetDefaultAppDesignerFolderNameAsync();
             if (string.IsNullOrEmpty(folderName))
                 return null; // Developer has set the AppDesigner path to empty
 
-            return Path.Combine(projectFolder, folderName);
+            return Path.Combine(projectPath, folderName);
         }
 
         private async Task<string> GetDefaultAppDesignerFolderNameAsync()
