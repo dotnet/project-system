@@ -160,6 +160,9 @@
     </StringProperty.DataSource>
   </StringProperty>
 
+  <BoolProperty Name="GenerateAssemblyInfo"
+                Visible="False" />
+
   <BoolProperty Name="GeneratePackageOnBuild"
                 Default="False"
                 Visible="False" />
