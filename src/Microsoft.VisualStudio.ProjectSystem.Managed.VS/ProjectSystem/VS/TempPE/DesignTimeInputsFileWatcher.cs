@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
-using System.Linq;
 using System.Threading.Tasks.Dataflow;
 
 using Microsoft.VisualStudio.Shell;
@@ -22,7 +21,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
     internal class DesignTimeInputsFileWatcher : ProjectValueDataSourceBase<string[]>, IVsFreeThreadedFileChangeEvents2, IDesignTimeInputsFileWatcher
     {
-        private readonly UnconfiguredProject _project;
         private readonly IProjectThreadingService _threadingService;
         private readonly IDesignTimeInputsDataSource _designTimeInputsDataSource;
         private readonly IVsService<IVsAsyncFileChangeEx> _fileChangeService;
@@ -54,7 +52,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                                            IVsService<SVsFileChangeEx, IVsAsyncFileChangeEx> fileChangeService)
              : base(unconfiguredProjectServices, synchronousDisposal: true, registerDataSource: false)
         {
-            _project = project;
             _threadingService = threadingService;
             _designTimeInputsDataSource = designTimeInputsDataSource;
             _fileChangeService = fileChangeService;
@@ -101,8 +98,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             // we don't care about the difference between types of inputs, so we just construct one hashset for fast comparisons later
             var allFiles = new HashSet<string>(StringComparers.Paths);
-            allFiles.AddRange(designTimeInputs.Inputs.Select(_project.MakeRooted));
-            allFiles.AddRange(designTimeInputs.SharedInputs.Select(_project.MakeRooted));
+            allFiles.AddRange(designTimeInputs.Inputs);
+            allFiles.AddRange(designTimeInputs.SharedInputs);
 
             // Remove any files we're watching that we don't care about any more
             var removedFiles = new List<string>();
