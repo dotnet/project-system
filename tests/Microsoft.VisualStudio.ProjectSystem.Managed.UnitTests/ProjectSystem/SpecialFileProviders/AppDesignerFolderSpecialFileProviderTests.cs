@@ -241,15 +241,13 @@ Project (flags: {ProjectRoot}), FilePath: ""C:\Project\Project.csproj""
         }
 
         [Fact]
-        public async Task GetFileAsync_WhenGetAddNewItemDirectoryNull_ReturnsNull()
+        public async Task GetFileAsync_WhenRootMarkedWithDisableAddItemFolder_ReturnsNull()
         {   // Mimics an extension turning on DisableAddItem flag for our parent
 
             var tree = ProjectTreeParser.Parse(@"
-Project (flags: {ProjectRoot}), FilePath: ""C:\Project\Project.csproj""
-    Properties (flags: {Folder AppDesignerFolder})
+Project (flags: {ProjectRoot DisableAddItemFolder}), FilePath: ""C:\Project\Project.csproj""
 ");
-            var treeProvider = IProjectTreeProviderFactory.ImplementGetAddNewItemDirectory(node => null!);
-            var physicalProjectTree = IPhysicalProjectTreeFactory.Create(provider: treeProvider, currentTree: tree);
+            var physicalProjectTree = IPhysicalProjectTreeFactory.Create(currentTree: tree);
 
             var provider = CreateInstance(physicalProjectTree);
 

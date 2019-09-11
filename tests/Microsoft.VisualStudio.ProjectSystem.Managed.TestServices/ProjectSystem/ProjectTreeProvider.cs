@@ -64,8 +64,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return null;
         }
 
-        public string GetAddNewItemDirectory(IProjectTree target)
+        public string? GetAddNewItemDirectory(IProjectTree target)
         {
+            if (target.Flags.Contains(ProjectTreeFlags.Common.DisableAddItemFolder))
+                return null;
+
             if (target.IsRoot())
                 return string.Empty;
 

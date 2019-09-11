@@ -40,6 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 
             return path;
         }
+
         private async Task<string?> FindFileAsync(IProjectTreeProvider provider, IProjectTree root, SpecialFileFlags flags)
         {
             IProjectTree? node = await FindFileAsync(provider, root);
