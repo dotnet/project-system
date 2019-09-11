@@ -116,12 +116,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             Private ReadOnly _debugLockCheck As IDebugLockCheck 'Used by the document to verify BufferLock is used when it's needed
 
             Public Sub New(buffer As IVsTextLines, debugLockCheck As IDebugLockCheck)
-                If buffer Is Nothing Then
-                    Throw New ArgumentNullException(NameOf(buffer))
-                End If
-                If debugLockCheck Is Nothing Then
-                    Throw New ArgumentNullException(NameOf(debugLockCheck))
-                End If
+                Requires.NotNull(buffer, NameOf(buffer))
+                Requires.NotNull(debugLockCheck, NameOf(debugLockCheck))
 
                 _buffer = buffer
                 _debugLockCheck = debugLockCheck
@@ -181,15 +177,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
 
             Public Sub New(vsTextLines As IVsTextLines, startLocation As Location, endLocation As Location, unescapedValue As String, definitionIncludesQuotes As Boolean)
-                If vsTextLines Is Nothing Then
-                    Throw New ArgumentNullException(NameOf(vsTextLines))
-                End If
-                If startLocation Is Nothing Then
-                    Throw New ArgumentNullException("nodeStart")
-                End If
-                If endLocation Is Nothing Then
-                    Throw New ArgumentNullException("nodeEnd")
-                End If
+                Requires.NotNull(vsTextLines, NameOf(vsTextLines))
+                Requires.NotNull(startLocation, NameOf(startLocation))
+                Requires.NotNull(endLocation, NameOf(endLocation))
+
                 If unescapedValue Is Nothing Then
                     unescapedValue = ""
                 End If
@@ -316,9 +307,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             Public Sub New(vsTextLines As IVsTextLines, fullyQualifiedPropertyName As String, elementStart As Location, elementEnd As Location)
                 MyBase.New(vsTextLines, elementStart, elementEnd, unescapedValue:="")
 
-                If fullyQualifiedPropertyName Is Nothing Then
-                    Throw New ArgumentNullException(NameOf(fullyQualifiedPropertyName))
-                End If
+                Requires.NotNull(fullyQualifiedPropertyName, NameOf(fullyQualifiedPropertyName))
 
                 _fullyQualifiedPropertyName = fullyQualifiedPropertyName
             End Sub
@@ -363,9 +352,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 #Region "Constructor"
 
         Public Sub New(vsTextLines As IVsTextLines)
-            If vsTextLines Is Nothing Then
-                Throw New ArgumentNullException(NameOf(vsTextLines))
-            End If
+            Requires.NotNull(vsTextLines, NameOf(vsTextLines))
             _vsTextLines = vsTextLines
         End Sub
 

@@ -714,9 +714,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="AllInitialValues"></param>
         ''' <remarks></remarks>
         Public Sub SetInitialValues(AllInitialValues As Object())
-            If AllInitialValues Is Nothing Then
-                Throw New ArgumentNullException(NameOf(AllInitialValues))
-            End If
+            Requires.NotNull(AllInitialValues, NameOf(AllInitialValues))
+
             If AllInitialValues.Length = 0 Then
                 Throw Common.CreateArgumentException(NameOf(AllInitialValues))
             End If
@@ -1434,9 +1433,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </param>
         ''' <remarks></remarks>
         Public Shared Sub GetAllPropertyValuesNative(Descriptor As PropertyDescriptor, Extenders As Object(), ByRef Values As Object(), ByRef ValueOrIndeterminate As Object)
-            If Extenders Is Nothing Then
-                Throw New ArgumentNullException(NameOf(Extenders))
-            End If
+            Requires.NotNull(Extenders, NameOf(Extenders))
 
             Dim ReturnValues As Object() = New Object(Extenders.Length - 1) {}
 
@@ -1472,7 +1469,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Public Shared Function GetValueOrIndeterminateFromArray(Values() As Object) As Object
             'Determine if all the values are the same or not
-            If Values Is Nothing OrElse Values.Length = 0 Then
+            Requires.NotNull(Values, NameOf(Values))
+
+            If Values.Length = 0 Then
                 Debug.Fail("Bad Values array")
                 Throw New ArgumentNullException(NameOf(Values))
             End If

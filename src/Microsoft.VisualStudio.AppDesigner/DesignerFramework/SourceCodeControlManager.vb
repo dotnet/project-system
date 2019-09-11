@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports Microsoft.VisualStudio.Shell.Interop
 
@@ -30,9 +30,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' <param name="sp"></param>
         ''' <remarks></remarks>
         Public Sub New(sp As IServiceProvider, Hierarchy As IVsHierarchy)
-            If sp Is Nothing Then
-                Throw New ArgumentNullException(NameOf(sp))
-            End If
+            Requires.NotNull(sp, NameOf(sp))
 
             _serviceProvider = sp
         End Sub
@@ -145,13 +143,8 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' <param name="fileReloaded">Out: Set to true if one or more files were reloaded...</param>
         ''' <remarks>Disallows in memory edits for IVsQueryEditQuerySave2</remarks>
         Public Shared Function QueryEditableFiles(sp As IServiceProvider, files As List(Of String), throwOnFailure As Boolean, checkOnly As Boolean, ByRef fileReloaded As Boolean, Optional allowInMemoryEdits As Boolean = True, Optional allowFileReload As Boolean = True) As Boolean
-            If sp Is Nothing Then
-                Throw New ArgumentNullException(NameOf(sp))
-            End If
-
-            If files Is Nothing Then
-                Throw New ArgumentNullException(NameOf(files))
-            End If
+            Requires.NotNull(sp, NameOf(sp))
+            Requires.NotNull(files, NameOf(files))
 
             If files.Count = 0 Then
                 Return True
@@ -263,13 +256,8 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Shared Function QuerySave(sp As IServiceProvider, files As List(Of String), throwOnFailure As Boolean) As Boolean
-            If sp Is Nothing Then
-                Throw New ArgumentNullException(NameOf(sp))
-            End If
-
-            If files Is Nothing Then
-                Throw New ArgumentNullException(NameOf(files))
-            End If
+            Requires.NotNull(sp, NameOf(sp))
+            Requires.NotNull(files, NameOf(files))
 
             If files.Count = 0 Then
                 Return True

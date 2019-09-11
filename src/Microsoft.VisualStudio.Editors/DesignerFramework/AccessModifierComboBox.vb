@@ -94,9 +94,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             Private ReadOnly _customToolValue As String
 
             Public Sub New(customToolValue As String)
-                If customToolValue Is Nothing Then
-                    Throw New ArgumentNullException(NameOf(customToolValue))
-                End If
+                Requires.NotNull(customToolValue, NameOf(customToolValue))
                 _customToolValue = customToolValue
             End Sub
 
@@ -116,9 +114,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             Public Sub New(displayName As String, customToolValue As String)
                 MyBase.New(customToolValue)
 
-                If displayName Is Nothing Then
-                    Throw New ArgumentNullException(displayName)
-                End If
+                Requires.NotNull(displayName, NameOf(displayName))
                 _displayName = displayName
             End Sub
 
@@ -138,9 +134,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             Public Sub New(accessibility As AccessModifierConverter.Access, serviceProvider As IServiceProvider, customToolValue As String)
                 MyBase.New(customToolValue)
 
-                If serviceProvider Is Nothing Then
-                    Throw New ArgumentNullException(NameOf(serviceProvider))
-                End If
+                Requires.NotNull(serviceProvider, NameOf(serviceProvider))
 
                 _accessibility = accessibility
                 _serviceProvider = serviceProvider
@@ -313,15 +307,9 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </param>
         ''' <remarks></remarks>
         Public Sub New(rootDesigner As BaseRootDesigner, serviceProvider As IServiceProvider, projectItem As EnvDTE.ProjectItem, namespaceToOverrideIfCustomToolIsEmpty As String)
-            If rootDesigner Is Nothing Then
-                Throw New ArgumentNullException(NameOf(rootDesigner))
-            End If
-            If projectItem Is Nothing Then
-                Throw New ArgumentNullException(NameOf(projectItem))
-            End If
-            If serviceProvider Is Nothing Then
-                Throw New ArgumentNullException(NameOf(serviceProvider))
-            End If
+            Requires.NotNull(rootDesigner, NameOf(rootDesigner))
+            Requires.NotNull(projectItem, NameOf(projectItem))
+            Requires.NotNull(serviceProvider, NameOf(serviceProvider))
 
             _rootDesigner = rootDesigner
             _projectItem = projectItem

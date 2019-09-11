@@ -1369,12 +1369,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             Private ReadOnly _description As String
 
             Public Sub New(value As String, description As String)
-                If value Is Nothing Then
-                    Throw New ArgumentNullException(NameOf(value))
-                End If
-                If description Is Nothing Then
-                    Throw New ArgumentNullException(NameOf(description))
-                End If
+                Requires.NotNull(value, NameOf(value))
+                Requires.NotNull(description, NameOf(description))
 
                 _value = value
                 _description = description

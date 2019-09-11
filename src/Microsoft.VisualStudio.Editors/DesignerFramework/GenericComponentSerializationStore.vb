@@ -359,9 +359,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' <param name="Value">The component from which we want to serialize stuff.</param>
             ''' <remarks></remarks>
             Public Sub New(Value As Object)
-                If Value Is Nothing Then
-                    Throw New ArgumentNullException(NameOf(Value))
-                End If
+                Requires.NotNull(Value, NameOf(Value))
 
                 ' If it is an IComponent, we'll try to get its name from 
                 ' its site
@@ -464,9 +462,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' <param name="Value">The component from which we want to serialize stuff.</param>
             ''' <remarks></remarks>
             Friend Sub New(Value As ObjectData)
-                If Value Is Nothing Then
-                    Throw New ArgumentNullException(NameOf(Value))
-                End If
+                Requires.NotNull(Value, NameOf(Value))
+
                 _objectName = Value.Name
                 _serializedValue = SerializeObject(Value.Value)
             End Sub
@@ -477,12 +474,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' <param name="Value">The component from which we want to serialize stuff.</param>
             ''' <remarks></remarks>
             Public Sub New(Value As ObjectData, [Property] As PropertyDescriptor)
-                If Value Is Nothing Then
-                    Throw New ArgumentNullException(NameOf(Value))
-                End If
-                If [Property] Is Nothing Then
-                    Throw New ArgumentNullException(NameOf([Property]))
-                End If
+                Requires.NotNull(Value, NameOf(Value))
+                Requires.NotNull([Property], NameOf([Property]))
 
                 _objectName = Value.Name
                 _propertyName = [Property].Name

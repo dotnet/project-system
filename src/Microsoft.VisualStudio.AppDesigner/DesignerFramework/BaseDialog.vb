@@ -56,9 +56,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         '**************************************************************************
         Public Sub New(ServiceProvider As IServiceProvider)
             Debug.Assert(ServiceProvider IsNot Nothing, "ServiceProvider is NULL.")
-            If ServiceProvider Is Nothing Then
-                Throw New ArgumentNullException(NameOf(ServiceProvider))
-            End If
+            Requires.NotNull(ServiceProvider, NameOf(ServiceProvider))
 
             _serviceProvider = ServiceProvider
 

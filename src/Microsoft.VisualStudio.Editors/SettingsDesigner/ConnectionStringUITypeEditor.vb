@@ -225,14 +225,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         '''</returns>
         ''' <remarks></remarks>
         Private Shared Function GetConnectionString(ServiceProvider As IServiceProvider, Dialog As IVsDataConnectionDialog, PromptIfContainsSensitiveData As Boolean) As String
-
-            If Dialog Is Nothing Then
-                Throw New ArgumentNullException(NameOf(Dialog))
-            End If
-
-            If ServiceProvider Is Nothing Then
-                Throw New ArgumentNullException(NameOf(ServiceProvider))
-            End If
+            Requires.NotNull(Dialog, NameOf(Dialog))
+            Requires.NotNull(ServiceProvider, NameOf(ServiceProvider))
 
             Dim SafeConnectionString As String = Dialog.SafeConnectionString
 

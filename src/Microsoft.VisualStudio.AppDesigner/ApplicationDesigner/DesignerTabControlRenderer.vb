@@ -124,9 +124,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="owner">The ProjectDesignerTabControl control which owns and contains this control.</param>
         ''' <remarks></remarks>
         Public Sub New(owner As ProjectDesignerTabControl)
-            If owner Is Nothing Then
-                Throw New ArgumentNullException(NameOf(owner))
-            End If
+            Requires.NotNull(owner, NameOf(owner))
+
             _owner = owner
 
             _buttonPagePadding = New Padding(9, 5, 9, 5)

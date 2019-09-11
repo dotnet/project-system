@@ -1306,9 +1306,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <return></return>
         ''' <remarks></remarks>
         Private Function IsWCFReferenceValidInProject(Hierarchy As IVsHierarchy) As Boolean
-            If Hierarchy Is Nothing Then
-                Throw New ArgumentNullException(NameOf(Hierarchy))
-            End If
+            Requires.NotNull(Hierarchy, NameOf(Hierarchy))
 
             If TryCast(Hierarchy, WCFReference.Interop.IVsWCFMetadataStorageProvider) IsNot Nothing Then
                 Dim objIsServiceReferenceSupported As Object = Nothing
@@ -1337,9 +1335,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <return></return>
         ''' <remarks></remarks>
         Friend Function IsWebReferenceSupportedByDefaultInProject(Hierarchy As IVsHierarchy) As Boolean
-            If Hierarchy Is Nothing Then
-                Throw New ArgumentNullException(NameOf(Hierarchy))
-            End If
+            Requires.NotNull(Hierarchy, NameOf(Hierarchy))
 
             Dim objIsReferenceSupported As Object = Nothing
             Try
@@ -1366,9 +1362,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <returns></returns>
         ''' <remarks></remarks>
         Friend Function IsVbProject(Hierarchy As IVsHierarchy) As Boolean
-            If Hierarchy Is Nothing Then
-                Throw New ArgumentNullException(NameOf(Hierarchy))
-            End If
+            Requires.NotNull(Hierarchy, NameOf(Hierarchy))
 
             Dim langService As Guid = Guid.Empty
             Try
@@ -1691,9 +1685,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         End Function
 
         Friend Function GetSecurityZoneOfFile(path As String, serviceProvider As ServiceProvider) As Security.SecurityZone
-            If path Is Nothing Then
-                Throw New ArgumentNullException(NameOf(path))
-            End If
+            Requires.NotNull(path, NameOf(path))
 
             If Not IO.Path.IsPathRooted(path) Then
                 Throw CreateArgumentException(NameOf(path))
