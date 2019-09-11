@@ -13,6 +13,24 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return Mock.Of<IPhysicalProjectTreeStorage>();
         }
 
+        public static IPhysicalProjectTreeStorage ImplementCreateEmptyFileAsync(Action<string> action)
+        {
+            var mock = new Mock<IPhysicalProjectTreeStorage>();
+            mock.Setup(p => p.CreateEmptyFileAsync(It.IsAny<string>()))
+                .ReturnsAsync(action);
+
+            return mock.Object;
+        }
+
+        public static IPhysicalProjectTreeStorage ImplementAddFileAsync(Action<string> action)
+        {
+            var mock = new Mock<IPhysicalProjectTreeStorage>();
+            mock.Setup(p => p.AddFileAsync(It.IsAny<string>()))
+                .ReturnsAsync(action);
+
+            return mock.Object;
+        }
+
         public static IPhysicalProjectTreeStorage ImplementAddFolderAsync(Action<string> action)
         {
             var mock = new Mock<IPhysicalProjectTreeStorage>();
