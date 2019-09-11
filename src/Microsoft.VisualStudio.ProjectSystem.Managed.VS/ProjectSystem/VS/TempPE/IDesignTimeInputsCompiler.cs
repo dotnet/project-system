@@ -12,10 +12,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         /// <summary>
         /// Gets the XML that describes a TempPE DLL, including building it if necessary
         /// </summary>
-        /// <param name="fileName">A project relative path to a source file that is a design time input</param>
+        /// <param name="relativeFileName">A project relative path to a source file that is a design time input</param>
         /// <param name="tempPEOutputPath">The path in which to place the TempPE DLL if one is created</param>
         /// <param name="sharedInputs">The list of shared inputs to be included in the TempPE DLL</param>
         /// <returns>An XML description of the TempPE DLL for the specified file</returns>
-        Task<string> GetDesignTimeInputXmlAsync(string fileName, string tempPEOutputPath, System.Collections.Immutable.ImmutableHashSet<string> sharedInputs);
+        Task<string> GetDesignTimeInputXmlAsync(string relativeFileName, string tempPEOutputPath, System.Collections.Immutable.ImmutableHashSet<string> sharedInputs);
     }
 }
