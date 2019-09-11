@@ -323,7 +323,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Else
                 If Not TypeOf value Is String Then
                     Debug.Fail("Expected a string value for property NoWarn")
-                    Throw Common.CreateArgumentException("value")
+                    Throw Common.CreateArgumentException(NameOf(value))
                 End If
                 _noWarn = SplitToNumbers(DirectCast(value, String))
             End If
@@ -368,7 +368,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Else
                 If Not TypeOf value Is String Then
                     Debug.Fail("Expected a string value for property SpecWarnAsError")
-                    Throw Common.CreateArgumentException("value")
+                    Throw Common.CreateArgumentException(NameOf(value))
                 End If
                 _specWarnAsError = SplitToNumbers(DirectCast(value, String))
             End If

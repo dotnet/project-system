@@ -57,7 +57,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                         Return "Public"
                     End If
                 Case Else
-                    Throw CreateArgumentException("AccessModifier")
+                    Throw CreateArgumentException(NameOf(accessibility))
             End Select
         End Function
     End Class

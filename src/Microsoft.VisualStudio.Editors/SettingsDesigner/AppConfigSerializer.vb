@@ -253,7 +253,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             If ClassName = "" Then
                 Debug.Fail("Must provide a valid class name!")
-                Throw Common.CreateArgumentException("ClassName")
+                Throw Common.CreateArgumentException(NameOf(ClassName))
             End If
 
             If NamespaceName Is Nothing Then

@@ -880,7 +880,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                         Case PaintStyles.DotDotDot, PaintStyles.DropDown
                             ' Everything is cool
                         Case Else
-                            Throw CreateArgumentException("value")
+                            Throw CreateArgumentException(NameOf(value))
                     End Select
                     _paintStyle = value
                     Invalidate()

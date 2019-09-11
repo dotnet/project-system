@@ -244,7 +244,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Sub New(id As Integer, name As String, FormControl As Control, setter As SetDelegate, getter As GetDelegate, multiValueSetter As MultiValueSetDelegate, multiValueGetter As MultiValueGetDelegate, flags As ControlDataFlags, AssociatedControls As Control())
             If id < 0 Then 'Don't allow DISPID_UNKNOWN (-1) etc
                 Debug.Fail("Property ID must be non-negative")
-                Throw Common.CreateArgumentException("id")
+                Throw Common.CreateArgumentException(NameOf(id))
             End If
             _dispId = id
             _propertyName = name
@@ -695,7 +695,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Public Sub SetInitialValues(InitialValue As Object, AllInitialValues As Object())
             If AllInitialValues IsNot Nothing AndAlso AllInitialValues.Length = 0 Then
-                Throw Common.CreateArgumentException("AllInitialValues")
+                Throw Common.CreateArgumentException(NameOf(AllInitialValues))
             End If
             Debug.Assert(AllInitialValues IsNot Nothing OrElse InitialValue IsNot Indeterminate)
             Debug.Assert(AllInitialValues Is Nothing _
@@ -718,7 +718,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Throw New ArgumentNullException(NameOf(AllInitialValues))
             End If
             If AllInitialValues.Length = 0 Then
-                Throw Common.CreateArgumentException("AllInitialValues")
+                Throw Common.CreateArgumentException(NameOf(AllInitialValues))
             End If
 
             _initialValue = GetValueOrIndeterminateFromArray(AllInitialValues)
@@ -1648,7 +1648,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Throw New InvalidOperationException
             End If
             If Objects Is Nothing OrElse Values Is Nothing OrElse Objects.Length <> Values.Length Then
-                Throw Common.CreateArgumentException("Objects")
+                Throw Common.CreateArgumentException(NameOf(Objects))
             End If
 
             m_PropPage.SuspendPropertyChangeListening(DispId)

@@ -40,7 +40,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             End If
             If Values.Length <> Objects.Length Then
                 Debug.Fail("Bad array length returned from GetPropertyMultipleValues()")
-                Throw Common.CreateArgumentException("Values, Objects")
+                Throw Common.CreateArgumentException(NameOf(Values))
             End If
 
             Me.SelectedConfigName = SelectedConfigName
@@ -67,7 +67,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     Me.Values(i) = Values(i)
                 Else
                     Debug.Fail("Unexpected type passed in to MultipleValues.  Currently only IVsCfg supported.  If it's a common (non-config) property, why are we creating MultipleValues for it?")
-                    Throw Common.CreateArgumentException("Values")
+                    Throw Common.CreateArgumentException(NameOf(Values))
                 End If
             Next
 

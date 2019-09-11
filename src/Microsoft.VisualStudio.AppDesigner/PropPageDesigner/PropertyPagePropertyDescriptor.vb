@@ -101,7 +101,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 Return View.GetProperty(Name)
             Else
                 Debug.Fail("PropertyPagePropertyDescriptor.GetValue() called with unexpected Component type.  Expected that this is also set up through the PropPageDesignerView (implementing IProjectDesignerPropertyPageUndoSite)")
-                Throw AppDesCommon.CreateArgumentException("Component")
+                Throw AppDesCommon.CreateArgumentException(NameOf(Component))
             End If
         End Function
 
@@ -122,7 +122,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 View.SetProperty(Name, Value)
             Else
                 Debug.Fail("PropertyPagePropertyDescriptor.SetValue() called with unexpected Component type.  Expected that this is also set up through the PropPageDesignerView (implementing IProjectDesignerPropertyPageUndoSite)")
-                Throw AppDesCommon.CreateArgumentException("Component")
+                Throw AppDesCommon.CreateArgumentException(NameOf(Component))
             End If
         End Sub
 

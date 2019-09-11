@@ -333,7 +333,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     ' perform parameter validation and initialization.
                     '
                     If (VsCreateEditorFlags And CType(__VSCREATEEDITORFLAGS.CEF_OPENFILE Or __VSCREATEEDITORFLAGS.CEF_SILENT, UInteger)) = 0 Then
-                        Throw CreateArgumentException("vscreateeditorflags")
+                        Throw CreateArgumentException(NameOf(vscreateeditorflags))
                     End If
 
                     DocView = Nothing

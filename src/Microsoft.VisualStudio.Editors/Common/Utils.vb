@@ -1696,7 +1696,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             End If
 
             If Not IO.Path.IsPathRooted(path) Then
-                Throw CreateArgumentException("path")
+                Throw CreateArgumentException(NameOf(path))
             End If
 
             ' Some additional verification is done by Path.GetFullPath...

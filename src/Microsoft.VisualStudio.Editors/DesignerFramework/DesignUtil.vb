@@ -256,7 +256,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             Dim chars() As Char = value.ToCharArray()
 
             If chars.Length = 0 Then
-                Throw Common.CreateArgumentException("value")
+                Throw Common.CreateArgumentException(NameOf(value))
             End If
 
             Dim result As New System.Text.StringBuilder
@@ -289,7 +289,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             Dim cleanIdentifier As String = result.ToString()
             If Not CodeDom.Compiler.CodeGenerator.IsValidLanguageIndependentIdentifier(cleanIdentifier) Then
                 Debug.Fail(String.Format("Failed to clean up identifier '{0}'", cleanIdentifier))
-                Throw Common.CreateArgumentException("value")
+                Throw Common.CreateArgumentException(NameOf(value))
             End If
 
             Return cleanIdentifier

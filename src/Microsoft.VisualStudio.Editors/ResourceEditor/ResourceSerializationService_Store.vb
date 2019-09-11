@@ -450,7 +450,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 ''' <remarks></remarks>
                 Public Sub New(Resource As Resource)
                     If Resource Is Nothing Then
-                        Throw Common.CreateArgumentException("Resource")
+                        Throw Common.CreateArgumentException(NameOf(Resource))
                     End If
 
                     _resource = Resource
@@ -565,7 +565,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     _resourceName = OwnerResource.Name
                     _propertyName = ResourceProperty.Name
                     If PropertyName = "" Then
-                        Throw Common.CreateArgumentException("ResourceProperty")
+                        Throw Common.CreateArgumentException(NameOf(ResourceProperty))
                     End If
                     _resourceValueTypeName = OwnerResource.ValueTypeName
 

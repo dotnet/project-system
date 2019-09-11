@@ -125,23 +125,23 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ' Validate arguments....
             Debug.Assert(rgpProjects IsNot Nothing AndAlso rgpProjects.Length = cProjects, "null rgpProjects or bad-length array")
             If (rgpProjects Is Nothing) Then Throw New ArgumentNullException(NameOf(rgpProjects))
-            If (rgpProjects.Length <> cProjects) Then Throw Common.CreateArgumentException("rgpProjects")
+            If (rgpProjects.Length <> cProjects) Then Throw Common.CreateArgumentException(NameOf(rgpProjects))
 
             Debug.Assert(rgFirstIndices IsNot Nothing AndAlso rgFirstIndices.Length = cProjects, "null rgFirstIndices or bad-length array")
             If (rgFirstIndices Is Nothing) Then Throw New ArgumentNullException(NameOf(rgFirstIndices))
-            If (rgFirstIndices.Length <> cProjects) Then Throw Common.CreateArgumentException("rgFirstIndices")
+            If (rgFirstIndices.Length <> cProjects) Then Throw Common.CreateArgumentException(NameOf(rgFirstIndices))
 
             Debug.Assert(rgszMkOldNames IsNot Nothing AndAlso rgszMkOldNames.Length = cFiles, "null rgszMkOldNames or bad-length array")
             If (rgszMkOldNames Is Nothing) Then Throw New ArgumentNullException(NameOf(rgszMkOldNames))
-            If (rgszMkOldNames.Length <> cFiles) Then Throw Common.CreateArgumentException("rgszMkOldNames")
+            If (rgszMkOldNames.Length <> cFiles) Then Throw Common.CreateArgumentException(NameOf(rgszMkOldNames))
 
             Debug.Assert(rgszMkNewNames IsNot Nothing AndAlso rgszMkNewNames.Length = cFiles, "null rgszMkNewNames or bad-length array")
             If (rgszMkNewNames Is Nothing) Then Throw New ArgumentNullException(NameOf(rgszMkNewNames))
-            If (rgszMkNewNames.Length <> cFiles) Then Throw Common.CreateArgumentException("rgszMkNewNames")
+            If (rgszMkNewNames.Length <> cFiles) Then Throw Common.CreateArgumentException(NameOf(rgszMkNewNames))
 
             Debug.Assert(rgFlags IsNot Nothing AndAlso rgFlags.Length = cFiles, "null rgFlags or bad-length array")
             If (rgFlags Is Nothing) Then Throw New ArgumentNullException(NameOf(rgFlags))
-            If (rgFlags.Length <> cFiles) Then Throw Common.CreateArgumentException("rgFlags")
+            If (rgFlags.Length <> cFiles) Then Throw Common.CreateArgumentException(NameOf(rgFlags))
 
             For i As Integer = 0 To cFiles - 1
                 If HasResourceFileExtension(rgszMkNewNames(i)) Then

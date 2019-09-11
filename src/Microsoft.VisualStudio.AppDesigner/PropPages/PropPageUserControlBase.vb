@@ -2769,7 +2769,7 @@ NextControl:
                     Return _controlData.IsDirty
                 End If
             Next _controlData
-            Throw Common.CreateArgumentException("sender")
+            Throw Common.CreateArgumentException(NameOf(sender))
         End Function
 
 
@@ -3541,7 +3541,7 @@ NextControl:
             Dim Data As PropertyControlData = GetNestedPropertyControlData(PropertyName)
             If Data Is Nothing Then
                 Debug.Fail("IVsProjectDesignerPage.GetPropertyValue: PropertyName passed in was not recognized")
-                Throw Common.CreateArgumentException("PropertyName")
+                Throw Common.CreateArgumentException(NameOf(PropertyName))
             End If
 
             Dim Value As Object = Data.InitialValue
@@ -3591,7 +3591,7 @@ NextControl:
             Dim _ControlData As PropertyControlData = GetNestedPropertyControlData(PropertyName)
             If _ControlData Is Nothing Then
                 Debug.Fail("IVsProjectDesignerPage.GetPropertyValue: PropertyName passed in was not recognized")
-                Throw Common.CreateArgumentException("PropertyName")
+                Throw Common.CreateArgumentException(NameOf(PropertyName))
             End If
 
 
@@ -3658,7 +3658,7 @@ NextControl:
         Protected Overridable Function IVsProjectDesignerPage_GetPropertyMultipleValues(PropertyName As String, ByRef Objects As Object(), ByRef Values As Object()) As Boolean Implements IVsProjectDesignerPage.GetPropertyMultipleValues
             Dim Data As PropertyControlData = GetNestedPropertyControlData(PropertyName)
             If Data Is Nothing OrElse Data.IsMissing Then
-                Throw Common.CreateArgumentException("PropertyName")
+                Throw Common.CreateArgumentException(NameOf(PropertyName))
             End If
 
             If Not SupportsMultipleValueUndo(Data) Then
@@ -3692,12 +3692,12 @@ NextControl:
         Protected Overridable Sub IVsProjectDesignerPage_SetPropertyValueMultipleValues(PropertyName As String, Objects() As Object, Values() As Object) Implements IVsProjectDesignerPage.SetPropertyMultipleValues
             If Objects Is Nothing OrElse Objects.Length = 0 OrElse Values Is Nothing OrElse Values.Length <> Objects.Length Then
                 Debug.Fail("unexpected")
-                Throw Common.CreateArgumentException("Objects, Values")
+                Throw Common.CreateArgumentException(NameOf(Objects))
             End If
 
             Dim Data As PropertyControlData = GetNestedPropertyControlData(PropertyName)
             If Data Is Nothing OrElse Data.IsMissing Then
-                Throw Common.CreateArgumentException("PropertyName")
+                Throw Common.CreateArgumentException(NameOf(PropertyName))
             End If
 
             If Not SupportsMultipleValueUndo(Data) Then

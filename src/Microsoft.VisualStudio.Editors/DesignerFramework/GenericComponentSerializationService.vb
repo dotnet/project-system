@@ -72,7 +72,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
             Dim RFStore As GenericComponentSerializationStore = TryCast(Store, GenericComponentSerializationStore)
             If RFStore Is Nothing Then
-                Throw Common.CreateArgumentException("Store")
+                Throw Common.CreateArgumentException(NameOf(Store))
             End If
 
             RFStore.AddObject(Value)
@@ -112,11 +112,11 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
             Dim RFStore As GenericComponentSerializationStore = TryCast(Store, GenericComponentSerializationStore)
             If RFStore Is Nothing Then
-                Throw Common.CreateArgumentException("Store")
+                Throw Common.CreateArgumentException(NameOf(Store))
             End If
 
             If Not TypeOf Member Is PropertyDescriptor Then
-                Throw Common.CreateArgumentException("Member")
+                Throw Common.CreateArgumentException(NameOf(Member))
             End If
 
             RFStore.AddMember(OwningObject, DirectCast(Member, PropertyDescriptor))
@@ -158,7 +158,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
             Dim RFStore As GenericComponentSerializationStore = TryCast(Store, GenericComponentSerializationStore)
             If RFStore Is Nothing Then
-                Throw Common.CreateArgumentException("Store")
+                Throw Common.CreateArgumentException(NameOf(Store))
             End If
 
             Return RFStore.Deserialize()
@@ -185,7 +185,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
             Dim RFStore As GenericComponentSerializationStore = TryCast(Store, GenericComponentSerializationStore)
             If RFStore Is Nothing Then
-                Throw Common.CreateArgumentException("Store")
+                Throw Common.CreateArgumentException(NameOf(Store))
             End If
 
             Return RFStore.Deserialize(Container)
@@ -218,7 +218,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
             Dim RFStore As GenericComponentSerializationStore = TryCast(Store, GenericComponentSerializationStore)
             If RFStore Is Nothing Then
-                Throw Common.CreateArgumentException("Store")
+                Throw Common.CreateArgumentException(NameOf(Store))
             End If
 
             RFStore.DeserializeTo(Container)

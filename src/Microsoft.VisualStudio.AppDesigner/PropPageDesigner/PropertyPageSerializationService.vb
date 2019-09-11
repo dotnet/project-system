@@ -90,13 +90,13 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             End If
 
             If Not TypeOf Value Is PropPageDesignerRootComponent Then
-                Throw AppDesCommon.CreateArgumentException("Value")
+                Throw AppDesCommon.CreateArgumentException(NameOf(Value))
             End If
             Dim Component As PropPageDesignerRootComponent = DirectCast(Value, PropPageDesignerRootComponent)
 
             Dim RFStore As PropertyPageSerializationStore = TryCast(Store, PropertyPageSerializationStore)
             If RFStore Is Nothing Then
-                Throw AppDesCommon.CreateArgumentException("Store")
+                Throw AppDesCommon.CreateArgumentException(NameOf(Store))
             End If
 
             RFStore.AddObject(Component)
@@ -135,12 +135,12 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
             Dim OwningResource As PropPageDesignerRootComponent = TryCast(OwningObject, PropPageDesignerRootComponent)
             If OwningObject Is Nothing Then
-                Throw AppDesCommon.CreateArgumentException("OwningObject")
+                Throw AppDesCommon.CreateArgumentException(NameOf(OwningObject))
             End If
 
             Dim RFStore As PropertyPageSerializationStore = TryCast(Store, PropertyPageSerializationStore)
             If RFStore Is Nothing Then
-                Throw AppDesCommon.CreateArgumentException("Store")
+                Throw AppDesCommon.CreateArgumentException(NameOf(Store))
             End If
 
             RFStore.AddMember(OwningResource, Member)
@@ -184,7 +184,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
             Dim RFStore As PropertyPageSerializationStore = TryCast(Store, PropertyPageSerializationStore)
             If RFStore Is Nothing Then
-                Throw AppDesCommon.CreateArgumentException("Store")
+                Throw AppDesCommon.CreateArgumentException(NameOf(Store))
             End If
 
             Return RFStore.Deserialize()
@@ -211,7 +211,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
             Dim RFStore As PropertyPageSerializationStore = TryCast(Store, PropertyPageSerializationStore)
             If RFStore Is Nothing Then
-                Throw AppDesCommon.CreateArgumentException("Store")
+                Throw AppDesCommon.CreateArgumentException(NameOf(Store))
             End If
 
             Return RFStore.Deserialize(Container)
@@ -244,7 +244,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
             Dim RFStore As PropertyPageSerializationStore = TryCast(Store, PropertyPageSerializationStore)
             If RFStore Is Nothing Then
-                Throw AppDesCommon.CreateArgumentException("Store")
+                Throw AppDesCommon.CreateArgumentException(NameOf(Store))
             End If
 
             RFStore.DeserializeTo(Container)

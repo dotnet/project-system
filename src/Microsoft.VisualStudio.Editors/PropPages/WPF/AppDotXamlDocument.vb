@@ -61,10 +61,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
             Public Sub New(lineIndex As Integer, charOnLineIndex As Integer)
                 If lineIndex < 0 Then
-                    Throw CreateArgumentException("lineIndex")
+                    Throw CreateArgumentException(NameOf(lineIndex))
                 End If
                 If charOnLineIndex < 0 Then
-                    Throw CreateArgumentException("charOnLineIndex")
+                    Throw CreateArgumentException(NameOf(charOnLineIndex))
                 End If
 
                 Me.LineIndex = lineIndex
