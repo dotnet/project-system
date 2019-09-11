@@ -9,16 +9,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 {
     public partial class VSProject : VSLangProj.ProjectProperties
     {
-        private ProjectProperties ProjectProperties
-        {
-            get { return _projectProperties.Value; }
-        }
-
         private T GetBrowseObjectValue<T>(Func<ConfigurationGeneralBrowseObject, IEvaluatedProperty> func)
         {
             return _threadingService.ExecuteSynchronously(async () =>
             {
-                ConfigurationGeneralBrowseObject browseObject = await ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync();
+                ConfigurationGeneralBrowseObject browseObject = await _projectProperties.Value.GetConfigurationGeneralBrowseObjectPropertiesAsync();
                 IEvaluatedProperty evaluatedProperty = func(browseObject);
                 object value = await evaluatedProperty.GetValueAsync();
                 return (T)value;
@@ -29,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         {
             _threadingService.ExecuteSynchronously(async () =>
             {
-                ConfigurationGeneralBrowseObject browseObject = await ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync();
+                ConfigurationGeneralBrowseObject browseObject = await _projectProperties.Value.GetConfigurationGeneralBrowseObjectPropertiesAsync();
                 IEvaluatedProperty evaluatedProperty = func(browseObject);
                 await evaluatedProperty.SetValueAsync(value);
             });
@@ -39,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         {
             return _threadingService.ExecuteSynchronously(async () =>
             {
-                ConfigurationGeneralBrowseObject browseObject = await ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync();
+                ConfigurationGeneralBrowseObject browseObject = await _projectProperties.Value.GetConfigurationGeneralBrowseObjectPropertiesAsync();
                 IEvaluatedProperty evaluatedProperty = func(browseObject);
                 return await evaluatedProperty.GetEvaluatedValueAtEndAsync();
             });
@@ -49,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         {
             return _threadingService.ExecuteSynchronously(async () =>
             {
-                ConfigurationGeneral configurationGeneral = await ProjectProperties.GetConfigurationGeneralPropertiesAsync();
+                ConfigurationGeneral configurationGeneral = await _projectProperties.Value.GetConfigurationGeneralPropertiesAsync();
                 IEvaluatedProperty evaluatedProperty = func(configurationGeneral);
                 return await evaluatedProperty.GetEvaluatedValueAtEndAsync();
             });
@@ -59,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         {
             _threadingService.ExecuteSynchronously(async () =>
             {
-                ConfigurationGeneral configurationGeneral = await ProjectProperties.GetConfigurationGeneralPropertiesAsync();
+                ConfigurationGeneral configurationGeneral = await _projectProperties.Value.GetConfigurationGeneralPropertiesAsync();
                 IEvaluatedProperty evaluatedProperty = func(configurationGeneral);
                 await evaluatedProperty.SetValueAsync(value);
             });
