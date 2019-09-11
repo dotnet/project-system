@@ -89,8 +89,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             watcher.AllowSourceBlockCompletion = true;
 
-            // Send our input
-            await source.SendAsync(new DesignTimeInputs(designTimeInputs, sharedDesignTimeInputs));
+            // Send our input. DesignTimeInputs expects full file paths
+            await source.SendAsync(new DesignTimeInputs(designTimeInputs.Select(f => f), sharedDesignTimeInputs.Select(f => f)));
 
             // The TaskCompletionSource is the thing we use to wait for the test to finish
             var finished = new TaskCompletionSource<bool>();
@@ -136,7 +136,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             watcher.Dispose();
 
             // Make sure we watched all of the files we should
-            Assert.Equal(watchedFiles, fileChangeService.UniqueFilesWatched.Select(f => Path.GetFileName(f)).ToArray());
+            Assert.Equal(watchedFiles, fileChangeService.UniqueFilesWatched);
 
             // Should clean up and unwatch everything
             Assert.Empty(fileChangeService.WatchedFiles.ToArray());
