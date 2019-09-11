@@ -24,12 +24,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                         ""Compile"": {
                             ""Items"": { 
                                 ""File1.cs"": {
-                                    ""DesignTime"": true
+                                    ""DesignTime"": true,
+                                    ""FullPath"": ""C:\\Project\\File1.cs""
                                 }
                             }
                         }
                     }",
-                    new string[] { "File1.cs" },
+                    new string[] { "C:\\Project\\File1.cs" },
                     new string[] { }
                 },
 
@@ -40,13 +41,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                         ""Compile"": {
                             ""Items"": { 
                                 ""File1.cs"": {
-                                    ""DesignTime"": true
+                                    ""DesignTime"": true,
+                                    ""FullPath"": ""C:\\Project\\File1.cs""
                                 },
-                                ""File2.cs"": { }
+                                ""File2.cs"": {
+                                    ""FullPath"": ""C:\\Project\\File2.cs""
+                                }
                             }
                         }
                     }",
-                    new string[] { "File1.cs" },
+                    new string[] { "C:\\Project\\File1.cs" },
                     new string[] { }
                 },
 
@@ -57,16 +61,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                         ""Compile"": {
                             ""Items"": { 
                                 ""File1.cs"": {
-                                    ""DesignTime"": true
+                                    ""DesignTime"": true,
+                                    ""FullPath"": ""C:\\Project\\File1.cs""
                                 },
                                 ""File2.cs"": {
-                                    ""DesignTimeSharedInput"": true
+                                    ""DesignTimeSharedInput"": true,
+                                    ""FullPath"": ""C:\\Project\\File2.cs""
                                 }
                             }
                         }
                     }",
-                    new string[] { "File1.cs" },
-                    new string[] { "File2.cs" }
+                    new string[] { "C:\\Project\\File1.cs" },
+                    new string[] { "C:\\Project\\File2.cs" }
                 },
 
                 // A file that is both a design time and shared design time input
@@ -77,13 +83,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                             ""Items"": { 
                                 ""File1.cs"": {
                                     ""DesignTime"": true,
-                                    ""DesignTimeSharedInput"": true
+                                    ""DesignTimeSharedInput"": true,
+                                    ""FullPath"": ""C:\\Project\\File1.cs""
                                 }
                             }
                         }
                     }",
-                    new string[] { "File1.cs" },
-                    new string[] { "File1.cs" }
+                    new string[] { "C:\\Project\\File1.cs" },
+                    new string[] { "C:\\Project\\File1.cs" }
                 },
 
                 // A design time input that is a linked file, and hence ignored
@@ -94,7 +101,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                             ""Items"": { 
                                 ""File1.cs"": {
                                     ""DesignTime"": true,
-                                    ""Link"": ""foo""
+                                    ""Link"": ""foo"",
+                                    ""FullPath"": ""C:\\Project\\File1.cs""
                                 }
                             }
                         }
