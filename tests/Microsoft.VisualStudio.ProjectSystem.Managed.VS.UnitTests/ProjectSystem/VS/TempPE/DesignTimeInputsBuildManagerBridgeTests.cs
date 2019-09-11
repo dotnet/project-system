@@ -89,10 +89,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                     _lastSharedInputs = sharedInputs;
                 });
 
+            var project = UnconfiguredProjectFactory.Create(filePath: @"C:\MyProject\MyProject.csproj");
 
             _buildManager = new TestBuildManager();
 
-            _bridge = new TestDesignTimeInputsBuildManagerBridge(threadingService, changeTracker, compilerMock.Object, _buildManager);
+            _bridge = new TestDesignTimeInputsBuildManagerBridge(project, threadingService, changeTracker, compilerMock.Object, _buildManager);
             _bridge.SkipInitialization = true;
         }
 
@@ -103,8 +104,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         internal class TestDesignTimeInputsBuildManagerBridge : DesignTimeInputsBuildManagerBridge
         {
-            public TestDesignTimeInputsBuildManagerBridge(IProjectThreadingService threadingService, IDesignTimeInputsChangeTracker designTimeInputsChangeTracker, IDesignTimeInputsCompiler designTimeInputsCompiler, VSBuildManager buildManager)
-                : base(threadingService, designTimeInputsChangeTracker, designTimeInputsCompiler, buildManager)
+            public TestDesignTimeInputsBuildManagerBridge(UnconfiguredProject project, IProjectThreadingService threadingService, IDesignTimeInputsChangeTracker designTimeInputsChangeTracker, IDesignTimeInputsCompiler designTimeInputsCompiler, VSBuildManager buildManager)
+                : base(project, threadingService, designTimeInputsChangeTracker, designTimeInputsCompiler, buildManager)
             {
             }
 
