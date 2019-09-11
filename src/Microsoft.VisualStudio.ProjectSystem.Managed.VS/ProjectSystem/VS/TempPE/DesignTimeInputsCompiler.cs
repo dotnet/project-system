@@ -6,7 +6,6 @@ using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
@@ -182,11 +181,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         /// <summary>
         /// Gets the XML that describes a TempPE DLL, including building it if necessary
         /// </summary>
-        /// <param name="fileName">A project relative path to a source file that is a design time input</param>
+        /// <param name="relativeFileName">A project relative path to a source file that is a design time input</param>
         /// <param name="tempPEOutputPath">The path in which to place the TempPE DLL if one is created</param>
         /// <param name="sharedInputs">The list of shared inputs to be included in the TempPE DLL</param>
         /// <returns>An XML description of the TempPE DLL for the specified file</returns>
-        public async Task<string> GetDesignTimeInputXmlAsync(string fileName, string tempPEOutputPath, ImmutableHashSet<string> sharedInputs)
+        public async Task<string> GetDesignTimeInputXmlAsync(string relativeFileName, string tempPEOutputPath, ImmutableHashSet<string> sharedInputs)
         {
             // A call to this method indicates that the TempPE system is in use for real, so we use it as a trigger for starting background compilation of things
             // This means we get a nicer experience for the user once they start using designers, without wasted cycles compiling things just because a project is loaded
@@ -194,11 +193,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             int initialQueueLength = _queue.Count;
 
+            string fileName = _project.MakeRooted(relativeFileName);
+
             // Remove the file from our todo list, in case it was in there.
             // Note that other than this avoidance of unnecessary work, this method is stateless.
             _queue.RemoveSpecific(fileName);
 
-            string outputFileName = GetOutputFileName(fileName, tempPEOutputPath);
+            string outputFileName = GetOutputFileNameFromRelativePath(relativeFileName, tempPEOutputPath);
             // make sure the file is up to date
             bool compiled = await _activeWorkspaceProjectContextHost.OpenContextForWriteAsync(accessor =>
             {
@@ -217,7 +218,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
   <Application private_binpath = ""{Path.GetDirectoryName(outputFileName)}""/>
   <Assembly
     codebase = ""{Path.GetFileName(outputFileName)}""
-    name = ""{fileName}""
+    name = ""{relativeFileName}""
     version = ""0.0.0.0""
     snapshot_id = ""1""
     replaceable = ""True""
@@ -266,11 +267,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             return false;
         }
 
-        private static string GetOutputFileName(string designTimeInput, string tempPEOutputPath)
+        private string GetOutputFileName(string fileName, string tempPEOutputPath)
         {
-            // All monikers are project relative paths by definition (anything else is a link, and linked files can't be TempPE inputs), meaning 
-            // the only invalid filename characters possible are path separators so we just replace them
-            return Path.Combine(tempPEOutputPath, designTimeInput.Replace('\\', '.') + ".dll");
+            // Turn the file path back into a relative path to compute output DLL name
+            return GetOutputFileNameFromRelativePath(_project.MakeRelative(fileName), tempPEOutputPath);
+        }
+
+        private static string GetOutputFileNameFromRelativePath(string relativePath, string tempPEOutputPath)
+        {
+            // Since we are given a relative path we can just replace path separators and we know we'll have a valid filename
+            return Path.Combine(tempPEOutputPath, relativePath.Replace('\\', '.') + ".dll");
         }
 
         private bool CompilationNeeded(HashSet<string> files, string outputFileName)
@@ -301,17 +307,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             return false;
         }
 
-        private HashSet<string> GetFilesToCompile(string moniker, ImmutableHashSet<string> sharedInputs)
+        private static HashSet<string> GetFilesToCompile(string moniker, ImmutableHashSet<string> sharedInputs)
         {
             // This is a HashSet because we allow files to be both inputs and shared inputs, and we don't want to compile the same file twice,
             // plus Roslyn needs to call Contains on this quite a lot in order to ensure its only compiling the right files so we want that to be fast.
             // When it comes to compiling the files there is no difference between shared and normal design time inputs, we just track differently because
             // shared are included in every DLL.
             var files = new HashSet<string>(sharedInputs.Count + 1, StringComparers.Paths);
-            // All monikers are project relative paths by defintion (anything else is a link, and linked files can't be TempPE inputs) so we can convert
-            // them to full paths using MakeRooted.
-            files.AddRange(sharedInputs.Select(_project.MakeRooted));
-            files.Add(_project.MakeRooted(moniker));
+            files.AddRange(sharedInputs);
+            files.Add(moniker);
             return files;
         }
     }

@@ -350,22 +350,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         private void SendDesignTimeInputs(DesignTimeInputs? inputs = null, string[]? changedFiles = null)
         {
+            // Make everything full paths here, to allow for easier test authoring
+            if (inputs != null)
+            {
+                inputs = new DesignTimeInputs(inputs.Inputs.Select(f => Path.Combine(_projectFolder, f)), inputs.SharedInputs.Select(f => Path.Combine(_projectFolder, f)));
+            }
+
             _designTimeInputs = inputs ?? _designTimeInputs!;
 
             // Ensure our input files are in the mock file system
             foreach (string file in _designTimeInputs.Inputs.Concat(_designTimeInputs.SharedInputs))
             {
-                var fullFilePath = Path.Combine(_projectFolder, file);
-                if (!_fileSystem.FileExists(fullFilePath))
+                if (!_fileSystem.FileExists(file))
                 {
-                    _fileSystem.AddFile(fullFilePath);
+                    _fileSystem.AddFile(file);
                 }
             }
 
             IEnumerable<DesignTimeInputFileChange> changes;
             if (changedFiles != null)
             {
-                changes = changedFiles.Select(f => new DesignTimeInputFileChange(f, false));
+                changes = changedFiles.Select(f => new DesignTimeInputFileChange(Path.Combine(_projectFolder, f), false));
             }
             else
             {
