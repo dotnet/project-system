@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         internal OrderPrecedenceImportCollection<VSLangProj.VSProject> Project { get; }
 
         [Import]
-        internal Lazy<IDesignTimeInputsBuildManagerBridge, IAppliesToMetadataView>? DesignTimeInputsBuildManagerBridge { get; }
+        internal Lazy<IDesignTimeInputsBuildManagerBridge, IAppliesToMetadataView>? DesignTimeInputsBuildManagerBridge { get; private set; }
 
         /// <summary>
         /// Occurs when a design time output moniker is deleted.
