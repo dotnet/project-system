@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         private readonly IPhysicalProjectTreeStorage _storage;
         private readonly bool _isFolder;
 
-        protected AbstractSpecialFileProvider(IPhysicalProjectTree projectTree, bool isFolder)
+        protected AbstractSpecialFileProvider(IPhysicalProjectTree projectTree, bool isFolder = false)
         {
             _treeService = projectTree.TreeService;
             _storage = projectTree.TreeStorage;
@@ -71,11 +71,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 
         protected abstract Task<IProjectTree?> FindFileAsync(IProjectTreeProvider provider, IProjectTree root);
 
-        protected string? GetFilePath(IProjectTreeProvider provider, IProjectTree node)
-        {
-            return _isFolder ? provider.GetRootedAddNewItemDirectory(node) : provider.GetPath(node);
-        }
-
         protected abstract Task<string?> GetDefaultFileAsync(IProjectTreeProvider provider, IProjectTree root);
 
         protected virtual Task CreateFileAsync(string path)
@@ -106,6 +101,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             }
 
             return Task.CompletedTask;
+        }
+
+        private string? GetFilePath(IProjectTreeProvider provider, IProjectTree node)
+        {
+            return _isFolder ? provider.GetRootedAddNewItemDirectory(node) : provider.GetPath(node);
         }
     }
 }
