@@ -489,18 +489,20 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If _unconfiguredProject Is Nothing OrElse _configuredProject Is Nothing Then
                 GetProjectsAndProvider()
             End If
-            'The TextBox needs to have the relative path, so the property isn't linked to the TextBox. It must be set manually.
-            AddOrChangeLicenseItem(_previousLicenseFileName, relativeFilePath)
-            LicenseFileNameTextBox.Text = relativeFilePath
-            _previousLicenseFileName = LicenseFileNameTextBox.Text
-            'If the user has changed the directory on their PackageLicenseFile, we should keep it there
-            Dim PackageLicenseFileSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor("PackageLicenseFile")), String)
-            If PackageLicenseFileSet IsNot Nothing AndAlso PackageLicenseFileSet IsNot "" Then
-                Dim currentPackageLicenseFileDirectory = Path.GetDirectoryName(PackageLicenseFileSet)
-                Dim potentialFullString = Path.Combine(currentPackageLicenseFileDirectory, Path.GetFileName(relativeFilePath))
-                SetCommonPropertyValue(GetPropertyDescriptor("PackageLicenseFile"), potentialFullString)
-            Else
-                SetCommonPropertyValue(GetPropertyDescriptor("PackageLicenseFile"), Path.GetFileName(relativeFilePath))
+            If relativeFilePath.IndexOfAny(Path.GetInvalidPathChars()) = -1 Then
+                'The TextBox needs to have the relative path, so the property isn't linked to the TextBox. It must be set manually.
+                AddOrChangeLicenseItem(_previousLicenseFileName, relativeFilePath)
+                LicenseFileNameTextBox.Text = relativeFilePath
+                _previousLicenseFileName = LicenseFileNameTextBox.Text
+                'If the user has changed the directory on their PackageLicenseFile, we should keep it there
+                Dim PackageLicenseFileSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor("PackageLicenseFile")), String)
+                If PackageLicenseFileSet IsNot Nothing AndAlso PackageLicenseFileSet IsNot "" Then
+                    Dim currentPackageLicenseFileDirectory = Path.GetDirectoryName(PackageLicenseFileSet)
+                    Dim potentialFullString = Path.Combine(currentPackageLicenseFileDirectory, Path.GetFileName(relativeFilePath))
+                    SetCommonPropertyValue(GetPropertyDescriptor("PackageLicenseFile"), potentialFullString)
+                Else
+                    SetCommonPropertyValue(GetPropertyDescriptor("PackageLicenseFile"), Path.GetFileName(relativeFilePath))
+                End If
             End If
         End Sub
 
