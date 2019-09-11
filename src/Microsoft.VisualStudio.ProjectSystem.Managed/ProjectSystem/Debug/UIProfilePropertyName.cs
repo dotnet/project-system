@@ -10,5 +10,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public const string EnvironmentVariables = "EnvironmentVariables";
         public const string WorkingDirectory = "WorkingDirectory";
         public const string NativeDebugging = "NativeDebugging";
+        public const string SqlDebugging = "SQLDebugging";
     }
 }
