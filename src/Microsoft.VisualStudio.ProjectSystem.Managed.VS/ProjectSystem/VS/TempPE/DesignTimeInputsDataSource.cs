@@ -59,23 +59,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         private DesignTimeInputs GetDesignTimeInputs(IImmutableDictionary<string, IProjectRuleSnapshot> currentState)
         {
-            var designTimeInputs = new List<string>();
-            var designTimeSharedInputs = new List<string>();
+            var designTimeInputs = new HashSet<string>(StringComparers.Paths);
+            var designTimeSharedInputs = new HashSet<string>(StringComparers.Paths);
 
             foreach ((string itemName, IImmutableDictionary<string, string> metadata) in currentState.GetSnapshotOrEmpty(Compile.SchemaName).Items)
             {
                 (bool designTime, bool designTimeShared) = GetDesignTimePropsForItem(metadata);
 
+                if (!metadata.TryGetValue(Compile.FullPathProperty, out string fullPath))
+                {
+                    // if there is no full path then we can calculate it
+                    fullPath = _project.MakeRooted(itemName);
+                }
+
                 if (designTime)
                 {
-                    designTimeInputs.Add(itemName);
+                    designTimeInputs.Add(fullPath);
                 }
 
                 // Legacy allows files to be DesignTime and DesignTimeShared
                 if (designTimeShared)
                 {
-                    designTimeSharedInputs.Add(itemName);
-
+                    designTimeSharedInputs.Add(fullPath);
                 }
             }
 
