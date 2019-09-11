@@ -246,24 +246,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <remarks></remarks>
         Friend Shared Sub Serialize(Settings As DesignTimeSettings, typeCache As SettingsTypeCache, valueCache As SettingsValueCache, ClassName As String, NamespaceName As String, AppConfigDocData As DocData, Hierarchy As IVsHierarchy, SynchronizeUserConfig As Boolean)
             Common.Switches.TraceSDSerializeSettings(TraceLevel.Info, "Serializing {0} settings to App.Config", Settings.Count)
-            If Settings Is Nothing Then
-                Debug.Fail("Can't serialize NULL settings instance!")
-                Throw New ArgumentNullException(NameOf(Settings))
-            End If
+            Requires.NotNull(Settings, NameOf(Settings))
+            Requires.NotNull(NamespaceName, NameOf(NamespaceName))
+            Requires.NotNull(AppConfigDocData, NameOf(AppConfigDocData))
 
             If ClassName = "" Then
                 Debug.Fail("Must provide a valid class name!")
-                Throw Common.CreateArgumentException("ClassName")
-            End If
-
-            If NamespaceName Is Nothing Then
-                Debug.Fail("Must provide a valid namespace name!")
-                Throw New ArgumentNullException(NameOf(NamespaceName))
-            End If
-
-            If AppConfigDocData Is Nothing Then
-                Debug.Fail("Can't serialize to a NULL DocData")
-                Throw New ArgumentNullException(NameOf(AppConfigDocData))
+                Throw Common.CreateArgumentException(NameOf(ClassName))
             End If
 
             Dim AppConfigReader As DocDataTextReader = Nothing

@@ -365,10 +365,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Private Sub GetPageInfo(pPageInfo() As PROPPAGEINFO)
-
-            If (pPageInfo Is Nothing) Then
-                Throw New ArgumentNullException(NameOf(pPageInfo))
-            End If
+            Requires.NotNull(pPageInfo, NameOf(pPageInfo))
 
             pPageInfo(0).cb = 4 + 4 + 8 + 4 + 4 + 4
             pPageInfo(0).dwHelpContext = HelpContext

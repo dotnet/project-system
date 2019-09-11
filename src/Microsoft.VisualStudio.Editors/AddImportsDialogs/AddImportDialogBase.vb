@@ -16,9 +16,7 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
         Private ReadOnly _serviceProvider As IServiceProvider
 
         Public Sub New(serviceProvider As IServiceProvider)
-            If serviceProvider Is Nothing Then
-                Throw New ArgumentNullException(NameOf(serviceProvider))
-            End If
+            Requires.NotNull(serviceProvider, NameOf(serviceProvider))
             _serviceProvider = serviceProvider
         End Sub
 

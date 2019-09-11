@@ -256,9 +256,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Dim hr As Integer
             Dim obj As Object = Nothing
 
-            If ProjectHierarchy Is Nothing Then
-                Throw New ArgumentNullException(NameOf(ProjectHierarchy))
-            End If
+            Requires.NotNull(ProjectHierarchy, NameOf(ProjectHierarchy))
 
             _projectHierarchy = ProjectHierarchy
 

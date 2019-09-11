@@ -741,7 +741,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
         Public Sub ValidateName(name As String) Implements INameCreationService.ValidateName
             If Not IsValidName(name) Then
-                Throw CreateArgumentException("name")
+                Throw CreateArgumentException(NameOf(name))
             End If
         End Sub
 #End Region

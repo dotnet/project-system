@@ -450,7 +450,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 ''' <remarks></remarks>
                 Public Sub New(Resource As Resource)
                     If Resource Is Nothing Then
-                        Throw Common.CreateArgumentException("Resource")
+                        Throw Common.CreateArgumentException(NameOf(Resource))
                     End If
 
                     _resource = Resource
@@ -511,9 +511,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 ''' <param name="Member">The property (must be a PropertyDescriptor) to be serialized.</param>
                 ''' <remarks></remarks>
                 Public Sub AddPropertyToSerialize(Member As MemberDescriptor)
-                    If Member Is Nothing Then
-                        Throw New ArgumentNullException(NameOf(Member))
-                    End If
+                    Requires.NotNull(Member, NameOf(Member))
 
                     If TypeOf Member Is PropertyDescriptor Then
                         Dim Prop As PropertyDescriptor = DirectCast(Member, PropertyDescriptor)
@@ -565,7 +563,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     _resourceName = OwnerResource.Name
                     _propertyName = ResourceProperty.Name
                     If PropertyName = "" Then
-                        Throw Common.CreateArgumentException("ResourceProperty")
+                        Throw Common.CreateArgumentException(NameOf(ResourceProperty))
                     End If
                     _resourceValueTypeName = OwnerResource.ValueTypeName
 

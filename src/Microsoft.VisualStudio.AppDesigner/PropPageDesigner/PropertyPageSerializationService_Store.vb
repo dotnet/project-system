@@ -352,7 +352,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     View = CType(component, PropPageDesignerRootComponent).RootDesigner.GetView()
                     View.SetProperty(PropertyName, Value)
                 Else
-                    Throw AppDesCommon.CreateArgumentException("component")
+                    Throw AppDesCommon.CreateArgumentException(NameOf(component))
                 End If
             End Sub
 
@@ -384,7 +384,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 ''' <remarks></remarks>
                 Public Sub New(Component As PropPageDesignerRootComponent)
                     If Component Is Nothing Then
-                        Throw AppDesCommon.CreateArgumentException("Component")
+                        Throw AppDesCommon.CreateArgumentException(NameOf(Component))
                     End If
 
                     _component = Component
@@ -446,9 +446,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 ''' <param name="Member">The property (must be a PropertyDescriptor) to be serialized.</param>
                 ''' <remarks></remarks>
                 Public Sub AddPropertyToSerialize(Member As MemberDescriptor)
-                    If Member Is Nothing Then
-                        Throw New ArgumentNullException(NameOf(Member))
-                    End If
+                    Requires.NotNull(Member, NameOf(Member))
 
                     If TypeOf Member Is PropertyDescriptor Then
                         Dim Prop As PropertyDescriptor = DirectCast(Member, PropertyDescriptor)
@@ -495,7 +493,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     _componentName = OwnerComponent.Name
                     _propertyName = ComponentProperty.Name
                     If PropertyName = "" Then
-                        Throw AppDesCommon.CreateArgumentException("ComponentProperty")
+                        Throw AppDesCommon.CreateArgumentException(NameOf(ComponentProperty))
                     End If
 
                     Dim PropertyValue As Object = ComponentProperty.GetValue(OwnerComponent)

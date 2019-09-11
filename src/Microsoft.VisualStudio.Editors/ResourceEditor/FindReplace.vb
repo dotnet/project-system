@@ -70,9 +70,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="RootDesigner">Pointer to the root designer</param>
         ''' <remarks></remarks>
         Public Sub New(RootDesigner As ResourceEditorRootDesigner)
-            If RootDesigner Is Nothing Then
-                Throw New ArgumentNullException(NameOf(RootDesigner))
-            End If
+            Requires.NotNull(RootDesigner, NameOf(RootDesigner))
             _rootDesigner = RootDesigner
         End Sub
 

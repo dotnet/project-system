@@ -67,9 +67,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <remarks></remarks>
         Public Overrides Function ConvertTo(Context As ITypeDescriptorContext, Culture As CultureInfo, Value As Object, DestinationType As Type) As Object
-            If DestinationType Is Nothing Then
-                Throw New ArgumentNullException(NameOf(DestinationType))
-            End If
+            Requires.NotNull(DestinationType, NameOf(DestinationType))
 
             If DestinationType.Equals(GetType(String)) AndAlso TypeOf Value Is SerializableEncoding Then
                 Dim SerializableEncoding As SerializableEncoding = DirectCast(Value, SerializableEncoding)

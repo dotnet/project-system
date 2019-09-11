@@ -795,7 +795,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Else
                 'Whoops.  Something's wrong.
                 Debug.Fail("Got a RenameComponent event to a name that's already in use - shouldn't have happened")
-                Throw CreateArgumentException("NewName")
+                Throw CreateArgumentException(NameOf(e.NewName))
             End If
 
             'Go ahead and make the change

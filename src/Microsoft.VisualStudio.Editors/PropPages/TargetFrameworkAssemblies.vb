@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports Microsoft.VisualStudio.Shell.Interop
 
@@ -21,9 +21,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Private ReadOnly _description As String
 
             Public Sub New(version As UInteger, description As String)
-                If description Is Nothing Then
-                    Throw New ArgumentNullException(NameOf(description))
-                End If
+                Requires.NotNull(description, NameOf(description))
 
                 _version = version
                 _description = description

@@ -16,9 +16,7 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
         ''' <param name="packageServiceProvider"></param>
         ''' <remarks></remarks>
         Friend Sub New(packageServiceProvider As IServiceProvider)
-            If packageServiceProvider Is Nothing Then
-                Throw New ArgumentNullException(NameOf(packageServiceProvider))
-            End If
+            Requires.NotNull(packageServiceProvider, NameOf(packageServiceProvider))
             _serviceProvider = packageServiceProvider
         End Sub
 

@@ -231,7 +231,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             If Not IsUniqueName(SettingName) Then
                 If Not AllowMakeUnique Then
                     Debug.Fail("Can't add two settings with the same name")
-                    Throw Common.CreateArgumentException("AllowMakeUnique")
+                    Throw Common.CreateArgumentException(NameOf(AllowMakeUnique))
                 Else
                     If SettingName = "" Then
                         SettingName = CreateUniqueName()

@@ -166,9 +166,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''   obtain the document filename</param>
         ''' <remarks></remarks>
         Public Sub New(DesignerView As ApplicationDesignerView, SpecialFileId As Integer)
-            If DesignerView Is Nothing Then
-                Throw New ArgumentNullException(NameOf(DesignerView))
-            End If
+            Requires.NotNull(DesignerView, NameOf(DesignerView))
 
             _specialFileId = SpecialFileId
             _designerView = DesignerView

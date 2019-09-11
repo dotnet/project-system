@@ -1373,7 +1373,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </remarks>
         Public Sub SetProperty(PropertyName As String, Value As Object)
             If String.IsNullOrEmpty(PropertyName) Then
-                Throw CreateArgumentException("PropertyName")
+                Throw CreateArgumentException(NameOf(PropertyName))
             End If
 
             Switches.TracePDUndo("PropPageDesignerView.SetProperty(""" & PropertyName & """, " & DebugToString(Value) & ")")

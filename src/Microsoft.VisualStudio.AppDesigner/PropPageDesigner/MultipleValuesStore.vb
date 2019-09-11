@@ -33,14 +33,12 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="SelectedPlatformName">The selected platform in the drop-down combobox.  Empty string indicates "All Platforms".</param>
         ''' <remarks></remarks>
         Public Sub New(VsCfgProvider As IVsCfgProvider2, Objects() As Object, Values() As Object, SelectedConfigName As String, SelectedPlatformName As String)
-            If Values Is Nothing Then
-                Throw New ArgumentNullException(NameOf(Values))
-            ElseIf Objects Is Nothing Then
-                Throw New ArgumentNullException(NameOf(Objects))
-            End If
+            Requires.NotNull(Values, NameOf(Values))
+            Requires.NotNull(Objects, NameOf(Objects))
+
             If Values.Length <> Objects.Length Then
                 Debug.Fail("Bad array length returned from GetPropertyMultipleValues()")
-                Throw Common.CreateArgumentException("Values, Objects")
+                Throw Common.CreateArgumentException(NameOf(Values))
             End If
 
             Me.SelectedConfigName = SelectedConfigName
@@ -67,7 +65,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     Me.Values(i) = Values(i)
                 Else
                     Debug.Fail("Unexpected type passed in to MultipleValues.  Currently only IVsCfg supported.  If it's a common (non-config) property, why are we creating MultipleValues for it?")
-                    Throw Common.CreateArgumentException("Values")
+                    Throw Common.CreateArgumentException(NameOf(Values))
                 End If
             Next
 

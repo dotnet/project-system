@@ -244,7 +244,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Sub New(id As Integer, name As String, FormControl As Control, setter As SetDelegate, getter As GetDelegate, multiValueSetter As MultiValueSetDelegate, multiValueGetter As MultiValueGetDelegate, flags As ControlDataFlags, AssociatedControls As Control())
             If id < 0 Then 'Don't allow DISPID_UNKNOWN (-1) etc
                 Debug.Fail("Property ID must be non-negative")
-                Throw Common.CreateArgumentException("id")
+                Throw Common.CreateArgumentException(NameOf(id))
             End If
             _dispId = id
             _propertyName = name
@@ -695,7 +695,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Public Sub SetInitialValues(InitialValue As Object, AllInitialValues As Object())
             If AllInitialValues IsNot Nothing AndAlso AllInitialValues.Length = 0 Then
-                Throw Common.CreateArgumentException("AllInitialValues")
+                Throw Common.CreateArgumentException(NameOf(AllInitialValues))
             End If
             Debug.Assert(AllInitialValues IsNot Nothing OrElse InitialValue IsNot Indeterminate)
             Debug.Assert(AllInitialValues Is Nothing _
@@ -714,11 +714,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="AllInitialValues"></param>
         ''' <remarks></remarks>
         Public Sub SetInitialValues(AllInitialValues As Object())
-            If AllInitialValues Is Nothing Then
-                Throw New ArgumentNullException(NameOf(AllInitialValues))
-            End If
+            Requires.NotNull(AllInitialValues, NameOf(AllInitialValues))
+
             If AllInitialValues.Length = 0 Then
-                Throw Common.CreateArgumentException("AllInitialValues")
+                Throw Common.CreateArgumentException(NameOf(AllInitialValues))
             End If
 
             _initialValue = GetValueOrIndeterminateFromArray(AllInitialValues)
@@ -1434,9 +1433,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </param>
         ''' <remarks></remarks>
         Public Shared Sub GetAllPropertyValuesNative(Descriptor As PropertyDescriptor, Extenders As Object(), ByRef Values As Object(), ByRef ValueOrIndeterminate As Object)
-            If Extenders Is Nothing Then
-                Throw New ArgumentNullException(NameOf(Extenders))
-            End If
+            Requires.NotNull(Extenders, NameOf(Extenders))
 
             Dim ReturnValues As Object() = New Object(Extenders.Length - 1) {}
 
@@ -1472,7 +1469,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Public Shared Function GetValueOrIndeterminateFromArray(Values() As Object) As Object
             'Determine if all the values are the same or not
-            If Values Is Nothing OrElse Values.Length = 0 Then
+            Requires.NotNull(Values, NameOf(Values))
+
+            If Values.Length = 0 Then
                 Debug.Fail("Bad Values array")
                 Throw New ArgumentNullException(NameOf(Values))
             End If
@@ -1648,7 +1647,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Throw New InvalidOperationException
             End If
             If Objects Is Nothing OrElse Values Is Nothing OrElse Objects.Length <> Values.Length Then
-                Throw Common.CreateArgumentException("Objects")
+                Throw Common.CreateArgumentException(NameOf(Objects))
             End If
 
             m_PropPage.SuspendPropertyChangeListening(DispId)
