@@ -116,10 +116,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             var changedInputs = new List<DesignTimeInputFileChange>();
             foreach (string changedFile in arg.Value)
             {
-                string relativeFilePath = _project.MakeRelative(changedFile);
-
                 // if a shared input changes, we recompile everything
-                if (state.SharedInputs.Contains(relativeFilePath))
+                if (state.SharedInputs.Contains(changedFile))
                 {
                     foreach (string file in state.Inputs)
                     {
@@ -130,7 +128,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 }
                 else
                 {
-                    changedInputs.Add(new DesignTimeInputFileChange(relativeFilePath, ignoreFileWriteTime: false));
+                    changedInputs.Add(new DesignTimeInputFileChange(changedFile, ignoreFileWriteTime: false));
                 }
             }
 
