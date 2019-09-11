@@ -37,7 +37,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     [AppliesTo(ProjectCapability.DependenciesTree)]
     internal class DependenciesProjectTreeProvider
         : ProjectTreeProviderBase,
-          IProjectTreeProvider,
           IDependenciesTreeServices
     {
         /// <summary><see cref="IProjectTreePropertiesProvider"/> imports that apply to the references tree.</summary>
@@ -101,14 +100,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return Task.CompletedTask;
             }
         }
-
-        /// <summary>
-        /// Gets the source block for the <see cref="IProjectTreeSnapshot" />.
-        /// </summary>
-        /// <remarks>
-        /// This stub defined for code contracts.
-        /// </remarks>
-        IReceivableSourceBlock<IProjectVersionedValue<IProjectTreeSnapshot>> IProjectTreeProvider.Tree => Tree;
 
         /// <summary>
         /// Gets a value indicating whether a given set of nodes can be copied or moved underneath some given node.
