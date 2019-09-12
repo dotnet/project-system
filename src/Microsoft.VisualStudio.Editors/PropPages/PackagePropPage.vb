@@ -420,6 +420,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         AddItemToProject(PackageIcon.Text, _packageIconFilePropName)
                     Else
                         RemoveItem(RetrievePreviousProperty(_packageIconFilePropName))
+                        _previousProperties(_packageIconFilePropName) = ""
+                        SetCommonPropertyValue(GetPropertyDescriptor(_packageIconFilePropName), "")
                     End If
                 End If
             End If
