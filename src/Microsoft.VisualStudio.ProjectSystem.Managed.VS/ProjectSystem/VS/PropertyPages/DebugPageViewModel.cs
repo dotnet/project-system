@@ -309,16 +309,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     return false;
                 }
 
-                if (SelectedDebugProfile.OtherSettings.ContainsKey("nativeDebugging"))
+                if (SelectedDebugProfile.OtherSettings.TryGetValue("nativeDebugging", out object value))
                 {
-                    return (bool)SelectedDebugProfile.OtherSettings["nativeDebugging"];
+                    return (bool)value;
                 }
 
                 return false;
             }
             set
             {
-                //Unlike other properties that have default values, nativeDebugging may not be set yet. Because false is the default behavior adding it has no affect
+                //Unlike other properties that have default values, nativeDebugging may not be set yet. Because false is the default behavior adding it has no effect
                 if (!SelectedDebugProfile.OtherSettings.TryGetValue("nativeDebugging", out object previousValue))
                 {
                     previousValue = false;
@@ -343,16 +343,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     return false;
                 }
 
-                if (SelectedDebugProfile.OtherSettings.ContainsKey("sqlDebugging"))
+                if (SelectedDebugProfile.OtherSettings.TryGetValue("sqlDebugging", out object value))
                 {
-                    return (bool)SelectedDebugProfile.OtherSettings["sqlDebugging"];
+                    return (bool)value;
                 }
 
                 return false;
             }
             set
             {
-                //Unlike other properties that have default values, sqlDebugging may not be set yet. Because false is the default behavior adding it has no affect
+                //Unlike other properties that have default values, sqlDebugging may not be set yet. Because false is the default behavior adding it has no effect
                 if (!SelectedDebugProfile.OtherSettings.TryGetValue("sqlDebugging", out object previousValue))
                 {
                     previousValue = false;
