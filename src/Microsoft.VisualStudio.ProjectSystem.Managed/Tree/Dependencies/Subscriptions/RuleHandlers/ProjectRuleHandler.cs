@@ -103,8 +103,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         /// </param>
         /// <param name="token"></param>
         private void OnOtherProjectDependenciesChanged(
-            IDependenciesSnapshot thisProjectSnapshot,
-            IDependenciesSnapshot otherProjectSnapshot,
+            DependenciesSnapshot thisProjectSnapshot,
+            DependenciesSnapshot otherProjectSnapshot,
             bool shouldBeResolved,
             CancellationToken token)
         {

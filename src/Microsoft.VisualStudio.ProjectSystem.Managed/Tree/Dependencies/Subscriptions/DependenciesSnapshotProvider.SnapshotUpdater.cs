@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     unloadCancellationToken);
             }
 
-            public IDependenciesSnapshot Current => _currentSnapshot;
+            public DependenciesSnapshot Current => _currentSnapshot;
 
             public IReceivableSourceBlock<SnapshotChangedEventArgs> Source => _source;
 
@@ -79,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         }
 
                         // Always publish the latest snapshot
-                        IDependenciesSnapshot snapshot = _currentSnapshot;
+                        DependenciesSnapshot snapshot = _currentSnapshot;
                         _source.Post(new SnapshotChangedEventArgs(snapshot, ct));
 
                         return Task.CompletedTask;

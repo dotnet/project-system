@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
             IGraphContext graphContext,
             GraphNode inputGraphNode,
             IDependency dependency,
-            IDependenciesSnapshot snapshot,
+            DependenciesSnapshot snapshot,
             IDependenciesGraphViewProvider viewProvider,
             string projectPath,
             ref bool trackChanges);
@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                     continue;
                 }
 
-                IDependency? dependency = FindDependency(inputGraphNode, out IDependenciesSnapshot? snapshot);
+                IDependency? dependency = FindDependency(inputGraphNode, out DependenciesSnapshot? snapshot);
 
                 if (dependency == null || snapshot == null)
                 {
@@ -78,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
             return trackChanges;
         }
 
-        private IDependency? FindDependency(GraphNode inputGraphNode, out IDependenciesSnapshot? snapshot)
+        private IDependency? FindDependency(GraphNode inputGraphNode, out DependenciesSnapshot? snapshot)
         {
             string? projectPath = inputGraphNode.Id.GetValue(CodeGraphNodeIdName.Assembly);
 

@@ -10,8 +10,10 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
-    /// <inheritdoc />
-    internal sealed class DependenciesSnapshot : IDependenciesSnapshot
+    /// <summary>
+    /// Immutable snapshot of all project dependencies across all target frameworks.
+    /// </summary>
+    internal sealed class DependenciesSnapshot : IEquatable<DependenciesSnapshot>
     {
         #region Factories and private constructor
 
@@ -203,19 +205,37 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         #endregion
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets the full path to the project file whose dependencies this snapshot contains.
+        /// </summary>
+        /// <remarks>
+        /// Cannot be null or empty.
+        /// </remarks>
         public string ProjectPath { get; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets the active target framework for project.
+        /// </summary>
         public ITargetFramework ActiveTargetFramework { get; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets a dictionary of dependencies by target framework.
+        /// </summary>
         public ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot> DependenciesByTargetFramework { get; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets whether this snapshot contains at least one unresolved/broken dependency at any level
+        /// for any target framework which is visible.
+        /// </summary>
         public bool HasVisibleUnresolvedDependency => DependenciesByTargetFramework.Any(x => x.Value.HasVisibleUnresolvedDependency);
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Finds dependency for given id across all target frameworks.
+        /// </summary>
+        /// <param name="dependencyId">Unique id for dependency to be found.</param>
+        /// <param name="topLevel">If <see langword="true"/>, search is first performed on top level
+        /// dependencies before searching all dependencies.</param>
+        /// <returns>The <see cref="IDependency"/> if found, otherwise <see langword="null"/>.</returns>
         public IDependency? FindDependency(string dependencyId, bool topLevel = false)
         {
             if (string.IsNullOrEmpty(dependencyId))
@@ -251,7 +271,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         }
 
         /// <inheritdoc />
-        public bool Equals(IDependenciesSnapshot other)
+        public bool Equals(DependenciesSnapshot other)
         {
             return other != null && other.ProjectPath.Equals(ProjectPath, StringComparison.OrdinalIgnoreCase);
         }

@@ -62,16 +62,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
             var cachedDependencyToMatchingResultsMap = new Dictionary<string, HashSet<IDependency>>(StringComparer.OrdinalIgnoreCase);
             var searchResultsPerContext = new Dictionary<string, HashSet<IDependency>>(StringComparer.OrdinalIgnoreCase);
 
-            System.Collections.Generic.IReadOnlyCollection<IDependenciesSnapshot> snapshots = AggregateSnapshotProvider.GetSnapshots();
+            System.Collections.Generic.IReadOnlyCollection<DependenciesSnapshot> snapshots = AggregateSnapshotProvider.GetSnapshots();
 
-            foreach (IDependenciesSnapshot snapshot in snapshots)
+            foreach (DependenciesSnapshot snapshot in snapshots)
             {
                 searchResultsPerContext[snapshot.ProjectPath] = SearchFlat(
                     searchTerm,
                     snapshot);
             }
 
-            foreach (IDependenciesSnapshot snapshot in snapshots)
+            foreach (DependenciesSnapshot snapshot in snapshots)
             {
                 IEnumerable<IDependency> allTopLevelDependencies = snapshot.GetFlatTopLevelDependencies();
                 HashSet<IDependency> matchedDependencies = searchResultsPerContext[snapshot.ProjectPath];
@@ -150,7 +150,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
         /// <summary>
         /// Does flat search among dependency world lists to find any dependencies that match search criteria.
         /// </summary>
-        private static HashSet<IDependency> SearchFlat(string searchTerm, IDependenciesSnapshot dependenciesSnapshot)
+        private static HashSet<IDependency> SearchFlat(string searchTerm, DependenciesSnapshot dependenciesSnapshot)
         {
             var matchedDependencies = new HashSet<IDependency>();
 

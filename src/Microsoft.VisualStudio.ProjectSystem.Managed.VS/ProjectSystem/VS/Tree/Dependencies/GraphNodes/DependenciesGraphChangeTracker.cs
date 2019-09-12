@@ -63,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         /// </summary>
         private void OnSnapshotChanged(object sender, SnapshotChangedEventArgs e)
         {
-            IDependenciesSnapshot snapshot = e.Snapshot;
+            DependenciesSnapshot snapshot = e.Snapshot;
 
             if (snapshot == null || e.Token.IsCancellationRequested)
             {
@@ -123,7 +123,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                         continue;
                     }
 
-                    IDependenciesSnapshot? updatedSnapshot = _aggregateSnapshotProvider.GetSnapshot(nodeProjectPath!);
+                    DependenciesSnapshot? updatedSnapshot = _aggregateSnapshotProvider.GetSnapshot(nodeProjectPath!);
 
                     IDependency? updatedDependency = updatedSnapshot?.FindDependency(existingDependencyId);
 

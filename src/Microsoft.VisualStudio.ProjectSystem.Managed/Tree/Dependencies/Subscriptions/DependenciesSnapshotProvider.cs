@@ -107,7 +107,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         }
 
         /// <inheritdoc />
-        public IDependenciesSnapshot CurrentSnapshot => _snapshot.Current;
+        public DependenciesSnapshot CurrentSnapshot => _snapshot.Current;
 
         /// <inheritdoc />
         IReceivableSourceBlock<SnapshotChangedEventArgs> IDependenciesSnapshotProvider.SnapshotChangedSource => _snapshot.Source;
