@@ -279,7 +279,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 ITargetFramework targetFramework =
                     string.IsNullOrEmpty(e.TargetShortOrFullName) || TargetFramework.Any.Equals(e.TargetShortOrFullName)
                         ? TargetFramework.Any
-                        : _targetFrameworkProvider.GetTargetFramework(e.TargetShortOrFullName) ?? TargetFramework.Any;
+                        : _targetFrameworkProvider.GetTargetFramework(e.TargetShortOrFullName!) ?? TargetFramework.Any;
 
                 UpdateDependenciesSnapshot(targetFramework, e.Changes, catalogs: null, targetFrameworks: default, activeTargetFramework: null, e.Token);
             }

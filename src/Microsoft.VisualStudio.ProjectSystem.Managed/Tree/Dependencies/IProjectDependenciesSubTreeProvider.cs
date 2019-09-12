@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Obsolete("Constructor includes unused properties")]
         public DependenciesChangedEventArgs(
             IProjectDependenciesSubTreeProvider provider,
-            string targetShortOrFullName,
+            string? targetShortOrFullName,
             IDependenciesChanges changes,
             IProjectCatalogSnapshot catalogs,
             IImmutableDictionary<NamedIdentity, IComparable> dataSourceVersions)
@@ -52,9 +52,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="DependenciesChangedEventArgs"/>.
+        /// </summary>
+        /// <param name="provider">The subtree provider whose dependencies changed.</param>
+        /// <param name="targetShortOrFullName">
+        /// The short or full name of the target framework to which <paramref name="changes"/> apply.
+        /// Optional if the project is not multi-targeting.
+        /// </param>
+        /// <param name="changes">The collection of dependency changes.</param>
+        /// <param name="token">A cancellation token that allows cancelling the update.</param>
         public DependenciesChangedEventArgs(
             IProjectDependenciesSubTreeProvider provider,
-            string targetShortOrFullName,
+            string? targetShortOrFullName,
             IDependenciesChanges changes,
             CancellationToken token)
         {
@@ -65,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         public IProjectDependenciesSubTreeProvider Provider { get; }
-        public string TargetShortOrFullName { get; }
+        public string? TargetShortOrFullName { get; }
         public IDependenciesChanges Changes { get; }
         public CancellationToken Token { get; }
     }
