@@ -957,23 +957,17 @@
   <data name="LicenseBrowseButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left, Right</value>
   </data>
-  <data name="LicenseBrowseButton.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="LicenseBrowseButton.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
-    <value>GrowAndShrink</value>
-  </data>
   <data name="LicenseBrowseButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="LicenseBrowseButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>723, 5</value>
+    <value>723, 7</value>
   </data>
   <data name="LicenseBrowseButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="LicenseBrowseButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>131, 30</value>
+    <value>131, 26</value>
   </data>
   <data name="LicenseBrowseButton.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -1122,17 +1116,17 @@
   <data name="IconFileBrowseButton.AccessibleName" xml:space="preserve">
     <value>Package Icon File Browse</value>
   </data>
-  <data name="IconFileBrowseButton.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="IconFileBrowseButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Left, Right</value>
   </data>
   <data name="IconFileBrowseButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>726, 3</value>
+    <value>726, 5</value>
   </data>
   <data name="IconFileBrowseButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 3, 0, 3</value>
   </data>
   <data name="IconFileBrowseButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>131, 30</value>
+    <value>132, 26</value>
   </data>
   <data name="IconFileBrowseButton.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1207,7 +1201,7 @@
     <value>26</value>
   </data>
   <data name="IconFileLayoutPanel.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="IconFileBrowseButton" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageIcon" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Absolute,726,Absolute,132" /&gt;&lt;Rows Styles="Absolute,35" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="IconFileBrowseButton" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageIcon" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Absolute,726,Absolute,132" /&gt;&lt;Rows Styles="Absolute,36" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="RepositoryUrlLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
