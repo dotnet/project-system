@@ -141,17 +141,17 @@ Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
             Assert.Equal(1, callCount);
         }
 
-        private AbstractFindByNameSpecialFileProvider2 CreateInstance(IProjectTree projectTree)
+        private AbstractFindByNameSpecialFileProvider CreateInstance(IProjectTree projectTree)
         {
             var physicalProjectTree = IPhysicalProjectTreeFactory.Create(currentTree: projectTree);
 
             return CreateInstance(physicalProjectTree);
         }
 
-        internal abstract AbstractFindByNameSpecialFileProvider2 CreateInstance(IPhysicalProjectTree projectTree);
+        internal abstract AbstractFindByNameSpecialFileProvider CreateInstance(IPhysicalProjectTree projectTree);
 
         internal static T CreateInstanceWithOverrideCreateFileAsync<T>(IPhysicalProjectTree projectTree)
-    where T : AbstractFindByNameSpecialFileProvider2
+    where T : AbstractFindByNameSpecialFileProvider
         {
             // We override CreateFileAsync to call the CreateEmptyFileAsync which makes writting tests in the base easier
             var mock = new Mock<T>(projectTree, (ICreateFileFromTemplateService)null!);

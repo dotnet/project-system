@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
     [ExportSpecialFileProvider(SpecialFiles.AppConfig)]
     [AppliesTo(ProjectCapability.DotNet)]
-    internal class AppConfigSpecialFileProvider : AbstractFindByNameSpecialFileProvider2
+    internal class AppConfigSpecialFileProvider : AbstractFindByNameSpecialFileProvider
     {
         private readonly ICreateFileFromTemplateService _templateFileCreationService;
 

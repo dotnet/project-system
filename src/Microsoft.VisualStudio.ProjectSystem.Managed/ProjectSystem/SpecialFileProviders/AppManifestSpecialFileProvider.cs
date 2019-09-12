@@ -11,19 +11,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
     {
         private readonly ProjectProperties _properties;
         private readonly ICreateFileFromTemplateService _templateFileCreationService;
-        private readonly UnconfiguredProject _project;
 
         [ImportingConstructor]
         public AppManifestSpecialFileProvider(
             ISpecialFilesManager specialFilesManager,
             IPhysicalProjectTree projectTree,            
             ICreateFileFromTemplateService templateFileCreationService, 
-            UnconfiguredProject project,
             ProjectProperties properties)
             : base("app.manifest", specialFilesManager, projectTree)
         {
             _templateFileCreationService = templateFileCreationService;
-            _project = project;
             _properties = properties;
         }
 
