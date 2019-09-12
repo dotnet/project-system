@@ -157,15 +157,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             return Task.CompletedTask;
         }
 
-        protected void RaiseDependenciesChanged(ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes, AggregateCrossTargetProjectContext currentAggregateContext, IProjectCatalogSnapshot catalogSnapshot)
+        protected void RaiseDependenciesChanged(ITargetFramework targetFramework, IDependenciesChanges changes, AggregateCrossTargetProjectContext currentAggregateContext, IProjectCatalogSnapshot catalogSnapshot)
         {
             DependenciesChanged?.Invoke(
                 this,
                 new DependencySubscriptionChangedEventArgs(
                     currentAggregateContext.TargetFrameworks,
                     currentAggregateContext.ActiveTargetFramework,
-                    catalogSnapshot,
-                    changes));
+                    targetFramework,
+                    changes,
+                    catalogSnapshot));
         }
     }
 }

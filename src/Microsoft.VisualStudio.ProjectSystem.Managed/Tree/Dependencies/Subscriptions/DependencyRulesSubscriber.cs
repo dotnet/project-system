@@ -125,7 +125,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             }
 
             // Create an object to track dependency changes.
-            var changesBuilder = new CrossTargetDependenciesChangesBuilder();
+            var changesBuilder = new DependenciesChangesBuilder();
 
             // Give each handler a chance to register dependency changes.
             foreach (Lazy<IDependenciesRuleHandler, IOrderPrecedenceMetadataView> handler in _handlers)
@@ -133,12 +133,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 handler.Value.Handle(projectUpdate.ProjectChanges, targetFrameworkToUpdate, changesBuilder);
             }
 
-            ImmutableDictionary<ITargetFramework, IDependenciesChanges>? changes = changesBuilder.TryBuildChanges();
+            IDependenciesChanges? changes = changesBuilder.TryBuildChanges();
 
             if (changes != null)
             {
                 // Notify subscribers of a change in dependency data
-                RaiseDependenciesChanged(changes, currentAggregateContext, catalogSnapshot);
+                RaiseDependenciesChanged(targetFrameworkToUpdate, changes, currentAggregateContext, catalogSnapshot);
             }
 
             // Record all the rules that have occurred

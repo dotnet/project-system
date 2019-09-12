@@ -70,61 +70,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         }
 
         [Fact]
-        public void FromChanges_Empty_NoChanges()
+        public void FromChanges_NullChanges_Throws()
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = new TargetFramework("tfm1");
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = TargetedDependenciesSnapshot.CreateEmpty(projectPath, targetFramework, catalogs);
 
-            var changes = new DependenciesChangesBuilder();
-
-            var snapshot = TargetedDependenciesSnapshot.FromChanges(
-                projectPath,
-                previousSnapshot,
-                changes.Build(),
-                catalogs,
-                ImmutableArray<IDependenciesSnapshotFilter>.Empty,
-                new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
-                null);
-
-            Assert.Same(previousSnapshot, snapshot);
-        }
-
-        [Fact]
-        public void FromChanges_NotEmpty_NoChanges()
-        {
-            const string projectPath = @"c:\somefolder\someproject\a.csproj";
-            var targetFramework = new TargetFramework("tfm1");
-
-            var dependencyTop1 = new TestDependency
-            {
-                Id = @"tfm1\xxx\topdependency1",
-                ProviderType = "Xxx",
-                Resolved = true,
-                TopLevel = true
-            };
-
-            var catalogs = IProjectCatalogSnapshotFactory.Create();
-            var previousSnapshot = ITargetedDependenciesSnapshotFactory.Implement(
-                projectPath: projectPath,
-                targetFramework: targetFramework,
-                catalogs: catalogs,
-                dependenciesWorld: new [] { dependencyTop1 },
-                topLevelDependencies: new [] { dependencyTop1 });
-
-            var changes = new DependenciesChangesBuilder();
-
-            var snapshot = TargetedDependenciesSnapshot.FromChanges(
-                projectPath,
-                previousSnapshot,
-                changes.Build(),
-                catalogs,
-                ImmutableArray<IDependenciesSnapshotFilter>.Empty,
-                new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
-                null);
-
-            Assert.Same(previousSnapshot, snapshot);
+            Assert.Throws<ArgumentNullException>(
+                "changes",
+                () => TargetedDependenciesSnapshot.FromChanges(
+                    projectPath,
+                    previousSnapshot,
+                    null!,
+                    catalogs,
+                    ImmutableArray<IDependenciesSnapshotFilter>.Empty,
+                    new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
+                    null));
         }
 
         [Fact]
@@ -171,7 +133,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
                 updatedProjectPath,
                 previousSnapshot,
-                changes.Build(),
+                changes.TryBuildChanges()!,
                 catalogs,
                 ImmutableArray<IDependenciesSnapshotFilter>.Empty,
                 new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
@@ -233,7 +195,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
                 projectPath,
                 previousSnapshot,
-                changes.Build(),
+                changes.TryBuildChanges()!,
                 catalogs,
                 ImmutableArray.Create<IDependenciesSnapshotFilter>(snapshotFilter),
                 new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
@@ -289,7 +251,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
                 projectPath,
                 previousSnapshot,
-                changes.Build(),
+                changes.TryBuildChanges()!,
                 catalogs,
                 ImmutableArray.Create<IDependenciesSnapshotFilter>(snapshotFilter),
                 new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
@@ -362,7 +324,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
                 projectPath,
                 previousSnapshot,
-                changes.Build(),
+                changes.TryBuildChanges()!,
                 catalogs,
                 ImmutableArray.Create<IDependenciesSnapshotFilter>(snapshotFilter),
                 new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
@@ -430,7 +392,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
                 projectPath,
                 previousSnapshot,
-                changes.Build(),
+                changes.TryBuildChanges()!,
                 catalogs,
                 ImmutableArray.Create<IDependenciesSnapshotFilter>(snapshotFilter),
                 new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
@@ -579,7 +541,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
                 projectPath,
                 previousSnapshot,
-                changes.Build(),
+                changes.TryBuildChanges()!,
                 catalogs,
                 ImmutableArray.Create<IDependenciesSnapshotFilter>(snapshotFilter),
                 new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
@@ -656,7 +618,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
                 projectPath,
                 previousSnapshot,
-                changes.Build(),
+                changes.TryBuildChanges()!,
                 catalogs,
                 ImmutableArray.Create<IDependenciesSnapshotFilter>(snapshotFilter),
                 new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
