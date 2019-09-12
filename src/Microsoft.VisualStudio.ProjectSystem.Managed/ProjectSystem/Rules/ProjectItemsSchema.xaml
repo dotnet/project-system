@@ -81,6 +81,7 @@
   <FileExtension Name=".asp" ContentType="AspPage" />
   <FileExtension Name=".txt" ContentType="Text" />
   <FileExtension Name=".resx" ContentType="EmbeddedResource" />
+  <FileExtension Name=".licx" ContentType="EmbeddedResource" />
   <FileExtension Name=".html" ContentType="HTML" />
   <FileExtension Name=".htm" ContentType="HTML" />
   <FileExtension Name=".css" ContentType="CSS" />
