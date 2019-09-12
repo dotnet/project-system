@@ -324,7 +324,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.TreeView
         }
 
         [Fact]
-        public async Task WheEmptySnapshotAndVisibilityMarkerProvided_ShouldDisplaySubTreeRoot()
+        public async Task WhenEmptySnapshotAndVisibilityMarkerProvided_ShouldDisplaySubTreeRoot()
         {
             var dependencyModelRootYyy = new TestDependencyModel
             {
@@ -374,7 +374,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.TreeView
         }
 
         [Fact]
-        public async Task WheEmptySnapshotAndVisibilityMarkerNotProvided_ShouldHideSubTreeRoot()
+        public async Task WhenEmptySnapshotAndVisibilityMarkerNotProvided_ShouldHideSubTreeRoot()
         {
             var dependencyModelRootYyy = new TestDependencyModel
             {
