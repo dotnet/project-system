@@ -18,7 +18,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private ReadOnly _assemblyVersionTextBoxes As TextBox()
 
         'switch to using a string dictionary to check for the previous property first
-        Private _previousProperties As Dictionary(Of String, String) = New Dictionary(Of String, String)
+        Private ReadOnly _previousProperties As Dictionary(Of String, String) = New Dictionary(Of String, String)
         Private ReadOnly _packageLicenseFilePropName As String = "PackageLicenseFile"
         Private ReadOnly _packageIconFilePropName As String = "PackageIcon"
         Private _licenseUrlDetected As Boolean = False
@@ -52,6 +52,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Overrides Sub PostInitPage()
             MyBase.PostInitPage()
             InitializeLicensing()
+            InitializeIconFile()
         End Sub
 
         Private Shared Function GetUnconfiguredProject(hierarchy As IVsHierarchy) As UnconfiguredProject
@@ -103,10 +104,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim PackageLicenseFileSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor(_packageLicenseFilePropName)), String)
             If (PackageLicenseFileSet IsNot Nothing AndAlso PackageLicenseFileSet IsNot "") Then
                 _newLicensePropertyDetectedAtInit = True
-                Dim projectItems = DTEProject.ProjectItems
                 LicenseFileNameTextBox.Text = LicenseTryGetExistingLicenseItemPath(PackageLicenseFileSet)
                 _previousProperties(_packageLicenseFilePropName) = LicenseFileNameTextBox.Text
-                '_previousLicenseFileName = LicenseFileNameTextBox.Text
                 SetLicenseRadioButtons(False)
             End If
             Dim PackageLicenseExpressionSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor("PackageLicenseExpression")), String)
@@ -118,6 +117,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If (PackageLicenseUrlSet IsNot Nothing AndAlso PackageLicenseUrlSet IsNot "") Then
                 SetLicenseUrlWarningActive(True)
                 _licenseUrlDetected = True
+            End If
+        End Sub
+
+        Private Sub InitializeIconFile()
+            GetProjectsAndProvider()
+            Dim PackageIconFileSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor(_packageIconFilePropName)), String)
+            If (PackageIconFileSet IsNot Nothing AndAlso PackageIconFileSet IsNot "") Then
+                PackageIcon.Text = LicenseTryGetExistingLicenseItemPath(PackageIconFileSet)
+                _previousProperties(_packageIconFilePropName) = PackageIcon.Text
             End If
         End Sub
 
