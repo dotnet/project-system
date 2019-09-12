@@ -48,8 +48,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.LicenseBrowseButton = New System.Windows.Forms.Button()
             Me.PackageProjectUrlLabel = New System.Windows.Forms.Label()
             Me.PackageProjectUrl = New System.Windows.Forms.TextBox()
-            Me.PackageIconUrlLabel = New System.Windows.Forms.Label()
-            Me.PackageIconUrl = New System.Windows.Forms.TextBox()
+            Me.PackageIconLabel = New System.Windows.Forms.Label()
+            Me.IconFileLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
+            Me.IconFileBrowseButton = New System.Windows.Forms.Button()
+            Me.PackageIcon = New System.Windows.Forms.TextBox()
             Me.RepositoryUrlLabel = New System.Windows.Forms.Label()
             Me.RepositoryUrl = New System.Windows.Forms.TextBox()
             Me.RepositoryTypeLabel = New System.Windows.Forms.Label()
@@ -77,6 +79,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.TableLayoutPanel.SuspendLayout()
             Me.ExpressionLayoutPanel.SuspendLayout()
             Me.LicenseFileLayoutPanel.SuspendLayout()
+            Me.IconFileLayoutPanel.SuspendLayout()
             Me.AssemblyVersionLayoutPanel.SuspendLayout()
             Me.FileVersionLayoutPanel.SuspendLayout()
             Me.SuspendLayout()
@@ -109,8 +112,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.TableLayoutPanel.Controls.Add(Me.LicenseFileLayoutPanel, 1, 11)
             Me.TableLayoutPanel.Controls.Add(Me.PackageProjectUrlLabel, 0, 12)
             Me.TableLayoutPanel.Controls.Add(Me.PackageProjectUrl, 1, 12)
-            Me.TableLayoutPanel.Controls.Add(Me.PackageIconUrlLabel, 0, 13)
-            Me.TableLayoutPanel.Controls.Add(Me.PackageIconUrl, 1, 13)
+            Me.TableLayoutPanel.Controls.Add(Me.PackageIconLabel, 0, 13)
+            Me.TableLayoutPanel.Controls.Add(Me.IconFileLayoutPanel, 1, 13)
             Me.TableLayoutPanel.Controls.Add(Me.RepositoryUrlLabel, 0, 14)
             Me.TableLayoutPanel.Controls.Add(Me.RepositoryUrl, 1, 14)
             Me.TableLayoutPanel.Controls.Add(Me.RepositoryTypeLabel, 0, 15)
@@ -290,15 +293,27 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             resources.ApplyResources(Me.PackageProjectUrl, "PackageProjectUrl")
             Me.PackageProjectUrl.Name = "PackageProjectUrl"
             '
-            'PackageIconUrlLabel
+            'PackageIconLabel
             '
-            resources.ApplyResources(Me.PackageIconUrlLabel, "PackageIconUrlLabel")
-            Me.PackageIconUrlLabel.Name = "PackageIconUrlLabel"
+            resources.ApplyResources(Me.PackageIconLabel, "PackageIconLabel")
+            Me.PackageIconLabel.Name = "PackageIconLabel"
             '
-            'PackageIconUrl
+            'IconFileLayoutPanel
             '
-            resources.ApplyResources(Me.PackageIconUrl, "PackageIconUrl")
-            Me.PackageIconUrl.Name = "PackageIconUrl"
+            resources.ApplyResources(Me.IconFileLayoutPanel, "IconFileLayoutPanel")
+            Me.IconFileLayoutPanel.Controls.Add(Me.IconFileBrowseButton, 1, 0)
+            Me.IconFileLayoutPanel.Controls.Add(Me.PackageIcon, 0, 0)
+            Me.IconFileLayoutPanel.Name = "IconFileLayoutPanel"
+            '
+            'IconFileBrowseButton
+            '
+            resources.ApplyResources(Me.IconFileBrowseButton, "IconFileBrowseButton")
+            Me.IconFileBrowseButton.Name = "IconFileBrowseButton"
+            '
+            'PackageIcon
+            '
+            resources.ApplyResources(Me.PackageIcon, "PackageIcon")
+            Me.PackageIcon.Name = "PackageIcon"
             '
             'RepositoryUrlLabel
             '
@@ -441,6 +456,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.ExpressionLayoutPanel.PerformLayout()
             Me.LicenseFileLayoutPanel.ResumeLayout(False)
             Me.LicenseFileLayoutPanel.PerformLayout()
+            Me.IconFileLayoutPanel.ResumeLayout(False)
+            Me.IconFileLayoutPanel.PerformLayout()
             Me.AssemblyVersionLayoutPanel.ResumeLayout(False)
             Me.AssemblyVersionLayoutPanel.PerformLayout()
             Me.FileVersionLayoutPanel.ResumeLayout(False)
@@ -457,8 +474,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Friend WithEvents Copyright As Windows.Forms.TextBox
         Friend WithEvents DescriptionLabel As Windows.Forms.Label
         Friend WithEvents Description As Windows.Forms.TextBox
-        Friend WithEvents PackageIconUrl As Windows.Forms.TextBox
-        Friend WithEvents PackageIconUrlLabel As Windows.Forms.Label
+        Friend WithEvents PackageIcon As Windows.Forms.TextBox
+        Friend WithEvents PackageIconLabel As Windows.Forms.Label
         Friend WithEvents PackageProjectUrl As Windows.Forms.TextBox
         Friend WithEvents PackageId As Windows.Forms.TextBox
         Friend WithEvents PackageIdLabel As Windows.Forms.Label
@@ -502,6 +519,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Friend WithEvents ExpressionLayoutPanel As Windows.Forms.TableLayoutPanel
         Friend WithEvents LicenseFileLayoutPanel As Windows.Forms.TableLayoutPanel
 
+        Friend WithEvents IconFileLayoutPanel As Windows.Forms.TableLayoutPanel
+
         Friend WithEvents LicenseFileRadioButton As Windows.Forms.RadioButton
         Friend WithEvents LicenseExpressionRadioButton As Windows.Forms.RadioButton
 
@@ -511,6 +530,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Friend WithEvents FileLabel As Windows.Forms.Label
         Friend WithEvents LicenseFileNameTextBox As Windows.Forms.TextBox
         Friend WithEvents LicenseBrowseButton As System.Windows.Forms.Button
+        Friend WithEvents IconFileBrowseButton As Windows.Forms.Button
     End Class
 
 End Namespace

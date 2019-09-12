@@ -17,9 +17,24 @@
         <target state="translated">&amp;Açıklama:</target>
         <note />
       </trans-unit>
-      <trans-unit id="PackageIconUrlLabel.Text">
-        <source>&amp;Icon URL:</source>
-        <target state="translated">&amp;Simge URL'si:</target>
+      <trans-unit id="IconFileBrowseButton.AccessibleName">
+        <source>Package Icon File Browse</source>
+        <target state="new">Package Icon File Browse</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IconFileBrowseButton.Text">
+        <source>Browse...</source>
+        <target state="new">Browse...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackageIcon.AccessibleName">
+        <source>Package Icon URL</source>
+        <target state="new">Package Icon URL</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackageIconLabel.Text">
+        <source>&amp;Icon File:</source>
+        <target state="new">&amp;Icon File:</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageVersionLabel.Text">
@@ -165,11 +180,6 @@
       <trans-unit id="Description.AccessibleName">
         <source>Package Description</source>
         <target state="translated">Paket Açıklaması</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PackageIconUrl.AccessibleName">
-        <source>Package Icon URL</source>
-        <target state="translated">Paket Simge URL’si</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageProjectUrl.AccessibleName">

@@ -17,9 +17,24 @@
         <target state="translated">&amp;Opis:</target>
         <note />
       </trans-unit>
-      <trans-unit id="PackageIconUrlLabel.Text">
-        <source>&amp;Icon URL:</source>
-        <target state="translated">Adres URL &amp;ikony:</target>
+      <trans-unit id="IconFileBrowseButton.AccessibleName">
+        <source>Package Icon File Browse</source>
+        <target state="new">Package Icon File Browse</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IconFileBrowseButton.Text">
+        <source>Browse...</source>
+        <target state="new">Browse...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackageIcon.AccessibleName">
+        <source>Package Icon URL</source>
+        <target state="new">Package Icon URL</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackageIconLabel.Text">
+        <source>&amp;Icon File:</source>
+        <target state="new">&amp;Icon File:</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageVersionLabel.Text">
@@ -165,11 +180,6 @@
       <trans-unit id="Description.AccessibleName">
         <source>Package Description</source>
         <target state="translated">Pakiet — opis</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PackageIconUrl.AccessibleName">
-        <source>Package Icon URL</source>
-        <target state="translated">Adres URL ikony pakietu</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageProjectUrl.AccessibleName">

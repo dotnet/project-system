@@ -225,7 +225,7 @@
     </IntProperty.DataSource>
   </IntProperty>
 
-  <StringProperty Name="PackageIconUrl"
+  <StringProperty Name="PackageIcon"
                   Visible="False" />
 
   <StringProperty Name="PackageId"

@@ -16,7 +16,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private ReadOnly _fileVersionTextBoxes As TextBox()
         Private ReadOnly _assemblyVersionTextBoxes As TextBox()
-        Private _previousLicenseFileName As String = ""
+
+        'switch to using a string dictionary to check for the previous property first
+        Private _previousProperties As Dictionary(Of String, String) = New Dictionary(Of String, String)
+        Private ReadOnly _packageLicenseFilePropName As String = "PackageLicenseFile"
+        Private ReadOnly _packageIconFilePropName As String = "PackageIcon"
         Private _licenseUrlDetected As Boolean = False
         Private _newLicensePropertyDetectedAtInit As Boolean = False
         Private _unconfiguredProject As UnconfiguredProject
@@ -96,12 +100,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         Private Sub InitializeLicensing()
             GetProjectsAndProvider()
-            Dim PackageLicenseFileSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor("PackageLicenseFile")), String)
+            Dim PackageLicenseFileSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor(_packageLicenseFilePropName)), String)
             If (PackageLicenseFileSet IsNot Nothing AndAlso PackageLicenseFileSet IsNot "") Then
                 _newLicensePropertyDetectedAtInit = True
                 Dim projectItems = DTEProject.ProjectItems
                 LicenseFileNameTextBox.Text = LicenseTryGetExistingLicenseItemPath(PackageLicenseFileSet)
-                _previousLicenseFileName = LicenseFileNameTextBox.Text
+                _previousProperties(_packageLicenseFilePropName) = LicenseFileNameTextBox.Text
+                '_previousLicenseFileName = LicenseFileNameTextBox.Text
                 SetLicenseRadioButtons(False)
             End If
             Dim PackageLicenseExpressionSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor("PackageLicenseExpression")), String)
@@ -250,9 +255,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     datalist.Add(data)
                     data = New PropertyControlData(106, "PackageLicenseExpression", PackageLicenseExpression, ControlDataFlags.None, New Control() {ExpressionLabel})
                     datalist.Add(data)
+                    data = New PropertyControlData(107, "PackageLicenseFile", Nothing, ControlDataFlags.None, Nothing)
+                    datalist.Add(data)
                     data = New PropertyControlData(108, "PackageProjectUrl", PackageProjectUrl, ControlDataFlags.None, New Control() {PackageProjectUrlLabel})
                     datalist.Add(data)
-                    data = New PropertyControlData(109, "PackageIconUrl", PackageIconUrl, ControlDataFlags.None, New Control() {PackageIconUrlLabel})
+                    data = New PropertyControlData(109, "PackageIcon", Nothing, ControlDataFlags.None, Nothing)
                     datalist.Add(data)
                     data = New PropertyControlData(110, "RepositoryUrl", RepositoryUrl, ControlDataFlags.None, New Control() {RepositoryUrlLabel})
                     datalist.Add(data)
@@ -310,10 +317,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             LicenseFileNameTextBox.Enabled = Not setLicenseExpression
             LicenseBrowseButton.Enabled = Not setLicenseExpression
             If setLicenseExpression AndAlso Not LicenseFileNameTextBox.Text = "" Then
-                LicenseRemoveLicenseItem(LicenseFileNameTextBox.Text)
-                SetCommonPropertyValue(GetPropertyDescriptor("PackageLicenseFile"), "")
+                RemoveItem(LicenseFileNameTextBox.Text)
+                SetCommonPropertyValue(GetPropertyDescriptor(_packageLicenseFilePropName), "")
                 LicenseFileNameTextBox.Text = ""
-                _previousLicenseFileName = LicenseFileNameTextBox.Text
+                _previousProperties(_packageLicenseFilePropName) = LicenseFileNameTextBox.Text
             ElseIf Not setLicenseExpression AndAlso Not PackageLicenseExpression.Text = "" Then
                 PackageLicenseExpression.Text = ""
                 SetDirty(PackageLicenseExpression)
@@ -375,24 +382,41 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Private Sub LicenseFileNameTextBox_LostFocus(sender As Object, e As EventArgs) Handles LicenseFileNameTextBox.LostFocus
-            If Not String.Equals(LicenseFileNameTextBox.Text, _previousLicenseFileName) Then
+            If Not String.Equals(LicenseFileNameTextBox.Text, RetrievePreviousProperty(_packageLicenseFilePropName)) Then
                 Dim TryConvertToAbsolutePath As String = RelativeToAbsolutePath(LicenseFileNameTextBox.Text)
                 If Not TryConvertToAbsolutePath Is Nothing AndAlso String.Equals(TryConvertToAbsolutePath, LicenseFileNameTextBox.Text) Then
                     'If these are equal then the path is absolute
-                    AddLicenseItemToProject(AbsoluteToRelativePath(LicenseFileNameTextBox.Text))
+                    AddItemToProject(AbsoluteToRelativePath(LicenseFileNameTextBox.Text), _packageLicenseFilePropName)
                 Else
                     If LicenseFileNameTextBox.Text IsNot Nothing AndAlso LicenseFileNameTextBox.Text IsNot "" Then
                         'If it is not definitely an absolute path, assume relative 
-                        AddLicenseItemToProject(LicenseFileNameTextBox.Text)
+                        AddItemToProject(LicenseFileNameTextBox.Text, _packageLicenseFilePropName)
                     Else
                         'Value was changed to empty
-                        LicenseRemoveLicenseItem(_previousLicenseFileName)
-                        _previousLicenseFileName = ""
-                        SetCommonPropertyValue(GetPropertyDescriptor("PackageLicenseFile"), "")
+                        RemoveItem(RetrievePreviousProperty(_packageLicenseFilePropName))
+                        _previousProperties(_packageLicenseFilePropName) = ""
+                        SetCommonPropertyValue(GetPropertyDescriptor(_packageLicenseFilePropName), "")
                     End If
                 End If
             End If
         End Sub
+
+        Private Sub PackageIconFile_LostFocus(sender As Object, e As EventArgs) Handles PackageIcon.LostFocus
+            If Not String.Equals(PackageIcon.Text, RetrievePreviousProperty(_packageIconFilePropName)) Then
+                Dim TryConvertToAbsolutePath As String = RelativeToAbsolutePath(PackageIcon.Text)
+                If Not TryConvertToAbsolutePath Is Nothing AndAlso String.Equals(TryConvertToAbsolutePath, PackageIcon.Text) Then
+                    'If these are equal then the path is absolute
+                    AddItemToProject(AbsoluteToRelativePath(PackageIcon.Text), _packageIconFilePropName)
+                Else
+                    If PackageIcon.Text IsNot Nothing AndAlso PackageIcon.Text IsNot "" Then
+                        AddItemToProject(PackageIcon.Text, _packageIconFilePropName)
+                    Else
+                        RemoveItem(RetrievePreviousProperty(_packageIconFilePropName))
+                    End If
+                End If
+            End If
+        End Sub
+
 
         Private Sub LicenseBrowseButton_GotFocus(sender As Object, e As EventArgs) Handles LicenseBrowseButton.GotFocus
             SetLicenseRadioButtons(False)
@@ -412,21 +436,29 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         'This is for checking if the project file changed and updating the textbox with the new value
         Protected Overrides Sub OnExternalPropertyChanged(data As PropertyControlData, source As PropertyChangeSource)
             MyBase.OnExternalPropertyChanged(data, source)
-            If String.Equals(data.PropertyName, "PackageLicenseFile") Then
-                Dim PackageLicenseFileSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor("PackageLicenseFile")), String)
+            If String.Equals(data.PropertyName, _packageLicenseFilePropName) Then
+                Dim PackageLicenseFileSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor(_packageLicenseFilePropName)), String)
                 'Because this will be called even when we set the value, we need to check to make sure we are not trying to set it twice
                 Dim ExistingItemPath = LicenseTryGetExistingLicenseItemPath(PackageLicenseFileSet)
                 If Not String.Equals(LicenseFileNameTextBox.Text, ExistingItemPath) Then
                     'If trying to resolve the existing item path fails, we should not modify anything
-                    If ExistingItemPath IsNot Nothing Then
-                        LicenseFileNameTextBox.Text = ExistingItemPath
-                        _previousLicenseFileName = LicenseFileNameTextBox.Text
-                    End If
+                    LicenseFileNameTextBox.Text = ExistingItemPath
+                    _previousProperties(_packageLicenseFilePropName) = LicenseFileNameTextBox.Text
+                End If
+            ElseIf String.Equals(data.PropertyName, _packageIconFilePropName) Then
+                Dim PackageIconFileSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor(_packageIconFilePropName)), String)
+                'Because this will be called even when we set the value, we need to check to make sure we are not trying to set it twice
+                Dim ExistingItemPath = LicenseTryGetExistingLicenseItemPath(PackageIconFileSet)
+                If Not String.Equals(PackageIcon.Text, ExistingItemPath) Then
+                    'If trying to resolve the existing item path fails, we should not modify anything
+                    PackageIcon.Text = ExistingItemPath
+                    _previousProperties(_packageIconFilePropName) = PackageIcon.Text
                 End If
             End If
+
         End Sub
 
-        Private Sub AddOrChangeLicenseItem(oldInclude As String, newInclude As String)
+        Private Sub AddOrChangeItem(oldInclude As String, newInclude As String)
             Dim projectLock = _configuredProject.Services.ExportProvider.GetExportedValue(Of IProjectLockService)()
 #Disable Warning RS0030 ' Do not used banned APIs. The project lock is needed here - there is no IVT for ProjectAccessor
             ThreadHelper.JoinableTaskFactory.Run(
@@ -436,7 +468,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                             Await access.CheckoutAsync(_unconfiguredProject.FullPath)
                             Dim projectXML = Await access.GetProjectXmlAsync(_unconfiguredProject.FullPath)
                             If Not String.IsNullOrEmpty(oldInclude) Then
-                                Dim foundItem = projectXML.ItemGroups.SelectMany(Function(x) x.Items).FirstOrDefault(Function(x) x.Include = oldInclude)
+                                Dim foundItem = projectXML.ItemGroups.SelectMany(Function(x) x.Items).FirstOrDefault(Function(x) x.Include = oldInclude Or x.Include = newInclude)
                                 If foundItem IsNot Nothing Then
                                     foundItem.Include = newInclude
                                 Else
@@ -453,7 +485,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 #Enable Warning RS0030 ' Do not used banned APIs
         End Sub
 
-        Private Sub LicenseRemoveLicenseItem(include As String)
+        Private Sub RemoveItem(include As String)
             Dim projectLock = _configuredProject.Services.ExportProvider.GetExportedValue(Of IProjectLockService)()
 #Disable Warning RS0030 ' Do not used banned APIs. The project lock is needed here - there is no IVT for ProjectAccessor
             ThreadHelper.JoinableTaskFactory.Run(
@@ -485,22 +517,38 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Try
         End Function
 
-        Private Sub AddLicenseItemToProject(relativeFilePath As String)
+        Private Function RetrievePreviousProperty(propertyName As String) As String
+            If _previousProperties.ContainsKey(propertyName) Then
+                Return _previousProperties(propertyName)
+            Else
+                Return String.Empty
+            End If
+        End Function
+
+        Private Sub AddItemToProject(relativeFilePath As String, propertyName As String)
             If _unconfiguredProject Is Nothing OrElse _configuredProject Is Nothing Then
                 GetProjectsAndProvider()
             End If
-            'The TextBox needs to have the relative path, so the property isn't linked to the TextBox. It must be set manually.
-            AddOrChangeLicenseItem(_previousLicenseFileName, relativeFilePath)
-            LicenseFileNameTextBox.Text = relativeFilePath
-            _previousLicenseFileName = LicenseFileNameTextBox.Text
-            'If the user has changed the directory on their PackageLicenseFile, we should keep it there
-            Dim PackageLicenseFileSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor("PackageLicenseFile")), String)
-            If PackageLicenseFileSet IsNot Nothing AndAlso PackageLicenseFileSet IsNot "" Then
-                Dim currentPackageLicenseFileDirectory = Path.GetDirectoryName(PackageLicenseFileSet)
-                Dim potentialFullString = Path.Combine(currentPackageLicenseFileDirectory, Path.GetFileName(relativeFilePath))
-                SetCommonPropertyValue(GetPropertyDescriptor("PackageLicenseFile"), potentialFullString)
-            Else
-                SetCommonPropertyValue(GetPropertyDescriptor("PackageLicenseFile"), Path.GetFileName(relativeFilePath))
+            If relativeFilePath.IndexOfAny(Path.GetInvalidPathChars()) = -1 Then
+                'The TextBox needs to have the relative path, so the property isn't linked to the TextBox. It must be set manually.
+                AddOrChangeItem(RetrievePreviousProperty(propertyName), relativeFilePath)
+                If String.Equals(_packageLicenseFilePropName, propertyName) Then
+                    LicenseFileNameTextBox.Text = relativeFilePath
+                ElseIf String.Equals(_packageIconFilePropName, propertyName) Then
+                    PackageIcon.Text = relativeFilePath
+                End If
+
+                _previousProperties(propertyName) = relativeFilePath
+
+                'If the user has changed the directory on their PackageLicenseFile, we should keep it there
+                Dim PackageLicenseFileSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor(propertyName)), String)
+                If PackageLicenseFileSet IsNot Nothing AndAlso PackageLicenseFileSet IsNot "" Then
+                    Dim currentPackageLicenseFileDirectory = Path.GetDirectoryName(PackageLicenseFileSet)
+                    Dim potentialFullString = Path.Combine(currentPackageLicenseFileDirectory, Path.GetFileName(relativeFilePath))
+                    SetCommonPropertyValue(GetPropertyDescriptor(propertyName), potentialFullString)
+                Else
+                    SetCommonPropertyValue(GetPropertyDescriptor(propertyName), Path.GetFileName(relativeFilePath))
+                End If
             End If
         End Sub
 
@@ -528,7 +576,24 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If fileNames IsNot Nothing AndAlso fileNames.Count = 1 Then
                 fileName = DirectCast(fileNames(0), String)
                 If File.Exists(fileName) Then
-                    AddLicenseItemToProject(AbsoluteToRelativePath(fileName))
+                    AddItemToProject(AbsoluteToRelativePath(fileName), _packageLicenseFilePropName)
+                End If
+            End If
+        End Sub
+
+        Private Sub IconFileBrowseButton_Click(sender As Object, e As EventArgs) Handles IconFileBrowseButton.Click
+            Dim fileName = ""
+            Dim initialDirectory = Path.GetFullPath(DTEProject.FullName)
+            Dim fileNames As ArrayList = GetFilesViaBrowse(ServiceProvider, Handle, initialDirectory, My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AddExistingFilesTitle,
+                    CombineDialogFilters(
+                        My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Filter_Icon + " (*.jpg, *.jpeg, *.png)|*.jpg;*.jpeg;*.png",
+                        GetAllFilesDialogFilter()
+                        ),
+                        0, False, fileName)
+            If fileNames IsNot Nothing AndAlso fileNames.Count = 1 Then
+                fileName = DirectCast(fileNames(0), String)
+                If File.Exists(fileName) Then
+                    AddItemToProject(AbsoluteToRelativePath(fileName), _packageIconFilePropName)
                 End If
             End If
         End Sub

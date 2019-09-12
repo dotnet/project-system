@@ -1080,68 +1080,134 @@
   <data name="&gt;&gt;PackageProjectUrl.ZOrder" xml:space="preserve">
     <value>24</value>
   </data>
-  <data name="PackageIconUrlLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="PackageIconLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
   </data>
-  <data name="PackageIconUrlLabel.AutoSize" type="System.Boolean, mscorlib">
+  <data name="PackageIconLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="PackageIconUrlLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="PackageIconLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="PackageIconUrlLabel.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="PackageIconLabel.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 538</value>
   </data>
-  <data name="PackageIconUrlLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="PackageIconLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 5, 0, 5</value>
   </data>
-  <data name="PackageIconUrlLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>81, 20</value>
+  <data name="PackageIconLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>73, 20</value>
   </data>
-  <data name="PackageIconUrlLabel.TabIndex" type="System.Int32, mscorlib">
+  <data name="PackageIconLabel.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="PackageIconUrlLabel.Text" xml:space="preserve">
-    <value>&amp;Icon URL:</value>
+  <data name="PackageIconLabel.Text" xml:space="preserve">
+    <value>&amp;Icon File:</value>
   </data>
-  <data name="&gt;&gt;PackageIconUrlLabel.Name" xml:space="preserve">
-    <value>PackageIconUrlLabel</value>
+  <data name="&gt;&gt;PackageIconLabel.Name" xml:space="preserve">
+    <value>PackageIconLabel</value>
   </data>
-  <data name="&gt;&gt;PackageIconUrlLabel.Type" xml:space="preserve">
+  <data name="&gt;&gt;PackageIconLabel.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;PackageIconUrlLabel.Parent" xml:space="preserve">
+  <data name="&gt;&gt;PackageIconLabel.Parent" xml:space="preserve">
     <value>TableLayoutPanel</value>
   </data>
-  <data name="&gt;&gt;PackageIconUrlLabel.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;PackageIconLabel.ZOrder" xml:space="preserve">
     <value>25</value>
   </data>
-  <data name="PackageIconUrl.AccessibleName" xml:space="preserve">
+  <data name="IconFileLayoutPanel.ColumnCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="IconFileBrowseButton.AccessibleName" xml:space="preserve">
+    <value>Package Icon File Browse</value>
+  </data>
+  <data name="IconFileBrowseButton.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="IconFileBrowseButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>726, 3</value>
+  </data>
+  <data name="IconFileBrowseButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 3, 0, 3</value>
+  </data>
+  <data name="IconFileBrowseButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>131, 30</value>
+  </data>
+  <data name="IconFileBrowseButton.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="IconFileBrowseButton.Text" xml:space="preserve">
+    <value>Browse...</value>
+  </data>
+  <data name="&gt;&gt;IconFileBrowseButton.Name" xml:space="preserve">
+    <value>IconFileBrowseButton</value>
+  </data>
+  <data name="&gt;&gt;IconFileBrowseButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;IconFileBrowseButton.Parent" xml:space="preserve">
+    <value>IconFileLayoutPanel</value>
+  </data>
+  <data name="&gt;&gt;IconFileBrowseButton.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="PackageIcon.AccessibleName" xml:space="preserve">
     <value>Package Icon URL</value>
   </data>
-  <data name="PackageIconUrl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>290, 535</value>
+  <data name="PackageIcon.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 5</value>
   </data>
-  <data name="PackageIconUrl.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="PackageIcon.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 5, 4, 5</value>
   </data>
-  <data name="PackageIconUrl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>854, 26</value>
+  <data name="PackageIcon.Size" type="System.Drawing.Size, System.Drawing">
+    <value>718, 26</value>
   </data>
-  <data name="PackageIconUrl.TabIndex" type="System.Int32, mscorlib">
+  <data name="PackageIcon.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
   </data>
-  <data name="&gt;&gt;PackageIconUrl.Name" xml:space="preserve">
-    <value>PackageIconUrl</value>
+  <data name="&gt;&gt;PackageIcon.Name" xml:space="preserve">
+    <value>PackageIcon</value>
   </data>
-  <data name="&gt;&gt;PackageIconUrl.Type" xml:space="preserve">
+  <data name="&gt;&gt;PackageIcon.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;PackageIconUrl.Parent" xml:space="preserve">
+  <data name="&gt;&gt;PackageIcon.Parent" xml:space="preserve">
+    <value>IconFileLayoutPanel</value>
+  </data>
+  <data name="&gt;&gt;PackageIcon.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="IconFileLayoutPanel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>286, 530</value>
+  </data>
+  <data name="IconFileLayoutPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="IconFileLayoutPanel.RowCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="IconFileLayoutPanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>858, 36</value>
+  </data>
+  <data name="IconFileLayoutPanel.TabIndex" type="System.Int32, mscorlib">
+    <value>17</value>
+  </data>
+  <data name="&gt;&gt;IconFileLayoutPanel.Name" xml:space="preserve">
+    <value>IconFileLayoutPanel</value>
+  </data>
+  <data name="&gt;&gt;IconFileLayoutPanel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;IconFileLayoutPanel.Parent" xml:space="preserve">
     <value>TableLayoutPanel</value>
   </data>
-  <data name="&gt;&gt;PackageIconUrl.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;IconFileLayoutPanel.ZOrder" xml:space="preserve">
     <value>26</value>
+  </data>
+  <data name="IconFileLayoutPanel.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="IconFileBrowseButton" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageIcon" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Absolute,726,Absolute,132" /&gt;&lt;Rows Styles="Absolute,35" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="RepositoryUrlLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -1834,7 +1900,7 @@
     <value>21</value>
   </data>
   <data name="TableLayoutPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1160, 870</value>
+    <value>1160, 875</value>
   </data>
   <data name="TableLayoutPanel.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1852,7 +1918,7 @@
     <value>0</value>
   </data>
   <data name="TableLayoutPanel.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="GeneratePackageOnBuild" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PackageRequireLicenseAcceptance" Row="1" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="PackageIdLabel" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PackageId" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageVersionLabel" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PackageVersion" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="AuthorsLabel" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="Authors" Row="4" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="AssemblyCompanyLabel" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="AssemblyCompany" Row="5" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="ProductLabel" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="Product" Row="6" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="DescriptionLabel" Row="7" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="Description" Row="7" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="CopyrightLabel" Row="8" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="Copyright" Row="8" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageLicenseLabel" Row="9" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="LicenseLineLabel" Row="9" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="LicenseUrlWarning" Row="9" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="ExpressionLabel" Row="10" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="ExpressionLayoutPanel" Row="10" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="FileLabel" Row="11" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="LicenseFileLayoutPanel" Row="11" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageProjectUrlLabel" Row="12" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PackageProjectUrl" Row="12" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageIconUrlLabel" Row="13" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PackageIconUrl" Row="13" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="RepositoryUrlLabel" Row="14" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="RepositoryUrl" Row="14" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="RepositoryTypeLabel" Row="15" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="RepositoryType" Row="15" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageTagsLabel" Row="16" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PackageTags" Row="16" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageReleaseNotesLabel" Row="17" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PackageReleaseNotes" Row="17" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="NeutralLanguageLabel" Row="18" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="NeutralLanguageComboBox" Row="18" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="AssemblyVersionLabel" Row="19" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="AssemblyVersionLayoutPanel" Row="19" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="AssemblyFileVersionLabel" Row="20" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="FileVersionLayoutPanel" Row="20" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,AutoSize,0,Absolute,9" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="GeneratePackageOnBuild" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PackageRequireLicenseAcceptance" Row="1" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="PackageIdLabel" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PackageId" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageVersionLabel" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PackageVersion" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="AuthorsLabel" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="Authors" Row="4" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="AssemblyCompanyLabel" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="AssemblyCompany" Row="5" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="ProductLabel" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="Product" Row="6" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="DescriptionLabel" Row="7" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="Description" Row="7" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="CopyrightLabel" Row="8" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="Copyright" Row="8" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageLicenseLabel" Row="9" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="LicenseLineLabel" Row="9" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="LicenseUrlWarning" Row="9" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="ExpressionLabel" Row="10" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="ExpressionLayoutPanel" Row="10" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="FileLabel" Row="11" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="LicenseFileLayoutPanel" Row="11" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageProjectUrlLabel" Row="12" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PackageProjectUrl" Row="12" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageIconLabel" Row="13" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="IconFileLayoutPanel" Row="13" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="RepositoryUrlLabel" Row="14" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="RepositoryUrl" Row="14" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="RepositoryTypeLabel" Row="15" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="RepositoryType" Row="15" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageTagsLabel" Row="16" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PackageTags" Row="16" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PackageReleaseNotesLabel" Row="17" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PackageReleaseNotes" Row="17" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="NeutralLanguageLabel" Row="18" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="NeutralLanguageComboBox" Row="18" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="AssemblyVersionLabel" Row="19" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="AssemblyVersionLayoutPanel" Row="19" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="AssemblyFileVersionLabel" Row="20" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="FileVersionLayoutPanel" Row="20" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,AutoSize,0,Absolute,9" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="LicenseLayoutPanel.ColumnCount" type="System.Int32, mscorlib">
     <value>6</value>
@@ -1927,7 +1993,7 @@
     <value>4, 5, 4, 5</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1164, 875</value>
+    <value>1164, 880</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>PackagePropPage</value>
