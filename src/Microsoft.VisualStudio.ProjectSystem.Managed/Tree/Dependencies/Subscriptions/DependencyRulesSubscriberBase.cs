@@ -32,11 +32,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             _tasksService = tasksService;
         }
 
-        public async Task InitializeSubscriberAsync(ICrossTargetSubscriptionsHost host)
+        public Task InitializeSubscriberAsync(ICrossTargetSubscriptionsHost host)
         {
             _host = host;
 
-            await InitializeAsync();
+            return InitializeAsync();
         }
 
         public virtual void AddSubscriptions(AggregateCrossTargetProjectContext projectContext)
@@ -99,20 +99,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             _subscriptions.Add(syncLink((intermediateBlock, actionBlock)));
         }
 
-        private async Task OnProjectChangedAsync(ConfiguredProject configuredProject, T e)
+        private Task OnProjectChangedAsync(ConfiguredProject configuredProject, T e)
         {
             if (IsDisposing || IsDisposed)
             {
-                return;
+                return Task.CompletedTask;
             }
 
             Assumes.True(IsInitialized);
 
             // Ensure updates don't overlap and that we aren't disposed during the update without cleaning up properly
-            await ExecuteUnderLockAsync(async token =>
+            return ExecuteUnderLockAsync(token =>
             {
                 // Ensure the project doesn't unload during the update
-                await _tasksService.LoadedProjectAsync(async () =>
+                return _tasksService.LoadedProjectAsync(async () =>
                 {
                     // TODO pass TasksService.UnloadCancellationToken into Handle to reduce redundant work on unload
 

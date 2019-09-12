@@ -402,42 +402,39 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         /// Determines whether the current project context object is out of date based on the project's target frameworks.
         /// If so, a new one is created and subscriptions are updated accordingly.
         /// </summary>
-        private async Task UpdateProjectContextAndSubscriptionsAsync()
+        private Task UpdateProjectContextAndSubscriptionsAsync()
         {
             // Prevent concurrent project context updates.
-            await _contextUpdateGate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, async () =>
+            return _contextUpdateGate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, async () =>
+            {
+                AggregateCrossTargetProjectContext? newProjectContext = await _context.TryUpdateCurrentAggregateProjectContextAsync();
+
+                if (newProjectContext != null)
                 {
-                    AggregateCrossTargetProjectContext? newProjectContext = await _context.TryUpdateCurrentAggregateProjectContextAsync();
+                    _snapshot.TryUpdate(previousSnapshot => previousSnapshot.SetTargets(newProjectContext.TargetFrameworks, newProjectContext.ActiveTargetFramework));
 
-                    if (newProjectContext != null)
+                    // The context changed, so update a few things.
+                    await _tasksService.LoadedProjectAsync(() =>
                     {
-                        _snapshot.TryUpdate(previousSnapshot => previousSnapshot.SetTargets(newProjectContext.TargetFrameworks, newProjectContext.ActiveTargetFramework));
-
-                        // The context changed, so update a few things.
-                        await _tasksService.LoadedProjectAsync(() =>
+                        lock (_lock)
                         {
-                            lock (_lock)
+                            if (_isDisposed)
                             {
-                                if (_isDisposed)
-                                {
-                                    throw new ObjectDisposedException(nameof(DependenciesSnapshotProvider));
-                                }
-
-                                // Dispose existing subscriptions.
-                                _subscriptions.Dispose();
-                                _subscriptions = new DisposableBag();
-
-                                // Add subscriptions for the configured projects in the new project context.
-                                AddSubscriptions(newProjectContext);
+                                throw new ObjectDisposedException(nameof(DependenciesSnapshotProvider));
                             }
 
-                            return Task.CompletedTask;
-                        });
-                    }
-                });
+                            // Dispose existing subscriptions.
+                            _subscriptions.Dispose();
+                            _subscriptions = new DisposableBag();
 
-            return;
+                            // Add subscriptions for the configured projects in the new project context.
+                            AddSubscriptions(newProjectContext);
+                        }
 
+                        return Task.CompletedTask;
+                    });
+                }
+            });
 
             void AddSubscriptions(AggregateCrossTargetProjectContext newProjectContext)
             {
