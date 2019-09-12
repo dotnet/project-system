@@ -279,7 +279,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 ITargetFramework targetFramework =
                     string.IsNullOrEmpty(e.TargetShortOrFullName) || TargetFramework.Any.Equals(e.TargetShortOrFullName)
                         ? TargetFramework.Any
-                        : _targetFrameworkProvider.GetTargetFramework(e.TargetShortOrFullName) ?? TargetFramework.Any;
+                        : _targetFrameworkProvider.GetTargetFramework(e.TargetShortOrFullName!) ?? TargetFramework.Any;
 
                 ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes = ImmutableDictionary<ITargetFramework, IDependenciesChanges>
                     .Empty.Add(targetFramework, e.Changes);
