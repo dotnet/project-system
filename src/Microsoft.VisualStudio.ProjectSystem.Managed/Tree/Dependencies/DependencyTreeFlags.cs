@@ -13,10 +13,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     public static class DependencyTreeFlags
     {
         internal static readonly ProjectTreeFlags DependenciesRootNodeFlags
-                = ProjectTreeFlags.Create(ProjectTreeFlags.Common.BubbleUp
-                                          | ProjectTreeFlags.Common.ReferencesFolder
-                                          | ProjectTreeFlags.Common.VirtualFolder)
-                                  .Add("DependenciesRootNode");
+                = ProjectTreeFlags.Create(ProjectTreeFlags.Common.BubbleUp)
+                + ProjectTreeFlags.Create(ProjectTreeFlags.Common.ReferencesFolder)
+                + ProjectTreeFlags.Create(ProjectTreeFlags.Common.VirtualFolder)
+                + ProjectTreeFlags.Create("DependenciesRootNode");
+
         /// <summary>
         /// The set of flags common to all Reference nodes.
         /// </summary>
@@ -31,13 +32,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <c>IGraphProvider</c> APIs from being called for that node.
         /// </remarks>
         internal static readonly ProjectTreeFlags UnresolvedReferenceFlags
-                = BaseReferenceFlags.Add(ProjectTreeFlags.Common.BrokenReference);
+                = BaseReferenceFlags
+                + ProjectTreeFlags.Create(ProjectTreeFlags.Common.BrokenReference);
 
         /// <summary>
         /// The set of flags to assign to resolved Reference nodes.
         /// </summary>
         internal static readonly ProjectTreeFlags ResolvedReferenceFlags
-                = BaseReferenceFlags.Add(ProjectTreeFlags.Common.ResolvedReference);
+                = BaseReferenceFlags
+                + ProjectTreeFlags.Create(ProjectTreeFlags.Common.ResolvedReference);
 
         internal static readonly ProjectTreeFlags GenericDependency = ProjectTreeFlags.Create("GenericDependency");
 
@@ -63,24 +66,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </summary>
         public static readonly ProjectTreeFlags DependencyFlags
                 = ProjectTreeFlags.Create("Dependency")
-                                  .Add(ProjectTreeFlags.Common.VirtualFolder.ToString())
-                                  .Add(ProjectTreeFlags.Common.BubbleUp)
-                                  .Union(SupportsRuleProperties)
-                                  .Union(SupportsRemove);
+                + ProjectTreeFlags.Create(ProjectTreeFlags.Common.VirtualFolder.ToString()) // TODO why ToString here?
+                + ProjectTreeFlags.Create(ProjectTreeFlags.Common.BubbleUp)
+                + SupportsRuleProperties
+                + SupportsRemove;
 
         internal static readonly ProjectTreeFlags Unresolved = ProjectTreeFlags.Create("Unresolved");
         internal static readonly ProjectTreeFlags Resolved = ProjectTreeFlags.Create("Resolved");
 
-        public static readonly ProjectTreeFlags UnresolvedDependencyFlags = Unresolved.Union(DependencyFlags);
-        public static readonly ProjectTreeFlags ResolvedDependencyFlags = Resolved.Union(DependencyFlags);
+        public static readonly ProjectTreeFlags UnresolvedDependencyFlags = Unresolved + DependencyFlags;
+        public static readonly ProjectTreeFlags ResolvedDependencyFlags = Resolved + DependencyFlags;
 
         internal static readonly ProjectTreeFlags GenericUnresolvedDependencyFlags
-                = UnresolvedDependencyFlags.Union(UnresolvedReferenceFlags)
-                                           .Union(GenericDependency);
+                = UnresolvedDependencyFlags
+                + UnresolvedReferenceFlags
+                + GenericDependency;
 
         internal static readonly ProjectTreeFlags GenericResolvedDependencyFlags
-                = ResolvedDependencyFlags.Union(ResolvedReferenceFlags)
-                                         .Union(GenericDependency);
+                = ResolvedDependencyFlags
+                + ResolvedReferenceFlags
+                + GenericDependency;
 
         internal static readonly ProjectTreeFlags TargetNode = ProjectTreeFlags.Create("TargetNode");
         internal static readonly ProjectTreeFlags SubTreeRootNode = ProjectTreeFlags.Create("SubTreeRootNode");
@@ -107,8 +112,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         internal static readonly ProjectTreeFlags ProjectDependency = ProjectTreeFlags.Create("ProjectDependency");
 
         internal static readonly ProjectTreeFlags SharedProjectFlags
-            = ProjectTreeFlags.Create("SharedProjectDependency")
-                              .Add(ProjectTreeFlags.Common.SharedProjectImportReference);
+                = ProjectTreeFlags.Create("SharedProjectDependency")
+                + ProjectTreeFlags.Create(ProjectTreeFlags.Common.SharedProjectImportReference);
 
         internal static readonly ProjectTreeFlags Diagnostic = ProjectTreeFlags.Create("Diagnostic");
         internal static readonly ProjectTreeFlags ErrorDiagnostic = ProjectTreeFlags.Create("ErrorDiagnostic");
