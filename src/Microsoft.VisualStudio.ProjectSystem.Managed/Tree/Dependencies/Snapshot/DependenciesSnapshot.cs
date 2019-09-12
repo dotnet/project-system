@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
     /// <summary>
     /// Immutable snapshot of all project dependencies across all target frameworks.
     /// </summary>
-    internal sealed class DependenciesSnapshot : IEquatable<DependenciesSnapshot>
+    internal sealed class DependenciesSnapshot
     {
         #region Factories and private constructor
 
@@ -268,12 +268,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             }
 
             return null;
-        }
-
-        /// <inheritdoc />
-        public bool Equals(DependenciesSnapshot other)
-        {
-            return other != null && other.ProjectPath.Equals(ProjectPath, StringComparison.OrdinalIgnoreCase);
         }
 
         public override string ToString() => $"{DependenciesByTargetFramework.Count} target framework{(DependenciesByTargetFramework.Count == 1 ? "" : "s")} - {ProjectPath}";
