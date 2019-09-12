@@ -1129,7 +1129,7 @@
     <value>132, 26</value>
   </data>
   <data name="IconFileBrowseButton.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="IconFileBrowseButton.Text" xml:space="preserve">
     <value>Browse...</value>
@@ -1159,7 +1159,7 @@
     <value>718, 26</value>
   </data>
   <data name="PackageIcon.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;PackageIcon.Name" xml:space="preserve">
     <value>PackageIcon</value>
@@ -1186,7 +1186,7 @@
     <value>858, 36</value>
   </data>
   <data name="IconFileLayoutPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>17</value>
+    <value>13</value>
   </data>
   <data name="&gt;&gt;IconFileLayoutPanel.Name" xml:space="preserve">
     <value>IconFileLayoutPanel</value>
