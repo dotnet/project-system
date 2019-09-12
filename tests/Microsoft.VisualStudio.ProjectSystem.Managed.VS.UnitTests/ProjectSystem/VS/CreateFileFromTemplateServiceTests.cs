@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.IO;
 using System.Threading.Tasks;
 
 using EnvDTE;
@@ -22,40 +23,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             await Assert.ThrowsAsync<ArgumentNullException>("templateFile", () =>
             {
-                return service.CreateFileAsync(null!, "ParentNode", "FileName");
+                return service.CreateFileAsync(null!, "Path");
             });
         }
 
         [Fact]
-        public async Task CreateFile_NullAsParentNode_ThrowsArgumentNull()
+        public async Task CreateFile_NullAsPath_ThrowsArgumentNull()
         {
             var service = CreateInstance();
 
-            await Assert.ThrowsAsync<ArgumentNullException>("parentDocumentMoniker", () =>
+            await Assert.ThrowsAsync<ArgumentNullException>("path", () =>
             {
-                return service.CreateFileAsync("SomeFile", null!, "FileName");
+                return service.CreateFileAsync("SomeFile", null!);
             });
         }
 
         [Fact]
-        public async Task CreateFile_EmptyAsParentNode_ThrowsArgument()
+        public async Task CreateFile_EmptyAsPath_ThrowsArgument()
         {
             var service = CreateInstance();
 
-            await Assert.ThrowsAsync<ArgumentException>("parentDocumentMoniker", () =>
+            await Assert.ThrowsAsync<ArgumentException>("path", () =>
             {
-                return service.CreateFileAsync("SomeFile", string.Empty, "FileName");
-            });
-        }
-
-        [Fact]
-        public async Task CreateFile_NullFileName_ThrowsArgumentNull()
-        {
-            var service = CreateInstance();
-
-            await Assert.ThrowsAsync<ArgumentNullException>("fileName", async () =>
-            {
-                await service.CreateFileAsync("SomeFile", "ParentNode", null!);
+                return service.CreateFileAsync("SomeFile", string.Empty);
             });
         }
 
@@ -95,8 +85,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var properties = CreateProperties();
             var service = CreateInstance(projectVsServices, dte, properties);
 
-            bool returnValue = await service.CreateFileAsync(templateName, "Moniker", fileName);
-            Assert.Equal(expectedResult, returnValue);
+            bool result = await service.CreateFileAsync(templateName, Path.Combine("Moniker", fileName));
+            Assert.Equal(expectedResult, result);
         }
 
         private static CreateFileFromTemplateService CreateInstance()

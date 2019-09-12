@@ -219,7 +219,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             {
                 Assumes.NotNull(parentPath);
 
-                await _templateFileCreationService.Value.CreateFileAsync(TemplateName, parentPath, specialFileName);
+                await _templateFileCreationService.Value.CreateFileAsync(TemplateName, specialFilePath);
             }
             else
             {
