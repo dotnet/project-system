@@ -31,7 +31,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Shell.Framework" Version="$(MicrosoftVisualStudioShellFrameworkVersion)" />
     <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.14.0.DesignTime" Version="$(MicrosoftVisualStudioShellInterop140DesignTimeVersion)" />
     <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.15.0.DesignTime" Version="$(MicrosoftVisualStudioShellInterop150DesignTimeVersion)" />
-    <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.15.3.DesignTime" Version="$(MicrosoftVisualStudioShellInterop150DesignTimeVersion)" />
+    <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.15.3.DesignTime" Version="$(MicrosoftVisualStudioShellInterop153DesignTimeVersion)" />
     <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.9.0" Version="$(MicrosoftVisualStudioShellInterop90Version)" />
     <PackageReference Include="Microsoft.VisualStudio.TextManager.Interop.10.0" Version="$(MicrosoftVisualStudioTextManagerInterop100Version)" />
     <PackageReference Include="Microsoft.VisualStudio.Utilities" Version="$(MicrosoftVisualStudioUtilitiesVersion)" />
