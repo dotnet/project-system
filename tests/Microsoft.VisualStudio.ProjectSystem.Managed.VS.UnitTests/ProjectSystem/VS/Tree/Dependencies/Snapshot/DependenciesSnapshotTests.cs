@@ -77,7 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         }
 
         [Fact]
-        public void FromChanges_NoChange()
+        public void FromChanges_NullChanges_Throws()
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var catalogs = IProjectCatalogSnapshotFactory.Create();
@@ -90,125 +90,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 activeTargetFramework: targetFramework,
                 dependenciesByTargetFramework);
 
-            var targetChanges = new DependenciesChangesBuilder();
-            var changes = new Dictionary<ITargetFramework, IDependenciesChanges> { [targetFramework] = targetChanges.Build() };
-
-            var snapshot = DependenciesSnapshot.FromChanges(
-                projectPath,
-                previousSnapshot,
-                changes.ToImmutableDictionary(),
-                catalogs,
-                targetFrameworks,
-                activeTargetFramework: targetFramework,
-                ImmutableArray<IDependenciesSnapshotFilter>.Empty,
-                new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
-                null);
-
-            Assert.Same(previousSnapshot, snapshot);
-        }
-
-        [Fact]
-        public void FromChanges_ProjectPathChange()
-        {
-            const string previousProjectPath = @"c:\somefolder\someproject\a.csproj";
-            const string newProjectPath = @"c:\somefolder\someproject\b.csproj";
-
-            var catalogs = IProjectCatalogSnapshotFactory.Create();
-            var targetFramework = new TargetFramework("tfm1");
-            var dependenciesByTargetFramework = CreateDependenciesByTargetFramework(previousProjectPath, catalogs, targetFramework);
-
-            var previousSnapshot = new DependenciesSnapshot(
-                previousProjectPath,
-                activeTargetFramework: targetFramework,
-                dependenciesByTargetFramework);
-
-            var targetChanges = new DependenciesChangesBuilder();
-            var changes = new Dictionary<ITargetFramework, IDependenciesChanges> { [targetFramework] = targetChanges.Build() };
-
-            var snapshot = DependenciesSnapshot.FromChanges(
-                newProjectPath,
-                previousSnapshot,
-                changes.ToImmutableDictionary(),
-                catalogs,
-                targetFrameworks: ImmutableArray<ITargetFramework>.Empty.Add(targetFramework),
-                activeTargetFramework: targetFramework,
-                ImmutableArray<IDependenciesSnapshotFilter>.Empty,
-                new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
-                null);
-
-            Assert.NotSame(previousSnapshot, snapshot);
-            Assert.Same(newProjectPath, snapshot.ProjectPath);
-            Assert.Same(targetFramework, snapshot.ActiveTargetFramework);
-            Assert.NotSame(previousSnapshot.DependenciesByTargetFramework, snapshot.DependenciesByTargetFramework);
-            var targetedSnapshot = snapshot.DependenciesByTargetFramework.Single().Value;
-            Assert.Equal(newProjectPath, targetedSnapshot.ProjectPath);
-            Assert.Equal(targetFramework, targetedSnapshot.TargetFramework);
-            Assert.Empty(targetedSnapshot.TopLevelDependencies);
-            Assert.Empty(targetedSnapshot.DependenciesWorld);
-            Assert.Same(catalogs, targetedSnapshot.Catalogs);
-            Assert.Same(
-                dependenciesByTargetFramework.Single().Value.DependenciesWorld,
-                targetedSnapshot.DependenciesWorld);
-        }
-
-        [Fact]
-        public void FromChanges_ProjectPathAndActiveTargetChange()
-        {
-            const string previousProjectPath = @"c:\somefolder\someproject\a.csproj";
-            const string newProjectPath = @"c:\somefolder\someproject\b.csproj";
-
-            var catalogs = IProjectCatalogSnapshotFactory.Create();
-            var targetFramework1 = new TargetFramework("tfm1");
-            var targetFramework2 = new TargetFramework("tfm2");
-            var targetFrameworks = ImmutableArray<ITargetFramework>.Empty.Add(targetFramework1).Add(targetFramework2);
-            var dependenciesByTargetFramework = CreateDependenciesByTargetFramework(previousProjectPath, catalogs, targetFramework1, targetFramework2);
-
-            var previousSnapshot = new DependenciesSnapshot(
-                previousProjectPath,
-                activeTargetFramework: targetFramework1,
-                dependenciesByTargetFramework);
-
-            var targetChanges = new DependenciesChangesBuilder();
-            var changes = new Dictionary<ITargetFramework, IDependenciesChanges>
-            {
-                [targetFramework1] = targetChanges.Build(),
-                [targetFramework2] = targetChanges.Build()
-            };
-
-            var snapshot = DependenciesSnapshot.FromChanges(
-                newProjectPath,
-                previousSnapshot,
-                changes.ToImmutableDictionary(),
-                catalogs,
-                targetFrameworks,
-                activeTargetFramework: targetFramework2,
-                ImmutableArray<IDependenciesSnapshotFilter>.Empty,
-                new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
-                null);
-
-            Assert.NotSame(previousSnapshot, snapshot);
-            Assert.Same(newProjectPath, snapshot.ProjectPath);
-            Assert.Same(targetFramework2, snapshot.ActiveTargetFramework);
-            Assert.NotSame(previousSnapshot.DependenciesByTargetFramework, snapshot.DependenciesByTargetFramework);
-            Assert.Equal(2, snapshot.DependenciesByTargetFramework.Count);
-            var targetedSnapshot1 = snapshot.DependenciesByTargetFramework[targetFramework1];
-            var targetedSnapshot2 = snapshot.DependenciesByTargetFramework[targetFramework2];
-            Assert.Equal(newProjectPath, targetedSnapshot1.ProjectPath);
-            Assert.Equal(newProjectPath, targetedSnapshot2.ProjectPath);
-            Assert.Equal(targetFramework1, targetedSnapshot1.TargetFramework);
-            Assert.Equal(targetFramework2, targetedSnapshot2.TargetFramework);
-            Assert.Empty(targetedSnapshot1.TopLevelDependencies);
-            Assert.Empty(targetedSnapshot2.TopLevelDependencies);
-            Assert.Empty(targetedSnapshot1.DependenciesWorld);
-            Assert.Empty(targetedSnapshot2.DependenciesWorld);
-            Assert.Same(catalogs, targetedSnapshot1.Catalogs);
-            Assert.Same(catalogs, targetedSnapshot2.Catalogs);
-            Assert.Same(
-                dependenciesByTargetFramework[targetFramework1].DependenciesWorld,
-                targetedSnapshot1.DependenciesWorld);
-            Assert.Same(
-                dependenciesByTargetFramework[targetFramework2].DependenciesWorld,
-                targetedSnapshot2.DependenciesWorld);
+            Assert.Throws<ArgumentNullException>(
+                "changes",
+                () => DependenciesSnapshot.FromChanges(
+                    projectPath,
+                    previousSnapshot,
+                    targetFramework,
+                    null!,
+                    catalogs,
+                    targetFrameworks,
+                    activeTargetFramework: targetFramework,
+                    ImmutableArray<IDependenciesSnapshotFilter>.Empty,
+                    new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
+                    null));
         }
 
         [Fact]
@@ -233,14 +127,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Id = "dependency1"
             };
             targetChanges.Added(model);
-            var changes = new Dictionary<ITargetFramework, IDependenciesChanges> { [targetFramework] = targetChanges.Build() };
 
             var snapshot = DependenciesSnapshot.FromChanges(
                 newProjectPath,
                 previousSnapshot,
-                changes.ToImmutableDictionary(),
+                targetFramework,
+                targetChanges.TryBuildChanges()!,
                 catalogs,
-                targetFrameworks: ImmutableArray<ITargetFramework>.Empty.Add(targetFramework),
+                targetFrameworks: ImmutableArray.Create<ITargetFramework>(targetFramework),
                 activeTargetFramework: targetFramework,
                 ImmutableArray<IDependenciesSnapshotFilter>.Empty,
                 new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
@@ -262,7 +156,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             ITargetFramework tfm2 = new TargetFramework("tfm2");
 
             var snapshot = DependenciesSnapshot.CreateEmpty(projectPath)
-                .SetTargets(new[] { tfm1, tfm2 }.ToImmutableArray(), tfm1);
+                .SetTargets(ImmutableArray.Create(tfm1, tfm2), tfm1);
 
             Assert.Same(tfm1, snapshot.ActiveTargetFramework);
             Assert.Equal(2, snapshot.DependenciesByTargetFramework.Count);
@@ -279,9 +173,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             ITargetFramework tfm2 = new TargetFramework("tfm2");
 
             var before = DependenciesSnapshot.CreateEmpty(projectPath)
-                .SetTargets(new[] { tfm1, tfm2 }.ToImmutableArray(), tfm1);
+                .SetTargets(ImmutableArray.Create(tfm1, tfm2), tfm1);
 
-            var after = before.SetTargets(new[] { tfm1, tfm2 }.ToImmutableArray(), tfm2);
+            var after = before.SetTargets(ImmutableArray.Create(tfm1, tfm2), tfm2);
 
             Assert.Same(tfm2, after.ActiveTargetFramework);
             Assert.Same(before.DependenciesByTargetFramework, after.DependenciesByTargetFramework);
@@ -296,9 +190,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             ITargetFramework tfm2 = new TargetFramework("tfm2");
 
             var before = DependenciesSnapshot.CreateEmpty(projectPath)
-                .SetTargets(new[] { tfm1, tfm2 }.ToImmutableArray(), tfm1);
+                .SetTargets(ImmutableArray.Create(tfm1, tfm2), tfm1);
 
-            var after = before.SetTargets(new[] { tfm1, tfm2 }.ToImmutableArray(), tfm1);
+            var after = before.SetTargets(ImmutableArray.Create(tfm1, tfm2), tfm1);
 
             Assert.Same(before, after);
         }
@@ -313,9 +207,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             ITargetFramework tfm3 = new TargetFramework("tfm3");
 
             var before = DependenciesSnapshot.CreateEmpty(projectPath)
-                .SetTargets(new[] { tfm1, tfm2 }.ToImmutableArray(), tfm1);
+                .SetTargets(ImmutableArray.Create(tfm1, tfm2), tfm1);
 
-            var after = before.SetTargets(new[] { tfm2, tfm3 }.ToImmutableArray(), tfm3);
+            var after = before.SetTargets(ImmutableArray.Create(tfm2, tfm3), tfm3);
 
             Assert.Same(tfm3, after.ActiveTargetFramework);
             Assert.Equal(2, after.DependenciesByTargetFramework.Count);

@@ -66,16 +66,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         public DependencySubscriptionChangedEventArgs(
             ImmutableArray<ITargetFramework> targetFrameworks,
             ITargetFramework activeTarget,
-            IProjectCatalogSnapshot catalogs,
-            ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes)
+            ITargetFramework changedTargetFramework,
+            IDependenciesChanges changes,
+            IProjectCatalogSnapshot catalogs)
         {
             Requires.Argument(!targetFrameworks.IsDefaultOrEmpty, nameof(targetFrameworks), "Must not be default or empty.");
-            Requires.Argument(changes.Count != 0, nameof(changes), "Must not be zero.");
 
             TargetFrameworks = targetFrameworks;
             ActiveTarget = activeTarget;
             Catalogs = catalogs;
             Changes = changes;
+            ChangedTargetFramework = changedTargetFramework;
         }
 
         public ImmutableArray<ITargetFramework> TargetFrameworks { get; }
@@ -84,6 +85,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         public IProjectCatalogSnapshot Catalogs { get; }
 
-        public ImmutableDictionary<ITargetFramework, IDependenciesChanges> Changes { get; }
+        public IDependenciesChanges Changes { get; }
+
+        public ITargetFramework ChangedTargetFramework { get; }
     }
 }

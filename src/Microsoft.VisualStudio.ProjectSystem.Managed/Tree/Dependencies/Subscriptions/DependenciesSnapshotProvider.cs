@@ -156,7 +156,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         return;
                     }
 
-                    UpdateDependenciesSnapshot(e.Changes, e.Catalogs, e.TargetFrameworks, e.ActiveTarget, CancellationToken.None);
+                    UpdateDependenciesSnapshot(e.ChangedTargetFramework, e.Changes, e.Catalogs, e.TargetFrameworks, e.ActiveTarget, CancellationToken.None);
                 }
             }
         }
@@ -281,10 +281,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         ? TargetFramework.Any
                         : _targetFrameworkProvider.GetTargetFramework(e.TargetShortOrFullName) ?? TargetFramework.Any;
 
-                ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes = ImmutableDictionary<ITargetFramework, IDependenciesChanges>
-                    .Empty.Add(targetFramework, e.Changes);
-
-                UpdateDependenciesSnapshot(changes, catalogs: null, targetFrameworks: default, activeTargetFramework: null, e.Token);
+                UpdateDependenciesSnapshot(targetFramework, e.Changes, catalogs: null, targetFrameworks: default, activeTargetFramework: null, e.Token);
             }
         }
 
@@ -307,7 +304,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         }
 
         private void UpdateDependenciesSnapshot(
-            ImmutableDictionary<ITargetFramework, IDependenciesChanges> changesByTargetFramework,
+            ITargetFramework changedTargetFramework,
+            IDependenciesChanges changes,
             IProjectCatalogSnapshot? catalogs,
             ImmutableArray<ITargetFramework> targetFrameworks,
             ITargetFramework? activeTargetFramework,
@@ -319,7 +317,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 previousSnapshot => DependenciesSnapshot.FromChanges(
                     _commonServices.Project.FullPath,
                     previousSnapshot,
-                    changesByTargetFramework,
+                    changedTargetFramework,
+                    changes,
                     catalogs,
                     targetFrameworks,
                     activeTargetFramework,

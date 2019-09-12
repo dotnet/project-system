@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         public void Handle(
             IImmutableDictionary<string, IProjectChangeDescription> changesByRuleName,
             ITargetFramework targetFramework,
-            CrossTargetDependenciesChangesBuilder changesBuilder)
+            DependenciesChangesBuilder changesBuilder)
         {
             // We receive evaluated and resolved project data separately, each as its own rule.
 
@@ -91,7 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             string addedItem,
             bool resolved,
             IProjectChangeDescription projectChange,
-            CrossTargetDependenciesChangesBuilder changesBuilder,
+            DependenciesChangesBuilder changesBuilder,
             ITargetFramework targetFramework,
             Func<string, bool>? isEvaluatedItemSpec)
         {
@@ -99,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             if (isEvaluatedItemSpec == null || isEvaluatedItemSpec(model.Id))
             {
-                changesBuilder.Added(targetFramework, model);
+                changesBuilder.Added(model);
             }
         }
 
@@ -107,7 +107,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             string removedItem,
             bool resolved,
             IProjectChangeDescription projectChange,
-            CrossTargetDependenciesChangesBuilder changesBuilder,
+            DependenciesChangesBuilder changesBuilder,
             ITargetFramework targetFramework,
             Func<string, bool>? isEvaluatedItemSpec)
         {
@@ -117,7 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             if (isEvaluatedItemSpec == null || isEvaluatedItemSpec(dependencyId))
             {
-                changesBuilder.Removed(targetFramework, ProviderType, removedItem);
+                changesBuilder.Removed(ProviderType, removedItem);
             }
         }
 
@@ -125,7 +125,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             string changedItem,
             bool resolved,
             IProjectChangeDescription projectChange,
-            CrossTargetDependenciesChangesBuilder changesBuilder,
+            DependenciesChangesBuilder changesBuilder,
             ITargetFramework targetFramework,
             Func<string, bool>? isEvaluatedItemSpec)
         {
@@ -136,7 +136,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 // For changes we try to add new dependency. If it is a resolved dependency, it would just override
                 // old one with new properties. If it is unresolved dependency, it would be added only when there no
                 // resolved version in the snapshot.
-                changesBuilder.Added(targetFramework, model);
+                changesBuilder.Added(model);
             }
         }
 
