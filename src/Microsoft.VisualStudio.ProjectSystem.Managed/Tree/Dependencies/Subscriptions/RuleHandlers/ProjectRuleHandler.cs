@@ -117,7 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             string otherProjectPath = otherProjectSnapshot.ProjectPath;
 
-            foreach ((ITargetFramework _, ITargetedDependenciesSnapshot targetedDependencies) in thisProjectSnapshot.DependenciesByTargetFramework)
+            foreach ((ITargetFramework _, TargetedDependenciesSnapshot targetedDependencies) in thisProjectSnapshot.DependenciesByTargetFramework)
             {
                 foreach (IDependency dependency in targetedDependencies.TopLevelDependencies)
                 {

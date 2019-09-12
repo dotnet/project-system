@@ -83,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             async Task BuildSingleTargetTreeAsync()
             {
-                foreach ((ITargetFramework _, ITargetedDependenciesSnapshot targetedSnapshot) in snapshot.DependenciesByTargetFramework)
+                foreach ((ITargetFramework _, TargetedDependenciesSnapshot targetedSnapshot) in snapshot.DependenciesByTargetFramework)
                 {
                     if (cancellationToken.IsCancellationRequested)
                     {
@@ -100,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             async Task BuildMultiTargetTreeAsync()
             {
-                foreach ((ITargetFramework targetFramework, ITargetedDependenciesSnapshot targetedSnapshot) in snapshot.DependenciesByTargetFramework)
+                foreach ((ITargetFramework targetFramework, TargetedDependenciesSnapshot targetedSnapshot) in snapshot.DependenciesByTargetFramework)
                 {
                     if (cancellationToken.IsCancellationRequested)
                     {
@@ -177,7 +177,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         private async Task<IProjectTree> BuildSubTreesAsync(
             IProjectTree rootNode,
             ITargetFramework activeTarget,
-            ITargetedDependenciesSnapshot targetedSnapshot,
+            TargetedDependenciesSnapshot targetedSnapshot,
             Func<IProjectTree, HashSet<IProjectTree>, IProjectTree> syncFunc)
         {
             var groupedByProviderType = new Dictionary<string, List<IDependency>>(StringComparers.DependencyProviderTypes);
@@ -260,7 +260,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </summary>
         private async Task<IProjectTree> BuildSubTreeAsync(
             IProjectTree rootNode,
-            ITargetedDependenciesSnapshot targetedSnapshot,
+            TargetedDependenciesSnapshot targetedSnapshot,
             List<IDependency> dependencies,
             bool isActiveTarget,
             bool shouldCleanup)
@@ -333,7 +333,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         private async Task<IProjectTree> CreateOrUpdateNodeAsync(
             IProjectTree? node,
             IDependency dependency,
-            ITargetedDependenciesSnapshot targetedSnapshot,
+            TargetedDependenciesSnapshot targetedSnapshot,
             bool isProjectItem,
             ProjectTreeFlags? additionalFlags = null,
             ProjectTreeFlags? excludedFlags = null)

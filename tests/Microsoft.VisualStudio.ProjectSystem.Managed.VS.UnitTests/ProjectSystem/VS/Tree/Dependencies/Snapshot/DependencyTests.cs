@@ -243,27 +243,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var dependency2 = new Dependency(dependencyModel2, targetFramework, projectPath);
             var dependency3 = new Dependency(dependencyModel3, targetFramework, projectPath);
 
-            var children = new IDependency[] { dependency1, dependency2, dependency3 }.ToImmutableDictionary(d => d.Id);
-
-            var mockSnapshot = ITargetedDependenciesSnapshotFactory.ImplementMock(targetFramework: targetFramework);
-            mockSnapshot.Setup(x => x.DependenciesWorld).Returns(children);
-
             AssertEx.CollectionLength(dependency1.DependencyIDs, 2);
             Assert.Contains(dependency1.DependencyIDs, x => x.Equals(dependency2.Id));
             Assert.Contains(dependency1.DependencyIDs, x => x.Equals(dependency3.Id));
-        }
-
-        [Fact]
-        public void Dependency_HasUnresolvedDependency()
-        {
-            var dependencyModel = new TestDependencyModel { ProviderType = "providerType", Id = "someId1", Resolved = true };
-
-            var mockSnapshot = ITargetedDependenciesSnapshotFactory.ImplementHasUnresolvedDependency(@"tfm1\providerType\someid1", hasUnresolvedDependency: true);
-
-            var dependency = new Dependency(dependencyModel, new TargetFramework("tfm1"), @"C:\Foo\Project.csproj");
-
-            Assert.True(dependency.HasUnresolvedDependency(mockSnapshot));
-            Assert.True(dependency.IsOrHasUnresolvedDependency(mockSnapshot));
         }
 
         [Fact]

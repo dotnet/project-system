@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             string projectPath,
             IDependency dependency,
             GraphNode dependencyGraphNode,
-            ITargetedDependenciesSnapshot targetedSnapshot);
+            TargetedDependenciesSnapshot targetedSnapshot);
 
         /// <summary>
         ///     Gets whether this provider would like to apply changes to a graph node in response to a snapshot update,
@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             string nodeProjectPath,
             IDependency updatedDependency,
             GraphNode dependencyGraphNode,
-            ITargetedDependenciesSnapshot targetedSnapshot);
+            TargetedDependenciesSnapshot targetedSnapshot);
 
         bool MatchSearchResults(
             IDependency topLevelDependency,

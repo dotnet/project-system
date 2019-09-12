@@ -86,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             Requires.NotNull(changesBuilder, nameof(changesBuilder));
 
             DependenciesSnapshot snapshot = _dependenciesSnapshotProvider.CurrentSnapshot;
-            if (!snapshot.DependenciesByTargetFramework.TryGetValue(targetFramework, out ITargetedDependenciesSnapshot targetedSnapshot))
+            if (!snapshot.DependenciesByTargetFramework.TryGetValue(targetFramework, out TargetedDependenciesSnapshot targetedSnapshot))
             {
                 return;
             }

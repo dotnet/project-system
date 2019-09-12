@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
     internal interface IDependenciesViewModelFactory
     {
-        IDependencyViewModel CreateTargetViewModel(ITargetedDependenciesSnapshot snapshot);
+        IDependencyViewModel CreateTargetViewModel(TargetedDependenciesSnapshot snapshot);
         IDependencyViewModel? CreateRootViewModel(string providerType, bool hasUnresolvedDependency);
         ImageMoniker GetDependenciesRootIcon(bool hasUnresolvedDependencies);
     }

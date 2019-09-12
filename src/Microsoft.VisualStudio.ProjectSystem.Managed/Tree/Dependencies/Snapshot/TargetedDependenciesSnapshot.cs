@@ -9,11 +9,11 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
-    internal sealed class TargetedDependenciesSnapshot : ITargetedDependenciesSnapshot
+    internal sealed class TargetedDependenciesSnapshot
     {
         #region Factories and internal constructor
 
-        public static ITargetedDependenciesSnapshot CreateEmpty(string projectPath, ITargetFramework targetFramework, IProjectCatalogSnapshot? catalogs)
+        public static TargetedDependenciesSnapshot CreateEmpty(string projectPath, ITargetFramework targetFramework, IProjectCatalogSnapshot? catalogs)
         {
             return new TargetedDependenciesSnapshot(
                 projectPath,
@@ -27,9 +27,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// If no changes are made, <paramref name="previousSnapshot"/> is returned unmodified.
         /// </summary>
         /// <returns>An updated snapshot, or <paramref name="previousSnapshot"/> if no changes occured.</returns>
-        public static ITargetedDependenciesSnapshot FromChanges(
+        public static TargetedDependenciesSnapshot FromChanges(
             string projectPath,
-            ITargetedDependenciesSnapshot previousSnapshot,
+            TargetedDependenciesSnapshot previousSnapshot,
             IDependenciesChanges changes,
             IProjectCatalogSnapshot? catalogs,
             ImmutableArray<IDependenciesSnapshotFilter> snapshotFilters,
@@ -168,6 +168,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Requires.NotNullOrEmpty(projectPath, nameof(projectPath));
             Requires.NotNull(targetFramework, nameof(targetFramework));
             Requires.NotNull(dependenciesWorld, nameof(dependenciesWorld));
+            Assumes.True(Equals(dependenciesWorld.KeyComparer, StringComparer.OrdinalIgnoreCase), $"{nameof(dependenciesWorld)} must have an {nameof(StringComparer.OrdinalIgnoreCase)} key comparer.");
 
             ProjectPath = projectPath;
             TargetFramework = targetFramework;
@@ -207,19 +208,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         #endregion
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Path to project containing this snapshot.
+        /// </summary>
         public string ProjectPath { get; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// <see cref="ITargetFramework" /> for which project has dependencies contained in this snapshot.
+        /// </summary>
         public ITargetFramework TargetFramework { get; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Catalogs of rules for project items (optional, custom dependency providers might not provide it).
+        /// </summary>
         public IProjectCatalogSnapshot? Catalogs { get; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Top level project dependencies.
+        /// </summary>
         public ImmutableArray<IDependency> TopLevelDependencies { get; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Contains all unique <see cref="IDependency"/> objects in the project, from all levels.
+        /// Allows looking them up by their IDs.
+        /// </summary>
         public ImmutableDictionary<string, IDependency> DependenciesWorld { get; }
 
         private readonly Dictionary<string, IDependency> _topLevelDependenciesByPathMap = new Dictionary<string, IDependency>(StringComparer.OrdinalIgnoreCase);
@@ -229,10 +241,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// <summary>Re-use an existing, private, object reference for locking, rather than allocating a dedicated object.</summary>
         private object SyncLock => _dependenciesChildrenMap;
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Specifies is this snapshot contains at least one unresolved/broken dependency at any level which is visible.
+        /// </summary>
         public bool HasVisibleUnresolvedDependency { get; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Efficient API for checking if a given dependency has an unresolved child dependency at any level. 
+        /// </summary>
+        /// <param name="dependency"></param>
+        /// <returns>Returns true if given dependency has unresolved child dependency at any level</returns>
         public bool CheckForUnresolvedDependencies(IDependency dependency)
         {
             lock (SyncLock)
@@ -288,7 +306,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             }
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Efficient API for checking if a there is at least one unresolved dependency with given provider type.
+        /// </summary>
+        /// <param name="providerType">Provider type to check</param>
+        /// <returns>Returns true if there is at least one unresolved dependency with given providerType.</returns>
         public bool CheckForUnresolvedDependencies(string providerType)
         {
             foreach ((string _, IDependency dependency) in DependenciesWorld)
@@ -304,7 +326,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             return false;
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Returns a list of direct child nodes for given dependency
+        /// </summary>
+        /// <param name="dependency"></param>
+        /// <returns></returns>
         public ImmutableArray<IDependency> GetDependencyChildren(IDependency dependency)
         {
             if (dependency.DependencyIDs.Length == 0)

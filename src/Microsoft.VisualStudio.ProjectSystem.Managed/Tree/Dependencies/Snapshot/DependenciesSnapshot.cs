@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             return new DependenciesSnapshot(
                 projectPath,
                 activeTargetFramework: TargetFramework.Empty,
-                dependenciesByTargetFramework: ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot>.Empty);
+                dependenciesByTargetFramework: ImmutableDictionary<ITargetFramework, TargetedDependenciesSnapshot>.Empty);
         }
 
         /// <summary>
@@ -57,14 +57,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             var builder = previousSnapshot.DependenciesByTargetFramework.ToBuilder();
 
-            if (!builder.TryGetValue(changedTargetFramework, out ITargetedDependenciesSnapshot previousTargetedSnapshot))
+            if (!builder.TryGetValue(changedTargetFramework, out TargetedDependenciesSnapshot previousTargetedSnapshot))
             {
                 previousTargetedSnapshot = TargetedDependenciesSnapshot.CreateEmpty(projectPath, changedTargetFramework, catalogs);
             }
 
             bool builderChanged = false;
 
-            ITargetedDependenciesSnapshot newTargetedSnapshot = TargetedDependenciesSnapshot.FromChanges(
+            TargetedDependenciesSnapshot newTargetedSnapshot = TargetedDependenciesSnapshot.FromChanges(
                 projectPath,
                 previousTargetedSnapshot,
                 changes,
@@ -154,14 +154,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         {
             bool activeChanged = !activeTargetFramework.Equals(ActiveTargetFramework);
 
-            ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot> map = DependenciesByTargetFramework;
+            ImmutableDictionary<ITargetFramework, TargetedDependenciesSnapshot> map = DependenciesByTargetFramework;
 
             var diff = new SetDiff<ITargetFramework>(map.Keys, targetFrameworks);
 
             map = map.RemoveRange(diff.Removed);
             map = map.AddRange(
                 diff.Added.Select(
-                    added => new KeyValuePair<ITargetFramework, ITargetedDependenciesSnapshot>(
+                    added => new KeyValuePair<ITargetFramework, TargetedDependenciesSnapshot>(
                         added,
                         TargetedDependenciesSnapshot.CreateEmpty(ProjectPath, added, null))));
 
@@ -177,7 +177,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         internal DependenciesSnapshot(
             string projectPath,
             ITargetFramework activeTargetFramework,
-            ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot> dependenciesByTargetFramework)
+            ImmutableDictionary<ITargetFramework, TargetedDependenciesSnapshot> dependenciesByTargetFramework)
         {
             Requires.NotNullOrEmpty(projectPath, nameof(projectPath));
             Requires.NotNull(activeTargetFramework, nameof(activeTargetFramework));
@@ -221,7 +221,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// <summary>
         /// Gets a dictionary of dependencies by target framework.
         /// </summary>
-        public ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot> DependenciesByTargetFramework { get; }
+        public ImmutableDictionary<ITargetFramework, TargetedDependenciesSnapshot> DependenciesByTargetFramework { get; }
 
         /// <summary>
         /// Gets whether this snapshot contains at least one unresolved/broken dependency at any level
@@ -247,7 +247,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             {
                 // if top level first try to find by top level id with full path,
                 // if found - return, if not - try regular Id in the DependenciesWorld
-                foreach ((ITargetFramework _, ITargetedDependenciesSnapshot targetedDependencies) in DependenciesByTargetFramework)
+                foreach ((ITargetFramework _, TargetedDependenciesSnapshot targetedDependencies) in DependenciesByTargetFramework)
                 {
                     IDependency? dependency = targetedDependencies.TopLevelDependencies
                         .FirstOrDefault((x, id) => x.TopLevelIdEquals(id), dependencyId);
@@ -259,7 +259,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 }
             }
 
-            foreach ((ITargetFramework _, ITargetedDependenciesSnapshot targetedDependencies) in DependenciesByTargetFramework)
+            foreach ((ITargetFramework _, TargetedDependenciesSnapshot targetedDependencies) in DependenciesByTargetFramework)
             {
                 if (targetedDependencies.DependenciesWorld.TryGetValue(dependencyId, out IDependency dependency))
                 {

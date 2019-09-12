@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 projectPath,
                 targetFramework,
                 catalogs,
-                ImmutableDictionary<string, IDependency>.Empty);
+                ImmutableStringDictionary<IDependency>.EmptyOrdinalIgnoreCase);
 
             Assert.Same(projectPath, snapshot.ProjectPath);
             Assert.Same(targetFramework, snapshot.TargetFramework);
@@ -180,12 +180,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             };
 
             var catalogs = IProjectCatalogSnapshotFactory.Create();
-            var previousSnapshot = ITargetedDependenciesSnapshotFactory.Implement(
-                projectPath: projectPath,
-                targetFramework: targetFramework,
-                catalogs: catalogs,
-                dependenciesWorld: new [] { dependencyTop1, dependencyChild1 },
-                topLevelDependencies: new [] { dependencyTop1 });
+            var previousSnapshot = new TargetedDependenciesSnapshot(
+                projectPath,
+                targetFramework,
+                catalogs,
+                new IDependency[] { dependencyTop1, dependencyChild1 }.ToImmutableDictionary(d => d.Id).WithComparers(StringComparer.OrdinalIgnoreCase));
 
             var changes = new DependenciesChangesBuilder();
             changes.Removed(dependencyTop1.ProviderType, dependencyTop1.Id);
@@ -202,6 +201,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 null);
 
             Assert.Same(previousSnapshot, snapshot);
+            Assert.True(snapshotFilter.Completed);
         }
 
         [Fact]
@@ -233,12 +233,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             };
 
             var catalogs = IProjectCatalogSnapshotFactory.Create();
-            var previousSnapshot = ITargetedDependenciesSnapshotFactory.Implement(
-                projectPath: projectPath,
-                targetFramework: targetFramework,
-                catalogs: catalogs,
-                dependenciesWorld: new [] { dependencyTop1, dependencyChild1 },
-                topLevelDependencies: new [] { dependencyTop1 });
+            var previousSnapshot = new TargetedDependenciesSnapshot(
+                projectPath,
+                targetFramework,
+                catalogs,
+                new IDependency[] { dependencyTop1, dependencyChild1 }.ToImmutableDictionary(d => d.Id).WithComparers(StringComparer.OrdinalIgnoreCase));
 
             var changes = new DependenciesChangesBuilder();
             changes.Removed("Xxx", "topdependency1");
@@ -256,6 +255,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 ImmutableArray.Create<IDependenciesSnapshotFilter>(snapshotFilter),
                 new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
                 null);
+
+            Assert.True(snapshotFilter.Completed);
 
             Assert.NotSame(previousSnapshot, snapshot);
 
@@ -308,12 +309,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             };
 
             var catalogs = IProjectCatalogSnapshotFactory.Create();
-            var previousSnapshot = ITargetedDependenciesSnapshotFactory.Implement(
-                projectPath: projectPath,
-                targetFramework: targetFramework,
-                catalogs: catalogs,
-                dependenciesWorld: new [] { dependencyTop1, dependencyChild1 },
-                topLevelDependencies: new [] { dependencyTop1 });
+            var previousSnapshot = new TargetedDependenciesSnapshot(
+                projectPath,
+                targetFramework,
+                catalogs,
+                new IDependency[] { dependencyTop1, dependencyChild1 }.ToImmutableDictionary(d => d.Id).WithComparers(StringComparer.OrdinalIgnoreCase));
 
             var changes = new DependenciesChangesBuilder();
             changes.Added(dependencyModelNew1);
@@ -329,6 +329,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 ImmutableArray.Create<IDependenciesSnapshotFilter>(snapshotFilter),
                 new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
                 null);
+
+            Assert.True(snapshotFilter.Completed);
 
             Assert.Same(previousSnapshot, snapshot);
         }
@@ -374,12 +376,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             };
 
             var catalogs = IProjectCatalogSnapshotFactory.Create();
-            var previousSnapshot = ITargetedDependenciesSnapshotFactory.Implement(
-                projectPath: projectPath,
-                targetFramework: targetFramework,
-                catalogs: catalogs,
-                dependenciesWorld: new [] { dependencyTop1, dependencyChild1 },
-                topLevelDependencies: new [] { dependencyTop1 });
+            var previousSnapshot = new TargetedDependenciesSnapshot(
+                projectPath,
+                targetFramework,
+                catalogs,
+                new IDependency[] { dependencyTop1, dependencyChild1 }.ToImmutableDictionary(d => d.Id).WithComparers(StringComparer.OrdinalIgnoreCase));
 
             var changes = new DependenciesChangesBuilder();
             changes.Added(dependencyModelNew1);
@@ -397,6 +398,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 ImmutableArray.Create<IDependenciesSnapshotFilter>(snapshotFilter),
                 new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
                 null);
+
+            Assert.True(snapshotFilter.Completed);
 
             Assert.NotSame(previousSnapshot, snapshot);
 
@@ -519,12 +522,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.False(dependencyRemoved1.TopLevel);
 
             var catalogs = IProjectCatalogSnapshotFactory.Create();
-            var previousSnapshot = ITargetedDependenciesSnapshotFactory.Implement(
-                projectPath: projectPath,
-                targetFramework: targetFramework,
-                catalogs: catalogs,
-                dependenciesWorld: new [] { dependencyTop1, dependencyChild1, dependencyRemoved1 },
-                topLevelDependencies: new [] { dependencyTop1 });
+            var previousSnapshot = new TargetedDependenciesSnapshot(
+                projectPath,
+                targetFramework,
+                catalogs,
+                new IDependency[] { dependencyTop1, dependencyChild1, dependencyRemoved1 }.ToImmutableDictionary(d => d.Id).WithComparers(StringComparer.OrdinalIgnoreCase));
 
             var changes = new DependenciesChangesBuilder();
             changes.Added(dependencyModelAdded1);
@@ -546,6 +548,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 ImmutableArray.Create<IDependenciesSnapshotFilter>(snapshotFilter),
                 new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
                 null);
+
+            Assert.True(snapshotFilter.Completed);
 
             Assert.NotSame(previousSnapshot, snapshot);
 
@@ -602,12 +606,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             };
 
             var catalogs = IProjectCatalogSnapshotFactory.Create();
-            var previousSnapshot = ITargetedDependenciesSnapshotFactory.Implement(
-                projectPath: projectPath,
-                targetFramework: targetFramework,
-                catalogs: catalogs,
-                dependenciesWorld: new[] { dependencyTopPrevious },
-                topLevelDependencies: new[] { dependencyTopPrevious });
+            var previousSnapshot = new TargetedDependenciesSnapshot(
+                projectPath,
+                targetFramework,
+                catalogs,
+                new IDependency[] { dependencyTopPrevious }.ToImmutableDictionary(d => d.Id).WithComparers(StringComparer.OrdinalIgnoreCase));
 
             var changes = new DependenciesChangesBuilder();
             changes.Added(dependencyModelTopAdded);
@@ -624,8 +627,43 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
                 null);
 
+            Assert.True(snapshotFilter.Completed);
+
             Assert.NotSame(previousSnapshot, snapshot);
             Assert.Same(dependencyTopUpdated, snapshot.TopLevelDependencies.Single());
+        }
+
+        [Fact]
+        public void CheckForUnresolvedDependencies()
+        {
+            var targetFramework = new TargetFramework("tfm1");
+
+            var unresolved = new TestDependency
+            {
+                ProviderType = "Yyy",
+                Id = "tfm1\\yyy\\child",
+                Resolved = false
+            };
+
+            var resolvedWithUnresolvedChild = new TestDependency
+            {
+                ProviderType = "Yyy",
+                Id = "tfm1\\yyy\\1",
+                Resolved = true,
+                DependencyIDs = ImmutableArray.Create(unresolved.Id)
+            };
+
+            var resolved = new TestDependency
+            {
+                ProviderType = "Yyy",
+                Id = "tfm1\\yyy\\2",
+                Resolved = true
+            };
+
+            var snapshot = TargetedDependenciesSnapshotFactory.ImplementFromDependencies(new IDependency[] { resolvedWithUnresolvedChild, unresolved, resolved });
+
+            Assert.True(snapshot.CheckForUnresolvedDependencies(resolvedWithUnresolvedChild));
+            Assert.False(snapshot.CheckForUnresolvedDependencies(resolved));
         }
 
         /// <summary>
@@ -655,11 +693,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 DependencyIDs = ImmutableArray.Create(id1)
             };
 
-            var snapshot = new TargetedDependenciesSnapshot(
-                "ProjectPath",
-                TargetFramework.Any,
-                catalogs: null,
-                dependenciesWorld: new IDependency[] { dependency1, dependency2 }.ToDictionary(d => d.Id).ToImmutableDictionary());
+            var snapshot = TargetedDependenciesSnapshotFactory.ImplementFromDependencies(new IDependency[] { dependency1, dependency2 });
 
             // verify it doesn't stack overflow
             snapshot.CheckForUnresolvedDependencies(dependency1);   
@@ -722,6 +756,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                     {
                         throw new NotSupportedException();
                     }
+
+                    _beforeAdd.Remove(dependency.Id);
                 }
                 else
                 {
@@ -758,12 +794,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                     {
                         throw new NotSupportedException();
                     }
+
+                    _beforeRemove.Remove(dependency.Id);
                 }
                 else
                 {
                     throw new ArgumentException("Unexpected dependency ID: " + dependency.Id);
                 }
             }
+
+            public bool Completed => _beforeAdd.Count == 0 && _beforeRemove.Count == 0;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
@@ -555,17 +556,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.TreeView
     Caption=ZzzDependencyRoot, FilePath=ZzzDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
         Caption=ZzzDependencyAny1, FilePath=ZzzDependencyAny1, IconHash=325248665, ExpandedIconHash=325248817, Rule=, IsProjectItem=False, CustomTag=
     Caption=tfm2, FilePath=tfm2, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=, BubbleUpFlag=True
+        Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
+            Caption=DependencyExisting, FilePath=tfm1\Yyy\dependencyyyyExistingpath, IconHash=325248088, ExpandedIconHash=325248260, Rule=, IsProjectItem=False, CustomTag=
+            Caption=Dependency1, FilePath=tfm1\Yyy\dependencyyyypath, IconHash=325248088, ExpandedIconHash=325248260, Rule=, IsProjectItem=False, CustomTag=
         Caption=XxxDependencyRoot, FilePath=XxxDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
             Caption=Dependency1, FilePath=tfm1\Xxx\dependencyxxxpath, IconHash=325248088, ExpandedIconHash=325248260, Rule=, IsProjectItem=False, CustomTag=
-        Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
-            Caption=Dependency1, FilePath=tfm1\Yyy\dependencyyyypath, IconHash=325248088, ExpandedIconHash=325248260, Rule=, IsProjectItem=False, CustomTag=
-            Caption=DependencyExisting, FilePath=tfm1\Yyy\dependencyyyyExistingpath, IconHash=325248088, ExpandedIconHash=325248260, Rule=, IsProjectItem=False, CustomTag=
     Caption=tfm1, FilePath=tfm1, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=, BubbleUpFlag=True
-        Caption=XxxDependencyRoot, FilePath=XxxDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
-            Caption=Dependency1, FilePath=tfm1\Xxx\dependencyxxxpath, IconHash=325248088, ExpandedIconHash=325248260, Rule=, IsProjectItem=True, CustomTag=
         Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
+            Caption=DependencyExisting, FilePath=tfm1\Yyy\dependencyyyyExistingpath, IconHash=325248088, ExpandedIconHash=325248260, Rule=, IsProjectItem=True, CustomTag=
             Caption=Dependency1, FilePath=tfm1\Yyy\dependencyyyypath, IconHash=325248088, ExpandedIconHash=325248260, Rule=, IsProjectItem=True, CustomTag=
-            Caption=DependencyExisting, FilePath=tfm1\Yyy\dependencyyyyExistingpath, IconHash=325248088, ExpandedIconHash=325248260, Rule=, IsProjectItem=True, CustomTag=";
+        Caption=XxxDependencyRoot, FilePath=XxxDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
+            Caption=Dependency1, FilePath=tfm1\Xxx\dependencyxxxpath, IconHash=325248088, ExpandedIconHash=325248260, Rule=, IsProjectItem=True, CustomTag=";
             Assert.Equal(expectedFlatHierarchy, ToTestDataString((TestProjectTree)resultTree));
         }
 
@@ -804,15 +805,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.TreeView
         private static DependenciesSnapshot GetSnapshot(params (ITargetFramework tfm, IReadOnlyList<IDependency> dependencies)[] testData)
         {
             var catalogs = IProjectCatalogSnapshotFactory.Create();
-            var dependenciesByTarget = new Dictionary<ITargetFramework, ITargetedDependenciesSnapshot>();
+            var dependenciesByTarget = new Dictionary<ITargetFramework, TargetedDependenciesSnapshot>();
 
             foreach ((ITargetFramework tfm, IReadOnlyList<IDependency> dependencies) in testData)
             {
-                var targetedSnapshot = ITargetedDependenciesSnapshotFactory.Implement(
-                    catalogs: catalogs,
-                    topLevelDependencies: dependencies,
-                    checkForUnresolvedDependencies: false,
-                    targetFramework: tfm);
+                var targetedSnapshot = new TargetedDependenciesSnapshot(
+                    "ProjectPath",
+                    tfm,
+                    catalogs,
+                    dependencies.ToImmutableDictionary(d => d.Id).WithComparers(StringComparer.OrdinalIgnoreCase));
 
                 dependenciesByTarget.Add(tfm, targetedSnapshot);
             }

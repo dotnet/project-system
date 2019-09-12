@@ -129,7 +129,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         }
 
         /// <inheritdoc />
-        public ITargetedDependenciesSnapshot? GetSnapshot(IDependency dependency)
+        public TargetedDependenciesSnapshot? GetSnapshot(IDependency dependency)
         {
             DependenciesSnapshot? snapshot = GetSnapshot(dependency.FullPath);
 

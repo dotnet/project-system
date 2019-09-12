@@ -1,44 +1,16 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System.Collections.Immutable;
+
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.RuleHandlers;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     public class DependencyExtensionsTests
     {
-        [Fact]
-        public void IsOrHasUnresolvedDependency()
-        {
-            var dependency1 = new TestDependency
-            {
-                ProviderType = "Yyy",
-                Id = "tfm1\\yyy\\dependencyExisting",
-                Name = "dependencyExisting",
-                Caption = "DependencyExisting",
-                Resolved = false
-            };
-
-            var mockSnapshot = ITargetedDependenciesSnapshotFactory.Implement();
-
-            Assert.True(dependency1.IsOrHasUnresolvedDependency(mockSnapshot));
-
-            var dependency2 = new TestDependency
-            {
-                ClonePropertiesFrom = dependency1,
-                Resolved = true
-            };
-
-            mockSnapshot = ITargetedDependenciesSnapshotFactory.ImplementHasUnresolvedDependency("tfm1\\yyy\\dependencyExisting", true);
-
-            Assert.True(dependency2.IsOrHasUnresolvedDependency(mockSnapshot));
-
-            mockSnapshot = ITargetedDependenciesSnapshotFactory.ImplementHasUnresolvedDependency("tfm1\\yyy\\dependencyExisting", false);
-
-            Assert.False(dependency2.IsOrHasUnresolvedDependency(mockSnapshot));
-        }
-
         [Fact]
         public void ToViewModel()
         {
@@ -48,12 +20,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 KnownMonikers.AboutBox,
                 KnownMonikers.Abbreviation);
 
+            // This is a resolved dependency
             var dependencyResolved = new TestDependency
             {
                 ProviderType = "Yyy",
-                Id = "tfm1\\yyy\\dependencyExisting",
-                Name = "dependencyExisting",
-                Caption = "DependencyExisting",
+                Id = "tfm1\\yyy\\dependencyResolved",
+                Name = "dependencyResolved",
+                Caption = "DependencyResolved",
                 SchemaName = "MySchema",
                 SchemaItemType = "MySchemaItemType",
                 Priority = 1,
@@ -61,12 +34,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 IconSet = iconSet
             };
 
+            // This is an unresolved dependency
             var dependencyUnresolved = new TestDependency
             {
                 ProviderType = "Yyy",
-                Id = "tfm1\\yyy\\dependencyExisting",
-                Name = "dependencyExisting",
-                Caption = "DependencyExisting",
+                Id = "tfm1\\yyy\\dependencyUnresolved",
+                Name = "dependencyUnresolved",
+                Caption = "DependencyUnresolved",
                 SchemaName = "MySchema",
                 SchemaItemType = "MySchemaItemType",
                 Priority = 1,
@@ -74,41 +48,61 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 IconSet = iconSet
             };
 
-            var mockSnapshot = ITargetedDependenciesSnapshotFactory.ImplementMock(checkForUnresolvedDependencies: false).Object;
-            var mockSnapshotUnresolvedDependency = ITargetedDependenciesSnapshotFactory.ImplementMock(checkForUnresolvedDependencies: true).Object;
+            // This is a resolved dependency with an unresolved child dependency
+            var dependencyUnresolvedChild = new TestDependency
+            {
+                ProviderType = "Yyy",
+                Id = "tfm1\\yyy\\dependencyUnresolvedChild",
+                Name = "dependencyUnresolvedChild",
+                Caption = "DependencyUnresolvedChild",
+                SchemaName = "MySchema",
+                SchemaItemType = "MySchemaItemType",
+                Priority = 1,
+                Resolved = true,
+                IconSet = iconSet,
+                DependencyIDs = ImmutableArray.Create(dependencyUnresolved.Id)
+            };
 
-            var viewModelResolved = dependencyResolved.ToViewModel(mockSnapshot);
+            var snapshotResolved        = TargetedDependenciesSnapshotFactory.ImplementFromDependencies(new[] { dependencyResolved });
+            var snapshotUnresolved      = TargetedDependenciesSnapshotFactory.ImplementFromDependencies(new[] { dependencyUnresolved });
+            var snapshotUnresolvedChild = TargetedDependenciesSnapshotFactory.ImplementFromDependencies(new[] { dependencyUnresolved, dependencyUnresolvedChild });
 
-            Assert.Equal(dependencyResolved.Caption, viewModelResolved.Caption);
-            Assert.Equal(dependencyResolved.Flags, viewModelResolved.Flags);
-            Assert.Equal(dependencyResolved.Id, viewModelResolved.FilePath);
-            Assert.Equal(dependencyResolved.SchemaName, viewModelResolved.SchemaName);
-            Assert.Equal(dependencyResolved.SchemaItemType, viewModelResolved.SchemaItemType);
-            Assert.Equal(dependencyResolved.Priority, viewModelResolved.Priority);
-            Assert.Equal(iconSet.Icon, viewModelResolved.Icon);
-            Assert.Equal(iconSet.ExpandedIcon, viewModelResolved.ExpandedIcon);
+            Assert.False(snapshotResolved.CheckForUnresolvedDependencies(dependencyResolved));
+            Assert.False(snapshotUnresolved.CheckForUnresolvedDependencies(dependencyResolved));
+            Assert.True(snapshotUnresolvedChild.CheckForUnresolvedDependencies(dependencyUnresolvedChild));
 
-            var viewModelUnresolved = dependencyUnresolved.ToViewModel(mockSnapshot);
+            var viewModelResolved = dependencyResolved.ToViewModel(snapshotResolved);
 
-            Assert.Equal(dependencyUnresolved.Caption, viewModelUnresolved.Caption);
-            Assert.Equal(dependencyUnresolved.Flags, viewModelUnresolved.Flags);
-            Assert.Equal(dependencyUnresolved.Id, viewModelUnresolved.FilePath);
-            Assert.Equal(dependencyUnresolved.SchemaName, viewModelUnresolved.SchemaName);
-            Assert.Equal(dependencyUnresolved.SchemaItemType, viewModelUnresolved.SchemaItemType);
-            Assert.Equal(dependencyUnresolved.Priority, viewModelUnresolved.Priority);
-            Assert.Equal(iconSet.UnresolvedIcon, viewModelUnresolved.Icon);
-            Assert.Equal(iconSet.UnresolvedExpandedIcon, viewModelUnresolved.ExpandedIcon);
+            Assert.Equal(dependencyResolved.Caption,               viewModelResolved.Caption);
+            Assert.Equal(dependencyResolved.Flags,                 viewModelResolved.Flags);
+            Assert.Equal(dependencyResolved.Id,                    viewModelResolved.FilePath);
+            Assert.Equal(dependencyResolved.SchemaName,            viewModelResolved.SchemaName);
+            Assert.Equal(dependencyResolved.SchemaItemType,        viewModelResolved.SchemaItemType);
+            Assert.Equal(dependencyResolved.Priority,              viewModelResolved.Priority);
+            Assert.Equal(iconSet.Icon,                             viewModelResolved.Icon);
+            Assert.Equal(iconSet.ExpandedIcon,                     viewModelResolved.ExpandedIcon);
 
-            var viewModelUnresolvedDependency = dependencyResolved.ToViewModel(mockSnapshotUnresolvedDependency);
+            var viewModelUnresolved = dependencyUnresolved.ToViewModel(snapshotResolved);
 
-            Assert.Equal(dependencyUnresolved.Caption, viewModelUnresolvedDependency.Caption);
-            Assert.Equal(dependencyUnresolved.Flags, viewModelUnresolvedDependency.Flags);
-            Assert.Equal(dependencyUnresolved.Id, viewModelUnresolvedDependency.FilePath);
-            Assert.Equal(dependencyUnresolved.SchemaName, viewModelUnresolvedDependency.SchemaName);
-            Assert.Equal(dependencyUnresolved.SchemaItemType, viewModelUnresolvedDependency.SchemaItemType);
-            Assert.Equal(dependencyUnresolved.Priority, viewModelUnresolvedDependency.Priority);
-            Assert.Equal(iconSet.UnresolvedIcon, viewModelUnresolvedDependency.Icon);
-            Assert.Equal(iconSet.UnresolvedExpandedIcon, viewModelUnresolvedDependency.ExpandedIcon);
+            Assert.Equal(dependencyUnresolved.Caption,             viewModelUnresolved.Caption);
+            Assert.Equal(dependencyUnresolved.Flags,               viewModelUnresolved.Flags);
+            Assert.Equal(dependencyUnresolved.Id,                  viewModelUnresolved.FilePath);
+            Assert.Equal(dependencyUnresolved.SchemaName,          viewModelUnresolved.SchemaName);
+            Assert.Equal(dependencyUnresolved.SchemaItemType,      viewModelUnresolved.SchemaItemType);
+            Assert.Equal(dependencyUnresolved.Priority,            viewModelUnresolved.Priority);
+            Assert.Equal(iconSet.UnresolvedIcon,                   viewModelUnresolved.Icon);
+            Assert.Equal(iconSet.UnresolvedExpandedIcon,           viewModelUnresolved.ExpandedIcon);
+
+            var viewModelUnresolvedChild = dependencyUnresolvedChild.ToViewModel(snapshotUnresolvedChild);
+
+            Assert.Equal(dependencyUnresolvedChild.Caption,        viewModelUnresolvedChild.Caption);
+            Assert.Equal(dependencyUnresolvedChild.Flags,          viewModelUnresolvedChild.Flags);
+            Assert.Equal(dependencyUnresolvedChild.Id,             viewModelUnresolvedChild.FilePath);
+            Assert.Equal(dependencyUnresolvedChild.SchemaName,     viewModelUnresolvedChild.SchemaName);
+            Assert.Equal(dependencyUnresolvedChild.SchemaItemType, viewModelUnresolvedChild.SchemaItemType);
+            Assert.Equal(dependencyUnresolvedChild.Priority,       viewModelUnresolvedChild.Priority);
+            Assert.Equal(iconSet.UnresolvedIcon,                   viewModelUnresolvedChild.Icon);
+            Assert.Equal(iconSet.UnresolvedExpandedIcon,           viewModelUnresolvedChild.ExpandedIcon);
         }
 
         [Theory]

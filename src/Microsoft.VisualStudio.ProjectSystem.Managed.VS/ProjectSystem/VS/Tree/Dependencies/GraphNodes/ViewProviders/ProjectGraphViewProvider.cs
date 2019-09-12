@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
 
         public override bool HasChildren(IDependency dependency)
         {
-            ITargetedDependenciesSnapshot? targetedSnapshot = _aggregateSnapshotProvider.GetSnapshot(dependency);
+            TargetedDependenciesSnapshot? targetedSnapshot = _aggregateSnapshotProvider.GetSnapshot(dependency);
 
             return targetedSnapshot?.TopLevelDependencies.Length != 0;
         }
@@ -53,13 +53,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             string projectPath,
             IDependency dependency,
             GraphNode dependencyGraphNode,
-            ITargetedDependenciesSnapshot targetedSnapshot)
+            TargetedDependenciesSnapshot targetedSnapshot)
         {
             // store refreshed dependency
             dependencyGraphNode.SetValue(DependenciesGraphSchema.DependencyIdProperty, dependency.Id);
             dependencyGraphNode.SetValue(DependenciesGraphSchema.ResolvedProperty, dependency.Resolved);
 
-            ITargetedDependenciesSnapshot? otherProjectTargetedSnapshot = _aggregateSnapshotProvider.GetSnapshot(dependency);
+            TargetedDependenciesSnapshot? otherProjectTargetedSnapshot = _aggregateSnapshotProvider.GetSnapshot(dependency);
 
             if (otherProjectTargetedSnapshot == null)
             {
@@ -98,9 +98,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             string nodeProjectPath,
             IDependency updatedDependency,
             GraphNode dependencyGraphNode,
-            ITargetedDependenciesSnapshot targetedSnapshot)
+            TargetedDependenciesSnapshot targetedSnapshot)
         {
-            ITargetedDependenciesSnapshot? referencedProjectSnapshot = _aggregateSnapshotProvider.GetSnapshot(updatedDependency);
+            TargetedDependenciesSnapshot? referencedProjectSnapshot = _aggregateSnapshotProvider.GetSnapshot(updatedDependency);
 
             if (referencedProjectSnapshot == null)
             {

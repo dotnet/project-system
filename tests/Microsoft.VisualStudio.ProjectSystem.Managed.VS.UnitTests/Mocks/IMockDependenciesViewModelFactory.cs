@@ -39,6 +39,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                             It.Is<string>(t => string.Equals(t, d.ProviderType, System.StringComparison.OrdinalIgnoreCase)),
                             false))
                         .Returns(d.ToViewModel(false));
+                    mock.Setup(x => x.CreateRootViewModel(
+                            It.Is<string>(t => string.Equals(t, d.ProviderType, System.StringComparison.OrdinalIgnoreCase)),
+                            true))
+                        .Returns(d.ToViewModel(true));
                 }
             }
 
@@ -47,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 foreach (var d in createTargetViewModel)
                 {
                     mock.Setup(x => x.CreateTargetViewModel(
-                            It.Is<ITargetedDependenciesSnapshot>(
+                            It.Is<TargetedDependenciesSnapshot>(
                                 t => string.Equals(t.TargetFramework.FullName, d.Caption, System.StringComparison.OrdinalIgnoreCase))))
                         .Returns(d.ToViewModel(false));
                 }
