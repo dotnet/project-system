@@ -78,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 }
             }
 
-            builderChanged |= SyncTargetFrameworks();
+            SyncTargetFrameworks();
 
             activeTargetFramework ??= previousSnapshot.ActiveTargetFramework;
 
@@ -112,17 +112,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             // Nothing has changed, so return the same snapshot
             return previousSnapshot;
 
-            bool SyncTargetFrameworks()
+            void SyncTargetFrameworks()
             {
                 // Only sync if a the full list of target frameworks has been provided
                 if (targetFrameworks.IsDefault)
                 {
-                    return false;
+                    return;
                 }
 
                 // This is a long-winded way of doing this that minimises allocations
-
-                bool anythingRemoved = false;
 
                 // Ensure all required target frameworks are present
                 foreach (ITargetFramework targetFramework in targetFrameworks)
@@ -130,7 +128,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                     if (!builder.ContainsKey(targetFramework))
                     {
                         builder.Add(targetFramework, TargetedDependenciesSnapshot.CreateEmpty(projectPath, targetFramework, catalogs));
-                        anythingRemoved = true;
+                        builderChanged = true;
                     }
                 }
 
@@ -144,10 +142,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                         builder.Remove(targetFramework);
                     }
 
-                    anythingRemoved = true;
+                    builderChanged = true;
                 }
-
-                return anythingRemoved;
             }
         }
 
