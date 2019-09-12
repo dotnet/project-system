@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -60,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             bool hasSingleTarget = snapshot.DependenciesByTargetFramework.Count(x => !x.Key.Equals(TargetFramework.Any)) == 1;
 
-            var currentTopLevelNodes = new List<IProjectTree>();
+            var currentTopLevelNodes = new HashSet<IProjectTree>();
 
             if (hasSingleTarget)
             {
@@ -179,7 +178,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             IProjectTree rootNode,
             ITargetFramework activeTarget,
             ITargetedDependenciesSnapshot targetedSnapshot,
-            Func<IProjectTree, IEnumerable<IProjectTree>, IProjectTree> syncFunc)
+            Func<IProjectTree, HashSet<IProjectTree>, IProjectTree> syncFunc)
         {
             var groupedByProviderType = new Dictionary<string, List<IDependency>>(StringComparers.DependencyProviderTypes);
 
@@ -209,7 +208,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 }
             }
 
-            var currentNodes = new List<IProjectTree>(capacity: groupedByProviderType.Count);
+            var currentNodes = new HashSet<IProjectTree>(capacity: groupedByProviderType.Count);
 
             bool isActiveTarget = targetedSnapshot.TargetFramework.Equals(activeTarget);
             foreach ((string providerType, List<IDependency> dependencies) in groupedByProviderType)
@@ -266,8 +265,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             bool isActiveTarget,
             bool shouldCleanup)
         {
-            List<IProjectTree>? currentNodes = shouldCleanup
-                ? new List<IProjectTree>(capacity: dependencies.Count)
+            HashSet<IProjectTree>? currentNodes = shouldCleanup
+                ? new HashSet<IProjectTree>(capacity: dependencies.Count)
                 : null;
 
             foreach (IDependency dependency in dependencies)
@@ -318,11 +317,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <summary>
         /// Removes nodes that don't exist anymore
         /// </summary>
-        private static IProjectTree CleanupOldNodes(IProjectTree rootNode, IEnumerable<IProjectTree> currentNodes)
+        private static IProjectTree CleanupOldNodes(IProjectTree rootNode, HashSet<IProjectTree> currentNodes)
         {
-            foreach (IProjectTree nodeToRemove in rootNode.Children.Except(currentNodes))
+            foreach (IProjectTree child in rootNode.Children)
             {
-                rootNode = rootNode.Remove(nodeToRemove);
+                if (!currentNodes.Contains(child))
+                {
+                    rootNode = rootNode.Remove(child);
+                }
             }
 
             return rootNode;
