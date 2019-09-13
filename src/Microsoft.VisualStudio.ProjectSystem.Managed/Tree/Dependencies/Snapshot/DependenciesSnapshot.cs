@@ -37,7 +37,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public static DependenciesSnapshot FromChanges(
             string projectPath,
             DependenciesSnapshot previousSnapshot,
-            ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes,
+            ITargetFramework changedTargetFramework,
+            IDependenciesChanges changes,
             IProjectCatalogSnapshot? catalogs,
             ImmutableArray<ITargetFramework> targetFrameworks,
             ITargetFramework? activeTargetFramework,
@@ -47,35 +48,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         {
             Requires.NotNullOrWhiteSpace(projectPath, nameof(projectPath));
             Requires.NotNull(previousSnapshot, nameof(previousSnapshot));
+            Requires.NotNull(changedTargetFramework, nameof(changedTargetFramework));
             Requires.NotNull(changes, nameof(changes));
             Requires.Argument(!snapshotFilters.IsDefault, nameof(snapshotFilters), "Cannot be default.");
             Requires.NotNull(subTreeProviderByProviderType, nameof(subTreeProviderByProviderType));
 
             var builder = previousSnapshot.DependenciesByTargetFramework.ToBuilder();
 
+            if (!builder.TryGetValue(changedTargetFramework, out ITargetedDependenciesSnapshot previousTargetedSnapshot))
+            {
+                previousTargetedSnapshot = TargetedDependenciesSnapshot.CreateEmpty(projectPath, changedTargetFramework, catalogs);
+            }
+
             bool builderChanged = false;
 
-            foreach ((ITargetFramework targetFramework, IDependenciesChanges dependenciesChanges) in changes)
+            ITargetedDependenciesSnapshot newTargetedSnapshot = TargetedDependenciesSnapshot.FromChanges(
+                projectPath,
+                previousTargetedSnapshot,
+                changes,
+                catalogs,
+                snapshotFilters,
+                subTreeProviderByProviderType,
+                projectItemSpecs);
+
+            if (!ReferenceEquals(previousTargetedSnapshot, newTargetedSnapshot))
             {
-                if (!builder.TryGetValue(targetFramework, out ITargetedDependenciesSnapshot previousTargetedSnapshot))
-                {
-                    previousTargetedSnapshot = TargetedDependenciesSnapshot.CreateEmpty(projectPath, targetFramework, catalogs);
-                }
-
-                ITargetedDependenciesSnapshot newTargetedSnapshot = TargetedDependenciesSnapshot.FromChanges(
-                    projectPath,
-                    previousTargetedSnapshot,
-                    dependenciesChanges,
-                    catalogs,
-                    snapshotFilters,
-                    subTreeProviderByProviderType,
-                    projectItemSpecs);
-
-                if (!ReferenceEquals(previousTargetedSnapshot, newTargetedSnapshot))
-                {
-                    builder[targetFramework] = newTargetedSnapshot;
-                    builderChanged = true;
-                }
+                builder[changedTargetFramework] = newTargetedSnapshot;
+                builderChanged = true;
             }
 
             builderChanged |= SyncTargetFrameworks();

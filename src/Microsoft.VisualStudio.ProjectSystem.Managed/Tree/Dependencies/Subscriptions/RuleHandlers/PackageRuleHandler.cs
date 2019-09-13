@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             string addedItem,
             bool resolved,
             IProjectChangeDescription projectChange,
-            CrossTargetDependenciesChangesBuilder changesBuilder,
+            DependenciesChangesBuilder changesBuilder,
             ITargetFramework targetFramework,
             Func<string, bool>? isEvaluatedItemSpec)
         {
@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 _targetFrameworkProvider,
                 out PackageDependencyMetadata metadata))
             {
-                changesBuilder.Added(targetFramework, metadata.CreateDependencyModel());
+                changesBuilder.Added(metadata.CreateDependencyModel());
             }
         }
 
@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             string changedItem,
             bool resolved,
             IProjectChangeDescription projectChange,
-            CrossTargetDependenciesChangesBuilder changesBuilder,
+            DependenciesChangesBuilder changesBuilder,
             ITargetFramework targetFramework,
             Func<string, bool>? isEvaluatedItemSpec)
         {
@@ -78,8 +78,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 _targetFrameworkProvider,
                 out PackageDependencyMetadata metadata))
             {
-                changesBuilder.Removed(targetFramework, ProviderTypeString, metadata.OriginalItemSpec);
-                changesBuilder.Added(targetFramework, metadata.CreateDependencyModel());
+                changesBuilder.Removed(ProviderTypeString, metadata.OriginalItemSpec);
+                changesBuilder.Added(metadata.CreateDependencyModel());
             }
         }
 
@@ -87,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             string removedItem,
             bool resolved,
             IProjectChangeDescription projectChange,
-            CrossTargetDependenciesChangesBuilder changesBuilder,
+            DependenciesChangesBuilder changesBuilder,
             ITargetFramework targetFramework,
             Func<string, bool>? isEvaluatedItemSpec)
         {
@@ -100,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 _targetFrameworkProvider,
                 out PackageDependencyMetadata metadata))
             {
-                changesBuilder.Removed(targetFramework, ProviderTypeString, metadata.OriginalItemSpec);
+                changesBuilder.Removed(ProviderTypeString, metadata.OriginalItemSpec);
             }
         }
 

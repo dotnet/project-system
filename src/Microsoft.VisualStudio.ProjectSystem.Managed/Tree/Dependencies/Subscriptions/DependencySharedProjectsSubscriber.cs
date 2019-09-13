@@ -64,22 +64,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             IProjectSharedFoldersSnapshot sharedProjectsUpdate = e.Item2;
             IProjectCatalogSnapshot catalogs = e.Item3;
 
-            var changesBuilder = new CrossTargetDependenciesChangesBuilder();
+            var changesBuilder = new DependenciesChangesBuilder();
 
             ProcessSharedProjectsUpdates(sharedProjectsUpdate, targetFrameworkToUpdate, changesBuilder);
 
-            ImmutableDictionary<ITargetFramework, IDependenciesChanges>? changes = changesBuilder.TryBuildChanges();
+            IDependenciesChanges? changes = changesBuilder.TryBuildChanges();
 
             if (changes != null)
             {
-                RaiseDependenciesChanged(changes, currentAggregateContext, catalogs);
+                RaiseDependenciesChanged(targetFrameworkToUpdate, changes, currentAggregateContext, catalogs);
             }
         }
 
         private void ProcessSharedProjectsUpdates(
             IProjectSharedFoldersSnapshot sharedFolders,
             ITargetFramework targetFramework,
-            CrossTargetDependenciesChangesBuilder changesBuilder)
+            DependenciesChangesBuilder changesBuilder)
         {
             Requires.NotNull(sharedFolders, nameof(sharedFolders));
             Requires.NotNull(targetFramework, nameof(targetFramework));
@@ -108,7 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     isResolved: true,
                     isImplicit: false,
                     properties: ImmutableStringDictionary<string>.EmptyOrdinal);
-                changesBuilder.Added(targetFramework, added);
+                changesBuilder.Added(added);
             }
 
             // process removed nodes
@@ -119,7 +119,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 if (exists)
                 {
                     changesBuilder.Removed(
-                        targetFramework,
                         ProjectRuleHandler.ProviderTypeString,
                         dependencyId: removedSharedImportPath);
                 }
