@@ -325,6 +325,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 settings.AdditionalDebugEngines.Add(DebuggerEngines.NativeOnlyEngine);
             }
 
+            if (resolvedProfile.SqlDebuggingIsEnabled())
+            {
+                settings.AdditionalDebugEngines.Add(DebuggerEngines.SqlEngine);
+            }
+
             if (settings.Environment.Count > 0)
             {
                 settings.LaunchOptions |= DebugLaunchOptions.MergeEnvironment;

@@ -141,6 +141,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                         OnPropertyChanged(nameof(SupportsLaunchUrl));
                         OnPropertyChanged(nameof(SupportsEnvironmentVariables));
                         OnPropertyChanged(nameof(SupportNativeDebugging));
+                        OnPropertyChanged(nameof(SupportSqlDebugging));
                         OnPropertyChanged(nameof(ActiveProviderUserControl));
                         OnPropertyChanged(nameof(DoesNotHaveErrors));
                     }
@@ -308,16 +309,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     return false;
                 }
 
-                if (SelectedDebugProfile.OtherSettings.ContainsKey("nativeDebugging"))
+                if (SelectedDebugProfile.OtherSettings.TryGetValue("nativeDebugging", out object value))
                 {
-                    return (bool)SelectedDebugProfile.OtherSettings["nativeDebugging"];
+                    return (bool)value;
                 }
 
                 return false;
             }
             set
             {
-                //Unlike other properties that have default values, nativeDebugging may not be set yet. Because false is the default behavior adding it has no affect
+                //Unlike other properties that have default values, nativeDebugging may not be set yet. Because false is the default behavior adding it has no effect
                 if (!SelectedDebugProfile.OtherSettings.TryGetValue("nativeDebugging", out object previousValue))
                 {
                     previousValue = false;
@@ -331,11 +332,53 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
+
+
+        public bool SqlDebugging
+        {
+            get
+            {
+                if (!IsProfileSelected)
+                {
+                    return false;
+                }
+
+                if (SelectedDebugProfile.OtherSettings.TryGetValue("sqlDebugging", out object value))
+                {
+                    return (bool)value;
+                }
+
+                return false;
+            }
+            set
+            {
+                //Unlike other properties that have default values, sqlDebugging may not be set yet. Because false is the default behavior adding it has no effect
+                if (!SelectedDebugProfile.OtherSettings.TryGetValue("sqlDebugging", out object previousValue))
+                {
+                    previousValue = false;
+                }
+
+                if ((bool)previousValue != value)
+                {
+                    SelectedDebugProfile.OtherSettings["sqlDebugging"] = value;
+                    OnPropertyChanged(nameof(SqlDebugging));
+                }
+            }
+        }
+
         public bool SupportNativeDebugging
         {
             get
             {
                 return ActiveProviderSupportsProperty(UIProfilePropertyName.NativeDebugging);
+            }
+        }
+
+        public bool SupportSqlDebugging
+        {
+            get
+            {
+                return ActiveProviderSupportsProperty(UIProfilePropertyName.SqlDebugging);
             }
         }
 
@@ -558,6 +601,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 OnPropertyChanged(nameof(LaunchPage));
                 OnPropertyChanged(nameof(HasLaunchOption));
                 OnPropertyChanged(nameof(NativeCodeDebugging));
+                OnPropertyChanged(nameof(SqlDebugging));
                 OnPropertyChanged(nameof(WorkingDirectory));
 
                 UpdateLaunchTypes();

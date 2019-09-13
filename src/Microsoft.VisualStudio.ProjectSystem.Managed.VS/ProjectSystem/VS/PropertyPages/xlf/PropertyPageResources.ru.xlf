@@ -222,6 +222,11 @@
         <target state="translated">Включить отладку машинного кода</target>
         <note />
       </trans-unit>
+      <trans-unit id="chkSqlCodeDebuggingText">
+        <source>Enable SQL Server debugging</source>
+        <target state="new">Enable SQL Server debugging</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>
