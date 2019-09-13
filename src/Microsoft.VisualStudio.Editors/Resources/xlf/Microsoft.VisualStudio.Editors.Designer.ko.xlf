@@ -918,6 +918,11 @@ Error:</source>
         <target state="translated">참조 속성</target>
         <note />
       </trans-unit>
+      <trans-unit id="PropPage_InvalidCharactersInFilePath">
+        <source>"Invalid characters in file path."</source>
+        <target state="new">"Invalid characters in file path."</target>
+        <note />
+      </trans-unit>
       <trans-unit id="PropPage_RemoteMachineBlankError">
         <source>The remote machine name cannot be blank.  Please specify the name of the machine to debug remotely.</source>
         <target state="translated">원격 컴퓨터 이름은 비워 둘 수 없습니다.  원격으로 디버그할 컴퓨터의 이름을 지정하세요.</target>

@@ -918,6 +918,11 @@ Erreur :</target>
         <target state="translated">Propriétés de la référence</target>
         <note />
       </trans-unit>
+      <trans-unit id="PropPage_InvalidCharactersInFilePath">
+        <source>"Invalid characters in file path."</source>
+        <target state="new">"Invalid characters in file path."</target>
+        <note />
+      </trans-unit>
       <trans-unit id="PropPage_RemoteMachineBlankError">
         <source>The remote machine name cannot be blank.  Please specify the name of the machine to debug remotely.</source>
         <target state="translated">Le nom de l'ordinateur distant ne peut pas être vide.  Spécifiez le nom de l'ordinateur à déboguer à distance.</target>

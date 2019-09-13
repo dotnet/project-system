@@ -611,6 +611,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         If Trim(Win32ResourceFile.Text).Length = 0 Then
                             message = My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_NeedResFile
                             Return ValidationResult.Warning
+                        ElseIf Not Win32ResourceFile.Text.IndexOfAny(Path.GetInvalidPathChars()) = -1 Then
+                            message = My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_InvalidCharactersInFilePath
+                            Return ValidationResult.Failed
                         ElseIf Not File.Exists(Win32ResourceFile.Text) Then
                             message = My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_ResourceFileNotExist
                             Return ValidationResult.Warning

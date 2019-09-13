@@ -918,6 +918,11 @@ Chyba:</target>
         <target state="translated">Vlastnosti odkazu</target>
         <note />
       </trans-unit>
+      <trans-unit id="PropPage_InvalidCharactersInFilePath">
+        <source>"Invalid characters in file path."</source>
+        <target state="new">"Invalid characters in file path."</target>
+        <note />
+      </trans-unit>
       <trans-unit id="PropPage_RemoteMachineBlankError">
         <source>The remote machine name cannot be blank.  Please specify the name of the machine to debug remotely.</source>
         <target state="translated">Název vzdáleného počítače nesmí být prázdný.  Zadejte prosím název vzdáleně laděného počítače.</target>
