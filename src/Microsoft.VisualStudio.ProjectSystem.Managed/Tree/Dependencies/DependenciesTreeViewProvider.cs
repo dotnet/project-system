@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <inheritdoc />
         public async Task<IProjectTree> BuildTreeAsync(
             IProjectTree dependenciesTree,
-            IDependenciesSnapshot snapshot,
+            DependenciesSnapshot snapshot,
             CancellationToken cancellationToken = default)
         {
             // Keep a reference to the original tree to return in case we are cancelled.

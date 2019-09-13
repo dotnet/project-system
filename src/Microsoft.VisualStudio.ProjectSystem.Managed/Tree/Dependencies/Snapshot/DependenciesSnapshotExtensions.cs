@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
-    internal static class IDependenciesSnapshotExtensions
+    internal static class DependenciesSnapshotExtensions
     {
-        public static IEnumerable<IDependency> GetFlatTopLevelDependencies(this IDependenciesSnapshot self)
+        public static IEnumerable<IDependency> GetFlatTopLevelDependencies(this DependenciesSnapshot self)
         {
             foreach ((ITargetFramework _, ITargetedDependenciesSnapshot targetedSnapshot) in self.DependenciesByTargetFramework)
             {

@@ -8,15 +8,15 @@ using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
-    internal static class IDependenciesSnapshotFactory
+    internal static class DependenciesSnapshotFactory
     {
-        public static IDependenciesSnapshot Implement(
+        public static DependenciesSnapshot Implement(
             Dictionary<ITargetFramework, ITargetedDependenciesSnapshot>? dependenciesByTarget = null,
             bool? hasUnresolvedDependency = null,
             ITargetFramework? activeTarget = null,
             MockBehavior mockBehavior = MockBehavior.Default)
         {
-            var mock = new Mock<IDependenciesSnapshot>(mockBehavior);
+            var mock = new Mock<DependenciesSnapshot>(mockBehavior);
 
             if (dependenciesByTarget != null)
             {

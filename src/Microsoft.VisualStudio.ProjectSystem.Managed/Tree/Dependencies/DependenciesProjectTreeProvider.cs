@@ -142,7 +142,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return false;
             }
 
-            IDependenciesSnapshot snapshot = _dependenciesSnapshotProvider.CurrentSnapshot;
+            DependenciesSnapshot snapshot = _dependenciesSnapshotProvider.CurrentSnapshot;
             if (snapshot == null)
             {
                 return false;
@@ -230,7 +230,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     }
                 }
 
-                IDependenciesSnapshot snapshot = _dependenciesSnapshotProvider.CurrentSnapshot;
+                DependenciesSnapshot snapshot = _dependenciesSnapshotProvider.CurrentSnapshot;
                 Requires.NotNull(snapshot, nameof(snapshot));
                 if (snapshot == null)
                 {
@@ -405,7 +405,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         private async Task OnDependenciesSnapshotChangedAsync(SnapshotChangedEventArgs e)
         {
-            IDependenciesSnapshot snapshot = e.Snapshot;
+            DependenciesSnapshot snapshot = e.Snapshot;
 
             if (_tasksService.UnloadCancellationToken.IsCancellationRequested || e.Token.IsCancellationRequested)
             {

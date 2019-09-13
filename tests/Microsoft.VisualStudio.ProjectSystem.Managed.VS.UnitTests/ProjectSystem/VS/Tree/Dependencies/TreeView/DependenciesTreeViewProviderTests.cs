@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -800,7 +801,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.TreeView
             return new DependenciesTreeViewProvider(treeServices, treeViewModelFactory, commonServices);
         }
 
-        private static IDependenciesSnapshot GetSnapshot(params (ITargetFramework tfm, IReadOnlyList<IDependency> dependencies)[] testData)
+        private static DependenciesSnapshot GetSnapshot(params (ITargetFramework tfm, IReadOnlyList<IDependency> dependencies)[] testData)
         {
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var dependenciesByTarget = new Dictionary<ITargetFramework, ITargetedDependenciesSnapshot>();
@@ -816,10 +817,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.TreeView
                 dependenciesByTarget.Add(tfm, targetedSnapshot);
             }
 
-            return IDependenciesSnapshotFactory.Implement(
-                dependenciesByTarget: dependenciesByTarget,
-                hasUnresolvedDependency: false,
-                activeTarget: testData[0].tfm);
+            return new DependenciesSnapshot(
+                ProjectPath,
+                testData[0].tfm,
+                dependenciesByTarget.ToImmutableDictionary());
         }
 
         private static string ToTestDataString(TestProjectTree root)

@@ -119,7 +119,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         }
 
         /// <inheritdoc />
-        public IDependenciesSnapshot? GetSnapshot(string projectFilePath)
+        public DependenciesSnapshot? GetSnapshot(string projectFilePath)
         {
             Requires.NotNullOrEmpty(projectFilePath, nameof(projectFilePath));
 
@@ -131,7 +131,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// <inheritdoc />
         public ITargetedDependenciesSnapshot? GetSnapshot(IDependency dependency)
         {
-            IDependenciesSnapshot? snapshot = GetSnapshot(dependency.FullPath);
+            DependenciesSnapshot? snapshot = GetSnapshot(dependency.FullPath);
 
             if (snapshot == null)
             {
@@ -150,7 +150,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         }
 
         /// <inheritdoc />
-        public IReadOnlyCollection<IDependenciesSnapshot> GetSnapshots()
+        public IReadOnlyCollection<DependenciesSnapshot> GetSnapshots()
         {
             return _snapshotProviderByPath.Values.Select(provider => provider.CurrentSnapshot).ToList();
         }

@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                    graphContext.RequestedProperties.Contains(DgmlNodeProperties.ContainsChildren);
         }
 
-        protected override void ProcessInputNode(IGraphContext graphContext, GraphNode inputGraphNode, IDependency dependency, IDependenciesSnapshot snapshot, IDependenciesGraphViewProvider viewProvider, string projectPath, ref bool trackChanges)
+        protected override void ProcessInputNode(IGraphContext graphContext, GraphNode inputGraphNode, IDependency dependency, DependenciesSnapshot snapshot, IDependenciesGraphViewProvider viewProvider, string projectPath, ref bool trackChanges)
         {
             inputGraphNode.SetValue(DependenciesGraphSchema.DependencyIdProperty, dependency.Id);
             inputGraphNode.SetValue(DependenciesGraphSchema.ResolvedProperty, dependency.Resolved);
