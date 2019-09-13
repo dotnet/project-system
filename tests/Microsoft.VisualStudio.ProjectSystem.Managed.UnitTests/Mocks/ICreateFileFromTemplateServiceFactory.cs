@@ -12,8 +12,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var mock = new Mock<ICreateFileFromTemplateService>();
 
-            mock.Setup(s => s.CreateFileAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns<string, string, string>((templateFile, parentNode, specialFileName) =>
+            mock.Setup(s => s.CreateFileAsync(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns<string, string>((templateFile, path) =>
                 {
                     return TaskResult.True;
                 });

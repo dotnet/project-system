@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
     ///     that find their special file by file name under the AppDesigner folder, falling back 
     ///     to the root folder if it doesn't exist.
     /// </summary>
-    internal class AbstractFindByNameUnderAppDesignerSpecialFileProvider : AbstractFindByNameSpecialFileProvider2
+    internal class AbstractFindByNameUnderAppDesignerSpecialFileProvider : AbstractFindByNameSpecialFileProvider
     {
         private readonly ISpecialFilesManager _specialFilesManager;
 

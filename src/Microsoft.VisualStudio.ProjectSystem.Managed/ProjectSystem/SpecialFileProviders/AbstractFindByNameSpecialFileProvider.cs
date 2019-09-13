@@ -1,264 +1,45 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
-using System.Collections.Immutable;
 using System.IO;
-using System.Threading;
 using System.Threading.Tasks;
-
-using Microsoft.VisualStudio.IO;
 
 namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
     /// <summary>
-    /// Base type for special file providers that find their file by name.
+    ///     Provides <see langword="abstract"/> base class for <see cref="ISpecialFileProvider"/> instances
+    ///     that find their special file by file name in the root of the project.
     /// </summary>
-    internal abstract class AbstractFindByNameSpecialFileProvider : ISpecialFileProvider
+    internal abstract class AbstractFindByNameSpecialFileProvider : AbstractSpecialFileProvider
     {
-        private readonly IProjectItemProvider _sourceItemsProvider;
-        private readonly IFileSystem _fileSystem;
-        private readonly ISpecialFilesManager _specialFilesManager;
-        
-        /// <summary>
-        /// A service that knows to create a file from a template. In non-VS scenarios
-        /// this might not exist, in which case we provide a default implementation for adding
-        /// a file.
-        /// </summary>
-        private readonly Lazy<ICreateFileFromTemplateService>? _templateFileCreationService;
+        private readonly string _fileName;
 
-        protected AbstractFindByNameSpecialFileProvider(
-            IPhysicalProjectTree projectTree,
-            IProjectItemProvider sourceItemsProvider,
-            Lazy<ICreateFileFromTemplateService>? templateFileCreationService,
-            IFileSystem fileSystem,
-            ISpecialFilesManager specialFileManager)
+        protected AbstractFindByNameSpecialFileProvider(string fileName, IPhysicalProjectTree projectTree)
+            : base(projectTree)
         {
-            Requires.NotNull(projectTree, nameof(projectTree));
-            Requires.NotNull(sourceItemsProvider, nameof(sourceItemsProvider));
-            Requires.NotNull(fileSystem, nameof(fileSystem));
-            Requires.NotNull(specialFileManager, nameof(specialFileManager));
-
-            ProjectTree = projectTree;
-            _sourceItemsProvider = sourceItemsProvider;
-            _templateFileCreationService = templateFileCreationService;
-            _fileSystem = fileSystem;
-            _specialFilesManager = specialFileManager;
+            _fileName = fileName;
         }
 
-        protected IPhysicalProjectTree ProjectTree
+        protected override Task<IProjectTree?> FindFileAsync(IProjectTreeProvider provider, IProjectTree root)
         {
-            get;
+            root.TryFindImmediateChild(_fileName, out IProjectTree? node);
+
+            return Task.FromResult<IProjectTree?>(node);
         }
 
-        /// <summary>
-        /// If true, the special file is created under the app designer folder
-        /// by default.
-        /// </summary>
-        protected virtual bool CreatedByDefaultUnderAppDesignerFolder => true;
-
-        /// <summary>
-        /// Gets the name of a special file.
-        /// </summary>
-        protected abstract string Name
+        protected override Task<string?> GetDefaultFileAsync(IProjectTreeProvider provider, IProjectTree root)
         {
-            get;
+            string? projectPath = provider.GetRootedAddNewItemDirectory(root);
+            if (projectPath == null)  // Root has DisableAddItem
+                return Task.FromResult<string?>(null);
+
+            string path = Path.Combine(projectPath, _fileName);
+
+            return Task.FromResult<string?>(path);
         }
 
-        /// <summary>
-        /// Gets the name of a template that can be used to create a new special file.
-        /// </summary>
-        protected abstract string TemplateName
+        protected string? GetDefaultFileAsync(string rootPath)
         {
-            get;
-        }
-
-        /// <summary>
-        /// We follow this algorithm for looking up files:
-        ///
-        /// if (not asked to create)
-        ///      Look in AppDesigner folder
-        ///      Look in root folder
-        ///
-        /// if (asked to create)
-        ///      Look in AppDesigner folder
-        ///      Look in root folder
-        ///      Force-create in app-designer folder unless that file is not created there by default.
-        ///      In that case create under the root node.
-        /// </summary>
-        public async Task<string?> GetFileAsync(SpecialFiles fileId, SpecialFileFlags flags, CancellationToken cancellationToken = default)
-        {
-            // Search for the file in the app designer and root folders.
-            IProjectTree? specialFileNode = await FindFileAsync(Name);
-            if (specialFileNode != null)
-            {
-                if (await IsNodeInSyncWithDiskAsync(specialFileNode, forceSync: flags.HasFlag(SpecialFileFlags.CreateIfNotExist), cancellationToken))
-                {
-                    return specialFileNode.FilePath;
-                }
-            }
-
-            // File doesn't exist. Create it if we've been asked to.
-            if (flags.HasFlag(SpecialFileFlags.CreateIfNotExist))
-            {
-                string createdFilePath = await CreateFileAsync(Name);
-                if (createdFilePath != null)
-                {
-                    return createdFilePath;
-                }
-            }
-
-            // We haven't found the file but return the default file path as that's the contract.
-            IProjectTree? rootNode = ProjectTree.CurrentTree;
-
-            if (rootNode == null)
-                return null;
-
-            string rootFilePath = ProjectTree.TreeProvider.GetPath(rootNode);
-            string fullPath = Path.Combine(Path.GetDirectoryName(rootFilePath), Name);
-            return fullPath;
-        }
-
-        /// <summary>
-        /// Find a file with the given file name. The algorithm used is :
-        ///       Look under the appdesigner folder for files that normally live there.
-        ///       Look under the project root for all files.
-        /// </summary>
-        protected virtual async Task<IProjectTree?> FindFileAsync(string specialFileName)
-        {
-            // First, we look in the AppDesigner folder.
-            if (CreatedByDefaultUnderAppDesignerFolder)
-            {
-                IProjectTree? appDesignerFolder = await GetAppDesignerFolderAsync(createIfNotExists: false);
-                if (appDesignerFolder != null)
-                {
-                    IProjectTree? specialFileNode = FindFileWithinNode(appDesignerFolder, specialFileName);
-                    if (specialFileNode != null)
-                    {
-                        return specialFileNode;
-                    }
-                }
-            }
-
-            IProjectTree? rootNode = ProjectTree.CurrentTree;
-
-            if (rootNode == null)
-                return null;
-
-            // Now try the root folder.
-            return FindFileWithinNode(rootNode, specialFileName);
-        }
-
-        /// <summary>
-        /// Find a file with the given filename within the given node.
-        /// </summary>
-        private static IProjectTree? FindFileWithinNode(IProjectTree parentNode, string fileName)
-        {
-            parentNode.TryFindImmediateChild(fileName, out IProjectTree fileNode);
-
-            // The user has created a folder with this name which means we don't have a special file.
-            if (fileNode != null && fileNode.IsFolder)
-            {
-                return null;
-            }
-
-            return fileNode;
-        }
-
-        /// <summary>
-        /// Check to see if a given node is both part of a project and exists on disk. If asked to 
-        /// force sync, then either a file is included in the project or removed from the project.
-        /// </summary>
-        private async Task<bool> IsNodeInSyncWithDiskAsync(IProjectTree specialFileNode, bool forceSync, CancellationToken cancellationToken)
-        {
-            // If the file exists on disk but is not part of the project.
-            if (!specialFileNode.Flags.IsIncludedInProject())
-            {
-                if (forceSync)
-                {
-                    // Since the file already exists on disk, just include it in the project.
-                    await _sourceItemsProvider.AddAsync(specialFileNode.FilePath);
-                    await ProjectTree.TreeService.PublishLatestTreeAsync(cancellationToken: cancellationToken);
-                }
-                else
-                {
-                    return false;
-                }
-            }
-
-            // If the file was in the project but not on disk.
-            if (!_fileSystem.FileExists(specialFileNode.FilePath))
-            {
-                if (forceSync)
-                {
-                    // Just remove the entry from the project so that we get to a clean state and then we can 
-                    // create the file as usual.
-                    await ProjectTree.TreeProvider.RemoveAsync(ImmutableHashSet.Create(specialFileNode));
-                    await ProjectTree.TreeService.PublishLatestTreeAsync(cancellationToken: cancellationToken);
-                }
-
-                return false;
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// Create a special file.
-        /// </summary>
-        private async Task<string> CreateFileAsync(string specialFileName)
-        {
-            IProjectTree? rootNode = await GetParentFolderAsync(createIfNotExists: true);
-
-            Assumes.NotNull(rootNode);
-
-            string? parentPath = ProjectTree.TreeProvider.GetRootedAddNewItemDirectory(rootNode);
-            string specialFilePath = Path.Combine(parentPath, specialFileName);
-
-            // If we can create the file from the template do it, otherwise just create an empty file.
-            if (_templateFileCreationService != null)
-            {
-                Assumes.NotNull(parentPath);
-
-                await _templateFileCreationService.Value.CreateFileAsync(TemplateName, parentPath, specialFileName);
-            }
-            else
-            {
-                using (_fileSystem.Create(specialFilePath))
-                { }
-
-                IProjectItem? item = await _sourceItemsProvider.AddAsync(specialFilePath);
-                if (item != null)
-                {
-                    await ProjectTree.TreeService.PublishLatestTreeAsync(waitForFileSystemUpdates: true);
-                }
-            }
-
-            return specialFilePath;
-        }
-
-        private async Task<IProjectTree?> GetParentFolderAsync(bool createIfNotExists)
-        {
-            if (CreatedByDefaultUnderAppDesignerFolder)
-            {
-                IProjectTree? tree = await GetAppDesignerFolderAsync(createIfNotExists);
-                if (tree != null)
-                    return tree;
-            }
-
-            return ProjectTree.CurrentTree;
-        }
-
-        private async Task<IProjectTree?> GetAppDesignerFolderAsync(bool createIfNotExists)
-        {
-            SpecialFileFlags flags = SpecialFileFlags.FullPath;
-            if (createIfNotExists)
-                flags |= SpecialFileFlags.CreateIfNotExist;
-
-            string? path = await _specialFilesManager.GetFileAsync(SpecialFiles.AppDesigner, flags);
-            if (path == null)
-                return null;
-
-            return ProjectTree.TreeProvider.FindByPath(ProjectTree.CurrentTree, path);
+            return Path.Combine(rootPath, _fileName);
         }
     }
 }

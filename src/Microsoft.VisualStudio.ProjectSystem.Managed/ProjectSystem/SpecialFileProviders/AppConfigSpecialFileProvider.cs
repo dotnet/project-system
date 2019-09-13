@@ -1,9 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.ComponentModel.Composition;
-
-using Microsoft.VisualStudio.IO;
+using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
@@ -11,21 +9,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
     [AppliesTo(ProjectCapability.DotNet)]
     internal class AppConfigSpecialFileProvider : AbstractFindByNameSpecialFileProvider
     {
+        private readonly ICreateFileFromTemplateService _templateFileCreationService;
+
         [ImportingConstructor]
-        public AppConfigSpecialFileProvider(
-            IPhysicalProjectTree projectTree,
-            [Import(ExportContractNames.ProjectItemProviders.SourceFiles)] IProjectItemProvider sourceItemsProvider,
-            [Import(AllowDefault = true)] Lazy<ICreateFileFromTemplateService>? templateFileCreationService,
-            IFileSystem fileSystem,
-            ISpecialFilesManager specialFilesManager)
-            : base(projectTree, sourceItemsProvider, templateFileCreationService, fileSystem, specialFilesManager)
+        public AppConfigSpecialFileProvider(IPhysicalProjectTree projectTree, ICreateFileFromTemplateService templateFileCreationService)
+            : base("App.config", projectTree)
         {
+            _templateFileCreationService = templateFileCreationService;
         }
 
-        protected override string Name => "App.config";
-
-        protected override string TemplateName => "AppConfigurationInternal.zip";
-
-        protected override bool CreatedByDefaultUnderAppDesignerFolder => false;
+        protected override Task CreateFileAsync(string path)
+        {
+            return _templateFileCreationService.CreateFileAsync("AppConfigurationInternal.zip", path);
+        }
     }
 }
