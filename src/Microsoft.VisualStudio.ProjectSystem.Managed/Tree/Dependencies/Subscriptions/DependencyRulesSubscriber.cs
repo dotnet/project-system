@@ -101,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         }
 
         protected override IProjectCapabilitiesSnapshot GetCapabilitiesSnapshot(EventData e) => e.Item3;
-        protected override IProjectSubscriptionUpdate GetProjectSubscriptionUpdate(EventData e) => e.Item1;
+        protected override ProjectConfiguration GetProjectConfiguration(EventData e) => e.Item1.ProjectConfiguration;
 
         protected override void Handle(
             AggregateCrossTargetProjectContext currentAggregateContext,
