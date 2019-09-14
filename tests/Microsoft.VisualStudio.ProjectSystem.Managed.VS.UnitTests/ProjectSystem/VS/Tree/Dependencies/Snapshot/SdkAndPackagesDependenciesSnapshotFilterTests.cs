@@ -68,10 +68,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             // Dependency should be accepted, but converted to resolved state
             Assert.NotNull(acceptedDependency);
             Assert.NotSame(sdkDependency, acceptedDependency);
-            acceptedDependency!.AssertEqualTo(
+            DependencyAssert.Equal(
                 sdkDependency.ToResolved(
                     schemaName: ResolvedSdkReference.SchemaName,
-                    dependencyIDs: dependencyIDs));
+                    dependencyIDs: dependencyIDs), acceptedDependency!);
 
             // No changes other than the filtered dependency
             Assert.False(context.Changed);
@@ -167,10 +167,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.True(context.Changed);
 
             Assert.True(context.TryGetDependency(sdkDependency.Id, out IDependency sdkDependencyAfter));
-            sdkDependencyAfter.AssertEqualTo(
+            DependencyAssert.Equal(
                 sdkDependency.ToResolved(
                     schemaName: ResolvedSdkReference.SchemaName,
-                    dependencyIDs: dependencyIDs));
+                    dependencyIDs: dependencyIDs), sdkDependencyAfter);
         }
 
         [Fact]
@@ -218,10 +218,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.Same(packageDependency, afterPackageDependency);
 
             Assert.True(worldBuilder.TryGetValue(sdkDependency.Id, out var afterSdkDependency));
-            afterSdkDependency.AssertEqualTo(
+            DependencyAssert.Equal(
                 afterSdkDependency.ToUnresolved(
                     SdkReference.SchemaName,
-                    dependencyIDs: ImmutableArray<string>.Empty));
+                    dependencyIDs: ImmutableArray<string>.Empty), afterSdkDependency);
         }
     }
 }

@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         {
             var path = "path";
             var tfm = TargetFramework.Any;
-            var dic = ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot>.Empty;
+            var dic = ImmutableDictionary<ITargetFramework, TargetedDependenciesSnapshot>.Empty;
 
             Assert.Throws<ArgumentNullException>("projectPath",                   () => new DependenciesSnapshot(null!, tfm,   dic));
             Assert.Throws<ArgumentNullException>("activeTargetFramework",         () => new DependenciesSnapshot(path,  null!, dic));
@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var ex = Assert.Throws<ArgumentException>(() => new DependenciesSnapshot(
                 projectPath,
                 activeTargetFramework: targetFramework,
-                ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot>.Empty));
+                ImmutableDictionary<ITargetFramework, TargetedDependenciesSnapshot>.Empty));
 
             Assert.StartsWith("Must contain activeTargetFramework (tfm1).", ex.Message);
         }
@@ -218,12 +218,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.Same(before.DependenciesByTargetFramework[tfm2], after.DependenciesByTargetFramework[tfm2]);
         }
 
-        private static ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot> CreateDependenciesByTargetFramework(
+        private static ImmutableDictionary<ITargetFramework, TargetedDependenciesSnapshot> CreateDependenciesByTargetFramework(
             string projectPath,
             IProjectCatalogSnapshot catalogs,
             params ITargetFramework[] targetFrameworks)
         {
-            var dic = ImmutableDictionary<ITargetFramework, ITargetedDependenciesSnapshot>.Empty;
+            var dic = ImmutableDictionary<ITargetFramework, TargetedDependenciesSnapshot>.Empty;
 
             foreach (var targetFramework in targetFrameworks)
             {

@@ -102,13 +102,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             // The filtered dependency had its caption changed to its alias
             var dependencyAfter = context.GetResult(filter);
-            dependencyAfter!.AssertEqualTo(
-                new TestDependency { ClonePropertiesFrom = dependency, Caption = "caption (originalItemSpec1)" });
+            DependencyAssert.Equal(new TestDependency { ClonePropertiesFrom = dependency, Caption = "caption (originalItemSpec1)" }, dependencyAfter!);
 
             // The other dependency had its caption changed to its alias
             Assert.True(context.TryGetDependency(otherDependency.Id, out IDependency otherDependencyAfter));
-            otherDependencyAfter.AssertEqualTo(
-                new TestDependency { ClonePropertiesFrom = otherDependency, Caption = "caption (originalItemSpec2)" });
+            DependencyAssert.Equal(new TestDependency { ClonePropertiesFrom = otherDependency, Caption = "caption (originalItemSpec2)" }, otherDependencyAfter);
         }
 
         [Fact]
@@ -158,13 +156,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             // The filtered dependency had its caption changed to its alias
             var dependencyAfter = context.GetResult(filter);
-            dependencyAfter!.AssertEqualTo(
-                new TestDependency { ClonePropertiesFrom = dependency, Caption = "caption (originalItemSpec1)" });
+            DependencyAssert.Equal(new TestDependency { ClonePropertiesFrom = dependency, Caption = "caption (originalItemSpec1)" }, dependencyAfter!);
 
             // The other dependency had its caption changed to its alias
             Assert.True(context.TryGetDependency(otherDependency.Id, out IDependency otherDependencyAfter));
-            otherDependencyAfter.AssertEqualTo(
-                new TestDependency { ClonePropertiesFrom = otherDependency, Caption = "caption (originalItemSpec2)" });
+            DependencyAssert.Equal(new TestDependency { ClonePropertiesFrom = otherDependency, Caption = "caption (originalItemSpec2)" }, otherDependencyAfter);
         }
 
         [Fact]

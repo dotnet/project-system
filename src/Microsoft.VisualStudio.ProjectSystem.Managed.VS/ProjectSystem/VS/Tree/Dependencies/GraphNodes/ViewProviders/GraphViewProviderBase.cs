@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             string projectPath,
             IDependency dependency,
             GraphNode dependencyGraphNode,
-            ITargetedDependenciesSnapshot targetedSnapshot);
+            TargetedDependenciesSnapshot targetedSnapshot);
 
         public virtual bool ShouldApplyChanges(string nodeProjectPath, string updatedSnapshotProjectPath, IDependency updatedDependency)
         {
@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             string nodeProjectPath,
             IDependency updatedDependency,
             GraphNode dependencyGraphNode,
-            ITargetedDependenciesSnapshot targetedSnapshot)
+            TargetedDependenciesSnapshot targetedSnapshot)
         {
             return ApplyChangesInternal(
                 graphContext,
@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             GraphNode dependencyGraphNode,
             ImmutableArray<IDependency> updatedChildren,
             string nodeProjectPath,
-            ITargetedDependenciesSnapshot targetedSnapshot)
+            TargetedDependenciesSnapshot targetedSnapshot)
         {
             IEnumerable<string> existingChildModelIds = GetExistingChildren();
             IEnumerable<string> updatedChildModelIds = updatedChildren.Select(dependency => dependency.Id);

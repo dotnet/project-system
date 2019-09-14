@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     /// <summary>
     /// Represents internal immutable dependency entity that is stored in immutable 
-    /// snapshot <see cref="ITargetedDependenciesSnapshot"/>.
+    /// snapshot <see cref="TargetedDependenciesSnapshot"/>.
     /// </summary>
     internal interface IDependency : IEquatable<IDependency?>
     {

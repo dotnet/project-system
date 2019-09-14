@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             string projectPath,
             IDependency dependency,
             GraphNode dependencyGraphNode,
-            ITargetedDependenciesSnapshot targetedSnapshot)
+            TargetedDependenciesSnapshot targetedSnapshot)
         {
             // store refreshed dependency info
             dependencyGraphNode.SetValue(DependenciesGraphSchema.DependencyIdProperty, dependency.Id);

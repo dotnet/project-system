@@ -32,8 +32,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// Gets the targeted snapshot for <paramref name="dependency"/>, or <see langword="null"/> if none found.
         /// </summary>
         /// <param name="dependency">A dependency that identifies the project and target framework to search with.</param>
-        /// <returns><see cref="ITargetedDependenciesSnapshot"/> or <see langword="null"/> if no snapshot exists with matching project and target framework.</returns>
-        ITargetedDependenciesSnapshot? GetSnapshot(IDependency dependency);
+        /// <returns><see cref="TargetedDependenciesSnapshot"/> or <see langword="null"/> if no snapshot exists with matching project and target framework.</returns>
+        TargetedDependenciesSnapshot? GetSnapshot(IDependency dependency);
 
         /// <summary>
         /// Gets the current snapshot from every registered project.
