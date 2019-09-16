@@ -2,9 +2,7 @@
 
 using System;
 using System.Threading.Tasks;
-
 using Xunit;
-
 using static Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.PackageRestoreProgressTracker;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore

@@ -2,9 +2,7 @@
 
 using System;
 using System.Runtime.InteropServices;
-
 using Microsoft.VisualStudio.ProjectSystem.VS;
-
 using IOleServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
 
 namespace Microsoft.VisualStudio.Shell

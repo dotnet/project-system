@@ -3,7 +3,6 @@
 using System;
 using System.Linq;
 using System.Threading;
-
 using Xunit;
 
 namespace Microsoft.VisualStudio.Threading.Tasks

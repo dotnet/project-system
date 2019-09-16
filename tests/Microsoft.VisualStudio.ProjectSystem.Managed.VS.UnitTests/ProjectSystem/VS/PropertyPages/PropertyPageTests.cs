@@ -2,12 +2,9 @@
 
 using System;
 using System.Security.Permissions;
-
 using Microsoft.VisualStudio.OLE.Interop;
-
 using Moq;
 using Moq.Protected;
-
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages

@@ -2,7 +2,6 @@
 
 using System;
 using System.Linq;
-
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Configuration

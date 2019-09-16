@@ -2,7 +2,6 @@
 
 using System;
 using System.Threading.Tasks;
-
 using Microsoft.VisualStudio.IO;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities

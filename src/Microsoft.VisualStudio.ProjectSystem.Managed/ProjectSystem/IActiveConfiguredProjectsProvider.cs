@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
-
 using Microsoft.VisualStudio.Composition;
 
 namespace Microsoft.VisualStudio.ProjectSystem

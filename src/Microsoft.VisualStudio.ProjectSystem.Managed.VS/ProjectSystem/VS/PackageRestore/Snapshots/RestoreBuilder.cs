@@ -2,9 +2,7 @@
 
 using System.Collections.Immutable;
 using System.Linq;
-
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-
 using NuGet.SolutionRestoreManager;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore

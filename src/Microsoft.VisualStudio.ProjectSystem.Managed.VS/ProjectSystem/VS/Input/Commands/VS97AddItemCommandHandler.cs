@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
-
 using Microsoft.VisualStudio.Input;
 using Microsoft.VisualStudio.Shell.Interop;
 

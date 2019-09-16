@@ -2,7 +2,6 @@
 
 using System.CodeDom.Compiler;
 using System.ComponentModel.Composition;
-
 using Microsoft.CSharp;
 using Microsoft.VisualStudio.Designer.Interfaces;
 

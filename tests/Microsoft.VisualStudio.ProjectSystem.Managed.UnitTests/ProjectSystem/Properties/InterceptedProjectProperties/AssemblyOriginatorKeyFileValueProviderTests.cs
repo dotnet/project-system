@@ -4,9 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders

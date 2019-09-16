@@ -4,14 +4,12 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.ProjectSystem.VS.Automation;
 using Microsoft.VisualStudio.ProjectSystem.VS.TempPE;
 using Microsoft.VisualStudio.Threading.Tasks;
 using Xunit;
-
 using Task = System.Threading.Tasks.Task;
 
 #nullable disable

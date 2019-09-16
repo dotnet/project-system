@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-
 using Microsoft.VisualStudio.OLE.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint

@@ -5,9 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-
 using Microsoft.VisualStudio.Utilities;
-
 using Xunit;
 using Xunit.Abstractions;
 

@@ -4,7 +4,6 @@
 
 using System;
 using System.ComponentModel.Composition;
-
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Threading;
 

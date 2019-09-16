@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Immutable;
-
 using static Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.AbstractAddItemCommandHandler;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands

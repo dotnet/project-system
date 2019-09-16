@@ -3,9 +3,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Linq;
-
 using Microsoft.VisualStudio.ProjectSystem.Logging;
-
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers

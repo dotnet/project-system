@@ -2,7 +2,6 @@
 
 using System;
 using System.Text;
-
 using Microsoft.VisualStudio.Text;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Logging

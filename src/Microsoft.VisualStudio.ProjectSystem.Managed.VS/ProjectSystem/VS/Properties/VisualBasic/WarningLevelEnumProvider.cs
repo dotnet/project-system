@@ -2,10 +2,8 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-
 using VSLangProj;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic

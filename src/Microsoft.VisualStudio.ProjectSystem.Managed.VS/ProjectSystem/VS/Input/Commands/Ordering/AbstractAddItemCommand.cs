@@ -2,10 +2,8 @@
 
 using System;
 using System.Threading.Tasks;
-
 using Microsoft.VisualStudio.ProjectSystem.Input;
 using Microsoft.VisualStudio.Shell;
-
 using Task = System.Threading.Tasks.Task;
 
 #nullable disable

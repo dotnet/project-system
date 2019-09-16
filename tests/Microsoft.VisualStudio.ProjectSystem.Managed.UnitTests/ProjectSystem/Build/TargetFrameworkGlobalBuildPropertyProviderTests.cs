@@ -3,9 +3,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-
 using Microsoft.VisualStudio.ProjectSystem.Build;
-
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties

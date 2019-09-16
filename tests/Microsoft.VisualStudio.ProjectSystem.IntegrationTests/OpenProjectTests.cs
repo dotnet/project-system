@@ -2,7 +2,6 @@
 
 using System;
 using System.Linq;
-
 using Microsoft.Test.Apex.VisualStudio.Solution;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

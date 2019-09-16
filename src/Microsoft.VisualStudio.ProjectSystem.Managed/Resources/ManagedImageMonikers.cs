@@ -2,7 +2,6 @@
 
 using System;
 using System.Diagnostics;
-
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem;

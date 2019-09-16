@@ -3,11 +3,8 @@
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
-
 using NuGet.SolutionRestoreManager;
-
 using Xunit;
-
 using static Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.PackageRestoreService;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore

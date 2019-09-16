@@ -2,12 +2,9 @@
 
 using System.Collections.Immutable;
 using System.Xml;
-
 using Microsoft.Build.Construction;
 using Microsoft.VisualStudio.ProjectSystem.Configuration;
-
 using Xunit;
-
 using StringReader = System.IO.StringReader;
 
 namespace Microsoft.VisualStudio.ProjectSystem

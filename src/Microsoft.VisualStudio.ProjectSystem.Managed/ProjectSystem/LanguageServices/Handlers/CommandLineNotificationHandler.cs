@@ -2,7 +2,6 @@
 
 using System;
 using System.ComponentModel.Composition;
-
 using Microsoft.VisualStudio.ProjectSystem.Logging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers

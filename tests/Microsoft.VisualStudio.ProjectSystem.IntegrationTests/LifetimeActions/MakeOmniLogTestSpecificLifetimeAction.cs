@@ -2,10 +2,8 @@
 
 using System;
 using System.ComponentModel.Composition;
-
 using Microsoft.Test.Apex;
 using Microsoft.Test.Apex.Services;
-
 using Omni.Logging;
 
 namespace Microsoft.VisualStudio.LifetimeActions

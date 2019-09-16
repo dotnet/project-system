@@ -2,7 +2,6 @@
 
 using System;
 using System.Text;
-
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 
 namespace Microsoft.VisualStudio.Text

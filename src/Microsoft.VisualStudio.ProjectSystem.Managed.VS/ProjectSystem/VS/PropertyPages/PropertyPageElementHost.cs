@@ -3,7 +3,6 @@
 using System;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
-
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 

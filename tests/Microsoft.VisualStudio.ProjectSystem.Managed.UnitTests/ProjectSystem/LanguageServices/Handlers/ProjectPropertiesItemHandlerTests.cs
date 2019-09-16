@@ -1,7 +1,5 @@
 ﻿using System;
-
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
-
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers

@@ -2,9 +2,7 @@
 
 using System;
 using System.Threading.Tasks;
-
 using Microsoft.VisualStudio.Threading;
-
 using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem

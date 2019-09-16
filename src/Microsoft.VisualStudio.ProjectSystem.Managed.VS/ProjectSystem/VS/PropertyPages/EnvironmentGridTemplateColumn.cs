@@ -2,7 +2,6 @@
 
 using System.Windows;
 using System.Windows.Controls;
-
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages

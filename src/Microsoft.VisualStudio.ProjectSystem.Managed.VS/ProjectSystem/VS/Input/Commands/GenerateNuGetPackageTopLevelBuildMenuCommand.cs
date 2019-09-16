@@ -2,7 +2,6 @@
 
 using System.ComponentModel.Composition;
 using System.IO;
-
 using Microsoft.VisualStudio.Input;
 using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.ProjectSystem.Input;

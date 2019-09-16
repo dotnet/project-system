@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Immutable;
-
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
