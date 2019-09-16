@@ -15,8 +15,8 @@ ASP.NET Core (.NET Framework & .NET Core)                                   |   
 ASP.NET                                                                     | ●        |   
 Xamarin                                                                     | ●        |   
 Universal Windows Platform (UWP)                                            | ●        |
-Windows Presentation Framework (WPF)                                        | ●        | [16.3](https://github.com/dotnet/project-system/labels/Feature-XAML)
-Windows Forms                                                               | ●        | [16.3](https://github.com/dotnet/project-system/labels/Feature-WinForms)  
+Windows Presentation Framework (WPF)                                        | ●        | 16.3
+Windows Forms                                                               | ●        | 16.3
 Windows Workflow Foundation (WWF)                                           | ●        |
 **Build**|
 Target multiple frameworks (multi-target) from single project               |          | ●
@@ -26,8 +26,8 @@ Debug multiple frameworks from single project                               |   
 Debug with multiple environments from single project ("launch profiles")    |          | ●
 Debug settings persistence                                                  |project.csproj.user|launchsettings.json
 Modify environment variables on debug                                       |          | ● 
-Launch with native debugging                                                | ●        | ◖ | Need to put `"nativeDebugging": true` in launchsettings.json for new project system
-Launch with SQL Server debugging                                            | ●        |   
+Launch with native debugging                                                | ●        | ●
+Launch with SQL Server debugging                                            | ●        | 16.4
 Launch with remote debugging                                                | ●        |   
 Launch with Azure Snapshot Debugger                                         |          | ●
 **Publish**                                                                 |
@@ -46,20 +46,20 @@ Automatically refresh Solution Explorer to reflect file system              |   
 Show items included in imports (.targets/.props)                            |          | ●
 **Dependencies**|
 Auto-restore packages on load and external edit                             |          | ● 
-PackageReference support                                                    | ◖ ● (15.9)        | ● | Starting in 15.9, legacy reloads package targets file without VS restart and supports using MSBuild properties in name, version and metadata.
+PackageReference support                                                    | ●        | ●
 Dependency node showing package/project graph                               |          | ● 
 Transitive ProjectReference                                                 |          | ●
 Generate NuGet package on build                                             |          | ● 
 **Features**|
 Add Service Reference                                                       | ●        | 
 Add Web Reference                                                           | ●        | 
-Add Data Source                                                             | ●        | 16.3
+Add Data Source                                                             | ●        | 16.x
 DataSet Designer                                                            | ●        | 16.x
-"Initialize Interactive Window with Project"                                | ●        | ● (15.8) | Only when targeting .NET Framework.
-Class Diagrams                                                              | ●        | ● (15.8) |
+"Initialize Interactive Window with Project"                                | ●        | ● | Only when targeting .NET Framework.
+Class Diagrams                                                              | ●        | ●
 Code Analysis                                                               | ●        | 
-Code Metrics                                                                | ●        | ◖ (15.8) ● (16.0 Preview 1) | 15.8 added support for Code Metrics when targeting .NET Framework. 16.0 will add support for Code Metrics when targeting all frameworks.
-Code Clones                                                                 | ●        | ● (15.8) | 
+Code Metrics                                                                | ●        | ● 
+Code Clones                                                                 | ●        | ●
 Fakes                                                                       | ●        | 
 T4 Templates                                                                | ●        | 
-[Automation Extenders](https://msdn.microsoft.com/en-us/library/0y92k2w2.aspx)| ●        | ● (15.8) | 
+[Automation Extenders](https://msdn.microsoft.com/en-us/library/0y92k2w2.aspx)| ●      | ●
