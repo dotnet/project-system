@@ -24,9 +24,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             _properties = properties;
         }
 
-        protected override Task CreateFileAsync(string path)
+        protected override async Task CreateFileCoreAsync(string path)
         {
-            return _templateFileCreationService.CreateFileAsync("ResourceInternal.zip", path);
+            await _templateFileCreationService.CreateFileAsync("ResourceInternal.zip", path);
         }
 
         protected override async Task<IProjectTree?> FindFileAsync(IProjectTreeProvider provider, IProjectTree root)
