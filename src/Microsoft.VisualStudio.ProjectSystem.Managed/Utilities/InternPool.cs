@@ -2,7 +2,6 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
-
 using System.Threading;
 
 namespace Microsoft.VisualStudio.Utilities

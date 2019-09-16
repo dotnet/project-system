@@ -3,7 +3,6 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Windows.Controls;
-
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages

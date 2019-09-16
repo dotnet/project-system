@@ -2,7 +2,6 @@
 
 using System;
 using System.Threading;
-
 using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem

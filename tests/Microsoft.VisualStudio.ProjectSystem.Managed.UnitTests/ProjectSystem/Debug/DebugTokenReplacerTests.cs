@@ -4,11 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
-
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
-
 using Moq;
-
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug

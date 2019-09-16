@@ -3,7 +3,6 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Reflection;
-
 using Microsoft.Test.Apex;
 using Microsoft.Test.Apex.Services;
 using Microsoft.Test.Apex.Services.Logging;

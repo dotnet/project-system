@@ -2,11 +2,9 @@
 
 using System;
 using System.Threading.Tasks;
-
 using Microsoft.Build.Framework;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.Shell.Interop;
-
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Build

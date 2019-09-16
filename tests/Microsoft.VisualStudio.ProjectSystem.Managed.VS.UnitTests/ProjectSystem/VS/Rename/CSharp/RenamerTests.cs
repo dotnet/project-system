@@ -3,12 +3,9 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices.CSharp;
-
 using Moq;
-
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.CSharp

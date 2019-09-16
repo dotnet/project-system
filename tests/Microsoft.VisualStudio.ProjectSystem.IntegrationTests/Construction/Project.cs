@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
-
 using Microsoft.Test.Apex.VisualStudio.Solution;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS

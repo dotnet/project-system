@@ -2,7 +2,6 @@
 
 using System.IO;
 using System.Xml;
-
 using Microsoft.Build.Construction;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities

@@ -3,7 +3,6 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
-
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Interop;

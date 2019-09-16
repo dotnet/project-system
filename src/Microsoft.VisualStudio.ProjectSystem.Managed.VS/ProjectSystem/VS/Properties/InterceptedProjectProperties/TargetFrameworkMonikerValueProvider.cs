@@ -5,10 +5,8 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
-
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Shell;
-
 using NuGet.VisualStudio;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties

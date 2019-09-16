@@ -5,9 +5,7 @@
 using System;
 using System.Diagnostics;
 using System.Reflection;
-
 using Microsoft.VisualStudio.ProjectSystem;
-
 using DiagDebugger = System.Diagnostics.Debugger;
 
 namespace Microsoft.VisualStudio.Packaging

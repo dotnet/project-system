@@ -5,12 +5,9 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
-
 using Moq;
-
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices

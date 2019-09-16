@@ -3,7 +3,6 @@
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-
 using Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities

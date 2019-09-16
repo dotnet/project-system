@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using System.Reflection;
-
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;

@@ -2,7 +2,6 @@
 
 using System;
 using System.ComponentModel.Composition;
-
 using Microsoft.Test.Apex;
 using Microsoft.Test.Apex.Services;
 using Microsoft.VisualStudio.ProjectSystem.VS;

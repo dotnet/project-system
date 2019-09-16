@@ -2,10 +2,8 @@
 
 using System;
 using System.Collections.Generic;
-
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.ProjectSystem;
-
 using Moq;
 
 namespace Microsoft.VisualStudio.LanguageServices.ProjectSystem

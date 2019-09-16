@@ -2,10 +2,8 @@
 
 using System;
 using System.Collections.Generic;
-
 using Moq;
 using Moq.Protected;
-
 using Xunit;
 
 #nullable disable

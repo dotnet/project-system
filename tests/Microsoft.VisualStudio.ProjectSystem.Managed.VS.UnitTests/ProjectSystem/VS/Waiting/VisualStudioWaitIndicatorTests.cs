@@ -3,10 +3,8 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-
 using Microsoft.VisualStudio.ProjectSystem.Waiting;
 using Microsoft.VisualStudio.Shell.Interop;
-
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting

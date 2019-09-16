@@ -2,7 +2,6 @@
 
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
-
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices

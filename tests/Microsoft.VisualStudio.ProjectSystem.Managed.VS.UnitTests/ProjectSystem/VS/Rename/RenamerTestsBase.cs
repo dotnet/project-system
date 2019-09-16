@@ -3,12 +3,10 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using Microsoft.VisualStudio.ProjectSystem.Refactor;
 using Microsoft.VisualStudio.ProjectSystem.Waiting;
-
 using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename

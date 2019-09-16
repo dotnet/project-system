@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-
 using Microsoft.Test.Apex;
 using Microsoft.Test.Apex.Providers;
 using Microsoft.Test.Apex.Services.Logging;

@@ -4,7 +4,6 @@ using System.Globalization;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-
 using Microsoft.VisualStudio.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders

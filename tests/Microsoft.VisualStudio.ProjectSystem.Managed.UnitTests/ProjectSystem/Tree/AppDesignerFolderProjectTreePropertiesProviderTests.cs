@@ -2,10 +2,8 @@
 
 using System;
 using System.Collections.Immutable;
-
 using Microsoft.VisualStudio.ProjectSystem.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree

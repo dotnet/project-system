@@ -2,11 +2,8 @@
 
 using System;
 using System.Threading;
-
 using Microsoft.VisualStudio.ProjectSystem;
-
 using Xunit;
-
 using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.Threading.Tasks

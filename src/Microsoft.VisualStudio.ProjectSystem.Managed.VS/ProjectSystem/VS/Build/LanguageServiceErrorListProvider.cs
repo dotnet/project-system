@@ -3,7 +3,6 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
-
 using Microsoft.Build.Framework;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.Shell.Interop;
