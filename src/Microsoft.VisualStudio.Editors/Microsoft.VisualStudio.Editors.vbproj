@@ -50,7 +50,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Update="OptionPages\GeneralOptionPageResources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <LastGenOutput>GeneralOptionPageResources.Designer.vb</LastGenOutput>
     </EmbeddedResource>
