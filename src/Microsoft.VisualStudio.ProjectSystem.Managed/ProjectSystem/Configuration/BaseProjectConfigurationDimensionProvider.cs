@@ -33,25 +33,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             DimensionDefaultValue = dimensionDefaultValue;
         }
 
-        public string DimensionName
-        {
-            get;
-        }
-
-        public string PropertyName
-        {
-            get;
-        }
-
-        public string? DimensionDefaultValue
-        {
-            get;
-        }
-
-        public IProjectAccessor ProjectAccessor
-        {
-            get;
-        }
+        public string DimensionName { get; }
+        public string PropertyName { get; }
+        public string? DimensionDefaultValue { get; }
+        public IProjectAccessor ProjectAccessor { get; }
 
         /// <summary>
         /// Gets the property values for the dimension.
@@ -153,8 +138,58 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// </summary>
         /// <param name="args">Information about the configuration dimension value change.</param>
         /// <returns>A task for the async operation.</returns>
-        /// From <see cref="IProjectConfigurationDimensionsProvider2"/>.
-        public abstract Task OnDimensionValueChangedAsync(ProjectConfigurationDimensionValueChangedEventArgs args);
+        public Task OnDimensionValueChangedAsync(ProjectConfigurationDimensionValueChangedEventArgs args)
+        {
+            if (StringComparers.ConfigurationDimensionNames.Equals(args.DimensionName, DimensionName))
+            {
+                if (args.Stage == ChangeEventStage.Before)
+                {
+                    switch (args.Change)
+                    {
+                        case ConfigurationDimensionChange.Add:
+                            return UpdateUnderLockAsync(args.Project, (msbuildProject, evaluatedPropertyValue) =>
+                                BuildUtilities.AppendPropertyValue(msbuildProject, evaluatedPropertyValue, PropertyName, args.DimensionValue));
+
+                        case ConfigurationDimensionChange.Delete:
+                            return UpdateUnderLockAsync(args.Project, (msbuildProject, evaluatedPropertyValue) =>
+                                BuildUtilities.RemovePropertyValue(msbuildProject, evaluatedPropertyValue, PropertyName, args.DimensionValue));
+
+                        case ConfigurationDimensionChange.Rename:
+                            // Need to wait until the core rename changes happen before renaming the property.
+                            break;
+                    }
+                }
+                else if (args.Stage == ChangeEventStage.After)
+                {
+                    // Only change that needs to be handled here is renaming configurations which needs to happen after all
+                    // of the core changes to rename existing conditions have executed.
+                    if (args.Change == ConfigurationDimensionChange.Rename)
+                    {
+                        return UpdateUnderLockAsync(args.Project, (msbuildProject, evaluatedPropertyValue) =>
+                            BuildUtilities.RenamePropertyValue(msbuildProject, evaluatedPropertyValue, PropertyName, args.OldDimensionValue, args.DimensionValue));
+                    }
+                }
+            }
+
+            return Task.CompletedTask;
+            
+            async Task UpdateUnderLockAsync(UnconfiguredProject project, Action<ProjectRootElement, string> action)
+            {
+                ConfiguredProject? configuredProject = await project.GetSuggestedConfiguredProjectAsync();
+
+                Assumes.NotNull(configuredProject);
+
+                await ProjectAccessor.OpenProjectForUpgradeableReadAsync(configuredProject, evaluatedProject =>
+                {
+                    string evaluatedPropertyValue = evaluatedProject.GetPropertyValue(PropertyName);
+
+                    return ProjectAccessor.OpenProjectXmlForWriteAsync(project, msbuildProject =>
+                    {
+                        action(msbuildProject, evaluatedPropertyValue);
+                    });
+                });
+            }
+        }    
 
         /// <summary>
         /// Gets the value for the specified property of the specified project.

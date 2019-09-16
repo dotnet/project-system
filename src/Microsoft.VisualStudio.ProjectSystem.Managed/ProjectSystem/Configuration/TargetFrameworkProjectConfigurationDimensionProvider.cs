@@ -25,7 +25,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
     {
         [ImportingConstructor]
         public TargetFrameworkProjectConfigurationDimensionProvider(IProjectAccessor projectAccessor)
-            : base(projectAccessor, ConfigurationGeneral.TargetFrameworkProperty, ConfigurationGeneral.TargetFrameworksProperty)
+            : base(
+                  projectAccessor,
+                  dimensionName: ConfigurationGeneral.TargetFrameworkProperty,
+                  propertyName: ConfigurationGeneral.TargetFrameworksProperty)
         {
         }
 
@@ -43,12 +46,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                 // If the project doesn't have a "TargetFrameworks" property, then this is not a cross-targeting project and we don't need a target framework dimension.
                 return ImmutableArray<string>.Empty;
             }
-        }
-
-        public override Task OnDimensionValueChangedAsync(ProjectConfigurationDimensionValueChangedEventArgs args)
-        {
-            // CPS cannot change TargetFramework currently so don't do anything for the dimension
-            return Task.CompletedTask;
         }
     }
 }

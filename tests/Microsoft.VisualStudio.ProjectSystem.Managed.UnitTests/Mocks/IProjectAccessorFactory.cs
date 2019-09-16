@@ -72,6 +72,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
             {
                 return action(_rootElement, cancellationToken);
             }
+
+            public Task<TResult> OpenProjectForUpgradeableReadAsync<TResult>(ConfiguredProject project, Func<Project, TResult> action, CancellationToken cancellationToken = default)
+            {
+                var result = action(_evaluationProject);
+
+                return Task.FromResult(result);
+            }
         }
     }
 }
