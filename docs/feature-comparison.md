@@ -53,8 +53,8 @@ Generate NuGet package on build                                             |   
 **Features**|
 Add Service Reference                                                       | ●        | 
 Add Web Reference                                                           | ●        | 
-Add Data Source                                                             | ●        | 16.x
-DataSet Designer                                                            | ●        | 16.x
+Add Data Source                                                             | ●        | 16.4
+DataSet Designer                                                            | ●        |
 "Initialize Interactive Window with Project"                                | ●        | ● | Only when targeting .NET Framework.
 Class Diagrams                                                              | ●        | ●
 Code Analysis                                                               | ●        | 
