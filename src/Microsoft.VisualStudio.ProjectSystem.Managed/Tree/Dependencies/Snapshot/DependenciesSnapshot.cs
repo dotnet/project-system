@@ -64,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             bool builderChanged = false;
 
-            TargetedDependenciesSnapshot newTargetedSnapshot = TargetedDependenciesSnapshot.FromChanges(
+            var newTargetedSnapshot = TargetedDependenciesSnapshot.FromChanges(
                 projectPath,
                 previousTargetedSnapshot,
                 changes,

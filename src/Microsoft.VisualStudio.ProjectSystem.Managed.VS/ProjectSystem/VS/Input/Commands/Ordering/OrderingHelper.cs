@@ -348,8 +348,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// </summary>
         private static IProjectTree? GetSiblingByMoveAction(IProjectTree projectTree, MoveAction moveAction)
         {
-            return moveAction == MoveAction.Above ? 
-                GetPreviousSibling(projectTree) : 
+            return moveAction == MoveAction.Above ?
+                GetPreviousSibling(projectTree) :
                 GetNextSibling(projectTree);
         }
 
@@ -361,8 +361,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         {
             ImmutableArray<ProjectItemElement> items = GetItemElements(project, projectTree, excludeIncludes);
 
-            return moveAction == MoveAction.Above ? 
-                items.FirstOrDefault() : 
+            return moveAction == MoveAction.Above ?
+                items.FirstOrDefault() :
                 items.LastOrDefault();
         }
 

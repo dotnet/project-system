@@ -15,8 +15,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         [ImportingConstructor]
         public AppManifestSpecialFileProvider(
             ISpecialFilesManager specialFilesManager,
-            IPhysicalProjectTree projectTree,            
-            ICreateFileFromTemplateService templateFileCreationService, 
+            IPhysicalProjectTree projectTree,
+            ICreateFileFromTemplateService templateFileCreationService,
             ProjectProperties properties)
             : base("app.manifest", specialFilesManager, projectTree)
         {

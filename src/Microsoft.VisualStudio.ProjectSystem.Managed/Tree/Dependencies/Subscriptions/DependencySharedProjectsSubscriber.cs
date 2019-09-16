@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             Subscribe(
                 configuredProject,
                 subscriptionService.ProjectRuleSource,
-                ruleNames: new [] { ConfigurationGeneral.SchemaName },
+                ruleNames: new[] { ConfigurationGeneral.SchemaName },
                 "Dependencies Shared Projects Input: {1}",
                 blocks => ProjectDataSources.SyncLinkTo(
                     blocks.Intermediate.SyncLinkOptions(),

@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         [ImportingConstructor]
         public DebugFrameworkPropertyMenuTextUpdater(IStartupProjectHelper startupProjectHelper)
             : base(
-                ExecHandler, 
+                ExecHandler,
                 delegate { },
                 QueryStatusHandler,
                 new CommandID(new Guid(CommandGroup.ManagedProjectSystem), ManagedProjectSystemCommandId.DebugTargetMenuDebugFrameworkMenu))

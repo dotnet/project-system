@@ -5,7 +5,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
     internal partial class WindowsFormsEditorProvider
     {
         private class SubTypeDescriptor
-        { 
+        {
             public readonly string SubType;
 
             public readonly string DisplayName;

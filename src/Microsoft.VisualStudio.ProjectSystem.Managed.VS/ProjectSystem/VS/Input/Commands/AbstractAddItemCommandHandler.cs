@@ -5,10 +5,9 @@ using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
-
 using Microsoft.VisualStudio.ProjectSystem.Input;
-using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
+using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {

@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             return _specialFilesManager.GetFileAsync(SpecialFiles.AppDesigner, flags);
         }
 
-        protected override sealed async Task CreateFileAsync(string path)
+        protected sealed override async Task CreateFileAsync(string path)
         {
             await EnsureAppDesignerFolder();
 

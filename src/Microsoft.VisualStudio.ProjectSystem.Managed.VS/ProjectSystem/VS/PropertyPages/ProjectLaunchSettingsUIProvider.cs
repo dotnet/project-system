@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// </summary>
         public bool ShouldEnableProperty(string propertyName)
         {
-            return !string.Equals(propertyName, UIProfilePropertyName.Executable, StringComparison.OrdinalIgnoreCase) && 
+            return !string.Equals(propertyName, UIProfilePropertyName.Executable, StringComparison.OrdinalIgnoreCase) &&
                    !string.Equals(propertyName, UIProfilePropertyName.LaunchUrl, StringComparison.OrdinalIgnoreCase);
         }
 

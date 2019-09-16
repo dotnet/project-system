@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
     internal class LicensesSpecialFileProvider : AbstractFindByNameUnderAppDesignerSpecialFileProvider
     {
         [ImportingConstructor]
-        public LicensesSpecialFileProvider(ISpecialFilesManager specialFilesManager, IPhysicalProjectTree projectTree) 
+        public LicensesSpecialFileProvider(ISpecialFilesManager specialFilesManager, IPhysicalProjectTree projectTree)
             : base("licenses.licx", specialFilesManager, projectTree)
         {
         }
