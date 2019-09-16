@@ -636,8 +636,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         [Fact]
         public void CheckForUnresolvedDependencies()
         {
-            var targetFramework = new TargetFramework("tfm1");
-
             var unresolved = new TestDependency
             {
                 ProviderType = "Yyy",
