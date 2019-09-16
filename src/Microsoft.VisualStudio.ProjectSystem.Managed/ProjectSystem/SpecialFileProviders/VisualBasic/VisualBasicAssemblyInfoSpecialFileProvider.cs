@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders.VisualBasic
         [ImportingConstructor]
         public VisualBasicAssemblyInfoSpecialFileProvider(
             ISpecialFilesManager specialFilesManager,
-            IPhysicalProjectTree projectTree, 
+            IPhysicalProjectTree projectTree,
             ICreateFileFromTemplateService templateFileCreationService)
             : base("AssemblyInfo.vb", specialFilesManager, projectTree)
         {

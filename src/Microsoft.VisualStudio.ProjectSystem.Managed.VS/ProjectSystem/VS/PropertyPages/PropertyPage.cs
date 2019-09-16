@@ -47,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 if (value != _isDirty && !_ignoreEvents)
                 {
                     _isDirty = value;
-                    
+
                     // If dirty, this causes Apply to be called
                     _site?.OnStatusChange((uint)(_isDirty ? PROPPAGESTATUS.PROPPAGESTATUS_DIRTY : PROPPAGESTATUS.PROPPAGESTATUS_CLEAN));
                 }
@@ -130,7 +130,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     pszTitle = PropertyPageName,
                     // set the size to 0 so the host doesn't use scroll bars
                     // we want to do that within our own container.
-                    SIZE = {cx = 0, cy = 0}
+                    SIZE = { cx = 0, cy = 0 }
                 };
             }
         }

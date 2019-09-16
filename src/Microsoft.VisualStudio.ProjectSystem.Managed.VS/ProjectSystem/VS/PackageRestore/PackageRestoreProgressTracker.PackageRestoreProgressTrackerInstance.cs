@@ -94,7 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
                 return lastEvaluationWriteTime >= restoreData.ProjectAssetsLastWriteTimeUtc;
             }
-            
+
             private static DateTime GetLastWriteTimeUtc(string filePath, IProjectSnapshot projectSnapshot)
             {
                 var projectSnapshot2 = (IProjectSnapshot2)projectSnapshot;

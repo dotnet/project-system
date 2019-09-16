@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             var disposables = new DisposableBag();
 
             var restoreConfiguredInputSource = new UnwrapCollectionChainedProjectValueDataSource<IReadOnlyCollection<ConfiguredProject>, PackageRestoreConfiguredInput>(
-                _project.Services, 
+                _project.Services,
                 projects => projects.Select(project => project.Services.ExportProvider.GetExportedValueOrDefault<IPackageRestoreConfiguredInputDataSource>())
                                     .Where(dataSource => dataSource != null)    // Filter out those without PackageReference
                                     .Select(DropConfiguredProjectVersions),

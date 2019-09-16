@@ -459,15 +459,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         }
 
         private bool _debugTargetsCoreInitialized = false;
-        public bool HasProfilesOrNotInitialized 
-        { 
-            get 
+        public bool HasProfilesOrNotInitialized
+        {
+            get
             {
                 return !_debugTargetsCoreInitialized || HasProfiles;
             }
         }
 
-        
+
         public bool HasProfiles
         {
             get

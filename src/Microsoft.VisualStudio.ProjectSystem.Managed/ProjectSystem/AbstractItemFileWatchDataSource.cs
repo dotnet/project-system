@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private readonly IProjectSubscriptionService _projectSubscriptionService;
 
         protected AbstractItemFileWatchDataSource(ConfiguredProject project, IProjectSubscriptionService projectSubscriptionService)
-            : base(project.Services, synchronousDisposal:true, registerDataSource: false)
+            : base(project.Services, synchronousDisposal: true, registerDataSource: false)
         {
             _project = project;
             _projectSubscriptionService = projectSubscriptionService;

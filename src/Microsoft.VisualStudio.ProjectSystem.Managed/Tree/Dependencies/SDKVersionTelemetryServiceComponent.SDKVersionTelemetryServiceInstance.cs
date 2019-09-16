@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
 
             protected override void Dispose(bool disposing)
-            {   
+            {
             }
 
             private async Task<string?> GetProjectIdAsync()

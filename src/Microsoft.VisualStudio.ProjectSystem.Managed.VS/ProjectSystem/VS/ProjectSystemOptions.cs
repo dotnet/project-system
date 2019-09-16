@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             await _joinableTaskContext.Factory.SwitchToMainThreadAsync(cancellationToken);
 
-            await _settingsManager.Value!.SetValueAsync(name, value, isMachineLocal:false);
+            await _settingsManager.Value!.SetValueAsync(name, value, isMachineLocal: false);
         }
 
         private bool IsEnvironmentVariableEnabled(string variable, ref bool? result)

@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 _dte = dte;
             }
 
-            internal static UndoScope Create(DTE dte,  string renameOperationName)
+            internal static UndoScope Create(DTE dte, string renameOperationName)
             {
                 var undo = new UndoScope(renameOperationName, dte);
                 undo.StartUndo();

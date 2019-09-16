@@ -558,7 +558,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         // Unused IVsSolutionLoadEvents
-        
+
         public int OnAfterLoadProjectBatch(bool fIsBackgroundIdleBatch)
         {
             return HResult.OK;
