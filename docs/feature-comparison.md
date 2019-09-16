@@ -38,8 +38,8 @@ Globbing support                                                            |   
 Simplified project format                                                   |          | ●    | `<Project Sdk="Microsoft.Net.Sdk">`
 Simplified configuration syntax                                             |          | ●    | `<Configurations>Debug;Release<Configurations>;<Platforms>AnyCPU;x64</Platforms>`
 Implicit configuration syntax                                               | ●        |      | `<PropertyGroup Condition="'$(Configuration)\|$(Platform)' == 'Debug\|AnyCPU'">`
-Edit project XML while loaded                                               |          | ●
-Find & Find in Files in project file                                        |          | [16.0](https://github.com/dotnet/project-system/issues/4061)
+Edit project XML while project is loaded                                    |          | ●
+Find & Find in Files in project file                                        |          | ●
 Automatically reload project file with no prompts                           |          | ●
 Automatically reload targets files                                          |          | ●
 Automatically refresh Solution Explorer to reflect file system              |          | ●
