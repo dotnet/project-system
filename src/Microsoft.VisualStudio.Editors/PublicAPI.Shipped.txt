@@ -1065,5 +1065,3 @@ Shared Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.IsVSTO() -> Boo
 Shared Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.ProductSKU() -> Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASKUEdition (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
 Shared Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.ProductSubSKU() -> Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASubSKUEdition (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
 Shared ReadOnly Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.PropPageBackColor -> System.Drawing.Color (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
-XamlGeneratedNamespace.GeneratedInternalTypeHelper
-XamlGeneratedNamespace.GeneratedInternalTypeHelper.New() -> Void
