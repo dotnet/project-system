@@ -5,6 +5,11 @@ using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders.VisualBasic
 {
+    /// <summary>
+    ///     Provides a <see cref="ISpecialFileProvider"/> that handles the default 'AssemblyInfo.vb' file; 
+    ///     which contains attributes for assembly versioning, COM exposure, and other assembly-level 
+    ///     directives and is typically found under the 'AppDesigner' folder.
+    /// </summary>
     [ExportSpecialFileProvider(SpecialFiles.AssemblyInfo)]
     [AppliesTo(ProjectCapability.VisualBasic)]
     internal class VisualBasicAssemblyInfoSpecialFileProvider : AbstractFindByNameUnderAppDesignerSpecialFileProvider

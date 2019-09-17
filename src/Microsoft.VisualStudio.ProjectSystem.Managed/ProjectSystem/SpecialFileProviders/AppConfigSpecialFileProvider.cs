@@ -5,6 +5,11 @@ using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
+    /// <summary>
+    ///     Provides a <see cref="ISpecialFileProvider"/> that handles the default 'App.config' file; 
+    ///     which contains .NET Framework directives for assembly binding, compatibility and runtime
+    ///     settings.
+    /// </summary>
     [ExportSpecialFileProvider(SpecialFiles.AppConfig)]
     [AppliesTo(ProjectCapability.DotNet)]
     internal class AppConfigSpecialFileProvider : AbstractFindByNameSpecialFileProvider
