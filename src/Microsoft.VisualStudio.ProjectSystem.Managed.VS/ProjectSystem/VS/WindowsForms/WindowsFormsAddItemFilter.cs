@@ -30,9 +30,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
         public int FilterTreeItemByTemplateDir(ref Guid rguidProjectItemTemplates, string pszTemplateDir, out int pfFilter)
         {
             pfFilter = 0;
+
+            var project = _project;
+            if (project == null)
+            {
+                return HResult.Unexpected;
+            }
+
             // Most of the templates for Windows Forms items are filtered by capabilities in the .vstemplate but there are a couple
             // that use an older .vsz tmeplate format that doesn't support capabilities, so we filter them all out here.
-            if (pszTemplateDir.EndsWith("\\Windows Forms", StringComparisons.Paths) && !_project!.Capabilities.AppliesTo(ProjectCapability.WindowsForms))
+            if (pszTemplateDir.EndsWith("\\Windows Forms", StringComparisons.Paths) && !project.Capabilities.AppliesTo(ProjectCapability.WindowsForms))
             {
                 pfFilter = 1;
             }
