@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 
         internal override AbstractFindByNameSpecialFileProvider CreateInstance(IPhysicalProjectTree projectTree)
         {
-            return CreateInstanceWithOverrideCreateFileAsync<AppConfigSpecialFileProvider>(projectTree);
+            return CreateInstanceWithOverrideCreateFileAsync<AppConfigSpecialFileProvider>(projectTree, (ICreateFileFromTemplateService)null!);
         }
     }
 }
