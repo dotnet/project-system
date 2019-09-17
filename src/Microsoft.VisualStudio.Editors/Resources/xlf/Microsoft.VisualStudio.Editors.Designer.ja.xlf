@@ -2784,7 +2784,7 @@ app.config ファイルでの新しい値は '{1}' です
       </trans-unit>
       <trans-unit id="PPG_CodeAnalysisTitle">
         <source>Code Analysis</source>
-        <target state="new">Code Analysis</target>
+        <target state="translated">コード分析</target>
         <note />
       </trans-unit>
     </body>

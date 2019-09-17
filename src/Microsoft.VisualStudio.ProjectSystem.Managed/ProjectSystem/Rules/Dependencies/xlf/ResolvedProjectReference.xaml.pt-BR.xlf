@@ -104,12 +104,12 @@
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
         <source>Exclude Assets</source>
-        <target state="translated">Excluir ativos</target>
+        <target state="translated">Excluir Ativos</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|Description">
         <source>Assets to exclude from this reference.</source>
-        <target state="needs-review-translation">Ativos a serem excluídos dessa referência</target>
+        <target state="translated">Ativos a serem excluídos dessa referência.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|DisplayName">
@@ -119,7 +119,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|Description">
         <source>Assets to include from this reference.</source>
-        <target state="needs-review-translation">Ativos a serem incluídos dessa referência</target>
+        <target state="translated">Ativos a serem incluídos dessa referência.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ReferenceOutputAssembly|DisplayName">
@@ -134,12 +134,12 @@
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|DisplayName">
         <source>Private Assets</source>
-        <target state="translated">Ativos Privados</target>
+        <target state="translated">Assets privados</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|Description">
         <source>Assets that are private in this reference.</source>
-        <target state="needs-review-translation">Ativos que são privados nessa referência</target>
+        <target state="translated">Ativos que são particulares nessa referência.</target>
         <note />
       </trans-unit>
     </body>

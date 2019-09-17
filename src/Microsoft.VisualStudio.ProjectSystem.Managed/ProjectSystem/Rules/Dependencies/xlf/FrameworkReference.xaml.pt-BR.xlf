@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="Rule|FrameworkReference|Description">
         <source>Framework Reference Properties</source>
-        <target state="new">Framework Reference Properties</target>
+        <target state="translated">Propriedades de Referência da Estrutura</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|FrameworkReference|DisplayName">
         <source>Framework Reference</source>
-        <target state="new">Framework Reference</target>
+        <target state="translated">Referência do Framework</target>
         <note />
       </trans-unit>
     </body>
