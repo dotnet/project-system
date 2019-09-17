@@ -46,11 +46,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// <remarks>
         /// From <see cref="IProjectConfigurationDimensionsProvider"/>.
         /// </remarks>
-        protected virtual async Task<ImmutableArray<string>> GetOrderedPropertyValuesAsync(UnconfiguredProject project)
+        private async Task<ImmutableArray<string>> GetOrderedPropertyValuesAsync(UnconfiguredProject project)
         {
             Requires.NotNull(project, nameof(project));
 
-            string? propertyValue = await GetPropertyValue(project);
+            string? propertyValue = await GetPropertyValueAsync(project);
+
             if (string.IsNullOrEmpty(propertyValue))
             {
                 return ImmutableArray<string>.Empty;
@@ -58,6 +59,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             else
             {
                 return BuildUtilities.GetPropertyValues(propertyValue!).ToImmutableArray();
+            }
+
+            async Task<string?> GetPropertyValueAsync(UnconfiguredProject project)
+            {
+                ConfiguredProject configuredProject = await project.GetSuggestedConfiguredProjectAsync();
+
+                return await ProjectAccessor.OpenProjectForReadAsync(configuredProject, evaluatedProject =>
+                {
+                    // Need evaluated property to get inherited properties defines in props or targets.
+                    return evaluatedProject.GetProperty(PropertyName)?.EvaluatedValue;
+                });
             }
         }
 
@@ -190,25 +202,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                 });
             }
         }    
-
-        /// <summary>
-        /// Gets the value for the specified property of the specified project.
-        /// </summary>
-        /// <param name="project">Unconfigured project.</param>
-        /// <param name="propertyName">The name of the property to get; otherwise, <see langword="null"/> to use <see cref="PropertyName"/>.</param>
-        /// <returns>Value of the property.</returns>
-        /// <remarks>
-        /// This needs to get the evaluated property in order to get inherited properties defines in props or targets.
-        /// </remarks>
-        protected async Task<string?> GetPropertyValue(UnconfiguredProject project, string? propertyName = null)
-        {
-            ConfiguredProject configuredProject = await project.GetSuggestedConfiguredProjectAsync();
-
-            return await ProjectAccessor.OpenProjectForReadAsync(configuredProject, evaluatedProject =>
-            {
-                return evaluatedProject.GetProperty(propertyName ?? PropertyName)?.EvaluatedValue;
-            });
-        }
 
         private async Task<string?> FindDefaultValueFromDimensionPropertyAsync(UnconfiguredProject project)
         {
