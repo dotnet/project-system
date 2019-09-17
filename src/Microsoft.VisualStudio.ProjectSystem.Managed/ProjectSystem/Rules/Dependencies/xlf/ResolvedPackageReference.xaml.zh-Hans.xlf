@@ -39,7 +39,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|Description">
         <source>Comma-delimited list of warnings that should be suppressed for this package.</source>
-        <target state="needs-review-translation">应为此包取消的警告逗号分隔列表</target>
+        <target state="translated">应为此包取消的警告列表(以逗号分隔)。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|DisplayName">
@@ -49,7 +49,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|Description">
         <source>Assets to include from this reference.</source>
-        <target state="needs-review-translation">要从此引用中包括的资产</target>
+        <target state="translated">要从此引用中包括的资产。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
@@ -59,17 +59,17 @@
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|Description">
         <source>Assets to exclude from this reference.</source>
-        <target state="needs-review-translation">要从此引用中排除的资产</target>
+        <target state="translated">要从此引用中排除的资产。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|DisplayName">
         <source>Private Assets</source>
-        <target state="needs-review-translation">PrivateAssets</target>
+        <target state="translated">私有资产</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|Description">
         <source>Assets that are private in this reference.</source>
-        <target state="needs-review-translation">此引用中的私有资产</target>
+        <target state="translated">此引用中的私有资产。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Path|Description">
@@ -79,12 +79,12 @@
       </trans-unit>
       <trans-unit id="StringProperty|Name|DisplayName">
         <source>Name</source>
-        <target state="new">Name</target>
+        <target state="translated">名称</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Path|DisplayName">
         <source>Path</source>
-        <target state="new">Path</target>
+        <target state="translated">路径</target>
         <note />
       </trans-unit>
     </body>

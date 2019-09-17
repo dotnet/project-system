@@ -34,22 +34,22 @@
       </trans-unit>
       <trans-unit id="IntProperty|VersionMajor|DisplayName">
         <source>Major Version</source>
-        <target state="new">Major Version</target>
+        <target state="translated">Numero di versione principale</target>
         <note />
       </trans-unit>
       <trans-unit id="IntProperty|VersionMinor|DisplayName">
         <source>Minor Version</source>
-        <target state="new">Minor Version</target>
+        <target state="translated">Numero di versione secondario</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WrapperTool|DisplayName">
         <source>Wrapper Tool</source>
-        <target state="new">Wrapper Tool</target>
+        <target state="translated">Strumento Wrapper</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Isolated|DisplayName">
         <source>Isolated</source>
-        <target state="new">Isolated</target>
+        <target state="translated">Isolato</target>
         <note />
       </trans-unit>
     </body>

@@ -49,7 +49,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|Description">
         <source>Assets to include from this reference.</source>
-        <target state="needs-review-translation">要从此引用中包括的资产</target>
+        <target state="translated">要从此引用中包括的资产。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
@@ -59,7 +59,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|Description">
         <source>Assets to exclude from this reference.</source>
-        <target state="needs-review-translation">要从此引用中排除的资产</target>
+        <target state="translated">要从此引用中排除的资产。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|DisplayName">
@@ -69,7 +69,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|Description">
         <source>Assets that are private in this reference.</source>
-        <target state="needs-review-translation">此引用中的私有资产</target>
+        <target state="translated">此引用中的私有资产。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|DisplayName">

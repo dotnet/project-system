@@ -19,7 +19,7 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ActiveDebugProfile|Description">
         <source>Specifies the profile to use for debugging.</source>
-        <target state="needs-review-translation">Určuje profil používaný k ladění</target>
+        <target state="translated">Určuje profil, který se má použít k ladění.</target>
         <note />
       </trans-unit>
     </body>
