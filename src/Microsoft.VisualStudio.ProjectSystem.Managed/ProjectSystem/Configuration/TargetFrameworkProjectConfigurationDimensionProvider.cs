@@ -10,12 +10,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
     /// <summary>
     /// Provides "TargetFramework" project configuration dimension and values.
     /// </summary>
-    /// <remarks>
-    /// The Order attribute will determine the order of the dimensions inside the configuration
-    /// service. We want Configuration|Platform|TargetFramework as the defaults so the values
-    /// start at MaxValue and get decremented for each in order for future extenders to fall
-    /// below these 3 providers.
-    /// </remarks>
     [Export(typeof(IProjectConfigurationDimensionsProvider))]
     [Export(typeof(IActiveConfiguredProjectsDimensionProvider))]
     [AppliesTo(ProjectCapabilities.ProjectConfigurationsDeclaredDimensions)]

@@ -7,6 +7,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
     /// </summary>
     internal static class DimensionProviderOrder
     {
+        // These values determine the order of dimensions inside the configuration service.
+        // We want Configuration|Platform|TargetFramework.
+
         public const int Configuration = Order.BeforeBeforeDefault;
         public const int Platform = Order.BeforeDefault;
         public const int TargetFramework = Order.Default;
