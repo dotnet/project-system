@@ -141,7 +141,7 @@ Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
             Assert.Equal(1, callCount);
         }
 
-        private AbstractFindByNameSpecialFileProvider CreateInstance(IProjectTree projectTree)
+        internal AbstractFindByNameSpecialFileProvider CreateInstance(IProjectTree projectTree)
         {
             var physicalProjectTree = IPhysicalProjectTreeFactory.Create(currentTree: projectTree);
 
@@ -150,11 +150,15 @@ Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
 
         internal abstract AbstractFindByNameSpecialFileProvider CreateInstance(IPhysicalProjectTree projectTree);
 
-        internal static T CreateInstanceWithOverrideCreateFileAsync<T>(IPhysicalProjectTree projectTree)
-    where T : AbstractFindByNameSpecialFileProvider
+        internal static T CreateInstanceWithOverrideCreateFileAsync<T>(IPhysicalProjectTree projectTree, params object[] args)
+            where T : AbstractFindByNameSpecialFileProvider
         {
+            object[] arguments = new object[args.Length + 1];
+            arguments[0] = projectTree;
+            args.CopyTo(arguments, 1);
+
             // We override CreateFileAsync to call the CreateEmptyFileAsync which makes writting tests in the base easier
-            var mock = new Mock<T>(projectTree, (ICreateFileFromTemplateService)null!);
+            var mock = new Mock<T>(arguments);
             mock.Protected().Setup<Task>("CreateFileAsync", ItExpr.IsAny<string>())
                 .Returns<string>(path => projectTree.TreeStorage.CreateEmptyFileAsync(path));
 
