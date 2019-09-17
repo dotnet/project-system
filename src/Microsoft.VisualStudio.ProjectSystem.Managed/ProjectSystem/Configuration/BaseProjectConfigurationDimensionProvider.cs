@@ -33,25 +33,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             DimensionDefaultValue = dimensionDefaultValue;
         }
 
-        public string DimensionName
-        {
-            get;
-        }
-
-        public string PropertyName
-        {
-            get;
-        }
-
-        public string? DimensionDefaultValue
-        {
-            get;
-        }
-
-        public IProjectAccessor ProjectAccessor
-        {
-            get;
-        }
+        public string DimensionName { get; }
+        public string PropertyName { get; }
+        public string? DimensionDefaultValue { get; }
+        public IProjectAccessor ProjectAccessor { get; }
 
         /// <summary>
         /// Gets the property values for the dimension.
@@ -61,11 +46,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// <remarks>
         /// From <see cref="IProjectConfigurationDimensionsProvider"/>.
         /// </remarks>
-        protected virtual async Task<ImmutableArray<string>> GetOrderedPropertyValuesAsync(UnconfiguredProject project)
+        private async Task<ImmutableArray<string>> GetOrderedPropertyValuesAsync(UnconfiguredProject project)
         {
             Requires.NotNull(project, nameof(project));
 
-            string? propertyValue = await GetPropertyValue(project);
+            string? propertyValue = await GetPropertyValueAsync(project);
+
             if (string.IsNullOrEmpty(propertyValue))
             {
                 return ImmutableArray<string>.Empty;
@@ -73,6 +59,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             else
             {
                 return BuildUtilities.GetPropertyValues(propertyValue!).ToImmutableArray();
+            }
+
+            async Task<string?> GetPropertyValueAsync(UnconfiguredProject project)
+            {
+                ConfiguredProject configuredProject = await project.GetSuggestedConfiguredProjectAsync();
+
+                return await ProjectAccessor.OpenProjectForReadAsync(configuredProject, evaluatedProject =>
+                {
+                    // Need evaluated property to get inherited properties defines in props or targets.
+                    return evaluatedProject.GetProperty(PropertyName)?.EvaluatedValue;
+                });
             }
         }
 
@@ -153,27 +150,58 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// </summary>
         /// <param name="args">Information about the configuration dimension value change.</param>
         /// <returns>A task for the async operation.</returns>
-        /// From <see cref="IProjectConfigurationDimensionsProvider2"/>.
-        public abstract Task OnDimensionValueChangedAsync(ProjectConfigurationDimensionValueChangedEventArgs args);
-
-        /// <summary>
-        /// Gets the value for the specified property of the specified project.
-        /// </summary>
-        /// <param name="project">Unconfigured project.</param>
-        /// <param name="propertyName">The name of the property to get; otherwise, <see langword="null"/> to use <see cref="PropertyName"/>.</param>
-        /// <returns>Value of the property.</returns>
-        /// <remarks>
-        /// This needs to get the evaluated property in order to get inherited properties defines in props or targets.
-        /// </remarks>
-        protected async Task<string?> GetPropertyValue(UnconfiguredProject project, string? propertyName = null)
+        public Task OnDimensionValueChangedAsync(ProjectConfigurationDimensionValueChangedEventArgs args)
         {
-            ConfiguredProject configuredProject = await project.GetSuggestedConfiguredProjectAsync();
-
-            return await ProjectAccessor.OpenProjectForReadAsync(configuredProject, evaluatedProject =>
+            if (StringComparers.ConfigurationDimensionNames.Equals(args.DimensionName, DimensionName))
             {
-                return evaluatedProject.GetProperty(propertyName ?? PropertyName)?.EvaluatedValue;
-            });
-        }
+                if (args.Stage == ChangeEventStage.Before)
+                {
+                    switch (args.Change)
+                    {
+                        case ConfigurationDimensionChange.Add:
+                            return UpdateUnderLockAsync(args.Project, (msbuildProject, evaluatedPropertyValue) =>
+                                BuildUtilities.AppendPropertyValue(msbuildProject, evaluatedPropertyValue, PropertyName, args.DimensionValue));
+
+                        case ConfigurationDimensionChange.Delete:
+                            return UpdateUnderLockAsync(args.Project, (msbuildProject, evaluatedPropertyValue) =>
+                                BuildUtilities.RemovePropertyValue(msbuildProject, evaluatedPropertyValue, PropertyName, args.DimensionValue));
+
+                        case ConfigurationDimensionChange.Rename:
+                            // Need to wait until the core rename changes happen before renaming the property.
+                            break;
+                    }
+                }
+                else if (args.Stage == ChangeEventStage.After)
+                {
+                    // Only change that needs to be handled here is renaming configurations which needs to happen after all
+                    // of the core changes to rename existing conditions have executed.
+                    if (args.Change == ConfigurationDimensionChange.Rename)
+                    {
+                        return UpdateUnderLockAsync(args.Project, (msbuildProject, evaluatedPropertyValue) =>
+                            BuildUtilities.RenamePropertyValue(msbuildProject, evaluatedPropertyValue, PropertyName, args.OldDimensionValue, args.DimensionValue));
+                    }
+                }
+            }
+
+            return Task.CompletedTask;
+            
+            async Task UpdateUnderLockAsync(UnconfiguredProject project, Action<ProjectRootElement, string> action)
+            {
+                ConfiguredProject? configuredProject = await project.GetSuggestedConfiguredProjectAsync();
+
+                Assumes.NotNull(configuredProject);
+
+                await ProjectAccessor.OpenProjectForUpgradeableReadAsync(configuredProject, evaluatedProject =>
+                {
+                    string evaluatedPropertyValue = evaluatedProject.GetPropertyValue(PropertyName);
+
+                    return ProjectAccessor.OpenProjectXmlForWriteAsync(project, msbuildProject =>
+                    {
+                        action(msbuildProject, evaluatedPropertyValue);
+                    });
+                });
+            }
+        }    
 
         private async Task<string?> FindDefaultValueFromDimensionPropertyAsync(UnconfiguredProject project)
         {

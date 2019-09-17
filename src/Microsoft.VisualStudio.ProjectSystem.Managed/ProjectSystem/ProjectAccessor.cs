@@ -55,6 +55,21 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }, cancellationToken);
         }
 
+        public Task<TResult> OpenProjectForUpgradeableReadAsync<TResult>(ConfiguredProject project, Func<Project, TResult> action, CancellationToken cancellationToken = default)
+        {
+            Requires.NotNull(project, nameof(project));
+            Requires.NotNull(project, nameof(action));
+
+            return _projectLockService.UpgradeableReadLockAsync(async access =>
+            {
+                Project evaluatedProject = await access.GetProjectAsync(project, cancellationToken);
+
+                // Deliberately not async to reduce the type of
+                // code you can run while holding the lock.
+                return action(evaluatedProject);
+            }, cancellationToken);
+        }
+
         public Task<TResult> OpenProjectXmlForReadAsync<TResult>(UnconfiguredProject project, Func<ProjectRootElement, TResult> action, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(project, nameof(project));
