@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
@@ -9,9 +10,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
     /// A filter for the Add New Item dialog that filters out Windows Forms items from non-Windows Forms projects.
     /// </summary>
     [ExportProjectNodeComService(typeof(IVsFilterAddProjectItemDlg))]
-    [AppliesTo("!" + ProjectCapability.WindowsForms)]
-    internal class WindowsFormsAddItemFilter : IVsFilterAddProjectItemDlg
+    [AppliesTo(ProjectCapability.DotNet)]
+    internal class WindowsFormsAddItemFilter : IVsFilterAddProjectItemDlg, IDisposable
     {
+        private  UnconfiguredProject? _project;
+
+        [ImportingConstructor]
+        public WindowsFormsAddItemFilter(UnconfiguredProject project)
+        {
+            _project = project;
+        }
+
         public int FilterTreeItemByLocalizedName(ref Guid rguidProjectItemTemplates, string pszLocalizedName, out int pfFilter)
         {
             pfFilter = 0;
@@ -22,9 +31,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
         {
             pfFilter = 0;
             // Most of the templates for Windows Forms items are filtered by capabilities in the .vstemplate but there are a couple
-            // that use an older .vsz tmeplate format that doesn't support capabilities, so we filter them out here.
-            // The AppliesTo on this class ensures this code only runs for Windows Forms projects
-            if (pszTemplateDir.EndsWith("\\Windows Forms", StringComparisons.Paths))
+            // that use an older .vsz tmeplate format that doesn't support capabilities, so we filter them all out here.
+            if (pszTemplateDir.EndsWith("\\Windows Forms", StringComparisons.Paths) && !_project!.Capabilities.AppliesTo(ProjectCapability.WindowsForms))
             {
                 pfFilter = 1;
             }
@@ -40,7 +48,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
         public int FilterListItemByTemplateFile(ref Guid rguidProjectItemTemplates, string pszTemplateFile, out int pfFilter)
         {
             pfFilter = 0;
-            return HResult.NotImplemented;
+
+            // These item templates are an older style that can't be filtered by capabilities, and use a Wizard that is broken for .NET Core
+            if (pszTemplateFile.EndsWith("\\CSControlInheritanceWizard.vsz", StringComparisons.Paths) ||
+                pszTemplateFile.EndsWith("\\CSFormInheritanceWizard.vsz", StringComparisons.Paths))
+            {
+                pfFilter = 1;
+            }
+            return HResult.OK;
+        }
+
+        public void Dispose()
+        {
+            // Important for ProjectNodeComServices to null out fields to reduce the amount 
+            // of data we leak when extensions incorrectly holds onto the IVsHierarchy.
+            _project = null;
         }
     }
 }
