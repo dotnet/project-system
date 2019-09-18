@@ -97,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             // Try and apply the changes to the current solution
             await _projectVsServices.ThreadingService.SwitchToUIThread();
             string renameOperationName = string.Format(CultureInfo.CurrentCulture, VSResources.Renaming_Type_from_0_to_1, oldName, newName);
-            (WaitIndicatorResult result, bool renamedSolutionApplied) = _waitService.WaitForAsyncFunctionWithResult(
+            (WaitIndicatorResult result, bool renamed) = _waitService.WaitForAsyncFunctionWithResult(
                 title: VSResources.Renaming_Type,
                 message: renameOperationName,
                 allowCancel: true,
@@ -110,7 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             }
 
             // Notify the user if the rename could not be performed
-            if (!renamedSolutionApplied)
+            if (!renamed)
             {
                 string failureMessage = string.Format(CultureInfo.CurrentCulture, VSResources.RenameSymbolFailed, oldName);
                 _userNotificationServices.ShowWarning(failureMessage);
