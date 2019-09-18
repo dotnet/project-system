@@ -182,7 +182,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 
         private void SaveLogs()
         {
-            var folderBrowser = new FolderBrowserDialog()
+            using var folderBrowser = new FolderBrowserDialog()
             {
                 Description = BuildLoggingResources.LogFolderDescription
             };
