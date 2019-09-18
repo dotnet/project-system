@@ -102,10 +102,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 title: VSResources.Renaming_Type,
                 message: renameOperationName,
                 allowCancel: true,
-                async token =>
+                token =>
                 {
                     token.ThrowIfCancellationRequested();
-                    return await _unconfiguredProjectTasksService.LoadedProjectAsync(async () =>
+                    return _unconfiguredProjectTasksService.LoadedProjectAsync(async () =>
                     {
                         // Perform the rename operation
                         Solution? renamedSolution = await GetRenamedSolutionAsync(oldName, oldFilePath, newFilePath, isCaseSensitive, GetCurrentProject, token);
