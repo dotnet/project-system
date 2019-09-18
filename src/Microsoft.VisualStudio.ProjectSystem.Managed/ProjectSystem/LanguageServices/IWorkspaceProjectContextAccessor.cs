@@ -26,17 +26,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
 
         /// <summary>
-        ///     Gets the object that represents the host specific "Edit and Continue" service.
-        /// </summary>
-        /// <remarks>
-        ///     Within a Visual Studio host, this is typically an object implementing IVsENCRebuildableProjectCfg2 and IVsENCRebuildableProjectCfg4.
-        /// </remarks>
-        object HostSpecificEditAndContinueService
-        {
-            get;
-        }
-
-        /// <summary>
         ///     Gets an object that represents a host-specific error reporter.
         /// </summary>
         /// <remarks>
