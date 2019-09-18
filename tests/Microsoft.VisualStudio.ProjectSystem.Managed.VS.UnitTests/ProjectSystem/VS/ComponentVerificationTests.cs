@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.Composition.Reflection;
+using Microsoft.VisualStudio.Packaging;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
@@ -94,6 +95,69 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             if (appliesToMetadata.Distinct().Count() > 1)
             {
                 Assert.False(true, $"{definition.Type.FullName} exports multiple values with differing AppliesTo. All exports from a component must apply to the same capabilities.");
+            }
+        }
+
+        [Theory]
+        [ClassData(typeof(ComposablePartDefinitionTestData))]
+        public void CertainExportsMustNotBeMarkedWithDynamicCapabilities(Type type)
+        {
+            string[] contractsWithFixedCapabilities = new string[] {
+                ExportContractNames.VsTypes.ProjectNodeComExtension,
+                "Microsoft.VisualStudio.ProjectSystem.ConfiguredProject.AutoLoad",
+                "Microsoft.VisualStudio.ProjectSystem.Project.AutoLoad",
+            };
+
+            var definition = ComponentComposition.Instance.FindComposablePartDefinition(type);
+            
+            Assert.NotNull(definition);
+
+            // BUG: https://github.com/dotnet/project-system/issues/5519
+            if (definition!.Type.FullName == "Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.DependenciesSnapshotProvider")
+                return;
+
+            foreach (KeyValuePair<MemberRef, ExportDefinition> exportDefinitionPair in definition!.ExportDefinitions)
+            {
+                ExportDefinition export = exportDefinitionPair.Value;
+                if (contractsWithFixedCapabilities.Contains(export.ContractName) && 
+                    export.Metadata.TryGetValue(nameof(AppliesToAttribute.AppliesTo), out object metadata) && 
+                    metadata is string appliesTo)
+                {
+                    foreach (string capability in GetDynamicCapabilities())
+                    {
+                        if (appliesTo.Contains(capability))
+                        {
+                            Assert.False(true, @$"{definition.Type.FullName} exports {export.ContractName} with a dynamic capability '{capability}'. This contract is used during project initialization and must use a capability that doesn't change over the lifetime of a project. These capabilities are specified in src\Microsoft.VisualStudio.ProjectSystem.Managed.VS\Packaging\ProjectTypeRegistration.cs");
+                        }
+                    }
+                }
+            }
+
+            static IEnumerable<string> GetDynamicCapabilities()
+            {
+                var allCapabilities = new HashSet<string>();
+                allCapabilities.AddRange(GetCapabilitiesFromConstants(typeof(ProjectCapabilities)));  // Add CPS
+                allCapabilities.AddRange(GetCapabilitiesFromConstants(typeof(ProjectCapability)));  // Add Ours
+
+                var fixedCapabilities = new HashSet<string>();
+                fixedCapabilities.AddRange(GetCapabilitiesFromProjectType(ProjectTypeCapabilities.Default));
+                fixedCapabilities.AddRange(GetCapabilitiesFromProjectType(ProjectTypeCapabilities.CSharp));
+                fixedCapabilities.AddRange(GetCapabilitiesFromProjectType(ProjectTypeCapabilities.VisualBasic));
+                fixedCapabilities.AddRange(GetCapabilitiesFromProjectType(ProjectTypeCapabilities.FSharp));
+
+                return allCapabilities.Except(fixedCapabilities);
+            }
+
+            static IEnumerable<string> GetCapabilitiesFromProjectType(string capabilities)
+            {
+                return capabilities.Split(new char[] { ';', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            }
+
+            static IEnumerable<string> GetCapabilitiesFromConstants(Type type)
+            {
+                return type.GetFields()
+                           .Select(f => (string)f.GetRawConstantValue())
+                           .SelectMany(s => s.Split(new char[] { '&', '|', '(', ')', ' ' }, StringSplitOptions.RemoveEmptyEntries));
             }
         }
 
