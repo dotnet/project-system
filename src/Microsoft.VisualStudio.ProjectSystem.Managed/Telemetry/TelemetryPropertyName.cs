@@ -57,6 +57,26 @@ namespace Microsoft.VisualStudio.Telemetry
         /// </summary>
         public static readonly string SDKVersionNETCoreSdkVersion = BuildPropertyName(TelemetryEventName.SDKVersion, "NETCoreSdkVersion");
 
+        /// <summary>
+        ///     Indicates the number of TempPE DLLs compiled
+        /// </summary>
+        public static readonly string TempPECompileCount = BuildPropertyName(TelemetryEventName.TempPEProcessQueue, "CompileCount");
+
+        /// <summary>
+        ///     Indicates the starting length of the TempPE compilation queue
+        /// </summary>
+        public static readonly string TempPEInitialQueueLength = BuildPropertyName(TelemetryEventName.TempPEProcessQueue, "QueueLength");
+
+        /// <summary>
+        ///     Indicates whether the TempPE compilation was cancelled
+        /// </summary>
+        public static readonly string TempPECompileWasCancelled = BuildPropertyName(TelemetryEventName.TempPEProcessQueue, "Cancelled");
+
+        /// <summary>
+        ///     Indicates the duration of the TempPE compilation
+        /// </summary>
+        public static readonly string TempPECompileDuration = BuildPropertyName(TelemetryEventName.TempPEProcessQueue, "Duration");
+
         private static string BuildPropertyName(string eventName, string propertyName)
         {
             // Property names use the event names, but with slashes replaced by periods.
