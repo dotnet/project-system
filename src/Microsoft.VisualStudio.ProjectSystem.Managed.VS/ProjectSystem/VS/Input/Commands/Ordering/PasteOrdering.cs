@@ -20,15 +20,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
     {
         public const int OrderPrecedence = 10000;
 
-        private readonly ConfiguredProject _configuredProject;
+        private readonly ActiveConfiguredProject<ConfiguredProject> _configuredProject;
         private readonly IProjectAccessor _accessor;
 
         private IProjectTree? _dropTarget;
 
         [ImportingConstructor]
-        public PasteOrdering(UnconfiguredProject unconfiguredProject, IProjectAccessor accessor)
+        public PasteOrdering(UnconfiguredProject unconfiguredProject, ActiveConfiguredProject<ConfiguredProject> configuredProject, IProjectAccessor accessor)
         {
-            _configuredProject = unconfiguredProject.Services.ActiveConfiguredProjectProvider.ActiveConfiguredProject;
+            _configuredProject = configuredProject;
             _accessor = accessor;
 
             PasteHandlers = new OrderPrecedenceImportCollection<IPasteHandler>(projectCapabilityCheckProvider: unconfiguredProject);
@@ -103,10 +103,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         {
             Assumes.NotNull(_dropTarget);
 
-            ImmutableHashSet<string> previousIncludes = await OrderingHelper.GetAllEvaluatedIncludes(_configuredProject, _accessor);
+            ImmutableHashSet<string> previousIncludes = await OrderingHelper.GetAllEvaluatedIncludes(_configuredProject.Value, _accessor);
             PasteItemsResult result = await PasteHandler.PasteItemsAsync(items, effect);
 
-            await OrderingHelper.Move(_configuredProject, _accessor, previousIncludes, _dropTarget, OrderingMoveAction.MoveToTop);
+            await OrderingHelper.Move(_configuredProject.Value, _accessor, previousIncludes, _dropTarget, OrderingMoveAction.MoveToTop);
 
             return result;
         }
