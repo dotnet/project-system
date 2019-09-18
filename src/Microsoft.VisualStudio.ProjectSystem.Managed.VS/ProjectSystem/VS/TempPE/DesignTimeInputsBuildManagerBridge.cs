@@ -45,14 +45,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         /// <summary>
         /// Get the list of design time monikers that need to have TempPE libraries created. Needs to be called on the UI thread.
         /// </summary>
-        public string[] GetTempPEMonikers()
+        public async Task<string[]> GetTempPEMonikers()
         {
-            // Not using use the ThreadingService property because unit tests
-            _threadingService.VerifyOnUIThread();
+            await InitializeAsync();
 
-            Initialize();
+            DesignTimeInputsDelta value = AppliedValue.Value;
 
-            return AppliedValue.Value.Inputs.Select(_project.MakeRelative).ToArray();
+            return value.Inputs.Select(_project.MakeRelative).ToArray();
         }
 
         /// <summary>
@@ -60,9 +59,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         /// </summary>
         public async Task<string> GetDesignTimeInputXmlAsync(string relativeFileName)
         {
-            // Not using use the ThreadingService property because unit tests
-            await _threadingService.SwitchToUIThread();
-
             if (!SkipInitialization)
             {
                 await InitializeAsync();
