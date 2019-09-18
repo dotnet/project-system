@@ -123,29 +123,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     export.Metadata.TryGetValue(nameof(AppliesToAttribute.AppliesTo), out object metadata) && 
                     metadata is string appliesTo)
                 {
-                    foreach (string capability in GetDynamicCapabilities())
-                    {
-                        if (appliesTo.Contains(capability))
-                        {
-                            Assert.False(true, @$"{definition.Type.FullName} exports {export.ContractName} with a dynamic capability '{capability}'. This contract is used during project initialization and must use a capability that doesn't change over the lifetime of a project. These capabilities are specified in src\Microsoft.VisualStudio.ProjectSystem.Managed.VS\Packaging\ProjectTypeRegistration.cs");
-                        }
-                    }
+                    IEnumerable<string> capabilities = GetRawCapabilities(appliesTo);
+                    IEnumerable<string> fixedCapabilities = GetFixedCapabilities();
+
+                    var dynamicCapabilities = capabilities.Except(fixedCapabilities);
+
+                    Assert.False(dynamicCapabilities.Any(), @$"{definition.Type.FullName} exports {export.ContractName} based on a dynamic capabilities '{string.Join(";", dynamicCapabilities)}'. This contract is used during project initialization and must use a capability that doesn't change over the lifetime of a project. These capabilities are specified in src\Microsoft.VisualStudio.ProjectSystem.Managed.VS\Packaging\ProjectTypeRegistration.cs");
                 }
             }
 
-            static IEnumerable<string> GetDynamicCapabilities()
+            static IEnumerable<string> GetFixedCapabilities()
             {
-                var allCapabilities = new HashSet<string>();
-                allCapabilities.AddRange(GetCapabilitiesFromConstants(typeof(ProjectCapabilities)));  // Add CPS
-                allCapabilities.AddRange(GetCapabilitiesFromConstants(typeof(ProjectCapability)));  // Add Ours
-
                 var fixedCapabilities = new HashSet<string>();
                 fixedCapabilities.AddRange(GetCapabilitiesFromProjectType(ProjectTypeCapabilities.Default));
                 fixedCapabilities.AddRange(GetCapabilitiesFromProjectType(ProjectTypeCapabilities.CSharp));
                 fixedCapabilities.AddRange(GetCapabilitiesFromProjectType(ProjectTypeCapabilities.VisualBasic));
                 fixedCapabilities.AddRange(GetCapabilitiesFromProjectType(ProjectTypeCapabilities.FSharp));
 
-                return allCapabilities.Except(fixedCapabilities);
+                return fixedCapabilities;
             }
 
             static IEnumerable<string> GetCapabilitiesFromProjectType(string capabilities)
@@ -153,11 +148,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 return capabilities.Split(new char[] { ';', ' ' }, StringSplitOptions.RemoveEmptyEntries);
             }
 
-            static IEnumerable<string> GetCapabilitiesFromConstants(Type type)
+            static IEnumerable<string> GetRawCapabilities(string appliesTo)
             {
-                return type.GetFields()
-                           .Select(f => (string)f.GetRawConstantValue())
-                           .SelectMany(s => s.Split(new char[] { '&', '|', '(', ')', ' ' }, StringSplitOptions.RemoveEmptyEntries));
+                return appliesTo.Split(new char[] { '&', '|', '(', ')', ' ', '!', }, StringSplitOptions.RemoveEmptyEntries);
             }
         }
 
