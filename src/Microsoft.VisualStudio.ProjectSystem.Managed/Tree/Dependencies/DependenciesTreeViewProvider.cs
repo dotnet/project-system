@@ -134,8 +134,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                             CleanupOldNodes);
 
                         dependenciesTree = shouldAddTargetNode
-                            ? dependenciesTree.Add(node).Parent
-                            : node.Parent;
+                            ? dependenciesTree.Add(node).Parent!
+                            : node.Parent!;
+
+                        Assumes.NotNull(dependenciesTree);
 
                         currentTopLevelNodes.Add(node);
                     }
@@ -247,8 +249,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 currentNodes.Add(subTreeNode);
 
                 rootNode = isNewSubTreeNode
-                    ? rootNode.Add(subTreeNode).Parent
-                    : subTreeNode.Parent;
+                    ? rootNode.Add(subTreeNode).Parent!
+                    : subTreeNode.Parent!;
+
+                Assumes.NotNull(rootNode);
             }
 
             return syncFunc(rootNode, currentNodes);
@@ -303,9 +307,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                 currentNodes?.Add(dependencyNode);
 
-                rootNode = isNewDependencyNode
+                IProjectTree? parent = isNewDependencyNode
                     ? rootNode.Add(dependencyNode).Parent
                     : dependencyNode.Parent;
+
+                Assumes.NotNull(parent);
+
+                rootNode = parent!;
             }
 
             return currentNodes != null // shouldCleanup

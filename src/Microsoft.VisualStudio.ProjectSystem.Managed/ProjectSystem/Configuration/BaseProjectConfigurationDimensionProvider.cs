@@ -63,7 +63,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 
             async Task<string?> GetPropertyValueAsync(UnconfiguredProject project)
             {
-                ConfiguredProject configuredProject = await project.GetSuggestedConfiguredProjectAsync();
+                ConfiguredProject? configuredProject = await project.GetSuggestedConfiguredProjectAsync();
+
+                Assumes.NotNull(configuredProject);
 
                 return await ProjectAccessor.OpenProjectForReadAsync(configuredProject, evaluatedProject =>
                 {

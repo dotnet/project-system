@@ -160,7 +160,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         {
             foreach (Project proj in _workspace.CurrentSolution.Projects)
             {
-                if (StringComparers.Paths.Equals(proj.FilePath, _projectVsServices.Project.FullPath))
+                if (StringComparers.Paths.Equals(proj.FilePath, _projectVsServices.Project.FullPath!))
                 {
                     return proj;
                 }

@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             mock.Setup(t => t.GetEvaluatedPropertyValueAsync(
                 It.IsIn<string>(propertyNameAndValues.Keys)))
-                 .Returns<string>(k => Task.FromResult(propertyNameAndValues[k]));
+                 .Returns<string>(k => Task.FromResult(propertyNameAndValues[k] ?? ""));
 
             mock.Setup(t => t.GetUnevaluatedPropertyValueAsync(
                 It.IsIn<string>(propertyNameAndValues.Keys)))

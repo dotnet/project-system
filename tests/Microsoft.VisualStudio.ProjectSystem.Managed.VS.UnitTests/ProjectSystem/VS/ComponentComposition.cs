@@ -171,7 +171,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
                 if (contractName != null || contractType != null)
                 {
-                    AddContractMetadata(contracts, contractName ?? contractType.FullName, assemblyAttribute.Scope, assemblyAttribute.Provider, assemblyAttribute.Cardinality);
+                    AddContractMetadata(contracts, contractName ?? contractType!.FullName, assemblyAttribute.Scope, assemblyAttribute.Provider, assemblyAttribute.Cardinality);
                 }
             }
 

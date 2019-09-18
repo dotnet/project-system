@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             public SnapshotUpdater(IUnconfiguredProjectCommonServices commonServices, CancellationToken unloadCancellationToken)
             {
                 // Initial snapshot is empty.
-                _currentSnapshot = DependenciesSnapshot.CreateEmpty(commonServices.Project.FullPath);
+                _currentSnapshot = DependenciesSnapshot.CreateEmpty(commonServices.Project.FullPath!);
 
                 // Updates will be published via Dataflow.
                 _source = DataflowBlockSlim.CreateBroadcastBlock<SnapshotChangedEventArgs>("DependenciesSnapshot {1}", skipIntermediateInputData: true);

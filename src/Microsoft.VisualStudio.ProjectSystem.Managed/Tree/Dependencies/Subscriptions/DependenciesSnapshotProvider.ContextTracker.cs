@@ -68,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
                     if (!previousContext.IsCrossTargeting)
                     {
-                        string newTargetFrameworkName = (string)await projectProperties.TargetFramework.GetValueAsync();
+                        string? newTargetFrameworkName = (string?)await projectProperties.TargetFramework.GetValueAsync();
                         ITargetFramework? newTargetFramework = _targetFrameworkProvider.GetTargetFramework(newTargetFrameworkName);
                         if (previousContext.ActiveTargetFramework.Equals(newTargetFramework))
                         {

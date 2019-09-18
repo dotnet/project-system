@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 {
                     foreach (var node in nodes)
                     {
-                        node.Parent.Remove(node);
+                        node.Parent!.Remove(node);
                     }
                     return Task.CompletedTask;
                 });

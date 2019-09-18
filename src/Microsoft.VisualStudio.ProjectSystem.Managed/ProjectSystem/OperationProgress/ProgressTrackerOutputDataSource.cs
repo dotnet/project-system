@@ -4,7 +4,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.OperationProgress
 {
     internal class ProgressTrackerOutputDataSource : IProgressTrackerOutputDataSource
     {
-        public ProgressTrackerOutputDataSource(ConfiguredProject configuredProject, string operationProgressStageId, string name, string? displayMessage)
+        public ProgressTrackerOutputDataSource(ConfiguredProject configuredProject, string operationProgressStageId, string name, string displayMessage)
         {
             ConfiguredProject = configuredProject;
             OperationProgressStageId = operationProgressStageId;
@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.OperationProgress
             get;
         }
 
-        public string? DisplayMessage
+        public string DisplayMessage
         {
             get;
         }

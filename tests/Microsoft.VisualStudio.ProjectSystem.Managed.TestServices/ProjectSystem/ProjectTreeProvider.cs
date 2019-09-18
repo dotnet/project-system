@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             get { throw new NotImplementedException(); }
         }
 
-        public bool CanCopy(IImmutableSet<IProjectTree> nodes, IProjectTree receiver, bool deleteOriginal = false)
+        public bool CanCopy(IImmutableSet<IProjectTree> nodes, IProjectTree? receiver, bool deleteOriginal = false)
         {
             throw new NotImplementedException();
         }
@@ -72,10 +72,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
             if (target.IsRoot())
                 return string.Empty;
 
-            return Path.Combine(GetAddNewItemDirectory(target.Parent), target.Caption);
+            return Path.Combine(GetAddNewItemDirectory(target.Parent!), target.Caption);
         }
 
-        public string GetPath(IProjectTree node)
+        public string? GetPath(IProjectTree node)
         {
             return node.FilePath;
         }
@@ -89,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             foreach (IProjectTree node in nodes)
             {
-                node.Parent.Remove(node);
+                node.Parent?.Remove(node);
             }
 
             return Task.CompletedTask;

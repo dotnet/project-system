@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 
             var provider = CreateInstance(projectXml.Replace("PROP", PropertyName).Replace("DIM", DimensionName));
 
-            var project = UnconfiguredProjectFactory.Create();
+            var project = UnconfiguredProjectFactory.Create(configuredProject: ConfiguredProjectFactory.Create());
             var values = await provider.GetDefaultValuesForDimensionsAsync(project);
 
             Assert.Single(values);
@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         {
             var provider = CreateInstance(projectXml.Replace("DIM", DimensionName));
 
-            var project = UnconfiguredProjectFactory.Create();
+            var project = UnconfiguredProjectFactory.Create(configuredProject: ConfiguredProjectFactory.Create());
             var values = await provider.GetDefaultValuesForDimensionsAsync(project);
 
             Assert.Empty(values);
@@ -81,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 
             var provider = CreateInstance(projectXml.Replace("PROP", PropertyName).Replace("DIM", DimensionName));
 
-            var project = UnconfiguredProjectFactory.Create();
+            var project = UnconfiguredProjectFactory.Create(configuredProject: ConfiguredProjectFactory.Create());
             var values = await provider.GetProjectConfigurationDimensionsAsync(project);
 
             Assert.Single(values);
@@ -105,7 +105,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         {
             var provider = CreateInstance(projectXml.Replace("DIM", DimensionName));
 
-            var project = UnconfiguredProjectFactory.Create();
+            var project = UnconfiguredProjectFactory.Create(configuredProject: ConfiguredProjectFactory.Create());
             var values = await provider.GetProjectConfigurationDimensionsAsync(project);
 
             Assert.Empty(values);

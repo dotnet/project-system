@@ -80,9 +80,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic
         }
 
 
-        private static void VerifySameValue(IEnumValue actual, IEnumValue expected, bool checkMapNameOnly = false)
+        private static void VerifySameValue(IEnumValue? actual, IEnumValue expected, bool checkMapNameOnly = false)
         {
-            Assert.True(string.Compare(actual.Name, expected.Name) == 0);
+            Assert.NotNull(actual);
+            Assert.True(string.Compare(actual!.Name, expected.Name) == 0);
 
             if (!checkMapNameOnly)
             {

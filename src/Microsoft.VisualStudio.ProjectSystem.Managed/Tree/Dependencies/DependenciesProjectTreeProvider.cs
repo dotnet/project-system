@@ -300,7 +300,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// For nodes that represent files on disk, this is the project-relative path to that file.
         /// The root node of a project is the absolute path to the project file.
         /// </returns>
-        public override string GetPath(IProjectTree node)
+        public override string? GetPath(IProjectTree node)
         {
             // Needed for graph nodes search
             return node.FilePath;
@@ -528,7 +528,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return null;
             }
 
-            Rule schema = browseObjectsCatalog.GetSchema(dependency.SchemaName);
+            Rule? schema = browseObjectsCatalog.GetSchema(dependency.SchemaName);
 
             string itemSpec = string.IsNullOrEmpty(dependency.OriginalItemSpec)
                 ? dependency.Path
