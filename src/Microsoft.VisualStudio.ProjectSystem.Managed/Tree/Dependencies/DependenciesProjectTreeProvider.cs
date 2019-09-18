@@ -341,7 +341,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                             _ = SubmitTreeUpdateAsync(
                                 delegate
                                 {
-                                    IProjectTree dependenciesNode = CreateDependenciesFolder();
+                                    IProjectTree dependenciesNode = CreateDependenciesNode();
 
                                     return Task.FromResult(new TreeUpdateResult(dependenciesNode));
                                 },
@@ -358,7 +358,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     registerFaultHandler: true);
             }
 
-            IProjectTree CreateDependenciesFolder()
+            IProjectTree CreateDependenciesNode()
             {
                 var values = new ReferencesProjectTreeCustomizablePropertyValues
                 {
