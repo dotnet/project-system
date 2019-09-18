@@ -1,9 +1,12 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+#pragma warning disable VSSDK005 // Avoid instantiating JoinableTaskContext
+
 using System;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Waiting;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Threading;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
@@ -373,11 +376,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
 
         private static (VisualStudioWaitIndicator, Action cancel) CreateInstance(string title = "", string message = "", bool isCancelable = false)
         {
-            var threadingService = IProjectThreadingServiceFactory.Create();
+            var joinableTaskContext = new JoinableTaskContext();
             var (threadedWaitDialogFactory, cancel) = IVsThreadedWaitDialogFactoryFactory.Create(title, message, isCancelable);
             var threadedWaitDialogFactoryService = IVsUIServiceFactory.Create<SVsThreadedWaitDialogFactory, IVsThreadedWaitDialogFactory>(threadedWaitDialogFactory);
 
-            var instance = new VisualStudioWaitIndicator(threadingService, threadedWaitDialogFactoryService);
+            var instance = new VisualStudioWaitIndicator(joinableTaskContext, threadedWaitDialogFactoryService);
             return (instance, cancel);
         }
     }

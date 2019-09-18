@@ -7,20 +7,21 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Waiting;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
 {
     [Export(typeof(IWaitIndicator))]
     internal partial class VisualStudioWaitIndicator : IWaitIndicator
     {
-        private readonly IProjectThreadingService _threadingService;
+        private readonly JoinableTaskContext _joinableTaskContext;
         private readonly IVsUIService<IVsThreadedWaitDialogFactory> _waitDialogFactoryService;
 
         [ImportingConstructor]
-        public VisualStudioWaitIndicator(IProjectThreadingService threadingService,
+        public VisualStudioWaitIndicator(JoinableTaskContext joinableTaskContext,
                                          IVsUIService<SVsThreadedWaitDialogFactory, IVsThreadedWaitDialogFactory> waitDialogFactoryService)
         {
-            _threadingService = threadingService;
+            _joinableTaskContext = joinableTaskContext;
             _waitDialogFactoryService = waitDialogFactoryService;
         }
 
@@ -53,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         {
             (WaitIndicatorResult waitResult, _) = WaitForOperationImpl(title, message, allowCancel, token =>
             {
-                _threadingService.ExecuteSynchronously(() => asyncFunction(token));
+                _joinableTaskContext.Factory.Run(() => asyncFunction(token));
                 return true;
             });
 
@@ -73,7 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
 
         public (WaitIndicatorResult, T) WaitForAsyncFunctionWithResult<T>(string title, string message, bool allowCancel, Func<CancellationToken, Task<T>> asyncFunction)
         {
-            return WaitForOperationImpl(title, message, allowCancel, token => _threadingService.ExecuteSynchronously(() => asyncFunction(token)));
+            return WaitForOperationImpl(title, message, allowCancel, token => _joinableTaskContext.Factory.Run(() => asyncFunction(token)));
         }
 
         public (WaitIndicatorResult, T) WaitWithResult<T>(string title, string message, bool allowCancel, Func<CancellationToken, T> function)
@@ -83,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
 
         private (WaitIndicatorResult, T) WaitForOperationImpl<T>(string title, string message, bool allowCancel, Func<CancellationToken, T> function)
         {
-            _threadingService.VerifyOnUIThread();
+            Assumes.True(_joinableTaskContext.IsOnMainThread);
 
             using IWaitContext waitContext = StartWait(title, message, allowCancel);
 
