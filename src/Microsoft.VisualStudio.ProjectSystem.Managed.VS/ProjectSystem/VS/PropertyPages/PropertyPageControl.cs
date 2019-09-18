@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 if (value != _isDirty && !_ignoreEvents)
                 {
                     _isDirty = value;
-                    OnStatusChanged(new EventArgs());
+                    OnStatusChanged(EventArgs.Empty);
                 }
             }
         }

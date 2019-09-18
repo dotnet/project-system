@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         public T Wait<T>(string title, string message, bool allowCancel, Func<CancellationToken, T> action)
         {
             if (typeof(T) == typeof(Task))
-                throw new ArgumentException(nameof(T));
+                throw new ArgumentException("Type argument must not be Task", nameof(T));
 
             (_, T result) = WaitWithResult(title, message, allowCancel, action);
             return result;

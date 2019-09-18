@@ -2,7 +2,7 @@
 
 namespace Microsoft.VisualStudio.Interop
 {
-    internal class Win32Interop
+    internal static class Win32Interop
     {
         /// <summary>
         ///     Represents the Win32 error code for ERROR_FILE_EXISTS.
