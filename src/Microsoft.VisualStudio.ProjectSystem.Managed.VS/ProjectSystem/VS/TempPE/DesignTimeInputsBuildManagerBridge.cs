@@ -17,7 +17,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
     internal class DesignTimeInputsBuildManagerBridge : UnconfiguredProjectHostBridge<IProjectVersionedValue<DesignTimeInputsDelta>, IProjectVersionedValue<DesignTimeInputsDelta>, IProjectVersionedValue<DesignTimeInputsDelta>>, IDesignTimeInputsBuildManagerBridge
     {
         private readonly UnconfiguredProject _project;
-        private readonly IProjectThreadingService _threadingService;
         private readonly IDesignTimeInputsChangeTracker _designTimeInputsChangeTracker;
         private readonly IDesignTimeInputsCompiler _designTimeInputsCompiler;
         private readonly VSBuildManager _buildManager;
@@ -36,7 +35,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
              : base(threadingService.JoinableTaskContext)
         {
             _project = project;
-            _threadingService = threadingService;
             _designTimeInputsChangeTracker = designTimeInputsChangeTracker;
             _designTimeInputsCompiler = designTimeInputsCompiler;
             _buildManager = buildManager;
