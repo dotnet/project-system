@@ -225,15 +225,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             return new Dependency(this, caption, resolved, flags, schemaName, dependencyIDs, iconSet, isImplicit);
         }
 
-        public override int GetHashCode()
-            => StringComparer.OrdinalIgnoreCase.GetHashCode(Id);
-
-        public override bool Equals(object obj)
-            => obj is IDependency other && Equals(other);
-
-        public bool Equals(IDependency? other)
-            => StringComparer.OrdinalIgnoreCase.Equals(Id, other?.Id);
-
         public override string ToString()
         {
             // Used for debugging only
