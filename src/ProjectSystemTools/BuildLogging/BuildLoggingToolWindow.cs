@@ -272,7 +272,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 
         protected override int InnerQueryStatus(ref Guid commandGroupGuid, uint commandCount, OLECMD[] commands, IntPtr commandText)
         {
-            if (commandCount != 1)
+            if (commandCount != 1 || commandGroupGuid != ProjectSystemToolsPackage.CommandSetGuid)
             {
                 return (int)Constants.OLECMDERR_E_NOTSUPPORTED;
             }
@@ -351,6 +351,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 
         protected override int InnerExec(ref Guid commandGroupGuid, uint commandId, uint commandExecOption, IntPtr pvaIn, IntPtr pvaOut)
         {
+            if (commandGroupGuid != ProjectSystemToolsPackage.CommandSetGuid)
+            {
+                return (int)Constants.OLECMDERR_E_NOTSUPPORTED;
+            }
+
             var handled = true;
 
             switch (commandId)
