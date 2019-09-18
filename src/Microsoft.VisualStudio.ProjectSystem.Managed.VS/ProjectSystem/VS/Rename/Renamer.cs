@@ -116,8 +116,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 string failureMessage = string.Format(CultureInfo.CurrentCulture, VSResources.RenameSymbolFailed, oldName);
                 _userNotificationServices.ShowWarning(failureMessage);
             }
-
-
         }
 
         private Task<bool> RenameAsync(string oldFilePath, string newFilePath, bool isCaseSensitive, string oldName, string newName, ISymbol? symbol, string renameOperationName, CancellationToken token)
@@ -149,15 +147,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
                 // Try and apply the changes to the current solution
                 token.ThrowIfCancellationRequested();
-                bool applyChangesSucceeded = _roslynServices.ApplyChangesToSolution(renamedSolution.Workspace, renamedSolution);
 
-                if (applyChangesSucceeded)
-                {
-                    // Notify other VS features that symbol has been renamed
-                    NotifyAfterRename(newName, rqName, changes);
-                }
-
-                return applyChangesSucceeded;
+                if (!_roslynServices.ApplyChangesToSolution(renamedSolution.Workspace, renamedSolution))
+                    return false;
+                
+                // Notify other VS features that symbol has been renamed
+                NotifyAfterRename(newName, rqName, changes);
+                return true;
             });
         }
 
