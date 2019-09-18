@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         /// <summary>
         /// Get the list of design time monikers that need to have TempPE libraries created. Needs to be called on the UI thread.
         /// </summary>
-        Task<string[]> GetTempPEMonikers();
+        Task<string[]> GetTempPEMonikersAsync();
 
         /// <summary>
         /// Gets the XML that describes a TempPE DLL, including building it if necessary
