@@ -3,9 +3,11 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.Composition;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Waiting
 {
+    [ProjectSystemContract(ProjectSystemContractScope.ProjectService, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface IWaitIndicator
     {
         void Wait(string title, string message, bool allowCancel, Action<CancellationToken> action);
