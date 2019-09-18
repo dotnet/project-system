@@ -15,12 +15,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
     internal partial class VisualStudioWaitIndicator : AbstractMultiLifetimeComponent<VisualStudioWaitIndicator.Instance>, IImplicitlyActiveService, IWaitIndicator
     {
         private readonly IProjectThreadingService _threadingService;
-        private readonly IVsService<SVsThreadedWaitDialogFactory, IVsThreadedWaitDialogFactory> _waitDialogFactoryService;
+        private readonly IVsUIService<IVsThreadedWaitDialogFactory> _waitDialogFactoryService;
 
         [ImportingConstructor]
         public VisualStudioWaitIndicator(UnconfiguredProject unconfiguredProject,
                                          IProjectThreadingService threadingService,
-                                         IVsService<SVsThreadedWaitDialogFactory, IVsThreadedWaitDialogFactory> waitDialogFactoryService)
+                                         IVsUIService<SVsThreadedWaitDialogFactory, IVsThreadedWaitDialogFactory> waitDialogFactoryService)
             : base(threadingService.JoinableTaskContext)
         {
             _threadingService = threadingService;

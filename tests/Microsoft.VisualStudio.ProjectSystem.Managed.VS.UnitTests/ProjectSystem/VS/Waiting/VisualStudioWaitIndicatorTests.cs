@@ -793,7 +793,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         {
             var threadingService = IProjectThreadingServiceFactory.Create();
             var (threadedWaitDialogFactory, cancel) = IVsThreadedWaitDialogFactoryFactory.Create(title, message, isCancelable);
-            var threadedWaitDialogFactoryService = IVsServiceFactory.Create<SVsThreadedWaitDialogFactory, IVsThreadedWaitDialogFactory>(threadedWaitDialogFactory);
+            var threadedWaitDialogFactoryService = IVsUIServiceFactory.Create<SVsThreadedWaitDialogFactory, IVsThreadedWaitDialogFactory>(threadedWaitDialogFactory);
             var unconfiguredProject = UnconfiguredProjectFactory.Create();
 
             var waitIndicator = new VisualStudioWaitIndicator(unconfiguredProject, threadingService, threadedWaitDialogFactoryService);

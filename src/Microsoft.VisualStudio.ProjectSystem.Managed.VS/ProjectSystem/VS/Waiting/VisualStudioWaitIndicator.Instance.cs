@@ -14,12 +14,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         internal class Instance : OnceInitializedOnceDisposedAsync, IMultiLifetimeInstance, IWaitIndicator
         {
             private readonly IProjectThreadingService _threadingService;
-            private readonly IVsService<SVsThreadedWaitDialogFactory, IVsThreadedWaitDialogFactory> _threadedWaitDialogFactoryService;
-            private IVsThreadedWaitDialogFactory _threadedWaitDialogFactory;
+            private readonly IVsUIService<IVsThreadedWaitDialogFactory> _threadedWaitDialogFactoryService;
 
-#pragma warning disable CS8618 // InitializeAsync handles this case
-            public Instance(IProjectThreadingService threadingService, IVsService<SVsThreadedWaitDialogFactory, IVsThreadedWaitDialogFactory> threadedWaitDialogFactoryService)
-#pragma warning restore CS8618 // Non-nullable field is uninitialized.
+            public Instance(IProjectThreadingService threadingService, IVsUIService<IVsThreadedWaitDialogFactory> threadedWaitDialogFactoryService)
                 : base(threadingService.JoinableTaskContext)
             {
                 _threadingService = threadingService;
@@ -112,19 +109,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
             }
 
             private IWaitContext StartWait(string title, string message, bool allowCancel)
-                => new VisualStudioWaitContext(_threadedWaitDialogFactory, title, message, allowCancel);
+                => new VisualStudioWaitContext(_threadedWaitDialogFactoryService.Value!, title, message, allowCancel);
 
             protected override Task DisposeCoreAsync(bool initialized) => Task.CompletedTask;
-            protected override Task InitializeCoreAsync(CancellationToken cancellationToken) => InitializeAsync();
+            public Task InitializeAsync() => Task.CompletedTask;
 
-            public async Task InitializeAsync()
-            {
-                await _threadingService.SwitchToUIThread();
-
-                IVsThreadedWaitDialogFactory? factory = await _threadedWaitDialogFactoryService.GetValueAsync();
-
-                _threadedWaitDialogFactory = factory!; // assume this service is available
-            }
+            protected override Task InitializeCoreAsync(CancellationToken cancellationToken) => Task.CompletedTask;
         }
     }
 }
