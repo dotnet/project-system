@@ -2,7 +2,6 @@
 
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Packaging;
-using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 
 // Visual Basic
@@ -13,7 +12,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS;
     defaultProjectExtension: "vbproj",
     language: "VisualBasic",
     resourcePackageGuid: ManagedProjectSystemPackage.PackageGuid,
-    Capabilities = ManagedProjectSystemPackage.DefaultCapabilities + "; " + ProjectCapability.VisualBasic,
+    Capabilities = ProjectTypeCapabilities.VisualBasic,
     DisableAsynchronousProjectTreeLoad = true)]
 
 // F#
@@ -24,7 +23,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS;
     defaultProjectExtension: "fsproj",
     language: "FSharp",
     resourcePackageGuid: ManagedProjectSystemPackage.PackageGuid,
-    Capabilities = ManagedProjectSystemPackage.DefaultCapabilities + "; " + ProjectCapability.FSharp + "; " + ProjectCapability.SortByDisplayOrder,
+    Capabilities = ProjectTypeCapabilities.FSharp,
     DisableAsynchronousProjectTreeLoad = true)]
 
 // C#
@@ -35,5 +34,5 @@ using Microsoft.VisualStudio.ProjectSystem.VS;
     defaultProjectExtension: "csproj",
     language: "CSharp",
     resourcePackageGuid: ManagedProjectSystemPackage.PackageGuid,
-    Capabilities = ManagedProjectSystemPackage.DefaultCapabilities + "; " + ProjectCapability.CSharp,
+    Capabilities = ProjectTypeCapabilities.CSharp,
     DisableAsynchronousProjectTreeLoad = true)]

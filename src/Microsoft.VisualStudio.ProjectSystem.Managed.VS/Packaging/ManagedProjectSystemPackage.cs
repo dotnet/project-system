@@ -32,16 +32,6 @@ namespace Microsoft.VisualStudio.Packaging
         public const string ActivationContextGuid = "E7DF1626-44DD-4E8C-A8A0-92EAB6DDC16E";
         public const string PackageGuid = "860A27C0-B665-47F3-BC12-637E16A1050A";
 
-
-        public const string DefaultCapabilities = ProjectCapability.AppDesigner + "; " +
-                                                  ProjectCapability.EditAndContinue + "; " +
-                                                  ProjectCapability.HandlesOwnReload + "; " +
-                                                  ProjectCapability.OpenProjectFile + "; " +
-                                                  ProjectCapability.PreserveFormatting + "; " +
-                                                  ProjectCapability.ProjectConfigurationsDeclaredDimensions + "; " +
-                                                  ProjectCapability.LanguageService + "; " +
-                                                  ProjectCapability.DotNet;
-
         private IDotNetCoreProjectCompatibilityDetector? _dotNetCoreCompatibilityDetector;
         private IVsRegisterProjectSelector? _projectSelectorService;
         private uint _projectSelectorCookie = VSConstants.VSCOOKIE_NIL;
