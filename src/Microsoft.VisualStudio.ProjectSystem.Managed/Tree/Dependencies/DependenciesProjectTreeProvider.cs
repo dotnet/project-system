@@ -373,7 +373,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 // providers to override lower priority providers.
                 foreach (IProjectTreePropertiesProvider provider in _projectTreePropertiesProviders.ExtensionValues())
                 {
-                    provider.CalculatePropertyValues(null, values);
+                    provider.CalculatePropertyValues(ProjectTreeCustomizablePropertyContext.Instance, values);
                 }
 
                 // Note that all the parameters are specified so we can force this call to an
@@ -609,6 +609,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 : base(configuredProject)
             {
             }
+        }
+
+        /// <summary>
+        /// A private implementation of <see cref="IProjectTreeCustomizablePropertyContext"/> used when creating
+        /// the dependencies nodes.
+        /// </summary>
+        private sealed class ProjectTreeCustomizablePropertyContext : IProjectTreeCustomizablePropertyContext
+        {
+            public static readonly ProjectTreeCustomizablePropertyContext Instance = new ProjectTreeCustomizablePropertyContext();
+
+            public string? ItemName => null;
+            public string? ItemType => null;
+            public IImmutableDictionary<string, string>? Metadata => null;
+            public ProjectTreeFlags ParentNodeFlags => ProjectTreeFlags.Empty;
+            public bool ExistsOnDisk => false;
+            public bool IsFolder => false;
+            public bool IsNonFileSystemProjectItem => true;
+            public IImmutableDictionary<string, string>? ProjectTreeSettings => null;
         }
     }
 }
