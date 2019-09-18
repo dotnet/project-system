@@ -4,7 +4,7 @@
 
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
-    <LangVersion>Latest</LangVersion>
+    <LangVersion>preview</LangVersion>
     <NoWarn>$(NoWarn);NU5125</NoWarn>
     <Copyright>$(CopyrightMicrosoft)</Copyright>
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
