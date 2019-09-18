@@ -7,7 +7,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
-
 using Microsoft.VisualStudio.ProjectSystem.VS.Automation;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE

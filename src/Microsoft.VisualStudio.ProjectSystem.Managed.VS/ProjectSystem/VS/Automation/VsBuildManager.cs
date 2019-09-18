@@ -4,7 +4,6 @@ using System;
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint;
 using Microsoft.VisualStudio.ProjectSystem.VS.TempPE;
-
 using VSLangProj;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
