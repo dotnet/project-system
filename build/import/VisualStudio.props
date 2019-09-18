@@ -67,7 +67,6 @@
     <PackageReference Include="Microsoft.VSDesigner" />
     <PackageReference Include="NuGet.SolutionRestoreManager.Interop" />
     <PackageReference Include="NuGet.VisualStudio" />
-
   </ItemGroup>
 
   <!--
