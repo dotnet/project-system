@@ -309,13 +309,13 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="levent"></param>
         ''' <remarks></remarks>
         Protected Overrides Sub OnLayout(levent As LayoutEventArgs)
-            Common.Switches.TracePDPerfBegin(levent, "DesignerTabControl.OnLayout()")
+            Common.Switches.TracePDPerfBegin(levent, "ProjectDesignerTabControl.OnLayout()")
 
             _renderer.PerformLayout() 'This can affect the layout of other controls on this page
             MyBase.OnLayout(levent)
 
             Invalidate()
-            Common.Switches.TracePDPerfEnd("DesignerTabControl.OnLayout()")
+            Common.Switches.TracePDPerfEnd("ProjectDesignerTabControl.OnLayout()")
         End Sub 'OnLayout
 
 

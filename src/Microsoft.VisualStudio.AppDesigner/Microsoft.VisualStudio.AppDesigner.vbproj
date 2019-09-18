@@ -1,6 +1,6 @@
 ﻿<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\..\build\import\VisualStudioDesigner.props"/>
+  <Import Project="..\..\build\import\VisualStudioDesigner.props" />
   <PropertyGroup>
     <!-- TODO: Function doesn't return a value on all code paths (https://github.com/dotnet/project-system/issues/2592) -->
     <NoWarn>$(NoWarn);42353;NU5125</NoWarn>
@@ -33,10 +33,10 @@
     <Compile Update="ApplicationDesigner\ApplicationDesignerWindowPaneControl.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="ApplicationDesigner\DesignerTabButton.vb">
+    <Compile Update="ApplicationDesigner\ProjectDesignerTabButton.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="ApplicationDesigner\DesignerTabControl.vb">
+    <Compile Update="ApplicationDesigner\ProjectDesignerTabControl.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="ApplicationDesigner\SpecialFileCustomView.Designer.vb">
