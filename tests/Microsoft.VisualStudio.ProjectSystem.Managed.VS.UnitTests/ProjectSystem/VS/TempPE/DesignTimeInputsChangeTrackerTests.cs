@@ -6,9 +6,7 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-
 using Moq;
-
 using Xunit;
 using Xunit.Sdk;
 

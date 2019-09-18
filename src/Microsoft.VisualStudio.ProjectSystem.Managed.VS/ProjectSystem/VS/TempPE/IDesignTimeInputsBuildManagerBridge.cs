@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
-
 using Microsoft.VisualStudio.Composition;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
@@ -15,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         /// <summary>
         /// Get the list of design time monikers that need to have TempPE libraries created. Needs to be called on the UI thread.
         /// </summary>
-        string[] GetTempPEMonikers();
+        Task<string[]> GetTempPEMonikersAsync();
 
         /// <summary>
         /// Gets the XML that describes a TempPE DLL, including building it if necessary

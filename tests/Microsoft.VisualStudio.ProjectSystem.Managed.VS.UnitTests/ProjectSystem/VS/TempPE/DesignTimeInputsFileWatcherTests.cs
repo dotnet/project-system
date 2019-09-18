@@ -3,17 +3,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-
 using Moq;
-
 using Xunit;
 using Xunit.Sdk;
-
 using Task = System.Threading.Tasks.Task;
 
+// Nullable annotations don't add a lot of value to this class, and until https://github.com/dotnet/roslyn/issues/33199 is fixed
+// MemberData doesn't work anyway
 #nullable disable
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE

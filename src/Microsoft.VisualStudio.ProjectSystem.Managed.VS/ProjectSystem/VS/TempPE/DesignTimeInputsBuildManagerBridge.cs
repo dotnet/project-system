@@ -7,7 +7,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
-
 using Microsoft.VisualStudio.ProjectSystem.VS.Automation;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
@@ -17,7 +16,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
     internal class DesignTimeInputsBuildManagerBridge : UnconfiguredProjectHostBridge<IProjectVersionedValue<DesignTimeInputsDelta>, IProjectVersionedValue<DesignTimeInputsDelta>, IProjectVersionedValue<DesignTimeInputsDelta>>, IDesignTimeInputsBuildManagerBridge
     {
         private readonly UnconfiguredProject _project;
-        private readonly IProjectThreadingService _threadingService;
         private readonly IDesignTimeInputsChangeTracker _designTimeInputsChangeTracker;
         private readonly IDesignTimeInputsCompiler _designTimeInputsCompiler;
         private readonly VSBuildManager _buildManager;
@@ -36,7 +34,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
              : base(threadingService.JoinableTaskContext)
         {
             _project = project;
-            _threadingService = threadingService;
             _designTimeInputsChangeTracker = designTimeInputsChangeTracker;
             _designTimeInputsCompiler = designTimeInputsCompiler;
             _buildManager = buildManager;
@@ -45,14 +42,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         /// <summary>
         /// Get the list of design time monikers that need to have TempPE libraries created. Needs to be called on the UI thread.
         /// </summary>
-        public string[] GetTempPEMonikers()
+        public async Task<string[]> GetTempPEMonikersAsync()
         {
-            // Not using use the ThreadingService property because unit tests
-            _threadingService.VerifyOnUIThread();
+            await InitializeAsync();
 
-            Initialize();
+            DesignTimeInputsDelta value = AppliedValue.Value;
 
-            return AppliedValue.Value.Inputs.Select(_project.MakeRelative).ToArray();
+            return value.Inputs.Select(_project.MakeRelative).ToArray();
         }
 
         /// <summary>
@@ -60,9 +56,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         /// </summary>
         public async Task<string> GetDesignTimeInputXmlAsync(string relativeFileName)
         {
-            // Not using use the ThreadingService property because unit tests
-            await _threadingService.SwitchToUIThread();
-
             if (!SkipInitialization)
             {
                 await InitializeAsync();
