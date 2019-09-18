@@ -39,6 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         [ImportMany(ExportContractNames.VsTypes.VSProject)]
         internal OrderPrecedenceImportCollection<VSLangProj.VSProject> Project { get; }
 
+        // This has to be a property import to prevent a circular dependency as the bridge imports this class in order to fire events
         [Import]
         internal Lazy<IDesignTimeInputsBuildManagerBridge, IAppliesToMetadataView>? DesignTimeInputsBuildManagerBridge { get; private set; }
 
