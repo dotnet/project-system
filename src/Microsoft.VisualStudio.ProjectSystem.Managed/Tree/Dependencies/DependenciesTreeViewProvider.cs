@@ -170,7 +170,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         /// <summary>
-        /// Builds all available sub trees under root: target framework or Dependencies node 
+        /// Builds all available sub trees under root: target framework or Dependencies node
         /// when there is only one target.
         /// </summary>
         private async Task<IProjectTree> BuildSubTreesAsync(
@@ -377,8 +377,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             IProjectTree CreateProjectTreeNode()
             {
-                // For IProjectTree remove ProjectTreeFlags.Common.Reference flag, otherwise CPS would fail to 
-                // map this node to graph node and GraphProvider would be never called. 
+                // For IProjectTree remove ProjectTreeFlags.Common.Reference flag, otherwise CPS would fail to
+                // map this node to graph node and GraphProvider would be never called.
                 // Only IProjectItemTree can have this flag
                 filteredFlags = filteredFlags.Except(DependencyTreeFlags.BaseReferenceFlags);
 

@@ -22,7 +22,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var service = IProjectServiceFactory.Create();
 
-
             var unconfiguredProjectServices = new Mock<UnconfiguredProjectServices>();
             unconfiguredProjectServices.SetupGet<object?>(u => u.HostObject)
                                        .Returns(hostObject);
