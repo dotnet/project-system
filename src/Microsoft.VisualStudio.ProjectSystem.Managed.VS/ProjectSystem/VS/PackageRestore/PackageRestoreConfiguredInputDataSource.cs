@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             return transformBlock;
         }
 
-        private PackageRestoreConfiguredInput CreateRestoreInput(ProjectConfiguration projectConfiguration, IImmutableDictionary<string, IProjectRuleSnapshot> update)
+        private static PackageRestoreConfiguredInput CreateRestoreInput(ProjectConfiguration projectConfiguration, IImmutableDictionary<string, IProjectRuleSnapshot> update)
         {
             var restoreInfo = RestoreBuilder.ToProjectRestoreInfo(update);
 

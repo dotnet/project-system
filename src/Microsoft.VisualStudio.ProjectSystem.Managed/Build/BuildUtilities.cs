@@ -78,7 +78,7 @@ namespace Microsoft.VisualStudio.Build
                 {
                     if (seen == null)
                     {
-                        seen = new HashSet<string> { s };
+                        seen = new HashSet<string>(StringComparers.PropertyValues) { s };
                         yield return s;
                     }
                     else
