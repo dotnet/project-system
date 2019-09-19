@@ -4,7 +4,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal static class IPhysicalProjectTreeExtensions
     {
-        public static bool NodeCanHaveAdditions(this IPhysicalProjectTree tree, IProjectTree node) =>
+        public static bool CanAddNewItem(this IPhysicalProjectTree tree, IProjectTree node) =>
             tree.TreeProvider.GetAddNewItemDirectory(node) != null;
     }
 }

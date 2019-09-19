@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         {
             Requires.NotNull(nodes, nameof(nodes));
 
-            if (nodes.Count == 1 && _projectTree.NodeCanHaveAdditions(nodes.First()) && TryGetTemplateDetails(commandId, out _))
+            if (nodes.Count == 1 && _projectTree.CanAddNewItem(nodes.First()) && TryGetTemplateDetails(commandId, out _))
             {
                 return GetCommandStatusResult.Handled(commandText, CommandStatus.Enabled);
             }
@@ -63,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             IProjectTree node = nodes.First();
 
             // We only support nodes that can actually have things added to it
-            if (!_projectTree.NodeCanHaveAdditions(node))
+            if (!_projectTree.CanAddNewItem(node))
             {
                 return false;
             }

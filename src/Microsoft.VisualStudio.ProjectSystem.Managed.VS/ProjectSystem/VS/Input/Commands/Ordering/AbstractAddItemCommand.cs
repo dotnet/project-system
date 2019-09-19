@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 
         protected override Task<CommandStatusResult> GetCommandStatusAsync(IProjectTree node, bool focused, string commandText, CommandStatus progressiveStatus)
         {
-            if (_projectTree.NodeCanHaveAdditions(GetNodeToAddTo(node)) && CanAdd(node))
+            if (_projectTree.CanAddNewItem(GetNodeToAddTo(node)) && CanAdd(node))
             {
                 return GetCommandStatusResult.Handled(commandText, CommandStatus.Enabled);
             }
