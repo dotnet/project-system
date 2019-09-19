@@ -1,53 +1,33 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Immutable;
-using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.VisualStudio.ProjectSystem.Input;
+using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
-    /// <summary>
-    /// Command handler that provides special handling for standard commands on dependency nodes.
-    /// </summary>
-    /// <remarks>
-    /// CPS provides a handler for the same commands, however it does not know anything special about dependency nodes.
-    /// </remarks>
-    [ExportCommandGroup(VSConstants.CMDSETID.StandardCommandSet2K_string)]
-    [AppliesTo(ProjectCapability.DependenciesTree)]
-    [Order(10)]
-    internal sealed class DependenciesNodeCommandGroupHandler : ICommandGroupHandler
+    [ProjectCommand(VSConstants.CMDSETID.StandardCommandSet2K_string, (long)VSConstants.VSStd2KCmdID.QUICKOBJECTSEARCH)]
+    [AppliesTo(ProjectCapability.PackageReferences)]
+    [Order(ProjectSystem.Order.Default)]
+    internal sealed class SuppressObjectBrowserForPackageReferenceCommand : AbstractSingleNodeProjectCommand
     {
-        private static readonly CommandStatusResult s_suppressedResult = new CommandStatusResult(handled: true, null, CommandStatus.NotSupported | CommandStatus.Invisible);
-
-        public CommandStatusResult GetCommandStatus(IImmutableSet<IProjectTree> nodes, long commandId, bool focused, string commandText, CommandStatus progressiveStatus)
+        private static readonly Task<CommandStatusResult> s_suppressedResult = Task.FromResult(new CommandStatusResult(handled: true, null, CommandStatus.NotSupported | CommandStatus.Invisible));
+        
+        protected override Task<CommandStatusResult> GetCommandStatusAsync(IProjectTree node, bool focused, string? commandText, CommandStatus progressiveStatus)
         {
-            var cmdId = (VSConstants.VSStd2KCmdID)commandId;
-
-            switch (cmdId)
+            if (node.Flags.Contains(DependencyTreeFlags.NuGetPackageDependency))
             {
-                case VSConstants.VSStd2KCmdID.QUICKOBJECTSEARCH: // Open in Object Browser
-                {
-                    if (nodes.Count == 1)
-                    {
-                        IProjectTree tree = nodes.First();
-
-                        if (tree.Flags.Contains(DependencyTreeFlags.NuGetPackageDependency))
-                        {
-                            // Suppress "Open in Object Browser" for NuGet packages
-                            return s_suppressedResult;
-                        }
-                    }
-
-                    break;
-                }
+                // Suppress "Open in Object Browser" for NuGet packages
+                return s_suppressedResult;
             }
-
-            return CommandStatusResult.Unhandled;
+         
+            return CommandStatusResult.Unhandled.AsTask();
         }
 
-        public bool TryHandleCommand(IImmutableSet<IProjectTree> nodes, long commandId, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut)
+        protected override Task<bool> TryHandleCommandAsync(IProjectTree node, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut)
         {
-            return false;
+            return TaskResult.False;
         }
     }
 }
