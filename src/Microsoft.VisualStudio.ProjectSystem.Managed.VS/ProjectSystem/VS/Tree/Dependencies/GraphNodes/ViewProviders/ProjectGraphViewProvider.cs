@@ -128,7 +128,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                 return false;
             }
 
-            topLevelDependencyMatches = new HashSet<IDependency>();
+            topLevelDependencyMatches = new HashSet<IDependency>(DependencyIdComparer.Instance);
 
             if (!topLevelDependency.Visible)
             {

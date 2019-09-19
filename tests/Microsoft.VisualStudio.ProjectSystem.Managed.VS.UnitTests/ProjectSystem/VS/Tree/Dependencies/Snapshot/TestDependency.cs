@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using Microsoft.VisualStudio.Imaging;
@@ -88,14 +87,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Implicit = isImplicit ?? Implicit
             };
         }
-
-        public override int GetHashCode()
-            => StringComparer.OrdinalIgnoreCase.GetHashCode(Id);
-
-        public override bool Equals(object obj)
-            => obj is IDependency other && Equals(other);
-
-        public bool Equals(IDependency? other)
-            => other != null && other.Id.Equals(Id, StringComparison.OrdinalIgnoreCase);
     }
 }

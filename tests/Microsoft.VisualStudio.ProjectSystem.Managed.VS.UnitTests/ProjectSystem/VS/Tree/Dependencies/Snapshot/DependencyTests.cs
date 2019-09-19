@@ -152,25 +152,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         }
 
         [Fact]
-        public void Dependency_EqualsAndGetHashCode()
-        {
-            var dependencyModel1 = new TestDependencyModel { ProviderType = "providerType", Id = "someId1" };
-            var dependencyModel2 = new TestDependencyModel { ProviderType = "providerType", Id = "someId1"};
-            var dependencyModel3 = new TestDependencyModel { ProviderType = "providerType", Id = "someId_other" };
-
-            var targetFramework = new TargetFramework("tfm1");
-            var dependency1 = new Dependency(dependencyModel1, targetFramework, @"C:\Foo\Project.csproj");
-            var dependency2 = new Dependency(dependencyModel2, targetFramework, @"C:\Foo\Project.csproj");
-            var dependency3 = new Dependency(dependencyModel3, targetFramework, @"C:\Foo\Project.csproj");
-
-            Assert.Equal(dependency1, dependency2);
-            Assert.NotEqual(dependency1, dependency3);
-            Assert.False(dependency1.Equals(other: null));
-            Assert.Equal(dependency1!.GetHashCode(), dependency2.GetHashCode());
-            Assert.NotEqual(dependency1.GetHashCode(), dependency3.GetHashCode());
-        }
-
-        [Fact]
         public void Dependency_SetProperties()
         {
             var dependencyModel = new TestDependencyModel { ProviderType = "providerType", Id = "someId" };
