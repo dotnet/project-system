@@ -65,19 +65,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 new DebugProfileEnumValuesGenerator(moqProfileProvider.Object, threadingService);
 
             Assert.False(generator.AllowCustomValues);
-            IEnumValue result = await generator.TryCreateEnumValueAsync("Profile1");
-            Assert.True(result.Name == "Profile1" && result.DisplayName == "Profile1");
+            IEnumValue? result = await generator.TryCreateEnumValueAsync("Profile1");
+            Assert.True(result!.Name == "Profile1" && result.DisplayName == "Profile1");
             result = await generator.TryCreateEnumValueAsync("MyCommand");
-            Assert.True(result.Name == "MyCommand" && result.DisplayName == "MyCommand");
+            Assert.True(result!.Name == "MyCommand" && result.DisplayName == "MyCommand");
 
             // case sensitive check
             result = await generator.TryCreateEnumValueAsync("mycommand");
             Assert.Null(result);
 
             result = await generator.TryCreateEnumValueAsync("Foo");
-            Assert.True(result.Name == "Foo" && result.DisplayName == "Foo");
+            Assert.True(result!.Name == "Foo" && result.DisplayName == "Foo");
             result = await generator.TryCreateEnumValueAsync("Bar");
-            Assert.True(result.Name == "Bar" && result.DisplayName == "Bar");
+            Assert.True(result!.Name == "Bar" && result.DisplayName == "Bar");
         }
     }
 }

@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             Project = project;
         }
 
-        public virtual string DefaultProjectPath => Project.FullPath;
+        public virtual string? DefaultProjectPath => Project.FullPath;
 
         public event AsyncEventHandler<ProjectPropertyChangedEventArgs> ProjectPropertyChanged
         {

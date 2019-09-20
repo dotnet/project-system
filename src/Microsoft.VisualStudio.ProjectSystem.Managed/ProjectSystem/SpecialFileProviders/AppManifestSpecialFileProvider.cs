@@ -47,14 +47,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         {
             ConfigurationGeneralBrowseObject configurationGeneral = await _properties.GetConfigurationGeneralBrowseObjectPropertiesAsync();
 
-            string value = (string)await configurationGeneral.ApplicationManifest.GetValueAsync();
-            if (value.Length == 0)
+            string? value = (string?)await configurationGeneral.ApplicationManifest.GetValueAsync();
+            if (string.IsNullOrEmpty(value))
                 return null;
 
-            if (StringComparers.PropertyLiteralValues.Equals(value, "DefaultManifest"))
+            if (StringComparers.PropertyLiteralValues.Equals(value!, "DefaultManifest"))
                 return null;
 
-            if (StringComparers.PropertyLiteralValues.Equals(value, "NoManifest"))
+            if (StringComparers.PropertyLiteralValues.Equals(value!, "NoManifest"))
                 return null;
 
             return value;

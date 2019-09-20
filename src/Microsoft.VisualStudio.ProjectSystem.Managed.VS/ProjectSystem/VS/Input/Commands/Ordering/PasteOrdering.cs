@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             return PasteProcessor.CanHandleDataObject(dataObject, dropTarget, currentProvider);
         }
 
-        public Task<IEnumerable<ICopyPasteItem>> ProcessDataObjectAsync(object dataObject, IProjectTree dropTarget, IProjectTreeProvider currentProvider, DropEffects effect)
+        public Task<IEnumerable<ICopyPasteItem>?> ProcessDataObjectAsync(object dataObject, IProjectTree dropTarget, IProjectTreeProvider currentProvider, DropEffects effect)
         {
             _dropTarget = dropTarget;
             return PasteProcessor.ProcessDataObjectAsync(dataObject, dropTarget, currentProvider, effect);

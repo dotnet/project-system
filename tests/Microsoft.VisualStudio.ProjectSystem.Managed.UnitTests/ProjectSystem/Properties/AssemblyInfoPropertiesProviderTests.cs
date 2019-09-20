@@ -129,10 +129,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [InlineData(@"[assembly: System.Reflection.AssemblyVersionAttribute(""MyVersion"")]", "AssemblyVersion", "MyVersion")]
         [InlineData(@"[assembly: System.Resources.NeutralResourcesLanguageAttribute(""en-us"")]", "NeutralLanguage", "en-us")]
         // Negative cases
-        [InlineData(@"[assembly: System.Reflection.AssemblyDescriptionAttribute(""MyDescription"")]", "SomeProperty", null)]
-        [InlineData(@"[assembly: System.Reflection.AssemblyDescriptionAttribute(""MyDescription"")]", "Company", null)]
-        [InlineData(@"[assembly: System.Runtime.InteropServices.AssemblyDescriptionAttribute(true)]", "Description", null)]
-        [InlineData(@"[assembly: System.Runtime.AssemblyDescriptionAttribute(""MyDescription"")]", "Description", null)]
+        [InlineData(@"[assembly: System.Reflection.AssemblyDescriptionAttribute(""MyDescription"")]", "SomeProperty", "")]
+        [InlineData(@"[assembly: System.Reflection.AssemblyDescriptionAttribute(""MyDescription"")]", "Company", "")]
+        [InlineData(@"[assembly: System.Runtime.InteropServices.AssemblyDescriptionAttribute(true)]", "Description", "")]
+        [InlineData(@"[assembly: System.Runtime.AssemblyDescriptionAttribute(""MyDescription"")]", "Description", "")]
         public async Task SourceFileProperties_GetEvaluatedPropertyAsync(string code, string propertyName, string expectedValue)
         {
             var provider = CreateProviderForSourceFileValidation(code, out Workspace workspace);
@@ -154,7 +154,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [InlineData(@"[assembly: System.Resources.NeutralResourcesLanguageAttribute(""en-us"")]", "NeutralResourcesLanguage", "en-uk", "en-uk")]
         [InlineData(@"[assembly: System.Reflection.AssemblyDescriptionAttribute(true)]", "Description", "MyDescription", "MyDescription")]
         [InlineData(@"[assembly: System.Reflection.AssemblyDescriptionAttribute(""MyDescription""]", "Description", "", "")]
-        [InlineData(@"[assembly: System.Reflection.AssemblyDescriptionAttribute(""MyDescription""]", "Description", null, null)]
+        [InlineData(@"[assembly: System.Reflection.AssemblyDescriptionAttribute(""MyDescription""]", "Description", null, "")]
         public async Task ProjectFileProperties_GetEvaluatedPropertyAsync(string code, string propertyName, string propertyValueInProjectFile, string expectedValue)
         {
             var provider = CreateProviderForProjectFileValidation(code, propertyName, propertyValueInProjectFile, out Workspace workspace);
@@ -198,8 +198,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         [Theory]
         [InlineData(@"[assembly: System.Reflection.AssemblyDescriptionAttribute(""MyDescription"")]", "Description", "", "NewDescription", "NewDescription")]
-        [InlineData(@"[assembly: System.Reflection.AssemblyDescriptionAttribute(""MyDescription"")]", "Description", null, "", "")]
-        [InlineData(@"[assembly: System.Reflection.AssemblyDescriptionAttribute(""MyDescription"")]", "Description", null, "NewDescription", "NewDescription")]
+        [InlineData(@"[assembly: System.Reflection.AssemblyDescriptionAttribute(""MyDescription"")]", "Description", "", "", "")]
         [InlineData(@"[assembly: System.Reflection.AssemblyDescriptionAttribute(""MyDescription"")]", "Description", "OldDescription", "NewDescription", "NewDescription")]
         [InlineData(@"[assembly: System.Reflection.AssemblyDescriptionAttribute(""MyDescription"", ""MyDescription"")]", "Description", "OldDescription", "", "")]
         public async Task ProjectFileProperties_SetPropertyValueAsync(string code, string propertyName, string existingPropertyValue, string propertyValueToSet, string expectedValue)
@@ -269,7 +268,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [InlineData(@"[assembly: System.Reflection.AssemblyInformationalVersionAttribute(""2.0.1-beta1"")]", "FileVersion", "2.0.1.0", typeof(FileVersionValueProvider))]
         [InlineData(@"[assembly: System.Reflection.AssemblyInformationalVersionAttribute(""2016.2"")]", "FileVersion", "2016.2.0.0", typeof(FileVersionValueProvider))]
         // Version
-        [InlineData(@"", "Version", null, null)]
+        [InlineData(@"", "Version", "", null)]
         [InlineData(@"[assembly: System.Reflection.AssemblyInformationalVersionAttribute(""1.1.1"")]", "Version", "1.1.1", null)]
         [InlineData(@"[assembly: System.Reflection.AssemblyInformationalVersionAttribute("""")]", "Version", "", null)]
         [InlineData(@"[assembly: System.Reflection.AssemblyInformationalVersionAttribute(""random"")]", "Version", "random", null)]
@@ -294,15 +293,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         [Theory]
         // PackageId
-        [InlineData("MyApp", "PackageId", null, null)]
+        [InlineData("MyApp", "PackageId", null, "")]
         [InlineData("MyApp", "PackageId", "", "")]
         [InlineData("MyApp", "PackageId", "ExistingValue", "ExistingValue")]
         // Authors
-        [InlineData("MyApp", "Authors", null, null)]
+        [InlineData("MyApp", "Authors", null, "")]
         [InlineData("MyApp", "Authors", "", "")]
         [InlineData("MyApp", "Authors", "ExistingValue", "ExistingValue")]
         // Product
-        [InlineData("MyApp", "Product", null, null)]
+        [InlineData("MyApp", "Product", null, "")]
         [InlineData("MyApp", "Product", "", "")]
         [InlineData("MyApp", "Product", "ExistingValue", "ExistingValue")]
         internal async Task ProjectFileProperties_DefaultValues_GetEvaluatedPropertyAsync(string assemblyName, string propertyName, string existingPropertyValue, string expectedValue)

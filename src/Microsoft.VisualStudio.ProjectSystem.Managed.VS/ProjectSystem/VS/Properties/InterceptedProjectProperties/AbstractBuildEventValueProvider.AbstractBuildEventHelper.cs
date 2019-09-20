@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             public async Task<(bool success, string? property)> TryGetPropertyAsync(IProjectProperties defaultProperties)
             {
                 // check if value already exists
-                string unevaluatedPropertyValue = await defaultProperties.GetUnevaluatedPropertyValueAsync(BuildEvent);
+                string? unevaluatedPropertyValue = await defaultProperties.GetUnevaluatedPropertyValueAsync(BuildEvent);
                 if (unevaluatedPropertyValue != null)
                 {
                     return (true, unevaluatedPropertyValue);
@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
 
             public async Task<bool> TrySetPropertyAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties)
             {
-                string currentValue = await defaultProperties.GetUnevaluatedPropertyValueAsync(BuildEvent);
+                string? currentValue = await defaultProperties.GetUnevaluatedPropertyValueAsync(BuildEvent);
                 if (currentValue == null)
                 {
                     return false;

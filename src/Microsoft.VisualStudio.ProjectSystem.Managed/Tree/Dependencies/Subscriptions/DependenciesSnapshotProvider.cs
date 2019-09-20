@@ -294,6 +294,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             ITargetFramework? activeTargetFramework,
             CancellationToken token)
         {
+            Assumes.NotNull(_commonServices.Project.FullPath);
+
             IImmutableSet<string>? projectItemSpecs = GetProjectItemSpecs(catalogs?.Project.ProjectInstance.Items);
 
             _snapshot.TryUpdate(

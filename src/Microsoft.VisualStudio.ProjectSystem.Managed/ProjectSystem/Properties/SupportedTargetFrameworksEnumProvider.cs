@@ -68,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             /// </summary>
             /// <param name="userSuppliedValue"></param>
             /// <returns></returns>
-            public Task<IEnumValue> TryCreateEnumValueAsync(string userSuppliedValue)
+            public Task<IEnumValue?> TryCreateEnumValueAsync(string userSuppliedValue)
             {
                 throw new NotImplementedException();
             }

@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public virtual Task<IEnumerable<string>> GetDirectPropertyNamesAsync()
             => DelegatedProperties.GetDirectPropertyNamesAsync();
 
-        public virtual Task<string?> GetEvaluatedPropertyValueAsync(string propertyName)
+        public virtual Task<string> GetEvaluatedPropertyValueAsync(string propertyName)
             => DelegatedProperties.GetEvaluatedPropertyValueAsync(propertyName);
 
         public virtual Task<IEnumerable<string>> GetPropertyNamesAsync()

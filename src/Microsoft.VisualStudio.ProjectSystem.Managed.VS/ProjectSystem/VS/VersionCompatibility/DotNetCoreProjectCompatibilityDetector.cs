@@ -142,7 +142,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             // is true for both add and a reload of an unloaded project
             if (SolutionOpen && fAdded == 1 && CompatibilityLevelWarnedForCurrentSolution != CompatibilityLevel.NotSupported)
             {
-                UnconfiguredProject project = pHierarchy.AsUnconfiguredProject();
+                UnconfiguredProject? project = pHierarchy.AsUnconfiguredProject();
                 if (project != null)
                 {
                     _threadHandling.Value.RunAndForget(async () =>
@@ -329,7 +329,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             if (project.Capabilities.AppliesTo($"{ProjectCapability.DotNet} & {ProjectCapability.PackageReferences}"))
             {
-                IProjectProperties properties = project.Services.ActiveConfiguredProjectProvider.ActiveConfiguredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
+                ConfiguredProject? activeConfiguredProject = project.Services.ActiveConfiguredProjectProvider.ActiveConfiguredProject;
+                Assumes.NotNull(activeConfiguredProject);
+                IProjectProperties properties = activeConfiguredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
                 string tfm = await properties.GetEvaluatedPropertyValueAsync("TargetFrameworkMoniker");
                 if (!string.IsNullOrEmpty(tfm))
                 {
@@ -341,7 +343,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     else if (fw.Identifier.Equals(".NETFramework", StringComparison.OrdinalIgnoreCase))
                     {
                         // The interesting case here is Asp.Net Core on full framework
-                        IImmutableSet<IUnresolvedPackageReference> pkgReferences = await project.Services.ActiveConfiguredProjectProvider.ActiveConfiguredProject.Services.PackageReferences.GetUnresolvedReferencesAsync();
+                        IImmutableSet<IUnresolvedPackageReference> pkgReferences = await activeConfiguredProject.Services.PackageReferences.GetUnresolvedReferencesAsync();
 
                         // Look through the package references
                         foreach (IUnresolvedPackageReference pkgRef in pkgReferences)

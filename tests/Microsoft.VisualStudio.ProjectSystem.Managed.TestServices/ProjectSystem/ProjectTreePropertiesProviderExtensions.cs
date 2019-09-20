@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             foreach (IProjectTree child in tree.Children)
             {
-                tree = ChangePropertyValuesWalkingTree(propertiesProvider, child, projectTreeSettings).Parent;
+                tree = ChangePropertyValuesWalkingTree(propertiesProvider, child, projectTreeSettings).Parent!;
             }
 
             return tree;
@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 get { return _tree; }
             }
 
-            public ProjectImageMoniker ExpandedIcon
+            public ProjectImageMoniker? ExpandedIcon
             {
                 get { return _tree.ExpandedIcon; }
                 set { _tree = _tree.SetExpandedIcon(value); }
@@ -69,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 set { _tree = _tree.SetFlags(value); }
             }
 
-            public ProjectImageMoniker Icon
+            public ProjectImageMoniker? Icon
             {
                 get { return _tree.Icon; }
                 set { _tree = _tree.SetIcon(value); }

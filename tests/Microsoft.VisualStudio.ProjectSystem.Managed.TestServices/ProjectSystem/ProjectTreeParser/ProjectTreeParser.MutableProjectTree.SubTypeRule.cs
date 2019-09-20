@@ -47,11 +47,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
                     throw new NotImplementedException();
                 }
 
-                public Task<string?> GetPropertyValueAsync(string propertyName)
+                public Task<string> GetPropertyValueAsync(string propertyName)
                 {
                     if (propertyName == "SubType")
                     {
-                        return Task.FromResult(_tree.SubType);
+                        return Task.FromResult(_tree.SubType ?? "");
                     }
 
                     throw new NotImplementedException();
