@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.ProjectSystem.VS.UI;
 using Microsoft.VisualStudio.Shell.Interop;
 using Moq;
 using Xunit;
@@ -73,44 +74,9 @@ Root (flags: {ProjectRoot})
         }
 
         [Fact]
-        public async Task GetCommandStatusAsync_NonAppDesignerFolderAsNodes_ReturnsUnhandled()
-        {
-            var command = CreateInstance(provider: IProjectTreeProviderFactory.Create(), addItemDialog: IVsAddProjectItemDlgFactory.Create());
-
-            var tree = ProjectTreeParser.Parse(@"
-Root (flags: {ProjectRoot})
-    Properties (flags: {AppDesignerFolder})
-");
-
-            var nodes = ImmutableHashSet.Create(tree.Children[0]);
-
-            var result = await command.GetCommandStatusAsync(nodes, TestAddItemCommand.CommandId, true, "commandText", (CommandStatus)0);
-
-            Assert.False(result.Handled);
-        }
-
-        [Fact]
-        public async Task TryHandleCommandAsync_NonRegularFolderAsNodes_ReturnsFalse()
-        {
-            var command = CreateInstance(provider: IProjectTreeProviderFactory.Create(), addItemDialog: IVsAddProjectItemDlgFactory.Create());
-
-            var tree = ProjectTreeParser.Parse(@"
-Root (flags: {ProjectRoot})
-    Properties (flags: {AppDesignerFolder})
-");
-
-            var nodes = ImmutableHashSet.Create(tree.Children[0]);
-
-            var result = await command.TryHandleCommandAsync(nodes, TestAddItemCommand.CommandId, true, 0, IntPtr.Zero, IntPtr.Zero);
-
-            Assert.False(result);
-        }
-
-        [Fact]
         public async Task GetCommandStatusAsync_FolderAsNodes_ReturnsHandled()
         {
-            var command = CreateInstance(provider: IProjectTreeProviderFactory.Create(""), addItemDialog:
-                IVsAddProjectItemDlgFactory.Create(0));
+            var command = CreateInstance();
 
             var tree = ProjectTreeParser.Parse(@"
 Root (flags: {ProjectRoot})
@@ -129,8 +95,7 @@ Root (flags: {ProjectRoot})
         [Fact]
         public async Task TryHandleCommandAsync_FolderAsNodes_ReturnsTrue()
         {
-            var command = CreateInstance(provider: IProjectTreeProviderFactory.Create(""), addItemDialog:
-                IVsAddProjectItemDlgFactory.Create(0));
+            var command = CreateInstance();
 
             var tree = ProjectTreeParser.Parse(@"
 Root (flags: {ProjectRoot})
@@ -148,22 +113,20 @@ Root (flags: {ProjectRoot})
         public async Task TryHandleCommandAsync_FolderAsNodes_CallsShowAddProjectItemDlgAsyncWithFilter()
         {
             int callCount = 0;
-            string dirFilter = "";
-            string templateFilter = "";
-            string browseLocations = "";
-            var g = new Guid();
-            string folder = "folderName";
+            string localizedDirectoryNameResult = "";
+            string localizedTemplateNameResult = "";
+            IProjectTree? nodeResult = null;
 
-            var dlg = IVsAddProjectItemDlgFactory.ImplementWithParams((id, guid, project, flags, dFilter, tFilter, browseLocs, filter, showAgain) =>
+            var addItemDialogService = IAddItemDialogServiceFactory.ImplementShowAddNewItemDialogAsync((node, localizedDirectoryName, localizedTemplateName) =>
             {
                 callCount++;
-                dirFilter = dFilter;
-                templateFilter = tFilter;
-                browseLocations = browseLocs;
-                return 0;
-            }, g, folder, string.Empty, 0);
+                nodeResult = node;
+                localizedDirectoryNameResult = localizedDirectoryName;
+                localizedTemplateNameResult = localizedTemplateName;
+                return true;
+            });
 
-            var command = CreateInstance(provider: IProjectTreeProviderFactory.Create(folder), addItemDialog: dlg);
+            var command = CreateInstance(addItemDialogService: addItemDialogService);
 
             var tree = ProjectTreeParser.Parse(@"
 Root (flags: {ProjectRoot})
@@ -175,16 +138,17 @@ Root (flags: {ProjectRoot})
             await command.TryHandleCommandAsync(nodes, TestAddItemCommand.CommandId, true, 0, IntPtr.Zero, IntPtr.Zero);
 
             Assert.Equal(1, callCount);
-            Assert.Equal(TestAddItemCommand.ResourceIds.DirName.ToString(), dirFilter);
-            Assert.Equal(TestAddItemCommand.ResourceIds.TemplateName.ToString(), templateFilter);
-            Assert.Equal("folderName", browseLocations);
+            Assert.Equal(TestAddItemCommand.ResourceIds.DirName.ToString(), localizedDirectoryNameResult);
+            Assert.Equal(TestAddItemCommand.ResourceIds.TemplateName.ToString(), localizedTemplateNameResult);
+            Assert.Same(tree.Children[0], nodeResult);
         }
 
         [Fact]
         public async Task TryHandleCommand_FolderAsNodes_ReturnsTrueWhenUserClicksCancel()
         {
-            var command = CreateInstance(provider: IProjectTreeProviderFactory.Create(""), addItemDialog:
-                IVsAddProjectItemDlgFactory.Create(VSConstants.OLE_E_PROMPTSAVECANCELLED));
+            var addItemDialogService = IAddItemDialogServiceFactory.ImplementShowAddNewItemDialogAsync((node, localizedDirectoryName, localizedTemplateName) => false);
+
+            var command = CreateInstance(addItemDialogService);
 
             var tree = ProjectTreeParser.Parse(@"
 Root (flags: {ProjectRoot})
@@ -199,18 +163,11 @@ Root (flags: {ProjectRoot})
         }
 
         internal static AbstractAddItemCommandHandler CreateInstance(
-            IPhysicalProjectTree? projectTree = null,
-            IUnconfiguredProjectVsServices? projectVsServices = null,
-            IProjectTreeProvider? provider = null,
-            IVsAddProjectItemDlg? addItemDialog = null,
+            IAddItemDialogService? addItemDialogService = null,
             string? capability = null)
         {
             var configuredProject = ConfiguredProjectFactory.Create(IProjectCapabilitiesScopeFactory.Create(new string[] { capability ?? TestAddItemCommand.Capability }));
-            projectTree ??= IPhysicalProjectTreeFactory.Create(provider);
-            projectVsServices ??=                 IUnconfiguredProjectVsServicesFactory.Implement(
-                    threadingServiceCreator: () => IProjectThreadingServiceFactory.Create()
-                );
-            var addItemDialogService = IVsUIServiceFactory.Create<SVsAddProjectItemDlg, IVsAddProjectItemDlg>(addItemDialog);
+            addItemDialogService ??= IAddItemDialogServiceFactory.Create();
 
             string result = "DirName";
             var vsShellMock = new Mock<IVsShell>();
@@ -220,7 +177,7 @@ Root (flags: {ProjectRoot})
 
             var vsShellService = IVsUIServiceFactory.Create<SVsShell, IVsShell>(vsShellMock.Object);
 
-            return new TestAddItemCommand(configuredProject, projectTree, projectVsServices, addItemDialogService, vsShellService);
+            return new TestAddItemCommand(configuredProject, addItemDialogService, vsShellService);
         }
 
         private class TestAddItemCommand : AbstractAddItemCommandHandler
@@ -234,8 +191,8 @@ Root (flags: {ProjectRoot})
                 TemplateName = 2014
             }
 
-            public TestAddItemCommand(ConfiguredProject configuredProject, IPhysicalProjectTree projectTree, IUnconfiguredProjectVsServices projectVsServices, IVsUIService<IVsAddProjectItemDlg> addItemDialog, IVsUIService<SVsShell, IVsShell> vsShell)
-                : base(configuredProject, projectTree, projectVsServices, addItemDialog, vsShell)
+            public TestAddItemCommand(ConfiguredProject configuredProject, IAddItemDialogService addItemDialogService, IVsUIService<SVsShell, IVsShell> vsShell)
+                : base(configuredProject, addItemDialogService, vsShell)
             {
             }
 

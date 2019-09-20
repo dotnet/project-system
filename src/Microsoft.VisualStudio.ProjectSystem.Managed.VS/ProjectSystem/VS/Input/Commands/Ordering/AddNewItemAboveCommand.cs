@@ -3,7 +3,7 @@
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Input;
 using Microsoft.VisualStudio.ProjectSystem.Input;
-using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.ProjectSystem.VS.UI;
 using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
@@ -12,19 +12,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
     [AppliesTo(ProjectCapability.SortByDisplayOrder)]
     internal class AddNewItemAboveCommand : AbstractAddItemCommand
     {
+        private readonly IAddItemDialogService _addItemDialogService;
+
         [ImportingConstructor]
         public AddNewItemAboveCommand(
-            IPhysicalProjectTree projectTree,
-            IUnconfiguredProjectVsServices projectVsServices,
-            SVsServiceProvider serviceProvider,
+            IAddItemDialogService addItemDialogService,
             OrderAddItemHintReceiver orderAddItemHintReceiver) :
-            base(projectTree, projectVsServices, serviceProvider, orderAddItemHintReceiver)
+            base(addItemDialogService, orderAddItemHintReceiver)
         {
+            _addItemDialogService = addItemDialogService;
         }
 
         protected override Task OnAddingNodesAsync(IProjectTree nodeToAddTo)
         {
-            return ShowAddNewFileDialogAsync(nodeToAddTo);
+            return _addItemDialogService.ShowAddNewItemDialogAsync(nodeToAddTo);
         }
 
         protected override bool CanAdd(IProjectTree target)
