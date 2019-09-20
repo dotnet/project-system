@@ -23,8 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 icon: KnownMonikers.Reference,
                 expandedIcon: KnownMonikers.Reference,
                 unresolvedIcon: KnownMonikers.ReferenceWarning,
-                unresolvedExpandedIcon: KnownMonikers.ReferenceWarning),
-            DependencyTreeFlags.AssemblySubTreeRootNode);
+                unresolvedExpandedIcon: KnownMonikers.ReferenceWarning));
 
         public AssemblyRuleHandler()
             : base(AssemblyReference.SchemaName, ResolvedAssemblyReference.SchemaName)
