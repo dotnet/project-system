@@ -188,8 +188,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     return;
                 }
 
-                await InitializeAsync();
-
                 await OnConfiguredProjectEvaluatedAsync(e);
             }
         }
