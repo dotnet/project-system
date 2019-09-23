@@ -447,7 +447,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                     if (_treeTelemetryService.IsActive)
                     {
-                        await _treeTelemetryService.ObserveTreeUpdateCompletedAsync(snapshot.HasVisibleUnresolvedDependency);
+                        await _treeTelemetryService.ObserveTreeUpdateCompletedAsync(snapshot.HasReachableVisibleUnresolvedDependency);
                     }
                 }
 

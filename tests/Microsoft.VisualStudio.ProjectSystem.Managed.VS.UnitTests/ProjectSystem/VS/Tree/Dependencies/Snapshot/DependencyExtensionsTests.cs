@@ -29,6 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 SchemaItemType = "MySchemaItemType",
                 Priority = 1,
                 Resolved = true,
+                TopLevel = true,
                 IconSet = iconSet
             };
 
@@ -43,6 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 SchemaItemType = "MySchemaItemType",
                 Priority = 1,
                 Resolved = false,
+                TopLevel = true,
                 IconSet = iconSet
             };
 
@@ -57,6 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 SchemaItemType = "MySchemaItemType",
                 Priority = 1,
                 Resolved = true,
+                TopLevel = true,
                 IconSet = iconSet,
                 DependencyIDs = ImmutableArray.Create(dependencyUnresolved.Id)
             };
@@ -66,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var snapshotUnresolvedChild = TargetedDependenciesSnapshotFactory.ImplementFromDependencies(new[] { dependencyUnresolved, dependencyUnresolvedChild });
 
             Assert.False(snapshotResolved.ShouldAppearUnresolved(dependencyResolved));
-            Assert.False(snapshotUnresolved.ShouldAppearUnresolved(dependencyResolved));
+            Assert.True(snapshotUnresolved.ShouldAppearUnresolved(dependencyUnresolved));
             Assert.True(snapshotUnresolvedChild.ShouldAppearUnresolved(dependencyUnresolvedChild));
 
             var viewModelResolved = dependencyResolved.ToViewModel(snapshotResolved);

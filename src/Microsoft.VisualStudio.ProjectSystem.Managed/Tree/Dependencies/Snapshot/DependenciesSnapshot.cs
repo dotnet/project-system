@@ -223,10 +223,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public ImmutableDictionary<ITargetFramework, TargetedDependenciesSnapshot> DependenciesByTargetFramework { get; }
 
         /// <summary>
-        /// Gets whether this snapshot contains at least one unresolved/broken dependency at any level
-        /// for any target framework which is visible.
+        /// Gets whether this snapshot contains at least one unresolved dependency which is both visible
+        /// and reachable from a visible top-level dependency, for any target framework.
         /// </summary>
-        public bool HasVisibleUnresolvedDependency => DependenciesByTargetFramework.Any(x => x.Value.HasVisibleUnresolvedDependency);
+        public bool HasReachableVisibleUnresolvedDependency => DependenciesByTargetFramework.Any(x => x.Value.HasReachableVisibleUnresolvedDependency);
 
         /// <summary>
         /// Finds dependency for given id across all target frameworks.
