@@ -632,7 +632,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         }
 
         [Fact]
-        public void CheckForUnresolvedDependencies()
+        public void ShouldAppearUnresolved()
         {
             var unresolved = new TestDependency
             {
@@ -658,8 +658,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             var snapshot = TargetedDependenciesSnapshotFactory.ImplementFromDependencies(new IDependency[] { resolvedWithUnresolvedChild, unresolved, resolved });
 
-            Assert.True(snapshot.CheckForUnresolvedDependencies(resolvedWithUnresolvedChild));
-            Assert.False(snapshot.CheckForUnresolvedDependencies(resolved));
+            Assert.True(snapshot.ShouldAppearUnresolved(resolvedWithUnresolvedChild));
+            Assert.False(snapshot.ShouldAppearUnresolved(resolved));
         }
 
         /// <summary>
@@ -667,7 +667,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// https://github.com/dotnet/project-system/issues/3374
         /// </summary>
         [Fact]
-        public void CheckForUnresolvedDependencies_CircularDependency_DoesNotRecurseInfinitely()
+        public void ShouldAppearUnresolved_CircularDependency_DoesNotRecurseInfinitely()
         {
             const string id1 = @"tfm1\xxx\dependency1";
             const string id2 = @"tfm1\xxx\dependency2";
@@ -692,7 +692,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var snapshot = TargetedDependenciesSnapshotFactory.ImplementFromDependencies(new IDependency[] { dependency1, dependency2 });
 
             // verify it doesn't stack overflow
-            snapshot.CheckForUnresolvedDependencies(dependency1);   
+            snapshot.ShouldAppearUnresolved(dependency1);   
         }
 
         internal sealed class TestDependenciesSnapshotFilter : IDependenciesSnapshotFilter

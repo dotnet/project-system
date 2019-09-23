@@ -246,11 +246,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public bool HasVisibleUnresolvedDependency { get; }
 
         /// <summary>
-        /// Efficient API for checking if a given dependency has an unresolved child dependency at any level. 
+        /// Gets whether this dependency's node should appear as unresolved in the dependencies tree.
         /// </summary>
         /// <param name="dependency"></param>
         /// <returns>Returns true if given dependency has unresolved child dependency at any level</returns>
-        public bool CheckForUnresolvedDependencies(IDependency dependency)
+        public bool ShouldAppearUnresolved(IDependency dependency)
         {
             lock (SyncLock)
             {

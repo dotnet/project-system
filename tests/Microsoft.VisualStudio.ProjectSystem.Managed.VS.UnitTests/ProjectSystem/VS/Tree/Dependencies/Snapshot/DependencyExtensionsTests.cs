@@ -65,9 +65,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var snapshotUnresolved      = TargetedDependenciesSnapshotFactory.ImplementFromDependencies(new[] { dependencyUnresolved });
             var snapshotUnresolvedChild = TargetedDependenciesSnapshotFactory.ImplementFromDependencies(new[] { dependencyUnresolved, dependencyUnresolvedChild });
 
-            Assert.False(snapshotResolved.CheckForUnresolvedDependencies(dependencyResolved));
-            Assert.False(snapshotUnresolved.CheckForUnresolvedDependencies(dependencyResolved));
-            Assert.True(snapshotUnresolvedChild.CheckForUnresolvedDependencies(dependencyUnresolvedChild));
+            Assert.False(snapshotResolved.ShouldAppearUnresolved(dependencyResolved));
+            Assert.False(snapshotUnresolved.ShouldAppearUnresolved(dependencyResolved));
+            Assert.True(snapshotUnresolvedChild.ShouldAppearUnresolved(dependencyUnresolvedChild));
 
             var viewModelResolved = dependencyResolved.ToViewModel(snapshotResolved);
 
