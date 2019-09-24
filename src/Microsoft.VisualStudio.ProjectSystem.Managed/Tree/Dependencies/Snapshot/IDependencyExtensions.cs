@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// </summary>
         public static IDependencyViewModel ToViewModel(this IDependency dependency, TargetedDependenciesSnapshot snapshot)
         {
-            bool hasUnresolvedDependency = !dependency.Resolved || snapshot.CheckForUnresolvedDependencies(dependency);
+            bool hasUnresolvedDependency = !dependency.Resolved || snapshot.ShouldAppearUnresolved(dependency);
 
             return new DependencyViewModel(dependency, hasUnresolvedDependency: hasUnresolvedDependency);
         }
