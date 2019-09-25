@@ -28,9 +28,10 @@ Namespace Microsoft.VisualStudio.Editors
     ProvideOptionPage(GetType(GeneralOptionPage),
                      "Projects and Solutions",
                      "SDK-Style Projects",
-                     0,        ' categoryResourceID: Not used, we don't own parent category
-                     0,        ' pageNameResourceID: Not used, set in Microsoft.VisualStudio.Editors.pkgdef, 
-                     True),    ' supportsAutomation
+                     0,                     ' categoryResourceID: Not used, we don't own parent category
+                     0,                     ' pageNameResourceID: Not used, set in Microsoft.VisualStudio.Editors.pkgdef, 
+                     True,                  ' supportsAutomation
+                     IsServerAware:=True),  ' Configured to work in cloud environment scenarios. Note we're hand-authoring the MS.VS.Editors.pkgdef file, so it is also set there.
     CLSCompliant(False)
     >
     Friend Class VBPackage
