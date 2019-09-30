@@ -104,7 +104,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim PackageLicenseFileSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor(_packageLicenseFilePropName)), String)
             If (PackageLicenseFileSet IsNot Nothing AndAlso PackageLicenseFileSet IsNot "") Then
                 _newLicensePropertyDetectedAtInit = True
-                LicenseFileNameTextBox.Text = LicenseTryGetExistingLicenseItemPath(PackageLicenseFileSet)
+                LicenseFileNameTextBox.Text = FileTryGetExistingFileItemPath(PackageLicenseFileSet)
                 _previousProperties(_packageLicenseFilePropName) = LicenseFileNameTextBox.Text
                 SetLicenseRadioButtons(False)
             End If
@@ -124,7 +124,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             GetProjectsAndProvider()
             Dim PackageIconFileSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor(_packageIconFilePropName)), String)
             If (PackageIconFileSet IsNot Nothing AndAlso PackageIconFileSet IsNot "") Then
-                PackageIcon.Text = LicenseTryGetExistingLicenseItemPath(PackageIconFileSet)
+                PackageIcon.Text = FileTryGetExistingFileItemPath(PackageIconFileSet)
                 _previousProperties(_packageIconFilePropName) = PackageIcon.Text
             End If
         End Sub
@@ -449,7 +449,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If String.Equals(data.PropertyName, _packageLicenseFilePropName) Then
                 Dim PackageLicenseFileSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor(_packageLicenseFilePropName)), String)
                 'Because this will be called even when we set the value, we need to check to make sure we are not trying to set it twice
-                Dim ExistingItemPath = LicenseTryGetExistingLicenseItemPath(PackageLicenseFileSet)
+                Dim ExistingItemPath = FileTryGetExistingFileItemPath(PackageLicenseFileSet)
                 If Not String.Equals(LicenseFileNameTextBox.Text, ExistingItemPath) Then
                     'If trying to resolve the existing item path fails, we should not modify anything
                     LicenseFileNameTextBox.Text = ExistingItemPath
@@ -458,7 +458,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ElseIf String.Equals(data.PropertyName, _packageIconFilePropName) Then
                 Dim PackageIconFileSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor(_packageIconFilePropName)), String)
                 'Because this will be called even when we set the value, we need to check to make sure we are not trying to set it twice
-                Dim ExistingItemPath = LicenseTryGetExistingLicenseItemPath(PackageIconFileSet)
+                Dim ExistingItemPath = FileTryGetExistingFileItemPath(PackageIconFileSet)
                 If Not String.Equals(PackageIcon.Text, ExistingItemPath) Then
                     'If trying to resolve the existing item path fails, we should not modify anything
                     PackageIcon.Text = ExistingItemPath
@@ -562,12 +562,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        'I want to be able to, given a license file name, try to find an item that matches the file name to populate the textbox
-        Private Function LicenseTryGetExistingLicenseItemPath(packageLicenseFile As String) As String
+        'I want to be able to, given a  file name, try to find an item that matches the file name to populate the textbox
+        Private Function FileTryGetExistingFileItemPath(packageFile As String) As String
             GetProjectsAndProvider()
             For Each item As IProjectItem In _allItems
-                'PackageLicenseFile can have a package path as a prefix, so we need to just look at file name
-                If Path.GetFileName(packageLicenseFile) = Path.GetFileName(item.EvaluatedIncludeAsRelativePath) Then
+                'PackageFile can have a package path as a prefix, so we need to just look at file name
+                If Path.GetFileName(packageFile) = Path.GetFileName(item.EvaluatedIncludeAsRelativePath) Then
                     Return item.EvaluatedIncludeAsRelativePath
                 End If
             Next
