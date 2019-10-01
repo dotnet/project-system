@@ -21,6 +21,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private ReadOnly _previousProperties As Dictionary(Of String, String) = New Dictionary(Of String, String)
         Private ReadOnly _packageLicenseFilePropName As String = "PackageLicenseFile"
         Private ReadOnly _packageIconFilePropName As String = "PackageIcon"
+        Private ReadOnly _packageIconUrlPropName As String = "PackageIconUrl"
+        Private _packageIconUrlDetected As Boolean = False
         Private _licenseUrlDetected As Boolean = False
         Private _newLicensePropertyDetectedAtInit As Boolean = False
         Private _unconfiguredProject As UnconfiguredProject
@@ -122,6 +124,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Sub InitializeIconFile()
             GetProjectsAndProvider()
+            Dim PackageIconUrlSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor(_packageIconUrlPropName)), String)
+            If (PackageIconUrlSet IsNot Nothing AndAlso PackageIconUrlSet IsNot "") Then
+                SetPackageIconUrlWarninglWarningActive(True)
+                _packageIconUrlDetected = True
+            End If
             Dim PackageIconFileSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor(_packageIconFilePropName)), String)
             If (PackageIconFileSet IsNot Nothing AndAlso PackageIconFileSet IsNot "") Then
                 PackageIcon.Text = FileTryGetExistingFileItemPath(PackageIconFileSet)
@@ -427,6 +434,23 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
+        'If I open a project that has the PackageIconUrl property, I should get a warning
+        'that the property changed to PackageIcon
+        Private Sub SetPackageIconUrlWarninglWarningActive(setActive As Boolean)
+            PackageIconLabel.Visible = Not setActive
+            PackageIconUrlWarning.Visible = setActive
+            PackageIconUrlWarning.Enabled = setActive
+
+            'Swaps the label and textbox location, as done for license warning
+            If setActive Then
+                TableLayoutPanel.SetColumn(PackageIconUrlWarning, 1)
+                TableLayoutPanel.SetColumn(PackageIconLabel, 2)
+            Else
+                TableLayoutPanel.SetColumn(PackageIconUrlWarning, 2)
+                TableLayoutPanel.SetColumn(PackageIconLabel, 1)
+                SetCommonPropertyValue(GetPropertyDescriptor("PackageIconUrl"), "")
+            End If
+        End Sub
 
         Private Sub LicenseBrowseButton_GotFocus(sender As Object, e As EventArgs) Handles LicenseBrowseButton.GotFocus
             SetLicenseRadioButtons(False)

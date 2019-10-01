@@ -1870,7 +1870,7 @@
     <value>10</value>
   </data>
   <data name="PackageIconUrlWarning.Text" xml:space="preserve">
-    <value>This is a Package Icon Url warning.</value>
+    <value>PackageIconUrl property was detected, but it has been deprecated. Please change to PackageIcon.</value>
   </data>
   <data name="PackageIconUrlWarning.Visible" type="System.Boolean, mscorlib">
     <value>False</value>

@@ -37,6 +37,11 @@
         <target state="new">&amp;Icon File:</target>
         <note />
       </trans-unit>
+      <trans-unit id="PackageIconUrlWarning.Text">
+        <source>This is a Package Icon Url warning.</source>
+        <target state="new">This is a Package Icon Url warning.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="PackageVersionLabel.Text">
         <source>Package &amp;version:</source>
         <target state="translated">&amp;Wersja pakietu:</target>
