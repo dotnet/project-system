@@ -74,6 +74,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.FileVersionBuildTextBox = New System.Windows.Forms.TextBox()
             Me.FileVersionMinorTextBox = New System.Windows.Forms.TextBox()
             Me.FileVersionMajorTextBox = New System.Windows.Forms.TextBox()
+            Me.PackageIconLineLabel = New System.Windows.Forms.Label()
+            Me.PackageIconUrlWarning = New System.Windows.Forms.TextBox()
             Me.LicenseLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
             Me.OrLabel = New System.Windows.Forms.Label()
             Me.TableLayoutPanel.SuspendLayout()
@@ -112,22 +114,24 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.TableLayoutPanel.Controls.Add(Me.LicenseFileLayoutPanel, 1, 11)
             Me.TableLayoutPanel.Controls.Add(Me.PackageProjectUrlLabel, 0, 12)
             Me.TableLayoutPanel.Controls.Add(Me.PackageProjectUrl, 1, 12)
-            Me.TableLayoutPanel.Controls.Add(Me.PackageIconLabel, 0, 13)
-            Me.TableLayoutPanel.Controls.Add(Me.IconFileLayoutPanel, 1, 13)
-            Me.TableLayoutPanel.Controls.Add(Me.RepositoryUrlLabel, 0, 14)
-            Me.TableLayoutPanel.Controls.Add(Me.RepositoryUrl, 1, 14)
-            Me.TableLayoutPanel.Controls.Add(Me.RepositoryTypeLabel, 0, 15)
-            Me.TableLayoutPanel.Controls.Add(Me.RepositoryType, 1, 15)
-            Me.TableLayoutPanel.Controls.Add(Me.PackageTagsLabel, 0, 16)
-            Me.TableLayoutPanel.Controls.Add(Me.PackageTags, 1, 16)
-            Me.TableLayoutPanel.Controls.Add(Me.PackageReleaseNotesLabel, 0, 17)
-            Me.TableLayoutPanel.Controls.Add(Me.PackageReleaseNotes, 1, 17)
-            Me.TableLayoutPanel.Controls.Add(Me.NeutralLanguageLabel, 0, 18)
-            Me.TableLayoutPanel.Controls.Add(Me.NeutralLanguageComboBox, 1, 18)
-            Me.TableLayoutPanel.Controls.Add(Me.AssemblyVersionLabel, 0, 19)
-            Me.TableLayoutPanel.Controls.Add(Me.AssemblyVersionLayoutPanel, 1, 19)
-            Me.TableLayoutPanel.Controls.Add(Me.AssemblyFileVersionLabel, 0, 20)
-            Me.TableLayoutPanel.Controls.Add(Me.FileVersionLayoutPanel, 1, 20)
+            Me.TableLayoutPanel.Controls.Add(Me.PackageIconLabel, 0, 14)
+            Me.TableLayoutPanel.Controls.Add(Me.IconFileLayoutPanel, 1, 14)
+            Me.TableLayoutPanel.Controls.Add(Me.RepositoryUrlLabel, 0, 15)
+            Me.TableLayoutPanel.Controls.Add(Me.RepositoryUrl, 1, 15)
+            Me.TableLayoutPanel.Controls.Add(Me.RepositoryTypeLabel, 0, 16)
+            Me.TableLayoutPanel.Controls.Add(Me.RepositoryType, 1, 16)
+            Me.TableLayoutPanel.Controls.Add(Me.PackageTagsLabel, 0, 17)
+            Me.TableLayoutPanel.Controls.Add(Me.PackageTags, 1, 17)
+            Me.TableLayoutPanel.Controls.Add(Me.PackageReleaseNotesLabel, 0, 18)
+            Me.TableLayoutPanel.Controls.Add(Me.PackageReleaseNotes, 1, 18)
+            Me.TableLayoutPanel.Controls.Add(Me.NeutralLanguageLabel, 0, 19)
+            Me.TableLayoutPanel.Controls.Add(Me.NeutralLanguageComboBox, 1, 19)
+            Me.TableLayoutPanel.Controls.Add(Me.AssemblyVersionLabel, 0, 20)
+            Me.TableLayoutPanel.Controls.Add(Me.AssemblyVersionLayoutPanel, 1, 20)
+            Me.TableLayoutPanel.Controls.Add(Me.AssemblyFileVersionLabel, 0, 21)
+            Me.TableLayoutPanel.Controls.Add(Me.FileVersionLayoutPanel, 1, 21)
+            Me.TableLayoutPanel.Controls.Add(Me.PackageIconLineLabel, 1, 13)
+            Me.TableLayoutPanel.Controls.Add(Me.PackageIconUrlWarning, 2, 13)
             Me.TableLayoutPanel.Name = "TableLayoutPanel"
             '
             'GeneratePackageOnBuild
@@ -434,6 +438,21 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             resources.ApplyResources(Me.FileVersionMajorTextBox, "FileVersionMajorTextBox")
             Me.FileVersionMajorTextBox.Name = "FileVersionMajorTextBox"
             '
+            'PackageIconLineLabel
+            '
+            Me.PackageIconLineLabel.AccessibleRole = System.Windows.Forms.AccessibleRole.Separator
+            resources.ApplyResources(Me.PackageIconLineLabel, "PackageIconLineLabel")
+            Me.PackageIconLineLabel.BackColor = System.Drawing.SystemColors.ControlDark
+            Me.PackageIconLineLabel.Name = "PackageIconLineLabel"
+            '
+            'PackageIconUrlWarning
+            '
+            Me.PackageIconUrlWarning.BackColor = System.Drawing.SystemColors.Control
+            Me.PackageIconUrlWarning.BorderStyle = System.Windows.Forms.BorderStyle.None
+            resources.ApplyResources(Me.PackageIconUrlWarning, "PackageIconUrlWarning")
+            Me.PackageIconUrlWarning.Name = "PackageIconUrlWarning"
+            Me.PackageIconUrlWarning.ReadOnly = True
+            '
             'LicenseLayoutPanel
             '
             resources.ApplyResources(Me.LicenseLayoutPanel, "LicenseLayoutPanel")
@@ -531,6 +550,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Friend WithEvents LicenseFileNameTextBox As Windows.Forms.TextBox
         Friend WithEvents LicenseBrowseButton As System.Windows.Forms.Button
         Friend WithEvents IconFileBrowseButton As Windows.Forms.Button
+        Friend WithEvents PackageIconLineLabel As Windows.Forms.Label
+        Friend WithEvents PackageIconUrlWarning As Windows.Forms.TextBox
     End Class
 
 End Namespace
