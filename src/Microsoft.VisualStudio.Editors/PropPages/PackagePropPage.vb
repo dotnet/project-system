@@ -22,7 +22,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private ReadOnly _packageLicenseFilePropName As String = "PackageLicenseFile"
         Private ReadOnly _packageIconFilePropName As String = "PackageIcon"
         Private ReadOnly _packageIconUrlPropName As String = "PackageIconUrl"
-        Private _packageIconUrlDetected As Boolean = False
         Private _licenseUrlDetected As Boolean = False
         Private _newLicensePropertyDetectedAtInit As Boolean = False
         Private _unconfiguredProject As UnconfiguredProject
@@ -127,7 +126,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim PackageIconUrlSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor(_packageIconUrlPropName)), String)
             If (PackageIconUrlSet IsNot Nothing AndAlso PackageIconUrlSet IsNot "") Then
                 SetPackageIconUrlWarninglWarningActive(True)
-                _packageIconUrlDetected = True
             End If
             Dim PackageIconFileSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor(_packageIconFilePropName)), String)
             If (PackageIconFileSet IsNot Nothing AndAlso PackageIconFileSet IsNot "") Then
