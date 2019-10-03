@@ -638,9 +638,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return HelpKeywords.VBProjPropAssemblyInfo
         End Function
 
-        Private Sub PackageIconUrlWarning_TextChanged(sender As Object, e As EventArgs) Handles PackageIconUrlWarning.TextChanged
-
-        End Sub
     End Class
 
 End Namespace
