@@ -228,6 +228,9 @@
   <StringProperty Name="PackageIconUrl"
                   Visible="False" />
 
+  <StringProperty Name="PackageIcon"
+                  Visible="False" />
+
   <StringProperty Name="PackageId"
                   Visible="False">
     <StringProperty.DataSource>
