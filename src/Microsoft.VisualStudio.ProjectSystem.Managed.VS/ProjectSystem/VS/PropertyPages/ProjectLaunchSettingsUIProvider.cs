@@ -3,7 +3,6 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Windows.Controls;
-
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
@@ -39,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// </summary>
         public bool ShouldEnableProperty(string propertyName)
         {
-            return !string.Equals(propertyName, UIProfilePropertyName.Executable, StringComparison.OrdinalIgnoreCase) && 
+            return !string.Equals(propertyName, UIProfilePropertyName.Executable, StringComparison.OrdinalIgnoreCase) &&
                    !string.Equals(propertyName, UIProfilePropertyName.LaunchUrl, StringComparison.OrdinalIgnoreCase);
         }
 

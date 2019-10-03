@@ -8,7 +8,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
-
 using Microsoft.Test.Apex.VisualStudio.Solution;
 using Microsoft.Test.Apex.VisualStudio.Shell.ToolWindows;
 using Microsoft.VisualStudio.Imaging.Interop;
@@ -62,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
         }
 
-        private void VerifyDependenciesNode(SolutionExplorerItemTestExtension actualDependencies, Node[] nodes)
+        private static void VerifyDependenciesNode(SolutionExplorerItemTestExtension actualDependencies, Node[] nodes)
         {
             var expectDependencies = new Node("Dependencies", ManagedImageMonikers.ReferenceGroup)
             {
@@ -179,12 +178,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private string CreateRootPath()
         {
-            string name;
             string rootPath;
 
             do
             {
-                name = "IntegrationTest_" + Guid.NewGuid().ToString("N").Substring(0, 12);
+                var name = "IntegrationTest_" + Guid.NewGuid().ToString("N").Substring(0, 12);
                 rootPath = Path.Combine(Path.GetTempPath(), name);
             }
             while (Directory.Exists(rootPath));

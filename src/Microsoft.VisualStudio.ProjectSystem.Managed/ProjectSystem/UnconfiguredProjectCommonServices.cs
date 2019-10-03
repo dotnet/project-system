@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private readonly ActiveConfiguredProject<ProjectProperties> _activeConfiguredProjectProperties;
 
         [ImportingConstructor]
-        public UnconfiguredProjectCommonServices(UnconfiguredProject project,  Lazy<IProjectThreadingService> threadingService,
+        public UnconfiguredProjectCommonServices(UnconfiguredProject project, Lazy<IProjectThreadingService> threadingService,
                                                  ActiveConfiguredProject<ConfiguredProject> activeConfiguredProject, ActiveConfiguredProject<ProjectProperties> activeConfiguredProjectProperties,
                                                  Lazy<IProjectAccessor> projectAccessor)
         {

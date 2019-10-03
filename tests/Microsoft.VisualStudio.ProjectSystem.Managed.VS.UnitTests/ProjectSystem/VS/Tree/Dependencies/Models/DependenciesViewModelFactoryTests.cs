@@ -2,10 +2,8 @@
 
 using System;
 using System.Collections.Generic;
-
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
-
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
@@ -17,9 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             var project = UnconfiguredProjectFactory.Create();
             var targetFramework = new TargetFramework(moniker: "tFm1");
-            var targetedSnapshot = ITargetedDependenciesSnapshotFactory.Implement(
-                    hasUnresolvedDependency: false,
-                    targetFramework: targetFramework);
+            var targetedSnapshot = TargetedDependenciesSnapshotFactory.ImplementHasUnresolvedDependency(hasUnresolvedDependency: false, targetFramework);
 
             var factory = new DependenciesViewModelFactory(project);
 
@@ -38,9 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             var project = UnconfiguredProjectFactory.Create();
             var targetFramework = new TargetFramework(moniker: "tFm1");
-            var targetedSnapshot = ITargetedDependenciesSnapshotFactory.Implement(
-                    hasUnresolvedDependency: true,
-                    targetFramework: targetFramework);
+            var targetedSnapshot = TargetedDependenciesSnapshotFactory.ImplementHasUnresolvedDependency(hasUnresolvedDependency: true, targetFramework);
 
             var factory = new DependenciesViewModelFactory(project);
 

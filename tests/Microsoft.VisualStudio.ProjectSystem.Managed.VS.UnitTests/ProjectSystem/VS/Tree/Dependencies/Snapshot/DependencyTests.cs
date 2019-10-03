@@ -3,10 +3,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
-
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
@@ -154,25 +152,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         }
 
         [Fact]
-        public void Dependency_EqualsAndGetHashCode()
-        {
-            var dependencyModel1 = new TestDependencyModel { ProviderType = "providerType", Id = "someId1" };
-            var dependencyModel2 = new TestDependencyModel { ProviderType = "providerType", Id = "someId1"};
-            var dependencyModel3 = new TestDependencyModel { ProviderType = "providerType", Id = "someId_other" };
-
-            var targetFramework = new TargetFramework("tfm1");
-            var dependency1 = new Dependency(dependencyModel1, targetFramework, @"C:\Foo\Project.csproj");
-            var dependency2 = new Dependency(dependencyModel2, targetFramework, @"C:\Foo\Project.csproj");
-            var dependency3 = new Dependency(dependencyModel3, targetFramework, @"C:\Foo\Project.csproj");
-
-            Assert.Equal(dependency1, dependency2);
-            Assert.NotEqual(dependency1, dependency3);
-            Assert.False(dependency1.Equals(other: null));
-            Assert.Equal(dependency1!.GetHashCode(), dependency2.GetHashCode());
-            Assert.NotEqual(dependency1.GetHashCode(), dependency3.GetHashCode());
-        }
-
-        [Fact]
         public void Dependency_SetProperties()
         {
             var dependencyModel = new TestDependencyModel { ProviderType = "providerType", Id = "someId" };
@@ -243,27 +222,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var dependency2 = new Dependency(dependencyModel2, targetFramework, projectPath);
             var dependency3 = new Dependency(dependencyModel3, targetFramework, projectPath);
 
-            var children = new IDependency[] { dependency1, dependency2, dependency3 }.ToImmutableDictionary(d => d.Id);
-
-            var mockSnapshot = ITargetedDependenciesSnapshotFactory.ImplementMock(targetFramework: targetFramework);
-            mockSnapshot.Setup(x => x.DependenciesWorld).Returns(children);
-
             AssertEx.CollectionLength(dependency1.DependencyIDs, 2);
             Assert.Contains(dependency1.DependencyIDs, x => x.Equals(dependency2.Id));
             Assert.Contains(dependency1.DependencyIDs, x => x.Equals(dependency3.Id));
-        }
-
-        [Fact]
-        public void Dependency_HasUnresolvedDependency()
-        {
-            var dependencyModel = new TestDependencyModel { ProviderType = "providerType", Id = "someId1", Resolved = true };
-
-            var mockSnapshot = ITargetedDependenciesSnapshotFactory.ImplementHasUnresolvedDependency(@"tfm1\providerType\someid1", hasUnresolvedDependency: true);
-
-            var dependency = new Dependency(dependencyModel, new TargetFramework("tfm1"), @"C:\Foo\Project.csproj");
-
-            Assert.True(dependency.HasUnresolvedDependency(mockSnapshot));
-            Assert.True(dependency.IsOrHasUnresolvedDependency(mockSnapshot));
         }
 
         [Fact]

@@ -7,7 +7,6 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
-
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.References;
@@ -18,7 +17,6 @@ using Microsoft.VisualStudio.Settings;
 using Microsoft.VisualStudio.Setup.Configuration;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
-
 using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
@@ -144,7 +142,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             // is true for both add and a reload of an unloaded project
             if (SolutionOpen && fAdded == 1 && CompatibilityLevelWarnedForCurrentSolution != CompatibilityLevel.NotSupported)
             {
-                UnconfiguredProject project = pHierarchy.AsUnconfiguredProject();
+                UnconfiguredProject? project = pHierarchy.AsUnconfiguredProject();
                 if (project != null)
                 {
                     _threadHandling.Value.RunAndForget(async () =>
@@ -331,7 +329,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             if (project.Capabilities.AppliesTo($"{ProjectCapability.DotNet} & {ProjectCapability.PackageReferences}"))
             {
-                IProjectProperties properties = project.Services.ActiveConfiguredProjectProvider.ActiveConfiguredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
+                ConfiguredProject? activeConfiguredProject = project.Services.ActiveConfiguredProjectProvider.ActiveConfiguredProject;
+                Assumes.NotNull(activeConfiguredProject);
+                IProjectProperties properties = activeConfiguredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
                 string tfm = await properties.GetEvaluatedPropertyValueAsync("TargetFrameworkMoniker");
                 if (!string.IsNullOrEmpty(tfm))
                 {
@@ -343,7 +343,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     else if (fw.Identifier.Equals(".NETFramework", StringComparison.OrdinalIgnoreCase))
                     {
                         // The interesting case here is Asp.Net Core on full framework
-                        IImmutableSet<IUnresolvedPackageReference> pkgReferences = await project.Services.ActiveConfiguredProjectProvider.ActiveConfiguredProject.Services.PackageReferences.GetUnresolvedReferencesAsync();
+                        IImmutableSet<IUnresolvedPackageReference> pkgReferences = await activeConfiguredProject.Services.PackageReferences.GetUnresolvedReferencesAsync();
 
                         // Look through the package references
                         foreach (IUnresolvedPackageReference pkgRef in pkgReferences)
@@ -558,7 +558,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         // Unused IVsSolutionLoadEvents
-        
+
         public int OnAfterLoadProjectBatch(bool fIsBackgroundIdleBatch)
         {
             return HResult.OK;

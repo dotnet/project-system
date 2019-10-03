@@ -2,10 +2,9 @@
 
 using System;
 using System.ComponentModel.Composition;
+using System.IO;
 using System.Threading.Tasks;
-
 using EnvDTE80;
-
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
@@ -33,16 +32,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// Create a file with the given template file and add it to the parent node.
         /// </summary>
         /// <param name="templateFile">The name of the template zip file.</param>
-        /// <param name="parentDocumentMoniker">The path to the node to which the new file will be added.</param>
-        /// <param name="fileName">The name of the file to be created.</param>
+        /// <param name="path">The path to the file to be created.</param>
         /// <returns>true if file is added successfully.</returns>
-        public async Task<bool> CreateFileAsync(string templateFile, string parentDocumentMoniker, string fileName)
+        public async Task<bool> CreateFileAsync(string templateFile, string path)
         {
             Requires.NotNull(templateFile, nameof(templateFile));
-            Requires.NotNullOrEmpty(parentDocumentMoniker, nameof(parentDocumentMoniker));
-            Requires.NotNull(fileName, nameof(fileName));
+            Requires.NotNullOrEmpty(path, nameof(path));
 
-            string templateLanguage = await GetTemplateLanguageAsync();
+            string directoryName = Path.GetDirectoryName(path);
+            string fileName = Path.GetFileName(path);
+
+            string? templateLanguage = await GetTemplateLanguageAsync();
             if (string.IsNullOrEmpty(templateLanguage))
                 return false;
 
@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             if (templateFilePath != null)
             {
-                HierarchyId parentId = _projectVsServices.VsProject.GetHierarchyId(parentDocumentMoniker);
+                HierarchyId parentId = _projectVsServices.VsProject.GetHierarchyId(directoryName);
                 var result = new VSADDRESULT[1];
                 string[] files = new string[] { templateFilePath };
                 _projectVsServices.VsProject.AddItemWithSpecific(parentId, VSADDITEMOPERATION.VSADDITEMOP_RUNWIZARD, fileName, (uint)files.Length, files, IntPtr.Zero, 0, Guid.Empty, null, Guid.Empty, result);
@@ -66,11 +66,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return false;
         }
 
-        private async Task<string> GetTemplateLanguageAsync()
+        private async Task<string?> GetTemplateLanguageAsync()
         {
             ConfigurationGeneral general = await _properties.GetConfigurationGeneralPropertiesAsync();
 
-            return (string)await general.TemplateLanguage.GetValueAsync();
+            return (string?)await general.TemplateLanguage.GetValueAsync();
         }
     }
 }

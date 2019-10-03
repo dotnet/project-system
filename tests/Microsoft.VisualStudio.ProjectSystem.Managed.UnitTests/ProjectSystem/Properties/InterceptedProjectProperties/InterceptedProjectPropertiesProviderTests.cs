@@ -2,7 +2,6 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
@@ -38,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             var properties = interceptedProvider.GetProperties("path/to/project.testproj", null, null);
 
             // Verify interception for GetEvaluatedPropertyValueAsync.
-            var propertyValue = await properties.GetEvaluatedPropertyValueAsync(MockPropertyName);
+            string? propertyValue = await properties.GetEvaluatedPropertyValueAsync(MockPropertyName);
             Assert.True(getEvaluatedInvoked);
 
             // Verify interception for GetUnevaluatedPropertyValueAsync.
@@ -78,7 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             var properties = interceptedProvider.GetCommonProperties();
 
             // Verify interception for GetEvaluatedPropertyValueAsync.
-            var propertyValue = await properties.GetEvaluatedPropertyValueAsync(MockPropertyName);
+            string? propertyValue = await properties.GetEvaluatedPropertyValueAsync(MockPropertyName);
             Assert.True(getEvaluatedInvoked);
 
             // Verify interception for GetUnevaluatedPropertyValueAsync.
@@ -118,7 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             var properties = interceptedProvider.GetCommonProperties(projectInstance: null);
 
             // Verify interception for GetEvaluatedPropertyValueAsync.
-            var propertyValue = await properties.GetEvaluatedPropertyValueAsync(MockPropertyName);
+            string? propertyValue = await properties.GetEvaluatedPropertyValueAsync(MockPropertyName);
             Assert.True(getEvaluatedInvoked);
 
             // Verify interception for GetUnevaluatedPropertyValueAsync.

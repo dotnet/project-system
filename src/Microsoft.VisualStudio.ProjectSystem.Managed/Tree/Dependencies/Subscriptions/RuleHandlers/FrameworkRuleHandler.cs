@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
-
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
@@ -23,8 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 icon: ManagedImageMonikers.Framework,
                 expandedIcon: ManagedImageMonikers.Framework,
                 unresolvedIcon: ManagedImageMonikers.FrameworkWarning,
-                unresolvedExpandedIcon: ManagedImageMonikers.FrameworkWarning),
-            DependencyTreeFlags.FrameworkSubTreeRootNode);
+                unresolvedExpandedIcon: ManagedImageMonikers.FrameworkWarning));
 
         public FrameworkRuleHandler()
             : base(FrameworkReference.SchemaName, ResolvedFrameworkReference.SchemaName)

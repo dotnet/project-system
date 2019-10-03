@@ -2,10 +2,8 @@
 
 using System;
 using System.Threading.Tasks;
-
 using Microsoft.VisualStudio.ProjectSystem.Input;
-using Microsoft.VisualStudio.Shell;
-
+using Microsoft.VisualStudio.ProjectSystem.VS.UI;
 using Task = System.Threading.Tasks.Task;
 
 #nullable disable
@@ -14,25 +12,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 {
     internal abstract class AbstractAddItemCommand : AbstractSingleNodeProjectCommand
     {
-        private readonly IPhysicalProjectTree _projectTree;
-        private readonly IUnconfiguredProjectVsServices _projectVsServices;
-        private readonly SVsServiceProvider _serviceProvider;
+        private readonly IAddItemDialogService _addItemDialogService;
         private readonly OrderAddItemHintReceiver _orderAddItemHintReceiver;
 
         protected AbstractAddItemCommand(
-            IPhysicalProjectTree projectTree,
-            IUnconfiguredProjectVsServices projectVsServices,
-            SVsServiceProvider serviceProvider,
+            IAddItemDialogService addItemDialogService,
             OrderAddItemHintReceiver orderAddItemHintReceiver)
         {
-            Requires.NotNull(projectTree, nameof(projectTree));
-            Requires.NotNull(projectVsServices, nameof(projectVsServices));
-            Requires.NotNull(serviceProvider, nameof(serviceProvider));
+            Requires.NotNull(addItemDialogService, nameof(addItemDialogService));
             Requires.NotNull(orderAddItemHintReceiver, nameof(orderAddItemHintReceiver));
 
-            _projectTree = projectTree;
-            _projectVsServices = projectVsServices;
-            _serviceProvider = serviceProvider;
+            _addItemDialogService = addItemDialogService;
             _orderAddItemHintReceiver = orderAddItemHintReceiver;
         }
 
@@ -40,19 +30,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 
         protected abstract Task OnAddingNodesAsync(IProjectTree nodeToAddTo);
 
-        protected Task ShowAddNewFileDialogAsync(IProjectTree target)
-        {
-            return HACK_AddItemHelper.ShowAddNewFileDialogAsync(_projectTree, _projectVsServices, _serviceProvider, target);
-        }
-
-        protected Task ShowAddExistingFilesDialogAsync(IProjectTree target)
-        {
-            return HACK_AddItemHelper.ShowAddExistingFilesDialogAsync(_projectTree, _projectVsServices, _serviceProvider, target);
-        }
-
         protected override Task<CommandStatusResult> GetCommandStatusAsync(IProjectTree node, bool focused, string commandText, CommandStatus progressiveStatus)
         {
-            if (_projectTree.NodeCanHaveAdditions(GetNodeToAddTo(node)) && CanAdd(node))
+            if (_addItemDialogService.CanAddNewOrExistingItemTo(GetNodeToAddTo(node)) && CanAdd(node))
             {
                 return GetCommandStatusResult.Handled(commandText, CommandStatus.Enabled);
             }

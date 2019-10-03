@@ -8,7 +8,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
-
 using Microsoft.Build.Execution;
 using Microsoft.VisualStudio.Build;
 using Microsoft.VisualStudio.Composition;
@@ -107,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         }
 
         /// <inheritdoc />
-        public IDependenciesSnapshot CurrentSnapshot => _snapshot.Current;
+        public DependenciesSnapshot CurrentSnapshot => _snapshot.Current;
 
         /// <inheritdoc />
         IReceivableSourceBlock<SnapshotChangedEventArgs> IDependenciesSnapshotProvider.SnapshotChangedSource => _snapshot.Source;
@@ -160,9 +159,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             }
         }
 
-#pragma warning disable RS0030 // symbol ProjectAutoLoad is banned
         [ProjectAutoLoad(ProjectLoadCheckpoint.ProjectFactoryCompleted)]
-#pragma warning restore RS0030 // symbol ProjectAutoLoad is banned
         [AppliesTo(ProjectCapability.DependenciesTree)]
         public Task OnProjectFactoryCompletedAsync()
         {
@@ -190,8 +187,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 {
                     return;
                 }
-
-                await InitializeAsync();
 
                 await OnConfiguredProjectEvaluatedAsync(e);
             }
@@ -297,6 +292,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             ITargetFramework? activeTargetFramework,
             CancellationToken token)
         {
+            Assumes.NotNull(_commonServices.Project.FullPath);
+
             IImmutableSet<string>? projectItemSpecs = GetProjectItemSpecs(catalogs?.Project.ProjectInstance.Items);
 
             _snapshot.TryUpdate(

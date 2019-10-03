@@ -2,7 +2,6 @@
 
 using System;
 using System.Threading.Tasks;
-
 using Microsoft.Build.Evaluation;
 using Microsoft.VisualStudio.ProjectSystem.Input;
 using Microsoft.VisualStudio.Shell;
@@ -36,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         protected override Task<CommandStatusResult> GetCommandStatusAsync(IProjectTree node, bool focused, string? commandText, CommandStatus progressiveStatus)
         {
             return GetCommandStatusResult.Handled(
-                commandText, 
+                commandText,
                 CanMove(node) ? CommandStatus.Enabled : CommandStatus.Ninched);
         }
 

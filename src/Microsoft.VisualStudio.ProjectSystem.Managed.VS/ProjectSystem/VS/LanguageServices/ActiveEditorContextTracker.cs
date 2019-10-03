@@ -4,11 +4,9 @@ using System;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
-
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.VisualStudio.Threading;
-
 using HierarchyId = Microsoft.VisualStudio.Shell.HierarchyId;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices

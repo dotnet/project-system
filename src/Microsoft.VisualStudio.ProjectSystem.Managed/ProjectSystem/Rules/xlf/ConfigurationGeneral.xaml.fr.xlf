@@ -84,7 +84,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
         <source>Whether the compiler should optimize output.</source>
-        <target state="needs-review-translation">Le compilateur doit-il optimiser la sortie ?</target>
+        <target state="translated">Indique si le compilateur doit optimiser la sortie.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|TargetRuntime.AppHost|DisplayName">
@@ -114,47 +114,47 @@
       </trans-unit>
       <trans-unit id="StringListProperty|AvailablePlatforms|DisplayName">
         <source>Available Platforms</source>
-        <target state="new">Available Platforms</target>
+        <target state="translated">Plateformes disponibles</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|BaseIntermediateOutputPath|DisplayName">
         <source>Base Intermediate Output Path</source>
-        <target state="new">Base Intermediate Output Path</target>
+        <target state="translated">Chemin de sortie intermédiaire de base</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Name|DisplayName">
         <source>Name</source>
-        <target state="new">Name</target>
+        <target state="translated">Nom</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|DisplayName">
         <source>Optimize</source>
-        <target state="new">Optimize</target>
+        <target state="translated">Optimiser</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|OutputName|DisplayName">
         <source>Output Name</source>
-        <target state="new">Output Name</target>
+        <target state="translated">Nom de la sortie</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|OutputPath|DisplayName">
         <source>Output Path</source>
-        <target state="new">Output Path</target>
+        <target state="translated">Chemin de sortie</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|OutputType|DisplayName">
         <source>Output Type</source>
-        <target state="new">Output Type</target>
+        <target state="translated">Type de sortie</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|TargetPath|DisplayName">
         <source>Target Path</source>
-        <target state="new">Target Path</target>
+        <target state="translated">Chemin cible</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|AssemblyName|DisplayName">
         <source>Assembly Name</source>
-        <target state="new">Assembly Name</target>
+        <target state="translated">Nom de l'assembly</target>
         <note />
       </trans-unit>
     </body>

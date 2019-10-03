@@ -2,7 +2,6 @@
 
 using System;
 using System.ComponentModel.Design;
-
 using Microsoft.VisualStudio.Shell;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands

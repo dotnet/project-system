@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Immutable;
-
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.RuleHandlers;
@@ -12,28 +11,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
     internal static class IDependencyExtensions
     {
         /// <summary>
-        /// Specifies if there is unresolved child somewhere in the dependency graph
-        /// </summary>
-        public static bool HasUnresolvedDependency(this IDependency self, ITargetedDependenciesSnapshot snapshot)
-        {
-            return snapshot.CheckForUnresolvedDependencies(self);
-        }
-
-        /// <summary>
-        /// Returns true if this reference itself is unresolved or it has at least 
-        /// one unresolved reference somewhere in the dependency chain.
-        /// </summary>
-        public static bool IsOrHasUnresolvedDependency(this IDependency self, ITargetedDependenciesSnapshot snapshot)
-        {
-            return !self.Resolved || self.HasUnresolvedDependency(snapshot);
-        }
-
-        /// <summary>
         /// Returns a IDependencyViewModel for given dependency.
         /// </summary>
-        public static IDependencyViewModel ToViewModel(this IDependency self, ITargetedDependenciesSnapshot snapshot)
+        public static IDependencyViewModel ToViewModel(this IDependency dependency, TargetedDependenciesSnapshot snapshot)
         {
-            return new DependencyViewModel(self, hasUnresolvedDependency: self.IsOrHasUnresolvedDependency(snapshot));
+            bool hasUnresolvedDependency = !dependency.Resolved || snapshot.ShouldAppearUnresolved(dependency);
+
+            return new DependencyViewModel(dependency, hasUnresolvedDependency: hasUnresolvedDependency);
         }
 
         private sealed class DependencyViewModel : IDependencyViewModel

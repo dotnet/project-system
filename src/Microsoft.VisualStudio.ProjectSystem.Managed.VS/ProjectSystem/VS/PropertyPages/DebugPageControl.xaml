@@ -48,6 +48,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Label
                 Grid.Row="0"
@@ -415,8 +416,20 @@
                 IsEnabled="{Binding Path=IsProfileSelected, Mode=OneWay}"
                 VerticalContentAlignment="Center"
                 Content="{x:Static Member=local:PropertyPageResources.chkNativeCodeDebuggingText}"/>
+            <CheckBox
+                Grid.Row="9"
+                Grid.Column="0"
+                x:Uid="chkSqlCodeDebugging"
+                x:Name="chkSqlCodeDebugging"
+                Visibility="{Binding SupportSqlDebugging, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
+                IsChecked="{Binding SqlDebugging, Mode=TwoWay}"
+                Margin="9,7,3,7"
+                VerticalAlignment="Center"
+                IsEnabled="{Binding Path=IsProfileSelected, Mode=OneWay}"
+                VerticalContentAlignment="Center"
+                Content="{x:Static Member=local:PropertyPageResources.chkSqlCodeDebuggingText}"/>
             <!-- Where the custom control is placed for the active provider -->
-            <ContentPresenter Grid.Row="9" Grid.Column="0"  Grid.ColumnSpan="3" Content="{Binding ActiveProviderUserControl, Mode=OneWay}" />
+            <ContentPresenter Grid.Row="10" Grid.Column="0"  Grid.ColumnSpan="3" Content="{Binding ActiveProviderUserControl, Mode=OneWay}" />
         </Grid>
     </Grid>
 </local:PropertyPageControl>

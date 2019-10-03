@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
-
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 
@@ -72,12 +71,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <summary>
         /// Get the value of a property.
         /// </summary>
-        public override async Task<string?> GetEvaluatedPropertyValueAsync(string propertyName)
+        public override async Task<string> GetEvaluatedPropertyValueAsync(string propertyName)
         {
             if (_attributeValueProviderMap.ContainsKey(propertyName) &&
                 !await IsAssemblyInfoPropertyGeneratedByBuild(propertyName))
             {
-                return await GetPropertyValueFromSourceAttributeAsync(propertyName);
+                return (await GetPropertyValueFromSourceAttributeAsync(propertyName)) ?? "";
             }
 
             return await base.GetEvaluatedPropertyValueAsync(propertyName);

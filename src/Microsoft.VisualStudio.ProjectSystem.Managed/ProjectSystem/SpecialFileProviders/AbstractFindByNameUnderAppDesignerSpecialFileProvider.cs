@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
     ///     that find their special file by file name under the AppDesigner folder, falling back 
     ///     to the root folder if it doesn't exist.
     /// </summary>
-    internal class AbstractFindByNameUnderAppDesignerSpecialFileProvider : AbstractFindByNameSpecialFileProvider2
+    internal class AbstractFindByNameUnderAppDesignerSpecialFileProvider : AbstractFindByNameSpecialFileProvider
     {
         private readonly ISpecialFilesManager _specialFilesManager;
 
@@ -65,11 +65,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             return _specialFilesManager.GetFileAsync(SpecialFiles.AppDesigner, flags);
         }
 
-        protected override async Task CreateFileAsync(string path)
+        protected sealed override async Task CreateFileAsync(string path)
         {
             await EnsureAppDesignerFolder();
 
-            await base.CreateFileAsync(path);
+            await CreateFileCoreAsync(path);
+        }
+
+        protected virtual Task CreateFileCoreAsync(string path)
+        {
+            return base.CreateFileAsync(path);
         }
 
         private Task EnsureAppDesignerFolder()

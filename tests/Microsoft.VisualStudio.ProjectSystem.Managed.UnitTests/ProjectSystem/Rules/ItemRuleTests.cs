@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
-
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Rules

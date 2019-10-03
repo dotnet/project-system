@@ -3,13 +3,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using Moq;
-
 using VSLangProj;
-
 using VSLangProj110;
-
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation

@@ -6,11 +6,8 @@ using System.ComponentModel.Composition;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks.Dataflow;
-
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
-
 using NuGet.SolutionRestoreManager;
-
 using RestoreInfo = Microsoft.VisualStudio.ProjectSystem.IProjectVersionedValue<Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.PackageRestoreUnconfiguredInput>;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
@@ -44,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             var disposables = new DisposableBag();
 
             var restoreConfiguredInputSource = new UnwrapCollectionChainedProjectValueDataSource<IReadOnlyCollection<ConfiguredProject>, PackageRestoreConfiguredInput>(
-                _project.Services, 
+                _project.Services,
                 projects => projects.Select(project => project.Services.ExportProvider.GetExportedValueOrDefault<IPackageRestoreConfiguredInputDataSource>())
                                     .Where(dataSource => dataSource != null)    // Filter out those without PackageReference
                                     .Select(DropConfiguredProjectVersions),

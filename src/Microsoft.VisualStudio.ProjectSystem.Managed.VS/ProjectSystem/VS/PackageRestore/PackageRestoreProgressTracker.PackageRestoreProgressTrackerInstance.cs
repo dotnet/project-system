@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
-
 using Microsoft.VisualStudio.ProjectSystem.OperationProgress;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
@@ -94,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
                 return lastEvaluationWriteTime >= restoreData.ProjectAssetsLastWriteTimeUtc;
             }
-            
+
             private static DateTime GetLastWriteTimeUtc(string filePath, IProjectSnapshot projectSnapshot)
             {
                 var projectSnapshot2 = (IProjectSnapshot2)projectSnapshot;

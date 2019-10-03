@@ -1,11 +1,8 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
-
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters;
-
 using Moq;
-
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
@@ -80,20 +77,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             var targetFramework = new TargetFramework(moniker: "tfm1");
 
-            var dependency = new TestDependency
+            var unresolvedChildDependency = new TestDependency
             {
-                Id = "dependency1",
-                TopLevel = true,
-                Resolved = true,
-                Flags = DependencyTreeFlags.ProjectDependency.Union(DependencyTreeFlags.Resolved),
+                Id = "unresolvedChildDependency",
+                TopLevel = false,
+                Resolved = false,
+                Flags = DependencyTreeFlags.ProjectDependency + DependencyTreeFlags.Resolved,
                 TargetFramework = targetFramework,
                 FullPath = projectPath
             };
 
-            var targetedSnapshot = ITargetedDependenciesSnapshotFactory.Implement(hasUnresolvedDependency: true);
+            var resolvedDependency = new TestDependency
+            {
+                Id = "resolvedDependency",
+                TopLevel = true,
+                Resolved = true,
+                Flags = DependencyTreeFlags.ProjectDependency + DependencyTreeFlags.Resolved,
+                TargetFramework = targetFramework,
+                FullPath = projectPath,
+                DependencyIDs = ImmutableArray.Create(unresolvedChildDependency.Id)
+            };
+
+            var targetedSnapshot = TargetedDependenciesSnapshotFactory.ImplementFromDependencies(new [] { resolvedDependency, unresolvedChildDependency });
 
             var aggregateSnapshotProvider = new Mock<IAggregateDependenciesSnapshotProvider>(MockBehavior.Strict);
-            aggregateSnapshotProvider.Setup(x => x.GetSnapshot(dependency)).Returns(targetedSnapshot);
+            aggregateSnapshotProvider.Setup(x => x.GetSnapshot(resolvedDependency)).Returns(targetedSnapshot);
 
             var worldBuilder = ImmutableDictionary<string, IDependency>.Empty.ToBuilder();
 
@@ -103,15 +111,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             filter.BeforeAddOrUpdate(
                 null!,
-                dependency,
+                resolvedDependency,
                 null!,
                 null,
                 context);
 
             // Accepts unresolved version
             var acceptedDependency = context.GetResult(filter);
-            acceptedDependency!.AssertEqualTo(
-                dependency.ToUnresolved(ProjectReference.SchemaName));
+            DependencyAssert.Equal(resolvedDependency.ToUnresolved(ProjectReference.SchemaName), acceptedDependency!);
 
             // No other changes made
             Assert.False(context.Changed);
@@ -134,7 +141,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             };
 
             var aggregateSnapshotProvider = new Mock<IAggregateDependenciesSnapshotProvider>(MockBehavior.Strict);
-            aggregateSnapshotProvider.Setup(x => x.GetSnapshot(dependency)).Returns((ITargetedDependenciesSnapshot?) null);
+            aggregateSnapshotProvider.Setup(x => x.GetSnapshot(dependency)).Returns((TargetedDependenciesSnapshot?) null);
 
             var worldBuilder = ImmutableDictionary<string, IDependency>.Empty.ToBuilder();
 
@@ -164,7 +171,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             const string projectPath = @"c:\project\project.csproj";
 
             var targetFramework = new TargetFramework(moniker: "tfm1");
-            var targetedSnapshot = ITargetedDependenciesSnapshotFactory.Implement(hasUnresolvedDependency: false);
+            var targetedSnapshot = TargetedDependenciesSnapshotFactory.ImplementHasUnresolvedDependency(false);
 
             var dependency = new TestDependency
             {

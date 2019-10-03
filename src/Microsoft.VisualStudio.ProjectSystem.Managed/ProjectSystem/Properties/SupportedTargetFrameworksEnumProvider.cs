@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
-
 using Microsoft.Build.Framework.XamlTypes;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
@@ -69,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             /// </summary>
             /// <param name="userSuppliedValue"></param>
             /// <returns></returns>
-            public Task<IEnumValue> TryCreateEnumValueAsync(string userSuppliedValue)
+            public Task<IEnumValue?> TryCreateEnumValueAsync(string userSuppliedValue)
             {
                 throw new NotImplementedException();
             }

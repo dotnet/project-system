@@ -5228,7 +5228,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         If cultureInfo IsNot Nothing Then
                             isLocalizedFileName = True
                         End If
-                    Catch ex As Exception When ReportWithoutCrash(ex, NameOf(IsLocalizedResXFile), NameOf(ResourceEditorView))
+                    Catch ex As Exception
                     End Try
                 End If
             End If

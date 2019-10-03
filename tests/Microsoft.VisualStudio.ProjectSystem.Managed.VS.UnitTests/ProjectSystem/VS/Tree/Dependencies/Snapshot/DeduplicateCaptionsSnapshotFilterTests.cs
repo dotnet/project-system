@@ -1,9 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
-
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters;
-
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
@@ -102,13 +100,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             // The filtered dependency had its caption changed to its alias
             var dependencyAfter = context.GetResult(filter);
-            dependencyAfter!.AssertEqualTo(
-                new TestDependency { ClonePropertiesFrom = dependency, Caption = "caption (originalItemSpec1)" });
+            DependencyAssert.Equal(new TestDependency { ClonePropertiesFrom = dependency, Caption = "caption (originalItemSpec1)" }, dependencyAfter!);
 
             // The other dependency had its caption changed to its alias
             Assert.True(context.TryGetDependency(otherDependency.Id, out IDependency otherDependencyAfter));
-            otherDependencyAfter.AssertEqualTo(
-                new TestDependency { ClonePropertiesFrom = otherDependency, Caption = "caption (originalItemSpec2)" });
+            DependencyAssert.Equal(new TestDependency { ClonePropertiesFrom = otherDependency, Caption = "caption (originalItemSpec2)" }, otherDependencyAfter);
         }
 
         [Fact]
@@ -158,13 +154,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             // The filtered dependency had its caption changed to its alias
             var dependencyAfter = context.GetResult(filter);
-            dependencyAfter!.AssertEqualTo(
-                new TestDependency { ClonePropertiesFrom = dependency, Caption = "caption (originalItemSpec1)" });
+            DependencyAssert.Equal(new TestDependency { ClonePropertiesFrom = dependency, Caption = "caption (originalItemSpec1)" }, dependencyAfter!);
 
             // The other dependency had its caption changed to its alias
             Assert.True(context.TryGetDependency(otherDependency.Id, out IDependency otherDependencyAfter));
-            otherDependencyAfter.AssertEqualTo(
-                new TestDependency { ClonePropertiesFrom = otherDependency, Caption = "caption (originalItemSpec2)" });
+            DependencyAssert.Equal(new TestDependency { ClonePropertiesFrom = otherDependency, Caption = "caption (originalItemSpec2)" }, otherDependencyAfter);
         }
 
         [Fact]

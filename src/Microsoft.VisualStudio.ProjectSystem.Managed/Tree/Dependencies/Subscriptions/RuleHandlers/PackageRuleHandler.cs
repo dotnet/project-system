@@ -2,7 +2,6 @@
 
 using System;
 using System.ComponentModel.Composition;
-
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
@@ -24,8 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 icon: ManagedImageMonikers.NuGetGrey,
                 expandedIcon: ManagedImageMonikers.NuGetGrey,
                 unresolvedIcon: ManagedImageMonikers.NuGetGreyWarning,
-                unresolvedExpandedIcon: ManagedImageMonikers.NuGetGreyWarning),
-            DependencyTreeFlags.NuGetSubTreeRootNode);
+                unresolvedExpandedIcon: ManagedImageMonikers.NuGetGreyWarning));
 
         private readonly ITargetFrameworkProvider _targetFrameworkProvider;
 

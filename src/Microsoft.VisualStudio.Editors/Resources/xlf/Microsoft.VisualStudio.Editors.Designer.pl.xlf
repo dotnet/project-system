@@ -2784,7 +2784,7 @@ Czy chcesz zaktualizować wartość w pliku settings?</target>
       </trans-unit>
       <trans-unit id="PPG_CodeAnalysisTitle">
         <source>Code Analysis</source>
-        <target state="new">Code Analysis</target>
+        <target state="translated">Analiza kodu</target>
         <note />
       </trans-unit>
     </body>

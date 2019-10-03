@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             RestoreInfo = restoreInfo;
             ConfiguredInputs = configuredInputs;
         }
-        
+
         /// <summary>
         ///     Gets the restore information produced in this input. Can be <see langword="null"/> if
         ///     the project has no active configurations.

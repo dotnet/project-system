@@ -2,7 +2,6 @@
 
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
-
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
@@ -32,9 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             _projectFaultHandler = projectFaultHandler;
         }
 
-#pragma warning disable RS0030 // Do not used banned APIs
         [ProjectAutoLoad(startAfter: ProjectLoadCheckpoint.AfterLoadInitialConfiguration, completeBy: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
-#pragma warning restore RS0030
         [AppliesTo(ProjectCapability.DotNetLanguageService)]
         public Task InitializeAsync()
         {

@@ -7,14 +7,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
     /// <summary>
     ///     Provides a <see cref="ISpecialFileProvider"/> that handles the 'licenses.licx' file; 
     ///     a file that contains a list of licensed (typically Windows Forms) components used by
-    ///     a project.  
+    ///     a project and is typically found under the 'AppDesigner' folder.
     /// </summary>
     [ExportSpecialFileProvider(SpecialFiles.Licenses)]
     [AppliesTo(ProjectCapability.DotNet)]
     internal class LicensesSpecialFileProvider : AbstractFindByNameUnderAppDesignerSpecialFileProvider
     {
         [ImportingConstructor]
-        public LicensesSpecialFileProvider(ISpecialFilesManager specialFilesManager, IPhysicalProjectTree projectTree) 
+        public LicensesSpecialFileProvider(ISpecialFilesManager specialFilesManager, IPhysicalProjectTree projectTree)
             : base("licenses.licx", specialFilesManager, projectTree)
         {
         }

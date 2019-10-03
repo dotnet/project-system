@@ -6,7 +6,6 @@ using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
-
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
@@ -30,8 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 icon: KnownMonikers.Application,
                 expandedIcon: KnownMonikers.Application,
                 unresolvedIcon: ManagedImageMonikers.ApplicationWarning,
-                unresolvedExpandedIcon: ManagedImageMonikers.ApplicationWarning),
-            DependencyTreeFlags.ProjectSubTreeRootNode);
+                unresolvedExpandedIcon: ManagedImageMonikers.ApplicationWarning));
 
         public override string ProviderType => ProviderTypeString;
 
@@ -103,8 +101,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         /// </param>
         /// <param name="token"></param>
         private void OnOtherProjectDependenciesChanged(
-            IDependenciesSnapshot thisProjectSnapshot,
-            IDependenciesSnapshot otherProjectSnapshot,
+            DependenciesSnapshot thisProjectSnapshot,
+            DependenciesSnapshot otherProjectSnapshot,
             bool shouldBeResolved,
             CancellationToken token)
         {
@@ -117,7 +115,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             string otherProjectPath = otherProjectSnapshot.ProjectPath;
 
-            foreach ((ITargetFramework _, ITargetedDependenciesSnapshot targetedDependencies) in thisProjectSnapshot.DependenciesByTargetFramework)
+            foreach ((ITargetFramework _, TargetedDependenciesSnapshot targetedDependencies) in thisProjectSnapshot.DependenciesByTargetFramework)
             {
                 foreach (IDependency dependency in targetedDependencies.TopLevelDependencies)
                 {

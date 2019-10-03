@@ -4,7 +4,6 @@ using System;
 using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
-
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.Shell.Interop;
 
@@ -43,9 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _launchProviders = launchProviders;
         }
 
-#pragma warning disable RS0030 // symbol ProjectAutoLoad is banned
         [ProjectAutoLoad(startAfter: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
-#pragma warning restore RS0030 // symbol ProjectAutoLoad is banned
         [AppliesTo(ProjectCapability.DotNet)]
         public Task InitializeAsync()
         {

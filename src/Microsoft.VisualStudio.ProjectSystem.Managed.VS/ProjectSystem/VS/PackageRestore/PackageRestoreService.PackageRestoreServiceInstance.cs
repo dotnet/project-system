@@ -5,12 +5,10 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
-
 using Microsoft.Internal.Performance;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
 using Microsoft.VisualStudio.Threading;
-
 using NuGet.SolutionRestoreManager;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
@@ -114,7 +112,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
             private async Task NominateForRestoreAsync(ProjectRestoreInfo restoreInfo, CancellationToken cancellationToken)
             {
-                RestoreLogger.BeginNominateRestore(_logger, _project.FullPath, restoreInfo);
+                RestoreLogger.BeginNominateRestore(_logger, _project.FullPath!, restoreInfo);
 
                 try
                 {
@@ -124,7 +122,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 {
                     CodeMarkers.Instance.CodeMarker(CodeMarkerTimerId.PerfPackageRestoreEnd);
 
-                    RestoreLogger.EndNominateRestore(_logger, _project.FullPath);
+                    RestoreLogger.EndNominateRestore(_logger, _project.FullPath!);
                 }
             }
 

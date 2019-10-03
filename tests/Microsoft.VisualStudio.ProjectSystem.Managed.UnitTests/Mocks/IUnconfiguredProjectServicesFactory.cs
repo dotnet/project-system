@@ -6,7 +6,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IUnconfiguredProjectServicesFactory
     {
-        public static IUnconfiguredProjectServices Create(IProjectAsynchronousTasksService? asyncTaskService = null, IActiveConfiguredProjectProvider? activeConfiguredProjectProvider = null, IProjectConfigurationsService? projectConfigurationsService = null)
+        public static IUnconfiguredProjectServices Create(IProjectAsynchronousTasksService? asyncTaskService = null, IActiveConfiguredProjectProvider? activeConfiguredProjectProvider = null, IProjectConfigurationsService? projectConfigurationsService = null, IProjectService? projectService = null)
         {
             var mock = new Mock<IUnconfiguredProjectServices>();
 
@@ -26,6 +26,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
             {
                 mock.Setup(s => s.ProjectConfigurationsService)
                     .Returns(projectConfigurationsService);
+            }
+
+            if (projectService != null)
+            {
+                mock.Setup(s => s.ProjectService)
+                    .Returns(projectService);
             }
 
             return mock.Object;

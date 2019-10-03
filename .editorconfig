@@ -41,8 +41,8 @@ indent_size = 2
 dotnet_sort_system_directives_first = true
 dotnet_style_require_accessibility_modifiers = always:warning
 
-# Put a blank line between System.* and Microsoft.*
-dotnet_separate_import_directive_groups = true
+# No blank line between System.* and Microsoft.*
+dotnet_separate_import_directive_groups = false
 
 # Suggest more modern language features when available
 dotnet_style_object_initializer = true:suggestion

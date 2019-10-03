@@ -4,7 +4,6 @@ using System.Globalization;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-
 using Microsoft.VisualStudio.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
@@ -93,8 +92,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             {   // Excluded from project
 
                 return AddFileAsync(path);
-            } 
-            
+            }
+
             if (node.Flags.IsMissingOnDisk())
             {   // Project includes it, but missing from disk
 

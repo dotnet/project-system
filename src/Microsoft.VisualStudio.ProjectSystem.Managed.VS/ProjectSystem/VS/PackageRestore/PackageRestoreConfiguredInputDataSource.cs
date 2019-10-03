@@ -4,9 +4,7 @@ using System;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks.Dataflow;
-
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-
 using RestoreUpdate = Microsoft.VisualStudio.ProjectSystem.IProjectVersionedValue<Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.PackageRestoreConfiguredInput>;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
@@ -62,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             return transformBlock;
         }
 
-        private PackageRestoreConfiguredInput CreateRestoreInput(ProjectConfiguration projectConfiguration, IImmutableDictionary<string, IProjectRuleSnapshot> update)
+        private static PackageRestoreConfiguredInput CreateRestoreInput(ProjectConfiguration projectConfiguration, IImmutableDictionary<string, IProjectRuleSnapshot> update)
         {
             var restoreInfo = RestoreBuilder.ToProjectRestoreInfo(update);
 

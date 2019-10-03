@@ -4,12 +4,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Threading;
-
 using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
@@ -65,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// <summary>
         /// See <see cref="IDynamicEnumValuesGenerator"/>
         /// </summary>
-        public async Task<IEnumValue> TryCreateEnumValueAsync(string userSuppliedValue)
+        public async Task<IEnumValue?> TryCreateEnumValueAsync(string userSuppliedValue)
         {
             return (await _listedValues.GetValueAsync())
             .FirstOrDefault(v => LaunchProfile.IsSameProfileName(v.Name, userSuppliedValue));

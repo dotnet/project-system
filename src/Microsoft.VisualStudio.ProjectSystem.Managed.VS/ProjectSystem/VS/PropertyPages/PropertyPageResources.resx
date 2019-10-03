@@ -249,4 +249,7 @@
   <data name="chkNativeCodeDebuggingText" xml:space="preserve">
     <value>Enable native code debugging</value>
   </data>
+  <data name="chkSqlCodeDebuggingText" xml:space="preserve">
+    <value>Enable SQL Server debugging</value>
+  </data>
 </root>

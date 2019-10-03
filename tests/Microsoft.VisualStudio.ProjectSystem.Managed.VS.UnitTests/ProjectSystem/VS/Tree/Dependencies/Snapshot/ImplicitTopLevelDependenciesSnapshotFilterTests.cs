@@ -2,10 +2,8 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
-
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters;
-
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
@@ -147,7 +145,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             // Returns changed dependency
             Assert.NotNull(acceptedDependency);
             Assert.NotSame(dependency, acceptedDependency);
-            acceptedDependency!.AssertEqualTo(
+            DependencyAssert.Equal(
                 new TestDependency
                 {
                     ClonePropertiesFrom = dependency,
@@ -157,7 +155,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                         implicitIcon,
                         KnownMonikers.Reference,
                         KnownMonikers.Reference)
-                });
+                }, acceptedDependency!);
 
             // No other changes made
             Assert.False(context.Changed);

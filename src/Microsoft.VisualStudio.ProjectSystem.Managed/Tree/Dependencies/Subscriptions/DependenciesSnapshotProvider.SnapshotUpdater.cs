@@ -4,7 +4,6 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
-
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.Threading.Tasks;
 
@@ -29,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             public SnapshotUpdater(IUnconfiguredProjectCommonServices commonServices, CancellationToken unloadCancellationToken)
             {
                 // Initial snapshot is empty.
-                _currentSnapshot = DependenciesSnapshot.CreateEmpty(commonServices.Project.FullPath);
+                _currentSnapshot = DependenciesSnapshot.CreateEmpty(commonServices.Project.FullPath!);
 
                 // Updates will be published via Dataflow.
                 _source = DataflowBlockSlim.CreateBroadcastBlock<SnapshotChangedEventArgs>("DependenciesSnapshot {1}", skipIntermediateInputData: true);
@@ -41,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     unloadCancellationToken);
             }
 
-            public IDependenciesSnapshot Current => _currentSnapshot;
+            public DependenciesSnapshot Current => _currentSnapshot;
 
             public IReceivableSourceBlock<SnapshotChangedEventArgs> Source => _source;
 
@@ -79,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         }
 
                         // Always publish the latest snapshot
-                        IDependenciesSnapshot snapshot = _currentSnapshot;
+                        DependenciesSnapshot snapshot = _currentSnapshot;
                         _source.Post(new SnapshotChangedEventArgs(snapshot, ct));
 
                         return Task.CompletedTask;

@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using VSLangProj;
-
 using VSLangProj80;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
@@ -131,7 +130,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
                 return _threadingService.ExecuteSynchronously(async () =>
                 {
                     ConfiguredBrowseObject browseObjectProperties = await _projectProperties.GetConfiguredBrowseObjectPropertiesAsync();
-                    object value = await browseObjectProperties.RunCodeAnalysis.GetValueAsync();
+                    object? value = await browseObjectProperties.RunCodeAnalysis.GetValueAsync();
                     return ((bool?)value).GetValueOrDefault();
                 });
             }

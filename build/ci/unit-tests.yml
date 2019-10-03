@@ -14,11 +14,8 @@ trigger:
     - dev16.1.x
     - dev16.2.x
     - dev16.3.x
+    - dev16.4.x
     - feature/*
-  paths:
-    exclude: # don't trigger the CI if only a doc file was changed
-    - docs/*
-    - README.md
 
 # Branches that trigger builds on PR
 pr:
@@ -31,6 +28,7 @@ pr:
     - dev16.1.x
     - dev16.2.x
     - dev16.3.x
+    - dev16.4.x
     - feature/*
   paths:
     exclude: # don't trigger the CI if only a doc file was changed

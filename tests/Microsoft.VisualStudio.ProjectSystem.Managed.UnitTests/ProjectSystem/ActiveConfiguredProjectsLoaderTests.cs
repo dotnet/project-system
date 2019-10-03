@@ -2,7 +2,6 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -16,12 +15,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public async Task WhenActiveConfigurationChanges_LoadsConfiguredProject(string[] configurationNames)
         {
             var configurationGroups = IConfigurationGroupFactory.CreateFromConfigurationNames(configurationNames);
+            var configuredProject = ConfiguredProjectFactory.Create();
 
             var results = new List<string>();
             var project = UnconfiguredProjectFactory.ImplementLoadConfiguredProjectAsync(configuration =>
             {
                 results.Add(configuration.Name);
-                return Task.FromResult<ConfiguredProject?>(null);
+                return Task.FromResult(configuredProject);
             });
 
             var loader = CreateInstance(project, out ProjectValueDataSource<IConfigurationGroup<ProjectConfiguration>> source);
@@ -37,12 +37,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public async Task WhenProjectUnloading_DoesNotLoadConfiguredProject()
         {
             var tasksService = IUnconfiguredProjectTasksServiceFactory.CreateWithUnloadedProject<ConfiguredProject>();
+            var configuredProject = ConfiguredProjectFactory.Create();
 
             int callCount = 0;
             UnconfiguredProject project = UnconfiguredProjectFactory.ImplementLoadConfiguredProjectAsync(configuration =>
             {
                 callCount++;
-                return Task.FromResult<ConfiguredProject?>(null);
+                return Task.FromResult(configuredProject);
             });
 
             var loader = CreateInstance(project, tasksService, out ProjectValueDataSource<IConfigurationGroup<ProjectConfiguration>> source);
@@ -60,11 +61,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [Fact]
         public async Task InitializeAsync_CanNotInitializeTwice()
         {
+            var configuredProject = ConfiguredProjectFactory.Create();
+
             var results = new List<string>();
             var project = UnconfiguredProjectFactory.ImplementLoadConfiguredProjectAsync(configuration =>
             {
                 results.Add(configuration.Name);
-                return Task.FromResult<ConfiguredProject?>(null);
+                return Task.FromResult(configuredProject);
             });
 
             var loader = CreateInstance(project, out var source);
@@ -94,11 +97,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [Fact]
         public async Task Dispose_WhenInitialized_DisposesSubscription()
         {
+            var configuredProject = ConfiguredProjectFactory.Create();
+
             int callCount = 0;
             UnconfiguredProject project = UnconfiguredProjectFactory.ImplementLoadConfiguredProjectAsync(configuration =>
             {
                 callCount++;
-                return Task.FromResult<ConfiguredProject?>(null);
+                return Task.FromResult(configuredProject);
             });
 
             var loader = CreateInstance(project, out ProjectValueDataSource<IConfigurationGroup<ProjectConfiguration>> source);

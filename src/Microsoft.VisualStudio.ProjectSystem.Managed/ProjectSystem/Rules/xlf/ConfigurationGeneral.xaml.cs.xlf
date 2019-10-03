@@ -84,7 +84,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
         <source>Whether the compiler should optimize output.</source>
-        <target state="needs-review-translation">Má kompilátor optimalizovat výstup?</target>
+        <target state="translated">Určuje, jestli má kompilátor optimalizovat výstup.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|TargetRuntime.AppHost|DisplayName">
@@ -114,47 +114,47 @@
       </trans-unit>
       <trans-unit id="StringListProperty|AvailablePlatforms|DisplayName">
         <source>Available Platforms</source>
-        <target state="new">Available Platforms</target>
+        <target state="translated">Dostupné platformy</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|BaseIntermediateOutputPath|DisplayName">
         <source>Base Intermediate Output Path</source>
-        <target state="new">Base Intermediate Output Path</target>
+        <target state="translated">Základní cesta k mezivýstupu</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Name|DisplayName">
         <source>Name</source>
-        <target state="new">Name</target>
+        <target state="translated">Název</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|DisplayName">
         <source>Optimize</source>
-        <target state="new">Optimize</target>
+        <target state="translated">Optimalizovat</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|OutputName|DisplayName">
         <source>Output Name</source>
-        <target state="new">Output Name</target>
+        <target state="translated">Název výstupu</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|OutputPath|DisplayName">
         <source>Output Path</source>
-        <target state="new">Output Path</target>
+        <target state="translated">Výstupní cesta</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|OutputType|DisplayName">
         <source>Output Type</source>
-        <target state="new">Output Type</target>
+        <target state="translated">Typ výstupu</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|TargetPath|DisplayName">
         <source>Target Path</source>
-        <target state="new">Target Path</target>
+        <target state="translated">Cesta k cíli</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|AssemblyName|DisplayName">
         <source>Assembly Name</source>
-        <target state="new">Assembly Name</target>
+        <target state="translated">Název sestavení</target>
         <note />
       </trans-unit>
     </body>

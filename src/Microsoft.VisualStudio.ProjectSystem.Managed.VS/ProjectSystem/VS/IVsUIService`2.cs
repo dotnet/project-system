@@ -14,8 +14,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     ///     The type of the service to return from <see cref="IVsService{T}.GetValueAsync"/>
     /// </typeparam>
     [ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
-    internal interface IVsUIService<TService, TInterface> : IVsUIService<TInterface> 
-        where TService : class 
+    internal interface IVsUIService<TService, TInterface> : IVsUIService<TInterface>
+        where TService : class
         where TInterface : class
     {
     }

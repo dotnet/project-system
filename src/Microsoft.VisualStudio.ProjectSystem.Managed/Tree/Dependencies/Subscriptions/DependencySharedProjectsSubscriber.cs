@@ -4,13 +4,11 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
-
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.RuleHandlers;
-
 using EventData = System.Tuple<
     Microsoft.VisualStudio.ProjectSystem.IProjectSubscriptionUpdate,
     Microsoft.VisualStudio.ProjectSystem.IProjectSharedFoldersSnapshot,
@@ -42,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             Subscribe(
                 configuredProject,
                 subscriptionService.ProjectRuleSource,
-                ruleNames: new [] { ConfigurationGeneral.SchemaName },
+                ruleNames: new[] { ConfigurationGeneral.SchemaName },
                 "Dependencies Shared Projects Input: {1}",
                 blocks => ProjectDataSources.SyncLinkTo(
                     blocks.Intermediate.SyncLinkOptions(),
@@ -54,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         }
 
         protected override IProjectCapabilitiesSnapshot GetCapabilitiesSnapshot(EventData e) => e.Item4;
-        protected override IProjectSubscriptionUpdate GetProjectSubscriptionUpdate(EventData e) => e.Item1;
+        protected override ProjectConfiguration GetProjectConfiguration(EventData e) => e.Item1.ProjectConfiguration;
 
         protected override void Handle(
             AggregateCrossTargetProjectContext currentAggregateContext,
@@ -85,8 +83,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             Requires.NotNull(targetFramework, nameof(targetFramework));
             Requires.NotNull(changesBuilder, nameof(changesBuilder));
 
-            IDependenciesSnapshot snapshot = _dependenciesSnapshotProvider.CurrentSnapshot;
-            if (!snapshot.DependenciesByTargetFramework.TryGetValue(targetFramework, out ITargetedDependenciesSnapshot targetedSnapshot))
+            DependenciesSnapshot snapshot = _dependenciesSnapshotProvider.CurrentSnapshot;
+            if (!snapshot.DependenciesByTargetFramework.TryGetValue(targetFramework, out TargetedDependenciesSnapshot targetedSnapshot))
             {
                 return;
             }

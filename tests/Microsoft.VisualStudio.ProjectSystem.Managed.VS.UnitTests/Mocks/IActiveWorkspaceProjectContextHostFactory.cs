@@ -3,7 +3,6 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-
 using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
@@ -26,6 +25,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             var accessor = IWorkspaceProjectContextAccessorFactory.ImplementHostSpecificErrorReporter(action);
 
+            return new ActiveWorkspaceProjectContextHost(accessor);
+        }
+
+        public static IActiveWorkspaceProjectContextHost ImplementProjectContextAccessor(IWorkspaceProjectContextAccessor accessor)
+        {
             return new ActiveWorkspaceProjectContextHost(accessor);
         }
 

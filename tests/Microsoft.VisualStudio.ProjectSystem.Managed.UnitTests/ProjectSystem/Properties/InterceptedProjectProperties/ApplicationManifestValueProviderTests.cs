@@ -2,7 +2,6 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
@@ -26,15 +25,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         }
 
         [Theory]
-        [InlineData(@"inp.man", "true", @"out.man", @"out.man", null)]
-        [InlineData(@"C:\projectdir\foo.man", "true", @"C:\projectdir\bar.man", @"bar.man", null)]
-        [InlineData(@"C:\projectdir\foo.man", "true", @" a asd ", @" a asd ", null)]
+        [InlineData(@"inp.man", "true", @"out.man", @"out.man", "")]
+        [InlineData(@"C:\projectdir\foo.man", "true", @"C:\projectdir\bar.man", @"bar.man", "")]
+        [InlineData(@"C:\projectdir\foo.man", "true", @" a asd ", @" a asd ", "")]
         [InlineData(@"C:\projectdir\foo.man", null, @"NoManifest", null, "true")]
         [InlineData(@"C:\projectdir\foo.man", null, @"nomANifest", null, "true")]
-        [InlineData(@"C:\projectdir\foo.man", null, @"DefaultManifest", null, null)]
-        [InlineData(@"C:\projectdir\foo.man", null, "", null, null)]
-        [InlineData(@"C:\projectdir\foo.man", null, null, null, null)]
-        public async Task SetApplicationManifest(string appManifestPropValue, string? noManifestPropValue, string? valueToSet, string? expectedAppManifestValue, string? expectedNoManifestValue)
+        [InlineData(@"C:\projectdir\foo.man", null, @"DefaultManifest", null, "")]
+        [InlineData(@"C:\projectdir\foo.man", null, "", null, "")]
+        [InlineData(@"C:\projectdir\foo.man", null, null, null, "")]
+        public async Task SetApplicationManifest(string appManifestPropValue, string? noManifestPropValue, string? valueToSet, string? expectedAppManifestValue, string expectedNoManifestValue)
         {
             var provider = new ApplicationManifestValueProvider(UnconfiguredProjectFactory.Create(filePath: @"C:\projectdir\proj.proj"));
             var defaultProperties = IProjectPropertiesFactory.CreateWithPropertiesAndValues(new Dictionary<string, string?>

@@ -154,8 +154,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
             if (!_options.HasFlag(ProjectTreeWriterOptions.SubType))
                 return;
 
-            _builder.Append(", SubType: ");
-            _builder.Append(tree.BrowseObjectProperties.GetPropertyValueAsync("SubType").Result);
+            if (tree.BrowseObjectProperties != null)
+            {
+                _builder.Append(", SubType: ");
+                _builder.Append(tree.BrowseObjectProperties.GetPropertyValueAsync("SubType").Result);
+            }
 
             if (TagElements)
             {
@@ -210,7 +213,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             WriteIcon("ExpandedIcon", tree.ExpandedIcon);
         }
 
-        private void WriteIcon(string name, ProjectImageMoniker icon)
+        private void WriteIcon(string name, ProjectImageMoniker? icon)
         {
             _builder.AppendFormat(", {0}: {{", name);
 

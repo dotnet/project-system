@@ -2,14 +2,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks.Dataflow;
-
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
-
 using EventData = System.Tuple<
     Microsoft.VisualStudio.ProjectSystem.IProjectSubscriptionUpdate,
     Microsoft.VisualStudio.ProjectSystem.Properties.IProjectCatalogSnapshot,
@@ -101,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         }
 
         protected override IProjectCapabilitiesSnapshot GetCapabilitiesSnapshot(EventData e) => e.Item3;
-        protected override IProjectSubscriptionUpdate GetProjectSubscriptionUpdate(EventData e) => e.Item1;
+        protected override ProjectConfiguration GetProjectConfiguration(EventData e) => e.Item1.ProjectConfiguration;
 
         protected override void Handle(
             AggregateCrossTargetProjectContext currentAggregateContext,

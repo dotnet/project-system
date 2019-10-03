@@ -2,7 +2,6 @@
 
 using System;
 using System.Threading.Tasks.Dataflow;
-
 using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore

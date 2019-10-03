@@ -3,7 +3,6 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-
 using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
 
@@ -72,6 +71,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
             public Task OpenProjectXmlForUpgradeableReadAsync(UnconfiguredProject project, Func<ProjectRootElement, CancellationToken, Task> action, CancellationToken cancellationToken = default)
             {
                 return action(_rootElement, cancellationToken);
+            }
+
+            public Task<TResult> OpenProjectForUpgradeableReadAsync<TResult>(ConfiguredProject project, Func<Project, TResult> action, CancellationToken cancellationToken = default)
+            {
+                var result = action(_evaluationProject);
+
+                return Task.FromResult(result);
             }
         }
     }

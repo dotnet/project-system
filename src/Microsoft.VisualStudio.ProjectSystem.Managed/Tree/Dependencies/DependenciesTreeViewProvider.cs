@@ -6,7 +6,6 @@ using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
-
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.References;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
@@ -51,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <inheritdoc />
         public async Task<IProjectTree> BuildTreeAsync(
             IProjectTree dependenciesTree,
-            IDependenciesSnapshot snapshot,
+            DependenciesSnapshot snapshot,
             CancellationToken cancellationToken = default)
         {
             // Keep a reference to the original tree to return in case we are cancelled.
@@ -77,13 +76,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             dependenciesTree = CleanupOldNodes(dependenciesTree, currentTopLevelNodes);
 
-            ProjectImageMoniker rootIcon = _viewModelFactory.GetDependenciesRootIcon(snapshot.HasVisibleUnresolvedDependency).ToProjectSystemType();
+            ProjectImageMoniker rootIcon = _viewModelFactory.GetDependenciesRootIcon(snapshot.HasReachableVisibleUnresolvedDependency).ToProjectSystemType();
 
             return dependenciesTree.SetProperties(icon: rootIcon, expandedIcon: rootIcon);
 
             async Task BuildSingleTargetTreeAsync()
             {
-                foreach ((ITargetFramework _, ITargetedDependenciesSnapshot targetedSnapshot) in snapshot.DependenciesByTargetFramework)
+                foreach ((ITargetFramework _, TargetedDependenciesSnapshot targetedSnapshot) in snapshot.DependenciesByTargetFramework)
                 {
                     if (cancellationToken.IsCancellationRequested)
                     {
@@ -100,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             async Task BuildMultiTargetTreeAsync()
             {
-                foreach ((ITargetFramework targetFramework, ITargetedDependenciesSnapshot targetedSnapshot) in snapshot.DependenciesByTargetFramework)
+                foreach ((ITargetFramework targetFramework, TargetedDependenciesSnapshot targetedSnapshot) in snapshot.DependenciesByTargetFramework)
                 {
                     if (cancellationToken.IsCancellationRequested)
                     {
@@ -135,8 +134,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                             CleanupOldNodes);
 
                         dependenciesTree = shouldAddTargetNode
-                            ? dependenciesTree.Add(node).Parent
-                            : node.Parent;
+                            ? dependenciesTree.Add(node).Parent!
+                            : node.Parent!;
+
+                        Assumes.NotNull(dependenciesTree);
 
                         currentTopLevelNodes.Add(node);
                     }
@@ -171,13 +172,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         /// <summary>
-        /// Builds all available sub trees under root: target framework or Dependencies node 
+        /// Builds all available sub trees under root: target framework or Dependencies node
         /// when there is only one target.
         /// </summary>
         private async Task<IProjectTree> BuildSubTreesAsync(
             IProjectTree rootNode,
             ITargetFramework activeTarget,
-            ITargetedDependenciesSnapshot targetedSnapshot,
+            TargetedDependenciesSnapshot targetedSnapshot,
             Func<IProjectTree, HashSet<IProjectTree>, IProjectTree> syncFunc)
         {
             var groupedByProviderType = new Dictionary<string, List<IDependency>>(StringComparers.DependencyProviderTypes);
@@ -248,8 +249,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 currentNodes.Add(subTreeNode);
 
                 rootNode = isNewSubTreeNode
-                    ? rootNode.Add(subTreeNode).Parent
-                    : subTreeNode.Parent;
+                    ? rootNode.Add(subTreeNode).Parent!
+                    : subTreeNode.Parent!;
+
+                Assumes.NotNull(rootNode);
             }
 
             return syncFunc(rootNode, currentNodes);
@@ -260,7 +263,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </summary>
         private async Task<IProjectTree> BuildSubTreeAsync(
             IProjectTree rootNode,
-            ITargetedDependenciesSnapshot targetedSnapshot,
+            TargetedDependenciesSnapshot targetedSnapshot,
             List<IDependency> dependencies,
             bool isActiveTarget,
             bool shouldCleanup)
@@ -304,9 +307,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                 currentNodes?.Add(dependencyNode);
 
-                rootNode = isNewDependencyNode
+                IProjectTree? parent = isNewDependencyNode
                     ? rootNode.Add(dependencyNode).Parent
                     : dependencyNode.Parent;
+
+                Assumes.NotNull(parent);
+
+                rootNode = parent!;
             }
 
             return currentNodes != null // shouldCleanup
@@ -333,7 +340,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         private async Task<IProjectTree> CreateOrUpdateNodeAsync(
             IProjectTree? node,
             IDependency dependency,
-            ITargetedDependenciesSnapshot targetedSnapshot,
+            TargetedDependenciesSnapshot targetedSnapshot,
             bool isProjectItem,
             ProjectTreeFlags? additionalFlags = null,
             ProjectTreeFlags? excludedFlags = null)
@@ -378,8 +385,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             IProjectTree CreateProjectTreeNode()
             {
-                // For IProjectTree remove ProjectTreeFlags.Common.Reference flag, otherwise CPS would fail to 
-                // map this node to graph node and GraphProvider would be never called. 
+                // For IProjectTree remove ProjectTreeFlags.Common.Reference flag, otherwise CPS would fail to
+                // map this node to graph node and GraphProvider would be never called.
                 // Only IProjectItemTree can have this flag
                 filteredFlags = filteredFlags.Except(DependencyTreeFlags.BaseReferenceFlags);
 

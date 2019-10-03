@@ -148,32 +148,32 @@ Aby debugować ten projekt, dodaj projekt wykonywalny do tego rozwiązania, któ
       </trans-unit>
       <trans-unit id="XprojNotSupported">
         <source>Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/en-us/dotnet/core/migration/.</source>
-        <target state="new">Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/en-us/dotnet/core/migration/.</target>
+        <target state="translated">Pliki projektu xproj nie są już obsługiwane. Szczegółowe informacje na temat migrowania do plików csproj można znaleźć na stronie https://docs.microsoft.com/pl-pl/dotnet/core/migration/.</target>
         <note />
       </trans-unit>
       <trans-unit id="WindowsFormEditor_DisplayName">
         <source>Form (Windows Forms) Designer</source>
-        <target state="new">Form (Windows Forms) Designer</target>
+        <target state="translated">Projektant formularzy (Windows Forms)</target>
         <note />
       </trans-unit>
       <trans-unit id="ComponentEditor_DisplayName">
         <source>Component (Windows Forms) Designer</source>
-        <target state="new">Component (Windows Forms) Designer</target>
+        <target state="translated">Projektant składników (Windows Forms)</target>
         <note />
       </trans-unit>
       <trans-unit id="UserControlEditor_DisplayName">
         <source>User Control (Windows Forms) Designer</source>
-        <target state="new">User Control (Windows Forms) Designer</target>
+        <target state="translated">Projektant kontrolki użytkownika (Windows Forms)</target>
         <note />
       </trans-unit>
       <trans-unit id="Renaming_Type">
         <source>Renaming Type</source>
-        <target state="new">Renaming Type</target>
+        <target state="translated">Zmienianie nazwy typu</target>
         <note />
       </trans-unit>
       <trans-unit id="Renaming_Type_from_0_to_1">
         <source>Renaming Type from '{0}' to '{1}'</source>
-        <target state="new">Renaming Type from '{0}' to '{1}'</target>
+        <target state="translated">Zmienianie nazwy typu z „{0}” na „{1}”</target>
         <note />
       </trans-unit>
     </body>

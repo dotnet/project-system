@@ -2,10 +2,8 @@
 
 using System;
 using System.Collections.Generic;
-
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.ProjectSystem;
-
 using Moq;
 
 namespace Microsoft.VisualStudio.LanguageServices.ProjectSystem
@@ -42,7 +40,7 @@ namespace Microsoft.VisualStudio.LanguageServices.ProjectSystem
             var context = new IWorkspaceProjectContextMock();
 
             context.SetupGet(c => c.ProjectFilePath)
-                .Returns(project.FullPath);
+                .Returns(project.FullPath!);
 
             if (addDynamicFile != null)
             {
@@ -58,7 +56,7 @@ namespace Microsoft.VisualStudio.LanguageServices.ProjectSystem
             var context = new IWorkspaceProjectContextMock();
 
             context.SetupGet(c => c.ProjectFilePath)
-                .Returns(project.FullPath);
+                .Returns(project.FullPath!);
 
             if (addSourceFile != null)
             {
@@ -80,7 +78,7 @@ namespace Microsoft.VisualStudio.LanguageServices.ProjectSystem
             var context = new Mock<IWorkspaceProjectContext>();
 
             context.SetupGet(c => c.ProjectFilePath)
-                .Returns(project.FullPath);
+                .Returns(project.FullPath!);
 
             if (addMetadataReference != null)
             {

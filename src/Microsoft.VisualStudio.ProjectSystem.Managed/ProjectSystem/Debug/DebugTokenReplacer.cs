@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
 #nullable disable

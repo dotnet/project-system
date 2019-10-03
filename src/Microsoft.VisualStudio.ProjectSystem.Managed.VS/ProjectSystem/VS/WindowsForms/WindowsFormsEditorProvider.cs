@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.VisualStudio.ProjectSystem.Properties;
 using System;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
 {
@@ -117,6 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
             IProjectTreeServiceState result = await _projectTree.Value.TreeService.PublishAnyNonLoadingTreeAsync();
 
             if (result.TreeProvider.FindByPath(result.Tree, documentMoniker) is IProjectItemTree treeItem &&
+                treeItem.Parent != null &&
                 !treeItem.Parent.Flags.Contains(ProjectTreeFlags.SourceFile) &&
                 StringComparers.ItemTypes.Equals(treeItem.Item.ItemType, Compile.SchemaName))
             {

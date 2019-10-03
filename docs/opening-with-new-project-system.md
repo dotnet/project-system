@@ -6,9 +6,11 @@
 
 Because both the new project system and legacy project systems use the same file extensions (csproj, vbproj and fsproj), two factors determine whether a project will open in one or the other.
 
-### TargetFramework/TargetFrameworks properties (C# and Visual Basic)
+### TargetFramework/TargetFrameworks properties
 
-If a csproj or vbproj project contains a `<TargetFramework>` or `<TargetFrameworks>` property in the body of the project file (not in any of its imports), then it will be automatically opened in the new project system.  Specifically, before picking a project system, Visual Studio will scan the raw text of the project file and if it contains `</TargetFramework>` or `</TargetFrameworks>`, it will be opened in the new project system.
+*Applies to C# and Visual Basic only*
+
+If a csproj or vbproj project contains a `<TargetFramework>` or `<TargetFrameworks>` property in the body of the project file (not in any of its imports), then it will be automatically opened in the new project system. Specifically, **in version 16.3 and earlier** Visual Studio will scan the raw text of the project file for `</TargetFramework>` or `</TargetFrameworks>`. In **version 16.4 and later** Visual Studio will look for a `<TargetFramework>` or `<TargetFrameworks>` element parented by a `<PropertyGroup>` element.
 
 For example, the following two csproj or vbproj projects will open in the new project system:
 
@@ -43,11 +45,13 @@ Whereas, the following csproj or vbproj will open in the legacy project system:
 </Project>
 ```
 
-### SDKs (F#)
+### SDKs
 
-If an fsproj project is marked as importing an SDK in the body of the project file (not in any of its imports), then the project is opened in the new project system.
+*Applies to F# in 16.3 and earlier, and to F#, C#, and Visual Basic in 16.4 and later*
 
-For example, the following two fsproj projects will open in the new project system:
+If a project is marked as importing an SDK in the body of the project file (not in any of its imports), then the project is opened in the new project system.
+
+Specifically, VS looks for an `Sdk` attribute within a `<Project>` or `<Import>` element. For example, the following two projects will open in the new project system:
 
 ``` XML
 <Project Sdk="Microsoft.NET.Sdk">
@@ -63,7 +67,16 @@ For example, the following two fsproj projects will open in the new project syst
 </Project>
 ```
 
-Where as the following fsproj will open in the legacy project system:
+In addition, for C# and Visual Basic projects only, VS will look for an `<Sdk>` element parented by a `<Project>` element. For example:
+
+``` XML
+<Project>
+  <Sdk Name="Microsoft.NET.Sdk" Version="1.2.3" />
+
+</Project>
+```
+
+Whereas the following will open in the legacy project system:
 
 ``` XML
 <?xml version="1.0" encoding="utf-8"?>

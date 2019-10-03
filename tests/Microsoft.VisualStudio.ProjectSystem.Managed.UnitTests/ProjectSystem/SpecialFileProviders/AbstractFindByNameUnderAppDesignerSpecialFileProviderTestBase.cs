@@ -2,6 +2,8 @@
 
 using System.IO;
 using System.Threading.Tasks;
+using Moq;
+using Moq.Protected;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
@@ -219,5 +221,24 @@ Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
         }
 
         internal abstract AbstractFindByNameUnderAppDesignerSpecialFileProvider CreateInstance(ISpecialFilesManager specialFilesManager, IPhysicalProjectTree projectTree);
+
+        internal static T CreateInstanceWithOverrideCreateFileAsync<T>(ISpecialFilesManager specialFilesManager, IPhysicalProjectTree projectTree, params object[] additionalArguments)
+            where T : AbstractFindByNameUnderAppDesignerSpecialFileProvider
+        {
+            object[] arguments = new object[3 + additionalArguments.Length];
+            arguments[0] = specialFilesManager;
+            arguments[1] = projectTree;
+            arguments[2] = (ICreateFileFromTemplateService)null!;
+            additionalArguments.CopyTo(arguments, 3);
+
+            // We override CreateFileAsync to call the CreateEmptyFileAsync which makes writting tests in the base easier
+            var mock = new Mock<T>(arguments);
+            mock.Protected().Setup<Task>("CreateFileCoreAsync", ItExpr.IsAny<string>())
+                .Returns<string>(path => projectTree.TreeStorage.CreateEmptyFileAsync(path));
+
+            mock.CallBase = true;
+
+            return mock.Object;
+        }
     }
 }

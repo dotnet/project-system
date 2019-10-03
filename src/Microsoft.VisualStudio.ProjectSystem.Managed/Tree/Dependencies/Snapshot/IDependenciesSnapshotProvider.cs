@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// <remarks>
         /// Never null.
         /// </remarks>
-        IDependenciesSnapshot CurrentSnapshot { get; }
+        DependenciesSnapshot CurrentSnapshot { get; }
 
         /// <summary>
         /// Dataflow to monitor the project snapshot changes.
@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
     internal sealed class SnapshotChangedEventArgs : EventArgs
     {
-        public SnapshotChangedEventArgs(IDependenciesSnapshot snapshot, CancellationToken token)
+        public SnapshotChangedEventArgs(DependenciesSnapshot snapshot, CancellationToken token)
         {
             Requires.NotNull(snapshot, nameof(snapshot));
 
@@ -47,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Token = token;
         }
 
-        public IDependenciesSnapshot Snapshot { get; }
+        public DependenciesSnapshot Snapshot { get; }
         public CancellationToken Token { get; }
     }
 

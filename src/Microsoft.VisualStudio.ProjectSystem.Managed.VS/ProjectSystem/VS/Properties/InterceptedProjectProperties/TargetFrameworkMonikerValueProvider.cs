@@ -5,10 +5,8 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
-
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Shell;
-
 using NuGet.VisualStudio;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
@@ -36,8 +34,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
             ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync();
-            string currentTargetFramework = (string)await configuration.TargetFramework.GetValueAsync();
-            string currentTargetFrameworks = (string)await configuration.TargetFrameworks.GetValueAsync();
+            string? currentTargetFramework = (string?)await configuration.TargetFramework.GetValueAsync();
+            string? currentTargetFrameworks = (string?)await configuration.TargetFrameworks.GetValueAsync();
             if (!string.IsNullOrEmpty(currentTargetFrameworks))
             {
                 throw new InvalidOperationException(VSResources.MultiTFEditNotSupported);

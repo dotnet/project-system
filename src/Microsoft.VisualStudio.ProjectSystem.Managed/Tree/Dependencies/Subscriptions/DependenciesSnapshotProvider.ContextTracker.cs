@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
-
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions
@@ -69,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
                     if (!previousContext.IsCrossTargeting)
                     {
-                        string newTargetFrameworkName = (string)await projectProperties.TargetFramework.GetValueAsync();
+                        string? newTargetFrameworkName = (string?)await projectProperties.TargetFramework.GetValueAsync();
                         ITargetFramework? newTargetFramework = _targetFrameworkProvider.GetTargetFramework(newTargetFrameworkName);
                         if (previousContext.ActiveTargetFramework.Equals(newTargetFramework))
                         {

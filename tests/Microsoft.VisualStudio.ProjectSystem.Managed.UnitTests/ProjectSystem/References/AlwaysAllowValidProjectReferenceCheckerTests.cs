@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
-
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.References

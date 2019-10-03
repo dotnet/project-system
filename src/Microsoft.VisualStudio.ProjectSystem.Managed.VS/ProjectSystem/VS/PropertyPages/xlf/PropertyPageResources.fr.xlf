@@ -222,6 +222,11 @@
         <target state="translated">Permettre le débogage du code natif</target>
         <note />
       </trans-unit>
+      <trans-unit id="chkSqlCodeDebuggingText">
+        <source>Enable SQL Server debugging</source>
+        <target state="new">Enable SQL Server debugging</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

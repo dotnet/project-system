@@ -2,7 +2,6 @@
 
 using System;
 using System.Threading.Tasks;
-
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 

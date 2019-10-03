@@ -109,7 +109,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|Description">
         <source>Assets to exclude from this reference.</source>
-        <target state="needs-review-translation">Bu başvurudan dışlanacak varlıklar</target>
+        <target state="translated">Bu başvuruya dahil edilmeyecek varlıklar.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|DisplayName">
@@ -119,7 +119,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|Description">
         <source>Assets to include from this reference.</source>
-        <target state="needs-review-translation">Bu başvurudan eklenecek varlıklar</target>
+        <target state="translated">Bu başvurudan eklenecek varlıklar.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ReferenceOutputAssembly|DisplayName">
@@ -139,7 +139,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|Description">
         <source>Assets that are private in this reference.</source>
-        <target state="needs-review-translation">Bu başvuruda özel olan varlıklar</target>
+        <target state="translated">Bu başvuruda özel olan varlıklar.</target>
         <note />
       </trans-unit>
     </body>

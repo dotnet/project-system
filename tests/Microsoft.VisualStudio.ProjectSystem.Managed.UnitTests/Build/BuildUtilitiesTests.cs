@@ -2,9 +2,7 @@
 
 using System;
 using System.Linq;
-
 using Microsoft.Build.Construction;
-
 using Xunit;
 
 namespace Microsoft.VisualStudio.Build

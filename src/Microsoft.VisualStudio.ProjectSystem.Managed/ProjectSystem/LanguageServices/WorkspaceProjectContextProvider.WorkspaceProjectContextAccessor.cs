@@ -27,11 +27,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 get { return _context; }
             }
 
-            public object HostSpecificEditAndContinueService
-            {
-                get { return _context; }
-            }
-
             public object HostSpecificErrorReporter
             {
                 get { return _context; }

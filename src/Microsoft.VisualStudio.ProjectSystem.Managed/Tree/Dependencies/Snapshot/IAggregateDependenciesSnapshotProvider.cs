@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-
 using Microsoft.VisualStudio.Composition;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
@@ -25,21 +24,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// Gets the snapshot for <paramref name="projectFilePath"/>, or <see langword="null"/> if none found.
         /// </summary>
         /// <param name="projectFilePath">Path to the project for which the snapshot is requested.</param>
-        /// <returns><see cref="IDependenciesSnapshot"/> or <see langword="null"/> if no project exists with the specified path.</returns>
-        IDependenciesSnapshot? GetSnapshot(string projectFilePath);
+        /// <returns><see cref="DependenciesSnapshot"/> or <see langword="null"/> if no project exists with the specified path.</returns>
+        DependenciesSnapshot? GetSnapshot(string projectFilePath);
 
         /// <summary>
         /// Gets the targeted snapshot for <paramref name="dependency"/>, or <see langword="null"/> if none found.
         /// </summary>
         /// <param name="dependency">A dependency that identifies the project and target framework to search with.</param>
-        /// <returns><see cref="ITargetedDependenciesSnapshot"/> or <see langword="null"/> if no snapshot exists with matching project and target framework.</returns>
-        ITargetedDependenciesSnapshot? GetSnapshot(IDependency dependency);
+        /// <returns><see cref="TargetedDependenciesSnapshot"/> or <see langword="null"/> if no snapshot exists with matching project and target framework.</returns>
+        TargetedDependenciesSnapshot? GetSnapshot(IDependency dependency);
 
         /// <summary>
         /// Gets the current snapshot from every registered project.
         /// </summary>
-        /// <returns>A collection of <see cref="IDependenciesSnapshot"/>. Will not contain <see langword="null"/> values.</returns>
-        IReadOnlyCollection<IDependenciesSnapshot> GetSnapshots();
+        /// <returns>A collection of <see cref="DependenciesSnapshot"/>. Will not contain <see langword="null"/> values.</returns>
+        IReadOnlyCollection<DependenciesSnapshot> GetSnapshots();
 
         /// <summary>
         /// Fired when a snapshot changed in a snapshot provider.

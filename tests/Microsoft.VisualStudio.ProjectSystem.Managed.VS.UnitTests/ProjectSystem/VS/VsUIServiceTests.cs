@@ -6,9 +6,7 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-
 using Microsoft.VisualStudio.Threading;
-
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS

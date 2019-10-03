@@ -4,9 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
-
 using Microsoft.VisualStudio.ProjectSystem.Configuration;
-
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -139,7 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var services = IUnconfiguredProjectServicesFactory.Create(activeConfiguredProjectProvider: activeConfiguredProjectProvider, projectConfigurationsService: configurationsService);
             var project = UnconfiguredProjectFactory.ImplementLoadConfiguredProjectAsync((projectConfiguration) =>
             {
-                return Task.FromResult<ConfiguredProject?>(ConfiguredProjectFactory.ImplementProjectConfiguration(projectConfiguration));
+                return Task.FromResult<ConfiguredProject>(ConfiguredProjectFactory.ImplementProjectConfiguration(projectConfiguration));
             });
 
             var dimensionProviders = dimensionNames.Select(name => IActiveConfiguredProjectsDimensionProviderFactory.ImplementDimensionName(name));

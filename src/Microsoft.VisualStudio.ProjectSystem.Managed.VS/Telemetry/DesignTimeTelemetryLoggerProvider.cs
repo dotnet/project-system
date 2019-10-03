@@ -5,12 +5,10 @@ using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
-
 using Microsoft.Build.Framework;
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-
 using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.Telemetry

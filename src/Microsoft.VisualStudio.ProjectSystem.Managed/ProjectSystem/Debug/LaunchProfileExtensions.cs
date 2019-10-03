@@ -5,6 +5,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     internal static class LaunchProfileExtensions
     {
         public const string NativeDebuggingProperty = "nativeDebugging";
+        public const string SqlDebuggingProperty = "sqlDebugging";
 
         /// <summary>
         /// Return a mutable instance
@@ -33,5 +34,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             return false;
         }
+
+        /// <summary>
+        /// Returns true if sqlDebugging property is set to true
+        /// </summary>
+        public static bool SqlDebuggingIsEnabled(this ILaunchProfile profile)
+        {
+            if (profile.OtherSettings != null
+                && profile.OtherSettings.TryGetValue(SqlDebuggingProperty, out object sqlDebugging)
+                && sqlDebugging is bool b)
+            {
+                return b;
+            }
+
+            return false;
+        }
+
     }
 }

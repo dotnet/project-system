@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
-
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
@@ -24,8 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 icon: KnownMonikers.CodeInformation,
                 expandedIcon: KnownMonikers.CodeInformation,
                 unresolvedIcon: ManagedImageMonikers.CodeInformationWarning,
-                unresolvedExpandedIcon: ManagedImageMonikers.CodeInformationWarning),
-            DependencyTreeFlags.AnalyzerSubTreeRootNode);
+                unresolvedExpandedIcon: ManagedImageMonikers.CodeInformationWarning));
 
         public AnalyzerRuleHandler()
             : base(AnalyzerReference.SchemaName, ResolvedAnalyzerReference.SchemaName)

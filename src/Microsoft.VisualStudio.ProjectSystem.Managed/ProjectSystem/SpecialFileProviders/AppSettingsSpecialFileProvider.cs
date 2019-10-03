@@ -1,29 +1,34 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.ComponentModel.Composition;
-
-using Microsoft.VisualStudio.IO;
+using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
+    /// <summary>
+    ///     Provides a <see cref="ISpecialFileProvider"/> that handles the default 'Settings.settings' file; 
+    ///     which contains applications settings for a project and is typically found under the 'AppDesigner' 
+    ///     folder.
+    /// </summary>
     [ExportSpecialFileProvider(SpecialFiles.AppSettings)]
     [AppliesTo(ProjectCapability.DotNet + " & " + ProjectCapability.AppSettings)]
-    internal class AppSettingsSpecialFileProvider : AbstractFindByNameSpecialFileProvider
+    internal class AppSettingsSpecialFileProvider : AbstractFindByNameUnderAppDesignerSpecialFileProvider
     {
+        private readonly ICreateFileFromTemplateService _templateFileCreationService;
+
         [ImportingConstructor]
         public AppSettingsSpecialFileProvider(
+            ISpecialFilesManager specialFilesManager,
             IPhysicalProjectTree projectTree,
-            [Import(ExportContractNames.ProjectItemProviders.SourceFiles)] IProjectItemProvider sourceItemsProvider,
-            [Import(AllowDefault = true)] Lazy<ICreateFileFromTemplateService>? templateFileCreationService,
-            IFileSystem fileSystem,
-            ISpecialFilesManager specialFilesManager)
-            : base(projectTree, sourceItemsProvider, templateFileCreationService, fileSystem, specialFilesManager)
+            ICreateFileFromTemplateService templateFileCreationService)
+            : base("Settings.settings", specialFilesManager, projectTree)
         {
+            _templateFileCreationService = templateFileCreationService;
         }
 
-        protected override string Name => "Settings.settings";
-
-        protected override string TemplateName => "SettingsInternal.zip";
+        protected override Task CreateFileCoreAsync(string path)
+        {
+            return _templateFileCreationService.CreateFileAsync("SettingsInternal.zip", path);
+        }
     }
 }

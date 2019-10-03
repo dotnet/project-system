@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-
 using EnvDTE;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
@@ -20,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 _dte = dte;
             }
 
-            internal static UndoScope Create(DTE dte,  string renameOperationName)
+            internal static UndoScope Create(DTE dte, string renameOperationName)
             {
                 var undo = new UndoScope(renameOperationName, dte);
                 undo.StartUndo();

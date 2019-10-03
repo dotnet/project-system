@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-
 using Microsoft.VisualStudio.GraphModel;
 using Microsoft.VisualStudio.GraphModel.Schemas;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.ViewProviders;
@@ -13,8 +12,7 @@ using Microsoft.VisualStudio.Shell;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.Actions
 {
     /// <summary>
-    /// Updates the graph to include any <see cref="GraphNode"/>s matching the search
-    /// criteria.
+    /// Updates the graph to include any <see cref="GraphNode"/>s matching the search criteria.
     /// </summary>
     [Export(typeof(IDependenciesGraphActionHandler))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
@@ -62,16 +60,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
             var cachedDependencyToMatchingResultsMap = new Dictionary<string, HashSet<IDependency>>(StringComparer.OrdinalIgnoreCase);
             var searchResultsPerContext = new Dictionary<string, HashSet<IDependency>>(StringComparer.OrdinalIgnoreCase);
 
-            System.Collections.Generic.IReadOnlyCollection<IDependenciesSnapshot> snapshots = AggregateSnapshotProvider.GetSnapshots();
+            System.Collections.Generic.IReadOnlyCollection<DependenciesSnapshot> snapshots = AggregateSnapshotProvider.GetSnapshots();
 
-            foreach (IDependenciesSnapshot snapshot in snapshots)
+            foreach (DependenciesSnapshot snapshot in snapshots)
             {
                 searchResultsPerContext[snapshot.ProjectPath] = SearchFlat(
                     searchTerm,
                     snapshot);
             }
 
-            foreach (IDependenciesSnapshot snapshot in snapshots)
+            foreach (DependenciesSnapshot snapshot in snapshots)
             {
                 IEnumerable<IDependency> allTopLevelDependencies = snapshot.GetFlatTopLevelDependencies();
                 HashSet<IDependency> matchedDependencies = searchResultsPerContext[snapshot.ProjectPath];
@@ -79,7 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                 using var scope = new GraphTransactionScope();
                 foreach (IDependency topLevelDependency in allTopLevelDependencies)
                 {
-                    ITargetedDependenciesSnapshot targetedSnapshot = snapshot.DependenciesByTargetFramework[topLevelDependency.TargetFramework];
+                    TargetedDependenciesSnapshot targetedSnapshot = snapshot.DependenciesByTargetFramework[topLevelDependency.TargetFramework];
 
                     if (!cachedDependencyToMatchingResultsMap
                             .TryGetValue(topLevelDependency.Id, out HashSet<IDependency>? topLevelDependencyMatches))
@@ -150,11 +148,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
         /// <summary>
         /// Does flat search among dependency world lists to find any dependencies that match search criteria.
         /// </summary>
-        private static HashSet<IDependency> SearchFlat(string searchTerm, IDependenciesSnapshot dependenciesSnapshot)
+        private static HashSet<IDependency> SearchFlat(string searchTerm, DependenciesSnapshot dependenciesSnapshot)
         {
-            var matchedDependencies = new HashSet<IDependency>();
+            var matchedDependencies = new HashSet<IDependency>(DependencyIdComparer.Instance);
 
-            foreach ((ITargetFramework _, ITargetedDependenciesSnapshot targetedSnapshot) in dependenciesSnapshot.DependenciesByTargetFramework)
+            foreach ((ITargetFramework _, TargetedDependenciesSnapshot targetedSnapshot) in dependenciesSnapshot.DependenciesByTargetFramework)
             {
                 foreach ((string _, IDependency dependency) in targetedSnapshot.DependenciesWorld)
                 {
@@ -170,16 +168,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
 
         private static HashSet<IDependency> GetMatchingResultsForDependency(
             IDependency rootDependency,
-            ITargetedDependenciesSnapshot snapshot,
+            TargetedDependenciesSnapshot snapshot,
             HashSet<IDependency> flatMatchingDependencies,
             Dictionary<string, HashSet<IDependency>> cachedPositiveResults)
         {
-            var matchingNodes = new HashSet<IDependency>();
+            var matchingNodes = new HashSet<IDependency>(DependencyIdComparer.Instance);
 
             foreach (string childDependency in rootDependency.DependencyIDs)
             {
-                if (!snapshot.DependenciesWorld
-                        .TryGetValue(childDependency, out IDependency childDependencyMetadata))
+                if (!snapshot.DependenciesWorld.TryGetValue(childDependency, out IDependency childDependencyMetadata))
                 {
                     continue;
                 }

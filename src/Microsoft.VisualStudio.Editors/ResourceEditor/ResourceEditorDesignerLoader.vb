@@ -189,15 +189,18 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 ' Instead, we use a MemoryStream and a StreamWriter/Reader.
 
                 '... Write out the .resx file into a memory stream
-                Dim StreamResXContents As New MemoryStream
-                Dim Writer As New StreamWriter(StreamResXContents, Encoding.UTF8)
-                ResXFile.WriteResources(Writer)
-                Writer.Flush()
+                Using StreamResXContents As New MemoryStream
+                    Using Writer As New StreamWriter(StreamResXContents, Encoding.UTF8, bufferSize:=4096, leaveOpen:=True)
+                        ResXFile.WriteResources(Writer)
+                        Writer.Flush()
+                    End Using
 
-                '... Now read from the stream and return the text
-                StreamResXContents.Position = 0
-                Dim Reader As New StreamReader(StreamResXContents)
-                Return Reader.ReadToEnd()
+                    '... Now read from the stream and return the text
+                    StreamResXContents.Position = 0
+                    Using Reader As New StreamReader(StreamResXContents)
+                        Return Reader.ReadToEnd()
+                    End Using
+                End Using
             Else
                 Debug.Fail("m_RootComponent is nothing")
                 Return ""

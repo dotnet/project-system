@@ -1,53 +1,63 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 
-using Microsoft.VisualStudio.IO;
-
 namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
+    /// <summary>
+    ///     Provides a <see cref="ISpecialFileProvider"/> that handles the default 'app.manifest' file; 
+    ///     which contains Win32 directives for assembly binding, compatibility and elevation and is
+    ///     typically found under the 'AppDesigner' folder.
+    /// </summary>
     [ExportSpecialFileProvider(SpecialFiles.AppManifest)]
     [AppliesTo(ProjectCapability.DotNet)]
-    internal class AppManifestSpecialFileProvider : AbstractFindByNameSpecialFileProvider
+    internal class AppManifestSpecialFileProvider : AbstractFindByNameUnderAppDesignerSpecialFileProvider
     {
-        private readonly ProjectProperties _projectProperties;
-
-        private const string NoManifestValue = "NoManifest";
-        private const string DefaultManifestValue = "DefaultManifest";
+        private readonly ProjectProperties _properties;
+        private readonly ICreateFileFromTemplateService _templateFileCreationService;
 
         [ImportingConstructor]
         public AppManifestSpecialFileProvider(
-            IPhysicalProjectTree projectTree,
-            [Import(ExportContractNames.ProjectItemProviders.SourceFiles)] IProjectItemProvider sourceItemsProvider,
-            [Import(AllowDefault = true)] Lazy<ICreateFileFromTemplateService>? templateFileCreationService,
-            IFileSystem fileSystem,
             ISpecialFilesManager specialFilesManager,
-            ProjectProperties projectProperties)
-            : base(projectTree, sourceItemsProvider, templateFileCreationService, fileSystem, specialFilesManager)
+            IPhysicalProjectTree projectTree,
+            ICreateFileFromTemplateService templateFileCreationService,
+            ProjectProperties properties)
+            : base("app.manifest", specialFilesManager, projectTree)
         {
-            _projectProperties = projectProperties;
+            _templateFileCreationService = templateFileCreationService;
+            _properties = properties;
         }
 
-        protected override string Name => "app.manifest";
-
-        protected override string TemplateName => "AppManifestInternal.zip";
-
-        protected override async Task<IProjectTree?> FindFileAsync(string specialFileName)
+        protected override async Task CreateFileCoreAsync(string path)
         {
-            // If the ApplicationManifest property is defined then we should just use that - otherwise fall back to the default logic to find app.manifest.
-            ConfigurationGeneralBrowseObject configurationGeneral = await _projectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync();
-            string appManifestProperty = await configurationGeneral.ApplicationManifest.GetEvaluatedValueAtEndAsync();
+            await _templateFileCreationService.CreateFileAsync("ResourceInternal.zip", path);
+        }
 
-            if (!string.IsNullOrEmpty(appManifestProperty) &&
-                !appManifestProperty.Equals(DefaultManifestValue, StringComparison.InvariantCultureIgnoreCase) &&
-                !appManifestProperty.Equals(NoManifestValue, StringComparison.InvariantCultureIgnoreCase))
-            {
-                return ProjectTree.TreeProvider.FindByPath(ProjectTree.CurrentTree, appManifestProperty);
-            }
+        protected override async Task<IProjectTree?> FindFileAsync(IProjectTreeProvider provider, IProjectTree root)
+        {
+            string? path = await GetAppManifestPathFromPropertiesAsync();
+            if (path == null)
+                return await base.FindFileAsync(provider, root);
 
-            return await base.FindFileAsync(specialFileName);
+            return provider.FindByPath(root, path);
+        }
+
+        private async Task<string?> GetAppManifestPathFromPropertiesAsync()
+        {
+            ConfigurationGeneralBrowseObject configurationGeneral = await _properties.GetConfigurationGeneralBrowseObjectPropertiesAsync();
+
+            string? value = (string?)await configurationGeneral.ApplicationManifest.GetValueAsync();
+            if (string.IsNullOrEmpty(value))
+                return null;
+
+            if (StringComparers.PropertyLiteralValues.Equals(value!, "DefaultManifest"))
+                return null;
+
+            if (StringComparers.PropertyLiteralValues.Equals(value!, "NoManifest"))
+                return null;
+
+            return value;
         }
     }
 }

@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -17,6 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             {
                 Children = new Collection<MutableProjectTree>();
                 Visible = true;
+                Caption = "";
                 BrowseObjectProperties = new SubTypeRule(this);
             }
 
@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 get;
             }
 
-            public string? Caption
+            public string Caption
             {
                 get;
                 set;
@@ -197,7 +197,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 return subtree;
             }
 
-            IProjectTree IProjectTree.SetBrowseObjectProperties(IRule browseObjectProperties)
+            IProjectTree IProjectTree.SetBrowseObjectProperties(IRule? browseObjectProperties)
             {
                 throw new NotImplementedException();
             }
@@ -207,21 +207,21 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 throw new NotImplementedException();
             }
 
-            IProjectTree IProjectTree.SetExpandedIcon(ProjectImageMoniker expandedIcon)
+            IProjectTree IProjectTree.SetExpandedIcon(ProjectImageMoniker? expandedIcon)
             {
                 ExpandedIcon = expandedIcon;
 
                 return this;
             }
 
-            IProjectTree IProjectTree.SetIcon(ProjectImageMoniker icon)
+            IProjectTree IProjectTree.SetIcon(ProjectImageMoniker? icon)
             {
                 Icon = icon;
 
                 return this;
             }
 
-            IProjectItemTree IProjectTree.SetItem(IProjectPropertiesContext context, IPropertySheet propertySheet, bool isLinked)
+            IProjectItemTree IProjectTree.SetItem(IProjectPropertiesContext context, IPropertySheet? propertySheet, bool isLinked)
             {
                 throw new NotImplementedException();
             }

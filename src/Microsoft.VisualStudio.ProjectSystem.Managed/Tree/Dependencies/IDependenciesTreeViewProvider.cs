@@ -2,7 +2,6 @@
 
 using System.Threading;
 using System.Threading.Tasks;
-
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
@@ -27,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <returns>An updated "Dependencies" node.</returns>
         Task<IProjectTree> BuildTreeAsync(
             IProjectTree dependenciesTree,
-            IDependenciesSnapshot snapshot,
+            DependenciesSnapshot snapshot,
             CancellationToken cancellationToken = default);
 
         /// <summary>

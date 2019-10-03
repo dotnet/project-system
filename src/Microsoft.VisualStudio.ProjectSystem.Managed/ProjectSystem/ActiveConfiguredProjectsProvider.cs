@@ -6,7 +6,6 @@ using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
-
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.ProjectSystem.Configuration;
 
@@ -128,14 +127,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public async Task<ActiveConfiguredObjects<ProjectConfiguration>?> GetActiveProjectConfigurationsAsync()
         {
-            ProjectConfiguration? activeSolutionConfiguration = _services.ActiveConfiguredProjectProvider.ActiveProjectConfiguration;
+            ProjectConfiguration? activeSolutionConfiguration = _services.ActiveConfiguredProjectProvider?.ActiveProjectConfiguration;
 
             if (activeSolutionConfiguration == null)
             {
                 return null;
             }
 
-            IImmutableSet<ProjectConfiguration> configurations = await _services.ProjectConfigurationsService.GetKnownProjectConfigurationsAsync();
+            IImmutableSet<ProjectConfiguration> configurations = await _services.ProjectConfigurationsService!.GetKnownProjectConfigurationsAsync();
 
             var builder = PooledArray<ProjectConfiguration>.GetInstance();
             IImmutableSet<string> dimensionNames = GetDimensionNames();

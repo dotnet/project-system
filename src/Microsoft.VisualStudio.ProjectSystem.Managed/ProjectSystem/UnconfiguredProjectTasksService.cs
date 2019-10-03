@@ -4,7 +4,6 @@ using System;
 using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
-
 using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -34,9 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _loadedInHostListener = loadedInHostListener;
         }
 
-#pragma warning disable RS0030 // symbol ProjectAutoLoad is banned
         [ProjectAutoLoad(completeBy: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
-#pragma warning restore RS0030 // symbol ProjectAutoLoad is banned
         [AppliesTo(ProjectCapability.DotNet)]
         public Task OnProjectFactoryCompleted()
         {

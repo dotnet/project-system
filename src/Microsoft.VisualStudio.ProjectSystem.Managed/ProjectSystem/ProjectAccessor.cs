@@ -4,7 +4,6 @@ using System;
 using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
-
 using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
 
@@ -47,6 +46,21 @@ namespace Microsoft.VisualStudio.ProjectSystem
             Requires.NotNull(project, nameof(action));
 
             return _projectLockService.ReadLockAsync(async access =>
+            {
+                Project evaluatedProject = await access.GetProjectAsync(project, cancellationToken);
+
+                // Deliberately not async to reduce the type of
+                // code you can run while holding the lock.
+                return action(evaluatedProject);
+            }, cancellationToken);
+        }
+
+        public Task<TResult> OpenProjectForUpgradeableReadAsync<TResult>(ConfiguredProject project, Func<Project, TResult> action, CancellationToken cancellationToken = default)
+        {
+            Requires.NotNull(project, nameof(project));
+            Requires.NotNull(project, nameof(action));
+
+            return _projectLockService.UpgradeableReadLockAsync(async access =>
             {
                 Project evaluatedProject = await access.GetProjectAsync(project, cancellationToken);
 

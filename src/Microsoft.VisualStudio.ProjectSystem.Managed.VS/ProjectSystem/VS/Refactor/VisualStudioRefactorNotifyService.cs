@@ -4,9 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
-
 using EnvDTE;
-
 using Microsoft.VisualStudio.ProjectSystem.Refactor;
 using Microsoft.VisualStudio.Shell.Interop;
 
@@ -43,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
 
             refactorNotify.OnBeforeGlobalSymbolRenamed(cItemsAffected: (uint)ids.Length,
                                                        rgItemsAffected: ids,
-                                                       cRQNames: (uint)1,
+                                                       cRQNames: 1,
                                                        rglpszRQName: new[] { rqName },
                                                        lpszNewName: newName,
                                                        promptContinueOnFail: 1);
@@ -66,12 +64,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
 
             refactorNotify.OnGlobalSymbolRenamed(cItemsAffected: (uint)ids.Length,
                                                  rgItemsAffected: ids,
-                                                 cRQNames: (uint)1,
+                                                 cRQNames: 1,
                                                  rglpszRQName: new[] { rqName },
                                                  lpszNewName: newName);
         }
 
-        private  IVsHierarchy? GetProjectHierarchy(string projectPath)
+        private IVsHierarchy? GetProjectHierarchy(string projectPath)
         {
             Project? project = TryGetProjectFromPath(projectPath);
             if (project == null)
@@ -109,9 +107,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
             return null;
         }
 
-        private  IVsHierarchy? TryGetIVsHierarchy(Project project)
+        private IVsHierarchy? TryGetIVsHierarchy(Project project)
         {
-            IVsSolution? solution =  _solution.Value;
+            IVsSolution? solution = _solution.Value;
 
             if (solution!.GetProjectOfUniqueName(project.UniqueName, out IVsHierarchy projectHierarchy) == HResult.OK)
             {

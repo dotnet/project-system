@@ -4,7 +4,6 @@ using System;
 using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
-
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.Settings;
 using Microsoft.VisualStudio.Threading;
@@ -67,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             await _joinableTaskContext.Factory.SwitchToMainThreadAsync(cancellationToken);
 
-            await _settingsManager.Value!.SetValueAsync(name, value, isMachineLocal:false);
+            await _settingsManager.Value!.SetValueAsync(name, value, isMachineLocal: false);
         }
 
         private bool IsEnvironmentVariableEnabled(string variable, ref bool? result)

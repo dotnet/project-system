@@ -8,13 +8,11 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.LanguageServices;
 using Microsoft.VisualStudio.ProjectSystem.Refactor;
 using Microsoft.VisualStudio.ProjectSystem.Rename;
 using Microsoft.VisualStudio.ProjectSystem.Waiting;
-
 using DTE = EnvDTE.DTE;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
@@ -93,56 +91,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 return;
 
             // Ask if the user wants to rename the symbol
-            bool userConfirmed = await CheckUserConfirmation(oldName);
-            if (!userConfirmed)
+            if (await CheckUserConfirmation(oldName))
                 return;
 
             // Try and apply the changes to the current solution
             await _projectVsServices.ThreadingService.SwitchToUIThread();
             string renameOperationName = string.Format(CultureInfo.CurrentCulture, VSResources.Renaming_Type_from_0_to_1, oldName, newName);
-            (WaitIndicatorResult result, bool renamedSolutionApplied) = _waitService.WaitForAsyncFunctionWithResult(
+            (WaitIndicatorResult result, bool renamed) = _waitService.WaitForAsyncFunctionWithResult(
                 title: VSResources.Renaming_Type,
                 message: renameOperationName,
                 allowCancel: true,
-                async token =>
-                {
-                    token.ThrowIfCancellationRequested();
-                    return await _unconfiguredProjectTasksService.LoadedProjectAsync(async () =>
-                    {
-                        // Perform the rename operation
-                        Solution? renamedSolution = await GetRenamedSolutionAsync(oldName, oldFilePath, newFilePath, isCaseSensitive, GetCurrentProject, token);
-                        if (renamedSolution is null)
-                            return false;
-
-                        string rqName = RQName.From(symbol);
-                        Solution? solution = GetCurrentProject()?.Solution;
-                        if (solution is null)
-                            return false;
-
-                        IEnumerable<ProjectChanges> changes = renamedSolution.GetChanges(solution).GetProjectChanges();
-
-                        DTE? dte = _dte.Value;
-
-                        Assumes.NotNull(dte);
-
-                        using var undo = UndoScope.Create(dte, renameOperationName);
-
-                        // Notify other VS features that symbol is about to be renamed
-                        NotifyBeforeRename(newName, rqName, changes);
-
-                        // Try and apply the changes to the current solution
-                        token.ThrowIfCancellationRequested();
-                        bool applyChangesSucceeded = _roslynServices.ApplyChangesToSolution(renamedSolution.Workspace, renamedSolution);
-
-                        if (applyChangesSucceeded)
-                        {
-                            // Notify other VS features that symbol has been renamed
-                            NotifyAfterRename(newName, rqName, changes);
-                        }
-
-                        return applyChangesSucceeded;
-                    });
-                });
+                token => RenameAsync(oldFilePath, newFilePath, isCaseSensitive, oldName, newName, symbol, renameOperationName, token));
 
             // Do not warn the user if the rename was cancelled by the user
             if (result.WasCanceled())
@@ -151,24 +110,63 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             }
 
             // Notify the user if the rename could not be performed
-            if (!renamedSolutionApplied)
+            if (!renamed)
             {
                 string failureMessage = string.Format(CultureInfo.CurrentCulture, VSResources.RenameSymbolFailed, oldName);
                 _userNotificationServices.ShowWarning(failureMessage);
             }
+        }
 
-            Project? GetCurrentProject()
+        private Task<bool> RenameAsync(string oldFilePath, string newFilePath, bool isCaseSensitive, string oldName, string newName, ISymbol? symbol, string renameOperationName, CancellationToken token)
+        {
+            token.ThrowIfCancellationRequested();
+
+            return _unconfiguredProjectTasksService.LoadedProjectAsync(async () =>
             {
-                foreach (Project proj in _workspace.CurrentSolution.Projects)
-                {
-                    if (StringComparers.Paths.Equals(proj.FilePath, _projectVsServices.Project.FullPath))
-                    {
-                        return proj;
-                    }
-                }
+                // Perform the rename operation
+                Solution? renamedSolution = await GetRenamedSolutionAsync(oldName, oldFilePath, newFilePath, isCaseSensitive, GetCurrentProject, token);
+                if (renamedSolution is null)
+                    return false;
 
-                return null;
+                string rqName = RQName.From(symbol);
+                Solution? solution = GetCurrentProject()?.Solution;
+                if (solution is null)
+                    return false;
+
+                IEnumerable<ProjectChanges> changes = renamedSolution.GetChanges(solution).GetProjectChanges();
+
+                DTE? dte = _dte.Value;
+
+                Assumes.NotNull(dte);
+
+                using var undo = UndoScope.Create(dte, renameOperationName);
+
+                // Notify other VS features that symbol is about to be renamed
+                NotifyBeforeRename(newName, rqName, changes);
+
+                // Try and apply the changes to the current solution
+                token.ThrowIfCancellationRequested();
+
+                if (!_roslynServices.ApplyChangesToSolution(renamedSolution.Workspace, renamedSolution))
+                    return false;
+                
+                // Notify other VS features that symbol has been renamed
+                NotifyAfterRename(newName, rqName, changes);
+                return true;
+            });
+        }
+
+        private Project? GetCurrentProject()
+        {
+            foreach (Project proj in _workspace.CurrentSolution.Projects)
+            {
+                if (StringComparers.Paths.Equals(proj.FilePath, _projectVsServices.Project.FullPath!))
+                {
+                    return proj;
+                }
             }
+
+            return null;
         }
 
         private void NotifyAfterRename(string newName, string rqName, IEnumerable<ProjectChanges> changes)

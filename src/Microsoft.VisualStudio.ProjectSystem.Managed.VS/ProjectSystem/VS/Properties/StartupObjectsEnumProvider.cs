@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
-
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.LanguageServices;
@@ -65,10 +64,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             return entryPointNames.Select(name => (IEnumValue)new PageEnumValue(new EnumValue { Name = name, DisplayName = name })).ToArray();
         }
 
-        public Task<IEnumValue> TryCreateEnumValueAsync(string userSuppliedValue)
+        public Task<IEnumValue?> TryCreateEnumValueAsync(string userSuppliedValue)
         {
             var value = new PageEnumValue(new EnumValue { Name = userSuppliedValue, DisplayName = userSuppliedValue });
-            return Task.FromResult<IEnumValue>(value);
+            return Task.FromResult<IEnumValue?>(value);
         }
     }
 }

@@ -1,11 +1,9 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Immutable;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
-
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
@@ -127,7 +125,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         }
 
                         // Get the target framework to update for this change.
-                        ITargetFramework? targetFrameworkToUpdate = currentAggregateContext.GetProjectFramework(GetProjectSubscriptionUpdate(e).ProjectConfiguration);
+                        ITargetFramework? targetFrameworkToUpdate = currentAggregateContext.GetProjectFramework(GetProjectConfiguration(e));
 
                         if (targetFrameworkToUpdate == null)
                         {
@@ -143,7 +141,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         protected abstract void Handle(AggregateCrossTargetProjectContext currentAggregateContext, ITargetFramework targetFrameworkToUpdate, T e);
 
         protected abstract IProjectCapabilitiesSnapshot GetCapabilitiesSnapshot(T e);
-        protected abstract IProjectSubscriptionUpdate GetProjectSubscriptionUpdate(T e);
+        protected abstract ProjectConfiguration GetProjectConfiguration(T e);
 
         protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
         {

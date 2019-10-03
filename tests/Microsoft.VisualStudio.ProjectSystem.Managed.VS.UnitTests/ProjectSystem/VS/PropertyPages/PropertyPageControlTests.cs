@@ -2,12 +2,9 @@
 
 using System;
 using System.Threading.Tasks;
-
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
-
 using Moq;
 using Moq.Protected;
-
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages

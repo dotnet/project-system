@@ -3,7 +3,6 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
-
 using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -38,10 +37,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
                    // Find the node that has the parent folder and add the new node as a child.
                    foreach (var node in inputTree.GetSelfAndDescendentsBreadthFirst())
                    {
-                       string nodeFolderPath = node.IsFolder ? node.FilePath : Path.GetDirectoryName(node.FilePath);
-                       if (nodeFolderPath.TrimEnd(Path.DirectorySeparatorChar).Equals(parentFolder))
+                       string? nodeFolderPath = node.IsFolder ? node.FilePath : Path.GetDirectoryName(node.FilePath);
+                       if (nodeFolderPath?.TrimEnd(Path.DirectorySeparatorChar) == parentFolder)
                        {
-                           if (node.TryFindImmediateChild(fileName, out IProjectTree child) && !child.Flags.IsIncludedInProject())
+                           if (node.TryFindImmediateChild(fileName, out IProjectTree? child) && !child.Flags.IsIncludedInProject())
                            {
                                var newFlags = child.Flags.Remove(ProjectTreeFlags.Common.IncludeInProjectCandidate);
                                child.SetProperties(flags: newFlags);
@@ -54,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                        }
                    }
 
-                   return Task.FromResult<IProjectItem?>(null);
+                   return Task.FromResult<IProjectItem?>(null)!; // TODO remove ! when CPS annotations updated
                });
 
             return mock.Object;

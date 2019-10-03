@@ -3,11 +3,9 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
 using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.ProjectSystem.Input;
 using Microsoft.VisualStudio.Shell.Interop;
-
 using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
@@ -124,7 +122,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                 // We tell the Solution Build Manager to Package our project, which will call the Pack target, which will build if necessary.
                 // Any dependent projects will just do a normal build
                 buildFlags[0] = VSConstants.VS_BUILDABLEPROJECTCFGOPTS_PACKAGE;
-                
+
                 ErrorHandler.ThrowOnFailure(_buildManager.StartUpdateSpecificProjectConfigurations(cProjs: (uint)projects.Count,
                                                                                                    rgpHier: projects.ToArray(),
                                                                                                    rgpcfg: null,

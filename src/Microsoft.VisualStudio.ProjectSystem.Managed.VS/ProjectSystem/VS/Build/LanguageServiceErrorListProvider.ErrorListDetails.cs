@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
@@ -31,9 +30,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 set;
             }
 
-            public string GetFileFullPath(string projectFile)
+            public string GetFileFullPath(string? projectFile)
             {
-                string baseFilePath = ProjectFile;
+                string? baseFilePath = ProjectFile;
                 if (string.IsNullOrEmpty(baseFilePath))
                 {
                     baseFilePath = projectFile;
@@ -41,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
                 if (!string.IsNullOrEmpty(baseFilePath) && !string.IsNullOrEmpty(File))
                 {
-                    return TryMakeRooted(baseFilePath, File);
+                    return TryMakeRooted(baseFilePath!, File);
                 }
 
                 return string.Empty;

@@ -1,29 +1,34 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.ComponentModel.Composition;
-
-using Microsoft.VisualStudio.IO;
+using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders.VisualBasic
 {
+    /// <summary>
+    ///     Provides a <see cref="ISpecialFileProvider"/> that handles the default 'AssemblyInfo.vb' file; 
+    ///     which contains attributes for assembly versioning, COM exposure, and other assembly-level 
+    ///     directives and is typically found under the 'AppDesigner' folder.
+    /// </summary>
     [ExportSpecialFileProvider(SpecialFiles.AssemblyInfo)]
     [AppliesTo(ProjectCapability.VisualBasic)]
-    internal class VisualBasicAssemblyInfoSpecialFileProvider : AbstractFindByNameSpecialFileProvider
+    internal class VisualBasicAssemblyInfoSpecialFileProvider : AbstractFindByNameUnderAppDesignerSpecialFileProvider
     {
+        private readonly ICreateFileFromTemplateService _templateFileCreationService;
+
         [ImportingConstructor]
         public VisualBasicAssemblyInfoSpecialFileProvider(
+            ISpecialFilesManager specialFilesManager,
             IPhysicalProjectTree projectTree,
-            [Import(ExportContractNames.ProjectItemProviders.SourceFiles)] IProjectItemProvider sourceItemsProvider,
-            [Import(AllowDefault = true)] Lazy<ICreateFileFromTemplateService>? templateFileCreationService,
-            IFileSystem fileSystem,
-            ISpecialFilesManager specialFilesManager)
-            : base(projectTree, sourceItemsProvider, templateFileCreationService, fileSystem, specialFilesManager)
+            ICreateFileFromTemplateService templateFileCreationService)
+            : base("AssemblyInfo.vb", specialFilesManager, projectTree)
         {
+            _templateFileCreationService = templateFileCreationService;
         }
 
-        protected override string Name => "AssemblyInfo.vb";
-
-        protected override string TemplateName => "AssemblyInfoInternal.zip";
+        protected override Task CreateFileCoreAsync(string path)
+        {
+            return _templateFileCreationService.CreateFileAsync("AssemblyInfoInternal.zip", path);
+        }
     }
 }

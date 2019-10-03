@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
-
 using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
 using Microsoft.VisualStudio.Buffers.PooledObjects;
@@ -167,17 +166,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             Requires.NotNull(project, nameof(project));
             Requires.NotNull(target, nameof(target));
 
-            IProjectTree newTarget = target;
+            IProjectTree? newTarget = target;
 
             // This is to handle adding files to empty folders since empty folders do not have a valid display order yet.
             // We need to find a target up the tree that has a valid display order, because it most likely will have our reference element that we want.
-            while (!HasValidDisplayOrder(newTarget) && !newTarget.Flags.Contains(ProjectTreeFlags.ProjectRoot))
+            while (!HasValidDisplayOrder(newTarget) && !newTarget!.Flags.Contains(ProjectTreeFlags.ProjectRoot))
             {
                 newTarget = newTarget.Parent;
             }
 
             var excludeIncludes = elements.Select(x => x.Include).ToImmutableArray();
-            ProjectItemElement? referenceElement = GetChildren(newTarget).Select(x => TryGetReferenceElement(project, x, excludeIncludes, MoveAction.Above)).FirstOrDefault(x => x != null);
+            ProjectItemElement? referenceElement = GetChildren(newTarget!).Select(x => TryGetReferenceElement(project, x, excludeIncludes, MoveAction.Above)).FirstOrDefault(x => x != null);
             if (referenceElement == null)
             {
                 return false;
@@ -247,7 +246,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
                     // Technically it is possible to have more than one of the same item names.
                     // We only want to add one of them.
                     // Sanity check
-                    if (hashSet.Add(tree2.Item.ItemName))
+                    if (tree2.Item.ItemName != null && hashSet.Add(tree2.Item.ItemName))
                     {
                         includes.Add(tree2.DisplayOrder, tree2.Item.ItemName);
                     }
@@ -290,7 +289,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// <returns>a sibling</returns>
         private static IProjectTree2? GetSiblingByDisplayOrder(IProjectTree projectTree, Func<int, ImmutableArray<IProjectTree>, IProjectTree2?> returnSibling)
         {
-            IProjectTree parent = projectTree.Parent;
+            IProjectTree? parent = projectTree.Parent;
             int displayOrder = GetDisplayOrder(projectTree);
             if (!IsValidDisplayOrder(displayOrder) || parent == null)
             {
@@ -348,8 +347,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// </summary>
         private static IProjectTree? GetSiblingByMoveAction(IProjectTree projectTree, MoveAction moveAction)
         {
-            return moveAction == MoveAction.Above ? 
-                GetPreviousSibling(projectTree) : 
+            return moveAction == MoveAction.Above ?
+                GetPreviousSibling(projectTree) :
                 GetNextSibling(projectTree);
         }
 
@@ -361,8 +360,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         {
             ImmutableArray<ProjectItemElement> items = GetItemElements(project, projectTree, excludeIncludes);
 
-            return moveAction == MoveAction.Above ? 
-                items.FirstOrDefault() : 
+            return moveAction == MoveAction.Above ?
+                items.FirstOrDefault() :
                 items.LastOrDefault();
         }
 

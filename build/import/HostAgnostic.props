@@ -11,6 +11,13 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
+
+    <!-- Microsoft.VisualStudio.Utilities depends on System.Threading.Tasks.Dataflow but
+         doesn't declare the dependency. The build then complains about "conflicts between
+         different versions of 'System.Threading.Tasks.Dataflow' that could not be
+         resolved". By explicitly bringing in the dependency we ensure that the proper 
+         version of the assembly is available. -->
+    <PackageReference Include="System.Threading.Tasks.Dataflow" />
     
     <!-- Toolset -->
     <PackageReference Include="MicroBuild.Core" ExcludeAssets="All" />
@@ -54,7 +61,9 @@
     <PackageReference Include="Microsoft.VisualStudio.Imaging.Interop.14.0.DesignTime" />
     <PackageReference Include="Microsoft.VisualStudio.ImageCatalog" />
     <PackageReference Include="StreamJsonRpc" />
-    
+
+    <PackageReference Include="Microsoft.ServiceHub.Framework" />
+
   </ItemGroup>
 
   <ItemGroup Condition="'$(IsUnitTestProject)' == 'true'" >

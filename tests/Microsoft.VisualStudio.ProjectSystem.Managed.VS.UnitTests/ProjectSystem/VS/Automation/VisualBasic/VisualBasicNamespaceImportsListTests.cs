@@ -2,9 +2,7 @@
 
 using System;
 using System.Collections.Generic;
-
 using Moq;
-
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic

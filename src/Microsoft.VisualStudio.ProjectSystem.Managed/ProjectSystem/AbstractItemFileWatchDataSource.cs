@@ -4,7 +4,6 @@ using System;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks.Dataflow;
-
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -18,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private readonly IProjectSubscriptionService _projectSubscriptionService;
 
         protected AbstractItemFileWatchDataSource(ConfiguredProject project, IProjectSubscriptionService projectSubscriptionService)
-            : base(project.Services, synchronousDisposal:true, registerDataSource: false)
+            : base(project.Services, synchronousDisposal: true, registerDataSource: false)
         {
             _project = project;
             _projectSubscriptionService = projectSubscriptionService;

@@ -7,7 +7,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
-
 using Microsoft.VisualStudio.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -43,9 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             get;
         }
 
-#pragma warning disable RS0030 // symbol ConfiguredProjectAutoLoad is banned
         [ConfiguredProjectAutoLoad]
-#pragma warning restore RS0030 // symbol ConfiguredProjectAutoLoad is banned
         [AppliesTo(ProjectCapability.DotNet)]
         public void Load()
         {

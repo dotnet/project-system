@@ -4,7 +4,6 @@ using System;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
-
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Telemetry;

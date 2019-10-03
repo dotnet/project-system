@@ -3,9 +3,7 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
-
 using EnvDTE;
-
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 

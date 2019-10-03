@@ -4,10 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.Composition.Reflection;
-
+using Microsoft.VisualStudio.Packaging;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
@@ -96,6 +95,62 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             if (appliesToMetadata.Distinct().Count() > 1)
             {
                 Assert.False(true, $"{definition.Type.FullName} exports multiple values with differing AppliesTo. All exports from a component must apply to the same capabilities.");
+            }
+        }
+
+        [Theory]
+        [ClassData(typeof(ComposablePartDefinitionTestData))]
+        public void CertainExportsMustNotBeMarkedWithDynamicCapabilities(Type type)
+        {
+            string[] contractsWithFixedCapabilities = new string[] {
+                ExportContractNames.VsTypes.ProjectNodeComExtension,
+                "Microsoft.VisualStudio.ProjectSystem.ConfiguredProject.AutoLoad",
+                "Microsoft.VisualStudio.ProjectSystem.Project.AutoLoad",
+            };
+
+            var definition = ComponentComposition.Instance.FindComposablePartDefinition(type);
+            
+            Assert.NotNull(definition);
+
+            // BUG: https://github.com/dotnet/project-system/issues/5519
+            if (definition!.Type.FullName == "Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.DependenciesSnapshotProvider")
+                return;
+
+            foreach (KeyValuePair<MemberRef, ExportDefinition> exportDefinitionPair in definition!.ExportDefinitions)
+            {
+                ExportDefinition export = exportDefinitionPair.Value;
+                if (contractsWithFixedCapabilities.Contains(export.ContractName) && 
+                    export.Metadata.TryGetValue(nameof(AppliesToAttribute.AppliesTo), out object metadata) && 
+                    metadata is string appliesTo)
+                {
+                    IEnumerable<string> capabilities = GetRawCapabilities(appliesTo);
+                    IEnumerable<string> fixedCapabilities = GetFixedCapabilities();
+
+                    var dynamicCapabilities = capabilities.Except(fixedCapabilities);
+
+                    Assert.False(dynamicCapabilities.Any(), @$"{definition.Type.FullName} exports {export.ContractName} based on a dynamic capabilities '{string.Join(";", dynamicCapabilities)}'. This contract is used during project initialization and must use a capability that doesn't change over the lifetime of a project. These capabilities are specified in src\Microsoft.VisualStudio.ProjectSystem.Managed.VS\Packaging\ProjectTypeRegistration.cs");
+                }
+            }
+
+            static IEnumerable<string> GetFixedCapabilities()
+            {
+                var fixedCapabilities = new HashSet<string>();
+                fixedCapabilities.AddRange(GetCapabilitiesFromProjectType(ProjectTypeCapabilities.Default));
+                fixedCapabilities.AddRange(GetCapabilitiesFromProjectType(ProjectTypeCapabilities.CSharp));
+                fixedCapabilities.AddRange(GetCapabilitiesFromProjectType(ProjectTypeCapabilities.VisualBasic));
+                fixedCapabilities.AddRange(GetCapabilitiesFromProjectType(ProjectTypeCapabilities.FSharp));
+
+                return fixedCapabilities;
+            }
+
+            static IEnumerable<string> GetCapabilitiesFromProjectType(string capabilities)
+            {
+                return capabilities.Split(new char[] { ';', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            }
+
+            static IEnumerable<string> GetRawCapabilities(string appliesTo)
+            {
+                return appliesTo.Split(new char[] { '&', '|', '(', ')', ' ', '!', }, StringSplitOptions.RemoveEmptyEntries);
             }
         }
 
