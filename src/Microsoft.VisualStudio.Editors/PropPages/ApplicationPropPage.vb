@@ -612,7 +612,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                             message = My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_NeedResFile
                             Return ValidationResult.Warning
                         ElseIf Not Win32ResourceFile.Text.IndexOfAny(Path.GetInvalidPathChars()) = -1 Then
-                            message = My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_InvalidCharactersInFilePath
+                            Dim FirstInvalidCharacter As String = Path.GetInvalidPathChars().First
+                            message = My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_InvalidCharactersInFilePath & vbCrLf & "Please remove the following character: " & FirstInvalidCharacter
                             Return ValidationResult.Failed
                         ElseIf Not File.Exists(Win32ResourceFile.Text) Then
                             message = My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_ResourceFileNotExist
