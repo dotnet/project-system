@@ -435,17 +435,17 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         'If I open a project that has the PackageIconUrl property, I should get a warning
         'that the property changed to PackageIcon
         Private Sub SetPackageIconUrlWarninglWarningActive(setActive As Boolean)
-            PackageIconLabel.Visible = Not setActive
+            PackageIconLineLabel.Visible = Not setActive
             PackageIconUrlWarning.Visible = setActive
             PackageIconUrlWarning.Enabled = setActive
 
             'Swaps the label and textbox location, as done for license warning
             If (setActive) Then
                 TableLayoutPanel.SetColumn(PackageIconUrlWarning, 1)
-                TableLayoutPanel.SetColumn(PackageIconLabel, 2)
+                TableLayoutPanel.SetColumn(PackageIconLineLabel, 2)
             Else
                 TableLayoutPanel.SetColumn(PackageIconUrlWarning, 2)
-                TableLayoutPanel.SetColumn(PackageIconLabel, 1)
+                TableLayoutPanel.SetColumn(PackageIconLineLabel, 1)
                 SetCommonPropertyValue(GetPropertyDescriptor("PackageIconUrl"), "")
             End If
         End Sub
@@ -634,6 +634,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ' TODO: New help keyword
             Return HelpKeywords.VBProjPropAssemblyInfo
         End Function
+
+        Private Sub PackageIconUrlWarning_TextChanged(sender As Object, e As EventArgs) Handles PackageIconUrlWarning.TextChanged
+
+        End Sub
     End Class
 
 End Namespace

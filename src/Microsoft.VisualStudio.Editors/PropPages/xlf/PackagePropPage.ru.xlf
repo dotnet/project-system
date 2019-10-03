@@ -38,8 +38,8 @@
         <note />
       </trans-unit>
       <trans-unit id="PackageIconUrlWarning.Text">
-        <source>PackageIconUrl property was detected, but it has been deprecated. Please change to PackageIcon.</source>
-        <target state="new">PackageIconUrl property was detected, but it has been deprecated. Please change to PackageIcon.</target>
+        <source>PackageIconUrl detected but is depricated. Use PackageIcon instead.</source>
+        <target state="new">PackageIconUrl detected but is depricated. Use PackageIcon instead.</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageVersionLabel.Text">
