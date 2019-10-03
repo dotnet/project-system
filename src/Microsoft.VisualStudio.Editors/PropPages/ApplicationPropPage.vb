@@ -608,9 +608,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     End If
                 Case VsProjPropId80.VBPROJPROPID_Win32ResourceFile
                     If Win32ResourceRadioButton.Checked Then
+                        Dim FirstInvalidCharacter As Integer = Win32ResourceFile.Text.IndexOfAny(Path.GetInvalidPathChars())
                         If Trim(Win32ResourceFile.Text).Length = 0 Then
                             message = My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_NeedResFile
                             Return ValidationResult.Warning
+                        ElseIf Not FirstInvalidCharacter = -1 Then
+                            message = My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_InvalidCharactersInFilePath & vbCrLf & "Remove the following character: " & Win32ResourceFile.Text.Substring(FirstInvalidCharacter, 1)
+                            Return ValidationResult.Failed
                         ElseIf Not File.Exists(Win32ResourceFile.Text) Then
                             message = My.Resources.Microsoft_VisualStudio_Editors_Designer.PropPage_ResourceFileNotExist
                             Return ValidationResult.Warning
