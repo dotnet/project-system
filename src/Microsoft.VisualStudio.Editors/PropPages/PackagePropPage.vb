@@ -420,9 +420,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 If (Not TryConvertToAbsolutePath Is Nothing AndAlso String.Equals(TryConvertToAbsolutePath, PackageIcon.Text)) Then
                     'If these are equal then the path is absolute
                     AddItemToProject(AbsoluteToRelativePath(PackageIcon.Text), _packageIconFilePropName)
+                    SetPackageIconUrlWarninglWarningActive(False)
                 Else
                     If (Not String.IsNullOrEmpty(PackageIcon.Text)) Then
                         AddItemToProject(PackageIcon.Text, _packageIconFilePropName)
+                        SetPackageIconUrlWarninglWarningActive(False)
                     Else
                         RemoveItem(RetrievePreviousProperty(_packageIconFilePropName))
                         _previousProperties(_packageIconFilePropName) = ""
@@ -626,6 +628,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 fileName = DirectCast(fileNames(0), String)
                 If (File.Exists(fileName)) Then
                     AddItemToProject(AbsoluteToRelativePath(fileName), _packageIconFilePropName)
+                    SetPackageIconUrlWarninglWarningActive(False)
                 End If
             End If
         End Sub
