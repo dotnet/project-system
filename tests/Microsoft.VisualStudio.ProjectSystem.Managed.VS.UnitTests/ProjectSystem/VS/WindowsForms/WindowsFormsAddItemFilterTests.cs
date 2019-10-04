@@ -42,6 +42,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
         [Theory]
         [InlineData(new object[] { @"C:\Program Files\Visual Studio\Templates\CSControlInheritanceWizard.vsz", true })]
         [InlineData(new object[] { @"C:\Program Files\Visual Studio\Templates\CSFormInheritanceWizard.vsz", true })]
+        [InlineData(new object[] { @"C:\Program Files\Visual Studio\Templates\InheritedForm.vsz", true })]
+        [InlineData(new object[] { @"C:\Program Files\Visual Studio\Templates\InheritedControl.vsz", true })]
         [InlineData(new object[] { @"C:\Program Files\Visual Studio\Templates\Class.vsz", false })]
         [InlineData(new object[] { @"C:\Program Files\Visual Studio\Templates\ControlLibrary.vsz", false })]
         public void FiltersItemTemplateFiles(string templateDir, bool shouldBeFiltered)

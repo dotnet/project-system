@@ -58,7 +58,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
 
             // These item templates are an older style that can't be filtered by capabilities, and use a Wizard that is broken for .NET Core
             if (pszTemplateFile.EndsWith("\\CSControlInheritanceWizard.vsz", StringComparisons.Paths) ||
-                pszTemplateFile.EndsWith("\\CSFormInheritanceWizard.vsz", StringComparisons.Paths))
+                pszTemplateFile.EndsWith("\\CSFormInheritanceWizard.vsz", StringComparisons.Paths) ||
+                pszTemplateFile.EndsWith("\\InheritedControl.vsz", StringComparisons.Paths) ||
+                pszTemplateFile.EndsWith("\\InheritedForm.vsz", StringComparisons.Paths))
             {
                 pfFilter = 1;
             }
