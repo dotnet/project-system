@@ -18,7 +18,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Const NuGetPackageManagerSearchProviderGuid As String = "042C2B4B-C7F7-49DB-B7A2-402EB8DC7892"
         Private Const RoslynAnalyzersDocumentationLink As String = "https://docs.microsoft.com/visualstudio/code-quality/roslyn-analyzers-overview"
 
-        Private Shared ReadOnly s_latestStableVersion As Version = New Version(2, 9, 5)
+        Private Shared ReadOnly s_latestStableVersion As Version = New Version(2, 9, 6)
         Private Shared ReadOnly s_childPackageIds As HashSet(Of String) = New HashSet(Of String)(
             {"Microsoft.CodeQuality.Analyzers", "Microsoft.NetCore.Analyzers", "Microsoft.NetFramework.Analyzers"},
             StringComparer.OrdinalIgnoreCase)
