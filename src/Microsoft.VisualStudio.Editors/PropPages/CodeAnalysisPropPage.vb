@@ -18,7 +18,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Const NuGetPackageManagerSearchProviderGuid As String = "042C2B4B-C7F7-49DB-B7A2-402EB8DC7892"
         Private Const RoslynAnalyzersDocumentationLink As String = "https://docs.microsoft.com/visualstudio/code-quality/roslyn-analyzers-overview"
 
-        Private Shared ReadOnly s_latestStableVersion As Version = New Version(2, 9, 3)
+        Private Shared ReadOnly s_latestStableVersion As Version = New Version(2, 9, 6)
         Private Shared ReadOnly s_childPackageIds As HashSet(Of String) = New HashSet(Of String)(
             {"Microsoft.CodeQuality.Analyzers", "Microsoft.NetCore.Analyzers", "Microsoft.NetFramework.Analyzers"},
             StringComparer.OrdinalIgnoreCase)
@@ -115,12 +115,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             If restorePackages Then
                 Using session = _threadedWaitDialogFactory.StartWaitDialog(My.Resources.Strings.RestoringPackagesMessage)
+
+                    ' Temporary workaround for https://github.com/NuGet/Home/issues/8616
+                    ' Add a small delay before invoking RestorePackages/GetInstalledPackages APIs.
+                    Thread.Sleep(5000)
+
                     _packageRestorer.RestorePackages(DTEProject)
 
                     session.UserCancellationToken.ThrowIfCancellationRequested()
-
-                    ' Add a small delay to ensure GetInstalledPackages invocation below gets updated packages.
-                    Thread.Sleep(2000)
                 End Using
             End If
 
