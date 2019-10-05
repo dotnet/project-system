@@ -3,8 +3,8 @@
   <file datatype="xml" source-language="en" target-language="de" original="../RoslynLoggingResources.resx">
     <body>
       <trans-unit id="LoggingRoslynWorkspaceStructure">
-        <source>Logging Roslyn Worksapce structure...</source>
-        <target state="new">Logging Roslyn Worksapce structure...</target>
+        <source>Logging Roslyn Workspace structure...</source>
+        <target state="new">Logging Roslyn Workspace structure...</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectSystemTools">
