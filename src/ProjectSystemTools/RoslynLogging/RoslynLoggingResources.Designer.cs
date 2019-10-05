@@ -59,9 +59,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.RoslynLogging {
                 resourceCulture = value;
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized string similar to Logging Roslyn Worksapce structure....
+        ///   Looks up a localized string similar to Logging Roslyn Workspace structure....
         /// </summary>
         internal static string LoggingRoslynWorkspaceStructure {
             get {
