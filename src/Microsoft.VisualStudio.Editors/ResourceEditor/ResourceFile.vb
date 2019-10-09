@@ -37,8 +37,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '  (both when we do it manually and when Undo/Redo does it for us), etc.
         Private WithEvents _componentChangeService As IComponentChangeService
 
-        'Our set of resources (keyed by Name normalized to uppercase so our look-up is case-insensitive)
-        Private ReadOnly _resourcesHash As Hashtable = Nothing
+        'Our set of resources
+        Private ReadOnly _resourcesHash As Dictionary(Of String, Resource) = Nothing
 
         'an arrayList to keep all meta data, we shouldn't lose them when we save the resource file back...
         Private ReadOnly _metadataList As ArrayList
@@ -113,7 +113,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Debug.Assert(Not RootComponent Is Nothing)
             Debug.Assert(ServiceProvider IsNot Nothing)
 
-            _resourcesHash = New Hashtable
+            _resourcesHash = New Dictionary(Of String, Resource)(StringComparers.ResourceNames)
             _metadataList = New ArrayList
 
             _rootComponent = RootComponent
@@ -192,9 +192,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     '  that didn't make into into the host container, or in case we later do the
                     '  optimization of delay-adding Resources as components.  The second dispose
                     '  won't hurt the Resource.
-                    For Each Entry As DictionaryEntry In _resourcesHash
-                        Dim Resource As IDisposable = DirectCast(Entry.Value, IDisposable)
-                        Resource.Dispose()
+                    For Each resource In _resourcesHash.Values
+                        resource.Dispose()
                     Next
 
                     _resourcesHash.Clear()
@@ -291,7 +290,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <value></value>
         ''' <remarks></remarks>
-        Friend ReadOnly Property ResourcesHashTable() As Hashtable
+        Friend ReadOnly Property ResourcesHashTable() As Dictionary(Of String, Resource)
             Get
                 Return _resourcesHash
             End Get
@@ -447,8 +446,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Return Nothing
             End If
 
-            'Keys are upper-cased
-            Dim Found As Resource = DirectCast(_resourcesHash(Name.ToUpperInvariant()), Resource)
+            Dim Found = _resourcesHash(Name)
             Debug.Assert(Found Is Nothing OrElse Found.ParentResourceFile Is Me)
             Return Found
         End Function
@@ -462,7 +460,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Function FindLinkResource(FileFullPath As String) As Resource
             Dim fileInfo As New FileInfo(FileFullPath)
             FileFullPath = fileInfo.FullName
-            For Each Resource As Resource In _resourcesHash.Values
+            For Each Resource In _resourcesHash.Values
                 If Resource.IsLink Then
                     Dim linkFileInfo As New FileInfo(Resource.AbsoluteLinkPathAndFileName)
                     If String.Equals(FileFullPath, linkFileInfo.FullName, StringComparison.OrdinalIgnoreCase) Then
@@ -482,12 +480,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''  Add a collection of resources to the ResourceFile
         ''' </summary>
         ''' <param name="NewResources">A collection of resource items to add</param>
-        Public Sub AddResources(NewResources As ICollection)
+        Public Sub AddResources(NewResources As ICollection(Of Resource))
             Debug.Assert(NewResources IsNot Nothing, "Invalid Resources collection")
 
             _inBatchAdding = True
             Try
-                For Each Resource As Resource In NewResources
+                For Each Resource In NewResources
                     AddResource(Resource)
                 Next
                 If Not _isLoadingResourceFile Then
@@ -608,7 +606,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Debug.Assert(Not _resourcesHash.ContainsValue(Resource), "already exists in our list")
 
             'Add it to our list (upper-case the key to normalize for in-case-sensitive look-ups)
-            _resourcesHash.Add(Resource.Name.ToUpperInvariant(), Resource)
+            _resourcesHash.Add(Resource.Name, Resource)
 
             'Set the parent
             Resource.ParentResourceFile = Me
@@ -672,7 +670,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Debug.Assert(_resourcesHash.ContainsValue(Resource), "not found")
 
             'Go ahead and remove from our list (keys are normalized as upper-case)
-            _resourcesHash.Remove(Resource.Name.ToUpperInvariant())
+            _resourcesHash.Remove(Resource.Name)
 
             'Remove the parent pointer
             Resource.ParentResourceFile = Nothing
@@ -807,12 +805,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             '  we change the Name, the location of the resource in the hashtable will not longer be correct
             '  (because we just changed the key, which it uses to search the hashtable).  So we have to
             '  remove ourself first and then re-insert ourself into the hashtable.
-            _resourcesHash.Remove(Resource.Name.ToUpperInvariant())
+            _resourcesHash.Remove(Resource.Name)
             Try
                 Resource.NameRawWithoutUndo = e.NewName
             Catch ex As Exception When ReportWithoutCrash(ex, "Unexpected error changing the name of the resource", NameOf(ResourceFile))
             End Try
-            _resourcesHash.Add(Resource.Name.ToUpperInvariant(), Resource)
+            _resourcesHash.Add(Resource.Name, Resource)
 
             'Notify the view that resources have been removed (if they were removed by someone besides us, think "Undo/Redo")
             View.OnResourceTouched(Resource)
@@ -1007,7 +1005,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 If _resourcesHash.Count > 0 Then
                     Dim resourceList As Resource() = New Resource(_resourcesHash.Count - 1) {}
                     Dim i As Integer = 0
-                    For Each Resource As Resource In _resourcesHash.Values
+                    For Each Resource In _resourcesHash.Values
                         resourceList(i) = Resource
                         i += 1
                     Next
@@ -1501,9 +1499,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Sub DelayCheckAllResourcesForErrors()
             StopDelayingCheckingForErrors()
             If _resourcesHash IsNot Nothing Then
-                For Each Entry As DictionaryEntry In _resourcesHash
-                    Dim Resource As Resource = DirectCast(Entry.Value, Resource)
-                    DelayCheckResourceForErrors(Resource)
+                For Each resource In _resourcesHash.Values
+                    DelayCheckResourceForErrors(resource)
                 Next
             End If
         End Sub
@@ -1656,7 +1653,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Resources">A collection of resource items </param>
         ''' <remarks>For performance reasons, we processes a collection of items one time</remarks>
-        Private Sub AddNecessaryReferenceToProject(Resources As ICollection)
+        Private Sub AddNecessaryReferenceToProject(Resources As ICollection(Of Resource))
             Debug.Assert(Resources IsNot Nothing, "Invalid Resources collection")
 
             Dim TypeResolutionService As ITypeResolutionService = View.GetTypeResolutionService()
@@ -1669,7 +1666,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Dim typeNameCollection As New Specialized.StringCollection
                 Dim assemblyCollection As New Specialized.StringCollection
 
-                For Each Resource As Resource In Resources
+                For Each Resource In Resources
                     Dim resourceType As Type = Nothing
                     Dim cachedValue As Object = Resource.CachedValue
                     If cachedValue IsNot Nothing Then
