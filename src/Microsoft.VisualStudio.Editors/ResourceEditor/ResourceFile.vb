@@ -58,7 +58,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
         'A list of resources that need to be checked for errors during idle-time
         '  processing.
-        Private ReadOnly _resourcesToDelayCheckForErrors As New ArrayList
+        Private ReadOnly _resourcesToDelayCheckForErrors As New HashSet(Of Resource)
 
         ' Indicate whether we should suspend delay checking temporary...
         Private _delayCheckSuspended As Boolean
@@ -1553,7 +1553,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
 
             If _resourcesToDelayCheckForErrors.Count > 0 Then
-                Dim Resource As Resource = DirectCast(_resourcesToDelayCheckForErrors(0), Resource)
+                Dim Resource As Resource = _resourcesToDelayCheckForErrors(0)
                 Debug.WriteLineIf(Switches.RSEDelayCheckErrors.TraceVerbose, "Delay-check errors: Processing: " & Resource.Name)
 
                 'Check the resource for errors
@@ -1575,7 +1575,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks></remarks>
         Private Sub StopDelayingCheckingForErrors()
             While _resourcesToDelayCheckForErrors.Count > 0
-                RemoveResourceToDelayCheckForErrors(DirectCast(_resourcesToDelayCheckForErrors(0), Resource))
+                RemoveResourceToDelayCheckForErrors(_resourcesToDelayCheckForErrors(0))
             End While
         End Sub
 
