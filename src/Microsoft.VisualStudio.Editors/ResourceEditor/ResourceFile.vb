@@ -41,7 +41,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private ReadOnly _resourcesHash As Dictionary(Of String, Resource) = Nothing
 
         'an arrayList to keep all meta data, we shouldn't lose them when we save the resource file back...
-        Private ReadOnly _metadataList As ArrayList
+        Private ReadOnly _metadataList As List(Of DictionaryEntry)
 
         'The root component for the resource editor.  Cannot be Nothing.
         Private ReadOnly _rootComponent As ResourceEditorRootComponent
@@ -114,7 +114,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Debug.Assert(ServiceProvider IsNot Nothing)
 
             _resourcesHash = New Dictionary(Of String, Resource)(StringComparers.ResourceNames)
-            _metadataList = New ArrayList
+            _metadataList = New List(Of DictionaryEntry)
 
             _rootComponent = RootComponent
             _serviceProvider = ServiceProvider
@@ -996,7 +996,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 If _metadataList IsNot Nothing AndAlso _metadataList.Count > 0 Then
                     Dim NewWriter As ResXResourceWriter = TryCast(ResXWriter, ResXResourceWriter)
                     If NewWriter IsNot Nothing Then
-                        For Each entry As DictionaryEntry In _metadataList
+                        For Each entry In _metadataList
                             NewWriter.AddMetadata(CStr(entry.Key), entry.Value)
                         Next
                     End If
