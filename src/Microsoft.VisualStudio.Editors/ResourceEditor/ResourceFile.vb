@@ -38,10 +38,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private WithEvents _componentChangeService As IComponentChangeService
 
         'Our set of resources
-        Private ReadOnly _resourcesHash As Dictionary(Of String, Resource) = Nothing
+        Private ReadOnly _resources As Dictionary(Of String, Resource) = Nothing
 
-        'an arrayList to keep all meta data, we shouldn't lose them when we save the resource file back...
-        Private ReadOnly _metadataList As List(Of DictionaryEntry)
+        'Metadata from the resource file so we can write them back out when saving the file.
+        Private ReadOnly _resourceFileMetadata As List(Of DictionaryEntry)
 
         'The root component for the resource editor.  Cannot be Nothing.
         Private ReadOnly _rootComponent As ResourceEditorRootComponent
@@ -54,9 +54,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private ReadOnly _mainThread As System.Threading.Thread
 
         'Holds a set of tasks for each Resource that has any task list entries.
-        Private ReadOnly _resourceErrorsHash As New Dictionary(Of Resource, ResourceTaskSet)
+        Private ReadOnly _resourceTaskSets As New Dictionary(Of Resource, ResourceTaskSet)
 
-        'A list of resources that need to be checked for errors during idle-time
+        'A set of resources that need to be checked for errors during idle-time
         '  processing.
         Private ReadOnly _resourcesToDelayCheckForErrors As New HashSet(Of Resource)
 
@@ -112,8 +112,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Debug.Assert(Not RootComponent Is Nothing)
             Debug.Assert(ServiceProvider IsNot Nothing)
 
-            _resourcesHash = New Dictionary(Of String, Resource)(StringComparers.ResourceNames)
-            _metadataList = New List(Of DictionaryEntry)
+            _resources = New Dictionary(Of String, Resource)(StringComparers.ResourceNames)
+            _resourceFileMetadata = New List(Of DictionaryEntry)
 
             _rootComponent = RootComponent
             _serviceProvider = ServiceProvider
@@ -185,21 +185,21 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     _errorListProvider.Tasks.Clear()
                 End If
 
-                If _resourcesHash IsNot Nothing Then
+                If _resources IsNot Nothing Then
                     'Note: The designer host disposing any Resources of ours that have been
                     '  added as components.  However, we do it now anyway, in case there are some
                     '  that didn't make into into the host container, or in case we later do the
                     '  optimization of delay-adding Resources as components.  The second dispose
                     '  won't hurt the Resource.
-                    For Each resource In _resourcesHash.Values
+                    For Each resource In _resources.Values
                         resource.Dispose()
                     Next
 
-                    _resourcesHash.Clear()
+                    _resources.Clear()
                 End If
 
-                If _metadataList IsNot Nothing Then
-                    _metadataList.Clear()
+                If _resourceFileMetadata IsNot Nothing Then
+                    _resourceFileMetadata.Clear()
                 End If
             End If
         End Sub
@@ -285,13 +285,13 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 
         ''' <summary>
-        ''' Returns the hashtable of resources from this resource file
+        ''' Returns the resources from this resource file
         ''' </summary>
         ''' <value></value>
         ''' <remarks></remarks>
-        Friend ReadOnly Property ResourcesHashTable() As Dictionary(Of String, Resource)
+        Friend ReadOnly Property Resources() As Dictionary(Of String, Resource)
             Get
-                Return _resourcesHash
+                Return _resources
             End Get
         End Property
 
@@ -430,7 +430,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function Contains(Resource As Resource) As Boolean
-            Return _resourcesHash.ContainsValue(Resource)
+            Return _resources.ContainsValue(Resource)
         End Function
 
 
@@ -445,7 +445,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Return Nothing
             End If
 
-            Dim Found = _resourcesHash(Name)
+            Dim Found = _resources(Name)
             Debug.Assert(Found Is Nothing OrElse Found.ParentResourceFile Is Me)
             Return Found
         End Function
@@ -459,7 +459,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Function FindLinkResource(FileFullPath As String) As Resource
             Dim fileInfo As New FileInfo(FileFullPath)
             FileFullPath = fileInfo.FullName
-            For Each Resource In _resourcesHash.Values
+            For Each Resource In _resources.Values
                 If Resource.IsLink Then
                     Dim linkFileInfo As New FileInfo(Resource.AbsoluteLinkPathAndFileName)
                     If String.Equals(FileFullPath, linkFileInfo.FullName, StringComparison.OrdinalIgnoreCase) Then
@@ -515,7 +515,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             NewResource.SetTypeResolutionContext(View)
 
 #If DEBUG Then
-            Dim ResourcesCountOld As Integer = _resourcesHash.Count
+            Dim ResourcesCountOld As Integer = _resources.Count
 #End If
 
             Dim AddingRemovingResourcesInternallySave As Boolean = _addingRemovingResourcesInternally
@@ -531,7 +531,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Try
 
 #If DEBUG Then
-            Debug.Assert(_resourcesHash.Count = ResourcesCountOld + 1)
+            Debug.Assert(_resources.Count = ResourcesCountOld + 1)
 #End If
         End Sub
 
@@ -545,9 +545,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Sub RemoveResource(Resource As Resource, DisposeResource As Boolean)
             Debug.Assert(Not Resource Is Nothing)
             Debug.Assert(FindResource(Resource.Name) Is Resource, "RemoveResource: not found by Name")
-            Debug.Assert(_resourcesHash.ContainsValue(Resource), "RemoveResource: not found")
+            Debug.Assert(_resources.ContainsValue(Resource), "RemoveResource: not found")
 
-            Dim ResourcesCountOld As Integer = _resourcesHash.Count
+            Dim ResourcesCountOld As Integer = _resources.Count
             Dim AddingRemovingResourcesInternallySave As Boolean = _addingRemovingResourcesInternally
 
             Try
@@ -561,7 +561,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 _addingRemovingResourcesInternally = AddingRemovingResourcesInternallySave
             End Try
 
-            Debug.Assert(_resourcesHash.Count = ResourcesCountOld - 1)
+            Debug.Assert(_resources.Count = ResourcesCountOld - 1)
 
             'Remove any task list entries for this resource
             ClearResourceTasks(Resource)
@@ -602,10 +602,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Debug.WriteLineIf(Switches.RSEAddRemoveResources.TraceVerbose, "Add/Remove Resources: Adding " & Resource.ToString())
 
             Debug.Assert(Not FindResource(Resource.Name) Is Resource, "already a resource by that name")
-            Debug.Assert(Not _resourcesHash.ContainsValue(Resource), "already exists in our list")
+            Debug.Assert(Not _resources.ContainsValue(Resource), "already exists in our list")
 
             'Add it to our list (upper-case the key to normalize for in-case-sensitive look-ups)
-            _resourcesHash.Add(Resource.Name, Resource)
+            _resources.Add(Resource.Name, Resource)
 
             'Set the parent
             Resource.ParentResourceFile = Me
@@ -666,10 +666,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Debug.WriteLineIf(Switches.RSEAddRemoveResources.TraceVerbose, "Add/Remove Resources: Removing " & Resource.ToString())
 
             Debug.Assert(FindResource(Resource.Name) Is Resource, "not found by Name")
-            Debug.Assert(_resourcesHash.ContainsValue(Resource), "not found")
+            Debug.Assert(_resources.ContainsValue(Resource), "not found")
 
             'Go ahead and remove from our list (keys are normalized as upper-case)
-            _resourcesHash.Remove(Resource.Name)
+            _resources.Remove(Resource.Name)
 
             'Remove the parent pointer
             Resource.ParentResourceFile = Nothing
@@ -800,16 +800,16 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Dim OldName As String = Resource.Name
 
-            'Since resources in the ResourceFile are placed in the hashtable using the Name as key, if
-            '  we change the Name, the location of the resource in the hashtable will not longer be correct
-            '  (because we just changed the key, which it uses to search the hashtable).  So we have to
-            '  remove ourself first and then re-insert ourself into the hashtable.
-            _resourcesHash.Remove(Resource.Name)
+            'Since resources in the ResourceFile are placed in the dictionary using the Name as key, if
+            '  we change the Name, the location of the resource in the dictionary will not longer be correct
+            '  (because we just changed the key, which it uses to search the dictionary).  So we have to
+            '  remove ourself first and then re-insert ourself into the dictionary.
+            _resources.Remove(Resource.Name)
             Try
                 Resource.NameRawWithoutUndo = e.NewName
             Catch ex As Exception When ReportWithoutCrash(ex, "Unexpected error changing the name of the resource", NameOf(ResourceFile))
             End Try
-            _resourcesHash.Add(Resource.Name, Resource)
+            _resources.Add(Resource.Name, Resource)
 
             'Notify the view that resources have been removed (if they were removed by someone besides us, think "Undo/Redo")
             View.OnResourceTouched(Resource)
@@ -854,7 +854,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function GetEnumerator() As IDictionaryEnumerator
-            Return _resourcesHash.GetEnumerator
+            Return _resources.GetEnumerator
         End Function
 
 
@@ -934,8 +934,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Dim orderID As Integer = 0
                 Dim lastName As String = String.Empty
 
-                _resourcesHash.Clear()
-                _metadataList.Clear()
+                _resources.Clear()
+                _resourceFileMetadata.Clear()
 
                 ResXReader.UseResXDataNodes = True
                 Using New WaitCursor
@@ -972,7 +972,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Dim enumerator As IDictionaryEnumerator = ResXReader.GetMetadataEnumerator()
                 If enumerator IsNot Nothing Then
                     While enumerator.MoveNext()
-                        _metadataList.Add(enumerator.Entry)
+                        _resourceFileMetadata.Add(enumerator.Entry)
                     End While
                 End If
             Finally
@@ -989,22 +989,22 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Sub WriteResources(ResXWriter As IResourceWriter)
             Debug.Assert(Not ResXWriter Is Nothing, "ResXWriter must exist.")
 
-            If Not _resourcesHash Is Nothing Then
+            If Not _resources Is Nothing Then
                 ' NOTE: We save all meta data first...  We don't have a way maintain the right order between Meta data items and resource items today.
                 ' Keep all meta data items if it is possible...
-                If _metadataList IsNot Nothing AndAlso _metadataList.Count > 0 Then
+                If _resourceFileMetadata IsNot Nothing AndAlso _resourceFileMetadata.Count > 0 Then
                     Dim NewWriter As ResXResourceWriter = TryCast(ResXWriter, ResXResourceWriter)
                     If NewWriter IsNot Nothing Then
-                        For Each entry In _metadataList
+                        For Each entry In _resourceFileMetadata
                             NewWriter.AddMetadata(CStr(entry.Key), entry.Value)
                         Next
                     End If
                 End If
 
-                If _resourcesHash.Count > 0 Then
-                    Dim resourceList As Resource() = New Resource(_resourcesHash.Count - 1) {}
+                If _resources.Count > 0 Then
+                    Dim resourceList As Resource() = New Resource(_resources.Count - 1) {}
                     Dim i As Integer = 0
-                    For Each Resource In _resourcesHash.Values
+                    For Each Resource In _resources.Values
                         resourceList(i) = Resource
                         i += 1
                     Next
@@ -1210,7 +1210,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function ResourceHasTasks(Resource As Resource) As Boolean
-            Dim TaskSet As ResourceTaskSet = _resourceErrorsHash(Resource)
+            Dim TaskSet As ResourceTaskSet = _resourceTaskSets(Resource)
             If TaskSet Is Nothing Then
                 Return False
             End If
@@ -1236,7 +1236,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function GetResourceTaskMessage(Resource As Resource, TaskType As ResourceTaskType) As String
-            Dim TaskSet As ResourceTaskSet = _resourceErrorsHash(Resource)
+            Dim TaskSet As ResourceTaskSet = _resourceTaskSets(Resource)
             If TaskSet Is Nothing Then
                 Return Nothing
             End If
@@ -1259,7 +1259,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function GetResourceTaskMessages(Resource As Resource) As String
-            Dim TaskSet As ResourceTaskSet = _resourceErrorsHash(Resource)
+            Dim TaskSet As ResourceTaskSet = _resourceTaskSets(Resource)
             If TaskSet Is Nothing Then
                 Return Nothing
             End If
@@ -1316,10 +1316,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Dim taskProvider As ErrorListProvider = ErrorListProvider
             If taskProvider IsNot Nothing Then
                 'Get current task set for this resource.  If none, then create one.
-                Dim TaskSet As ResourceTaskSet = _resourceErrorsHash(Resource)
+                Dim TaskSet As ResourceTaskSet = _resourceTaskSets(Resource)
                 If TaskSet Is Nothing Then
                     TaskSet = New ResourceTaskSet
-                    _resourceErrorsHash.Add(Resource, TaskSet)
+                    _resourceTaskSets.Add(Resource, TaskSet)
                 End If
 
                 'Optimization: If the task already exists with the correct Text and Priority, there's no need
@@ -1390,7 +1390,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="TaskType">The type of task list entry to clear, if it exists.</param>
         ''' <remarks></remarks>
         Public Sub ClearResourceTask(Resource As Resource, TaskType As ResourceTaskType)
-            Dim TaskSet As ResourceTaskSet = _resourceErrorsHash(Resource)
+            Dim TaskSet As ResourceTaskSet = _resourceTaskSets(Resource)
             If TaskSet Is Nothing Then
                 Exit Sub 'Nothing to clear
             End If
@@ -1418,12 +1418,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Next
             If Empty Then
 #If DEBUG Then
-                Dim OldCount As Integer = _resourceErrorsHash.Count
+                Dim OldCount As Integer = _resourceTaskSets.Count
 #End If
-                _resourceErrorsHash.Remove(key:=Resource)
+                _resourceTaskSets.Remove(key:=Resource)
 
 #If DEBUG Then
-                Debug.Assert(_resourceErrorsHash.Count = OldCount - 1)
+                Debug.Assert(_resourceTaskSets.Count = OldCount - 1)
 #End If
             End If
         End Sub
@@ -1435,7 +1435,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Resource">The resource to clear.</param>
         ''' <remarks></remarks>
         Public Sub ClearResourceTasks(Resource As Resource)
-            Dim TaskSet As ResourceTaskSet = _resourceErrorsHash(Resource)
+            Dim TaskSet As ResourceTaskSet = _resourceTaskSets(Resource)
             If TaskSet IsNot Nothing Then
                 'Remove all entries for this resource
                 For i As Integer = 0 To TaskSet.Tasks.Length - 1
@@ -1449,12 +1449,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                 '... and then remove the task set itself from the hash table.
 #If DEBUG Then
-                Dim OldCount As Integer = _resourceErrorsHash.Count
+                Dim OldCount As Integer = _resourceTaskSets.Count
 #End If
-                _resourceErrorsHash.Remove(key:=Resource)
+                _resourceTaskSets.Remove(key:=Resource)
 
 #If DEBUG Then
-                Debug.Assert(_resourceErrorsHash.Count = OldCount - 1)
+                Debug.Assert(_resourceTaskSets.Count = OldCount - 1)
 #End If
             End If
         End Sub
@@ -1497,8 +1497,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks></remarks>
         Public Sub DelayCheckAllResourcesForErrors()
             StopDelayingCheckingForErrors()
-            If _resourcesHash IsNot Nothing Then
-                For Each resource In _resourcesHash.Values
+            If _resources IsNot Nothing Then
+                For Each resource In _resources.Values
                     DelayCheckResourceForErrors(resource)
                 Next
             End If
@@ -1644,7 +1644,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Scan all resources items and add necessary reference to the project (if possible)
         ''' </summary>
         Friend Sub AddNecessaryReferenceToProject()
-            AddNecessaryReferenceToProject(_resourcesHash.Values)
+            AddNecessaryReferenceToProject(_resources.Values)
         End Sub
 
         ''' <summary>

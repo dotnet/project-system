@@ -256,7 +256,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     End If
                 End If
 
-                If _resourcesToSearch IsNot Nothing AndAlso _resourcesToSearch.Length <> View.ResourceFile.ResourcesHashTable.Count Then
+                If _resourcesToSearch IsNot Nothing AndAlso _resourcesToSearch.Length <> View.ResourceFile.Resources.Count Then
                     Debug.Fail("The number of resources has changed, but InvalidateFindLoop() wasn't called.  This must be called when resources are added/removed.")
                     _resourcesToSearch = Nothing 'defensive - force re-generation anyway
                 End If
@@ -524,12 +524,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 'First collect all the resources to search through
                 If FindInSelection Then
                     Dim SelectedResources() As Resource = View.GetSelectedResources()
-                    ResourcesToSearch = New ArrayList(View.ResourceFile.ResourcesHashTable.Count)
+                    ResourcesToSearch = New ArrayList(View.ResourceFile.Resources.Count)
                     For Each Resource As Resource In SelectedResources
                         ResourcesToSearch.Add(Resource)
                     Next
                 Else
-                    ResourcesToSearch = New ArrayList(View.ResourceFile.ResourcesHashTable.Count)
+                    ResourcesToSearch = New ArrayList(View.ResourceFile.Resources.Count)
                     For Each Entry As DictionaryEntry In View.ResourceFile
                         Dim Resource As Resource = DirectCast(Entry.Value, Resource)
                         ResourcesToSearch.Add(Resource)
@@ -565,7 +565,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             _currentFieldInCurrentIndex = Field.MinimumValue
 
-            If View.ResourceFile.ResourcesHashTable.Count = 0 Then
+            If View.ResourceFile.Resources.Count = 0 Then
                 'No resources at all.
                 _currentIndex = 0
                 Exit Sub
