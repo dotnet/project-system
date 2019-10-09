@@ -54,8 +54,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private ReadOnly _mainThread As System.Threading.Thread
 
         'Holds a set of tasks for each Resource that has any task list entries.
-        'Hashes key=Resource to ResourceTaskSet.
-        Private ReadOnly _resourceErrorsHash As New Hashtable 'Of Resource To ResourceTaskSet
+        Private ReadOnly _resourceErrorsHash As New Dictionary(Of Resource, ResourceTaskSet)
 
         'A list of resources that need to be checked for errors during idle-time
         '  processing.
@@ -1211,7 +1210,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function ResourceHasTasks(Resource As Resource) As Boolean
-            Dim TaskSet As ResourceTaskSet = DirectCast(_resourceErrorsHash(Resource), ResourceTaskSet)
+            Dim TaskSet As ResourceTaskSet = _resourceErrorsHash(Resource)
             If TaskSet Is Nothing Then
                 Return False
             End If
@@ -1237,7 +1236,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function GetResourceTaskMessage(Resource As Resource, TaskType As ResourceTaskType) As String
-            Dim TaskSet As ResourceTaskSet = DirectCast(_resourceErrorsHash(Resource), ResourceTaskSet)
+            Dim TaskSet As ResourceTaskSet = _resourceErrorsHash(Resource)
             If TaskSet Is Nothing Then
                 Return Nothing
             End If
@@ -1260,7 +1259,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function GetResourceTaskMessages(Resource As Resource) As String
-            Dim TaskSet As ResourceTaskSet = DirectCast(_resourceErrorsHash(Resource), ResourceTaskSet)
+            Dim TaskSet As ResourceTaskSet = _resourceErrorsHash(Resource)
             If TaskSet Is Nothing Then
                 Return Nothing
             End If
@@ -1317,7 +1316,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Dim taskProvider As ErrorListProvider = ErrorListProvider
             If taskProvider IsNot Nothing Then
                 'Get current task set for this resource.  If none, then create one.
-                Dim TaskSet As ResourceTaskSet = DirectCast(_resourceErrorsHash(Resource), ResourceTaskSet)
+                Dim TaskSet As ResourceTaskSet = _resourceErrorsHash(Resource)
                 If TaskSet Is Nothing Then
                     TaskSet = New ResourceTaskSet
                     _resourceErrorsHash.Add(Resource, TaskSet)
@@ -1391,7 +1390,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="TaskType">The type of task list entry to clear, if it exists.</param>
         ''' <remarks></remarks>
         Public Sub ClearResourceTask(Resource As Resource, TaskType As ResourceTaskType)
-            Dim TaskSet As ResourceTaskSet = DirectCast(_resourceErrorsHash(Resource), ResourceTaskSet)
+            Dim TaskSet As ResourceTaskSet = _resourceErrorsHash(Resource)
             If TaskSet Is Nothing Then
                 Exit Sub 'Nothing to clear
             End If
@@ -1436,7 +1435,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Resource">The resource to clear.</param>
         ''' <remarks></remarks>
         Public Sub ClearResourceTasks(Resource As Resource)
-            Dim TaskSet As ResourceTaskSet = DirectCast(_resourceErrorsHash(Resource), ResourceTaskSet)
+            Dim TaskSet As ResourceTaskSet = _resourceErrorsHash(Resource)
             If TaskSet IsNot Nothing Then
                 'Remove all entries for this resource
                 For i As Integer = 0 To TaskSet.Tasks.Length - 1
