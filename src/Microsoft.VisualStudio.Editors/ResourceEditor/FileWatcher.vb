@@ -38,7 +38,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   is based on directories, and allocates system resources per directory.
         ''' </summary>
         ''' <remarks></remarks>
-        Private ReadOnly _directoryWatchers As New Hashtable 'Key = Directory Path (upper-cased, with the backslash)
+        Private ReadOnly _directoryWatchers As New Dictionary(Of String, DirectoryWatcher)(StringComparers.Paths)
 
         'Any Windows Forms control on the primary thread.  This is used for invoking 
         '  the system filewatch events (called on a secondary thread) back to the main thread.
@@ -64,8 +64,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <remarks></remarks>
         Public Sub Dispose() Implements IDisposable.Dispose
-            For Each Entry As DictionaryEntry In _directoryWatchers
-                Dim Watcher As DirectoryWatcher = DirectCast(Entry.Value, DirectoryWatcher)
+            For Each Watcher In _directoryWatchers.Values
                 Watcher.Dispose()
             Next
 
@@ -165,20 +164,16 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Function GetWatcherForDirectory(DirectoryPath As String, CreateIfNotFound As Boolean) As DirectoryWatcher
             DirectoryPath = NormalizeDirectoryPath(DirectoryPath)
 
-            Dim Watcher As DirectoryWatcher = DirectCast(_directoryWatchers(DirectoryPath), DirectoryWatcher)
-            If Watcher IsNot Nothing Then
-                'Found it.
-                Return Watcher
-            Else
+            Dim Watcher As DirectoryWatcher = Nothing
+            If Not _directoryWatchers.TryGetValue(DirectoryPath, Watcher) Then
                 'None found.  Create a new one if requested
                 If CreateIfNotFound Then
-                    Dim NewWatcher As New DirectoryWatcher(DirectoryPath, Me)
-                    _directoryWatchers.Add(DirectoryPath, NewWatcher)
-                    Return NewWatcher
+                    Watcher = New DirectoryWatcher(DirectoryPath, Me)
+                    _directoryWatchers(DirectoryPath) = Watcher
                 End If
-
-                Return Nothing
             End If
+
+            Return Watcher
         End Function
 
 
@@ -191,7 +186,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Shared Function NormalizeDirectoryPath(DirectoryPath As String) As String
             Debug.Assert(DirectoryPath <> "")
             DirectoryPath = GetFullPathTolerant(DirectoryPath)
-            DirectoryPath = DirectoryPath.ToUpperInvariant()
             Debug.Assert(DirectoryPath.IndexOf(Path.AltDirectorySeparatorChar) = -1, "Normalized path shouldn't contain alternate directory separators - these should have been removed by the Path methods")
 
             Return DirectoryPath
