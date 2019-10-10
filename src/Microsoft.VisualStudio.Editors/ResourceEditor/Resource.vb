@@ -2245,7 +2245,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If Not s_propertyDescriptorCollectionHash.ContainsKey(HashKey) Then
                 'Register properties: Name, Comment, Filename, Type, Persistence
                 'These are all the same no matter what kind of resource value we're looking at
-                Dim PropertyDescriptorArrayList As New ArrayList From {
+                Dim PropertyDescriptorList As New List(Of ResourcePropertyDescriptor) From {
                     s_propertyDescriptor_Name,
                     s_propertyDescriptor_Comment,
                     s_propertyDescriptor_Filename_ReadOnly,
@@ -2254,31 +2254,29 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                 '"Encoding" property
                 If ResourceTypeEditor.Equals(ResourceTypeEditors.TextFile) Then
-                    PropertyDescriptorArrayList.Add(s_propertyDescriptor_Encoding)
+                    PropertyDescriptorList.Add(s_propertyDescriptor_Encoding)
                 End If
 
                 '"FileType" property
                 If TypeOf ResourceTypeEditor Is ResourceTypeEditorFileBase Then
-                    PropertyDescriptorArrayList.Add(s_propertyDescriptor_FileType)
+                    PropertyDescriptorList.Add(s_propertyDescriptor_FileType)
                 End If
 
                 '"Persistence" property -  read/write or read/only, depending on the resource type
                 If ResourceTypeEditor.CanChangePersistenceProperty(ParentResourceFile) Then
-                    PropertyDescriptorArrayList.Add(s_propertyDescriptor_Persistence)
+                    PropertyDescriptorList.Add(s_propertyDescriptor_Persistence)
                 Else
-                    PropertyDescriptorArrayList.Add(s_propertyDescriptor_Persistence_ReadOnly)
+                    PropertyDescriptorList.Add(s_propertyDescriptor_Persistence_ReadOnly)
                 End If
 
                 '"Value" property.  We only show this property for strings (we could do it for other types, but there
                 '  turn out to be lots of special exceptions and issues with various types).
                 If ResourceTypeEditor.Equals(ResourceTypeEditors.String) Then
-                    PropertyDescriptorArrayList.Add(s_propertyDescriptor_ValueAsString)
+                    PropertyDescriptorList.Add(s_propertyDescriptor_ValueAsString)
                 End If
 
                 'Create the properties collection
-                Dim PropertyDescriptorArray(PropertyDescriptorArrayList.Count - 1) As PropertyDescriptor
-                PropertyDescriptorArrayList.CopyTo(PropertyDescriptorArray, 0)
-                Dim Properties As New PropertyDescriptorCollection(PropertyDescriptorArray)
+                Dim Properties As New PropertyDescriptorCollection(PropertyDescriptorList.ToArray())
 
                 '... and add it to our hash table
                 s_propertyDescriptorCollectionHash.Add(HashKey, Properties)
