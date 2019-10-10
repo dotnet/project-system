@@ -2572,10 +2572,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Fix">If true, the resource names are fixed to be legal identifiers (if not possible, will throw)</param>
         ''' <param name="CheckForDuplicateNames">If true, then the new names are checked to make sure they don't duplicate anything currently in the ResourceFile</param>
         ''' <remarks></remarks>
-        Public Shared Sub CheckResourceIdentifiers(ResourceFile As ResourceFile, Resources As ICollection, Fix As Boolean, CheckForDuplicateNames As Boolean)
+        Public Shared Sub CheckResourceIdentifiers(ResourceFile As ResourceFile, Resources As ICollection(Of Resource), Fix As Boolean, CheckForDuplicateNames As Boolean)
             Dim NewNames(Resources.Count - 1), NewFormattedNames(Resources.Count - 1) As String
             Dim i As Integer = 0
-            For Each Resource As Resource In Resources
+            For Each Resource In Resources
                 NewNames(i) = Resource.Name
                 i += 1
             Next
@@ -2587,7 +2587,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             i = 0
             If Fix Then
-                For Each resource As Resource In Resources
+                For Each resource In Resources
                     If Not resource.Name.Equals(NewFormattedNames(i), StringComparison.Ordinal) Then
                         resource.Name = NewFormattedNames(i)
                     End If

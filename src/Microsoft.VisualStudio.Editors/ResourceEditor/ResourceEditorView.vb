@@ -128,7 +128,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ' Undo status
         Private _inUndoing As Boolean
         Private _categoryAffected As Category
-        Private _resourcesAffected As Hashtable
+        Private _resourcesAffected As HashSet(Of Resource)
 
         ' Registry path
         Private _registryRoot As String
@@ -1331,7 +1331,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Resources">Resources to highlight</param>
         ''' <param name="SelectInPropertyGrid">If true, the property grid is updated with the new selection.</param>
         ''' <remarks></remarks>
-        Public Sub HighlightResources(Resources As ICollection, SelectInPropertyGrid As Boolean)
+        Public Sub HighlightResources(Resources As ICollection(Of Resource), SelectInPropertyGrid As Boolean)
             HighlightResourceHelper(Resources, 0, True, HighlightEntireResource:=True)
         End Sub
 
@@ -1377,10 +1377,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="SelectInPropertyGrid">If true, update the property grid with the new selection</param>
         ''' <param name="HighlightEntireResource">If true, Field is ignored and the entire resource is highlighted.</param>
         ''' <remarks></remarks>
-        Private Sub HighlightResourceHelper(Resources As ICollection, Field As FindReplace.Field, SelectInPropertyGrid As Boolean, HighlightEntireResource As Boolean)
+        Private Sub HighlightResourceHelper(Resources As ICollection(Of Resource), Field As FindReplace.Field, SelectInPropertyGrid As Boolean, HighlightEntireResource As Boolean)
             Dim NewCategory As Category = Nothing
             Dim ResourceCollection As New ArrayList()
-            For Each Resource As Resource In Resources
+            For Each Resource In Resources
                 If _resourceFile.Contains(Resource) Then
                     Dim CategoryOfResource As Category = Resource.GetCategory(_categories)
                     If NewCategory Is Nothing Then
@@ -1591,7 +1591,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Resources"></param>
         ''' <param name="SelectInPropertyGrid"></param>
         ''' <remarks></remarks>
-        Private Delegate Sub HighlightResourcesDelegate(Resources As ICollection, SelectInPropertyGrid As Boolean)
+        Private Delegate Sub HighlightResourcesDelegate(Resources As ICollection(Of Resource), SelectInPropertyGrid As Boolean)
 
 
         ''' <summary>
@@ -1662,8 +1662,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     'Then add them to the editor.
                     If AddToProject AndAlso Not CopyFileIfExists AndAlso Not AlwaysAddNew Then
                         ' we will replace the file in the project with the external file, and don't add a new resource item if it is already there
-                        Dim ResourcesReadyToAdd As New ArrayList(NewResources.Length) 'Resources which needed to be added
-                        Dim OldResources As New ArrayList(NewResources.Length)
+                        Dim ResourcesReadyToAdd As New List(Of Resource)(NewResources.Length) 'Resources which needed to be added
+                        Dim OldResources As New List(Of Resource)(NewResources.Length)
                         For i As Integer = 0 To NewResources.Length - 1
                             Dim Resource As Resource = NewResources(i)
                             Dim currentPath As String = Resource.AbsoluteLinkPathAndFileName
@@ -1736,7 +1736,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         UnselectAllResources()
                         HighlightResources(OldResources, True)
 
-                        Return CType(OldResources.ToArray(GetType(Resource)), Resource())
+                        Return OldResources.ToArray()
                     Else
                         ' Always Add...
                         AddResources(NewResources, CopyFileIfExists, AddToProject)
@@ -1760,7 +1760,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Forces all names to be unique, if necessary.
         ''' Caller must catch and display exceptions
         ''' </remarks>
-        Public Sub AddResources(NewResources As ICollection, CopyFileIfExists As Boolean, AddToProject As Boolean)
+        Public Sub AddResources(NewResources As ICollection(Of Resource), CopyFileIfExists As Boolean, AddToProject As Boolean)
             If NewResources Is Nothing OrElse NewResources.Count = 0 Then
                 Exit Sub
             End If
@@ -1772,7 +1772,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             'Set up the type resolution context for all the resources in the list.  If they came from copy/paste or drag/drop, they
             '  won't have it set up yet, and we'll need that in order to make changes (like the link path)
-            For Each Resource As Resource In NewResources
+            For Each Resource In NewResources
                 Resource.SetTypeResolutionContext(Me)
                 Resource.SetTypeNameConverter(ResourceFile)
             Next
@@ -1780,7 +1780,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ' Verify whether the resource items are supported by current platform
             ' NOTE: some projects like device projects do not support TIFF files. We don't want the user to add them into the resource, and hit the issue at runtime.
             '  We validate resource here, because a tiff item could be added from an external file, or copy from another resource editor...
-            For Each NewResource As Resource In NewResources
+            For Each NewResource In NewResources
                 Dim Message As String = String.Empty
                 Dim HelpID As String = String.Empty
 
@@ -1800,11 +1800,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 UnselectAllResources()
 
                 'Add the files pointed to by linked resources into the project.
-                Dim ResourcesReadyToAdd As New ArrayList(NewResources.Count) 'Resources which weren't canceled by the user.
+                Dim ResourcesReadyToAdd As New List(Of Resource)(NewResources.Count) 'Resources which weren't canceled by the user.
                 Dim projectBuildBatch As ProjectBatchEdit = Nothing
 
                 Try
-                    For Each Resource As Resource In NewResources
+                    For Each Resource In NewResources
                         If AddToProject AndAlso Resource.IsLink Then
                             If projectBuildBatch Is Nothing Then
                                 ' We should start a batch process if necessary...
@@ -1832,7 +1832,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                                     Resource.AbsoluteLinkPathAndFileName,
                                     CopyFileIfExists)
 
-                                If FinalPathAndFileName = "" Then
+                                If FinalPathAndFileName.Length = 0 Then
                                     'The user canceled (because a file already exists and s/he didn't want to replace it).
                                     'Continue to the next resource.
                                 Else
@@ -1867,9 +1867,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     'Force all names to be unique, both among themselves and within the ResourceFile
 
                     '... First, we create a case-insensitive hashtable with all the resource names in the ResourceFile
-                    Dim ResourceNameTable As Hashtable = Specialized.CollectionsUtil.CreateCaseInsensitiveHashtable(ResourceFile.ResourcesHashTable)
+                    Dim ResourceNameTable As Hashtable = Specialized.CollectionsUtil.CreateCaseInsensitiveHashtable(ResourceFile.Resources)
                     '... Then we add to this list as we check for uniqueness and make name changes...
-                    For Each Resource As Resource In ResourcesReadyToAdd
+                    For Each Resource In ResourcesReadyToAdd
                         Dim NewResourceName As String = Resource.Name
                         Dim Append As Integer = 0
                         While ResourceNameTable.ContainsKey(NewResourceName)
@@ -1915,7 +1915,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="NewResources">The resources to add to our display.</param>
         ''' <remarks></remarks>
-        Private Sub AddAndHighlightResourcesInView(NewResources As IList)
+        Private Sub AddAndHighlightResourcesInView(NewResources As IList(Of Resource))
             If NewResources Is Nothing OrElse NewResources.Count = 0 Then
                 Exit Sub
             End If
@@ -1947,8 +1947,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
 
             'Figure out which resources are in the currently (possibly switched category)
-            Dim NewResourcesInCurrentCategory As New ArrayList
-            For Each Resource As Resource In NewResources
+            Dim NewResourcesInCurrentCategory As New List(Of Resource)
+            For Each Resource In NewResources
                 If Resource.GetCategory(_categories) Is _currentCategory Then
                     NewResourcesInCurrentCategory.Add(Resource)
                 End If
@@ -1985,7 +1985,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Resources">The resources to remove.</param>
         ''' <remarks></remarks>
-        Public Sub RemoveResources(Resources As ICollection)
+        Public Sub RemoveResources(Resources As ICollection(Of Resource))
             CommitPendingChanges()
 
             If Resources Is Nothing OrElse Resources.Count = 0 Then
@@ -1999,7 +1999,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 'First, remove all resources from the table or list that belong in the current category.  Need to
                 '  do this first to ensure we don't have the virtual listview trying to get info on missing resources.
                 Dim ResourcesInCurrentCategory As New ArrayList
-                For Each Resource As Resource In Resources
+                For Each Resource In Resources
                     If Resource.GetCategory(_categories) Is _currentCategory Then
                         ResourcesInCurrentCategory.Add(Resource)
                     End If
@@ -2011,7 +2011,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Using Transaction As DesignerTransaction = RootDesigner.DesignerHost.CreateTransaction(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Undo_RemoveResources_1Arg, CStr(Resources.Count)))
 
                     'Finally, remove the resources from the resource file and also dispose of them
-                    For Each Resource As Resource In Resources
+                    For Each Resource In Resources
                         'This call will mark the designer as dirty.
                         _resourceFile.RemoveResource(Resource, DisposeResource:=True)
                     Next
@@ -2096,11 +2096,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     If _resourcesAffected IsNot Nothing Then
                         _resourcesAffected.Clear()
                     Else
-                        _resourcesAffected = New Hashtable()
+                        _resourcesAffected = New HashSet(Of Resource)
                     End If
-                    _resourcesAffected.Add(Resource, Nothing)
+                    _resourcesAffected.Add(Resource)
                 ElseIf Not _resourcesAffected.Contains(Resource) Then
-                    _resourcesAffected.Add(Resource, Nothing)
+                    _resourcesAffected.Add(Resource)
                 End If
             End If
         End Sub
@@ -5521,7 +5521,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                 UnselectAllResources()
                 If _resourcesAffected IsNot Nothing Then
-                    HighlightResources(_resourcesAffected.Keys, True)
+                    HighlightResources(_resourcesAffected, True)
                     _resourcesAffected.Clear()
                 End If
             End If
