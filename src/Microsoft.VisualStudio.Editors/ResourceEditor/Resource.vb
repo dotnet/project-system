@@ -259,12 +259,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 #Region "Shared fields"
 
-        'Hash of ValueTypeName to PropertyDescriptionCollection
+        'Map of ValueTypeName to PropertyDescriptionCollection
         '  This is the set of properties that we expose in the property sheet for each type of 
         '  Resource.  The set of properties shown is based solely on the value type of the
         '  resource and the type of ResourceTypeEditor that it uses.  Therefore we only need to 
         '  create a unique properties collection for each distinct pairing of these values.
-        Private Shared ReadOnly s_propertyDescriptorCollectionHash As New Hashtable '(Of PropertyDescriptorCollection), key = fully-qualified type names of resource value + resource type editor
+        Private Shared ReadOnly s_propertyDescriptorCollections As New Dictionary(Of String, PropertyDescriptorCollection)
 
         'A list of names which are not recommended for use by the end user (because they cause
         '  compiler errors or other problems).
@@ -2240,9 +2240,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   us the hassle of implementing everything on ICustomDescriptor. Instead, we only override what we need.
         ''' </remarks>
         Friend Function GetProperties() As PropertyDescriptorCollection
-            Dim HashKey As Object = ValueTypeName & "|" & ResourceTypeEditor.GetType.AssemblyQualifiedName
+            Dim Key As String = ValueTypeName & "|" & ResourceTypeEditor.GetType.AssemblyQualifiedName
+            Dim Properties As PropertyDescriptorCollection = Nothing
 
-            If Not s_propertyDescriptorCollectionHash.ContainsKey(HashKey) Then
+            If Not s_propertyDescriptorCollections.TryGetValue(Key, Properties) Then
                 'Register properties: Name, Comment, Filename, Type, Persistence
                 'These are all the same no matter what kind of resource value we're looking at
                 Dim PropertyDescriptorList As New List(Of ResourcePropertyDescriptor) From {
@@ -2276,14 +2277,14 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 End If
 
                 'Create the properties collection
-                Dim Properties As New PropertyDescriptorCollection(PropertyDescriptorList.ToArray())
+                Properties = New PropertyDescriptorCollection(PropertyDescriptorList.ToArray())
 
                 '... and add it to our hash table
-                s_propertyDescriptorCollectionHash.Add(HashKey, Properties)
-                Debug.Assert(s_propertyDescriptorCollectionHash.ContainsKey(HashKey))
+                s_propertyDescriptorCollections.Add(Key, Properties)
+                Debug.Assert(s_propertyDescriptorCollections.ContainsKey(Key))
             End If
 
-            Return DirectCast(s_propertyDescriptorCollectionHash(HashKey), PropertyDescriptorCollection)
+            Return Properties
         End Function
 
 
