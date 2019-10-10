@@ -2,9 +2,34 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="cs" original="../ProjectItemsSchema.xaml">
     <body>
+      <trans-unit id="ContentType|AppInstaller|DisplayName">
+        <source>App Installer file</source>
+        <target state="new">App Installer file</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|Config|DisplayName">
+        <source>Config file</source>
+        <target state="new">Config file</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|Manifest|DisplayName">
+        <source>Manifest file</source>
+        <target state="new">Manifest file</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|PackageLayout|DisplayName">
+        <source>Package Layout file</source>
+        <target state="new">Package Layout file</target>
+        <note />
+      </trans-unit>
       <trans-unit id="ContentType|Text|DisplayName">
         <source>Text file</source>
         <target state="translated">Textový soubor</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|WindowsResource|DisplayName">
+        <source>Windows Resourcs file</source>
+        <target state="new">Windows Resourcs file</target>
         <note />
       </trans-unit>
       <trans-unit id="ContentType|XML|DisplayName">
