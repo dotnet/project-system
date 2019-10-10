@@ -4,33 +4,33 @@
     xmlns="http://schemas.microsoft.com/build/2009/properties">
 
   <ContentType
-      Name="Text"
-      DisplayName="Text file"
-      ItemType="Content">
+    Name="Text"
+    DisplayName="Text file"
+    ItemType="Content">
   </ContentType>
 
   <ContentType
-      Name="XML"
-      DisplayName="Xml file"
-      ItemType="Content">
+    Name="XML"
+    DisplayName="Xml file"
+    ItemType="Content">
   </ContentType>
 
   <ContentType
-      Name="HTML"
-      DisplayName="Html file"
-      ItemType="Content">
+    Name="HTML"
+    DisplayName="Html file"
+    ItemType="Content">
   </ContentType>
 
   <ContentType
-      Name="CSS"
-      DisplayName="Cascading style sheet"
-      ItemType="Content">
+    Name="CSS"
+    DisplayName="Cascading style sheet"
+    ItemType="Content">
   </ContentType>
 
   <ContentType
-      Name="Json"
-      DisplayName="Json file"
-      ItemType="Content">
+    Name="Json"
+    DisplayName="Json file"
+    ItemType="Content">
   </ContentType>
 
   <ContentType
@@ -99,9 +99,15 @@
     <NameValuePair Name="SuppressNumericSuffix" Value="true" />
   </ContentType>
 
-  <ContentType Name="XamlAppDef" DisplayName="Workflow definition" ItemType="XamlAppDef" />
+  <ContentType 
+    Name="XamlAppDef"
+    DisplayName="Workflow definition"
+    ItemType="XamlAppDef" />
 
-  <ContentType Name="Resource" DisplayName="Resource" ItemType="Resource" />
+  <ContentType 
+    Name="Resource"
+    DisplayName="Resource"
+    ItemType="Resource" />
 
   <ItemType Name="None" DisplayName="None"/>
   <ItemType Name="Content" DisplayName="Content" />
