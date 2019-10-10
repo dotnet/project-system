@@ -270,7 +270,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '  compiler errors or other problems).
         'Use the UnrecommendedResourceNamesHash property to access these so that they are properly
         '  initialized.
-        Private Shared s_unrecommendedResourceNamesHash As Hashtable  'Of Boolean (key = member name [string])
+        Private Shared s_unrecommendedResourceNames As HashSet(Of String)
 
 #End Region
 
@@ -1983,22 +1983,22 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <value></value>
         ''' <remarks></remarks>
-        Private Shared ReadOnly Property UnrecommendedResourceNamesHash() As Hashtable
+        Private Shared ReadOnly Property UnrecommendedResourceNames() As HashSet(Of String)
             Get
-                If s_unrecommendedResourceNamesHash Is Nothing Then
-                    s_unrecommendedResourceNamesHash = New Hashtable(StringComparer.OrdinalIgnoreCase)
+                If s_unrecommendedResourceNames Is Nothing Then
+                    s_unrecommendedResourceNames = New HashSet(Of String)(StringComparer.OrdinalIgnoreCase)
 
                     'Names which conflict with members of Object will cause compile
                     '  errors, so add those to the unrecommended list.
                     Dim ObjectMembers As MemberInfo() = GetType(Object).GetMembers()
                     For Each Member As MemberInfo In ObjectMembers
-                        If Not s_unrecommendedResourceNamesHash.ContainsKey(Member.Name) Then
-                            s_unrecommendedResourceNamesHash.Add(Member.Name, True)
+                        If Not s_unrecommendedResourceNames.Contains(Member.Name) Then
+                            s_unrecommendedResourceNames.Add(Member.Name)
                         End If
                     Next
                 End If
 
-                Return s_unrecommendedResourceNamesHash
+                Return s_unrecommendedResourceNames
             End Get
         End Property
 
@@ -2044,7 +2044,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
 
             'Is it in our list of unrecommended names?
-            If UnrecommendedResourceNamesHash.ContainsKey(Name) Then
+            If UnrecommendedResourceNames.Contains(Name) Then
                 SetTask(ResourceFile.ResourceTaskType.BadName, My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Task_NonrecommendedName_1Arg, Name), TaskPriority.Low, HelpIDs.Task_NonrecommendedName, TaskErrorCategory.Warning)
                 Exit Sub
             End If
