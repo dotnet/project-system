@@ -1867,12 +1867,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     'Force all names to be unique, both among themselves and within the ResourceFile
 
                     '... First, we create a case-insensitive hashtable with all the resource names in the ResourceFile
-                    Dim ResourceNameTable As Hashtable = Specialized.CollectionsUtil.CreateCaseInsensitiveHashtable(ResourceFile.Resources)
+                    Dim ResourceNameTable = New HashSet(Of String)(ResourceFile.Resources.Keys, StringComparers.ResourceNames)
                     '... Then we add to this list as we check for uniqueness and make name changes...
                     For Each Resource In ResourcesReadyToAdd
                         Dim NewResourceName As String = Resource.Name
                         Dim Append As Integer = 0
-                        While ResourceNameTable.ContainsKey(NewResourceName)
+                        While ResourceNameTable.Contains(NewResourceName)
                             'Munge the name and try again
                             Append += 1
                             NewResourceName = Resource.Name & Append
@@ -1880,7 +1880,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                         'Rename the resource and add it to the name table
                         Resource.NameWithoutUndo = NewResourceName
-                        ResourceNameTable.Add(NewResourceName, Resource)
+                        ResourceNameTable.Add(NewResourceName)
                     Next
 
                     'And finally, add them to the resource file and our view.
