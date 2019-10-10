@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Explicit On
 Option Strict On
@@ -14,8 +14,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     Friend NotInheritable Class ResourceComparerForFind
         Implements IComparer
 
-        'A hashtable that maps a Category to its sort order
-        Private ReadOnly _categoryToCategoryOrderHash As New Hashtable
+        'A dictionary that maps a Category to its sort order
+        Private ReadOnly _categoryToCategoryOrderHash As New Dictionary(Of Category, Integer)
 
         'All categories included in the search
         Private ReadOnly _categories As CategoryCollection
@@ -36,7 +36,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Dim CategoryOrder As Integer = 0
             For Each Category As Category In OrderedCategories
-                _categoryToCategoryOrderHash.Add(Category, CategoryOrder)
+                _categoryToCategoryOrderHash(Category) = CategoryOrder
                 CategoryOrder += 1
             Next
             Debug.Assert(_categoryToCategoryOrderHash.Count = OrderedCategories.Count)
@@ -68,8 +68,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Dim category1 As Category = Resource1.GetCategory(_categories)
 
             'First compare by category
-            Dim Resource1CategoryOrder As Integer = DirectCast(_categoryToCategoryOrderHash(category1), Integer)
-            Dim Resource2CategoryOrder As Integer = DirectCast(_categoryToCategoryOrderHash(Resource2.GetCategory(_categories)), Integer)
+            Dim Resource1CategoryOrder As Integer = _categoryToCategoryOrderHash(category1)
+            Dim Resource2CategoryOrder As Integer = _categoryToCategoryOrderHash(Resource2.GetCategory(_categories))
 
             If Resource1CategoryOrder > Resource2CategoryOrder Then
                 Return 1
