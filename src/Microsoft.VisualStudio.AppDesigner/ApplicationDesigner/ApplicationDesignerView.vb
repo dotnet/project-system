@@ -8,6 +8,7 @@ Imports EnvDTE
 Imports Microsoft.Internal.Performance
 Imports Microsoft.VisualStudio.Editors.AppDesInterop
 Imports Microsoft.VisualStudio.Shell.Interop
+Imports Microsoft.VisualStudio.Telemetry
 
 Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
 Imports OleInterop = Microsoft.VisualStudio.OLE.Interop
@@ -122,6 +123,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ' Helper class to handle font change notifications...
         Private _fontChangeWatcher As Common.ShellUtil.FontChangeMonitor
 
+        Private Const TelemetryEventRootPath As String = "vs/projectsystem/appdesigner/"
+        Private Const TelemetryPropertyPrefix As String = "vs.projectsystem.appdesigner."
         ''' <summary>
         ''' Constructor for the ApplicationDesigner view
         ''' </summary>
@@ -739,6 +742,12 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         .TabTitle = .EditorCaption
                         .TabAutomationName = PROP_PAGE_TAB_PREFIX & PropertyPages(Index).Guid.ToString("N")
 
+                        Dim TelemetryEvent As TelemetryEvent = New TelemetryEvent(TelemetryEventRootPath + "TabInfo")
+                        TelemetryEvent.Properties(TelemetryPropertyPrefix + "TabInfo.TabTitle") = .EditorCaption
+                        TelemetryEvent.Properties(TelemetryPropertyPrefix + "TabInfo.GUID") = PropertyPages(Index).Guid.ToString()
+                        TelemetryEvent.Properties(TelemetryPropertyPrefix + "ProjectExtension") = IO.Path.GetExtension(_projectFilePath)
+                        TelemetryService.DefaultSession.PostEvent(TelemetryEvent)
+
                     Else
                         Dim FileName As String = DirectCast(AppDesignerItems(Index - PropertyPages.Length), String)
 
@@ -760,6 +769,14 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                             Else
                                 .CustomViewProvider = New SpecialFileCustomViewProvider(Me, DesignerPanel, __PSFFILEID2.PSFFILEID_AssemblyResource, My.Resources.Designer.APPDES_ClickHereCreateResx)
                             End If
+
+                            Dim TelemetryEvent As TelemetryEvent = New TelemetryEvent(TelemetryEventRootPath + "TabInfo/SpecialTab")
+                            TelemetryEvent.Properties(TelemetryPropertyPrefix + "TabInfo.TabTitle") = .EditorCaption
+                            TelemetryEvent.Properties(TelemetryPropertyPrefix + "ProjectExtension") = IO.Path.GetExtension(_projectFilePath)
+                            TelemetryEvent.Properties(TelemetryPropertyPrefix + "TabInfo.SpecialTab.EditorGuid") = .EditorGuid
+                            TelemetryEvent.Properties(TelemetryPropertyPrefix + "TabInfo.SpecialTab.Type") = ".resx"
+                            TelemetryService.DefaultSession.PostEvent(TelemetryEvent)
+
                         ElseIf String.Equals(VisualBasic.Right(FileName, 9), ".settings", StringComparison.OrdinalIgnoreCase) Then
                             'Add .settings file with a known editor so user config cannot change
                             .EditorGuid = New Guid(My.Resources.Designer.SettingsDesignerEditorFactory_GUID)
@@ -777,6 +794,13 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                             Else
                                 .CustomViewProvider = New SpecialFileCustomViewProvider(Me, DesignerPanel, __PSFFILEID2.PSFFILEID_AppSettings, My.Resources.Designer.APPDES_ClickHereCreateSettings)
                             End If
+
+                            Dim TelemetryEvent As TelemetryEvent = New TelemetryEvent(TelemetryEventRootPath + "TabInfo/SpecialTab")
+                            TelemetryEvent.Properties(TelemetryPropertyPrefix + "TabInfo.TabTitle") = .EditorCaption
+                            TelemetryEvent.Properties(TelemetryPropertyPrefix + "ProjectExtension") = IO.Path.GetExtension(_projectFilePath)
+                            TelemetryEvent.Properties(TelemetryPropertyPrefix + "TabInfo.SpecialTab.EditorGuid") = .EditorGuid
+                            TelemetryEvent.Properties(TelemetryPropertyPrefix + "TabInfo.SpecialTab.Type") = ".settings"
+                            TelemetryService.DefaultSession.PostEvent(TelemetryEvent)
                         Else
                             Debug.Fail("Unexpected file in list of intended tabs")
                         End If
