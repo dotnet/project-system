@@ -1038,7 +1038,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 Try
                     If _activePanelIndex <> Index Then
                         LastShownTab = Index
-                        Common.TelemetryLogger.LogAppDesignerPageOpened(NewCurrentPanel.ActualGuid)
+                        Common.TelemetryLogger.LogAppDesignerPageOpened(NewCurrentPanel.ActualGuid, NewCurrentPanel.TabTitle)
                     End If
 
                     _activePanelIndex = Index
