@@ -492,7 +492,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             '  in multiples.
             Private Const DelayInMilliseconds As Integer = 400
 
-            Private ReadOnly _listeners As New ArrayList 'Of IFileWatchListener
+            Private ReadOnly _listeners As New HashSet(Of IFileWatcherListener)
 
 #If DEBUG Then
             'Hashcode of the last thread we fired notifications on.  Used to verify
