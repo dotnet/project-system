@@ -48,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                                            IProjectThreadingService threadingService,
                                            IDesignTimeInputsDataSource designTimeInputsDataSource,
                                            IVsService<SVsFileChangeEx, IVsAsyncFileChangeEx> fileChangeService)
-             : base(unconfiguredProjectServices, synchronousDisposal: true, registerDataSource: false)
+             : base(unconfiguredProjectServices, synchronousDisposal: false, registerDataSource: false)
         {
             _threadingService = threadingService;
             _designTimeInputsDataSource = designTimeInputsDataSource;
