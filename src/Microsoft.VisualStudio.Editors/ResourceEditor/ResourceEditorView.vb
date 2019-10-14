@@ -1127,7 +1127,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="CategoryUpdated">The category to change.</param>
         ''' <param name="Sorter"></param>
         ''' <remarks></remarks>
-        Private Sub ChangeSorterForCategory(CategoryUpdated As Category, Sorter As IComparer)
+        Private Sub ChangeSorterForCategory(CategoryUpdated As Category, Sorter As IComparer(Of Resource))
             Debug.Assert(_currentCategory IsNot Nothing)
             If CategoryUpdated Is _currentCategory Then
                 Select Case _currentCategory.CategoryDisplay
