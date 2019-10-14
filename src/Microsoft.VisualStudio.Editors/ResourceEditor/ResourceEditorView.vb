@@ -120,7 +120,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private _inEditingItem As Boolean
 
         ' all menu commands supported by this designer....
-        Private _menuCommands As ArrayList
+        Private _menuCommands As List(Of MenuCommand)
 
         ' ReadOnly Mode
         Private _readOnlyMode As Boolean
@@ -734,7 +734,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             InThisMethod = True
             Try
-                _menuCommands = New ArrayList From {
+                _menuCommands = New List(Of MenuCommand) From {
                     New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDResXPlay, AddressOf MenuPlay, AddressOf MenuPlayEnabledHandler,
                     AlwaysCheckStatus:=True),
                     New DesignerMenuCommand(RootDesigner, Constants.MenuConstants.CommandIDVSStd97Open, AddressOf MenuOpen, AddressOf MenuOpenOpenWithEnabledHandler,
@@ -809,7 +809,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         AlwaysCheckStatus:=True))
 
                     'Access modifier combobox
-                    _menuCommands.AddRange(_accessModifierCombobox.GetMenuCommandsToRegister())
+                    _menuCommands.AddRange(_accessModifierCombobox.GetMenuCommandsToRegister().Cast(Of MenuCommand))
 
                 End If
 
