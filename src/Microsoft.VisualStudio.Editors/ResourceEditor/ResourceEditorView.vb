@@ -70,10 +70,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private _currentCategory As Category
 
         'Temporary files which can be cleaned up on the next clipboard flush.
-        Private ReadOnly _deleteFilesOnClipboardFlush As New ArrayList
+        Private ReadOnly _deleteFilesOnClipboardFlush As New List(Of String)
 
-        'Temporary files which can be cleaned up when the editor exists.
-        Private ReadOnly _deleteFoldersOnEditorExit As New ArrayList
+        'Temporary files which can be cleaned up when the editor exits.
+        Private ReadOnly _deleteFoldersOnEditorExit As New List(Of String)
 
         'The set of internal resources that we cache for this instance of the resource editor
         Private _cachedResources As CachedResourcesForView
@@ -4747,8 +4747,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="FilesToDelete"></param>
         ''' <remarks>Swallows exceptions if the files can't be deleted.  Does not display any UI.</remarks>
-        Private Shared Sub DeleteTemporaryFiles(FilesToDelete As IList)
-            For Each FileName As String In FilesToDelete
+        Private Shared Sub DeleteTemporaryFiles(FilesToDelete As IList(Of String))
+            For Each FileName In FilesToDelete
                 Try
                     If File.Exists(FileName) Then
                         File.Delete(FileName)
@@ -4764,8 +4764,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="FoldersToDelete"></param>
         ''' <remarks>Swallows exceptions if the folders can't be deleted.  Does not display any UI.</remarks>
-        Private Shared Sub DeleteTemporaryFolders(FoldersToDelete As IList)
-            For Each FolderName As String In FoldersToDelete
+        Private Shared Sub DeleteTemporaryFolders(FoldersToDelete As IList(Of String))
+            For Each FolderName In FoldersToDelete
                 Try
                     If Directory.Exists(FolderName) Then
                         Directory.Delete(FolderName)
