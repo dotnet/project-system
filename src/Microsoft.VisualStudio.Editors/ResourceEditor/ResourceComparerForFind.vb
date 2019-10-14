@@ -46,7 +46,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Sorts a <see cref="List(Of Resource)"/> for UI purposes
         ''' </summary>
-        ''' <param name="Resources">ArrayList of Resources to source (will be sorted in place)</param>
+        ''' <param name="Resources"><see cref="List(Of Resource)"/> to sort (will be sorted in place)</param>
         ''' <remarks></remarks>
         Public Sub SortResources(Resources As List(Of Resource))
             Resources.Sort(Me)
