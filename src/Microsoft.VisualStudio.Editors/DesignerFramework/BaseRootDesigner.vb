@@ -102,6 +102,17 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             Next
         End Sub
 
+        ''' <summary>
+        ''' See <see cref="RegisterMenuCommands(ArrayList, Boolean)"/>.
+        ''' </summary>
+        ''' <remarks>This just converts <paramref name="MenuCommands"/> to an <see cref="ArrayList"/> and passes it
+        ''' to <see cref="RegisterMenuCommands(ArrayList, Boolean)"/>. Once we're done refactoring this class to
+        ''' eliminate <see cref="ArrayList"/> that overload will go away.</remarks>
+        Friend Sub RegisterMenuCommands(MenuCommands As List(Of MenuCommand),
+                Optional KeepRegisteredMenuCommands As Boolean = True)
+            RegisterMenuCommands(New ArrayList(MenuCommands), KeepRegisteredMenuCommands)
+        End Sub
+
         Friend Sub RemoveMenuCommands()
             'Iterate backwards to avoid problems removing while iterating
             For i As Integer = MenuCommands.Count - 1 To 0 Step -1
