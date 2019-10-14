@@ -91,7 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 return;
 
             // Ask if the user wants to rename the symbol
-            if (await CheckUserConfirmation(oldName))
+            if (await CheckUserConfirmation(oldName)) != true)
                 return;
 
             // Try and apply the changes to the current solution
