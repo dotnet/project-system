@@ -1379,7 +1379,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks></remarks>
         Private Sub HighlightResourceHelper(Resources As ICollection(Of Resource), Field As FindReplace.Field, SelectInPropertyGrid As Boolean, HighlightEntireResource As Boolean)
             Dim NewCategory As Category = Nothing
-            Dim ResourceCollection As New ArrayList()
+            Dim ResourceCollection As New List(Of Resource)
             For Each Resource In Resources
                 If _resourceFile.Contains(Resource) Then
                     Dim CategoryOfResource As Category = Resource.GetCategory(_categories)
@@ -1414,7 +1414,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         If HighlightEntireResource OrElse ResourceCollection.Count <> 1 Then
                             StringTable.HighlightResources(ResourceCollection)
                         Else
-                            StringTable.HighlightResource(DirectCast(ResourceCollection(0), Resource), Field)
+                            StringTable.HighlightResource(ResourceCollection(0), Field)
                         End If
                     Case Else
                         Debug.Fail("Unexpected CategoryDisplay")
@@ -1998,7 +1998,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                 'First, remove all resources from the table or list that belong in the current category.  Need to
                 '  do this first to ensure we don't have the virtual listview trying to get info on missing resources.
-                Dim ResourcesInCurrentCategory As New ArrayList
+                Dim ResourcesInCurrentCategory As New List(Of Resource)
                 For Each Resource In Resources
                     If Resource.GetCategory(_categories) Is _currentCategory Then
                         ResourcesInCurrentCategory.Add(Resource)
@@ -2699,7 +2699,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             'We make a copy of linked resources as well, because if you drag from resource editor to Windows
             '  explorer, Windows will think "move" and try to delete the original source files.  I can't do 
             '  anything about this except to make a temporary copy so that it doesn't matter.
-            Dim ResourceFileNames As New ArrayList
+            Dim ResourceFileNames As New List(Of String)
             Dim TempFolder As String = Nothing
             For Each Resource As Resource In Resources
                 If TempFolder = "" Then
@@ -2749,10 +2749,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Next
             'Build a list of filenames out of the saved/exported files.
             If ResourceFileNames.Count > 0 Then
-                Dim FileNamesArray(ResourceFileNames.Count - 1) As String
-                For i As Integer = 0 To ResourceFileNames.Count - 1
-                    FileNamesArray(i) = DirectCast(ResourceFileNames(i), String)
-                Next
+                Dim FileNamesArray = ResourceFileNames.ToArray()
 
                 '... and add to the data format as the FileDrop format.
                 Data.SetData(DataFormats.FileDrop, False, FileNamesArray)
@@ -3090,7 +3087,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             '  disable this scenario.  For drag/drop, we couldn't actually disable the drop (because the VS shell
             '  has the file drop supported style), so the best we can do is ignore any directories when they are
             '  dropped.
-            Dim FilteredFileNames As New ArrayList
+            Dim FilteredFileNames As New List(Of String)
             For Each FileName As String In FileNames
                 If Directory.Exists(FileName) Then
                     'Directory - ignore
@@ -3867,7 +3864,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Try
                 'Determine the list of filenames to use
-                Dim FileNames As New ArrayList(Resources.Length)
+                Dim FileNames As New List(Of String)(Resources.Length)
                 For Each Resource As Resource In Resources
                     Debug.Assert(Not Resource.IsResXNullRef AndAlso Not Resource.IsLink)
 
