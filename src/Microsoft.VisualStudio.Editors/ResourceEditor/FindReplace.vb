@@ -517,22 +517,17 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks></remarks>
         Private ReadOnly Property GetResourcesToSearch(FindInSelection As Boolean) As Resource()
             Get
-                Dim ResourcesToSearch As ArrayList
+                Dim ResourcesToSearch = New List(Of Resource)(View.ResourceFile.Resources.Count)
 
                 Trace("Getting list of resources to search through")
 
                 'First collect all the resources to search through
                 If FindInSelection Then
-                    Dim SelectedResources() As Resource = View.GetSelectedResources()
-                    ResourcesToSearch = New ArrayList(View.ResourceFile.Resources.Count)
-                    For Each Resource As Resource In SelectedResources
-                        ResourcesToSearch.Add(Resource)
-                    Next
+                    Dim SelectedResources = View.GetSelectedResources()
+                    ResourcesToSearch.AddRange(SelectedResources)
                 Else
-                    ResourcesToSearch = New ArrayList(View.ResourceFile.Resources.Count)
-                    For Each Resource In View.ResourceFile.Resources.Values
-                        ResourcesToSearch.Add(Resource)
-                    Next
+                    Dim AllResources = View.ResourceFile.Resources.Values
+                    ResourcesToSearch.AddRange(AllResources)
                 End If
 
                 'Now sort them according to category and name
