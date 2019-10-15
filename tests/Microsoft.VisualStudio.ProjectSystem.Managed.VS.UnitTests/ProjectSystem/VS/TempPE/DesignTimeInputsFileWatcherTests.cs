@@ -130,7 +130,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             await finished.Task;
 
             // Dispose the watcher so that internal blocks complete (especially for tests that don't send any file changes)
-            watcher.Dispose();
+            await watcher.DisposeAsync();
 
             // Make sure we watched all of the files we should
             Assert.Equal(watchedFiles, fileChangeService.UniqueFilesWatched);
