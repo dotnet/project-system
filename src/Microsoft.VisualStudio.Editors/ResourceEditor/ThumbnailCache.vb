@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Explicit On
 Option Strict On
@@ -49,7 +49,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '  replace an old image in the ImageList (without shifting other indices) does not allow you 
         '  to simultaneously change the key.  When we replace an image in the imagelist, we're also
         '  using a different key.
-        Private ReadOnly _keys As New Hashtable
+        Private ReadOnly _keys As New Dictionary(Of Object, Integer)
 
         'An Mru List we maintained to release the most less used item in the ImageList when we need load a new image.
         ' For performance reason, we implement the list table inside an array of structures. Each item contains a point (index)
@@ -314,10 +314,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Function GetCachedImageListIndexInternal(Key As Object, ByRef Index As Integer) As Boolean
             Dim ThumbnailFound As Boolean
             Debug.Assert(Key IsNot Nothing)
-            Dim IndexAsObject As Object = _keys(Key)
-            Debug.Assert(_keys.ContainsKey(Key) = (IndexAsObject IsNot Nothing))
 
-            If IndexAsObject Is Nothing Then
+            If Not _keys.TryGetValue(Key, Index) Then
                 'Sorry, we no longer have a copy of that thumbnail...  You have to re-add it.
                 ThumbnailFound = False
                 Index = -1
@@ -327,7 +325,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 '  a higher value.
 
                 ThumbnailFound = True
-                Index = DirectCast(IndexAsObject, Integer)
                 Debug.Assert(Index < ThumbnailCount + _reservedImagesCount)
             End If
             Return ThumbnailFound
@@ -471,7 +468,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Do
                 Debug.Assert(_mruList(i).PreviousIndex = prev)
                 If _mruList(i).Key IsNot Nothing Then
-                    Debug.Assert(_keys.Contains(_mruList(i).Key))
+                    Debug.Assert(_keys.ContainsKey(_mruList(i).Key))
                 End If
 
                 count += 1

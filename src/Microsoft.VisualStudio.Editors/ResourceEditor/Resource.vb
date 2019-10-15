@@ -259,18 +259,18 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 #Region "Shared fields"
 
-        'Hash of ValueTypeName to PropertyDescriptionCollection
+        'Map of ValueTypeName to PropertyDescriptionCollection
         '  This is the set of properties that we expose in the property sheet for each type of 
         '  Resource.  The set of properties shown is based solely on the value type of the
         '  resource and the type of ResourceTypeEditor that it uses.  Therefore we only need to 
         '  create a unique properties collection for each distinct pairing of these values.
-        Private Shared ReadOnly s_propertyDescriptorCollectionHash As New Hashtable '(Of PropertyDescriptorCollection), key = fully-qualified type names of resource value + resource type editor
+        Private Shared ReadOnly s_propertyDescriptorCollections As New Dictionary(Of String, PropertyDescriptorCollection)
 
         'A list of names which are not recommended for use by the end user (because they cause
         '  compiler errors or other problems).
         'Use the UnrecommendedResourceNamesHash property to access these so that they are properly
         '  initialized.
-        Private Shared s_unrecommendedResourceNamesHash As Hashtable  'Of Boolean (key = member name [string])
+        Private Shared s_unrecommendedResourceNames As HashSet(Of String)
 
 #End Region
 
@@ -1983,22 +1983,22 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <value></value>
         ''' <remarks></remarks>
-        Private Shared ReadOnly Property UnrecommendedResourceNamesHash() As Hashtable
+        Private Shared ReadOnly Property UnrecommendedResourceNames() As HashSet(Of String)
             Get
-                If s_unrecommendedResourceNamesHash Is Nothing Then
-                    s_unrecommendedResourceNamesHash = New Hashtable(StringComparer.OrdinalIgnoreCase)
+                If s_unrecommendedResourceNames Is Nothing Then
+                    s_unrecommendedResourceNames = New HashSet(Of String)(StringComparer.OrdinalIgnoreCase)
 
                     'Names which conflict with members of Object will cause compile
                     '  errors, so add those to the unrecommended list.
                     Dim ObjectMembers As MemberInfo() = GetType(Object).GetMembers()
                     For Each Member As MemberInfo In ObjectMembers
-                        If Not s_unrecommendedResourceNamesHash.ContainsKey(Member.Name) Then
-                            s_unrecommendedResourceNamesHash.Add(Member.Name, True)
+                        If Not s_unrecommendedResourceNames.Contains(Member.Name) Then
+                            s_unrecommendedResourceNames.Add(Member.Name)
                         End If
                     Next
                 End If
 
-                Return s_unrecommendedResourceNamesHash
+                Return s_unrecommendedResourceNames
             End Get
         End Property
 
@@ -2044,7 +2044,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
 
             'Is it in our list of unrecommended names?
-            If UnrecommendedResourceNamesHash.ContainsKey(Name) Then
+            If UnrecommendedResourceNames.Contains(Name) Then
                 SetTask(ResourceFile.ResourceTaskType.BadName, My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Task_NonrecommendedName_1Arg, Name), TaskPriority.Low, HelpIDs.Task_NonrecommendedName, TaskErrorCategory.Warning)
                 Exit Sub
             End If
@@ -2240,12 +2240,13 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   us the hassle of implementing everything on ICustomDescriptor. Instead, we only override what we need.
         ''' </remarks>
         Friend Function GetProperties() As PropertyDescriptorCollection
-            Dim HashKey As Object = ValueTypeName & "|" & ResourceTypeEditor.GetType.AssemblyQualifiedName
+            Dim Key As String = ValueTypeName & "|" & ResourceTypeEditor.GetType.AssemblyQualifiedName
+            Dim Properties As PropertyDescriptorCollection = Nothing
 
-            If Not s_propertyDescriptorCollectionHash.ContainsKey(HashKey) Then
+            If Not s_propertyDescriptorCollections.TryGetValue(Key, Properties) Then
                 'Register properties: Name, Comment, Filename, Type, Persistence
                 'These are all the same no matter what kind of resource value we're looking at
-                Dim PropertyDescriptorArrayList As New ArrayList From {
+                Dim PropertyDescriptorList As New List(Of ResourcePropertyDescriptor) From {
                     s_propertyDescriptor_Name,
                     s_propertyDescriptor_Comment,
                     s_propertyDescriptor_Filename_ReadOnly,
@@ -2254,38 +2255,36 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                 '"Encoding" property
                 If ResourceTypeEditor.Equals(ResourceTypeEditors.TextFile) Then
-                    PropertyDescriptorArrayList.Add(s_propertyDescriptor_Encoding)
+                    PropertyDescriptorList.Add(s_propertyDescriptor_Encoding)
                 End If
 
                 '"FileType" property
                 If TypeOf ResourceTypeEditor Is ResourceTypeEditorFileBase Then
-                    PropertyDescriptorArrayList.Add(s_propertyDescriptor_FileType)
+                    PropertyDescriptorList.Add(s_propertyDescriptor_FileType)
                 End If
 
                 '"Persistence" property -  read/write or read/only, depending on the resource type
                 If ResourceTypeEditor.CanChangePersistenceProperty(ParentResourceFile) Then
-                    PropertyDescriptorArrayList.Add(s_propertyDescriptor_Persistence)
+                    PropertyDescriptorList.Add(s_propertyDescriptor_Persistence)
                 Else
-                    PropertyDescriptorArrayList.Add(s_propertyDescriptor_Persistence_ReadOnly)
+                    PropertyDescriptorList.Add(s_propertyDescriptor_Persistence_ReadOnly)
                 End If
 
                 '"Value" property.  We only show this property for strings (we could do it for other types, but there
                 '  turn out to be lots of special exceptions and issues with various types).
                 If ResourceTypeEditor.Equals(ResourceTypeEditors.String) Then
-                    PropertyDescriptorArrayList.Add(s_propertyDescriptor_ValueAsString)
+                    PropertyDescriptorList.Add(s_propertyDescriptor_ValueAsString)
                 End If
 
                 'Create the properties collection
-                Dim PropertyDescriptorArray(PropertyDescriptorArrayList.Count - 1) As PropertyDescriptor
-                PropertyDescriptorArrayList.CopyTo(PropertyDescriptorArray, 0)
-                Dim Properties As New PropertyDescriptorCollection(PropertyDescriptorArray)
+                Properties = New PropertyDescriptorCollection(PropertyDescriptorList.ToArray())
 
                 '... and add it to our hash table
-                s_propertyDescriptorCollectionHash.Add(HashKey, Properties)
-                Debug.Assert(s_propertyDescriptorCollectionHash.ContainsKey(HashKey))
+                s_propertyDescriptorCollections.Add(Key, Properties)
+                Debug.Assert(s_propertyDescriptorCollections.ContainsKey(Key))
             End If
 
-            Return DirectCast(s_propertyDescriptorCollectionHash(HashKey), PropertyDescriptorCollection)
+            Return Properties
         End Function
 
 

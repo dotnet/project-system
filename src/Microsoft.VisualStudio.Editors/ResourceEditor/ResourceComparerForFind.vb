@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Explicit On
 Option Strict On
@@ -12,10 +12,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     ''' </summary>
     ''' <remarks></remarks>
     Friend NotInheritable Class ResourceComparerForFind
-        Implements IComparer
+        Implements IComparer(Of Resource)
 
-        'A hashtable that maps a Category to its sort order
-        Private ReadOnly _categoryToCategoryOrderHash As New Hashtable
+        'A dictionary that maps a Category to its sort order
+        Private ReadOnly _categoryToCategoryOrderHash As New Dictionary(Of Category, Integer)
 
         'All categories included in the search
         Private ReadOnly _categories As CategoryCollection
@@ -36,7 +36,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Dim CategoryOrder As Integer = 0
             For Each Category As Category In OrderedCategories
-                _categoryToCategoryOrderHash.Add(Category, CategoryOrder)
+                _categoryToCategoryOrderHash(Category) = CategoryOrder
                 CategoryOrder += 1
             Next
             Debug.Assert(_categoryToCategoryOrderHash.Count = OrderedCategories.Count)
@@ -44,11 +44,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 
         ''' <summary>
-        ''' Sorts an ArrayList of Resoures for UI purposes
+        ''' Sorts a <see cref="List(Of Resource)"/> for UI purposes
         ''' </summary>
-        ''' <param name="Resources">ArrayList of Resources to source (will be sorted in place)</param>
+        ''' <param name="Resources"><see cref="List(Of Resource)"/> to sort (will be sorted in place)</param>
         ''' <remarks></remarks>
-        Public Sub SortResources(Resources As ArrayList)
+        Public Sub SortResources(Resources As List(Of Resource))
             Resources.Sort(Me)
         End Sub
 
@@ -56,20 +56,16 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Compares two objects and returns a value indicating whether one is less than, equal to or greater than the other.
         ''' </summary>
-        ''' <param name="x">First object to compare.</param>
-        ''' <param name="y">Second object to compare.</param>
+        ''' <param name="Resource1">First object to compare.</param>
+        ''' <param name="Resource2">Second object to compare.</param>
         ''' <returns>-1, 0 or 1, depending on whether x is less than, equal to or greater than y, respectively.</returns>
         ''' <remarks>This function gets called by ArrayList.Sort for each pair of resources to be sorted.</remarks>
-        Private Function Compare(x As Object, y As Object) As Integer Implements IComparer.Compare
-            Debug.Assert(TypeOf x Is Resource AndAlso TypeOf y Is Resource, "ResourceComparer: expected Resources")
-            Dim Resource1 As Resource = DirectCast(x, Resource)
-            Dim Resource2 As Resource = DirectCast(y, Resource)
-
+        Private Function Compare(Resource1 As Resource, Resource2 As Resource) As Integer Implements IComparer(Of Resource).Compare
             Dim category1 As Category = Resource1.GetCategory(_categories)
 
             'First compare by category
-            Dim Resource1CategoryOrder As Integer = DirectCast(_categoryToCategoryOrderHash(category1), Integer)
-            Dim Resource2CategoryOrder As Integer = DirectCast(_categoryToCategoryOrderHash(Resource2.GetCategory(_categories)), Integer)
+            Dim Resource1CategoryOrder As Integer = _categoryToCategoryOrderHash(category1)
+            Dim Resource2CategoryOrder As Integer = _categoryToCategoryOrderHash(Resource2.GetCategory(_categories))
 
             If Resource1CategoryOrder > Resource2CategoryOrder Then
                 Return 1
