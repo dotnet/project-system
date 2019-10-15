@@ -182,14 +182,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Requires.NotNull(activeTargetFramework, nameof(activeTargetFramework));
             Requires.NotNull(dependenciesByTargetFramework, nameof(dependenciesByTargetFramework));
 
-            if (activeTargetFramework.Equals(TargetFramework.Empty))
-            {
-                Requires.Argument(
-                    dependenciesByTargetFramework.Count == 0,
-                    nameof(dependenciesByTargetFramework),
-                    $"Must be empty when {nameof(activeTargetFramework)} is empty.");
-            }
-            else
+            if (!activeTargetFramework.Equals(TargetFramework.Empty))
             {
                 Requires.Argument(
                     dependenciesByTargetFramework.ContainsKey(activeTargetFramework),
