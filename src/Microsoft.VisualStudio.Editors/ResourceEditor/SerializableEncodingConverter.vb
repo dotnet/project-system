@@ -121,8 +121,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 '
                 'This corresponds to approximate likeliness of use
 
-                Dim SortedUnicodeEncodings As New SortedList() 'Key=display name (localized), value = web name
-                Dim SortedEncodings As New SortedList() 'Key=display name (localized), value = web name
+                Dim SortedUnicodeEncodings As New SortedList(Of String, String)() 'Key=display name (localized), value = web name
+                Dim SortedEncodings As New SortedList(Of String, String)() 'Key=display name (localized), value = web name
                 Dim CurrentCodePageEncoding As Encoding = Encoding.Default
 
                 'Find all Unicode and other encodings, and alphabetize them
@@ -154,7 +154,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Next
 
                 'Build up the full list
-                Dim AllEncodings As New ArrayList From {
+                Dim AllEncodings As New List(Of String) From {
                     "", 'default
                     CurrentCodePageEncoding.WebName
                 }
