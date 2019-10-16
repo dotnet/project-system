@@ -181,7 +181,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         For Each Entry As DictionaryEntry In _categorySorter
                             Dim Category As Category = View._categories(CStr(Entry.Key))
                             If Category IsNot Nothing Then
-                                View.ChangeSorterForCategory(Category, DirectCast(Entry.Value, IComparer(Of Resource)))
+                                View.ChangeSorterForCategory(Category, DirectCast(Entry.Value, IComparer))
                             End If
                         Next
 
