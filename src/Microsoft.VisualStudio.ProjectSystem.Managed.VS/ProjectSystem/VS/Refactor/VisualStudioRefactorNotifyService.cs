@@ -87,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
 
             foreach (Project project in dte.Solution.Projects)
             {
-                string? fullName = null;
+                string? fullName;
                 try
                 {
                     fullName = project.FullName;

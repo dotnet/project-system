@@ -294,7 +294,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     End If
                     If undoTran IsNot Nothing Then
                         undoTran.Commit()
-                        undoTran = Nothing
                     End If
                 Finally
                     If undoTran IsNot Nothing Then

@@ -90,8 +90,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             _buildManager = new TestBuildManager();
 
-            _bridge = new TestDesignTimeInputsBuildManagerBridge(project, threadingService, changeTracker, compilerMock.Object, _buildManager);
-            _bridge.SkipInitialization = true;
+            _bridge = new TestDesignTimeInputsBuildManagerBridge(project, threadingService, changeTracker, compilerMock.Object, _buildManager)
+            {
+                SkipInitialization = true
+            };
         }
 
         public void Dispose()

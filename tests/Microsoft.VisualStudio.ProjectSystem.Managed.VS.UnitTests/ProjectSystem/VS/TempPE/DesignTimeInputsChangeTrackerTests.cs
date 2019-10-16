@@ -319,12 +319,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             _lastIntermediateOutputPath = _intermediateOutputPath;
 
-            // Ensure our input files are in the mock file system
-            foreach (string file in inputs.Inputs.Concat(inputs.SharedInputs))
-            {
-                var fullFilePath = Path.Combine(_projectFolder, file);
-            }
-
             _changeTracker.ProcessDataflowChanges(new ProjectVersionedValue<Tuple<DesignTimeInputs, IProjectSubscriptionUpdate>>(new Tuple<DesignTimeInputs, IProjectSubscriptionUpdate>(inputs, subscriptionUpdate), ImmutableDictionary<NamedIdentity, IComparable>.Empty));
         }
 
