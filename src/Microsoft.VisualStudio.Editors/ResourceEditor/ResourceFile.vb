@@ -445,9 +445,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Return Nothing
             End If
 
-            Dim Found = _resources(Name)
-            Debug.Assert(Found Is Nothing OrElse Found.ParentResourceFile Is Me)
-            Return Found
+            Dim Resource As Resource = Nothing
+            If _resources.TryGetValue(Name, Resource) Then
+                Debug.Assert(Resource.ParentResourceFile Is Me)
+            End If
+
+            Return Resource
         End Function
 
         ''' <summary>
@@ -847,17 +850,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 #Region "Reading/Writing/Enumerating"
 
-
-        ''' <summary>
-        ''' Gets an enumerator.  Allows ResourceFile to be used in For Each statements directly.
-        ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Function GetEnumerator() As IDictionaryEnumerator
-            Return _resources.GetEnumerator
-        End Function
-
-
         ''' <summary>
         ''' Reads resources from a string (contents of a resx file).
         ''' </summary>
@@ -1210,8 +1202,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function ResourceHasTasks(Resource As Resource) As Boolean
-            Dim TaskSet As ResourceTaskSet = _resourceTaskSets(Resource)
-            If TaskSet Is Nothing Then
+            Dim TaskSet As ResourceTaskSet = Nothing
+            If Not _resourceTaskSets.TryGetValue(Resource, TaskSet) Then
                 Return False
             End If
 
@@ -1236,8 +1228,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function GetResourceTaskMessage(Resource As Resource, TaskType As ResourceTaskType) As String
-            Dim TaskSet As ResourceTaskSet = _resourceTaskSets(Resource)
-            If TaskSet Is Nothing Then
+            Dim TaskSet As ResourceTaskSet = Nothing
+            If Not _resourceTaskSets.TryGetValue(Resource, TaskSet) Then
                 Return Nothing
             End If
 
@@ -1259,8 +1251,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function GetResourceTaskMessages(Resource As Resource) As String
-            Dim TaskSet As ResourceTaskSet = _resourceTaskSets(Resource)
-            If TaskSet Is Nothing Then
+            Dim TaskSet As ResourceTaskSet = Nothing
+            If Not _resourceTaskSets.TryGetValue(Resource, TaskSet) Then
                 Return Nothing
             End If
 
@@ -1316,8 +1308,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Dim taskProvider As ErrorListProvider = ErrorListProvider
             If taskProvider IsNot Nothing Then
                 'Get current task set for this resource.  If none, then create one.
-                Dim TaskSet As ResourceTaskSet = _resourceTaskSets(Resource)
-                If TaskSet Is Nothing Then
+                Dim TaskSet As ResourceTaskSet = Nothing
+                If Not _resourceTaskSets.TryGetValue(Resource, TaskSet) Then
                     TaskSet = New ResourceTaskSet
                     _resourceTaskSets.Add(Resource, TaskSet)
                 End If
@@ -1390,8 +1382,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="TaskType">The type of task list entry to clear, if it exists.</param>
         ''' <remarks></remarks>
         Public Sub ClearResourceTask(Resource As Resource, TaskType As ResourceTaskType)
-            Dim TaskSet As ResourceTaskSet = _resourceTaskSets(Resource)
-            If TaskSet Is Nothing Then
+            Dim TaskSet As ResourceTaskSet = Nothing
+            If Not _resourceTaskSets.TryGetValue(Resource, TaskSet) Then
                 Exit Sub 'Nothing to clear
             End If
 
@@ -1435,8 +1427,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Resource">The resource to clear.</param>
         ''' <remarks></remarks>
         Public Sub ClearResourceTasks(Resource As Resource)
-            Dim TaskSet As ResourceTaskSet = _resourceTaskSets(Resource)
-            If TaskSet IsNot Nothing Then
+            Dim TaskSet As ResourceTaskSet = Nothing
+            If _resourceTaskSets.TryGetValue(Resource, TaskSet) Then
+
                 'Remove all entries for this resource
                 For i As Integer = 0 To TaskSet.Tasks.Length - 1
                     Dim Task As Task = TaskSet.Tasks(i)
@@ -1458,6 +1451,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 #End If
             End If
         End Sub
+
 
 
         ''' <summary>
