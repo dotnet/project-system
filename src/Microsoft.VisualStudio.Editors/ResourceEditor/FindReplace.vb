@@ -530,8 +530,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Next
                 Else
                     ResourcesToSearch = New ArrayList(View.ResourceFile.Resources.Count)
-                    For Each Entry As DictionaryEntry In View.ResourceFile
-                        Dim Resource As Resource = DirectCast(Entry.Value, Resource)
+                    For Each Resource In View.ResourceFile.Resources.Values
                         ResourcesToSearch.Add(Resource)
                     Next
                 End If

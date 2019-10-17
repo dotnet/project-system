@@ -416,8 +416,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             'Go through all resources, and pick out the ones which belong to the specified category, 
             '  and add them to our virtual list
             Dim Categories As CategoryCollection = ResourceFile.RootComponent.RootDesigner.GetView().Categories
-            For Each Entry As DictionaryEntry In ResourceFile
-                Dim Resource As Resource = DirectCast(Entry.Value, Resource)
+            For Each Resource In ResourceFile.Resources.Values
                 If Resource.GetCategory(Categories) Is CategoryToFilterOn Then
                     Debug.Assert(Not Resource.ResourceTypeEditor.DisplayInStringTable,
                             "Why are we trying to display this type of resource in a listview?")

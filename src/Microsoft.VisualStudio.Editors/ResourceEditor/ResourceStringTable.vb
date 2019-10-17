@@ -303,8 +303,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             'First, create a sorted list of resources that we want to display
             Dim ResourcesToDisplay As New ArrayList
             Dim Categories As CategoryCollection = ResourceFile.RootComponent.RootDesigner.GetView().Categories
-            For Each Entry As DictionaryEntry In ResourceFile
-                Dim Resource As Resource = DirectCast(Entry.Value, Resource)
+            For Each Resource In ResourceFile.Resources.Values
                 If Resource.GetCategory(Categories) Is CategoryToFilterOn Then
                     If Resource.ResourceTypeEditor.DisplayInStringTable Then
                         ResourcesToDisplay.Add(Resource)
