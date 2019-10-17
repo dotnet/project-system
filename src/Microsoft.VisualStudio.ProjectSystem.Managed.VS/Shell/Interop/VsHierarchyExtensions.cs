@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
         /// <summary>
         ///     Gets the value of the specified property of the specified item if the hierarchy supports it, or throws an exception if there was an error.
         /// </summary>
-        public static T GetProperty<T>(this IVsHierarchy hierarchy, HierarchyId item, VsHierarchyPropID property, T defaultValue = default)
+        public static T GetProperty<T>(this IVsHierarchy hierarchy, HierarchyId item, VsHierarchyPropID property, [MaybeNull]T defaultValue = default)
         {
             HResult hr = GetProperty(hierarchy, item, property, defaultValue, out T result);
             if (hr.Failed)
@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
         /// <summary>
         ///     Gets the value of the specified property if the hierarchy supports it, or returns a HRESULT if there was an error.
         /// </summary>
-        public static int GetProperty<T>(this IVsHierarchy hierarchy, VsHierarchyPropID property, T defaultValue, out T result)
+        public static int GetProperty<T>(this IVsHierarchy hierarchy, VsHierarchyPropID property, T defaultValue, [MaybeNull]out T result)
         {
             return GetProperty(hierarchy, HierarchyId.Root, property, defaultValue, out result);
         }

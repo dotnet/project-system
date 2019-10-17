@@ -903,7 +903,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                             'Go ahead and populate the field for use within the form
                             If Not Handled Then
                                 SetControlValue(value)
-                                Handled = True
                             End If
                         Else
                             FormControl.Enabled = False
