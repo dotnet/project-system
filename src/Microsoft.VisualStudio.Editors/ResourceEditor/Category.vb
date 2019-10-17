@@ -1,4 +1,4 @@
-﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Explicit On
 Option Strict On
@@ -48,7 +48,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private _showTypeColumnInStringTable As Boolean 'applies only to Display.StringTable
         Private ReadOnly _menuCommand As MenuCommand
         Private _addCommand As EventHandler
-        Private _sorter As IComparer(Of Resource)           ' how to sort resources in the category...
+        Private _sorter As IComparer           ' how to sort resources in the category...
 
 
         '======================================================================
@@ -253,7 +253,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <value></value>
         ''' <remarks></remarks>
-        Public Property Sorter() As IComparer(Of Resource)
+        Public Property Sorter() As IComparer
             Get
                 Return _sorter
             End Get

@@ -69,7 +69,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             '  "serialize" into this store.  The actual values won't be serialized
             '  until we're Close'd, until then this just keeps track of what we
             '  want to serialize.  It will be cleared out when we Close.
-            Private _resourcesToSerialize As Dictionary(Of Resource, ResourceDataToSerialize)
+            Private _hashedObjectsToSerialize As Hashtable 'Of ResourceSerializationData
 
 
             'The actual "serialized" data (binary serialized Resource instances and
@@ -92,7 +92,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' </summary>
             ''' <remarks></remarks>
             Public Sub New()
-                _resourcesToSerialize = New Dictionary(Of Resource, ResourceDataToSerialize)
+                _hashedObjectsToSerialize = New Hashtable
 
                 Trace("Created new store")
             End Sub
@@ -108,26 +108,26 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <remarks></remarks>
             Public Overrides Sub Close()
                 If _serializedState Is Nothing Then
-                    Dim SerializedState As New ArrayList(_resourcesToSerialize.Count)
+                    Dim SerializedState As New ArrayList(_hashedObjectsToSerialize.Count)
 
-                    Trace("Closing Store: serializing {0} objects", _resourcesToSerialize.Count)
+                    Trace("Closing Store: serializing {0} objects", _hashedObjectsToSerialize.Count)
 
                     'Go through each object that we wanted to save anything from...
-                    For Each ResourceData In _resourcesToSerialize.Values
-
-                        If ResourceData.EntireObject Then
+                    For Each Entry As DictionaryEntry In _hashedObjectsToSerialize
+                        Dim Data As ResourceDataToSerialize = DirectCast(Entry.Value, ResourceDataToSerialize)
+                        If Data.EntireObject Then
                             'We're saving the entire Resource object.
                             '  The constructor for SerializedResourceOrProperty will do the
                             '  actual binary serialization for us.
-                            Dim SerializedData As New SerializedResourceOrProperty(ResourceData.Resource)
+                            Dim SerializedData As New SerializedResourceOrProperty(Data.Resource)
                             SerializedState.Add(SerializedData)
                         Else
                             'We're saving individual property values.  Go through each...
-                            For Each Prop As PropertyDescriptor In ResourceData.PropertiesToSerialize
+                            For Each Prop As PropertyDescriptor In Data.PropertiesToSerialize
                                 '... and serialize it.
                                 '  The constructor for SerializedResourceOrProperty will do the
                                 '  actual binary serialization for us.
-                                Dim SerializedData As New SerializedResourceOrProperty(ResourceData.Resource, Prop)
+                                Dim SerializedData As New SerializedResourceOrProperty(Data.Resource, Prop)
                                 SerializedState.Add(SerializedData)
                             Next
                         End If
@@ -136,7 +136,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     'Save what we've serialized, and clear out the old data - it's no longer
                     '  needed.
                     _serializedState = SerializedState
-                    _resourcesToSerialize = Nothing
+                    _hashedObjectsToSerialize = Nothing
                 End If
             End Sub
 
@@ -267,16 +267,16 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <returns>The ResourceDataToSerialize object associated with this Resource.</returns>
             ''' <remarks></remarks>
             Private Function GetResourceSerializationData(Resource As Resource) As ResourceDataToSerialize
-                Dim ResourceData As ResourceDataToSerialize = Nothing
-                If Not _resourcesToSerialize.TryGetValue(Resource, ResourceData) Then
+                Dim Data As ResourceDataToSerialize = DirectCast(_hashedObjectsToSerialize(Resource), ResourceDataToSerialize)
+                If Data Is Nothing Then
                     'No object created for this Resource yet.  Create one now.
-                    ResourceData = New ResourceDataToSerialize(Resource)
-                    _resourcesToSerialize(Resource) = ResourceData
+                    Data = New ResourceDataToSerialize(Resource)
+                    _hashedObjectsToSerialize(Resource) = Data
 
                     Trace("ResourceSerializationService: Adding new ResourceSerializationData to hashed objects to serialize: '{0}'", Resource.Name)
                 End If
 
-                Return ResourceData
+                Return Data
             End Function
 
 #End Region
