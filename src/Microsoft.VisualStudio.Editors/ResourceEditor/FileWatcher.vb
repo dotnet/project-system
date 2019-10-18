@@ -38,7 +38,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   is based on directories, and allocates system resources per directory.
         ''' </summary>
         ''' <remarks></remarks>
-        Private ReadOnly _directoryWatchers As New Hashtable 'Key = Directory Path (upper-cased, with the backslash)
+        Private ReadOnly _directoryWatchers As New Dictionary(Of String, DirectoryWatcher)(StringComparers.Paths)
 
         'Any Windows Forms control on the primary thread.  This is used for invoking 
         '  the system filewatch events (called on a secondary thread) back to the main thread.
@@ -64,8 +64,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <remarks></remarks>
         Public Sub Dispose() Implements IDisposable.Dispose
-            For Each Entry As DictionaryEntry In _directoryWatchers
-                Dim Watcher As DirectoryWatcher = DirectCast(Entry.Value, DirectoryWatcher)
+            For Each Watcher In _directoryWatchers.Values
                 Watcher.Dispose()
             Next
 
@@ -165,20 +164,16 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Function GetWatcherForDirectory(DirectoryPath As String, CreateIfNotFound As Boolean) As DirectoryWatcher
             DirectoryPath = NormalizeDirectoryPath(DirectoryPath)
 
-            Dim Watcher As DirectoryWatcher = DirectCast(_directoryWatchers(DirectoryPath), DirectoryWatcher)
-            If Watcher IsNot Nothing Then
-                'Found it.
-                Return Watcher
-            Else
+            Dim Watcher As DirectoryWatcher = Nothing
+            If Not _directoryWatchers.TryGetValue(DirectoryPath, Watcher) Then
                 'None found.  Create a new one if requested
                 If CreateIfNotFound Then
-                    Dim NewWatcher As New DirectoryWatcher(DirectoryPath, Me)
-                    _directoryWatchers.Add(DirectoryPath, NewWatcher)
-                    Return NewWatcher
+                    Watcher = New DirectoryWatcher(DirectoryPath, Me)
+                    _directoryWatchers(DirectoryPath) = Watcher
                 End If
-
-                Return Nothing
             End If
+
+            Return Watcher
         End Function
 
 
@@ -191,7 +186,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Shared Function NormalizeDirectoryPath(DirectoryPath As String) As String
             Debug.Assert(DirectoryPath <> "")
             DirectoryPath = GetFullPathTolerant(DirectoryPath)
-            DirectoryPath = DirectoryPath.ToUpperInvariant()
             Debug.Assert(DirectoryPath.IndexOf(Path.AltDirectorySeparatorChar) = -1, "Normalized path shouldn't contain alternate directory separators - these should have been removed by the Path methods")
 
             Return DirectoryPath
@@ -225,7 +219,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Private ReadOnly _directoryPath As String
 
             'A list of FileWatcherEntry's, one for each file in this directory being watched.
-            Private _fileWatcherEntries As New Hashtable 'Key=FileName, maps to FileWatcherEntry
+            Private _fileWatcherEntries As New Dictionary(Of String, FileWatcherEntry)(StringComparers.Paths)
 
             'A system FileSystemWatcher class.  This is the actual class that does the watching
             '  on our directory.  It's most efficient to use it on a single directory, since 
@@ -315,11 +309,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Public Sub AddFileListener(FileNameOnly As String, Listener As IFileWatcherListener)
                 FileNameOnly = NormalizeFileName(FileNameOnly)
 
-                Dim Entry As FileWatcherEntry = DirectCast(_fileWatcherEntries(FileNameOnly), FileWatcherEntry)
-                If Entry Is Nothing Then
+                Dim Entry As FileWatcherEntry = Nothing
+                If Not _fileWatcherEntries.TryGetValue(FileNameOnly, Entry) Then
                     'We don't have an entry for this file yet.  Add one now.
                     Entry = New FileWatcherEntry(Me, FileNameOnly)
-                    _fileWatcherEntries.Add(FileNameOnly, Entry)
+                    _fileWatcherEntries(FileNameOnly) = Entry
                 End If
 
                 'Add this listener to the entry
@@ -342,8 +336,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Public Sub RemoveListener(FileNameOnly As String, Listener As IFileWatcherListener)
                 FileNameOnly = NormalizeFileName(FileNameOnly)
 
-                Dim Entry As FileWatcherEntry = CType(_fileWatcherEntries.Item(FileNameOnly), FileWatcherEntry)
-                If Not Entry Is Nothing Then
+                Dim Entry As FileWatcherEntry = Nothing
+
+                If _fileWatcherEntries.TryGetValue(FileNameOnly, Entry) Then
                     Entry.RemoveListener(Listener)
 
                     If Entry.ListenerCount = 0 Then
@@ -373,7 +368,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Debug.Assert(Path.GetDirectoryName(FileNameOnly) = "" AndAlso Not Path.IsPathRooted(FileNameOnly),
                     "DirectoryWatcher does not accept paths with the filename - should be relative to the directory path in DirectoryWatcher")
                 Debug.Assert(Path.GetFileName(FileNameOnly) = FileNameOnly)
-                Return FileNameOnly.ToUpperInvariant()
+                Return FileNameOnly
             End Function
 
 
@@ -392,9 +387,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Dim FileNameThatChanged As String = NormalizeFileName(FileName)
 
                 'Is this file one that we're interested in?
-                If _fileWatcherEntries.ContainsKey(FileNameThatChanged) Then
+                Dim EntryThatChanged As FileWatcherEntry = Nothing
+                If _fileWatcherEntries.TryGetValue(FileNameThatChanged, EntryThatChanged) Then
                     '... Yes.
-                    Dim EntryThatChanged As FileWatcherEntry = CType(_fileWatcherEntries(FileNameThatChanged), FileWatcherEntry)
                     Debug.WriteLineIf(Switches.RSEFileWatcher.TraceVerbose, "    Matched entry: " & EntryThatChanged.ToString)
 
                     'Let the parent file watcher use its synchronization control to
@@ -498,7 +493,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             '  in multiples.
             Private Const DelayInMilliseconds As Integer = 400
 
-            Private ReadOnly _listeners As New ArrayList 'Of IFileWatchListener
+            Private ReadOnly _listeners As New HashSet(Of IFileWatcherListener)
 
 #If DEBUG Then
             'Hashcode of the last thread we fired notifications on.  Used to verify

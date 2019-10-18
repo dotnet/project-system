@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Strict On
 Option Explicit On
@@ -14,20 +14,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     Friend NotInheritable Class CategoryCollection
         Inherits CollectionBase
 
-
-
         'A hashtable list of resources by name.
-        Private ReadOnly _innerHashByName As New Hashtable 'Of String (case-sensitive)
-
-
-
+        Private ReadOnly _innerHashByName As New Dictionary(Of String, Category)
 
         '======================================================================
         '= Properties =                                                       =
         '======================================================================
-
-
-
 
         ''' <summary>
         ''' Searches for a category by its index
@@ -50,7 +42,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks>Does not throw an exception if not found.</remarks>
         Default Public ReadOnly Property Item(ProgrammaticCategoryName As String) As Category
             Get
-                Return DirectCast(_innerHashByName(ProgrammaticCategoryName), Category)
+                Dim Value As Category = Nothing
+                _innerHashByName.TryGetValue(ProgrammaticCategoryName, Value)
+                Return Value
             End Get
         End Property
 
@@ -74,7 +68,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             InnerList.Add(Category)
 
             'Add to the hash table (for indexing by programmatic name)
-            _innerHashByName.Add(Category.ProgrammaticName, Category)
+            _innerHashByName(Category.ProgrammaticName) = Category
         End Sub
 
 
