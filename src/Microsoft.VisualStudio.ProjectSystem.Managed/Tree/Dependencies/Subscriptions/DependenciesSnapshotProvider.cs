@@ -28,8 +28,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
     [AppliesTo(ProjectCapability.DependenciesTree)]
     internal sealed partial class DependenciesSnapshotProvider : OnceInitializedOnceDisposedAsync
     {
-        public const string DependencySubscriptionsHostContract = "DependencySubscriptionsHostContract";
-
         /// <summary>
         /// Raised when the project's full path changes (i.e. due to being renamed).
         /// </summary>

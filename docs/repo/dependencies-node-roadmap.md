@@ -24,7 +24,7 @@ Internally every individual dependency (both direct and transitive) is represent
 
 All the [`IDependency`][IDependency]s for a given target framework in a given project are collected together into a [`TargetedDependenciesSnapshot`][TargetedDependenciesSnapshot]. All of those for a given project are, in turn, collected into a [`DependenciesSnapshot`][DependenciesSnapshot].
 
-The [`IDependenciesSnapshotProvider`][IDependenciesSnapshotProvider] is responsible for providing access to the current [`DependenciesSnapshot`][DependenciesSnapshot] and firing events when the snapshot has changed. It is implemented by [`DependenciesSnapshotProvider`][DependenciesSnapshotProvider].
+The [`DependenciesSnapshotProvider`][DependenciesSnapshotProvider] is responsible for providing access to the current [`DependenciesSnapshot`][DependenciesSnapshot] and firing events when the snapshot has changed.
 
 Much of the code for the Dependencies node is concerned with creating [`IDependency`][IDependency]s and translating them into new `IProjectTree`s when they change.
 
@@ -41,7 +41,7 @@ The primary connection point between CPS and the Dependencies node is the [`Depe
 1. Creating the `IProjectTree` for the "Dependencies" node itself (children are handled elsewhere).
 2. Handling explicit commands to copy or remove a node underneath the "Dependencies" node.
 3. Mapping back and forth between `IProjectTree` instances and paths.
-4. Listening for changes to the set of dependencies via the [`IDependenciesSnapshotProvider`][IDependenciesSnapshotProvider], delegating to the [`IDependenciesTreeViewProvider`][IDependenciesTreeViewProvider] to rebuild the tree underneath the Dependencies node, and submitting the updated tree back to CPS.
+4. Listening for changes to the set of dependencies via the [`DependenciesSnapshotProvider`][DependenciesSnapshotProvider], delegating to the [`IDependenciesTreeViewProvider`][IDependenciesTreeViewProvider] to rebuild the tree underneath the Dependencies node, and submitting the updated tree back to CPS.
 
 ### Generating Dependencies
 
@@ -51,7 +51,7 @@ Various implementations of [`IDependenciesRuleHandler`][IDependenciesRuleHandler
 
 The [`DependencyRulesSubscriber`][DependencyRulesSubscriber] (implementing [`IDependencyCrossTargetSubscriber`][IDependencyCrossTargetSubscriber]) subscribes via Dataflow to the union of rules specified by the handlers. When updates are received, a [`CrossTargetDependenciesChangesBuilder`][CrossTargetDependenciesChangesBuilder] is instantiated and each handler is given a chance to add/update/remove [`IDependencyModel`][IDependencyModel] instances through the builder. Once complete, the `IDependencyCrossTargetSubscriber.DependenciesChanged` event is fired, carrying dependency model changes.
 
-Each project has an instance of [`DependenciesSnapshotProvider`][DependenciesSnapshotProvider] (implementing [`IDependenciesSnapshotProvider`][IDependenciesSnapshotProvider]) that holds the latest `DependenciesSnapshot` object. It imports `IDependencyCrossTargetSubscriber` implementations (such as `DependencyRulesSubscriber`) and subscribes to their `DependenciesChanged` events. When these events fire, the current snapshot is combined with changes to produce a new snapshot. That snapshot is then propagated via the `IDependenciesSnapshotProvider.SnapshotChanged` event.
+Each project has an instance of [`DependenciesSnapshotProvider`][DependenciesSnapshotProvider] that holds the latest `DependenciesSnapshot` object. It imports `IDependencyCrossTargetSubscriber` implementations (such as `DependencyRulesSubscriber`) and subscribes to their `DependenciesChanged` events. When these events fire, the current snapshot is combined with changes to produce a new snapshot. That snapshot is then propagated via the `DependenciesSnapshotProvider.SnapshotChanged` event.
 
 This `SnapshotChanged` event is then handled by:
 
@@ -108,7 +108,7 @@ For example, when the user expands a NuGet package node:
 
 1. The `IGraphProvider.BeginGetGraphData` implementation in [`DependenciesGraphProvider`][DependenciesGraphProvider] is called with an `IGraphContext` describing the current graph, the input node (e.g. the node for the NuGet Package) and the operation (e.g. "get the children of the input node").
 2. Each implementation of [`IDependenciesGraphActionHandler`][IDependenciesGraphActionHandler] that can handle the request is asked to do so.
-3. We retrieve the current [`DependenciesSnapshot`][DependenciesSnapshot] for the project as well as the [`IDependency`][IDependency] for the input node (via [`IAggregateDependenciesSnapshotProvider`][IAggregateDependenciesSnapshotProvider]/[`IDependenciesSnapshotProvider`][IDependenciesSnapshotProvider]).
+3. We retrieve the current [`DependenciesSnapshot`][DependenciesSnapshot] for the project as well as the [`IDependency`][IDependency] for the input node (via [`IAggregateDependenciesSnapshotProvider`][IAggregateDependenciesSnapshotProvider]/[`DependenciesSnapshotProvider`][DependenciesSnapshotProvider]).
 4. We find the first [`IDependenciesGraphViewProvider`][IDependenciesGraphViewProvider] that supports the given [`IDependency`][IDependency] and ask it to build up the corresponding parts of the graph.
 5. The [`IDependenciesGraphViewProvider`][IDependenciesGraphViewProvider] decides what nodes to add to the graph, and calls [`IDependenciesGraphBuilder`][IDependenciesGraphBuilder]`.AddGraphNode` (implemented by [`DependenciesGraphProvider`][DependenciesGraphProvider]) to handle the actual mechanics.
 
@@ -170,7 +170,6 @@ The _Web Tools Extensions_ project is a good example of a project flavor that do
 [IDependenciesSnapshotFilter]:            /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/Snapshot/Filters/IDependenciesSnapshotFilter.cs "IDependenciesSnapshotFilter.cs"
 [IAggregateDependenciesSnapshotProvider]: /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/Snapshot/IAggregateDependenciesSnapshotProvider.cs "IAggregateDependenciesSnapshotProvider.cs"
 [DependenciesSnapshot]:                   /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/Snapshot/DependenciesSnapshot.cs "DependenciesSnapshot.cs"
-[IDependenciesSnapshotProvider]:          /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/Snapshot/IDependenciesSnapshotProvider.cs "IDependenciesSnapshotProvider.cs"
 [IDependency]:                            /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/Snapshot/IDependency.cs "IDependency.cs"
 [TargetedDependenciesSnapshot]:           /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/Snapshot/TargetedDependenciesSnapshot.cs "TargetedDependenciesSnapshot.cs"
 [CrossTargetDependenciesChangesBuilder]:  /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/Subscriptions/CrossTargetDependenciesChangesBuilder.cs "CrossTargetDependenciesChangesBuilder.cs"
