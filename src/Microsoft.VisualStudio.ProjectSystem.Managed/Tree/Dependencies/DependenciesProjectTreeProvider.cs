@@ -14,7 +14,6 @@ using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.References;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
 using Microsoft.VisualStudio.Threading;
@@ -45,8 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         private readonly OrderPrecedenceImportCollection<IDependenciesTreeViewProvider> _viewProviders;
 
         private readonly CancellationSeries _treeUpdateCancellationSeries = new CancellationSeries();
-        private readonly ICrossTargetSubscriptionsHost _dependenciesHost;
-        private readonly IDependenciesSnapshotProvider _dependenciesSnapshotProvider;
+        private readonly DependenciesSnapshotProvider _dependenciesSnapshotProvider;
         private readonly IProjectAsynchronousTasksService _tasksService;
         private readonly IProjectAccessor _projectAccessor;
         private readonly IDependencyTreeTelemetryService _treeTelemetryService;
@@ -67,8 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             IProjectThreadingService threadingService,
             IProjectAccessor projectAccessor,
             UnconfiguredProject unconfiguredProject,
-            IDependenciesSnapshotProvider dependenciesSnapshotProvider,
-            [Import(DependenciesSnapshotProvider.DependencySubscriptionsHostContract)] ICrossTargetSubscriptionsHost dependenciesHost,
+            DependenciesSnapshotProvider dependenciesSnapshotProvider,
             [Import(ExportContractNames.Scopes.UnconfiguredProject)] IProjectAsynchronousTasksService tasksService,
             IDependencyTreeTelemetryService treeTelemetryService)
             : base(threadingService, unconfiguredProject)
@@ -82,7 +79,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 projectCapabilityCheckProvider: unconfiguredProject);
 
             _dependenciesSnapshotProvider = dependenciesSnapshotProvider;
-            _dependenciesHost = dependenciesHost;
             _tasksService = tasksService;
             _projectAccessor = projectAccessor;
             _treeTelemetryService = treeTelemetryService;
@@ -587,7 +583,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             {
                 ConfiguredProject project = dependency.TargetFramework.Equals(TargetFramework.Any)
                     ? ActiveConfiguredProject
-                    : _dependenciesHost.GetConfiguredProject(dependency.TargetFramework) ?? ActiveConfiguredProject;
+                    : _dependenciesSnapshotProvider.GetConfiguredProject(dependency.TargetFramework) ?? ActiveConfiguredProject;
 
                 return GetActiveConfiguredProjectExports(project);
             }

@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.Composition;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
@@ -15,10 +16,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
     {
         /// <summary>
         /// Since IAggregateDependenciesSnapshotProvider is global scope component, 
-        /// each <see cref="IDependenciesSnapshotProvider"/> should register itself when it is ready.
+        /// each <see cref="DependenciesSnapshotProvider"/> should register itself when it is ready.
         /// </summary>
         /// <returns>An object that, when disposed, unregisters <paramref name="snapshotProvider"/>.</returns>
-        IDisposable RegisterSnapshotProvider(IDependenciesSnapshotProvider snapshotProvider);
+        IDisposable RegisterSnapshotProvider(DependenciesSnapshotProvider snapshotProvider);
 
         /// <summary>
         /// Gets the snapshot for <paramref name="projectFilePath"/>, or <see langword="null"/> if none found.

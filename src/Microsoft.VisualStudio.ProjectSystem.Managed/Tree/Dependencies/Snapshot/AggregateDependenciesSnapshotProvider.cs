@@ -7,6 +7,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
@@ -31,14 +32,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// here so that read-only calls from <see cref="GetSnapshot(string)"/>, <see cref="GetSnapshot(IDependency)"/> and
         /// <see cref="GetSnapshots"/> don't need to take a global lock.
         /// </remarks>
-        private ImmutableDictionary<string, IDependenciesSnapshotProvider> _snapshotProviderByPath;
+        private ImmutableDictionary<string, DependenciesSnapshotProvider> _snapshotProviderByPath;
 
         [ImportingConstructor]
         public AggregateDependenciesSnapshotProvider(ITargetFrameworkProvider targetFrameworkProvider)
         {
             _targetFrameworkProvider = targetFrameworkProvider;
 
-            _snapshotProviderByPath = ImmutableDictionary<string, IDependenciesSnapshotProvider>.Empty.WithComparers(StringComparer.OrdinalIgnoreCase);
+            _snapshotProviderByPath = ImmutableDictionary<string, DependenciesSnapshotProvider>.Empty.WithComparers(StringComparer.OrdinalIgnoreCase);
         }
 
         /// <inheritdoc />
@@ -48,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public event EventHandler<SnapshotProviderUnloadingEventArgs>? SnapshotProviderUnloading;
 
         /// <inheritdoc />
-        public IDisposable RegisterSnapshotProvider(IDependenciesSnapshotProvider snapshotProvider)
+        public IDisposable RegisterSnapshotProvider(DependenciesSnapshotProvider snapshotProvider)
         {
             Requires.NotNull(snapshotProvider, nameof(snapshotProvider));
 
@@ -104,7 +105,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 lock (_lock)
                 {
                     // Remove and re-add provider with new project path
-                    if (_snapshotProviderByPath.TryGetValue(e.OldFullPath, out IDependenciesSnapshotProvider provider))
+                    if (_snapshotProviderByPath.TryGetValue(e.OldFullPath, out DependenciesSnapshotProvider provider))
                     {
                         _snapshotProviderByPath = _snapshotProviderByPath.Remove(e.OldFullPath);
 
@@ -122,7 +123,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         {
             Requires.NotNullOrEmpty(projectFilePath, nameof(projectFilePath));
 
-            _snapshotProviderByPath.TryGetValue(projectFilePath, out IDependenciesSnapshotProvider? provider);
+            _snapshotProviderByPath.TryGetValue(projectFilePath, out DependenciesSnapshotProvider? provider);
 
             return provider?.CurrentSnapshot;
         }
