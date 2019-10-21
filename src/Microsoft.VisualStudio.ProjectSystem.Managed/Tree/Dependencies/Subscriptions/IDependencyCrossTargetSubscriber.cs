@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
     /// </summary>
     /// <remarks>
     /// <para>
-    ///     Instances are imported into a <see cref="ICrossTargetSubscriptionsHost"/>.
+    ///     Instances are imported into a <see cref="DependenciesSnapshotProvider"/>.
     /// </para>
     /// <para>
     ///     That host will call <see cref="InitializeSubscriberAsync"/> once, then call <see cref="AddSubscriptions"/>
@@ -38,10 +38,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         event EventHandler<DependencySubscriptionChangedEventArgs> DependenciesChanged;
 
         /// <summary>
-        ///     Called once, when this subscriber is first loaded into its <paramref name="host"/>.
+        ///     Called once, when this subscriber is first loaded into its <paramref name="provider"/>.
         /// </summary>
-        /// <param name="host">The object that's hosting this subscriber.</param>
-        Task InitializeSubscriberAsync(ICrossTargetSubscriptionsHost host);
+        /// <param name="provider">The object that's hosting this subscriber.</param>
+        Task InitializeSubscriberAsync(DependenciesSnapshotProvider provider);
 
         /// <summary>
         ///     Requests this subscriber to create subscriptions based on the target frameworks specified in <paramref name="projectContext"/>.

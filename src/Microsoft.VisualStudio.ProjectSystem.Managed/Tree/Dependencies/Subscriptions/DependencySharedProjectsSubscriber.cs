@@ -21,13 +21,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
     [AppliesTo(ProjectCapability.DependenciesTree)]
     internal sealed class DependencySharedProjectsSubscriber : DependencyRulesSubscriberBase<EventData>
     {
-        private readonly IDependenciesSnapshotProvider _dependenciesSnapshotProvider;
+        private readonly DependenciesSnapshotProvider _dependenciesSnapshotProvider;
 
         [ImportingConstructor]
         public DependencySharedProjectsSubscriber(
             IProjectThreadingService threadingService,
             IUnconfiguredProjectTasksService tasksService,
-            IDependenciesSnapshotProvider dependenciesSnapshotProvider)
+            DependenciesSnapshotProvider dependenciesSnapshotProvider)
             : base(threadingService, tasksService)
         {
             _dependenciesSnapshotProvider = dependenciesSnapshotProvider;

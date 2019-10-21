@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         [ImportingConstructor]
         public ProjectRuleHandler(
             IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider,
-            IDependenciesSnapshotProvider snapshotProvider,
+            DependenciesSnapshotProvider snapshotProvider,
             IUnconfiguredProjectCommonServices commonServices)
             : base(ProjectReference.SchemaName, ResolvedProjectReference.SchemaName)
         {

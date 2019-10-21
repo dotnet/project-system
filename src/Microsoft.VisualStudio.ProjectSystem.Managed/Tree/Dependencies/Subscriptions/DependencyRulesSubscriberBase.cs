@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
     {
         private readonly IUnconfiguredProjectTasksService _tasksService;
 
-        private ICrossTargetSubscriptionsHost? _host;
+        private DependenciesSnapshotProvider? _provider;
         private DisposableBag? _subscriptions;
 
         public event EventHandler<DependencySubscriptionChangedEventArgs>? DependenciesChanged;
@@ -30,9 +30,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             _tasksService = tasksService;
         }
 
-        public Task InitializeSubscriberAsync(ICrossTargetSubscriptionsHost host)
+        public Task InitializeSubscriberAsync(DependenciesSnapshotProvider provider)
         {
-            _host = host;
+            _provider = provider;
 
             return InitializeAsync();
         }
@@ -117,7 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     // Ensure the project's capabilities don't change during the update
                     using (ProjectCapabilitiesContext.CreateIsolatedContext(configuredProject, capabilities: GetCapabilitiesSnapshot(e)))
                     {
-                        AggregateCrossTargetProjectContext? currentAggregateContext = await _host!.GetCurrentAggregateProjectContextAsync();
+                        AggregateCrossTargetProjectContext? currentAggregateContext = await _provider!.GetCurrentAggregateProjectContextAsync();
 
                         if (currentAggregateContext == null)
                         {
