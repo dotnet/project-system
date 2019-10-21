@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.IO;
@@ -418,7 +419,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 {"TargetFrameworkIdentifier", @".NETFramework" }
                 };
 
-            var provider = GetDebugTargetsProvider("exe", properties, debugger);
+            var scope = IProjectCapabilitiesScopeFactory.Create(capabilities: new string[] { ProjectCapabilities.IntegratedConsoleDebugging });
+
+            var provider = GetDebugTargetsProvider("exe", properties, debugger, scope);
 
             var activeProfile = new LaunchProfile() { Name = "Name", CommandName = "Project" };
 
@@ -439,7 +442,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 {"TargetFrameworkIdentifier", @".NETFramework" }
                 };
 
-            var provider = GetDebugTargetsProvider("exe", properties, debugger);
+            var scope = IProjectCapabilitiesScopeFactory.Create(capabilities: new string[] { ProjectCapabilities.IntegratedConsoleDebugging });
+
+            var provider = GetDebugTargetsProvider("exe", properties, debugger, scope);
 
             var activeProfile = new LaunchProfile() { Name = "Name", CommandName = "Project" };
 
@@ -447,6 +452,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             Assert.Single(result);
             Assert.True((result[0].LaunchOptions & DebugLaunchOptions.IntegratedConsole) == DebugLaunchOptions.IntegratedConsole);
+        }
+
+        [Theory]
+        [InlineData((DebugLaunchOptions)0)]
+        [InlineData(DebugLaunchOptions.NoDebug)]
+        public async Task QueryDebugTargetsAsync_NonIntegratedConsoleCapability_DoesNotIncludeIntegrationConsoleInLaunchOptions(DebugLaunchOptions launchOptions)
+        {
+            var debugger = IVsDebugger10Factory.ImplementIsIntegratedConsoleEnabled(enabled: true);
+            var properties = new Dictionary<string, string?>() {
+                {"TargetPath", @"C:\ConsoleApp.exe"},
+                {"TargetFrameworkIdentifier", @".NETFramework" }
+                };
+
+            var provider = GetDebugTargetsProvider("exe", properties, debugger);
+
+            var activeProfile = new LaunchProfile() { Name = "Name", CommandName = "Project" };
+
+            var result = await provider.QueryDebugTargetsAsync(launchOptions, activeProfile);
+
+            Assert.Single(result);
+            Assert.True((result[0].LaunchOptions & DebugLaunchOptions.IntegratedConsole) != DebugLaunchOptions.IntegratedConsole);
         }
 
         [Theory]
@@ -571,7 +597,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             Assert.Equal(expected, ConsoleDebugTargetsProvider.EscapeString(input, new[] { '^', '<', '>', '&' }));
         }
 
-        private ConsoleDebugTargetsProvider GetDebugTargetsProvider(string outputType = "exe", Dictionary<string, string?>? properties = null, IVsDebugger10? debugger = null)
+        private ConsoleDebugTargetsProvider GetDebugTargetsProvider(string outputType = "exe", Dictionary<string, string?>? properties = null, IVsDebugger10? debugger = null, IProjectCapabilitiesScope? scope = null)
         {
             _mockFS.WriteAllText(@"c:\test\Project\someapp.exe", "");
             _mockFS.CreateDirectory(@"c:\test\Project");
@@ -600,16 +626,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var configuredProjectServices = Mock.Of<ConfiguredProjectServices>(o =>
                 o.ProjectPropertiesProvider == delegateProvider);
 
+            var capabilitiesScope = scope ?? IProjectCapabilitiesScopeFactory.Create(capabilities: Enumerable.Empty<string>());
+
             var configuredProject = Mock.Of<ConfiguredProject>(o =>
                 o.UnconfiguredProject == project &&
-                o.Services == configuredProjectServices);
+                o.Services == configuredProjectServices &&
+                o.Capabilities == capabilitiesScope);
             var environment = IEnvironmentHelperFactory.ImplementGetEnvironmentVariable(_Path);
 
-            return CreateInstance(project: project, configuredProject : configuredProject, fileSystem: _mockFS, properties: projectProperties, environment: environment, debugger : debugger);
+            return CreateInstance(configuredProject : configuredProject, fileSystem: _mockFS, properties: projectProperties, environment: environment, debugger : debugger);
         }
 
         private static ConsoleDebugTargetsProvider CreateInstance(
-            UnconfiguredProject? project = null,
             ConfiguredProject? configuredProject = null,
             IDebugTokenReplacer? tokenReplacer = null,
             IFileSystem? fileSystem = null,
@@ -625,7 +653,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             threadingService ??= IProjectThreadingServiceFactory.Create();
             debugger ??= IVsDebugger10Factory.ImplementIsIntegratedConsoleEnabled(enabled: false);
             
-            return new ConsoleDebugTargetsProvider(project, tokenReplacer, fileSystem, environment, activeDebugFramework, properties, threadingService, IVsUIServiceFactory.Create<SVsShellDebugger, IVsDebugger10>(debugger));
+            return new ConsoleDebugTargetsProvider(configuredProject, tokenReplacer, fileSystem, environment, activeDebugFramework, properties, threadingService, IVsUIServiceFactory.Create<SVsShellDebugger, IVsDebugger10>(debugger));
         }
     }
 }
