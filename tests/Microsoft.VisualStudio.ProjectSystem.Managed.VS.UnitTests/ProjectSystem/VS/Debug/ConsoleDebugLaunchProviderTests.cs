@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.IO;
@@ -603,7 +604,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _mockFS.CreateDirectory(@"c:\test\Project\bin\");
             _mockFS.WriteAllText(@"c:\program files\dotnet\dotnet.exe", "");
 
-            var project = UnconfiguredProjectFactory.Create(filePath: _ProjectFile, scope: scope);
+            var capabilitiesScope = scope ?? IProjectCapabilitiesScopeFactory.Create(capabilities: Enumerable.Empty<string>());
+            var project = UnconfiguredProjectFactory.Create(filePath: _ProjectFile, scope: capabilitiesScope);
 
             var outputTypeEnum = new PageEnumValue(new EnumValue() { Name = outputType });
             var data = new PropertyPageData(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutputTypeProperty, outputTypeEnum);

@@ -336,7 +336,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             bool useCmdShell = false;
             if (await IsConsoleAppAsync())
             {
-                var isIntegratedConsoleCapable = (await _project.GetSuggestedConfiguredProjectAsync()).Capabilities.Contains(ProjectCapabilities.IntegratedConsoleDebugging);
+                var isIntegratedConsoleCapable = _project.Capabilities.Contains(ProjectCapabilities.IntegratedConsoleDebugging);
 
                 if (isIntegratedConsoleCapable && await IsIntegratedConsoleEnabledAsync())
                 {
