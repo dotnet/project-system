@@ -36,10 +36,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private readonly ProjectProperties _properties;
         private readonly IProjectThreadingService _threadingService;
         private readonly IVsUIService<IVsDebugger10> _debugger;
-        private readonly UnconfiguredProject _project;
+        private readonly ConfiguredProject _project;
 
         [ImportingConstructor]
-        public ConsoleDebugTargetsProvider(UnconfiguredProject project,
+        public ConsoleDebugTargetsProvider(ConfiguredProject project,
                                            IDebugTokenReplacer tokenReplacer,
                                            IFileSystem fileSystem,
                                            IEnvironmentHelper environment,
@@ -204,7 +204,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             string executable, arguments;
 
-            string projectFolder = Path.GetDirectoryName(_project.FullPath);
+            string projectFolder = Path.GetDirectoryName(_project.UnconfiguredProject.FullPath);
             ConfiguredProject configuredProject = await GetConfiguredProjectForDebugAsync();
 
             // If no working directory specified in the profile, we default to output directory. If for some reason the output directory
@@ -391,7 +391,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             // If the working directory is relative, it will be relative to the project root so make it a full path
             if (!string.IsNullOrWhiteSpace(runWorkingDirectory) && !Path.IsPathRooted(runWorkingDirectory))
             {
-                runWorkingDirectory = Path.Combine(Path.GetDirectoryName(_project.FullPath), runWorkingDirectory);
+                runWorkingDirectory = Path.Combine(Path.GetDirectoryName(_project.UnconfiguredProject.FullPath), runWorkingDirectory);
             }
 
             return new Tuple<string, string, string>(runCommand, runArguments, runWorkingDirectory);

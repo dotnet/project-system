@@ -604,8 +604,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _mockFS.CreateDirectory(@"c:\test\Project\bin\");
             _mockFS.WriteAllText(@"c:\program files\dotnet\dotnet.exe", "");
 
-            var capabilitiesScope = scope ?? IProjectCapabilitiesScopeFactory.Create(capabilities: Enumerable.Empty<string>());
-            var project = UnconfiguredProjectFactory.Create(filePath: _ProjectFile, scope: capabilitiesScope);
+            var project = UnconfiguredProjectFactory.Create(filePath: _ProjectFile);
 
             var outputTypeEnum = new PageEnumValue(new EnumValue() { Name = outputType });
             var data = new PropertyPageData(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutputTypeProperty, outputTypeEnum);
@@ -627,16 +626,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var configuredProjectServices = Mock.Of<ConfiguredProjectServices>(o =>
                 o.ProjectPropertiesProvider == delegateProvider);
 
+            var capabilitiesScope = scope ?? IProjectCapabilitiesScopeFactory.Create(capabilities: Enumerable.Empty<string>());
+
             var configuredProject = Mock.Of<ConfiguredProject>(o =>
                 o.UnconfiguredProject == project &&
-                o.Services == configuredProjectServices);
+                o.Services == configuredProjectServices &&
+                o.Capabilities == capabilitiesScope);
             var environment = IEnvironmentHelperFactory.ImplementGetEnvironmentVariable(_Path);
 
-            return CreateInstance(project: project, configuredProject : configuredProject, fileSystem: _mockFS, properties: projectProperties, environment: environment, debugger : debugger);
+            return CreateInstance(configuredProject : configuredProject, fileSystem: _mockFS, properties: projectProperties, environment: environment, debugger : debugger);
         }
 
         private static ConsoleDebugTargetsProvider CreateInstance(
-            UnconfiguredProject? project = null,
             ConfiguredProject? configuredProject = null,
             IDebugTokenReplacer? tokenReplacer = null,
             IFileSystem? fileSystem = null,
@@ -652,7 +653,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             threadingService ??= IProjectThreadingServiceFactory.Create();
             debugger ??= IVsDebugger10Factory.ImplementIsIntegratedConsoleEnabled(enabled: false);
             
-            return new ConsoleDebugTargetsProvider(project, tokenReplacer, fileSystem, environment, activeDebugFramework, properties, threadingService, IVsUIServiceFactory.Create<SVsShellDebugger, IVsDebugger10>(debugger));
+            return new ConsoleDebugTargetsProvider(configuredProject, tokenReplacer, fileSystem, environment, activeDebugFramework, properties, threadingService, IVsUIServiceFactory.Create<SVsShellDebugger, IVsDebugger10>(debugger));
         }
     }
 }
