@@ -705,6 +705,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             tabCount = PropertyPages.Length + AppDesignerItems.Count 'Resource Designer + Settings Designer + property pages
 
             _designerPanels = New ApplicationDesignerPanel(tabCount - 1) {}
+            Dim HasResourcesPage As Boolean = False
+            Dim HasSettingsPage As Boolean = False
 
             'Create the designer panels
             For Index As Integer = 0 To tabCount - 1
@@ -748,18 +750,21 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         .TabTitle = .EditorCaption
                         .TabAutomationName = PROP_PAGE_TAB_PREFIX & PropertyPages(Index).Guid.ToString("N")
 
-                        Dim TelemetryEvent As TelemetryEvent = New TelemetryEvent(TelemetryEventRootPath + "TabInfo")
-                        TelemetryEvent.Properties(TelemetryPropertyPrefix + "TabInfo.TabTitle") = .EditorCaption
-                        TelemetryEvent.Properties(TelemetryPropertyPrefix + "TabInfo.GUID") = PropertyPages(Index).Guid.ToString("B")
-                        TelemetryEvent.Properties(TelemetryPropertyPrefix + "Project.Extension") = IO.Path.GetExtension(_projectFilePath)
-                        TelemetryEvent.Properties(TelemetryPropertyPrefix + "Project.GUID") = _projectGuid.ToString("B")
-                        TelemetryService.DefaultSession.PostEvent(TelemetryEvent)
+                        Dim SpecialTabsTelemetryEvent As TelemetryEvent = New TelemetryEvent(TelemetryEventRootPath + "TabInfo")
+                        SpecialTabsTelemetryEvent.Properties(TelemetryPropertyPrefix + "TabInfo.TabTitle") = New TelemetryPiiProperty(.EditorCaption)
+                        SpecialTabsTelemetryEvent.Properties(TelemetryPropertyPrefix + "TabInfo.GUID") = PropertyPages(Index).Guid.ToString("B")
+                        SpecialTabsTelemetryEvent.Properties(TelemetryPropertyPrefix + "Project.Extension") = IO.Path.GetExtension(_projectFilePath)
+                        SpecialTabsTelemetryEvent.Properties(TelemetryPropertyPrefix + "Project.GUID") = _projectGuid.ToString("B")
+                        TelemetryService.DefaultSession.PostEvent(SpecialTabsTelemetryEvent)
 
                     Else
                         Dim FileName As String = DirectCast(AppDesignerItems(Index - PropertyPages.Length), String)
 
                         .EditFlags = CUInt(_VSRDTFLAGS.RDT_DontAddToMRU)
                         If String.Equals(VisualBasic.Right(FileName, 5), ".resx", StringComparison.OrdinalIgnoreCase) Then
+
+                            HasResourcesPage = True
+
                             'Add .resx file with a known editor so user config cannot change
                             .EditorGuid = New Guid(My.Resources.Designer.ResourceEditorFactory_GUID)
                             .EditorCaption = My.Resources.Designer.APPDES_ResourceTabTitle
@@ -776,15 +781,10 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                             Else
                                 .CustomViewProvider = New SpecialFileCustomViewProvider(Me, DesignerPanel, __PSFFILEID2.PSFFILEID_AssemblyResource, My.Resources.Designer.APPDES_ClickHereCreateResx)
                             End If
-
-                            Dim TelemetryEvent As TelemetryEvent = New TelemetryEvent(TelemetryEventRootPath + "TabInfo/SpecialTab")
-                            TelemetryEvent.Properties(TelemetryPropertyPrefix + "TabInfo.TabTitle") = .EditorCaption
-                            TelemetryEvent.Properties(TelemetryPropertyPrefix + "ProjectExtension") = IO.Path.GetExtension(_projectFilePath)
-                            TelemetryEvent.Properties(TelemetryPropertyPrefix + "TabInfo.SpecialTab.EditorGuid") = .EditorGuid
-                            TelemetryEvent.Properties(TelemetryPropertyPrefix + "TabInfo.SpecialTab.Type") = ".resx"
-                            TelemetryService.DefaultSession.PostEvent(TelemetryEvent)
-
                         ElseIf String.Equals(VisualBasic.Right(FileName, 9), ".settings", StringComparison.OrdinalIgnoreCase) Then
+
+                            HasSettingsPage = True
+
                             'Add .settings file with a known editor so user config cannot change
                             .EditorGuid = New Guid(My.Resources.Designer.SettingsDesignerEditorFactory_GUID)
                             .EditorCaption = My.Resources.Designer.APPDES_SettingsTabTitle
@@ -801,13 +801,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                             Else
                                 .CustomViewProvider = New SpecialFileCustomViewProvider(Me, DesignerPanel, __PSFFILEID2.PSFFILEID_AppSettings, My.Resources.Designer.APPDES_ClickHereCreateSettings)
                             End If
-
-                            Dim TelemetryEvent As TelemetryEvent = New TelemetryEvent(TelemetryEventRootPath + "TabInfo/SpecialTab")
-                            TelemetryEvent.Properties(TelemetryPropertyPrefix + "TabInfo.TabTitle") = .EditorCaption
-                            TelemetryEvent.Properties(TelemetryPropertyPrefix + "ProjectExtension") = IO.Path.GetExtension(_projectFilePath)
-                            TelemetryEvent.Properties(TelemetryPropertyPrefix + "TabInfo.SpecialTab.EditorGuid") = .EditorGuid
-                            TelemetryEvent.Properties(TelemetryPropertyPrefix + "TabInfo.SpecialTab.Type") = ".settings"
-                            TelemetryService.DefaultSession.PostEvent(TelemetryEvent)
                         Else
                             Debug.Fail("Unexpected file in list of intended tabs")
                         End If
@@ -824,6 +817,13 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     _designerPanels(Index) = DesignerPanel
                 End With
             Next
+
+            Dim TelemetryEvent As TelemetryEvent = New TelemetryEvent(TelemetryEventRootPath + "TabInfo/SpecialTabs")
+            TelemetryEvent.Properties(TelemetryPropertyPrefix + "Project.Extension") = IO.Path.GetExtension(_projectFilePath)
+            TelemetryEvent.Properties(TelemetryPropertyPrefix + "Project.Guid") = _projectGuid.ToString("B")
+            TelemetryEvent.Properties(TelemetryPropertyPrefix + "TabInfo.HasResourcesPage") = HasResourcesPage
+            TelemetryEvent.Properties(TelemetryPropertyPrefix + "TabInfo.HasSettingsPage") = HasSettingsPage
+            TelemetryService.DefaultSession.PostEvent(TelemetryEvent)
 
             'Order the tabs
             OrderTabs(_designerPanels)
