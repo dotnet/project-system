@@ -79,6 +79,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Private _serviceProvider As IServiceProvider
         Private _projectHierarchy As IVsHierarchy
         Private _projectFilePath As String 'Full path to the project filename
+        Private _projectGuid As Guid
 
         '*** Project Property related data
         Private _projectObject As Object 'Project's browse object
@@ -225,6 +226,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     Text = "AppDesigner+" & DTEProject.Name
 
                     _projectFilePath = DTEProject.FullName
+                End If
+
+                hr = _projectHierarchy.GetGuidProperty(VSITEMID.ROOT, __VSHPROPID.VSHPROPID_ProjectIDGuid, _projectGuid)
+                If Not NativeMethods.Succeeded(hr) Then
+                    _projectGuid = Guid.Empty
                 End If
 
                 If _dteProject Is Nothing Then
@@ -744,8 +750,9 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
                         Dim TelemetryEvent As TelemetryEvent = New TelemetryEvent(TelemetryEventRootPath + "TabInfo")
                         TelemetryEvent.Properties(TelemetryPropertyPrefix + "TabInfo.TabTitle") = .EditorCaption
-                        TelemetryEvent.Properties(TelemetryPropertyPrefix + "TabInfo.GUID") = PropertyPages(Index).Guid.ToString()
-                        TelemetryEvent.Properties(TelemetryPropertyPrefix + "ProjectExtension") = IO.Path.GetExtension(_projectFilePath)
+                        TelemetryEvent.Properties(TelemetryPropertyPrefix + "TabInfo.GUID") = PropertyPages(Index).Guid.ToString("B")
+                        TelemetryEvent.Properties(TelemetryPropertyPrefix + "Project.Extension") = IO.Path.GetExtension(_projectFilePath)
+                        TelemetryEvent.Properties(TelemetryPropertyPrefix + "Project.GUID") = _projectGuid
                         TelemetryService.DefaultSession.PostEvent(TelemetryEvent)
 
                     Else
