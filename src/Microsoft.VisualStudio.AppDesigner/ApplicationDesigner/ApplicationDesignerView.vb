@@ -752,7 +752,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         TelemetryEvent.Properties(TelemetryPropertyPrefix + "TabInfo.TabTitle") = .EditorCaption
                         TelemetryEvent.Properties(TelemetryPropertyPrefix + "TabInfo.GUID") = PropertyPages(Index).Guid.ToString("B")
                         TelemetryEvent.Properties(TelemetryPropertyPrefix + "Project.Extension") = IO.Path.GetExtension(_projectFilePath)
-                        TelemetryEvent.Properties(TelemetryPropertyPrefix + "Project.GUID") = _projectGuid
+                        TelemetryEvent.Properties(TelemetryPropertyPrefix + "Project.GUID") = _projectGuid.ToString("B")
                         TelemetryService.DefaultSession.PostEvent(TelemetryEvent)
 
                     Else
