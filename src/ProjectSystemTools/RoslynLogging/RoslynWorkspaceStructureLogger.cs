@@ -141,6 +141,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.RoslynLogging
                         workspaceReferencesElement.Add(referenceElement);
                     }
 
+                    projectElement.Add(new XElement("workspaceDocuments", CreateElementsForDocumentCollection(project.Documents, "document")));
+                    projectElement.Add(new XElement("workspaceAdditionalDocuments", CreateElementsForDocumentCollection(project.AdditionalDocuments, "additionalDocuments")));
+
+                    // Read AnalyzerConfigDocuments via reflection, as our target version may not be on a Roslyn
+                    // new enough to support it.
+                    var analyzerConfigDocumentsProperty = project.GetType().GetProperty("AnalyzerConfigDocuments");
+
+                    if (analyzerConfigDocumentsProperty != null)
+                    {
+                        var analyzerConfigDocuments = (IEnumerable<TextDocument>)analyzerConfigDocumentsProperty.GetValue(project);
+                        projectElement.Add(new XElement("workspaceAnalyzerConfigDocuments", CreateElementsForDocumentCollection(analyzerConfigDocuments, "analyzerConfigDocument")));
+                    }
+
                     // Dump references from the compilation; this should match the workspace but can help rule out
                     // cross-language reference bugs or other issues like that
 #pragma warning disable VSTHRD002 // Avoid problematic synchronous waits -- this is fine since it's a Roslyn API
@@ -301,6 +314,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.RoslynLogging
                 new XAttribute("objectId", compilationId.Value),
                 new XAttribute("assemblyIdentity", compilation.Assembly.Identity.ToString()),
                 typesElement);
+        }
+
+        public static IEnumerable<XElement> CreateElementsForDocumentCollection(IEnumerable<TextDocument> documents, string elementName)
+        {
+            foreach (var document in documents)
+            {
+                yield return new XElement(elementName, new XAttribute("file", SanitizePath(document.FilePath ?? "(none)")));
+            }
         }
 
         private sealed class ThreadedWaitCallback : IVsThreadedWaitDialogCallback
