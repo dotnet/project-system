@@ -1,18 +1,18 @@
-﻿using Microsoft.CodeAnalysis;
-using Microsoft.VisualStudio;
-using Microsoft.VisualStudio.ComponentModelHost;
-using Microsoft.VisualStudio.LanguageServices;
-using Microsoft.VisualStudio.Shell.Interop;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
-using System.Xml.Linq;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.Shell;
-using Microsoft;
 using System.Windows.Forms;
+using System.Xml.Linq;
+using Microsoft.CodeAnalysis;
+using Microsoft.VisualStudio.ComponentModelHost;
+using Microsoft.VisualStudio.LanguageServices;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools.RoslynLogging
 {
@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.RoslynLogging
 
             var saveDialog = new SaveFileDialog()
             {
-                Filter = "XML Files (*.xml)|*.xml"
+                Filter = "Zip Files (*.zip)|*.zip"
             };
 
             if (saveDialog.ShowDialog() != DialogResult.OK)
@@ -187,7 +187,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.RoslynLogging
                     threadedWaitDialog.UpdateProgress(null, null, null, projectsProcessed, solution.ProjectIds.Count, false, out cancelled);
                 }
 
-                document.Save(path);
+                File.Delete(path);
+
+                using (var zipFile = ZipFile.Open(path, ZipArchiveMode.Create))
+                {
+                    var zipFileEntry = zipFile.CreateEntry("Workspace.xml", CompressionLevel.Fastest);
+                    document.Save(zipFileEntry.Open());
+                }
             }
             catch (OperationCanceledException)
             {
