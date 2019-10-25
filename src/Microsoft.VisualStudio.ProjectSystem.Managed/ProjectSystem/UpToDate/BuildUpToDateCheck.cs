@@ -190,92 +190,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return true;
         }
 
-        private IEnumerable<string> CollectInputs(BuildUpToDateCheckLogger logger, State state)
-        {
-            if (state.MSBuildProjectFullPath != null)
-            {
-                logger.Verbose("Adding project file inputs:");
-                logger.Verbose("    '{0}'", state.MSBuildProjectFullPath);
-                yield return state.MSBuildProjectFullPath;
-            }
-
-            if (state.NewestImportInput != null)
-            {
-                logger.Verbose("Adding newest import input:");
-                logger.Verbose("    '{0}'", state.NewestImportInput);
-                yield return state.NewestImportInput;
-            }
-
-            foreach ((string itemType, ImmutableHashSet<(string path, string? link, CopyToOutputDirectoryType copyType)> changes) in state.ItemsByItemType)
-            {
-                if (!NonCompilationItemTypes.Contains(itemType))
-                {
-                    logger.Verbose("Adding {0} inputs:", itemType);
-
-                    foreach (string input in changes.Select(item => _configuredProject.UnconfiguredProject.MakeRooted(item.path)))
-                    {
-                        logger.Verbose("    '{0}'", input);
-                        yield return input;
-                    }
-                }
-            }
-
-            if (state.AnalyzerReferences.Count != 0)
-            {
-                logger.Verbose("Adding " + ResolvedAnalyzerReference.SchemaName + " inputs:");
-                foreach (string input in state.AnalyzerReferences)
-                {
-                    logger.Verbose("    '{0}'", input);
-                    yield return input;
-                }
-            }
-
-            if (state.CompilationReferences.Count != 0)
-            {
-                logger.Verbose("Adding " + ResolvedCompilationReference.SchemaName + " inputs:");
-                foreach (string input in state.CompilationReferences)
-                {
-                    logger.Verbose("    '{0}'", input);
-                    yield return input;
-                }
-            }
-
-            if (state.CustomInputs.Count != 0)
-            {
-                logger.Verbose("Adding " + UpToDateCheckInput.SchemaName + " inputs:");
-                foreach (string input in state.CustomInputs.Select(_configuredProject.UnconfiguredProject.MakeRooted))
-                {
-                    logger.Verbose("    '{0}'", input);
-                    yield return input;
-                }
-            }
-        }
-
-        private IEnumerable<string> CollectOutputs(BuildUpToDateCheckLogger logger, State state)
-        {
-            if (state.CustomOutputs.Count != 0)
-            {
-                logger.Verbose("Adding " + UpToDateCheckOutput.SchemaName + " outputs:");
-
-                foreach (string output in state.CustomOutputs.Select(_configuredProject.UnconfiguredProject.MakeRooted))
-                {
-                    logger.Verbose("    '{0}'", output);
-                    yield return output;
-                }
-            }
-
-            if (state.BuiltOutputs.Count != 0)
-            {
-                logger.Verbose("Adding " + UpToDateCheckBuilt.SchemaName + " outputs:");
-
-                foreach (string output in state.BuiltOutputs.Select(_configuredProject.UnconfiguredProject.MakeRooted))
-                {
-                    logger.Verbose("    '{0}'", output);
-                    yield return output;
-                }
-            }
-        }
-
         private (DateTime time, string? path) GetLatestInput(IEnumerable<string> inputs, IDictionary<string, DateTime> timestampCache)
         {
             DateTime latest = DateTime.MinValue;
@@ -335,7 +249,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private bool CheckInputsAndOutputs(BuildUpToDateCheckLogger logger, IDictionary<string, DateTime> timestampCache, State state)
         {
             // We assume there are fewer outputs than inputs, so perform a full scan of outputs to find the earliest
-            (DateTime? outputTime, string? outputPath) = GetEarliestOutput(CollectOutputs(logger, state), timestampCache);
+            (DateTime? outputTime, string? outputPath) = GetEarliestOutput(CollectOutputs(), timestampCache);
 
             if (outputTime != null)
             {
@@ -348,7 +262,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 // Search for an input that's either missing or newer than the earliest output.
                 // As soon as we find one, we can stop the scan.
-                foreach (string input in CollectInputs(logger, state))
+                foreach (string input in CollectInputs())
                 {
                     DateTime? time = GetTimestampUtc(input, timestampCache);
 
@@ -380,6 +294,92 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
 
             return true;
+
+            IEnumerable<string> CollectInputs()
+            {
+                if (state.MSBuildProjectFullPath != null)
+                {
+                    logger.Verbose("Adding project file inputs:");
+                    logger.Verbose("    '{0}'", state.MSBuildProjectFullPath);
+                    yield return state.MSBuildProjectFullPath;
+                }
+
+                if (state.NewestImportInput != null)
+                {
+                    logger.Verbose("Adding newest import input:");
+                    logger.Verbose("    '{0}'", state.NewestImportInput);
+                    yield return state.NewestImportInput;
+                }
+
+                foreach ((string itemType, ImmutableHashSet<(string path, string? link, CopyToOutputDirectoryType copyType)> changes) in state.ItemsByItemType)
+                {
+                    if (!NonCompilationItemTypes.Contains(itemType))
+                    {
+                        logger.Verbose("Adding {0} inputs:", itemType);
+
+                        foreach (string input in changes.Select(item => _configuredProject.UnconfiguredProject.MakeRooted(item.path)))
+                        {
+                            logger.Verbose("    '{0}'", input);
+                            yield return input;
+                        }
+                    }
+                }
+
+                if (state.AnalyzerReferences.Count != 0)
+                {
+                    logger.Verbose("Adding " + ResolvedAnalyzerReference.SchemaName + " inputs:");
+                    foreach (string input in state.AnalyzerReferences)
+                    {
+                        logger.Verbose("    '{0}'", input);
+                        yield return input;
+                    }
+                }
+
+                if (state.CompilationReferences.Count != 0)
+                {
+                    logger.Verbose("Adding " + ResolvedCompilationReference.SchemaName + " inputs:");
+                    foreach (string input in state.CompilationReferences)
+                    {
+                        logger.Verbose("    '{0}'", input);
+                        yield return input;
+                    }
+                }
+
+                if (state.CustomInputs.Count != 0)
+                {
+                    logger.Verbose("Adding " + UpToDateCheckInput.SchemaName + " inputs:");
+                    foreach (string input in state.CustomInputs.Select(_configuredProject.UnconfiguredProject.MakeRooted))
+                    {
+                        logger.Verbose("    '{0}'", input);
+                        yield return input;
+                    }
+                }
+            }
+
+            IEnumerable<string> CollectOutputs()
+            {
+                if (state.CustomOutputs.Count != 0)
+                {
+                    logger.Verbose("Adding " + UpToDateCheckOutput.SchemaName + " outputs:");
+
+                    foreach (string output in state.CustomOutputs.Select(_configuredProject.UnconfiguredProject.MakeRooted))
+                    {
+                        logger.Verbose("    '{0}'", output);
+                        yield return output;
+                    }
+                }
+
+                if (state.BuiltOutputs.Count != 0)
+                {
+                    logger.Verbose("Adding " + UpToDateCheckBuilt.SchemaName + " outputs:");
+
+                    foreach (string output in state.BuiltOutputs.Select(_configuredProject.UnconfiguredProject.MakeRooted))
+                    {
+                        logger.Verbose("    '{0}'", output);
+                        yield return output;
+                    }
+                }
+            }
         }
 
         private bool CheckMarkers(BuildUpToDateCheckLogger logger, IDictionary<string, DateTime> timestampCache, State state)
