@@ -140,8 +140,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             static IProjectSubscriptionUpdate CreateUpdate(Dictionary<string, IProjectRuleSnapshotModel>? snapshotBySchemaName)
             {
-                var snapshots = ImmutableDictionary<string, IProjectRuleSnapshot>.Empty;
-                var changes = ImmutableDictionary<string, IProjectChangeDescription>.Empty;
+                var snapshots = ImmutableStringDictionary<IProjectRuleSnapshot>.EmptyOrdinal;
+                var changes = ImmutableStringDictionary<IProjectChangeDescription>.EmptyOrdinal;
 
                 if (snapshotBySchemaName != null)
                 {
@@ -168,7 +168,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 Items = items.Aggregate(
                     ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal,
-                    (current, item) => current.Add(item, ImmutableDictionary<string, string>.Empty))
+                    (current, item) => current.Add(item, ImmutableStringDictionary<string>.EmptyOrdinal))
             };
         }
 
@@ -302,9 +302,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 [Content.SchemaName] = new IProjectRuleSnapshotModel
                 {
                     Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
-                        .Add("ItemPath1", ImmutableDictionary<string, string>.Empty
+                        .Add("ItemPath1", ImmutableStringDictionary<string>.EmptyOrdinal
                             .Add("CopyToOutputDirectory", "Always")) // ALWAYS COPY THIS ITEM
-                        .Add("ItemPath2", ImmutableDictionary<string, string>.Empty)
+                        .Add("ItemPath2", ImmutableStringDictionary<string>.EmptyOrdinal)
                 }
             };
 
@@ -525,7 +525,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 [ResolvedCompilationReference.SchemaName] = new IProjectRuleSnapshotModel
                 {
                     Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
-                        .Add("Reference1", ImmutableDictionary<string, string>.Empty
+                        .Add("Reference1", ImmutableStringDictionary<string>.EmptyOrdinal
                             .Add("CopyUpToDateMarker", "Reference1MarkerPath")
                             .Add("ResolvedPath", "Reference1ResolvedPath")
                             .Add("OriginalPath", "Reference1OriginalPath"))
@@ -590,7 +590,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 [ResolvedCompilationReference.SchemaName] = new IProjectRuleSnapshotModel
                 {
                     Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
-                        .Add("Reference1", ImmutableDictionary<string, string>.Empty
+                        .Add("Reference1", ImmutableStringDictionary<string>.EmptyOrdinal
                             .Add("CopyUpToDateMarker", "Reference1MarkerPath")
                             .Add("ResolvedPath", "Reference1ResolvedPath")
                             .Add("OriginalPath", "Reference1OriginalPath"))
