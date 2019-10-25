@@ -487,7 +487,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         }
 
         [Fact]
-        public async Task IsUpToDateAsync_False_InputNewerThanCustomOutput()
+        public async Task IsUpToDateAsync_False_CompileItemNewerThanCustomOutput()
         {
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
@@ -501,18 +501,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await SetupAsync(projectSnapshot, sourceSnapshot);
 
-            var itemChangeTime = DateTime.UtcNow.AddMinutes(-4);
-            var outputTime     = DateTime.UtcNow.AddMinutes(-3);
-            var inputTime      = DateTime.UtcNow.AddMinutes(-2);
-            var lastCheckTime  = DateTime.UtcNow.AddMinutes(-1);
+            var itemChangeTime  = DateTime.UtcNow.AddMinutes(-4);
+            var outputTime      = DateTime.UtcNow.AddMinutes(-3);
+            var compileItemTime = DateTime.UtcNow.AddMinutes(-2);
+            var lastCheckTime   = DateTime.UtcNow.AddMinutes(-1);
 
             _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\CustomOutputPath1", outputTime);
-            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\ItemPath1", inputTime);
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\ItemPath1", compileItemTime);
             _buildUpToDateCheck.TestAccess.SetLastCheckedAtUtc(lastCheckTime);
             _buildUpToDateCheck.TestAccess.SetLastItemsChangedAtUtc(itemChangeTime);
 
             await AssertNotUpToDateAsync(
-                $"Input 'C:\\Dev\\Solution\\Project\\ItemPath1' is newer ({inputTime.ToLocalTime()}) than earliest output 'C:\\Dev\\Solution\\Project\\CustomOutputPath1' ({outputTime.ToLocalTime()}), not up to date.",
+                $"Input 'C:\\Dev\\Solution\\Project\\ItemPath1' is newer ({compileItemTime.ToLocalTime()}) than earliest output 'C:\\Dev\\Solution\\Project\\CustomOutputPath1' ({outputTime.ToLocalTime()}), not up to date.",
                 "Outputs");
         }
 
