@@ -192,7 +192,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.RoslynLogging
                 using (var zipFile = ZipFile.Open(path, ZipArchiveMode.Create))
                 {
                     var zipFileEntry = zipFile.CreateEntry("Workspace.xml", CompressionLevel.Fastest);
-                    document.Save(zipFileEntry.Open());
+                    using (var stream = zipFileEntry.Open())
+                    {
+                        document.Save(stream);
+                    }
                 }
             }
             catch (OperationCanceledException)
