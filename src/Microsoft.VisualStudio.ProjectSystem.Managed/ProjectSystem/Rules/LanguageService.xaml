@@ -20,4 +20,12 @@
   <StringProperty Name="MaxSupportedLangVersion"
                   ReadOnly="True"
                   Visible="False" />
+
+  <StringProperty Name="RunAnalyzers"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="RunAnalyzersDuringLiveAnalysis"
+                  ReadOnly="True"
+                  Visible="False" />
 </Rule>
