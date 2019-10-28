@@ -136,21 +136,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
         }
 
-        private DateTime? GetTimestampUtc(string path, IDictionary<string, DateTime> timestampCache)
-        {
-            if (!timestampCache.TryGetValue(path, out DateTime time))
-            {
-                if (!_fileSystem.FileExists(path))
-                {
-                    return null;
-                }
-                time = _fileSystem.LastFileWriteTimeUtc(path);
-                timestampCache[path] = time;
-            }
-
-            return time;
-        }
-
         private bool Fail(BuildUpToDateCheckLogger logger, string reason, string message, params object[] values)
         {
             logger.Minimal(message, values);
@@ -190,25 +175,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return true;
         }
 
-        private (DateTime time, string? path) GetLatestInput(IEnumerable<string> inputs, IDictionary<string, DateTime> timestampCache)
-        {
-            DateTime latest = DateTime.MinValue;
-            string? latestPath = null;
-
-            foreach (string input in inputs)
-            {
-                DateTime? time = GetTimestampUtc(input, timestampCache);
-
-                if (time > latest)
-                {
-                    latest = time.Value;
-                    latestPath = input;
-                }
-            }
-
-            return (latest, latestPath);
-        }
-
         /// <summary>
         /// Returns one of:
         /// <list type="bullet">
@@ -217,7 +183,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         ///     <item><c>(null, null)</c> when there were no outputs</item>
         /// </list>
         /// </summary>
-        private (DateTime? time, string? path) GetEarliestOutput(IEnumerable<string> outputs, IDictionary<string, DateTime> timestampCache)
+        private static (DateTime? time, string? path) GetEarliestOutput(IEnumerable<string> outputs, in TimestampCache timestampCache)
         {
             DateTime? earliest = DateTime.MaxValue;
             string? earliestPath = null;
@@ -225,7 +191,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             foreach (string output in outputs)
             {
-                DateTime? time = GetTimestampUtc(output, timestampCache);
+                DateTime? time = timestampCache.GetTimestampUtc(output);
 
                 if (time == null)
                 {
@@ -246,7 +212,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 : (null, null);
         }
 
-        private bool CheckInputsAndOutputs(BuildUpToDateCheckLogger logger, IDictionary<string, DateTime> timestampCache, State state)
+        private bool CheckInputsAndOutputs(BuildUpToDateCheckLogger logger, in TimestampCache timestampCache, State state)
         {
             // We assume there are fewer outputs than inputs, so perform a full scan of outputs to find the earliest
             (DateTime? outputTime, string? outputPath) = GetEarliestOutput(CollectOutputs(), timestampCache);
@@ -264,7 +230,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 // As soon as we find one, we can stop the scan.
                 foreach (string input in CollectInputs())
                 {
-                    DateTime? time = GetTimestampUtc(input, timestampCache);
+                    DateTime? time = timestampCache.GetTimestampUtc(input);
 
                     if (time == null)
                     {
@@ -382,7 +348,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
         }
 
-        private bool CheckMarkers(BuildUpToDateCheckLogger logger, IDictionary<string, DateTime> timestampCache, State state)
+        private bool CheckMarkers(BuildUpToDateCheckLogger logger, in TimestampCache timestampCache, State state)
         {
             // Reference assembly copy markers are strange. The property is always going to be present on
             // references to SDK-based projects, regardless of whether or not those referenced projects
@@ -408,9 +374,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             logger.Verbose("Adding output reference copy marker:");
             logger.Verbose("    '{0}'", markerFile);
 
-            (DateTime latestInputMarkerTime, string? latestInputMarkerPath) = GetLatestInput(state.CopyReferenceInputs, timestampCache);
-
-            if (latestInputMarkerPath != null)
+            if (timestampCache.TryGetLatestInput(state.CopyReferenceInputs, out string? latestInputMarkerPath, out DateTime latestInputMarkerTime))
             {
                 logger.Info("Latest write timestamp on input marker is {0} on '{1}'.", latestInputMarkerTime, latestInputMarkerPath);
             }
@@ -420,7 +384,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return true;
             }
 
-            DateTime? outputMarkerTime = GetTimestampUtc(markerFile, timestampCache);
+            DateTime? outputMarkerTime = timestampCache.GetTimestampUtc(markerFile);
 
             if (outputMarkerTime != null)
             {
@@ -440,7 +404,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return true;
         }
 
-        private bool CheckCopiedOutputFiles(BuildUpToDateCheckLogger logger, IDictionary<string, DateTime> timestampCache, State state)
+        private bool CheckCopiedOutputFiles(BuildUpToDateCheckLogger logger, in TimestampCache timestampCache, State state)
         {
             foreach ((string destinationRelative, string sourceRelative) in state.CopiedOutputFiles)
             {
@@ -449,7 +413,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 logger.Info("Checking copied output (" + UpToDateCheckBuilt.SchemaName + " with " + UpToDateCheckBuilt.OriginalProperty + " property) file '{0}':", source);
 
-                DateTime? sourceTime = GetTimestampUtc(source, timestampCache);
+                DateTime? sourceTime = timestampCache.GetTimestampUtc(source);
 
                 if (sourceTime != null)
                 {
@@ -460,7 +424,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     return Fail(logger, "CopyOutput", "Source '{0}' does not exist, not up to date.", source);
                 }
 
-                DateTime? destinationTime = GetTimestampUtc(destination, timestampCache);
+                DateTime? destinationTime = timestampCache.GetTimestampUtc(destination);
 
                 if (destinationTime != null)
                 {
@@ -480,7 +444,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return true;
         }
 
-        private bool CheckCopyToOutputDirectoryFiles(BuildUpToDateCheckLogger logger, IDictionary<string, DateTime> timestampCache, State state)
+        private bool CheckCopyToOutputDirectoryFiles(BuildUpToDateCheckLogger logger, in TimestampCache timestampCache, State state)
         {
             IEnumerable<(string path, string? link, CopyToOutputDirectoryType copyType)> items = state.ItemsByItemType.SelectMany(kvp => kvp.Value).Where(item => item.copyType == CopyToOutputDirectoryType.CopyIfNewer);
 
@@ -500,7 +464,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 logger.Info("Checking PreserveNewest file '{0}':", rootedPath);
 
-                DateTime? itemTime = GetTimestampUtc(rootedPath, timestampCache);
+                DateTime? itemTime = timestampCache.GetTimestampUtc(rootedPath);
 
                 if (itemTime != null)
                 {
@@ -512,7 +476,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
 
                 string outputItem = Path.Combine(outputFullPath, filename);
-                DateTime? outputItemTime = GetTimestampUtc(outputItem, timestampCache);
+                DateTime? outputItemTime = timestampCache.GetTimestampUtc(outputItem);
 
                 if (outputItemTime != null)
                 {
@@ -559,7 +523,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     }
 
                     // Short-lived cache of timestamp by path
-                    var timestampCache = new Dictionary<string, DateTime>(StringComparers.Paths);
+                    var timestampCache = new TimestampCache(_fileSystem);
 
                     if (!CheckInputsAndOutputs(logger, timestampCache, state) ||
                         !CheckMarkers(logger, timestampCache, state) ||
