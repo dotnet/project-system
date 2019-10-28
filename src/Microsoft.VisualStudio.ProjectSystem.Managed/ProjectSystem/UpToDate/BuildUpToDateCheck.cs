@@ -136,13 +136,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
         }
 
-        private bool Fail(BuildUpToDateCheckLogger logger, string reason, string message, params object[] values)
-        {
-            logger.Minimal(message, values);
-            _telemetryService.PostProperty(TelemetryEventName.UpToDateCheckFail, TelemetryPropertyName.UpToDateCheckFailReason, reason);
-            return false;
-        }
-
         private bool CheckGlobalConditions(BuildAction buildAction, BuildUpToDateCheckLogger logger, State state)
         {
             if (buildAction != BuildAction.Build)
@@ -152,24 +145,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             if (!_tasksService.IsTaskQueueEmpty(ProjectCriticalOperation.Build))
             {
-                return Fail(logger, "CriticalTasks", "Critical build tasks are running, not up to date.");
+                return logger.Fail("CriticalTasks", "Critical build tasks are running, not up to date.");
             }
 
             if (state.LastVersionSeen == null || _configuredProject.ProjectVersion.CompareTo(state.LastVersionSeen) > 0)
             {
-                return Fail(logger, "ProjectInfoOutOfDate", "Project information is older than current project version, not up to date.");
+                return logger.Fail("ProjectInfoOutOfDate", "Project information is older than current project version, not up to date.");
             }
 
             if (state.IsDisabled)
             {
-                return Fail(logger, "Disabled", "The 'DisableFastUpToDateCheck' property is true, not up to date.");
+                return logger.Fail("Disabled", "The 'DisableFastUpToDateCheck' property is true, not up to date.");
             }
 
             string copyAlwaysItemPath = state.ItemsByItemType.SelectMany(kvp => kvp.Value).FirstOrDefault(item => item.copyType == CopyToOutputDirectoryType.CopyAlways).path;
 
             if (copyAlwaysItemPath != null)
             {
-                return Fail(logger, "CopyAlwaysItemExists", "Item '{0}' has CopyToOutputDirectory set to 'Always', not up to date.", _configuredProject.UnconfiguredProject.MakeRooted(copyAlwaysItemPath));
+                return logger.Fail("CopyAlwaysItemExists", "Item '{0}' has CopyToOutputDirectory set to 'Always', not up to date.", _configuredProject.UnconfiguredProject.MakeRooted(copyAlwaysItemPath));
             }
 
             return true;
@@ -223,7 +216,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 if (outputTime < state.LastItemsChangedAtUtc)
                 {
-                    return Fail(logger, "Outputs", "The set of project items was changed more recently ({0}) than the earliest output '{1}' ({2}), not up to date.", state.LastItemsChangedAtUtc, outputPath, outputTime.Value);
+                    return logger.Fail("Outputs", "The set of project items was changed more recently ({0}) than the earliest output '{1}' ({2}), not up to date.", state.LastItemsChangedAtUtc, outputPath, outputTime.Value);
                 }
 
                 // Search for an input that's either missing or newer than the earliest output.
@@ -234,17 +227,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                     if (time == null)
                     {
-                        return Fail(logger, "Outputs", "Input '{0}' does not exist, not up to date.", input);
+                        return logger.Fail("Outputs", "Input '{0}' does not exist, not up to date.", input);
                     }
 
                     if (time > outputTime)
                     {
-                        return Fail(logger, "Outputs", "Input '{0}' is newer ({1}) than earliest output '{2}' ({3}), not up to date.", input, time.Value, outputPath, outputTime.Value);
+                        return logger.Fail("Outputs", "Input '{0}' is newer ({1}) than earliest output '{2}' ({3}), not up to date.", input, time.Value, outputPath, outputTime.Value);
                     }
 
                     if (time > _state.LastCheckedAtUtc)
                     {
-                        return Fail(logger, "Outputs", "Input '{0}' ({1}) has been modified since the last up-to-date check ({2}), not up to date.", input, time.Value, state.LastCheckedAtUtc);
+                        return logger.Fail("Outputs", "Input '{0}' ({1}) has been modified since the last up-to-date check ({2}), not up to date.", input, time.Value, state.LastCheckedAtUtc);
                     }
                 }
 
@@ -252,7 +245,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
             else if (outputPath != null)
             {
-                return Fail(logger, "Outputs", "Output '{0}' does not exist, not up to date.", outputPath);
+                return logger.Fail("Outputs", "Output '{0}' does not exist, not up to date.", outputPath);
             }
             else
             {
@@ -398,7 +391,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             if (outputMarkerTime < latestInputMarkerTime)
             {
-                return Fail(logger, "Marker", "Input marker is newer than output marker, not up to date.");
+                return logger.Fail("Marker", "Input marker is newer than output marker, not up to date.");
             }
 
             return true;
@@ -421,7 +414,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
                 else
                 {
-                    return Fail(logger, "CopyOutput", "Source '{0}' does not exist, not up to date.", source);
+                    return logger.Fail("CopyOutput", "Source '{0}' does not exist, not up to date.", source);
                 }
 
                 DateTime? destinationTime = timestampCache.GetTimestampUtc(destination);
@@ -432,12 +425,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
                 else
                 {
-                    return Fail(logger, "CopyOutput", "Destination '{0}' does not exist, not up to date.", destination);
+                    return logger.Fail("CopyOutput", "Destination '{0}' does not exist, not up to date.", destination);
                 }
 
                 if (destinationTime < sourceTime)
                 {
-                    return Fail(logger, "CopyOutput", "Source is newer than build output destination, not up to date.");
+                    return logger.Fail("CopyOutput", "Source is newer than build output destination, not up to date.");
                 }
             }
 
@@ -472,7 +465,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
                 else
                 {
-                    return Fail(logger, "CopyToOutputDirectory", "Source '{0}' does not exist, not up to date.", rootedPath);
+                    return logger.Fail("CopyToOutputDirectory", "Source '{0}' does not exist, not up to date.", rootedPath);
                 }
 
                 string outputItem = Path.Combine(outputFullPath, filename);
@@ -484,12 +477,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
                 else
                 {
-                    return Fail(logger, "CopyToOutputDirectory", "Destination '{0}' does not exist, not up to date.", outputItem);
+                    return logger.Fail("CopyToOutputDirectory", "Destination '{0}' does not exist, not up to date.", outputItem);
                 }
 
                 if (outputItemTime < itemTime)
                 {
-                    return Fail(logger, "CopyToOutputDirectory", "PreserveNewest source is newer than destination, not up to date.");
+                    return logger.Fail("CopyToOutputDirectory", "PreserveNewest source is newer than destination, not up to date.");
                 }
             }
 
@@ -511,7 +504,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 await InitializeAsync(token);
 
                 LogLevel requestedLogLevel = await _projectSystemOptions.GetFastUpToDateLoggingLevelAsync(token);
-                var logger = new BuildUpToDateCheckLogger(logWriter, requestedLogLevel, _configuredProject.UnconfiguredProject.FullPath ?? "");
+                var logger = new BuildUpToDateCheckLogger(logWriter, requestedLogLevel, _configuredProject.UnconfiguredProject.FullPath ?? "", _telemetryService);
 
                 try
                 {
@@ -533,8 +526,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         return false;
                     }
 
-                    _telemetryService.PostEvent(TelemetryEventName.UpToDateCheckSuccess);
-                    logger.Info("Project is up to date.");
+                    logger.UpToDate();
                     return true;
                 }
                 finally

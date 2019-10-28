@@ -2,6 +2,7 @@
 
 using System;
 using System.IO;
+using Microsoft.VisualStudio.Telemetry;
 
 namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 {
@@ -10,11 +11,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private readonly TextWriter? _logger;
         private readonly LogLevel _requestedLogLevel;
         private readonly string _fileName;
+        private readonly ITelemetryService _telemetryService;
 
-        public BuildUpToDateCheckLogger(TextWriter? logger, LogLevel requestedLogLevel, string projectPath)
+        public BuildUpToDateCheckLogger(TextWriter? logger, LogLevel requestedLogLevel, string projectPath, ITelemetryService telemetryService)
         {
             _logger = logger;
             _requestedLogLevel = requestedLogLevel;
+            _telemetryService = telemetryService;
             _fileName = Path.GetFileNameWithoutExtension(projectPath);
         }
 
@@ -44,5 +47,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         public void Minimal(string message, params object[] values) => Log(LogLevel.Minimal, message, values);
         public void Info(string message, params object[] values) => Log(LogLevel.Info, message, values);
         public void Verbose(string message, params object[] values) => Log(LogLevel.Verbose, message, values);
+
+        public bool Fail(string reason, string message, params object[] values)
+        {
+            Minimal(message, values);
+            _telemetryService.PostProperty(TelemetryEventName.UpToDateCheckFail, TelemetryPropertyName.UpToDateCheckFailReason, reason);
+            return false;
+        }
+
+        public void UpToDate()
+        {
+            _telemetryService.PostEvent(TelemetryEventName.UpToDateCheckSuccess);
+            Info("Project is up to date.");
+        }
     }
 }
