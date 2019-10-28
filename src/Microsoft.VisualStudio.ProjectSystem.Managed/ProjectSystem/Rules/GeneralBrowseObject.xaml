@@ -413,7 +413,7 @@
     <BoolProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
                   PersistedName="RunAnalyzersDuringLiveAnalysis"
-                  Persistence="ProjectFile"
+                  Persistence="UserFile"
                   SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
