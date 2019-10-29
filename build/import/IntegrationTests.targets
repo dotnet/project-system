@@ -17,7 +17,7 @@
 
   <PropertyGroup>
     <TestResultsDirectory>$(ArtifactsTestResultsDir)</TestResultsDirectory>
-    <RunSettingsFilePath>$(IntermediateOutputPath)$(TargetName)$(TargetExt).runsettings</RunSettingsFilePath>    
+    <RunSettingsFullPath>$(IntermediateOutputPath)$(TargetName)$(TargetExt).runsettings</RunSettingsFullPath>    
   </PropertyGroup>
 
   <Target Name="GenerateRunSettings">
@@ -66,7 +66,7 @@
     </PropertyGroup>
 
     <WriteLinesToFile 
-      File="$(RunSettingsFilePath)"
+      File="$(RunSettingsFullPath)"
       Lines="$(RunSettingsContents)"
       Overwrite="true" 
       />
@@ -111,7 +111,7 @@
     <Delete Files="$(TrxLogFilePath)" />
 
     <Exec
-      Command='"$(VSTestExe)" /Blame /ResultsDirectory:"$(TestResultsDirectory)\" /Settings:"$(RunSettingsFilePath)" /Logger:trx;LogFileName=$(TrxLogFileName) "$(TargetPath)"'
+      Command='"$(VSTestExe)" /Blame /ResultsDirectory:"$(TestResultsDirectory)\" /Settings:"$(RunSettingsFullPath)" /Logger:trx;LogFileName=$(TrxLogFileName) "$(TargetPath)"'
       EnvironmentVariables="$(VSTestExeEnvironment)"
       LogStandardErrorAsError="true"
       StandardOutputImportance="Low"
