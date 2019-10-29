@@ -40,7 +40,9 @@ namespace Microsoft.VisualStudio.Shell.Interop
         /// </summary>
         public static T GetProperty<T>(this IVsHierarchy hierarchy, HierarchyId item, VsHierarchyPropID property, [MaybeNull]T defaultValue = default)
         {
+#pragma warning disable CS8717 // Needs https://github.com/dotnet/roslyn/issues/38638
             HResult hr = GetProperty(hierarchy, item, property, defaultValue, out T result);
+#pragma warning restore CS8717
             if (hr.Failed)
                 throw hr.Exception;
 
@@ -52,7 +54,9 @@ namespace Microsoft.VisualStudio.Shell.Interop
         /// </summary>
         public static int GetProperty<T>(this IVsHierarchy hierarchy, VsHierarchyPropID property, T defaultValue, [MaybeNull]out T result)
         {
+#pragma warning disable CS8717 // Needs https://github.com/dotnet/roslyn/issues/38638
             return GetProperty(hierarchy, HierarchyId.Root, property, defaultValue, out result);
+#pragma warning restore CS8717 
         }
 
         /// <summary>
