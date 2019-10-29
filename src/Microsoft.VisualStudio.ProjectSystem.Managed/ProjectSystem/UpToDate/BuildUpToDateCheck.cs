@@ -464,19 +464,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     return logger.Fail("CopyToOutputDirectory", "Source '{0}' does not exist, not up to date.", rootedPath);
                 }
 
-                string outputItem = Path.Combine(outputFullPath, filename);
-                DateTime? outputItemTime = timestampCache.GetTimestampUtc(outputItem);
+                string destination = Path.Combine(outputFullPath, filename);
+                DateTime? destinationTime = timestampCache.GetTimestampUtc(destination);
 
-                if (outputItemTime != null)
+                if (destinationTime != null)
                 {
-                    logger.Info("    Destination {0}: '{1}'.", outputItemTime, outputItem);
+                    logger.Info("    Destination {0}: '{1}'.", destinationTime, destination);
                 }
                 else
                 {
-                    return logger.Fail("CopyToOutputDirectory", "Destination '{0}' does not exist, not up to date.", outputItem);
+                    return logger.Fail("CopyToOutputDirectory", "Destination '{0}' does not exist, not up to date.", destination);
                 }
 
-                if (outputItemTime < itemTime)
+                if (destinationTime < itemTime)
                 {
                     return logger.Fail("CopyToOutputDirectory", "PreserveNewest source is newer than destination, not up to date.");
                 }
