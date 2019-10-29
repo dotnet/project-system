@@ -280,30 +280,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     }
                 }
 
-                if (state.AnalyzerReferences.Count != 0)
+                if (state.ResolvedAnalyzerReferencePaths.Count != 0)
                 {
                     logger.Verbose("Adding " + ResolvedAnalyzerReference.SchemaName + " inputs:");
-                    foreach (string input in state.AnalyzerReferences)
+                    foreach (string input in state.ResolvedAnalyzerReferencePaths)
                     {
                         logger.Verbose("    '{0}'", input);
                         yield return input;
                     }
                 }
 
-                if (state.CompilationReferences.Count != 0)
+                if (state.ResolvedCompilationReferencePaths.Count != 0)
                 {
                     logger.Verbose("Adding " + ResolvedCompilationReference.SchemaName + " inputs:");
-                    foreach (string input in state.CompilationReferences)
+                    foreach (string input in state.ResolvedCompilationReferencePaths)
                     {
                         logger.Verbose("    '{0}'", input);
                         yield return input;
                     }
                 }
 
-                if (state.CustomInputs.Count != 0)
+                if (state.UpToDateCheckInputItems.Count != 0)
                 {
                     logger.Verbose("Adding " + UpToDateCheckInput.SchemaName + " inputs:");
-                    foreach (string input in state.CustomInputs.Select(_configuredProject.UnconfiguredProject.MakeRooted))
+                    foreach (string input in state.UpToDateCheckInputItems.Select(_configuredProject.UnconfiguredProject.MakeRooted))
                     {
                         logger.Verbose("    '{0}'", input);
                         yield return input;
@@ -313,22 +313,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             IEnumerable<string> CollectOutputs()
             {
-                if (state.CustomOutputs.Count != 0)
+                if (state.UpToDateCheckOutputItems.Count != 0)
                 {
                     logger.Verbose("Adding " + UpToDateCheckOutput.SchemaName + " outputs:");
 
-                    foreach (string output in state.CustomOutputs.Select(_configuredProject.UnconfiguredProject.MakeRooted))
+                    foreach (string output in state.UpToDateCheckOutputItems.Select(_configuredProject.UnconfiguredProject.MakeRooted))
                     {
                         logger.Verbose("    '{0}'", output);
                         yield return output;
                     }
                 }
 
-                if (state.BuiltOutputs.Count != 0)
+                if (state.UpToDateCheckBuiltItems.Count != 0)
                 {
                     logger.Verbose("Adding " + UpToDateCheckBuilt.SchemaName + " outputs:");
 
-                    foreach (string output in state.BuiltOutputs.Select(_configuredProject.UnconfiguredProject.MakeRooted))
+                    foreach (string output in state.UpToDateCheckBuiltItems.Select(_configuredProject.UnconfiguredProject.MakeRooted))
                     {
                         logger.Verbose("    '{0}'", output);
                         yield return output;
@@ -346,12 +346,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             // here if the project actually produced a marker and we only check it against references that
             // actually produced a marker.
 
-            if (string.IsNullOrWhiteSpace(state.MarkerFile) || !state.CopyReferenceInputs.Any())
+            if (string.IsNullOrWhiteSpace(state.CopyUpToDateMarkerItem) || !state.CopyReferenceInputs.Any())
             {
                 return true;
             }
 
-            string markerFile = _configuredProject.UnconfiguredProject.MakeRooted(state.MarkerFile);
+            string markerFile = _configuredProject.UnconfiguredProject.MakeRooted(state.CopyUpToDateMarkerItem);
 
             logger.Verbose("Adding input reference copy markers:");
 
