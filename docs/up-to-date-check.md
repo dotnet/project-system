@@ -42,6 +42,23 @@ allows custom logic to be executed when determining the set of items. The releva
 Note that changes to inputs **must** result in changes to outputs. If this rule is not observed, then an input may
 have a timestamp after all outputs, which leads the up-to-date check to consider the project out-of-date after building.
 
+### Grouping inputs and outputs into sets
+
+For some advanced scenarios, it's necessary to partition inputs and outputs into groups and consider each separately.
+This can be achieved by adding `Set` metadata to the relevant items.
+
+For example, an ASP.NET project may use sets to group Razor `.cshtml` files with their output assembly `MyProject.Views.dll`,
+which is distinct from the other compilation target `MyProject.dll`. This could be achieved with something like:
+
+```xml
+<ItemGroup>
+  <UpToDateCheckInput Include="Home.csproj" Set="Views" />
+  <UpToDateCheckOutput Include="MyProject.Views.dll" Set="Views" />
+</ItemGroup>
+```
+
+Items that do not specify a `Set` are included in the default set.
+
 ## Debugging
 
 By default the up-to-date check does not log anything, though you can infer its decision from your build output summary:

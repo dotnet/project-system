@@ -27,6 +27,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private const string Always = "Always";
         private const string Link = "Link";
 
+        private const string DefaultSetName = "";
+        private static readonly StringComparer s_setNameComparer = StringComparer.OrdinalIgnoreCase;
+
         private static ImmutableHashSet<string> ReferenceSchemas => ImmutableStringHashSet.EmptyOrdinal
             .Add(ResolvedAnalyzerReference.SchemaName)
             .Add(ResolvedCompilationReference.SchemaName);
@@ -164,93 +167,112 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return true;
         }
 
-        /// <summary>
-        /// Returns one of:
-        /// <list type="bullet">
-        ///     <item><c>(time, path)</c> describing the earliest output when all were found</item>
-        ///     <item><c>(null, path)</c> where <c>path</c> is the first output that could not be found</item>
-        ///     <item><c>(null, null)</c> when there were no outputs</item>
-        /// </list>
-        /// </summary>
-        private static (DateTime? time, string? path) GetEarliestOutput(IEnumerable<string> outputs, in TimestampCache timestampCache)
-        {
-            DateTime? earliest = DateTime.MaxValue;
-            string? earliestPath = null;
-            bool hasOutput = false;
-
-            foreach (string output in outputs)
-            {
-                DateTime? time = timestampCache.GetTimestampUtc(output);
-
-                if (time == null)
-                {
-                    return (null, output);
-                }
-
-                if (time < earliest)
-                {
-                    earliest = time;
-                    earliestPath = output;
-                }
-
-                hasOutput = true;
-            }
-
-            return hasOutput
-                ? (earliest, earliestPath)
-                : (null, null);
-        }
-
         private bool CheckInputsAndOutputs(BuildUpToDateCheckLogger logger, in TimestampCache timestampCache, State state)
         {
-            // We assume there are fewer outputs than inputs, so perform a full scan of outputs to find the earliest
-            (DateTime? outputTime, string? outputPath) = GetEarliestOutput(CollectOutputs(), timestampCache);
+            // UpToDateCheckInput/Output/Built items have optional 'Set' metadata that determine whether they
+            // are treated separately or not. If omitted, such inputs/outputs are included in the default set,
+            // which also includes other items such as project files, compilation items, analyzer references, etc.
 
-            if (outputTime != null)
+            // First, validate the relationship between inputs and outputs within the default set.
+            if (!CheckInputsAndOutputs(CollectDefaultInputs(), CollectDefaultOutputs(), timestampCache, DefaultSetName))
             {
-                Assumes.NotNull(outputPath);
+                return false;
+            }
 
-                if (outputTime < state.LastItemsChangedAtUtc)
+            // Second, validate the relationships between inputs and outputs in specific sets, if any.
+            foreach (string setName in state.SetNames)
+            {
+                logger.Verbose("Comparing timestamps of inputs and outputs in set '{0}':", setName);
+        
+                if (!CheckInputsAndOutputs(CollectSetInputs(setName), CollectSetOutputs(setName), timestampCache, setName))
                 {
-                    return logger.Fail("Outputs", "The set of project items was changed more recently ({0}) than the earliest output '{1}' ({2}), not up to date.", state.LastItemsChangedAtUtc, outputPath, outputTime.Value);
+                    return false;
+                }
+            }
+
+            // Validation passed
+            return true;
+
+            bool CheckInputsAndOutputs(IEnumerable<string> inputs, IEnumerable<string> outputs, in TimestampCache timestampCache, string setName)
+            {
+                // We assume there are fewer outputs than inputs, so perform a full scan of outputs to find the earliest.
+                // This increases the chance that we may return sooner in the case we are not up to date.
+                DateTime earliestOutputTime = DateTime.MaxValue;
+                string? earliestOutputPath = null;
+                bool hasOutput = false;
+                bool hasInput = false;
+
+                foreach (string output in outputs)
+                {
+                    DateTime? outputTime = timestampCache.GetTimestampUtc(output);
+
+                    if (outputTime == null)
+                    {
+                        return logger.Fail("Outputs", "Output '{0}' does not exist, not up to date.", output);
+                    }
+
+                    if (outputTime < earliestOutputTime)
+                    {
+                        earliestOutputTime = outputTime.Value;
+                        earliestOutputPath = output;
+                    }
+
+                    hasOutput = true;
                 }
 
-                // Search for an input that's either missing or newer than the earliest output.
-                // As soon as we find one, we can stop the scan.
-                foreach (string input in CollectInputs())
+                if (!hasOutput)
                 {
-                    DateTime? time = timestampCache.GetTimestampUtc(input);
+                    logger.Info(setName == DefaultSetName ? "No build outputs defined." : "No build outputs defined in set '{0}'.", setName);
 
-                    if (time == null)
+                    return true;
+                }
+
+                Assumes.NotNull(earliestOutputPath);
+
+                if (earliestOutputTime < state.LastItemsChangedAtUtc)
+                {
+                    return logger.Fail("Outputs", "The set of project items was changed more recently ({0}) than the earliest output '{1}' ({2}), not up to date.", state.LastItemsChangedAtUtc, earliestOutputPath, earliestOutputTime);
+                }
+
+                foreach (string input in inputs)
+                {
+                    DateTime? inputTime = timestampCache.GetTimestampUtc(input);
+
+                    if (inputTime == null)
                     {
                         return logger.Fail("Outputs", "Input '{0}' does not exist, not up to date.", input);
                     }
 
-                    if (time > outputTime)
+                    if (inputTime > earliestOutputTime)
                     {
-                        return logger.Fail("Outputs", "Input '{0}' is newer ({1}) than earliest output '{2}' ({3}), not up to date.", input, time.Value, outputPath, outputTime.Value);
+                        return logger.Fail("Outputs", "Input '{0}' is newer ({1}) than earliest output '{2}' ({3}), not up to date.", input, inputTime.Value, earliestOutputPath, earliestOutputTime);
                     }
 
-                    if (time > _state.LastCheckedAtUtc)
+                    if (inputTime > _state.LastCheckedAtUtc)
                     {
-                        return logger.Fail("Outputs", "Input '{0}' ({1}) has been modified since the last up-to-date check ({2}), not up to date.", input, time.Value, state.LastCheckedAtUtc);
+                        return logger.Fail("Outputs", "Input '{0}' ({1}) has been modified since the last up-to-date check ({2}), not up to date.", input, inputTime.Value, state.LastCheckedAtUtc);
                     }
+
+                    hasInput = true;
                 }
 
-                logger.Info("No inputs are newer than earliest output '{0}' ({1}).", outputPath, outputTime.Value);
-            }
-            else if (outputPath != null)
-            {
-                return logger.Fail("Outputs", "Output '{0}' does not exist, not up to date.", outputPath);
-            }
-            else
-            {
-                logger.Info("No build outputs defined.");
+                if (!hasInput)
+                {
+                    logger.Info(setName == DefaultSetName ? "No inputs defined." : "No inputs defined in set '{0}'.", setName);
+                }
+                else if (setName == DefaultSetName)
+                {
+                    logger.Info("No inputs are newer than earliest output '{0}' ({1}).", earliestOutputPath, earliestOutputTime);
+                }
+                else
+                {
+                    logger.Info("In set '{0}', no inputs are newer than earliest output '{1}' ({2}).", setName, earliestOutputPath, earliestOutputTime);
+                }
+
+                return true;
             }
 
-            return true;
-
-            IEnumerable<string> CollectInputs()
+            IEnumerable<string> CollectDefaultInputs()
             {
                 if (state.MSBuildProjectFullPath != null)
                 {
@@ -300,10 +322,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     }
                 }
 
-                if (state.UpToDateCheckInputItems.Count != 0)
+                if (state.UpToDateCheckInputItemsBySetName.TryGetValue(DefaultSetName, out ImmutableHashSet<string> upToDateCheckInputItems))
                 {
                     logger.Verbose("Adding " + UpToDateCheckInput.SchemaName + " inputs:");
-                    foreach (string input in state.UpToDateCheckInputItems.Select(_configuredProject.UnconfiguredProject.MakeRooted))
+                    foreach (string input in upToDateCheckInputItems.Select(_configuredProject.UnconfiguredProject.MakeRooted))
                     {
                         logger.Verbose("    '{0}'", input);
                         yield return input;
@@ -311,24 +333,62 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
             }
 
-            IEnumerable<string> CollectOutputs()
+            IEnumerable<string> CollectDefaultOutputs()
             {
-                if (state.UpToDateCheckOutputItems.Count != 0)
+                if (state.UpToDateCheckOutputItemsBySetName.TryGetValue(DefaultSetName, out ImmutableHashSet<string> upToDateCheckOutputItems))
                 {
                     logger.Verbose("Adding " + UpToDateCheckOutput.SchemaName + " outputs:");
 
-                    foreach (string output in state.UpToDateCheckOutputItems.Select(_configuredProject.UnconfiguredProject.MakeRooted))
+                    foreach (string output in upToDateCheckOutputItems.Select(_configuredProject.UnconfiguredProject.MakeRooted))
                     {
                         logger.Verbose("    '{0}'", output);
                         yield return output;
                     }
                 }
 
-                if (state.UpToDateCheckBuiltItems.Count != 0)
+                if (state.UpToDateCheckBuiltItemsBySetName.TryGetValue(DefaultSetName, out ImmutableHashSet<string> upToDateCheckBuiltItems))
                 {
                     logger.Verbose("Adding " + UpToDateCheckBuilt.SchemaName + " outputs:");
 
-                    foreach (string output in state.UpToDateCheckBuiltItems.Select(_configuredProject.UnconfiguredProject.MakeRooted))
+                    foreach (string output in upToDateCheckBuiltItems.Select(_configuredProject.UnconfiguredProject.MakeRooted))
+                    {
+                        logger.Verbose("    '{0}'", output);
+                        yield return output;
+                    }
+                }
+            }
+
+            IEnumerable<string> CollectSetInputs(string setName)
+            {
+                if (state.UpToDateCheckInputItemsBySetName.TryGetValue(setName, out ImmutableHashSet<string> upToDateCheckInputItems))
+                {
+                    logger.Verbose("Adding " + UpToDateCheckInput.SchemaName + " inputs in set '{0}':", setName);
+                    foreach (string input in upToDateCheckInputItems.Select(_configuredProject.UnconfiguredProject.MakeRooted))
+                    {
+                        logger.Verbose("    '{0}'", input);
+                        yield return input;
+                    }
+                }
+            }
+
+            IEnumerable<string> CollectSetOutputs(string setName)
+            {
+                if (state.UpToDateCheckOutputItemsBySetName.TryGetValue(setName, out ImmutableHashSet<string> upToDateCheckOutputItems))
+                {
+                    logger.Verbose("Adding " + UpToDateCheckOutput.SchemaName + " outputs in set '{0}':", setName);
+
+                    foreach (string output in upToDateCheckOutputItems.Select(_configuredProject.UnconfiguredProject.MakeRooted))
+                    {
+                        logger.Verbose("    '{0}'", output);
+                        yield return output;
+                    }
+                }
+
+                if (state.UpToDateCheckBuiltItemsBySetName.TryGetValue(setName, out ImmutableHashSet<string> upToDateCheckBuiltItems))
+                {
+                    logger.Verbose("Adding " + UpToDateCheckBuilt.SchemaName + " outputs in set '{0}':", setName);
+
+                    foreach (string output in upToDateCheckBuiltItems.Select(_configuredProject.UnconfiguredProject.MakeRooted))
                     {
                         logger.Verbose("    '{0}'", output);
                         yield return output;

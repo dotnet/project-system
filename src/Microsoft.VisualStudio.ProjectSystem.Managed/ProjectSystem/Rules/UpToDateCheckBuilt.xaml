@@ -14,4 +14,7 @@
   <StringProperty Name="Original"
                   DisplayName="Original" />
 
+  <StringProperty Name="Set"
+                  Visible="False" />
+
 </Rule>
