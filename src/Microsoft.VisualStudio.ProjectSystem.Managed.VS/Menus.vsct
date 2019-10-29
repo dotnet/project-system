@@ -35,6 +35,7 @@
         <CommandFlag>DefaultInvisible</CommandFlag>
         <CommandFlag>DefaultDisabled</CommandFlag>
         <CommandFlag>DynamicItemStart</CommandFlag>
+        <CommandFlag>TogglePatternAvailable</CommandFlag>
         <Strings>
           <ButtonText>Web Debugger</ButtonText>
         </Strings>
@@ -176,6 +177,7 @@
         <CommandFlag>DefaultInvisible</CommandFlag>
         <CommandFlag>DefaultDisabled</CommandFlag>
         <CommandFlag>DynamicItemStart</CommandFlag>
+        <CommandFlag>TogglePatternAvailable</CommandFlag>
         <Strings>
           <ButtonText>Framework</ButtonText>
         </Strings>
