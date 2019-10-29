@@ -759,6 +759,41 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         }
 
         [Fact]
+        public async Task IsUpToDateAsync_False_Sets_InputNewerThanOutput_ItemInMultipleSets()
+        {
+            var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                [UpToDateCheckBuilt.SchemaName] = SimpleItems("BuildDefault"),
+                [UpToDateCheckInput.SchemaName] = ItemWithMetadata("Input", "Set", "Set1;Set2"),
+                [UpToDateCheckOutput.SchemaName] = Union(ItemWithMetadata("Output1", "Set", "Set1"), ItemWithMetadata("Output2", "Set", "Set2"))
+            };
+
+            await SetupAsync(projectSnapshot);
+
+            var itemChangeTime = DateTime.UtcNow.AddMinutes(-5);
+            var outputTime2    = DateTime.UtcNow.AddMinutes(-4);
+            var inputTime      = DateTime.UtcNow.AddMinutes(-3);
+            var outputTime1    = DateTime.UtcNow.AddMinutes(-2);
+            var lastCheckTime  = DateTime.UtcNow.AddMinutes(-1);
+
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\Input", inputTime);
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\Output1", outputTime1);
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\Output2", outputTime2);
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\BuildDefault", outputTime1);
+            _buildUpToDateCheck.TestAccess.SetLastCheckedAtUtc(lastCheckTime);
+            _buildUpToDateCheck.TestAccess.SetLastItemsChangedAtUtc(itemChangeTime);
+
+            await AssertNotUpToDateAsync(
+                new[]
+                {
+                    $"No inputs are newer than earliest output 'C:\\Dev\\Solution\\Project\\BuildDefault' ({outputTime1.ToLocalTime()}).",
+                    $"In set 'Set1', no inputs are newer than earliest output 'C:\\Dev\\Solution\\Project\\Output1' ({outputTime1.ToLocalTime()}).",
+                    $"Input 'C:\\Dev\\Solution\\Project\\Input' is newer ({inputTime.ToLocalTime()}) than earliest output 'C:\\Dev\\Solution\\Project\\Output2' ({outputTime2.ToLocalTime()}), not up to date."
+                },
+                "Outputs");
+        }
+
+        [Fact]
         public async Task IsUpToDateAsync_True_Sets_InputOnly()
         {
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>

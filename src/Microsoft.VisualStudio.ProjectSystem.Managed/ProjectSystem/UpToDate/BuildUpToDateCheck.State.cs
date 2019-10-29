@@ -381,8 +381,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                     foreach ((string item, IImmutableDictionary<string, string> metadata) in projectChangeDescription.After.Items)
                     {
-                        string setName = metadata.GetStringProperty(setPropertyName) ?? DefaultSetName;
+                        string? setNames = metadata.GetStringProperty(setPropertyName);
 
+                        if (setNames != null)
+                        {
+                            foreach (string setName in new LazyStringSplit(setNames, ';'))
+                            {
+                                AddItem(setName, item);
+                            }
+                        }
+                        else
+                        {
+                            AddItem(DefaultSetName, item);
+                        }
+                    }
+
+                    return itemsBySet.ToImmutableDictionary(pair => pair.Key, pair => pair.Value.ToImmutable(), s_setNameComparer);
+
+                    void AddItem(string setName, string item)
+                    {
                         if (!itemsBySet.TryGetValue(setName, out ImmutableHashSet<string>.Builder builder))
                         {
                             itemsBySet[setName] = builder = ImmutableHashSet.CreateBuilder(StringComparers.Paths);
@@ -390,8 +407,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                         builder.Add(item);
                     }
-
-                    return itemsBySet.ToImmutableDictionary(pair => pair.Key, pair => pair.Value.ToImmutable(), s_setNameComparer);
                 }
             }
 
