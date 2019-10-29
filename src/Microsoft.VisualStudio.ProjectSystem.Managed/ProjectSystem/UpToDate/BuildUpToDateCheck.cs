@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.Telemetry;
+using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 {
@@ -136,13 +137,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
         }
 
-        private bool CheckGlobalConditions(BuildAction buildAction, BuildUpToDateCheckLogger logger, State state)
+        private bool CheckGlobalConditions(BuildUpToDateCheckLogger logger, State state)
         {
-            if (buildAction != BuildAction.Build)
-            {
-                return false;
-            }
-
             if (!_tasksService.IsTaskQueueEmpty(ProjectCriticalOperation.Build))
             {
                 return logger.Fail("CriticalTasks", "Critical build tasks are running, not up to date.");
@@ -491,6 +487,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         public Task<bool> IsUpToDateAsync(BuildAction buildAction, TextWriter logWriter, CancellationToken cancellationToken = default)
         {
+            if (buildAction != BuildAction.Build)
+            {
+                return TaskResult.False;
+            }
+
             cancellationToken.ThrowIfCancellationRequested();
 
             return ExecuteUnderLockAsync(IsUpToDateInternalAsync, cancellationToken);
@@ -510,7 +511,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 {
                     State state = _state;
 
-                    if (!CheckGlobalConditions(buildAction, logger, state))
+                    if (!CheckGlobalConditions(logger, state))
                     {
                         return false;
                     }
