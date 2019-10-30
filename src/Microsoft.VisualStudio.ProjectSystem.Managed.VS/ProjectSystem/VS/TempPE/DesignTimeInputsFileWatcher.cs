@@ -7,7 +7,6 @@ using System.ComponentModel.Composition;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using Microsoft.VisualStudio.Threading;
 using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE

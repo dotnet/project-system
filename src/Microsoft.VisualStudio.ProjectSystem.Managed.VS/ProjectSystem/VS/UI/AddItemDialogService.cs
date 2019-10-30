@@ -3,7 +3,6 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
