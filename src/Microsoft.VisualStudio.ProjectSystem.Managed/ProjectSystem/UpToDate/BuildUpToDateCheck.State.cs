@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             public DateTime LastCheckedAtUtc { get; }
 
             public ImmutableHashSet<string> ItemTypes { get; }
-            public ImmutableDictionary<string, ImmutableHashSet<(string path, string? link, CopyToOutputDirectoryType copyType)>> ItemsByItemType { get; }
+            public ImmutableDictionary<string, ImmutableHashSet<(string path, string? link, CopyType copyType)>> ItemsByItemType { get; }
 
             public ImmutableArray<string> SetNames { get; }
 
@@ -101,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 LastItemsChangedAtUtc = DateTime.MinValue;
                 LastCheckedAtUtc = DateTime.MinValue;
                 ItemTypes = ImmutableHashSet.Create(StringComparers.ItemTypes);
-                ItemsByItemType = ImmutableDictionary.Create<string, ImmutableHashSet<(string path, string? link, CopyToOutputDirectoryType copyType)>>(StringComparers.ItemTypes);
+                ItemsByItemType = ImmutableDictionary.Create<string, ImmutableHashSet<(string path, string? link, CopyType copyType)>>(StringComparers.ItemTypes);
                 SetNames = ImmutableArray<string>.Empty;
                 UpToDateCheckInputItemsBySetName = emptyItemBySetName;
                 UpToDateCheckOutputItemsBySetName = emptyItemBySetName;
@@ -121,7 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 IComparable? lastVersionSeen,
                 bool isDisabled,
                 ImmutableHashSet<string> itemTypes,
-                ImmutableDictionary<string, ImmutableHashSet<(string, string?, CopyToOutputDirectoryType)>> itemsByItemType,
+                ImmutableDictionary<string, ImmutableHashSet<(string, string?, CopyType)>> itemsByItemType,
                 ImmutableDictionary<string, ImmutableHashSet<string>> upToDateCheckInputItemsBySetName,
                 ImmutableDictionary<string, ImmutableHashSet<string>> upToDateCheckOutputItemsBySetName,
                 ImmutableDictionary<string, ImmutableHashSet<string>> upToDateCheckBuiltItemsBySetName,
@@ -299,12 +299,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                                                  .Where(itemType => projectItemSchema.GetItemType(itemType).UpToDateCheckInput)
                                                  .ToImmutableHashSet(StringComparers.ItemTypes);
 
-                ImmutableDictionary<string, ImmutableHashSet<(string path, string? link, CopyToOutputDirectoryType copyType)>>.Builder itemsByItemTypeBuilder;
+                ImmutableDictionary<string, ImmutableHashSet<(string path, string? link, CopyType copyType)>>.Builder itemsByItemTypeBuilder;
                 bool itemTypesChanged = !ItemTypes.SetEquals(itemTypes);
 
                 if (itemTypesChanged)
                 {
-                    itemsByItemTypeBuilder = ImmutableDictionary.CreateBuilder<string, ImmutableHashSet<(string path, string? link, CopyToOutputDirectoryType copyType)>>(StringComparers.ItemTypes);
+                    itemsByItemTypeBuilder = ImmutableDictionary.CreateBuilder<string, ImmutableHashSet<(string path, string? link, CopyType copyType)>>(StringComparers.ItemTypes);
                 }
                 else
                 {
@@ -323,7 +323,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     if (projectChange.After.Items.Count == 0)
                         continue;
 
-                    itemsByItemTypeBuilder[itemType] = projectChange.After.Items.Select(item => (item.Key, GetLink(item.Value), GetCopyType(item.Value))).ToImmutableHashSet(UpToDateCheckItemComparer.Instance);
+                    itemsByItemTypeBuilder[itemType] = projectChange.After.Items.Select(item => (item.Key, GetLink(item.Value), GetCopyType(item.Value))).ToImmutableHashSet(ItemComparer.Instance);
                     itemsChanged = true;
                 }
 
@@ -352,22 +352,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     lastItemsChangedAtUtc,
                     LastCheckedAtUtc);
 
-                static CopyToOutputDirectoryType GetCopyType(IImmutableDictionary<string, string> itemMetadata)
+                static CopyType GetCopyType(IImmutableDictionary<string, string> itemMetadata)
                 {
                     if (itemMetadata.TryGetValue(CopyToOutputDirectory, out string value))
                     {
                         if (string.Equals(value, Always, StringComparison.OrdinalIgnoreCase))
                         {
-                            return CopyToOutputDirectoryType.CopyAlways;
+                            return CopyType.CopyAlways;
                         }
 
                         if (string.Equals(value, PreserveNewest, StringComparison.OrdinalIgnoreCase))
                         {
-                            return CopyToOutputDirectoryType.CopyIfNewer;
+                            return CopyType.CopyIfNewer;
                         }
                     }
 
-                    return CopyToOutputDirectoryType.CopyNever;
+                    return CopyType.CopyNever;
                 }
 
                 static string? GetLink(IImmutableDictionary<string, string> itemMetadata)

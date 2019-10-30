@@ -157,7 +157,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return log.Fail("Disabled", "The 'DisableFastUpToDateCheck' property is true, not up to date.");
             }
 
-            string copyAlwaysItemPath = state.ItemsByItemType.SelectMany(kvp => kvp.Value).FirstOrDefault(item => item.copyType == CopyToOutputDirectoryType.CopyAlways).path;
+            string copyAlwaysItemPath = state.ItemsByItemType.SelectMany(kvp => kvp.Value).FirstOrDefault(item => item.copyType == CopyType.CopyAlways).path;
 
             if (copyAlwaysItemPath != null)
             {
@@ -288,7 +288,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     yield return state.NewestImportInput;
                 }
 
-                foreach ((string itemType, ImmutableHashSet<(string path, string? link, CopyToOutputDirectoryType copyType)> changes) in state.ItemsByItemType)
+                foreach ((string itemType, ImmutableHashSet<(string path, string? link, CopyType copyType)> changes) in state.ItemsByItemType)
                 {
                     if (!NonCompilationItemTypes.Contains(itemType))
                     {
@@ -495,7 +495,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         private bool CheckCopyToOutputDirectoryFiles(Log log, in TimestampCache timestampCache, State state)
         {
-            IEnumerable<(string path, string? link, CopyToOutputDirectoryType copyType)> items = state.ItemsByItemType.SelectMany(kvp => kvp.Value).Where(item => item.copyType == CopyToOutputDirectoryType.CopyIfNewer);
+            IEnumerable<(string path, string? link, CopyType copyType)> items = state.ItemsByItemType.SelectMany(kvp => kvp.Value).Where(item => item.copyType == CopyType.CopyIfNewer);
 
             string outputFullPath = Path.Combine(state.MSBuildProjectDirectory, state.OutputRelativeOrFullPath);
 
