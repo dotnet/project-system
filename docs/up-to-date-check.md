@@ -61,7 +61,7 @@ which is distinct from the other compilation target `MyProject.dll`. This could 
 ```
 
 Items that do not specify a `Set` are included in the default set. Items may be added to multiple sets by separating
-their names with a semicolor (e.g. `Set="Set1;Set2"`).
+their names with a semicolon (e.g. `Set="Set1;Set2"`).
 
 ### Copied files
 
