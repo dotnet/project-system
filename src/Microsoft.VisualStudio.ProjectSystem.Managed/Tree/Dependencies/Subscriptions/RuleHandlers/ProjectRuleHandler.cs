@@ -143,7 +143,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     dependency.OriginalItemSpec,
                     shouldBeResolved,
                     dependency.Implicit,
-                    dependency.Properties);
+                    dependency.BrowseObjectProperties);
 
                 var changes = new DependenciesChangesBuilder();
 

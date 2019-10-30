@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                    && Equals(ExpandedIcon, dependency.IconSet.ExpandedIcon)
                    && Equals(UnresolvedIcon, dependency.IconSet.UnresolvedIcon)
                    && Equals(UnresolvedExpandedIcon, dependency.IconSet.UnresolvedExpandedIcon)
-                   && Equals(Properties, dependency.Properties)
+                   && Equals(Properties, dependency.BrowseObjectProperties)
                    && SetEquals(DependencyIDs, dependency.DependencyIDs);
         }
 

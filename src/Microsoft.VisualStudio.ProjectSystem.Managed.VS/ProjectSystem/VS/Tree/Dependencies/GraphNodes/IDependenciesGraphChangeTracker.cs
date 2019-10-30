@@ -9,6 +9,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
     /// <summary>
     /// Keeps registered graph contexts up to date with project dependency changes.
     /// </summary>
+    /// <remarks>
+    /// Listens to aggregate snapshot changes and updates registered graph contexts accordingly.
+    /// </remarks>
     [ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface IDependenciesGraphChangeTracker : IDisposable
     {

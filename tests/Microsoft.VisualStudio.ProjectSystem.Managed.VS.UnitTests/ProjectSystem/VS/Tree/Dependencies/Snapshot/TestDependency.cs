@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Visible = value.Visible;
                 Priority = value.Priority;
                 IconSet = value.IconSet;
-                Properties = value.Properties;
+                BrowseObjectProperties = value.BrowseObjectProperties;
                 DependencyIDs = value.DependencyIDs;
                 Flags = value.Flags;
                 Id = value.Id;
@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public bool Implicit { get; set; } = false;
         public bool Visible { get; set; } = true;
         public int Priority { get; set; } = 0;
-        public IImmutableDictionary<string, string> Properties { get; set; }
+        public IImmutableDictionary<string, string> BrowseObjectProperties { get; set; }
         public ImmutableArray<string> DependencyIDs { get; set; } = ImmutableArray<string>.Empty;
         public ProjectTreeFlags Flags { get; set; } = ProjectTreeFlags.Empty;
         public string Id { get; set; }

@@ -2,15 +2,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.GraphModel;
 using Microsoft.VisualStudio.GraphModel.CodeSchema;
 using Microsoft.VisualStudio.GraphModel.Schemas;
-using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.Actions;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
@@ -31,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
     [Export(typeof(DependenciesGraphProvider))]
     [Export(typeof(IDependenciesGraphBuilder))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
-    internal sealed class DependenciesGraphProvider : OnceInitializedOnceDisposedAsync, IGraphProvider, IDependenciesGraphBuilder
+    internal sealed partial class DependenciesGraphProvider : OnceInitializedOnceDisposedAsync, IGraphProvider, IDependenciesGraphBuilder
     {
         /// <summary>The set of commands this provider supports.</summary>
         private static readonly GraphCommand[] s_commands =
@@ -204,7 +201,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             string parents;
             if (parentNode != null)
             {
-                // to ensure Graph id for node is unique we add a hashcodes for node's parents separated by ';'
+                // to ensure Graph id for node is unique we add a hash codes for node's parents separated by ';'
                 parents = parentNode.Id.GetNestedValueByName<string>(CodeGraphNodeIdName.Namespace);
                 if (string.IsNullOrEmpty(parents))
                 {
@@ -233,39 +230,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             return GraphNodeId.GetNested(
                 GraphNodeId.GetPartial(CodeGraphNodeIdName.Assembly, new Uri(projectPath, UriKind.RelativeOrAbsolute)),
                 GraphNodeId.GetPartial(CodeGraphNodeIdName.File, filePath));
-        }
-
-        private sealed class GraphIconCache
-        {
-            private ImmutableHashSet<ImageMoniker> _registeredIcons = ImmutableHashSet<ImageMoniker>.Empty;
-
-            private ImmutableDictionary<(int id, Guid guid), string> _iconNameCache = ImmutableDictionary<(int id, Guid guid), string>.Empty;
-
-            private readonly IVsImageService2 _imageService;
-
-            public static async Task<GraphIconCache> CreateAsync(IAsyncServiceProvider serviceProvider)
-            {
-#pragma warning disable RS0030 // Do not used banned APIs
-                var imageService = (IVsImageService2)await serviceProvider.GetServiceAsync(typeof(SVsImageService));
-#pragma warning restore RS0030 // Do not used banned APIs
-
-                return new GraphIconCache(imageService);
-            }
-
-            private GraphIconCache(IVsImageService2 imageService) => _imageService = imageService;
-
-            public string GetName(ImageMoniker icon)
-            {
-                return ImmutableInterlocked.GetOrAdd(ref _iconNameCache, (id: icon.Id, guid: icon.Guid), i => $"{i.guid:D};{i.id}");
-            }
-
-            public void Register(ImageMoniker icon)
-            {
-                if (ImmutableInterlocked.Update(ref _registeredIcons, (knownIcons, arg) => knownIcons.Add(arg), icon))
-                {
-                    _imageService.TryAssociateNameWithMoniker(GetName(icon), icon);
-                }
-            }
         }
     }
 }
