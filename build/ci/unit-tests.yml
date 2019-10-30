@@ -11,9 +11,6 @@ trigger:
     - dev15.0.x
     - dev15.9.x
     - dev16.0.x
-    - dev16.1.x
-    - dev16.2.x
-    - dev16.3.x
     - dev16.4.x
     - feature/*
 
@@ -25,9 +22,6 @@ pr:
     - dev15.0.x
     - dev15.9.x
     - dev16.0.x
-    - dev16.1.x
-    - dev16.2.x
-    - dev16.3.x
     - dev16.4.x
     - feature/*
   paths:
