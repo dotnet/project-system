@@ -13,19 +13,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         public static readonly GraphCategory CategoryDependency = Schema.Categories.AddNewCategory(VSResources.GraphNodeCategoryDependency);
 
         private const string DependencyIdPropertyId = "Dependency.Id";
-        public static readonly GraphProperty DependencyIdProperty;
+        public static readonly GraphProperty DependencyIdProperty = Schema.Properties.AddNewProperty(DependencyIdPropertyId, typeof(string));
 
         private const string ResolvedPropertyId = "Dependency.Resolved";
-        public static readonly GraphProperty ResolvedProperty;
+        public static readonly GraphProperty ResolvedProperty = Schema.Properties.AddNewProperty(ResolvedPropertyId, typeof(bool));
 
         private const string IsFrameworkAssemblyFolderPropertyId = "Dependency.IsFrameworkAssembly";
-        public static readonly GraphProperty IsFrameworkAssemblyFolderProperty;
-
-        static DependenciesGraphSchema()
-        {
-            ResolvedProperty = Schema.Properties.AddNewProperty(ResolvedPropertyId, typeof(bool));
-            DependencyIdProperty = Schema.Properties.AddNewProperty(DependencyIdPropertyId, typeof(string));
-            IsFrameworkAssemblyFolderProperty = Schema.Properties.AddNewProperty(IsFrameworkAssemblyFolderPropertyId, typeof(bool));
-        }
+        public static readonly GraphProperty IsFrameworkAssemblyFolderProperty = Schema.Properties.AddNewProperty(IsFrameworkAssemblyFolderPropertyId, typeof(bool));
     }
 }
