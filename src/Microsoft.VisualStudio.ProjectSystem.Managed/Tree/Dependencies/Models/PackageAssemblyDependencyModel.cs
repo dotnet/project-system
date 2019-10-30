@@ -3,7 +3,6 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.Imaging;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.RuleHandlers;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
@@ -24,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public override string Name { get; }
 
-        public override int Priority => Resolved ? Dependency.PackageAssemblyNodePriority : Dependency.UnresolvedReferenceNodePriority;
+        public override int Priority => Resolved ? GraphNodePriority.PackageAssembly : GraphNodePriority.UnresolvedReference;
 
         public override string ProviderType => PackageRuleHandler.ProviderTypeString;
 
