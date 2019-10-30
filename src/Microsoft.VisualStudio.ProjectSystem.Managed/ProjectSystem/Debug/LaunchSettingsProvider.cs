@@ -284,9 +284,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 // display the error when run
                 if (CurrentSnapshot == null)
                 {
-                    var errorProfile = new LaunchProfile() { Name = Resources.NoActionProfileName, CommandName = ErrorProfileCommandName, DoNotPersist = true };
-                    errorProfile.OtherSettings = ImmutableStringDictionary<object>.EmptyOrdinal.Add("ErrorString", ex.Message);
-                    var snapshot = new LaunchSettings(new List<ILaunchProfile>() { errorProfile }, null, errorProfile.Name);
+                    var errorProfile = new LaunchProfile
+                    {
+                        Name = Resources.NoActionProfileName,
+                        CommandName = ErrorProfileCommandName,
+                        DoNotPersist = true,
+                        OtherSettings = ImmutableStringDictionary<object>.EmptyOrdinal.Add("ErrorString", ex.Message)
+                    };
+                    var snapshot = new LaunchSettings(new[] { errorProfile }, null, errorProfile.Name);
                     await FinishUpdateAsync(snapshot, ensureProfileProperty: false);
                 }
             }

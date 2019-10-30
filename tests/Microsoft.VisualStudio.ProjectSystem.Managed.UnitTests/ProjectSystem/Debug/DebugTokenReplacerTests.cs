@@ -10,23 +10,27 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
-
     public class DebugTokenReplacerTests
     {
-        private readonly Dictionary<string, string> _envVars = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {
+        private readonly Dictionary<string, string> _envVars = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
             { "%env1%","envVariable1" },
             { "%env2%","envVariable2" },
             { "%env3%","$(msbuildProperty6)" }
         };
-        private readonly Mock<IEnvironmentHelper> _envHelper = new Mock<IEnvironmentHelper>();
+
+        private readonly Mock<IEnvironmentHelper> _envHelper;
+        
         public DebugTokenReplacerTests()
         {
+            _envHelper = new Mock<IEnvironmentHelper>();
             _envHelper.Setup(x => x.ExpandEnvironmentVariables(It.IsAny<string>())).Returns<string>((str) =>
             {
-                foreach (var kv in _envVars)
+                foreach ((string key, string value) in _envVars)
                 {
-                    str = str.Replace(kv.Key, kv.Value);
+                    str = str.Replace(key, value);
                 }
+
                 return str;
             });
         }
@@ -86,7 +90,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         private DebugTokenReplacer CreateInstance()
         {
             var environmentHelper = _envHelper.Object;
-            var activeDebugFramework = Mock.Of<IActiveDebugFrameworkServices>();
+            
+            var activeDebugFramework = new Mock<IActiveDebugFrameworkServices>();
+            activeDebugFramework.Setup(s => s.GetConfiguredProjectForActiveFrameworkAsync())
+                .Returns(() => Task.FromResult<ConfiguredProject?>(ConfiguredProjectFactory.Create()));
 
             string projectFile = @"<Project>
                 <PropertyGroup>
@@ -99,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 </PropertyGroup>
                 </Project>";
 
-            return new DebugTokenReplacer(environmentHelper, activeDebugFramework, IProjectAccessorFactory.Create(projectFile));
+            return new DebugTokenReplacer(environmentHelper, activeDebugFramework.Object, IProjectAccessorFactory.Create(projectFile));
         }
     }
 }

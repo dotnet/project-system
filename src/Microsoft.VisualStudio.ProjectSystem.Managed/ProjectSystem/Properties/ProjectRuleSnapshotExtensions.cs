@@ -1,10 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
-
-#nullable disable
-
-// TODO annotate this file once NotNullIfNotNull is supported https://github.com/dotnet/roslyn/issues/31549
+using System.Diagnostics.CodeAnalysis;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
@@ -27,7 +24,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <summary>
         ///     Gets the value that is associated with the specified rule and property.
         /// </summary>
-        public static string GetPropertyOrDefault(this IImmutableDictionary<string, IProjectRuleSnapshot> snapshots, string ruleName, string propertyName, string defaultValue)
+        [return: NotNullIfNotNull(parameterName: "defaultValue")]
+        public static string? GetPropertyOrDefault(this IImmutableDictionary<string, IProjectRuleSnapshot> snapshots, string ruleName, string propertyName, string? defaultValue)
         {
             Requires.NotNull(snapshots, nameof(snapshots));
             Requires.NotNullOrEmpty(ruleName, nameof(ruleName));
@@ -37,7 +35,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             {
                 // Similar to MSBuild, we treat the absence of a property the same as an empty property
                 if (!string.IsNullOrEmpty(value))
+                {
                     return value;
+                }
             }
 
             return defaultValue;
