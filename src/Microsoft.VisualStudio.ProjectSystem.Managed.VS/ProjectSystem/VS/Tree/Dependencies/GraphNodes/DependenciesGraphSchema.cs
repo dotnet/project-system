@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.GraphModel;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 {
     /// <summary>
-    /// Contains graph node ids and properties for Dependencies nodes
+    /// Defines the structure of identifiers for graph nodes in the dependencies tree.
     /// </summary>
     internal static class DependenciesGraphSchema
     {

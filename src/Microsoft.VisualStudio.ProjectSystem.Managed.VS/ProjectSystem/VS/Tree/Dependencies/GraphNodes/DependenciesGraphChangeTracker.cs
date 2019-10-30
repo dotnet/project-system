@@ -13,9 +13,6 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 {
-    /// <summary>
-    /// Listens to aggregate snapshot changes and updates known graph contexts accordingly.
-    /// </summary>
     [Export(typeof(IDependenciesGraphChangeTracker))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     internal sealed class DependenciesGraphChangeTracker : IDependenciesGraphChangeTracker
