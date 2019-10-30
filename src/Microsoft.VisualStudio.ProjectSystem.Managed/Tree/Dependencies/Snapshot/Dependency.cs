@@ -68,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 IconSet = DependencyIconSetCache.Instance.GetOrAddIconSet(dependencyModel.Icon, dependencyModel.ExpandedIcon, dependencyModel.UnresolvedIcon, dependencyModel.UnresolvedExpandedIcon);
             }
 
-            Properties = dependencyModel.Properties
+            BrowseObjectProperties = dependencyModel.Properties
                 ?? ImmutableStringDictionary<string>.EmptyOrdinal
                      .Add(Folder.IdentityProperty, Caption)
                      .Add(Folder.FullPathProperty, Path);
@@ -115,7 +115,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             TopLevel = dependency.TopLevel;
             Visible = dependency.Visible;
             Priority = dependency.Priority;
-            Properties = dependency.Properties;
+            BrowseObjectProperties = dependency.BrowseObjectProperties;
             Caption = caption ?? dependency.Caption; // TODO if Properties contains "Folder.IdentityProperty" should we update it? (see public ctor)
             Resolved = resolved ?? dependency.Resolved;
             Flags = flags ?? dependency.Flags;
@@ -190,7 +190,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public int Priority { get; }
         public ProjectTreeFlags Flags { get; }
 
-        public IImmutableDictionary<string, string> Properties { get; }
+        public IImmutableDictionary<string, string> BrowseObjectProperties { get; }
 
         public ImmutableArray<string> DependencyIDs { get; }
 
