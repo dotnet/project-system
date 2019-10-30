@@ -140,34 +140,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
         }
 
-        private bool CheckGlobalConditions(BuildUpToDateCheckLogger logger, State state)
+        private bool CheckGlobalConditions(Log log, State state)
         {
             if (!_tasksService.IsTaskQueueEmpty(ProjectCriticalOperation.Build))
             {
-                return logger.Fail("CriticalTasks", "Critical build tasks are running, not up to date.");
+                return log.Fail("CriticalTasks", "Critical build tasks are running, not up to date.");
             }
 
             if (state.LastVersionSeen == null || _configuredProject.ProjectVersion.CompareTo(state.LastVersionSeen) > 0)
             {
-                return logger.Fail("ProjectInfoOutOfDate", "Project information is older than current project version, not up to date.");
+                return log.Fail("ProjectInfoOutOfDate", "Project information is older than current project version, not up to date.");
             }
 
             if (state.IsDisabled)
             {
-                return logger.Fail("Disabled", "The 'DisableFastUpToDateCheck' property is true, not up to date.");
+                return log.Fail("Disabled", "The 'DisableFastUpToDateCheck' property is true, not up to date.");
             }
 
             string copyAlwaysItemPath = state.ItemsByItemType.SelectMany(kvp => kvp.Value).FirstOrDefault(item => item.copyType == CopyToOutputDirectoryType.CopyAlways).path;
 
             if (copyAlwaysItemPath != null)
             {
-                return logger.Fail("CopyAlwaysItemExists", "Item '{0}' has CopyToOutputDirectory set to 'Always', not up to date.", _configuredProject.UnconfiguredProject.MakeRooted(copyAlwaysItemPath));
+                return log.Fail("CopyAlwaysItemExists", "Item '{0}' has CopyToOutputDirectory set to 'Always', not up to date.", _configuredProject.UnconfiguredProject.MakeRooted(copyAlwaysItemPath));
             }
 
             return true;
         }
 
-        private bool CheckInputsAndOutputs(BuildUpToDateCheckLogger logger, in TimestampCache timestampCache, State state)
+        private bool CheckInputsAndOutputs(Log log, in TimestampCache timestampCache, State state)
         {
             // UpToDateCheckInput/Output/Built items have optional 'Set' metadata that determine whether they
             // are treated separately or not. If omitted, such inputs/outputs are included in the default set,
@@ -182,7 +182,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             // Second, validate the relationships between inputs and outputs in specific sets, if any.
             foreach (string setName in state.SetNames)
             {
-                logger.Verbose("Comparing timestamps of inputs and outputs in set '{0}':", setName);
+                log.Verbose("Comparing timestamps of inputs and outputs in set '{0}':", setName);
         
                 if (!CheckInputsAndOutputs(CollectSetInputs(setName), CollectSetOutputs(setName), timestampCache, setName))
                 {
@@ -208,7 +208,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                     if (outputTime == null)
                     {
-                        return logger.Fail("Outputs", "Output '{0}' does not exist, not up to date.", output);
+                        return log.Fail("Outputs", "Output '{0}' does not exist, not up to date.", output);
                     }
 
                     if (outputTime < earliestOutputTime)
@@ -222,7 +222,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 if (!hasOutput)
                 {
-                    logger.Info(setName == DefaultSetName ? "No build outputs defined." : "No build outputs defined in set '{0}'.", setName);
+                    log.Info(setName == DefaultSetName ? "No build outputs defined." : "No build outputs defined in set '{0}'.", setName);
 
                     return true;
                 }
@@ -231,7 +231,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 if (earliestOutputTime < state.LastItemsChangedAtUtc)
                 {
-                    return logger.Fail("Outputs", "The set of project items was changed more recently ({0}) than the earliest output '{1}' ({2}), not up to date.", state.LastItemsChangedAtUtc, earliestOutputPath, earliestOutputTime);
+                    return log.Fail("Outputs", "The set of project items was changed more recently ({0}) than the earliest output '{1}' ({2}), not up to date.", state.LastItemsChangedAtUtc, earliestOutputPath, earliestOutputTime);
                 }
 
                 foreach (string input in inputs)
@@ -240,17 +240,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                     if (inputTime == null)
                     {
-                        return logger.Fail("Outputs", "Input '{0}' does not exist, not up to date.", input);
+                        return log.Fail("Outputs", "Input '{0}' does not exist, not up to date.", input);
                     }
 
                     if (inputTime > earliestOutputTime)
                     {
-                        return logger.Fail("Outputs", "Input '{0}' is newer ({1}) than earliest output '{2}' ({3}), not up to date.", input, inputTime.Value, earliestOutputPath, earliestOutputTime);
+                        return log.Fail("Outputs", "Input '{0}' is newer ({1}) than earliest output '{2}' ({3}), not up to date.", input, inputTime.Value, earliestOutputPath, earliestOutputTime);
                     }
 
                     if (inputTime > _state.LastCheckedAtUtc)
                     {
-                        return logger.Fail("Outputs", "Input '{0}' ({1}) has been modified since the last up-to-date check ({2}), not up to date.", input, inputTime.Value, state.LastCheckedAtUtc);
+                        return log.Fail("Outputs", "Input '{0}' ({1}) has been modified since the last up-to-date check ({2}), not up to date.", input, inputTime.Value, state.LastCheckedAtUtc);
                     }
 
                     hasInput = true;
@@ -258,15 +258,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 if (!hasInput)
                 {
-                    logger.Info(setName == DefaultSetName ? "No inputs defined." : "No inputs defined in set '{0}'.", setName);
+                    log.Info(setName == DefaultSetName ? "No inputs defined." : "No inputs defined in set '{0}'.", setName);
                 }
                 else if (setName == DefaultSetName)
                 {
-                    logger.Info("No inputs are newer than earliest output '{0}' ({1}).", earliestOutputPath, earliestOutputTime);
+                    log.Info("No inputs are newer than earliest output '{0}' ({1}).", earliestOutputPath, earliestOutputTime);
                 }
                 else
                 {
-                    logger.Info("In set '{0}', no inputs are newer than earliest output '{1}' ({2}).", setName, earliestOutputPath, earliestOutputTime);
+                    log.Info("In set '{0}', no inputs are newer than earliest output '{1}' ({2}).", setName, earliestOutputPath, earliestOutputTime);
                 }
 
                 return true;
@@ -276,15 +276,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 if (state.MSBuildProjectFullPath != null)
                 {
-                    logger.Verbose("Adding project file inputs:");
-                    logger.Verbose("    '{0}'", state.MSBuildProjectFullPath);
+                    log.Verbose("Adding project file inputs:");
+                    log.Verbose("    '{0}'", state.MSBuildProjectFullPath);
                     yield return state.MSBuildProjectFullPath;
                 }
 
                 if (state.NewestImportInput != null)
                 {
-                    logger.Verbose("Adding newest import input:");
-                    logger.Verbose("    '{0}'", state.NewestImportInput);
+                    log.Verbose("Adding newest import input:");
+                    log.Verbose("    '{0}'", state.NewestImportInput);
                     yield return state.NewestImportInput;
                 }
 
@@ -292,11 +292,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 {
                     if (!NonCompilationItemTypes.Contains(itemType))
                     {
-                        logger.Verbose("Adding {0} inputs:", itemType);
+                        log.Verbose("Adding {0} inputs:", itemType);
 
                         foreach (string input in changes.Select(item => _configuredProject.UnconfiguredProject.MakeRooted(item.path)))
                         {
-                            logger.Verbose("    '{0}'", input);
+                            log.Verbose("    '{0}'", input);
                             yield return input;
                         }
                     }
@@ -304,30 +304,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 if (state.ResolvedAnalyzerReferencePaths.Count != 0)
                 {
-                    logger.Verbose("Adding " + ResolvedAnalyzerReference.SchemaName + " inputs:");
+                    log.Verbose("Adding " + ResolvedAnalyzerReference.SchemaName + " inputs:");
                     foreach (string input in state.ResolvedAnalyzerReferencePaths)
                     {
-                        logger.Verbose("    '{0}'", input);
+                        log.Verbose("    '{0}'", input);
                         yield return input;
                     }
                 }
 
                 if (state.ResolvedCompilationReferencePaths.Count != 0)
                 {
-                    logger.Verbose("Adding " + ResolvedCompilationReference.SchemaName + " inputs:");
+                    log.Verbose("Adding " + ResolvedCompilationReference.SchemaName + " inputs:");
                     foreach (string input in state.ResolvedCompilationReferencePaths)
                     {
-                        logger.Verbose("    '{0}'", input);
+                        log.Verbose("    '{0}'", input);
                         yield return input;
                     }
                 }
 
                 if (state.UpToDateCheckInputItemsBySetName.TryGetValue(DefaultSetName, out ImmutableHashSet<string> upToDateCheckInputItems))
                 {
-                    logger.Verbose("Adding " + UpToDateCheckInput.SchemaName + " inputs:");
+                    log.Verbose("Adding " + UpToDateCheckInput.SchemaName + " inputs:");
                     foreach (string input in upToDateCheckInputItems.Select(_configuredProject.UnconfiguredProject.MakeRooted))
                     {
-                        logger.Verbose("    '{0}'", input);
+                        log.Verbose("    '{0}'", input);
                         yield return input;
                     }
                 }
@@ -337,22 +337,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 if (state.UpToDateCheckOutputItemsBySetName.TryGetValue(DefaultSetName, out ImmutableHashSet<string> upToDateCheckOutputItems))
                 {
-                    logger.Verbose("Adding " + UpToDateCheckOutput.SchemaName + " outputs:");
+                    log.Verbose("Adding " + UpToDateCheckOutput.SchemaName + " outputs:");
 
                     foreach (string output in upToDateCheckOutputItems.Select(_configuredProject.UnconfiguredProject.MakeRooted))
                     {
-                        logger.Verbose("    '{0}'", output);
+                        log.Verbose("    '{0}'", output);
                         yield return output;
                     }
                 }
 
                 if (state.UpToDateCheckBuiltItemsBySetName.TryGetValue(DefaultSetName, out ImmutableHashSet<string> upToDateCheckBuiltItems))
                 {
-                    logger.Verbose("Adding " + UpToDateCheckBuilt.SchemaName + " outputs:");
+                    log.Verbose("Adding " + UpToDateCheckBuilt.SchemaName + " outputs:");
 
                     foreach (string output in upToDateCheckBuiltItems.Select(_configuredProject.UnconfiguredProject.MakeRooted))
                     {
-                        logger.Verbose("    '{0}'", output);
+                        log.Verbose("    '{0}'", output);
                         yield return output;
                     }
                 }
@@ -362,10 +362,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 if (state.UpToDateCheckInputItemsBySetName.TryGetValue(setName, out ImmutableHashSet<string> upToDateCheckInputItems))
                 {
-                    logger.Verbose("Adding " + UpToDateCheckInput.SchemaName + " inputs in set '{0}':", setName);
+                    log.Verbose("Adding " + UpToDateCheckInput.SchemaName + " inputs in set '{0}':", setName);
                     foreach (string input in upToDateCheckInputItems.Select(_configuredProject.UnconfiguredProject.MakeRooted))
                     {
-                        logger.Verbose("    '{0}'", input);
+                        log.Verbose("    '{0}'", input);
                         yield return input;
                     }
                 }
@@ -375,29 +375,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 if (state.UpToDateCheckOutputItemsBySetName.TryGetValue(setName, out ImmutableHashSet<string> upToDateCheckOutputItems))
                 {
-                    logger.Verbose("Adding " + UpToDateCheckOutput.SchemaName + " outputs in set '{0}':", setName);
+                    log.Verbose("Adding " + UpToDateCheckOutput.SchemaName + " outputs in set '{0}':", setName);
 
                     foreach (string output in upToDateCheckOutputItems.Select(_configuredProject.UnconfiguredProject.MakeRooted))
                     {
-                        logger.Verbose("    '{0}'", output);
+                        log.Verbose("    '{0}'", output);
                         yield return output;
                     }
                 }
 
                 if (state.UpToDateCheckBuiltItemsBySetName.TryGetValue(setName, out ImmutableHashSet<string> upToDateCheckBuiltItems))
                 {
-                    logger.Verbose("Adding " + UpToDateCheckBuilt.SchemaName + " outputs in set '{0}':", setName);
+                    log.Verbose("Adding " + UpToDateCheckBuilt.SchemaName + " outputs in set '{0}':", setName);
 
                     foreach (string output in upToDateCheckBuiltItems.Select(_configuredProject.UnconfiguredProject.MakeRooted))
                     {
-                        logger.Verbose("    '{0}'", output);
+                        log.Verbose("    '{0}'", output);
                         yield return output;
                     }
                 }
             }
         }
 
-        private bool CheckMarkers(BuildUpToDateCheckLogger logger, in TimestampCache timestampCache, State state)
+        private bool CheckMarkers(Log log, in TimestampCache timestampCache, State state)
         {
             // Reference assembly copy markers are strange. The property is always going to be present on
             // references to SDK-based projects, regardless of whether or not those referenced projects
@@ -413,23 +413,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             string markerFile = _configuredProject.UnconfiguredProject.MakeRooted(state.CopyUpToDateMarkerItem);
 
-            logger.Verbose("Adding input reference copy markers:");
+            log.Verbose("Adding input reference copy markers:");
 
             foreach (string referenceMarkerFile in state.CopyReferenceInputs)
             {
-                logger.Verbose("    '{0}'", referenceMarkerFile);
+                log.Verbose("    '{0}'", referenceMarkerFile);
             }
 
-            logger.Verbose("Adding output reference copy marker:");
-            logger.Verbose("    '{0}'", markerFile);
+            log.Verbose("Adding output reference copy marker:");
+            log.Verbose("    '{0}'", markerFile);
 
             if (timestampCache.TryGetLatestInput(state.CopyReferenceInputs, out string? latestInputMarkerPath, out DateTime latestInputMarkerTime))
             {
-                logger.Info("Latest write timestamp on input marker is {0} on '{1}'.", latestInputMarkerTime, latestInputMarkerPath);
+                log.Info("Latest write timestamp on input marker is {0} on '{1}'.", latestInputMarkerTime, latestInputMarkerPath);
             }
             else
             {
-                logger.Info("No input markers exist, skipping marker check.");
+                log.Info("No input markers exist, skipping marker check.");
                 return true;
             }
 
@@ -437,63 +437,63 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             if (outputMarkerTime != null)
             {
-                logger.Info("Write timestamp on output marker is {0} on '{1}'.", outputMarkerTime, markerFile);
+                log.Info("Write timestamp on output marker is {0} on '{1}'.", outputMarkerTime, markerFile);
             }
             else
             {
-                logger.Info("Output marker '{0}' does not exist, skipping marker check.", markerFile);
+                log.Info("Output marker '{0}' does not exist, skipping marker check.", markerFile);
                 return true;
             }
 
             if (outputMarkerTime < latestInputMarkerTime)
             {
-                return logger.Fail("Marker", "Input marker is newer than output marker, not up to date.");
+                return log.Fail("Marker", "Input marker is newer than output marker, not up to date.");
             }
 
             return true;
         }
 
-        private bool CheckCopiedOutputFiles(BuildUpToDateCheckLogger logger, in TimestampCache timestampCache, State state)
+        private bool CheckCopiedOutputFiles(Log log, in TimestampCache timestampCache, State state)
         {
             foreach ((string destinationRelative, string sourceRelative) in state.CopiedOutputFiles)
             {
                 string source = _configuredProject.UnconfiguredProject.MakeRooted(sourceRelative);
                 string destination = _configuredProject.UnconfiguredProject.MakeRooted(destinationRelative);
 
-                logger.Info("Checking copied output (" + UpToDateCheckBuilt.SchemaName + " with " + UpToDateCheckBuilt.OriginalProperty + " property) file '{0}':", source);
+                log.Info("Checking copied output (" + UpToDateCheckBuilt.SchemaName + " with " + UpToDateCheckBuilt.OriginalProperty + " property) file '{0}':", source);
 
                 DateTime? sourceTime = timestampCache.GetTimestampUtc(source);
 
                 if (sourceTime != null)
                 {
-                    logger.Info("    Source {0}: '{1}'.", sourceTime, source);
+                    log.Info("    Source {0}: '{1}'.", sourceTime, source);
                 }
                 else
                 {
-                    return logger.Fail("CopyOutput", "Source '{0}' does not exist, not up to date.", source);
+                    return log.Fail("CopyOutput", "Source '{0}' does not exist, not up to date.", source);
                 }
 
                 DateTime? destinationTime = timestampCache.GetTimestampUtc(destination);
 
                 if (destinationTime != null)
                 {
-                    logger.Info("    Destination {0}: '{1}'.", destinationTime, destination);
+                    log.Info("    Destination {0}: '{1}'.", destinationTime, destination);
                 }
                 else
                 {
-                    return logger.Fail("CopyOutput", "Destination '{0}' does not exist, not up to date.", destination);
+                    return log.Fail("CopyOutput", "Destination '{0}' does not exist, not up to date.", destination);
                 }
 
                 if (destinationTime < sourceTime)
                 {
-                    return logger.Fail("CopyOutput", "Source is newer than build output destination, not up to date.");
+                    return log.Fail("CopyOutput", "Source is newer than build output destination, not up to date.");
                 }
             }
 
             return true;
         }
 
-        private bool CheckCopyToOutputDirectoryFiles(BuildUpToDateCheckLogger logger, in TimestampCache timestampCache, State state)
+        private bool CheckCopyToOutputDirectoryFiles(Log log, in TimestampCache timestampCache, State state)
         {
             IEnumerable<(string path, string? link, CopyToOutputDirectoryType copyType)> items = state.ItemsByItemType.SelectMany(kvp => kvp.Value).Where(item => item.copyType == CopyToOutputDirectoryType.CopyIfNewer);
 
@@ -511,17 +511,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 filename = _configuredProject.UnconfiguredProject.MakeRelative(filename);
 
-                logger.Info("Checking PreserveNewest file '{0}':", rootedPath);
+                log.Info("Checking PreserveNewest file '{0}':", rootedPath);
 
                 DateTime? itemTime = timestampCache.GetTimestampUtc(rootedPath);
 
                 if (itemTime != null)
                 {
-                    logger.Info("    Source {0}: '{1}'.", itemTime, rootedPath);
+                    log.Info("    Source {0}: '{1}'.", itemTime, rootedPath);
                 }
                 else
                 {
-                    return logger.Fail("CopyToOutputDirectory", "Source '{0}' does not exist, not up to date.", rootedPath);
+                    return log.Fail("CopyToOutputDirectory", "Source '{0}' does not exist, not up to date.", rootedPath);
                 }
 
                 string destination = Path.Combine(outputFullPath, filename);
@@ -529,16 +529,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 if (destinationTime != null)
                 {
-                    logger.Info("    Destination {0}: '{1}'.", destinationTime, destination);
+                    log.Info("    Destination {0}: '{1}'.", destinationTime, destination);
                 }
                 else
                 {
-                    return logger.Fail("CopyToOutputDirectory", "Destination '{0}' does not exist, not up to date.", destination);
+                    return log.Fail("CopyToOutputDirectory", "Destination '{0}' does not exist, not up to date.", destination);
                 }
 
                 if (destinationTime < itemTime)
                 {
-                    return logger.Fail("CopyToOutputDirectory", "PreserveNewest source is newer than destination, not up to date.");
+                    return log.Fail("CopyToOutputDirectory", "PreserveNewest source is newer than destination, not up to date.");
                 }
             }
 
@@ -565,7 +565,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 await InitializeAsync(token);
 
                 LogLevel requestedLogLevel = await _projectSystemOptions.GetFastUpToDateLoggingLevelAsync(token);
-                var logger = new BuildUpToDateCheckLogger(logWriter, requestedLogLevel, _configuredProject.UnconfiguredProject.FullPath ?? "", _telemetryService);
+                var logger = new Log(logWriter, requestedLogLevel, _configuredProject.UnconfiguredProject.FullPath ?? "", _telemetryService);
 
                 try
                 {
