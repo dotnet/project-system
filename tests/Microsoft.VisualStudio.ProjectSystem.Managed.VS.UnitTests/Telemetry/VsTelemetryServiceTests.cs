@@ -2,11 +2,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Moq;
 using Moq.Protected;
 using Xunit;
-
-#nullable disable
 
 namespace Microsoft.VisualStudio.Telemetry
 {
@@ -19,7 +18,7 @@ namespace Microsoft.VisualStudio.Telemetry
 
             Assert.Throws<ArgumentNullException>("eventName", () =>
             {
-                service.PostEvent(null);
+                service.PostEvent(null!);
             });
         }
 
@@ -42,7 +41,7 @@ namespace Microsoft.VisualStudio.Telemetry
 
             Assert.Throws<ArgumentNullException>("eventName", () =>
             {
-                service.PostProperty(null, null, null);
+                service.PostProperty(null!, "propName", "value");
             });
         }
 
@@ -53,7 +52,7 @@ namespace Microsoft.VisualStudio.Telemetry
 
             Assert.Throws<ArgumentException>("eventName", () =>
             {
-                service.PostProperty(string.Empty, null, null);
+                service.PostProperty(string.Empty, "propName", "value");
             });
         }
 
@@ -64,7 +63,7 @@ namespace Microsoft.VisualStudio.Telemetry
 
             Assert.Throws<ArgumentNullException>("propertyName", () =>
             {
-                service.PostProperty("event1", null, null);
+                service.PostProperty("event1", null!, "value");
             });
         }
 
@@ -75,7 +74,7 @@ namespace Microsoft.VisualStudio.Telemetry
 
             Assert.Throws<ArgumentException>("propertyName", () =>
             {
-                service.PostProperty("event1", string.Empty, null);
+                service.PostProperty("event1", string.Empty, "value");
             });
         }
 
@@ -86,7 +85,7 @@ namespace Microsoft.VisualStudio.Telemetry
 
             Assert.Throws<ArgumentNullException>("propertyValue", () =>
             {
-                service.PostProperty("event1", "propName", null);
+                service.PostProperty("event1", "propName", null!);
             });
         }
 
@@ -97,7 +96,7 @@ namespace Microsoft.VisualStudio.Telemetry
 
             Assert.Throws<ArgumentNullException>("eventName", () =>
             {
-                service.PostProperties(null, null);
+                service.PostProperties(null!, new[] { ("propertyName", (object)"propertyValue") });
             });
         }
 
@@ -108,7 +107,7 @@ namespace Microsoft.VisualStudio.Telemetry
 
             Assert.Throws<ArgumentException>("eventName", () =>
             {
-                service.PostProperties(string.Empty, null);
+                service.PostProperties(string.Empty, new[] { ("propertyName", (object)"propertyValue") });
             });
         }
 
@@ -119,48 +118,50 @@ namespace Microsoft.VisualStudio.Telemetry
 
             Assert.Throws<ArgumentNullException>("properties", () =>
             {
-                service.PostProperties("event1", null);
+                service.PostProperties("event1", null!);
             });
         }
 
         [Fact]
-        public void PostProperties_EmptyAsPropertyName_ThrowArgument()
+        public void PostProperties_EmptyProperties_ThrowArgument()
         {
             var service = CreateInstance();
 
             Assert.Throws<ArgumentException>("properties", () =>
             {
-                service.PostProperties("event1", new List<(string propertyName, object propertyValue)>());
+                service.PostProperties("event1", Enumerable.Empty<(string propertyName, object propertyValue)>());
             });
         }
 
         [Fact]
         public void PostEvent_SendsTelemetryEvent()
         {
-            TelemetryEvent result = null;
+            TelemetryEvent? result = null;
             var service = CreateInstance((e) => { result = e; });
 
             service.PostEvent(TelemetryEventName.UpToDateCheckSuccess);
 
-            Assert.Equal(TelemetryEventName.UpToDateCheckSuccess, result.Name);
+            Assert.NotNull(result);
+            Assert.Equal(TelemetryEventName.UpToDateCheckSuccess, result!.Name);
         }
 
         [Fact]
         public void PostProperty_SendsTelemetryEventWithProperty()
         {
-            TelemetryEvent result = null;
+            TelemetryEvent? result = null;
             var service = CreateInstance((e) => { result = e; });
 
             service.PostProperty(TelemetryEventName.UpToDateCheckFail, TelemetryPropertyName.UpToDateCheckFailReason, "Reason");
 
-            Assert.Equal(TelemetryEventName.UpToDateCheckFail, result.Name);
+            Assert.NotNull(result);
+            Assert.Equal(TelemetryEventName.UpToDateCheckFail, result!.Name);
             Assert.Contains(new KeyValuePair<string, object>(TelemetryPropertyName.UpToDateCheckFailReason, "Reason"), result.Properties);
         }
 
         [Fact]
         public void PostProperties_SendsTelemetryEventWithProperties()
         {
-            TelemetryEvent result = null;
+            TelemetryEvent? result = null;
             var service = CreateInstance((e) => { result = e; });
 
             service.PostProperties(TelemetryEventName.DesignTimeBuildComplete, new[]
@@ -169,12 +170,13 @@ namespace Microsoft.VisualStudio.Telemetry
                 (TelemetryPropertyName.DesignTimeBuildCompleteTargets, "Compile")
             });
 
-            Assert.Equal(TelemetryEventName.DesignTimeBuildComplete, result.Name);
+            Assert.NotNull(result);
+            Assert.Equal(TelemetryEventName.DesignTimeBuildComplete, result!.Name);
             Assert.Contains(new KeyValuePair<string, object>(TelemetryPropertyName.DesignTimeBuildCompleteSucceeded, true), result.Properties);
             Assert.Contains(new KeyValuePair<string, object>(TelemetryPropertyName.DesignTimeBuildCompleteTargets, "Compile"), result.Properties);
         }
 
-        private static VsTelemetryService CreateInstance(Action<TelemetryEvent> action = null)
+        private static VsTelemetryService CreateInstance(Action<TelemetryEvent>? action = null)
         {
             if (action == null)
                 return new VsTelemetryService();

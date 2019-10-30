@@ -4,8 +4,6 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
 {
     public class WindowsFormsEditorProviderTests
@@ -17,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
 
             await Assert.ThrowsAsync<ArgumentNullException>("documentMoniker", () =>
             {
-                return provider.GetSpecificEditorAsync((string)null);
+                return provider.GetSpecificEditorAsync((string)null!);
             });
         }
 
@@ -28,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
 
             await Assert.ThrowsAsync<ArgumentNullException>("documentMoniker", () =>
             {
-                return provider.SetUseGlobalEditorAsync((string)null, false);
+                return provider.SetUseGlobalEditorAsync((string)null!, false);
             });
         }
 
@@ -233,7 +231,8 @@ Project
 
             var result = await provider.GetSpecificEditorAsync(@"C:\Foo.cs");
 
-            Assert.NotEmpty(result.DisplayName);
+            Assert.NotNull(result);
+            Assert.NotEmpty(result!.DisplayName);
             Assert.Equal(VSConstants.LOGVIEWID.Designer_guid, result.DefaultView);
             Assert.Equal(useDesignerByDefault, result.IsDefaultEditor);
             Assert.Equal(defaultEditorFactory, result.EditorFactory);
@@ -258,7 +257,7 @@ Project
 ", "Component")]
         public async Task SetUseGlobalEditorAsync_WhenMarkedWithRecognizedSubType_ReturnsTrue(string tree, string expectedCategory)
         {
-            string categoryResult = null;
+            string? categoryResult = null;
             bool? valueResult = null;
             var options = IProjectSystemOptionsFactory.ImplementSetUseDesignerByDefaultAsync((category, value, __) => { categoryResult = category; valueResult = value; return Task.CompletedTask; });
             var provider = CreateInstanceWithDefaultEditorProvider(tree, options);
@@ -270,7 +269,7 @@ Project
             Assert.Equal(expectedCategory, categoryResult);
         }
 
-        private static WindowsFormsEditorProvider CreateInstanceWithDefaultEditorProvider(string projectTree, IProjectSystemOptions options = null, Guid defaultEditorFactory = default)
+        private static WindowsFormsEditorProvider CreateInstanceWithDefaultEditorProvider(string projectTree, IProjectSystemOptions? options = null, Guid defaultEditorFactory = default)
         {
             var tree = ProjectTreeParser.Parse(projectTree);
 
@@ -282,7 +281,7 @@ Project
             return provider;
         }
 
-        private static WindowsFormsEditorProvider CreateInstance(UnconfiguredProject unconfiguredProject = null, IPhysicalProjectTree projectTree = null, IProjectSystemOptions options = null)
+        private static WindowsFormsEditorProvider CreateInstance(UnconfiguredProject? unconfiguredProject = null, IPhysicalProjectTree? projectTree = null, IProjectSystemOptions? options = null)
         {
             unconfiguredProject ??= UnconfiguredProjectFactory.Create();
             projectTree ??= IPhysicalProjectTreeFactory.Create();

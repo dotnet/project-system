@@ -3,8 +3,6 @@
 using System;
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.VisualBasic
 {
     public class VisualBasicProjectTypeGuidProviderTests
