@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.True(model.Resolved);
             Assert.False(model.Implicit);
             Assert.Equal(properties, model.Properties);
-            Assert.Equal(Dependency.PackageNodePriority, model.Priority);
+            Assert.Equal(GraphNodePriority.Package, model.Priority);
             Assert.Equal(ManagedImageMonikers.NuGetGrey, model.Icon);
             Assert.Equal(ManagedImageMonikers.NuGetGrey, model.ExpandedIcon);
             Assert.Equal(ManagedImageMonikers.NuGetGreyWarning, model.UnresolvedIcon);
@@ -86,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.False(model.Resolved);
             Assert.False(model.Implicit);
             Assert.Equal(properties, model.Properties);
-            Assert.Equal(Dependency.UnresolvedReferenceNodePriority, model.Priority);
+            Assert.Equal(GraphNodePriority.UnresolvedReference, model.Priority);
             Assert.Equal(ManagedImageMonikers.NuGetGrey, model.Icon);
             Assert.Equal(ManagedImageMonikers.NuGetGrey, model.ExpandedIcon);
             Assert.Equal(ManagedImageMonikers.NuGetGreyWarning, model.UnresolvedIcon);
@@ -131,7 +131,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.True(model.Resolved);
             Assert.True(model.Implicit);
             Assert.Equal(properties, model.Properties);
-            Assert.Equal(Dependency.PackageNodePriority, model.Priority);
+            Assert.Equal(GraphNodePriority.Package, model.Priority);
             Assert.Equal(ManagedImageMonikers.NuGetGreyPrivate, model.Icon);
             Assert.Equal(ManagedImageMonikers.NuGetGreyPrivate, model.ExpandedIcon);
             Assert.Equal(ManagedImageMonikers.NuGetGreyWarning, model.UnresolvedIcon);

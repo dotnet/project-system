@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public string? FilePath => null;
         public string? SchemaName => null;
         public string? SchemaItemType => null;
-        public int Priority => Dependency.FrameworkAssemblyNodePriority;
+        public int Priority => GraphNodePriority.FrameworkAssembly;
         public ImageMoniker Icon => RegularIcon;
         public ImageMoniker ExpandedIcon => RegularIcon;
         public ProjectTreeFlags Flags => DependencyTreeFlags.FrameworkAssembliesNode;

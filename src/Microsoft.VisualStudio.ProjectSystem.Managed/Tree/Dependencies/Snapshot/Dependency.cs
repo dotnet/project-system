@@ -11,21 +11,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     internal sealed class Dependency : IDependency
     {
-        // These priorities are for graph nodes only and are used to group graph nodes 
-        // appropriately in order groups predefined order instead of alphabetically.
-        // Order is not changed for top dependency nodes only for graph hierarchies.
-        public const int DiagnosticsErrorNodePriority = 100;
-        public const int DiagnosticsWarningNodePriority = 101;
-        public const int UnresolvedReferenceNodePriority = 110;
-        public const int ProjectNodePriority = 120;
-        public const int PackageNodePriority = 130;
-        public const int FrameworkAssemblyNodePriority = 140;
-        public const int PackageAssemblyNodePriority = 150;
-        public const int AnalyzerNodePriority = 160;
-        public const int ComNodePriority = 170;
-        public const int SdkNodePriority = 180;
-        public const int FrameworkReferenceNodePriority = 190;
-
         public Dependency(IDependencyModel dependencyModel, ITargetFramework targetFramework, string containingProjectPath)
         {
             Requires.NotNull(dependencyModel, nameof(dependencyModel));
