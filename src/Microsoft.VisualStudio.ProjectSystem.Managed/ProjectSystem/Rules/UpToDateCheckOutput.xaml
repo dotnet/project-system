@@ -11,4 +11,7 @@
                 SourceType="TargetResults" />
   </Rule.DataSource>
 
+  <StringProperty Name="Set"
+                  Visible="False" />
+
 </Rule>

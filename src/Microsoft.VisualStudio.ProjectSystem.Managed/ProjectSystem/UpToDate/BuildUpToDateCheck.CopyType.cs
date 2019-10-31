@@ -2,10 +2,13 @@
 
 namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 {
-    internal enum CopyToOutputDirectoryType
+    internal sealed partial class BuildUpToDateCheck
     {
-        CopyNever,
-        CopyIfNewer,
-        CopyAlways
+        internal enum CopyType
+        {
+            CopyNever,
+            CopyIfNewer,
+            CopyAlways
+        }
     }
 }

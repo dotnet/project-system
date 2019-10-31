@@ -17,9 +17,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             public string? MSBuildProjectFullPath { get; }
             public string? MSBuildProjectDirectory { get; }
-            public string? MarkerFile { get; }
+            public string? CopyUpToDateMarkerItem { get; }
             public string? OutputRelativeOrFullPath { get; }
+
+            /// <summary>
+            /// Contains the first path from the <see cref="ConfigurationGeneral.MSBuildAllProjectsProperty"/>,
+            /// which MSBuild guarantees to be the newest import from all properties (since 16.0). As we
+            /// are only interested in the newest import, we need not retain the remaining paths.
+            /// </summary>
             public string? NewestImportInput { get; }
+
             public IComparable? LastVersionSeen { get; }
             public bool IsDisabled { get; }
 
@@ -54,73 +61,102 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             public DateTime LastCheckedAtUtc { get; }
 
             public ImmutableHashSet<string> ItemTypes { get; }
-            public ImmutableDictionary<string, ImmutableHashSet<(string path, string? link, CopyToOutputDirectoryType copyType)>> ItemsByItemType { get; }
-            public ImmutableHashSet<string> CustomInputs { get; }
-            public ImmutableHashSet<string> CustomOutputs { get; }
-            public ImmutableHashSet<string> BuiltOutputs { get; }
+            public ImmutableDictionary<string, ImmutableHashSet<(string path, string? link, CopyType copyType)>> ItemsByItemType { get; }
 
-            /// <summary>Key is destination, value is source.</summary>
+            public ImmutableArray<string> SetNames { get; }
+
+            public ImmutableDictionary<string, ImmutableHashSet<string>> UpToDateCheckInputItemsBySetName { get; }
+            
+            public ImmutableDictionary<string, ImmutableHashSet<string>> UpToDateCheckOutputItemsBySetName { get; }
+            
+            public ImmutableDictionary<string, ImmutableHashSet<string>> UpToDateCheckBuiltItemsBySetName { get; }
+
+            /// <summary>
+            /// Holds <see cref="UpToDateCheckBuilt"/> items which are copied, not built.</summary>
+            /// <remarks>
+            /// <para>
+            /// Key is destination, value is source.
+            /// </para>
+            /// <para>
+            /// Projects add to this collection by specifying the <see cref="UpToDateCheckBuilt.OriginalProperty"/>
+            /// on <see cref="UpToDateCheckBuilt"/> items.
+            /// </para>
+            /// </remarks>
             public ImmutableDictionary<string, string> CopiedOutputFiles { get; }
 
-            public ImmutableHashSet<string> AnalyzerReferences { get; }
-            public ImmutableHashSet<string> CompilationReferences { get; }
+            public ImmutableHashSet<string> ResolvedAnalyzerReferencePaths { get; }
+            public ImmutableHashSet<string> ResolvedCompilationReferencePaths { get; }
+
+            /// <summary>
+            /// Holds the set of observed <see cref="CopyUpToDateMarker"/> metadata values from all
+            /// <see cref="ResolvedCompilationReference"/> items in the project.
+            /// </summary>
             public ImmutableHashSet<string> CopyReferenceInputs { get; }
 
             private State()
             {
                 var emptyPathSet = ImmutableHashSet.Create(StringComparers.Paths);
+                var emptyItemBySetName = ImmutableDictionary.Create<string, ImmutableHashSet<string>>(s_setNameComparer);
 
                 LastItemsChangedAtUtc = DateTime.MinValue;
                 LastCheckedAtUtc = DateTime.MinValue;
                 ItemTypes = ImmutableHashSet.Create(StringComparers.ItemTypes);
-                ItemsByItemType = ImmutableDictionary.Create<string, ImmutableHashSet<(string path, string? link, CopyToOutputDirectoryType copyType)>>(StringComparers.ItemTypes);
-                CustomInputs = emptyPathSet;
-                CustomOutputs = emptyPathSet;
-                BuiltOutputs = emptyPathSet;
+                ItemsByItemType = ImmutableDictionary.Create<string, ImmutableHashSet<(string path, string? link, CopyType copyType)>>(StringComparers.ItemTypes);
+                SetNames = ImmutableArray<string>.Empty;
+                UpToDateCheckInputItemsBySetName = emptyItemBySetName;
+                UpToDateCheckOutputItemsBySetName = emptyItemBySetName;
+                UpToDateCheckBuiltItemsBySetName = emptyItemBySetName;
                 CopiedOutputFiles = ImmutableDictionary.Create<string, string>(StringComparers.Paths);
-                AnalyzerReferences = emptyPathSet;
-                CompilationReferences = emptyPathSet;
+                ResolvedAnalyzerReferencePaths = emptyPathSet;
+                ResolvedCompilationReferencePaths = emptyPathSet;
                 CopyReferenceInputs = emptyPathSet;
             }
 
             private State(
                 string? msBuildProjectFullPath,
                 string? msBuildProjectDirectory,
-                string? markerFile,
+                string? copyUpToDateMarkerItem,
                 string? outputRelativeOrFullPath,
                 string? newestImportInput,
                 IComparable? lastVersionSeen,
                 bool isDisabled,
                 ImmutableHashSet<string> itemTypes,
-                ImmutableDictionary<string, ImmutableHashSet<(string, string?, CopyToOutputDirectoryType)>> itemsByItemType,
-                ImmutableHashSet<string> customInputs,
-                ImmutableHashSet<string> customOutputs,
-                ImmutableHashSet<string> builtOutputs,
+                ImmutableDictionary<string, ImmutableHashSet<(string, string?, CopyType)>> itemsByItemType,
+                ImmutableDictionary<string, ImmutableHashSet<string>> upToDateCheckInputItemsBySetName,
+                ImmutableDictionary<string, ImmutableHashSet<string>> upToDateCheckOutputItemsBySetName,
+                ImmutableDictionary<string, ImmutableHashSet<string>> upToDateCheckBuiltItemsBySetName,
                 ImmutableDictionary<string, string> copiedOutputFiles,
-                ImmutableHashSet<string> analyzerReferences,
-                ImmutableHashSet<string> compilationReferences,
+                ImmutableHashSet<string> resolvedAnalyzerReferencePaths,
+                ImmutableHashSet<string> resolvedCompilationReferencePaths,
                 ImmutableHashSet<string> copyReferenceInputs,
                 DateTime lastItemsChangedAtUtc,
                 DateTime lastCheckedAtUtc)
             {
                 MSBuildProjectFullPath = msBuildProjectFullPath;
                 MSBuildProjectDirectory = msBuildProjectDirectory;
-                MarkerFile = markerFile;
+                CopyUpToDateMarkerItem = copyUpToDateMarkerItem;
                 OutputRelativeOrFullPath = outputRelativeOrFullPath;
                 NewestImportInput = newestImportInput;
                 LastVersionSeen = lastVersionSeen;
                 IsDisabled = isDisabled;
                 ItemTypes = itemTypes;
                 ItemsByItemType = itemsByItemType;
-                CustomInputs = customInputs;
-                CustomOutputs = customOutputs;
-                BuiltOutputs = builtOutputs;
+                UpToDateCheckInputItemsBySetName = upToDateCheckInputItemsBySetName;
+                UpToDateCheckOutputItemsBySetName = upToDateCheckOutputItemsBySetName;
+                UpToDateCheckBuiltItemsBySetName = upToDateCheckBuiltItemsBySetName;
                 CopiedOutputFiles = copiedOutputFiles;
-                AnalyzerReferences = analyzerReferences;
-                CompilationReferences = compilationReferences;
+                ResolvedAnalyzerReferencePaths = resolvedAnalyzerReferencePaths;
+                ResolvedCompilationReferencePaths = resolvedCompilationReferencePaths;
                 CopyReferenceInputs = copyReferenceInputs;
                 LastItemsChangedAtUtc = lastItemsChangedAtUtc;
                 LastCheckedAtUtc = lastCheckedAtUtc;
+
+                var setNames = new HashSet<string>(s_setNameComparer);
+                setNames.AddRange(upToDateCheckInputItemsBySetName.Keys);
+                setNames.AddRange(upToDateCheckOutputItemsBySetName.Keys);
+                setNames.AddRange(upToDateCheckBuiltItemsBySetName.Keys);
+                setNames.Remove(DefaultSetName);
+                SetNames = setNames.OrderBy(n => n, s_setNameComparer).ToImmutableArray();
             }
 
             public State Update(
@@ -141,90 +177,95 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 // save memory and time by only considering this first path (dotnet/project-system#4333).
                 string? newestImportInput = new LazyStringSplit(msBuildAllProjects, ';').FirstOrDefault();
 
-                ImmutableHashSet<string> analyzerReferences;
+                ImmutableHashSet<string> resolvedAnalyzerReferencePaths;
                 if (jointRuleUpdate.ProjectChanges.TryGetValue(ResolvedAnalyzerReference.SchemaName, out IProjectChangeDescription change) && change.Difference.AnyChanges)
                 {
-                    analyzerReferences = change.After.Items.Select(item => item.Value[ResolvedAnalyzerReference.ResolvedPathProperty]).ToImmutableHashSet(StringComparers.Paths);
+                    resolvedAnalyzerReferencePaths = change.After.Items.Select(item => item.Value[ResolvedAnalyzerReference.ResolvedPathProperty]).ToImmutableHashSet(StringComparers.Paths);
                 }
                 else
                 {
-                    analyzerReferences = AnalyzerReferences;
+                    resolvedAnalyzerReferencePaths = ResolvedAnalyzerReferencePaths;
                 }
 
-                ImmutableHashSet<string> customInputs;
+                ImmutableDictionary<string, ImmutableHashSet<string>> upToDateCheckInputItems;
                 if (jointRuleUpdate.ProjectChanges.TryGetValue(UpToDateCheckInput.SchemaName, out change) && change.Difference.AnyChanges)
                 {
-                    customInputs = change.After.Items.Keys.ToImmutableHashSet(StringComparers.Paths);
+                    upToDateCheckInputItems = BuildItemsBySetName(change, UpToDateCheckInput.SetProperty);
                 }
                 else
                 {
-                    customInputs = CustomInputs;
+                    upToDateCheckInputItems = UpToDateCheckInputItemsBySetName;
                 }
 
-                ImmutableHashSet<string> customOutputs;
+                ImmutableDictionary<string, ImmutableHashSet<string>> upToDateCheckOutputItems;
                 if (sourceItemsUpdate.ProjectChanges.TryGetValue(UpToDateCheckOutput.SchemaName, out change) && change.Difference.AnyChanges)
                 {
-                    customOutputs = change.After.Items.Keys.ToImmutableHashSet(StringComparers.Paths);
+                    upToDateCheckOutputItems = BuildItemsBySetName(change, UpToDateCheckOutput.SetProperty);
                 }
                 else if (jointRuleUpdate.ProjectChanges.TryGetValue(UpToDateCheckOutput.SchemaName, out change) && change.Difference.AnyChanges)
                 {
-                    customOutputs = change.After.Items.Keys.ToImmutableHashSet(StringComparers.Paths);
+                    upToDateCheckOutputItems = BuildItemsBySetName(change, UpToDateCheckOutput.SetProperty);
                 }
                 else
                 {
-                    customOutputs = CustomOutputs;
+                    upToDateCheckOutputItems = UpToDateCheckOutputItemsBySetName;
                 }
 
-                string? markerFile;
+                string? copyUpToDateMarkerItem;
                 if (jointRuleUpdate.ProjectChanges.TryGetValue(CopyUpToDateMarker.SchemaName, out change) && change.Difference.AnyChanges)
                 {
-                    markerFile = change.After.Items.Count == 1 ? change.After.Items.Single().Key : null;
+                    copyUpToDateMarkerItem = change.After.Items.Count == 1 ? change.After.Items.Single().Key : null;
                 }
                 else
                 {
-                    markerFile = MarkerFile;
+                    copyUpToDateMarkerItem = CopyUpToDateMarkerItem;
                 }
 
-                ImmutableHashSet<string> compilationReferences;
+                ImmutableHashSet<string> resolvedCompilationReferencePaths;
                 ImmutableHashSet<string> copyReferenceInputs;
                 if (jointRuleUpdate.ProjectChanges.TryGetValue(ResolvedCompilationReference.SchemaName, out change) && change.Difference.AnyChanges)
                 {
-                    ImmutableHashSet<string>.Builder compilationReferencesBuilder = ImmutableHashSet.CreateBuilder(StringComparers.Paths);
+                    ImmutableHashSet<string>.Builder resolvedCompilationReferencePathsBuilder = ImmutableHashSet.CreateBuilder(StringComparers.Paths);
                     ImmutableHashSet<string>.Builder copyReferenceInputsBuilder = ImmutableHashSet.CreateBuilder(StringComparers.Paths);
 
-                    foreach (IImmutableDictionary<string, string> item in change.After.Items.Values)
+                    foreach (IImmutableDictionary<string, string> itemMetadata in change.After.Items.Values)
                     {
-                        compilationReferencesBuilder.Add(item[ResolvedCompilationReference.ResolvedPathProperty]);
-                        if (!string.IsNullOrWhiteSpace(item[CopyUpToDateMarker.SchemaName]))
+                        string originalPath = itemMetadata[ResolvedCompilationReference.OriginalPathProperty];
+                        string resolvedPath = itemMetadata[ResolvedCompilationReference.ResolvedPathProperty];
+                        string copyReferenceInput = itemMetadata[CopyUpToDateMarker.SchemaName];
+
+                        resolvedCompilationReferencePathsBuilder.Add(resolvedPath);
+
+                        if (!string.IsNullOrWhiteSpace(originalPath))
                         {
-                            copyReferenceInputsBuilder.Add(item[CopyUpToDateMarker.SchemaName]);
+                            copyReferenceInputsBuilder.Add(originalPath);
                         }
 
-                        if (!string.IsNullOrWhiteSpace(item[ResolvedCompilationReference.OriginalPathProperty]))
+                        if (!string.IsNullOrWhiteSpace(copyReferenceInput))
                         {
-                            copyReferenceInputsBuilder.Add(item[ResolvedCompilationReference.OriginalPathProperty]);
+                            copyReferenceInputsBuilder.Add(copyReferenceInput);
                         }
                     }
 
-                    compilationReferences = compilationReferencesBuilder.ToImmutable();
+                    resolvedCompilationReferencePaths = resolvedCompilationReferencePathsBuilder.ToImmutable();
                     copyReferenceInputs = copyReferenceInputsBuilder.ToImmutable();
                 }
                 else
                 {
-                    compilationReferences = CompilationReferences;
+                    resolvedCompilationReferencePaths = ResolvedCompilationReferencePaths;
                     copyReferenceInputs = CopyReferenceInputs;
                 }
 
-                ImmutableHashSet<string> builtOutputs;
+                ImmutableDictionary<string, ImmutableHashSet<string>> upToDateCheckBuiltItems;
                 ImmutableDictionary<string, string> copiedOutputFiles;
                 if (jointRuleUpdate.ProjectChanges.TryGetValue(UpToDateCheckBuilt.SchemaName, out change) && change.Difference.AnyChanges)
                 {
-                    ImmutableHashSet<string>.Builder builtOutputsBuilder = ImmutableHashSet.CreateBuilder(StringComparers.Paths);
+                    var itemsBySet = new Dictionary<string, ImmutableHashSet<string>.Builder>(s_setNameComparer);
                     ImmutableDictionary<string, string>.Builder copiedOutputFilesBuilder = ImmutableDictionary.CreateBuilder<string, string>(StringComparers.Paths);
 
-                    foreach ((string destination, IImmutableDictionary<string, string> properties) in change.After.Items)
+                    foreach ((string destination, IImmutableDictionary<string, string> metadata) in change.After.Items)
                     {
-                        if (properties.TryGetValue(UpToDateCheckBuilt.OriginalProperty, out string source) && !string.IsNullOrEmpty(source))
+                        if (metadata.TryGetValue(UpToDateCheckBuilt.OriginalProperty, out string source) && !string.IsNullOrEmpty(source))
                         {
                             // This file is copied, not built
                             // Remember the `Original` source for later
@@ -233,16 +274,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         else
                         {
                             // This file is built, not copied
-                            builtOutputsBuilder.Add(destination);
+                            string setName = metadata.GetStringProperty(UpToDateCheckBuilt.SetProperty) ?? DefaultSetName;
+
+                            if (!itemsBySet.TryGetValue(setName, out ImmutableHashSet<string>.Builder builder))
+                            {
+                                itemsBySet[setName] = builder = ImmutableHashSet.CreateBuilder(s_setNameComparer);
+                            }
+
+                            builder.Add(destination);
                         }
                     }
 
-                    builtOutputs = builtOutputsBuilder.ToImmutable();
+                    upToDateCheckBuiltItems = itemsBySet.ToImmutableDictionary(pair => pair.Key, pair => pair.Value.ToImmutable(), s_setNameComparer);
                     copiedOutputFiles = copiedOutputFilesBuilder.ToImmutable();
                 }
                 else
                 {
-                    builtOutputs = BuiltOutputs;
+                    upToDateCheckBuiltItems = UpToDateCheckBuiltItemsBySetName;
                     copiedOutputFiles = CopiedOutputFiles;
                 }
 
@@ -251,12 +299,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                                                  .Where(itemType => projectItemSchema.GetItemType(itemType).UpToDateCheckInput)
                                                  .ToImmutableHashSet(StringComparers.ItemTypes);
 
-                ImmutableDictionary<string, ImmutableHashSet<(string path, string? link, CopyToOutputDirectoryType copyType)>>.Builder itemsByItemTypeBuilder;
+                ImmutableDictionary<string, ImmutableHashSet<(string path, string? link, CopyType copyType)>>.Builder itemsByItemTypeBuilder;
                 bool itemTypesChanged = !ItemTypes.SetEquals(itemTypes);
 
                 if (itemTypesChanged)
                 {
-                    itemsByItemTypeBuilder = ImmutableDictionary.CreateBuilder<string, ImmutableHashSet<(string path, string? link, CopyToOutputDirectoryType copyType)>>(StringComparers.ItemTypes);
+                    itemsByItemTypeBuilder = ImmutableDictionary.CreateBuilder<string, ImmutableHashSet<(string path, string? link, CopyType copyType)>>(StringComparers.ItemTypes);
                 }
                 else
                 {
@@ -275,7 +323,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     if (projectChange.After.Items.Count == 0)
                         continue;
 
-                    itemsByItemTypeBuilder[itemType] = projectChange.After.Items.Select(item => (item.Key, GetLink(item.Value), GetCopyType(item.Value))).ToImmutableHashSet(UpToDateCheckItemComparer.Instance);
+                    itemsByItemTypeBuilder[itemType] = projectChange.After.Items.Select(item => (item.Key, GetLink(item.Value), GetCopyType(item.Value))).ToImmutableHashSet(ItemComparer.Instance);
                     itemsChanged = true;
                 }
 
@@ -287,44 +335,78 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return new State(
                     msBuildProjectFullPath,
                     msBuildProjectDirectory,
-                    markerFile,
+                    copyUpToDateMarkerItem,
                     outputRelativeOrFullPath,
                     newestImportInput,
                     lastVersionSeen: configuredProjectVersion,
                     isDisabled,
                     itemTypes,
                     itemsByItemTypeBuilder.ToImmutable(),
-                    customInputs,
-                    customOutputs,
-                    builtOutputs,
+                    upToDateCheckInputItems,
+                    upToDateCheckOutputItems,
+                    upToDateCheckBuiltItems,
                     copiedOutputFiles,
-                    analyzerReferences,
-                    compilationReferences,
+                    resolvedAnalyzerReferencePaths,
+                    resolvedCompilationReferencePaths,
                     copyReferenceInputs,
                     lastItemsChangedAtUtc,
                     LastCheckedAtUtc);
 
-                static CopyToOutputDirectoryType GetCopyType(IImmutableDictionary<string, string> itemMetadata)
+                static CopyType GetCopyType(IImmutableDictionary<string, string> itemMetadata)
                 {
                     if (itemMetadata.TryGetValue(CopyToOutputDirectory, out string value))
                     {
                         if (string.Equals(value, Always, StringComparison.OrdinalIgnoreCase))
                         {
-                            return CopyToOutputDirectoryType.CopyAlways;
+                            return CopyType.CopyAlways;
                         }
 
                         if (string.Equals(value, PreserveNewest, StringComparison.OrdinalIgnoreCase))
                         {
-                            return CopyToOutputDirectoryType.CopyIfNewer;
+                            return CopyType.CopyIfNewer;
                         }
                     }
 
-                    return CopyToOutputDirectoryType.CopyNever;
+                    return CopyType.CopyNever;
                 }
 
                 static string? GetLink(IImmutableDictionary<string, string> itemMetadata)
                 {
                     return itemMetadata.TryGetValue(Link, out string link) ? link : null;
+                }
+
+                static ImmutableDictionary<string, ImmutableHashSet<string>> BuildItemsBySetName(IProjectChangeDescription projectChangeDescription, string setPropertyName)
+                {
+                    var itemsBySet = new Dictionary<string, ImmutableHashSet<string>.Builder>(s_setNameComparer);
+
+                    foreach ((string item, IImmutableDictionary<string, string> metadata) in projectChangeDescription.After.Items)
+                    {
+                        string? setNames = metadata.GetStringProperty(setPropertyName);
+
+                        if (setNames != null)
+                        {
+                            foreach (string setName in new LazyStringSplit(setNames, ';'))
+                            {
+                                AddItem(setName, item);
+                            }
+                        }
+                        else
+                        {
+                            AddItem(DefaultSetName, item);
+                        }
+                    }
+
+                    return itemsBySet.ToImmutableDictionary(pair => pair.Key, pair => pair.Value.ToImmutable(), s_setNameComparer);
+
+                    void AddItem(string setName, string item)
+                    {
+                        if (!itemsBySet.TryGetValue(setName, out ImmutableHashSet<string>.Builder builder))
+                        {
+                            itemsBySet[setName] = builder = ImmutableHashSet.CreateBuilder(StringComparers.Paths);
+                        }
+
+                        builder.Add(item);
+                    }
                 }
             }
 
@@ -333,19 +415,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return new State(
                     MSBuildProjectFullPath,
                     MSBuildProjectDirectory,
-                    MarkerFile,
+                    CopyUpToDateMarkerItem,
                     OutputRelativeOrFullPath,
                     NewestImportInput,
                     LastVersionSeen,
                     IsDisabled,
                     ItemTypes,
                     ItemsByItemType,
-                    CustomInputs,
-                    CustomOutputs,
-                    BuiltOutputs,
+                    UpToDateCheckInputItemsBySetName,
+                    UpToDateCheckOutputItemsBySetName,
+                    UpToDateCheckBuiltItemsBySetName,
                     CopiedOutputFiles,
-                    AnalyzerReferences,
-                    CompilationReferences,
+                    ResolvedAnalyzerReferencePaths,
+                    ResolvedCompilationReferencePaths,
                     CopyReferenceInputs,
                     LastItemsChangedAtUtc,
                     lastCheckedAtUtc);
@@ -359,19 +441,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return new State(
                     MSBuildProjectFullPath,
                     MSBuildProjectDirectory,
-                    MarkerFile,
+                    CopyUpToDateMarkerItem,
                     OutputRelativeOrFullPath,
                     NewestImportInput,
                     LastVersionSeen,
                     IsDisabled,
                     ItemTypes,
                     ItemsByItemType,
-                    CustomInputs,
-                    CustomOutputs,
-                    BuiltOutputs,
+                    UpToDateCheckInputItemsBySetName,
+                    UpToDateCheckOutputItemsBySetName,
+                    UpToDateCheckBuiltItemsBySetName,
                     CopiedOutputFiles,
-                    AnalyzerReferences,
-                    CompilationReferences,
+                    ResolvedAnalyzerReferencePaths,
+                    ResolvedCompilationReferencePaths,
                     CopyReferenceInputs,
                     lastItemsChangedAtUtc,
                     LastCheckedAtUtc);
