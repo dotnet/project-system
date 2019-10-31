@@ -390,7 +390,7 @@ Please select a valid folder path.</source>
       </trans-unit>
       <trans-unit id="PPG_Compile_42104">
         <source>Use of variable prior to assignment</source>
-        <target state="translated">割り当て前の変数の使用</target>
+        <target state="translated">代入前の変数の使用</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Compile_42105_42106_42107">
