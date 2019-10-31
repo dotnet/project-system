@@ -76,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             dependenciesTree = CleanupOldNodes(dependenciesTree, currentTopLevelNodes);
 
-            ProjectImageMoniker rootIcon = _viewModelFactory.GetDependenciesRootIcon(snapshot.HasVisibleUnresolvedDependency).ToProjectSystemType();
+            ProjectImageMoniker rootIcon = _viewModelFactory.GetDependenciesRootIcon(snapshot.HasReachableVisibleUnresolvedDependency).ToProjectSystemType();
 
             return dependenciesTree.SetProperties(icon: rootIcon, expandedIcon: rootIcon);
 
@@ -134,8 +134,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                             CleanupOldNodes);
 
                         dependenciesTree = shouldAddTargetNode
-                            ? dependenciesTree.Add(node).Parent
-                            : node.Parent;
+                            ? dependenciesTree.Add(node).Parent!
+                            : node.Parent!;
+
+                        Assumes.NotNull(dependenciesTree);
 
                         currentTopLevelNodes.Add(node);
                     }
@@ -170,7 +172,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         /// <summary>
-        /// Builds all available sub trees under root: target framework or Dependencies node 
+        /// Builds all available sub trees under root: target framework or Dependencies node
         /// when there is only one target.
         /// </summary>
         private async Task<IProjectTree> BuildSubTreesAsync(
@@ -247,8 +249,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 currentNodes.Add(subTreeNode);
 
                 rootNode = isNewSubTreeNode
-                    ? rootNode.Add(subTreeNode).Parent
-                    : subTreeNode.Parent;
+                    ? rootNode.Add(subTreeNode).Parent!
+                    : subTreeNode.Parent!;
+
+                Assumes.NotNull(rootNode);
             }
 
             return syncFunc(rootNode, currentNodes);
@@ -303,9 +307,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                 currentNodes?.Add(dependencyNode);
 
-                rootNode = isNewDependencyNode
+                IProjectTree? parent = isNewDependencyNode
                     ? rootNode.Add(dependencyNode).Parent
                     : dependencyNode.Parent;
+
+                Assumes.NotNull(parent);
+
+                rootNode = parent!;
             }
 
             return currentNodes != null // shouldCleanup
@@ -377,8 +385,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             IProjectTree CreateProjectTreeNode()
             {
-                // For IProjectTree remove ProjectTreeFlags.Common.Reference flag, otherwise CPS would fail to 
-                // map this node to graph node and GraphProvider would be never called. 
+                // For IProjectTree remove ProjectTreeFlags.Common.Reference flag, otherwise CPS would fail to
+                // map this node to graph node and GraphProvider would be never called.
                 // Only IProjectItemTree can have this flag
                 filteredFlags = filteredFlags.Except(DependencyTreeFlags.BaseReferenceFlags);
 

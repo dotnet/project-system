@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             if (relativePath == null)
                 return null;
 
-            string projectFilePath = provider.GetPath(target.Root);
+            string? projectFilePath = provider.GetPath(target.Root);
 
             string rootPath = Path.GetDirectoryName(projectFilePath);
 

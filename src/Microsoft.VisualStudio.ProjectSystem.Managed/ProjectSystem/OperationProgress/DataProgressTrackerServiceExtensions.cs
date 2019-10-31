@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.OperationProgress
         {
             // We deliberately do not want these individual operations in a stage (such as pushing evaluation
             // results to Roslyn) to be visible to the user, so we avoiding specifying a display message.
-            var dataSource = new ProgressTrackerOutputDataSource(project, operationProgressStageId: OperationProgressStageId.IntelliSense, name, displayMessage: null);
+            var dataSource = new ProgressTrackerOutputDataSource(project, operationProgressStageId: OperationProgressStageId.IntelliSense, name, displayMessage: "");
 
             return service.RegisterOutputDataSource(dataSource);
         }

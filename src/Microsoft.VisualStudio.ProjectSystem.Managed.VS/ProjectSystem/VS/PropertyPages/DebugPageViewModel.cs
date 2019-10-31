@@ -908,7 +908,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                         DialogResult result = dialog.ShowDialog();
                         if (result == DialogResult.OK)
                         {
-                            WorkingDirectory = dialog.SelectedPath.ToString();
+                            WorkingDirectory = dialog.SelectedPath;
                         }
                     }));
             }
@@ -934,7 +934,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                         DialogResult result = dialog.ShowDialog();
                         if (result == DialogResult.OK)
                         {
-                            ExecutablePath = dialog.FileName.ToString();
+                            ExecutablePath = dialog.FileName;
                         }
                     }));
             }

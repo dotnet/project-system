@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             public string File => throw new NotImplementedException();
 
-            public string? ItemType { get; set; }
+            public string ItemType { get; set; } = "";
 
             public string? ItemName { get; set; }
         }

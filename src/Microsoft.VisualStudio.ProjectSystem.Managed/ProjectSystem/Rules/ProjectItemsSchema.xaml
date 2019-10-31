@@ -4,33 +4,33 @@
     xmlns="http://schemas.microsoft.com/build/2009/properties">
 
   <ContentType
-      Name="Text"
-      DisplayName="Text file"
-      ItemType="Content">
+    Name="Text"
+    DisplayName="Text file"
+    ItemType="Content">
   </ContentType>
 
   <ContentType
-      Name="XML"
-      DisplayName="Xml file"
-      ItemType="Content">
+    Name="XML"
+    DisplayName="Xml file"
+    ItemType="Content">
   </ContentType>
 
   <ContentType
-      Name="HTML"
-      DisplayName="Html file"
-      ItemType="Content">
+    Name="HTML"
+    DisplayName="Html file"
+    ItemType="Content">
   </ContentType>
 
   <ContentType
-      Name="CSS"
-      DisplayName="Cascading style sheet"
-      ItemType="Content">
+    Name="CSS"
+    DisplayName="Cascading style sheet"
+    ItemType="Content">
   </ContentType>
 
   <ContentType
-      Name="Json"
-      DisplayName="Json file"
-      ItemType="Content">
+    Name="Json"
+    DisplayName="Json file"
+    ItemType="Content">
   </ContentType>
 
   <ContentType
@@ -64,9 +64,50 @@
     <NameValuePair Name="DefaultMetadata_Generator" Value="MSBuild:Compile" />
   </ContentType>
 
-  <ContentType Name="XamlAppDef" DisplayName="Workflow definition" ItemType="XamlAppDef" />
+  <ContentType
+    Name="Manifest"
+    DisplayName="Manifest file"
+    ItemType="None">
+    <NameValuePair Name="SuppressNumericSuffix" Value="true" />
+  </ContentType>
 
-  <ContentType Name="Resource" DisplayName="Resource" ItemType="Resource" />
+  <ContentType
+    Name="Config"
+    DisplayName="Config file"
+    ItemType="None">
+    <NameValuePair Name="SuppressNumericSuffix" Value="true" />
+  </ContentType>
+
+  <ContentType
+    Name="WindowsResource"
+    DisplayName="Windows Resourcs file"
+    ItemType="None">
+    <NameValuePair Name="SuppressNumericSuffix" Value="true" />
+  </ContentType>
+
+  <ContentType
+    Name="PackageLayout"
+    DisplayName="Package Layout file"
+    ItemType="None">
+    <NameValuePair Name="SuppressNumericSuffix" Value="true" />
+  </ContentType>
+
+  <ContentType
+    Name="AppInstaller"
+    DisplayName="App Installer file"
+    ItemType="None">
+    <NameValuePair Name="SuppressNumericSuffix" Value="true" />
+  </ContentType>
+
+  <ContentType 
+    Name="XamlAppDef"
+    DisplayName="Workflow definition"
+    ItemType="XamlAppDef" />
+
+  <ContentType 
+    Name="Resource"
+    DisplayName="Resource"
+    ItemType="Resource" />
 
   <ItemType Name="None" DisplayName="None"/>
   <ItemType Name="Content" DisplayName="Content" />
@@ -91,6 +132,10 @@
   <FileExtension Name=".xml" ContentType="XML" />
   <FileExtension Name=".mht" ContentType="MHT" />
   <FileExtension Name=".manifest" ContentType="Manifest" />
+  <FileExtension Name=".config" ContentType="Config" />
+  <FileExtension Name=".resw;.resjson" ContentType="WindowsResource" />
+  <FileExtension Name=".packagelayout" ContentType="PackageLayout" />
+  <FileExtension Name=".appinstaller" ContentType="AppInstaller" />
   <FileExtension Name=".rdlc" ContentType="RDLC" />
   <FileExtension Name=".cd" ContentType="ClassDiagram" />
   <FileExtension Name=".licenses" ContentType="Licenses" />

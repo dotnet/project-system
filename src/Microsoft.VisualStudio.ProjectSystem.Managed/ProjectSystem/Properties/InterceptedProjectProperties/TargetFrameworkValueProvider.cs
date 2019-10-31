@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public override async Task<string> OnGetEvaluatedPropertyValueAsync(string evaluatedPropertyValue, IProjectProperties defaultProperties)
         {
             ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync();
-            string targetFrameworkMoniker = (string)await configuration.TargetFrameworkMoniker.GetValueAsync();
+            string? targetFrameworkMoniker = (string?)await configuration.TargetFrameworkMoniker.GetValueAsync();
 
             if (targetFrameworkMoniker != null)
             {

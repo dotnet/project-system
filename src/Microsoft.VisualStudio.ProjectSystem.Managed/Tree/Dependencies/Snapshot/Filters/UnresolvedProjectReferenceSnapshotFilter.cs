@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             {
                 TargetedDependenciesSnapshot? snapshot = _aggregateSnapshotProvider.GetSnapshot(dependency);
 
-                if (snapshot != null && snapshot.HasVisibleUnresolvedDependency)
+                if (snapshot != null && snapshot.HasReachableVisibleUnresolvedDependency)
                 {
                     context.Accept(dependency.ToUnresolved(ProjectReference.SchemaName));
                     return;

@@ -35,14 +35,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // correctly. 
             ConfigurationGeneral props = await _commonProjectServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync();
 
-            string targetFrameworks = (string)await props.TargetFrameworks.GetValueAsync();
+            string? targetFrameworks = (string?)await props.TargetFrameworks.GetValueAsync();
 
             if (string.IsNullOrWhiteSpace(targetFrameworks))
             {
                 return null;
             }
 
-            return BuildUtilities.GetPropertyValues(targetFrameworks).ToList();
+            return BuildUtilities.GetPropertyValues(targetFrameworks!).ToList();
         }
 
         /// <summary>

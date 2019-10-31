@@ -6,7 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Input;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
+using Microsoft.VisualStudio.ProjectSystem.VS.UI;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
@@ -19,17 +19,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         protected static readonly Guid LegacyCSharpPackageGuid = new Guid("{FAE04EC1-301F-11d3-BF4B-00C04F79EFBC}");
         protected static readonly Guid LegacyVBPackageGuid = new Guid("{164B10B9-B200-11d0-8C61-00A0C91E29D5}");
         private readonly ConfiguredProject _configuredProject;
-        private readonly IPhysicalProjectTree _projectTree;
-        private readonly IUnconfiguredProjectVsServices _projectVsServices;
-        private readonly IVsUIService<IVsAddProjectItemDlg> _addItemDialog;
+        private readonly IAddItemDialogService _addItemDialogService;
         private readonly IVsUIService<IVsShell> _vsShell;
 
-        protected AbstractAddItemCommandHandler(ConfiguredProject configuredProject, IPhysicalProjectTree projectTree, IUnconfiguredProjectVsServices projectVsServices, IVsUIService<IVsAddProjectItemDlg> addItemDialog, IVsUIService<SVsShell, IVsShell> vsShell)
+        protected AbstractAddItemCommandHandler(ConfiguredProject configuredProject, IAddItemDialogService addItemDialogService, IVsUIService<SVsShell, IVsShell> vsShell)
         {
             _configuredProject = configuredProject;
-            _projectTree = projectTree;
-            _projectVsServices = projectVsServices;
-            _addItemDialog = addItemDialog;
+            _addItemDialogService = addItemDialogService;
             _vsShell = vsShell;
         }
 
@@ -38,11 +34,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         /// </summary>
         protected abstract ImmutableDictionary<long, ImmutableArray<TemplateDetails>> GetTemplateDetails();
 
-        public Task<CommandStatusResult> GetCommandStatusAsync(IImmutableSet<IProjectTree> nodes, long commandId, bool focused, string commandText, CommandStatus progressiveStatus)
+        public Task<CommandStatusResult> GetCommandStatusAsync(IImmutableSet<IProjectTree> nodes, long commandId, bool focused, string? commandText, CommandStatus progressiveStatus)
         {
             Requires.NotNull(nodes, nameof(nodes));
 
-            if (nodes.Count == 1 && _projectTree.NodeCanHaveAdditions(nodes.First()) && TryGetTemplateDetails(commandId, out _))
+            if (nodes.Count == 1 && _addItemDialogService.CanAddNewOrExistingItemTo(nodes.First()) && TryGetTemplateDetails(commandId, out _))
             {
                 return GetCommandStatusResult.Handled(commandText, CommandStatus.Enabled);
             }
@@ -54,52 +50,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         {
             Requires.NotNull(nodes, nameof(nodes));
 
-            // We only support single node selections
-            if (nodes.Count != 1)
-            {
-                return false;
-            }
-
-            IProjectTree node = nodes.First();
-
-            // We only support nodes that can actually have things added to it
-            if (!_projectTree.NodeCanHaveAdditions(node))
-            {
-                return false;
-            }
-
-            if (TryGetTemplateDetails(commandId, out TemplateDetails? result))
-            {
-                __VSADDITEMFLAGS uiFlags = __VSADDITEMFLAGS.VSADDITEM_AddNewItems |
-                                           __VSADDITEMFLAGS.VSADDITEM_SuggestTemplateName |
-                                           __VSADDITEMFLAGS.VSADDITEM_AllowHiddenTreeView;
-
-                string strBrowseLocations = _projectTree.TreeProvider.GetAddNewItemDirectory(node);
-
-                await _projectVsServices.ThreadingService.SwitchToUIThread();
-
+            if (nodes.Count == 1 && _addItemDialogService.CanAddNewOrExistingItemTo(nodes.First()) && TryGetTemplateDetails(commandId, out TemplateDetails? result))
+            { 
                 // Look up the resources from each package to get the strings to pass to the Add Item dialog.
                 // These strings must match what is used in the template exactly, including localized versions. Rather than relying on
                 // our localizations being the same as the VS repository localizations we just load the right strings using the same
                 // resource IDs as the templates themselves use.
-                string dirName = _vsShell.Value!.LoadPackageString(result.DirNamePackageGuid, result.DirNameResourceId);
-                string templateName = _vsShell.Value!.LoadPackageString(result.TemplateNamePackageGuid, result.TemplateNameResourceId);
+                string localizedDirectoryName = _vsShell.Value!.LoadPackageString(result.DirNamePackageGuid, result.DirNameResourceId);
+                string localizedTemplateName = _vsShell.Value!.LoadPackageString(result.TemplateNamePackageGuid, result.TemplateNameResourceId);
 
-                string strFilter = string.Empty;
-                Guid addItemTemplateGuid = Guid.Empty;  // Let the dialog ask the hierarchy itself
-                HResult res = _addItemDialog.Value!.AddProjectItemDlg(node.GetHierarchyId(),
-                                                                    ref addItemTemplateGuid,
-                                                                    _projectVsServices.VsProject,
-                                                                    (uint)uiFlags,
-                                                                    dirName,
-                                                                    templateName,
-                                                                    ref strBrowseLocations,
-                                                                    ref strFilter,
-                                                                    out _);
-
-                // Return true here regardless of whether or not the user clicked OK or they clicked Cancel. This ensures that some other
-                // handler isn't called after we run.
-                return res == HResult.OK || res == HResult.Ole.PromptSaveCancelled;
+                await _addItemDialogService.ShowAddNewItemDialogAsync(nodes.First(), localizedDirectoryName, localizedTemplateName);
+                return true;
             }
 
             return false;

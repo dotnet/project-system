@@ -29,7 +29,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
         'A list of all Resource entries that are displayed in this string table (with the exception
         '  of the uncommitted resource, if any)
-        Private ReadOnly _virtualResourceList As New ArrayList
+        Private ReadOnly _virtualResourceList As New List(Of Resource)
 
         'The row that is currently being removed, if any.
         Private _removingRow As DataGridViewRow
@@ -301,10 +301,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             _virtualResourceList.Clear()
 
             'First, create a sorted list of resources that we want to display
-            Dim ResourcesToDisplay As New ArrayList
+            Dim ResourcesToDisplay As New List(Of Resource)
             Dim Categories As CategoryCollection = ResourceFile.RootComponent.RootDesigner.GetView().Categories
-            For Each Entry As DictionaryEntry In ResourceFile
-                Dim Resource As Resource = DirectCast(Entry.Value, Resource)
+            For Each Resource In ResourceFile.Resources.Values
                 If Resource.GetCategory(Categories) Is CategoryToFilterOn Then
                     If Resource.ResourceTypeEditor.DisplayInStringTable Then
                         ResourcesToDisplay.Add(Resource)
@@ -1517,7 +1516,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="originalSorter"></param>
         ''' <remarks></remarks>
-        Friend Sub RestoreSorter(originalSorter As IComparer)
+        Friend Sub RestoreSorter(originalSorter As IComparer(Of Resource))
             Dim stringSorter As StringTableSorter = TryCast(originalSorter, StringTableSorter)
             If stringSorter IsNot Nothing Then
                 SortOnColumn(stringSorter.ColumnIndex, stringSorter.InReverseOrder)
@@ -1600,7 +1599,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' A helper class to sort the resource list in the Data Grid View
         ''' </summary>
         Private Class StringTableSorter
-            Implements IComparer
+            Implements IComparer(Of Resource)
 
             ' which column is used to sort the list
             Private _columnIndex As Integer
@@ -1638,7 +1637,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <summary>
             '''  Compare two list items
             ''' </summary>
-            Public Function Compare(x As Object, y As Object) As Integer Implements IComparer.Compare
+            Public Function Compare(x As Resource, y As Resource) As Integer Implements IComparer(Of Resource).Compare
                 Dim ret As Integer = String.Compare(GetColumnValue(x, _columnIndex), GetColumnValue(y, _columnIndex), StringComparison.CurrentCultureIgnoreCase)
                 If ret = 0 AndAlso _columnIndex <> COLUMN_NAME Then
                     ret = String.Compare(GetColumnValue(x, COLUMN_NAME), GetColumnValue(y, COLUMN_NAME), StringComparison.CurrentCultureIgnoreCase)
@@ -1652,15 +1651,13 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <summary>
             '''  Get String Value of one column
             ''' </summary>
-            Private Shared Function GetColumnValue(obj As Object, column As Integer) As String
-                If TypeOf obj Is Resource Then
-                    Dim value As String = GetResourceCellStringValue(DirectCast(obj, Resource), column)
-                    If value IsNot Nothing Then
-                        Return value
-                    End If
-                Else
-                    Debug.Fail("DetailViewSorter: obj was not a Resource")
+            Private Shared Function GetColumnValue(obj As Resource, column As Integer) As String
+
+                Dim value As String = GetResourceCellStringValue(obj, column)
+                If value IsNot Nothing Then
+                    Return value
                 End If
+
                 Return String.Empty
             End Function
 

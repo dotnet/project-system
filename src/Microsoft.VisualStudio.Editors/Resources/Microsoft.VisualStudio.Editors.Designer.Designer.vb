@@ -2835,7 +2835,16 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PropPage_ImportedNamespacesTitle", resourceCulture)
             End Get
         End Property
-        
+
+        '''<summary>
+        '''  Looks up a localized string similar to &quot;Invalid characters in file path.&quot;.
+        '''</summary>
+        Friend Shared ReadOnly Property PropPage_InvalidCharactersInFilePath() As String
+            Get
+                Return ResourceManager.GetString("PropPage_InvalidCharactersInFilePath", resourceCulture)
+            End Get
+        End Property
+
         '''<summary>
         '''  Looks up a localized string similar to The URL is invalid. Please enter a valid URL like &quot;http://www.microsoft.com/&quot;.
         '''</summary>

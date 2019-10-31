@@ -303,9 +303,9 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Performs layout for the associated tab control
         ''' </summary>
         Public Sub PerformLayout()
-            Common.Switches.TracePDPerfBegin("DesignerTabControlRenderer.PerformLayout()")
+            Common.Switches.TracePDPerfBegin("ProjectDesignerTabRenderer.PerformLayout()")
             UpdateCacheState()
-            Common.Switches.TracePDPerfEnd("DesignerTabControlRenderer.PerformLayout()")
+            Common.Switches.TracePDPerfEnd("ProjectDesignerTabRenderer.PerformLayout()")
         End Sub
 
 

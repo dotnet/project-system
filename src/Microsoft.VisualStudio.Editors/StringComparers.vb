@@ -19,6 +19,12 @@ Namespace Microsoft.VisualStudio
             End Get
         End Property
 
+        Public Shared ReadOnly Property Paths As StringComparer
+            Get
+                Return StringComparer.OrdinalIgnoreCase
+            End Get
+        End Property
+
     End Class
 
 End Namespace

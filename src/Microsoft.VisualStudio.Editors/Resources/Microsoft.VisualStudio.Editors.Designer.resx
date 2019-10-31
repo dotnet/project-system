@@ -742,6 +742,9 @@ Error:</value>
   <data name="PropPage_ResourceFileNotExist" xml:space="preserve">
     <value>"The resource file entered does not exist."</value>
   </data>
+  <data name="PropPage_InvalidCharactersInFilePath" xml:space="preserve">
+    <value>"Invalid characters in file path."</value>
+  </data>
   <data name="APPDES_Title" xml:space="preserve">
     <value>Project Designer</value>
   </data>

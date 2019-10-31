@@ -140,8 +140,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             static IProjectSubscriptionUpdate CreateUpdate(Dictionary<string, IProjectRuleSnapshotModel>? snapshotBySchemaName)
             {
-                var snapshots = ImmutableDictionary<string, IProjectRuleSnapshot>.Empty;
-                var changes = ImmutableDictionary<string, IProjectChangeDescription>.Empty;
+                var snapshots = ImmutableStringDictionary<IProjectRuleSnapshot>.EmptyOrdinal;
+                var changes = ImmutableStringDictionary<IProjectChangeDescription>.EmptyOrdinal;
 
                 if (snapshotBySchemaName != null)
                 {
@@ -168,7 +168,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 Items = items.Aggregate(
                     ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal,
-                    (current, item) => current.Add(item, ImmutableDictionary<string, string>.Empty))
+                    (current, item) => current.Add(item, ImmutableStringDictionary<string>.EmptyOrdinal))
+            };
+        }
+
+        private static IProjectRuleSnapshotModel ItemWithMetadata(string itemSpec, string metadataName, string metadataValue)
+        {
+            return new IProjectRuleSnapshotModel
+            {
+                Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal.Add(
+                    itemSpec,
+                    ImmutableStringDictionary<string>.EmptyOrdinal.Add(metadataName, metadataValue))
             };
         }
 
@@ -292,9 +302,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 [Content.SchemaName] = new IProjectRuleSnapshotModel
                 {
                     Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
-                        .Add("ItemPath1", ImmutableDictionary<string, string>.Empty
+                        .Add("ItemPath1", ImmutableStringDictionary<string>.EmptyOrdinal
                             .Add("CopyToOutputDirectory", "Always")) // ALWAYS COPY THIS ITEM
-                        .Add("ItemPath2", ImmutableDictionary<string, string>.Empty)
+                        .Add("ItemPath2", ImmutableStringDictionary<string>.EmptyOrdinal)
                 }
             };
 
@@ -477,7 +487,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         }
 
         [Fact]
-        public async Task IsUpToDateAsync_False_InputNewerThanCustomOutput()
+        public async Task IsUpToDateAsync_False_CompileItemNewerThanCustomOutput()
         {
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
@@ -491,18 +501,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await SetupAsync(projectSnapshot, sourceSnapshot);
 
-            var itemChangeTime = DateTime.UtcNow.AddMinutes(-4);
-            var outputTime     = DateTime.UtcNow.AddMinutes(-3);
-            var inputTime      = DateTime.UtcNow.AddMinutes(-2);
-            var lastCheckTime  = DateTime.UtcNow.AddMinutes(-1);
+            var itemChangeTime  = DateTime.UtcNow.AddMinutes(-4);
+            var outputTime      = DateTime.UtcNow.AddMinutes(-3);
+            var compileItemTime = DateTime.UtcNow.AddMinutes(-2);
+            var lastCheckTime   = DateTime.UtcNow.AddMinutes(-1);
 
             _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\CustomOutputPath1", outputTime);
-            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\ItemPath1", inputTime);
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\ItemPath1", compileItemTime);
             _buildUpToDateCheck.TestAccess.SetLastCheckedAtUtc(lastCheckTime);
             _buildUpToDateCheck.TestAccess.SetLastItemsChangedAtUtc(itemChangeTime);
 
             await AssertNotUpToDateAsync(
-                $"Input 'C:\\Dev\\Solution\\Project\\ItemPath1' is newer ({inputTime.ToLocalTime()}) than earliest output 'C:\\Dev\\Solution\\Project\\CustomOutputPath1' ({outputTime.ToLocalTime()}), not up to date.",
+                $"Input 'C:\\Dev\\Solution\\Project\\ItemPath1' is newer ({compileItemTime.ToLocalTime()}) than earliest output 'C:\\Dev\\Solution\\Project\\CustomOutputPath1' ({outputTime.ToLocalTime()}), not up to date.",
                 "Outputs");
         }
 
@@ -515,7 +525,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 [ResolvedCompilationReference.SchemaName] = new IProjectRuleSnapshotModel
                 {
                     Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
-                        .Add("Reference1", ImmutableDictionary<string, string>.Empty
+                        .Add("Reference1", ImmutableStringDictionary<string>.EmptyOrdinal
                             .Add("CopyUpToDateMarker", "Reference1MarkerPath")
                             .Add("ResolvedPath", "Reference1ResolvedPath")
                             .Add("OriginalPath", "Reference1OriginalPath"))
@@ -551,12 +561,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
                 [UpToDateCheckBuilt.SchemaName] = SimpleItems("BuiltOutputPath1"),
-                [ResolvedAnalyzerReference.SchemaName] = new IProjectRuleSnapshotModel
-                {
-                    Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
-                        .Add("Analyzer1", ImmutableDictionary<string, string>.Empty
-                            .Add("ResolvedPath", "Analyzer1ResolvedPath"))
-                }
+                [ResolvedAnalyzerReference.SchemaName] = ItemWithMetadata("Analyzer1", "ResolvedPath", "Analyzer1ResolvedPath")
             };
 
             await SetupAsync(projectSnapshot);
@@ -585,7 +590,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 [ResolvedCompilationReference.SchemaName] = new IProjectRuleSnapshotModel
                 {
                     Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
-                        .Add("Reference1", ImmutableDictionary<string, string>.Empty
+                        .Add("Reference1", ImmutableStringDictionary<string>.EmptyOrdinal
                             .Add("CopyUpToDateMarker", "Reference1MarkerPath")
                             .Add("ResolvedPath", "Reference1ResolvedPath")
                             .Add("OriginalPath", "Reference1OriginalPath"))
@@ -641,12 +646,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
-                [UpToDateCheckBuilt.SchemaName] = new IProjectRuleSnapshotModel
-                {
-                    Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
-                        .Add("CopiedOutputDestination", ImmutableDictionary<string, string>.Empty
-                            .Add("Original", "CopiedOutputSource"))
-                }
+                [UpToDateCheckBuilt.SchemaName] = ItemWithMetadata("CopiedOutputDestination", "Original", "CopiedOutputSource")
             };
 
             await SetupAsync(projectSnapshot);
@@ -681,12 +681,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
-                [UpToDateCheckBuilt.SchemaName] = new IProjectRuleSnapshotModel
-                {
-                    Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
-                        .Add("CopiedOutputDestination", ImmutableDictionary<string, string>.Empty
-                            .Add("Original", "CopiedOutputSource"))
-                }
+                [UpToDateCheckBuilt.SchemaName] = ItemWithMetadata("CopiedOutputDestination", "Original", "CopiedOutputSource")
             };
 
             await SetupAsync(projectSnapshot);
@@ -711,12 +706,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
-                [UpToDateCheckBuilt.SchemaName] = new IProjectRuleSnapshotModel
-                {
-                    Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
-                        .Add("CopiedOutputDestination", ImmutableDictionary<string, string>.Empty
-                            .Add("Original", "CopiedOutputSource"))
-                }
+                [UpToDateCheckBuilt.SchemaName] = ItemWithMetadata("CopiedOutputDestination", "Original", "CopiedOutputSource")
             };
 
             await SetupAsync(projectSnapshot);
@@ -748,12 +738,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             var sourceSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
-                [Content.SchemaName] = new IProjectRuleSnapshotModel
-                {
-                    Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
-                        .Add("Item1", ImmutableDictionary<string, string>.Empty
-                            .Add("CopyToOutputDirectory", "PreserveNewest"))
-                }
+                [Content.SchemaName] = ItemWithMetadata("Item1", "CopyToOutputDirectory", "PreserveNewest")
             };
 
             await SetupAsync(sourceSnapshot: sourceSnapshot);
@@ -788,12 +773,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             var sourceSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
-                [Content.SchemaName] = new IProjectRuleSnapshotModel
-                {
-                    Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
-                        .Add("Item1", ImmutableDictionary<string, string>.Empty
-                            .Add("CopyToOutputDirectory", "PreserveNewest"))
-                }
+                [Content.SchemaName] = ItemWithMetadata("Item1", "CopyToOutputDirectory", "PreserveNewest")
             };
 
             await SetupAsync(sourceSnapshot: sourceSnapshot);
@@ -824,12 +804,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             var sourceSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
-                [Content.SchemaName] = new IProjectRuleSnapshotModel
-                {
-                    Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
-                        .Add("Item1", ImmutableDictionary<string, string>.Empty
-                            .Add("CopyToOutputDirectory", "PreserveNewest"))
-                }
+                [Content.SchemaName] = ItemWithMetadata("Item1", "CopyToOutputDirectory", "PreserveNewest")
             };
 
             await SetupAsync(sourceSnapshot: sourceSnapshot);

@@ -683,14 +683,23 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 LogAppDesignerPageOpened(DEFAULT_PAGE)
             End Sub
 
-            Public Shared Sub LogAppDesignerPageOpened(pageGuid As Guid)
+            Public Shared Sub LogAppDesignerPageOpened(pageGuid As Guid, Optional tabTitle As String = Nothing)
                 Dim pageId = PageGuidToId(pageGuid)
-                LogAppDesignerPageOpened(pageId)
+                LogAppDesignerPageOpened(pageId, pageGuid, tabTitle)
             End Sub
 
-            Private Shared Sub LogAppDesignerPageOpened(pageId As Byte)
+            Private Shared Sub LogAppDesignerPageOpened(pageId As Byte, Optional pageGuid As Guid? = Nothing, Optional tabTitle As String = Nothing)
                 Dim userTask = New UserTaskEvent("vs/projectsystem/appdesigner/page-opened", TelemetryResult.Success)
                 userTask.Properties("vs.projectsystem.appdesigner.page-opened") = pageId
+
+                If pageGuid IsNot Nothing Then
+                    userTask.Properties("vs.projectsystem.appdesigner.page-opened.pageguid") = pageGuid.Value.ToString()
+                End If
+
+                If tabTitle IsNot Nothing Then
+                    userTask.Properties("vs.projectsystem.appdesigner.page-opened.tabtitle") = tabTitle
+                End If
+
                 TelemetryService.DefaultSession.PostEvent(userTask)
             End Sub
         End Class

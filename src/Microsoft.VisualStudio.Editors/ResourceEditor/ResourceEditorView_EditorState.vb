@@ -181,7 +181,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         For Each Entry As DictionaryEntry In _categorySorter
                             Dim Category As Category = View._categories(CStr(Entry.Key))
                             If Category IsNot Nothing Then
-                                View.ChangeSorterForCategory(Category, DirectCast(Entry.Value, IComparer))
+                                View.ChangeSorterForCategory(Category, DirectCast(Entry.Value, IComparer(Of Resource)))
                             End If
                         Next
 
@@ -189,7 +189,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         If _selectedResourceNames IsNot Nothing Then
                             'We have to search for the resources by name.  Some of them may no longer exist.
                             '  We'll select the ones we can still find.
-                            Dim ResourcesToSelect As New ArrayList
+                            Dim ResourcesToSelect As New List(Of Resource)
                             For Each Name As String In _selectedResourceNames
                                 Dim Resource As Resource = View._resourceFile.FindResource(Name)
                                 If Resource IsNot Nothing Then

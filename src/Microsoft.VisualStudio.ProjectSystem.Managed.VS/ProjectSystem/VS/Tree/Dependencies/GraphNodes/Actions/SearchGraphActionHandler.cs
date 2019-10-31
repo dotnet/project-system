@@ -12,8 +12,7 @@ using Microsoft.VisualStudio.Shell;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.Actions
 {
     /// <summary>
-    /// Updates the graph to include any <see cref="GraphNode"/>s matching the search
-    /// criteria.
+    /// Updates the graph to include any <see cref="GraphNode"/>s matching the search criteria.
     /// </summary>
     [Export(typeof(IDependenciesGraphActionHandler))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
@@ -151,7 +150,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
         /// </summary>
         private static HashSet<IDependency> SearchFlat(string searchTerm, DependenciesSnapshot dependenciesSnapshot)
         {
-            var matchedDependencies = new HashSet<IDependency>();
+            var matchedDependencies = new HashSet<IDependency>(DependencyIdComparer.Instance);
 
             foreach ((ITargetFramework _, TargetedDependenciesSnapshot targetedSnapshot) in dependenciesSnapshot.DependenciesByTargetFramework)
             {
@@ -173,12 +172,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
             HashSet<IDependency> flatMatchingDependencies,
             Dictionary<string, HashSet<IDependency>> cachedPositiveResults)
         {
-            var matchingNodes = new HashSet<IDependency>();
+            var matchingNodes = new HashSet<IDependency>(DependencyIdComparer.Instance);
 
             foreach (string childDependency in rootDependency.DependencyIDs)
             {
-                if (!snapshot.DependenciesWorld
-                        .TryGetValue(childDependency, out IDependency childDependencyMetadata))
+                if (!snapshot.DependenciesWorld.TryGetValue(childDependency, out IDependency childDependencyMetadata))
                 {
                     continue;
                 }

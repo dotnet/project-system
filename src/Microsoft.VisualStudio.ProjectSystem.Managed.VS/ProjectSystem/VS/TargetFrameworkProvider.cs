@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _nuGetFrameworkParser = nugetFrameworkParser;
         }
 
-        public ITargetFramework? GetTargetFramework(string shortOrFullName)
+        public ITargetFramework? GetTargetFramework(string? shortOrFullName)
         {
             if (string.IsNullOrEmpty(shortOrFullName))
             {
@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
 
             // Fast path for an exact name match
-            if (_targetFrameworkByName.TryGetValue(shortOrFullName, out ITargetFramework existing))
+            if (_targetFrameworkByName.TryGetValue(shortOrFullName!, out ITargetFramework existing))
             {
                 return existing;
             }
@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 if (_targetFrameworkByName.TryGetValue(frameworkName.FullName, out ITargetFramework exitingByFullName))
                 {
                     // The full name was known, so cache by the provided (unknown) name too for next time
-                    ImmutableInterlocked.TryAdd(ref _targetFrameworkByName, shortOrFullName, exitingByFullName);
+                    ImmutableInterlocked.TryAdd(ref _targetFrameworkByName, shortOrFullName!, exitingByFullName);
 
                     return exitingByFullName;
                 }
@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 if (shortName != null && _targetFrameworkByName.TryGetValue(shortName, out ITargetFramework exitingByShortName))
                 {
                     // The short name was known, so cache by the provided (unknown) name too for next time
-                    ImmutableInterlocked.TryAdd(ref _targetFrameworkByName, shortOrFullName, exitingByShortName);
+                    ImmutableInterlocked.TryAdd(ref _targetFrameworkByName, shortOrFullName!, exitingByShortName);
 
                     return exitingByShortName;
                 }
@@ -75,20 +75,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 // This is a completely new target framework. Create, cache and return it.
                 var targetFramework = new TargetFramework(frameworkName, shortName);
 
-                ImmutableInterlocked.TryAdd(ref _targetFrameworkByName, shortOrFullName, targetFramework);
+                ImmutableInterlocked.TryAdd(ref _targetFrameworkByName, shortOrFullName!, targetFramework);
 
                 return targetFramework;
             }
             catch
             {
                 // Note: catching all exceptions and return a generic TargetFramework for given shortOrFullName
-                return new TargetFramework(shortOrFullName);
+                return new TargetFramework(shortOrFullName!);
             }
         }
 
         public ITargetFramework? GetNearestFramework(
-            ITargetFramework targetFramework,
-            IEnumerable<ITargetFramework> otherFrameworks)
+            ITargetFramework? targetFramework,
+            IEnumerable<ITargetFramework>? otherFrameworks)
         {
             if (targetFramework?.FrameworkName == null || otherFrameworks == null)
             {

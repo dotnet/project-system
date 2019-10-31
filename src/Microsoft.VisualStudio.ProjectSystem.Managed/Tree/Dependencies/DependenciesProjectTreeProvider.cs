@@ -14,7 +14,6 @@ using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.References;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
 using Microsoft.VisualStudio.Threading;
@@ -45,8 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         private readonly OrderPrecedenceImportCollection<IDependenciesTreeViewProvider> _viewProviders;
 
         private readonly CancellationSeries _treeUpdateCancellationSeries = new CancellationSeries();
-        private readonly ICrossTargetSubscriptionsHost _dependenciesHost;
-        private readonly IDependenciesSnapshotProvider _dependenciesSnapshotProvider;
+        private readonly DependenciesSnapshotProvider _dependenciesSnapshotProvider;
         private readonly IProjectAsynchronousTasksService _tasksService;
         private readonly IProjectAccessor _projectAccessor;
         private readonly IDependencyTreeTelemetryService _treeTelemetryService;
@@ -67,8 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             IProjectThreadingService threadingService,
             IProjectAccessor projectAccessor,
             UnconfiguredProject unconfiguredProject,
-            IDependenciesSnapshotProvider dependenciesSnapshotProvider,
-            [Import(DependenciesSnapshotProvider.DependencySubscriptionsHostContract)] ICrossTargetSubscriptionsHost dependenciesHost,
+            DependenciesSnapshotProvider dependenciesSnapshotProvider,
             [Import(ExportContractNames.Scopes.UnconfiguredProject)] IProjectAsynchronousTasksService tasksService,
             IDependencyTreeTelemetryService treeTelemetryService)
             : base(threadingService, unconfiguredProject)
@@ -82,7 +79,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 projectCapabilityCheckProvider: unconfiguredProject);
 
             _dependenciesSnapshotProvider = dependenciesSnapshotProvider;
-            _dependenciesHost = dependenciesHost;
             _tasksService = tasksService;
             _projectAccessor = projectAccessor;
             _treeTelemetryService = treeTelemetryService;
@@ -300,7 +296,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// For nodes that represent files on disk, this is the project-relative path to that file.
         /// The root node of a project is the absolute path to the project file.
         /// </returns>
-        public override string GetPath(IProjectTree node)
+        public override string? GetPath(IProjectTree node)
         {
             // Needed for graph nodes search
             return node.FilePath;
@@ -341,7 +337,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                             _ = SubmitTreeUpdateAsync(
                                 delegate
                                 {
-                                    IProjectTree dependenciesNode = CreateDependenciesFolder();
+                                    IProjectTree dependenciesNode = CreateDependenciesNode();
 
                                     return Task.FromResult(new TreeUpdateResult(dependenciesNode));
                                 },
@@ -358,7 +354,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     registerFaultHandler: true);
             }
 
-            IProjectTree CreateDependenciesFolder()
+            IProjectTree CreateDependenciesNode()
             {
                 var values = new ReferencesProjectTreeCustomizablePropertyValues
                 {
@@ -373,7 +369,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 // providers to override lower priority providers.
                 foreach (IProjectTreePropertiesProvider provider in _projectTreePropertiesProviders.ExtensionValues())
                 {
-                    provider.CalculatePropertyValues(null, values);
+                    provider.CalculatePropertyValues(ProjectTreeCustomizablePropertyContext.Instance, values);
                 }
 
                 // Note that all the parameters are specified so we can force this call to an
@@ -447,7 +443,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                     if (_treeTelemetryService.IsActive)
                     {
-                        await _treeTelemetryService.ObserveTreeUpdateCompletedAsync(snapshot.HasVisibleUnresolvedDependency);
+                        await _treeTelemetryService.ObserveTreeUpdateCompletedAsync(snapshot.HasReachableVisibleUnresolvedDependency);
                     }
                 }
 
@@ -528,7 +524,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return null;
             }
 
-            Rule schema = browseObjectsCatalog.GetSchema(dependency.SchemaName);
+            Rule? schema = browseObjectsCatalog.GetSchema(dependency.SchemaName);
 
             string itemSpec = string.IsNullOrEmpty(dependency.OriginalItemSpec)
                 ? dependency.Path
@@ -587,7 +583,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             {
                 ConfiguredProject project = dependency.TargetFramework.Equals(TargetFramework.Any)
                     ? ActiveConfiguredProject
-                    : _dependenciesHost.GetConfiguredProject(dependency.TargetFramework) ?? ActiveConfiguredProject;
+                    : _dependenciesSnapshotProvider.GetConfiguredProject(dependency.TargetFramework) ?? ActiveConfiguredProject;
 
                 return GetActiveConfiguredProjectExports(project);
             }
@@ -609,6 +605,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 : base(configuredProject)
             {
             }
+        }
+
+        /// <summary>
+        /// A private implementation of <see cref="IProjectTreeCustomizablePropertyContext"/> used when creating
+        /// the dependencies nodes.
+        /// </summary>
+        private sealed class ProjectTreeCustomizablePropertyContext : IProjectTreeCustomizablePropertyContext
+        {
+            public static readonly ProjectTreeCustomizablePropertyContext Instance = new ProjectTreeCustomizablePropertyContext();
+
+            public string? ItemName => null;
+            public string? ItemType => null;
+            public IImmutableDictionary<string, string>? Metadata => null;
+            public ProjectTreeFlags ParentNodeFlags => ProjectTreeFlags.Empty;
+            public bool ExistsOnDisk => false;
+            public bool IsFolder => false;
+            public bool IsNonFileSystemProjectItem => true;
+            public IImmutableDictionary<string, string>? ProjectTreeSettings => null;
         }
     }
 }

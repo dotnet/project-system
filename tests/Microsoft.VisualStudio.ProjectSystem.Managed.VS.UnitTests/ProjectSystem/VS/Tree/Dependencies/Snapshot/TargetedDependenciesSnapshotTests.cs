@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.Same(projectPath, snapshot.ProjectPath);
             Assert.Same(targetFramework, snapshot.TargetFramework);
             Assert.Same(catalogs, snapshot.Catalogs);
-            Assert.False(snapshot.HasVisibleUnresolvedDependency);
+            Assert.False(snapshot.HasReachableVisibleUnresolvedDependency);
             Assert.Empty(snapshot.TopLevelDependencies);
             Assert.Empty(snapshot.DependenciesWorld);
             Assert.False(snapshot.CheckForUnresolvedDependencies("foo"));
@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.Same(projectPath, snapshot.ProjectPath);
             Assert.Same(targetFramework, snapshot.TargetFramework);
             Assert.Same(catalogs, snapshot.Catalogs);
-            Assert.False(snapshot.HasVisibleUnresolvedDependency);
+            Assert.False(snapshot.HasReachableVisibleUnresolvedDependency);
             Assert.Empty(snapshot.TopLevelDependencies);
             Assert.Empty(snapshot.DependenciesWorld);
             Assert.False(snapshot.CheckForUnresolvedDependencies("foo"));
@@ -140,7 +140,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.NotSame(previousSnapshot, snapshot);
             Assert.Same(updatedProjectPath, snapshot.ProjectPath);
             Assert.Same(catalogs, snapshot.Catalogs);
-            Assert.True(snapshot.HasVisibleUnresolvedDependency);
+            Assert.False(snapshot.HasReachableVisibleUnresolvedDependency);
             AssertEx.CollectionLength(snapshot.DependenciesWorld, 2);
             AssertEx.CollectionLength(snapshot.TopLevelDependencies, 1);
             Assert.True(resolvedTop.Matches(snapshot.TopLevelDependencies.Single(), targetFramework));
@@ -632,34 +632,111 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         }
 
         [Fact]
-        public void CheckForUnresolvedDependencies()
+        public void ShouldAppearUnresolved()
         {
-            var unresolved = new TestDependency
+            var unresolvedTopLevel = new TestDependency
             {
                 ProviderType = "Yyy",
-                Id = "tfm1\\yyy\\child",
-                Resolved = false
+                Id = "tfm1\\yyy\\unresolvedTopLevel",
+                Resolved = false,
+                TopLevel = true
             };
 
-            var resolvedWithUnresolvedChild = new TestDependency
+            var unresolvedReachable = new TestDependency
             {
                 ProviderType = "Yyy",
-                Id = "tfm1\\yyy\\1",
+                Id = "tfm1\\yyy\\unresolvedReachable",
+                Resolved = false,
+                TopLevel = false
+            };
+
+            var resolvedUnreachableWithHiddenParent = new TestDependency
+            {
+                ProviderType = "Yyy",
+                Id = "tfm1\\yyy\\resolvedUnreachableWithHiddenParent",
                 Resolved = true,
-                DependencyIDs = ImmutableArray.Create(unresolved.Id)
+                TopLevel = false
             };
 
-            var resolved = new TestDependency
+            var resolvedHiddenParent = new TestDependency
             {
                 ProviderType = "Yyy",
-                Id = "tfm1\\yyy\\2",
-                Resolved = true
+                Id = "tfm1\\yyy\\resolvedHiddenParent",
+                Resolved = true,
+                TopLevel = true,
+                Visible = false,
+                DependencyIDs = ImmutableArray.Create(resolvedUnreachableWithHiddenParent.Id)
             };
 
-            var snapshot = TargetedDependenciesSnapshotFactory.ImplementFromDependencies(new IDependency[] { resolvedWithUnresolvedChild, unresolved, resolved });
+            var resolvedTopLevelWithUnresolvedChild = new TestDependency
+            {
+                ProviderType = "Yyy",
+                Id = "tfm1\\yyy\\resolvedTopLevelWithUnresolvedChild",
+                Resolved = true,
+                TopLevel = true,
+                DependencyIDs = ImmutableArray.Create(unresolvedReachable.Id)
+            };
 
-            Assert.True(snapshot.CheckForUnresolvedDependencies(resolvedWithUnresolvedChild));
-            Assert.False(snapshot.CheckForUnresolvedDependencies(resolved));
+            var resolvedTopLevel = new TestDependency
+            {
+                ProviderType = "Yyy",
+                Id = "tfm1\\yyy\\resolvedTopLevel",
+                Resolved = true,
+                TopLevel = true
+            };
+            
+            var resolvedUnreachable = new TestDependency
+            {
+                ProviderType = "Yyy",
+                Id = "tfm1\\yyy\\resolvedUnreachable",
+                Resolved = true,
+                TopLevel = false
+            };
+            
+            var resolvedChildWithVisibleUnresolvedParent = new TestDependency
+            {
+                ProviderType = "Yyy",
+                Id = "tfm1\\yyy\\resolvedChildWithVisibleUnresolvedParent",
+                Resolved = true,
+                TopLevel = false
+            };
+
+            var unresolvedTopLevelWithUnresolvedChild = new TestDependency
+            {
+                ProviderType = "Yyy",
+                Id = "tfm1\\yyy\\unresolvedTopLevelWithUnresolvedChild",
+                Resolved = false,
+                TopLevel = true,
+                DependencyIDs = ImmutableArray.Create(resolvedChildWithVisibleUnresolvedParent.Id)
+            };
+
+            var snapshot = TargetedDependenciesSnapshotFactory.ImplementFromDependencies(new IDependency[]
+            {
+                unresolvedTopLevel, unresolvedReachable, resolvedUnreachableWithHiddenParent, resolvedHiddenParent,
+                resolvedTopLevelWithUnresolvedChild, resolvedTopLevel, resolvedUnreachable, resolvedChildWithVisibleUnresolvedParent,
+                unresolvedTopLevelWithUnresolvedChild
+            });
+
+            Assert.True(snapshot.ShouldAppearUnresolved(unresolvedTopLevel));
+            Assert.True(snapshot.ShouldAppearUnresolved(unresolvedReachable));
+            Assert.True(snapshot.ShouldAppearUnresolved(resolvedTopLevelWithUnresolvedChild));
+            Assert.True(snapshot.ShouldAppearUnresolved(unresolvedTopLevelWithUnresolvedChild));
+            Assert.False(snapshot.ShouldAppearUnresolved(resolvedTopLevel));
+            Assert.False(snapshot.ShouldAppearUnresolved(resolvedChildWithVisibleUnresolvedParent));
+#if DEBUG
+            // These throw in unit tests but assert elsewhere
+            Assert.ThrowsAny<Exception>(() => snapshot.ShouldAppearUnresolved(resolvedUnreachable));
+            Assert.ThrowsAny<Exception>(() => snapshot.ShouldAppearUnresolved(resolvedHiddenParent));
+            Assert.ThrowsAny<Exception>(() => snapshot.ShouldAppearUnresolved(resolvedUnreachableWithHiddenParent));
+            Assert.ThrowsAny<Exception>(() => snapshot.ShouldAppearUnresolved(new TestDependency { Id = "ID", Resolved = false }));
+            Assert.ThrowsAny<Exception>(() => snapshot.ShouldAppearUnresolved(new TestDependency { Id = "ID", Resolved = true }));
+#else
+            Assert.False(snapshot.ShouldAppearUnresolved(resolvedUnreachable));
+            Assert.False(snapshot.ShouldAppearUnresolved(resolvedHiddenParent));
+            Assert.False(snapshot.ShouldAppearUnresolved(resolvedUnreachableWithHiddenParent));
+            Assert.True(snapshot.ShouldAppearUnresolved(new TestDependency { Id = "ID", Resolved = false }));
+            Assert.False(snapshot.ShouldAppearUnresolved(new TestDependency { Id = "ID", Resolved = true }));
+#endif
         }
 
         /// <summary>
@@ -667,7 +744,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// https://github.com/dotnet/project-system/issues/3374
         /// </summary>
         [Fact]
-        public void CheckForUnresolvedDependencies_CircularDependency_DoesNotRecurseInfinitely()
+        public void ShouldAppearUnresolved_CircularDependency_DoesNotRecurseInfinitely()
         {
             const string id1 = @"tfm1\xxx\dependency1";
             const string id2 = @"tfm1\xxx\dependency2";
@@ -692,7 +769,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var snapshot = TargetedDependenciesSnapshotFactory.ImplementFromDependencies(new IDependency[] { dependency1, dependency2 });
 
             // verify it doesn't stack overflow
-            snapshot.CheckForUnresolvedDependencies(dependency1);   
+            snapshot.ShouldAppearUnresolved(dependency1);   
         }
 
         internal sealed class TestDependenciesSnapshotFilter : IDependenciesSnapshotFilter

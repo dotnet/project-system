@@ -280,7 +280,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Else
                         Dim propTreatAllWarnings As PropertyDescriptor
                         Dim obj As Object
-                        Dim bTreatAllWarningsAsErrors As Boolean = False
 
                         propTreatAllWarnings = GetPropertyDescriptor("TreatWarningsAsErrors")
 
@@ -288,7 +287,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                         If Not (PropertyControlData.IsSpecialValue(obj)) Then
                             txtSpecificWarnings.Text = ""
-                            bTreatAllWarningsAsErrors = CType(obj, Boolean)
+                            Dim bTreatAllWarningsAsErrors = CType(obj, Boolean)
                             If (bTreatAllWarningsAsErrors) Then
                                 warnings = TreatWarningsSetting.WARNINGS_ALL
                             Else

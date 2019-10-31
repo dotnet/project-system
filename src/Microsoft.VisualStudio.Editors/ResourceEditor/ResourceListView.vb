@@ -25,7 +25,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '  Since we're using the listview in virtual mode (in order to accomplish
         '  delay-load of the images from disk), we keep track of the data ourselves.
         '  The base listview notifies us when it needs data to display.
-        Private ReadOnly _virtualResourceList As New ArrayList 'Of Resource
+        Private ReadOnly _virtualResourceList As New List(Of Resource)
 
         'A cache of thumbnails for the listview items that we are displaying.  This has
         '  knowledge of our imagelist, and manages it for us.
@@ -416,8 +416,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             'Go through all resources, and pick out the ones which belong to the specified category, 
             '  and add them to our virtual list
             Dim Categories As CategoryCollection = ResourceFile.RootComponent.RootDesigner.GetView().Categories
-            For Each Entry As DictionaryEntry In ResourceFile
-                Dim Resource As Resource = DirectCast(Entry.Value, Resource)
+            For Each Resource In ResourceFile.Resources.Values
                 If Resource.GetCategory(Categories) Is CategoryToFilterOn Then
                     Debug.Assert(Not Resource.ResourceTypeEditor.DisplayInStringTable,
                             "Why are we trying to display this type of resource in a listview?")
@@ -623,7 +622,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="originalSorter"></param>
         ''' <remarks></remarks>
-        Friend Sub RestoreSorter(originalSorter As IComparer)
+        Friend Sub RestoreSorter(originalSorter As IComparer(Of Resource))
             Dim listViewSorter As DetailViewSorter = TryCast(originalSorter, DetailViewSorter)
             If listViewSorter IsNot Nothing Then
                 SortOnColumn(listViewSorter.ColumnIndex, listViewSorter.InReverseOrder)
@@ -1365,7 +1364,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks>
         '''   The resources are added to the end of the list, alphabetized.
         ''' </remarks>
-        Public Sub AddResources(Resources As IList)
+        Public Sub AddResources(Resources As IList(Of Resource))
             UnselectAll()
             Debug.Assert(_virtualResourceList.Count = VirtualListSize)
 
@@ -1375,7 +1374,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
 
             'Alphabetize
-            Dim AlphabetizedResources As New ArrayList(Resources)
+            Dim AlphabetizedResources As New List(Of Resource)(Resources)
             AlphabetizedResources.Sort(_sorter)
 
             '... and add them to the end of the list.
@@ -1436,7 +1435,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' A helper class to sort the resource list in the detail view
         ''' </summary>
         Private Class DetailViewSorter
-            Implements IComparer
+            Implements IComparer(Of Resource)
 
             ' which column is used to sort the list
             Private _columnIndex As Integer
@@ -1474,7 +1473,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <summary>
             '''  Compare two list items
             ''' </summary>
-            Public Function Compare(x As Object, y As Object) As Integer Implements IComparer.Compare
+            Public Function Compare(x As Resource, y As Resource) As Integer Implements IComparer(Of Resource).Compare
                 Dim ret As Integer = String.Compare(GetColumnValue(x, _columnIndex), GetColumnValue(y, _columnIndex), StringComparison.CurrentCultureIgnoreCase)
                 If ret = 0 AndAlso _columnIndex <> 0 Then
                     ret = String.Compare(GetColumnValue(x, 0), GetColumnValue(y, 0), StringComparison.CurrentCultureIgnoreCase)
@@ -1488,13 +1487,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <summary>
             '''  Get String Value of one column
             ''' </summary>
-            Private Shared Function GetColumnValue(obj As Object, column As Integer) As String
-                If TypeOf obj Is Resource Then
-                    Return GetDetailViewColumn(DirectCast(obj, Resource), column)
-                End If
-
-                Debug.Fail("DetailViewSorter: obj was not a Resource")
-                Return String.Empty
+            Private Shared Function GetColumnValue(obj As Resource, column As Integer) As String
+                Return GetDetailViewColumn(obj, column)
             End Function
 
 

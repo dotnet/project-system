@@ -20,14 +20,22 @@ using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions
 {
-    [Export(DependencySubscriptionsHostContract, typeof(ICrossTargetSubscriptionsHost))]
-    [Export(typeof(IDependenciesSnapshotProvider))]
+    /// <summary>
+    /// Provides immutable dependencies snapshot for a given project.
+    /// </summary>
+    [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
+    [Export(typeof(DependenciesSnapshotProvider))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
-    internal sealed partial class DependenciesSnapshotProvider : OnceInitializedOnceDisposedAsync, ICrossTargetSubscriptionsHost, IDependenciesSnapshotProvider
+    internal sealed partial class DependenciesSnapshotProvider : OnceInitializedOnceDisposedAsync
     {
-        public const string DependencySubscriptionsHostContract = "DependencySubscriptionsHostContract";
-
+        /// <summary>
+        /// Raised when the project's full path changes (i.e. due to being renamed).
+        /// </summary>
         public event EventHandler<ProjectRenamedEventArgs>? SnapshotRenamed;
+
+        /// <summary>
+        /// Raised when the project and its snapshot provider are unloading.
+        /// </summary>
         public event EventHandler<SnapshotProviderUnloadingEventArgs>? SnapshotProviderUnloading;
 
         private readonly SemaphoreSlim _contextUpdateGate = new SemaphoreSlim(initialCount: 1);
@@ -105,11 +113,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             _disposables = new DisposableBag { _snapshot, _contextUpdateGate };
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets the current immutable dependencies snapshot for the project.
+        /// </summary>
+        /// <remarks>
+        /// Never null.
+        /// </remarks>
         public DependenciesSnapshot CurrentSnapshot => _snapshot.Current;
 
-        /// <inheritdoc />
-        IReceivableSourceBlock<SnapshotChangedEventArgs> IDependenciesSnapshotProvider.SnapshotChangedSource => _snapshot.Source;
+        /// <summary>
+        /// Dataflow to monitor the project snapshot changes.
+        /// </summary>
+        public IReceivableSourceBlock<SnapshotChangedEventArgs> SnapshotChangedSource => _snapshot.Source;
 
         private ImmutableArray<IDependencyCrossTargetSubscriber> Subscribers
         {
@@ -159,9 +174,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             }
         }
 
-#pragma warning disable RS0030 // symbol ProjectAutoLoad is banned
         [ProjectAutoLoad(ProjectLoadCheckpoint.ProjectFactoryCompleted)]
-#pragma warning restore RS0030 // symbol ProjectAutoLoad is banned
         [AppliesTo(ProjectCapability.DependenciesTree)]
         public Task OnProjectFactoryCompletedAsync()
         {
@@ -189,8 +202,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 {
                     return;
                 }
-
-                await InitializeAsync();
 
                 await OnConfiguredProjectEvaluatedAsync(e);
             }
@@ -296,6 +307,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             ITargetFramework? activeTargetFramework,
             CancellationToken token)
         {
+            Assumes.NotNull(_commonServices.Project.FullPath);
+
             IImmutableSet<string>? projectItemSpecs = GetProjectItemSpecs(catalogs?.Project.ProjectInstance.Items);
 
             _snapshot.TryUpdate(
@@ -455,5 +468,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     action,
                     ruleNames: ConfigurationGeneral.SchemaName));
         }
+    }
+
+    internal sealed class SnapshotChangedEventArgs : EventArgs
+    {
+        public SnapshotChangedEventArgs(DependenciesSnapshot snapshot, CancellationToken token)
+        {
+            Requires.NotNull(snapshot, nameof(snapshot));
+
+            Snapshot = snapshot;
+            Token = token;
+        }
+
+        public DependenciesSnapshot Snapshot { get; }
+        public CancellationToken Token { get; }
+    }
+
+    internal sealed class SnapshotProviderUnloadingEventArgs : EventArgs
+    {
+        public SnapshotProviderUnloadingEventArgs(DependenciesSnapshotProvider snapshotProvider, CancellationToken token = default)
+        {
+            Requires.NotNull(snapshotProvider, nameof(snapshotProvider));
+
+            SnapshotProvider = snapshotProvider;
+            Token = token;
+        }
+
+        public DependenciesSnapshotProvider SnapshotProvider { get; }
+        public CancellationToken Token { get; }
     }
 }

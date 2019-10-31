@@ -174,35 +174,160 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Catalogs = catalogs;
             DependenciesWorld = dependenciesWorld;
 
-            bool hasVisibleUnresolvedDependency = false;
-            ImmutableArray<IDependency>.Builder topLevelDependencies = ImmutableArray.CreateBuilder<IDependency>();
+            bool hasVisibleUnresolvedDependency;
 
-            foreach ((string id, IDependency dependency) in dependenciesWorld)
+            // Perform a single pass through dependencies, gathering as much information as possible
+            (TopLevelDependencies, _topLevelDependencyByPath, hasVisibleUnresolvedDependency) = Scan(dependenciesWorld, targetFramework);
+
+            if (hasVisibleUnresolvedDependency)
             {
-                System.Diagnostics.Debug.Assert(
-                    string.Equals(id, dependency.Id),
-                    "dependenciesWorld dictionary entry keys must match their value's ids.");
-
-                if (!dependency.Resolved && dependency.Visible)
-                {
-                    hasVisibleUnresolvedDependency = true;
-                }
-
-                if (dependency.TopLevel)
-                {
-                    topLevelDependencies.Add(dependency);
-
-                    if (!string.IsNullOrEmpty(dependency.Path))
-                    {
-                        _topLevelDependenciesByPathMap.Add(
-                            Dependency.GetID(TargetFramework, dependency.ProviderType, dependency.Path),
-                            dependency);
-                    }
-                }
+                // Walk the dependency graph to find visible, unresolved dependencies which are reachable
+                // from visible top-level dependencies.
+                _hasReachableVisibleUnresolvedById = FindReachableVisibleUnresolvedDependencies();
+            }
+            else
+            {
+                // There are no visible and unresolved dependencies in the snapshot
+                _hasReachableVisibleUnresolvedById = null;
             }
 
-            HasVisibleUnresolvedDependency = hasVisibleUnresolvedDependency;
-            TopLevelDependencies = topLevelDependencies.ToImmutable();
+            return;
+
+            static (ImmutableArray<IDependency> TopLevelDependencies, Dictionary<string, IDependency> topLevelDependencyByPath, bool hasVisibleUnresolvedDependency) Scan(ImmutableDictionary<string, IDependency> dependenciesWorld, ITargetFramework targetFramework)
+            {
+                // TODO use ToImmutableAndFree?
+                ImmutableArray<IDependency>.Builder topLevelDependencies = ImmutableArray.CreateBuilder<IDependency>();
+
+                bool hasVisibleUnresolvedDependency = false;
+                var topLevelDependencyByPath = new Dictionary<string, IDependency>(StringComparer.OrdinalIgnoreCase);
+
+                foreach ((string id, IDependency dependency) in dependenciesWorld)
+                {
+                    System.Diagnostics.Debug.Assert(
+                        string.Equals(id, dependency.Id),
+                        "dependenciesWorld dictionary entry keys must match their value's ids.");
+
+                    if (!dependency.Resolved && dependency.Visible)
+                    {
+                        hasVisibleUnresolvedDependency = true;
+                    }
+
+                    if (dependency.TopLevel)
+                    {
+                        topLevelDependencies.Add(dependency);
+
+                        if (!string.IsNullOrEmpty(dependency.Path))
+                        {
+                            topLevelDependencyByPath.Add(
+                                Dependency.GetID(targetFramework, dependency.ProviderType, dependency.Path),
+                                dependency);
+                        }
+                    }
+                }
+
+                return (topLevelDependencies.ToImmutable(), topLevelDependencyByPath, hasVisibleUnresolvedDependency);
+            }
+
+            IReadOnlyDictionary<string, bool>? FindReachableVisibleUnresolvedDependencies()
+            {
+                // It is possible that there exists a dependency which is both visible and unresolved, yet not
+                // actually present in the tree because one of its ancestors is not visible. Therefore instead
+                // of scanning all dependencies in the snapshot, we walk the dependency graph starting with
+                // top-level visible nodes, and remember those which have at least one visible, unresolved and
+                // reachable descendant.
+
+                bool hasReachableVisibleUnresolvedDependency = false;
+
+                var hasReachableVisibleUnresolvedById = new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
+
+                // 'spine' is a stack containing an enumerator for each level of the graph, which is updated as
+                // we walk the graph. We are working with struct enumerators so need this array. It will grow
+                // if needed.
+                var spine = new ImmutableArray<IDependency>.Enumerator[8];
+                int depth = 0;
+
+                // Start with all top-level dependencies
+                spine[0] = TopLevelDependencies.GetEnumerator();
+
+                while (true)
+                {
+                    ref ImmutableArray<IDependency>.Enumerator level = ref spine[depth];
+
+                    // Move to next item at this level
+                    if (!level.MoveNext())
+                    {
+                        // This level is done, so pop back up a level
+                        depth--;
+
+                        if (depth < 0)
+                        {
+                            // No more levels, so finished tree traversal
+                            break;
+                        }
+
+                        // Resume the previous level
+                        continue;
+                    }
+
+                    // Wvaluate the current dependency
+                    IDependency dependency = level.Current;
+
+                    if (!dependency.Visible)
+                    {
+                        // Skip any hidden nodes
+                        continue;
+                    }
+
+                    if (hasReachableVisibleUnresolvedById.ContainsKey(dependency.Id))
+                    {
+                        // We've already visited this item, so skip it
+                        continue;
+                    }
+
+                    if (!dependency.Resolved)
+                    {
+                        // This node is unresolved
+                        hasReachableVisibleUnresolvedDependency = true;
+
+                        // This node is unresolved, so set it and all items up the spine as unresolved
+                        for (int i = 0; i <= depth; i++)
+                        {
+                            hasReachableVisibleUnresolvedById[spine[i].Current.Id] = true;
+                        }
+                    }
+                    else
+                    {
+                        // This node is resolved, set it to false. If a descendant is later
+                        // found which is visible, reachable and unresolved, then this dependency's
+                        // entry will be updated to 'true' as part of marking all entries in the spine.
+                        hasReachableVisibleUnresolvedById[dependency.Id] = false;
+                    }
+
+                    if (dependency.DependencyIDs.Length != 0)
+                    {
+                        // This dependency has child dependencies, so traverse into them
+                        depth++;
+
+                        if (depth == spine.Length)
+                        {
+                            // Grow the spine
+                            var newSpine = new ImmutableArray<IDependency>.Enumerator[depth << 1];
+                            Array.Copy(spine, newSpine, depth);
+                            spine = newSpine;
+                        }
+
+                        // Enumerate child dependencies
+                        spine[depth] = GetDependencyChildren(dependency).GetEnumerator();
+                    }
+                }
+
+                // If, after all that, all visible and reachable dependencies are resolved, return
+                // null as there is no value in a collection where every entry is false. Consumers
+                // of this collection are local to this class and will null appropriately.
+                return hasReachableVisibleUnresolvedDependency
+                    ? hasReachableVisibleUnresolvedById
+                    : null;
+            }
         }
 
         #endregion
@@ -233,76 +358,52 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// </summary>
         public ImmutableDictionary<string, IDependency> DependenciesWorld { get; }
 
-        private readonly Dictionary<string, IDependency> _topLevelDependenciesByPathMap = new Dictionary<string, IDependency>(StringComparer.OrdinalIgnoreCase);
-        private readonly Dictionary<string, ImmutableArray<IDependency>> _dependenciesChildrenMap = new Dictionary<string, ImmutableArray<IDependency>>(StringComparer.OrdinalIgnoreCase);
-        private readonly Dictionary<string, bool> _unresolvedDescendantsMap = new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
-
-        /// <summary>Re-use an existing, private, object reference for locking, rather than allocating a dedicated object.</summary>
-        private object SyncLock => _dependenciesChildrenMap;
+        /// <summary>
+        /// Maps each top-level dependency by its path, where path is composed of targetFramework/providerType/dependencyPath.
+        /// </summary>
+        private readonly Dictionary<string, IDependency> _topLevelDependencyByPath;
+        
+        /// <summary>
+        /// A map whose keys are the IDs of all reachable dependencies, and whose values are <see langword="true" /> if
+        /// the dependency has a reachable, visible, unresolved descendant, otherwise <see langword="false" />.
+        /// If this fields is <see langword="null" /> then there are no reachable visible unresolved dependencies in the
+        /// entire snapshot.
+        /// Any dependency not in this collection will not be displayed in the tree.
+        /// </summary>
+        private readonly IReadOnlyDictionary<string, bool>? _hasReachableVisibleUnresolvedById;
 
         /// <summary>
-        /// Specifies is this snapshot contains at least one unresolved/broken dependency at any level which is visible.
+        /// Gets whether this snapshot contains at least one unresolved dependency which is both visible
+        /// and reachable from a visible top-level dependency.
         /// </summary>
-        public bool HasVisibleUnresolvedDependency { get; }
+        public bool HasReachableVisibleUnresolvedDependency => _hasReachableVisibleUnresolvedById != null;
 
         /// <summary>
-        /// Efficient API for checking if a given dependency has an unresolved child dependency at any level. 
+        /// Gets whether this dependency's node should appear as unresolved in the dependencies tree.
         /// </summary>
-        /// <param name="dependency"></param>
-        /// <returns>Returns true if given dependency has unresolved child dependency at any level</returns>
-        public bool CheckForUnresolvedDependencies(IDependency dependency)
+        /// <remarks>
+        /// Returns <see langword="true" /> if, for either <paramref name="dependency"/> or one of its descendants, all of the following are true:
+        /// <list type="number">
+        ///   <item><see cref="IDependency.Visible"/> is <see langword="true" />, and</item>
+        ///   <item><see cref="IDependency.Resolved"/> is <see langword="false" />, and</item>
+        ///   <item>the dependency is reachable via the dependency graph from a visible top-level node, where all intermediate nodes are also visible.</item>
+        /// </list>
+        /// </remarks>
+        public bool ShouldAppearUnresolved(IDependency dependency)
         {
-            lock (SyncLock)
+            if (_hasReachableVisibleUnresolvedById == null)
             {
-                if (!_unresolvedDescendantsMap.TryGetValue(dependency.Id, out bool unresolved))
-                {
-                    unresolved = _unresolvedDescendantsMap[dependency.Id] = FindUnresolvedDependenciesRecursive(dependency);
-                }
-
-                return unresolved;
-            }
-
-            bool FindUnresolvedDependenciesRecursive(IDependency parent)
-            {
-                if (parent.DependencyIDs.Length == 0)
-                {
-                    return false;
-                }
-
-                foreach (IDependency child in GetDependencyChildren(parent))
-                {
-                    if (!child.Visible)
-                    {
-                        return false;
-                    }
-
-                    if (!child.Resolved)
-                    {
-                        return true;
-                    }
-
-                    // If the dependency is already in the child map, it is resolved
-                    // Checking here will prevent a stack overflow due to rechecking the same dependencies
-                    if (_dependenciesChildrenMap.ContainsKey(child.Id))
-                    {
-                        return false;
-                    }
-
-                    if (!_unresolvedDescendantsMap.TryGetValue(child.Id, out bool depthFirstResult))
-                    {
-                        depthFirstResult = FindUnresolvedDependenciesRecursive(child);
-                        _unresolvedDescendantsMap[parent.Id] = depthFirstResult;
-                        return depthFirstResult;
-                    }
-
-                    if (depthFirstResult)
-                    {
-                        return true;
-                    }
-                }
-
+                // No reachable dependency in this snapshot is visible and unresolved
                 return false;
             }
+
+            if (_hasReachableVisibleUnresolvedById.TryGetValue(dependency.Id, out bool exists))
+            {
+                return exists;
+            }
+
+            System.Diagnostics.Debug.Fail("Snapshot should not be asked about unreachable dependency, or dependency not in snapshot.");
+            return !dependency.Resolved;
         }
 
         /// <summary>
@@ -312,11 +413,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// <returns>Returns true if there is at least one unresolved dependency with given providerType.</returns>
         public bool CheckForUnresolvedDependencies(string providerType)
         {
+            if (_hasReachableVisibleUnresolvedById == null)
+            {
+                return false;
+            }
+
             foreach ((string _, IDependency dependency) in DependenciesWorld)
             {
                 if (StringComparers.DependencyProviderTypes.Equals(dependency.ProviderType, providerType) &&
                     dependency.Visible &&
-                    !dependency.Resolved)
+                    !dependency.Resolved &&
+                    _hasReachableVisibleUnresolvedById.ContainsKey(dependency.Id))
                 {
                     return true;
                 }
@@ -336,35 +443,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             {
                 return ImmutableArray<IDependency>.Empty;
             }
+            
+            ImmutableArray<IDependency>.Builder children = ImmutableArray.CreateBuilder<IDependency>(dependency.DependencyIDs.Length);
 
-            lock (SyncLock)
+            foreach (string id in dependency.DependencyIDs)
             {
-                if (!_dependenciesChildrenMap.TryGetValue(dependency.Id, out ImmutableArray<IDependency> children))
+                // TODO what if a dependency's child isn't in the snapshot? is that a bug?
+                // TODO why is the ID also considered a path there?
+                if (DependenciesWorld.TryGetValue(id, out IDependency child) || _topLevelDependencyByPath.TryGetValue(id, out child))
                 {
-                    children = _dependenciesChildrenMap[dependency.Id] = BuildChildren();
+                    children.Add(child);
                 }
-
-                return children;
             }
 
-            ImmutableArray<IDependency> BuildChildren()
-            {
-                ImmutableArray<IDependency>.Builder children =
-                    ImmutableArray.CreateBuilder<IDependency>(dependency.DependencyIDs.Length);
-
-                foreach (string id in dependency.DependencyIDs)
-                {
-                    if (DependenciesWorld.TryGetValue(id, out IDependency child) ||
-                        _topLevelDependenciesByPathMap.TryGetValue(id, out child))
-                    {
-                        children.Add(child);
-                    }
-                }
-
-                return children.Count == children.Capacity
-                    ? children.MoveToImmutable()
-                    : children.ToImmutable();
-            }
+            return children.Count == children.Capacity
+                ? children.MoveToImmutable()
+                : children.ToImmutable();
         }
 
         public override string ToString() => $"{TargetFramework.FriendlyName} - {DependenciesWorld.Count} dependencies ({TopLevelDependencies.Length} top level) - {ProjectPath}";

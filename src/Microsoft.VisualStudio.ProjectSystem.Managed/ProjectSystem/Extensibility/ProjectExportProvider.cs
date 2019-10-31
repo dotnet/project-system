@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Extensibility
             IProjectService projectService = _projectServiceAccessor.GetProjectService();
 
             UnconfiguredProject? project = projectService?.LoadedUnconfiguredProjects
-                .FirstOrDefault(x => x.FullPath.Equals(projectFilePath, StringComparison.OrdinalIgnoreCase));
+                .FirstOrDefault(x => string.Equals(x.FullPath, projectFilePath, StringComparison.OrdinalIgnoreCase));
 
             return project?.Services.ExportProvider.GetExportedValueOrDefault<T>();
         }

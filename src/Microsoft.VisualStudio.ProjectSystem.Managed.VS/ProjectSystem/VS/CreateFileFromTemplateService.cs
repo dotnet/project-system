@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             string directoryName = Path.GetDirectoryName(path);
             string fileName = Path.GetFileName(path);
 
-            string templateLanguage = await GetTemplateLanguageAsync();
+            string? templateLanguage = await GetTemplateLanguageAsync();
             if (string.IsNullOrEmpty(templateLanguage))
                 return false;
 
@@ -66,11 +66,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return false;
         }
 
-        private async Task<string> GetTemplateLanguageAsync()
+        private async Task<string?> GetTemplateLanguageAsync()
         {
             ConfigurationGeneral general = await _properties.GetConfigurationGeneralPropertiesAsync();
 
-            return (string)await general.TemplateLanguage.GetValueAsync();
+            return (string?)await general.TemplateLanguage.GetValueAsync();
         }
     }
 }

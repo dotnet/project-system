@@ -6,10 +6,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Input
 {
     internal static class GetCommandStatusResult
     {
-        public static Task<CommandStatusResult> Unhandled
-        {
-            get { return CommandStatusResult.Unhandled.AsTask(); }
-        }
+        public static Task<CommandStatusResult> Unhandled { get; } = CommandStatusResult.Unhandled.AsTask();
+
+        public static Task<CommandStatusResult> Suppressed { get; } = Task.FromResult(new CommandStatusResult(handled: true, null, CommandStatus.NotSupported | CommandStatus.Invisible));
 
         public static Task<CommandStatusResult> Handled(string? commandText, CommandStatus status)
         {

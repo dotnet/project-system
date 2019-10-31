@@ -28,6 +28,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             return new ActiveWorkspaceProjectContextHost(accessor);
         }
 
+        public static IActiveWorkspaceProjectContextHost ImplementProjectContextAccessor(IWorkspaceProjectContextAccessor accessor)
+        {
+            return new ActiveWorkspaceProjectContextHost(accessor);
+        }
+
         private class ActiveWorkspaceProjectContextHost : IActiveWorkspaceProjectContextHost
         {
             private readonly IWorkspaceProjectContextAccessor _accessor;

@@ -29,8 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 icon: KnownMonikers.Application,
                 expandedIcon: KnownMonikers.Application,
                 unresolvedIcon: ManagedImageMonikers.ApplicationWarning,
-                unresolvedExpandedIcon: ManagedImageMonikers.ApplicationWarning),
-            DependencyTreeFlags.ProjectSubTreeRootNode);
+                unresolvedExpandedIcon: ManagedImageMonikers.ApplicationWarning));
 
         public override string ProviderType => ProviderTypeString;
 
@@ -39,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         [ImportingConstructor]
         public ProjectRuleHandler(
             IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider,
-            IDependenciesSnapshotProvider snapshotProvider,
+            DependenciesSnapshotProvider snapshotProvider,
             IUnconfiguredProjectCommonServices commonServices)
             : base(ProjectReference.SchemaName, ResolvedProjectReference.SchemaName)
         {

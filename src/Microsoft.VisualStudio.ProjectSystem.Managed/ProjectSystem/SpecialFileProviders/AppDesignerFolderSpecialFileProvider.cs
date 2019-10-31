@@ -44,18 +44,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             if (projectPath == null)  // Root has DisableAddItem
                 return null;
 
-            string folderName = await GetDefaultAppDesignerFolderNameAsync();
+            string? folderName = await GetDefaultAppDesignerFolderNameAsync();
             if (string.IsNullOrEmpty(folderName))
                 return null; // Developer has set the AppDesigner path to empty
 
             return Path.Combine(projectPath, folderName);
         }
 
-        private async Task<string> GetDefaultAppDesignerFolderNameAsync()
+        private async Task<string?> GetDefaultAppDesignerFolderNameAsync()
         {
             AppDesigner general = await _properties.GetAppDesignerPropertiesAsync();
 
-            return (string)await general.FolderName.GetValueAsync();
+            return (string?)await general.FolderName.GetValueAsync();
         }
 
         private IProjectTree? FindAppDesignerFolder(IProjectTree root)

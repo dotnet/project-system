@@ -903,7 +903,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                             'Go ahead and populate the field for use within the form
                             If Not Handled Then
                                 SetControlValue(value)
-                                Handled = True
                             End If
                         Else
                             FormControl.Enabled = False
@@ -919,8 +918,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     ' to update the associated control's UI.
                     '
                     SetControlValue(value)
-                ElseIf Not Handled Then
-                    Debug.Assert(IsHidden, "InitPropertyUI: Non-hidden property '" & PropertyName & ": Setting control value was not handled, and FormControl was not specified, so could not be handled automatically.")
                 End If
 
                 Common.Switches.TracePDPerfEnd("InitPropertyUI: " & PropertyName)

@@ -15,8 +15,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             {
                 ConfigurationGeneralBrowseObject browseObject = await _projectProperties.Value.GetConfigurationGeneralBrowseObjectPropertiesAsync();
                 IEvaluatedProperty evaluatedProperty = func(browseObject);
-                object value = await evaluatedProperty.GetValueAsync();
-                return (T)value;
+                object? value = await evaluatedProperty.GetValueAsync();
+
+                // IEvaluatedProperty.GetValueAsync always returns a non-null value, though
+                // it inherits this method from IProperty which can return null.
+                return (T)value!;
             });
         }
 
