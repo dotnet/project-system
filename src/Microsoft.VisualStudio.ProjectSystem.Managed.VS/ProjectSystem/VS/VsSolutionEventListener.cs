@@ -14,7 +14,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     ///     <see cref="IUnconfiguredProjectTasksService.ProjectLoadedInHost"/>.
     /// </summary>
     [Export(typeof(ILoadedInHostListener))]
-    internal class VsSolutionEventListener : OnceInitializedOnceDisposedAsync, IVsSolutionEvents, IVsPrioritizedSolutionEvents, ILoadedInHostListener
+    [Export(typeof(ISolutionService))]
+    internal class VsSolutionEventListener : OnceInitializedOnceDisposedAsync, IVsSolutionEvents, IVsPrioritizedSolutionEvents, ILoadedInHostListener, ISolutionService
     {
         private readonly IVsUIService<IVsSolution> _solution;
         private readonly IProjectThreadingService _threadingService;
@@ -27,6 +28,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _solution = solution;
             _threadingService = threadingService;
         }
+
+        public bool IsSolutionClosing { get; private set; }
 
         public Task StartListeningAsync()
         {
@@ -123,6 +126,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public int OnAfterOpenSolution(object pUnkReserved, int fNewSolution)
         {
+            IsSolutionClosing = false;
+
             return HResult.NotImplemented;
         }
 
@@ -133,6 +138,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public int OnBeforeCloseSolution(object pUnkReserved)
         {
+            IsSolutionClosing = true;
+
             return HResult.NotImplemented;
         }
 
@@ -158,11 +165,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public int PrioritizedOnAfterOpenSolution(object pUnkReserved, int fNewSolution)
         {
+            IsSolutionClosing = false;
+
             return HResult.NotImplemented;
         }
 
         public int PrioritizedOnBeforeCloseSolution(object pUnkReserved)
         {
+            IsSolutionClosing = true;
+
             return HResult.NotImplemented;
         }
 
