@@ -71,9 +71,9 @@
         <source>A file or folder with the name '{0}' already exists on disk at this location. Please choose another name.
 
 If this file or folder does not appear in Solution Explorer, then it is not currently part of your project. To view files which exist on disk, but are not in the project, select Show All Files from the Project menu.</source>
-        <target state="new">A file or folder with the name '{0}' already exists on disk at this location. Please choose another name.
+        <target state="translated">Eine Datei oder ein Ordner namens "{0}" ist auf dem Datenträger an diesem Speicherort bereits vorhanden. Wählen Sie einen anderen Namen aus.
 
-If this file or folder does not appear in Solution Explorer, then it is not currently part of your project. To view files which exist on disk, but are not in the project, select Show All Files from the Project menu.</target>
+Wenn diese Datei oder dieser Ordner nicht im Projektmappen-Explorer angezeigt wird, gehört sie/er momentan nicht zum Projekt. Wählen Sie im Menü "Projekt" die Option "Alle Dateien anzeigen" aus, um Dateien anzuzeigen, die sich zwar auf der Festplatte, aber nicht im Projekt befinden.</target>
         <note />
       </trans-unit>
     </body>

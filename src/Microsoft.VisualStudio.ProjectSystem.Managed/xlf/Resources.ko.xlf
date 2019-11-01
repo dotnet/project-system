@@ -71,9 +71,9 @@
         <source>A file or folder with the name '{0}' already exists on disk at this location. Please choose another name.
 
 If this file or folder does not appear in Solution Explorer, then it is not currently part of your project. To view files which exist on disk, but are not in the project, select Show All Files from the Project menu.</source>
-        <target state="new">A file or folder with the name '{0}' already exists on disk at this location. Please choose another name.
+        <target state="translated">이름이 '{0}'인 파일 또는 폴더가 이 위치의 디스크에 이미 있습니다. 다른 이름을 선택하세요.
 
-If this file or folder does not appear in Solution Explorer, then it is not currently part of your project. To view files which exist on disk, but are not in the project, select Show All Files from the Project menu.</target>
+이 파일 또는 폴더가 솔루션 탐색기에 나타나지 않으면 현재 사용 중인 프로젝트의 일부가 아닙니다. 프로젝트에 없지만 디스크에 있는 파일을 보려면 [프로젝트] 메뉴에서 [모든 파일 표시]를 선택하세요.</target>
         <note />
       </trans-unit>
     </body>
