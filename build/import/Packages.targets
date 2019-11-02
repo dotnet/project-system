@@ -35,6 +35,7 @@
     <PackageReference Update="MicroBuild.Core.Sentinel"                                               Version="1.0.0" />
     <PackageReference Update="MicroBuild.Plugins.SwixBuild"                                           Version="$(MicroBuildPluginsSwixBuildVersion)" />
     <PackageReference Update="Microsoft.DevDiv.Validation.MediaRecorder"                              Version="15.0.199" />
+    <PackageReference Update="Microsoft.SourceLink.GitHub"                                            Version="1.0.0-beta2-19367-01" />
 
     <!-- VS SDK -->
     <PackageReference Update="Microsoft.VSSDK.BuildTools"                                             Version="16.3.2099" />
