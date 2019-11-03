@@ -30,7 +30,7 @@
     <PackageReference Include="Codecov" ExcludeAssets="all" />
     <PackageReference Include="OpenCover" ExcludeAssets="all" />
     <PackageReference Include="Microsoft.DiaSymReader.Pdb2Pdb" ExcludeAssets="all" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" ExcludeAssets="all" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="all"/>
     
     <!-- CPS -->
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.SDK" />
