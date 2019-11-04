@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Build.Construction;
@@ -64,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// <summary>
         /// Checks to see if the project tree has a valid display order.
         /// </summary>
-        public static bool HasValidDisplayOrder(IProjectTree? projectTree)
+        public static bool HasValidDisplayOrder([NotNullWhen(returnValue: true)] IProjectTree? projectTree)
         {
             return IsValidDisplayOrder(GetDisplayOrder(projectTree));
         }
