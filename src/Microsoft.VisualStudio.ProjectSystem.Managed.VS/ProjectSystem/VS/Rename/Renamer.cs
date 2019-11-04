@@ -140,7 +140,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
                 Assumes.Present(dte);
 
-                using var undo = UndoScope.Create(dte, renameOperationName);
+                using var _ = UndoScope.Create(dte, renameOperationName);
 
                 // Notify other VS features that symbol is about to be renamed
                 NotifyBeforeRename(newName, rqName, changes);
