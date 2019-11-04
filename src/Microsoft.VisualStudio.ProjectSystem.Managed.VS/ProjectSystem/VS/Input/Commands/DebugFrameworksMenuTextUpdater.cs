@@ -95,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                 {
                     // If no active framework or the current active property doesn't match any of the frameworks, then
                     // set it to the first one.
-                    if (!string.IsNullOrEmpty(activeFramework) && frameworks.Contains(activeFramework!))
+                    if (!Strings.IsNullOrEmpty(activeFramework) && frameworks.Contains(activeFramework))
                     {
                         Text = string.Format(VSResources.DebugFrameworkMenuText, activeFramework);
                     }
