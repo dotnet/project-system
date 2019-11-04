@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
                 ConfigurationGeneral configuration = await projectProperties.GetConfigurationGeneralPropertiesAsync();
                 string? currentTargetFrameworkMoniker = (string?)await configuration.TargetFrameworkMoniker.GetValueAsync();
                 Assumes.NotNull(currentTargetFrameworkMoniker);
-                builder.Add(currentTargetFrameworkMoniker!);
+                builder.Add(currentTargetFrameworkMoniker);
             }
 
             return string.Join(";", builder.ToArrayAndFree());

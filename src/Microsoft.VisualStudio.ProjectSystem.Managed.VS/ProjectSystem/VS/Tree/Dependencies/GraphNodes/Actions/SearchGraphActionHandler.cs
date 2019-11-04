@@ -109,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                         cachedDependencyToMatchingResultsMap[topLevelDependency.Id] = topLevelDependencyMatches;
                     }
 
-                    if (topLevelDependencyMatches!.Count == 0)
+                    if (topLevelDependencyMatches.Count == 0)
                     {
                         continue;
                     }
