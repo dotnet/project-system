@@ -544,7 +544,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 ? dependency.Path
                 : dependency.OriginalItemSpec;
 
-            var context = ProjectPropertiesContext.GetContext(UnconfiguredProject,
+            var context = ProjectPropertiesContext.GetContext(
+                UnconfiguredProject,
                 itemType: dependency.SchemaItemType,
                 itemName: itemSpec);
 
