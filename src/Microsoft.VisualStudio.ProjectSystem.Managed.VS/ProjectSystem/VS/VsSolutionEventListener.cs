@@ -128,7 +128,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             IsSolutionClosing = false;
 
-            return HResult.NotImplemented;
+            return HResult.OK;
         }
 
         public int OnQueryCloseSolution(object pUnkReserved, ref int pfCancel)
@@ -140,7 +140,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             IsSolutionClosing = true;
 
-            return HResult.NotImplemented;
+            return HResult.OK;
         }
 
         public int OnAfterCloseSolution(object pUnkReserved)
@@ -167,14 +167,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             IsSolutionClosing = false;
 
-            return HResult.NotImplemented;
+            return HResult.OK;
         }
 
         public int PrioritizedOnBeforeCloseSolution(object pUnkReserved)
         {
             IsSolutionClosing = true;
 
-            return HResult.NotImplemented;
+            return HResult.OK;
         }
 
         public int PrioritizedOnAfterCloseSolution(object pUnkReserved)
