@@ -19,7 +19,7 @@
       </trans-unit>
       <trans-unit id="General_FastUpToDateCheck_LogLevel_Minimal">
         <source>Minimal</source>
-        <target state="new">Minimal</target>
+        <target state="translated">Minimální</target>
         <note />
       </trans-unit>
       <trans-unit id="General_FastUpToDateCheck_LogLevel_None">

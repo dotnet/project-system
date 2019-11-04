@@ -71,9 +71,9 @@
         <source>A file or folder with the name '{0}' already exists on disk at this location. Please choose another name.
 
 If this file or folder does not appear in Solution Explorer, then it is not currently part of your project. To view files which exist on disk, but are not in the project, select Show All Files from the Project menu.</source>
-        <target state="new">A file or folder with the name '{0}' already exists on disk at this location. Please choose another name.
+        <target state="translated">磁碟這個位置已經有名稱為 '{0}' 的檔案或資料夾存在，請另選名稱。
 
-If this file or folder does not appear in Solution Explorer, then it is not currently part of your project. To view files which exist on disk, but are not in the project, select Show All Files from the Project menu.</target>
+[方案總管] 如果沒有這個檔案或資料夾，表示目前不屬於專案的一部分。若要檢視磁碟中有哪些檔案不在專案中，請從 [專案] 功能表選取 [顯示所有檔案]。</target>
         <note />
       </trans-unit>
     </body>

@@ -59,7 +59,7 @@
       </trans-unit>
       <trans-unit id="serviceReferenceToolStripMenuItem.Text">
         <source>Service Reference...</source>
-        <target state="translated">Odwołanie usługi...</target>
+        <target state="translated">Odwołanie do usługi...</target>
         <note />
       </trans-unit>
       <trans-unit id="addSplitButton.Text">

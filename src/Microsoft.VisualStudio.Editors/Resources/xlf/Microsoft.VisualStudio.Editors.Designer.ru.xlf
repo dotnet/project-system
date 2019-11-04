@@ -2580,7 +2580,7 @@ Do you want to update the value in the .settings file?</source>
       </trans-unit>
       <trans-unit id="PPG_ServiceReferenceTypeName">
         <source>Service Reference Properties</source>
-        <target state="translated">Свойства ссылки службы</target>
+        <target state="translated">Свойства ссылки на службу</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_ServiceReferenceUrlDescription">

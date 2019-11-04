@@ -129,7 +129,7 @@
       </trans-unit>
       <trans-unit id="PackageIdLabel.Text">
         <source>Package &amp;id:</source>
-        <target state="translated">Идент&amp;тификатор пакета:</target>
+        <target state="translated">Иден&amp;тификатор пакета:</target>
         <note />
       </trans-unit>
       <trans-unit id="AuthorsLabel.Text">

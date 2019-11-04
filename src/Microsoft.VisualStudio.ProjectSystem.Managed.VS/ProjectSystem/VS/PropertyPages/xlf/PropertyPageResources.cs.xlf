@@ -224,7 +224,7 @@
       </trans-unit>
       <trans-unit id="chkSqlCodeDebuggingText">
         <source>Enable SQL Server debugging</source>
-        <target state="new">Enable SQL Server debugging</target>
+        <target state="translated">Povolit ladění SQL Serveru</target>
         <note />
       </trans-unit>
     </body>

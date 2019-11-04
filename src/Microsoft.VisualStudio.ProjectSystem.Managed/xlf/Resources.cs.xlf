@@ -71,9 +71,9 @@
         <source>A file or folder with the name '{0}' already exists on disk at this location. Please choose another name.
 
 If this file or folder does not appear in Solution Explorer, then it is not currently part of your project. To view files which exist on disk, but are not in the project, select Show All Files from the Project menu.</source>
-        <target state="new">A file or folder with the name '{0}' already exists on disk at this location. Please choose another name.
+        <target state="translated">Soubor nebo složka s názvem {0} už na tomto místě disku existuje. Zvolte prosím jiný název.
 
-If this file or folder does not appear in Solution Explorer, then it is not currently part of your project. To view files which exist on disk, but are not in the project, select Show All Files from the Project menu.</target>
+Nezobrazuje-li se tento soubor nebo složka v Průzkumníkovi řešení, není momentálně součástí vašeho projektu. Jestli chcete zobrazit soubory, které na disku existují, ale nejsou součástí projektu, vyberte z nabídky Projekt příkaz Zobrazit všechny soubory.</target>
         <note />
       </trans-unit>
     </body>

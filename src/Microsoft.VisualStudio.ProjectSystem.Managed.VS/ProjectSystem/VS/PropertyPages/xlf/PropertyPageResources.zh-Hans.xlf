@@ -224,7 +224,7 @@
       </trans-unit>
       <trans-unit id="chkSqlCodeDebuggingText">
         <source>Enable SQL Server debugging</source>
-        <target state="new">Enable SQL Server debugging</target>
+        <target state="translated">启用 SQL Server 调试</target>
         <note />
       </trans-unit>
     </body>
