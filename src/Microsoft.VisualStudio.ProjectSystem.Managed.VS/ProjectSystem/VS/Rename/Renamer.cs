@@ -138,7 +138,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
                 DTE? dte = _dte.Value;
 
-                Assumes.NotNull(dte);
+                Assumes.Present(dte);
 
                 using var undo = UndoScope.Create(dte, renameOperationName);
 

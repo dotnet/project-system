@@ -110,8 +110,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
         private IVsHierarchy? TryGetIVsHierarchy(Project project)
         {
             IVsSolution? solution = _solution.Value;
+            Assumes.Present(solution);
 
-            if (solution!.GetProjectOfUniqueName(project.UniqueName, out IVsHierarchy projectHierarchy) == HResult.OK)
+            if (solution.GetProjectOfUniqueName(project.UniqueName, out IVsHierarchy projectHierarchy) == HResult.OK)
             {
                 return projectHierarchy;
             }

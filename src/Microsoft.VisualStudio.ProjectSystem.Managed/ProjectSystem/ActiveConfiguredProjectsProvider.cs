@@ -134,7 +134,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 return null;
             }
 
-            IImmutableSet<ProjectConfiguration> configurations = await _services.ProjectConfigurationsService!.GetKnownProjectConfigurationsAsync();
+            IProjectConfigurationsService? projectConfigurationsService = _services.ProjectConfigurationsService;
+            Assumes.Present(projectConfigurationsService);
+
+            IImmutableSet<ProjectConfiguration> configurations = await projectConfigurationsService.GetKnownProjectConfigurationsAsync();
 
             var builder = PooledArray<ProjectConfiguration>.GetInstance();
             IImmutableSet<string> dimensionNames = GetDimensionNames();

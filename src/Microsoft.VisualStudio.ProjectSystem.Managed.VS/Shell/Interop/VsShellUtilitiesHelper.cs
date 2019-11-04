@@ -32,7 +32,9 @@ namespace Microsoft.VisualStudio.Shell.Interop
 
             IVsAppId? vsAppId = await vsAppIdService.GetValueAsync();
 
-            if (ErrorHandler.Succeeded(vsAppId!.GetProperty((int)VSAPropID.VSAPROPID_ProductSemanticVersion, out object oVersion)) &&
+            Assumes.Present(vsAppId);
+
+            if (ErrorHandler.Succeeded(vsAppId.GetProperty((int)VSAPropID.VSAPROPID_ProductSemanticVersion, out object oVersion)) &&
                 oVersion is string semVersion)
             {
                 // This is a semantic version string. We only care about the non-semantic version part
@@ -57,7 +59,9 @@ namespace Microsoft.VisualStudio.Shell.Interop
 
             IVsShell? shell = await vsShellService.GetValueAsync();
 
-            if (ErrorHandler.Succeeded(shell!.GetProperty((int)__VSSPROPID4.VSSPROPID_LocalAppDataDir, out object objDataFolder)) && objDataFolder is string appDataFolder)
+            Assumes.Present(shell);
+
+            if (ErrorHandler.Succeeded(shell.GetProperty((int)__VSSPROPID4.VSSPROPID_LocalAppDataDir, out object objDataFolder)) && objDataFolder is string appDataFolder)
             {
                 return appDataFolder;
             }

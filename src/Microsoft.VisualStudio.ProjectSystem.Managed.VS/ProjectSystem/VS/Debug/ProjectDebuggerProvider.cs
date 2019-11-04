@@ -199,8 +199,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 await ThreadingService.SwitchToUIThread();
 
                 IVsDebugger4? shellDebugger = await _vsDebuggerService.GetValueAsync();
+                Assumes.Present(shellDebugger);
                 var launchResults = new VsDebugTargetProcessInfo[launchSettingsNative.Length];
-                shellDebugger!.LaunchDebugTargets4((uint)launchSettingsNative.Length, launchSettingsNative, launchResults);
+                shellDebugger.LaunchDebugTargets4((uint)launchSettingsNative.Length, launchSettingsNative, launchResults);
                 return launchResults;
             }
             finally
