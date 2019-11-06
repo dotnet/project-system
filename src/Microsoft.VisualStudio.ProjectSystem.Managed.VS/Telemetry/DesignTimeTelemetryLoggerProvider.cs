@@ -26,7 +26,9 @@ namespace Microsoft.VisualStudio.Telemetry
 
             if (properties.GetBoolProperty("DesignTimeBuild") == true)
             {
-                loggers = loggers.Add(new DesignTimeTelemetryLogger(TelemetryService!));
+                Assumes.Present(TelemetryService);
+
+                loggers = loggers.Add(new DesignTimeTelemetryLogger(TelemetryService));
             }
 
             return Task.FromResult(loggers);

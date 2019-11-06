@@ -52,13 +52,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 
             string? propertyValue = await GetPropertyValueAsync(project);
 
-            if (string.IsNullOrEmpty(propertyValue))
+            if (Strings.IsNullOrEmpty(propertyValue))
             {
                 return ImmutableArray<string>.Empty;
             }
             else
             {
-                return BuildUtilities.GetPropertyValues(propertyValue!).ToImmutableArray();
+                return BuildUtilities.GetPropertyValues(propertyValue).ToImmutableArray();
             }
 
             async Task<string?> GetPropertyValueAsync(UnconfiguredProject project)
@@ -208,10 +208,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         private async Task<string?> FindDefaultValueFromDimensionPropertyAsync(UnconfiguredProject project)
         {
             string? values = await FindDimensionPropertyAsync(project);
-            if (string.IsNullOrEmpty(values))
+            if (Strings.IsNullOrEmpty(values))
                 return null;
 
-            foreach (string defaultValue in BuildUtilities.GetPropertyValues(values!))
+            foreach (string defaultValue in BuildUtilities.GetPropertyValues(values))
             {
                 // If this property is derived from another property, skip it and just
                 // pull default from next known values. This is better than picking a 

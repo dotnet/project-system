@@ -52,12 +52,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
             if (nodes.Count == 1 && _addItemDialogService.CanAddNewOrExistingItemTo(nodes.First()) && TryGetTemplateDetails(commandId, out TemplateDetails? result))
             { 
+                IVsShell? vsShell = _vsShell.Value;
+                Assumes.Present(vsShell);
+
                 // Look up the resources from each package to get the strings to pass to the Add Item dialog.
                 // These strings must match what is used in the template exactly, including localized versions. Rather than relying on
                 // our localizations being the same as the VS repository localizations we just load the right strings using the same
                 // resource IDs as the templates themselves use.
-                string localizedDirectoryName = _vsShell.Value!.LoadPackageString(result.DirNamePackageGuid, result.DirNameResourceId);
-                string localizedTemplateName = _vsShell.Value!.LoadPackageString(result.TemplateNamePackageGuid, result.TemplateNameResourceId);
+                string localizedDirectoryName = vsShell.LoadPackageString(result.DirNamePackageGuid, result.DirNameResourceId);
+                string localizedTemplateName = vsShell.LoadPackageString(result.TemplateNamePackageGuid, result.TemplateNameResourceId);
 
                 await _addItemDialogService.ShowAddNewItemDialogAsync(nodes.First(), localizedDirectoryName, localizedTemplateName);
                 return true;

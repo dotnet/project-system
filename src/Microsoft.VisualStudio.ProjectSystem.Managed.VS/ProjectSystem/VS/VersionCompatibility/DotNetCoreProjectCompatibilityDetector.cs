@@ -97,7 +97,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             VisualStudioVersion = await _shellUtilitiesHelper.Value.GetVSVersionAsync(_vsAppIdService);
 
             _vsSolution = await _vsSolutionService.GetValueAsync();
-            Verify.HResult(_vsSolution!.AdviseSolutionEvents(this, out _solutionCookie));
+            Assumes.Present(_vsSolution);
+
+            Verify.HResult(_vsSolution.AdviseSolutionEvents(this, out _solutionCookie));
 
             // Check to see if a solution is already open. If so we set _solutionOpened to true so that subsequent projects added to 
             // this solution are processed.
@@ -184,8 +186,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
 
             ISettingsManager? settings = await _settingsManagerService.GetValueAsync();
-
-            return settings!.GetValueOrDefault<bool>(UsePreviewSdkSettingKey);
+            Assumes.Present(settings);
+            
+            return settings.GetValueOrDefault<bool>(UsePreviewSdkSettingKey);
         }
 
         private async Task<bool> IsPrereleaseAsync()
@@ -271,7 +274,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 CompatibilityLevelWarnedForCurrentSolution = compatLevel;
 
                 IVsUIShell? uiShell = await _vsUIShellService.GetValueAsync();
-                uiShell!.GetAppName(out string caption);
+                Assumes.Present(uiShell);
+
+                uiShell.GetAppName(out string caption);
 
                 if (compatLevel == CompatibilityLevel.Supported)
                 {

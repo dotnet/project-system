@@ -37,7 +37,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             await _threadingService.SwitchToUIThread(cancellationToken);
 
-            HResult result = _solution.Value!.AdviseSolutionEvents(this, out _cookie);
+            IVsSolution? solution = _solution.Value;
+            Assumes.Present(solution);
+
+            HResult result = solution.AdviseSolutionEvents(this, out _cookie);
             if (result.Failed)
                 throw result.Exception;
         }
@@ -50,7 +53,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 {
                     await _threadingService.SwitchToUIThread();
 
-                    HResult result = _solution.Value!.UnadviseSolutionEvents(_cookie);
+                    IVsSolution? solution = _solution.Value;
+                    Assumes.Present(solution);
+
+                    HResult result = solution.UnadviseSolutionEvents(_cookie);
                     if (result.Failed)
                         throw result.Exception;
 

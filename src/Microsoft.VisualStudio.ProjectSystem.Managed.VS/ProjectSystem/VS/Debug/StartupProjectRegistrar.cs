@@ -80,12 +80,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             if (isDebuggable)
             {
                 // If we're already registered, the service no-ops
-                startupProjectsListService!.AddProject(ref _projectGuid);
+                startupProjectsListService.AddProject(ref _projectGuid);
             }
             else
             {
                 // If we're already unregistered, the service no-ops
-                startupProjectsListService!.RemoveProject(ref _projectGuid);
+                startupProjectsListService.RemoveProject(ref _projectGuid);
             }
         }
 

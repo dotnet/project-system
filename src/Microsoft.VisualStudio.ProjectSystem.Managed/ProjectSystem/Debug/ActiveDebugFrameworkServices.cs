@@ -37,12 +37,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             string? targetFrameworks = (string?)await props.TargetFrameworks.GetValueAsync();
 
-            if (string.IsNullOrWhiteSpace(targetFrameworks))
+            if (Strings.IsNullOrWhiteSpace(targetFrameworks))
             {
                 return null;
             }
 
-            return BuildUtilities.GetPropertyValues(targetFrameworks!).ToList();
+            return BuildUtilities.GetPropertyValues(targetFrameworks).ToList();
         }
 
         /// <summary>
@@ -86,9 +86,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             string? activeFramework = await GetActiveDebuggingFrameworkPropertyAsync();
 
-            if (!string.IsNullOrWhiteSpace(activeFramework))
+            if (!Strings.IsNullOrWhiteSpace(activeFramework))
             {
-                if (configProjects.TryGetValue(activeFramework!, out ConfiguredProject configuredProject))
+                if (configProjects.TryGetValue(activeFramework, out ConfiguredProject configuredProject))
                 {
                     return configuredProject;
                 }
