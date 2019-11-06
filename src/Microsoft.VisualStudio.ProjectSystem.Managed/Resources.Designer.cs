@@ -151,6 +151,24 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Contains all the assemblies needed when publishing a .NET Core project..
+        /// </summary>
+        internal static string OutputGroupPublishItemsDescription {
+            get {
+                return ResourceManager.GetString("OutputGroupPublishItemsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Publish Items.
+        /// </summary>
+        internal static string OutputGroupPublishItemsDisplayName {
+            get {
+                return ResourceManager.GetString("OutputGroupPublishItemsDisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Packages.
         /// </summary>
         internal static string PackagesNodeName {
