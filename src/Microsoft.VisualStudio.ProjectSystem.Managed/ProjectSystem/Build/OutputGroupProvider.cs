@@ -1,15 +1,14 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.ComponentModel.Composition;
+using System.Threading.Tasks;
+using Microsoft.VisualStudio.Threading;
+
 namespace Microsoft.VisualStudio.ProjectSystem.Build
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.Immutable;
-    using System.ComponentModel.Composition;
-    using System.Threading.Tasks;
-    using Microsoft.VisualStudio.ProjectSystem;
-    using Microsoft.VisualStudio.Threading;
-
     [Export(typeof(IOutputGroupProvider))]
     [AppliesTo(ProjectCapabilities.VisualStudioWellKnownOutputGroups)]
     [Order(1000)]
@@ -42,15 +41,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
             _outputGroups = new AsyncLazy<IImmutableSet<IOutputGroup>>(GetOutputGroupMetadataAsync);
         }
 
-        #region IOutputGroupProvider Members
-
-        /// <inheritdoc/>
         public Task<IImmutableSet<IOutputGroup>> OutputGroups
         {
             get { return _outputGroups.GetValueAsync(); }
         }
-
-        #endregion
 
         /// <summary>
         /// Gets a collection of names of targets in this project.
