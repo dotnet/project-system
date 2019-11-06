@@ -41,6 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
             _outputGroups = new AsyncLazy<IImmutableSet<IOutputGroup>>(GetOutputGroupMetadataAsync);
         }
 
+        /// <inheritdoc/>
         public Task<IImmutableSet<IOutputGroup>> OutputGroups
         {
             get { return _outputGroups.GetValueAsync(); }
