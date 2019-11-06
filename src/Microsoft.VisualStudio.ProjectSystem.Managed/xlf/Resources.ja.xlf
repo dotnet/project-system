@@ -47,6 +47,16 @@
         <target state="translated">フレームワーク アセンブリ</target>
         <note />
       </trans-unit>
+      <trans-unit id="OutputGroupPublishItemsDescription">
+        <source>Contains all the assemblies needed when publishing a .NET Core project.</source>
+        <target state="new">Contains all the assemblies needed when publishing a .NET Core project.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="OutputGroupPublishItemsDisplayName">
+        <source>Publish Items</source>
+        <target state="new">Publish Items</target>
+        <note />
+      </trans-unit>
       <trans-unit id="ProjectsNodeName">
         <source>Projects</source>
         <target state="translated">プロジェクト</target>
