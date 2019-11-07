@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using Microsoft.VisualStudio.ProjectSystem.VS;
 
 namespace Microsoft.VisualStudio.Shell.Interop
 {
@@ -20,9 +19,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
             Requires.NotNullOrEmpty(documentMoniker, nameof(documentMoniker));
 
             var priority = new VSDOCUMENTPRIORITY[1];
-            HResult result = project.IsDocumentInProject(documentMoniker, out int isFound, priority, out uint itemId);
-            if (result.Failed)
-                throw result.Exception;
+            Verify.HResult(project.IsDocumentInProject(documentMoniker, out int isFound, priority, out uint itemId));
 
             // We only return items that are actually part of the project. CPS returns non-member from this API.
             if (isFound == 0 || priority[0] != VSDOCUMENTPRIORITY.DP_Standard && priority[0] != VSDOCUMENTPRIORITY.DP_Intrinsic)
@@ -45,9 +42,8 @@ namespace Microsoft.VisualStudio.Shell.Interop
         public static IVsWindowFrame? OpenItemWithSpecific(this IVsProject4 project, HierarchyId id, Guid editorType)
         {
             Requires.NotNull(project, nameof(project));
-            HResult hr = project.OpenItemWithSpecific(id, 0, ref editorType, "", VSConstants.LOGVIEWID_Primary, (IntPtr)(-1), out IVsWindowFrame frame);
-            if (hr.Failed)
-                throw hr.Exception;
+
+            Verify.HResult(project.OpenItemWithSpecific(id, 0, ref editorType, "", VSConstants.LOGVIEWID_Primary, (IntPtr)(-1), out IVsWindowFrame frame));
 
             // NOTE: frame is 'null' when opened in an external editor
             return frame;

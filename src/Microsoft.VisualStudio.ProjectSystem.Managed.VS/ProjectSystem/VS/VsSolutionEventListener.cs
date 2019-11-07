@@ -40,9 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             IVsSolution? solution = _solution.Value;
             Assumes.Present(solution);
 
-            HResult result = solution.AdviseSolutionEvents(this, out _cookie);
-            if (result.Failed)
-                throw result.Exception;
+            Verify.HResult(solution.AdviseSolutionEvents(this, out _cookie));
         }
 
         protected override async Task DisposeCoreAsync(bool initialized)
@@ -56,9 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     IVsSolution? solution = _solution.Value;
                     Assumes.Present(solution);
 
-                    HResult result = solution.UnadviseSolutionEvents(_cookie);
-                    if (result.Failed)
-                        throw result.Exception;
+                    Verify.HResult(solution.UnadviseSolutionEvents(_cookie));
 
                     _cookie = VSConstants.VSCOOKIE_NIL;
                 }
