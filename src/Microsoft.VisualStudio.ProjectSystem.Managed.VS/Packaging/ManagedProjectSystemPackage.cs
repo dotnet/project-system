@@ -52,6 +52,8 @@ namespace Microsoft.VisualStudio.Packaging
 
             var componentModel = (IComponentModel)(await GetServiceAsync(typeof(SComponentModel)));
             Lazy<DebugFrameworksDynamicMenuCommand> debugFrameworksCmd = componentModel.DefaultExportProvider.GetExport<DebugFrameworksDynamicMenuCommand>();
+            var solutionService = (SolutionService)componentModel.GetService<ISolutionService>();
+            solutionService.StartListening();
 
             var mcs = (OleMenuCommandService)await GetServiceAsync(typeof(IMenuCommandService));
             mcs.AddCommand(debugFrameworksCmd.Value);
@@ -75,10 +77,13 @@ namespace Microsoft.VisualStudio.Packaging
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing && _projectSelectorCookie != VSConstants.VSCOOKIE_NIL)
+            if (disposing)
             {
-                _projectSelectorService?.UnregisterProjectSelector(_projectSelectorCookie);
-                _projectSelectorCookie = VSConstants.VSCOOKIE_NIL;
+                if (_projectSelectorCookie != VSConstants.VSCOOKIE_NIL)
+                {
+                    _projectSelectorService?.UnregisterProjectSelector(_projectSelectorCookie);
+                    _projectSelectorCookie = VSConstants.VSCOOKIE_NIL;
+                }
             }
 
             base.Dispose(disposing);

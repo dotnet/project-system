@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             typeof(IDependenciesRuleHandler))]
     [Export(typeof(IProjectDependenciesSubTreeProvider))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
-    internal class ProjectRuleHandler : DependenciesRuleHandlerBase
+    internal sealed class ProjectRuleHandler : DependenciesRuleHandlerBase
     {
         public const string ProviderTypeString = "ProjectDependency";
 
@@ -39,7 +39,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         public ProjectRuleHandler(
             IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider,
             DependenciesSnapshotProvider snapshotProvider,
-            IUnconfiguredProjectCommonServices commonServices)
+            IUnconfiguredProjectCommonServices commonServices,
+            [Import(AllowDefault = true)] ISolutionService? solutionService)
             : base(ProjectReference.SchemaName, ResolvedProjectReference.SchemaName)
         {
             aggregateSnapshotProvider.SnapshotChanged += OnAggregateSnapshotChanged;
@@ -66,7 +67,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             void OnAggregateSnapshotProviderUnloading(object sender, SnapshotProviderUnloadingEventArgs e)
             {
-                OnOtherProjectDependenciesChanged(snapshotProvider.CurrentSnapshot, e.SnapshotProvider.CurrentSnapshot, shouldBeResolved: false, e.Token);
+                // Only notify if the solution is not closing.
+                // If it is closing, notifying would result in pointless updates.
+                // If the solution service is unavailable, always update.
+                if (solutionService?.IsSolutionClosing != true)
+                {
+                    OnOtherProjectDependenciesChanged(snapshotProvider.CurrentSnapshot, e.SnapshotProvider.CurrentSnapshot, shouldBeResolved: false, e.Token);
+                }
             }
         }
 
