@@ -107,21 +107,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             {
                 return projectXml.Targets
                     .Where(target =>
-                        StringComparer.OrdinalIgnoreCase.Compare(GetTarget(target), BuildEvent) == 0 &&
-                        StringComparer.OrdinalIgnoreCase.Compare(target.Name, TargetName) == 0)
+                        StringComparer.OrdinalIgnoreCase.Equals(GetTarget(target), BuildEvent) &&
+                        StringComparer.OrdinalIgnoreCase.Equals(target.Name, TargetName))
                     .SelectMany(target => target.Tasks)
-                    .FirstOrDefault(task => StringComparer.OrdinalIgnoreCase.Compare(task.Name, ExecTask) == 0);
+                    .FirstOrDefault(task => StringComparer.OrdinalIgnoreCase.Equals(task.Name, ExecTask));
             }
 
             private ProjectTargetElement? FindTargetToRemove(ProjectRootElement projectXml)
             {
                 return projectXml.Targets
                     .FirstOrDefault(target =>
-                        StringComparer.OrdinalIgnoreCase.Compare(GetTarget(target), BuildEvent) == 0 &&
-                        StringComparer.OrdinalIgnoreCase.Compare(target.Name, TargetName) == 0 &&
+                        StringComparer.OrdinalIgnoreCase.Equals(GetTarget(target), BuildEvent) &&
+                        StringComparer.OrdinalIgnoreCase.Equals(target.Name, TargetName) &&
                         target.Children.Count == 1 &&
                         target.Tasks.Count == 1 &&
-                        StringComparer.OrdinalIgnoreCase.Compare(target.Tasks.First().Name, ExecTask) == 0);
+                        StringComparer.OrdinalIgnoreCase.Equals(target.Tasks.First().Name, ExecTask));
             }
 
             private void SetParameter(ProjectRootElement projectXml, string unevaluatedPropertyValue)

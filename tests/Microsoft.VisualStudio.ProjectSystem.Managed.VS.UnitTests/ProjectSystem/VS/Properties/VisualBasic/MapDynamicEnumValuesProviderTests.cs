@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -83,11 +85,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic
         private static void VerifySameValue(IEnumValue? actual, IEnumValue expected, bool checkMapNameOnly = false)
         {
             Assert.NotNull(actual);
-            Assert.True(string.Compare(actual!.Name, expected.Name) == 0);
+            Assert.Equal(expected.Name, actual!.Name);
 
             if (!checkMapNameOnly)
             {
-                Assert.True(string.Compare(actual.DisplayName, expected.DisplayName) == 0);
+                Assert.Equal(expected.DisplayName, actual.DisplayName);
                 Assert.True(actual.IsDefault == expected.IsDefault);
             }
         }
@@ -101,7 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic
             }
         }
 
-        private async Task VerifySameValueOnQueryAsync(IDynamicEnumValuesGenerator generator, Dictionary<string, IEnumValue> persistencePageEnumMap, bool checkMapNameOnly = false)
+        private static async Task VerifySameValueOnQueryAsync(IDynamicEnumValuesGenerator generator, Dictionary<string, IEnumValue> persistencePageEnumMap, bool checkMapNameOnly = false)
         {
             foreach (var key in persistencePageEnumMap.Keys)
             {
@@ -122,7 +124,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic
             }
         }
 
-        private Dictionary<string, IEnumValue> CreateEnumValueMap(List<string> keys, IEnumerable<PageEnumValue> pageEnumValues)
+        private static Dictionary<string, IEnumValue> CreateEnumValueMap(List<string> keys, IEnumerable<PageEnumValue> pageEnumValues)
         {
             Assert.True(keys.Count == pageEnumValues.Count(), "This is a test authoring error");
 

@@ -326,8 +326,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         private async Task VerifyDLLsCompiled(int numberOfDLLsExpected, Action actionThatCausesCompilation)
         {
-            int initialComplations = _compilationResults.Count;
-            _expectedCompilations = initialComplations + numberOfDLLsExpected;
+            int initialCompilations = _compilationResults.Count;
+            _expectedCompilations = initialCompilations + numberOfDLLsExpected;
             _compilationOccurredCompletionSource = new TaskCompletionSource<bool>();
 
             actionThatCausesCompilation();
@@ -337,7 +337,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             if (await Task.WhenAny(_compilationOccurredCompletionSource.Task, delay) == delay)
             {
-                var actualDLLs = _compilationResults.Count - initialComplations;
+                var actualDLLs = _compilationResults.Count - initialCompilations;
                 if (numberOfDLLsExpected != actualDLLs)
                 {
                     throw new AssertActualExpectedException(numberOfDLLsExpected, actualDLLs, $"Timed out after {TestTimeoutMillisecondsDelay}ms");

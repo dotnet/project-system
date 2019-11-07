@@ -52,13 +52,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
         private static IVsOutputWindowPane CreateProjectOutputWindowPane(IVsOutputWindow outputWindow)
         {
             Guid paneGuid = s_projectOutputWindowPaneGuid;
-            HResult hr = outputWindow.CreatePane(ref paneGuid, VSResources.OutputWindowPaneTitle, fInitVisible: 1, fClearWithSolution: 0);
-            if (hr.Failed)
-                throw hr.Exception;
 
-            hr = outputWindow.GetPane(ref paneGuid, out IVsOutputWindowPane pane);
-            if (hr.Failed)
-                throw hr.Exception;
+            Verify.HResult(outputWindow.CreatePane(ref paneGuid, VSResources.OutputWindowPaneTitle, fInitVisible: 1, fClearWithSolution: 0));
+
+            Verify.HResult(outputWindow.GetPane(ref paneGuid, out IVsOutputWindowPane pane));
 
             return pane;
         }

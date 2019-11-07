@@ -28,9 +28,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
             //GetEnumerator
             var enumerator = list.GetEnumerator();
             Assert.True(enumerator.MoveNext());
-            Assert.True(string.Compare(enumerator.Current, "A") == 0);
+            Assert.Equal("A", enumerator.Current);
             Assert.True(enumerator.MoveNext());
-            Assert.True(string.Compare(enumerator.Current, "B") == 0);
+            Assert.Equal("B", enumerator.Current);
             Assert.False(enumerator.MoveNext());
 
             //IsPresent(string)
@@ -66,8 +66,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
             {
                 list.Item(3);
             });
-            Assert.True(string.Compare(list.Item(1), "A") == 0);
-            Assert.True(string.Compare(list.Item(2), "B") == 0);
+            Assert.Equal("A", list.Item(1));
+            Assert.Equal("B", list.Item(2));
         }
 
         [Fact]
