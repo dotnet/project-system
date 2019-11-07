@@ -46,22 +46,18 @@ namespace Microsoft.VisualStudio.Packaging
             Guid selectorGuid = typeof(FSharpProjectSelector).GUID;
             _projectSelectorService.RegisterProjectSelector(ref selectorGuid, new FSharpProjectSelector(), out _projectSelectorCookie);
 
-            var componentModel = (IComponentModel)(await GetServiceAsync(typeof(SComponentModel)));
+            IComponentModel componentModel = await this.GetServiceAsync<SComponentModel, IComponentModel>();
 
             var solutionService = (SolutionService)componentModel.GetService<ISolutionService>();
             solutionService.StartListening();
 
             var mcs = (OleMenuCommandService)await GetServiceAsync(typeof(IMenuCommandService));
-            
-            Lazy<DebugFrameworksDynamicMenuCommand> debugFrameworksCmd = componentModel.DefaultExportProvider.GetExport<DebugFrameworksDynamicMenuCommand>();
-            mcs.AddCommand(debugFrameworksCmd.Value);
-
-            Lazy<DebugFrameworkPropertyMenuTextUpdater> debugFrameworksMenuTextUpdater = componentModel.DefaultExportProvider.GetExport<DebugFrameworkPropertyMenuTextUpdater>();
-            mcs.AddCommand(debugFrameworksMenuTextUpdater.Value);
+            mcs.AddCommand(componentModel.GetService<DebugFrameworksDynamicMenuCommand>());
+            mcs.AddCommand(componentModel.GetService<DebugFrameworkPropertyMenuTextUpdater>());
 
             // Need to use the CPS export provider to get the dotnet compatibility detector
-            Lazy<IProjectServiceAccessor> projectServiceAccessor = componentModel.DefaultExportProvider.GetExport<IProjectServiceAccessor>();
-            _dotNetCoreCompatibilityDetector = projectServiceAccessor.Value.GetProjectService().Services.ExportProvider.GetExport<IDotNetCoreProjectCompatibilityDetector>().Value;
+            IProjectServiceAccessor projectServiceAccessor = componentModel.GetService<IProjectServiceAccessor>();
+            _dotNetCoreCompatibilityDetector = projectServiceAccessor.GetProjectService().Services.ExportProvider.GetExport<IDotNetCoreProjectCompatibilityDetector>().Value;
             await _dotNetCoreCompatibilityDetector.InitializeAsync();
 
             IVsProjectFactory factory = new XprojProjectFactory();
