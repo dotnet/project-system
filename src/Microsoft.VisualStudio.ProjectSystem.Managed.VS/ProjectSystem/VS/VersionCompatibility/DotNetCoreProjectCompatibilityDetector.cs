@@ -21,9 +21,7 @@ using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
-    /// <summary>
-    /// <see cref="IDotNetCoreProjectCompatibilityDetector"/>
-    /// </summary>
+    /// <inheritdoc cref="IDotNetCoreProjectCompatibilityDetector"/>
     [Export(typeof(IDotNetCoreProjectCompatibilityDetector))]
     internal partial class DotNetCoreProjectCompatibilityDetector : IDotNetCoreProjectCompatibilityDetector, IVsSolutionEvents, IVsSolutionLoadEvents, IDisposable
     {
