@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
                 return "";
             }
 
-            var builder = PooledArray<string>.GetInstance();
+            var builder = PooledArray<string>.GetInstance(capacity: configuredProjects.Objects.Count);
 
             foreach (ConfiguredProject configuredProject in configuredProjects.Objects)
             {
