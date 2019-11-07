@@ -3,6 +3,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ComponentModelHost;
+using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.Packaging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
@@ -13,6 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     /// <remarks>
     /// Implementations must be exported in global scope.
     /// </remarks>
+    [ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ZeroOrMore)]
     internal interface IPackageService
     {
         /// <summary>
