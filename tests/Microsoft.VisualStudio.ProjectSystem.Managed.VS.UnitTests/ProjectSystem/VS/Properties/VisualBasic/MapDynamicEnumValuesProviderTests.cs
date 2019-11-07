@@ -103,7 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic
             }
         }
 
-        private async Task VerifySameValueOnQueryAsync(IDynamicEnumValuesGenerator generator, Dictionary<string, IEnumValue> persistencePageEnumMap, bool checkMapNameOnly = false)
+        private static async Task VerifySameValueOnQueryAsync(IDynamicEnumValuesGenerator generator, Dictionary<string, IEnumValue> persistencePageEnumMap, bool checkMapNameOnly = false)
         {
             foreach (var key in persistencePageEnumMap.Keys)
             {
@@ -124,7 +124,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic
             }
         }
 
-        private Dictionary<string, IEnumValue> CreateEnumValueMap(List<string> keys, IEnumerable<PageEnumValue> pageEnumValues)
+        private static Dictionary<string, IEnumValue> CreateEnumValueMap(List<string> keys, IEnumerable<PageEnumValue> pageEnumValues)
         {
             Assert.True(keys.Count == pageEnumValues.Count(), "This is a test authoring error");
 
