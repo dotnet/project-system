@@ -11,8 +11,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
 {
     [Export(typeof(IOutputGroupProvider))]
     [AppliesTo(ProjectCapabilities.VisualStudioWellKnownOutputGroups)]
-    [Order(1000)]
-    internal class OutputGroupProvider : IOutputGroupProvider
+    [Order(Order.Default)]
+    internal class PublishItemsOutputGroupProvider : IOutputGroupProvider
     {
         /// <summary>
         /// List of well known output groups names and their associated target and description
@@ -29,19 +29,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
         private readonly ConfiguredProject _configuredProject;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OutputGroupProvider"/> class.
+        /// Initializes a new instance of the <see cref="PublishItemsOutputGroupProvider"/> class.
         /// </summary>
         /// <param name="projectAccessor">Imported <see cref="IProjectAccessor"/>.</param>
         /// <param name="configuredProject">Imported <see cref="ConfiguredProject"/>.</param>
         [ImportingConstructor]
-        private OutputGroupProvider(IProjectAccessor projectAccessor, ConfiguredProject configuredProject)
+        private PublishItemsOutputGroupProvider(IProjectAccessor projectAccessor, ConfiguredProject configuredProject)
         {
             _projectAccessor = projectAccessor;
             _configuredProject = configuredProject;
             _outputGroups = new AsyncLazy<IImmutableSet<IOutputGroup>>(GetOutputGroupMetadataAsync);
         }
 
-        /// <inheritdoc/>
         public Task<IImmutableSet<IOutputGroup>> OutputGroups
         {
             get { return _outputGroups.GetValueAsync(); }
@@ -64,11 +63,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
         private async Task<IImmutableSet<IOutputGroup>> GetOutputGroupMetadataAsync()
         {
             // Start with the comment set of output groups.
-            var result = s_outputGroups;
+            ImmutableHashSet<IOutputGroup> result = s_outputGroups;
 
             // Remove any well known output group for which no target is defined.
-            var targets = await GetProjectTargetsAsync();
-            foreach (var outputGroup in result)
+            ImmutableHashSet<string> targets = await GetProjectTargetsAsync();
+            foreach (IOutputGroup outputGroup in result)
             {
                 if (!targets.Contains(outputGroup.TargetName))
                 {

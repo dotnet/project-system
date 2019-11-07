@@ -30,22 +30,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
             IsSuccessful = successful;
         }
 
-        /// <inheritdoc/>
         public string TargetName { get; }
 
-        /// <inheritdoc/>
         public string Name { get; }
 
-        /// <inheritdoc/>
         public string DisplayName { get; }
 
-        /// <inheritdoc/>
         public string? Description { get; }
 
-        /// <inheritdoc/>
         public bool IsSuccessful { get; }
 
-        /// <inheritdoc/>
         public IImmutableList<KeyValuePair<string, IImmutableDictionary<string, string>>> Outputs { get; }
     }
 }
