@@ -20,12 +20,12 @@ namespace Microsoft.VisualStudio.Packaging
     [PackageRegistration(AllowsBackgroundLoading = true, RegisterUsing = RegistrationMethod.CodeBase, UseManagedResourcesOnly = true)]
     [ProvideProjectFactory(typeof(XprojProjectFactory), null, "#27", "xproj", "xproj", null)]
     [ProvideAutoLoad(ActivationContextGuid, PackageAutoLoadFlags.BackgroundLoad)]
-    [ProvideUIContextRule(ActivationContextGuid, "Load Managed Project Package",
-        "dotnetcore",
-        new string[] { "dotnetcore" },
-        new string[] { "SolutionHasProjectCapability:.NET & CPS" }
+    [ProvideUIContextRule(ActivationContextGuid,
+        name: "Load Managed Project Package",
+        expression: "dotnetcore",
+        termNames: new[] { "dotnetcore" },
+        termValues: new[] { "SolutionHasProjectCapability:.NET & CPS" }
         )]
-
     [ProvideMenuResource("Menus.ctmenu", 4)]
     internal partial class ManagedProjectSystemPackage : AsyncPackage
     {
@@ -35,10 +35,6 @@ namespace Microsoft.VisualStudio.Packaging
         private IDotNetCoreProjectCompatibilityDetector? _dotNetCoreCompatibilityDetector;
         private IVsRegisterProjectSelector? _projectSelectorService;
         private uint _projectSelectorCookie = VSConstants.VSCOOKIE_NIL;
-
-        public ManagedProjectSystemPackage()
-        {
-        }
 
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
@@ -51,11 +47,13 @@ namespace Microsoft.VisualStudio.Packaging
             _projectSelectorService.RegisterProjectSelector(ref selectorGuid, new FSharpProjectSelector(), out _projectSelectorCookie);
 
             var componentModel = (IComponentModel)(await GetServiceAsync(typeof(SComponentModel)));
-            Lazy<DebugFrameworksDynamicMenuCommand> debugFrameworksCmd = componentModel.DefaultExportProvider.GetExport<DebugFrameworksDynamicMenuCommand>();
+
             var solutionService = (SolutionService)componentModel.GetService<ISolutionService>();
             solutionService.StartListening();
 
             var mcs = (OleMenuCommandService)await GetServiceAsync(typeof(IMenuCommandService));
+            
+            Lazy<DebugFrameworksDynamicMenuCommand> debugFrameworksCmd = componentModel.DefaultExportProvider.GetExport<DebugFrameworksDynamicMenuCommand>();
             mcs.AddCommand(debugFrameworksCmd.Value);
 
             Lazy<DebugFrameworkPropertyMenuTextUpdater> debugFrameworksMenuTextUpdater = componentModel.DefaultExportProvider.GetExport<DebugFrameworkPropertyMenuTextUpdater>();
