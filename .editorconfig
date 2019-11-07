@@ -206,6 +206,9 @@ csharp_preserve_single_line_blocks = true
 # Code block
 csharp_prefer_braces = false:none
 
+# Using statements
+csharp_using_directive_placement = outside_namespace:error
+
 # Dotnet code analysis settings:
 [*.{cs,vb}]
 # Microsoft.Analyzers.ManagedCodeAnalysis
