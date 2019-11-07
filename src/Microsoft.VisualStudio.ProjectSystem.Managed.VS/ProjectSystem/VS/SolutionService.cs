@@ -2,7 +2,6 @@
 
 using System;
 using System.ComponentModel.Composition;
-using System.Threading;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 
@@ -10,16 +9,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <inheritdoc cref="ISolutionService"/>
     [Export(typeof(ISolutionService))]
-    internal sealed class SolutionService : ISolutionService, IVsSolutionEvents, IVsPrioritizedSolutionEvents, IDisposable
+    internal sealed class SolutionService : OnceInitializedOnceDisposed, ISolutionService, IVsSolutionEvents, IVsPrioritizedSolutionEvents, IDisposable
     {
-        private const int StateUninitialized = 0;
-        private const int StateListening = 1;
-        private const int StateDisposed = 2;
-
         private readonly IVsUIService<IVsSolution> _solution;
         private readonly JoinableTaskContext _joinableTaskContext;
 
-        private int _state = StateUninitialized;
         private uint _cookie = VSConstants.VSCOOKIE_NIL;
         
         /// <inheritdoc />
@@ -34,12 +28,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public void StartListening()
         {
-            Assumes.True(_joinableTaskContext.IsOnMainThread, "Must be called on the UI thread.");
+            EnsureInitialized();
+        }
 
-            if (Interlocked.CompareExchange(ref _state, StateListening, StateUninitialized) != StateUninitialized)
-            {
-                return;
-            }
+        protected override void Initialize()
+        {
+            Assumes.True(_joinableTaskContext.IsOnMainThread, "Must be called on the UI thread.");
 
             IVsSolution? solution = _solution.Value;
             Assumes.Present(solution);
@@ -80,14 +74,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return HResult.OK;
         }
 
-        public void Dispose()
+        protected override void Dispose(bool disposing)
         {
-            Assumes.True(_joinableTaskContext.IsOnMainThread, "Must be called on the UI thread.");
-
-            if (Interlocked.CompareExchange(ref _state, StateDisposed, StateListening) != StateListening)
-            {
+            if (!disposing)
                 return;
-            }
+
+            Assumes.True(_joinableTaskContext.IsOnMainThread, "Must be called on the UI thread.");
 
             if (_cookie != VSConstants.VSCOOKIE_NIL)
             {
