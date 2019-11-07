@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using Microsoft.VisualStudio.Packaging;
+using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
@@ -37,6 +40,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.FSharp
             }
 
             guidProjectFactory = ProjectType.LegacyFSharpGuid;
+        }
+
+        public static async Task<IDisposable> RegisterAsync(ManagedProjectSystemPackage package)
+        {
+            IVsRegisterProjectSelector projectSelector = await package.GetServiceAsync<SVsRegisterProjectTypes, IVsRegisterProjectSelector>();
+            
+            Guid selectorGuid = typeof(FSharpProjectSelector).GUID;
+            projectSelector.RegisterProjectSelector(ref selectorGuid, new FSharpProjectSelector(), out uint cookie);
+
+            return new DisposableDelegate(
+                () =>
+                {
+                    if (cookie != VSConstants.VSCOOKIE_NIL)
+                    {
+                        projectSelector.UnregisterProjectSelector(cookie);
+                    }
+                });
         }
     }
 }

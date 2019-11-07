@@ -33,18 +33,15 @@ namespace Microsoft.VisualStudio.Packaging
         public const string PackageGuid = "860A27C0-B665-47F3-BC12-637E16A1050A";
 
         private IDotNetCoreProjectCompatibilityDetector? _dotNetCoreCompatibilityDetector;
-        private IVsRegisterProjectSelector? _projectSelectorService;
-        private uint _projectSelectorCookie = VSConstants.VSCOOKIE_NIL;
+        private IDisposable? _projectSelector;
 
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
 #pragma warning disable RS0030 // Do not used banned APIs
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-
-            _projectSelectorService = await this.GetServiceAsync<SVsRegisterProjectTypes, IVsRegisterProjectSelector>();
 #pragma warning restore RS0030 // Do not used banned APIs
-            Guid selectorGuid = typeof(FSharpProjectSelector).GUID;
-            _projectSelectorService.RegisterProjectSelector(ref selectorGuid, new FSharpProjectSelector(), out _projectSelectorCookie);
+
+            _projectSelector = await FSharpProjectSelector.RegisterAsync(this);
 
             IComponentModel componentModel = await this.GetServiceAsync<SComponentModel, IComponentModel>();
 
@@ -73,11 +70,7 @@ namespace Microsoft.VisualStudio.Packaging
         {
             if (disposing)
             {
-                if (_projectSelectorCookie != VSConstants.VSCOOKIE_NIL)
-                {
-                    _projectSelectorService?.UnregisterProjectSelector(_projectSelectorCookie);
-                    _projectSelectorCookie = VSConstants.VSCOOKIE_NIL;
-                }
+                _projectSelector?.Dispose();
             }
 
             base.Dispose(disposing);
