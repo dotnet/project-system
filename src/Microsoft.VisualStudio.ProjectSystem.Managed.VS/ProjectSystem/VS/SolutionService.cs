@@ -36,6 +36,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             Verify.HResult(solution.AdviseSolutionEvents(this, out _cookie));
         }
 
+        // We handle both prioritized and regular before/after events to update state as early as possible,
+        // and ensure we set the value regardless of whether the caller supports one or both interfaces.
+
         public int OnAfterOpenSolution(object pUnkReserved, int fNewSolution)                                 => UpdateClosing(false);
         public int OnBeforeCloseSolution(object pUnkReserved)                                                 => UpdateClosing(true);
         public int OnAfterOpenProject(IVsHierarchy pHierarchy, int fAdded)                                    => HResult.OK;
