@@ -3,7 +3,6 @@
 using System;
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Shell.Interop;
-using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
@@ -12,7 +11,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     internal sealed class SolutionService : OnceInitializedOnceDisposed, ISolutionService, IVsSolutionEvents, IVsPrioritizedSolutionEvents, IDisposable
     {
         private readonly IVsUIService<IVsSolution> _solution;
-        private readonly JoinableTaskContext _joinableTaskContext;
 
         private uint _cookie = VSConstants.VSCOOKIE_NIL;
         
@@ -20,10 +18,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public bool IsSolutionClosing { get; private set; }
 
         [ImportingConstructor]
-        public SolutionService(IVsUIService<SVsSolution, IVsSolution> solution, JoinableTaskContext joinableTaskContext)
+        public SolutionService(IVsUIService<SVsSolution, IVsSolution> solution)
         {
             _solution = solution;
-            _joinableTaskContext = joinableTaskContext;
         }
 
         public void StartListening()
@@ -33,8 +30,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         protected override void Initialize()
         {
-            Assumes.True(_joinableTaskContext.IsOnMainThread, "Must be called on the UI thread.");
-
             IVsSolution? solution = _solution.Value;
             Assumes.Present(solution);
 
@@ -78,8 +73,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             if (!disposing)
                 return;
-
-            Assumes.True(_joinableTaskContext.IsOnMainThread, "Must be called on the UI thread.");
 
             if (_cookie != VSConstants.VSCOOKIE_NIL)
             {
