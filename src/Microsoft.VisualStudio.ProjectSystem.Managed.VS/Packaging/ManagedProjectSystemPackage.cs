@@ -33,6 +33,7 @@ namespace Microsoft.VisualStudio.Packaging
         public const string PackageGuid = "860A27C0-B665-47F3-BC12-637E16A1050A";
 
         private IDotNetCoreProjectCompatibilityDetector? _dotNetCoreCompatibilityDetector;
+        private SolutionService? _solutionService;
         private IVsRegisterProjectSelector? _projectSelectorService;
         private uint _projectSelectorCookie = VSConstants.VSCOOKIE_NIL;
 
@@ -52,6 +53,8 @@ namespace Microsoft.VisualStudio.Packaging
 
             var componentModel = (IComponentModel)(await GetServiceAsync(typeof(SComponentModel)));
             Lazy<DebugFrameworksDynamicMenuCommand> debugFrameworksCmd = componentModel.DefaultExportProvider.GetExport<DebugFrameworksDynamicMenuCommand>();
+            _solutionService = (SolutionService)componentModel.GetService<ISolutionService>();
+            _solutionService.StartListening();
 
             var mcs = (OleMenuCommandService)await GetServiceAsync(typeof(IMenuCommandService));
             mcs.AddCommand(debugFrameworksCmd.Value);
@@ -75,10 +78,15 @@ namespace Microsoft.VisualStudio.Packaging
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing && _projectSelectorCookie != VSConstants.VSCOOKIE_NIL)
+            if (disposing)
             {
-                _projectSelectorService?.UnregisterProjectSelector(_projectSelectorCookie);
-                _projectSelectorCookie = VSConstants.VSCOOKIE_NIL;
+                if (_projectSelectorCookie != VSConstants.VSCOOKIE_NIL)
+                {
+                    _projectSelectorService?.UnregisterProjectSelector(_projectSelectorCookie);
+                    _projectSelectorCookie = VSConstants.VSCOOKIE_NIL;
+                }
+
+                _solutionService?.Dispose();
             }
 
             base.Dispose(disposing);

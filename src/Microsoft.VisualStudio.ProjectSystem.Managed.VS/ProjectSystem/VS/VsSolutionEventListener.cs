@@ -3,9 +3,9 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Shell.Interop;
+using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
@@ -14,8 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     ///     <see cref="IUnconfiguredProjectTasksService.ProjectLoadedInHost"/>.
     /// </summary>
     [Export(typeof(ILoadedInHostListener))]
-    [Export(typeof(ISolutionService))]
-    internal class VsSolutionEventListener : OnceInitializedOnceDisposedAsync, IVsSolutionEvents, IVsPrioritizedSolutionEvents, ILoadedInHostListener, ISolutionService
+    internal class VsSolutionEventListener : OnceInitializedOnceDisposedAsync, IVsSolutionEvents, IVsPrioritizedSolutionEvents, ILoadedInHostListener
     {
         private readonly IVsUIService<IVsSolution> _solution;
         private readonly IProjectThreadingService _threadingService;
@@ -28,8 +27,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _solution = solution;
             _threadingService = threadingService;
         }
-
-        public bool IsSolutionClosing { get; private set; }
 
         public Task StartListeningAsync()
         {
@@ -126,9 +123,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public int OnAfterOpenSolution(object pUnkReserved, int fNewSolution)
         {
-            IsSolutionClosing = false;
-
-            return HResult.OK;
+            return HResult.NotImplemented;
         }
 
         public int OnQueryCloseSolution(object pUnkReserved, ref int pfCancel)
@@ -138,9 +133,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public int OnBeforeCloseSolution(object pUnkReserved)
         {
-            IsSolutionClosing = true;
-
-            return HResult.OK;
+            return HResult.NotImplemented;
         }
 
         public int OnAfterCloseSolution(object pUnkReserved)
@@ -165,16 +158,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public int PrioritizedOnAfterOpenSolution(object pUnkReserved, int fNewSolution)
         {
-            IsSolutionClosing = false;
-
-            return HResult.OK;
+            return HResult.NotImplemented;
         }
 
         public int PrioritizedOnBeforeCloseSolution(object pUnkReserved)
         {
-            IsSolutionClosing = true;
-
-            return HResult.OK;
+            return HResult.NotImplemented;
         }
 
         public int PrioritizedOnAfterCloseSolution(object pUnkReserved)
