@@ -1,14 +1,12 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.ComponentModel.Design;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading;
 using Microsoft.VisualStudio.ComponentModelHost;
-using Microsoft.VisualStudio.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.VS;
-using Microsoft.VisualStudio.ProjectSystem.VS.FSharp;
-using Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands;
 using Microsoft.VisualStudio.ProjectSystem.VS.Xproj;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -32,8 +30,7 @@ namespace Microsoft.VisualStudio.Packaging
         public const string ActivationContextGuid = "E7DF1626-44DD-4E8C-A8A0-92EAB6DDC16E";
         public const string PackageGuid = "860A27C0-B665-47F3-BC12-637E16A1050A";
 
-        private IDotNetCoreProjectCompatibilityDetector? _dotNetCoreCompatibilityDetector;
-        private IDisposable? _projectSelector;
+        private readonly DisposableBag _disposables = new DisposableBag();
 
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
@@ -41,36 +38,30 @@ namespace Microsoft.VisualStudio.Packaging
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 #pragma warning restore RS0030 // Do not used banned APIs
 
-            _projectSelector = await FSharpProjectSelector.RegisterAsync(this);
-
             IComponentModel componentModel = await this.GetServiceAsync<SComponentModel, IComponentModel>();
 
-            var solutionService = (SolutionService)componentModel.GetService<ISolutionService>();
-            solutionService.StartListening();
+            IEnumerable<Lazy<IPackageService>> packageServices = componentModel.DefaultExportProvider.GetExports<IPackageService>();
 
-            var mcs = (OleMenuCommandService)await GetServiceAsync(typeof(IMenuCommandService));
-            mcs.AddCommand(componentModel.GetService<DebugFrameworksDynamicMenuCommand>());
-            mcs.AddCommand(componentModel.GetService<DebugFrameworkPropertyMenuTextUpdater>());
-
-            // Need to use the CPS export provider to get the dotnet compatibility detector
-            IProjectServiceAccessor projectServiceAccessor = componentModel.GetService<IProjectServiceAccessor>();
-            _dotNetCoreCompatibilityDetector = projectServiceAccessor.GetProjectService().Services.ExportProvider.GetExport<IDotNetCoreProjectCompatibilityDetector>().Value;
-            await _dotNetCoreCompatibilityDetector.InitializeAsync();
-
-            IVsProjectFactory factory = new XprojProjectFactory();
-            factory.SetSite(new ServiceProviderToOleServiceProviderAdapter(ServiceProvider.GlobalProvider));
-            RegisterProjectFactory(factory);
+            foreach (Lazy<IPackageService> packageService in packageServices)
+            {
+                _disposables.Add(await packageService.Value.InitializeAsync(this, componentModel));
+            }
 
 #if DEBUG
             DebuggerTraceListener.RegisterTraceListener();
 #endif
         }
 
+        internal new void RegisterProjectFactory(IVsProjectFactory factory)
+        {
+            base.RegisterProjectFactory(factory);
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                _projectSelector?.Dispose();
+                _disposables.Dispose();
             }
 
             base.Dispose(disposing);

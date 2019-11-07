@@ -2,13 +2,17 @@
 
 using System;
 using System.ComponentModel.Composition;
+using System.Threading.Tasks;
+using Microsoft.VisualStudio.ComponentModelHost;
+using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <inheritdoc cref="ISolutionService"/>
     [Export(typeof(ISolutionService))]
-    internal sealed class SolutionService : OnceInitializedOnceDisposed, ISolutionService, IVsSolutionEvents, IVsPrioritizedSolutionEvents, IDisposable
+    [Export(typeof(IPackageService))]
+    internal sealed class SolutionService : OnceInitializedOnceDisposed, ISolutionService, IVsSolutionEvents, IVsPrioritizedSolutionEvents, IPackageService
     {
         private readonly IVsUIService<IVsSolution> _solution;
 
@@ -23,9 +27,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _solution = solution;
         }
 
-        public void StartListening()
+        /// <inheritdoc />
+        public Task<IDisposable?> InitializeAsync(ManagedProjectSystemPackage package, IComponentModel componentModel)
         {
             EnsureInitialized();
+            
+            return Task.FromResult<IDisposable?>(null);
         }
 
         protected override void Initialize()
