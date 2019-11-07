@@ -48,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private readonly IVsService<IVsShell> _vsShellService;
         private RemoteCacheFile? _versionDataCacheFile;
         private uint _solutionCookie = VSConstants.VSCOOKIE_NIL;
-        private DateTime _timeCurVersionDataLastUpdatedUtc = DateTime.MinValue; // Tracks how often we meed to look for new data
+        private DateTime _timeCurVersionDataLastUpdatedUtc = DateTime.MinValue; // Tracks how often we need to look for new data
         private IVsSolution? _vsSolution;
 
         // These are internal for unit testing
