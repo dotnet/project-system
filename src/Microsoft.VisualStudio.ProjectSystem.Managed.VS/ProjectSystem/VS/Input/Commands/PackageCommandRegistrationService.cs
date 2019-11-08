@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Design;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Threading;
 using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
@@ -20,17 +21,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         /// </summary>
         public const string PackageCommandContract = "ManagedPackageCommand";
 
+        private readonly JoinableTaskContext _context;
         private readonly IEnumerable<MenuCommand> _commands;
 
         [ImportingConstructor]
-        public PackageCommandRegistrationService([ImportMany(PackageCommandContract)] IEnumerable<MenuCommand> commands)
+        public PackageCommandRegistrationService([ImportMany(PackageCommandContract)] IEnumerable<MenuCommand> commands, JoinableTaskContext context)
         {
             _commands = commands;
+            _context = context;
         }
 
         public async Task InitializeAsync(IAsyncServiceProvider asyncServiceProvider)
         {
             IMenuCommandService menuCommandService = await asyncServiceProvider.GetServiceAsync<IMenuCommandService, IMenuCommandService>();
+
+            await _context.Factory.SwitchToMainThreadAsync();
 
             foreach (MenuCommand menuCommand in _commands)
             {

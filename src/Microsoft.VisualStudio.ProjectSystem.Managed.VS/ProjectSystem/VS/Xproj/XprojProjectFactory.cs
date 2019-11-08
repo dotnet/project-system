@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Flavor;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Threading;
 using IAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider;
 using Task = System.Threading.Tasks.Task;
 
@@ -16,14 +17,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
     [Guid(ProjectType.LegacyXProj)]
     internal sealed class XprojProjectFactory : FlavoredProjectFactoryBase, IVsProjectUpgradeViaFactory4, IPackageService, IDisposable
     {
+        private readonly JoinableTaskContext _context;
         private IVsRegisterProjectTypes? _registerProjectTypes;
         private uint _cookie = VSConstants.VSCOOKIE_NIL;
+
+        public XprojProjectFactory(JoinableTaskContext context)
+        {
+            _context = context;
+        }
 
         public async Task InitializeAsync(IAsyncServiceProvider asyncServiceProvider)
         {
             Assumes.Null(_registerProjectTypes);
 
             _registerProjectTypes = await asyncServiceProvider.GetServiceAsync<SVsRegisterProjectTypes, IVsRegisterProjectTypes>();
+            
+            await _context.Factory.SwitchToMainThreadAsync();
 
             ((IVsProjectFactory)this).SetSite(new ServiceProviderToOleServiceProviderAdapter(ServiceProvider.GlobalProvider));
 
@@ -61,6 +70,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 
         public void Dispose()
         {
+            Assumes.True(_context.IsOnMainThread, "Must be on UI thread");
+
             if (_cookie != VSConstants.VSCOOKIE_NIL && _registerProjectTypes != null)
             {
                 Verify.HResult(_registerProjectTypes.UnregisterProjectType(_cookie));

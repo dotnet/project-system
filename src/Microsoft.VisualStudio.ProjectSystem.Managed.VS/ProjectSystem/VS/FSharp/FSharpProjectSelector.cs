@@ -8,6 +8,7 @@ using System.Xml.Linq;
 using System.Xml.XPath;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Threading;
 using IAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider;
 using Task = System.Threading.Tasks.Task;
 
@@ -20,14 +21,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.FSharp
     {
         private const string MSBuildXmlNamespace = "http://schemas.microsoft.com/developer/msbuild/2003";
 
+        private readonly JoinableTaskContext _context;
         private IVsRegisterProjectSelector? _projectSelector;
         private uint _cookie = VSConstants.VSCOOKIE_NIL;
+
+        public FSharpProjectSelector(JoinableTaskContext context)
+        {
+            _context = context;
+        }
 
         public async Task InitializeAsync(IAsyncServiceProvider asyncServiceProvider)
         {
             Assumes.Null(_projectSelector);
 
             _projectSelector = await asyncServiceProvider.GetServiceAsync<SVsRegisterProjectTypes, IVsRegisterProjectSelector>();
+
+            await _context.Factory.SwitchToMainThreadAsync();
 
             Guid selectorGuid = typeof(FSharpProjectSelector).GUID;
             _projectSelector.RegisterProjectSelector(ref selectorGuid, this, out _cookie);
@@ -60,6 +69,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.FSharp
 
         public void Dispose()
         {
+            Assumes.True(_context.IsOnMainThread, "Must be on UI thread");
+
             if (_cookie != VSConstants.VSCOOKIE_NIL)
             {
                 _projectSelector?.UnregisterProjectSelector(_cookie);

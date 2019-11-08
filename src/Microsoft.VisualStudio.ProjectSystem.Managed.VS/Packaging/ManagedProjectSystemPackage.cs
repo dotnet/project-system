@@ -8,7 +8,6 @@ using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Xproj;
 using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Threading;
 using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.Packaging
@@ -33,11 +32,7 @@ namespace Microsoft.VisualStudio.Packaging
         {
             IComponentModel componentModel = await this.GetServiceAsync<SComponentModel, IComponentModel>();
             
-            JoinableTaskContext context = componentModel.GetService<JoinableTaskContext>();
-
             IEnumerable<IPackageService> packageServices = componentModel.GetExtensions<IPackageService>();
-
-            await context.Factory.SwitchToMainThreadAsync(cancellationToken);
 
             foreach (IPackageService packageService in packageServices)
             {

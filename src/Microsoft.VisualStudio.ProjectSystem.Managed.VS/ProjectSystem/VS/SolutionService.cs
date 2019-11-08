@@ -3,6 +3,7 @@
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Threading;
 using IAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider;
 using Task = System.Threading.Tasks.Task;
 
@@ -13,16 +14,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     [Export(typeof(IPackageService))]
     internal sealed class SolutionService : ISolutionService, IVsSolutionEvents, IVsPrioritizedSolutionEvents, IPackageService
     {
+        private readonly JoinableTaskContext _context;
         private IVsSolution? _solution;
         private uint _cookie = VSConstants.VSCOOKIE_NIL;
         
         public bool IsSolutionClosing { get; private set; }
+
+        public SolutionService(JoinableTaskContext context)
+        {
+            _context = context;
+        }
 
         public async Task InitializeAsync(IAsyncServiceProvider asyncServiceProvider)
         {
             Assumes.Null(_solution);
             
             _solution = await asyncServiceProvider.GetServiceAsync<IVsSolution, IVsSolution>();
+
+            await _context.Factory.SwitchToMainThreadAsync();
 
             Verify.HResult(_solution.AdviseSolutionEvents(this, out _cookie));
         }
@@ -65,6 +74,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public void Dispose()
         {
+            Assumes.True(_context.IsOnMainThread, "Must be on UI thread");
+
             if (_cookie != VSConstants.VSCOOKIE_NIL && _solution != null)
             {
                 Verify.HResult(_solution.UnadviseSolutionEvents(_cookie));
