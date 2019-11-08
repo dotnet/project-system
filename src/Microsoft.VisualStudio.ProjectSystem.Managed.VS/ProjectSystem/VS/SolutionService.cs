@@ -17,13 +17,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private readonly JoinableTaskContext _context;
         private IVsSolution? _solution;
         private uint _cookie = VSConstants.VSCOOKIE_NIL;
-        
-        public bool IsSolutionClosing { get; private set; }
 
+        [ImportingConstructor]
         public SolutionService(JoinableTaskContext context)
         {
+            Requires.NotNull(context, nameof(context));
+
             _context = context;
         }
+
+        public bool IsSolutionClosing { get; private set; }
 
         public async Task InitializeAsync(IAsyncServiceProvider asyncServiceProvider)
         {

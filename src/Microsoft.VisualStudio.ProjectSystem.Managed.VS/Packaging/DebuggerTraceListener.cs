@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.Packaging
             var source = (TraceSource)field.GetValue(null);
 
             source.Switch.Level = SourceLevels.Warning;
-            source.Listeners.Add(new DebuggerTraceListener());
+            source.Listeners.Add(this);
 
             return Task.CompletedTask;
         }

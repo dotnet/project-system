@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Xunit;
 
@@ -15,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         {
             string projectPath = "foo\\bar.xproj";
 
-            var factory = new XprojProjectFactory();
+            var factory = new XprojProjectFactory(ThreadHelper.JoinableTaskContext);
 
             var loggedMessages = new List<LogMessage>();
             var logger = IVsUpgradeLoggerFactory.CreateLogger(loggedMessages);

@@ -25,8 +25,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.FSharp
         private IVsRegisterProjectSelector? _projectSelector;
         private uint _cookie = VSConstants.VSCOOKIE_NIL;
 
+        [ImportingConstructor]
         public FSharpProjectSelector(JoinableTaskContext context)
         {
+            Requires.NotNull(context, nameof(context));
+
             _context = context;
         }
 
@@ -38,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.FSharp
 
             await _context.Factory.SwitchToMainThreadAsync();
 
-            Guid selectorGuid = typeof(FSharpProjectSelector).GUID;
+            Guid selectorGuid = GetType().GUID;
             _projectSelector.RegisterProjectSelector(ref selectorGuid, this, out _cookie);
         }
 

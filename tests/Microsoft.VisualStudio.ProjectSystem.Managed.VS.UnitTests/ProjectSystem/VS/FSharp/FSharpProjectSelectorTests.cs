@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Xml.Linq;
+using Microsoft.VisualStudio.Shell;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.FSharp
@@ -8,9 +10,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.FSharp
     public class FSharpProjectSelectorTests
     {
         [Fact]
-        public void Constructor_DoesNotThrow()
+        public void Constructor()
         {
-            new FSharpProjectSelector();
+            Assert.Throws<ArgumentNullException>(() => new FSharpProjectSelector(null!));
+            
+            new FSharpProjectSelector(ThreadHelper.JoinableTaskContext);
         }
 
         [Theory]

@@ -21,8 +21,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         private IVsRegisterProjectTypes? _registerProjectTypes;
         private uint _cookie = VSConstants.VSCOOKIE_NIL;
 
+        [ImportingConstructor]
         public XprojProjectFactory(JoinableTaskContext context)
         {
+            Requires.NotNull(context, nameof(context));
+
             _context = context;
         }
 

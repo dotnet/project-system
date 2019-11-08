@@ -18,8 +18,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// <summary>
         /// Called when the package is initializing.
         /// </summary>
-        /// <param name="asyncServiceProvider"></param>
-        /// <returns>An optional disposable object, to be disposed when the package is disposed.</returns>
         Task InitializeAsync(IAsyncServiceProvider asyncServiceProvider);
     }
 }

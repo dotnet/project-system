@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.ComponentModel.Composition;
-using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.Shell;
 using Task = System.Threading.Tasks.Task;
 
@@ -13,20 +12,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     [Export(typeof(IPackageService))]
     internal sealed class DotNetCoreProjectCompatibilityDetectorInitializer : IPackageService
     {
-        public async Task InitializeAsync(IAsyncServiceProvider asyncServiceProvider)
-        {
-            IComponentModel componentModel = await asyncServiceProvider.GetServiceAsync<SComponentModel, IComponentModel>();
+        private readonly IProjectServiceAccessor _projectServiceAccessor;
 
+        [ImportingConstructor]
+        public DotNetCoreProjectCompatibilityDetectorInitializer(IProjectServiceAccessor projectServiceAccessor)
+        {
+            Requires.NotNull(projectServiceAccessor, nameof(projectServiceAccessor));
+
+            _projectServiceAccessor = projectServiceAccessor;
+        }
+
+        public Task InitializeAsync(IAsyncServiceProvider asyncServiceProvider)
+        {
             // Need to use the CPS export provider to get the dotnet compatibility detector
-            IDotNetCoreProjectCompatibilityDetector dotNetCoreCompatibilityDetector = componentModel
-                .GetService<IProjectServiceAccessor>()
+            IDotNetCoreProjectCompatibilityDetector dotNetCoreCompatibilityDetector = _projectServiceAccessor
                 .GetProjectService()
                 .Services
                 .ExportProvider
                 .GetExport<IDotNetCoreProjectCompatibilityDetector>()
                 .Value;
 
-            await dotNetCoreCompatibilityDetector.InitializeAsync();
+            return dotNetCoreCompatibilityDetector.InitializeAsync();
         }
     }
 }
