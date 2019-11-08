@@ -163,4 +163,10 @@
 
 If this file or folder does not appear in Solution Explorer, then it is not currently part of your project. To view files which exist on disk, but are not in the project, select Show All Files from the Project menu.</value>
   </data>
+  <data name="OutputGroupPublishItemsDescription" xml:space="preserve">
+    <value>Contains all the assemblies needed when publishing a .NET Core project.</value>
+  </data>
+  <data name="OutputGroupPublishItemsDisplayName" xml:space="preserve">
+    <value>Publish Items</value>
+  </data>
 </root>
