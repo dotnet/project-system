@@ -1,12 +1,10 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Design;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.ComponentModelHost;
-using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.Shell;
+using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
@@ -16,15 +14,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     [Export(typeof(IPackageService))]
     internal sealed class PackageCommandRegistrationService : IPackageService
     {
-        /// <inheritdoc />
-        public async Task<IDisposable?> InitializeAsync(ManagedProjectSystemPackage package, IComponentModel componentModel)
+        /// <summary>
+        /// <see cref="MenuCommand"/> implementations may export themselves with this contract name
+        /// to be automatically added when the managed-language project system package initializes.
+        /// </summary>
+        public const string PackageCommandContract = "ManagedPackageCommand";
+
+        private readonly IEnumerable<MenuCommand> _commands;
+
+        [ImportingConstructor]
+        public PackageCommandRegistrationService([ImportMany(PackageCommandContract)] IEnumerable<MenuCommand> commands)
         {
-            OleMenuCommandService mcs = await package.GetServiceAsync<IMenuCommandService, OleMenuCommandService>();
+            _commands = commands;
+        }
 
-            mcs.AddCommand(componentModel.GetService<DebugFrameworksDynamicMenuCommand>());
-            mcs.AddCommand(componentModel.GetService<DebugFrameworkPropertyMenuTextUpdater>());
+        public async Task InitializeAsync(IAsyncServiceProvider asyncServiceProvider)
+        {
+            IMenuCommandService menuCommandService = await asyncServiceProvider.GetServiceAsync<IMenuCommandService, IMenuCommandService>();
 
-            return null;
+            foreach (MenuCommand menuCommand in _commands)
+            {
+                menuCommandService.AddCommand(menuCommand);
+            }
         }
     }
 }

@@ -1,46 +1,30 @@
 ﻿// Copyright(c) Microsoft.All Rights Reserved.Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.ComponentModel.Composition;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.ComponentModelHost;
-using Microsoft.VisualStudio.Packaging;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using IAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider;
+using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <inheritdoc cref="ISolutionService"/>
     [Export(typeof(ISolutionService))]
     [Export(typeof(IPackageService))]
-    internal sealed class SolutionService : OnceInitializedOnceDisposed, ISolutionService, IVsSolutionEvents, IVsPrioritizedSolutionEvents, IPackageService
+    internal sealed class SolutionService : ISolutionService, IVsSolutionEvents, IVsPrioritizedSolutionEvents, IPackageService
     {
-        private readonly IVsUIService<IVsSolution> _solution;
-
+        private IVsSolution? _solution;
         private uint _cookie = VSConstants.VSCOOKIE_NIL;
         
-        /// <inheritdoc />
         public bool IsSolutionClosing { get; private set; }
 
-        [ImportingConstructor]
-        public SolutionService(IVsUIService<SVsSolution, IVsSolution> solution)
+        public async Task InitializeAsync(IAsyncServiceProvider asyncServiceProvider)
         {
-            _solution = solution;
-        }
-
-        /// <inheritdoc />
-        public Task<IDisposable?> InitializeAsync(ManagedProjectSystemPackage package, IComponentModel componentModel)
-        {
-            EnsureInitialized();
+            Assumes.Null(_solution);
             
-            return Task.FromResult<IDisposable?>(null);
-        }
+            _solution = await asyncServiceProvider.GetServiceAsync<IVsSolution, IVsSolution>();
 
-        protected override void Initialize()
-        {
-            IVsSolution? solution = _solution.Value;
-            Assumes.Present(solution);
-
-            Verify.HResult(solution.AdviseSolutionEvents(this, out _cookie));
+            Verify.HResult(_solution.AdviseSolutionEvents(this, out _cookie));
         }
 
         // We handle both prioritized and regular before/after events to update state as early as possible,
@@ -79,17 +63,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return HResult.OK;
         }
 
-        protected override void Dispose(bool disposing)
+        public void Dispose()
         {
-            if (!disposing)
-                return;
-
-            if (_cookie != VSConstants.VSCOOKIE_NIL)
+            if (_cookie != VSConstants.VSCOOKIE_NIL && _solution != null)
             {
-                IVsSolution? solution = _solution.Value;
-                Assumes.Present(solution);
+                Verify.HResult(_solution.UnadviseSolutionEvents(_cookie));
 
-                Verify.HResult(solution.UnadviseSolutionEvents(_cookie));
                 _cookie = VSConstants.VSCOOKIE_NIL;
             }
         }

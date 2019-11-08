@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     /// Updates the text of the Frameworks menu to include the current active framework. Instead of just saying
     /// Frameworks it will say Frameworks (netcoreapp1.0).
     /// </summary>
-    [Export(typeof(DebugFrameworkPropertyMenuTextUpdater))]
+    [Export(PackageCommandRegistrationService.PackageCommandContract, typeof(MenuCommand))]
     internal class DebugFrameworkPropertyMenuTextUpdater : OleMenuCommand
     {
         [ImportingConstructor]

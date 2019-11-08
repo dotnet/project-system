@@ -3,36 +3,34 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using Microsoft.VisualStudio.ComponentModelHost;
-using Microsoft.VisualStudio.Packaging;
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using IAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider;
+using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.FSharp
 {
     [Export(typeof(IPackageService))]
     [Guid("E720DAD0-1854-47FC-93AF-E719B54B84E6")]
     [ProvideObject(typeof(FSharpProjectSelector), RegisterUsing = RegistrationMethod.CodeBase)]
-    internal sealed class FSharpProjectSelector : IVsProjectSelector, IPackageService
+    internal sealed class FSharpProjectSelector : IVsProjectSelector, IPackageService, IDisposable
     {
         private const string MSBuildXmlNamespace = "http://schemas.microsoft.com/developer/msbuild/2003";
 
-        /// <inheritdoc />
-        public async Task<IDisposable?> InitializeAsync(ManagedProjectSystemPackage package, IComponentModel componentModel)
+        private IVsRegisterProjectSelector? _projectSelector;
+        private uint _cookie = VSConstants.VSCOOKIE_NIL;
+
+        public async Task InitializeAsync(IAsyncServiceProvider asyncServiceProvider)
         {
-            IVsRegisterProjectSelector projectSelector = await package.GetServiceAsync<SVsRegisterProjectTypes, IVsRegisterProjectSelector>();
+            Assumes.Null(_projectSelector);
+
+            _projectSelector = await asyncServiceProvider.GetServiceAsync<SVsRegisterProjectTypes, IVsRegisterProjectSelector>();
 
             Guid selectorGuid = typeof(FSharpProjectSelector).GUID;
-            projectSelector.RegisterProjectSelector(ref selectorGuid, this, out uint cookie);
-
-            return cookie == VSConstants.VSCOOKIE_NIL
-                ? null 
-                : new DisposableDelegate(() => projectSelector.UnregisterProjectSelector(cookie));
+            _projectSelector.RegisterProjectSelector(ref selectorGuid, this, out _cookie);
         }
 
         public void GetProjectFactoryGuid(Guid guidProjectType, string pszFilename, out Guid guidProjectFactory)
@@ -58,6 +56,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.FSharp
             }
 
             guidProjectFactory = ProjectType.LegacyFSharpGuid;
+        }
+
+        public void Dispose()
+        {
+            if (_cookie != VSConstants.VSCOOKIE_NIL)
+            {
+                _projectSelector?.UnregisterProjectSelector(_cookie);
+            }
         }
     }
 }

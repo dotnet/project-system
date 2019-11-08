@@ -1,10 +1,9 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.ComponentModel.Composition;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.ComponentModelHost;
-using Microsoft.VisualStudio.Packaging;
+using Microsoft.VisualStudio.Shell;
+using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
@@ -14,9 +13,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     [Export(typeof(IPackageService))]
     internal sealed class DotNetCoreProjectCompatibilityDetectorInitializer : IPackageService
     {
-        /// <inheritdoc />
-        public async Task<IDisposable?> InitializeAsync(ManagedProjectSystemPackage package, IComponentModel componentModel)
+        public async Task InitializeAsync(IAsyncServiceProvider asyncServiceProvider)
         {
+            IComponentModel componentModel = await asyncServiceProvider.GetServiceAsync<SComponentModel, IComponentModel>();
+
             // Need to use the CPS export provider to get the dotnet compatibility detector
             IDotNetCoreProjectCompatibilityDetector dotNetCoreCompatibilityDetector = componentModel
                 .GetService<IProjectServiceAccessor>()
@@ -27,8 +27,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 .Value;
 
             await dotNetCoreCompatibilityDetector.InitializeAsync();
-
-            return null;
         }
     }
 }

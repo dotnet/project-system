@@ -30,8 +30,6 @@ namespace Microsoft.VisualStudio.Packaging
         public const string ActivationContextGuid = "E7DF1626-44DD-4E8C-A8A0-92EAB6DDC16E";
         public const string PackageGuid = "860A27C0-B665-47F3-BC12-637E16A1050A";
 
-        private readonly DisposableBag _disposables = new DisposableBag();
-
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
 #pragma warning disable RS0030 // Do not used banned APIs
@@ -44,27 +42,12 @@ namespace Microsoft.VisualStudio.Packaging
 
             foreach (Lazy<IPackageService> packageService in packageServices)
             {
-                _disposables.Add(await packageService.Value.InitializeAsync(this, componentModel));
+                await packageService.Value.InitializeAsync(this);
             }
 
 #if DEBUG
             DebuggerTraceListener.RegisterTraceListener();
 #endif
-        }
-
-        internal new void RegisterProjectFactory(IVsProjectFactory factory)
-        {
-            base.RegisterProjectFactory(factory);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                _disposables.Dispose();
-            }
-
-            base.Dispose(disposing);
         }
     }
 }
