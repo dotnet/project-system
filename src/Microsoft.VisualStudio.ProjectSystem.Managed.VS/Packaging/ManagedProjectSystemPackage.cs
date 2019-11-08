@@ -5,11 +5,10 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading;
 using Microsoft.VisualStudio.ComponentModelHost;
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Xproj;
 using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Threading;
 using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.Packaging
@@ -32,17 +31,17 @@ namespace Microsoft.VisualStudio.Packaging
 
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
-#pragma warning disable RS0030 // Do not used banned APIs
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-#pragma warning restore RS0030 // Do not used banned APIs
-
             IComponentModel componentModel = await this.GetServiceAsync<SComponentModel, IComponentModel>();
+            
+            JoinableTaskContext context = componentModel.GetService<JoinableTaskContext>();
 
-            IEnumerable<Lazy<IPackageService>> packageServices = componentModel.DefaultExportProvider.GetExports<IPackageService>();
+            IEnumerable<IPackageService> packageServices = componentModel.GetExtensions<IPackageService>();
 
-            foreach (Lazy<IPackageService> packageService in packageServices)
+            await context.Factory.SwitchToMainThreadAsync(cancellationToken);
+
+            foreach (IPackageService packageService in packageServices)
             {
-                await packageService.Value.InitializeAsync(this);
+                await packageService.InitializeAsync(this);
             }
 
 #if DEBUG
