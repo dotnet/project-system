@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.Packaging
         termValues: new[] { "SolutionHasProjectCapability:.NET & CPS" }
         )]
     [ProvideMenuResource("Menus.ctmenu", 4)]
-    internal partial class ManagedProjectSystemPackage : AsyncPackage
+    internal sealed class ManagedProjectSystemPackage : AsyncPackage
     {
         public const string ActivationContextGuid = "E7DF1626-44DD-4E8C-A8A0-92EAB6DDC16E";
         public const string PackageGuid = "860A27C0-B665-47F3-BC12-637E16A1050A";
@@ -43,10 +43,6 @@ namespace Microsoft.VisualStudio.Packaging
             {
                 await packageService.InitializeAsync(this);
             }
-
-#if DEBUG
-            DebuggerTraceListener.RegisterTraceListener();
-#endif
         }
     }
 }
