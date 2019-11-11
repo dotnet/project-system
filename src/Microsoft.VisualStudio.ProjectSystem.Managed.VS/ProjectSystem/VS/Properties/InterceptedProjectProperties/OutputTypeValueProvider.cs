@@ -12,21 +12,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
     [ExportInterceptingPropertyValueProvider("OutputType", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
     internal sealed class OutputTypeValueProvider : OutputTypeValueProviderBase
     {
-        private static readonly ImmutableDictionary<string, string> s_getOutputTypeMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        private static readonly ImmutableDictionary<string, string> s_getOutputTypeMap = new Dictionary<string, string>()
         {
             {"WinExe",          "0" },
             {"Exe",             "1" },
             {"Library",         "2" },
             {"WinMDObj",        "2" },
             {"AppContainerExe", "1" },
-        }.ToImmutableDictionary();
+        }.ToImmutableDictionary(StringComparer.OrdinalIgnoreCase);
 
-        private static readonly ImmutableDictionary<string, string> s_setOutputTypeMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        private static readonly ImmutableDictionary<string, string> s_setOutputTypeMap = new Dictionary<string, string>()
         {
             {"0", "WinExe" },
             {"1", "Exe" },
             {"2", "Library" },
-        }.ToImmutableDictionary();
+        }.ToImmutableDictionary(StringComparer.OrdinalIgnoreCase);
 
         [ImportingConstructor]
         public OutputTypeValueProvider(ProjectProperties properties)
