@@ -1,3 +1,13 @@
+# Banned APIs across the project.
+
+# Syntax:
+#
+#       E:Event
+#       M:Method
+#       F:Field
+#       P:Property
+#       T:Type
+
 T:Microsoft.VisualStudio.ProjectSystem.IProjectLockService; Using IProjectAccessor enables checkout from source control on write, and allows async release
 
 T:Microsoft.VisualStudio.ProjectSystem.VS.IProjectGuidService; Using ISafeProjectGuidService avoids reading the GUID before it is safe to do so during initialisation
@@ -50,19 +60,19 @@ T:System.Threading.Tasks.Dataflow.ActionBlock`1;Use DataflowUtilities.LinkToActi
 T:System.Threading.Tasks.Dataflow.BroadcastBlock`1;Use DataflowBlockSlim.CreateBroadcastBlock to reduce memory and avoid the overhead of the built-in blocks
 T:System.Threading.Tasks.Dataflow.TransformManyBlock`2;Use DataflowBlockSlim.CreateTransformManyBlock to reduce memory and avoid the overhead of the built-in blocks
 
-M:Microsoft.VisualStudio.VSConstants.S_OK;Use HResult.OK or HResult.IsOK
-M:Microsoft.VisualStudio.VSConstants.E_FAIL;Use HResult.Fail or HResult.Failed
-M:Microsoft.VisualStudio.VSConstants.S_FALSE;Use HResult.False or HResult.IsFalse
-M:Microsoft.VisualStudio.VSConstants.E_NOTIMPL;Use HResult.NotImplemented or HResult.IsNotImplemented
-M:Microsoft.VisualStudio.VSConstants.E_INVALIDARG;Use HResult.InvalidArg
-M:Microsoft.VisualStudio.VSConstants.RPC_E_WRONG_THREAD;Use HResult.WrongThread
-M:Microsoft.VisualStudio.VSConstants.E_ABORT;Use HResult.Abort
-M:Microsoft.VisualStudio.VSConstants.E_PENDING;Use HResult.Pending
-M:Microsoft.VisualStudio.VSConstants.DISP_E_MEMBERNOTFOUND;Use HResult.MemberNotFound
-M:Microsoft.VisualStudio.VSConstants.E_NOINTERFACE;Use HResult.NoInterface
-M:Microsoft.VisualStudio.VSConstants.E_UNEXPECTED;Use HResult.Unexpected
-M:Microsoft.VisualStudio.OLE.Interop.Constants.OLECMDERR_E_NOTSUPPORTED;Use HResult.Ole.Cmd.NotSupported
-M:Microsoft.VisualStudio.OLE.Interop.Constants.OLECMDERR_E_UNKNOWNGROUP;Use HResult.Ole.Cmd.UnknownGroup
+F:Microsoft.VisualStudio.VSConstants.S_OK;Use HResult.OK or HResult.IsOK
+F:Microsoft.VisualStudio.VSConstants.E_FAIL;Use HResult.Fail or HResult.Failed
+F:Microsoft.VisualStudio.VSConstants.S_FALSE;Use HResult.False or HResult.IsFalse
+F:Microsoft.VisualStudio.VSConstants.E_NOTIMPL;Use HResult.NotImplemented or HResult.IsNotImplemented
+F:Microsoft.VisualStudio.VSConstants.E_INVALIDARG;Use HResult.InvalidArg
+F:Microsoft.VisualStudio.VSConstants.RPC_E_WRONG_THREAD;Use HResult.WrongThread
+F:Microsoft.VisualStudio.VSConstants.E_ABORT;Use HResult.Abort
+F:Microsoft.VisualStudio.VSConstants.E_PENDING;Use HResult.Pending
+F:Microsoft.VisualStudio.VSConstants.DISP_E_MEMBERNOTFOUND;Use HResult.MemberNotFound
+F:Microsoft.VisualStudio.VSConstants.E_NOINTERFACE;Use HResult.NoInterface
+F:Microsoft.VisualStudio.VSConstants.E_UNEXPECTED;Use HResult.Unexpected
+F:Microsoft.VisualStudio.OLE.Interop.Constants.OLECMDERR_E_NOTSUPPORTED;Use HResult.Ole.Cmd.NotSupported
+F:Microsoft.VisualStudio.OLE.Interop.Constants.OLECMDERR_E_UNKNOWNGROUP;Use HResult.Ole.Cmd.UnknownGroup
 
 T:Microsoft.VisualStudio.Shell.ThreadHelper;Import JoinableTaskContext if inside a MEF component for unit testing purposes
 
