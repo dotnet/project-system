@@ -16,6 +16,9 @@
          binaries without it, but Microsoft.VisualStudio.SDK.EmbedInteropTypes turns it on. Silencing the warning will
          mean we won't embed the things already not being embedded, but that's harmless. -->
     <NoWarn>1762</NoWarn>
+
+    <!-- Work around dotnet/wpf#1718 for the time being -->
+    <EmbedUntrackedSources>false</EmbedUntrackedSources>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Build" Version="$(MicrosoftBuildVersion)" />
