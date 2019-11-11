@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
         /// <param name="projectAccessor">Imported <see cref="IProjectAccessor"/>.</param>
         /// <param name="configuredProject">Imported <see cref="ConfiguredProject"/>.</param>
         [ImportingConstructor]
-        private PublishItemsOutputGroupProvider(IProjectAccessor projectAccessor, ConfiguredProject configuredProject)
+        internal PublishItemsOutputGroupProvider(IProjectAccessor projectAccessor, ConfiguredProject configuredProject)
         {
             _projectAccessor = projectAccessor;
             _configuredProject = configuredProject;
