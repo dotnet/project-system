@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             {"Library",         "2" },
             {"WinMDObj",        "3" },
             {"AppContainerExe", "4" },
-        }.ToImmutableDictionary(StringComparer.OrdinalIgnoreCase);
+        }.ToImmutableDictionary(StringComparers.PropertyLiteralValues);
 
         private static readonly ImmutableDictionary<string, string> s_setOutputTypeExMap = new Dictionary<string, string>()
         {
@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             {"2", "Library" },
             {"3", "WinMDObj"},
             {"4", "AppContainerExe" },
-        }.ToImmutableDictionary(StringComparer.OrdinalIgnoreCase);
+        }.ToImmutableDictionary(StringComparers.PropertyLiteralValues);
 
         [ImportingConstructor]
         public OutputTypeExValueProvider(ProjectProperties properties)

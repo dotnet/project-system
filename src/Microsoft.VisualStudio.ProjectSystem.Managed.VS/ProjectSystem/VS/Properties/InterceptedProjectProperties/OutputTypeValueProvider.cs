@@ -19,14 +19,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             {"Library",         "2" },
             {"WinMDObj",        "2" },
             {"AppContainerExe", "1" },
-        }.ToImmutableDictionary(StringComparer.OrdinalIgnoreCase);
+        }.ToImmutableDictionary(StringComparers.PropertyLiteralValues);
 
         private static readonly ImmutableDictionary<string, string> s_setOutputTypeMap = new Dictionary<string, string>()
         {
             {"0", "WinExe" },
             {"1", "Exe" },
             {"2", "Library" },
-        }.ToImmutableDictionary(StringComparer.OrdinalIgnoreCase);
+        }.ToImmutableDictionary(StringComparers.PropertyLiteralValues);
 
         [ImportingConstructor]
         public OutputTypeValueProvider(ProjectProperties properties)
