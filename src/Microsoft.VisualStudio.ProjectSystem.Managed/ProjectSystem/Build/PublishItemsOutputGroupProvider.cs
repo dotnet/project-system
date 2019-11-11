@@ -20,21 +20,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
         private static readonly ImmutableHashSet<IOutputGroup> s_outputGroups = ImmutableHashSet.Create<IOutputGroup>()
             .Add(NewGroup("PublishItems", "PublishItemsOutputGroup", Resources.OutputGroupPublishItemsDisplayName, Resources.OutputGroupPublishItemsDescription));
 
-        /// <summary>
-        /// The set of output groups that apply to this project.
-        /// </summary>
         private readonly AsyncLazy<IImmutableSet<IOutputGroup>> _outputGroups;
-
         private readonly IProjectAccessor _projectAccessor;
         private readonly ConfiguredProject _configuredProject;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PublishItemsOutputGroupProvider"/> class.
-        /// </summary>
-        /// <param name="projectAccessor">Imported <see cref="IProjectAccessor"/>.</param>
-        /// <param name="configuredProject">Imported <see cref="ConfiguredProject"/>.</param>
         [ImportingConstructor]
-        private PublishItemsOutputGroupProvider(IProjectAccessor projectAccessor, ConfiguredProject configuredProject)
+        internal PublishItemsOutputGroupProvider(IProjectAccessor projectAccessor, ConfiguredProject configuredProject)
         {
             _projectAccessor = projectAccessor;
             _configuredProject = configuredProject;
