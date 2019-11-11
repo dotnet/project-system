@@ -254,6 +254,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             Assert.Equal(@"c:\WorkingDir", targets[0].CurrentDirectory);
         }
 
+        [Fact]
+        public async Task QueryDebugTargetsAsync_SetsProject()
+        {
+            var project = new LaunchProfile() { Name = "run", ExecutablePath = "dotnet.exe" };
+
+            var debugger = GetDebugTargetsProvider();
+            var targets = await debugger.QueryDebugTargetsAsync(0, project);
+
+            Assert.Single(targets);
+            Assert.NotNull(targets[0].Project);
+        }
+
         [Theory]
         [InlineData("dotnet")]
         [InlineData("dotnet.exe")]
@@ -652,8 +664,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             activeDebugFramework ??= IActiveDebugFrameworkServicesFactory.ImplementGetConfiguredProjectForActiveFrameworkAsync(configuredProject);
             threadingService ??= IProjectThreadingServiceFactory.Create();
             debugger ??= IVsDebugger10Factory.ImplementIsIntegratedConsoleEnabled(enabled: false);
-            
-            return new ConsoleDebugTargetsProvider(configuredProject, tokenReplacer, fileSystem, environment, activeDebugFramework, properties, threadingService, IVsUIServiceFactory.Create<SVsShellDebugger, IVsDebugger10>(debugger));
+
+            IUnconfiguredProjectVsServices unconfiguredProjectVsServices = IUnconfiguredProjectVsServicesFactory.Implement(() => IVsHierarchyFactory.Create());
+
+            return new ConsoleDebugTargetsProvider(unconfiguredProjectVsServices, configuredProject, tokenReplacer, fileSystem, environment, activeDebugFramework, properties, threadingService, IVsUIServiceFactory.Create<SVsShellDebugger, IVsDebugger10>(debugger));
         }
     }
 }
