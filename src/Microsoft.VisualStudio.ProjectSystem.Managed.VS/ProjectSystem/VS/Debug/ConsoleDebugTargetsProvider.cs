@@ -29,6 +29,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     internal class ConsoleDebugTargetsProvider : IDebugProfileLaunchTargetsProvider, IDebugProfileLaunchTargetsProvider2
     {
         private static readonly char[] s_escapedChars = new[] { '^', '<', '>', '&' };
+        private readonly ConfiguredProject _project;
+        private readonly IUnconfiguredProjectVsServices _unconfiguredProjectVsServices;
         private readonly IDebugTokenReplacer _tokenReplacer;
         private readonly IFileSystem _fileSystem;
         private readonly IEnvironmentHelper _environment;
@@ -36,18 +38,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private readonly ProjectProperties _properties;
         private readonly IProjectThreadingService _threadingService;
         private readonly IVsUIService<IVsDebugger10> _debugger;
-        private readonly ConfiguredProject _project;
 
         [ImportingConstructor]
-        public ConsoleDebugTargetsProvider(ConfiguredProject project,
-                                           IDebugTokenReplacer tokenReplacer,
-                                           IFileSystem fileSystem,
-                                           IEnvironmentHelper environment,
-                                           IActiveDebugFrameworkServices activeDebugFramework,
-                                           ProjectProperties properties,
-                                           IProjectThreadingService threadingService,
-                                           IVsUIService<SVsShellDebugger, IVsDebugger10> debugger)
+        public ConsoleDebugTargetsProvider(
+            IUnconfiguredProjectVsServices unconfiguredProjectVsServices,
+            ConfiguredProject project,
+            IDebugTokenReplacer tokenReplacer,
+            IFileSystem fileSystem,
+            IEnvironmentHelper environment,
+            IActiveDebugFrameworkServices activeDebugFramework,
+            ProjectProperties properties,
+            IProjectThreadingService threadingService,
+            IVsUIService<SVsShellDebugger, IVsDebugger10> debugger)
         {
+            _project = project;
+            _unconfiguredProjectVsServices = unconfiguredProjectVsServices;
             _tokenReplacer = tokenReplacer;
             _fileSystem = fileSystem;
             _environment = environment;
@@ -55,7 +60,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _properties = properties;
             _threadingService = threadingService;
             _debugger = debugger;
-            _project = project;
         }
 
         private Task<ConfiguredProject> GetConfiguredProjectForDebugAsync()
@@ -352,6 +356,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             settings.Executable = finalExecutable;
             settings.Arguments = finalArguments;
             settings.CurrentDirectory = workingDir;
+            settings.Project = _unconfiguredProjectVsServices.VsHierarchy;
 
             return settings;
         }
