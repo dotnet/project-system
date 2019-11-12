@@ -78,6 +78,7 @@
 
     <!-- DependenciesTree capability lights up a Dependencies tree node and its sub node providers-->
     <ProjectCapability Include="DependenciesTree" />
+    <ProjectCapability Include="ProjectImportsTree" />
     <ProjectCapability Include="LaunchProfiles" />
     <ProjectCapability Include="NoGeneralDependentFileIcon"/>
     <!--
