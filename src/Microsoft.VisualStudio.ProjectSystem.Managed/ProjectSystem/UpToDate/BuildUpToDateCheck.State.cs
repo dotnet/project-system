@@ -95,12 +95,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             private State()
             {
-                var emptyPathSet = ImmutableHashSet.Create(StringComparers.Paths);
+                var emptyPathSet = ImmutableHashSet.Create((IEqualityComparer<string>)StringComparers.Paths);
                 var emptyItemBySetName = ImmutableDictionary.Create<string, ImmutableHashSet<string>>(s_setNameComparer);
 
                 LastItemsChangedAtUtc = DateTime.MinValue;
                 LastCheckedAtUtc = DateTime.MinValue;
-                ItemTypes = ImmutableHashSet.Create(StringComparers.ItemTypes);
+                ItemTypes = ImmutableHashSet.Create((IEqualityComparer<string>)StringComparers.ItemTypes);
                 ItemsByItemType = ImmutableDictionary.Create<string, ImmutableHashSet<(string path, string? link, CopyType copyType)>>(StringComparers.ItemTypes);
                 SetNames = ImmutableArray<string>.Empty;
                 UpToDateCheckInputItemsBySetName = emptyItemBySetName;
@@ -356,12 +356,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 {
                     if (itemMetadata.TryGetValue(CopyToOutputDirectory, out string value))
                     {
-                        if (string.Equals(value, Always, StringComparison.OrdinalIgnoreCase))
+                        if (string.Equals(value, Always, StringComparisons.PropertyLiteralValues))
                         {
                             return CopyType.CopyAlways;
                         }
 
-                        if (string.Equals(value, PreserveNewest, StringComparison.OrdinalIgnoreCase))
+                        if (string.Equals(value, PreserveNewest, StringComparisons.PropertyLiteralValues))
                         {
                             return CopyType.CopyIfNewer;
                         }

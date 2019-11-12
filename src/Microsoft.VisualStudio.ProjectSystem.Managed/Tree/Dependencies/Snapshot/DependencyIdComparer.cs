@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
@@ -14,12 +13,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         public bool Equals(IDependency? x, IDependency? y)
         {
-            return StringComparer.OrdinalIgnoreCase.Equals(x?.Id, y?.Id);
+            return StringComparers.DependencyTreeIds.Equals(x?.Id, y?.Id);
         }
 
         public int GetHashCode(IDependency dependency)
         {
-            return StringComparer.OrdinalIgnoreCase.GetHashCode(dependency.Id);
+            return StringComparers.DependencyTreeIds.GetHashCode(dependency.Id);
         }
     }
 }

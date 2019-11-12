@@ -114,7 +114,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                     Enabled = true;
 
                     // Get's a check if it matches the active one, or there is no active one in which case the first one is the active one
-                    Checked = (string.IsNullOrEmpty(activeFramework) && cmdIndex == 0) || string.Equals(frameworks[cmdIndex], activeFramework, StringComparison.Ordinal);
+                    Checked = (string.IsNullOrEmpty(activeFramework) && cmdIndex == 0) || string.Equals(frameworks[cmdIndex], activeFramework, StringComparisons.ConfigurationDimensionNames);
                     MatchedCommandId = 0;
                     return true;
                 }

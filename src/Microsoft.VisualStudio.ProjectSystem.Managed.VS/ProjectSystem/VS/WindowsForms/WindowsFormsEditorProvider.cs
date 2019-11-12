@@ -129,7 +129,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
 
         private IProjectSpecificEditorProvider? GetDefaultEditorProvider()
         {
-            Lazy<IProjectSpecificEditorProvider> editorProvider = ProjectSpecificEditorProviders.FirstOrDefault(p => string.Equals(p.Metadata.Name, "Default", StringComparison.OrdinalIgnoreCase));
+            Lazy<IProjectSpecificEditorProvider> editorProvider = ProjectSpecificEditorProviders.FirstOrDefault(p => string.Equals(p.Metadata.Name, "Default", StringComparisons.NamedExports));
 
             return editorProvider?.Value;
         }

@@ -93,8 +93,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             const string NetStandardPrefix = ".NetStandard";
             const string NetCorePrefix = ".NetCore";
-            return targetFramework.StartsWith(NetCorePrefix, StringComparison.OrdinalIgnoreCase) ||
-                   targetFramework.StartsWith(NetStandardPrefix, StringComparison.OrdinalIgnoreCase);
+            return targetFramework.StartsWith(NetCorePrefix, StringComparisons.FrameworkIdentifiers) ||
+                   targetFramework.StartsWith(NetStandardPrefix, StringComparisons.FrameworkIdentifiers);
         }
 
         /// <summary>

@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
@@ -13,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging.FSharp
     [Order(Order.Default)]
     internal class FSharpSourcesIconProvider : IProjectTreePropertiesProvider
     {
-        private static readonly Dictionary<string, ProjectImageMoniker> s_fileExtensionImageMap = new Dictionary<string, ProjectImageMoniker>(StringComparer.OrdinalIgnoreCase)
+        private static readonly Dictionary<string, ProjectImageMoniker> s_fileExtensionImageMap = new Dictionary<string, ProjectImageMoniker>(StringComparers.Paths)
         {
             { ".fs",   KnownMonikers.FSFileNode.ToProjectSystemType() },
             { ".fsi",  KnownMonikers.FSSignatureFile.ToProjectSystemType() },

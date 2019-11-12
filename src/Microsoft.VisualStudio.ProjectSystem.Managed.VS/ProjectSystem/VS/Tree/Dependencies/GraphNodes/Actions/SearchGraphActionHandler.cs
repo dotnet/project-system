@@ -57,8 +57,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                 return;
             }
 
-            var cachedDependencyToMatchingResultsMap = new Dictionary<string, HashSet<IDependency>>(StringComparer.OrdinalIgnoreCase);
-            var searchResultsPerContext = new Dictionary<string, HashSet<IDependency>>(StringComparer.OrdinalIgnoreCase);
+            var cachedDependencyToMatchingResultsMap = new Dictionary<string, HashSet<IDependency>>(StringComparers.DependencyTreeIds);
+            var searchResultsPerContext = new Dictionary<string, HashSet<IDependency>>(StringComparers.Paths);
 
             System.Collections.Generic.IReadOnlyCollection<DependenciesSnapshot> snapshots = AggregateSnapshotProvider.GetSnapshots();
 
@@ -160,7 +160,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
             {
                 foreach ((string _, IDependency dependency) in targetedSnapshot.DependenciesWorld)
                 {
-                    if (dependency.Visible && dependency.Caption.IndexOf(searchTerm, StringComparison.CurrentCultureIgnoreCase) != -1)
+                    if (dependency.Visible && dependency.Caption.IndexOf(searchTerm, StringComparisons.UserEnteredSearchTermIgnoreCase) != -1)
                     {
                         matchedDependencies.Add(dependency);
                     }

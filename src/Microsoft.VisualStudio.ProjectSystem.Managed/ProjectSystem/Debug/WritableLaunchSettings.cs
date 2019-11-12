@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         public List<IWritableLaunchProfile> Profiles { get; } = new List<IWritableLaunchProfile>();
 
-        public Dictionary<string, object> GlobalSettings { get; } = new Dictionary<string, object>(StringComparer.Ordinal);
+        public Dictionary<string, object> GlobalSettings { get; } = new Dictionary<string, object>(StringComparers.LaunchProfileProperties);
 
         public ILaunchSettings ToLaunchSettings()
         {

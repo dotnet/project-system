@@ -181,12 +181,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         private static bool IsRunExecutableCommand(ILaunchProfile profile)
         {
-            return string.Equals(profile.CommandName, LaunchSettingsProvider.RunExecutableCommandName, StringComparison.OrdinalIgnoreCase);
+            return string.Equals(profile.CommandName, LaunchSettingsProvider.RunExecutableCommandName, StringComparisons.LaunchProfileCommandNames);
         }
 
         private static bool IsRunProjectCommand(ILaunchProfile profile)
         {
-            return string.Equals(profile.CommandName, LaunchSettingsProvider.RunProjectCommandName, StringComparison.OrdinalIgnoreCase);
+            return string.Equals(profile.CommandName, LaunchSettingsProvider.RunProjectCommandName, StringComparisons.LaunchProfileCommandNames);
         }
 
         private async Task<bool> IsIntegratedConsoleEnabledAsync()
@@ -290,7 +290,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                     else
                     {
                         // Try to resolve against the current working directory (for compat) and failing that, the environment path.
-                        string exeName = executable.EndsWith(".exe", StringComparison.OrdinalIgnoreCase) ? executable : executable + ".exe";
+                        string exeName = executable.EndsWith(".exe", StringComparisons.Paths) ? executable : executable + ".exe";
                         string fullPath = _fileSystem.GetFullPath(exeName);
                         if (_fileSystem.FileExists(fullPath))
                         {
@@ -435,7 +435,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             // If dotnet.exe is used runCommand returns just "dotnet". The debugger is going to require a full path so we need to append the .exe
             // extension.
-            if (!runCommand.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
+            if (!runCommand.EndsWith(".exe", StringComparisons.Paths))
             {
                 runCommand += ".exe";
             }
