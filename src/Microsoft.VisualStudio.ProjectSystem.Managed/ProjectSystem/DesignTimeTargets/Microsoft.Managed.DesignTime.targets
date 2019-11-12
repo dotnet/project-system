@@ -76,7 +76,7 @@
     <ProjectCapability Include="UseFileGlobs"/>
     <ProjectCapability Include="DynamicDependentFile"/>
 
-    <!-- DependenciesTree capability lights up a Dependencies tree node and it's sub node providers-->
+    <!-- DependenciesTree capability lights up a Dependencies tree node and its sub node providers-->
     <ProjectCapability Include="DependenciesTree" />
     <ProjectCapability Include="LaunchProfiles" />
     <ProjectCapability Include="NoGeneralDependentFileIcon"/>
