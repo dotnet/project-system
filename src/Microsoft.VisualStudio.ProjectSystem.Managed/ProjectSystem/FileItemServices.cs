@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Immutable;
 using System.IO;
 
@@ -31,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 return null;
 
             // Is this outside of base path?
-            if (Path.IsPathRooted(relativePath) || relativePath.StartsWith("..\\", StringComparison.OrdinalIgnoreCase))
+            if (Path.IsPathRooted(relativePath) || relativePath.StartsWith("..\\", StringComparisons.Paths))
                 return null;
 
             string? relativeDirectoryName = Path.GetDirectoryName(relativePath);

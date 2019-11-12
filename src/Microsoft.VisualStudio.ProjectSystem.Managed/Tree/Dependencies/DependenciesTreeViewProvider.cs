@@ -168,7 +168,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 : root.GetSubTreeNode(DependencyTreeFlags.DependenciesRootNodeFlags);
 
             return dependenciesNode?.GetSelfAndDescendentsBreadthFirst()
-                .FirstOrDefault((node, p) => string.Equals(node.FilePath, p, StringComparison.OrdinalIgnoreCase), path);
+                .FirstOrDefault((node, p) => string.Equals(node.FilePath, p, StringComparisons.Paths), path);
         }
 
         /// <summary>

@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private const string Link = "Link";
 
         private const string DefaultSetName = "";
-        private static readonly StringComparer s_setNameComparer = StringComparer.OrdinalIgnoreCase;
+        private static readonly StringComparer s_setNameComparer = StringComparers.ItemNames;
 
         private static ImmutableHashSet<string> ReferenceSchemas => ImmutableStringHashSet.EmptyOrdinal
             .Add(ResolvedAnalyzerReference.SchemaName)

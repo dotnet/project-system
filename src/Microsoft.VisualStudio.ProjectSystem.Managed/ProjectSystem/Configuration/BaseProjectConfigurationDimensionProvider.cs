@@ -216,7 +216,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                 // If this property is derived from another property, skip it and just
                 // pull default from next known values. This is better than picking a 
                 // default that is not actually one of the known configs.
-                if (defaultValue.IndexOf("$(", StringComparison.Ordinal) == -1)
+                if (defaultValue.IndexOf("$(", StringComparisons.PropertyValues) == -1)
                     return defaultValue;
             }
 

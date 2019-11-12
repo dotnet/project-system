@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Immutable;
 
 #nullable disable
@@ -80,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         public static bool IsSameProfileName(string name1, string name2)
         {
-            return string.Equals(name1, name2, StringComparison.Ordinal);
+            return string.Equals(name1, name2, StringComparisons.LaunchProfileNames);
         }
     }
 }

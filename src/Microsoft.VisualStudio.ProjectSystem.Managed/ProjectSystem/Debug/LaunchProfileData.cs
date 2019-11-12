@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         private const string Prop_launchUrl = "launchUrl";
         private const string Prop_environmentVariables = "environmentVariables";
 
-        private static readonly HashSet<string> s_knownProfileProperties = new HashSet<string>(StringComparer.Ordinal)
+        private static readonly HashSet<string> s_knownProfileProperties = new HashSet<string>(StringComparers.LaunchProfileProperties)
         {
             {Prop_commandName},
             {Prop_executablePath},
@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         public static Dictionary<string, LaunchProfileData> DeserializeProfiles(JObject profilesObject)
         {
-            var profiles = new Dictionary<string, LaunchProfileData>(StringComparer.Ordinal);
+            var profiles = new Dictionary<string, LaunchProfileData>(StringComparers.LaunchProfileNames);
 
             if (profilesObject == null)
             {
@@ -88,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 LaunchProfileData profileData = JsonConvert.DeserializeObject<LaunchProfileData>(jToken.ToString());
 
                 // Now pick up any custom properties. Handle string, int, boolean
-                var customSettings = new Dictionary<string, object>(StringComparer.Ordinal);
+                var customSettings = new Dictionary<string, object>(StringComparers.LaunchProfileProperties);
                 foreach (JToken data in jToken.Children())
                 {
                     if (!(data is JProperty dataProperty))
@@ -156,7 +156,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         public static Dictionary<string, object> ToSerializableForm(ILaunchProfile profile)
         {
-            var data = new Dictionary<string, object>(StringComparer.Ordinal);
+            var data = new Dictionary<string, object>(StringComparers.LaunchProfileProperties);
 
             // Don't write out empty elements
             if (!string.IsNullOrEmpty(profile.CommandName))

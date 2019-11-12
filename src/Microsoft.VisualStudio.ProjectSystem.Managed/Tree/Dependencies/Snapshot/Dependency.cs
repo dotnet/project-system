@@ -249,7 +249,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             if (id.Length != length)
                 return false;
-            if (!id.StartsWith(targetFramework.ShortName, StringComparison.OrdinalIgnoreCase))
+            if (!id.StartsWith(targetFramework.ShortName, StringComparisons.DependencyTreeIds))
                 return false;
             int index = targetFramework.ShortName.Length;
             if (id[index++] != '\\')
@@ -265,7 +265,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             // reimplementing OrdinalIgnoreCase comparison.
             modelId = modelId.Replace('/', '\\').Replace("..", "__");
 
-            if (string.Compare(id, index, modelId, 0, modelId.Length - modelSlashCount, StringComparison.OrdinalIgnoreCase) != 0)
+            if (string.Compare(id, index, modelId, 0, modelId.Length - modelSlashCount, StringComparisons.DependencyTreeIds) != 0)
                 return false;
 
             return true;

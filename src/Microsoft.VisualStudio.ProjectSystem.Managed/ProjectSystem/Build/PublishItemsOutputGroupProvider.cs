@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
@@ -44,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
         private Task<ImmutableHashSet<string>> GetProjectTargetsAsync()
         {
             return _projectAccessor.OpenProjectForReadAsync(_configuredProject, project =>
-                project.Targets.Keys.ToImmutableHashSet(StringComparer.OrdinalIgnoreCase));
+                project.Targets.Keys.ToImmutableHashSet(StringComparers.TargetNames));
         }
 
         /// <summary>

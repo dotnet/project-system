@@ -93,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
                         if (index is string removeImport1)
                         {
                             importProjectItem = project.GetItems(ImportItemTypeName)
-                                                       .First(i => string.Equals(removeImport1, i.EvaluatedInclude, StringComparison.OrdinalIgnoreCase));
+                                                       .First(i => string.Equals(removeImport1, i.EvaluatedInclude, StringComparisons.ItemNames));
                         }
                         else if (index is int indexInt1)
                         {

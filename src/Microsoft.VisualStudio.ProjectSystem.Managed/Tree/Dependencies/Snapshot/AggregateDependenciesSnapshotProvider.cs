@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         {
             _targetFrameworkProvider = targetFrameworkProvider;
 
-            _snapshotProviderByPath = ImmutableDictionary<string, DependenciesSnapshotProvider>.Empty.WithComparers(StringComparer.OrdinalIgnoreCase);
+            _snapshotProviderByPath = ImmutableDictionary<string, DependenciesSnapshotProvider>.Empty.WithComparers(StringComparers.Paths);
         }
 
         /// <inheritdoc />

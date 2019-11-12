@@ -1,7 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IProjectTreeExtensions
@@ -13,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public static IProjectTree? FindChildWithCaption(this IProjectTree tree, string caption)
         {
             return tree.Children.FirstOrDefault(
-                (child, cap) => string.Equals(cap, child.Caption, StringComparison.OrdinalIgnoreCase),
+                (child, cap) => string.Equals(cap, child.Caption, StringComparisons.ProjectTreeCaptionIgnoreCase),
                 caption);
         }
 

@@ -830,7 +830,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     return null;
                 }
 
-                Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView> activeProvider = _uiProviders.FirstOrDefault((p) => string.Equals(p.Value.CommandName, SelectedLaunchType.CommandName, StringComparison.OrdinalIgnoreCase));
+                Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView> activeProvider = _uiProviders.FirstOrDefault((p) => string.Equals(p.Value.CommandName, SelectedLaunchType.CommandName, StringComparisons.LaunchProfileCommandNames));
                 return activeProvider?.Value;
             }
         }

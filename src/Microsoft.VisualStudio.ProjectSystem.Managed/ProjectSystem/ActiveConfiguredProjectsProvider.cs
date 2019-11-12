@@ -176,7 +176,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 }
 
                 if (!configuration.Dimensions.TryGetValue(dimensionName, out string otherDimensionValue) ||
-                    !string.Equals(dimensionValue, otherDimensionValue, StringComparison.Ordinal))
+                    !string.Equals(dimensionValue, otherDimensionValue, StringComparisons.ConfigurationDimensionNames))
                 {
                     return false;
                 }
