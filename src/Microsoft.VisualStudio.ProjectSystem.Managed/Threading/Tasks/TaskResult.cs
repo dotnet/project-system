@@ -12,11 +12,11 @@ namespace Microsoft.VisualStudio.Threading
         /// <summary>
         ///     Represents a <see cref="Task{TResult}"/> that's completed successfully with the result of <see langword="false"/>.
         /// </summary>
-        public static readonly Task<bool> False = TplExtensions.FalseTask;
+        public static Task<bool> False => TplExtensions.FalseTask;
 
         /// <summary>
         ///     Represents a <see cref="Task{TResult}"/> that's completed successfully with the result of <see langword="true"/>.
         /// </summary>
-        public static readonly Task<bool> True = TplExtensions.TrueTask;
+        public static Task<bool> True => TplExtensions.TrueTask;
     }
 }
