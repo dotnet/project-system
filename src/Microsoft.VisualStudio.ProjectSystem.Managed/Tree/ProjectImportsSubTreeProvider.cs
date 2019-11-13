@@ -30,11 +30,9 @@ namespace Microsoft.VisualStudio.Tree
     /// </para>
     /// </remarks>
     [Export(ExportContractNames.ProjectTreeProviders.PhysicalViewRootGraft, typeof(IProjectTreeProvider))]
-    [AppliesTo(Capability)]
+    [AppliesTo(ProjectCapability.ProjectImportsTree)]
     internal sealed class ProjectImportsSubTreeProvider : ProjectTreeProviderBase, IProjectTreeProvider, IShowAllFilesProjectTreeProvider
     {
-        public const string Capability = "ProjectImportsTree";
-
         private static readonly ProjectImageMoniker s_rootIcon = KnownMonikers.ImportSettings.ToProjectSystemType();
         private static readonly ProjectImageMoniker s_nodeIcon = KnownMonikers.TargetFile.ToProjectSystemType();
 
@@ -44,7 +42,7 @@ namespace Microsoft.VisualStudio.Tree
             ProjectTreeFlags.Common.DisableAddItemFolder);
         
         private static ProjectTreeFlags ProjectImportFlags { get; } = ProjectTreeFlags.Create(
-            ProjectTreeFlags.Common.SourceFile |
+            ProjectTreeFlags.Common.SourceFile |            // enable double-click/enter to edit
             ProjectTreeFlags.Common.NonMemberItem);         // enable double-click/enter to edit
 
         private readonly IActiveConfiguredProjectSubscriptionService _projectSubscriptionService;
@@ -267,7 +265,7 @@ namespace Microsoft.VisualStudio.Tree
         }
 
         [Export]
-        [AppliesTo(Capability)]
+        [AppliesTo(ProjectCapability.ProjectImportsTree)]
         private sealed class MyConfiguredProjectExports : ConfiguredProjectExports
         {
             [ImportingConstructor]
