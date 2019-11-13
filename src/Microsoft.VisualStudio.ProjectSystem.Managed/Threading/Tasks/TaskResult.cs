@@ -10,13 +10,13 @@ namespace Microsoft.VisualStudio.Threading
     internal static class TaskResult
     {
         /// <summary>
-        ///     Represents a Task that's completed successfully with the result of <see langword="false"/>.
+        ///     Represents a <see cref="Task{TResult}"/> that's completed successfully with the result of <see langword="false"/>.
         /// </summary>
-        public static readonly Task<bool> False = Task.FromResult(false);
+        public static readonly Task<bool> False = TplExtensions.FalseTask;
 
         /// <summary>
-        ///     Represents a Task that's completed successfully with the result of <see langword="true"/>.
+        ///     Represents a <see cref="Task{TResult}"/> that's completed successfully with the result of <see langword="true"/>.
         /// </summary>
-        public static readonly Task<bool> True = Task.FromResult(true);
+        public static readonly Task<bool> True = TplExtensions.TrueTask;
     }
 }
