@@ -159,11 +159,13 @@ namespace Microsoft.VisualStudio.Tree
 
                             IProjectTree SyncNode(IReadOnlyList<IProjectImportSnapshot> imports, IProjectTree tree)
                             {
-                                var knownImportPaths = new HashSet<string?>(StringComparers.Paths);
+                                var knownImportPaths = new HashSet<string>(StringComparers.Paths);
 
                                 // Process removals
                                 foreach (IProjectTree existingNode in tree.Children)
                                 {
+                                    Assumes.NotNullOrEmpty(existingNode.FilePath);
+
                                     if (!imports.Any(import => StringComparers.Paths.Equals(import.ProjectPath, existingNode.FilePath)))
                                     {
                                         if (tree.TryFind(existingNode.Identity, out IProjectTree? child))
