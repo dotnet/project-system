@@ -263,7 +263,6 @@ namespace Microsoft.VisualStudio.Tree
         }
 
         [Export]
-        [AppliesTo(ProjectCapability.ProjectImportsTree)]
         private sealed class MyConfiguredProjectExports : ConfiguredProjectExports
         {
             [ImportingConstructor]
