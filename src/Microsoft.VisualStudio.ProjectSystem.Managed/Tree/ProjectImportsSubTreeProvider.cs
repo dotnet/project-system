@@ -34,7 +34,6 @@ namespace Microsoft.VisualStudio.Tree
     internal sealed class ProjectImportsSubTreeProvider : ProjectTreeProviderBase, IProjectTreeProvider, IShowAllFilesProjectTreeProvider
     {
         public const string Capability = "ProjectImportsTree";
-        private const string RootNodeCaption = "Imports";
 
         private static readonly ProjectImageMoniker s_rootIcon = KnownMonikers.ImportSettings.ToProjectSystemType();
         private static readonly ProjectImageMoniker s_nodeIcon = KnownMonikers.TargetFile.ToProjectSystemType();
@@ -125,17 +124,10 @@ namespace Microsoft.VisualStudio.Tree
                         SubmitTreeUpdateAsync(
                             (currentTree, a, c) =>
                             {
-                                IProjectTree tree;
-                                if (currentTree == null)
-                                {
-                                    // Create a new tree as no prior one exists
-                                    tree = NewTree(RootNodeCaption, icon: s_rootIcon, flags: ProjectImportsTreeRootFlags);
-                                }
-                                else
-                                {
-                                    // Reuse existing tree, but make it visible
-                                    tree = currentTree.Value.Tree.SetVisible(true);
-                                }
+                                // Update (make visible) or create a new tree if no prior one exists
+                                IProjectTree tree = currentTree == null
+                                    ? NewTree(Resources.ImportsTreeNodeName, icon: s_rootIcon, flags: ProjectImportsTreeRootFlags)
+                                    : currentTree.Value.Tree.SetVisible(true);
 
                                 return Task.FromResult(new TreeUpdateResult(tree));
                             });

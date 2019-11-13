@@ -115,6 +115,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Imports.
+        /// </summary>
+        internal static string ImportsTreeNodeName {
+            get {
+                return ResourceManager.GetString("ImportsTreeNodeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Errors in &apos;{0}&apos; need to be corrected before applying changes..
         /// </summary>
         internal static string JsonErrorNeedToBeCorrected {
