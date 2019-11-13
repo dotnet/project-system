@@ -239,7 +239,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.RoslynLogging
                 p =>
                 {
                     ThreadHelper.ThrowIfNotOnUIThread();
-                    return string.Equals(p.FullName, project.FilePath, StringComparison.OrdinalIgnoreCase);
+                    try
+                    {
+                        return string.Equals(p.FullName, project.FilePath, StringComparison.OrdinalIgnoreCase);
+                    }
+                    catch (NotImplementedException)
+                    {
+                        // Some EnvDTE.Projects will throw on p.FullName, so just bail in that case.
+                        return false;
+                    }
                 });
 
             return dteProject?.Object as VSLangProj.VSProject;
