@@ -131,16 +131,12 @@ namespace Microsoft.VisualStudio.Tree
                             });
 
                         // Subscribe to data to populate the tree and keep it updated with changes
-                        ITargetBlock<IProjectVersionedValue<IProjectImportTreeSnapshot>> actionBlock
-                            = DataflowBlockSlim.CreateActionBlock(
-                                new Action<IProjectVersionedValue<IProjectImportTreeSnapshot>>(SyncTree));
-
                         IReceivableSourceBlock<IProjectVersionedValue<IProjectImportTreeSnapshot>> importTreeSource
                             = _projectSubscriptionService.ImportTreeSource.SourceBlock;
 
                         using (TrySuppressExecutionContextFlow())
                         {
-                            _subscription = importTreeSource.LinkTo(actionBlock, DataflowOption.PropagateCompletion);
+                            _subscription = importTreeSource.LinkToAction(SyncTree);
                         }
 
                         JoinUpstreamDataSources(_projectSubscriptionService.ImportTreeSource);
