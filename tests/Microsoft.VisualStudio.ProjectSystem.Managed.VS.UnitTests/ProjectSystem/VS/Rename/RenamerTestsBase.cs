@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
-using Microsoft.VisualStudio.ProjectSystem.Refactor;
 using Microsoft.VisualStudio.ProjectSystem.Waiting;
 using Moq;
 
@@ -57,11 +56,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             var unconfiguredProjectTasksService = IUnconfiguredProjectTasksServiceFactory.Create();
             var environmentOptionsFactory = IEnvironmentOptionsFactory.Implement((string category, string page, string property, bool defaultValue) => { return true; });
             var waitIndicator = (new Mock<IWaitIndicator>()).Object;
-            var refactorNotifyService = (new Mock<IRefactorNotifyService>()).Object;
 
             var dte = IVsUIServiceFactory.Create<Shell.Interop.SDTE, EnvDTE.DTE>(null!);
 
-            var renamer = new Renamer(projectServices, unconfiguredProjectTasksService, ws, dte, environmentOptionsFactory, userNotificationServices, roslynServices, waitIndicator, refactorNotifyService);
+            var renamer = new Renamer(projectServices, unconfiguredProjectTasksService, ws, dte, environmentOptionsFactory, userNotificationServices, roslynServices, waitIndicator);
             await renamer.HandleRenameAsync(oldFilePath, newFilePath)
                          .TimeoutAfter(TimeSpan.FromSeconds(1));
         }

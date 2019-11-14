@@ -39,6 +39,7 @@
     
     <!-- Roslyn -->
     <PackageReference Include="Microsoft.VisualStudio.LanguageServices" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" />
     <PackageReference Include="Microsoft.CodeAnalysis" />
     
     <!-- Analyzers-->
