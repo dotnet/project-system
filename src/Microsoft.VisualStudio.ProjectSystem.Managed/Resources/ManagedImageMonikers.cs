@@ -45,6 +45,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public static ImageMoniker Framework => new ImageMoniker { Guid = s_manifestGuid, Id = 22 };
         public static ImageMoniker FrameworkPrivate => new ImageMoniker { Guid = s_manifestGuid, Id = 23 };
         public static ImageMoniker FrameworkWarning => new ImageMoniker { Guid = s_manifestGuid, Id = 24 };
+        public static ImageMoniker ProjectImports => new ImageMoniker { Guid = s_manifestGuid, Id = 25 };
+        public static ImageMoniker TargetFile => new ImageMoniker { Guid = s_manifestGuid, Id = 26 };
+        public static ImageMoniker TargetFilePrivate => new ImageMoniker { Guid = s_manifestGuid, Id = 27 };
 
         // These internal fields are provided for convenience
 
@@ -119,6 +122,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     case 22: return nameof(Framework);
                     case 23: return nameof(FrameworkPrivate);
                     case 24: return nameof(FrameworkWarning);
+                    case 25: return nameof(ProjectImports);
+                    case 26: return nameof(TargetFile);
+                    case 27: return nameof(TargetFilePrivate);
                 }
             }
 

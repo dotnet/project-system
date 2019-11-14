@@ -9,10 +9,10 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
-using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
+using Microsoft.VisualStudio.ProjectSystem.VS;
 
 namespace Microsoft.VisualStudio.Tree
 {
@@ -33,8 +33,8 @@ namespace Microsoft.VisualStudio.Tree
     [AppliesTo(ProjectCapability.ProjectImportsTree)]
     internal sealed class ProjectImportsSubTreeProvider : ProjectTreeProviderBase, IProjectTreeProvider, IShowAllFilesProjectTreeProvider
     {
-        private static readonly ProjectImageMoniker s_rootIcon = KnownMonikers.ImportSettings.ToProjectSystemType();
-        private static readonly ProjectImageMoniker s_nodeIcon = KnownMonikers.TargetFile.ToProjectSystemType();
+        private static readonly ProjectImageMoniker s_rootIcon = ManagedImageMonikers.ProjectImports.ToProjectSystemType();
+        private static readonly ProjectImageMoniker s_nodeIcon = ManagedImageMonikers.TargetFile.ToProjectSystemType();
 
         private static ProjectTreeFlags ProjectImportsTreeRootFlags { get; } = ProjectTreeFlags.Create(
             ProjectTreeFlags.Common.BubbleUp |              // sort to top of tree, not alphabetically
