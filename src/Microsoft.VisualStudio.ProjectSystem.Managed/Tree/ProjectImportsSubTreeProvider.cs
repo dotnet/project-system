@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 
@@ -31,24 +32,28 @@ namespace Microsoft.VisualStudio.Tree
     /// </remarks>
     [Export(ExportContractNames.ProjectTreeProviders.PhysicalViewRootGraft, typeof(IProjectTreeProvider))]
     [AppliesTo(ProjectCapability.ProjectImportsTree)]
-    internal sealed class ProjectImportsSubTreeProvider : ProjectTreeProviderBase, IProjectTreeProvider, IShowAllFilesProjectTreeProvider
+    internal sealed partial class ProjectImportsSubTreeProvider : ProjectTreeProviderBase, IProjectTreeProvider, IShowAllFilesProjectTreeProvider
     {
         private static readonly ProjectImageMoniker s_rootIcon = ManagedImageMonikers.ProjectImports.ToProjectSystemType();
         private static readonly ProjectImageMoniker s_nodeIcon = ManagedImageMonikers.TargetFile.ToProjectSystemType();
+        private static readonly ProjectImageMoniker s_nodeImplicitIcon = ManagedImageMonikers.TargetFilePrivate.ToProjectSystemType();
 
-        private static ProjectTreeFlags ProjectImportsTreeRootFlags { get; } = ProjectTreeFlags.Create(
+        public static ProjectTreeFlags ProjectImport { get; } = ProjectTreeFlags.Create("ProjectImport");
+        public static ProjectTreeFlags ProjectImportImplicit { get; } = ProjectTreeFlags.Create("ProjectImportImplicit");
+
+        private static readonly ProjectTreeFlags s_projectImportsTreeRootFlags = ProjectTreeFlags.Create(
             ProjectTreeFlags.Common.BubbleUp |              // sort to top of tree, not alphabetically
             ProjectTreeFlags.Common.VirtualFolder |
             ProjectTreeFlags.Common.DisableAddItemFolder);
-        
-        private static ProjectTreeFlags ProjectImportFlags { get; } = ProjectTreeFlags.Create(
-            ProjectTreeFlags.Common.SourceFile |            // enable double-click/enter to edit
-            ProjectTreeFlags.Common.NonMemberItem);         // enable double-click/enter to edit
 
+        private static readonly ProjectTreeFlags s_projectImportFlags = ProjectImport;
+        private static readonly ProjectTreeFlags s_projectImportImplicitFlags = s_projectImportFlags + ProjectImportImplicit;
+
+        private readonly ImplicitProjectCheck _importPathCheck = new ImplicitProjectCheck();
         private readonly IActiveConfiguredProjectSubscriptionService _projectSubscriptionService;
         private readonly IUnconfiguredProjectTasksService _unconfiguredProjectTasksService;
 
-        private IDisposable? _subscription;
+        private DisposableBag? _subscriptions;
         private bool _showAllFiles;
 
         [ImportingConstructor]
@@ -99,9 +104,9 @@ namespace Microsoft.VisualStudio.Tree
 
                                 // Use the presence or absence of a subscription to indicate which operation we are performing here.
                                 // This avoids a race condition between the (locked) changing of _showAllFiles and the (locked) changing
-                                // of _subscription. Even if there is a race, the right number of toggles will occur and the end result
+                                // of _subscriptions. Even if there is a race, the right number of toggles will occur and the end result
                                 // will be correct.
-                                if (_subscription == null)
+                                if (_subscriptions == null)
                                 {
                                     SetUpTree();
                                 }
@@ -116,15 +121,15 @@ namespace Microsoft.VisualStudio.Tree
 
                     void SetUpTree()
                     {
-                        Assumes.Null(_subscription);
+                        Assumes.Null(_subscriptions);
 
                         // Set a visible root
                         SubmitTreeUpdateAsync(
-                            (currentTree, a, c) =>
+                            (currentTree, configuredProjectExports, token) =>
                             {
                                 // Update (make visible) or create a new tree if no prior one exists
                                 IProjectTree tree = currentTree == null
-                                    ? NewTree(Resources.ImportsTreeNodeName, icon: s_rootIcon, flags: ProjectImportsTreeRootFlags)
+                                    ? NewTree(Resources.ImportsTreeNodeName, icon: s_rootIcon, flags: s_projectImportsTreeRootFlags)
                                     : currentTree.Value.Tree.SetVisible(true);
 
                                 return Task.FromResult(new TreeUpdateResult(tree));
@@ -134,23 +139,60 @@ namespace Microsoft.VisualStudio.Tree
                         IReceivableSourceBlock<IProjectVersionedValue<IProjectImportTreeSnapshot>> importTreeSource
                             = _projectSubscriptionService.ImportTreeSource.SourceBlock;
 
+                        IReceivableSourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> projectRuleSource
+                            = _projectSubscriptionService.ProjectRuleSource.SourceBlock;
+
+                        var intermediateBlock =
+                            new BufferBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(
+                                new ExecutionDataflowBlockOptions
+                                {
+                                    NameFormat = "Import Tree Intermediate: {1}"
+                                });
+
+                        _subscriptions ??= new DisposableBag();
+
+                        _subscriptions.Add(
+                            projectRuleSource.LinkTo(
+                                intermediateBlock,
+                                ruleNames: ConfigurationGeneral.SchemaName,
+                                suppressVersionOnlyUpdates: false,
+                                linkOptions: DataflowOption.PropagateCompletion));
+
+                        ITargetBlock<IProjectVersionedValue<ValueTuple<IProjectImportTreeSnapshot, IProjectSubscriptionUpdate>>> actionBlock =
+                            DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<ValueTuple<IProjectImportTreeSnapshot, IProjectSubscriptionUpdate>>>(
+                                SyncTree,
+                                new ExecutionDataflowBlockOptions
+                                {
+                                    NameFormat = "Import Tree Action: {1}"
+                                });
+
                         using (TrySuppressExecutionContextFlow())
                         {
-                            _subscription = importTreeSource.LinkToAction(SyncTree);
+                            _subscriptions.Add(ProjectDataSources.SyncLinkTo(
+                                importTreeSource.SyncLinkOptions(),
+                                intermediateBlock.SyncLinkOptions(),
+                                actionBlock,
+                                linkOptions: DataflowOption.PropagateCompletion));
                         }
 
                         JoinUpstreamDataSources(_projectSubscriptionService.ImportTreeSource);
 
                         return;
 
-                        void SyncTree(IProjectVersionedValue<IProjectImportTreeSnapshot> e)
+                        void SyncTree(IProjectVersionedValue<ValueTuple<IProjectImportTreeSnapshot, IProjectSubscriptionUpdate>> e)
                         {
+                            if (e.Value.Item2.CurrentState.TryGetValue(ConfigurationGeneral.SchemaName, out IProjectRuleSnapshot snapshot) &&
+                                snapshot.Properties.TryGetValue(ConfigurationGeneral.MSBuildProjectExtensionsPathProperty, out string projectExtensionsPath))
+                            {
+                                _importPathCheck.ProjectExtensionsPath = projectExtensionsPath;
+                            }
+
                             SubmitTreeUpdateAsync(
-                                (treeSnapshot, configuredProjectExports, ct) =>
+                                (currentTree, configuredProjectExports, token) =>
                                 {
                                     IProjectTree updatedTree = SyncNode(
-                                        imports: e.Value.Value,
-                                        tree: treeSnapshot.Value.Tree);
+                                        imports: e.Value.Item1.Value,
+                                        tree: currentTree.Value.Tree);
 
                                     return Task.FromResult(new TreeUpdateResult(updatedTree, e.DataSourceVersions));
                                 });
@@ -159,15 +201,15 @@ namespace Microsoft.VisualStudio.Tree
 
                             IProjectTree SyncNode(IReadOnlyList<IProjectImportSnapshot> imports, IProjectTree tree)
                             {
-                                var knownImportPaths = new HashSet<string>(StringComparers.Paths);
+                                var existingChildByPath = new Dictionary<string, IProjectTree>(StringComparers.Paths);
 
-                                // Process removals
                                 foreach (IProjectTree existingNode in tree.Children)
                                 {
                                     Assumes.NotNullOrEmpty(existingNode.FilePath);
 
                                     if (!imports.Any(import => StringComparers.Paths.Equals(import.ProjectPath, existingNode.FilePath)))
                                     {
+                                        // Remove child that's no longer present
                                         if (tree.TryFind(existingNode.Identity, out IProjectTree? child))
                                         {
                                             tree = child.Remove();
@@ -175,25 +217,39 @@ namespace Microsoft.VisualStudio.Tree
                                     }
                                     else
                                     {
-                                        knownImportPaths.Add(existingNode.FilePath);
+                                        existingChildByPath[existingNode.FilePath] = existingNode;
                                     }
                                 }
 
-                                // Process additions
                                 foreach (IProjectImportSnapshot import in imports)
                                 {
-                                    if (!knownImportPaths.Contains(import.ProjectPath))
+                                    if (!existingChildByPath.TryGetValue(import.ProjectPath, out IProjectTree child))
                                     {
+                                        // No child exists for this import, so add it
+                                        bool isImplicit = _importPathCheck.IsImplicit(import.ProjectPath);
+                                        ProjectTreeFlags flags = isImplicit ? s_projectImportImplicitFlags : s_projectImportFlags;
+                                        ProjectImageMoniker icon = isImplicit ? s_nodeImplicitIcon : s_nodeIcon;
+
                                         IProjectTree newChild = NewTree(
                                             Path.GetFileName(import.ProjectPath),
                                             filePath: import.ProjectPath,
-                                            flags: ProjectImportFlags,
-                                            icon: s_nodeIcon);
+                                            flags: flags,
+                                            icon: icon);
 
                                         // Recur down the tree
                                         newChild = SyncNode(import.Imports, newChild);
 
                                         tree = tree.Add(newChild).Parent!;
+                                    }
+                                    else
+                                    {
+                                        // Child exists, so continue walking tree
+                                        IProjectTree newChild = SyncNode(import.Imports, child);
+
+                                        if (!ReferenceEquals(child, newChild))
+                                        {
+                                            tree = tree.Remove(child).Add(newChild).Parent!;
+                                        }
                                     }
                                 }
 
@@ -211,12 +267,12 @@ namespace Microsoft.VisualStudio.Tree
 
                     void TearDownTree()
                     {
-                        Assumes.NotNull(_subscription);
-                        _subscription.Dispose();
-                        _subscription = null;
+                        Assumes.NotNull(_subscriptions);
+                        _subscriptions.Dispose();
+                        _subscriptions = null;
 
                         SubmitTreeUpdateAsync(
-                            (currentTree, a, c) =>
+                            (currentTree, configuredProjectExports, token) =>
                             {
                                 IProjectTree tree = currentTree.Value.Tree;
 
@@ -256,7 +312,7 @@ namespace Microsoft.VisualStudio.Tree
         {
             if (disposing)
             {
-                _subscription?.Dispose();
+                _subscriptions?.Dispose();
             }
 
             base.Dispose(disposing);
