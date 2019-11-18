@@ -128,16 +128,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         private async Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsAsync(DebugLaunchOptions launchOptions, ILaunchProfile activeProfile, bool validateSettings)
         {
-            var launchSettings = new List<DebugLaunchSettings>();
-
             // Resolve the tokens in the profile
             ILaunchProfile resolvedProfile = await _tokenReplacer.ReplaceTokensInProfileAsync(activeProfile);
 
             DebugLaunchSettings consoleTarget = await GetConsoleTargetForProfile(resolvedProfile, launchOptions, validateSettings);
 
-            launchSettings.Add(consoleTarget);
-
-            return launchSettings.ToArray();
+            return new DebugLaunchSettings[] { consoleTarget };
         }
 
         /// <summary>
