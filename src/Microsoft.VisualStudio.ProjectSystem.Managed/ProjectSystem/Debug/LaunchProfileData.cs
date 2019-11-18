@@ -90,27 +90,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 var customSettings = new Dictionary<string, object>(StringComparers.LaunchProfileProperties);
                 foreach (JToken data in jToken.Children())
                 {
-                    if (!(data is JProperty dataProperty))
-                    {
-                        continue;
-                    }
-
-                    if (!IsKnownProfileProperty(dataProperty.Name))
+                    if (data is JProperty property && !IsKnownProfileProperty(property.Name))
                     {
                         try
                         {
-                            object? value = dataProperty.Value.Type switch
+                            object? value = property.Value.Type switch
                             {
-                                JTokenType.Boolean => bool.Parse(dataProperty.Value.ToString()),
-                                JTokenType.Integer => int.Parse(dataProperty.Value.ToString()),
-                                JTokenType.Object => JsonConvert.DeserializeObject<Dictionary<string, string>>(dataProperty.Value.ToString()),
-                                JTokenType.String => dataProperty.Value.ToString(),
+                                JTokenType.Boolean => bool.Parse(property.Value.ToString()),
+                                JTokenType.Integer => int.Parse(property.Value.ToString()),
+                                JTokenType.Object => JsonConvert.DeserializeObject<Dictionary<string, string>>(property.Value.ToString()),
+                                JTokenType.String => property.Value.ToString(),
                                 _ => null
                             };
 
                             if (value != null)
                             {
-                                customSettings.Add(dataProperty.Name, value);
+                                customSettings.Add(property.Name, value);
                             }
                         }
                         catch
