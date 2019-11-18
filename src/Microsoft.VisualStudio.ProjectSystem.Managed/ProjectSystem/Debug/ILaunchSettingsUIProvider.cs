@@ -6,44 +6,47 @@ using Microsoft.VisualStudio.Composition;
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     /// <summary>
-    /// Interface definition which allows a launch settings provider to participate in the debug property page UI. The Set of 
-    /// LaunchSettingUIProviders provides the set of entries for the debug dropdown command list.
+    /// Allow a launch settings provider to modify and extend the debug property page.
     /// </summary>
     [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     public interface ILaunchSettingsUIProvider
     {
         /// <summary>
-        /// The name of the command that is written to the launchSettings.json file
+        /// The value of the <c>commandName</c> property written to the <c>launchSettings.json</c> file.
         /// </summary>
         string CommandName { get; }
 
         /// <summary>
-        /// The name to display in the dropdown for this command
+        /// The user-friendly name of this this launch provider.
         /// </summary>
         string FriendlyName { get; }
 
         /// <summary>
-        /// Current supports these property names which map to the the default set of properties
-        ///     "Executable"
-        ///     "Arguments"
-        ///     "LaunchUrl"
-        ///     "EnvironmentVariables"
-        ///     "WorkingDirectory"
-        /// The names are case insensitive 
+        /// Allows a launch provider to suppress default properties from the UI.
         /// </summary>
+        /// <remarks>
+        /// Currently supports the following default properties:
+        /// <list type="bullet">
+        ///   <item><c>Executable</c></item>
+        ///   <item><c>Arguments</c></item>
+        ///   <item><c>LaunchUrl</c></item>
+        ///   <item><c>EnvironmentVariables</c></item>
+        ///   <item><c>WorkingDirectory</c></item>
+        /// </list>
+        /// Names should be treated case-insensitively. Constants for these names exist in <see cref="UIProfilePropertyName"/>.
+        /// </remarks>
         bool ShouldEnableProperty(string propertyName);
 
         /// <summary>
-        /// The UI to be displayed. This control is placed below all the common controls on the dialog. It is OK to return
-        /// null if there are no custom controls but still want to add a new command to the list. Example is the Executable and Project
-        /// commands. Neither provide custom controls (though arguable executable should).
+        /// Provides an optional UI control for this launch provider to be displayed below other controls on the dialog.
+        /// May be <see langword="null"/> if the launch provider does not have any dedicated UI.
         /// </summary>
         UserControl? CustomUI { get; }
 
         /// <summary>
-        /// Called when the selected profile changes to a profile which matches this command. curSettings will contain 
-        /// the current values from the page, and activeProfile will point to the active one.
+        /// Called when the selected profile changes to a profile which matches this command.
         /// </summary>
+        /// <param name="curSettings">The page's current values.</param>
         void ProfileSelected(IWritableLaunchSettings curSettings);
     }
 }

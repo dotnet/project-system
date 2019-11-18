@@ -172,7 +172,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             _changedSourceBlock = _broadcastBlock.SafePublicize();
 
 
-            // Subscribe to changes to the broadcast block using the idle scheduler. This should filter out a lot of the intermediates
+            // Subscribe to changes to the broadcast block using the idle scheduler. This should filter out a lot of the intermediate
             // states that files can be in.
             if (_projectSubscriptionService != null)
             {
@@ -503,7 +503,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         /// <summary>
-        /// Saves the launch settings to the launch settings file. Adds an errorstring and throws if an exception. Note
+        /// Saves the launch settings to the launch settings file. Adds an error string and throws if an exception. Note
         /// that the caller is responsible for checking out the file
         /// </summary>
         protected async Task SaveSettingsToDiskAsync(ILaunchSettings newSettings)
@@ -566,7 +566,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         /// <summary>
-        /// Helper returns true if this is a profile which should be persisted. Filters out noaction profiles
+        /// Helper returns true if this is a profile which should be persisted.
+        /// Filters out <see cref="IPersistOption.DoNotPersist"/> profiles.
         /// </summary>
         private static bool ProfileShouldBePersisted(ILaunchProfile profile)
         {

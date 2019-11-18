@@ -184,8 +184,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         /// <summary>
-        /// Helper to convert an ILaunchProfile back to its serializable form. It does some
-        /// fixup. Like setting empty values to null.
+        /// Converts <paramref name="profile"/> to its serializable form.
+        /// It does some fix up, like setting empty values to <see langword="null"/>.
         /// </summary>
         public static LaunchProfileData FromILaunchProfile(ILaunchProfile profile)
         {
