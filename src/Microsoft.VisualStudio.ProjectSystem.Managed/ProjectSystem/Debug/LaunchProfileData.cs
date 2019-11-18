@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -24,13 +23,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         private static readonly HashSet<string> s_knownProfileProperties = new HashSet<string>(StringComparers.LaunchProfileProperties)
         {
-            {Prop_commandName},
-            {Prop_executablePath},
-            {Prop_commandLineArgs},
-            {Prop_workingDirectory},
-            {Prop_launchBrowser},
-            {Prop_launchUrl},
-            {Prop_environmentVariables},
+            Prop_commandName,
+            Prop_executablePath,
+            Prop_commandLineArgs,
+            Prop_workingDirectory,
+            Prop_launchBrowser,
+            Prop_launchUrl,
+            Prop_environmentVariables
         };
 
         public static bool IsKnownProfileProperty(string propertyName)
@@ -95,6 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     {
                         continue;
                     }
+
                     if (!IsKnownProfileProperty(dataProperty.Name))
                     {
                         try

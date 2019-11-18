@@ -107,7 +107,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             // pause to end of window when CTRL+F5'ing a console application
             ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync();
 
-
             var actualOutputType = (IEnumValue)await configuration.OutputType.GetValueAsync();
 
             return StringComparers.PropertyLiteralValues.Equals(actualOutputType.Name, outputType);
@@ -425,7 +424,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             return runCommand;
         }
 
-
         private async Task<string> GetRunCommandAsync(IProjectProperties properties)
         {
             string runCommand = await properties.GetEvaluatedPropertyValueAsync("RunCommand");
@@ -460,6 +458,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             return outdir;
         }
+
         private static async Task<Guid> GetDebuggingEngineAsync(ConfiguredProject configuredProject)
         {
             IProjectProperties properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
