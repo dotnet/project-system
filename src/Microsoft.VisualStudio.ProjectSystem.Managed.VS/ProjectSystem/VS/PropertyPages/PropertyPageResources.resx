@@ -196,7 +196,7 @@
     <value>Environment variables:</value>
   </data>
   <data name="Executable" xml:space="preserve">
-    <value>Executable</value>
+    <value>Executable:</value>
   </data>
   <data name="Launch" xml:space="preserve">
     <value>Launch:</value>

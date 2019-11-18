@@ -133,8 +133,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Executable">
-        <source>Executable</source>
-        <target state="translated">Ke spuštění</target>
+        <source>Executable:</source>
+        <target state="translated">Ke spuštění:</target>
         <note />
       </trans-unit>
       <trans-unit id="Launch">
