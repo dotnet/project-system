@@ -25,6 +25,14 @@ namespace Microsoft.VisualStudio.Packaging
         new string[] { "dotnetcore" },
         new string[] { "SolutionHasProjectCapability:.NET & CPS" }
         )]
+    // Tell the diff window that these files should use the XML editor
+    [ProvideLanguageExtension("{f6819a78-a205-47b5-be1c-675b3c7f0b8e}", ".csproj")]
+    [ProvideLanguageExtension("{f6819a78-a205-47b5-be1c-675b3c7f0b8e}", ".vbproj")]
+    [ProvideLanguageExtension("{f6819a78-a205-47b5-be1c-675b3c7f0b8e}", ".fsproj")]
+    // Tell the diff window that these files are supported and should be editable. The actual content type doesn't matter for this
+    [ProvideDiffSupportedContentType(".csproj", "")]
+    [ProvideDiffSupportedContentType(".vbproj", "")]
+    [ProvideDiffSupportedContentType(".fsproj", "")]
 
     [ProvideMenuResource("Menus.ctmenu", 4)]
     internal partial class ManagedProjectSystemPackage : AsyncPackage
