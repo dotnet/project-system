@@ -2,38 +2,35 @@
 
 using System;
 using System.ComponentModel.Composition;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <inheritdoc cref="ISolutionService"/>
     [Export(typeof(ISolutionService))]
-    internal sealed class SolutionService : OnceInitializedOnceDisposed, ISolutionService, IVsSolutionEvents, IVsPrioritizedSolutionEvents, IDisposable
+    internal sealed class SolutionService : OnceInitializedOnceDisposedAsync, ISolutionService, IVsSolutionEvents, IVsPrioritizedSolutionEvents, IDisposable
     {
+        private readonly JoinableTaskContext _joinableTaskContext;
         private readonly IVsUIService<IVsSolution> _solution;
-
         private uint _cookie = VSConstants.VSCOOKIE_NIL;
         
         /// <inheritdoc />
         public bool IsSolutionClosing { get; private set; }
 
         [ImportingConstructor]
-        public SolutionService(IVsUIService<SVsSolution, IVsSolution> solution)
+        public SolutionService(JoinableTaskContext joinableTaskContext, IVsUIService<SVsSolution, IVsSolution> solution)
+            : base(new JoinableTaskContextNode(joinableTaskContext))
         {
+            _joinableTaskContext = joinableTaskContext;
             _solution = solution;
         }
 
-        public void StartListening()
+        public new Task InitializeAsync(CancellationToken cancellationToken)
         {
-            EnsureInitialized();
-        }
-
-        protected override void Initialize()
-        {
-            IVsSolution? solution = _solution.Value;
-            Assumes.Present(solution);
-
-            Verify.HResult(solution.AdviseSolutionEvents(this, out _cookie));
+            return base.InitializeAsync(cancellationToken);
         }
 
         // We handle both prioritized and regular before/after events to update state as early as possible,
@@ -72,13 +69,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return HResult.OK;
         }
 
-        protected override void Dispose(bool disposing)
+        protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
-            if (!disposing)
-                return;
+            await _joinableTaskContext.Factory.SwitchToMainThreadAsync(cancellationToken);
 
-            if (_cookie != VSConstants.VSCOOKIE_NIL)
+            IVsSolution? solution = _solution.Value;
+            Assumes.Present(solution);
+
+            Verify.HResult(solution.AdviseSolutionEvents(this, out _cookie));
+        }
+
+        protected override async Task DisposeCoreAsync(bool initialized)
+        {
+            if (initialized && _cookie != VSConstants.VSCOOKIE_NIL)
             {
+                await _joinableTaskContext.Factory.SwitchToMainThreadAsync();
+
                 IVsSolution? solution = _solution.Value;
                 Assumes.Present(solution);
 
