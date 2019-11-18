@@ -100,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         // Tracks when we last read or wrote to the file. Prevents picking up needless changes
         protected DateTime LastSettingsFileSyncTime { get; set; }
 
-        protected int WaitForFirstSnapshotDelay = 5000; // 5 seconds
+        protected readonly int WaitForFirstSnapshotDelay = 5000; // 5 seconds
 
         [Obsolete("Use GetLaunchSettingsFilePathAsync instead.")]
         public string LaunchSettingsFile
@@ -118,14 +118,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// Returns the active profile. Looks up the value of the ActiveProfile property. If the value doesn't match the
         /// any of the profiles, the first one is returned
         /// </summary>
-        public ILaunchProfile ActiveProfile
-        {
-            get
-            {
-                ILaunchSettings snapshot = CurrentSnapshot;
-                return snapshot?.ActiveProfile;
-            }
-        }
+        public ILaunchProfile ActiveProfile => CurrentSnapshot?.ActiveProfile;
+
         /// <summary>
         /// Link to this source block to be notified when the snapshot is changed.
         /// </summary>
@@ -170,7 +164,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Create our broadcast block for subscribers to get new ILaunchProfiles Information
             _broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<ILaunchSettings>();
             _changedSourceBlock = _broadcastBlock.SafePublicize();
-
 
             // Subscribe to changes to the broadcast block using the idle scheduler. This should filter out a lot of the intermediate
             // states that files can be in.
@@ -371,6 +364,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         protected async Task FinishUpdateAsync(ILaunchSettings newSnapshot, bool ensureProfileProperty)
         {
             CurrentSnapshot = newSnapshot;
+
             if (ensureProfileProperty)
             {
                 ProjectDebugger props = await _commonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync();
@@ -383,10 +377,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 }
             }
 
-            if (_broadcastBlock != null)
-            {
-                _broadcastBlock.Post(newSnapshot);
-            }
+            _broadcastBlock?.Post(newSnapshot);
         }
 
         /// <summary>
@@ -409,15 +400,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             string fileName = await GetLaunchSettingsFilePathAsync();
 
-            LaunchSettingsData settings;
-            if (_fileSystem.FileExists(fileName))
-            {
-                settings = await ReadSettingsFileFromDiskAsync();
-            }
-            else
-            {
-                settings = new LaunchSettingsData();
-            }
+            LaunchSettingsData settings = _fileSystem.FileExists(fileName)
+                ? await ReadSettingsFileFromDiskAsync()
+                : new LaunchSettingsData();
 
             // Make sure there is at least an empty profile list
             if (settings.Profiles == null)
@@ -447,7 +432,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 if (key.Equals(ProfilesSectionName, StringComparisons.LaunchSettingsPropertyNames) && jToken is JObject jObject)
                 {
                     Dictionary<string, LaunchProfileData> profiles = LaunchProfileData.DeserializeProfiles(jObject);
-                    launchSettingsData.Profiles = FixupProfilesAndLogErrors(profiles);
+                    launchSettingsData.Profiles = FixUpProfilesAndLogErrors(profiles);
                 }
                 else
                 {
@@ -481,7 +466,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// Does a quick validation to make sure at least a name is present in each profile. Removes bad ones and
         /// logs errors. Returns the resultant profiles as a list
         /// </summary>
-        private static List<LaunchProfileData> FixupProfilesAndLogErrors(Dictionary<string, LaunchProfileData> profilesData)
+        private static List<LaunchProfileData> FixUpProfilesAndLogErrors(Dictionary<string, LaunchProfileData> profilesData)
         {
             if (profilesData == null)
             {
@@ -580,7 +565,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         protected async Task CheckoutSettingsFileAsync()
         {
             Lazy<ISourceCodeControlIntegration, IOrderPrecedenceMetadataView> sourceControlIntegration = SourceControlIntegrations.FirstOrDefault();
-            if (sourceControlIntegration != null && sourceControlIntegration.Value != null)
+            if (sourceControlIntegration?.Value != null)
             {
                 string fileName = await GetLaunchSettingsFilePathAsync();
 
