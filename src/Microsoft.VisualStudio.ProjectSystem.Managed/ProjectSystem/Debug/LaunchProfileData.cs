@@ -99,35 +99,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     {
                         try
                         {
-                            switch (dataProperty.Value.Type)
+                            object? value = dataProperty.Value.Type switch
                             {
-                                case JTokenType.Boolean:
-                                    {
-                                        bool value = bool.Parse(dataProperty.Value.ToString());
-                                        customSettings.Add(dataProperty.Name, value);
-                                        break;
-                                    }
-                                case JTokenType.Integer:
-                                    {
-                                        int value = int.Parse(dataProperty.Value.ToString());
-                                        customSettings.Add(dataProperty.Name, value);
-                                        break;
-                                    }
-                                case JTokenType.Object:
-                                    {
-                                        Dictionary<string, string> value = JsonConvert.DeserializeObject<Dictionary<string, string>>(dataProperty.Value.ToString());
-                                        customSettings.Add(dataProperty.Name, value);
-                                        break;
-                                    }
-                                case JTokenType.String:
-                                    {
-                                        customSettings.Add(dataProperty.Name, dataProperty.Value.ToString());
-                                        break;
-                                    }
-                                default:
-                                    {
-                                        break;
-                                    }
+                                JTokenType.Boolean => bool.Parse(dataProperty.Value.ToString()),
+                                JTokenType.Integer => int.Parse(dataProperty.Value.ToString()),
+                                JTokenType.Object => JsonConvert.DeserializeObject<Dictionary<string, string>>(dataProperty.Value.ToString()),
+                                JTokenType.String => dataProperty.Value.ToString(),
+                                _ => null
+                            };
+
+                            if (value != null)
+                            {
+                                customSettings.Add(dataProperty.Name, value);
                             }
                         }
                         catch
