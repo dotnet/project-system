@@ -538,7 +538,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                             finalBuilder.Append('^');
                         }
 
-                        finalBuilder.Append(currentChar);
                         break;
                     case StringState.EscapedCharacter:
                         // If a '\' was the previous character, then we blindly append to the string, escaping if necessary,
@@ -548,7 +547,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                             finalBuilder.Append('^');
                         }
 
-                        finalBuilder.Append(currentChar);
                         currentState = StringState.NormalCharacter;
                         break;
                     case StringState.QuotedString:
@@ -564,18 +562,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                             currentState = StringState.NormalCharacter;
                         }
 
-                        finalBuilder.Append(currentChar);
                         break;
                     case StringState.QuotedStringEscapedCharacter:
                         // If we have one slash, then we blindly append to the string, no escaping, and move back to
                         // QuotedString. This handles escaped '"' inside strings.
-                        finalBuilder.Append(currentChar);
                         currentState = StringState.QuotedString;
                         break;
                     default:
                         // We can't get here.
                         throw new InvalidOperationException();
                 }
+
+                finalBuilder.Append(currentChar);
             }
 
             return finalBuilder.ToStringAndFree();
