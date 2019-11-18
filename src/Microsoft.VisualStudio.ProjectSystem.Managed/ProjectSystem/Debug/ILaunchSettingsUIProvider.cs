@@ -6,8 +6,12 @@ using Microsoft.VisualStudio.Composition;
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     /// <summary>
-    /// Allow a launch settings provider to modify and extend the debug property page.
+    /// Allows a launch settings provider to modify and extend the debug property page.
     /// </summary>
+    /// <remarks>
+    /// Implementations of this interface each contribute an entry to the drop-down list of
+    /// launch profiles in the "Debug" project property page.
+    /// </remarks>
     [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     public interface ILaunchSettingsUIProvider
     {

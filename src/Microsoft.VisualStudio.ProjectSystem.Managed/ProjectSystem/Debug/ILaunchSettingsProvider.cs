@@ -22,12 +22,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         ILaunchProfile? ActiveProfile { get; }
 
-        // Replaces the current set of profiles with the contents of profiles. If changes were
-        // made, the file will be checked out and updated. If the active profile is different, the
-        // active profile property is updated.
+        /// <summary>
+        /// Replaces the current set of profiles with the contents of profiles. If changes were
+        /// made, the file will be checked out and updated. If the active profile is different, the
+        /// active profile property is updated.
+        /// </summary>
         Task UpdateAndSaveSettingsAsync(ILaunchSettings profiles);
 
-        // Blocks until at least one snapshot has been generated.
+        /// <summary>
+        /// Blocks until at least one snapshot has been generated.
+        /// </summary>
+        /// <param name="timeout">The timeout in milliseconds.</param>
+        /// <returns></returns>
         Task<ILaunchSettings> WaitForFirstSnapshot(int timeout);
 
         /// <summary>
