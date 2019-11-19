@@ -18,7 +18,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     [ExportOrder(1000)] // High number so it called first
     internal class ErrorProfileDebugTargetsProvider : IDebugProfileLaunchTargetsProvider
     {
-
         [ImportingConstructor]
         public ErrorProfileDebugTargetsProvider(ConfiguredProject configuredProject)
         {

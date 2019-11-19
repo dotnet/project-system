@@ -95,7 +95,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 return Task.FromResult(rawString);
             }
 
-            string expandedString = expandEnvironmentVars ? EnvironmentHelper.ExpandEnvironmentVariables(rawString) : rawString;
+            string expandedString = expandEnvironmentVars
+                ? EnvironmentHelper.ExpandEnvironmentVariables(rawString)
+                : rawString;
 
             return ReplaceMSBuildTokensInStringAsync(expandedString);
         }

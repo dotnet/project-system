@@ -107,7 +107,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             // pause to end of window when CTRL+F5'ing a console application
             ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync();
 
-
             var actualOutputType = (IEnumValue)await configuration.OutputType.GetValueAsync();
 
             return StringComparers.PropertyLiteralValues.Equals(actualOutputType.Name, outputType);
@@ -129,16 +128,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         private async Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsAsync(DebugLaunchOptions launchOptions, ILaunchProfile activeProfile, bool validateSettings)
         {
-            var launchSettings = new List<DebugLaunchSettings>();
-
             // Resolve the tokens in the profile
             ILaunchProfile resolvedProfile = await _tokenReplacer.ReplaceTokensInProfileAsync(activeProfile);
 
             DebugLaunchSettings consoleTarget = await GetConsoleTargetForProfile(resolvedProfile, launchOptions, validateSettings);
 
-            launchSettings.Add(consoleTarget);
-
-            return launchSettings.ToArray();
+            return new DebugLaunchSettings[] { consoleTarget };
         }
 
         /// <summary>
@@ -239,12 +234,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             if (IsRunProjectCommand(resolvedProfile))
             {
                 // Get the executable to run, the arguments and the default working directory
-                Tuple<string, string, string> runData = await GetRunnableProjectInformationAsync(configuredProject, validateSettings);
-                executable = runData.Item1;
-                arguments = runData.Item2;
-                if (!string.IsNullOrWhiteSpace(runData.Item3))
+                string workingDirectory;
+                (executable, arguments, workingDirectory) = await GetRunnableProjectInformationAsync(configuredProject, validateSettings);
+
+                if (!string.IsNullOrWhiteSpace(workingDirectory))
                 {
-                    defaultWorkingDir = runData.Item3;
+                    defaultWorkingDir = workingDirectory;
                 }
 
                 if (!string.IsNullOrWhiteSpace(resolvedProfile.CommandLineArgs))
@@ -379,7 +374,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// Queries properties from the project to get information on how to run the application. The returned Tuple contains:
         /// exeToRun, arguments, workingDir
         /// </summary>
-        private async Task<Tuple<string, string, string>> GetRunnableProjectInformationAsync(
+        private async Task<(string Command, string Arguments, string WorkingDirectory)> GetRunnableProjectInformationAsync(
             ConfiguredProject configuredProject,
             bool validateSettings)
         {
@@ -400,7 +395,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 runWorkingDirectory = Path.Combine(Path.GetDirectoryName(_project.UnconfiguredProject.FullPath), runWorkingDirectory);
             }
 
-            return new Tuple<string, string, string>(runCommand, runArguments, runWorkingDirectory);
+            return (runCommand, runArguments, runWorkingDirectory);
         }
 
         private async Task<string> GetTargetCommandAsync(
@@ -424,7 +419,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             return runCommand;
         }
-
 
         private async Task<string> GetRunCommandAsync(IProjectProperties properties)
         {
@@ -460,6 +454,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             return outdir;
         }
+
         private static async Task<Guid> GetDebuggingEngineAsync(ConfiguredProject configuredProject)
         {
             IProjectProperties properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
@@ -543,7 +538,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                             finalBuilder.Append('^');
                         }
 
-                        finalBuilder.Append(currentChar);
                         break;
                     case StringState.EscapedCharacter:
                         // If a '\' was the previous character, then we blindly append to the string, escaping if necessary,
@@ -553,7 +547,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                             finalBuilder.Append('^');
                         }
 
-                        finalBuilder.Append(currentChar);
                         currentState = StringState.NormalCharacter;
                         break;
                     case StringState.QuotedString:
@@ -569,18 +562,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                             currentState = StringState.NormalCharacter;
                         }
 
-                        finalBuilder.Append(currentChar);
                         break;
                     case StringState.QuotedStringEscapedCharacter:
                         // If we have one slash, then we blindly append to the string, no escaping, and move back to
                         // QuotedString. This handles escaped '"' inside strings.
-                        finalBuilder.Append(currentChar);
                         currentState = StringState.QuotedString;
                         break;
                     default:
                         // We can't get here.
                         throw new InvalidOperationException();
                 }
+
+                finalBuilder.Append(currentChar);
             }
 
             return finalBuilder.ToStringAndFree();

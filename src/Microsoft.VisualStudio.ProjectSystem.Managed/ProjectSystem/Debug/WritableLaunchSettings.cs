@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // ICloneable that is used, otherwise, it is serialized back to json, and a new object rehydrated from that
             if (settings.GlobalSettings != null)
             {
-                var jsonSerializerSettings = new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore };
+                var jsonSerializerSettings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
 
                 foreach ((string key, object value) in settings.GlobalSettings)
                 {
@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             if (settings.ActiveProfile != null)
             {
-                ActiveProfile = Profiles.FirstOrDefault((profile) => LaunchProfile.IsSameProfileName(profile.Name, settings.ActiveProfile.Name));
+                ActiveProfile = Profiles.FirstOrDefault(profile => LaunchProfile.IsSameProfileName(profile.Name, settings.ActiveProfile.Name));
             }
         }
 

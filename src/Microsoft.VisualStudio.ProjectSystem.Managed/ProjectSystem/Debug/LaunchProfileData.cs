@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -24,13 +23,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         private static readonly HashSet<string> s_knownProfileProperties = new HashSet<string>(StringComparers.LaunchProfileProperties)
         {
-            {Prop_commandName},
-            {Prop_executablePath},
-            {Prop_commandLineArgs},
-            {Prop_workingDirectory},
-            {Prop_launchBrowser},
-            {Prop_launchUrl},
-            {Prop_environmentVariables},
+            Prop_commandName,
+            Prop_executablePath,
+            Prop_commandLineArgs,
+            Prop_workingDirectory,
+            Prop_launchBrowser,
+            Prop_launchUrl,
+            Prop_environmentVariables
         };
 
         public static bool IsKnownProfileProperty(string propertyName)
@@ -91,43 +90,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 var customSettings = new Dictionary<string, object>(StringComparers.LaunchProfileProperties);
                 foreach (JToken data in jToken.Children())
                 {
-                    if (!(data is JProperty dataProperty))
-                    {
-                        continue;
-                    }
-                    if (!IsKnownProfileProperty(dataProperty.Name))
+                    if (data is JProperty property && !IsKnownProfileProperty(property.Name))
                     {
                         try
                         {
-                            switch (dataProperty.Value.Type)
+                            object? value = property.Value.Type switch
                             {
-                                case JTokenType.Boolean:
-                                    {
-                                        bool value = bool.Parse(dataProperty.Value.ToString());
-                                        customSettings.Add(dataProperty.Name, value);
-                                        break;
-                                    }
-                                case JTokenType.Integer:
-                                    {
-                                        int value = int.Parse(dataProperty.Value.ToString());
-                                        customSettings.Add(dataProperty.Name, value);
-                                        break;
-                                    }
-                                case JTokenType.Object:
-                                    {
-                                        Dictionary<string, string> value = JsonConvert.DeserializeObject<Dictionary<string, string>>(dataProperty.Value.ToString());
-                                        customSettings.Add(dataProperty.Name, value);
-                                        break;
-                                    }
-                                case JTokenType.String:
-                                    {
-                                        customSettings.Add(dataProperty.Name, dataProperty.Value.ToString());
-                                        break;
-                                    }
-                                default:
-                                    {
-                                        break;
-                                    }
+                                JTokenType.Boolean => bool.Parse(property.Value.ToString()),
+                                JTokenType.Integer => int.Parse(property.Value.ToString()),
+                                JTokenType.Object => JsonConvert.DeserializeObject<Dictionary<string, string>>(property.Value.ToString()),
+                                JTokenType.String => property.Value.ToString(),
+                                _ => null
+                            };
+
+                            if (value != null)
+                            {
+                                customSettings.Add(property.Name, value);
                             }
                         }
                         catch
@@ -206,8 +184,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         /// <summary>
-        /// Helper to convert an ILaunchProfile back to its serializable form. It does some
-        /// fixup. Like setting empty values to null.
+        /// Converts <paramref name="profile"/> to its serializable form.
+        /// It does some fix up, like setting empty values to <see langword="null"/>.
         /// </summary>
         public static LaunchProfileData FromILaunchProfile(ILaunchProfile profile)
         {
