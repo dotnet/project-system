@@ -27,9 +27,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
             HResult hr = outputWindow.GetPane(ref paneGuid, out IVsOutputWindowPane pane);
             if (hr.IsOK) // Pane found
             {
-                hr = pane.Activate();
-                if (hr.Failed)
-                    throw hr.Exception;
+                Verify.HResult(pane.Activate());
             }
         }
 
@@ -46,9 +44,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
 
             if (outputWindow is IVsOutputWindow2 outputWindow2)
             {
-                HResult hr = outputWindow2.GetActivePaneGUID(out Guid activePaneGuid);
-                if (hr.Failed)
-                    throw hr.Exception;
+                Verify.HResult(outputWindow2.GetActivePaneGUID(out Guid activePaneGuid));
 
                 return activePaneGuid;
             }

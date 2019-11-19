@@ -32,10 +32,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         public async Task InitializeAsync(IAsyncServiceProvider asyncServiceProvider)
         {
             Assumes.Null(_registerProjectTypes);
+            Assumes.True(_context.IsOnMainThread, "Must be on UI thread");
 
             _registerProjectTypes = await asyncServiceProvider.GetServiceAsync<SVsRegisterProjectTypes, IVsRegisterProjectTypes>();
-            
-            await _context.Factory.SwitchToMainThreadAsync();
 
             ((IVsProjectFactory)this).SetSite(new ServiceProviderToOleServiceProviderAdapter(ServiceProvider.GlobalProvider));
 

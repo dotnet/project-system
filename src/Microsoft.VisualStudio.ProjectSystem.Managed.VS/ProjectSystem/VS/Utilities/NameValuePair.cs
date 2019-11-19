@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
                 string? error = null;
                 HasValidationError = false;
 
-                if (propertyName.Equals("Name", StringComparison.OrdinalIgnoreCase))
+                if (propertyName.Equals("Name", StringComparisons.UIPropertyNames))
                 {
                     if (IsNamePropertyEmpty())
                     {
@@ -83,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
                         HasValidationError = IsValuePropertyEmpty();
                     }
                 }
-                else if (propertyName.Equals("Value", StringComparison.OrdinalIgnoreCase))
+                else if (propertyName.Equals("Value", StringComparisons.UIPropertyNames))
                 {
                     if (string.IsNullOrWhiteSpace(Value))
                     {
@@ -114,7 +114,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
                 {
                     if (!ReferenceEquals(this, nvp))
                     {
-                        if (string.Equals(nvp.Name, Name, StringComparison.OrdinalIgnoreCase))
+                        if (string.Equals(nvp.Name, Name, StringComparisons.UIPropertyNames))
                         {
                             return true;
                         }

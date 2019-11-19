@@ -29,6 +29,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     internal class ConsoleDebugTargetsProvider : IDebugProfileLaunchTargetsProvider, IDebugProfileLaunchTargetsProvider2
     {
         private static readonly char[] s_escapedChars = new[] { '^', '<', '>', '&' };
+        private readonly ConfiguredProject _project;
+        private readonly IUnconfiguredProjectVsServices _unconfiguredProjectVsServices;
         private readonly IDebugTokenReplacer _tokenReplacer;
         private readonly IFileSystem _fileSystem;
         private readonly IEnvironmentHelper _environment;
@@ -36,18 +38,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private readonly ProjectProperties _properties;
         private readonly IProjectThreadingService _threadingService;
         private readonly IVsUIService<IVsDebugger10> _debugger;
-        private readonly ConfiguredProject _project;
 
         [ImportingConstructor]
-        public ConsoleDebugTargetsProvider(ConfiguredProject project,
-                                           IDebugTokenReplacer tokenReplacer,
-                                           IFileSystem fileSystem,
-                                           IEnvironmentHelper environment,
-                                           IActiveDebugFrameworkServices activeDebugFramework,
-                                           ProjectProperties properties,
-                                           IProjectThreadingService threadingService,
-                                           IVsUIService<SVsShellDebugger, IVsDebugger10> debugger)
+        public ConsoleDebugTargetsProvider(
+            IUnconfiguredProjectVsServices unconfiguredProjectVsServices,
+            ConfiguredProject project,
+            IDebugTokenReplacer tokenReplacer,
+            IFileSystem fileSystem,
+            IEnvironmentHelper environment,
+            IActiveDebugFrameworkServices activeDebugFramework,
+            ProjectProperties properties,
+            IProjectThreadingService threadingService,
+            IVsUIService<SVsShellDebugger, IVsDebugger10> debugger)
         {
+            _project = project;
+            _unconfiguredProjectVsServices = unconfiguredProjectVsServices;
             _tokenReplacer = tokenReplacer;
             _fileSystem = fileSystem;
             _environment = environment;
@@ -55,7 +60,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _properties = properties;
             _threadingService = threadingService;
             _debugger = debugger;
-            _project = project;
         }
 
         private Task<ConfiguredProject> GetConfiguredProjectForDebugAsync()
@@ -177,12 +181,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         private static bool IsRunExecutableCommand(ILaunchProfile profile)
         {
-            return string.Equals(profile.CommandName, LaunchSettingsProvider.RunExecutableCommandName, StringComparison.OrdinalIgnoreCase);
+            return string.Equals(profile.CommandName, LaunchSettingsProvider.RunExecutableCommandName, StringComparisons.LaunchProfileCommandNames);
         }
 
         private static bool IsRunProjectCommand(ILaunchProfile profile)
         {
-            return string.Equals(profile.CommandName, LaunchSettingsProvider.RunProjectCommandName, StringComparison.OrdinalIgnoreCase);
+            return string.Equals(profile.CommandName, LaunchSettingsProvider.RunProjectCommandName, StringComparisons.LaunchProfileCommandNames);
         }
 
         private async Task<bool> IsIntegratedConsoleEnabledAsync()
@@ -286,7 +290,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                     else
                     {
                         // Try to resolve against the current working directory (for compat) and failing that, the environment path.
-                        string exeName = executable.EndsWith(".exe", StringComparison.OrdinalIgnoreCase) ? executable : executable + ".exe";
+                        string exeName = executable.EndsWith(".exe", StringComparisons.Paths) ? executable : executable + ".exe";
                         string fullPath = _fileSystem.GetFullPath(exeName);
                         if (_fileSystem.FileExists(fullPath))
                         {
@@ -352,6 +356,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             settings.Executable = finalExecutable;
             settings.Arguments = finalArguments;
             settings.CurrentDirectory = workingDir;
+            settings.Project = _unconfiguredProjectVsServices.VsHierarchy;
 
             return settings;
         }
@@ -430,7 +435,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             // If dotnet.exe is used runCommand returns just "dotnet". The debugger is going to require a full path so we need to append the .exe
             // extension.
-            if (!runCommand.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
+            if (!runCommand.EndsWith(".exe", StringComparisons.Paths))
             {
                 runCommand += ".exe";
             }

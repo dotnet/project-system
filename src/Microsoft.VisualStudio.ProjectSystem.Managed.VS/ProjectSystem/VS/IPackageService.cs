@@ -18,6 +18,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// <summary>
         /// Called when the package is initializing.
         /// </summary>
+        /// <remarks>
+        /// Always called on the UI thread.
+        /// </remarks>
         Task InitializeAsync(IAsyncServiceProvider asyncServiceProvider);
     }
 }

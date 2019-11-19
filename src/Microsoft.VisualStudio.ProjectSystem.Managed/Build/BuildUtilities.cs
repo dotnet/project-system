@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.Build
             Requires.NotNull(project, "project");
 
             return project.Properties
-                .FirstOrDefault(p => string.Equals(p.Name, propertyName, StringComparison.OrdinalIgnoreCase));
+                .FirstOrDefault(p => string.Equals(p.Name, propertyName, StringComparisons.PropertyNames));
         }
 
         /// <summary>
@@ -141,7 +141,7 @@ namespace Microsoft.VisualStudio.Build
             bool valueFound = false;
             foreach (string value in GetPropertyValues(evaluatedPropertyValue, delimiter))
             {
-                if (!string.Equals(value, valueToRemove, StringComparison.Ordinal))
+                if (!string.Equals(value, valueToRemove, StringComparisons.PropertyValues))
                 {
                     if (newValue.Length != 0)
                     {
@@ -193,7 +193,7 @@ namespace Microsoft.VisualStudio.Build
                     value.Append(delimiter);
                 }
 
-                if (string.Equals(propertyValue, oldValue, StringComparison.Ordinal))
+                if (string.Equals(propertyValue, oldValue, StringComparisons.PropertyValues))
                 {
                     value.Append(newValue);
                     valueFound = true;

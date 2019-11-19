@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.Runtime.Versioning;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -68,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             if (obj != null)
             {
-                return FullName.Equals(obj.FullName, StringComparison.OrdinalIgnoreCase);
+                return FullName.Equals(obj.FullName, StringComparisons.FrameworkIdentifiers);
             }
 
             return false;
@@ -78,8 +77,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             if (obj != null)
             {
-                return string.Equals(FullName, obj, StringComparison.OrdinalIgnoreCase)
-                    || string.Equals(ShortName, obj, StringComparison.OrdinalIgnoreCase);
+                return string.Equals(FullName, obj, StringComparisons.FrameworkIdentifiers)
+                    || string.Equals(ShortName, obj, StringComparisons.FrameworkIdentifiers);
             }
 
             return false;
@@ -93,7 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public override int GetHashCode()
         {
-            return StringComparer.OrdinalIgnoreCase.GetHashCode(FullName);
+            return StringComparers.FrameworkIdentifiers.GetHashCode(FullName);
         }
 
         public override string ToString()

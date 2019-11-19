@@ -223,7 +223,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Executable.
+        ///   Looks up a localized string similar to Executable:.
         /// </summary>
         public static string Executable {
             get {

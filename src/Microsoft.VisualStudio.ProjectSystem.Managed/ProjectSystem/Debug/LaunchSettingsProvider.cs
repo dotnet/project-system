@@ -440,11 +440,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             // Since the sections in the settings file are extensible we iterate through each one and have the appropriate provider
             // serialize their section. Unfortunately, this means the data is string to object which is messy to deal with
-            var launchSettingsData = new LaunchSettingsData() { OtherSettings = new Dictionary<string, object>(StringComparer.Ordinal) };
+            var launchSettingsData = new LaunchSettingsData() { OtherSettings = new Dictionary<string, object>(StringComparers.LaunchProfileProperties) };
             var jsonObject = JObject.Parse(jsonString);
             foreach ((string key, JToken jToken) in jsonObject)
             {
-                if (key.Equals(ProfilesSectionName, StringComparison.Ordinal) && jToken is JObject jObject)
+                if (key.Equals(ProfilesSectionName, StringComparisons.LaunchSettingsPropertyNames) && jToken is JObject jObject)
                 {
                     Dictionary<string, LaunchProfileData> profiles = LaunchProfileData.DeserializeProfiles(jObject);
                     launchSettingsData.Profiles = FixupProfilesAndLogErrors(profiles);
@@ -538,7 +538,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         protected static Dictionary<string, object> GetSettingsToSerialize(ILaunchSettings curSettings)
         {
-            var profileData = new Dictionary<string, Dictionary<string, object>>(StringComparer.Ordinal);
+            var profileData = new Dictionary<string, Dictionary<string, object>>(StringComparers.LaunchProfileNames);
             foreach (ILaunchProfile profile in curSettings.Profiles)
             {
                 if (ProfileShouldBePersisted(profile))
@@ -547,7 +547,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 }
             }
 
-            var dataToSave = new Dictionary<string, object>(StringComparer.Ordinal);
+            var dataToSave = new Dictionary<string, object>(StringComparers.LaunchProfileProperties);
 
             foreach ((string key, object value) in curSettings.GlobalSettings)
             {
@@ -896,7 +896,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public async Task<ILaunchSettings> GetSnapshotThrowIfErrors()
         {
             ILaunchSettings currentSettings = await WaitForFirstSnapshot(WaitForFirstSnapshotDelay);
-            if (currentSettings == null || (currentSettings.Profiles.Count == 1 && string.Equals(currentSettings.Profiles[0].CommandName, ErrorProfileCommandName, StringComparison.Ordinal)))
+            if (currentSettings == null || (currentSettings.Profiles.Count == 1 && string.Equals(currentSettings.Profiles[0].CommandName, ErrorProfileCommandName, StringComparisons.LaunchProfileCommandNames)))
             {
                 string fileName = await GetLaunchSettingsFilePathAsync();
 

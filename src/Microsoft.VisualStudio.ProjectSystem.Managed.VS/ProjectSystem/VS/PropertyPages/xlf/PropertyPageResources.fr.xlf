@@ -104,7 +104,7 @@
       </trans-unit>
       <trans-unit id="ErrorsMustBeCorrectedPriorToSaving">
         <source>The errors on the page must be corrected prior to saving your changes.</source>
-        <target state="translated">Les erreurs de la page doivent être corrigées avant d’enregistrer vos modifications.</target>
+        <target state="translated">Les erreurs de la page doivent être corrigées avant d'enregistrer vos modifications.</target>
         <note />
       </trans-unit>
       <trans-unit id="AddBtn">
@@ -129,12 +129,12 @@
       </trans-unit>
       <trans-unit id="EnvironmentVariables">
         <source>Environment variables:</source>
-        <target state="translated">Variables d’environnement :</target>
+        <target state="translated">Variables d'environnement :</target>
         <note />
       </trans-unit>
       <trans-unit id="Executable">
-        <source>Executable</source>
-        <target state="translated">Exécutable</target>
+        <source>Executable:</source>
+        <target state="translated">Exécutable :</target>
         <note />
       </trans-unit>
       <trans-unit id="Launch">

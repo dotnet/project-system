@@ -12,6 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [Theory]
         [InlineData("WinExe", "0")]
         [InlineData("Exe", "1")]
+        [InlineData("exe", "1")]
         [InlineData("Library", "2")]
         [InlineData("WinMDObj", "3")]
         [InlineData("AppContainerExe", "4")]

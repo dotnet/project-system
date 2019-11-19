@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
         private static Dictionary<string, int> CreateOrderedMap(UnconfiguredProject project, IReadOnlyCollection<ProjectItemIdentity> orderedItems)
         {
             int displayOrder = 1;
-            var orderedMap = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+            var orderedMap = new Dictionary<string, int>(StringComparers.ItemNames);
 
             foreach (ProjectItemIdentity item in orderedItems)
             {

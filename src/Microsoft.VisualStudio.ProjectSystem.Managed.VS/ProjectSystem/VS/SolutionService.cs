@@ -31,10 +31,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public async Task InitializeAsync(IAsyncServiceProvider asyncServiceProvider)
         {
             Assumes.Null(_solution);
-            
-            _solution = await asyncServiceProvider.GetServiceAsync<IVsSolution, IVsSolution>();
+            Assumes.True(_context.IsOnMainThread, "Must be on UI thread");
 
-            await _context.Factory.SwitchToMainThreadAsync();
+            _solution = await asyncServiceProvider.GetServiceAsync<IVsSolution, IVsSolution>();
 
             Verify.HResult(_solution.AdviseSolutionEvents(this, out _cookie));
         }

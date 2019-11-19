@@ -36,10 +36,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.FSharp
         public async Task InitializeAsync(IAsyncServiceProvider asyncServiceProvider)
         {
             Assumes.Null(_projectSelector);
+            Assumes.True(_context.IsOnMainThread, "Must be on UI thread");
 
             _projectSelector = await asyncServiceProvider.GetServiceAsync<SVsRegisterProjectTypes, IVsRegisterProjectSelector>();
-
-            await _context.Factory.SwitchToMainThreadAsync();
 
             Guid selectorGuid = GetType().GUID;
             _projectSelector.RegisterProjectSelector(ref selectorGuid, this, out _cookie);

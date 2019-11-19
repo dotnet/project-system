@@ -49,9 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
                 // Can only use Shell APIs on the UI thread
                 await _projectVsServices.ThreadingService.SwitchToUIThread();
 
-                HResult hr = frame.Show();
-                if (hr.Failed)
-                    throw hr.Exception;
+                Verify.HResult(frame.Show());
             }
         }
     }

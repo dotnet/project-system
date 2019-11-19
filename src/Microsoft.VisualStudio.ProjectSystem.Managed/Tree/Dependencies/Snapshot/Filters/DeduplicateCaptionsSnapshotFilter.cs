@@ -38,13 +38,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             foreach ((string _, IDependency other) in context)
             {
                 if (!other.TopLevel ||
-                    other.Id.Equals(dependency.Id, StringComparison.OrdinalIgnoreCase) ||
+                    StringComparers.DependencyTreeIds.Equals(other.Id, dependency.Id) ||
                     !StringComparers.DependencyProviderTypes.Equals(other.ProviderType, dependency.ProviderType))
                 {
                     continue;
                 }
 
-                if (other.Caption.StartsWith(dependency.Caption, StringComparison.OrdinalIgnoreCase))
+                if (other.Caption.StartsWith(dependency.Caption, StringComparisons.ProjectTreeCaptionIgnoreCase))
                 {
                     if (other.Caption.Length == dependency.Caption.Length)
                     {
@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                     int expectedLength = expectedItemSpecIndex + itemSpec.Length + 1; // ")".Length
 
                     if (other.Caption.Length == expectedLength &&
-                        string.Compare(other.Caption, expectedItemSpecIndex, itemSpec, 0, itemSpec.Length, StringComparison.OrdinalIgnoreCase) == 0)
+                        string.Compare(other.Caption, expectedItemSpecIndex, itemSpec, 0, itemSpec.Length, StringComparisons.ProjectTreeCaptionIgnoreCase) == 0)
                     {
                         shouldApplyAlias = true;
                     }
@@ -92,7 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             {
                 string path = dependency.OriginalItemSpec ?? dependency.Path;
 
-                return string.IsNullOrEmpty(path) || path.Equals(dependency.Caption, StringComparison.OrdinalIgnoreCase)
+                return string.IsNullOrEmpty(path) || path.Equals(dependency.Caption, StringComparisons.ProjectTreeCaptionIgnoreCase)
                     ? dependency.Caption
                     : string.Concat(dependency.Caption, " (", path, ")");
             }

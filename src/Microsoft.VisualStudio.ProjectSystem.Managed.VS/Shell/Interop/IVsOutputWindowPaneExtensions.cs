@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using Microsoft.VisualStudio.ProjectSystem.VS;
 
 namespace Microsoft.VisualStudio.Shell.Interop
 {
@@ -26,9 +25,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
             }
             else
             {
-                HResult hr = pane.OutputStringThreadSafe(pszOutputString);
-                if (hr.Failed)
-                    throw hr.Exception;
+                Verify.HResult(pane.OutputStringThreadSafe(pszOutputString));
             }
         }
     }

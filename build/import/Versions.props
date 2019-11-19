@@ -1,6 +1,6 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <ProjectSystemVersion>16.4.0</ProjectSystemVersion>
+    <ProjectSystemVersion>16.5.0</ProjectSystemVersion>
     <VersionBase>$(ProjectSystemVersion)</VersionBase>
     <PreReleaseVersionLabel>beta1</PreReleaseVersionLabel>
     <SuppressNETCoreSdkPreviewMessage>true</SuppressNETCoreSdkPreviewMessage>

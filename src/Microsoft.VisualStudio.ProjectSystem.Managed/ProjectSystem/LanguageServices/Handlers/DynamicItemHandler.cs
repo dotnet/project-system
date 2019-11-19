@@ -104,8 +104,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         private static bool IsDynamicFile(string includePath)
         {
             // Note a file called just '.cshtml' is still considered a Razor file
-            return includePath.EndsWith(RazorPagesExtension, StringComparison.OrdinalIgnoreCase) ||
-                   includePath.EndsWith(RazorComponentsExtension, StringComparison.OrdinalIgnoreCase);
+            return includePath.EndsWith(RazorPagesExtension, StringComparisons.Paths) ||
+                   includePath.EndsWith(RazorComponentsExtension, StringComparisons.Paths);
         }
     }
 }

@@ -339,11 +339,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 if (!string.IsNullOrEmpty(tfm))
                 {
                     var fw = new FrameworkName(tfm);
-                    if (fw.Identifier.Equals(".NETCoreApp", StringComparison.OrdinalIgnoreCase))
+                    if (fw.Identifier.Equals(".NETCoreApp", StringComparisons.FrameworkIdentifiers))
                     {
                         return GetCompatibilityLevelFromVersion(fw.Version, compatData, isPreviewSDKInUse);
                     }
-                    else if (fw.Identifier.Equals(".NETFramework", StringComparison.OrdinalIgnoreCase))
+                    else if (fw.Identifier.Equals(".NETFramework", StringComparisons.FrameworkIdentifiers))
                     {
                         // The interesting case here is Asp.Net Core on full framework
                         IImmutableSet<IUnresolvedPackageReference> pkgReferences = await activeConfiguredProject.Services.PackageReferences.GetUnresolvedReferencesAsync();
@@ -351,8 +351,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                         // Look through the package references
                         foreach (IUnresolvedPackageReference pkgRef in pkgReferences)
                         {
-                            if (string.Equals(pkgRef.EvaluatedInclude, "Microsoft.AspNetCore.All", StringComparison.OrdinalIgnoreCase) ||
-                                string.Equals(pkgRef.EvaluatedInclude, "Microsoft.AspNetCore", StringComparison.OrdinalIgnoreCase))
+                            if (string.Equals(pkgRef.EvaluatedInclude, "Microsoft.AspNetCore.All", StringComparisons.ItemNames) ||
+                                string.Equals(pkgRef.EvaluatedInclude, "Microsoft.AspNetCore", StringComparisons.ItemNames))
                             {
                                 string verString = await pkgRef.Metadata.GetEvaluatedPropertyValueAsync("Version");
                                 if (!string.IsNullOrWhiteSpace(verString))
