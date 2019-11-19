@@ -5,8 +5,8 @@ using Microsoft.VisualStudio.Shell;
 
 namespace Microsoft.VisualStudio
 {
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-    internal class ProvideDiffSupportedContentTypeAttribute : RegistrationAttribute
+    [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
+    internal sealed class ProvideDiffSupportedContentTypeAttribute : RegistrationAttribute
     {
         private const string RegistryKey = @"Diff\SupportedContentTypes";
 
