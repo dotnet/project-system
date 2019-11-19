@@ -26,7 +26,6 @@ namespace Microsoft.VisualStudio
             key.SetValue(_extension, _contentType);
         }
 
-        //
         public override void Unregister(RegistrationContext context)
         {
             context.RemoveValue(RegistryKey, _extension);
