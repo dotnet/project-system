@@ -30,13 +30,13 @@ namespace Microsoft.VisualStudio.Packaging
 
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
-#pragma warning disable RS0030 // Do not used banned APIs
-            Assumes.True(ThreadHelper.JoinableTaskContext.IsOnMainThread, "Must be on UI thread.");
-#pragma warning restore RS0030 // Do not used banned APIs
-
             IComponentModel componentModel = await this.GetServiceAsync<SComponentModel, IComponentModel>();
             
             IEnumerable<IPackageService> packageServices = componentModel.GetExtensions<IPackageService>();
+
+#pragma warning disable RS0030 // Do not used banned APIs
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+#pragma warning restore RS0030 // Do not used banned APIs
 
             foreach (IPackageService packageService in packageServices)
             {
