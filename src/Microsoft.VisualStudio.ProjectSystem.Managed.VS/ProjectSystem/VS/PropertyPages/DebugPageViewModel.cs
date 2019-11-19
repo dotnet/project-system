@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -37,8 +38,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             {
                 if (_projectThreadingService == null)
                 {
-                    IUnconfiguredProjectVsServices _projectVsServices = Project.Services.ExportProvider.GetExportedValue<IUnconfiguredProjectVsServices>();
-                    _projectThreadingService = _projectVsServices.ThreadingService;
+                    IUnconfiguredProjectVsServices projectVsServices = Project.Services.ExportProvider.GetExportedValue<IUnconfiguredProjectVsServices>();
+                    _projectThreadingService = projectVsServices.ThreadingService;
                 }
 
                 return _projectThreadingService;
@@ -157,9 +158,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             if (oldProvider?.CustomUI?.DataContext is INotifyPropertyChanged context)
             {
                 context.PropertyChanged -= OnCustomUIStateChanged;
-                if (context is INotifyDataErrorInfo)
+                
+                if (context is INotifyDataErrorInfo notifyDataErrorInfo)
                 {
-                    ((INotifyDataErrorInfo)context).ErrorsChanged -= OnCustomUIErrorsChanged;
+                    notifyDataErrorInfo.ErrorsChanged -= OnCustomUIErrorsChanged;
                 }
             }
 
@@ -330,8 +332,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
-
-
         public bool SqlDebugging
         {
             get
@@ -364,87 +364,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
-        public bool SupportNativeDebugging
-        {
-            get
-            {
-                return ActiveProviderSupportsProperty(UIProfilePropertyName.NativeDebugging);
-            }
-        }
-
-        public bool SupportSqlDebugging
-        {
-            get
-            {
-                return ActiveProviderSupportsProperty(UIProfilePropertyName.SqlDebugging);
-            }
-        }
-
-        public bool SupportsExecutable
-        {
-            get
-            {
-                return ActiveProviderSupportsProperty(UIProfilePropertyName.Executable);
-            }
-        }
-
-        public bool SupportsArguments
-        {
-            get
-            {
-                return ActiveProviderSupportsProperty(UIProfilePropertyName.Arguments);
-            }
-        }
-
-        public bool SupportsWorkingDirectory
-        {
-            get
-            {
-                return ActiveProviderSupportsProperty(UIProfilePropertyName.WorkingDirectory);
-            }
-        }
-
-        public bool SupportsLaunchUrl
-        {
-            get
-            {
-                return ActiveProviderSupportsProperty(UIProfilePropertyName.LaunchUrl);
-            }
-        }
-
-        public bool SupportsEnvironmentVariables
-        {
-            get
-            {
-                return ActiveProviderSupportsProperty(UIProfilePropertyName.EnvironmentVariables);
-            }
-        }
+        public bool SupportNativeDebugging       => ActiveProviderSupportsProperty(UIProfilePropertyName.NativeDebugging);
+        public bool SupportSqlDebugging          => ActiveProviderSupportsProperty(UIProfilePropertyName.SqlDebugging);
+        public bool SupportsExecutable           => ActiveProviderSupportsProperty(UIProfilePropertyName.Executable);
+        public bool SupportsArguments            => ActiveProviderSupportsProperty(UIProfilePropertyName.Arguments);
+        public bool SupportsWorkingDirectory     => ActiveProviderSupportsProperty(UIProfilePropertyName.WorkingDirectory);
+        public bool SupportsLaunchUrl            => ActiveProviderSupportsProperty(UIProfilePropertyName.LaunchUrl);
+        public bool SupportsEnvironmentVariables => ActiveProviderSupportsProperty(UIProfilePropertyName.EnvironmentVariables);
 
         /// <summary>
         /// Helper returns true if there is an active provider and it supports the specified property
         /// </summary>
         private bool ActiveProviderSupportsProperty(string propertyName)
         {
-            ILaunchSettingsUIProvider activeProvider = ActiveProvider;
-            return activeProvider?.ShouldEnableProperty(propertyName) ?? false;
+            return ActiveProvider?.ShouldEnableProperty(propertyName) ?? false;
         }
 
-        public bool IsProfileSelected
-        {
-            get
-            {
-                return SelectedDebugProfile != null;
-            }
-        }
+        public bool IsProfileSelected => SelectedDebugProfile != null;
 
-        private readonly ObservableCollection<IWritableLaunchProfile> _launchProfiles = new ObservableCollection<IWritableLaunchProfile>();
-        public ObservableCollection<IWritableLaunchProfile> LaunchProfiles
-        {
-            get
-            {
-                return _launchProfiles;
-            }
-        }
+        public ObservableCollection<IWritableLaunchProfile> LaunchProfiles { get; } = new ObservableCollection<IWritableLaunchProfile>();
 
         /// <summary>
         /// Helper called when a profile is added (new profile command), or a profile is deleted (delete profile command)
@@ -464,7 +402,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 return !_debugTargetsCoreInitialized || HasProfiles;
             }
         }
-
 
         public bool HasProfiles
         {
@@ -523,7 +460,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     }
                     else
                     {
-                        RemoveEnvironmentVariablesRow = (EnvironmentVariablesValid) ? true : ((EnvironmentVariables[_environmentVariablesRowSelectedIndex] as NameValuePair).HasValidationError == true);
+                        RemoveEnvironmentVariablesRow = EnvironmentVariablesValid || EnvironmentVariables[_environmentVariablesRowSelectedIndex].HasValidationError;
                     }
 
                     OnPropertyChanged(nameof(EnvironmentVariablesRowSelectedIndex), suppressInvalidation: true);
@@ -536,10 +473,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             get
             {
-                if (EnvironmentVariables == null)
-                { return true; }
-                else
-                { return _environmentVariablesValid; }
+                return EnvironmentVariables == null || _environmentVariablesValid;
             }
             set
             {
@@ -569,15 +503,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         }
 
         /// <summary>
-        /// Provides binding to the current UI Provider usercontrol. 
+        /// Provides binding to the current UI Provider user control. 
         /// </summary>
-        public UserControl ActiveProviderUserControl
-        {
-            get
-            {
-                return ActiveProvider?.CustomUI;
-            }
-        }
+        public UserControl ActiveProviderUserControl => ActiveProvider?.CustomUI;
 
         /// <summary>
         /// Called when the selection does change. Note that this code relies on the fact the current selection has been
@@ -739,7 +667,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     // Note that we have to be careful since the collection can be empty. 
                     if (profiles.ActiveProfile != null && !string.IsNullOrEmpty(profiles.ActiveProfile.Name))
                     {
-                        SelectedDebugProfile = LaunchProfiles.Where(p => LaunchProfile.IsSameProfileName(p.Name, profiles.ActiveProfile.Name)).Single();
+                        SelectedDebugProfile = LaunchProfiles.Single(p => LaunchProfile.IsSameProfileName(p.Name, profiles.ActiveProfile.Name));
                     }
                     else
                     {
@@ -755,17 +683,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 }
                 else
                 {
-                    SelectedDebugProfile = LaunchProfiles.Where(p => LaunchProfile.IsSameProfileName(p.Name, curProfileName)).Single();
+                    SelectedDebugProfile = LaunchProfiles.Single(p => LaunchProfile.IsSameProfileName(p.Name, curProfileName));
                 }
             }
             finally
             {
                 PopIgnoreEvents();
-                if (_firstSnapshotCompleteSource != null)
-                {
-                    _firstSnapshotCompleteSource.TrySetResult(true);
-                }
-
+                _firstSnapshotCompleteSource?.TrySetResult(true);
                 _debugTargetsCoreInitialized = true;
             }
         }
@@ -839,7 +763,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             // Initialize the page
             InitializePropertyPage();
-            return System.Threading.Tasks.Task.CompletedTask;
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -864,7 +788,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             get
             {
                 return LazyInitializer.EnsureInitialized(ref _addEnvironmentVariableRowCommand, () =>
-                    new DelegateCommand((state) =>
+                    new DelegateCommand(state =>
                     {
                         var newRow = new NameValuePair(PropertyPageResources.EnvVariableNameWatermark, PropertyPageResources.EnvVariableValueWatermark, EnvironmentVariables);
                         EnvironmentVariables.Add(newRow);
@@ -940,13 +864,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
-        public bool NewProfileEnabled
-        {
-            get
-            {
-                return LaunchProfiles != null;
-            }
-        }
+        public bool NewProfileEnabled => LaunchProfiles != null;
 
         private ICommand _newProfileCommand;
         public ICommand NewProfileCommand
@@ -968,18 +886,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
-        public bool DeleteProfileEnabled
-        {
-            get
-            {
-                if (!IsProfileSelected)
-                {
-                    return false;
-                }
-
-                return true;
-            }
-        }
+        public bool DeleteProfileEnabled => IsProfileSelected;
 
         private ICommand _deleteProfileCommand;
         public ICommand DeleteProfileCommand
@@ -1003,7 +910,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         internal void CreateProfile(string name, string commandName)
         {
-            var profile = new WritableLaunchProfile() { Name = name, CommandName = commandName };
+            var profile = new WritableLaunchProfile { Name = name, CommandName = commandName };
             CurrentLaunchSettings.Profiles.Add(profile);
             LaunchProfiles.Add(profile);
 
@@ -1051,9 +958,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 _providerLaunchTypes = new List<LaunchType>();
                 foreach (Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView> provider in _uiProviders)
                 {
-                    if (_providerLaunchTypes.FirstOrDefault((lt) => lt.CommandName.Equals(provider.Value.CommandName)) == null)
+                    if (_providerLaunchTypes.FirstOrDefault(launchType => launchType.CommandName.Equals(provider.Value.CommandName)) == null)
                     {
-                        _providerLaunchTypes.Add(new LaunchType() { CommandName = provider.Value.CommandName, Name = provider.Value.FriendlyName });
+                        _providerLaunchTypes.Add(new LaunchType(provider.Value.CommandName, provider.Value.FriendlyName));
                     }
                 }
             }
@@ -1066,10 +973,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             {
                 _launchTypes.AddRange(_providerLaunchTypes);
 
-                selectedLaunchType = _launchTypes.FirstOrDefault((launchType) => string.Equals(launchType.CommandName, selectedProfile.CommandName));
+                selectedLaunchType = _launchTypes.FirstOrDefault(launchType => string.Equals(launchType.CommandName, selectedProfile.CommandName));
                 if (selectedLaunchType == null)
                 {
-                    selectedLaunchType = new LaunchType() { CommandName = selectedProfile.CommandName, Name = selectedProfile.CommandName };
+                    selectedLaunchType = new LaunchType(selectedProfile.CommandName, selectedProfile.CommandName);
                     _launchTypes.Insert(0, selectedLaunchType);
                 }
             }
@@ -1139,27 +1046,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             get
             {
-                if (ActiveProvider?.CustomUI?.DataContext is INotifyDataErrorInfo notifyDataError)
-                {
-                    return notifyDataError.HasErrors;
-                }
-
-                return false;
+                return ActiveProvider?.CustomUI?.DataContext is INotifyDataErrorInfo notifyDataError && notifyDataError.HasErrors;
             }
         }
 
-        public bool DoesNotHaveErrors
-        {
-            get
-            {
-                return !HasErrors;
-            }
-        }
+        public bool DoesNotHaveErrors => !HasErrors;
 
         public class LaunchType
         {
-            public string CommandName { get; set; }
-            public string Name { get; set; }
+            public string CommandName { get; }
+            public string Name { get; }
+
+            public LaunchType(string commandName, string name)
+            {
+                CommandName = commandName;
+                Name = name;
+            }
 
             public override bool Equals(object obj)
             {

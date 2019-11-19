@@ -46,13 +46,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         private int _dataSourceVersion;
 
-        /// <inheritdoc/>
         public override IComparable DataSourceVersion
         {
             get { return _dataSourceVersion; }
         }
 
-        /// <inheritdoc/>
         public override IReceivableSourceBlock<IProjectVersionedValue<IReadOnlyList<IEnumValue>>> SourceBlock
         {
             get

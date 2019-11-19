@@ -26,7 +26,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
 
         protected IAggregateDependenciesSnapshotProvider AggregateSnapshotProvider { get; }
 
-        /// <inheritdoc />
         public abstract bool TryHandleRequest(IGraphContext graphContext);
 
         protected IDependenciesGraphViewProvider? FindViewProvider(IDependency dependency)

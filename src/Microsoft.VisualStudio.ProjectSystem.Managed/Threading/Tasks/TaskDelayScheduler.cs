@@ -28,13 +28,11 @@ namespace Microsoft.VisualStudio.Threading.Tasks
             _cancellationSeries = new CancellationSeries(originalSourceToken);
         }
 
-        /// <inheritdoc />
         public JoinableTask RunAsyncTask(Func<CancellationToken, Task> operation, CancellationToken token = default)
         {
             return ScheduleAsyncTaskInternal(operation, immediate: true, token);
         }
 
-        /// <inheritdoc />
         public JoinableTask ScheduleAsyncTask(Func<CancellationToken, Task> operation, CancellationToken token = default)
         {
             return ScheduleAsyncTaskInternal(operation, immediate: false, token);
