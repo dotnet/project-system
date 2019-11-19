@@ -96,7 +96,6 @@ namespace Microsoft.VisualStudio.Threading.Tasks
             return nextToken;
         }
 
-        /// <inheritdoc />
         public void Dispose()
         {
 #if DEBUG

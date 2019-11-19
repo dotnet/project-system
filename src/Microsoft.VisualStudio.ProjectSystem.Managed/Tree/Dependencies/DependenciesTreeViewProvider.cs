@@ -47,7 +47,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 projectCapabilityCheckProvider: commonServices.Project);
         }
 
-        /// <inheritdoc />
         public async Task<IProjectTree> BuildTreeAsync(
             IProjectTree dependenciesTree,
             DependenciesSnapshot snapshot,
@@ -155,7 +154,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
         }
 
-        /// <inheritdoc />
         public IProjectTree? FindByPath(IProjectTree? root, string path)
         {
             if (root == null)

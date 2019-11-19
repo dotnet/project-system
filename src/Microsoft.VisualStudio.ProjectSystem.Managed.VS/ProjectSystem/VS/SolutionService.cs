@@ -17,7 +17,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private readonly IVsUIService<IVsSolution> _solution;
         private uint _cookie = VSConstants.VSCOOKIE_NIL;
         
-        /// <inheritdoc />
         public bool IsSolutionClosing { get; private set; }
 
         [ImportingConstructor]
