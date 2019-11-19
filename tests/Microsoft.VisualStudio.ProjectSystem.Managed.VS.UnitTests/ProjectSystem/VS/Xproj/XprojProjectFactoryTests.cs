@@ -15,7 +15,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         {
             string projectPath = "foo\\bar.xproj";
 
-            var factory = new XprojProjectFactory();
+#pragma warning disable VSSDK005 // Avoid instantiating JoinableTaskContext
+            var factory = new XprojProjectFactory(new Threading.JoinableTaskContext());
+#pragma warning restore VSSDK005 // Avoid instantiating JoinableTaskContext
 
             var loggedMessages = new List<LogMessage>();
             var logger = IVsUpgradeLoggerFactory.CreateLogger(loggedMessages);

@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     /// Handles populating a menu command on the debug dropdown when the menu reflects the IEnumValues for
     /// a debug property. It shows the active framework used for running the app (F5/Ctrl+F5).
     /// </summary>
-    [Export(typeof(DebugFrameworksDynamicMenuCommand))]
+    [Export(PackageCommandRegistrationService.PackageCommandContract, typeof(MenuCommand))]
     internal class DebugFrameworksDynamicMenuCommand : DynamicMenuCommand
     {
         private const int MaxFrameworks = 20;

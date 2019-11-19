@@ -1,35 +1,41 @@
 ﻿// Copyright(c) Microsoft.All Rights Reserved.Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.ComponentModel.Composition;
-using System.Threading;
-using System.Threading.Tasks;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
+using IAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider;
+using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <inheritdoc cref="ISolutionService"/>
     [Export(typeof(ISolutionService))]
-    internal sealed class SolutionService : OnceInitializedOnceDisposedAsync, ISolutionService, IVsSolutionEvents, IVsPrioritizedSolutionEvents, IDisposable
+    [Export(typeof(IPackageService))]
+    internal sealed class SolutionService : ISolutionService, IVsSolutionEvents, IVsPrioritizedSolutionEvents, IPackageService
     {
-        private readonly JoinableTaskContext _joinableTaskContext;
-        private readonly IVsUIService<IVsSolution> _solution;
+        private readonly JoinableTaskContext _context;
+        private IVsSolution? _solution;
         private uint _cookie = VSConstants.VSCOOKIE_NIL;
-        
-        public bool IsSolutionClosing { get; private set; }
 
         [ImportingConstructor]
-        public SolutionService(JoinableTaskContext joinableTaskContext, IVsUIService<SVsSolution, IVsSolution> solution)
-            : base(new JoinableTaskContextNode(joinableTaskContext))
+        public SolutionService(JoinableTaskContext context)
         {
-            _joinableTaskContext = joinableTaskContext;
-            _solution = solution;
+            Requires.NotNull(context, nameof(context));
+
+            _context = context;
         }
 
-        public new Task InitializeAsync(CancellationToken cancellationToken)
+        public bool IsSolutionClosing { get; private set; }
+
+        public async Task InitializeAsync(IAsyncServiceProvider asyncServiceProvider)
         {
-            return base.InitializeAsync(cancellationToken);
+            Assumes.Null(_solution);
+            Assumes.True(_context.IsOnMainThread, "Must be on UI thread");
+
+            _solution = await asyncServiceProvider.GetServiceAsync<IVsSolution, IVsSolution>();
+
+            Verify.HResult(_solution.AdviseSolutionEvents(this, out _cookie));
         }
 
         // We handle both prioritized and regular before/after events to update state as early as possible,
@@ -68,26 +74,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return HResult.OK;
         }
 
-        protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
+        public void Dispose()
         {
-            await _joinableTaskContext.Factory.SwitchToMainThreadAsync(cancellationToken);
+            Assumes.True(_context.IsOnMainThread, "Must be on UI thread");
 
-            IVsSolution? solution = _solution.Value;
-            Assumes.Present(solution);
-
-            Verify.HResult(solution.AdviseSolutionEvents(this, out _cookie));
-        }
-
-        protected override async Task DisposeCoreAsync(bool initialized)
-        {
-            if (initialized && _cookie != VSConstants.VSCOOKIE_NIL)
+            if (_cookie != VSConstants.VSCOOKIE_NIL && _solution != null)
             {
-                await _joinableTaskContext.Factory.SwitchToMainThreadAsync();
+                Verify.HResult(_solution.UnadviseSolutionEvents(_cookie));
 
-                IVsSolution? solution = _solution.Value;
-                Assumes.Present(solution);
-
-                Verify.HResult(solution.UnadviseSolutionEvents(_cookie));
                 _cookie = VSConstants.VSCOOKIE_NIL;
             }
         }
