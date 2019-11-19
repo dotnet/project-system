@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Xunit;
 
@@ -16,7 +15,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         {
             string projectPath = "foo\\bar.xproj";
 
-            var factory = new XprojProjectFactory(ThreadHelper.JoinableTaskContext);
+#pragma warning disable VSSDK005 // Avoid instantiating JoinableTaskContext
+            var factory = new XprojProjectFactory(new Threading.JoinableTaskContext());
+#pragma warning restore VSSDK005 // Avoid instantiating JoinableTaskContext
 
             var loggedMessages = new List<LogMessage>();
             var logger = IVsUpgradeLoggerFactory.CreateLogger(loggedMessages);

@@ -2,7 +2,6 @@
 
 using System;
 using System.Xml.Linq;
-using Microsoft.VisualStudio.Shell;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.FSharp
@@ -13,8 +12,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.FSharp
         public void Constructor()
         {
             Assert.Throws<ArgumentNullException>(() => new FSharpProjectSelector(null!));
-            
-            new FSharpProjectSelector(ThreadHelper.JoinableTaskContext);
+
+#pragma warning disable VSSDK005 // Avoid instantiating JoinableTaskContext
+            new FSharpProjectSelector(new Threading.JoinableTaskContext());
+#pragma warning restore VSSDK005 // Avoid instantiating JoinableTaskContext
         }
 
         [Theory]
