@@ -20,7 +20,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Extensibility
             _projectServiceAccessor = serviceAccessor;
         }
 
-        /// <inheritdoc />
         public T? GetExport<T>(string projectFilePath) where T : class
         {
             Requires.NotNullOrEmpty(projectFilePath, nameof(projectFilePath));
