@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.Packaging
             var componentModel = (IComponentModel)(await GetServiceAsync(typeof(SComponentModel)));
             Lazy<DebugFrameworksDynamicMenuCommand> debugFrameworksCmd = componentModel.DefaultExportProvider.GetExport<DebugFrameworksDynamicMenuCommand>();
             var solutionService = (SolutionService)componentModel.GetService<ISolutionService>();
-            solutionService.StartListening();
+            await solutionService.InitializeAsync(cancellationToken);
 
             var mcs = (OleMenuCommandService)await GetServiceAsync(typeof(IMenuCommandService));
             mcs.AddCommand(debugFrameworksCmd.Value);
