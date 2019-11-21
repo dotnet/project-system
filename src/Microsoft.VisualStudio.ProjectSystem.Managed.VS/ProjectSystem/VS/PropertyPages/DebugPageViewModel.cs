@@ -987,7 +987,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             SelectedLaunchType = selectedLaunchType;
         }
 
-        private void EnvironmentVariables_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void EnvironmentVariables_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             // cause the property page to be dirtied when a row is added or removed
             OnPropertyChanged("EnvironmentVariables_Contents");
