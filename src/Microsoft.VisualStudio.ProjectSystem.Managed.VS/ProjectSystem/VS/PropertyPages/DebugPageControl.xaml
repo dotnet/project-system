@@ -9,7 +9,10 @@
              x:ClassModifier="internal"
              d:DesignHeight="700"
              d:DesignWidth="1000" 
-             d:DataContext="{d:DesignInstance local:DebugPageViewModel}">
+             d:DataContext="{d:DesignInstance local:DebugPageViewModel}"
+             UseLayoutRounding="true"
+             TextOptions.TextFormattingMode="Display"
+             >
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
