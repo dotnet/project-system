@@ -25,8 +25,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         [ImportingConstructor]
         public MetadataReferenceItemHandler(UnconfiguredProject project)
         {
-            Requires.NotNull(project, nameof(project));
-
             _project = project;
         }
 

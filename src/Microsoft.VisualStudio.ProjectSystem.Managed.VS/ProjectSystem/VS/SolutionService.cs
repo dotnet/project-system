@@ -21,8 +21,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [ImportingConstructor]
         public SolutionService(JoinableTaskContext context)
         {
-            Requires.NotNull(context, nameof(context));
-
             _context = context;
         }
 

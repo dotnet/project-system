@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.Xml.Linq;
 using Xunit;
 
@@ -8,16 +7,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.FSharp
 {
     public class FSharpProjectSelectorTests
     {
-        [Fact]
-        public void Constructor()
-        {
-            Assert.Throws<ArgumentNullException>(() => new FSharpProjectSelector(null!));
-
-#pragma warning disable VSSDK005 // Avoid instantiating JoinableTaskContext
-            new FSharpProjectSelector(new Threading.JoinableTaskContext());
-#pragma warning restore VSSDK005 // Avoid instantiating JoinableTaskContext
-        }
-
         [Theory]
         [InlineData(@"<Project Sdk = ""FSharp.SDK""> </Project>", ProjectType.FSharp)]
         [InlineData(@"<Project ToolsVersion=""15.0""> </Project>", ProjectType.LegacyFSharp)]

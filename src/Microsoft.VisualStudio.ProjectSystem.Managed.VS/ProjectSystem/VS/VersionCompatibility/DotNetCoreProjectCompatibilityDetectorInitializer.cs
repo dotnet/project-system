@@ -17,8 +17,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [ImportingConstructor]
         public DotNetCoreProjectCompatibilityDetectorInitializer(IProjectServiceAccessor projectServiceAccessor)
         {
-            Requires.NotNull(projectServiceAccessor, nameof(projectServiceAccessor));
-
             _projectServiceAccessor = projectServiceAccessor;
         }
 

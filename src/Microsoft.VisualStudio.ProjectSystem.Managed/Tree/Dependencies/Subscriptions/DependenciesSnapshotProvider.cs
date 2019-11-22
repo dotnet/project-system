@@ -84,11 +84,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider)
             : base(commonServices.ThreadingService.JoinableTaskContext)
         {
-            Requires.NotNull(tasksService, nameof(tasksService));
-            Requires.NotNull(activeConfiguredProjectSubscriptionService, nameof(activeConfiguredProjectSubscriptionService));
-            Requires.NotNull(targetFrameworkProvider, nameof(targetFrameworkProvider));
-            Requires.NotNull(aggregateSnapshotProvider, nameof(aggregateSnapshotProvider));
-
             _commonServices = commonServices;
             _tasksService = tasksService;
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;

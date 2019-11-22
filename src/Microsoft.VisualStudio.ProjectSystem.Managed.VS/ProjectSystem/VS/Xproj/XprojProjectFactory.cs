@@ -24,8 +24,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         [ImportingConstructor]
         public XprojProjectFactory(JoinableTaskContext context)
         {
-            Requires.NotNull(context, nameof(context));
-
             _context = context;
         }
 
