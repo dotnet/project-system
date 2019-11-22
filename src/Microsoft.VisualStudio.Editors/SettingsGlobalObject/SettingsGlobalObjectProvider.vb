@@ -9,7 +9,7 @@ Imports System.Reflection
 Imports System.Runtime.InteropServices
 
 Imports EnvDTE
-
+Imports Microsoft.VisualStudio.Editors.DesignerFramework
 Imports Microsoft.VisualStudio.Editors.Interop
 Imports Microsoft.VisualStudio.Editors.SettingsDesigner
 Imports Microsoft.VisualStudio.Shell.Design
@@ -1791,14 +1791,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                     Else
                         ' If we didn't save the document, we still have to make sure that the single file generator is run 
                         ' (Clients may depend on the new property in TempPE:s - VsWhidbey 449609)
-                        If ProjectItem IsNot Nothing AndAlso ProjectItem.Object IsNot Nothing Then
-                            Dim vsProjItem As VSLangProj.VSProjectItem = TryCast(ProjectItem.Object, VSLangProj.VSProjectItem)
-                            If vsProjItem IsNot Nothing Then
-                                Try
-                                    vsProjItem.RunCustomTool()
-                                Catch ex As Exception When Common.ReportWithoutCrash(ex, "Failed to run custom tool", NameOf(SettingsGlobalObjectProvider))
-                                End Try
-                            End If
+                        Dim provider = DirectCast(_provider, IServiceProvider)
+                        Dim generator = TryCast(provider.GetService(GetType(SingleFileGenerator)), SingleFileGenerator)
+                        If generator IsNot Nothing Then
+                            Try
+                                generator.Run()
+                            Catch ex As Exception When Common.ReportWithoutCrash(ex, "Failed to run custom tool", NameOf(SettingsGlobalObjectProvider))
+                            End Try
                         End If
                     End If
                 End Try

@@ -1429,9 +1429,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Try
                     If ProjectItem.ProjectItems Is Nothing OrElse ProjectItem.ProjectItems.Count = 0 Then
                         ' If we don't have any subitems, we better try & run the custom tool...
-                        Dim vsProjectItem As VSLangProj.VSProjectItem = TryCast(ProjectItem.Object, VSLangProj.VSProjectItem)
-                        If vsProjectItem IsNot Nothing Then
-                            vsProjectItem.RunCustomTool()
+                        Dim generator = TryCast(Settings.Site.GetService(GetType(SingleFileGenerator)), SingleFileGenerator)
+                        If generator IsNot Nothing Then
+                            generator.Run()
                         End If
                     End If
                     Dim FullyQualifiedClassName As String = SettingsDesigner.FullyQualifiedGeneratedTypedSettingsClassName(Hierarchy, VSITEMID.NIL, Settings, ProjectItem)
