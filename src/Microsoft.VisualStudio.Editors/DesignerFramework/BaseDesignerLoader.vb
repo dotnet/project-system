@@ -430,6 +430,9 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
             'Add the IVsHierarchy object as a service as well
             LoaderHost.AddService(GetType(IVsHierarchy), VsHierarchy)
+
+            'Add the single-file generator as a service
+            LoaderHost.AddService(GetType(SingleFileGenerator), New SingleFileGenerator(LoaderHost))
         End Sub
 
         ' <include file='doc\VSDDesignerLoader.uex' path='docs/doc[@for="VSDDesignerLoader.IVSMDDesignerLoader.Initialize"]/*' />
@@ -621,12 +624,9 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 HandleFlush(Nothing)
             End If
             Try
-                Dim projItem As EnvDTE.ProjectItem = ProjectItem
-                If projItem IsNot Nothing Then
-                    Dim vsProj As VSLangProj.VSProjectItem = TryCast(projItem.Object, VSLangProj.VSProjectItem)
-                    If vsProj IsNot Nothing Then
-                        vsProj.RunCustomTool()
-                    End If
+                Dim sfg = TryCast(GetService(GetType(SingleFileGenerator)), SingleFileGenerator)
+                If sfg IsNot Nothing Then
+                    sfg.Run()
                 End If
             Catch ex As Exception When ReportWithoutCrash(ex, "Failed to run custom tool", NameOf(BaseDesignerLoader))
             End Try
