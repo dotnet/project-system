@@ -1034,7 +1034,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                 If (Not (IsNothing(rgConstants))) Then
                     For Each stTemp In rgConstants
-                        If (String.Equals(Trim(stTemp), stSymbol, StringComparison.Ordinal)) Then
+                        If Not String.Equals(Trim(stTemp), stSymbol, StringComparison.Ordinal) Then
                             If (stNewConstants <> "") Then
                                 stNewConstants += ";"
                             End If
