@@ -28,8 +28,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.FSharp
         [ImportingConstructor]
         public FSharpProjectSelector(JoinableTaskContext context)
         {
-            Requires.NotNull(context, nameof(context));
-
             _context = context;
         }
 
