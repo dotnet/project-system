@@ -164,9 +164,9 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
             Assert.False(result.Status.HasFlag(CommandStatus.Enabled));
         }
 
-        override internal long GetCommandId() => FSharpProjectCommandId.MoveDown;
+        internal override long GetCommandId() => FSharpProjectCommandId.MoveDown;
 
-        override internal AbstractMoveCommand CreateInstance(IPhysicalProjectTree projectTree, Shell.SVsServiceProvider serviceProvider, ConfiguredProject configuredProject, IProjectAccessor accessor)
+        internal override AbstractMoveCommand CreateInstance(IPhysicalProjectTree projectTree, Shell.SVsServiceProvider serviceProvider, ConfiguredProject configuredProject, IProjectAccessor accessor)
         {
             return new MoveDownCommand(projectTree, serviceProvider, configuredProject, accessor);
         }
