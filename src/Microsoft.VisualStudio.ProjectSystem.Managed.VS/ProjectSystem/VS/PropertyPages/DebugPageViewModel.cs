@@ -23,7 +23,7 @@ using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
-    internal class DebugPageViewModel : PropertyPageViewModel, INotifyDataErrorInfo
+    internal partial class DebugPageViewModel : PropertyPageViewModel, INotifyDataErrorInfo
     {
         private readonly string _executableFilter = string.Format("{0} (*.exe)|*.exe|{1} (*.*)|*.*", PropertyPageResources.ExecutableFiles, PropertyPageResources.AllFiles);
         private IDisposable _debugProfileProviderLink;
@@ -31,6 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         private bool _debugTargetsCoreInitialized = false;
         private bool _environmentVariablesValid = true;
         private int _environmentVariablesRowSelectedIndex = -1;
+        private ILaunchSettingsProvider _launchSettingsProvider;
         private ObservableList<NameValuePair> _environmentVariables;
         private IProjectThreadingService _projectThreadingService;
         private List<LaunchType> _launchTypes;
@@ -646,8 +647,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             OnPropertyChanged(nameof(NewProfileEnabled));
         }
 
-   
-
         /// <summary>
         /// Called when the selection does change. Note that this code relies on the fact the current selection has been
         /// updated
@@ -1008,7 +1007,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             PropertyChanged -= ViewModel_PropertyChanged;
         }
 
-        private ILaunchSettingsProvider _launchSettingsProvider;
         protected virtual ILaunchSettingsProvider GetDebugProfileProvider()
         {
             if (_launchSettingsProvider == null)
@@ -1046,40 +1044,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         }
 
         public bool DoesNotHaveErrors => !HasErrors;
-
-        public class LaunchType
-        {
-            public string CommandName { get; }
-            public string Name { get; }
-
-            public LaunchType(string commandName, string name)
-            {
-                CommandName = commandName;
-                Name = name;
-            }
-
-            public override bool Equals(object obj)
-            {
-                if (obj is LaunchType oth)
-                {
-                    return CommandName?.Equals(oth.CommandName) ?? oth.CommandName == null;
-                }
-
-                return false;
-            }
-
-            public override int GetHashCode()
-            {
-                return CommandName?.GetHashCode() ?? 0;
-            }
-        }
-    }
-
-    public static class ProfileCommandNames
-    {
-        public const string Project = "Project";
-        public const string IISExpress = "IISExpress";
-        public const string Executable = "Executable";
-        public const string NoAction = "NoAction";
     }
 }
