@@ -1429,7 +1429,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Try
                     If ProjectItem.ProjectItems Is Nothing OrElse ProjectItem.ProjectItems.Count = 0 Then
                         ' If we don't have any subitems, we better try & run the custom tool...
-                        Dim generator = TryCast(Settings.Site.GetService(GetType(SingleFileGenerator)), SingleFileGenerator)
+                        Dim generator = TryCast(Settings.Site.GetService(GetType(ISingleFileGenerator)), ISingleFileGenerator)
                         If generator IsNot Nothing Then
                             generator.Run()
                         End If

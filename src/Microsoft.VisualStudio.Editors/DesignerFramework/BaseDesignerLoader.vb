@@ -432,7 +432,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             LoaderHost.AddService(GetType(IVsHierarchy), VsHierarchy)
 
             'Add the single-file generator as a service
-            LoaderHost.AddService(GetType(SingleFileGenerator), New SingleFileGenerator(LoaderHost))
+            LoaderHost.AddService(GetType(ISingleFileGenerator), New SingleFileGenerator(LoaderHost))
         End Sub
 
         ' <include file='doc\VSDDesignerLoader.uex' path='docs/doc[@for="VSDDesignerLoader.IVSMDDesignerLoader.Initialize"]/*' />
@@ -624,7 +624,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 HandleFlush(Nothing)
             End If
             Try
-                Dim sfg = TryCast(GetService(GetType(SingleFileGenerator)), SingleFileGenerator)
+                Dim sfg = TryCast(GetService(GetType(ISingleFileGenerator)), ISingleFileGenerator)
                 If sfg IsNot Nothing Then
                     sfg.Run()
                 End If

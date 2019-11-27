@@ -1792,7 +1792,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                         ' If we didn't save the document, we still have to make sure that the single file generator is run 
                         ' (Clients may depend on the new property in TempPE:s - VsWhidbey 449609)
                         Dim provider = DirectCast(_provider, IServiceProvider)
-                        Dim generator = TryCast(provider.GetService(GetType(SingleFileGenerator)), SingleFileGenerator)
+                        Dim generator = TryCast(provider.GetService(GetType(ISingleFileGenerator)), ISingleFileGenerator)
                         If generator IsNot Nothing Then
                             Try
                                 generator.Run()

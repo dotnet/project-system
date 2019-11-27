@@ -6,6 +6,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
     ''' Handles running the single-file generator for a particular <see cref="EnvDTE.ProjectItem"/>.
     ''' </summary>
     Friend Class SingleFileGenerator
+        Implements ISingleFileGenerator
 
         Private ReadOnly _serviceProvider As IServiceProvider
 
@@ -21,7 +22,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' provided in the constructor. We depend on the IServiceProvider being updated if/when the
         ''' project item associated with the designer changes.
         ''' </remarks>
-        Public Sub Run()
+        Public Sub Run() Implements ISingleFileGenerator.Run
             Dim projItem = TryCast(_serviceProvider.GetService(GetType(EnvDTE.ProjectItem)), EnvDTE.ProjectItem)
 
             If projItem IsNot Nothing Then
