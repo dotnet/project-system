@@ -4,8 +4,10 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
     ''' <summary>
     ''' Handles running the single-file generator for a particular <see cref="EnvDTE.ProjectItem"/>.
+    ''' This implementation of <see cref="ISingleFileGenerator"/> handles the "local" scenario,
+    ''' where the Resource Designer is running in the same process as the project system.
     ''' </summary>
-    Friend Class SingleFileGenerator
+    Friend Class LocalSingleFileGenerator
         Implements ISingleFileGenerator
 
         Private ReadOnly _serviceProvider As IServiceProvider
