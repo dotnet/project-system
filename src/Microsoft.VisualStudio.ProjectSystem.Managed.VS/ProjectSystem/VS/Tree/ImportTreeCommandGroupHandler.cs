@@ -20,49 +20,44 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree
     /// <summary>
     /// Handles opening of files displayed in the import tree.
     /// </summary>
-    [ExportCommandGroup(CMDSETID.UIHierarchyWindowCommandSet_string)]
-    [AppliesTo(ProjectCapability.ProjectImportsTree)]
-    [Order(ProjectSystem.Order.BeforeDefault)]
-    internal sealed class ImportTreeCommandGroupHandler : IAsyncCommandGroupHandler
+    internal abstract class ImportTreeCommandGroupHandlerBase : IAsyncCommandGroupHandler
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly ConfiguredProject _configuredProject;
-        private readonly IVsUIService<SVsUIShellOpenDocument, IVsUIShellOpenDocument> _uiShellOpenDocument;
+        private readonly IVsUIService<IVsUIShellOpenDocument> _uiShellOpenDocument;
+        private readonly IVsUIService<IVsExternalFilesManager> _externalFilesManager;
         private readonly IVsUIService<IOleServiceProvider> _oleServiceProvider;
 
-        [ImportingConstructor]
-        public ImportTreeCommandGroupHandler(
-            [Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider,
+        protected ImportTreeCommandGroupHandlerBase(
+            IServiceProvider serviceProvider,
             ConfiguredProject configuredProject,
-            IVsUIService<SVsUIShellOpenDocument, IVsUIShellOpenDocument> uiShellOpenDocument,
+            IVsUIService<IVsUIShellOpenDocument> uiShellOpenDocument,
+            IVsUIService<IVsExternalFilesManager> externalFilesManager,
             IVsUIService<IOleServiceProvider> oleServiceProvider)
         {
             Requires.NotNull(serviceProvider, nameof(serviceProvider));
             Requires.NotNull(configuredProject, nameof(configuredProject));
             Requires.NotNull(uiShellOpenDocument, nameof(uiShellOpenDocument));
+            Requires.NotNull(externalFilesManager, nameof(externalFilesManager));
             Requires.NotNull(oleServiceProvider, nameof(oleServiceProvider));
 
             _serviceProvider = serviceProvider;
             _configuredProject = configuredProject;
             _uiShellOpenDocument = uiShellOpenDocument;
+            _externalFilesManager = externalFilesManager;
             _oleServiceProvider = oleServiceProvider;
         }
 
+        protected abstract bool IsOpenCommand(long commandId);
+
+        protected abstract bool IsOpenWithCommand(long commandId);
+
         public Task<CommandStatusResult> GetCommandStatusAsync(IImmutableSet<IProjectTree> items, long commandId, bool focused, string? commandText, CommandStatus status)
         {
-            switch ((VsUIHierarchyWindowCmdIds)commandId)
+            if (items.Count != 0 && IsOpenCommand(commandId) && items.All(CanOpenFile))
             {
-                case VsUIHierarchyWindowCmdIds.UIHWCMDID_DoubleClick:
-                case VsUIHierarchyWindowCmdIds.UIHWCMDID_EnterKey:
-                {
-                    if (items.Count != 0 && items.All(CanOpenFile))
-                    {
-                        status |= CommandStatus.Enabled | CommandStatus.Supported;
-                        return new CommandStatusResult(true, commandText, status).AsTask();
-                    }
-
-                    break;
-                }
+                status |= CommandStatus.Enabled | CommandStatus.Supported;
+                return new CommandStatusResult(true, commandText, status).AsTask();
             }
 
             return CommandStatusResult.Unhandled.AsTask();
@@ -70,20 +65,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree
 
         public Task<bool> TryHandleCommandAsync(IImmutableSet<IProjectTree> items, long commandId, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut)
         {
-            switch ((VsUIHierarchyWindowCmdIds)commandId)
+            if (items.Count != 0 && IsOpenCommand(commandId) && items.All(CanOpenFile))
             {
-                case VsUIHierarchyWindowCmdIds.UIHWCMDID_DoubleClick:
-                case VsUIHierarchyWindowCmdIds.UIHWCMDID_EnterKey:
-                {
-                    if (items.Count != 0 && items.All(CanOpenFile))
-                    {
-                        OpenItems();
+                OpenItems();
 
-                        return TaskResult.True;
-                    }
-
-                    break;
-                }
+                return TaskResult.True;
             }
 
             return TaskResult.False;
@@ -96,10 +82,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree
                 IOleServiceProvider? oleServiceProvider = _oleServiceProvider.Value;
                 Assumes.Present(oleServiceProvider);
 
-                var hierarchy = (IVsUIHierarchy) _configuredProject.UnconfiguredProject.Services.HostObject;
-                var rdtHelper = new RunningDocumentTable(_serviceProvider);
+                IVsExternalFilesManager? externalFilesManager = _externalFilesManager.Value;
+                Assumes.Present(externalFilesManager);
 
-                // Open all items
+                var hierarchy = (IVsUIHierarchy)_configuredProject.UnconfiguredProject.Services.HostObject;
+                var rdt = new RunningDocumentTable(_serviceProvider);
+
+                // Open all items.
                 RunAllAndAggregateExceptions(items, OpenItem);
 
                 void OpenItem(IProjectTree item)
@@ -107,12 +96,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree
                     IVsWindowFrame? windowFrame = null;
                     try
                     {
-                        Guid logicalView = LOGVIEWID.Code_guid;
+                        // Open the document.
+                        Guid logicalView = IsOpenWithCommand(commandId) ? LOGVIEWID_UserChooseView : LOGVIEWID.Code_guid;
                         IntPtr docData = IntPtr.Zero;
 
                         ErrorHandler.ThrowOnFailure(
                             uiShellOpenDocument!.OpenStandardEditor(
-                                (uint) __VSOSEFLAGS.OSE_ChooseBestStdEditor,
+                                (uint)__VSOSEFLAGS.OSE_ChooseBestStdEditor,
                                 item.FilePath,
                                 ref logicalView,
                                 item.Caption,
@@ -122,11 +112,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree
                                 oleServiceProvider,
                                 out windowFrame));
 
+                        RunningDocumentInfo rdtInfo = rdt.GetDocumentInfo(item.FilePath);
+
+                        // Set it as read only if necessary.
                         bool isReadOnly = item.Flags.Contains(ProjectImportsSubTreeProvider.ProjectImportImplicit);
 
                         if (isReadOnly)
                         {
-                            RunningDocumentInfo rdtInfo = rdtHelper.GetDocumentInfo(item.FilePath);
                             if (rdtInfo.DocData is IVsTextBuffer textBuffer)
                             {
                                 textBuffer.GetStateFlags(out uint flags);
@@ -134,6 +126,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree
                             }
                         }
 
+                        // Detach the document from this project.
+                        // Ignore failure. It may be that we've already transferred the item to Miscellaneous Files.
+                        externalFilesManager!.TransferDocument(item.FilePath, item.FilePath, windowFrame);
+
+                        // Show the document window
                         if (windowFrame != null)
                         {
                             ErrorHandler.ThrowOnFailure(windowFrame.Show());
@@ -156,7 +153,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree
         /// handled, any exceptions are thrown either as a single exception or an
         /// <see cref="AggregateException"/>.
         /// </summary>
-        public static void RunAllAndAggregateExceptions<T>(IEnumerable<T> items, Action<T> action)
+        private static void RunAllAndAggregateExceptions<T>(IEnumerable<T> items, Action<T> action)
         {
             List<Exception>? exceptions = null;
 
@@ -184,6 +181,64 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree
                     throw new AggregateException(exceptions);
                 }
             }
+        }
+
+        [ExportCommandGroup(CMDSETID.UIHierarchyWindowCommandSet_string)]
+        [AppliesTo(ProjectCapability.ProjectImportsTree)]
+        [Order(ProjectSystem.Order.BeforeDefault)]
+        private sealed class ImportTreeCommandGroupHandler : ImportTreeCommandGroupHandlerBase
+        {
+            [ImportingConstructor]
+            public ImportTreeCommandGroupHandler(
+                [Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider,
+                ConfiguredProject configuredProject,
+                IVsUIService<SVsUIShellOpenDocument, IVsUIShellOpenDocument> uiShellOpenDocument,
+                IVsUIService<SVsExternalFilesManager, IVsExternalFilesManager> externalFilesManager,
+                IVsUIService<IOleServiceProvider> oleServiceProvider)
+            : base(serviceProvider, configuredProject, uiShellOpenDocument, externalFilesManager, oleServiceProvider)
+            {
+            }
+
+            protected override bool IsOpenCommand(long commandId)
+            {
+                return (VsUIHierarchyWindowCmdIds)commandId switch
+                {
+                    VsUIHierarchyWindowCmdIds.UIHWCMDID_DoubleClick => true,
+                    VsUIHierarchyWindowCmdIds.UIHWCMDID_EnterKey => true,
+                    _ => false
+                };
+            }
+
+            protected override bool IsOpenWithCommand(long commandId) => false;
+        }
+
+        [ExportCommandGroup(CMDSETID.StandardCommandSet97_string)]
+        [AppliesTo(ProjectCapability.ProjectImportsTree)]
+        [Order(ProjectSystem.Order.BeforeDefault)]
+        private sealed class ImportTreeStandardCommandSet97GroupHandler : ImportTreeCommandGroupHandlerBase
+        {
+            [ImportingConstructor]
+            public ImportTreeStandardCommandSet97GroupHandler(
+                [Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider,
+                ConfiguredProject configuredProject,
+                IVsUIService<SVsUIShellOpenDocument, IVsUIShellOpenDocument> uiShellOpenDocument,
+                IVsUIService<SVsExternalFilesManager, IVsExternalFilesManager> externalFilesManager,
+                IVsUIService<IOleServiceProvider> oleServiceProvider)
+                : base(serviceProvider, configuredProject, uiShellOpenDocument, externalFilesManager, oleServiceProvider)
+            {
+            }
+
+            protected override bool IsOpenCommand(long commandId)
+            {
+                return (VSStd97CmdID)commandId switch
+                {
+                    VSStd97CmdID.Open => true,
+                    VSStd97CmdID.OpenWith => true,
+                    _ => false
+                };
+            }
+
+            protected override bool IsOpenWithCommand(long commandId) => (VSStd97CmdID)commandId == VSStd97CmdID.OpenWith;
         }
     }
 }
