@@ -8,6 +8,7 @@ Imports System.ComponentModel.Design.Serialization
 Imports System.IO
 
 Imports Microsoft.VisualStudio.Editors.Common
+Imports Microsoft.VisualStudio.Shell
 Imports Microsoft.VisualStudio.Shell.Design.Serialization
 Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.VisualStudio.TextManager.Interop
@@ -432,7 +433,11 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             LoaderHost.AddService(GetType(IVsHierarchy), VsHierarchy)
 
             'Add the single-file generator as a service
-            LoaderHost.AddService(GetType(ISingleFileGenerator), New LocalSingleFileGenerator(LoaderHost))
+            If KnownUIContexts.CloudEnvironmentConnectedContext.IsActive Then
+                LoaderHost.AddService(GetType(ISingleFileGenerator), New CloudEnvironmentSingleFileGenerator())
+            Else
+                LoaderHost.AddService(GetType(ISingleFileGenerator), New LocalSingleFileGenerator(LoaderHost))
+            End If
         End Sub
 
         ' <include file='doc\VSDDesignerLoader.uex' path='docs/doc[@for="VSDDesignerLoader.IVSMDDesignerLoader.Initialize"]/*' />
