@@ -227,16 +227,6 @@
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
     </XamlPropertyRule>
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\Page.BrowseObject.xaml" />
-
-    <Compile Update="ProjectSystem\Rules\Items\Resource.cs">
-      <DependentUpon>Resource.xaml</DependentUpon>
-    </Compile>
-    <XamlPropertyRule Include="ProjectSystem\Rules\Items\Resource.xaml">
-      <XlfInput>false</XlfInput>
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-    </XamlPropertyRule>
-    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\Resource.BrowseObject.xaml" />
   </ItemGroup>
 
   <!-- Others -->
