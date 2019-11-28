@@ -9,13 +9,12 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
-using Microsoft.VisualStudio.Threading;
-using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.VS;
+using Microsoft.VisualStudio.Threading;
 
-namespace Microsoft.VisualStudio.Tree
+namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
 {
     /// <summary>
     /// Provides a top-level project sub-tree showing the tree of MSBuild project imports,

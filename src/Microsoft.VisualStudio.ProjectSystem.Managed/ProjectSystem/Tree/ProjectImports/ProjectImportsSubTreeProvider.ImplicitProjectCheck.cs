@@ -2,7 +2,7 @@
 
 using System;
 
-namespace Microsoft.VisualStudio.Tree
+namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
 {
     internal sealed partial class ProjectImportsSubTreeProvider
     {

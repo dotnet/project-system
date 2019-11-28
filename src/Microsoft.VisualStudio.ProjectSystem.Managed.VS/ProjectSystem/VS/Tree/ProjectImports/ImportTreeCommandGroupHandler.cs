@@ -7,20 +7,20 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.VisualStudio.Threading;
-using Microsoft.VisualStudio.Tree;
 using IOleServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
 using static Microsoft.VisualStudio.VSConstants;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.ProjectImports
 {
     /// <summary>
-    /// Handles opening of files displayed in the import tree.
+    /// Handles opening of files displayed in the project imports tree.
     /// </summary>
-    internal abstract class ImportTreeCommandGroupHandlerBase : IAsyncCommandGroupHandler
+    internal abstract class ProjectImportsCommandGroupHandlerBase : IAsyncCommandGroupHandler
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly ConfiguredProject _configuredProject;
@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree
         private readonly IVsUIService<IVsExternalFilesManager> _externalFilesManager;
         private readonly IVsUIService<IOleServiceProvider> _oleServiceProvider;
 
-        protected ImportTreeCommandGroupHandlerBase(
+        protected ProjectImportsCommandGroupHandlerBase(
             IServiceProvider serviceProvider,
             ConfiguredProject configuredProject,
             IVsUIService<IVsUIShellOpenDocument> uiShellOpenDocument,
@@ -186,10 +186,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree
         [ExportCommandGroup(CMDSETID.UIHierarchyWindowCommandSet_string)]
         [AppliesTo(ProjectCapability.ProjectImportsTree)]
         [Order(ProjectSystem.Order.BeforeDefault)]
-        private sealed class ImportTreeCommandGroupHandler : ImportTreeCommandGroupHandlerBase
+        private sealed class UIHierarchyWindowCommandSetGroupHandler : ProjectImportsCommandGroupHandlerBase
         {
             [ImportingConstructor]
-            public ImportTreeCommandGroupHandler(
+            public UIHierarchyWindowCommandSetGroupHandler(
                 [Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider,
                 ConfiguredProject configuredProject,
                 IVsUIService<SVsUIShellOpenDocument, IVsUIShellOpenDocument> uiShellOpenDocument,
@@ -215,10 +215,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree
         [ExportCommandGroup(CMDSETID.StandardCommandSet97_string)]
         [AppliesTo(ProjectCapability.ProjectImportsTree)]
         [Order(ProjectSystem.Order.BeforeDefault)]
-        private sealed class ImportTreeStandardCommandSet97GroupHandler : ImportTreeCommandGroupHandlerBase
+        private sealed class StandardCommandSet97GroupHandler : ProjectImportsCommandGroupHandlerBase
         {
             [ImportingConstructor]
-            public ImportTreeStandardCommandSet97GroupHandler(
+            public StandardCommandSet97GroupHandler(
                 [Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider,
                 ConfiguredProject configuredProject,
                 IVsUIService<SVsUIShellOpenDocument, IVsUIShellOpenDocument> uiShellOpenDocument,
