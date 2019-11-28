@@ -145,14 +145,6 @@
       <Context>BrowseObject</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)ApplicationDefinition.xaml">
-      <Context>File</Context>
-    </PropertyPageSchema>
-
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ApplicationDefinition.BrowseObject.xaml">
-      <Context>BrowseObject</Context>
-    </PropertyPageSchema>
-
     <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)Compile.xaml;">
       <Context>File</Context>
     </PropertyPageSchema>

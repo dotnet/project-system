@@ -150,16 +150,6 @@
     </XamlPropertyRule>
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\AdditionalFiles.BrowseObject.xaml" />
 
-    <Compile Update="ProjectSystem\Rules\Items\ApplicationDefinition.cs">
-      <DependentUpon>ApplicationDefinition.xaml</DependentUpon>
-    </Compile>
-    <XamlPropertyRule Include="ProjectSystem\Rules\Items\ApplicationDefinition.xaml">
-      <XlfInput>false</XlfInput>
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-    </XamlPropertyRule>
-    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\ApplicationDefinition.BrowseObject.xaml" />
-    
     <Compile Update="ProjectSystem\Rules\Items\Compile.cs">
       <DependentUpon>Compile.xaml</DependentUpon>
     </Compile>
