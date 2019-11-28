@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.Runtime.InteropServices
 
@@ -18,7 +18,7 @@ Namespace Microsoft.VisualStudio.Editors
         Public Const WS_CLIPSIBLINGS As Integer = &H4000000L
         Public Const WS_CLIPCHILDREN As Integer = &H2000000L
         Public Const WS_MAXIMIZE As Integer = &H1000000L
-        Public Const WS_CAPTION As Integer = &HC00000L                '/* WS_BORDER | WS_DLGFRAME  */
+        Public Const WS_CAPTION As Integer = &HC00000L                ' WS_BORDER | WS_DLGFRAME
         Public Const WS_BORDER As Integer = &H800000L
         Public Const WS_DLGFRAME As Integer = &H400000L
         Public Const WS_VSCROLL As Integer = &H200000L
@@ -37,9 +37,9 @@ Namespace Microsoft.VisualStudio.Editors
         Public Const WS_SIZEBOX As Integer = WS_THICKFRAME
         Public Const WS_TILEDWINDOW As Integer = WS_OVERLAPPEDWINDOW
 
-        '/*
-        ' * Common Window Styles
-        ' */
+        '
+        ' Common Window Styles
+        '
         Public Const WS_OVERLAPPEDWINDOW As Integer = (WS_OVERLAPPED Or WS_CAPTION Or WS_SYSMENU Or WS_THICKFRAME Or WS_MINIMIZEBOX Or WS_MAXIMIZEBOX)
         Public Const WS_POPUPWINDOW As Integer = (WS_POPUP Or WS_BORDER Or WS_SYSMENU)
         Public Const WS_CHILDWINDOW As Integer = (WS_CHILD)
@@ -58,9 +58,9 @@ Namespace Microsoft.VisualStudio.Editors
         Public Const WS_EX_OVERLAPPEDWINDOW As Integer = (WS_EX_WINDOWEDGE Or WS_EX_CLIENTEDGE)
         Public Const WS_EX_PALETTEWINDOW As Integer = (WS_EX_WINDOWEDGE Or WS_EX_TOOLWINDOW Or WS_EX_TOPMOST)
 
-        '/*
-        ' * Extended Window Styles
-        ' */
+        '
+        ' Extended Window Styles
+        '
         Public Const WS_EX_DLGMODALFRAME As Integer = &H1L
         Public Const WS_EX_NOPARENTNOTIFY As Integer = &H4L
         Public Const WS_EX_TOPMOST As Integer = &H8L
@@ -80,7 +80,6 @@ Namespace Microsoft.VisualStudio.Editors
         Public Const DS_CENTER As Integer = &H800
         Public Const DS_CENTERMOUSE As Integer = &H1000
         Public Const DS_CONTEXTHELP As Integer = &H2000
-
 
     End Class
 

@@ -309,11 +309,11 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         End Property
 
 #Region "IDisposeable design pattern"
-        '/ <devdoc>
-        '/     Disposes this designer loader.  The designer host will call this method
-        '/     when the design document itself is being destroyed.  Once called, the
-        '/     designer loader will never be called again.
-        '/ </devdoc>
+        ' <devdoc>
+        '     Disposes this designer loader.  The designer host will call this method
+        '     when the design document itself is being destroyed.  Once called, the
+        '     designer loader will never be called again.
+        ' </devdoc>
         Public Overloads Overrides Sub Dispose() Implements IDisposable.Dispose
             Dispose(True)
 
@@ -360,10 +360,10 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 #End Region
 
 
-        '/ <include file='doc\ShellTextBuffer.uex' path='docs/doc[@for="ShellTextBuffer.ReadOnly"]/*' />
-        '/ <devdoc>
-        '/      Determines if this file is read only.
-        '/ </devdoc>
+        ' <include file='doc\ShellTextBuffer.uex' path='docs/doc[@for="ShellTextBuffer.ReadOnly"]/*' />
+        ' <devdoc>
+        '      Determines if this file is read only.
+        ' </devdoc>
 
         Public ReadOnly Property DocDataIsReadOnly() As Boolean
             Get
@@ -444,12 +444,12 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             LoaderHost.AddService(GetType(IVsHierarchy), VsHierarchy)
         End Sub
 
-        '/ <include file='doc\VSDDesignerLoader.uex' path='docs/doc[@for="VSDDesignerLoader.IVSMDDesignerLoader.Initialize"]/*' />
-        '/ <devdoc>
-        '/     This method is called to initialize the designer loader with the text
-        '/     buffer to read from and a service provider through which we
-        '/     can ask for services.
-        '/ </devdoc>
+        ' <include file='doc\VSDDesignerLoader.uex' path='docs/doc[@for="VSDDesignerLoader.IVSMDDesignerLoader.Initialize"]/*' />
+        ' <devdoc>
+        '     This method is called to initialize the designer loader with the text
+        '     buffer to read from and a service provider through which we
+        '     can ask for services.
+        ' </devdoc>
         Friend Overridable Sub InitializeEx(ServiceProvider As Shell.ServiceProvider, moniker As String, Hierarchy As IVsHierarchy, ItemId As UInteger, punkDocData As Object)
 
             If m_DocData IsNot Nothing Then

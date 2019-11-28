@@ -23,12 +23,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         'True when we're changing control values ourselves
         Protected InsideInternalUpdate As Boolean = False
 
-        '// Stored conditional compilation symbols. We need these to calculate the new strings
-        '//   to return for the conditional compilation constants when the user changes any
-        '//   of the controls related to conditional compilation symbols (the data in the
-        '//   controls is not sufficient because they could be indeterminate, and we are acting
-        '//   as if we have three separate properties, so we need the original property values).
-        '// Array same length and indexing as the objects passed in to SetObjects.
+        ' Stored conditional compilation symbols. We need these to calculate the new strings
+        '   to return for the conditional compilation constants when the user changes any
+        '   of the controls related to conditional compilation symbols (the data in the
+        '   controls is not sufficient because they could be indeterminate, and we are acting
+        '   as if we have three separate properties, so we need the original property values).
+        ' Array same length and indexing as the objects passed in to SetObjects.
         Protected CondCompSymbols() As String
         Protected Const Const_DebugConfiguration As String = "Debug" 'Name of the debug configuration
         Protected Const Const_ReleaseConfiguration As String = "Release" 'Name of the release configuration
@@ -221,7 +221,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                     chkRegisterForCOM.Checked = bRegisterForCOM
 
-                    '// Checkbox is only enabled for DLL projects
+                    ' Checkbox is only enabled for DLL projects
                     If Not ShouldEnableRegisterForCOM() Then
                         chkRegisterForCOM.Enabled = False
                     Else
@@ -245,7 +245,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 value = chkRegisterForCOM.Checked
                 Return True
             Else
-                Return False   '// Let the framework handle it since its indeterminate
+                Return False   ' Let the framework handle it since its indeterminate
             End If
         End Function
 
@@ -296,12 +296,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                             bIndeterminateState = False
                         Else
-                            '// Since TreadAllWarnings is indeterminate we should be too
+                            ' Since TreadAllWarnings is indeterminate we should be too
                             bIndeterminateState = True
                         End If
                     End If
                 Else
-                    '// Indeterminate. Leave all the radio buttons unchecked
+                    ' Indeterminate. Leave all the radio buttons unchecked
                     bIndeterminateState = True
                 End If
 
@@ -353,7 +353,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 value = ""
                 bRetVal = True
             Else
-                '// We're in the indeterminate state. Let the architecture handle it
+                ' We're in the indeterminate state. Let the architecture handle it
                 bRetVal = False
             End If
 
@@ -361,7 +361,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Private Function TreatWarningsInit(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
-            '// Don't need to do anything here (it's done in TreatSpecificWarningsInit)
+            ' Don't need to do anything here (it's done in TreatSpecificWarningsInit)
             Return True
         End Function
 
@@ -375,10 +375,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 value = False
                 bRetVal = True
             ElseIf rbWarningNone.Checked Then
-                value = Not (rbWarningNone.Checked)    '// If none is checked we want value to be false
+                value = Not (rbWarningNone.Checked)    ' If none is checked we want value to be false
                 bRetVal = True
             Else
-                '// We're in the indeterminate state. Let the architecture handle it.
+                ' We're in the indeterminate state. Let the architecture handle it.
                 bRetVal = False
             End If
 
@@ -394,7 +394,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 rbWarningNone.Checked = (warnings = TreatWarningsSetting.WARNINGS_NONE)
                 IsDirty = True
 
-                '// Dirty both of the properties since either one could have changed
+                ' Dirty both of the properties since either one could have changed
                 SetDirty(rbWarningAll)
                 SetDirty(txtSpecificWarnings)
             End If
@@ -426,7 +426,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 txtXMLDocumentationFile.Enabled = False
             End If
 
-            '// Reset value
+            ' Reset value
             InsideInternalUpdate = bOriginalState
             Return True
         End Function
@@ -448,7 +448,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 cboWarningLevel.SelectedIndex = CType(value, Integer)
                 Return True
             Else
-                '// Indeterminate. Let the architecture handle
+                ' Indeterminate. Let the architecture handle
                 cboWarningLevel.SelectedIndex = -1
                 Return True
             End If
@@ -462,45 +462,45 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Function PlatformTargetSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             If (Not (PropertyControlData.IsSpecialValue(value))) Then
                 If (IsNothing(TryCast(value, String)) OrElse TryCast(value, String) = "") Then
-                    cboPlatformTarget.SelectedIndex = 0     '// AnyCPU
+                    cboPlatformTarget.SelectedIndex = 0     ' AnyCPU
                 Else
                     Dim strPlatform As String = TryCast(value, String)
 
-                    '// vswhidbey 474635: For Undo, we may get called to set the value
-                    '// to AnyCpu (no space but the one we display in the combobox has a space so
-                    '// convert to the one with the space for this specific case
+                    ' vswhidbey 474635: For Undo, we may get called to set the value
+                    ' to AnyCpu (no space but the one we display in the combobox has a space so
+                    ' convert to the one with the space for this specific case
 
-                    '// Convert the no-space to one with a space
+                    ' Convert the no-space to one with a space
                     If (String.Equals(strPlatform, "AnyCPU", StringComparison.Ordinal)) Then
                         strPlatform = "Any CPU"
                     End If
 
                     cboPlatformTarget.SelectedItem = strPlatform
 
-                    If (cboPlatformTarget.SelectedIndex = -1) Then   '// If we can't find a match
+                    If (cboPlatformTarget.SelectedIndex = -1) Then   ' If we can't find a match
                         If (VSProductSKU.IsStandard) Then
-                            '// For the standard SKU, we do not include Itanium in the list. However,
-                            '// if the property is already set to Itanium (most likely from the project file set from
-                            '// a non-Standard SKU then add it to the list so we do not report the wrong
-                            '// platform target to the user.
+                            ' For the standard SKU, we do not include Itanium in the list. However,
+                            ' if the property is already set to Itanium (most likely from the project file set from
+                            ' a non-Standard SKU then add it to the list so we do not report the wrong
+                            ' platform target to the user.
 
                             Dim stValue As String = TryCast(value, String)
                             If (String.Equals(Trim(stValue), "Itanium", StringComparison.Ordinal)) Then
                                 cboPlatformTarget.Items.Add("Itanium")
                                 cboPlatformTarget.SelectedItem = stValue
                             Else
-                                '// Note that the project system will return "AnyCPU" (no space) but in the UI we want to show the one with a space
+                                ' Note that the project system will return "AnyCPU" (no space) but in the UI we want to show the one with a space
                                 cboPlatformTarget.SelectedItem = "Any CPU"
                             End If
                         Else
-                            '// Note that the project system will return "AnyCPU" (no space) but in the UI we want to show the one with a space
+                            ' Note that the project system will return "AnyCPU" (no space) but in the UI we want to show the one with a space
                             cboPlatformTarget.SelectedItem = "Any CPU"
                         End If
                     End If
                 End If
                 Return True
             Else
-                '// Indeterminate - allow the architecture to handle
+                ' Indeterminate - allow the architecture to handle
                 Return False
             End If
         End Function
@@ -515,7 +515,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If (cboPlatformTarget.SelectedItem.ToString() <> "AnyCPU") And (cboPlatformTarget.SelectedItem.ToString() <> "Any CPU") Then
                 value = cboPlatformTarget.SelectedItem
             Else
-                '// Return to the project system the one without a space
+                ' Return to the project system the one without a space
                 value = "AnyCPU"
             End If
 
@@ -527,17 +527,17 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             If chkXMLDocumentationFile.Checked Then
 
-                '// Enable the textbox
+                ' Enable the textbox
                 txtXMLDocumentationFile.Enabled = True
 
                 If Trim(txtXMLDocumentationFile.Text) = "" Then
-                    '// The textbox is empty so initialize it
+                    ' The textbox is empty so initialize it
                     Dim stOutputPath As String
                     Dim stAssemblyName As String
                     Dim obj As Object = Nothing
 
-                    '// Get OutputPath for all configs. We're going to calculate the documentation file
-                    '// for each config (and the value is dependant on the OutputPath
+                    ' Get OutputPath for all configs. We're going to calculate the documentation file
+                    ' for each config (and the value is dependant on the OutputPath
 
                     Dim RawDocFiles() As Object = RawPropertiesObjects(GetPropertyControlData(VsProjPropId.VBPROJPROPID_DocumentationFile))
                     Dim OutputPathData() As Object
@@ -560,7 +560,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     End If
 
                     If (Not IsNothing(DocumentationFile)) Then
-                        '// Loop through each config and calculate what we think the output path should be
+                        ' Loop through each config and calculate what we think the output path should be
                         Dim i As Integer
 
                         For i = 0 To DocumentationFile.Length - 1
@@ -578,34 +578,34 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                                 End If
 
                                 If (Path.IsPathRooted(stOutputPath)) Then
-                                    '// stOutputPath is an Absolute path so check to see if its within the project path
+                                    ' stOutputPath is an Absolute path so check to see if its within the project path
 
                                     If (String.Equals(Path.GetFullPath(stProjectDirectory),
                                                       VisualBasic.Left(Path.GetFullPath(stOutputPath), Len(stProjectDirectory)),
                                                       StringComparison.Ordinal)) Then
 
-                                        '// The output path is within the project so suggest the output directory (or suggest just the filename
-                                        '// which will put it in the default location
+                                        ' The output path is within the project so suggest the output directory (or suggest just the filename
+                                        ' which will put it in the default location
 
                                         DocumentationFile(i) = stOutputPath & stAssemblyName & XML_FILE_EXTENSION
 
                                     Else
 
-                                        '// The output path is outside the project so just suggest the project directory.
+                                        ' The output path is outside the project so just suggest the project directory.
                                         DocumentationFile(i) = stProjectDirectory & stAssemblyName & XML_FILE_EXTENSION
 
                                     End If
 
                                 Else
-                                    '// OutputPath is a Relative path so it will be based on the project directory. use
-                                    '// the OutputPath to suggest a location for the documentation file
+                                    ' OutputPath is a Relative path so it will be based on the project directory. use
+                                    ' the OutputPath to suggest a location for the documentation file
                                     DocumentationFile(i) = stOutputPath & stAssemblyName & XML_FILE_EXTENSION
                                 End If
 
                             End If
                         Next
 
-                        '// Now if all the values are the same then set the textbox text
+                        ' Now if all the values are the same then set the textbox text
                         Dim objDocumentationFile As Object
                         objDocumentationFile = PropertyControlData.GetValueOrIndeterminateFromArray(DocumentationFile)
 
@@ -617,11 +617,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                 txtXMLDocumentationFile.Focus()
             Else
-                '// Disable the checkbox
+                ' Disable the checkbox
                 txtXMLDocumentationFile.Enabled = False
                 txtXMLDocumentationFile.Text = ""
 
-                '// Clear the values
+                ' Clear the values
                 Dim i As Integer
                 For i = 0 To DocumentationFile.Length - 1
                     DocumentationFile(i) = ""
@@ -959,7 +959,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   doesn't already exist.
         ''' </summary>
         Public Shared Function AddSymbol(stOldCondCompConstants As String, stSymbol As String) As String
-            '// See if we find it
+            ' See if we find it
             Dim rgConstants() As String
             Dim bFound As Boolean = False
 
@@ -979,7 +979,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
 
             If (Not bFound) Then
-                '// Add it to the beginning
+                ' Add it to the beginning
                 Dim stNewConstants As String = stSymbol
 
 
@@ -998,7 +998,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Given a string containing conditional compilation constants, determines if the given constant is defined in it
         ''' </summary>
         Public Shared Function FindSymbol(stOldCondCompConstants As String, stSymbol As String) As Boolean
-            '// See if we find it
+            ' See if we find it
             Dim rgConstants() As String
 
             If (Not (IsNothing(stOldCondCompConstants))) Then
@@ -1023,7 +1023,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   is in the list.
         ''' </summary>
         Public Shared Function RemoveSymbol(stOldCondCompConstants As String, stSymbol As String) As String
-            '// Look for the DEBUG constant
+            ' Look for the DEBUG constant
             Dim rgConstants() As String
             Dim stNewConstants As String = ""
 

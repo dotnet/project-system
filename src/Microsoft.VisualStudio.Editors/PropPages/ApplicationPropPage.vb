@@ -158,7 +158,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         .Items.Clear()
                         .SelectedItem = .Items.Add(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_StartupObjectNotSet)
                         .Text = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_StartupObjectNotSet
-                        .SelectedIndex = 0  '// Set it to NotSet
+                        .SelectedIndex = 0  ' Set it to NotSet
                     End With
 
                     If StartupObjectPropertyControlData.IsMissing Then
@@ -267,10 +267,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
 
             If Not didSelectItem Then
-                '// We're indeterminate 
+                ' We're indeterminate 
                 OutputType.SelectedIndex = -1
 
-                '// Set the startup object to indeterminate as well
+                ' Set the startup object to indeterminate as well
                 StartupObject.SelectedIndex = -1
             End If
             Return True
@@ -308,7 +308,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     If (ProjectProperties.OutputType <> VSLangProj.prjOutputType.prjOutputTypeLibrary) Then
                         stApplicationIcon = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_DefaultIconText
                     Else
-                        '// ApplicationIcon can be empty for dlls
+                        ' ApplicationIcon can be empty for dlls
                     End If
                 End If
             End If
@@ -327,7 +327,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     If (ProjectProperties.OutputType <> VSLangProj.prjOutputType.prjOutputTypeLibrary) Then
                         stApplicationManifest = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_DefaultManifestText
                     Else
-                        '// ApplicationManifest can be empty for dlls
+                        ' ApplicationManifest can be empty for dlls
                     End If
                 End If
             End If
@@ -338,7 +338,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
 
             If stApplicationIcon Is Nothing AndAlso stWin32ResourceFile Is Nothing Then
-                '// indeterminate
+                ' indeterminate
                 If Not IconEntryIsDefault(ApplicationIcon.Text) Then
                     ApplicationIcon.Text = ""
                 End If
@@ -585,11 +585,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                                 message = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_BadIcon
                                 Return ValidationResult.Warning
                             ElseIf Trim(ApplicationIcon.Text).Equals(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_DefaultIconText, StringComparison.OrdinalIgnoreCase) Then
-                                '// This is valid
+                                ' This is valid
                                 Return ValidationResult.Succeeded
                             End If
                         Else
-                            '// We allow empty string for class libraries so don't display error
+                            ' We allow empty string for class libraries so don't display error
                         End If
                     End If
                 Case VsProjPropId90.VBPROJPROPID_ApplicationManifest
@@ -599,11 +599,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                                 message = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_BadManifest
                                 Return ValidationResult.Warning
                             Else
-                                '// This is valid
+                                ' This is valid
                                 Return ValidationResult.Succeeded
                             End If
                         Else
-                            '// We allow empty string for class libraries so don't display error
+                            ' We allow empty string for class libraries so don't display error
                         End If
                     End If
                 Case VsProjPropId80.VBPROJPROPID_Win32ResourceFile

@@ -1418,10 +1418,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
 
         End Function 'CreateInstance
 
-        '/ <devdoc>
-        '/    Internal dispose. We don't implement IDisposable because we don't want the outside world
-        '/    to call this.  Here we detach our events from the RDT.
-        '/ </devdoc>
+        ' <devdoc>
+        '    Internal dispose. We don't implement IDisposable because we don't want the outside world
+        '    to call this.  Here we detach our events from the RDT.
+        ' </devdoc>
         Friend Sub Dispose()
 
 #If DEBUG Then
@@ -1483,12 +1483,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             Debug.Assert(_hierarchy Is foundHierarchy, "Different hierarchies!?")
         End Sub
 
-        '/ <devdoc>
-        '/    Called by the ObjectType property to retrieve the type of this global type.  Once 
-        '/    retrieved the value will be cached until PerformChange is called.  The default 
-        '/    implementation of this method returns the type that was passed into the 
-        '/    GlobalType constructor.
-        '/ </devdoc>
+        ' <devdoc>
+        '    Called by the ObjectType property to retrieve the type of this global type.  Once 
+        '    retrieved the value will be cached until PerformChange is called.  The default 
+        '    implementation of this method returns the type that was passed into the 
+        '    GlobalType constructor.
+        ' </devdoc>
         Protected Overrides Function GetObjectType() As Type
 
             If _virtualType Is Nothing Then
@@ -1510,9 +1510,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             _virtualType = Nothing
         End Sub
 
-        '/ <devdoc>
-        '/    We need to return the serializer for our class.
-        '/ </devdoc>
+        ' <devdoc>
+        '    We need to return the serializer for our class.
+        ' </devdoc>
         Public Overrides Function GetSerializerCore(serializerType As Type) As Object
 
             If (serializerType Is GetType(CodeDomSerializer)) Then
@@ -1646,10 +1646,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             RaiseChange()
         End Sub
 
-        '/ <devdoc>
-        '/    Raised while we are listening to doc data events to signal that
-        '/    the global object has changed.
-        '/ </devdoc>
+        ' <devdoc>
+        '    Raised while we are listening to doc data events to signal that
+        '    the global object has changed.
+        ' </devdoc>
         Private Sub OnDocDataChanged(sender As Object, e As EventArgs)
 
 #If DEBUG Then
@@ -1662,11 +1662,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             RaiseChange()
         End Sub 'OnDocDataChanged
 
-        '/ <devdoc>
-        '/    Called when the first lock is taken out on this document.  punkDocData
-        '/    is an add-ref'd pointer (we do not have to release it, it will be 
-        '/    released for us).
-        '/ </devdoc>
+        ' <devdoc>
+        '    Called when the first lock is taken out on this document.  punkDocData
+        '    is an add-ref'd pointer (we do not have to release it, it will be 
+        '    released for us).
+        ' </devdoc>
         Friend Sub OnFirstLock(punkDocData As IntPtr)
 
             If (Not _ignoreDocLock) Then
@@ -1698,9 +1698,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             End If
         End Sub 'OnLastUnlock
 
-        '/ <devdoc>
-        '/    Called by our RDT code when an item changes.
-        '/ </devdoc>
+        ' <devdoc>
+        '    Called by our RDT code when an item changes.
+        ' </devdoc>
         Friend Sub RaiseChange()
 
 #If DEBUG Then
@@ -1710,10 +1710,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
 
         End Sub 'RaiseChange
 
-        '/ <devdoc>
-        '/    Called by project item monitoring code when a project item
-        '/    is removed.
-        '/ </devdoc>
+        ' <devdoc>
+        '    Called by project item monitoring code when a project item
+        '    is removed.
+        ' </devdoc>
         Friend Sub RaiseRemove()
 
 #If DEBUG Then
@@ -1960,11 +1960,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             End Try
         End Sub
 
-        '/ <devdoc>
-        '/     Scrubs the compile unit of structures that a virtual type
-        '/     can't support.  For example, virtual types can't support
-        '/     private members, so we remove them here.
-        '/ </devdoc>
+        ' <devdoc>
+        '     Scrubs the compile unit of structures that a virtual type
+        '     can't support.  For example, virtual types can't support
+        '     private members, so we remove them here.
+        ' </devdoc>
         Private Shared Sub ScrubCompileUnit(ccu As CodeCompileUnit)
 
             Dim allowed As MemberAttributes = SettingsSingleFileGeneratorBase.SettingsPropertyVisibility

@@ -81,7 +81,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 'cmdUIGuid = Guid.Empty;
                 'canceled = false;
 
-                '// if the user selected 'View Code', let's bring up the dataset partial class.
+                ' if the user selected 'View Code', let's bring up the dataset partial class.
                 'ValidationManager validationMgr = new ValidationManager(this.ServiceProvider);
                 'ProjectItem schemaPrjItem = ProjectItemUtil.GetProjectitem(hierarchy as IVsProject, fileName);
                 'if (schemaPrjItem == null) {

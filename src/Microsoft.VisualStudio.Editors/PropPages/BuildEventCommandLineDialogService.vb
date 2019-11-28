@@ -27,18 +27,18 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim i As Integer
             Dim Count As Integer
 
-            '// Initialize the title text
+            ' Initialize the title text
             frm.SetFormTitleText(WindowText)
 
-            '// Initialize the command line
+            ' Initialize the command line
             frm.EventCommandLine = OriginalCommandLine
 
-            '// Initialize helpTopicID
+            ' Initialize helpTopicID
             If HelpID IsNot Nothing Then
                 frm.HelpTopic = HelpID
             End If
 
-            '// Initialize the token values
+            ' Initialize the token values
             Count = MacroProvider.GetCount()
 
             Dim Names(Count - 1) As String
@@ -50,7 +50,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             frm.SetTokensAndValues(Names, Values)
 
-            '// Show the form
+            ' Show the form
             If (frm.ShowDialog(_serviceProvider) = System.Windows.Forms.DialogResult.OK) Then
                 Result = frm.EventCommandLine
                 Return 0

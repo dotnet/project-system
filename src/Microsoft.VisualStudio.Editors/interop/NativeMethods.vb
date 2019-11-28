@@ -15,10 +15,10 @@ Namespace Microsoft.VisualStudio.Editors.Interop
         Private Const VB_COMPILER_GUID As String = "019971d6-4685-11d2-b48a-0000f87572eb"
         Friend Shared ReadOnly VBCompilerGuid As Guid = New Guid(VB_COMPILER_GUID)
 
-        '/ <summary>
-        '/     Handle type for HDC's that count against the Win98 limit of five DC's.  HDC's
-        '/     which are not scarce, such as HDC's for bitmaps, are counted as GDIHANDLE's.
-        '/ </summary>
+        ''' <summary>
+        '''     Handle type for HDC's that count against the Win98 limit of five DC's.  HDC's
+        '''     which are not scarce, such as HDC's for bitmaps, are counted as GDIHANDLE's.
+        ''' </summary>
         Friend Shared InvalidIntPtr As IntPtr = New IntPtr(-1)
         Friend Const S_OK As Integer = &H0
         Friend Const S_FALSE As Integer = &H1
@@ -107,21 +107,21 @@ Namespace Microsoft.VisualStudio.Editors.Interop
 #End If
 
 
-            '/ <include file='doc\NativeMethods.uex' path='docs/doc[@for="NativeMethods.ConnectionPointCookie.ConnectionPointCookie"]/*' />
-            '/ <devdoc>
-            '/ Creates a connection point to of the given interface type.
-            '/ which will call on a managed code sink that implements that interface.
-            '/ </devdoc>
+            ' <include file='doc\NativeMethods.uex' path='docs/doc[@for="NativeMethods.ConnectionPointCookie.ConnectionPointCookie"]/*' />
+            ' <devdoc>
+            ' Creates a connection point to of the given interface type.
+            ' which will call on a managed code sink that implements that interface.
+            ' </devdoc>
             Friend Sub New([source] As Object, sink As Object, eventInterface As Type)
                 MyClass.New([source], sink, eventInterface, True)
             End Sub 'New
 
 
-            '/ <include file='doc\NativeMethods.uex' path='docs/doc[@for="NativeMethods.ConnectionPointCookie.ConnectionPointCookie1"]/*' />
-            '/ <devdoc>
-            '/ Creates a connection point to of the given interface type.
-            '/ which will call on a managed code sink that implements that interface.
-            '/ </devdoc>
+            ' <include file='doc\NativeMethods.uex' path='docs/doc[@for="NativeMethods.ConnectionPointCookie.ConnectionPointCookie1"]/*' />
+            ' <devdoc>
+            ' Creates a connection point to of the given interface type.
+            ' which will call on a managed code sink that implements that interface.
+            ' </devdoc>
             Friend Sub New([source] As Object, sink As Object, eventInterface As Type, throwException As Boolean)
                 Dim ex As Exception = Nothing
                 If sink Is Nothing OrElse Not eventInterface.IsInstanceOfType(sink) Then
@@ -188,21 +188,21 @@ Namespace Microsoft.VisualStudio.Editors.Interop
             End Sub 'New
 
 
-            '/ <include file='doc\NativeMethods.uex' path='docs/doc[@for="NativeMethods.ConnectionPointCookie.Disconnect"]/*' />
-            '/ <devdoc>
-            '/ Disconnect the current connection point.  If the object is not connected,
-            '/ this method will do nothing.
-            '/ </devdoc>
+            ' <include file='doc\NativeMethods.uex' path='docs/doc[@for="NativeMethods.ConnectionPointCookie.Disconnect"]/*' />
+            ' <devdoc>
+            ' Disconnect the current connection point.  If the object is not connected,
+            ' this method will do nothing.
+            ' </devdoc>
             Friend Overloads Sub Disconnect()
                 Disconnect(False)
             End Sub 'Disconnect
 
 
-            '/ <include file='doc\NativeMethods.uex' path='docs/doc[@for="NativeMethods.ConnectionPointCookie.Disconnect1"]/*' />
-            '/ <devdoc>
-            '/ Disconnect the current connection point.  If the object is not connected,
-            '/ this method will do nothing.
-            '/ </devdoc>
+            ' <include file='doc\NativeMethods.uex' path='docs/doc[@for="NativeMethods.ConnectionPointCookie.Disconnect1"]/*' />
+            ' <devdoc>
+            ' Disconnect the current connection point.  If the object is not connected,
+            ' this method will do nothing.
+            ' </devdoc>
             Friend Overloads Sub Disconnect(release As Boolean)
                 If _cookie <> 0 Then
                     Try
@@ -229,8 +229,8 @@ Namespace Microsoft.VisualStudio.Editors.Interop
             End Sub 'Disconnect
 
 
-            '/ <include file='doc\NativeMethods.uex' path='docs/doc[@for="NativeMethods.ConnectionPointCookie.Finalize"]/*' />
-            '/ <internalonly/>
+            ' <include file='doc\NativeMethods.uex' path='docs/doc[@for="NativeMethods.ConnectionPointCookie.Finalize"]/*' />
+            ' <internalonly/>
             Protected Overrides Sub Finalize()
 
 #If DEBUG Then
@@ -475,9 +475,9 @@ Namespace Microsoft.VisualStudio.Editors.Interop
 
     End Class 'NativeMethods
 
-    '//
-    '// ILangPropertyProvideBatchUpdate
-    '//
+    '
+    ' ILangPropertyProvideBatchUpdate
+    '
     <ComImport(), Guid("F8828A38-5208-4497-991A-F8034C8D5A69"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)>
     Friend Interface ILangPropertyProvideBatchUpdate
         Sub BeginBatch()
