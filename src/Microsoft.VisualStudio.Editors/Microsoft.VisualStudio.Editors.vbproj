@@ -411,23 +411,23 @@
     <Compile Update="PropPages\AdvancedServicesDialog.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="proppages\AdvBuildSettingsPropPage.vb">
+    <Compile Update="PropPages\AdvBuildSettingsPropPage.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="proppages\AdvCompilerSettingsPropPage.vb">
+    <Compile Update="PropPages\AdvCompilerSettingsPropPage.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="proppages\ApplicationPropPage.vb">
+    <Compile Update="PropPages\ApplicationPropPage.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Update="PropPages\ApplicationPropPage.Designer.vb">
       <DependentUpon>ApplicationPropPage.vb</DependentUpon>
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="proppages\ApplicationPropPageBase.vb">
+    <Compile Update="PropPages\ApplicationPropPageBase.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="proppages\ApplicationPropPageInternalBase.vb">
+    <Compile Update="PropPages\ApplicationPropPageInternalBase.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Update="PropPages\ApplicationPropPageVBBase.vb">
@@ -436,52 +436,52 @@
     <Compile Update="PropPages\ApplicationPropPageVBWinForms.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="proppages\AssemblyInfoPropPage.vb">
+    <Compile Update="PropPages\AssemblyInfoPropPage.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="proppages\BuildEventCommandLineDialog.vb">
+    <Compile Update="PropPages\BuildEventCommandLineDialog.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="proppages\BuildEventsPropPage.vb">
+    <Compile Update="PropPages\BuildEventsPropPage.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="proppages\BuildPropPage.vb">
+    <Compile Update="PropPages\BuildPropPage.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="proppages\BuildPropPageBase.vb">
+    <Compile Update="PropPages\BuildPropPageBase.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="proppages\CodeAnalysisPropPage.vb">
+    <Compile Update="PropPages\CodeAnalysisPropPage.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="proppages\CompilePropPage2.vb">
+    <Compile Update="PropPages\CompilePropPage2.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="proppages\ComponentWrapper.vb">
+    <Compile Update="PropPages\ComponentWrapper.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="proppages\CSharpApplicationPropPage.vb">
+    <Compile Update="PropPages\CSharpApplicationPropPage.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="proppages\DebugPropPage.vb">
+    <Compile Update="PropPages\DebugPropPage.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="proppages\ReferenceComponent.vb">
+    <Compile Update="PropPages\ReferenceComponent.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="proppages\ReferencePathsPropPage.vb">
+    <Compile Update="PropPages\ReferencePathsPropPage.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="proppages\ReferencePropPage.vb">
+    <Compile Update="PropPages\ReferencePropPage.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="proppages\ServiceReferenceComponent.vb">
+    <Compile Update="PropPages\ServiceReferenceComponent.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="proppages\ServicesAuthenticationForm.vb">
+    <Compile Update="PropPages\ServicesAuthenticationForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="proppages\ServicesPropPage.vb">
+    <Compile Update="PropPages\ServicesPropPage.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Update="PropPages\Strings.Designer.vb">
@@ -489,10 +489,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
-    <Compile Update="proppages\UnusedReferencePropPage.vb">
+    <Compile Update="PropPages\UnusedReferencePropPage.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="proppages\WebReferenceComponent.vb">
+    <Compile Update="PropPages\WebReferenceComponent.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="PropPages\WPF\AppDotXamlErrorControl.Designer.vb">
