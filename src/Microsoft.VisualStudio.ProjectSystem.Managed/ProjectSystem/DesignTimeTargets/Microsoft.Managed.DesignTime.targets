@@ -189,14 +189,6 @@
       <Context>BrowseObject</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)Page.xaml">
-      <Context>File</Context>
-    </PropertyPageSchema>
-
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)Page.BrowseObject.xaml">
-      <Context>BrowseObject</Context>
-    </PropertyPageSchema>
-
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)SpecialFolder.xaml">
       <Context>File;ProjectSubscriptionService</Context>
     </PropertyPageSchema>
