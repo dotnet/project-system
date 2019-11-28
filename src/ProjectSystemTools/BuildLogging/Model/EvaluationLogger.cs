@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 
         private void AnyEvent(object sender, BuildEventArgs args)
         {
-            if (args.BuildEventContext.EvaluationId == BuildEventContext.InvalidEvaluationId)
+            if (args.BuildEventContext == null || args.BuildEventContext.EvaluationId == BuildEventContext.InvalidEvaluationId)
             {
                 return;
             }
