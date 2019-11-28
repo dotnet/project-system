@@ -42,7 +42,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         .Items.Clear()
                         .SelectedItem = .Items.Add(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_StartupObjectNotSet)
                         .Text = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_StartupObjectNotSet
-                        .SelectedIndex = 0  '// Set it to NotSet
+                        .SelectedIndex = 0  ' Set it to NotSet
                     End With
 
                     If StartupObjectPropertyControlData.IsMissing Then
@@ -104,7 +104,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         If String.Compare(StartupObjectText, My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_StartupObjectNotSet) <> 0 Then
                             value = StartupObjectText
                         Else
-                            '// the value is (Not Set) so just leave it empty
+                            ' the value is (Not Set) so just leave it empty
                             value = ""
                         End If
                     Else

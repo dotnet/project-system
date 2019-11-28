@@ -18,7 +18,7 @@ Namespace Microsoft.Internal.Performance
             End Sub
 
             ' ********************* Imported Win32 functions *********************
-            '///// Code markers test function imports
+            ' Code markers test function imports
 #If Codemarkers_IncludeAppEnum Then
             <DllImport(TestDllName, EntryPoint:="InitPerf")> _
             Public Shared Sub TestDllInitPerf(iApp As Integer)
@@ -33,7 +33,7 @@ Namespace Microsoft.Internal.Performance
             Public Shared Sub TestDllPerfCodeMarker(nTimerID As Integer, uiLow As UInteger, uiHigh As UInteger)
             End Sub
 
-            '///// Code markers product function imports
+            ' Code markers product function imports
 #If Codemarkers_IncludeAppEnum Then
             <DllImport(ProductDllName, EntryPoint:="InitPerf")> _
             Public Shared Sub ProductDllInitPerf(iApp As Integer)
@@ -48,7 +48,7 @@ Namespace Microsoft.Internal.Performance
             Public Shared Sub ProductDllPerfCodeMarker(nTimerID As Integer, uiLow As UInteger, uiHigh As UInteger)
             End Sub
 
-            '///// global native method imports
+            ' global native method imports
             <DllImport("kernel32.dll", CharSet:=CharSet.Unicode)>
             Public Shared Function FindAtom(lpString As String) As UShort
             End Function

@@ -106,7 +106,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Property
 
         Private Sub OKButton_Click(sender As Object, e As EventArgs) Handles OKButton.Click
-            '// Store the command line
+            ' Store the command line
             _eventCommandLine = CommandLine.Text
 
             Close()
@@ -122,7 +122,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Private Function ParseAndPopulateTokens() As Boolean
-            '// Walk through the array and add each row to the listview
+            ' Walk through the array and add each row to the listview
             Dim i As Integer
             Dim NameItem As ListViewItem
 
@@ -147,7 +147,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Sub BuildEventCommandLineDialog_Load(sender As Object, e As EventArgs) Handles MyBase.Load
             InitializeControlLocations()
 
-            '// Never let them resize to something smaller than the default form size
+            ' Never let them resize to something smaller than the default form size
             MinimumSize = Size
         End Sub
 
@@ -156,7 +156,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Private Function ShowCollapsedForm() As Boolean
-            '// Show the ShowMacros button
+            ' Show the ShowMacros button
             ShowMacrosButton.Visible = True
 
             MacrosPanel.Visible = False
@@ -165,14 +165,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             ShowMacrosButton.Focus()
 
-            '// Disable and hide the Insert button
+            ' Disable and hide the Insert button
             SetInsertButtonState(False)
 
             Return True
         End Function
 
         Private Function ShowExpandedForm() As Boolean
-            '// Hide this button
+            ' Hide this button
             ShowMacrosButton.Visible = False
 
             MacrosPanel.Visible = True
@@ -181,7 +181,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             HideMacrosButton.Focus()
 
-            '// Show the Insert button
+            ' Show the Insert button
             SetInsertButtonState(True)
             Return True
         End Function

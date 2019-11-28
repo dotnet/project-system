@@ -79,11 +79,11 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
                 _supportToolbox = SupportToolbox
 
-                '// Create our view control and hook its focus event.
-                '// Do not be tempted to create a container control here
-                '// and use it for focus management!  It will steal key
-                '// events from the shell and break things
-                '//
+                ' Create our view control and hook its focus event.
+                ' Do not be tempted to create a container control here
+                ' and use it for focus management!  It will steal key
+                ' events from the shell and break things
+                '
                 _view = New TopLevelControl()
                 AddHandler _view.GotFocus, AddressOf OnViewFocus
                 _view.BackColor = SystemColors.Window
