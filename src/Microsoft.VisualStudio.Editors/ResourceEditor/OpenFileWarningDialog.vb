@@ -14,7 +14,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Constructor.
         ''' </summary>
         ''' <param name="ServiceProvider"></param>
-        ''' <remarks></remarks>
         Public Sub New(ServiceProvider As IServiceProvider, fileName As String)
             MyBase.New(ServiceProvider)
 
@@ -59,7 +58,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub ButtonOk_Click(sender As Object, e As EventArgs) Handles buttonOK.Click
             Close()
         End Sub
@@ -70,7 +68,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub DialogQueryName_HelpButtonClicked(sender As Object, e As ComponentModel.CancelEventArgs) Handles MyBase.HelpButtonClicked
             e.Cancel = True
             ShowHelp()

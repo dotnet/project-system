@@ -66,12 +66,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Sub AssemblyInfoButton_Click(sender As Object, e As EventArgs) Handles AssemblyInfoButton.Click
             ShowChildPage(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AssemblyInfo_Title, GetType(AssemblyInfoPropPage), HelpKeywords.VBProjPropAssemblyInfo)
         End Sub
-
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Protected Overrides ReadOnly Property ControlData() As PropertyControlData()
             Get
                 If m_ControlData Is Nothing Then
@@ -127,12 +121,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return _controlGroup
             End Get
         End Property
-
-        ''' <summary>
-        ''' 
-        ''' </summary>
         ''' <param name="OutputType"></param>
-        ''' <remarks></remarks>
         Private Sub PopulateControlSet(OutputType As UInteger)
             Debug.Assert(m_Objects.Length <= 1, "Multiple project updates not supported")
             PopulateStartupObject(StartUpObjectSupported(OutputType), False)
@@ -143,7 +132,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="StartUpObjectSupported">If false, (None) will be the only entry in the list.</param>
         ''' <param name="PopulateDropdown">If false, only the current text in the combobox is set.  If true, the entire dropdown list is populated.  For performance reasons, False should be used until the user actually drops down the list.</param>
-        ''' <remarks></remarks>
         Protected Overridable Sub PopulateStartupObject(StartUpObjectSupported As Boolean, PopulateDropdown As Boolean)
             'overridable to support the csharpapplication page (Sub Main isn't used by C#)
 
@@ -209,23 +197,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 m_fInsideInit = InsideInitSave
             End Try
         End Sub
-
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        ''' <remarks></remarks>
         Private Sub EnableControlSet()
             UpdateIconImage(False)
         End Sub
-
-        ''' <summary>
-        ''' 
-        ''' </summary>
         ''' <param name="control"></param>
         ''' <param name="prop"></param>
         ''' <param name="value"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Protected Overridable Function OutputTypeGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
 
             If OutputType.SelectedIndex = -1 Then
@@ -243,15 +220,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return True
 
         End Function
-
-        ''' <summary>
-        ''' 
-        ''' </summary>
         ''' <param name="control"></param>
         ''' <param name="prop"></param>
         ''' <param name="value"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Protected Overridable Function OutputTypeSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
 
             Dim didSelectItem As Boolean = False
@@ -405,15 +376,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return True
 
         End Function
-
-        ''' <summary>
-        ''' 
-        ''' </summary>
         ''' <param name="control"></param>
         ''' <param name="prop"></param>
         ''' <param name="value"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Protected Shadows Function ApplicationIconGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
             If (IconRadioButton.Checked = True) Then
                 If (ApplicationIcon.Text.Equals(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_DefaultIconText, StringComparison.OrdinalIgnoreCase)) Then
@@ -429,27 +394,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return False
             End If
         End Function
-
-        ''' <summary>
-        ''' 
-        ''' </summary>
         ''' <param name="control"></param>
         ''' <param name="prop"></param>
         ''' <param name="value"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Protected Overridable Function ApplicationIconSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             Return SetIconAndWin32ResourceFile()
         End Function
-
-        ''' <summary>
-        ''' 
-        ''' </summary>
         ''' <param name="control"></param>
         ''' <param name="prop"></param>
         ''' <param name="value"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Protected Shadows Function ApplicationManifestGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
             If (IconRadioButton.Checked = True) Then
                 If (ApplicationManifest.Text.Equals(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_DefaultManifestText, StringComparison.CurrentCultureIgnoreCase)) Then
@@ -468,27 +421,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return False
             End If
         End Function
-
-        ''' <summary>
-        ''' 
-        ''' </summary>
         ''' <param name="control"></param>
         ''' <param name="prop"></param>
         ''' <param name="value"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Protected Overridable Function ApplicationManifestSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             Return SetIconAndWin32ResourceFile()
         End Function
-
-        ''' <summary>
-        ''' 
-        ''' </summary>
         ''' <param name="control"></param>
         ''' <param name="prop"></param>
         ''' <param name="value"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Protected Overridable Function Win32ResourceGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
             If (Win32ResourceRadioButton.Checked = True) Then
                 value = Win32ResourceFile.Text
@@ -500,25 +441,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return False
             End If
         End Function
-
-        ''' <summary>
-        ''' 
-        ''' </summary>
         ''' <param name="control"></param>
         ''' <param name="prop"></param>
         ''' <param name="value"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Protected Overridable Function Win32ResourceSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             Return SetIconAndWin32ResourceFile()
         End Function
-
-        ''' <summary>
-        ''' 
-        ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub IconResourceFile_CheckedChanged(sender As Object, e As EventArgs) Handles IconRadioButton.CheckedChanged, Win32ResourceRadioButton.CheckedChanged
             If (IconRadioButton.Checked = True) Then
                 ManifestExplanationLabel.Enabled = True
@@ -574,8 +504,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="controlData"></param>
         ''' <param name="message"></param>
         ''' <param name="returnControl"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Protected Overrides Function ValidateProperty(controlData As PropertyControlData, ByRef message As String, ByRef returnControl As Control) As ValidationResult
             Select Case controlData.DispId
                 Case VsProjPropId.VBPROJPROPID_ApplicationIcon
@@ -623,16 +551,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Select
             Return ValidationResult.Succeeded
         End Function
-
-
-        ''' <summary>
-        ''' 
-        ''' </summary>
         ''' <param name="control"></param>
         ''' <param name="prop"></param>
         ''' <param name="value"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Protected Overridable Function StartupObjectGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
             'overridable to support the csharpapplication page (C# doesn't use root namespace)
             If Not StartUpObjectSupported() Then
@@ -730,13 +651,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Overrides Sub TargetFrameworkMonikerChanged()
             ShowAutoGeneratedBindingRedirectsCheckBox(TargetFramework, AutoGenerateBindingRedirects)
         End Sub
-
-        ''' <summary>
-        ''' 
-        ''' </summary>
         ''' <param name="value"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function RemoveRootNamespace(value As String) As String
             Dim root As String
             Dim RootLength As Integer
@@ -765,13 +680,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
             Return value
         End Function
-
-        ''' <summary>
-        ''' 
-        ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub OutputType_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles OutputType.SelectionChangeCommitted
             If m_fInsideInit Then
                 Return
@@ -799,13 +709,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Debug.Assert(IsCSProject, "Unknown project type")
             Return HelpKeywords.CSProjPropApplication
         End Function
-
-        ''' <summary>
-        ''' 
-        ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub Win32ResourceFileBrowse_Click(sender As Object, e As EventArgs) Handles Win32ResourceFileBrowse.Click
 
             SkipValidating(Win32ResourceFile)   ' skip this because we will pop up dialog to edit it...
@@ -860,7 +765,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub ComboBoxes_DropDown(sender As Object, e As EventArgs) Handles OutputType.DropDown
             SetComboBoxDropdownWidth(DirectCast(sender, ComboBox))
         End Sub
@@ -873,7 +777,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="FindIconsInProject">If False, only the standard items are added (this is faster
         '''   and so may be appropriate for page initialization).</param>
-        ''' <remarks></remarks>
         Private Overloads Sub PopulateIconList(FindIconsInProject As Boolean)
             PopulateIconList(FindIconsInProject, ApplicationIcon, CType(GetControlValueNative(Const_ApplicationIcon), String))
         End Sub
@@ -882,7 +785,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Update the image displayed for the currently-selected application icon
         ''' </summary>
-        ''' <remarks></remarks>
         Private Overloads Sub UpdateIconImage(AddToProject As Boolean)
             UpdateIconImage(ApplicationIcon, AppIconImage, AddToProject)
         End Sub
@@ -898,13 +800,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             PopulateIconList(True)
             SetComboBoxDropdownWidth(ApplicationIcon)
         End Sub
-
-        ''' <summary>
-        ''' 
-        ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub ApplicationIcon_LostFocus(sender As Object, e As EventArgs) Handles ApplicationIcon.LostFocus
             If m_fInsideInit Then
                 Return
@@ -932,14 +829,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             SetDirty(VsProjPropId.VBPROJPROPID_ApplicationIcon, False)
         End Sub
-
-
-        ''' <summary>
-        ''' 
-        ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub AppIconBrowse_Click(sender As Object, e As EventArgs) Handles AppIconBrowse.Click
             BrowseForAppIcon(ApplicationIcon, AppIconImage)
         End Sub
@@ -953,7 +844,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="FindManifestInProject">If False, only the standard items are added (this is faster
         '''   and so may be appropriate for page initialization).</param>
-        ''' <remarks></remarks>
         Private Overloads Sub PopulateManifestList(FindManifestInProject As Boolean)
             PopulateManifestList(FindManifestInProject, ApplicationManifest, CType(GetControlValueNative(Const_ApplicationManifest), String))
         End Sub
@@ -967,13 +857,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             PopulateManifestList(True)
             SetComboBoxDropdownWidth(ApplicationManifest)
         End Sub
-
-        ''' <summary>
-        ''' 
-        ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub ApplicationManifest_LostFocus(sender As Object, e As EventArgs) Handles ApplicationManifest.LostFocus
             If m_fInsideInit Then
                 Return

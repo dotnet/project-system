@@ -18,7 +18,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
     '''   
     '''   DesignerDataGridView is our control inherited from DataGridView.
     ''' </summary>
-    ''' <remarks></remarks>
     Friend Class DesignerDataGridView
         Inherits DataGridView
 
@@ -38,7 +37,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <summary>
         ''' Constructor
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub New()
             BackColor = SystemColors.Window
             ForeColor = SystemColors.WindowText
@@ -59,7 +57,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' Indicate that we are about to begin edit due to a click on a cell.
         ''' </summary>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Friend Overridable Sub OnCellClickBeginEdit(e As System.ComponentModel.CancelEventArgs)
             RaiseEvent CellClickBeginEdit(Me, e)
         End Sub
@@ -87,7 +84,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' before showing the context menu... 
         ''' </summary>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Protected Overrides Sub OnMouseDown(e As MouseEventArgs)
             Dim ht As HitTestInfo = HitTest(e.X, e.Y)
 
@@ -171,8 +167,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' (they normally do a clear cell, which is bad for comboboxcolumns...)
         ''' </summary>
         ''' <param name="m"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Protected Overrides Function ProcessKeyMessage(ByRef m As Message) As Boolean
             Dim ke As New KeyEventArgs(CType(CInt(m.WParam) Or ModifierKeys, Keys))
 
@@ -206,8 +200,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' (they normally do a clear cell, which is bad for comboboxcolumns...)
         ''' </summary>
         ''' <param name="keyData"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         <Security.Permissions.UIPermission(Security.Permissions.SecurityAction.LinkDemand, Window:=Security.Permissions.UIPermissionWindow.AllWindows)>
         Protected Overrides Function ProcessDialogKey(keyData As Keys) As Boolean
             Const CtrlD0 As Keys = Keys.D0 Or Keys.Control
@@ -226,7 +218,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <summary>
         ''' Extremely simple cell template that enables a hybrid of EditCellOnF2OrKeyDown and EditOnEnter mode
         ''' </summary>
-        ''' <remarks></remarks>
         Friend Class EditOnClickDataGridViewComboBoxCell
             Inherits DataGridViewComboBoxCell
 
@@ -272,7 +263,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <summary>
         ''' Extremely simple cell template that enables a hybrid of EditCellOnF2OrKeyDown and EditOnEnter mode
         ''' </summary>
-        ''' <remarks></remarks>
         Friend Class EditOnClickDataGridViewTextBoxCell
             Inherits DataGridViewTextBoxCell
 

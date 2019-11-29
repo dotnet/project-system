@@ -17,7 +17,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     ''' <summary>
     ''' Utility functions.
     ''' </summary>
-    ''' <remarks></remarks>
     Friend Module Utility
 
         ''' <summary>
@@ -32,7 +31,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="BorderWidth">The width of the border (ignored if DrawBorder=False)</param>
         ''' <param name="ImageListTransparentColor">The TransparentColor property of the ImageList that this will be used for.  This is required to get the selection border drawing to work properly.</param>
         ''' <returns>The drawn thumbnail image</returns>
-        ''' <remarks></remarks>
         Public Function CreateThumbnail(SourceImage As Image, ThumbnailSize As Size, DrawBorder As Boolean, BorderWidth As Integer, SelectionBorderWidth As Integer, ImageListTransparentColor As Color) As Bitmap
             If SourceImage Is Nothing Then
                 Debug.Fail("SourceImage can't be nothing")
@@ -117,8 +115,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="MaxScaledSize">Maximum size that is allowed</param>
         ''' <param name="OnlyScaleDownward">If true, image sizes which are smaller than maximum size will *not* be
         '''    scaled upward.</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function ScaleSizeProportionally(OriginalSize As Size, MaxScaledSize As Size, OnlyScaleDownward As Boolean) As Size
             'Get the scale required to match the original width to the maximum scaled width
             Dim ScaleBasedOnWidth As Double = MaxScaledSize.Width / OriginalSize.Width
@@ -150,7 +146,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="SuggestedFileName">The suggested (desired) filename, with no path</param>
         ''' <returns>A valid path based on the suggested one.</returns>
-        ''' <remarks></remarks>
         Public Function CreateLegalFileName(SuggestedFileName As String) As String
             Debug.Assert(SuggestedFileName <> "")
             If SuggestedFileName = "" Then
@@ -205,7 +200,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="StringValue">The string value to check against Nothing.</param>
         ''' <returns>Empty string if the string is Nothing, or else the original string value.</returns>
-        ''' <remarks></remarks>
         Public Function NonNothingString(StringValue As String) As String
             If StringValue Is Nothing Then
                 Return ""
@@ -468,7 +462,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="ch0">First byte</param>
         ''' <param name="ch1">Second byte</param>
         ''' <returns>The Int16combined from the bytes</returns>
-        ''' <remarks></remarks>
         Private Function BytesToInt16(ch0 As Byte, ch1 As Byte) As Short
             Return CShort(ch1) Or CShort(CInt(ch0) << 8)
         End Function
@@ -483,7 +476,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="ch2">Third byte</param>
         ''' <param name="ch3">Fourth byte</param>
         ''' <returns>The Int32 combined from these four bytes in a way used by the mmio functions.</returns>
-        ''' <remarks></remarks>
         Private Function BytesToInt(ch0 As Byte, ch1 As Byte, ch2 As Byte, ch3 As Byte) As Integer
             Dim Result As Integer = ch3
             Result = Result Or (CInt(ch2) << 8)
@@ -499,7 +491,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="LengthInBytes">The length in bytes</param>
         ''' <returns>A friendly formatted string</returns>
-        ''' <remarks></remarks>
         Public Function GetKBDisplay(LengthInBytes As Long) As String
             Const BytesInKilobyte As Integer = 1024
 
@@ -518,8 +509,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Message">The message for the exception.</param>
         ''' <param name="HelpLink">The help link for the exception</param>
         ''' <param name="InnerException">The inner exception.</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function NewException(Message As String, Optional HelpLink As String = Nothing, Optional InnerException As Exception = Nothing) As Exception
             Dim ex As Exception
             If InnerException IsNot Nothing Then
@@ -543,7 +532,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="FilePath">The full path and filename of the file</param>
         ''' <returns>The filename only, as actually found in the file system.</returns>
-        ''' <remarks></remarks>
         Public Function GetFileNameInActualCase(FilePath As String) As String
             If File.Exists(FilePath) Then
                 'Strange, but there appears to be no way to do this from the CLR/NDP, other than searching for it.
@@ -563,8 +551,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   Nothing if the font was not set in the resx file (the strings are empty).
         ''' </summary>
         ''' <param name="FontResourceString">The font described as a string, just as if it were in a form's resx file.  Example: "Arial, 12pt"</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function GetFontFromResources(FontResourceString As String) As Font
             Dim FontAsString As String = FontResourceString
 
@@ -585,8 +571,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Determines if the provided file name has the .resw file extension
         ''' </summary>
         ''' <param name="fileName"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function HasResWExtension(fileName As String) As Boolean
             Return Path.GetExtension(fileName).Equals(".resw", StringComparison.OrdinalIgnoreCase)
         End Function
@@ -595,8 +579,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Determines if the provided file name has any resource file extension (.resx or .resw)
         ''' </summary>
         ''' <param name="fileName"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function HasResourceFileExtension(fileName As String) As Boolean
             Dim extension As String = Path.GetExtension(fileName)
             Return extension.Equals(".resx", StringComparison.OrdinalIgnoreCase) OrElse

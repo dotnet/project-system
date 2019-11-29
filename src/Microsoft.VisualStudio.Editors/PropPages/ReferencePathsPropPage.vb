@@ -310,7 +310,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <returns>True iff the ENTER key is actually used.  False indicates it should be allowed
         '''   to be passed along and processed normally.</returns>
-        ''' <remarks></remarks>
         Private Function ProcessEnterKey() As Boolean
             'If the focus is on the Folder textbox, and the AddFolder button is enabled, then 
             '  we interpret ENTER as meaning, "Add this folder", i.e., click on the AddFolder button.
@@ -332,8 +331,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Gets the absolute path to the path currently in the Folder textbox.  If the path is invalid (contains bad
         '''   characters, etc.), returns simply the current text.
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function GetCurrentFolderPathAbsolute() As String
             Dim FolderText As String = Trim(Folder.Text)
             If FolderText.Length > 0 Then

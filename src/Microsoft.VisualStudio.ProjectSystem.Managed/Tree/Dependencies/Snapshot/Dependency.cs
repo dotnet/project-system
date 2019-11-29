@@ -286,7 +286,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// <param name="targetFramework"></param>
         /// <param name="providerType"></param>
         /// <param name="modelId"></param>
-        /// <returns></returns>
         public static string GetID(ITargetFramework targetFramework, string providerType, string modelId)
         {
             Requires.NotNull(targetFramework, nameof(targetFramework));

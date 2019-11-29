@@ -117,7 +117,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Fill up the allowed values in the target framework combo box
         ''' </summary>
-        ''' <remarks></remarks>
         Protected Sub PopulateTargetFrameworkComboBox(targetFrameworkComboBox As ComboBox)
             Dim targetFrameworkSupported As Boolean = False
             targetFrameworkComboBox.Items.Clear()
@@ -174,8 +173,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="control"></param>
         ''' <param name="prop"></param>
         ''' <param name="value"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Protected Function SetTargetFrameworkMoniker(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             Dim combobox As ComboBox = CType(control, ComboBox)
             Dim previouslySelectedIndex = combobox.SelectedIndex
@@ -210,8 +207,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="control"></param>
         ''' <param name="prop"></param>
         ''' <param name="value"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Protected Function GetTargetFrameworkMoniker(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
             Dim currentTarget As TargetFrameworkMoniker = CType(CType(control, ComboBox).SelectedItem, TargetFrameworkMoniker)
             If currentTarget IsNot Nothing Then

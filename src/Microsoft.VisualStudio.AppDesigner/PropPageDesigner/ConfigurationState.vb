@@ -14,7 +14,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
     ''' Also listens for changes to the configurations that the user makes outside of the
     '''   project designer and allows the individual pages to get notifications on that.
     ''' </summary>
-    ''' <remarks></remarks>
     Public NotInheritable Class ConfigurationState
         Implements IDisposable
         Implements IVsUpdateSolutionEvents
@@ -62,7 +61,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Selection types for the configuration and platform comboboxes
         ''' </summary>
-        ''' <remarks></remarks>
         Public Enum SelectionTypes
             Normal    'Just a normal entry
             Active    'This is the entry for the currently-active configuration or platform
@@ -100,13 +98,11 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         '''   changes to configurations/platforms that are not currently supported by our
         '''   undo/redo story.
         ''' </summary>
-        ''' <remarks></remarks>
         Public Event ClearConfigPageUndoRedoStacks()
 
         ''' <summary>
         ''' Raised when the value of the SimplifiedConfigMode property changes.
         ''' </summary>
-        ''' <remarks></remarks>
         Public Event SimplifiedConfigModeChanged()
 
 #End Region
@@ -116,7 +112,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Constructor
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub New(Project As EnvDTE.Project, ProjectHierarchy As IVsHierarchy, View As ApplicationDesigner.ApplicationDesignerView)
             If Project Is Nothing OrElse ProjectHierarchy Is Nothing OrElse View Is Nothing Then
                 Debug.Fail("")
@@ -141,7 +136,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Dispose
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub Dispose() Implements IDisposable.Dispose
             UnadviseEventHandling()
             _project = Nothing
@@ -159,7 +153,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="PlatformSelectionType">The platform selection type to search for.  For more information, see comments for FindItemToSelect.</param>
         ''' <param name="PreferExactMatch">For more information, see comments for FindItemToSelect.</param>
         ''' <param name="FireNotifications">If true, notifications are sent to the pages (but only if the selection actually changed)</param>
-        ''' <remarks></remarks>
         Public Sub ChangeSelection(ConfigName As String, ConfigSelectionType As SelectionTypes, PlatformName As String, PlatformSelectionType As SelectionTypes, PreferExactMatch As Boolean, FireNotifications As Boolean)
             Dim NewSelectedConfigIndex As Integer = FindItemToSelect(_configurationDropdownEntries, _selectedConfigIndex, ConfigName, ConfigSelectionType, PreferExactMatch)
             Dim NewSelectedPlatformIndex As Integer = FindItemToSelect(_platformDropdownEntries, _selectedPlatformIndex, PlatformName, PlatformSelectionType, PreferExactMatch)
@@ -176,7 +169,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="ConfigIndex">The index to select in the configuration list</param>
         ''' <param name="PlatformIndex">The index to select in the platform list</param>
         ''' <param name="FireNotifications">If true, notifications are sent to the pages (but only if the selection actually changed)</param>
-        ''' <remarks></remarks>
         Public Sub ChangeSelection(ConfigIndex As Integer, PlatformIndex As Integer, FireNotifications As Boolean)
             Debug.Assert(ConfigIndex >= 0 AndAlso ConfigIndex < _configurationDropdownEntries.Length)
             Debug.Assert(PlatformIndex >= 0 AndAlso PlatformIndex < _platformDropdownEntries.Length)
@@ -197,8 +189,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Returns the index of the item to be the currently selected item in the configuration dropdown of all
         '''   config-dependent property pages
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public ReadOnly Property SelectedConfigIndex() As Integer
             Get
                 Return _selectedConfigIndex
@@ -210,8 +200,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Returns the index of the item to be the currently selected item in the platform dropdown of all
         '''   config-dependent property pages        
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public ReadOnly Property SelectedPlatformIndex() As Integer
             Get
                 Return _selectedPlatformIndex
@@ -232,8 +220,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' All current entries to be displayed in each pages' configuration combobox
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public ReadOnly Property ConfigurationDropdownEntries() As DropdownItem()
             Get
                 If _platformDropdownEntries Is Nothing OrElse _configurationDropdownEntries Is Nothing Then
@@ -247,8 +233,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' All current entries to be displayed in each pages' platform combobox
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public ReadOnly Property PlatformDropdownEntries() As DropdownItem()
             Get
                 If _platformDropdownEntries Is Nothing OrElse _configurationDropdownEntries Is Nothing Then
@@ -263,7 +247,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Updates the configuration and platform dropdown entries based on the current
         '''   configurations in the project
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub UpdateDropdownEntries()
             'Populate the dropdowns
             Dim ActiveConfiguration As EnvDTE.Configuration = Common.DTEUtils.GetActiveDTEConfiguration(Project)
@@ -334,8 +317,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Retrieves the project associated with this configuration state
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public ReadOnly Property Project() As EnvDTE.Project
             Get
                 Debug.Assert(_project IsNot Nothing)
@@ -347,8 +328,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Configuration provider for the project (IVsCfgProvider2)
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public ReadOnly Property VsCfgProvider() As IVsCfgProvider2
             Get
                 Debug.Assert(_vsCfgProvider IsNot Nothing)
@@ -361,8 +340,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Returns whether or not we're in simplified config mode for this project, which means that
         '''   we hide the configuration/platform comboboxes.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public ReadOnly Property IsSimplifiedConfigMode() As Boolean
             Get
                 Return Common.ShellUtil.GetIsSimplifiedConfigMode(_projectHierarchy)
@@ -375,7 +352,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         '''   has changed, we check manually on WM_SETFOCUS in the property page designer.  The designer calls us on this
         '''   method for us to do the check.
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub CheckForModeChanges()
             Common.Switches.TracePDConfigs("CheckForModeChanges")
             Dim SimplifiedConfigModeCurrent As Boolean = IsSimplifiedConfigMode
@@ -390,7 +366,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Retrieves the current list of all configurations for the project
         ''' </summary>
-        ''' <remarks></remarks>
         Public Function GetAllConfigs() As IVsCfg()
             Dim ConfigCount As UInteger() = New UInteger(0) {} 'Interop declaration requires us to use an array
             VSErrorHandler.ThrowOnFailure(VsCfgProvider.GetCfgs(0, Nothing, ConfigCount, Nothing))
@@ -407,7 +382,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Retrieves the current list of all configuration names for the project
         ''' </summary>
-        ''' <remarks></remarks>
         Private Function GetAllConfigNames() As String()
             Dim NameObject As Object = Project.ConfigurationManager.ConfigurationRowNames()
             Dim NameArray As Array = DirectCast(NameObject, Array)
@@ -423,7 +397,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Retrieves the current list of all configuration platform names for the project
         ''' </summary>
-        ''' <remarks></remarks>
         Private Function GetAllPlatformNames() As String()
             Dim NameObject As Object = Project.ConfigurationManager.PlatformNames()
             Dim NameArray As Array = DirectCast(NameObject, Array)
@@ -453,7 +426,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         '''     item is the active version of the same config/platform name).  If false, preference is given to the current item
         '''     when searching for a "Normal" selection type.</param>
         ''' <returns>The new index into the ExistingItems array of the found item.</returns>
-        ''' <remarks></remarks>
         Private Shared Function FindItemToSelect(ExistingItems() As DropdownItem, CurrentIndex As Integer, DesiredName As String, DesiredSelectionType As SelectionTypes,
             PreferExactMatch As Boolean
         ) As Integer
@@ -540,7 +512,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Start listening to configuration change events
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub AdviseEventHandling()
             Debug.Assert(_updateSolutionEventsCookie = 0)
             Debug.Assert(_cfgProviderEventsCookie = 0)
@@ -553,7 +524,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Stoplistening to configuration change events
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub UnadviseEventHandling()
             If _updateSolutionEventsCookie <> 0 AndAlso _vsSolutionBuildManager IsNot Nothing Then
                 VSErrorHandler.ThrowOnFailure(_vsSolutionBuildManager.UnadviseUpdateSolutionEvents(_updateSolutionEventsCookie))
@@ -572,7 +542,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <param name="KeepCurrentSelection">If True, then attempts to keep the current selection after the list is updated.  If false, then
         '''   the current "active" configuration and platform will be selected.</param>
-        ''' <remarks></remarks>
         Private Sub UpdateEntriesAndNotifyPages(KeepCurrentSelection As Boolean)
             Dim CurrentConfigName As String = ConfigurationDropdownEntries(_selectedConfigIndex).Name
             Dim CurrentConfigSelectionType As SelectionTypes = ConfigurationDropdownEntries(_selectedConfigIndex).SelectionType
@@ -597,8 +566,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' A configuration name has been added.
         ''' </summary>
         ''' <param name="pszCfgName"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function OnCfgNameAdded(pszCfgName As String) As Integer Implements IVsCfgProviderEvents.OnCfgNameAdded
             Try
                 Common.Switches.TracePDConfigs("OnCfgNameAdded: Updating list")
@@ -615,7 +582,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' A configuration name has been deleted.
         ''' </summary>
         ''' <param name="CfgName"></param>
-        ''' <remarks></remarks>
         Public Function OnCfgNameDeleted(CfgName As String) As Integer Implements IVsCfgProviderEvents.OnCfgNameDeleted
             Try
                 Common.Switches.TracePDConfigs("OnCfgNameDeleted: Clearing undo/redo stack")
@@ -637,7 +603,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <param name="OldName"></param>
         ''' <param name="NewName"></param>
-        ''' <remarks></remarks>
         Public Function OnCfgNameRenamed(OldName As String, NewName As String) As Integer Implements IVsCfgProviderEvents.OnCfgNameRenamed
             Try
                 Common.Switches.TracePDConfigs("OnCfgNameRenamed: Clearing undo/redo stack")
@@ -658,7 +623,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' A platform name has been added
         ''' </summary>
         ''' <param name="pszPlatformName"></param>
-        ''' <remarks></remarks>
         Public Function OnPlatformNameAdded(pszPlatformName As String) As Integer Implements IVsCfgProviderEvents.OnPlatformNameAdded
             Try
                 Common.Switches.TracePDConfigs("OnPlatformNameAdded: Updating list")
@@ -675,7 +639,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' A platform name has been deleted
         ''' </summary>
         ''' <param name="pszPlatformName"></param>
-        ''' <remarks></remarks>
         Public Function OnPlatformNameDeleted(pszPlatformName As String) As Integer Implements IVsCfgProviderEvents.OnPlatformNameDeleted
             Try
                 Common.Switches.TracePDConfigs("OnPlatformNameDeleted: Clearing undo/redo stack")
@@ -699,8 +662,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         '''   active in the solution.
         ''' </summary>
         ''' <param name="pIVsHierarchy"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function OnActiveProjectCfgChange(pIVsHierarchy As IVsHierarchy) As Integer Implements IVsUpdateSolutionEvents.OnActiveProjectCfgChange
             Try
                 If pIVsHierarchy Is Nothing OrElse pIVsHierarchy Is _projectHierarchy Then
@@ -748,7 +709,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' This nested class represents an item in the configuration or platform dropdown listbox
         ''' </summary>
-        ''' <remarks></remarks>
         Public Class DropdownItem
 
             Public Name As String
@@ -759,7 +719,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             ''' </summary>
             ''' <param name="Name">The configuration or platform name</param>
             ''' <param name="SelectionType">Type of entry</param>
-            ''' <remarks></remarks>
             Public Sub New(Name As String, SelectionType As SelectionTypes)
                 Debug.Assert(Name <> "")
                 Debug.Assert([Enum].IsDefined(GetType(SelectionTypes), SelectionType))
@@ -772,8 +731,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             ''' <summary>
             ''' Returns the display string to show in the combobox
             ''' </summary>
-            ''' <returns></returns>
-            ''' <remarks></remarks>
             Public ReadOnly Property DisplayName() As String
                 Get
                     Select Case SelectionType

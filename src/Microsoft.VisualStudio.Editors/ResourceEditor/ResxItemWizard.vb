@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Strict On
 Option Explicit On
@@ -17,7 +17,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     ''' file-name. If it is a localized .resx file (e.g. foo.en.resx), this class will skip setting
     ''' any CustomTool-related properties [CustomTool is the project-property name for a generator]
     ''' </summary>
-    ''' <remarks></remarks>
     Public Class ResxItemWizard
         Implements IWizard
 
@@ -27,7 +26,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Do nothing
         ''' </summary>
         ''' <param name="projectItem"></param>
-        ''' <remarks></remarks>
         Public Sub BeforeOpeningFile(projectItem As ProjectItem) Implements IWizard.BeforeOpeningFile
         End Sub
 
@@ -35,7 +33,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Do nothing
         ''' </summary>
         ''' <param name="project"></param>
-        ''' <remarks></remarks>
         Public Sub ProjectFinishedGenerating(project As Project) Implements IWizard.ProjectFinishedGenerating
         End Sub
 
@@ -45,7 +42,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' CultureInfo string).
         ''' </summary>
         ''' <param name="projectItem"></param>
-        ''' <remarks></remarks>
         Public Sub ProjectItemFinishedGenerating(projectItem As ProjectItem) Implements IWizard.ProjectItemFinishedGenerating
 
             Debug.Assert(projectItem IsNot Nothing, "Null projectItem?")
@@ -102,7 +98,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Do nothing
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub RunFinished() Implements IWizard.RunFinished
         End Sub
 
@@ -114,7 +109,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="replacementsDictionary"></param>
         ''' <param name="runKind"></param>
         ''' <param name="customParams"></param>
-        ''' <remarks></remarks>
         Public Sub RunStarted(automationObject As Object, replacementsDictionary As Dictionary(Of String, String), runKind As WizardRunKind, customParams() As Object) Implements IWizard.RunStarted
 
             ' we can't do any work if the dictionary is nothing...
@@ -156,8 +150,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Do nothing and simply return true
         ''' </summary>
         ''' <param name="filePath"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function ShouldAddProjectItem(filePath As String) As Boolean Implements IWizard.ShouldAddProjectItem
             Return True
         End Function

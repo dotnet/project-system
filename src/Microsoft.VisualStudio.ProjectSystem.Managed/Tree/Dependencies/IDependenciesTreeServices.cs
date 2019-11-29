@@ -24,7 +24,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <param name="expandedIcon"></param>
         /// <param name="visible"></param>
         /// <param name="flags"></param>
-        /// <returns></returns>
         IProjectTree CreateTree(
             string caption,
             IProjectPropertiesContext itemContext,
@@ -45,7 +44,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <param name="expandedIcon"></param>
         /// <param name="visible"></param>
         /// <param name="flags"></param>
-        /// <returns></returns>
         IProjectTree CreateTree(
             string caption,
             string? filePath,
@@ -61,7 +59,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </summary>
         /// <param name="dependency"></param>
         /// <param name="catalogs"></param>
-        /// <returns></returns>
         Task<IRule?> GetBrowseObjectRuleAsync(IDependency dependency, IProjectCatalogSnapshot? catalogs);
     }
 }

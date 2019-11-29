@@ -14,7 +14,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
     ''' <summary>
     ''' Utilities relating to the Visual Studio shell, services, etc.
     ''' </summary>
-    ''' <remarks></remarks>
     Friend NotInheritable Class ShellUtil
 
 
@@ -25,8 +24,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="VsUIShell">The IVsUIShell interface that must also implement IVsUIShell2 (if not, or if Nothing, default color is returned)</param>
         ''' <param name="VsSysColorIndex">The color index to look up.</param>
         ''' <param name="DefaultColor">The default color to return if the call fails.</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Shared Function GetColor(VsUIShell As IVsUIShell, VsSysColorIndex As __VSSYSCOLOREX, DefaultColor As Color) As Color
             Return GetColor(TryCast(VsUIShell, IVsUIShell2), VsSysColorIndex, DefaultColor)
         End Function
@@ -39,8 +36,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="VsUIShell2">The IVsUIShell2 interface to use (if Nothing, default color is returned)</param>
         ''' <param name="VsSysColorIndex">The color index to look up.</param>
         ''' <param name="DefaultColor">The default color to return if the call fails.</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Shared Function GetColor(VsUIShell2 As IVsUIShell2, VsSysColorIndex As __VSSYSCOLOREX, DefaultColor As Color) As Color
             If VsUIShell2 IsNot Nothing Then
                 Dim abgrValue As UInteger
@@ -60,7 +55,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' </summary>
         ''' <param name="abgrValue">The UInteger COLORREF value</param>
         ''' <returns>The System.Drawing.Color equivalent.</returns>
-        ''' <remarks></remarks>
         Private Shared Function COLORREFToColor(abgrValue As UInteger) As Color
             Return Color.FromArgb(CInt(abgrValue And &HFFUI), CInt((abgrValue And &HFF00UI) >> 8), CInt((abgrValue And &HFF0000UI) >> 16))
         End Function
@@ -69,8 +63,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <summary>
         ''' Retrieves the window that should be used as the owner of all dialogs and messageboxes.
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Shared Function GetDialogOwnerWindow(serviceProvider As IServiceProvider) As IWin32Window
             Dim dialogOwner As IWin32Window = Nothing
             Dim UIService As IUIService = DirectCast(serviceProvider.GetService(GetType(IUIService)), IUIService)
@@ -89,7 +81,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="Config">The IVsCfg to get the configuration and platform name from.</param>
         ''' <param name="ConfigName">[out] The configuration name.</param>
         ''' <param name="PlatformName">[out] The platform name.</param>
-        ''' <remarks></remarks>
         Public Shared Sub GetConfigAndPlatformFromIVsCfg(Config As IVsCfg, ByRef ConfigName As String, ByRef PlatformName As String)
             Dim DisplayName As String = Nothing
 
@@ -120,7 +111,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         '''   we hide the configuration/platform comboboxes.
         ''' </summary>
         ''' <param name="ProjectHierarchy">The hierarchy to check</param>
-        ''' <remarks></remarks>
         Public Shared Function GetIsSimplifiedConfigMode(ProjectHierarchy As IVsHierarchy) As Boolean
             Try
                 If ProjectHierarchy IsNot Nothing Then
@@ -143,7 +133,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         '''   from then on out).
         ''' </summary>
         ''' <param name="ProjectHierarchy">The project hierarchy to check</param>
-        ''' <remarks></remarks>
         Private Shared Function CanHideConfigurationsForProject(ProjectHierarchy As IVsHierarchy) As Boolean
             Dim ReturnValue As Boolean = False 'If failed to get config value, default to not hiding configs
 
@@ -175,7 +164,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         '''   Tools.Options.
         ''' </summary>
         ''' <param name="DTE">The DTE extensibility object</param>
-        ''' <remarks></remarks>
         Private Shared Function ToolsOptionsShowAdvancedBuildConfigurations(DTE As DTE) As Boolean
             Dim ShowValue As Boolean
             Dim ProjAndSolutionProperties As Properties
@@ -203,8 +191,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         '''   don't support this, returns Nothing (e.g. C++).
         ''' </summary>
         ''' <param name="ProjectHierarchy"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Shared Function DTEProjectFromHierarchy(ProjectHierarchy As IVsHierarchy) As Project
             If ProjectHierarchy Is Nothing Then
                 Return Nothing
@@ -226,8 +212,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' </summary>
         ''' <param name="sp"></param>
         ''' <param name="project"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Shared Function VsHierarchyFromDTEProject(sp As IServiceProvider, project As Project) As IVsHierarchy
             Debug.Assert(sp IsNot Nothing)
             If sp Is Nothing OrElse project Is Nothing Then
@@ -251,8 +235,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' Returns the IVsCfgProvider2 for the given project hierarchy
         ''' </summary>
         ''' <param name="ProjectHierarchy"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Shared Function GetConfigProvider(ProjectHierarchy As IVsHierarchy) As IVsCfgProvider2
             'CONSIDER: This will not work for all project types because they do not support this property.
             Dim ConfigProvider As Object = Nothing
@@ -266,8 +248,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' Given a hierarchy, determine if this is a devices project...
         ''' </summary>
         ''' <param name="hierarchy"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Shared Function IsDeviceProject(hierarchy As IVsHierarchy) As Boolean
             If hierarchy Is Nothing Then
                 Debug.Fail("I can't determine if this is a devices project from a NULL hierarchy!?")
@@ -287,7 +267,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' </summary>
         ''' <param name="hierarchy"></param>
         ''' <returns>true if it is a venus project</returns>
-        ''' <remarks></remarks>
         Friend Shared Function IsVenusProject(hierarchy As IVsHierarchy) As Boolean
 
             If hierarchy Is Nothing Then
@@ -314,8 +293,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' Is this a web (Venus WSP or WAP project)
         ''' </summary>
         ''' <param name="hierarchy"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Shared Function IsWebProject(hierarchy As IVsHierarchy) As Boolean
             Const WebAppProjectGuid As String = "{349c5851-65df-11da-9384-00065b846f21}"
 
@@ -366,10 +343,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             End Try
             Return False
         End Function
-
-        ''' <summary>
-        ''' 
-        ''' </summary>
         ''' <param name="fileName">IN: name of the file to get the document info from</param>
         ''' <param name="rdt">IN: Running document table to find the info in</param>
         ''' <param name="hierarchy">OUT: Hierarchy that the document was found in</param>
@@ -377,7 +350,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="readLocks">OUT: Number of read locks for the document</param>
         ''' <param name="editLocks">OUT: Number of edit locks on the document</param>
         ''' <param name="docCookie">OUT: A cookie for the doc, 0 if the doc isn't found in the RDT</param>
-        ''' <remarks></remarks>
         Friend Shared Sub GetDocumentInfo(fileName As String, rdt As IVsRunningDocumentTable, ByRef hierarchy As IVsHierarchy, ByRef readLocks As UInteger, ByRef editLocks As UInteger, ByRef itemid As UInteger, ByRef docCookie As UInteger)
             Requires.NotNull(fileName, NameOf(fileName))
             Requires.NotNull(rdt, NameOf(rdt))
@@ -435,7 +407,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <returns>
         ''' The list of items that are to be checked out
         ''' </returns>
-        ''' <remarks></remarks>
         Friend Shared Function FileNameAndGeneratedFileName(projectitem As ProjectItem,
                                                             Optional suffix As String = ".Designer",
                                                             Optional requireExactlyOneChild As Boolean = True,
@@ -493,7 +464,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <summary>
         ''' Wrapper class for IVsShell.OnBroadcastMessage
         ''' </summary>
-        ''' <remarks></remarks>
         Friend Class BroadcastMessageEventsHelper
             Implements IVsBroadcastMessageEvents
             Implements IDisposable
@@ -542,8 +512,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             ''' <param name="msg"></param>
             ''' <param name="wParam"></param>
             ''' <param name="lParam"></param>
-            ''' <returns></returns>
-            ''' <remarks></remarks>
             Private Function IVsBroadcastMessageEvents_OnBroadcastMessage(msg As UInteger, wParam As IntPtr, lParam As IntPtr) As Integer Implements IVsBroadcastMessageEvents.OnBroadcastMessage
                 OnBroadcastMessage(msg, wParam, lParam)
                 Return Interop.NativeMethods.S_OK
@@ -555,7 +523,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             ''' <param name="msg"></param>
             ''' <param name="wParam"></param>
             ''' <param name="lParam"></param>
-            ''' <remarks></remarks>
             Protected Overridable Sub OnBroadcastMessage(msg As UInteger, wParam As IntPtr, lParam As IntPtr)
                 RaiseEvent BroadcastMessage(msg, wParam, lParam)
             End Sub
@@ -597,7 +564,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <summary>
         ''' Monitor and set font when font changes...
         ''' </summary>
-        ''' <remarks></remarks>
         Friend NotInheritable Class FontChangeMonitor
             Inherits BroadcastMessageEventsHelper
 
@@ -612,7 +578,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             ''' <param name="sp"></param>
             ''' <param name="ctrl"></param>
             ''' <param name="SetFontInitially">If true, set the font of the provided control when this FontChangeMonitor is created</param>
-            ''' <remarks></remarks>
             Public Sub New(sp As IServiceProvider, ctrl As Control, SetFontInitially As Boolean)
                 MyBase.New(sp)
 
@@ -633,7 +598,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             ''' <param name="msg"></param>
             ''' <param name="wParam"></param>
             ''' <param name="lParam"></param>
-            ''' <remarks></remarks>
             Protected Overrides Sub OnBroadcastMessage(msg As UInteger, wParam As IntPtr, lParam As IntPtr)
                 MyBase.OnBroadcastMessage(msg, wParam, lParam)
 
@@ -651,8 +615,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             ''' <summary>
             ''' Pick current dialog font...
             ''' </summary>
-            ''' <value></value>
-            ''' <remarks></remarks>
             Friend Shared ReadOnly Property GetDialogFont(ServiceProvider As IServiceProvider) As Font
                 Get
                     If ServiceProvider IsNot Nothing Then
@@ -676,7 +638,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="hierarchy">Hierarchy to check if the custom tool is registered for</param>
         ''' <param name="customToolName">Name of custom tool to look for</param>
         ''' <returns>True if registered, false otherwise</returns>
-        ''' <remarks></remarks>
         Friend Shared Function IsCustomToolRegistered(hierarchy As IVsHierarchy, customToolName As String) As Boolean
             Requires.NotNull(hierarchy, NameOf(hierarchy))
             Requires.NotNull(customToolName, NameOf(customToolName))
@@ -716,8 +677,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' </summary>
         ''' <param name="pHier"></param>
         ''' <param name="itemId"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Shared Function IsDefaultNamespaceRename(pHier As IVsHierarchy, itemId As UInteger) As Boolean
             ' result <<== out
             Dim result As Object = Nothing
@@ -735,8 +694,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' </summary>
         ''' <param name="serviceProvider"></param>
         ''' <param name="hierarchy"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Shared Function CreateTypeResolutionService(serviceProvider As IServiceProvider, hierarchy As IVsHierarchy) As System.ComponentModel.Design.ITypeResolutionService
             Dim dynamicTypeService As Shell.Design.DynamicTypeService =
                     TryCast(serviceProvider.GetService(
@@ -759,8 +716,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="VsSysColorIndex"></param>
         ''' <param name="DefaultColor"></param>
         ''' <param name="UseVSTheme">Whether to use VS Shell to map the right color or just use the default one.</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Shared Function GetVSColor(VsSysColorIndex As __VSSYSCOLOREX3, DefaultColor As Color, Optional UseVSTheme As Boolean = True) As Color
             If Not UseVSTheme Then
                 Return DefaultColor

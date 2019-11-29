@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Explicit On
 Option Strict On
@@ -11,7 +11,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     ''' <summary>
     ''' Provides information about a specific property of a Resource instance.
     ''' </summary>
-    ''' <remarks></remarks>
     Friend NotInheritable Class ResourcePropertyDescriptor
         Inherits PropertyDescriptor
 
@@ -81,7 +80,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Returns the type of the instance this property is bound to, which is Resource.
         ''' </summary>
         ''' <value>The Resource type.</value>
-        ''' <remarks></remarks>
         Public Overrides ReadOnly Property ComponentType() As Type
             Get
                 Return GetType(Resource)
@@ -93,7 +91,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''  Returns a value indicating whether this property is read-only.
         ''' </summary>
         ''' <value>True if the property is read-only, False otherwise.</value>
-        ''' <remarks></remarks>
         Public Overrides ReadOnly Property IsReadOnly() As Boolean
             Get
                 Return _isReadOnly
@@ -105,7 +102,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''  Returns the type of the property.
         ''' </summary>
         ''' <value>A Type that represents the type of the property.</value>
-        ''' <remarks></remarks>
         Public Overrides ReadOnly Property PropertyType() As Type
             Get
                 Return _propertyType

@@ -14,7 +14,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     ''' <summary>
     ''' Requests a new resource name from the user.
     ''' </summary>
-    ''' <remarks></remarks>
     Friend NotInheritable Class DialogQueryName
         Inherits BaseDialog
         'Inherits System.Windows.Forms.Form
@@ -24,7 +23,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Constructor.
         ''' </summary>
         ''' <param name="ServiceProvider"></param>
-        ''' <remarks></remarks>
         Public Sub New(ServiceProvider As IServiceProvider)
             MyBase.New(ServiceProvider)
 
@@ -160,7 +158,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="SuggestedName">The default name to show in the dialog when it is first shown.</param>
         ''' <param name="UserCancel">[Out] True iff the user canceled the dialog.</param>
         ''' <returns>The Name selected by the user.</returns>
-        ''' <remarks></remarks>
         Public Shared Function QueryAddNewResourceName(RootDesigner As ResourceEditorRootDesigner, SuggestedName As String, ByRef UserCancel As Boolean) As String
             Dim Dialog As New DialogQueryName(RootDesigner)
             With Dialog
@@ -190,7 +187,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub ButtonAdd_Click(sender As Object, e As EventArgs) Handles ButtonAdd.Click
             Dim ResourceView As ResourceEditorView = _rootDesigner.GetView()
             Debug.Assert(ResourceView IsNot Nothing, "Why there is no view?")
@@ -219,7 +215,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub ButtonCancel_Click(sender As Object, e As EventArgs) Handles ButtonCancel.Click
             Close()
         End Sub
@@ -229,7 +224,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub DialogQueryName_HelpButtonClicked(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles MyBase.HelpButtonClicked
             e.Cancel = True
             ShowHelp()

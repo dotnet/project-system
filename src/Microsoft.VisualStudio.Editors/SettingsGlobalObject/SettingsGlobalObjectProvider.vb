@@ -60,20 +60,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         Private _ignoreAppConfigChanges As Boolean
 
         Private Shared s_globalSettings As TraceSwitch
-
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        ''' <remarks></remarks>
         Protected Overrides Sub Finalize()
             Dispose(False)
         End Sub
-
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Friend Shared ReadOnly Property GlobalSettings() As TraceSwitch
             Get
                 If (s_globalSettings Is Nothing) Then
@@ -88,7 +77,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' gets the running-doc-table for the instance of VS
         ''' </summary>
         ''' <value>running-doc-table</value>
-        ''' <remarks></remarks>
         Friend ReadOnly Property RunningDocTable() As IVsRunningDocumentTable
             Get
                 If (_rdt Is Nothing) Then
@@ -336,7 +324,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' <param name="project">Project that we're searching</param>
         ''' <param name="baseType">type to which we should limit our search</param>
         ''' <returns>collection of global objects</returns>
-        ''' <remarks></remarks>
         Protected Overrides Function GetGlobalObjectsCore(project As Project, baseType As Type) As GlobalObjectCollection
 
 #If DEBUG Then
@@ -467,13 +454,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             End If
             Return result
         End Function 'GetGlobalObjectsCore
-
-        ''' <summary>
-        ''' 
-        ''' </summary>
         ''' <param name="o"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Shared Function DebugGetId(o As Object) As String
 #If DEBUG Then
             If (o Is Nothing) Then
@@ -485,13 +466,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             Return ""
 #End If
         End Function
-
-        ''' <summary>
-        ''' 
-        ''' </summary>
         ''' <param name="o"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Shared Function DebugGetStr(o As Object) As String
 #If DEBUG Then
             If (o Is Nothing) Then
@@ -669,8 +644,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' </summary>
         ''' <param name="docCookie">Cookie corresponding to the file we are looking for</param>
         ''' <param name="hier">Nothing or the IVsHierarchy in which the document is the default app.config file</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function IsDefaultAppConfigFile(docCookie As UInteger, ByRef hier As IVsHierarchy) As Boolean
             Dim itemid As UInteger = VSITEMID.NIL
 
@@ -712,8 +685,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' the settings objects... That will only affect that particular object, and it should raise
         ''' it's own change notifications!
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Friend Property IgnoreAppConfigChanges() As Boolean
             Get
                 Return _ignoreAppConfigChanges
@@ -1023,8 +994,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' <param name="rgpProjects"></param>
         ''' <param name="rgFirstIndices"></param>
         ''' <param name="cFiles"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Shared Function GetCorrespondingProjects(rgpProjects() As IVsProject, rgFirstIndices() As Integer, cFiles As Integer) As IVsHierarchy()
             ' We trust that someone has already checked these parameters, so we only ASSERT if something looks
             ' bogus....
@@ -1194,7 +1163,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' (the XML serializer may use the DynamicTypeService to resolve the type to
         ''' deserialize, which means that we may be called again - See VsWhidbey 444946)
         ''' </summary>
-        ''' <remarks></remarks>
         Private _loadingSettings As Boolean = False
 
         ''' <summary>
@@ -1225,8 +1193,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' <summary>
         ''' access to the DesignTimeSettings class this global-object represents
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Friend ReadOnly Property Settings() As DesignTimeSettings
             Get
                 Debug.Assert(_dtSettings IsNot Nothing, "missing the design-time settings collection?")
@@ -1247,8 +1213,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' gets/sets the DocData associated with this global object, appropriately adding
         ''' or removing event listeners
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Private Property DocData() As DocData
             Get
                 Return _docData
@@ -1302,7 +1266,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' Builds a virtual type based on the data stored in this global object.  Also populates
         ''' all of the child global objects.
         ''' </summary>
-        ''' <returns></returns>
         Private Function BuildType() As Type
 
 #If DEBUG Then
@@ -1406,8 +1369,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' <summary>
         ''' Creates an instance of this global type
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Protected Overrides Function CreateInstance() As Object
 
             Dim value As Object = TypeDescriptor.CreateInstance(DirectCast(_provider, IServiceProvider), GetObjectType(), Array.Empty(Of Type), Array.Empty(Of Object))
@@ -1440,7 +1401,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' <summary>
         ''' ensures that this file is generating a typed-settings class
         ''' </summary>
-        ''' <remarks></remarks>
         Friend Sub EnsureGeneratingSettingClass()
 
             Dim customTool As String
@@ -1464,15 +1424,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             End Try
 
         End Sub
-
-        ''' <summary>
-        ''' 
-        ''' </summary>
         ''' <param name="fileName">IN: name of the file to get the document info from</param>
         ''' <param name="readLocks">OUT: Number of read locks for the document</param>
         ''' <param name="editLocks">OUT: Number of edit locks on the document</param>
         ''' <param name="docCookie">OUT: A cookie for the doc, 0 if the doc isn't found in the RDT</param>
-        ''' <remarks></remarks>
         Private Sub GetDocumentInfo(fileName As String, ByRef readLocks As UInteger, ByRef editLocks As UInteger, ByRef itemid As UInteger, ByRef docCookie As UInteger)
             Dim rdt As IVsRunningDocumentTable = _provider.RunningDocTable
             Debug.Assert((rdt IsNot Nothing), "What?  No RDT?")
@@ -1504,7 +1459,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' <summary>
         ''' Whenever the schema of the object changes, we have to clear our cached type
         ''' </summary>
-        ''' <remarks></remarks>
         Protected Overrides Sub PerformChange()
             MyBase.PerformChange()
             _virtualType = Nothing
@@ -1534,7 +1488,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' </summary>
         ''' <param name="fileName">path to a .settings file</param>
         ''' <returns>DesignTimeSettings that represents the given file</returns>
-        ''' <remarks></remarks>
         Private Function LoadSettings(fileName As String) As DesignTimeSettings
 
 #If DEBUG Then
@@ -1641,7 +1594,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' <summary>
         ''' Allow clients to force us to update our contents..
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub Refresh() Implements VSDesignerPackage.IRefreshSettingsObject.Refresh
             RaiseChange()
         End Sub
@@ -1685,7 +1637,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' <summary>
         ''' Called when the last lock is removed from this document.
         ''' </summary>
-        ''' <remarks></remarks>
         Friend Sub OnLastUnlock()
 
             If (Not _ignoreDocLock) Then
@@ -1727,7 +1678,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' If the root namespace changes, we've gotta remove all old stuff from the 
         ''' app/web.config and re-serialize the .settings file
         ''' </summary>
-        ''' <remarks></remarks>
         Friend Sub OnRootNamespaceChanged(OldRootNamespace As String)
             ' If we don't have a persisted namespace, that means that we have a newly created
             ' instance, which doesn't exist in the app.config (yet)
@@ -1761,7 +1711,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' DesignTimeSettings class -- intended to be called after the forms
         ''' designer pokes in new settings
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub Save()
 
 #If DEBUG Then
@@ -2007,7 +1956,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' <summary>
         ''' This class is the code serializer for SettingsFile global object.
         ''' </summary>
-        ''' <remarks></remarks>
         <Serializable()>
         Private NotInheritable Class SettingsFileCodeDomSerializer
             Inherits CodeDomSerializer
@@ -2017,8 +1965,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             ''' <summary>
             ''' Provides a stock serializer instance.
             ''' </summary>
-            ''' <value></value>
-            ''' <remarks></remarks>
             Friend Shared ReadOnly Property [Default]() As SettingsFileCodeDomSerializer
                 Get
                     If (s_default Is Nothing) Then
@@ -2033,8 +1979,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             ''' </summary>
             ''' <param name="manager"></param>
             ''' <param name="codeObject"></param>
-            ''' <returns></returns>
-            ''' <remarks></remarks>
             Public Overrides Function Deserialize(manager As IDesignerSerializationManager, codeObject As Object) As Object
 
                 Debug.Fail("Should never be called")
@@ -2047,8 +1991,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             ''' </summary>
             ''' <param name="manager"></param>
             ''' <param name="value">a SettingsGlobalObjectValueAttribute</param>
-            ''' <returns></returns>
-            ''' <remarks></remarks>
             Public Overrides Function Serialize(manager As IDesignerSerializationManager, value As Object) As Object
 
 #If DEBUG Then
@@ -2098,7 +2040,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' <summary>
         ''' The virtual type implementor for our global object.  This maps properties to setting names.
         ''' </summary>
-        ''' <remarks></remarks>
         Private NotInheritable Class SettingsFileTypeImplementor
             Inherits VirtualTypeImplementor
 
@@ -2108,7 +2049,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             ''' constructor for this implementor
             ''' </summary>
             ''' <param name="globalObject">object we implement in place of</param>
-            ''' <remarks></remarks>
             Friend Sub New(globalObject As SettingsFileGlobalObject)
 
 #If DEBUG Then
@@ -2124,8 +2064,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             ''' <param name="prop"></param>
             ''' <param name="instance"></param>
             ''' <param name="args"></param>
-            ''' <returns></returns>
-            ''' <remarks></remarks>
             Public Overrides Function GetPropertyValue(prop As PropertyInfo, instance As Object, args() As Object) As Object
 
                 Debug.Assert(prop IsNot Nothing, "bad property passed to GetPropertyValue")
@@ -2207,14 +2145,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                 Debug.Fail(("Property " + prop.Name + " could not be located in our global object collection."))
                 Return Nothing
             End Function 'GetPropertyValue
-
-            ''' <summary>
-            ''' 
-            ''' </summary>
             ''' <param name="ctor"></param>
             ''' <param name="args"></param>
-            ''' <returns></returns>
-            ''' <remarks></remarks>
             Public Overrides Function InvokeConstructor(ctor As ConstructorInfo, args As Object()) As Object
 
 #If DEBUG Then
@@ -2227,15 +2159,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                 Return constructedObject
 
             End Function 'InvokeConstructor
-
-            ''' <summary>
-            ''' 
-            ''' </summary>
             ''' <param name="prop"></param>
             ''' <param name="instance"></param>
             ''' <param name="value"></param>
             ''' <param name="args"></param>
-            ''' <remarks></remarks>
             Public Overrides Sub SetPropertyValue(prop As PropertyInfo, instance As Object, value As Object, args As Object())
 
                 Debug.Assert(prop IsNot Nothing, "bad property passed to SetPropertyValue")
@@ -2295,19 +2222,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             End Sub
 
         End Class 'SettingsFileTypeImplementor
-
-
-
-
-
-
-
-
-
-
-        ''' <summary>
-        ''' 
-        ''' </summary>
         ''' <remarks>
         ''' This type must be serializable to satisfy the VS shell.
         ''' https://devdiv.visualstudio.com/DevDiv/_workitems/edit/765098
@@ -2320,12 +2234,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             Private ReadOnly _globalObject As SettingsFileGlobalObject
             <NonSerialized>
             Private _properties As SettingsPropertyCollection
-
-            ''' <summary>
-            ''' 
-            ''' </summary>
             ''' <param name="globalObject"></param>
-            ''' <remarks></remarks>
             Friend Sub New(globalObject As SettingsFileGlobalObject)
 
 #If DEBUG Then
@@ -2344,7 +2253,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             ''' objects in general) we use our derived SettingsPropertyCollection that will happily pick up the settings from
             ''' the DesignTimeSettings object associated with this instance.
             ''' </summary>
-            ''' <value></value>
             ''' <remarks>
             ''' The properties collection is cached in this instance, so it will only reflect the settings that were
             ''' present at the time when the client called this property getter. Whenever someone adds/removes settings
@@ -2375,17 +2283,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' This collection should only be used to add/remove settings - you should not rely on the actual attributes that
         ''' are put on each property as they may not be correct...
         ''' </summary>
-        ''' <remarks></remarks>
         Private Class GlobalSettingsPropertyCollection
             Inherits SettingsPropertyCollection
 
             Private ReadOnly _globalObject As SettingsFileGlobalObject
-
-            ''' <summary>
-            ''' 
-            ''' </summary>
             ''' <param name="globalObject"></param>
-            ''' <remarks></remarks>
             Friend Sub New(globalObject As SettingsFileGlobalObject)
 
 #If DEBUG Then
@@ -2401,12 +2303,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                 Debug.Assert(globalObject IsNot Nothing, "")
                 _globalObject = globalObject
             End Sub
-
-            ''' <summary>
-            ''' 
-            ''' </summary>
             ''' <param name="prop"></param>
-            ''' <remarks></remarks>
             Protected Overrides Sub OnAddComplete(prop As SettingsProperty)
                 If _globalObject Is Nothing Then Return
 #If DEBUG Then
@@ -2490,7 +2387,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             ''' Handle the remove of a setting
             ''' </summary>
             ''' <param name="property"></param>
-            ''' <remarks></remarks>
             Protected Overrides Sub OnRemoveComplete([property] As SettingsProperty)
                 If _globalObject Is Nothing Then Return
 #If DEBUG Then
@@ -2549,7 +2445,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' Attribute we tack on to values that we return from GetPropertyValue to identify which property
         ''' the value hails from.
         ''' </summary>
-        ''' <remarks></remarks>
         Private Class SettingsGlobalObjectValueAttribute
             Inherits Attribute
 
@@ -2561,7 +2456,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             ''' </summary>
             ''' <param name="globalObject"></param>
             ''' <param name="propertyName"></param>
-            ''' <remarks></remarks>
             Friend Sub New(globalObject As SettingsFileGlobalObject, propertyName As String)
                 _globalObject = globalObject
                 _propertyName = propertyName
@@ -2570,8 +2464,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             ''' <summary>
             ''' gets the GlobalObject associated with this value
             ''' </summary>
-            ''' <value></value>
-            ''' <remarks></remarks>
             Friend ReadOnly Property GlobalObject() As SettingsFileGlobalObject
                 Get
                     Return _globalObject
@@ -2581,8 +2473,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             ''' <summary>
             ''' Gets the property-name associated with this value
             ''' </summary>
-            ''' <value></value>
-            ''' <remarks></remarks>
             Friend ReadOnly Property PropertyName() As String
                 Get
                     Return _propertyName
@@ -2597,7 +2487,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
     ''' <summary>
     ''' Class that helps get an IVsHierarchy given a DTE project.
     ''' </summary>
-    ''' <remarks></remarks>
     Friend Class ProjectUtilities
 
         Public Shared Function GetVsHierarchy(provider As IServiceProvider, project As Project) As IVsHierarchy

@@ -11,7 +11,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     ''' Should be returned by an overriden GetUserDefinedPropertyDescriptor.
     ''' This is used mainly in integrating with the Undo/Redo capabilities.
     ''' </summary>
-    ''' <remarks></remarks>
     Public Class UserPropertyDescriptor
         Inherits PropertyDescriptor
 

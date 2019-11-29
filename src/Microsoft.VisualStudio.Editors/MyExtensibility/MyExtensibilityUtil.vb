@@ -14,7 +14,6 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
     ''' <summary>
     ''' Common utility methods for MyExtensibility.
     ''' </summary>
-    ''' <remarks></remarks>
     Friend Class MyExtensibilityUtil
 
         ''' ;StringEquals

@@ -61,7 +61,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Returns the default visibility of this properties
         ''' </summary>
-        ''' <value></value>
         ''' <remarks>MemberAttributes indicating what visibility to make the generated properties.</remarks>
         Friend Shared ReadOnly Property SettingsPropertyVisibility() As MemberAttributes
             Get
@@ -84,7 +83,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="compileUnit">The full compile unit that we are to generate code from</param>
         ''' <param name="generatedClass">The generated settings class</param>
-        ''' <remarks></remarks>
         Protected Overridable Sub OnCompileUnitCreated(compileUnit As CodeCompileUnit, generatedClass As CodeTypeDeclaration)
             ' By default, we don't want to make any modifications...
         End Sub
@@ -94,7 +92,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Get the default extension for the generated class.
         ''' </summary>
         ''' <param name="pbstrDefaultExtension"></param>
-        ''' <remarks></remarks>
         Private Function DefaultExtension(ByRef pbstrDefaultExtension As String) As Integer Implements IVsSingleFileGenerator.DefaultExtension
             If CodeDomProvider IsNot Nothing Then
                 ' For some reason some the code providers seem to be inconsistent in the way that they 
@@ -119,7 +116,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="rgbOutputFileContents"></param>
         ''' <param name="pcbOutput"></param>
         ''' <param name="pGenerateProgress"></param>
-        ''' <remarks></remarks>
         Private Function Generate(wszInputFilePath As String, bstrInputFileContents As String, wszDefaultNamespace As String, rgbOutputFileContents() As IntPtr, ByRef pcbOutput As UInteger, pGenerateProgress As IVsGeneratorProgress) As Integer Implements IVsSingleFileGenerator.Generate
 
 
@@ -241,7 +237,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="GeneratedClassVisibility"></param>
         ''' <param name="GenerateVBMyAutoSave"></param>
         ''' <returns>CodeCompileUnit of the given DesignTimeSettings object</returns>
-        ''' <remarks></remarks>
         Friend Shared Function Create(Hierarchy As IVsHierarchy,
                                       Settings As DesignTimeSettings,
                                       DefaultNamespace As String,
@@ -321,8 +316,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="InputString"></param>
         ''' <param name="GenerateProgress"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Shared Function DeserializeSettings(InputString As String, GenerateProgress As IVsGeneratorProgress) As DesignTimeSettings
             Dim Settings As New DesignTimeSettings()
             If InputString <> "" Then
@@ -537,8 +530,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Get the type of the class that our strongly typed wrapper class is supposed to inherit from
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Friend Shared ReadOnly Property SettingsBaseClass() As Type
             Get
                 Return GetType(Configuration.ApplicationSettingsBase)
@@ -549,8 +540,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Generate CodeDomStatements to get a setting from our base class
         ''' </summary>
         ''' <param name="Instance"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Shared Function GenerateGetterStatements(Instance As DesignTimeSettingInstance, SettingType As CodeTypeReference) As CodeStatementCollection
             Dim Statements As New CodeStatementCollection
             Dim Parameters() As CodeExpression = {New CodePrimitiveExpression(Instance.Name)}
@@ -569,8 +558,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Generate statements to set a settings value
         ''' </summary>
         ''' <param name="Instance"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Shared Function GenerateSetterStatements(Instance As DesignTimeSettingInstance) As CodeStatementCollection
             Dim Statements As New CodeStatementCollection
             Dim Parameters() As CodeExpression = {New CodePrimitiveExpression(Instance.Name)}
@@ -589,8 +576,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="projectRootNamespace">project's root namespace (may be String.Empty)</param>
         ''' <param name="defaultNamespace">namespace into which we are generating (may be String.Empty)</param>
         ''' <param name="typeName">the type of the settings-class we are generating</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Shared Function GetFullTypeName(projectRootNamespace As String, defaultNamespace As String, typeName As String) As String
 
             Dim fullTypeName As String = String.Empty
@@ -614,7 +599,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Add required references to the project - currently only adding a reference to the settings base class assembly
         ''' </summary>
         ''' <param name="GenerateProgress"></param>
-        ''' <remarks></remarks>
         Protected Overridable Sub AddRequiredReferences(GenerateProgress As IVsGeneratorProgress)
             Dim CurrentProjectItem As EnvDTE.ProjectItem = CType(GetService(GetType(EnvDTE.ProjectItem)), EnvDTE.ProjectItem)
             If CurrentProjectItem Is Nothing Then
@@ -636,7 +620,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' My.Settings for easy access to typed-settings.
         ''' </summary>
         ''' <param name="Unit"></param>
-        ''' <remarks></remarks>
         Private Shared Sub AddMyModule(Unit As CodeCompileUnit, projectRootNamespace As String, defaultNamespace As String)
 
             Debug.Assert(Unit IsNot Nothing AndAlso Unit.Namespaces.Count = 1 AndAlso Unit.Namespaces(0).Types.Count = 1, "Expected a compile unit with a single namespace containing a single type!")
@@ -740,8 +723,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' we are currently generating. This will include the root-namespace for VB even though
         ''' we would not have been passed in that namespace in the call to Generate.
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Protected Overridable Function GetProjectRootNamespace() As String
 
             Dim rootNamespace As String = String.Empty
@@ -805,8 +786,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Is this the "default" settings file
         ''' </summary>
         ''' <param name="FilePath">Fully qualified path of file to check</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function IsDefaultSettingsFile(FilePath As String) As Boolean
             Dim Hierarchy As IVsHierarchy = DirectCast(GetService(GetType(IVsHierarchy)), IVsHierarchy)
             If Hierarchy Is Nothing Then
@@ -842,7 +821,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Demand-create a CodeDomProvider corresponding to my projects current language
         ''' </summary>
         ''' <value>A CodeDomProvider</value>
-        ''' <remarks></remarks>
         Private Property CodeDomProvider() As CodeDomProvider
             Get
                 If _codeDomProvider Is Nothing Then
@@ -865,8 +843,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Demand-create service provider from my site
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Private ReadOnly Property ServiceProvider() As ServiceProvider
             Get
                 If _serviceProvider Is Nothing AndAlso _site IsNot Nothing Then
@@ -881,8 +857,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Create a CodeTypeReference instance with the GlobalReference option set.
         ''' </summary>
         ''' <param name="type"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Shared Function CreateGlobalCodeTypeReference(type As Type) As CodeTypeReference
             Dim ctr As New CodeTypeReference(type) With {
                 .Options = CodeTypeReferenceOptions.GlobalReference
@@ -1101,7 +1075,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="serviceType">The type of service requested</param>
         ''' <returns>An instance of the service, or nothing if service not found</returns>
-        ''' <remarks></remarks>
         Private Function GetService(serviceType As Type) As Object Implements System.IServiceProvider.GetService
             If ServiceProvider IsNot Nothing Then
                 Return ServiceProvider.GetService(serviceType)

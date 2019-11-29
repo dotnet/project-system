@@ -14,7 +14,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     ''' <summary>
     ''' Class that provides basic read/write of property values to/from the project system
     ''' </summary>
-    ''' <remarks></remarks>
     <DebuggerDisplay("{PropertyName}, InitialValue={InitialValue}, IsDirty={IsDirty}")>
     Public Class PropertyControlData
 
@@ -82,8 +81,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="control">The form control from which to get the data (or Nothing if none is associated with this PropertyControlData)</param>
         ''' <param name="prop">The property descriptor associated with this PropertyControlData, or Nothing if none</param>
         ''' <param name="value">The value to set into the control's UI (may be Indeterminate or MissingProperty</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Delegate Function SetDelegate(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
 
         ''' <summary>
@@ -93,8 +90,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="control">The form control from which to get the data (or Nothing if none is associated with this PropertyControlData)</param>
         ''' <param name="prop">The property descriptor associated with this PropertyControlData, or Nothing if none</param>
         ''' <param name="value">[out] Should be filled in with the value from the control.</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Delegate Function GetDelegate(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
 
         ''' <summary>
@@ -106,8 +101,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="prop">The property descriptor associated with this PropertyControlData, or Nothing if none</param>
         ''' <param name="values">The array of values to set into the control's UI.  May not be Nothing, and individual values will not be Indeterminate or MissingProperty.
         '''   Callee is responsible for determining how to deal with multiple values.</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Delegate Function MultiValueSetDelegate(control As Control, prop As PropertyDescriptor, Values() As Object) As Boolean
 
         ''' <summary>
@@ -120,8 +113,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="Values">Should be filled in with an array containing the values from the control.  The length of the array must match
         '''   that of RawPropertiesObjects, and must not contain Nothing, Indeterminate or MissingProperty values.
         ''' </param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Delegate Function MultiValueGetDelegate(control As Control, prop As PropertyDescriptor, ByRef Values() As Object) As Boolean
 
 #End Region
@@ -134,7 +125,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="name">The property name.  See comments at top of PropertyControlData.vb.</param>
         ''' <param name="FormControl">The control, if any, which is automatically managed by this class instance to correspond to the property's value.  May be Nothing.</param>
         ''' <param name="flags">Additional flags.</param>
-        ''' <remarks></remarks>
         Public Sub New(id As Integer, name As String, FormControl As Control, flags As ControlDataFlags)
             Call Me.New(id, name, FormControl, Nothing, Nothing, flags)
         End Sub
@@ -145,7 +135,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="id">The DISPID of the property.  See comments at top of PropertyControlData.vb.</param>
         ''' <param name="name">The property name.  See comments at top of PropertyControlData.vb.</param>
         ''' <param name="FormControl">The control, if any, which is automatically managed by this class instance to correspond to the property's value.  May be Nothing.</param>
-        ''' <remarks></remarks>
         Public Sub New(id As Integer, name As String, FormControl As Control)
             Call Me.New(id, name, FormControl, Nothing, Nothing, ControlDataFlags.None)
         End Sub
@@ -159,7 +148,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="setter">The setter delegate, if any, which provides manual handling of getting and setting the property value into the control in the UI.  Note that this is a separate issue of whether a property is user-persisted.  May be Nothing.</param>
         ''' <param name="getter">The getter delegate, if any, which provides manual handling of getting and setting the property value into the control in the UI.  Note that this is a separate issue of whether a property is user-persisted.  May be Nothing.</param>
         ''' <param name="flags">Additional flags.</param>
-        ''' <remarks></remarks>
         Public Sub New(id As Integer, name As String, FormControl As Control, setter As SetDelegate, getter As GetDelegate, flags As ControlDataFlags)
             Call Me.New(id, name, FormControl, setter, getter, flags, Nothing)
         End Sub
@@ -170,7 +158,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="id">The DISPID of the property.  See comments at top of PropertyControlData.vb.</param>
         ''' <param name="name">The property name.  See comments at top of PropertyControlData.vb.</param>
         ''' <param name="FormControl">The control, if any, which is automatically managed by this class instance to correspond to the property's value.  May be Nothing.</param>
-        ''' <remarks></remarks>
         Public Sub New(id As Integer, name As String, FormControl As Control, AssocControls As Control())
             Call Me.New(id, name, FormControl, Nothing, Nothing, Nothing, Nothing, ControlDataFlags.None, AssocControls)
         End Sub
@@ -183,7 +170,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="FormControl">The control, if any, which is automatically managed by this class instance to correspond to the property's value.  May be Nothing.</param>
         ''' <param name="setter">The setter delegate, if any, which provides manual handling of getting and setting the property value into the control in the UI.  Note that this is a separate issue of whether a property is user-persisted.  May be Nothing.</param>
         ''' <param name="getter">The getter delegate, if any, which provides manual handling of getting and setting the property value into the control in the UI.  Note that this is a separate issue of whether a property is user-persisted.  May be Nothing.</param>
-        ''' <remarks></remarks>
         Public Sub New(id As Integer, name As String, FormControl As Control, setter As SetDelegate, getter As GetDelegate)
             Call Me.New(id, name, FormControl, setter, getter, ControlDataFlags.None, Nothing)
         End Sub
@@ -197,7 +183,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="setter">The setter delegate, if any, which provides manual handling of getting and setting the property value into the control in the UI.  Note that this is a separate issue of whether a property is user-persisted.  May be Nothing.</param>
         ''' <param name="getter">The getter delegate, if any, which provides manual handling of getting and setting the property value into the control in the UI.  Note that this is a separate issue of whether a property is user-persisted.  May be Nothing.</param>
         ''' <param name="flags">Additional flags.</param>
-        ''' <remarks></remarks>
         Public Sub New(id As Integer, name As String, FormControl As Control, setter As MultiValueSetDelegate, getter As MultiValueGetDelegate, flags As ControlDataFlags, AssocControls As Control())
             Me.New(id, name, FormControl, Nothing, Nothing, setter, getter, flags, AssocControls)
         End Sub
@@ -209,7 +194,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="name">The property name.  See comments at top of PropertyControlData.vb.</param>
         ''' <param name="FormControl">The control, if any, which is automatically managed by this class instance to correspond to the property's value.  May be Nothing.</param>
         ''' <param name="flags">Additional flags.</param>
-        ''' <remarks></remarks>
         Public Sub New(id As Integer, name As String, FormControl As Control, flags As ControlDataFlags, AssocControls As Control())
             Me.New(id, name, FormControl, Nothing, Nothing, Nothing, Nothing, flags, AssocControls)
         End Sub
@@ -223,7 +207,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="setter">The setter delegate, if any, which provides manual handling of getting and setting the property value into the control in the UI.  Note that this is a separate issue of whether a property is user-persisted.  May be Nothing.</param>
         ''' <param name="getter">The getter delegate, if any, which provides manual handling of getting and setting the property value into the control in the UI.  Note that this is a separate issue of whether a property is user-persisted.  May be Nothing.</param>
         ''' <param name="flags">Additional flags.</param>
-        ''' <remarks></remarks>
         Public Sub New(id As Integer, name As String, FormControl As Control, setter As SetDelegate, getter As GetDelegate, flags As ControlDataFlags, AssocControls As Control())
             Me.New(id, name, FormControl, setter, getter, Nothing, Nothing, flags, AssocControls)
         End Sub
@@ -240,7 +223,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="multiValueGetter">The multi-value getter delegate, if any.  See comments for MultiValueGetDelegate.  May be Nothing.</param>
         ''' <param name="flags">Additional flags.</param>
         ''' <param name="AssociatedControls">An array of associated controls which should be enabled/disabled along with the FormControl if a property is not supported in a given project system.  May be Nothing.</param>
-        ''' <remarks></remarks>
         Protected Sub New(id As Integer, name As String, FormControl As Control, setter As SetDelegate, getter As GetDelegate, multiValueSetter As MultiValueSetDelegate, multiValueGetter As MultiValueGetDelegate, flags As ControlDataFlags, AssociatedControls As Control())
             If id < 0 Then 'Don't allow DISPID_UNKNOWN (-1) etc
                 Debug.Fail("Property ID must be non-negative")
@@ -276,9 +258,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' The DISPID that corresponds to the property in the project.  See comments at top of PropertyControlData.vb.
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public ReadOnly Property DispId() As Integer
             Get
                 Return _dispId
@@ -290,9 +269,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''  are looked up by name (not DISPID).  This allows project flavors to hide one property and add another with the same name but
         '''  a different DISPID in order to "override" a property.
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public ReadOnly Property PropertyName() As String
             Get
                 Return _propertyName
@@ -302,8 +278,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Returns the page where this property is hosted.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Protected ReadOnly Property PropPage() As PropPageUserControlBase
             Get
                 Return m_PropPage
@@ -315,8 +289,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Retrieves the object to be used for querying for common property values.  The object
         '''   used may vary, depending on the project type and what it supports.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Protected ReadOnly Property CommonPropertiesObject() As Object
             Get
                 Debug.Assert(m_PropPage IsNot Nothing, "PropertyControlData not initialized?")
@@ -330,7 +302,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   passed in to the page through SetObjects.  However, it may be modified by subclasses to contain a superset
         '''   or subset for special purposes.
         ''' </summary>
-        ''' <value></value>
         ''' <remarks>
         ''' Calls to this property are called once by the PropPageUserControlBase after each SetObjects call, and may
         '''   be cached after that.  Properties should return the same set of values when given the same set of 
@@ -350,8 +321,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   based on the set of objects passed in to the page through SetObjects.  However, it may be modified by subclasses to 
         '''   contain a superset or subset for special purposes.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public Overridable ReadOnly Property ExtendedPropertiesObjects() As Object()
             Get
                 Debug.Assert(m_PropPage IsNot Nothing, "PropertyControlData not initialized?")
@@ -363,9 +332,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' The control, if any, which is automatically managed by this class instance to correspond to the property's value.  May be Nothing.
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public ReadOnly Property FormControl() As Control
             Get
                 Return m_FormControl
@@ -377,8 +343,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' True iff this property is user-persisted (i.e., rather than getting/setting it directly through the project
         '''   system, the storage/retrieval of the property's value is handled by the page).
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public Property IsUserPersisted() As Boolean
             Get
                 Return ((Flags And ControlDataFlags.UserPersisted) <> 0)
@@ -418,8 +382,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Note that this is *not* equivalent to whether or not the property is configuration-dependent - no properties on
         '''   a non-configuration-page are "common" properties, even though they are non-configuration-dependent
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public Property IsCommonProperty() As Boolean
             Get
                 Return ((Flags And ControlDataFlags.CommonProperty) = ControlDataFlags.CommonProperty)
@@ -438,8 +400,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Returns true iff this property is configuration-specific.  This is not the opposite of
         '''   a "common" property (but all common properties are non-configuration-specific).
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public ReadOnly Property IsConfigurationSpecificProperty() As Boolean
             Get
                 Debug.Assert(m_PropPage IsNot Nothing)
@@ -460,8 +420,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' True iff this property instance is currently dirty
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public Property IsDirty() As Boolean
             Get
                 Return ((Flags And ControlDataFlags.Dirty) = ControlDataFlags.Dirty)
@@ -513,8 +471,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   property represented by this class instance is missing in the current
         '''   project.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
         Public Shared ReadOnly Property MissingProperty() As Object
             Get
@@ -539,8 +495,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   property has different values in the currently selected configurations
         '''   and therefore cannot be determined.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
         Public Shared ReadOnly Property Indeterminate() As Object
             Get
@@ -553,8 +507,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   property has different values in the currently selected configurations
         '''   and therefore cannot be determined.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public ReadOnly Property IsIndeterminate() As Boolean
             Get
 #If DEBUG Then
@@ -569,8 +521,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   property represented by this class instance is missing in the current
         '''   project.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public ReadOnly Property IsMissing() As Boolean
             Get
 #If DEBUG Then
@@ -584,8 +534,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Returns true iff the value is the special indeterminate or missing
         '''   property value.
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function IsSpecialValue() As Boolean
             Return IsSpecialValue(InitialValue)
         End Function
@@ -594,8 +542,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Returns true iff the given value is the special indeterminate or missing
         '''   property value.
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Shared Function IsSpecialValue(Value As Object) As Boolean
             Return (Value Is s_missingValue) OrElse (Value Is s_indeterminateValue)
         End Function
@@ -619,8 +565,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   will have the value IndeterminateValue (and m_AllInitialValues will contain the array of differing values).
         '''   If the property was not found, this will have the value MissingValue.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public ReadOnly Property InitialValue() As Object
             Get
                 Return _initialValue
@@ -633,8 +577,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   for this property.  Generally only stored if the values were actually different.  Otherwise, this may
         '''   simply be Nothing.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public ReadOnly Property AllInitialValues() As Object()
             Get
                 Debug.Assert(_allInitialValues Is Nothing OrElse _allInitialValues.Length = RawPropertiesObjects.Length AndAlso _allInitialValues.Length = ExtendedPropertiesObjects.Length,
@@ -651,8 +593,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   as each element.  Never returns Nothing, but always returns an array of the same size
         '''   as RawPropertiesObjects.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public ReadOnly Property AllInitialValuesExpanded() As Object()
             Get
                 Dim Values() As Object = AllInitialValues
@@ -679,7 +619,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   that the same value is being persisted for all objects (configurations).
         ''' </summary>
         ''' <param name="InitialValue">The value to set as the initial value.</param>
-        ''' <remarks></remarks>
         Public Sub SetInitialValues(InitialValue As Object)
             _initialValue = InitialValue
             _allInitialValues = Nothing
@@ -692,7 +631,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="InitialValue">The single initial value to set into m_InitialValue</param>
         ''' <param name="AllInitialValues">All initial values for all objects (configurations).  May be Nothing if all values are
         '''   the same as the single initial value, or if InitialValue is IsMissing.</param>
-        ''' <remarks></remarks>
         Public Sub SetInitialValues(InitialValue As Object, AllInitialValues As Object())
             If AllInitialValues IsNot Nothing AndAlso AllInitialValues.Length = 0 Then
                 Throw Common.CreateArgumentException(NameOf(AllInitialValues))
@@ -712,7 +650,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   set as well.
         ''' </summary>
         ''' <param name="AllInitialValues"></param>
-        ''' <remarks></remarks>
         Public Sub SetInitialValues(AllInitialValues As Object())
             Requires.NotNull(AllInitialValues, NameOf(AllInitialValues))
 
@@ -728,7 +665,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Sets up the property descriptor by searching for the property in the objects passed to us.
         ''' </summary>
-        ''' <remarks></remarks>
         Public Overridable Sub Initialize(PropertyPage As PropPageUserControlBase)
             Debug.Assert(PropertyPage IsNot Nothing)
             m_Initializing = True
@@ -785,7 +721,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Initializes the value for the property by getting the value from the project system
         ''' </summary>
-        ''' <remarks></remarks>
         Public Overridable Sub InitPropertyValue()
             Dim prop As PropertyDescriptor
             Dim Value As Object = Nothing
@@ -845,7 +780,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Updates the UI for the property's control (if any), using the current value in Me.InitialValue
         ''' </summary>
-        ''' <remarks></remarks>
         Public Overridable Sub InitPropertyUI()
             Dim value As Object
             Dim Handled As Boolean
@@ -931,7 +865,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Enables or disables the given control associated with this property (but never
         '''   enables a control when it has been disabled by a project flavor).
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub EnableAssociatedControl(control As Control, Enabled As Boolean)
             EnableAssociatedControls(New Control() {control}, Enabled)
         End Sub
@@ -941,7 +874,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Enables or disables all the controls associated with this property (but never
         '''   enables a control when it has been disabled by a project flavor).
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub EnableAssociatedControls(controls() As Control, Enabled As Boolean)
             If Not _controlsCanBeEnabled Then
                 'A flavor has disabled this property or made it readonly - we shouldn't enable the controls even
@@ -960,7 +892,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Enables or disables all the controls associated with this property (but never
         '''   enables a control when it has been disabled by a project flavor).
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub EnableControls(Enabled As Boolean)
             'Enable or disable the main control
             If FormControl IsNot Nothing Then
@@ -979,7 +910,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   disables it.
         ''' </summary>
         ''' <param name="controls"></param>
-        ''' <remarks></remarks>
         Private Shared Sub SetControlsReadOnly(controls() As Control)
             If controls IsNot Nothing Then
                 For Each control As Control In controls
@@ -998,7 +928,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="Controls">The controls to hide.  May be Nothing or empty.</param>
         ''' <param name="Hide">If True, the controls are hidden, else they're disabled</param>
-        ''' <remarks></remarks>
         Protected Shared Sub HideOrDisableControls(Controls() As Control, Hide As Boolean)
             If Controls IsNot Nothing Then
                 For Each Control As Control In Controls
@@ -1017,7 +946,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   User pages handle this by specifying ControlDataFlags.UserPersisted, and overriding
         '''   PropPageUserControlBase.WriteUserDefinedProperty, ReadUserDefinedProperty and GetUserDefinedPropertyDescriptor.
         ''' </summary>
-        ''' <returns></returns>
         ''' <remarks>
         ''' This is normally overridden in the property page, which this method delegates to, and
         '''    not in this class.
@@ -1040,7 +968,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="PropertyName"></param>
         ''' <param name="Value"></param>
-        ''' <returns></returns>
         ''' <remarks>Used only for non-standard properties.  Note that this is completely independent of whether a custom
         '''   getter and setter are defined (they control reading a value from and writing it to a control's UI, while this
         '''   mechanism handles persisting and depersisting the property value in the project or other storage once it's 
@@ -1060,7 +987,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="PropertyName"></param>
         ''' <param name="Value"></param>
-        ''' <returns></returns>
         ''' <remarks>Used only for non-standard properties.  Note that this is completely independent of whether a custom
         '''   getter and setter are defined (they control reading a value from and writing it to a control's UI, while this
         '''   mechanism handles persisting and depersisting the property value in the project or other storage once it's 
@@ -1196,8 +1122,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Retrieves all current values of a property, for controls which support multiple-value get.
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function GetControlValueMultipleValues() As Object()
             'Get the current values from the UI
             Dim values() As Object = Nothing
@@ -1227,8 +1151,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="control"></param>
         ''' <param name="_TypeConverter"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function GetControlValue(control As Control, _TypeConverter As TypeConverter) As Object
 
             Dim StringText As String
@@ -1350,8 +1272,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   PropertyControlData.MissingProperty is returned.
         ''' </summary>
         ''' <param name="Extenders">The list of extenders to pass to the descriptor's GetValue function</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Overridable Function TryGetPropertyValueNative(Extenders As Object()) As Object
             If IsCommonProperty Then
                 Try
@@ -1373,8 +1293,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="Descriptor">The property descriptor for the property to get the value from</param>
         ''' <param name="Extenders">The list of extenders to pass to the descriptor's GetValue function</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Shared Function TryGetNonCommonPropertyValueNative(Descriptor As PropertyDescriptor, Extenders As Object()) As Object
             Dim Value As Object = Nothing
 
@@ -1410,7 +1328,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   that value is returned.  If they differ, PropertyControlData.Inderminate is returned.  If the property descriptor is missing,
         '''   PropertyControlData.MissingProperty is returned.
         ''' </param>
-        ''' <remarks></remarks>
         Public Overridable Sub GetAllPropertyValuesNative(Extenders As Object(), ByRef Values As Object(), ByRef ValueOrIndeterminate As Object)
             GetAllPropertyValuesNative(PropDesc, Extenders, Values, ValueOrIndeterminate)
         End Sub
@@ -1428,7 +1345,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   that value is returned.  If they differ, PropertyControlData.Inderminate is returned.  If the property descriptor is missing,
         '''   PropertyControlData.MissingProperty is returned.
         ''' </param>
-        ''' <remarks></remarks>
         Public Shared Sub GetAllPropertyValuesNative(Descriptor As PropertyDescriptor, Extenders As Object(), ByRef Values As Object(), ByRef ValueOrIndeterminate As Object)
             Requires.NotNull(Extenders, NameOf(Extenders))
 
@@ -1462,8 +1378,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   or else return Indeterminate
         ''' </summary>
         ''' <param name="Values"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Shared Function GetValueOrIndeterminateFromArray(Values() As Object) As Object
             'Determine if all the values are the same or not
             Requires.NotNull(Values, NameOf(Values))
@@ -1498,8 +1412,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   visible in the property page's control, which the user may have edited).
         ''' No type conversion takes place.
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Overridable Function GetPropertyValueNative(Extender As Object) As Object
             Debug.Assert(PropDesc IsNot Nothing, "Calling GetPropertyValueNative() on a property that could not be found [PropDesc Is Nothing]")
 
@@ -1518,8 +1430,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="Descriptor">The type descriptor to get the property value from.</param>
         ''' <param name="Extender">The extender objects to use.</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Protected Shared Function GetNonCommonPropertyValueNative(Descriptor As PropertyDescriptor, Extender As Object) As Object
             Debug.Assert(Descriptor IsNot Nothing, "Calling GetPropertyValueNative() on a property that could not be found [Descriptor Is Nothing]")
             Debug.Assert(Extender IsNot Nothing)
@@ -1535,7 +1445,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' The value is first converted using the property's type converter.
         ''' </summary>
         ''' <param name="Value"></param>
-        ''' <remarks></remarks>
         Public Overridable Sub SetPropertyValue(Value As Object)
             m_PropPage.SuspendPropertyChangeListening(DispId)
             Try
@@ -1582,7 +1491,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' The value is not converted using any type converter.
         ''' </summary>
         ''' <param name="Value"></param>
-        ''' <remarks></remarks>
         Public Overridable Sub SetPropertyValueNative(Value As Object)
             m_PropPage.SuspendPropertyChangeListening(DispId)
 
@@ -1631,7 +1539,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="Objects">The objects to set the values on</param>
         ''' <param name="Values">The values to set into the property for each of the objects (configurations)</param>
-        ''' <remarks></remarks>
         Public Overridable Sub SetPropertyValueNativeMultipleValues(Objects As Object(), Values As Object())
             If IsUserPersisted Then
                 'No need to handle this case, it is not currently supported
@@ -1681,7 +1588,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="Descriptor">The property descriptor to invoke SetValue on</param>
         ''' <param name="Component">The component whose property should be changed</param>
         ''' <param name="Value">The new value to set the given property to</param>
-        ''' <remarks></remarks>
         Protected Shared Sub PropertyDescriptorSetValue(Descriptor As PropertyDescriptor, Component As Object, Value As Object)
             Dim Helper As New PropertyDescriptorSetValueHelper
             Helper.SetValue(Descriptor, Component, Value)
@@ -1692,7 +1598,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Helper class for PropertyDescriptorSetValue - detects if a PropertyDescriptor.SetValue
         '''   fails due to a canceled checkout...
         ''' </summary>
-        ''' <remarks></remarks>
         Private Class PropertyDescriptorSetValueHelper
             Private _valueChangedWasFired As Boolean
 
@@ -1703,7 +1608,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ''' <param name="Descriptor"></param>
             ''' <param name="Component"></param>
             ''' <param name="Value"></param>
-            ''' <remarks></remarks>
             Public Sub SetValue(Descriptor As PropertyDescriptor, Component As Object, Value As Object)
                 'Hook up to detect if ValueChanged is fired
                 Descriptor.AddValueChanged(Component, AddressOf ValueChanged)
@@ -1739,7 +1643,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ''' Helper function for PropertyDescriptorSetValue - handles the OnValueChanged
             '''   event for the property descriptor as it's being set.
             ''' </summary>
-            ''' <remarks></remarks>
             Private Sub ValueChanged(sender As Object, e As EventArgs)
                 Debug.Assert(Not _valueChangedWasFired, "OnValueChanged() fired multiple times?")
                 _valueChangedWasFired = True
@@ -1754,8 +1657,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   same value for a given property (i.e., it does not depend on whether multiple configurations have currently been passed in
         '''   to SetObjects, but simply whether this property supports multiple-value undo/redo).
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Overridable Function SupportsMultipleValueUndo() As Boolean
             If IsUserPersisted Then
                 'Not currently supported: User-persisted properties that have per-config values
@@ -1799,7 +1700,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="Descriptor">The descriptor for the common property.</param>
         ''' <param name="ProjectCommonPropertiesObject">The project object from which to query the property value.</param>
-        ''' <returns></returns>
         ''' <remarks>
         ''' This must be a common property.
         ''' See comments "About 'common' properties"
@@ -1816,7 +1716,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   control on the property page as it has been edited by the user).
         ''' No type conversion is performed on the return value.
         ''' </summary>
-        ''' <returns></returns>
         ''' <remarks>
         ''' This must be a common property.
         ''' See comments "About 'common' properties"
@@ -1835,7 +1734,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="Descriptor">The descriptor for the common property.</param>
         ''' <param name="ProjectCommonPropertiesObject">The project object from which to query the property value.</param>
-        ''' <returns></returns>
         ''' <remarks>
         ''' See comments "About 'common' properties"
         ''' </remarks>
@@ -1916,7 +1814,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   This is done after a non-immediate (child) property page is canceled in order to restore
         '''   the page's original values into the control.
         ''' </summary>
-        ''' <remarks></remarks>
         Public Overridable Sub RestoreInitialValue()
             If Not IsDirty Then
                 Return
@@ -1952,7 +1849,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   dirty, only the last SetDirty() call should pass in True for ReadyToApply.  Doing it this way will cause all of the properties
         '''   to be changed in the same undo/redo transaction (apply batches up all current changes into a single transaction).
         ''' </param>
-        ''' <remarks></remarks>
         Protected Sub SetDirty(ReadyToApply As Boolean)
             IsDirty = True
             m_PropPage.SetDirty(ReadyToApply)
@@ -1965,7 +1861,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub Control_TextChanged(sender As Object, e As EventArgs)
             'We don't want to apply change while the user might still be typing in the textbox, therefore
             '  we use ReadyToApply:=False
@@ -1978,7 +1873,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub Control_TextUpdated(sender As Object, e As EventArgs)
             'We don't want to apply change while the user might still be typing in the textbox, therefore
             '  we use ReadyToApply:=False
@@ -1991,7 +1885,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub Control_LostFocus(sender As Object, e As EventArgs)
             'If the user leaves the property page to, say, a tool window, we will receive the 
             '  notification here.  If the page is dirty (s/he has typed something into the 
@@ -2006,7 +1899,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub Control_Validated(sender As Object, e As EventArgs)
             If IsDirty Then
                 SetDirty(True)
@@ -2018,7 +1910,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Protected Overridable Sub ComboBox_SelectionChangeCommitted(sender As Object, e As EventArgs)
             SetDirty(True)
         End Sub
@@ -2028,26 +1919,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub ComboBox_DropDown(sender As Object, e As EventArgs)
             'We need to make sure the drop-down list is wide enough for its contents
             Common.SetComboBoxDropdownWidth(DirectCast(sender, ComboBox))
         End Sub
-
-        ''' <summary>
-        ''' 
-        ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub CheckBox_CheckStateChanged(sender As Object, e As EventArgs)
             SetDirty(True)
         End Sub
-
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        ''' <remarks></remarks>
         Public Overridable Sub AddChangeHandlers()
 
             If (FormControl IsNot Nothing) AndAlso Not IsUserHandledEvents Then
@@ -2172,7 +2052,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Calls OnPropertyChanging on the PropPageUserControlBase for this property.  This is required for Undo/Redo
         '''   support.
         ''' </summary>
-        ''' <remarks></remarks>
         Protected Overridable Sub OnPropertyChanging()
             m_PropPage.OnPropertyChanging(PropertyName, PropDesc)
         End Sub
@@ -2184,7 +2063,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="OldValue">The property's previous value.</param>
         ''' <param name="NewValue">The property's new value.</param>
-        ''' <remarks></remarks>
         Protected Overridable Sub OnPropertyChanged(OldValue As Object, NewValue As Object)
             m_PropPage.OnPropertyChanged(PropertyName, PropDesc, OldValue, NewValue)
         End Sub
@@ -2194,8 +2072,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Returns a list of files which should be checked out before trying to change this property's
         '''   value.
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Overridable Function FilesToCheckOut() As String()
             Const PERUSER_EXTENSION As String = ".user" 'Project .user file extension
 
@@ -2240,8 +2116,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="PSFFILEID"></param>
         ''' <param name="CreateIfNotExist"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function GetSpecialFile(psfFileId As Integer, CreateIfNotExist As Boolean) As String
             If m_PropPage Is Nothing OrElse m_PropPage.ProjectHierarchy Is Nothing Then
                 Debug.Fail("Unexpected null")
@@ -2277,8 +2151,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="Object1"></param>
         ''' <param name="Object2"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Shared Function ObjectsAreEqual(Object1 As Object, Object2 As Object) As Boolean
             If Object1 Is Nothing AndAlso TypeOf Object2 Is String Then
                 Object1 = String.Empty

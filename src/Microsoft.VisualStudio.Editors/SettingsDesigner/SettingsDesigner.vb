@@ -10,7 +10,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
     ''' <summary>
     ''' The root designer for settings
     ''' </summary>
-    ''' <remarks></remarks>
     Friend NotInheritable Class SettingsDesigner
         Inherits DesignerFramework.BaseRootDesigner
         Implements IRootDesigner
@@ -28,8 +27,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Trace switch used by all SettingsDesigner components - should be moved to the common Switches file
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Friend Shared ReadOnly Property TraceSwitch() As TraceSwitch
             Get
                 Static MyTraceSwitch As New TraceSwitch("SettingsDesigner", "Tracing for settings designer")
@@ -40,8 +37,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Demand-crete our designer view 
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Private ReadOnly Property View() As SettingsDesignerView
             Get
                 If _settingsDesignerViewProperty Is Nothing Then
@@ -56,8 +51,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Have we already created a view?
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Friend ReadOnly Property HasView() As Boolean
             Get
                 Return _settingsDesignerViewProperty IsNot Nothing
@@ -69,7 +62,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="technology"></param>
         ''' <returns>The view for this root designer</returns>
-        ''' <remarks></remarks>
         Public Function GetView(technology As ViewTechnology) As Object Implements IRootDesigner.GetView
             If technology <> ViewTechnology.Default Then
                 Debug.Fail("Unsupported view technology!")
@@ -83,8 +75,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Our supported technologies
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public ReadOnly Property SupportedTechnologies() As ViewTechnology() Implements IRootDesigner.SupportedTechnologies
             Get
                 Return New ViewTechnology() {ViewTechnology.Default}
@@ -94,8 +84,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Get access to all our settings
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Friend ReadOnly Property Settings() As DesignTimeSettings
             Get
                 Return Component
@@ -105,7 +93,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Commit any pending changes
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub CommitPendingChanges(suppressValidationUI As Boolean, cancelOnValidationFailure As Boolean)
             If _settingsDesignerViewProperty IsNot Nothing Then
                 _settingsDesignerViewProperty.CommitPendingChanges(suppressValidationUI, cancelOnValidationFailure)
@@ -118,8 +105,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Make component property type safe if we want to access the component through
         ''' a SettingsDesigner instance
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public Shadows ReadOnly Property Component() As DesignTimeSettings
             Get
                 Return CType(MyBase.Component, DesignTimeSettings)
@@ -133,7 +118,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Public Overloads Sub ShowContextMenu(sender As Object, e As Windows.Forms.MouseEventArgs)
             ShowContextMenu(Constants.MenuConstants.SettingsDesignerContextMenuID, e.X, e.Y)
         End Sub
@@ -156,8 +140,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         '''</summary>
         '''<param name="Hierarchy"></param>
         '''<param name="Item"></param>
-        '''<returns></returns>
-        '''<remarks></remarks>
         Friend Shared Function FullyQualifiedGeneratedTypedSettingsClassName(Hierarchy As IVsHierarchy, ItemId As UInteger, Settings As DesignTimeSettings, Item As EnvDTE.ProjectItem) As String
             Dim Ns As String
             Ns = ProjectUtils.GeneratedSettingsClassNamespace(Hierarchy, ProjectUtils.ItemId(Hierarchy, Item), True)
@@ -175,8 +157,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="itemId"></param>
         ''' <param name="Settings"></param>
         ''' <param name="FullPath"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Shared Function GeneratedClassName(Hierarchy As IVsHierarchy, itemId As UInteger, Optional Settings As DesignTimeSettings = Nothing, Optional FullPath As String = Nothing) As String
             Try
                 If itemId = VSITEMID.NIL AndAlso FullPath = "" Then
@@ -242,8 +222,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' The class name is basically the file name minus the file extension...
         ''' </summary>
         ''' <param name="PathName"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Shared Function GeneratedClassNameFromPath(PathName As String) As String
             If PathName Is Nothing Then
                 Debug.Fail("Can't get a class name from an empty path!")
@@ -257,8 +235,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="Hierarchy"></param>
         ''' <param name="itemId"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Shared Function IsDefaultSettingsFile(Hierarchy As IVsHierarchy, itemId As UInteger) As Boolean
             If itemId = VSITEMID.NIL OrElse itemId = VSITEMID.ROOT OrElse itemId = VSITEMID.SELECTION Then
                 Return False
@@ -285,8 +261,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Is this the "default" settings file
         ''' </summary>
         ''' <param name="FilePath">Fully qualified path of file to check</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Shared Function IsDefaultSettingsFile(Hierarchy As IVsHierarchy, FilePath As String) As Boolean
             If Hierarchy Is Nothing Then
                 Debug.Fail("Passed in a NULL hiearchy - can't figure out if this is the default settings file")
@@ -325,8 +299,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Find all user config files that are associated with this application
         ''' </summary>
         ''' <param name="DIrectories"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Shared Function FindUserConfigFiles(Directories As List(Of String)) As List(Of String)
             Dim result As New List(Of String)
             For Each directory As String In Directories
@@ -339,8 +311,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Find all directories that we are going to search through to find user.config files
         ''' </summary>
         ''' <param name="hierarchy"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Shared Function FindUserConfigDirectories(hierarchy As IVsHierarchy) As List(Of String)
             Dim result As New List(Of String)
             Dim ConfigHelper As New Shell.Design.Serialization.ConfigurationHelperService
@@ -393,7 +363,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="path"></param>
         ''' <param name="files"></param>
-        ''' <remarks></remarks>
         Friend Shared Sub AddUserConfigFiles(path As String, files As List(Of String))
             Debug.WriteLineIf(Common.Switches.SDSyncUserConfig.TraceInfo, String.Format("SettingsDesigner::DeleteUserConfig, path={0}", path))
 
@@ -426,7 +395,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="files">List of files to delete</param>
         ''' <param name="directories">List of directories to delete (if empty)</param>
-        ''' <remarks></remarks>
         Friend Shared Function DeleteFilesAndDirectories(files As List(Of String), directories As List(Of String)) As Boolean
             Dim completeSuccess As Boolean = True
             If files IsNot Nothing Then

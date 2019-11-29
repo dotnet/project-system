@@ -139,7 +139,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '''  Refreshes the status of all the menus of the current designer. 
         '''  This is called from DesignerMenuCommand after each invoke.
         ''' </summary>
-        ''' <remarks></remarks>
         Friend Sub RefreshMenuStatus()
             For Each MenuItem As MenuCommand In MenuCommands
                 Debug.Assert(MenuItem IsNot Nothing, "MenuItem IsNot Nothing!")

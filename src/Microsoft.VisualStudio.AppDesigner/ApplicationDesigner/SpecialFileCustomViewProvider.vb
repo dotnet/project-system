@@ -10,7 +10,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
     ''' A provider which can create views of the type SpecialFileCustomView.  See that
     '''   class' description for more information.
     ''' </summary>
-    ''' <remarks></remarks>
     Public Class SpecialFileCustomViewProvider
         Inherits CustomViewProvider
 
@@ -28,7 +27,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="DesignerPanel">The ApplicationDesignerPanel in which this view will be displayed.</param>
         ''' <param name="SpecialFileId">The special file ID to create when the user clicks the link.</param>
         ''' <param name="LinkText">The text of the link message to display.</param>
-        ''' <remarks></remarks>
         Public Sub New(DesignerView As ApplicationDesignerView, DesignerPanel As ApplicationDesignerPanel, SpecialFileId As Integer, LinkText As String)
             Debug.Assert(DesignerView IsNot Nothing)
             _designerView = DesignerView
@@ -41,8 +39,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' The text of the link message to display.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public ReadOnly Property LinkText() As String
             Get
                 Return _linkText
@@ -52,8 +48,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' The ApplicationDesignerView which owns this view.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public ReadOnly Property DesignerView() As ApplicationDesignerView
             Get
                 Return _designerView
@@ -63,8 +57,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' The special file ID to create when the user clicks the link.  Used by IVsProjectSpecialFiles.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public ReadOnly Property SpecialFileId() As Integer
             Get
                 Return _specialFileId
@@ -74,8 +66,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' The ApplicationDesignerPanel in which this view will be displayed.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public ReadOnly Property DesignerPanel() As ApplicationDesignerPanel
             Get
                 Return _designerPanel
@@ -86,8 +76,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Returns the view control (if already created)
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public Overrides ReadOnly Property View() As Control
             Get
                 Return _view
@@ -97,7 +85,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Creates the view control, if it doesn't already exist
         ''' </summary>
-        ''' <remarks></remarks>
         Public Overrides Sub CreateView()
             If _view Is Nothing Then
                 Dim NewView As New SpecialFileCustomView
@@ -111,7 +98,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Close the view control, if not already closed
         ''' </summary>
-        ''' <remarks></remarks>
         Public Overrides Sub CloseView()
             If _view IsNot Nothing Then
                 _view.Dispose()
@@ -133,7 +119,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Disposes of contained objects
         ''' </summary>
         ''' <param name="disposing"></param>
-        ''' <remarks></remarks>
         Protected Overloads Overrides Sub Dispose(Disposing As Boolean)
             If Disposing Then
                 ' Dispose managed resources.
@@ -151,7 +136,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
     ''' <summary>
     ''' Returns the document of a special file by calling through the IVsProjectSpecialFiles interface
     ''' </summary>
-    ''' <remarks></remarks>
     Public NotInheritable Class SpecialFileCustomDocumentMonikerProvider
         Inherits CustomDocumentMonikerProvider
 
@@ -164,7 +148,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="DesignerView">The associated ApplicationDesignerView</param>
         ''' <param name="SpecialFileId">The special file ID for IVsProjectSpecialFiles that will be used to
         '''   obtain the document filename</param>
-        ''' <remarks></remarks>
         Public Sub New(DesignerView As ApplicationDesignerView, SpecialFileId As Integer)
             Requires.NotNull(DesignerView, NameOf(DesignerView))
 

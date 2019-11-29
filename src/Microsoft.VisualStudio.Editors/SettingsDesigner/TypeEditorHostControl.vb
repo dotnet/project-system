@@ -14,7 +14,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
     ''' <summary>
     ''' Control to host UI type editor. Set the value and value type of the value to edit
     ''' </summary>
-    ''' <remarks></remarks>
     Friend Class TypeEditorHostControl
         Inherits UserControl
         Implements IWindowsFormsEditorService, IServiceProvider
@@ -114,7 +113,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' that we need to re-parse it if the user wants to get the deserialized
         ''' value
         ''' </summary>
-        ''' <remarks></remarks>
         Private _textValueDirty As Boolean
 
         ' Indicating if we are currently showing a UI type editor
@@ -250,7 +248,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub PreviewPanel_Paint(sender As Object, e As PaintEventArgs) Handles _previewPanel.Paint
             If Not _typeEditor Is Nothing Then
                 If _typeEditor.GetPaintValueSupported Then
@@ -269,7 +266,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Layout contained controls
         ''' </summary>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Protected Overrides Sub OnLayout(e As LayoutEventArgs)
             MyBase.OnLayout(e)
 
@@ -318,7 +314,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub ShowEditorButton_Click(sender As Object, e As EventArgs) Handles _showEditorButton.Click
             Debug.Assert(Not _typeEditor Is Nothing)
             ShowUITypeEditor()
@@ -327,7 +322,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Display the associated type editor if not already showing
         ''' </summary>
-        ''' <remarks></remarks>
         <Security.SecurityCritical()>
         <System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptions()>
         Private Sub ShowUITypeEditor()
@@ -386,7 +380,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub TextChangedHandler(sender As Object, e As EventArgs) Handles _valueTextBox.TextChanged, _valueComboBox.TextChanged
             If Not _ignoreTextChangeEvents Then
                 TextValueDirty = True
@@ -400,7 +393,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub KeyDownHandler(sender As Object, e As KeyEventArgs) Handles _valueTextBox.KeyDown
             If _typeEditor IsNot Nothing Then
                 If _typeEditor.GetEditStyle() = UITypeEditorEditStyle.DropDown Then
@@ -428,8 +420,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' and the current UI Type editor is a modal editor...
         ''' </summary>
         ''' <param name="keyData"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Protected Overrides Function IsInputKey(keyData As Keys) As Boolean
             If keyData = Keys.Enter Then
                 If _showEditorButton.Focused AndAlso _typeEditor IsNot Nothing AndAlso _typeEditor.GetEditStyle() = UITypeEditorEditStyle.Modal Then
@@ -526,8 +516,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Are we currently showing the UI type editor?
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public ReadOnly Property IsShowingUITypeEditor() As Boolean
             Get
                 Return _isShowingUITypeEditor
@@ -551,7 +539,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Host the UI type editor control given to use. 
         ''' </summary>
-        ''' <remarks></remarks>
         Private Class DropDownHolder
             Inherits Form
 
@@ -563,8 +550,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' <summary>
             ''' Override default create parameters for window
             ''' </summary>
-            ''' <value></value>
-            ''' <remarks></remarks>
             Protected Overrides ReadOnly Property CreateParams() As CreateParams
                 Get
                     Dim BaseParams As CreateParams = MyBase.CreateParams
@@ -589,12 +574,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Protected Sub HideForm()
                 Hide()
             End Sub
-
-            ''' <summary>
-            ''' 
-            ''' </summary>
             ''' <param name="e"></param>
-            ''' <remarks></remarks>
             Protected Overrides Sub OnDeactivate(e As EventArgs)
                 HideForm()
             End Sub
@@ -602,8 +582,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' <summary>
             ''' Get/set the UI type editor that I'm hosting...
             ''' </summary>
-            ''' <value></value>
-            ''' <remarks></remarks>
             Public Property Editor() As Control
                 Get
                     If Controls.Count = 1 Then
@@ -625,7 +603,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' Pressing the escape key should close the window
             ''' </summary>
             ''' <param name="m"></param>
-            ''' <remarks></remarks>
             Protected Overrides Function ProcessKeyPreview(ByRef m As Message) As Boolean
                 If m.Msg = Interop.NativeMethods.WM_KEYDOWN Then
                     If CType(m.WParam.ToInt32(), Keys) = Keys.Escape Then
@@ -642,7 +619,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub ValueComboBox_SelectedIndexChanged(sender As Object, e As EventArgs) Handles _valueComboBox.SelectedIndexChanged
             _innerValue = _valueComboBox.SelectedItem
             TextValueDirty = False
@@ -652,8 +628,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Is the text in the currently selected edit control dirty?
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Private Property TextValueDirty() As Boolean
             Get
                 Return _textValueDirty
@@ -666,7 +640,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Map the SelectAll procedure to the currently selected edit control
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub SelectAll()
             If TypeOf EditControl Is ComboBox Then
                 DirectCast(EditControl, ComboBox).SelectAll()
@@ -679,8 +652,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Map the selection length property to the currently selected edit control
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public Property SelectionLength() As Integer
             Get
                 If _valueComboBox.Visible Then
@@ -703,8 +674,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Map the selection start property to the currently selected edit control
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public Property SelectionStart() As Integer
             Get
                 If _valueComboBox.Visible Then
@@ -727,8 +696,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Map the selected text to the currently selected edit control
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public Property SelectedText() As String
             Get
                 If _valueComboBox.Visible Then
@@ -751,8 +718,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Get the text in the edit control
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public Overrides Property Text() As String
             Get
                 Return EditControl.Text
@@ -771,8 +736,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Get the currently active edit control (textbox or combobox)
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Friend Property EditControl() As Control
             Get
                 If _currentEditControl IsNot Nothing Then
@@ -796,8 +759,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Get an instance of a ITypeDescriptorContext to pass into the UITypeEditor
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public Overridable ReadOnly Property Context() As ITypeDescriptorContext
             Get
                 Return Nothing
@@ -807,7 +768,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' We want to special-handle a couple of keyboard messages from the textbox...
         ''' </summary>
-        ''' <remarks></remarks>
         Private Class TypeEditorHostControlTextBox
             Inherits TextBox
 
@@ -815,8 +775,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' This code was mainly ripped from DataGridViewTextBoxEditingControl...
             ''' </summary>
             ''' <param name="m"></param>
-            ''' <returns></returns>
-            ''' <remarks></remarks>
             <Security.Permissions.SecurityPermission(Security.Permissions.SecurityAction.LinkDemand, Flags:=Security.Permissions.SecurityPermissionFlag.UnmanagedCode)>
             Protected Overrides Function ProcessKeyEventArgs(ByRef m As Message) As Boolean
                 Select Case CType(CInt(m.WParam), Keys)
@@ -847,7 +805,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Custom button that alternates between ... and combobox drop down
         ''' </summary>
-        ''' <remarks></remarks>
         Private Class ComboBoxDotDotDotButton
             Inherits Button
 
@@ -869,8 +826,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' Do we want to look like a browse button or like a 
             ''' combobox dropdown?
             ''' </summary>
-            ''' <value></value>
-            ''' <remarks></remarks>
             Public Property PaintStyle() As PaintStyles
                 Get
                     Return _paintStyle
@@ -891,7 +846,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' Keep track on when the mouse is over us
             ''' </summary>
             ''' <param name="e"></param>
-            ''' <remarks></remarks>
             Protected Overrides Sub OnMouseEnter(e As EventArgs)
                 _drawHot = True
                 Invalidate()
@@ -902,7 +856,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' Keep track on when the mouse is over us
             ''' </summary>
             ''' <param name="e"></param>
-            ''' <remarks></remarks>
             Protected Overrides Sub OnMouseLeave(e As EventArgs)
                 _drawHot = False
                 Invalidate()
@@ -913,7 +866,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' Custom paint ... or combobox drop down...
             ''' </summary>
             ''' <param name="pevent"></param>
-            ''' <remarks></remarks>
             Protected Overrides Sub OnPaint(pevent As PaintEventArgs)
                 MyBase.OnPaint(pevent)
                 Select Case PaintStyle

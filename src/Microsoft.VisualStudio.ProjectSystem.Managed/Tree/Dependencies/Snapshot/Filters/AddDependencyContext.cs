@@ -76,7 +76,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
         /// <summary>
         /// Returns an enumerator over all dependencies in the project tree.
         /// </summary>
-        /// <returns></returns>
         public ImmutableDictionary<string, IDependency>.Enumerator GetEnumerator()
         {
             return _worldBuilder.GetEnumerator();

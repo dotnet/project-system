@@ -9,7 +9,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
     ''' The DesignTimeSettings class is a list of all the settings that are currently
     ''' available in a .Settings file.
     ''' </summary>
-    ''' <remarks></remarks>
     <
     Designer(GetType(SettingsDesigner), GetType(Design.IRootDesigner)),
     DesignerCategory("Designer")
@@ -25,7 +24,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' We may want to special-case handling of the generated class name to avoid
         ''' name clashes with updated projects...
         ''' </summary>
-        ''' <remarks></remarks>
         Private _useSpecialClassName As Boolean
 
         Private ReadOnly _settings As New List(Of DesignTimeSettingInstance)(16)
@@ -50,9 +48,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Is the UseMySettingsClassName flag set in the underlying .settings file?
         ''' If so, we may want to special-case the class name...
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Property UseSpecialClassName() As Boolean
             Get
                 Return _useSpecialClassName
@@ -65,7 +60,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' The namespace as persisted in the .settings file
         ''' </summary>
-        ''' <value></value>
         ''' <remarks>May return NULL if no namespace was persisted!!!</remarks>
         Friend Property PersistedNamespace() As String
             Get
@@ -100,8 +94,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="Name">Name to test</param>
         ''' <param name="instanceToIgnore">If we want to rename an existing setting, we want to that particular it from the unique name check</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Function IsValidName(Name As String, Optional checkForUniqueness As Boolean = False, Optional instanceToIgnore As DesignTimeSettingInstance = Nothing) As Boolean
             Return IsValidIdentifier(Name) AndAlso (Not checkForUniqueness OrElse IsUniqueName(Name, instanceToIgnore))
         End Function
@@ -111,8 +103,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="Name"></param>
         ''' <param name="IgnoreThisInstance"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Function IsUniqueName(Name As String, Optional IgnoreThisInstance As DesignTimeSettingInstance = Nothing) As Boolean
             ' Empty name not considered unique!
             If Name = "" Then
@@ -143,8 +133,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Is this a valid identifier for us to use?
         ''' </summary>
         ''' <param name="Name"></param>
-        ''' <returns>
-        ''' </returns>
         ''' <remarks>
         ''' We are more strict than the language specific code provider (if any) since the language specific code provider
         ''' may allow escaped identifiers. 
@@ -174,8 +162,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="Id1"></param>
         ''' <param name="Id2"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Shared Function EqualIdentifiers(Id1 As String, Id2 As String) As Boolean
             Return StringComparers.SettingNames.Equals(Id1, Id2)
         End Function
@@ -223,8 +209,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="TypeName"></param>
         ''' <param name="SettingName"></param>
         ''' <param name="AllowMakeUnique">If true, we are allowed to change the name in order to make this setting unique</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Function AddNew(TypeName As String, SettingName As String, AllowMakeUnique As Boolean) As DesignTimeSettingInstance
             Dim Instance As New DesignTimeSettingInstance
             Instance.SetSettingTypeName(TypeName)
@@ -251,7 +235,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="Instance"></param>
         ''' <param name="MakeNameUnique"></param>
-        ''' <remarks></remarks>
         Friend Sub Add(Instance As DesignTimeSettingInstance, Optional MakeNameUnique As Boolean = False)
             If Contains(Instance) Then
                 Return
@@ -285,7 +268,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Do we already contain this instance? 
         ''' </summary>
         ''' <param name="instance"></param>
-        ''' <returns></returns>
         ''' <remarks>
         ''' Useful to prevent adding the same setting multiple times
         ''' </remarks>
@@ -297,7 +279,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Remove a setting from our list of components...
         ''' </summary>
         ''' <param name="instance"></param>
-        ''' <remarks></remarks>
         Friend Sub Remove(instance As DesignTimeSettingInstance)
             ' If the instance is site:ed, and it's containers components contains the instance, we better remove it...
             ' ...but only if our m_settings collection contains this instance...

@@ -8,7 +8,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
     ''' <summary>
     ''' Utilities related to the code model and code dom
     ''' </summary>
-    ''' <remarks></remarks>
     Friend NotInheritable Class CodeModelUtils
 
         ' When you want an exception that has no error message and 
@@ -20,7 +19,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <summary>
         ''' This is a shared class - disallow instantiation.
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub New()
         End Sub
 
@@ -34,7 +32,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="AllowMatchToOnlyEventName">If true, and no function matches both by handled event and name, 
         '''   will return any function that handles the given event, regardless of name</param>
         ''' <returns>The function which handles the given event and (optionally) has the given name.</returns>
-        ''' <remarks></remarks>
         Public Shared Function FindEventHandler(Elements As CodeElements, EventName As String, EventHandlerFunctionName As String, AllowMatchToOnlyEventName As Boolean) As CodeFunction
             Dim ExistingHandler As CodeFunction
 
@@ -125,7 +122,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' Navigates to the given function in the code editor.
         ''' </summary>
         ''' <param name="Func">The function to navigate to.</param>
-        ''' <remarks></remarks>
         Public Shared Sub NavigateToFunction(Func As CodeFunction)
             Try
                 'Ensure the document is activated
@@ -154,7 +150,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="CodeNamespace">The namespace to search through</param>
         ''' <param name="ClassName">The class name to search for</param>
         ''' <returns>The CodeClass if found, otherwise Nothing.</returns>
-        ''' <remarks></remarks>
         Public Shared Function FindCodeClass(CodeNamespace As CodeNamespace, ClassName As String) As CodeClass
             For Each Element As CodeElement In CodeNamespace.Members
                 If Element.Kind = vsCMElement.vsCMElementClass Then
@@ -176,7 +171,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="NamespaceName">The namespace name to search for</param>
         ''' <param name="ClassName">The class name to search for</param>
         ''' <returns>The CodeClass if found, otherwise Nothing.</returns>
-        ''' <remarks></remarks>
         Public Shared Function FindCodeClass(CodeElements As CodeElements, NamespaceName As String, ClassName As String) As CodeClass
             For Each Element As CodeElement In CodeElements
                 If Element.Kind = vsCMElement.vsCMElementNamespace Then

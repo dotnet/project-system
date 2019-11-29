@@ -11,7 +11,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     ''' This is an Icomparer implementation used to sort Resources for UI purposes (ResourceListView and
     '''    ResourceStringTable).
     ''' </summary>
-    ''' <remarks></remarks>
     Friend NotInheritable Class ResourceComparer
         Implements IComparer
 
@@ -19,7 +18,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Sorts an ArrayList of Resources for UI purposes
         ''' </summary>
         ''' <param name="Resources">ArrayList of Resources to source (will be sorted in place)</param>
-        ''' <remarks></remarks>
         Public Shared Sub SortResources(Resources As ArrayList)
             Resources.Sort(New ResourceComparer)
         End Sub

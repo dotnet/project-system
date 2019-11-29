@@ -17,7 +17,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     '''   both WinForms and WPF projects
     '''   See comments in proppage.vb: "Application property pages (VB and C#)"
     ''' </summary>
-    ''' <remarks></remarks>
     Friend Class ApplicationPropPageVBBase
         Inherits ApplicationPropPageInternalBase
 
@@ -68,7 +67,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="FindIconsInProject">If False, only the standard items are added (this is faster
         '''   and so may be appropriate for page initialization).</param>
-        ''' <remarks></remarks>
         Protected Overloads Sub PopulateIconList(FindIconsInProject As Boolean)
             PopulateIconList(FindIconsInProject, CommonControls.IconCombobox, CType(GetControlValueNative(Const_ApplicationIcon), String))
         End Sub
@@ -98,7 +96,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Enables the Icon combobox (if Enable=True), but only if the associated property is supported
         ''' </summary>
-        ''' <remarks></remarks>
         Protected Overridable Sub EnableIconComboBox(Enable As Boolean)
             EnableControl(CommonControls.IconCombobox, Enable)
             UpdateIconImage(False)
@@ -108,7 +105,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Adds an icon entry to the application icon combobox in its correct place
         ''' </summary>
         ''' <param name="ApplicationIconCombobox"></param>
-        ''' <remarks></remarks>
         Protected Overrides Sub AddIconEntryToCombobox(ApplicationIconCombobox As ComboBox, IconRelativePath As String)
             'In VB, the last entry in the combobox is the <browse> entry, so we add it in the
             '  next-to-last position
@@ -120,7 +116,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Update the image displayed for the currently-selected application icon
         ''' </summary>
-        ''' <remarks></remarks>
         Protected Overloads Sub UpdateIconImage(AddToProject As Boolean)
             UpdateIconImage(CommonControls.IconCombobox, CommonControls.IconPicturebox, AddToProject)
         End Sub
@@ -343,7 +338,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ''' <param name="ApplicationType"></param>
             ''' <param name="DisplayName"></param>
             ''' <param name="SupportedInExpress"></param>
-            ''' <remarks></remarks>
             Public Sub New(ApplicationType As ApplicationTypes, DisplayName As String, SupportedInExpress As Boolean)
                 _applicationType = ApplicationType
                 _displayName = DisplayName
@@ -381,9 +375,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ''' <summary>
             ''' Get the references required for each project type...
             ''' </summary>
-            ''' <value></value>
-            ''' <returns></returns>
-            ''' <remarks></remarks>
             Public ReadOnly Property References() As String()
                 Get
                     Select Case ApplicationType
@@ -407,7 +398,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ''' <summary>
             ''' Override ToString to get the "right" look in the ApplicationType combobox
             ''' </summary>
-            ''' <returns></returns>
             ''' <remarks>The current (localized) display name for the application type</remarks>
             Public Overrides Function ToString() As String
                 Return DisplayName
@@ -452,7 +442,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 ''' </summary>
                 ''' <param name="SemicolonSeparatedNames"></param>
                 ''' <param name="MustBeSupportedInExpressSKUs">If true, only application types supported by express SKUs will be returned</param>
-                ''' <remarks></remarks>
                 Friend Sub New(SemicolonSeparatedNames As String, MustBeSupportedInExpressSKUs As Boolean)
                     _mustBeSupportedInExpressSKUs = MustBeSupportedInExpressSKUs
                     For Each AppType As String In SemicolonSeparatedNames.Split(";"c)

@@ -145,7 +145,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
     ''' <summary>
     ''' Contains predefined switches for enabling/disabling trace output or code instrumentation.
     ''' </summary>
-    ''' <remarks></remarks>
     Friend Class Switches
 
         '------------- Resource Editor -------------
@@ -153,49 +152,41 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <summary>
         ''' Trace for the ResourceEditor.FileWatcher class
         ''' </summary>
-        ''' <remarks></remarks>
         Public Shared RSEFileWatcher As New TraceSwitch("RSEFileWatcher", "Trace the resource editor FileWatcher class.")
 
         ''' <summary>
         ''' Tracing for the ResourceEditor.ResourceSerializationService class
         ''' </summary>
-        ''' <remarks></remarks>
         Public Shared RSEResourceSerializationService As New TraceSwitch("RSEResourceSerializationService", "Trace the resource editor ResourceSerializationService class.")
 
         ''' <summary>
         ''' Track adding and removing resources in the resource editor
         ''' </summary>
-        ''' <remarks></remarks>
         Public Shared RSEAddRemoveResources As New TraceSwitch("RSEAddRemoveResources", "Trace adding/removing resources in the resource editor")
 
         ''' <summary>
         ''' Trace virtual mode methods in the resource editor's string table
         ''' </summary>
-        ''' <remarks></remarks>
         Public Shared RSEVirtualStringTable As New TraceSwitch("RSEVirtualStringTable", "Trace virtual mode methods in the resource editor's string table")
 
         ''' <summary>
         ''' Trace virtual mode methods in the resource editor's listview
         ''' </summary>
-        ''' <remarks></remarks>
         Public Shared RSEVirtualListView As New TraceSwitch("RSEVirtualListView", "Trace virtual mode methods in the resource editor's listview")
 
         ''' <summary>
         ''' Trace the delayed checking of errors in resources
         ''' </summary>
-        ''' <remarks></remarks>
         Public Shared RSEDelayCheckErrors As New TraceSwitch("RSEDelayCheckErrors", "Trace the delayed checking of errors in resources")
 
         ''' <summary>
         ''' Disable high-quality options on the Graphics object when creating thumbnails in the resource editor
         ''' </summary>
-        ''' <remarks></remarks>
         Public Shared RSEDisableHighQualityThumbnails As New BooleanSwitch("RSEDisableHighQualityThumbnails", "Disable high-quality options on the Graphics object when creating thumbnails in the resource editor")
 
         ''' <summary>
         ''' Trace find/replace in the resource editor
         ''' </summary>
-        ''' <remarks></remarks>
         Public Shared RSEFindReplace As New TraceSwitch("RSEFindReplace", "Trace find/replace in the resource editor")
 
 
@@ -207,7 +198,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <summary>
         ''' Trace the showing of context menus via the base control classes in DesignerFramework
         ''' </summary>
-        ''' <remarks></remarks>
         Public Shared DFContextMenu As New TraceSwitch("DFContextMenu", "Trace the showing of context menus via the base control classes in DesignerFramework")
 
 
@@ -219,7 +209,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <summary>
         ''' Trace source code control integration behavior in Microsoft.VisualStudio.Editors.dll
         ''' </summary>
-        ''' <remarks></remarks>
         Public Shared MSVBE_SCC As New TraceSwitch("MSVBE_SCC", "Trace source code control integration behavior in Microsoft.VisualStudio.Editors.dll")
 
 
@@ -231,80 +220,67 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <summary>
         ''' Trace when the active designer changes in the project designer
         ''' </summary>
-        ''' <remarks></remarks>
         Public Shared PDDesignerActivations As New TraceSwitch("PDDesignerActivations", "Trace when the active designer changes in the project designer")
 
         ''' <summary>
         ''' Trace project designer focus-related events
         ''' </summary>
-        ''' <remarks></remarks>
         Public Shared PDFocus As New TraceSwitch("PDFocus", "Trace project designer focus-related events")
 
         ''' <summary>
         ''' Trace behavior of multiple-value undo and redo
         ''' </summary>
-        ''' <remarks></remarks>
         Public Shared PDUndo As New TraceSwitch("PDUndo", "Trace behavior of multiple-value undo and redo")
 
         ''' <summary>
         ''' Trace the creation and dirtying of properties, apply, etc.
         ''' </summary>
-        ''' <remarks></remarks>
         Public Shared PDProperties As New TraceSwitch("PDProperties", "Trace the creation and dirtying of properties in property pages, apply, etc.")
 
         ''' <summary>
         ''' Trace mapping of application type - output type, MyType
         ''' </summary>
-        ''' <remarks></remarks>
         Public Shared PDApplicationType As New TraceSwitch("PDApplicationType", "Trace mapping of application type properties")
 
         ''' <summary>
         ''' Trace the functionality of extender properties
         ''' </summary>
-        ''' <remarks></remarks>
         Public Shared PDExtenders As New TraceSwitch("PDExtenders", "Trace the functionality of extender properties")
 
         ''' <summary>
         ''' Trace configuration setup and changes tracking in the project designer
         ''' </summary>
-        ''' <remarks></remarks>
         Public Shared PDConfigs As New TraceSwitch("PDConfigs", "Trace configuration setup and changes tracking in the project designer")
 
         ''' <summary>
         ''' Trace performance issues for the project designer
         ''' </summary>
-        ''' <remarks></remarks>
         Public Shared PDPerf As New TraceSwitch("PDPerf", "Trace performance issues for the project designer")
 
         ''' <summary>
         ''' Trace command routing (CmdTargetHelper, etc.) in the project designer
         ''' </summary>
-        ''' <remarks></remarks>
         Public Shared PDCmdTarget As New TraceSwitch("PDCmdTarget", "Trace command routing (CmdTargetHelper, etc.) in the project designer")
 
         ''' <summary>
         ''' Always use native ::SetParent() instead of setting the WinForms Parent property for property page hosting.
         ''' This is useful for testing the hosting of pages as it would occur for non-native pages.
         ''' </summary>
-        ''' <remarks></remarks>
         Public Shared PDAlwaysUseSetParent As New BooleanSwitch("PDAlwaysUseSetParent", "Always use native ::SetParent() instead of setting the WinForms Parent property for property page hosting")
 
         ''' <summary>
         ''' Traces message routing in the project designer and its property pages
         ''' </summary>
-        ''' <remarks></remarks>
         Public Shared PDMessageRouting As New TraceSwitch("PDMessageRouting", "Traces message routing in the project designer and its property pages")
 
         ''' <summary>
         ''' Overrides the SKU edition value for the project designer
         ''' </summary>
-        ''' <remarks></remarks>
         Public Shared PDSku As New EnumSwitch(Of VSProductSKU.VSASKUEdition)("PDSku", "Overrides the SKU edition value for the project designer")
 
         ''' <summary>
         ''' Overrides the Sub-SKU edition value for the project designer
         ''' </summary>
-        ''' <remarks></remarks>
         Public Shared PDSubSku As New EnumSwitch(Of VSProductSKU.VSASubSKUEdition)("PDSubSku", "Overrides the Sub-SKU edition value for the project designer")
 
         Public Shared PDAddVBWPFApplicationPageToAllProjects As New BooleanSwitch("PDAddVBWPFApplicationPageToAllProjects",
@@ -321,7 +297,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <summary>
         ''' Tracing whenever we read/write .settings and/or app.config files...
         ''' </summary>
-        ''' <remarks></remarks>
         Public Shared SDSerializeSettings As New TraceSwitch("SDSerializeSettings", "Serialization/deserialization of settings")
 
         '------------- WCF Tooling -------------
@@ -343,8 +318,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' </summary>
         ''' <param name="Message"></param>
         ''' <param name="FormatArguments"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Shared Function Format(Message As String, ParamArray FormatArguments() As Object) As String
             If FormatArguments Is Nothing OrElse FormatArguments.Length = 0 Then
                 Return Message
@@ -368,8 +341,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' Formats a Win32 message into a friendly form for debugging/tracing purposes
         ''' </summary>
         ''' <param name="msg"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Shared Function FormatWin32Message(msg As Windows.Forms.Message) As String
             Dim str As New StringBuilder()
             Dim MsgType As String = Nothing
@@ -441,7 +412,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <summary>
         ''' A Switch which has a simple enum value (either as integer or string representation)
         ''' </summary>
-        ''' <remarks></remarks>
         Public Class EnumSwitch(Of T)
             Inherits Switch
 
@@ -453,9 +423,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             ''' <summary>
             ''' True iff the switch has a non-empty value
             ''' </summary>
-            ''' <value></value>
-            ''' <returns></returns>
-            ''' <remarks></remarks>
             Public ReadOnly Property ValueDefined() As Boolean
                 Get
                     Return MyBase.Value <> "" AndAlso CInt(Convert.ChangeType(Value, TypeCode.Int32)) <> 0
@@ -465,9 +432,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             ''' <summary>
             ''' Gets/sets the current value of the switch
             ''' </summary>
-            ''' <value></value>
-            ''' <returns></returns>
-            ''' <remarks></remarks>
             Public Shadows Property Value() As T
                 Get
                     Return CType([Enum].Parse(GetType(T), MyBase.Value), T)
@@ -481,7 +445,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             ''' Interprets the new (string-based) correctly, based on the string or
             '''   integer representation.
             ''' </summary>
-            ''' <remarks></remarks>
             Protected Overrides Sub OnValueChanged()
                 SwitchSetting = CInt(Convert.ChangeType(Value, TypeCode.Int32))
             End Sub
@@ -497,7 +460,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' </summary>
         ''' <param name="Message"></param>
         ''' <param name="FormatArguments"></param>
-        ''' <remarks></remarks>
         <Conditional("DEBUG")>
         Public Shared Sub TraceSCC(Message As String, ParamArray FormatArguments() As Object)
 #If DEBUG Then
@@ -510,7 +472,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' </summary>
         ''' <param name="Message"></param>
         ''' <param name="FormatArguments"></param>
-        ''' <remarks></remarks>
         <Conditional("DEBUG")>
         Public Shared Sub TracePDFocus(Level As TraceLevel, Message As String, ParamArray FormatArguments() As Object)
 #If DEBUG Then
@@ -523,7 +484,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' </summary>
         ''' <param name="Message"></param>
         ''' <param name="FormatArguments"></param>
-        ''' <remarks></remarks>
         <Conditional("DEBUG")>
         Public Shared Sub TracePDUndo(Message As String, ParamArray FormatArguments() As Object)
 #If DEBUG Then
@@ -537,7 +497,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' </summary>
         ''' <param name="Message"></param>
         ''' <param name="FormatArguments"></param>
-        ''' <remarks></remarks>
         <Conditional("DEBUG")>
         Public Shared Sub TracePDProperties(Level As TraceLevel, Message As String, ParamArray FormatArguments() As Object)
 #If DEBUG Then
@@ -551,7 +510,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' </summary>
         ''' <param name="Message"></param>
         ''' <param name="FormatArguments"></param>
-        ''' <remarks></remarks>
         <Conditional("DEBUG")>
         Public Shared Sub TracePDExtenders(Level As TraceLevel, Message As String, ParamArray FormatArguments() As Object)
 #If DEBUG Then
@@ -565,7 +523,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' </summary>
         ''' <param name="Message"></param>
         ''' <param name="FormatArguments"></param>
-        ''' <remarks></remarks>
         <Conditional("DEBUG")>
         Public Shared Sub TracePDConfigs(TraceLevel As TraceLevel, Message As String, ParamArray FormatArguments() As Object)
 #If DEBUG Then
@@ -586,7 +543,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' </summary>
         ''' <param name="Message"></param>
         ''' <param name="FormatArguments"></param>
-        ''' <remarks></remarks>
         <Conditional("DEBUG")>
         Public Shared Sub TracePDPerf(Message As String, ParamArray FormatArguments() As Object)
 #If DEBUG Then
@@ -644,7 +600,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' </summary>
         ''' <param name="Message"></param>
         ''' <param name="FormatArguments"></param>
-        ''' <remarks></remarks>
         <Conditional("DEBUG")>
         Public Shared Sub TracePDCmdTarget(TraceLevel As TraceLevel, Message As String, ParamArray FormatArguments() As Object)
 #If DEBUG Then
@@ -659,7 +614,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="TraceLevel"></param>
         ''' <param name="Message"></param>
         ''' <param name="msg"></param>
-        ''' <remarks></remarks>
         <Conditional("DEBUG")>
         Public Shared Sub TracePDMessageRouting(TraceLevel As TraceLevel, Message As String, msg As Windows.Forms.Message)
 #If DEBUG Then
@@ -678,7 +632,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' </summary>
         ''' <param name="TraceLevel"></param>
         ''' <param name="Message"></param>
-        ''' <remarks></remarks>
         <Conditional("DEBUG")>
         Public Shared Sub TracePDMessageRouting(TraceLevel As TraceLevel, Message As String)
 #If DEBUG Then
@@ -689,7 +642,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <summary>
         ''' Traces the access modifier combobox functionality
         ''' </summary>
-        ''' <remarks></remarks>
         <Conditional("DEBUG")>
         Public Shared Sub TracePDAccessModifierCombobox(traceLevel As TraceLevel, message As String)
 #If DEBUG Then
@@ -703,7 +655,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' </summary>
         ''' <param name="tracelevel"></param>
         ''' <param name="message"></param>
-        ''' <remarks></remarks>
         <Conditional("DEBUG")>
         Public Overloads Shared Sub TraceSDSerializeSettings(tracelevel As TraceLevel, message As String)
 #If DEBUG Then
@@ -717,7 +668,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="tracelevel"></param>
         ''' <param name="formatString"></param>
         ''' <param name="parameters"></param>
-        ''' <remarks></remarks>
         <Conditional("DEBUG")>
         Public Overloads Shared Sub TraceSDSerializeSettings(tracelevel As TraceLevel, formatString As String, ParamArray parameters() As Object)
 #If DEBUG Then
@@ -736,7 +686,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' Trace changes to one of the monitored configuration files 
         ''' </summary>
         ''' <param name="tracelevel"></param>
-        ''' <remarks></remarks>
         <Conditional("DEBUG")>
         Public Overloads Shared Sub TraceWCFConfigFileChangeWatch(tracelevel As TraceLevel, formatString As String, ParamArray parameters() As Object)
 #If DEBUG Then
@@ -750,7 +699,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' </summary>
         ''' <param name="tracelevel"></param>
         ''' <param name="message"></param>
-        ''' <remarks></remarks>
         <Conditional("DEBUG")>
         Public Overloads Shared Sub TraceWCFConfigFileChangeWatch(tracelevel As TraceLevel, message As String)
 #If DEBUG Then

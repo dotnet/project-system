@@ -34,7 +34,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     ''' This class contains the actual top-level UI surface for the resource
     '''   editor.  It is created by ResourceEditorRootDesigner.
     ''' </summary>
-    ''' <remarks></remarks>
     Friend Class ResourceEditorView
         Inherits BaseDesignerView
         Implements Resource.ITypeResolutionContextProvider
@@ -186,7 +185,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Constructor needed for form designer (should use the constructor with a service provider)
         ''' </summary>
-        ''' <remarks></remarks>
         <System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>
         Public Sub New()
             Me.New(Nothing)
@@ -197,7 +195,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Constructor
         ''' </summary>
         ''' <param name="ServiceProvider"></param>
-        ''' <remarks></remarks>
         Public Sub New(ServiceProvider As IServiceProvider)
             MyBase.New()
 
@@ -215,7 +212,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Overrides Dispose()
         ''' </summary>
         ''' <param name="Disposing"></param>
-        ''' <remarks></remarks>
         Protected Overloads Overrides Sub Dispose(Disposing As Boolean)
             If Disposing Then
                 'Turn off listening to virtual notifications immediately.
@@ -350,8 +346,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Retrieves the set of categories handled by this instance of the resource editor.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public ReadOnly Property Categories() As CategoryCollection
             Get
                 Return _categories
@@ -362,8 +356,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Retrieves the file watcher for this instance of the resource editor.  Creates one if necessary.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public ReadOnly Property FileWatcher() As FileWatcher
             Get
                 If _fileWatcher Is Nothing Then
@@ -380,8 +372,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Return true when we are editing a name label
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Friend ReadOnly Property IsInEditing() As Boolean
             Get
                 Return _inEditingItem
@@ -391,8 +381,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Return true when we are undoing/redoing
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Friend ReadOnly Property IsUndoing() As Boolean
             Get
                 Return _inUndoing
@@ -403,8 +391,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' ReadOnly Mode
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Friend Property ReadOnlyMode() As Boolean
             Get
                 Return _readOnlyMode
@@ -420,8 +406,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Gets the RootDesigner associated with this resource editor instance.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Friend ReadOnly Property RootDesigner() As ResourceEditorRootDesigner
             Get
                 Debug.Assert(Not _rootDesigner Is Nothing, "Can't call RootDesigner before SetRootDesigner() - we don't have a root designer cached yet")
@@ -433,8 +417,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Gets the ResourceFile that is being viewed/edited in this view.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public ReadOnly Property ResourceFile() As ResourceFile
             Get
                 Return _resourceFile
@@ -445,8 +427,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' The component being edited - ResourceEditorRootComponent
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Friend ReadOnly Property RootComponent() As ResourceEditorRootComponent
             Get
                 If _rootDesigner IsNot Nothing AndAlso _rootDesigner.Component IsNot Nothing Then
@@ -469,7 +449,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Return the root Registry key of the Resource Editor
         ''' </summary>
-        ''' <remarks></remarks>
         Private ReadOnly Property RegistryRoot() As String
             Get
                 If _registryRoot Is Nothing Then
@@ -488,7 +467,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''  We save a list of file extensions in the registry. All extensions were approved by the customer that they don't want to see
         '''  a warning dialog when they double-click the item to open it.
         ''' </summary>
-        ''' <remarks></remarks>
         Private Property SafeExtensions() As String
             Get
                 Dim registryPath As String = RegistryRoot
@@ -594,7 +572,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Initializes all UI elements.
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub InitializeUI()
             AllowDrop = True
             StringTable.RowHeadersWidth = DpiAwareness.LogicalToDeviceUnits(Handle, 35)
@@ -604,8 +581,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Gets the environment font for the shell.
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Shared Function GetEnvironmentFont(ServiceProvider As IServiceProvider) As Font
             Dim UIService As IUIService = DirectCast(ServiceProvider.GetService(GetType(IUIService)), IUIService)
             If UIService IsNot Nothing Then
@@ -623,7 +598,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Initialize the fonts in the resource editor from the environment (or from the resx file,
         '''   if hard-coded there).
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub SetFonts(ServiceProvider As IServiceProvider)
             Dim MainFont, StringTableFont, ListViewFont As Font
             'First try to get the environment font
@@ -658,7 +632,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   that can cause problems with reentrant code.
         ''' </summary>
         ''' <param name="RootDesigner"></param>
-        ''' <remarks></remarks>
         Public Sub SetRootDesigner(RootDesigner As ResourceEditorRootDesigner)
             'Cache off the pointer to our root designer (our parent)
             _rootDesigner = RootDesigner
@@ -698,7 +671,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Tells the view to starting displaying resources from a ResourceFile.  Can only be called once.
         ''' </summary>
         ''' <param name="ResourceFile">The ResourceFile to load.</param>
-        ''' <remarks></remarks>
         Public Sub SetResourceFile(ResourceFile As ResourceFile)
             Debug.Assert(Not (ResourceFile Is Nothing))
             If Not _resourceFile Is Nothing Then
@@ -858,7 +830,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Create instances of all the categories
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub InitializeResourceCategories()
             _categoryStrings = New Category(
                 _categoryNameStrings, My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Cat_Strings,
@@ -944,7 +915,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Received when the resource editor view window is resized.  Cause a layout.
         ''' </summary>
-        ''' <remarks></remarks>
         Protected Overrides Sub OnResize(e As EventArgs)
             MyBase.OnResize(e)
 
@@ -956,7 +926,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Lays out the resource editor's controls.
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub LayOutResourceEditor()
             Static InLayout As Boolean = False
             If InLayout Then
@@ -983,7 +952,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="msg"></param>
         ''' <param name="wParam"></param>
         ''' <param name="lParam"></param>
-        ''' <remarks></remarks>
         Public Function OnBroadcastMessage(msg As UInteger, wParam As IntPtr, lParam As IntPtr) As Integer Implements IVsBroadcastMessageEvents.OnBroadcastMessage
             If msg = Editors.Interop.Win32Constant.WM_SETTINGCHANGE Then
                 If RootDesigner IsNot Nothing Then
@@ -1091,7 +1059,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Changes the ResourceView for the current category.  Updates the display.
         ''' </summary>
         ''' <param name="View"></param>
-        ''' <remarks></remarks>
         Private Sub ChangeResourceView(View As ResourceListView.ResourceView)
             If _currentCategory Is Nothing Then
                 Debug.Fail("m_CurrentCategory Is Nothing")
@@ -1111,7 +1078,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Category">The category to change.</param>
         ''' <param name="View">The ResourceView to change to for that category.</param>
-        ''' <remarks></remarks>
         Private Sub ChangeResourceViewForCategory(Category As Category, View As ResourceListView.ResourceView)
             Debug.Assert(_currentCategory IsNot Nothing)
             If Category Is _currentCategory Then
@@ -1126,7 +1092,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="CategoryUpdated">The category to change.</param>
         ''' <param name="Sorter"></param>
-        ''' <remarks></remarks>
         Private Sub ChangeSorterForCategory(CategoryUpdated As Category, Sorter As IComparer(Of Resource))
             Debug.Assert(_currentCategory IsNot Nothing)
             If CategoryUpdated Is _currentCategory Then
@@ -1146,7 +1111,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Commits all pending changes in the string table or listview.
         ''' </summary>
-        ''' <remarks></remarks>
         Friend Sub CommitPendingChanges()
             If _currentCategory Is Nothing Then
                 'Ignore if this is fired before categories are set up (InitializeComponent)
@@ -1167,7 +1131,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Ping the toolbar panel so that it gets included in the search for
         ''' toolbars when translating accelerators/pressing shift-alt
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub UpdateToolbarFocus()
             If _toolbarPanel IsNot Nothing Then
                 _toolbarPanel.Activate(Handle)
@@ -1186,8 +1149,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Retrieves the window that should be used as the owner of all dialogs and messageboxes.
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function GetDialogOwnerWindow() As IWin32Window
             Dim UIService As IUIService = DirectCast(RootDesigner.GetService(GetType(IUIService)), IUIService)
             If UIService IsNot Nothing Then
@@ -1204,7 +1165,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Resource">The resource to invalidate</param>
         ''' <param name="InvalidateThumbnail">If True, the resource's thumbnail and other info is also invalidated.</param>
-        ''' <remarks></remarks>
         Public Sub InvalidateResource(Resource As Resource, InvalidateThumbnail As Boolean)
             If _currentCategory IsNot Nothing Then
                 Select Case _currentCategory.CategoryDisplay
@@ -1228,7 +1188,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="DefaultButton">Which button should be default?</param>
         ''' <param name="HelpLink">The help link</param>
         ''' <returns>One of the DialogResult values</returns>
-        ''' <remarks></remarks>
         Public Overridable Function DsMsgBox(Message As String,
                 Buttons As MessageBoxButtons,
                 Icon As MessageBoxIcon,
@@ -1243,7 +1202,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Displays a message box for an exception using the Visual Studio-approved manner.
         ''' </summary>
         ''' <param name="ex">The exception whose message we want to display.</param>
-        ''' <remarks></remarks>
         Public Overridable Sub DsMsgBox(ex As Exception)
             DesignerMessageBox.Show(DirectCast(RootDesigner, IServiceProvider), ex, s_messageBoxCaption)
         End Sub
@@ -1253,7 +1211,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Switch to the specified category, if it's not already the current category.
         ''' </summary>
         ''' <param name="Category"></param>
-        ''' <remarks></remarks>
         Private Sub SwitchToCategory(Category As Category)
             If _currentCategory IsNot Nothing AndAlso _currentCategory IsNot Category Then
                 PopulateResources(Category)
@@ -1270,8 +1227,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   editor close, etc.
         ''' </summary>
         ''' <param name="pfCommitFailed"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function IVsWindowPaneCommit_CommitPendingEdit(ByRef pfCommitFailed As Integer) As Integer Implements IVsWindowPaneCommit.CommitPendingEdit
             CommitPendingChanges()
             pfCommitFailed = 0
@@ -1308,7 +1263,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Unselects all resources in the current view.
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub UnselectAllResources()
             CommitPendingChanges()
 
@@ -1330,7 +1284,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Resources">Resources to highlight</param>
         ''' <param name="SelectInPropertyGrid">If true, the property grid is updated with the new selection.</param>
-        ''' <remarks></remarks>
         Public Sub HighlightResources(Resources As ICollection(Of Resource), SelectInPropertyGrid As Boolean)
             HighlightResourceHelper(Resources, 0, True, HighlightEntireResource:=True)
         End Sub
@@ -1346,7 +1299,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Resource">The Resource to highlight</param>
         ''' <param name="Field">The field in the resource's row to highlight.</param>
         ''' <param name="SelectInPropertyGrid">If true, update the property grid with the new selection</param>
-        ''' <remarks></remarks>
         Public Sub HighlightResource(Resource As Resource, Field As FindReplace.Field, SelectInPropertyGrid As Boolean)
             If Resource IsNot Nothing Then
                 HighlightResourceHelper(New Resource() {Resource}, Field, SelectInPropertyGrid, HighlightEntireResource:=False)
@@ -1361,7 +1313,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Resource">The Resource to highlight</param>
         ''' <param name="SelectInPropertyGrid">If true, update the property grid with the new selection</param>
-        ''' <remarks></remarks>
         Friend Sub HighlightResource(Resource As Resource, SelectInPropertyGrid As Boolean)
             If Resource IsNot Nothing Then
                 HighlightResourceHelper(New Resource() {Resource}, 0, SelectInPropertyGrid, HighlightEntireResource:=True)
@@ -1376,7 +1327,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Field">The field in the resource's row to highlight, if not HighlightEntireResource and if it's a stringtable.</param>
         ''' <param name="SelectInPropertyGrid">If true, update the property grid with the new selection</param>
         ''' <param name="HighlightEntireResource">If true, Field is ignored and the entire resource is highlighted.</param>
-        ''' <remarks></remarks>
         Private Sub HighlightResourceHelper(Resources As ICollection(Of Resource), Field As FindReplace.Field, SelectInPropertyGrid As Boolean, HighlightEntireResource As Boolean)
             Dim NewCategory As Category = Nothing
             Dim ResourceCollection As New List(Of Resource)
@@ -1435,7 +1385,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   when the user double-clicks on an error in the task list.
         ''' </summary>
         ''' <param name="Resource">The resource to navigate to</param>
-        ''' <remarks></remarks>
         Public Sub NavigateToResource(Resource As Resource)
             If ResourceFile.Contains(Resource) Then
                 'First, make sure our resx file has focus
@@ -1475,7 +1424,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Set the selection in the properties window to the currently-selected set of resources.
         '''  It is the real code to do updating when we receive the message posted by us.
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub OnWmUpdatePropertyGrid()
             If _propertyGridNeedUpdate Then
                 Try
@@ -1492,8 +1440,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''    be unselected.
         ''' </summary>
         ''' <param name="Resources">An array of Resource to be selected.</param>
-        ''' <remarks>
-        ''' </remarks>
         Private Sub PropertyGridSelect(Resources() As Resource)
             'CONSIDER: Perf optimization: do delay-adding of resources to the component list.  Currently we just add all of them all the time.  This would
             '  probably involve some changes to the undo code as well.
@@ -1531,7 +1477,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Unselects all resources from the property grid.
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub PropertyGridUnselectAll()
             PropertyGridSelect(Array.Empty(Of Resource))
         End Sub
@@ -1541,7 +1486,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub ResourceListView_SelectedIndexChanged(sender As Object, e As EventArgs) Handles _resourceListView.SelectedIndexChanged
             Try
                 PropertyGridUpdate()
@@ -1575,7 +1519,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub StringTable_CellEnter(sender As Object, e As DataGridViewCellEventArgs) Handles StringTable.CellEnter
             Try
                 PropertyGridUpdate()
@@ -1590,7 +1533,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Resources"></param>
         ''' <param name="SelectInPropertyGrid"></param>
-        ''' <remarks></remarks>
         Private Delegate Sub HighlightResourcesDelegate(Resources As ICollection(Of Resource), SelectInPropertyGrid As Boolean)
 
 
@@ -1600,7 +1542,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   being shown for a set of resources and simply doing PropertyGridUpdate() doesn't give Visual Studio enough
         '''   incentive, er, time, to notice the changes.
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub DelayedPropertyGridUpdate()
             Dim SelectedResources() As Resource = GetSelectedResources()
 
@@ -1619,7 +1560,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub StringTable_CellBeginEdit(sender As Object, e As DataGridViewCellCancelEventArgs) Handles StringTable.CellBeginEdit
             Try
                 RootDesigner.DesignerLoader.ManualCheckOut()
@@ -1914,7 +1854,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   in our view yet, add them to our view.
         ''' </summary>
         ''' <param name="NewResources">The resources to add to our display.</param>
-        ''' <remarks></remarks>
         Private Sub AddAndHighlightResourcesInView(NewResources As IList(Of Resource))
             If NewResources Is Nothing OrElse NewResources.Count = 0 Then
                 Exit Sub
@@ -1984,7 +1923,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Removes a set of resources from the ResourceFile.
         ''' </summary>
         ''' <param name="Resources">The resources to remove.</param>
-        ''' <remarks></remarks>
         Public Sub RemoveResources(Resources As ICollection(Of Resource))
             CommitPendingChanges()
 
@@ -2029,7 +1967,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   in it.  Does not remove them from the ResourceFile.
         ''' </summary>
         ''' <param name="Resources"></param>
-        ''' <remarks></remarks>
         Private Sub RemoveResourcesFromView(Resources As IList)
             CommitPendingChanges()
 
@@ -2052,7 +1989,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   to our view, since they're in the ResourceFile but not yet displayed.
         ''' </summary>
         ''' <param name="Resource">The resource which has been added.</param>
-        ''' <remarks></remarks>
         Public Sub OnResourceAddedExternally(Resource As Resource)
             AddAndHighlightResourcesInView(New Resource() {Resource})
             OnResourceTouched(Resource)
@@ -2065,7 +2001,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   which is currently in our view.
         ''' </summary>
         ''' <param name="Resource">The resource which has been removed.</param>
-        ''' <remarks></remarks>
         Public Sub OnResourceRemovedExternally(Resource As Resource)
             If _inUndoing Then
                 Dim resourceCategory As Category = Resource.GetCategory(_categories)
@@ -2087,7 +2022,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' This is called when resources have been updated
         ''' </summary>
         ''' <param name="Resource">The resource which has been renamed.</param>
-        ''' <remarks></remarks>
         Friend Sub OnResourceTouched(Resource As Resource)
             If _inUndoing Then
                 Dim resourceCategory As Category = Resource.GetCategory(_categories)
@@ -2111,8 +2045,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   ResourceFile, and do not add the file to the project.
         ''' </summary>
         ''' <param name="ResourceSourceFilePath"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function CreateNewResourceFromFile(ResourceSourceFilePath As String) As Resource
             'We don't bother trying to make the name unique among those in ResourceFile, because we'll do that in AddResources.
             Dim ResourceName As String = GetResourceNameFromFileName(ResourceSourceFilePath)
@@ -2138,8 +2070,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Given a filename, returns an ID based on that name
         ''' </summary>
         ''' <param name="FileName">The filename to base the resource name on.</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Shared Function GetResourceNameFromFileName(FileName As String) As String
             Return Path.GetFileNameWithoutExtension(GetFileNameInActualCase(FileName))
         End Function
@@ -2153,7 +2083,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Extension">The filename extension (including the period prefix, e.g. ".txt") to check</param>
         ''' <returns>The ResourceTypeEditor found, or Nothing if none found</returns>
-        ''' <remarks></remarks>
         Private Function GetResourceTypeEditorForFileExtension(Extension As String) As ResourceTypeEditor
             Debug.Assert(Extension = "" OrElse Extension.Chars(0) = "."c)
 
@@ -2184,7 +2113,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Checks to see whether we can add a resource to this file
         ''' </summary>
-        ''' <remarks></remarks>
         Private Function IsValidResourceItem(NewResource As Resource, ByRef Message As String, ByRef HelpID As String) As Boolean
             Return NewResource.ResourceTypeEditor.IsResourceItemValid(NewResource, _resourceFile, Message, HelpID)
         End Function
@@ -2198,8 +2126,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Enabled handler for the Paste menu.  Determines if the menu item should be enabled or not.
         ''' </summary>
         ''' <param name="MenuCommand">The Paste menu.</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function MenuPasteEnabledHandler(MenuCommand As DesignerMenuCommand) As Boolean
             If ReadOnlyMode OrElse IsInEditing Then
                 Return False        ' if one editBox is activated, let it handle this...
@@ -2229,8 +2155,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' The remove row command should only be enabled if we are currently
         ''' showing the string table, and there is 1 or more cells selected
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function MenuRemoveRowEnabledHandler(command As DesignerMenuCommand) As Boolean
             If ReadOnlyMode Then
                 Return False
@@ -2253,8 +2177,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Returns true iff the copy commands should be enabled
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function MenuCopyShouldBeEnabled() As Boolean
             If IsInEditing Then
                 ' we should let the textBox to handle everything....
@@ -2290,8 +2212,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Returns true iff the delete commands should be enabled
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function MenuDeleteShouldBeEnabled() As Boolean
             If ReadOnlyMode OrElse IsInEditing Then
                 ' we should let the textBox to handle everything....
@@ -2326,8 +2246,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Enabled handler for the cmdidDelete command
         ''' </summary>
         ''' <param name="menucommand"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function MenuDeleteEnabledHandler(MenuCommand As DesignerMenuCommand) As Boolean
             Return Not ReadOnlyMode AndAlso MenuDeleteShouldBeEnabled()
         End Function
@@ -2336,8 +2254,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Visible handler for the cmdidRemove command
         ''' </summary>
         ''' <param name="menucommand"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function MenuDeleteVisibleHandler(MenuCommand As DesignerMenuCommand) As Boolean
             Return _currentCategory IsNot Nothing AndAlso _currentCategory.CategoryDisplay = Category.Display.StringTable
         End Function
@@ -2346,8 +2262,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Enabled handler for the cmdidRemove command
         ''' </summary>
         ''' <param name="menucommand"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function MenuRemoveEnabledHandler(MenuCommand As DesignerMenuCommand) As Boolean
             ' we should let the textBox to handle everything when IsInEditing = True
             Return Not IsInEditing AndAlso RemoveButtonShouldBeEnabled()
@@ -2357,8 +2271,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Visible handler for the cmdidRemove command
         ''' </summary>
         ''' <param name="menucommand"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function MenuRemoveVisibleHandler(MenuCommand As DesignerMenuCommand) As Boolean
             Return _currentCategory IsNot Nothing AndAlso _currentCategory.CategoryDisplay <> Category.Display.StringTable
         End Function
@@ -2367,8 +2279,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Enabled handler for the Cut menus.  Determines if the menu items should be enabled or not.
         ''' </summary>
         ''' <param name="MenuCommand">The menu item to check</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function MenuCutEnabledHandler(MenuCommand As DesignerMenuCommand) As Boolean
             Return Not ReadOnlyMode AndAlso MenuCopyShouldBeEnabled() AndAlso MenuDeleteShouldBeEnabled()
         End Function
@@ -2377,8 +2287,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Enabled handler for the Copy menus.  Determines if the menu items should be enabled or not.
         ''' </summary>
         ''' <param name="MenuCommand">The menu item to check</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function MenuCopyEnabledHandler(MenuCommand As DesignerMenuCommand) As Boolean
             Return MenuCopyShouldBeEnabled()
         End Function
@@ -2413,7 +2321,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Enables or disables buttons as appropriate according to the current
         '''   selection state
         ''' </summary>
-        ''' <remarks></remarks>
         Private Function RemoveButtonShouldBeEnabled() As Boolean
             If ReadOnlyMode Then
                 ' we should let the textBox to handle everything....
@@ -2429,8 +2336,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Enabled handler for the Rename menus.  Determines if the menu items should be enabled or not.
         ''' </summary>
         ''' <param name="MenuCommand">The menu item to check</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function MenuRenameEnabledHandler(MenuCommand As DesignerMenuCommand) As Boolean
             If _currentCategory IsNot Nothing AndAlso _currentCategory.CategoryDisplay = Category.Display.ListView Then
                 MenuCommand.Visible = True
@@ -2452,7 +2357,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Handles the Remove menu command
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub MenuRemove(sender As Object, e As EventArgs)
             If CurrentCategory.CategoryDisplay = Category.Display.StringTable AndAlso Not StringTable.InLineSelectionMode Then
                 ClearCells()
@@ -2464,7 +2368,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Clear cells in StringTable
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub ClearCells()
             If CurrentCategory.CategoryDisplay <> Category.Display.StringTable Then
                 Return
@@ -2493,7 +2396,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub MenuRemoveRow(sender As Object, e As EventArgs)
             RemoveResources(GetSelectedResources())
         End Sub
@@ -2504,7 +2406,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub MenuRename(sender As Object, e As EventArgs)
             Dim SelectedResources() As Resource = GetSelectedResources()
             If SelectedResources.Length = 1 Then
@@ -2518,7 +2419,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub MenuCut(sender As Object, e As EventArgs)
             MenuCopy(sender, e)
             MenuRemove(sender, e)
@@ -2530,7 +2430,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub MenuCopy(sender As Object, e As EventArgs)
             If CurrentCategory.CategoryDisplay = Category.Display.StringTable AndAlso Not StringTable.InLineSelectionMode Then
                 Dim cells As DataGridViewSelectedCellCollection = StringTable.SelectedCells
@@ -2547,7 +2446,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Handles the Paste menu command
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub MenuPaste(sender As Object, e As EventArgs)
             Dim ActualEffect As DragDropEffects
             Dim ActualFormat As ResourceEditorDataFormats
@@ -2576,7 +2474,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' An enum for the clipboard formats supported by the resource editor.
         ''' </summary>
-        ''' <remarks></remarks>
         Private Enum ResourceEditorDataFormats
             Resources 'Our own internal format, used between instances of the resource editor and intra-editor
             SolutionExplorer 'Visual Studio solution explorer
@@ -2627,7 +2524,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Clipboard format for intra-editor and between resource editor instances.  Essentially just a list of
         '''   serialized Resources.
         ''' </summary>
-        ''' <remarks></remarks>
         <Serializable()>
         Private NotInheritable Class ResourcesDataFormat
             'List of resources
@@ -2637,7 +2533,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' Constructor
             ''' </summary>
             ''' <param name="Resources"></param>
-            ''' <remarks></remarks>
             Public Sub New(Resources() As Resource)
                 _resources = Resources
             End Sub
@@ -2645,8 +2540,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <summary>
             ''' Retrives the list of resources stored in this format.
             ''' </summary>
-            ''' <value></value>
-            ''' <remarks></remarks>
             Public ReadOnly Property Resources() As Resource()
                 Get
                     Return _resources
@@ -2665,7 +2558,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Resources">The set of resources</param>
         ''' <returns>A data object with our supported source formats.</returns>
-        ''' <remarks></remarks>
         Private Function CreateDataObjectFromResources(Resources() As Resource) As IDataObject
             Dim Data As New DataObject
 
@@ -2790,7 +2682,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Copies a set of resources to the clipboard in all formats sourced by us.
         ''' </summary>
         ''' <param name="Resources">The resources to copy</param>
-        ''' <remarks></remarks>
         Private Sub CopyResourcesToClipboard(Resources() As Resource)
             'The old temporary files from the last clipboard or drag/drop operation should no longer be needed - delete them now
             DeleteTemporaryFiles(_deleteFilesOnClipboardFlush)
@@ -2806,7 +2697,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Copies a single string to the clipboard in text format
         ''' </summary>
         ''' <param name="value">The value to copy</param>
-        ''' <remarks></remarks>
         Private Sub CopyValueToClipboard(value As Object)
             'The old temporary files from the last clipboard or drag/drop operation should no longer be needed - delete them now
             DeleteTemporaryFiles(_deleteFilesOnClipboardFlush)
@@ -2830,8 +2720,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="CopyAllowed">Whether a copy is currently allowed.</param>
         ''' <param name="MoveAllowed">Whether a move is currently allowed.</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Shared Function DetermineCopyOrMove(CopyAllowed As Boolean, MoveAllowed As Boolean) As DragDropEffects
             'Shift pressed - want to move
             If (ModifierKeys And Keys.Shift) <> 0 AndAlso MoveAllowed Then
@@ -2865,7 +2753,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="ActualEffect">[Out] The copy/move effect that we choose</param>
         ''' <param name="ActualFormat">[Out] The format that we choose.</param>
         ''' <returns>True if we were able to select a format to copy or move</returns>
-        ''' <remarks></remarks>
         Private Function DataFormatSupported(Data As IDataObject, AllowedEffects As DragDropEffects, ByRef ActualEffect As DragDropEffects, ByRef ActualFormat As ResourceEditorDataFormats) As Boolean
             Dim CopyAllowed As Boolean = (AllowedEffects And DragDropEffects.Copy) <> 0
             Dim MoveAllowed As Boolean = (AllowedEffects And DragDropEffects.Move) <> 0
@@ -2926,7 +2813,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Handles setting the drag/drop effect for drag/drop events
         ''' </summary>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub SetDragDropEffect(e As DragEventArgs)
             Dim ActualFormat As ResourceEditorDataFormats
             Call DataFormatSupported(e.Data, e.AllowedEffect, e.Effect, ActualFormat)
@@ -2937,7 +2823,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Called when the mouse is moved over our view during a drag/drop operation
         ''' </summary>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Protected Overrides Sub OnDragOver(e As DragEventArgs)
             MyBase.OnDragOver(e)
             SetDragDropEffect(e)
@@ -2948,7 +2833,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Called when the mouse is moved into our view during a drag/drop operation
         ''' </summary>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Protected Overrides Sub OnDragEnter(e As DragEventArgs)
             MyBase.OnDragEnter(e)
             RootDesigner.DesignerHost.Activate()
@@ -2987,7 +2871,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub ResourceListView_ItemDrag(sender As Object, e As ItemDragEventArgs) Handles _resourceListView.ItemDrag
             Dim ResourcesToDrag() As Resource = GetSelectedResources()
             Dim Data As IDataObject = CreateDataObjectFromResources(ResourcesToDrag)
@@ -3164,8 +3047,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Decodes text data from an IDataObject
         ''' </summary>
         ''' <param name="Data"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Shared Function GetTextFromIDataObject(Data As IDataObject, ClipboardFormat As String) As String
             Dim RawData As Object = Data.GetData(ClipboardFormat)
             Dim Text As String = ""
@@ -3214,7 +3095,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Represents a single file drop info from a drag/drop initiated from the Visual Studio solution explorer
         ''' </summary>
-        ''' <remarks></remarks>
         Private Structure DraggedFileInfo
             Public FilePath As String
             Public Guid As String
@@ -3227,8 +3107,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   parses the information from the drop and returns it.
         ''' </summary>
         ''' <param name="HDropStream"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Shared Function GetFileListFromVsHDropHandle(HDropStream As Stream) As DraggedFileInfo()
             Dim Files() As DraggedFileInfo
             Const MAX_PATH As Integer = 260
@@ -3301,8 +3179,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Enabled handler for the Play menu command.  Determines if the menu item should be enabled/visible.
         ''' </summary>
         ''' <param name="MenuCommand">The menu item for Play.</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function MenuPlayEnabledHandler(MenuCommand As DesignerMenuCommand) As Boolean
             'Play should be only be visible in the Audio category
             If _currentCategory IsNot Nothing AndAlso _currentCategory.ProgrammaticName.Equals(_categoryNameAudio, StringComparison.OrdinalIgnoreCase) Then
@@ -3320,8 +3196,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Given a set of resources, determines if they can be played as audio.
         ''' </summary>
         ''' <param name="Resources"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Shared Function CanPlayResources(Resources() As Resource) As Boolean
             'The must be exactly one resource selected
             If Resources Is Nothing OrElse Resources.Length <> 1 Then
@@ -3340,7 +3214,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Handler for the "Play" menu command
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub MenuPlay(sender As Object, e As EventArgs)
             Dim SelectedResources As Resource() = GetSelectedResources()
             If Not CanPlayResources(SelectedResources) Then
@@ -3395,7 +3268,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub ResourceListView_ItemActivate(sender As Object, e As EventArgs) Handles _resourceListView.ItemActivate
             If CanPlayResources(GetSelectedResources()) Then
                 MenuPlay(sender, e)
@@ -3408,7 +3280,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Handler for the "Open" menu command
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub MenuOpen(sender As Object, e As EventArgs)
             Try
                 For Each Resource As Resource In GetSelectedResources()
@@ -3424,7 +3295,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Handler for the "Open With..." menu command
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub MenuOpenWith(sender As Object, e As EventArgs)
             Try
                 For Each Resource As Resource In GetSelectedResources()
@@ -3441,8 +3311,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Enabled handler for the Open/Open With menu commands.  Determines if the menu item should be enabled.
         ''' </summary>
         ''' <param name="MenuCommand">The menu item for Open or Open/With.</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function MenuOpenOpenWithEnabledHandler(MenuCommand As DesignerMenuCommand) As Boolean
             'Open/Open With should be shown only in the listview mode
             If _currentCategory IsNot Nothing AndAlso _currentCategory.CategoryDisplay <> Category.Display.ListView Then
@@ -3605,7 +3473,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub MenuExport(sender As Object, e As EventArgs)
             'CONSIDER: persist per resource editor instance
             Static StickyExportPath As String 'Remember where the used last exported, so we'll bring up the dialog there by default
@@ -3659,7 +3526,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub MenuImport(sender As Object, e As EventArgs)
             Dim SelectedResources() As Resource = GetSelectedResources()
 
@@ -3725,7 +3591,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Resources">The set of resources.</param>
         ''' <returns>True iff all resources in the set can be imported or exported.</returns>
-        ''' <remarks></remarks>
         Private Function CanImportOrExportResources(Resources() As Resource) As Boolean
             For Each Resource As Resource In Resources
                 'We can import or export non-string, non-resxref, non-linked resources.  Can't import
@@ -3753,8 +3618,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Menu handler for the Import command.  Determines whether it's enabled and/or visible
         ''' </summary>
         ''' <param name="MenuCommand">The import DesignerMenuCommand</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function MenuImportEnabledHandler(MenuCommand As DesignerMenuCommand) As Boolean
             'Only visible if we're in the listview
             If _currentCategory IsNot Nothing AndAlso _currentCategory.CategoryDisplay <> Category.Display.ListView Then
@@ -3780,8 +3643,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Menu handler for the Export command.  Determines whether it's enabled and/or visible
         ''' </summary>
         ''' <param name="MenuCommand">The import DesignerMenuCommand</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function MenuExportEnabledHandler(MenuCommand As DesignerMenuCommand) As Boolean
             'Only visible if we're in the listview
             If _currentCategory IsNot Nothing AndAlso _currentCategory.CategoryDisplay <> Category.Display.ListView Then
@@ -3803,7 +3664,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Given a Resource, get a filename to suggest to the user for saving that resource, based on its name.
         ''' </summary>
         ''' <param name="Resource">The Resource to get the name from.</param>
-        ''' <returns></returns>
         ''' <remarks>Only suggests only legal filenames.</remarks>
         Public Shared Function GetSuggestedFileNameForResource(Resource As Resource) As String
             Debug.Assert(Resource IsNot Nothing)
@@ -3829,7 +3689,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="FileNames"></param>
         ''' <returns>True if the user says Yes, otherwise False.</returns>
-        ''' <remarks></remarks>
         Public Function QueryUserToReplaceFiles(FileNames As IList) As Boolean
             If FileNames.Count = 0 Then
                 Debug.Fail("QueryUserToReplaceFiles: there weren't any files passed in")
@@ -3855,7 +3714,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="FolderPath">The directory to export all resources to.</param>
         ''' <param name="SingleFileName">If specified, and if there is only a single resource in the list, then this filename will be used to export to (in FolderPath).
         '''   Otherwise, the individual filenames will be derived automatically from the resource names.</param>
-        ''' <remarks></remarks>
         Private Sub ExportResources(Resources() As Resource, FolderPath As String, Optional SingleFileName As String = Nothing)
             Debug.Assert(SingleFileName = "" OrElse UBound(Resources) = 0, "ExportResources: SingleFileName is only allowed if exporting a single resource")
             If Resources Is Nothing OrElse Resources.Length = 0 Then
@@ -3944,7 +3802,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Handler for the "Select All" menu command
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub MenuSelectAll(sender As Object, e As EventArgs)
             If IsInEditing Then
                 CommitPendingChanges()
@@ -3966,8 +3823,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Enabled handler for the Cut and Copy menus.  Determines if the menu items should be enabled or not.
         ''' </summary>
         ''' <param name="MenuCommand">The menu item to check</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function MenuSelectAllEnableHandler(MenuCommand As DesignerMenuCommand) As Boolean
             Select Case CurrentCategory.CategoryDisplay
                 Case Category.Display.ListView
@@ -3988,7 +3843,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' The function was called by child-page when an editBox is activated
         ''' </summary>
-        ''' <remarks></remarks>
         Friend Sub OnItemBeginEdit()
             _inEditingItem = True
             RefreshCommandStatus()
@@ -3997,7 +3851,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' The function was called by child-page when an editBox is dismissed
         ''' </summary>
-        ''' <remarks></remarks>
         Friend Sub OnItemEndEdit()
             _inEditingItem = False
             RefreshCommandStatus()
@@ -4007,7 +3860,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' The function forces to refresh the status of all commonds...
         '''  The reason is that the selection isn't updated when we activate an editBox to edit the name label in the listView, so the status of the menu items won't be updated as well
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub RefreshCommandStatus()
             If _menuCommands IsNot Nothing Then
                 For Each command As DesignerMenuCommand In _menuCommands
@@ -4026,7 +3878,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub MenuEditLabel(sender As Object, e As EventArgs)
             If CurrentCategory.CategoryDisplay = Category.Display.StringTable Then
                 StringTable.BeginEdit(False)
@@ -4045,8 +3896,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''  the menu item is usually invisible, we use this to handle F2
         ''' </summary>
         ''' <param name="MenuCommand">The menu item to check</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function MenuEditLabelEnabledHandler(MenuCommand As DesignerMenuCommand) As Boolean
             If _currentCategory IsNot Nothing Then
                 If _currentCategory.CategoryDisplay = Category.Display.ListView Then
@@ -4072,7 +3921,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub Category_XXX_ResourcesExistChanged(sender As Object, e As EventArgs) _
         Handles _
             _categoryAudio.ResourcesExistChanged,
@@ -4089,7 +3937,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub MenuResourceTypeStrings(sender As Object, e As EventArgs)
             SwitchToCategory(_categoryStrings)
         End Sub
@@ -4100,7 +3947,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub MenuResourceTypeImages(sender As Object, e As EventArgs)
             SwitchToCategory(_categoryImages)
         End Sub
@@ -4111,7 +3957,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub MenuResourceTypeIcons(sender As Object, e As EventArgs)
             SwitchToCategory(_categoryIcons)
         End Sub
@@ -4122,7 +3967,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub MenuResourceTypeAudio(sender As Object, e As EventArgs)
             SwitchToCategory(_categoryAudio)
         End Sub
@@ -4133,7 +3977,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub MenuResourceTypeFiles(sender As Object, e As EventArgs)
             SwitchToCategory(_categoryFiles)
         End Sub
@@ -4144,7 +3987,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub MenuResourceTypeOther(sender As Object, e As EventArgs)
             SwitchToCategory(_categoryOther)
         End Sub
@@ -4159,7 +4001,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub ButtonAdd_ExistingFile_Click(sender As Object, e As EventArgs)
             Dim Title As String = My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_DlgTitle_AddExisting
             Dim FilterIndex As Integer = 0
@@ -4216,8 +4057,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Check whether "add item" menu should be enabled
         ''' </summary>
         ''' <param name="MenuCommand">The menu item to check</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function MenuAddEnabledHandler(MenuCommand As DesignerMenuCommand) As Boolean
             Return Not ReadOnlyMode
         End Function
@@ -4228,7 +4067,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub ButtonFixedAdd_Click(sender As Object, e As EventArgs)
             If CurrentCategory.AddCommand IsNot Nothing Then
                 CurrentCategory.AddCommand.Invoke(sender, e)
@@ -4239,8 +4077,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Check whether "add TIFF" menu should be enabled
         ''' </summary>
         ''' <param name="MenuCommand">The menu item to check</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function MenuAddTiffEnabledHandler(MenuCommand As DesignerMenuCommand) As Boolean
             Return Not ReadOnlyMode AndAlso Not RootComponent.IsInsideDeviceProject
         End Function
@@ -4248,7 +4084,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Handles the "Add.New String" ToolStripMenuItem
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub ButtonAdd_NewString_Click(sender As Object, e As EventArgs)
             CommitPendingChanges()
 
@@ -4261,7 +4096,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Handles the "Add.New Image.BMP Image" ToolStripMenuItem
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub ButtonAdd_NewImage_BMP_Click(sender As Object, e As EventArgs)
             QueryAddNewLinkedResource(ResourceTypeEditors.Bitmap, ResourceTypeEditorImageBase.EXT_BMP)
 
@@ -4273,7 +4107,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Handles the "Add.New Image.GIF Image" ToolStripMenuItem
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub ButtonAdd_NewImage_GIF_Click(sender As Object, e As EventArgs)
             QueryAddNewLinkedResource(ResourceTypeEditors.Bitmap, ResourceTypeEditorImageBase.EXT_GIF)
 
@@ -4285,7 +4118,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Handles the "Add.New Image.JPEG Image" ToolStripMenuItem
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub ButtonAdd_NewImage_JPEG_Click(sender As Object, e As EventArgs)
             QueryAddNewLinkedResource(ResourceTypeEditors.Bitmap, ResourceTypeEditorImageBase.EXT_JPG)
 
@@ -4297,7 +4129,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Handles the "Add.New Image.PNG" ToolStripMenuItem
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub ButtonAdd_NewImage_PNG_Click(sender As Object, e As EventArgs)
             QueryAddNewLinkedResource(ResourceTypeEditors.Bitmap, ResourceTypeEditorImageBase.EXT_PNG)
 
@@ -4309,7 +4140,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Handles the "Add.New Image.TIFF Image" ToolStripMenuItem
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub ButtonAdd_NewImage_TIFF_Click(sender As Object, e As EventArgs)
             QueryAddNewLinkedResource(ResourceTypeEditors.Bitmap, ResourceTypeEditorImageBase.EXT_TIF)
 
@@ -4321,7 +4151,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Handles the "Add.New Icon" ToolStripMenuItem
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub ButtonAdd_NewIcon_Click(sender As Object, e As EventArgs)
             QueryAddNewLinkedResource(ResourceTypeEditors.Icon, ResourceTypeEditorIcon.EXT_ICO)
         End Sub
@@ -4330,7 +4159,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Handles the "Add.New Text File" ToolStripMenuItem
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub ButtonAdd_NewTextFile_Click(sender As Object, e As EventArgs)
             QueryAddNewLinkedResource(ResourceTypeEditors.TextFile, ResourceTypeEditorTextFile.EXT_TXT)
         End Sub
@@ -4385,7 +4213,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   where to place the new resource.
         ''' </summary>
         ''' <param name="TypeEditor">The resource type editor for the type(s) of file being created.</param>
-        ''' <remarks></remarks>
         Private Sub QueryAddNewLinkedResource(TypeEditor As ResourceTypeEditor, ResourceFileExtension As String)
             Try
                 ' If we can't check out the resource file, do not pop up any dialog...
@@ -4492,7 +4319,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub ButtonFixedView_Click(sender As Object, e As EventArgs)
         End Sub
 
@@ -4501,7 +4327,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub ButtonViews_List_Click(sender As Object, e As EventArgs)
             ChangeResourceView(ResourceListView.ResourceView.List)
         End Sub
@@ -4512,7 +4337,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub ButtonViews_Details_Click(sender As Object, e As EventArgs)
             ChangeResourceView(ResourceListView.ResourceView.Details)
         End Sub
@@ -4523,7 +4347,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub ButtonViews_Thumbnail_Click(sender As Object, e As EventArgs)
             ChangeResourceView(ResourceListView.ResourceView.Thumbnail)
         End Sub
@@ -4532,8 +4355,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Enabled handler for the Open/Open With menu commands.  Determines if the menu item should be enabled.
         ''' </summary>
         ''' <param name="MenuCommand">The menu item for Open or Open/With.</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function ViewsMenuItemsEnabledHandler(MenuCommand As DesignerMenuCommand) As Boolean
             'Only visible/enabled if we're in a listview
             If _currentCategory IsNot Nothing AndAlso _currentCategory.CategoryDisplay = Category.Display.ListView Then
@@ -4554,7 +4375,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Shows a context menu, given mouse event args.
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub ShowContextMenu(sender As Object, e As MouseEventArgs)
             If e.Button = System.Windows.Forms.MouseButtons.Right Then
                 Try
@@ -4570,7 +4390,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Called when the listview should show a context menu.
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub ResourceListView_ContextMenuShow(sender As Object, e As MouseEventArgs) Handles _resourceListView.ContextMenuShow
             ShowContextMenu(sender, e)
         End Sub
@@ -4581,7 +4400,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub StringTable_ContextMenuShow(sender As Object, e As MouseEventArgs) Handles StringTable.ContextMenuShow
             ShowContextMenu(sender, e)
         End Sub
@@ -4600,7 +4418,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="ShowNewFolderButton">Whether to show the "New Folder" button</param>
         ''' <param name="DefaultPath">The path to start out with.</param>
         ''' <returns>The selected folder, or Nothing if the user canceled.</returns>
-        ''' <remarks></remarks>
         Public Function ShowFolderBrowserDialog(ByRef UserCanceled As Boolean, Title As String, ShowNewFolderButton As Boolean, Optional DefaultPath As String = Nothing) As String
             Using (DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware))
                 UserCanceled = False
@@ -4634,7 +4451,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="MultiSelect">Whether the user can select multiple files.</param>
         ''' <param name="DefaultPath">The initial path for the dialog to open</param>
         ''' <returns>The selected file/path, or Nothing if the user canceled.</returns>
-        ''' <remarks></remarks>
         Public Function ShowOpenFileDialog(ByRef UserCanceled As Boolean, Title As String, Filter As String, FilterIndex As Integer, MultiSelect As Boolean, Optional DefaultPath As String = Nothing) As String()
             Try
                 ' BUGFIX: Dev11#35824: Initialize Open File Dialog on the DefaultPath.  Nothing means devenv location.
@@ -4690,8 +4506,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="DefaultCategory">(Optional).  If present and non-Nothing, indicates which category should be the default.  This is done by checking the ByRef FilterIndexForDefaultCategory value on return.</param>
         ''' <param name="FilterIndexForDefaultCategory">[Out] (Optional) Returns the filter index which corresponds to the filter for DefaultCategory, or to the
         '''    *.* filter if there was no filter for the default category.</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function GetFileDialogFilterForCategories(Categories As CategoryCollection, Optional DefaultCategory As Category = Nothing, Optional ByRef FilterIndexForDefaultCategory As Integer = 0) As String
             Dim Filter As New StringBuilder
             FilterIndexForDefaultCategory = -1
@@ -4777,8 +4591,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Create a subdirectory in the user's temporary folder and returns it.  It will
         '''   will automatically be deleted when the editor exits.
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function GetTemporarySubfolder() As String
             'We want to start with a fairly unique name, so we'll call GetTempFileName().  But
             '  Windows actually creates this for us as a file.  So we'll try deleting it and
@@ -4805,7 +4617,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="ParentDirectory">The parent folder to create the file in.  If not specified, it's created in the user's temporary folder.</param>
         ''' <param name="PreferredFileName">If specified, tries to use this filename for the file.  Must contain only valid characters.</param>
         ''' <returns>The path to the created temporary file.</returns>
-        ''' <remarks></remarks>
         Private Function GetTemporaryFile(AutoDelete As AutoDelete, Optional ParentDirectory As String = "", Optional PreferredFileName As String = "") As String
             Dim TempFileName As String
 
@@ -4859,7 +4670,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <summary>
             ''' Constructor
             ''' </summary>
-            ''' <remarks></remarks>
             Public Sub New(background As Color)
                 _errorGlyphLarge = GetImageFromImageService(KnownMonikers.Blank, 96, 96, background)
                 _errorGlyphSmall = GetImageFromImageService(KnownMonikers.Blank, 16, 16, background)
@@ -4871,8 +4681,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <summary>
             ''' The error glyph used in a large thumbnail
             ''' </summary>
-            ''' <value></value>
-            ''' <remarks></remarks>
             Public ReadOnly Property ErrorGlyphLarge() As Image
                 Get
                     Return _errorGlyphLarge
@@ -4882,8 +4690,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <summary>
             ''' The error glyph used in a small thumbnail (details or list view)
             ''' </summary>
-            ''' <value></value>
-            ''' <remarks></remarks>
             Public ReadOnly Property ErrorGlyphSmall() As Image
                 Get
                     Return _errorGlyphSmall
@@ -4893,8 +4699,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <summary>
             ''' The error glyph used next to a thumbnail as a state image
             ''' </summary>
-            ''' <value></value>
-            ''' <remarks></remarks>
             Public ReadOnly Property ErrorGlyphState() As Image
                 Get
                     Return _errorGlyphState
@@ -4904,8 +4708,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <summary>
             ''' The arrow glyph used in the ListView to show that it is column being sorted
             ''' </summary>
-            ''' <value></value>
-            ''' <remarks></remarks>
             Public ReadOnly Property SortUpGlyph() As Image
                 Get
                     Return _sortUpGlyph
@@ -4915,8 +4717,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <summary>
             ''' The arrow glyph used in the ListView to show that it is column being sorted
             ''' </summary>
-            ''' <value></value>
-            ''' <remarks></remarks>
             Public ReadOnly Property SortDownGlyph() As Image
                 Get
                     Return _sortDownGlyph
@@ -4929,8 +4729,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Retrieves the set of internal resources that we cache for this instance of the resource editor
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public ReadOnly Property CachedResources() As CachedResourcesForView
             Get
                 Return _cachedResources
@@ -4945,7 +4743,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Gets the DTE ProjectItem corresponding to the ResX file being edited.
         ''' </summary>
-        ''' <returns></returns>
         ''' <remarks>There's always a ProjectItem, even if you're not opened in a project, 'cause then you're really opened in the Miscellaneous Files project.</remarks>
         Public Function GetResXProjectItem() As ProjectItem
             'Retrieve the ProjectItem service that we proffered in our designer loader.
@@ -4962,7 +4759,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Returns the DTE Project associated with the ResX file being edited.
         ''' </summary>
-        ''' <returns></returns>
         ''' <remarks>If the ResX file isn't opened in the context of a project, this will return the
         '''   Miscellaneous Files project (so in reality it is always opened in the context of
         '''   a project).</remarks>
@@ -4985,8 +4781,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Retrieves the IVsHierarchy interface for the project the resx file is in
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Function GetVsHierarchy() As IVsHierarchy
             Dim Hierarchy As IVsHierarchy = DirectCast(RootComponent.RootDesigner.GetService(GetType(IVsHierarchy)), IVsHierarchy)
             Debug.Assert(Hierarchy IsNot Nothing, "Couldn't find IVsHierarchy as a service from our root designer - should have been added from our designerloader")
@@ -5019,8 +4813,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Retrieves the itemid for the resx file
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Function GetVsItemId() As UInteger
             Dim DesignerLoader As ResourceEditorDesignerLoader = GetDesignerLoader()
             If DesignerLoader IsNot Nothing Then
@@ -5042,7 +4834,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   will no longer be fully qualified in Whidbey) according to the project references.
         ''' </summary>
         ''' <returns>The ITypeResolutionService for the project the .resx file was opened in, or else Nothing if it was opened outside the context of a project.</returns>
-        ''' <remarks></remarks>
         Public Function GetTypeResolutionService() As ITypeResolutionService Implements Resource.ITypeResolutionContextProvider.GetTypeResolutionService
             If _typeResolutionServiceIsCached Then
                 Return _typeResolutionServiceCache
@@ -5080,8 +4871,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   a .resx file is opened outside the context of a project.  This is a list of
         '''   assemblies commonly found in .resx files.
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Shared Function GetDefaultAssemblyReferences() As AssemblyName()
             Return s_defaultAssemblyReferences
         End Function
@@ -5161,8 +4950,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Returns true iff the resx file being edited is the default resx file
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function IsDefaultResXFile() As Boolean
             Dim VsSpecialFiles As IVsProjectSpecialFiles = TryCast(GetVsHierarchy(), IVsProjectSpecialFiles)
             If VsSpecialFiles Is Nothing Then
@@ -5209,8 +4996,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' An example is Form1.en-US.resx  [en-US is a valid CultureInfo]
         ''' </summary>
         ''' <param name="fileName"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Shared Function IsLocalizedResXFile(fileName As String) As Boolean
 
             Dim isLocalizedFileName As Boolean = False
@@ -5238,8 +5023,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Returns true if the given project is a VB project (or a VB for smart devices project)
         ''' </summary>
         ''' <param name="Project"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function IsVBProject(Project As Project) As Boolean
             Return Project IsNot Nothing AndAlso (New Guid(Project.Kind).Equals(_projectGuid_VB))
         End Function
@@ -5247,8 +5030,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Returns true iff this the default resx file for a VB project
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function ShouldUseVbMyResXCodeGenerator() As Boolean
             Return IsVBProject(GetProject()) AndAlso IsDefaultResXFile()
         End Function
@@ -5259,7 +5040,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Gets the current value of the Custom Tool property for this resx file.  If the project
         '''   does not support a Custom Tool property, returns Nothing.
         ''' </summary>
-        ''' <remarks></remarks>
         Public Function GetCustomToolCurrentValue() As String
             Dim ProjectItem As ProjectItem = GetResXProjectItem()
 
@@ -5288,7 +5068,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="OldName">The old name of the resource that was renamed</param>
         ''' <param name="NewName">The new name of the resource</param>
-        ''' <remarks></remarks>
         Friend Sub CallGlobalRename(OldName As String, NewName As String)
             Dim ProjItem As ProjectItem = GetResXProjectItem()
 
@@ -5375,7 +5154,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   generator is our own.  Otherwise returns empty.
         ''' </summary>
         ''' <returns>The name of the strongly-typed generated class, if any, otherwise String.Empty.</returns>
-        ''' <remarks></remarks>
         Friend Function GetStronglyGeneratedClassName() As String
 
             If RootComponent.RootDesigner.IsEditingResWFile() Then
@@ -5480,8 +5258,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Given a filename, determines what the generated class name would be
         ''' </summary>
         ''' <param name="FileName"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Shared Function GetGeneratedClassNameFromFileName(FileName As String) As String
             Return DesignUtil.GenerateValidLanguageIndependentIdentifier(Path.GetFileNameWithoutExtension(FileName))
         End Function
@@ -5494,7 +5270,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' handle Undo Event, it will be called when undo is started
         ''' </summary>
-        ''' <remarks></remarks>
         Friend Sub OnUndoing()
             _inUndoing = True
             _categoryAffected = Nothing
@@ -5506,7 +5281,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' handle Undo Event, it will be called when undo is done
         ''' </summary>
-        ''' <remarks></remarks>
         Friend Sub OnUndone()
             _inUndoing = False
 
@@ -5532,7 +5306,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Handle custom window messages...
         ''' </summary>
-        ''' <remarks></remarks>
         Protected Overrides Sub WndProc(ByRef m As Message)
             Select Case m.Msg
                 Case WmUserConstants.WM_UPDATE_PROPERTY_GRID

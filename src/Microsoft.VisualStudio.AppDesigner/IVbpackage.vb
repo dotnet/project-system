@@ -28,13 +28,7 @@ Namespace Microsoft.VisualStudio.Editors
 #Disable Warning IDE1006 ' Naming Styles (Compat)
         Public Delegate Function getServiceDelegate(ServiceType As Type) As Object
 #Enable Warning IDE1006 ' Naming Styles
-        ''' <summary>
-        ''' 
-        ''' </summary>
         ''' <param name="GetService"></param>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Shared ReadOnly Property PackageInstance(GetService As getServiceDelegate) As IVBPackage
             Get
                 If s_editorsPackage Is Nothing Then

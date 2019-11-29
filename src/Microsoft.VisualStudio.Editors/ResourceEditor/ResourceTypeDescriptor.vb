@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Explicit On
 Option Strict On
@@ -35,7 +35,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''  Constructs a new instance of ResourceTypeDescriptor with the specified Resource.
         ''' </summary>
         ''' <param name="Instance">An instance of Resource class.</param>
-        ''' <remarks></remarks>
         Public Sub New(Instance As Resource)
             MyBase.New()
 
@@ -76,7 +75,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' The GetComponentName method returns the name of the component instance 
         '''     this type descriptor is describing.
         ''' </summary>
-        ''' <remarks></remarks>
         Public Overrides Function GetComponentName() As String
             Debug.Assert(_instance.Name <> "")
             Return _instance.Name
@@ -86,7 +84,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' The GetClassName method returns the name of the resource type
         '''     this type descriptor is describing.
         ''' </summary>
-        ''' <remarks></remarks>
         Public Overrides Function GetClassName() As String
             ' CONSIDER: We should return Category here...
             If _instance IsNot Nothing Then

@@ -10,7 +10,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
     ''' <summary>
     ''' Editing control for UI type editor in DataGridView
     ''' </summary>
-    ''' <remarks></remarks>
     Friend NotInheritable Class DataGridViewUITypeEditorEditingControl
         Inherits TypeEditorHostControl
         Implements IDataGridViewEditingControl
@@ -57,7 +56,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Stop listening for DataGridView events
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub DisconnectDataGridViewEventHandlers()
             If DataGridView IsNot Nothing Then
                 RemoveHandler DataGridView.CellValidating, AddressOf CellValidatingHandler
@@ -67,7 +65,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Start listening for DataGridView events
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub ConnectDataGridViewEventHandlers()
             If DataGridView IsNot Nothing Then
                 AddHandler DataGridView.CellValidating, AddressOf CellValidatingHandler
@@ -80,8 +77,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Set the datagridview instance I'm showing in
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public Property DataGridView() As DataGridView Implements IDataGridViewEditingControl.EditingControlDataGridView
             Get
                 Return _dataGridView
@@ -96,7 +91,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Set the formatted representation of my current value
         ''' </summary>
-        ''' <value></value>
         ''' <remarks>Will set my value to the deserialized value - nothing if deserialization fails</remarks>
         Public Property FormattedValue() As Object Implements IDataGridViewEditingControl.EditingControlFormattedValue
             Get
@@ -308,8 +302,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' ITypeDescriptorContext to pass into UITypeEditors providing services and access to the current instance
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public Overrides ReadOnly Property Context() As System.ComponentModel.ITypeDescriptorContext
             Get
                 Return New EditContext(TryCast(DataGridView.CurrentRow.Tag, DesignTimeSettingInstance))
@@ -319,7 +311,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' ITypeDescriptorContext to pass into UITypeEditors providing services and access to the current instance
         ''' </summary>
-        ''' <remarks></remarks>
         Private Class EditContext
             Implements System.ComponentModel.ITypeDescriptorContext
 
@@ -332,8 +323,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' <summary>
             ''' The container (site) that the current instance is hosted in
             ''' </summary>
-            ''' <value></value>
-            ''' <remarks></remarks>
             Public ReadOnly Property Container() As System.ComponentModel.IContainer Implements System.ComponentModel.ITypeDescriptorContext.Container
                 Get
                     If _instance IsNot Nothing AndAlso _instance.Site IsNot Nothing Then
@@ -347,8 +336,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' <summary>
             ''' The instance this value is associated with
             ''' </summary>
-            ''' <value></value>
-            ''' <remarks></remarks>
             Public ReadOnly Property Instance() As Object Implements System.ComponentModel.ITypeDescriptorContext.Instance
                 Get
                     Return _instance
@@ -358,7 +345,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' <summary>
             ''' Let the IComponentChangeService handle component change notifications
             ''' </summary>
-            ''' <remarks></remarks>
             Public Sub OnComponentChanged() Implements System.ComponentModel.ITypeDescriptorContext.OnComponentChanged
 
             End Sub
@@ -366,7 +352,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' <summary>
             ''' We don't have any objections to things changing...
             ''' </summary>
-            ''' <remarks></remarks>
             Public Function OnComponentChanging() As Boolean Implements System.ComponentModel.ITypeDescriptorContext.OnComponentChanging
                 Return True
             End Function
@@ -374,8 +359,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' <summary>
             ''' Get the associated instance's value property descriptor
             ''' </summary>
-            ''' <value></value>
-            ''' <remarks></remarks>
             Public ReadOnly Property PropertyDescriptor() As System.ComponentModel.PropertyDescriptor Implements System.ComponentModel.ITypeDescriptorContext.PropertyDescriptor
                 Get
                     Return System.ComponentModel.TypeDescriptor.GetProperties(GetType(DesignTimeSettingInstance)).Item("Value")
@@ -386,8 +369,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' Provide services to the UITypeEditor...
             ''' </summary>
             ''' <param name="serviceType"></param>
-            ''' <returns></returns>
-            ''' <remarks></remarks>
             Public Function GetService(serviceType As Type) As Object Implements IServiceProvider.GetService
                 Return Nothing
             End Function

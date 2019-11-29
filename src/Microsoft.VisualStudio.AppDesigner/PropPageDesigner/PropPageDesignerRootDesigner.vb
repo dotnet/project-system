@@ -12,7 +12,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
     ''' This is the designer for the top-level resource editor component (PropPageDesigner).  I.e., this
     ''' is the top-level designer.  
     ''' </summary>
-    ''' <remarks></remarks>
     Public NotInheritable Class PropPageDesignerRootDesigner
         Inherits AppDesDesignerFramework.BaseRootDesigner
         Implements IRootDesigner
@@ -24,7 +23,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Returns the PropPageDesignerRootComponent component that is being edited by this designer.
         ''' </summary>
         ''' <value>The PropPageDesignerRootComponent object.</value>
-        ''' <remarks></remarks>
         Public Shadows ReadOnly Property Component() As PropPageDesignerRootComponent
             Get
                 Dim RootComponent As PropPageDesignerRootComponent = CType(MyBase.Component, PropPageDesignerRootComponent)
@@ -51,7 +49,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' We currently support only Windows Forms technology (i.e., our designer view, ResourceEditorView,
         ''' inherits from System.Windows.Forms.Control)
         ''' </summary>
-        ''' <value></value>
         ''' <remarks>
         ''' The view technology we support, which is currently only Windows Forms
         ''' </remarks>
@@ -66,7 +63,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         '''   our resource editor's designer surface.  In this case, we return an instance of ResourceEditorView.
         ''' </summary>
         ''' <param name="Technology"></param>
-        ''' <returns></returns>
         ''' <remarks>
         '''   The newly-instantiated ResourceEditorView object.
         ''' </remarks>
@@ -85,8 +81,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Wrapper function to expose our UI object
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function GetView() As PropPageDesignerView
             Return CType(RootDesigner_GetView(ViewTechnology.Default), PropPageDesignerView)
         End Function
@@ -105,7 +99,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Disposes of the root designer
         ''' </summary>
         ''' <param name="Disposing"></param>
-        ''' <remarks></remarks>
         Protected Overloads Overrides Sub Dispose(Disposing As Boolean)
             If Disposing Then
                 If _view IsNot Nothing Then

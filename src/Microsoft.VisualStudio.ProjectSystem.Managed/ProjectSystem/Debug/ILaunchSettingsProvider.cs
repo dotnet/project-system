@@ -33,7 +33,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// Blocks until at least one snapshot has been generated.
         /// </summary>
         /// <param name="timeout">The timeout in milliseconds.</param>
-        /// <returns></returns>
         Task<ILaunchSettings> WaitForFirstSnapshot(int timeout);
 
         /// <summary>

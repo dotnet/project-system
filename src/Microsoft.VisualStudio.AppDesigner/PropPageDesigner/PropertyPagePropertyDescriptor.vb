@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel
 
@@ -14,7 +14,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
     '''   directly to the propdescriptor (and hence the project).  This allows us exact control of undo and redo and how properties
     '''   are set and got.
     ''' </summary>
-    ''' <remarks></remarks>
     Public NotInheritable Class PropertyPagePropertyDescriptor
         Inherits PropertyDescriptor
 
@@ -30,7 +29,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Constructs a PropertyDescriptor using the wrapped properties property descriptor
         ''' </summary>
         ''' <param name="PropDesc">The property descriptor that is being wrapped.</param>
-        ''' <remarks></remarks>
         Public Sub New(PropDesc As PropertyDescriptor, PropertyName As String)
             MyBase.New(PropDesc)
 
@@ -55,7 +53,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Returns the type of the instance this property is bound to, which is PropPageDesignerRootComponent.
         ''' </summary>
         ''' <value>The component type.</value>
-        ''' <remarks></remarks>
         Public Overrides ReadOnly Property ComponentType() As Type
             Get
                 Return GetType(PropPageDesignerRootComponent)
@@ -67,7 +64,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         '''  Returns a value indicating whether this property is read-only.
         ''' </summary>
         ''' <value>True if the property is read-only, False otherwise.</value>
-        ''' <remarks></remarks>
         Public Overrides ReadOnly Property IsReadOnly() As Boolean
             Get
                 Return _isReadOnly
@@ -79,7 +75,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Returns the type of the property.
         ''' </summary>
         ''' <value>A Type that represents the type of the property.</value>
-        ''' <remarks></remarks>
         Public Overrides ReadOnly Property PropertyType() As Type
             Get
                 Return _propertyType
@@ -158,8 +153,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Returns the converter for the contained property
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public Overrides ReadOnly Property Converter() As TypeConverter
             Get
                 Return _typeConverter
@@ -169,9 +162,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Returns the name of the property.
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Overrides ReadOnly Property Name() As String
             Get
                 If _name = "" Then
@@ -187,8 +177,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' be displayed in a properties window.  This will be the same as the property
         ''' name for most properties.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public Overrides ReadOnly Property DisplayName() As String
             Get
                 Return _displayName
@@ -206,8 +194,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Gets an editor of the specified type.
         ''' </summary>
         ''' <param name="editorBaseType"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Overrides Function GetEditor(editorBaseType As Type) As Object
             If _propDesc IsNot Nothing Then
                 Return _propDesc.GetEditor(editorBaseType)

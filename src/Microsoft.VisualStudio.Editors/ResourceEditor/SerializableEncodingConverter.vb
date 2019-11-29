@@ -14,7 +14,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     '''   on Resource allows the Encoding property to have a dropdown list that we control and fill with
     '''   suggested encoding values.
     ''' </summary>
-    ''' <remarks></remarks>
     Friend NotInheritable Class SerializableEncodingConverter
         Inherits TypeConverter
 
@@ -26,7 +25,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Gets a value indicating whether this converter can convert an object in the given source 
         '''   type to a SerializableEncoding object using the specified context.
         ''' </summary>
-        ''' <remarks></remarks>
         Public Overrides Function CanConvertFrom(Context As ITypeDescriptorContext, SourceType As Type) As Boolean
             If SourceType.Equals(GetType(String)) Then
                 Return True
@@ -39,7 +37,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Converts the specified value object to a SerializableEncoding object.
         ''' </summary>
-        ''' <remarks></remarks>
         Public Overrides Function ConvertFrom(Context As ITypeDescriptorContext, Culture As CultureInfo, Value As Object) As Object
             If TypeOf Value Is String Then
                 Dim EncodingName As String = DirectCast(Value, String)
@@ -65,7 +62,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Converts the given value object to the specified destination type.
         ''' </summary>
-        ''' <remarks></remarks>
         Public Overrides Function ConvertTo(Context As ITypeDescriptorContext, Culture As CultureInfo, Value As Object, DestinationType As Type) As Object
             Requires.NotNull(DestinationType, NameOf(DestinationType))
 
@@ -85,7 +81,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Gets a value indicating whether this object supports a standard set of values that 
         '''   can be picked from a list using the specified context.
         ''' </summary>
-        ''' <remarks></remarks>
         Public Overrides Function GetStandardValuesSupported(Context As ITypeDescriptorContext) As Boolean
             Return True
         End Function
@@ -95,7 +90,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Indicates whether the standard values that we return are the only allowable values.
         ''' </summary>
         ''' <param name="Context"></param>
-        ''' <returns></returns>
         ''' <remarks>
         ''' We return false so that the user is allows to type in a value manually (in particular,
         '''    a codepage value).
@@ -109,7 +103,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Gets a collection of standard values collection for a System.Globalization.CultureInfo
         '''   object using the specified context.
         ''' </summary>
-        ''' <remarks></remarks>
         Public Overrides Function GetStandardValues(Context As ITypeDescriptorContext) As StandardValuesCollection
             If _standardValuesCache Is Nothing Then
                 'We want to sort like the the Save As... dialog does.  In particular, we want this sorting:
@@ -172,8 +165,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Returns true if the encoding is a Unicode encoding variant
         ''' </summary>
         ''' <param name="Encoding"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Shared Function IsUnicodeEncoding(Encoding As Encoding) As Boolean
             Return Encoding.Equals(Encoding.BigEndianUnicode) _
                 OrElse Encoding.Equals(Encoding.Unicode) _
@@ -190,7 +181,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Encoding">The encoding to check for validity.</param>
         ''' <returns>True if the encoding is valid.</returns>
-        ''' <remarks></remarks>
         Private Shared Function IsValidEncoding(Encoding As Encoding) As Boolean
             If Interop.NativeMethods.IsValidCodePage(CUInt(Encoding.CodePage)) Then
                 Return True

@@ -27,7 +27,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="RootDesigner">A root designer inherited from BaseRootDesigner, which has the ability to get services.</param>
         ''' <param name="Caption">The text to display in the title bar of the message box.</param>
         ''' <param name="HelpLink">Link to the help topic for this message box.</param>
-        ''' <remarks></remarks>
         Friend Shared Function Show(RootDesigner As BaseRootDesigner, Message As String,
                 Caption As String, Buttons As MessageBoxButtons, Icon As MessageBoxIcon,
                 Optional DefaultButton As MessageBoxDefaultButton = MessageBoxDefaultButton.Button1,
@@ -44,7 +43,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="ex">The exception to include in the message.</param>
         ''' <param name="Caption">The text to display in the title bar of the message box.</param>
         ''' <param name="HelpLink">Link to the help topic for this message box.</param>
-        ''' <remarks></remarks>
         Friend Shared Sub Show(ServiceProvider As IServiceProvider, ex As Exception,
                 Caption As String, Optional HelpLink As String = Nothing)
             Show(ServiceProvider, Nothing, ex, Caption, HelpLink)
@@ -115,7 +113,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="Icon">One of the MessageBoxIcon values that specifies which icon to display in the message box.</param>
         ''' <param name="HelpLink">Link to the help topic for this message box.</param>
         ''' <param name="DefaultButton">One of the MessageBoxDefaultButton values that specifies the default button of the message box.</param>
-        ''' <remarks></remarks>
         Friend Shared Function Show(ServiceProvider As IServiceProvider, Message As String,
                 Caption As String, Buttons As MessageBoxButtons, Icon As MessageBoxIcon,
                 Optional DefaultButton As MessageBoxDefaultButton = MessageBoxDefaultButton.Button1,
@@ -135,7 +132,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="Icon">One of the MessageBoxIcon values that specifies which icon to display in the message box.</param>
         ''' <param name="HelpLink">Link to the help topic for this message box.</param>
         ''' <param name="DefaultButton">One of the MessageBoxDefaultButton values that specifies the default button of the message box.</param>
-        ''' <remarks></remarks>
         Private Shared Function ShowHelper(ServiceProvider As IServiceProvider, Message As String,
                 Caption As String, Buttons As MessageBoxButtons, Icon As MessageBoxIcon,
                 Optional DefaultButton As MessageBoxDefaultButton = MessageBoxDefaultButton.Button1,

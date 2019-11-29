@@ -94,8 +94,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <summary>
         ''' Creates a new native TextBuffer by CoCreating it from COM.
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Protected Function CreateNewTextStreamBuffer() As IVsTextStream
             Dim LocalRegistry As ILocalRegistry = CType(_serviceProvider.GetService(GetType(ILocalRegistry)), ILocalRegistry)
             Dim TextStreamInstance As IVsTextStream = Nothing
@@ -135,8 +133,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '''   compatible, it uses that.  Otherwise it creates a new native TextBuffer.
         ''' </summary>
         ''' <param name="ExistingDocData">The existing DocData pointer, if any</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Protected Overridable Function GetOrCreateDocDataForNewEditor(ExistingDocData As Object) As Object
             Dim TextStreamInstance As IVsTextStream
 
@@ -166,7 +162,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' Called in base classes when the editor factory is sited.  Before this time, ServiceProvider will not be available (and
         '''   should not be assumed afterwards).
         ''' </summary>
-        ''' <remarks></remarks>
         Protected Overridable Sub OnSited()
         End Sub
 
@@ -174,7 +169,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <summary>
         ''' Provides the (constant) GUID for the subclassed editor factory.
         ''' </summary>
-        ''' <value></value>
         ''' <remarks>
         ''' Must be overridden.  Be sure to use the same GUID on the GUID attribute
         '''   attached to the inheriting class.
@@ -185,8 +179,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' Provides the (constant) GUID for the command UI.  This is the guid used in the
         '''   CTC file for keybindings, toolbars, etc.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Protected MustOverride ReadOnly Property CommandUIGuid() As Guid
 
 
@@ -309,7 +301,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="Caption"></param>
         ''' <param name="CmdUIGuid"></param>
         ''' <param name="Canceled"></param>
-        ''' <remarks></remarks>
         Protected Overridable Sub CreateEditorInstance(VsCreateEditorFlags As UInteger,
                 FileName As String,
                 PhysicalView As String,
@@ -457,7 +448,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <summary>
         ''' Returns the ServiceProvider
         ''' </summary>
-        ''' <value></value>
         ''' <remarks>
         ''' Will not be available before OnSited is called.
         ''' </remarks>
@@ -480,7 +470,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' Called by the VS shell when it first initializes us.  
         ''' </summary>
         ''' <param name="Site">The Site that will own this editor factory</param>
-        ''' <remarks></remarks>
         Private Sub SetSiteInternal(Site As Object)
             'This same Site already set?  Or Site not yet initialized (= Nothing)?  If so, NOP.
             If _site Is Site Then

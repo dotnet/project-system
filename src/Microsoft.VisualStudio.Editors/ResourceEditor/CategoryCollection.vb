@@ -25,7 +25,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Searches for a category by its index
         ''' </summary>
         ''' <param name="Index">The integer index to look up</param>
-        ''' <value></value>
         ''' <remarks>Throws an exception if out of bounds.</remarks>
         Default Public ReadOnly Property Item(Index As Integer) As Category
             Get
@@ -62,7 +61,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Adds a category to the collection.
         ''' </summary>
         ''' <param name="Category">The category to add.</param>
-        ''' <remarks></remarks>
         Public Sub Add(Category As Category)
             'Add to the inner list (indexable by integer index)
             InnerList.Add(Category)

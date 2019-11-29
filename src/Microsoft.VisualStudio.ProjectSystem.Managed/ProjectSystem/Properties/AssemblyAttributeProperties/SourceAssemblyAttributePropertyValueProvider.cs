@@ -63,7 +63,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// Sets the value of the property in the source assembly attribute.
         /// </summary>
         /// <param name="value"></param>
-        /// <returns></returns>
         public async Task SetPropertyValueAsync(string value)
         {
             Project? project = GetActiveProject();

@@ -30,7 +30,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
     ''' which let us bubble the notification into the standard component changed mechanism.
     ''' This will cause the normal undo mechanism to be invoked.
     ''' </summary>
-    ''' <remarks></remarks>
     Public NotInheritable Class PropPageDesignerView
         Inherits UserControl
         Implements IVsProjectDesignerPageSite
@@ -262,7 +261,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' View constructor 
         ''' </summary>
         ''' <param name="RootDesigner"></param>
-        ''' <remarks></remarks>
         Public Sub New(RootDesigner As PropPageDesignerRootDesigner)
             Me.New()
             SetSite(RootDesigner)
@@ -307,8 +305,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Property page we host
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public ReadOnly Property PropPage() As OleInterop.IPropertyPage
             Get
                 Return _loadedPage
@@ -328,7 +324,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Retrieves the IVsUIShell service
         ''' </summary>
-        ''' <remarks></remarks>
         Private ReadOnly Property VsUIShellService() As IVsUIShell
             Get
                 If (_uiShellService Is Nothing) Then
@@ -346,7 +341,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Retrieves the IVsUIShell5 service
         ''' </summary>
-        ''' <remarks></remarks>
         Private ReadOnly Property VsUIShell5Service() As IVsUIShell5
             Get
                 If (_uiShell5Service Is Nothing) Then
@@ -374,8 +368,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' True iff the property page is hosted through native SetParent and not as a Windows Form child control.
         ''' Returns False if the property page is not currently activated
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public ReadOnly Property IsNativeHostedPropertyPageActivated() As Boolean
             Get
                 Return _isPageActivated AndAlso _isNativeHostedPropertyPage
@@ -386,8 +378,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Gets the browse object for the project.  This is what is passed to SetObjects for
         '''   non-config-dependent pages
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function GetProjectBrowseObject() As Object
             Dim BrowseObject As Object = Nothing
             VSErrorHandler.ThrowOnFailure(_projectHierarchy.GetProperty(VSITEMID.ROOT, __VSHPROPID.VSHPROPID_BrowseObject, BrowseObject))
@@ -417,7 +407,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="PropPageSite"></param>
         ''' <param name="Hierarchy"></param>
         ''' <param name="IsConfigPage"></param>
-        ''' <remarks></remarks>
         Public Sub Init(DTEProject As EnvDTE.Project, PropPage As OleInterop.IPropertyPage, PropPageSite As PropertyPageSite, Hierarchy As IVsHierarchy, IsConfigPage As Boolean)
             Debug.Assert(_dteProject Is Nothing, "Init() called twice?")
 
@@ -508,7 +497,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub OnUndoEngineUndone(sender As Object, e As EventArgs) Handles _undoEngine.Undone
             'Tell the project designer it needs to refresh its dirty status
             If _loadedPageSite IsNot Nothing Then
@@ -527,7 +515,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub OnDesignerHostTransactionClosed(sender As Object, e As DesignerTransactionCloseEventArgs) Handles _designerHost.TransactionClosed
             If _loadedPageSite IsNot Nothing Then
                 Dim AppDesignerView As ApplicationDesignerView = TryCast(_loadedPageSite.GetService(GetType(ApplicationDesignerView)), ApplicationDesignerView)
@@ -555,7 +542,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="msg"></param>
         ''' <param name="wparam"></param>
         ''' <param name="lparam"></param>
-        ''' <remarks></remarks>
         Private Sub OnBroadcastMessageEventsHelperBroadcastMessage(msg As UInteger, wParam As IntPtr, lParam As IntPtr) Handles _broadcastMessageEventsHelper.BroadcastMessage
             Select Case msg
                 Case Win32Constant.WM_PALETTECHANGED, Win32Constant.WM_SYSCOLORCHANGE, Win32Constant.WM_THEMECHANGED
@@ -585,7 +571,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Show the property page 
         ''' </summary>
         ''' <param name="PropPage"></param>
-        ''' <remarks></remarks>
         Public Sub ActivatePage(PropPage As OleInterop.IPropertyPage)
             Switches.TracePDPerfBegin("PropPageDesignerView.ActivatePage")
             If PropPage Is Nothing Then
@@ -668,7 +653,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Display the error control instead of a property page
         ''' </summary>
         ''' <param name="ex">The exception to retrieve the error message from</param>
-        ''' <remarks></remarks>
         Private Sub DisplayErrorControl(ex As Exception)
 
             UnLoadPage()
@@ -688,7 +672,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Hide and deactivate the property page
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub UnLoadPage()
             _isPageActivated = False
             _isNativeHostedPropertyPage = False
@@ -721,7 +704,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Our site - always of type PropPageDesignerRootDesigner
         ''' </summary>
         ''' <param name="RootDesigner"></param>
-        ''' <remarks></remarks>
         Private Sub SetSite(RootDesigner As PropPageDesignerRootDesigner) 'Implements OLE.Interop.IObjectWithSite.SetSite
             _rootDesigner = RootDesigner
             _broadcastMessageEventsHelper = New ShellUtil.BroadcastMessageEventsHelper(Me)
@@ -732,8 +714,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' GetService helper
         ''' </summary>
         ''' <param name="ServiceType"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Shadows Function GetService(ServiceType As Type) As Object Implements IServiceProvider.GetService
             Dim Service As Object
             Service = _rootDesigner.GetService(ServiceType)
@@ -743,8 +723,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Get the size of the hosting client rect for sizing the property page 
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function GetPageRect() As OleInterop.RECT
             Dim ClientRect As New OleInterop.RECT
             ' We should use DisplayRectangle.Left/Top here, so the child page could work with auto-scroll
@@ -760,7 +738,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Update the hosted property page size
         ''' </summary>
-        ''' <remarks></remarks>
         Protected Sub UpdatePageSize()
             If _loadedPage IsNot Nothing Then
                 Dim RectArray As OleInterop.RECT() = New OleInterop.RECT() {GetPageRect()}
@@ -791,7 +768,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' This is part of the undo host code for the property page.  
         ''' We pass this interface to the property pages implementation of IVsProjectDesignerPage.SetSite
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub OnPropertyChanged(Component As Component, PropDesc As PropertyDescriptor, OldValue As Object, NewValue As Object)
             Dim ChangeService As IComponentChangeService = DirectCast(GetService(GetType(IComponentChangeService)), IComponentChangeService)
             ChangeService.OnComponentChanged(Component, PropDesc, OldValue, NewValue)
@@ -817,7 +793,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' This is part of the undo host code for the property page.  
         ''' We pass this interface to the property pages implementation of IVsProjectDesignerPage.SetSite
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub OnPropertyChanging(Component As Component, PropDesc As PropertyDescriptor)
             Dim ChangeService As IComponentChangeService = DirectCast(GetService(GetType(IComponentChangeService)), IComponentChangeService)
 
@@ -851,7 +826,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <param name="description">The localized description string to use for the transaction.  This will appear as the
         '''   description for the Undo/Redo unit.</param>
-        ''' <returns></returns>
         Public Function GetTransaction(Description As String) As DesignerTransaction Implements IVsProjectDesignerPageSite.GetTransaction
             Dim DesignerHost As IDesignerHost
             DesignerHost = DirectCast(GetService(GetType(IDesignerHost)), IDesignerHost)
@@ -863,7 +837,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Set font for controls on the Configuration panel
         ''' </summary>
-        ''' <remarks></remarks>
         Protected Sub SetDialogFont()
             Font = GetDialogFont()
         End Sub
@@ -871,8 +844,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Pick font to use in this dialog page
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Private ReadOnly Property GetDialogFont() As Font
             Get
                 Dim uiSvc As IUIService = CType(GetService(GetType(IUIService)), IUIService)
@@ -900,7 +871,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="DefaultButton">Which button should be default?</param>
         ''' <param name="HelpLink">The help link</param>
         ''' <returns>One of the DialogResult values</returns>
-        ''' <remarks></remarks>
         Public Function DsMsgBox(Message As String,
                 Buttons As MessageBoxButtons,
                 Icon As MessageBoxIcon,
@@ -916,7 +886,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Displays a designer error message
         ''' </summary>
         ''' <param name="Message"></param>
-        ''' <remarks></remarks>
         Public Sub ShowErrorMessage(Message As String, Optional HelpLink As String = Nothing)
             DsMsgBox(Message, MessageBoxButtons.OK, MessageBoxIcon.Error, HelpLink:=HelpLink)
         End Sub
@@ -927,7 +896,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Sets whether or not the configuration/platform dropdowns are visible
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub SetConfigDropdownVisibility()
             ConfigurationPanel.Visible = Not _configurationState.IsSimplifiedConfigMode()
 
@@ -954,7 +922,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <param name="NewSelectedConfigIndex">New index into the ConfigurationComboBox</param>
         ''' <param name="NewSelectedPlatformIndex">New index into the PlatformComboBox</param>
-        ''' <remarks></remarks>
         Private Sub ChangeSelectedComboBoxIndicesWithoutNotification(NewSelectedConfigIndex As Integer, NewSelectedPlatformIndex As Integer)
             Debug.Assert(Not _ignoreSelectedIndexChanged)
 
@@ -973,7 +940,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub SelectedConfigurationOrPlatformIndexChanged(sender As Object, e As EventArgs) _
                         Handles ConfigurationComboBox.SelectedIndexChanged, PlatformComboBox.SelectedIndexChanged, PlatformComboBox.SelectedIndexChanged
 
@@ -1046,7 +1012,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Raised when the value of the SimplifiedConfigMode property changes.
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub ConfigurationState_SimplifiedConfigModeChanged()
             SetConfigDropdownVisibility()
 
@@ -1059,7 +1024,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Check if the simplified configs mode property has changed (we do this on WM_SETFOCUS, since there's no notification
         '''   of a change)
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub CheckForModeChanges()
             If _configurationState IsNot Nothing AndAlso _fInitialized AndAlso _needToCheckForModeChanges Then
                 _configurationState.CheckForModeChanges()
@@ -1071,7 +1035,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Updates the configuration and platform combobox dropdown lists and selects the first entry in each list
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub UpdateConfigLists()
             If Not IsConfigPage Then
                 Exit Sub
@@ -1102,8 +1065,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Returns the currently selected config combobox item
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function GetSelectedConfigItem() As ConfigurationState.DropdownItem
             Debug.Assert(ConfigurationComboBox.SelectedIndex >= 0)
             Debug.Assert(ConfigurationComboBox.Items.Count = _configurationState.ConfigurationDropdownEntries.Length,
@@ -1117,8 +1078,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Returns the currently selected platform combobox item
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function GetSelectedPlatformItem() As ConfigurationState.DropdownItem
             Debug.Assert(PlatformComboBox.SelectedIndex >= 0)
             Debug.Assert(PlatformComboBox.Items.Count = _configurationState.PlatformDropdownEntries.Length,
@@ -1133,7 +1092,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Determines the set of currently-selected configurations by inspecting the configuration comboboxes, 
         '''   and passes that set of objects to the loaded property page
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub SetObjectsForSelectedConfigs()
             CommitPendingChanges()
 
@@ -1236,7 +1194,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         '''    for the page properties).
         ''' </summary>
         ''' <param name="Objects"></param>
-        ''' <remarks></remarks>
         Private Sub CallPageSetObjects(Objects() As Object)
             Dim Count As UInteger = 0
             If Objects IsNot Nothing Then
@@ -1257,7 +1214,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub ConfigurationComboBox_DropDown(sender As Object, e As EventArgs) Handles ConfigurationComboBox.DropDown
             'Set the drop-down width to handle all the text entries in it
             SetComboBoxDropdownWidth(ConfigurationComboBox)
@@ -1269,7 +1225,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub PlatformComboBox_DropDown(sender As Object, e As EventArgs) Handles PlatformComboBox.DropDown
             'Set the drop-down width to handle all the text entries in it
             SetComboBoxDropdownWidth(PlatformComboBox)
@@ -1416,7 +1371,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' If the object passed in is an enum, then convert it to its underlying type
         ''' </summary>
         ''' <param name="Value">[inout] The value to check and convert in place.</param>
-        ''' <remarks></remarks>
         Private Shared Sub ConvertEnumToUnderlyingType(ByRef Value As Object)
             If Value IsNot Nothing AndAlso Value.GetType().IsEnum Then
                 Value = Convert.ChangeType(Value, Type.GetTypeCode(Value.GetType().UnderlyingSystemType))
@@ -1427,7 +1381,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Returns the selection state of the configuration and platform comboboxes to the pre-undo/redo state.
         ''' </summary>
         ''' <param name="MultiValues">Specifies the selected configuration and platform in the drop-down combobox.</param>
-        ''' <remarks></remarks>
         Private Sub ReselectConfigurationsForUndoRedo(MultiValues As MultipleValuesStore)
             If Not IsConfigPage Then
                 Exit Sub
@@ -1451,7 +1404,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Commits any pending changes on the page
         ''' </summary>
         ''' <returns>return False if it failed</returns>
-        ''' <remarks></remarks>
         Private Function CommitPendingChanges() As Boolean
             Switches.TracePDPerfBegin("PropPageDesignerView.CommitPendingChanges")
             Try
@@ -1482,8 +1434,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         '''   an immediate apply.
         ''' </summary>
         ''' <param name="pfCommitFailed">[Out] Set to non-zero to indicate that the action should be canceled because the commit failed.</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function IVsWindowPaneCommit_CommitPendingEdit(ByRef pfCommitFailed As Integer) As Integer Implements IVsWindowPaneCommit.CommitPendingEdit
             pfCommitFailed = 0
             If Not CommitPendingChanges() Then
@@ -1502,8 +1452,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         '''   a native-hosted property page's controls.
         ''' </summary>
         ''' <param name="forward"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Protected Overrides Function ProcessTabKey(forward As Boolean) As Boolean
             Switches.TracePDMessageRouting(TraceLevel.Warning, "PropPageDesignerView.ProcessTabKey")
 
@@ -1551,8 +1499,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Override Control's ProcessDialogChar in order to allow mnemonics to work.
         ''' </summary>
         ''' <param name="charCode"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Protected Overrides Function ProcessDialogChar(charCode As Char) As Boolean
             'Control's version of this function only calls ProcessMnemonic if the window
             '  is top-level, but the control is not top-level as far as WinForms is concerned.
@@ -1593,8 +1539,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Sets the focus to the first (or last) control in the property page.
         ''' </summary>
         ''' <param name="First"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function FocusFirstOrLastPropertyPageControl(First As Boolean) As Boolean
             'Make sure to set the active control as well as doing SetFocus(), or else when
             '  devenv gets focus the focus will not go back to the correct control. 
@@ -1607,8 +1551,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Retrieves the top-most HWND of the property page hosted inside the property page panel
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function GetPropertyPageTopHwnd() As IntPtr
             If PropertyPagePanel.Handle.Equals(IntPtr.Zero) Then
                 Return IntPtr.Zero
@@ -1643,7 +1585,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Clears all undo and redo entries for this page
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub ClearUndoStackForPage()
             'Only need to do this if undo is enabled
             Dim UndoEngine As UndoEngine = TryCast(GetService(GetType(UndoEngine)), UndoEngine)
@@ -1668,7 +1609,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Overridden WndProc
         ''' </summary>
         ''' <param name="m"></param>
-        ''' <remarks></remarks>
         Protected Overrides Sub WndProc(ByRef m As Message)
             Dim isSetFocusMessage As Boolean = False
             If m.Msg = Win32Constant.WM_SETFOCUS Then
@@ -1704,8 +1644,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Retrieves the title of the loaded property page
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function GetPageTitle() As String
             Dim Info As OleInterop.PROPPAGEINFO() = New OleInterop.PROPPAGEINFO(0) {}
             If _loadedPage IsNot Nothing Then
@@ -1720,7 +1658,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Sets the undo/redo level to a "clean" state
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub SetUndoRedoCleanState()
             Dim CurrentUndoUnitsAvailable As Integer
             If TryGetUndoUnitsAvailable(CurrentUndoUnitsAvailable) Then
@@ -1741,8 +1678,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Determines whether the page is dirty in the sense of, "no current changes and the undo stack is at the same
         '''   place as when the user first loaded the page."
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function ShouldShowDirtyIndicator() As Boolean
             If PropPage Is Nothing Then
                 ' This can happen if an exception happened during property page initialization
@@ -1799,7 +1734,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub DisabledMenuCommandHandler(sender As Object, e As EventArgs)
         End Sub
 #End Region
@@ -1809,7 +1743,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <returns>True if the function successfully retrieves the # of undo units available.  False if it
         '''   fails (e.g., the Undo engine is not available, which can happen when the property page didn't 
         '''   load properly, etc.)</returns>
-        ''' <remarks></remarks>
         Private Function TryGetUndoUnitsAvailable(ByRef UndoUnitsAvailable As Integer) As Boolean
             UndoUnitsAvailable = 0
 
@@ -1854,7 +1787,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub PropertyPagePanel_GotFocus(sender As Object, e As EventArgs) Handles PropertyPagePanel.GotFocus
             If _isNativeHostedPropertyPage Then
                 'Since PropertyPagePanel has no child controls that WinForms knows about, we need to

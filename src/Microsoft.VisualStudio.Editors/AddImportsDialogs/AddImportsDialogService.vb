@@ -14,7 +14,6 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
         ''' Constructor
         ''' </summary>
         ''' <param name="packageServiceProvider"></param>
-        ''' <remarks></remarks>
         Friend Sub New(packageServiceProvider As IServiceProvider)
             Requires.NotNull(packageServiceProvider, NameOf(packageServiceProvider))
             _serviceProvider = packageServiceProvider

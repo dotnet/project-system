@@ -18,7 +18,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     '''   simply to create a new resource editor designer when requested by the
     '''   shell.
     ''' </summary>
-    ''' <remarks></remarks>
     <CLSCompliant(False),
     Guid("ff4d6aca-9352-4a5f-821e-f4d6ebdcab11")>
     Friend NotInheritable Class ResourceEditorFactory
@@ -37,7 +36,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   by the DesignerPackage when it gets sited.
         ''' We pass in our designer loader type to the base.
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub New()
             MyBase.New(GetType(ResourceEditorDesignerLoader))
         End Sub
@@ -46,7 +44,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Provides the (constant) GUID for the subclassed editor factory.
         ''' </summary>
-        ''' <value></value>
         ''' <remarks>
         ''' Must overridde the base.  Be sure to use the same GUID on the GUID attribute
         '''    attached to the inheriting class.
@@ -61,8 +58,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Provides the (constant) GUID for the command UI.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Protected Overrides ReadOnly Property CommandUIGuid() As Guid
             Get
                 'This is required for key bindings hook-up to work properly.

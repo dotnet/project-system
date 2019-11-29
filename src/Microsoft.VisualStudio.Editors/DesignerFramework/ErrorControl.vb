@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.Drawing
 Imports System.Windows.Forms
@@ -10,7 +10,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
     ''' This is a Windows control that is shown when there is an exception loading a designer or property page.
     ''' All it does is display an error message and an error icon.
     ''' </summary>
-    ''' <remarks></remarks>
     Friend NotInheritable Class ErrorControl
 
         Private _firstGotFocus As Boolean = True
@@ -32,7 +31,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' Constructor
         ''' </summary>
         ''' <param name="Text">The error text to display</param>
-        ''' <remarks></remarks>
         Friend Sub New(Text As String)
             Me.New()
             Me.Text = Text
@@ -43,7 +41,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' Constructor
         ''' </summary>
         ''' <param name="ex">The exception to display</param>
-        ''' <remarks></remarks>
         Friend Sub New(ex As Exception)
             Me.New(Common.DebugMessageFromException(ex))
         End Sub
@@ -53,7 +50,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' Constructor
         ''' </summary>
         ''' <param name="errors">A list of exceptions or error messages to display</param>
-        ''' <remarks></remarks>
         Friend Sub New(errors As ICollection)
             Me.New()
 
@@ -71,8 +67,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <summary>
         ''' Constructor
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public Overrides Property Text() As String
             Get
                 Return ErrorText.Text
@@ -89,7 +83,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub ErrorText_GotFocus(sender As Object, e As EventArgs) Handles ErrorText.GotFocus
             If _firstGotFocus Then
                 'The first time a textbox gets focus, WinForms selects all text in it.  That
@@ -105,8 +98,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' Get the preferred size of the control, expanding 
         ''' </summary>
         ''' <param name="proposedSize"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Overrides Function GetPreferredSize(proposedSize As Size) As Size
             If proposedSize.Width = 0 Then
                 Return MyBase.GetPreferredSize(proposedSize)

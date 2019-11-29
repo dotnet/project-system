@@ -27,7 +27,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     '''     (e.g., VB, C# Express, etc.).
     ''' 
     ''' </summary>
-    ''' <remarks></remarks>
     Friend Class SingleConfigPropertyControlData
         Inherits PropertyControlData
 
@@ -89,8 +88,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   passed in to the page through SetObjects.  However, it may be modified by subclasses to contain a superset
         '''   or subset for special purposes.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public Overrides ReadOnly Property RawPropertiesObjects() As Object()
             Get
                 Dim AllObjects As Object() = MyBase.RawPropertiesObjects
@@ -113,8 +110,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   based on the set of objects passed in to the page through SetObjects.  However, it may be modified by subclasses to 
         '''   contain a superset or subset for special purposes.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public Overrides ReadOnly Property ExtendedPropertiesObjects() As Object()
             Get
                 'We must pass the raw setobjects array to IndexOfSpecificConfig - it won't work with the extended objects
@@ -191,8 +186,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Returns true iff this project is in simplified configuration mode.
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function SimplifiedConfigsMode() As Boolean
             Return ShellUtil.GetIsSimplifiedConfigMode(PropPage.ProjectHierarchy)
         End Function

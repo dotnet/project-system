@@ -7,7 +7,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     ''' <summary>
     ''' The exception will be thrown when validation failed...
     ''' </summary>
-    ''' <remarks></remarks>
     Friend Class ValidationException
         Inherits ApplicationException
 

@@ -24,7 +24,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     '''    manages the state of the edited object.  Persistence is handled in the code loader, and the
     '''    UI is handled by the ResourceEditorRootDesigner.
     ''' </summary>
-    ''' <remarks></remarks>
     <Designer(GetType(ResourceEditorRootDesigner), GetType(IRootDesigner))>
     Friend NotInheritable Class ResourceEditorRootComponent
         Inherits Component
@@ -67,7 +66,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Override Dispose().
         ''' </summary>
         ''' <param name="Disposing"></param>
-        ''' <remarks></remarks>
         Protected Overrides Sub Dispose(Disposing As Boolean)
             _tearingDown = True
 
@@ -107,8 +105,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' True iff the root component is being torn down or is already torn down.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Friend ReadOnly Property IsTearingDown() As Boolean
             Get
                 Return _tearingDown
@@ -119,8 +115,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Gets the ResXResourceFile that is currently being edited.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Friend ReadOnly Property ResourceFile() As ResourceFile
             Get
                 Debug.Assert(Not _resourceFile Is Nothing, "m_ResourceFile should have already been created!  SetResXResourceFile not called?")
@@ -131,8 +125,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Gets the ResXResourceFileName that is currently being edited.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Friend Property ResourceFileName() As String
             Get
                 Return _resourceFileName
@@ -147,8 +139,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   designer which is showing the UI to the user which allows this component's
         '''   resx file to be edited by the user.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Friend ReadOnly Property RootDesigner() As ResourceEditorRootDesigner
             Get
                 If _rootDesigner Is Nothing Then
@@ -199,7 +189,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''    component.  This effectively sets the .resx file which is being edited by the user.
         ''' </summary>
         ''' <param name="NewResourceFile"></param>
-        ''' <remarks></remarks>
         Friend Sub LoadResXResourceFile(NewResourceFile As ResourceFile)
             Debug.Assert(NewResourceFile.RootComponent Is Me)
             Debug.Assert(Not NewResourceFile Is Nothing)
@@ -221,7 +210,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Checks to see whether the RESX file belongs to another file item (like form, usercontrol...)
         ''' </summary>
-        ''' <remarks></remarks>
         Private Function IsDependentItem() As Boolean
             Dim ProjectItem As ProjectItem = TryCast(RootDesigner.GetService(GetType(ProjectItem)), ProjectItem)
             Debug.Assert(ProjectItem IsNot Nothing, "ProjectItem not found!")
@@ -248,7 +236,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Checks to see whether the RESX file is inside a device project...
         '''  We got a lot of limitation for this kind of projects
         ''' </summary>
-        ''' <remarks></remarks>
         Private Function IsInDeviceProject() As Boolean
             Dim hierarchy As IVsHierarchy = DirectCast(RootDesigner.GetService(GetType(IVsHierarchy)), IVsHierarchy)
             If hierarchy IsNot Nothing Then
@@ -260,7 +247,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Checks to see whether the RESX file is under "App_GlobalResources" in an ASP project
         ''' </summary>
-        ''' <remarks></remarks>
         Private Function IsInGlobalResourceFolderInASP() As Boolean
             Try
                 Dim projectItem As ProjectItem = RootDesigner.DesignerLoader.ProjectItem

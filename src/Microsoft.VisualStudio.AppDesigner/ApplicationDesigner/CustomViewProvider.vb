@@ -18,20 +18,16 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Returns the view control (if already created)
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public MustOverride ReadOnly Property View() As Control
 
         ''' <summary>
         ''' Creates the view control, if it doesn't already exist
         ''' </summary>
-        ''' <remarks></remarks>
         Public MustOverride Sub CreateView()
 
         ''' <summary>
         ''' Close the view control, if not already closed
         ''' </summary>
-        ''' <remarks></remarks>
         Public MustOverride Sub CloseView()
 
 #Region "Dispose/IDisposable"
@@ -44,7 +40,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Disposes of contained objects
         ''' </summary>
         ''' <param name="disposing"></param>
-        ''' <remarks></remarks>
         Protected Overridable Sub Dispose(Disposing As Boolean)
             If Disposing Then
                 ' Dispose managed resources.
@@ -61,15 +56,12 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
     ''' This is a simple, related class that returns the document moniker to use to
     '''   create a view.
     ''' </summary>
-    ''' <remarks></remarks>
     Public MustInherit Class CustomDocumentMonikerProvider
 
         ''' <summary>
         ''' Retrieve the filename to use for the moniker.  The file may or may not exist
         '''   and should be verified by the client.
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public MustOverride Function GetDocumentMoniker() As String
 
     End Class

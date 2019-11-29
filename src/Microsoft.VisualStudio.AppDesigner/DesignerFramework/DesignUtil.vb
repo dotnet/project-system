@@ -56,8 +56,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' Get the default caption from IVsUIShell, or fall back to localized resource
         ''' </summary>
         ''' <param name="sp"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Shared Function GetDefaultCaption(sp As IServiceProvider) As String
             Dim caption As String = ""
             Dim uiShell As IVsUIShell = Nothing
@@ -77,7 +75,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' </summary>
         ''' <param name="ServiceProvider"></param>
         ''' <param name="keyword"></param>
-        ''' <remarks></remarks>
         Public Shared Sub DisplayTopicFromF1Keyword(ServiceProvider As IServiceProvider, keyword As String)
             If ServiceProvider Is Nothing Then
                 Debug.Fail("NULL serviceprovider - can't show help!")

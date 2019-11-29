@@ -129,7 +129,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Disconnect from the owning site
         ''' </summary>
-        ''' <remarks></remarks>
         Public Function Close() As Integer Implements IVsEditorFactory.Close
             _siteProvider = Nothing
             _site = Nothing
@@ -138,7 +137,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Wrapper of COM interface which delegates to Internal
         ''' </summary>
-        ''' <remarks></remarks>
         Private Function IVsEditorFactory_CreateEditorInstance(
                 vscreateeditorflags As UInteger,
                 FileName As String,
@@ -189,7 +187,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <param name="rguidLogicalView"></param>
         ''' <param name="pbstrPhysicalView"></param>
-        ''' <remarks></remarks>
         Public Function MapLogicalView(ByRef rguidLogicalView As Guid, ByRef pbstrPhysicalView As String) As Integer Implements IVsEditorFactory.MapLogicalView
             pbstrPhysicalView = Nothing
         End Function
@@ -198,7 +195,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Called by owning site after creation
         ''' </summary>
         ''' <param name="Site"></param>
-        ''' <remarks></remarks>
         Public Function SetSite(Site As IServiceProvider) As Integer Implements IVsEditorFactory.SetSite
             'This same Site already set?  Or Site not yet initialized (= Nothing)?  If so, NOP.
             If _site Is Site Then

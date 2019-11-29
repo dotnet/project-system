@@ -15,7 +15,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     ''' <summary>
     ''' This is a virtualized listview capable of displaying Resource items as thumbnails.
     ''' </summary>
-    ''' <remarks></remarks>
     Friend NotInheritable Class ResourceListView
         Inherits DesignerFramework.DesignerListView
 
@@ -135,7 +134,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' The view mode for the listview.  (Starting at non-zero helps find possible bugs in
         '''    case this enum is mixed up with the base's View enum.)
         ''' </summary>
-        ''' <remarks></remarks>
         Public Enum ResourceView
             Thumbnail = 1000
             List = 1001
@@ -167,7 +165,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Constructor.
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub New()
             MyBase.New()
 
@@ -191,7 +188,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Overrides Dispose to do clean-up of managed resources
         ''' </summary>
         ''' <param name="Disposing"></param>
-        ''' <remarks></remarks>
         Protected Overloads Overrides Sub Dispose(Disposing As Boolean)
             StopIdleMessage()
 
@@ -230,8 +226,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' The current view of the listview (in ResourceView terms - shadows the
         '''   base ListView's View property)
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public Shadows Property View() As ResourceView
             Get
                 Select Case MyBase.View
@@ -265,8 +259,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' If this is turned on, attempted retrieval of listview items will simply return
         '''   a blank entry.  This is useful when the resource editor is being disposed of.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public Property DisableItemRetrieval() As Boolean
             Get
                 Return _disableItemRetrieval
@@ -279,8 +271,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Gets the Parent of this ResourceListView control, which must be an instance of ResourceEditorView.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Private ReadOnly Property ParentView() As ResourceEditorView
             Get
                 If TypeOf Parent Is ResourceEditorView Then
@@ -296,7 +286,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Gets the ResourceFile that was used to populate this listview.
         ''' </summary>
-        ''' <value></value>
         ''' <remarks>Can be called only after population</remarks>
         Private ReadOnly Property ResourceFile() As ResourceFile
             Get
@@ -349,7 +338,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Clear all entries from the listview.
         ''' </summary>
-        ''' <remarks></remarks>
         Public Overloads Sub Clear()
             StopIdleMessage()
 
@@ -375,7 +363,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="ResourceFile">The resources from which the displayed resources will be pulled.</param>
         ''' <param name="CategoryToFilterOn">The category of resources to display.</param>
-        ''' <remarks></remarks>
         Public Sub Populate(ResourceFile As ResourceFile, CategoryToFilterOn As Category)
             VirtualListSize = 0
             _resourceFile = ResourceFile
@@ -475,7 +462,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Resource">The Resource which should be repainted.</param>
         ''' <param name="InvalidateThumbnail">If True, also invalidates the Resource's thumbnail image and other cached
         '''   info so that it is re-created on the next redraw.</param>
-        ''' <remarks></remarks>
         Public Sub InvalidateResource(Resource As Resource, Optional InvalidateThumbnail As Boolean = False)
             Debug.Assert(Resource IsNot Nothing)
             If Not _virtualResourceList.Contains(Resource) Then
@@ -500,7 +486,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Occurs when the user tries to go into label edit mode to change the resource name
         ''' </summary>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Protected Overrides Sub OnBeforeLabelEdit(e As LabelEditEventArgs)
             If ParentView.ReadOnlyMode Then
                 e.CancelEdit = True
@@ -563,7 +548,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Causes the listview to go into label edit mode
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub BeginLabelEdit(Resource As Resource)
             If LabelEdit AndAlso Resource IsNot Nothing Then
                 Dim Index As Integer = IndexOf(Resource)
@@ -582,7 +566,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Commits all pending changes that the user has made in the grid.
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub CommitPendingChanges()
             If ParentView.IsInEditing Then
                 ' Don't do this if we are not in edit mode. The function will refresh the window...
@@ -606,7 +589,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   We need sort the whole list
         ''' </summary>
         ''' <param name="e">Event args</param>
-        ''' <remarks></remarks>
         Protected Overrides Sub OnColumnClick(e As ColumnClickEventArgs)
             If e.Column <> _sorter.ColumnIndex Then
                 SortOnColumn(e.Column, False)
@@ -621,7 +603,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''  Restore Sorter -- used when we need restore view state
         ''' </summary>
         ''' <param name="originalSorter"></param>
-        ''' <remarks></remarks>
         Friend Sub RestoreSorter(originalSorter As IComparer(Of Resource))
             Dim listViewSorter As DetailViewSorter = TryCast(originalSorter, DetailViewSorter)
             If listViewSorter IsNot Nothing Then
@@ -636,7 +617,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="columnIndex"></param>
         ''' <param name="inReverseOrder"></param>
-        ''' <remarks></remarks>
         Private Sub SortOnColumn(columnIndex As Integer, inReverseOrder As Boolean)
             Dim currentResource As Resource = Nothing
             Dim selectedResources() As Resource
@@ -693,7 +673,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="columnIndex"></param>
         ''' <param name="inReverseOrder"></param>
-        ''' <remarks></remarks>
         Private Sub SetColumnSortImage(columnIndex As Integer, inReverseOrder As Boolean)
             Dim headerHandle As IntPtr
             headerHandle = Interop.NativeMethods.SendMessage(Handle, Interop.Win32Constant.LVM_GETHEADER, IntPtr.Zero, IntPtr.Zero)
@@ -725,7 +704,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''  Remove the column header image
         ''' </summary>
         ''' <param name="columnIndex"></param>
-        ''' <remarks></remarks>
         Private Sub ClearColumnSortImage(columnIndex As Integer)
             Dim headerHandle As IntPtr
             headerHandle = Interop.NativeMethods.SendMessage(Handle, Interop.Win32Constant.LVM_GETHEADER, IntPtr.Zero, IntPtr.Zero)
@@ -751,7 +729,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''  Update the column header image when the system color is changed
         ''' </summary>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Protected Overrides Sub OnSystemColorsChanged(e As EventArgs)
             MyBase.OnSystemColorsChanged(e)
 
@@ -784,7 +761,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   displayed, so it's likely to be our page size.
         ''' </summary>
         ''' <param name="e">Event args</param>
-        ''' <remarks></remarks>
         Protected Overrides Sub OnCacheVirtualItems(e As CacheVirtualItemsEventArgs)
             MyBase.OnCacheVirtualItems(e)
 
@@ -830,7 +806,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="StartIndex"></param>
         ''' <param name="EndIndex"></param>
-        ''' <remarks></remarks>
         Private Sub RequireCacheImage(StartIndex As Integer, EndIndex As Integer)
             If Not _onIdleEnabled Then
                 _imageStartIndex = StartIndex
@@ -878,7 +853,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         '''  Turn off OnIdle Message
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub StopIdleMessage()
             If _onIdleEnabled Then
                 _cacheRequirementStack = Nothing
@@ -895,7 +869,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e">Event arguments</param>
-        ''' <remarks></remarks>
         Private Sub OnDelayLoadImages(sender As Object, e As EventArgs)
             Debug.Assert(_thumbnailCache IsNot Nothing)
             _needLoadVisibleItem = False
@@ -967,7 +940,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   be displayed, etc.
         ''' </summary>
         ''' <param name="e">Retrieval arguments</param>
-        ''' <remarks></remarks>
         Protected Overrides Sub OnRetrieveVirtualItem(e As RetrieveVirtualItemEventArgs)
             MyBase.OnRetrieveVirtualItem(e)
 
@@ -1106,7 +1078,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Resource">The Resource to look up/create a thumbnail for</param>
         ''' <param name="AllowDelayLoading">If it is true, we won't load image, and leave it to the idle time</param>
         ''' <returns>The index into the imagelist for the resource's thumbnail</returns>
-        ''' <remarks></remarks>
         Private Function GetThumbnailIndex(Resource As Resource, AllowDelayLoading As Boolean) As Integer
             'Verify that the error glyphs aren't too big (we don't expand them, so being too small
             '  is okay)
@@ -1253,7 +1224,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Highlights a given resource (selects it and scrolls the listview so that it's visible)
         ''' </summary>
         ''' <param name="Resources">The Resources to highlight</param>
-        ''' <remarks></remarks>
         Friend Sub HighlightResources(Resources As ICollection)
             Dim firstOne As Boolean = True
             For Each Resource As Resource In Resources
@@ -1340,7 +1310,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Unselect all resources in this listview.
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub SelectAll()
             For i As Integer = 0 To VirtualListSize - 1
                 SelectedIndices.Add(i)
@@ -1408,7 +1377,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   otherwise do anything to the resources.
         ''' </summary>
         ''' <param name="Resources">The set of Resources to remove from view.</param>
-        ''' <remarks></remarks>
         Public Sub RemoveResources(Resources As IList)
             UnselectAll()
             Debug.Assert(_virtualResourceList.Count = VirtualListSize)

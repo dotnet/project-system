@@ -22,8 +22,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Gets the F1 keyword to push into the user context for this property page
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Protected Overrides Property F1Keyword() As String
             Get
                 Dim keyword As String = MyBase.F1Keyword
@@ -169,7 +167,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Constructor.
         ''' </summary>
         ''' <param name="ServiceProvider"></param>
-        ''' <remarks></remarks>
         Public Sub New(ServiceProvider As IServiceProvider, F1Keyword As String)
             MyBase.New(ServiceProvider)
 

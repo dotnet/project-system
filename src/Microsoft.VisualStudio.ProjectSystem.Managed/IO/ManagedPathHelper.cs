@@ -15,7 +15,6 @@ namespace Microsoft.VisualStudio.IO
         /// Tests a path to see if it is absolute or not. More reliable than <see cref="System.IO.Path.IsPathRooted"/>.
         /// </summary>
         /// <param name="path"></param>
-        /// <returns></returns>
         public static bool IsRooted(string path)
         {
             Requires.NotNullOrEmpty(path, nameof(path));

@@ -12,7 +12,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
     ''' A DesignTimeSettingInstance wraps a single setting. Each setting will generate 
     ''' a property with the appropriate attributes in the generated file.
     ''' </summary>
-    ''' <remarks></remarks>
     <Serializable()>
     Friend Class DesignTimeSettingInstance
         Inherits Component
@@ -21,7 +20,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Application or user scoped setting?
         ''' </summary>
-        ''' <remarks></remarks>
         <TypeConverter(GetType(ScopeConverter))>
         Friend Enum SettingScope
             ' Don't use zero in the enum since that hides CType(NULL, SettingScope) 
@@ -33,43 +31,36 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' The name of this setting instance
         ''' </summary>
-        ''' <remarks></remarks>
         Private _name As String
 
         ''' <summary>
         ''' The type name (as persisted in the .settings file) of this setting
         ''' </summary>
-        ''' <remarks></remarks>
         Private _settingTypeName As String = GetType(String).FullName
 
         ''' <summary>
         ''' The setting scope (application or user) for this setting
         ''' </summary>
-        ''' <remarks></remarks>
         Private _settingScope As SettingScope = SettingScope.User
 
         ''' <summary>
         ''' Is this setting a roaming setting?
         ''' </summary>
-        ''' <remarks></remarks>
         Private _roaming As Boolean = False
 
         ''' <summary>
         ''' The serialized representation of this setting
         ''' </summary>
-        ''' <remarks></remarks>
         Private _serializedValue As String = ""
 
         ''' <summary>
         ''' The setting provider if any
         ''' </summary>
-        ''' <remarks></remarks>
         Private _provider As String
 
         ''' <summary>
         ''' The description for this setting
         ''' </summary>
-        ''' <remarks></remarks>
         Private _description As String
 
         ''' <summary>
@@ -78,7 +69,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' contains sensitive information, the user can set this to false
         ''' through the property grid...
         ''' </summary>
-        ''' <remarks></remarks>
         Private _generateDefaultValueInCode As Boolean = True
 
 #Region "Cached property descriptors with this instance as the owner"
@@ -172,7 +162,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' behavior and overrides to make it more explicit what we expect from each
         ''' propertydescriptor.
         ''' </summary>
-        ''' <remarks></remarks>
         Private MustInherit Class DesignTimeSettingInstanceCustomPropertyDescriptorBase
             Inherits PropertyDescriptor
 
@@ -222,17 +211,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' Override to set the description (shown in the properties window) for this
             ''' property
             ''' </summary>
-            ''' <value></value>
-            ''' <returns></returns>
-            ''' <remarks></remarks>
             Protected MustOverride ReadOnly Property DescriptionAttributeText() As String
 
             ''' <summary>
             ''' Override to get the value for the current component in a type-safe way
             ''' </summary>
             ''' <param name="component"></param>
-            ''' <returns></returns>
-            ''' <remarks></remarks>
             Protected MustOverride Overloads Function GetValue(component As DesignTimeSettingInstance) As Object
         End Class
 
@@ -240,7 +224,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Add Undo support (component change notifications and designer transactions w. descriptions)
         ''' whenever we change the value
         ''' </summary>
-        ''' <remarks></remarks>
         Private MustInherit Class DesignTimeSettingInstanceCustomPropertyDescriptor
             Inherits DesignTimeSettingInstanceCustomPropertyDescriptorBase
 
@@ -256,7 +239,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' </summary>
             ''' <param name="component"></param>
             ''' <param name="value"></param>
-            ''' <remarks></remarks>
             Public NotOverridable Overrides Sub SetValue(component As Object, value As Object)
                 Dim instance As DesignTimeSettingInstance = DirectCast(component, DesignTimeSettingInstance)
                 Dim ccsvc As Design.IComponentChangeService = Nothing
@@ -305,9 +287,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' <summary>
             ''' Override to provide the description showing up in the undo menu
             ''' </summary>
-            ''' <value></value>
-            ''' <returns></returns>
-            ''' <remarks></remarks>
             Protected MustOverride ReadOnly Property UndoDescription() As String
 
             ''' <summary>
@@ -315,7 +294,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' </summary>
             ''' <param name="component"></param>
             ''' <param name="value"></param>
-            ''' <remarks></remarks>
             Protected MustOverride Overloads Sub SetValue(component As DesignTimeSettingInstance, value As Object)
 
 
@@ -673,7 +651,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Translate to/from localized string representation of User and Application
         ''' </summary>
-        ''' <remarks></remarks>
         Friend Class ScopeConverter
             Inherits EnumConverter
 
@@ -774,9 +751,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' The name of a setting
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public ReadOnly Property NameProperty() As PropertyDescriptor
             Get
                 Return _namePropertyDescriptor
@@ -819,9 +793,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' The scope for a setting
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public ReadOnly Property ScopeProperty() As PropertyDescriptor
             Get
                 Return _scopePropertyDescriptor
@@ -844,9 +815,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' The name of the type for a setting
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public ReadOnly Property TypeNameProperty() As PropertyDescriptor
             Get
                 Return _settingTypeNamePropertyDescriptor
@@ -869,9 +837,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' The serialized (string) representation of the value of this setting
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public ReadOnly Property SerializedValueProperty() As PropertyDescriptor
             Get
                 Return _serializedValuePropertyDescriptor
@@ -895,9 +860,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Flag indicating if this is a roaming setting 
         ''' (value is stored in the roaming user.config by the runtime)
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public ReadOnly Property Roaming() As Boolean
             Get
                 Return _roaming
@@ -914,9 +876,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' The description for this setting
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public ReadOnly Property Description() As String
             Get
                 Return _description
@@ -933,9 +892,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' The settings provider for this setting
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public ReadOnly Property Provider() As String
             Get
                 Return _provider
@@ -956,9 +912,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Flag indicating if we should generate a defaultsettingsvalue attribute
         ''' on this setting
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public ReadOnly Property GenerateDefaultValueInCode() As Boolean
             Get
                 Return _generateDefaultValueInCode
@@ -1038,8 +991,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Does the current project system support user scoped settings?
         ''' </summary>
         ''' <param name="instance"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Shared Function ProjectSupportsUserScopedSettings(instance As DesignTimeSettingInstance) As Boolean
             If instance Is Nothing OrElse instance.Site Is Nothing Then
                 Return True
@@ -1052,8 +1003,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Does the current project system support user scoped settings?
         ''' </summary>
         ''' <param name="hierarchy"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Shared Function ProjectSupportsUserScopedSettings(hierarchy As IVsHierarchy) As Boolean
             If hierarchy Is Nothing Then
                 Return True
