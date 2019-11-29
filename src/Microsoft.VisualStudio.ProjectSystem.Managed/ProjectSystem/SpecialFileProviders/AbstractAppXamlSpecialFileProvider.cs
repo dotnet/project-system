@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         {
             foreach (IProjectItemTree item in root.GetSelfAndDescendentsBreadthFirst().OfType<IProjectItemTree>())
             {
-                if (StringComparers.ItemTypes.Equals(item.Item?.ItemType, ApplicationDefinition.SchemaName))
+                if (StringComparers.ItemTypes.Equals(item.Item?.ItemType, "ApplicationDefinition"))
                 {
                     return item;
                 }
