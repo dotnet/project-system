@@ -355,7 +355,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return _manualPageScaling
             End Get
             Set
-                _manualPageScaling = value
+                _manualPageScaling = Value
             End Set
         End Property
 
@@ -379,7 +379,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return _pageEnabledState
             End Get
             Set
-                _pageEnabledState = value
+                _pageEnabledState = Value
                 SetEnabledState()
             End Set
         End Property
@@ -1040,23 +1040,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         ''' <summary>
-        ''' Provides an array of IUnknown pointers for the objects associated with the property page.
-        ''' </summary>
-        ''' <param name="objects"></param>
-        ''' <remarks>
-        '''   The property page host uses this method to communicate to the property page (which gets delegated to
-        '''   this class) the objects whose properties are to be displayed.  The property values are read and set
-        '''   via these objects.
-        ''' 
-        '''   IMPORTANT NOTE: Depending on the property page host and project, the objects may be IVsCfg objects 
-        '''   or they may be something else.
-        '''</remarks>
-        Private Sub IPropertyPageInternal_SetObjects(objects() As Object) Implements IPropertyPageInternal.SetObjects
-            SetObjects(objects)
-        End Sub
-
-
-        ''' <summary>
         ''' Debug-only method to print the properties in a property descriptor collection to trace output.
         ''' </summary>
         ''' <param name="DebugMessage">The message to be printed first to trace output.</param>
@@ -1162,7 +1145,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   IMPORTANT NOTE: Depending on the property page host and project, the objects may be IVsCfg objects 
         '''   or they may be something else.
         '''</remarks>
-        Public Overridable Sub SetObjects(objects() As Object)
+        Public Overridable Sub SetObjects(objects() As Object) Implements IPropertyPageInternal.SetObjects
             Debug.Assert(_site IsNot Nothing OrElse objects Is Nothing OrElse objects.Length = 0, "SetObjects() called (with non-null objects), but we are not sited!")
             m_Objects = Nothing
 
