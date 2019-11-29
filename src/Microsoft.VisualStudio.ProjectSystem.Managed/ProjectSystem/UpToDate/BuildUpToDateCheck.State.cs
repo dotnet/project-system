@@ -185,6 +185,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 IProjectSubscriptionUpdate sourceItemsUpdate,
                 IProjectSnapshot2 projectSnapshot,
                 IProjectItemSchema projectItemSchema,
+                IProjectCatalogSnapshot projectCatalogSnapshot,
                 IComparable configuredProjectVersion)
             {
                 bool isDisabled = jointRuleUpdate.CurrentState.IsPropertyTrue(ConfigurationGeneral.SchemaName, ConfigurationGeneral.DisableFastUpToDateCheckProperty, defaultValue: false);
@@ -339,8 +340,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 bool itemsChanged = false;
 
-                foreach ((string itemType, IProjectChangeDescription projectChange) in sourceItemsUpdate.ProjectChanges)
+                foreach ((string schemaName, IProjectChangeDescription projectChange) in sourceItemsUpdate.ProjectChanges)
                 {
+                    // ProjectChanges is keyed by the rule name which is usually the same as the item type, but not always (eg, in auto-generated rules)
+                    string? itemType = projectCatalogSnapshot.NamedCatalogs[PropertyPageContexts.File].GetSchema(schemaName)?.DataSource.ItemType;
+                    if (itemType == null)
+                        continue;
                     if (!itemTypes.Contains(itemType))
                         continue;
                     if (!itemTypesChanged && !projectChange.Difference.AnyChanges)
