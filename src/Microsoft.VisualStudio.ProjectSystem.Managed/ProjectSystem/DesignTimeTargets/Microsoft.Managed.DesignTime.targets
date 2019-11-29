@@ -137,14 +137,6 @@
     </PropertyPageSchema>
 
     <!-- Files/Folders -->
-    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)AdditionalFiles.xaml">
-      <Context>File</Context>
-    </PropertyPageSchema>
-
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)AdditionalFiles.BrowseObject.xaml">
-      <Context>BrowseObject</Context>
-    </PropertyPageSchema>
-
     <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)Compile.xaml;">
       <Context>File</Context>
     </PropertyPageSchema>
