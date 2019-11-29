@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="OptionExplicitLabel.Text">
         <source>Option e&amp;xplicit:</source>
-        <target state="translated">Option Explicit(&amp;X):</target>
+        <target state="translated">명시적 옵션(&amp;X):</target>
         <note />
       </trans-unit>
       <trans-unit id="DisableAllWarningsCheckBox.Text">
@@ -44,17 +44,17 @@
       </trans-unit>
       <trans-unit id="OptionStrictLabel.Text">
         <source>Option &amp;strict:</source>
-        <target state="translated">Option Strict(&amp;S):</target>
+        <target state="translated">제한 옵션(&amp;S):</target>
         <note />
       </trans-unit>
       <trans-unit id="OptionCompareLabel.Text">
         <source>Option c&amp;ompare:</source>
-        <target state="translated">Option Compare(&amp;O):</target>
+        <target state="translated">비교 옵션(&amp;O):</target>
         <note />
       </trans-unit>
       <trans-unit id="OptionInferLabel.Text">
         <source>Option in&amp;fer:</source>
-        <target state="translated">Option Infer(&amp;F):</target>
+        <target state="translated">유추 옵션(&amp;F):</target>
         <note />
       </trans-unit>
       <trans-unit id="WarningsConfigurationsGridViewLabel.Text">
