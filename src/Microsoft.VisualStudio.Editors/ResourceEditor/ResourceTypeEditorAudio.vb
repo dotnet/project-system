@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Explicit On
 Option Strict On
@@ -100,7 +100,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Resource">The IResource instance.  May not be Nothing.  The value of the resource to save.  Must be of the type handled by this ResourceTypeEditor.</param>
         ''' <returns>The friendly description of the resource's type.</returns>
-        ''' <remarks></remarks>
         Public Overrides Function GetResourceFriendlyTypeDescription(Resource As IResource) As String
             ValidateResourceValue(Resource, GetType(Byte()), GetType(MemoryStream))
             Return My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Type_Wave
@@ -112,7 +111,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Resource">The IResource instance.  May not be Nothing.  The value of the resource to save.  Must be of the type handled by this ResourceTypeEditor.</param>
         ''' <returns>The friendly size string.</returns>
-        ''' <remarks></remarks>
         Public Overrides Function GetResourceFriendlySize(Resource As IResource) As String
             ValidateResourceValue(Resource, GetType(Byte()), GetType(MemoryStream))
 
@@ -157,7 +155,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Resource">The IResource instance.  May not be Nothing.  The value of the resource to save.  Must be of the type handled by this ResourceTypeEditor.</param>
         ''' <returns>True iff the resource type editor supports saving the specific resource value to a file.</returns>
-        ''' <remarks></remarks>
         Public Overrides Function CanSaveResourceToFile(Resource As IResource) As Boolean
             ValidateResourceValue(Resource, GetType(Byte()), GetType(MemoryStream))
             Return True
@@ -271,8 +268,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   handled by this resource type editor, the suggested names could take the form 
         '''   of "id01", "id02", etc.
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Overrides Function GetSuggestedNamePrefix() As String
             Return "Sound"
         End Function

@@ -39,7 +39,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Project">The Project to get the destination path for.  If this is Nothing or the Miscellaneous Files project, returns Nothing.</param>
         ''' <returns>The default destination path for this project, or Nothing if the Project is Nothing or the Miscellaneous Files project.</returns>
-        ''' <remarks></remarks>
         Friend Shared Function GetAddFileDestinationPath(Project As Project, ResXProjectItem As ProjectItem, CreateDirectoryIfDoesntExist As Boolean) As String
             If Project Is Nothing OrElse IsMiscellaneousProject(Project) OrElse Project.FullName = "" Then
                 Return Nothing
@@ -67,8 +66,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Project">The Project to query.  Returns False if Project = Nothing or the project is the Miscellaneous Files project.</param>
         ''' <param name="FilePath">The file path to check to see if it's in the project's subdirectories.</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Shared Function IsFileInProjectSubdirectories(Project As Project, FilePath As String) As Boolean
             If Project Is Nothing OrElse IsMiscellaneousProject(Project) OrElse Project.FullName = "" Then
                 Return False

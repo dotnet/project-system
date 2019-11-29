@@ -15,7 +15,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
     ''' <summary>
     ''' Show a dialog allowing the user to pick a type
     ''' </summary>
-    ''' <remarks></remarks>
     Friend NotInheritable Class TypePickerDialog
         'Inherits System.Windows.Forms.Form
         Inherits BaseDialog
@@ -230,8 +229,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Get whatever type name the user selected
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public Property TypeName() As String
             Get
                 Return _typeTextBox.Text.Trim()
@@ -248,8 +245,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' A collection of available types
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Private ReadOnly Property AvailableTypes() As AutoCompleteStringCollection
             Get
                 Return _typeTextBox.AutoCompleteCustomSource
@@ -303,7 +298,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub OnOkButtonClick(sender As Object, e As EventArgs) Handles _okButton.Click
             If QueryClose() Then
                 DialogResult = DialogResult.OK
@@ -317,7 +311,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <returns>
         ''' True if validation successful OR validation unsuccessful, but user chooses to save type anyway
         '''</returns>
-        ''' <remarks></remarks>
         Private Function QueryClose() As Boolean
             Dim ShouldClose As Boolean
 
@@ -374,8 +367,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' type names (i.e. int for System.Int32) as well as type names in imported namespaces
         ''' </summary>
         ''' <param name="displayName"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function NormalizeTypeName(displayName As String) As String
             Dim typeNameResolutionService As SettingTypeNameResolutionService =
                 DirectCast(GetService(GetType(SettingTypeNameResolutionService)), SettingTypeNameResolutionService)
@@ -421,8 +412,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Get the project level imports
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function GetProjectImports() As List(Of String)
             Dim Result As New List(Of String)
             Dim vsProject As VSLangProj.VSProject
@@ -621,7 +610,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub TypePickerDialog_FormClosed(sender As Object, e As FormClosedEventArgs) Handles Me.FormClosed
             s_previousSize = Size
         End Sub

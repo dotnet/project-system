@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Explicit On
 Option Strict On
@@ -14,7 +14,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     ''' This is a base class used by all resource type editors internal to the resource editor.
     '''   It simply provides a few helpful functions.
     ''' </summary>
-    ''' <remarks></remarks>
     Friend MustInherit Class ResourceTypeEditorInternalBase
         Inherits ResourceTypeEditor
 
@@ -26,7 +25,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Extensions">The list of extensions to match against.</param>
         ''' <param name="MatchedIndex">[out optional] Set to the index of the extension which matched, or -1 if none.</param>
         ''' <returns>True if the extension is found in the list.</returns>
-        ''' <remarks></remarks>
         Protected Shared Function MatchAgainstListOfExtensions(Extension As String, Extensions() As String, Optional ByRef MatchedIndex As Integer = -1) As Boolean
             Debug.Assert(Extension = "" OrElse Extension.Chars(0) = "."c, "HandlesExtension: must start extension with dot")
             MatchedIndex = -1
@@ -50,8 +48,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="FilterText">The text for that filter entry, e.g. "Metafiles"</param>
         ''' <param name="Extensions">An array of extensions supported, e.g. {".wmf", ".emf")</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Protected Shared Function CreateSingleDialogFilter(FilterText As String, Extensions() As String) As String
             Return Common.CreateDialogFilter(FilterText, Extensions)
         End Function
@@ -89,7 +85,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Resource">The IResource instance.  May not be Nothing.  The value of the resource to save.  Must be of the type handled by this ResourceTypeEditor.</param>
         ''' <returns>The friendly file size as string.</returns>
-        ''' <remarks></remarks>
         Protected Shared Function GetLinkedResourceFriendlySize(Resource As IResource) As String
             If Resource.IsLink Then
                 Dim SizeInBytes As Long = New FileInfo(Resource.LinkedFilePath).Length

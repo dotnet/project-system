@@ -122,7 +122,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Constructor.
         ''' </summary>
         ''' <param name="owner">The ProjectDesignerTabControl control which owns and contains this control.</param>
-        ''' <remarks></remarks>
         Public Sub New(owner As ProjectDesignerTabControl)
             Requires.NotNull(owner, NameOf(owner))
 
@@ -139,8 +138,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''   shell (e.g., colors will default to system or fallback colors instead of using the
         '''   shell's color service). 
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public Property ServiceProvider() As IServiceProvider
             Get
                 Return _serviceProvider
@@ -205,8 +202,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Note: this is not necessarily the same as the currently-selected button, because once a button
         '''   is pulled into the switchable slot, we want it to stay there unless we have to change it.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public Property PreferredButtonForSwitchableSlot() As ProjectDesignerTabButton
             Get
                 Return _preferredButtonForSwitchableSlot
@@ -226,7 +221,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Creates GDI objects that we keep around, if they have not already been created
         ''' </summary>
         ''' <param name="ForceUpdate">If True, the GDI objects are updated if they have already been created.</param>
-        ''' <remarks></remarks>
         Public Sub CreateGDIObjects(Optional ForceUpdate As Boolean = False)
             If _creatingGDIObjects Then
                 Exit Sub
@@ -313,7 +307,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Computes all layout-related, cached state, if it is not currently valid.
         '''   Otherwise immediately returns.
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub UpdateCacheState()
             If _updatingCache Then
                 Exit Sub
@@ -357,8 +350,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Retrieves the width in pixels of the widest text in any of the buttons.
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function GetLargestButtonTextSize() As Size
             'Calculate required text width
             Dim maxTextWidth As Integer = 0
@@ -411,7 +402,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Sets the positions of all the owner's buttons.
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub SetButtonPositions()
             'Adjust all the button positions
 
@@ -511,7 +501,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' The main painting routine.
         ''' </summary>
         ''' <param name="g">The Graphics object to paint to.</param>
-        ''' <remarks></remarks>
         Public Sub RenderBackground(g As Graphics)
             CreateGDIObjects()
 

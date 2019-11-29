@@ -8,14 +8,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     ''' Support for retrieving and working with the available target framework assemblies
     '''   for a project.
     ''' </summary>
-    ''' <remarks></remarks>
     Friend Class TargetFrameworkAssemblies
 
         ''' <summary>
         ''' Represents a supported target framework assembly.  Can be placed directly into 
         '''   a listbox or combobox (it will show the Description text in the listbox)
         ''' </summary>
-        ''' <remarks></remarks>
         Friend Class TargetFramework
             Private ReadOnly _version As UInteger
             Private ReadOnly _description As String
@@ -42,8 +40,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ''' <summary>
             ''' Provides the text to show inside of a combobox/listbox
             ''' </summary>
-            ''' <returns></returns>
-            ''' <remarks></remarks>
             Public Overrides Function ToString() As String
                 Return _description
             End Function
@@ -54,8 +50,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Retrieves the set of target framework assemblies that are supported
         ''' </summary>
         ''' <param name="vsTargetFrameworkAssemblies"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Shared Function GetSupportedTargetFrameworkAssemblies(vsTargetFrameworkAssemblies As IVsTargetFrameworkAssemblies) As IEnumerable(Of TargetFramework)
             Dim versions As UInteger() = GetSupportedTargetFrameworkAssemblyVersions(vsTargetFrameworkAssemblies)
             Dim targetFrameworks As New List(Of TargetFramework)
@@ -72,8 +66,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="vsTargetFrameworkAssemblies"></param>
         ''' <param name="version"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Shared Function GetTargetFrameworkDescriptionFromVersion(vsTargetFrameworkAssemblies As IVsTargetFrameworkAssemblies, version As UInteger) As String
             Dim pszDescription As String = Nothing
             VSErrorHandler.ThrowOnFailure(vsTargetFrameworkAssemblies.GetTargetFrameworkDescription(version, pszDescription))
@@ -84,8 +76,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Retrieve the list of assemblies versions (as uint) that are supported
         ''' </summary>
         ''' <param name="vsTargetFrameworkAssemblies"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Shared Function GetSupportedTargetFrameworkAssemblyVersions(vsTargetFrameworkAssemblies As IVsTargetFrameworkAssemblies) As UInteger()
             Dim targetFrameworkEnumerator As IEnumTargetFrameworks = Nothing
             VSErrorHandler.ThrowOnFailure(vsTargetFrameworkAssemblies.GetSupportedFrameworks(targetFrameworkEnumerator))

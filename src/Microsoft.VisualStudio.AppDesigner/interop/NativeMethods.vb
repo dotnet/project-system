@@ -287,8 +287,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
         ''' <summary>
         ''' The GetNextDlgTabItem function retrieves a handle to the first control that has the WS_TABSTOP style that precedes (or follows) the specified control. 
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         <PreserveSig()> Public Declare Auto Function _
             GetNextDlgTabItem _
                 Lib "user32" (hDlg As IntPtr, hCtl As IntPtr, bPrevious As Boolean) As IntPtr

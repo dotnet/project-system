@@ -10,7 +10,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
     ''' <summary>
     ''' Cell type for displaying UI Type editors in DataGridView 
     ''' </summary>
-    ''' <remarks></remarks>
     Friend NotInheritable Class DataGridViewUITypeEditorCell
         Inherits DataGridViewCell
 
@@ -20,7 +19,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' For edit on keydown or mouse click we sometimes need to
         ''' ignore a mouse click...
         ''' </summary>
-        ''' <remarks></remarks>
         Private _ignoreNextMouseClick As Boolean
 
 #Region "DataGridViewCell overrides"
@@ -28,8 +26,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Return the custom editing control used by this type
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public Overrides ReadOnly Property EditType() As Type
             Get
                 Return GetType(DataGridViewUITypeEditorEditingControl)
@@ -44,8 +40,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="rowIndex"></param>
         ''' <param name="cellStyle"></param>
         ''' <param name="context"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Protected Overrides Function GetFormattedValue(value As Object, rowIndex As Integer, ByRef cellStyle As DataGridViewCellStyle, valueTypeConverter As TypeConverter, formattedValueTypeConverter As TypeConverter, context As DataGridViewDataErrorContexts) As Object
             If (context And DataGridViewDataErrorContexts.Display) <> 0 AndAlso
                 value IsNot Nothing AndAlso
@@ -60,8 +54,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Type of formatted value
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public Overrides ReadOnly Property FormattedValueType() As Type
             Get
                 Return GetType(String)
@@ -75,8 +67,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="CellStyle"></param>
         ''' <param name="valueTypeConverter"></param>
         ''' <param name="formattedTypeConverter"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Overrides Function ParseFormattedValue(FormattedValue As Object,
                                                  CellStyle As DataGridViewCellStyle,
                                                  valueTypeConverter As TypeConverter,
@@ -115,8 +105,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="cellStyle"></param>
         ''' <param name="rowIndex"></param>
         ''' <param name="constraintSize"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Protected Overrides Function GetPreferredSize(g As Graphics, cellStyle As DataGridViewCellStyle, rowIndex As Integer, constraintSize As Size) As Size
             Dim FormattedValue As String = DirectCast(GetFormattedValue(GetValue(rowIndex), rowIndex, cellStyle, Nothing, Nothing, DataGridViewDataErrorContexts.Formatting Or DataGridViewDataErrorContexts.Display), String)
             Dim preferredStringSize As SizeF = g.MeasureString(FormattedValue, cellStyle.Font)
@@ -138,7 +126,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="cellStyle"></param>
         ''' <param name="advancedBorderStyle"></param>
         ''' <param name="paintParts"></param>
-        ''' <remarks></remarks>
         Protected Overrides Sub Paint(graphics As Graphics, clipBounds As Rectangle, cellBounds As Rectangle, rowIndex As Integer, cellState As DataGridViewElementStates, value As Object, formattedValue As Object, errorText As String, cellStyle As DataGridViewCellStyle, advancedBorderStyle As DataGridViewAdvancedBorderStyle, paintParts As DataGridViewPaintParts)
             MyBase.Paint(graphics, clipBounds, cellBounds, rowIndex, cellState, value, formattedValue, errorText, cellStyle, advancedBorderStyle, paintParts)
 
@@ -235,7 +222,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="InitialFormattedValue"></param>
         ''' <param name="CellStyle"></param>
-        ''' <remarks></remarks>
         Public Overrides Sub InitializeEditingControl(RowIndex As Integer, InitialFormattedValue As Object, CellStyle As DataGridViewCellStyle)
             Debug.Assert(DataGridView IsNot Nothing AndAlso DataGridView.EditingControl IsNot Nothing AndAlso TypeOf DataGridView.EditingControl Is DataGridViewUITypeEditorEditingControl)
             MyBase.InitializeEditingControl(RowIndex, InitialFormattedValue, CellStyle)
@@ -251,7 +237,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="rowIndex"></param>
         ''' <param name="throughMouseClick"></param>
-        ''' <remarks></remarks>
         Protected Overrides Sub OnEnter(rowIndex As Integer, throughMouseClick As Boolean)
             MyBase.OnEnter(rowIndex, throughMouseClick)
             If throughMouseClick Then
@@ -275,7 +260,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="rowIndex"></param>
         ''' <param name="throughMouseClick"></param>
-        ''' <remarks></remarks>
         Protected Overrides Sub OnLeave(rowIndex As Integer, throughMouseClick As Boolean)
             MyBase.OnLeave(rowIndex, throughMouseClick)
             _ignoreNextMouseClick = False

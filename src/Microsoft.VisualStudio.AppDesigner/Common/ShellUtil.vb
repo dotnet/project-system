@@ -15,7 +15,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
     ''' <summary>
     ''' Utilities relating to the Visual Studio shell, services, etc.
     ''' </summary>
-    ''' <remarks></remarks>
     Friend NotInheritable Class ShellUtil
 
         Public Shared ReadOnly ProjectDesignerThemeCategory As New Guid("ef1a2d2c-5d16-4ddb-8d04-79d0f6c1c56e")
@@ -29,8 +28,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="VsUIShell">The IVsUIShell interface that must also implement IVsUIShell2 (if not, or if Nothing, default color is returned)</param>
         ''' <param name="VsSysColorIndex">The color index to look up.</param>
         ''' <param name="DefaultColor">The default color to return if the call fails.</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Shared Function GetColor(VsUIShell As IVsUIShell, VsSysColorIndex As __VSSYSCOLOREX, DefaultColor As Color) As Color
             Return GetColor(TryCast(VsUIShell, IVsUIShell2), VsSysColorIndex, DefaultColor)
         End Function
@@ -43,8 +40,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="VsUIShell2">The IVsUIShell2 interface to use (if Nothing, default color is returned)</param>
         ''' <param name="VsSysColorIndex">The color index to look up.</param>
         ''' <param name="DefaultColor">The default color to return if the call fails.</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Shared Function GetColor(VsUIShell2 As IVsUIShell2, VsSysColorIndex As __VSSYSCOLOREX, DefaultColor As Color) As Color
             If VsUIShell2 IsNot Nothing Then
                 Dim abgrValue As UInteger
@@ -94,7 +89,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' </summary>
         ''' <param name="abgrValue">The UInteger COLORREF value</param>
         ''' <returns>The System.Drawing.Color equivalent.</returns>
-        ''' <remarks></remarks>
         Private Shared Function COLORREFToColor(abgrValue As UInteger) As Color
             Return Color.FromArgb(CInt(abgrValue And &HFFUI), CInt((abgrValue And &HFF00UI) >> 8), CInt((abgrValue And &HFF0000UI) >> 16))
         End Function
@@ -105,7 +99,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="Config">The IVsCfg to get the configuration and platform name from.</param>
         ''' <param name="ConfigName">[out] The configuration name.</param>
         ''' <param name="PlatformName">[out] The platform name.</param>
-        ''' <remarks></remarks>
         Public Shared Sub GetConfigAndPlatformFromIVsCfg(Config As IVsCfg, ByRef ConfigName As String, ByRef PlatformName As String)
             Dim DisplayName As String = Nothing
 
@@ -136,7 +129,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         '''   we hide the configuration/platform comboboxes.
         ''' </summary>
         ''' <param name="ProjectHierarchy">The hierarchy to check</param>
-        ''' <remarks></remarks>
         Public Shared Function GetIsSimplifiedConfigMode(ProjectHierarchy As IVsHierarchy) As Boolean
             Try
                 If ProjectHierarchy IsNot Nothing Then
@@ -159,7 +151,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         '''   from then on out).
         ''' </summary>
         ''' <param name="ProjectHierarchy">The project hierarchy to check</param>
-        ''' <remarks></remarks>
         Private Shared Function CanHideConfigurationsForProject(ProjectHierarchy As IVsHierarchy) As Boolean
             Dim ReturnValue As Boolean = False 'If failed to get config value, default to not hiding configs
 
@@ -191,7 +182,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         '''   Tools.Options.
         ''' </summary>
         ''' <param name="DTE">The DTE extensibility object</param>
-        ''' <remarks></remarks>
         Private Shared Function ToolsOptionsShowAdvancedBuildConfigurations(DTE As DTE) As Boolean
             Dim ShowValue As Boolean
             Dim ProjAndSolutionProperties As Properties
@@ -219,8 +209,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         '''   don't support this, returns Nothing (e.g. C++).
         ''' </summary>
         ''' <param name="ProjectHierarchy"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Shared Function DTEProjectFromHierarchy(ProjectHierarchy As IVsHierarchy) As Project
             If ProjectHierarchy Is Nothing Then
                 Return Nothing
@@ -239,7 +227,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <summary>
         ''' Wrapper class for IVsShell.OnBroadcastMessage
         ''' </summary>
-        ''' <remarks></remarks>
         Public Class BroadcastMessageEventsHelper
             Implements IVsBroadcastMessageEvents
             Implements IDisposable
@@ -288,8 +275,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             ''' <param name="msg"></param>
             ''' <param name="wParam"></param>
             ''' <param name="lParam"></param>
-            ''' <returns></returns>
-            ''' <remarks></remarks>
             Private Function IVsBroadcastMessageEvents_OnBroadcastMessage(msg As UInteger, wParam As IntPtr, lParam As IntPtr) As Integer Implements IVsBroadcastMessageEvents.OnBroadcastMessage
                 OnBroadcastMessage(msg, wParam, lParam)
                 Return AppDesInterop.NativeMethods.S_OK
@@ -301,7 +286,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             ''' <param name="msg"></param>
             ''' <param name="wParam"></param>
             ''' <param name="lParam"></param>
-            ''' <remarks></remarks>
             Protected Overridable Sub OnBroadcastMessage(msg As UInteger, wParam As IntPtr, lParam As IntPtr)
                 RaiseEvent BroadcastMessage(msg, wParam, lParam)
             End Sub
@@ -343,7 +327,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <summary>
         ''' Monitor and set font when font changes...
         ''' </summary>
-        ''' <remarks></remarks>
         Public NotInheritable Class FontChangeMonitor
             Inherits BroadcastMessageEventsHelper
 
@@ -358,7 +341,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             ''' <param name="sp"></param>
             ''' <param name="ctrl"></param>
             ''' <param name="SetFontInitially">If true, set the font of the provided control when this FontChangeMonitor is created</param>
-            ''' <remarks></remarks>
             Public Sub New(sp As IServiceProvider, ctrl As Control, SetFontInitially As Boolean)
                 MyBase.New(sp)
 
@@ -379,7 +361,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             ''' <param name="msg"></param>
             ''' <param name="wParam"></param>
             ''' <param name="lParam"></param>
-            ''' <remarks></remarks>
             Protected Overrides Sub OnBroadcastMessage(msg As UInteger, wParam As IntPtr, lParam As IntPtr)
                 MyBase.OnBroadcastMessage(msg, wParam, lParam)
 
@@ -397,8 +378,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             ''' <summary>
             ''' Pick current dialog font...
             ''' </summary>
-            ''' <value></value>
-            ''' <remarks></remarks>
             Public Shared ReadOnly Property GetDialogFont(ServiceProvider As IServiceProvider) As Font
                 Get
                     If ServiceProvider IsNot Nothing Then

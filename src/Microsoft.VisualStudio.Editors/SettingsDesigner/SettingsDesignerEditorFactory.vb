@@ -11,7 +11,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
     ''' <summary>
     ''' The editor factory for the settings designer
     ''' </summary>
-    ''' <remarks></remarks>
     <Guid(SettingsDesignerEditorFactory.EditorGuidString)>
     Friend NotInheritable Class SettingsDesignerEditorFactory
         Inherits DesignerFramework.BaseEditorFactory
@@ -33,8 +32,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' My commandUI GUID
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Protected Overrides ReadOnly Property CommandUIGuid() As Guid
             Get
                 Return Constants.MenuConstants.GUID_SETTINGSDESIGNER_CommandUI
@@ -44,8 +41,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Return my editor GUID
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Protected Overrides ReadOnly Property EditorGuid() As Guid
             Get
                 Return New Guid(EditorGuidString)
@@ -66,7 +61,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="Caption"></param>
         ''' <param name="CmdUIGuid"></param>
         ''' <param name="Canceled"></param>
-        ''' <remarks></remarks>
         Protected Overrides Sub CreateEditorInstance(VsCreateEditorFlags As UInteger, FileName As String, PhysicalView As String, Hierarchy As Shell.Interop.IVsHierarchy, ItemId As UInteger, ExistingDocData As Object, ByRef DocView As Object, ByRef DocData As Object, ByRef Caption As String, ByRef CmdUIGuid As Guid, ByRef Canceled As Boolean)
             Static prjKindVenus As String = "{E24C65DC-7377-472b-9ABA-BC803B73C61A}"
             Dim proj As EnvDTE.Project = Common.DTEUtils.EnvDTEProject(Hierarchy)

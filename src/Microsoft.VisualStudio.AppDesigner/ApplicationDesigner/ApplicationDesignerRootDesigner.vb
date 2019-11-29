@@ -13,7 +13,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
     ''' This is the designer for the top-level resource editor component (ApplicationDesigner).  I.e., this
     ''' is the top-level designer.  
     ''' </summary>
-    ''' <remarks></remarks>
     Public NotInheritable Class ApplicationDesignerRootDesigner
         Inherits AppDesDesignerFramework.BaseRootDesigner
         Implements IRootDesigner
@@ -25,7 +24,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Returns the ApplicationDesignerRootComponent component that is being edited by this designer.
         ''' </summary>
         ''' <value>The ApplicationDesignerRootComponent object.</value>
-        ''' <remarks></remarks>
         Public Shadows ReadOnly Property Component() As ApplicationDesignerRootComponent
             Get
                 Dim RootComponent As ApplicationDesignerRootComponent = CType(MyBase.Component, ApplicationDesignerRootComponent)
@@ -60,7 +58,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Disposes of the root designer
         ''' </summary>
         ''' <param name="Disposing"></param>
-        ''' <remarks></remarks>
         Protected Overloads Overrides Sub Dispose(Disposing As Boolean)
             If Disposing Then
                 If _view IsNot Nothing Then
@@ -77,7 +74,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' We currently support only Windows Forms technology (i.e., our designer view, ResourceEditorView,
         ''' inherits from System.Windows.Forms.Control)
         ''' </summary>
-        ''' <value></value>
         ''' <remarks>
         ''' The view technology we support, which is currently only Windows Forms
         ''' </remarks>
@@ -92,7 +88,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''   our resource editor's designer surface.  In this case, we return an instance of ResourceEditorView.
         ''' </summary>
         ''' <param name="Technology"></param>
-        ''' <returns></returns>
         ''' <remarks>
         '''   The newly-instantiated ResourceEditorView object.
         ''' </remarks>
@@ -114,8 +109,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Wrapper function to expose our UI object
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function GetView() As ApplicationDesignerView
             Return CType(RootDesigner_GetView(ViewTechnology.Default), ApplicationDesignerView)
         End Function

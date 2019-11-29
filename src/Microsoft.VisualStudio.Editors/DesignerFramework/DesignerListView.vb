@@ -17,7 +17,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
     '''   
     '''   DesignerListView is our control inherited from ListView.
     ''' </summary>
-    ''' <remarks></remarks>
     Friend Class DesignerListView
         Inherits ListView
 
@@ -30,7 +29,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Public Event ContextMenuShow(sender As Object, e As MouseEventArgs)
 
 

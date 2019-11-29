@@ -65,8 +65,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' negative numbers to UInt32.  We just want raw bit translation.
         ''' </summary>
         ''' <param name="obj"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function NoOverflowCUInt(obj As Object) As UInteger
             Return NoOverflowCUInt(CLng(obj))
         End Function
@@ -75,8 +73,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' Masks the top 32 bits to get just the lower 32bit number
         ''' </summary>
         ''' <param name="LongValue"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function NoOverflowCUInt(LongValue As Long) As UInteger
             Return CUInt(LongValue And UInteger.MaxValue)
         End Function
@@ -155,7 +151,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         '''  False if a is true and b is false.  Otherwise it returns True (as there's no
         '''   evidence to suggest that the implication is incorrect).
         ''' </summary>
-        ''' <remarks></remarks>
         Public Function Implies(a As Boolean, b As Boolean) As Boolean
             Return Not (a And Not b)
         End Function
@@ -167,8 +162,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         '''   also the inner exception, if any.
         ''' </summary>
         ''' <param name="ex"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function DebugMessageFromException(ex As Exception) As String
 #If DEBUG Then
             Dim ErrorMessage As String = ex.Message & vbCrLf & vbCrLf & vbCrLf & "[SHOWN IN DEBUG ONLY] STACK TRACE:" & vbCrLf & ex.StackTrace
@@ -188,8 +181,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         '''   returns an empty string.
         ''' </summary>
         ''' <param name="Value">The value to turn into a displayable string.</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function DebugToString(Value As Object) As String
 #If DEBUG Then
             Dim StringValue As String = ""
@@ -248,7 +239,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' Given an exception, returns True if it is a CheckOut exception.
         ''' </summary>
         ''' <param name="ex">The exception to check rethrow if it's caused by canceling checkout</param>
-        ''' <remarks></remarks>
         Public Function IsCheckoutCanceledException(ex As Exception) As Boolean
             If (TypeOf ex Is CheckoutException AndAlso ex.Equals(CheckoutException.Canceled)) _
                 OrElse
@@ -269,8 +259,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' If the given string is Nothing, return "", else return the original string.
         ''' </summary>
         ''' <param name="Str"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function NothingToEmptyString(Str As String) As String
             If Str Is Nothing Then
                 Return String.Empty
@@ -284,8 +272,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' If the given string is "", return Nothing, else return the original string.
         ''' </summary>
         ''' <param name="Str"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function EmptyStringToNothing(Str As String) As String
             If Str Is Nothing OrElse Str.Length = 0 Then
                 Return Nothing
@@ -300,8 +286,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="Condition">The condition to test.</param>
         ''' <param name="TrueExpression">What to return if the condition is True</param>
         ''' <param name="FalseExpression">What to return if the condition is False</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function IIf(Of T)(Condition As Boolean, TrueExpression As T, FalseExpression As T) As T
             If Condition Then
                 Return TrueExpression
@@ -315,7 +299,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' Set the drop-down width of a combobox wide enough to show the text of all entries in it
         ''' </summary>
         ''' <param name="ComboBox">The combobox to change the width for</param>
-        ''' <remarks></remarks>
         Public Sub SetComboBoxDropdownWidth(ComboBox As ComboBox)
             If ComboBox IsNot Nothing Then
                 ComboBox.DropDownWidth = Math.Max(MeasureMaxTextWidth(ComboBox, ComboBox.Items), ComboBox.Width)
@@ -385,7 +368,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' </summary>
         ''' <param name="HwndParent">The container HWND.</param>
         ''' <param name="First">If True, sets focus to the first control, otherwise the last.</param>
-        ''' <remarks></remarks>
         Public Function FocusFirstOrLastTabItem(HwndParent As IntPtr, First As Boolean) As Boolean
             If HwndParent.Equals(IntPtr.Zero) Then
                 Return False
@@ -436,8 +418,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' Returns a given path with a backslash at the end, if not already there.
         ''' </summary>
         ''' <param name="Path">The path to add a backslash to.</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function AppendBackslash(Path As String) As String
             If Path <> "" AndAlso Right(Path, 1) <> IO.Path.DirectorySeparatorChar AndAlso Right(Path, 1) <> IO.Path.AltDirectorySeparatorChar Then
                 Return Path & IO.Path.DirectorySeparatorChar
@@ -459,7 +439,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="MutiSelect">Whether we should support multi-selection</param>
         ''' <param name="NeedThrowError">Throw error when the dialog fails unexpectedly</param>
         ''' <returns>a collection of files</returns>
-        ''' <remarks></remarks>
         Public Function GetFilesViaBrowse(ServiceProvider As IServiceProvider, ParentWindow As IntPtr,
                 InitialDirectory As String, DialogTitle As String,
                 Filter As String, FilterIndex As UInteger, MutiSelect As Boolean,
@@ -603,8 +582,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' </summary>
         ''' <param name="ctrl"></param>
         ''' <param name="items"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function MeasureMaxTextWidth(ctrl As Control, items As IEnumerable) As Integer
             Dim MaxEntryWidth As Integer = 0
             Using g As Graphics = ctrl.CreateGraphics()
@@ -668,8 +645,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             ''' Map a known property page or designer id to telemetry display name to log.
             ''' </summary>
             ''' <param name="guid"></param>
-            ''' <returns></returns>
-            ''' <remarks></remarks>
             Private Shared Function PageGuidToId(guid As Guid) As Byte
                 For i As Integer = 0 To s_sqmOrder.Length - 1
                     If s_sqmOrder(i).Equals(guid) Then

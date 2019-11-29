@@ -130,7 +130,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Constructor for the ApplicationDesigner view
         ''' </summary>
         ''' <param name="serviceProvider">The service provider from the root designer.</param>
-        ''' <remarks></remarks>
         Public Sub New(serviceProvider As IServiceProvider)
             MyBase.New()
             SuspendLayout()
@@ -152,11 +151,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             HostingPanel.ResumeLayout(False)
             ResumeLayout(False) 'Don't need to lay out yet - we'll do that at the end of AddTabs
         End Sub
-
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        ''' <remarks></remarks>
         Public Sub InitView()
             Dim WindowFrame As IVsWindowFrame
             Dim Value As Object = Nothing
@@ -268,8 +262,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Retrieves the DTE project object associated with this project designer instance.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public ReadOnly Property DTEProject() As Project
             Get
                 Return _dteProject
@@ -285,7 +277,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Instance of the loaded IVBPackage
         ''' </summary>
-        ''' <value></value>
         ''' <remarks>Used to persist user data</remarks>
         Private ReadOnly Property Package() As IVBPackage
             Get
@@ -306,8 +297,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Get/set the last viewed tab of for this application page...
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Private Property LastShownTab() As Integer
             Get
                 Dim editorsPackage As IVBPackage = Package
@@ -332,7 +321,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Should be called to let the project designer know it's shutting down and should no longer try
         '''   to activate child pages
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub NotifyShuttingDown()
             Common.Switches.TracePDFocus(TraceLevel.Info, "NotifyShuttingDown")
             _okayToActivatePanelsOnFocus = False
@@ -345,7 +333,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="DocCookie"></param>
         ''' <param name="Hierarchy"></param>
         ''' <param name="ItemId"></param>
-        ''' <returns></returns>
         ''' <remarks>Used by view to prompt for saving changes</remarks>
         Private Function IsDocDataDirty(DocCookie As UInteger, ByRef Hierarchy As IVsHierarchy, ByRef ItemId As UInteger) As Boolean
             Dim rdt As IVsRunningDocumentTable = TryCast(GetService(GetType(IVsRunningDocumentTable)), IVsRunningDocumentTable)
@@ -388,7 +375,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Populates the list of documents based on flags argument
         ''' </summary>
         ''' <param name="flags"></param>
-        ''' <value></value>
         ''' <remarks>Used to build table of documents to save</remarks>
         Public ReadOnly Property GetSaveTreeItems(flags As __VSRDTSAVEOPTIONS) As VSSAVETREEITEM()
             Get
@@ -496,7 +482,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Does *not* load them now, but waits to load them on demand.
         ''' </summary>
         ''' <returns>An array of PropertyPageInfo with the loaded property page information.</returns>
-        ''' <remarks></remarks>
         Public Function GetPropertyPages() As PropertyPageInfo()
             Dim LocalRegistry As ILocalRegistry
             LocalRegistry = CType(GetService(GetType(ILocalRegistry)), ILocalRegistry)
@@ -544,8 +529,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Get the max property page size based on the reported page infos
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public ReadOnly Property GetMaxPropPageSize() As Drawing.Size
             Get
                 Dim MaxSize As Drawing.Size
@@ -598,7 +581,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Obtain the current Config browse object from the project hierarchy
         ''' </summary>
         ''' <returns>The browse object for the currently selected configuration.</returns>
-        ''' <remarks></remarks>
         Private Function GetActiveConfigBrowseObject() As Object
             Return Common.DTEUtils.GetActiveConfiguration(DTEProject, VsCfgProvider)
         End Function
@@ -641,7 +623,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="tabSupported">[Out] True if the given tab is supported by the project</param>
         ''' <param name="fileExists">[Out] True if the given tab's file actually exists currently.  Always false if Not TabSupported.</param>
         ''' <param name="fullPathToProjectItem">[Out] The full path to the given tab's file.  If TabSupported is True but FileExists is False, this value indicates the preferred file and location for the project for this special file.</param>
-        ''' <remarks></remarks>
         Private Sub CheckIfTabSupported(fileId As Integer, ByRef tabSupported As Boolean, ByRef fileExists As Boolean, ByRef fullPathToProjectItem As String)
             tabSupported = False
             fileExists = False
@@ -673,7 +654,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Adds the tab buttons for the App Designer
         ''' </summary>
         ''' <param name="PropertyPages">The list of property pages to display</param>
-        ''' <remarks></remarks>
         Private Sub AddTabs(PropertyPages() As PropertyPageInfo)
             SuspendLayout()
             HostingPanel.SuspendLayout()
@@ -941,8 +921,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Gets the guid list from the specified object
         ''' </summary>
         ''' <param name="BrowseObject"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Shared Function GetPageGuids(BrowseObject As Object) As Guid()
             If TypeOf BrowseObject Is IVsSpecifyProjectDesignerPages Then
                 Dim CauuidPages() As OleInterop.CAUUID = New OleInterop.CAUUID(1) {}
@@ -988,7 +966,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Called by designer when changes need to be persisted
         ''' </summary>
         ''' <returns>Return true if success </returns>
-        ''' <remarks></remarks>
         Public Function CommitAnyPendingChanges() As Boolean
             If _activePanelIndex >= 0 Then
                 Dim currentPanel As ApplicationDesignerPanel = _designerPanels(_activePanelIndex)
@@ -1005,7 +982,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="Index">Index of Designer panel to show</param>
         ''' <param name="ForceShow">Forces the Show code to go through, even if the current panel is the same as the one requested.</param>
-        ''' <remarks></remarks>
         Private Sub ShowTab(Index As Integer, Optional ForceShow As Boolean = False, Optional ForceActivate As Boolean = False)
 
             Common.Switches.TracePDFocus(TraceLevel.Warning, "ApplicationDesignerView.ShowTab(" & Index & ")")
@@ -1193,7 +1169,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="DefaultButton">Which button should be default?</param>
         ''' <param name="HelpLink">The help link</param>
         ''' <returns>One of the DialogResult values</returns>
-        ''' <remarks></remarks>
 #Disable Warning RS0026 ' Do not add multiple public overloads with optional parameters
         Public Function DsMsgBox(Message As String,
                 Buttons As MessageBoxButtons,
@@ -1213,7 +1188,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="ex">The exception whose text should be displayed.</param>
         ''' <param name="HelpLink">The help link</param>
-        ''' <remarks></remarks>
 #Disable Warning RS0026 ' Do not add multiple public overloads with optional parameters
         Public Sub DsMsgBox(ex As Exception,
                 Optional HelpLink As String = Nothing) Implements IPropertyPageSiteOwner.DsMsgBox
@@ -1228,7 +1202,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Moves to the next or previous tab in the project designer
         ''' </summary>
         ''' <param name="forward">If true, moves forward a tab.  If false, moves back a tab.</param>
-        ''' <remarks></remarks>
         Public Sub SwitchTab(forward As Boolean)
             Dim Index As Integer = _activePanelIndex
             If forward Then
@@ -1248,7 +1221,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Occurs when the user clicks on one of the tab buttons.  Switch to that tab.
         ''' </summary>
         ''' <param name="item"></param>
-        ''' <remarks></remarks>
         Public Overrides Sub OnItemClick(item As ProjectDesignerTabButton)
             OnItemClick(item, reactivatePage:=False)
         End Sub
@@ -1286,7 +1258,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' WndProc for the project designer.
         ''' </summary>
         ''' <param name="m"></param>
-        ''' <remarks></remarks>
         Protected Overrides Sub WndProc(ByRef m As Message)
             If m.Msg = Win32Constant.WM_SETFOCUS AndAlso Not _isInPanelWindowFrameShow Then 'in MDI mode this can get hit recursively
                 'We need to intercept WM_SETFOCUS on the project designer to keep WinForms from setting focus to the
@@ -1335,7 +1306,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Calls when the application designer window pane has completely initialized the application designer view (the
         '''   ApplicationDesignerWindowPane controls initialization and population of the view).
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub OnInitializationComplete()
             Common.Switches.TracePDFocus(TraceLevel.Warning, "OnInitializationComplete")
             _initializationComplete = True
@@ -1358,8 +1328,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''   by ApplicationDesignerPanel to delay any window frame activations until after
         '''   initialization.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public ReadOnly Property InitializationComplete() As Boolean
             Get
                 Return _initializationComplete
@@ -1372,7 +1340,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Queues up a request (via PostMessage) to refresh all of our dirty indicators.
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub DelayRefreshDirtyIndicators() Implements IPropertyPageSiteOwner.DelayRefreshDirtyIndicators
             If Not _initializationComplete Then
                 Exit Sub
@@ -1389,7 +1356,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Used by DelayRefreshDirtyIndicators, do not call directly.  Updates the dirty
         '''   indicators for the project designer and all tabs.
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub RefreshDirtyIndicatorsHelper()
             Try
                 'First, update all tab dirty indicators
@@ -1428,8 +1394,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Returns true if the project file is dirty
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function IsProjectFileDirty(Project As Project) As Boolean
             Debug.Assert(Project IsNot Nothing)
 
@@ -1462,8 +1426,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Gets the cookie for the project file
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function GetProjectFileCookie(Project As Project) As UInteger
             Debug.Assert(Project IsNot Nothing)
 
@@ -1499,7 +1461,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''   state as a whole).
         ''' </summary>
         ''' <param name="Dirty">If true, the asterisk is added, if false, it is removed.</param>
-        ''' <remarks></remarks>
         Private Sub SetFrameDirtyIndicator(Dirty As Boolean)
             If Not _projectDesignerDirtyStateInitialized OrElse _lastProjectDesignerDirtyState <> Dirty Then
                 Dim Frame As IVsWindowFrame = WindowFrame
@@ -1615,7 +1576,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Start listening to IVsRunningDocTableEvents events
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub AdviseRunningDocTableEvents()
             Dim rdt As IVsRunningDocumentTable = TryCast(GetService(GetType(IVsRunningDocumentTable)), IVsRunningDocumentTable)
             Debug.Assert(rdt IsNot Nothing, "Couldn't get running document table")
@@ -1628,7 +1588,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Stop listening to IVsRunningDocTableEvents events
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub UnadviseRunningDocTableEvents()
             If _rdtEventsCookie <> 0 Then
                 Dim rdt As IVsRunningDocumentTable = TryCast(GetService(GetType(IVsRunningDocumentTable)), IVsRunningDocumentTable)
@@ -1646,8 +1605,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="docCookie"></param>
         ''' <param name="grfAttribs"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function OnAfterAttributeChange(docCookie As UInteger, grfAttribs As UInteger) As Integer Implements IVsRunningDocTableEvents.OnAfterAttributeChange
             Const InterestingFlags As Long = __VSRDTATTRIB.RDTA_DocDataIsDirty Or __VSRDTATTRIB.RDTA_DocDataIsNotDirty Or __VSRDTATTRIB.RDTA_NOTIFYDOCCHANGEDMASK
             If (grfAttribs And InterestingFlags) <> 0 Then
@@ -1665,8 +1622,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="docCookie"></param>
         ''' <param name="pFrame"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function OnAfterDocumentWindowHide(docCookie As UInteger, pFrame As IVsWindowFrame) As Integer Implements IVsRunningDocTableEvents.OnAfterDocumentWindowHide
             Return NativeMethods.S_OK
         End Function
@@ -1678,8 +1633,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="dwRDTLockType"></param>
         ''' <param name="dwReadLocksRemaining"></param>
         ''' <param name="dwEditLocksRemaining"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function OnAfterFirstDocumentLock(docCookie As UInteger, dwRDTLockType As UInteger, dwReadLocksRemaining As UInteger, dwEditLocksRemaining As UInteger) As Integer Implements IVsRunningDocTableEvents.OnAfterFirstDocumentLock
             Return NativeMethods.S_OK
         End Function
@@ -1688,8 +1641,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Fires after a document in the RDT is saved.
         ''' </summary>
         ''' <param name="docCookie"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function OnAfterSave(docCookie As UInteger) As Integer Implements IVsRunningDocTableEvents.OnAfterSave
             Debug.Assert(_designerPanels IsNot Nothing, "m_DesignerPanels should not be Nothing")
             If _designerPanels IsNot Nothing Then
@@ -1710,8 +1661,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="docCookie"></param>
         ''' <param name="fFirstShow"></param>
         ''' <param name="pFrame"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function OnBeforeDocumentWindowShow(docCookie As UInteger, fFirstShow As Integer, pFrame As IVsWindowFrame) As Integer Implements IVsRunningDocTableEvents.OnBeforeDocumentWindowShow
             Debug.Assert(_designerPanels IsNot Nothing, "m_DesignerPanels should not be Nothing")
             If _designerPanels IsNot Nothing Then
@@ -1740,8 +1689,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="dwRDTLockType"></param>
         ''' <param name="dwReadLocksRemaining"></param>
         ''' <param name="dwEditLocksRemaining"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function OnBeforeLastDocumentUnlock(docCookie As UInteger, dwRDTLockType As UInteger, dwReadLocksRemaining As UInteger, dwEditLocksRemaining As UInteger) As Integer Implements IVsRunningDocTableEvents.OnBeforeLastDocumentUnlock
             Return NativeMethods.S_OK
         End Function
@@ -1751,16 +1698,12 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="Hierarchy"></param>
         ''' <param name="ItemId"></param>
         ''' <param name="MkDocument"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function OnBeforeFirstDocumentLock(Hierarchy As IVsHierarchy, ItemId As UInteger, MkDocument As String) As Integer Implements IVsRunningDocTableEvents4.OnBeforeFirstDocumentLock
             Return NativeMethods.S_OK
         End Function
         ''' <summary>
         ''' Fires after all documents are saved (some of the documents saved may not be in the running document table).
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function OnAfterSaveAll() As Integer Implements IVsRunningDocTableEvents4.OnAfterSaveAll
             'A Save All operation just occurred.  Need to reset the undo/redo clean state of all property pages
             SetUndoRedoCleanStateOnAllPropertyPages()
@@ -1769,7 +1712,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Calls SetUndoRedoCleanState() on each property page
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub SetUndoRedoCleanStateOnAllPropertyPages()
             For i As Integer = 0 To _designerPanels.Length - 1
                 Debug.Assert(_designerPanels(i) IsNot Nothing, "m_DesignerPanels(Index) should not be Nothing")
@@ -1791,8 +1733,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="ItemId"></param>
         ''' <param name="MkDocument"></param>
         ''' <param name="ClosedWithoutSaving"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function OnAfterLastDocumentUnlock(Hierarchy As IVsHierarchy, ItemId As UInteger, MkDocument As String, ClosedWithoutSaving As Integer) As Integer Implements IVsRunningDocTableEvents4.OnAfterLastDocumentUnlock
             Return NativeMethods.S_OK
         End Function
@@ -1803,8 +1743,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Gets the locale ID from the shell
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function GetLocaleID() As UInteger Implements IPropertyPageSiteOwner.GetLocaleID
             Dim LocaleId As UInteger
             Dim UIHostLocale As IUIHostLocale = DirectCast(GetService(GetType(IUIHostLocale)), IUIHostLocale)

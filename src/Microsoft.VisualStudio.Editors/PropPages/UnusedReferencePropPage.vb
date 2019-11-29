@@ -106,7 +106,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Initialize proppage for use on a PropPageHostDialog: 
         ''' Initialize proppage variables and install custom dialog event handlers.
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub InitDialog()
             Try
                 ' Get our project hierarchy
@@ -131,7 +130,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' ;Abort
         ''' Abort requesting unused references from compiler.
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub Abort()
 
             ' Stop polling
@@ -206,7 +204,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Sets the proppage appearance according to current operation
         ''' </summary>
         ''' <param name="Status">Current status of proppage (equivalent to status of GetUnusedRefsList call)</param>
-        ''' <remarks></remarks>
         Private Sub UpdateStatus(Status As ReferenceUsageResult)
 
             ' Only update status when necessary
@@ -331,7 +328,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Poll compiler for unused references list from compiler and update listview
         ''' when received.
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub GetUnusedRefs()
 
             ' Request unused references from 
@@ -444,7 +440,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' ;RemoveCheckRefs
         ''' Remove all references the user checked from the project.
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub RemoveCheckedRefs()
 
             Dim ref As VSLangProj.Reference

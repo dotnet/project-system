@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel
 
@@ -10,7 +10,6 @@ Namespace Microsoft.VisualStudio.Editors.Package
     '''   (obviously not very helpful, but it doesn't make sense to localize and doc messages for errors which shouldn't
     '''   be happening).
     ''' </summary>
-    ''' <remarks></remarks>
     <Serializable()>
     Friend Class InternalException
         Inherits ApplicationException
@@ -28,7 +27,6 @@ Namespace Microsoft.VisualStudio.Editors.Package
         ''' Constructor
         ''' </summary>
         ''' <param name="Message">The message for the exception.</param>
-        ''' <remarks></remarks>
         Public Sub New(Message As String)
             Me.New(Message, Nothing)
         End Sub
@@ -49,7 +47,6 @@ Namespace Microsoft.VisualStudio.Editors.Package
         ''' </summary>
         ''' <param name="Message">The message for the exception.</param>
         ''' <param name="InnerException">The inner exception, if any (Nothing = none).</param>
-        ''' <remarks></remarks>
         Public Sub New(Message As String, InnerException As Exception)
             MyBase.New(Message, InnerException)
         End Sub
@@ -62,7 +59,6 @@ Namespace Microsoft.VisualStudio.Editors.Package
         ''' </summary>
         ''' <param name="info"></param>
         ''' <param name="context"></param>
-        ''' <remarks></remarks>
         <EditorBrowsable(EditorBrowsableState.Advanced)>
         Protected Sub New(info As System.Runtime.Serialization.SerializationInfo, context As System.Runtime.Serialization.StreamingContext)
             MyBase.New(info, context)

@@ -36,8 +36,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' True if the dirty indicator should be display
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public Property DirtyIndicator() As Boolean
             Get
                 Return _dirtyIndicator
@@ -54,8 +52,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Returns the text of the tab button, with the dirty indicator if it is on.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public ReadOnly Property TextWithDirtyIndicator() As String
             Get
                 'If the dirty indicator is on, append "*" to the text
@@ -73,9 +69,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' The location of the button.  Should not be changed directly except
         '''   by the tab control itself.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-
         Public Shadows Property Location() As Point
             Get
                 Return MyBase.Location
@@ -110,10 +103,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 parent.Renderer.RenderButton(e.Graphics, Me, Me Is parent.SelectedItem, Me Is parent.HoverItem)
             End If
         End Sub
-
-
-        '''<summary>
-        '''</summary>
         '''<remarks> We need handle OnClick to make Accessibility work... </remarks>
         Protected Overrides Sub OnClick(e As EventArgs)
             MyBase.OnClick(e)

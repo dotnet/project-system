@@ -436,7 +436,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// Returns a list of direct child nodes for given dependency
         /// </summary>
         /// <param name="dependency"></param>
-        /// <returns></returns>
         public ImmutableArray<IDependency> GetDependencyChildren(IDependency dependency)
         {
             if (dependency.DependencyIDs.Length == 0)

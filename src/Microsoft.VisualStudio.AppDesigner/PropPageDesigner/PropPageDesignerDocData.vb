@@ -52,7 +52,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Constructor
         ''' </summary>
         ''' <param name="BaseProvider"></param>
-        ''' <remarks></remarks>
         Public Sub New(BaseProvider As IServiceProvider)
             'not must init to do here
             _baseProvider = BaseProvider
@@ -61,8 +60,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Creates VsTextBuffer if necessary and returns the instance of VsTextBuffer
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Private ReadOnly Property VsTextStream() As IVsTextBuffer
             Get
                 If _vsTextBuffer IsNot Nothing Then
@@ -112,7 +109,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <param name="riidKey"></param>
         ''' <param name="pvtData"></param>
-        ''' <remarks></remarks>
         Public Function GetData(ByRef riidKey As Guid, ByRef pvtData As Object) As Integer Implements IVsUserData.GetData
             If riidKey.Equals(GetType(IVsUserData).GUID) Then
                 'IID_IVsUserData (GUID_VsBufferMoniker) is the guid used for retrieving MkDocument (filename)
@@ -131,7 +127,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <param name="riidKey"></param>
         ''' <param name="vtData"></param>
-        ''' <remarks></remarks>
         Public Function SetData(ByRef riidKey As Guid, vtData As Object) As Integer Implements IVsUserData.SetData
             If _vsTextBuffer IsNot Nothing Then
                 Return CType(_vsTextBuffer, IVsUserData).SetData(riidKey, vtData)
@@ -267,7 +262,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Returns the IVsTextLines for our virtual buffer
         ''' </summary>
         ''' <param name="ppTextBuffer"></param>
-        ''' <remarks></remarks>
         Public Function GetTextBuffer(ByRef ppTextBuffer As IVsTextLines) As Integer Implements IVsTextBufferProvider.GetTextBuffer
             If TypeOf VsTextStream Is IVsTextLines Then
                 ppTextBuffer = CType(VsTextStream, IVsTextLines)
@@ -280,7 +274,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Locks/Unlocks our buffer
         ''' </summary>
         ''' <param name="fLock"></param>
-        ''' <remarks></remarks>
         Public Function LockTextBuffer(fLock As Integer) As Integer Implements IVsTextBufferProvider.LockTextBuffer
             If fLock = 0 Then
                 Return VsTextStream.UnlockBuffer()
@@ -293,7 +286,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' SetTextBuffer is currently unsupported.
         ''' </summary>
         ''' <param name="pTextBuffer"></param>
-        ''' <remarks></remarks>
         Public Function SetTextBuffer(pTextBuffer As IVsTextLines) As Integer Implements IVsTextBufferProvider.SetTextBuffer
             Debug.Fail("SetTextBuffer not supported in Application Designer!")
         End Function
@@ -305,7 +297,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <param name="riid"></param>
         ''' <param name="ppvSite"></param>
-        ''' <remarks></remarks>
         Public Sub GetSite(ByRef riid As Guid, ByRef ppvSite As IntPtr) Implements OLE.Interop.IObjectWithSite.GetSite
             Dim punk As IntPtr = Marshal.GetIUnknownForObject(_siteProvider)
             Dim hr As Integer
@@ -320,7 +311,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Sets the hosting site for the DocData
         ''' </summary>
         ''' <param name="pUnkSite"></param>
-        ''' <remarks></remarks>
         Public Sub SetSite(pUnkSite As Object) Implements OLE.Interop.IObjectWithSite.SetSite
             If TypeOf pUnkSite Is OLE.Interop.IServiceProvider Then
                 _siteProvider = New Shell.ServiceProvider(DirectCast(pUnkSite, OLE.Interop.IServiceProvider))
@@ -334,7 +324,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Disposes of any the doc data
         ''' </summary>
-        ''' <remarks></remarks>
         Public Overloads Sub Dispose() Implements IDisposable.Dispose
             Dispose(True)
         End Sub
@@ -343,7 +332,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Disposes of contained objects
         ''' </summary>
         ''' <param name="disposing"></param>
-        ''' <remarks></remarks>
         Protected Overloads Sub Dispose(disposing As Boolean)
             If disposing Then
                 ' Dispose managed resources.

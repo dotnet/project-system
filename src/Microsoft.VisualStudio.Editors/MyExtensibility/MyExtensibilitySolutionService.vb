@@ -298,7 +298,6 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Handle solution's AfterClosing events and clear our collection of project services.
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub SolutionEvents_AfterClosing()
             Switches.TraceMyExtensibility(TraceLevel.Verbose, "MyExtensibilitySolutionService.SolutionEvents_AfterClosing: Entry. Clear project services dictionary.")
             _projectServices.Clear()
@@ -335,7 +334,6 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Handle DTE OnBeginShutDown event to remove our event handlers.
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub DTEEvents_OnBeginShutDown()
             Switches.TraceMyExtensibility(TraceLevel.Verbose, "MyExtensibilitySolutionService.DTEEvents_OnBeginShutDown: Entry. Call AfterClosing.")
             SolutionEvents_AfterClosing() ' Dispose all project services.

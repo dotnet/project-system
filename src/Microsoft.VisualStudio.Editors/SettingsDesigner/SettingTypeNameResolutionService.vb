@@ -13,7 +13,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
     '''    types
     ''' 3) The .NET FX type name. This is what we present to the single file generator and the settings global object.
     ''' </summary>
-    ''' <remarks></remarks>
     Friend Class SettingTypeNameResolutionService
 
         Private Enum Language
@@ -79,9 +78,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Is the current language case sensitive?
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public ReadOnly Property IsCaseSensitive() As Boolean
             Get
                 Return _caseSensitive
@@ -92,8 +88,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' show in the UI
         ''' </summary>
         ''' <param name="typeName"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function PersistedSettingTypeNameToTypeDisplayName(typeName As String) As String
             Dim displayName As String = Nothing
             If String.Equals(typeName, SettingsSerializer.CultureInvariantVirtualTypeNameConnectionString, StringComparison.Ordinal) Then
@@ -111,8 +105,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' that we'll use when building the CodeDom tree
         ''' </summary>
         ''' <param name="typeName"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Shared Function PersistedSettingTypeNameToFxTypeName(typeName As String) As String
             If String.Equals(typeName, SettingsSerializer.CultureInvariantVirtualTypeNameConnectionString, StringComparison.Ordinal) Then
                 Return GetType(String).FullName
@@ -128,8 +120,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' .settings file
         ''' </summary>
         ''' <param name="typeName"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function TypeDisplayNameToPersistedSettingTypeName(typeName As String) As String
             Dim persistedTypeName As String = Nothing
             If String.Equals(typeName, DisplayTypeNameConnectionString, StringComparison.Ordinal) Then

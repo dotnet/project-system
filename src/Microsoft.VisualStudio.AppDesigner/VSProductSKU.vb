@@ -52,9 +52,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Returns the product SKU as an enum.
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Shared ReadOnly Property ProductSKU() As VSASKUEdition
             Get
                 EnsureInited()
@@ -65,9 +62,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Returns the product Sub-SKU as an enum.
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Shared ReadOnly Property ProductSubSKU() As VSASubSKUEdition
             Get
                 EnsureInited()
@@ -78,7 +72,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Returns True iff this is a Standard SKU
         ''' </summary>
-        ''' <value></value>
         ''' <remarks>From a macro in vsappid.idl</remarks>
         Public Shared ReadOnly Property IsStandard() As Boolean
             Get
@@ -91,8 +84,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Returns True iff this is a VSTO SKU
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public Shared ReadOnly Property IsVSTO() As Boolean
             Get
                 EnsureInited()
@@ -103,7 +94,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Returns True iff this is a Professional SKU
         ''' </summary>
-        ''' <value></value>
         ''' <remarks>From a macro in vsappid.idl</remarks>
         Public Shared ReadOnly Property IsProfessional() As Boolean
             Get
@@ -116,7 +106,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Returns True iff this is an Express SKU
         ''' </summary>
-        ''' <value></value>
         ''' <remarks>From a macro in vsappid.idl</remarks>
         Public Shared ReadOnly Property IsExpress() As Boolean
             Get
@@ -129,7 +118,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Returns True iff this is an Academic SKU
         ''' </summary>
-        ''' <value></value>
         ''' <remarks>From a macro in vsappid.idl</remarks>
         Public Shared ReadOnly Property IsAcademic() As Boolean
             Get
@@ -142,7 +130,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Returns True iff this is an Enterprise SKU
         ''' </summary>
-        ''' <value></value>
         ''' <remarks>From a macro in vsappid.idl</remarks>
         Public Shared ReadOnly Property IsEnterprise() As Boolean
             Get
@@ -155,8 +142,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Returns True iff this is a VB SKU
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public Shared ReadOnly Property IsVB() As Boolean
             Get
                 EnsureInited()
@@ -168,8 +153,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Returns True iff this is a VC SKU
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public Shared ReadOnly Property IsVC() As Boolean
             Get
                 EnsureInited()
@@ -183,7 +166,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Makes sure that our information on the current SKU has been read, and reads it if not
         ''' </summary>
-        ''' <remarks></remarks>
         Private Shared Sub EnsureInited()
             If s_productSKU = VSASKUEdition.None Then
                 If Common.VBPackageInstance IsNot Nothing Then
@@ -197,7 +179,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Reads information on the current SKU
         ''' </summary>
         ''' <param name="ServiceProvider"></param>
-        ''' <remarks></remarks>
         Private Shared Sub Init(ServiceProvider As IServiceProvider)
             Dim VsAppIdService As IVsAppId
             Dim objSKU As Object = Nothing

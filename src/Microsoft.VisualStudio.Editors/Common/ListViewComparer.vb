@@ -12,7 +12,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
     ''' - Sort the ListView based on the current column or the first column if current column values are equal.
     ''' - Shared method to handle a column click event and sort the list view.
     ''' </summary>
-    ''' <remarks></remarks>
     Friend Class ListViewComparer
         Implements IComparer
 

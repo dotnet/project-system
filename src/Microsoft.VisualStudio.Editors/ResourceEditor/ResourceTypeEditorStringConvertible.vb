@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Explicit On
 Option Strict On
@@ -15,7 +15,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     '''   by another resource type editor, but that is convertible from/to a string.  It allows the
     '''   user to edit the resource value as a string.
     ''' </summary>
-    ''' <remarks></remarks>
     Friend NotInheritable Class ResourceTypeEditorStringConvertible
         Inherits ResourceTypeEditorStringBase
 
@@ -30,8 +29,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Gets whether or not the strings handled by this resource type editor
         '''   are allowed to be edited by the user.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public Overrides ReadOnly Property StringValueCanBeEdited() As Boolean
             Get
                 Return True

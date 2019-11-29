@@ -7,7 +7,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     '''   Warning means this can be postponed for delay-validation
     '''   Failed means the user must fix this before leaving the page/field...
     ''' </summary>
-    ''' <remarks></remarks>
     Public Enum ValidationResult
         Succeeded = 0
         Warning = 1

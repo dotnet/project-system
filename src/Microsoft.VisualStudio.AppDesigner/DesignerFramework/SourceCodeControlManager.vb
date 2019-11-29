@@ -7,7 +7,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
     ''' <summary>
     ''' Provide a convenient way to check out/query edit a set of files. 
     ''' </summary>
-    ''' <remarks></remarks>
     Public NotInheritable Class SourceCodeControlManager
 
 #Region "Private fields"
@@ -28,7 +27,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         '''   
         ''' </summary>
         ''' <param name="sp"></param>
-        ''' <remarks></remarks>
         Public Sub New(sp As IServiceProvider, Hierarchy As IVsHierarchy)
             Requires.NotNull(sp, NameOf(sp))
 
@@ -42,7 +40,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' Add a file to manage SCC status for. 
         ''' </summary>
         ''' <param name="mkDocument"></param>
-        ''' <remarks></remarks>
         Public Sub ManageFile(mkDocument As String)
             _managedFiles(mkDocument) = True
         End Sub
@@ -62,9 +59,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' <summary>
         ''' Get a list of the files currently managed by this service...
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Property ManagedFiles() As List(Of String)
             Get
                 Return New List(Of String)(_managedFiles.Keys)
@@ -96,8 +90,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' Query if all the files are editable. Will not prompt the user - will only report
         ''' if it is OK to edit the file. 
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function AreFilesEditable() As Boolean
             Return QueryEditableFilesInternal(True, False)
         End Function
@@ -110,8 +102,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' </summary>
         ''' <param name="checkOnly">If true, only query if it is OK to edit all managed files without actually checking anything out</param>
         ''' <param name="throwOnFailure">If the method should throw a CheckoutException on failure</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function QueryEditableFilesInternal(checkOnly As Boolean, throwOnFailure As Boolean) As Boolean
             ' Do actual checkout here...
             Return QueryEditableFiles(_serviceProvider, ManagedFiles, throwOnFailure, checkOnly)
@@ -253,8 +243,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' <param name="sp">Service provider. Will be QI:ed for IVsQueryEditQuerySave2</param>
         ''' <param name="files">The set of files to check</param>
         ''' <param name="throwOnFailure">Should we throw if the save fails?</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Shared Function QuerySave(sp As IServiceProvider, files As List(Of String), throwOnFailure As Boolean) As Boolean
             Requires.NotNull(sp, NameOf(sp))
             Requires.NotNull(files, NameOf(files))

@@ -12,7 +12,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     ''' <summary>
     ''' A resource type editor that handles Bitmaps (GIF, JPG, BMP, etc).
     ''' </summary>
-    ''' <remarks></remarks>
     Friend NotInheritable Class ResourceTypeEditorBitmap
         Inherits ResourceTypeEditorImageBase
 
@@ -71,7 +70,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="FilePath"></param>
         ''' <param name="ResourceContentFile">The resource file contains the resource item. </param>
-        ''' <returns></returns>
         ''' <remarks>
         ''' Default implementation uses a ResXFileRef to automatically load the resource from the file.  Can be
         '''   overriden if this behavior is insufficient.
@@ -121,8 +119,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Create extension -> resource ID mapping table
         ''' </summary>
-        ''' <return></return>
-        ''' <remarks></remarks>
         Private Shared Function GetManifestResourceList() As ListDictionary
             If s_manifestResourceList Is Nothing Then
                 s_manifestResourceList = New ListDictionary(StringComparer.OrdinalIgnoreCase) From {
@@ -248,8 +244,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   Persistence property changed.
         ''' </summary>
         ''' <param name="ResourceContentFile">The resource file that contains the resource</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Overrides ReadOnly Property CanChangePersistenceProperty(ResourceContentFile As IResourceContentFile) As Boolean
             Get
                 ' We don't support changing the persistence type unless Bitmap is supported because embedding

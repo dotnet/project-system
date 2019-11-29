@@ -21,7 +21,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
     ''' <summary>
     ''' Generator for strongly MyApplication class
     ''' </summary>
-    ''' <remarks></remarks>
     <Guid("4d35b437-4197-4241-8d24-8ac3ab6f0e0c")>
     Public NotInheritable Class MyApplicationCodeGenerator
         Implements IVsSingleFileGenerator, IObjectWithSite, System.IServiceProvider, IVsRefactorNotify
@@ -37,9 +36,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' Returns a type for System.Diagnostics.DebuggerStepThrough so that we can create
         ''' attribute-declarations for the CodeDom to spit them out.
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Shared ReadOnly Property DebuggerStepThroughAttribute() As Type
             Get
                 Return GetType(DebuggerStepThroughAttribute)
@@ -51,7 +47,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' Get the default extension for the generated class.
         ''' </summary>
         ''' <param name="pbstrDefaultExtension"></param>
-        ''' <remarks></remarks>
         Private Function DefaultExtension(ByRef pbstrDefaultExtension As String) As Integer Implements IVsSingleFileGenerator.DefaultExtension
             If CodeDomProvider IsNot Nothing Then
                 ' For some reason some the code providers seem to be inconsistent in the way that they 
@@ -77,7 +72,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="rgbOutputFileContents"></param>
         ''' <param name="pcbOutput"></param>
         ''' <param name="pGenerateProgress"></param>
-        ''' <remarks></remarks>
         Private Function Generate(wszInputFilePath As String, bstrInputFileContents As String, wszDefaultNamespace As String, rgbOutputFileContents() As IntPtr, ByRef pcbOutput As UInteger, pGenerateProgress As IVsGeneratorProgress) As Integer Implements IVsSingleFileGenerator.Generate
             Dim BufPtr As IntPtr
             Try
@@ -313,7 +307,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="Member">The type member to add the attribute to</param>
         ''' <param name="AttributeType">The type of the attribute, e.g. GetType(System.Diagnostics.DebuggerStepThroughAttribute)</param>
         ''' <param name="PrependGlobal">If true, then "Global." is prepended to the attribute name</param>
-        ''' <remarks></remarks>
         Private Shared Sub AddAttribute(Member As CodeTypeMember, AttributeType As Type, PrependGlobal As Boolean)
 
             If Member.CustomAttributes Is Nothing Then
@@ -374,7 +367,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="FieldName">The name of the field for the left-hand side of the assignment</param>
         ''' <param name="RootNamespace">The root namespace, if any (including empty string if none), or else Nothing if reference should be declared without using the root namespace.</param>
         ''' <param name="FormNameWithoutRootNamespace">The name of the form, without the root namespace.</param>
-        ''' <remarks></remarks>
         Private Shared Sub AddDefaultFormAssignment(Method As CodeMemberMethod, FieldName As String, RootNamespace As String, FormNameWithoutRootNamespace As String)
             '
             '  GENERATED CODE:
@@ -414,7 +406,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' Demand-create a CodeDomProvider corresponding to my projects current language
         ''' </summary>
         ''' <value>A CodeDomProvider</value>
-        ''' <remarks></remarks>
         Private Property CodeDomProvider() As CodeDomProvider
             Get
                 If _codeDomProvider Is Nothing Then
@@ -792,7 +783,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' </summary>
         ''' <param name="serviceType">The type of service requested</param>
         ''' <returns>An instance of the service, or nothing if service not found</returns>
-        ''' <remarks></remarks>
         Private Function GetService(serviceType As Type) As Object Implements System.IServiceProvider.GetService
             If ServiceProvider IsNot Nothing Then
                 Return ServiceProvider.GetService(serviceType)
@@ -804,8 +794,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <summary>
         ''' Demand-create service provider from my site
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Private ReadOnly Property ServiceProvider() As ServiceProvider
             Get
                 If _serviceProvider Is Nothing Then

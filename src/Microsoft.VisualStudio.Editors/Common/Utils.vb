@@ -95,7 +95,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="obj"></param>
         ''' <param name="value"></param>
         ''' <return> return true if the variant is an integer type value</return>
-        ''' <remarks></remarks>
         Public Function TryConvertVariantToInt(obj As Object, ByRef value As Integer) As Boolean
             If obj Is Nothing Then
                 Return False
@@ -127,8 +126,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' negative numbers to UInt32.  We just want raw bit translation.
         ''' </summary>
         ''' <param name="obj"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function NoOverflowCUInt(obj As Object) As UInteger
             Return NoOverflowCUInt(CLng(obj))
         End Function
@@ -137,8 +134,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' Masks the top 32 bits to get just the lower 32bit number
         ''' </summary>
         ''' <param name="LongValue"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function NoOverflowCUInt(LongValue As Long) As UInteger
             Return CUInt(LongValue And UInteger.MaxValue)
         End Function
@@ -257,7 +252,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         '''  False if a is true and b is false.  Otherwise it returns True (as there's no
         '''   evidence to suggest that the implication is incorrect).
         ''' </summary>
-        ''' <remarks></remarks>
         Public Function Implies(a As Boolean, b As Boolean) As Boolean
             Return Not (a And Not b)
         End Function
@@ -269,8 +263,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         '''   also the inner exception, if any.
         ''' </summary>
         ''' <param name="ex"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function DebugMessageFromException(ex As Exception) As String
 #If DEBUG Then
             Dim ErrorMessage As String = ex.Message & vbCrLf & vbCrLf & vbCrLf & "[SHOWN IN DEBUG ONLY] STACK TRACE:" & vbCrLf & ex.StackTrace
@@ -290,8 +282,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         '''   returns an empty string.
         ''' </summary>
         ''' <param name="Value">The value to turn into a displayable string.</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function DebugToString(Value As Object) As String
 #If DEBUG Then
             Dim StringValue As String = ""
@@ -353,7 +343,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' Given an exception, returns True if it is a CheckOut exception.
         ''' </summary>
         ''' <param name="ex">The exception to check rethrow if it's caused by canceling checkout</param>
-        ''' <remarks></remarks>
         Public Function IsCheckoutCanceledException(ex As Exception) As Boolean
             If (TypeOf ex Is CheckoutException AndAlso ex.Equals(CheckoutException.Canceled)) _
                 OrElse
@@ -374,8 +363,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' If the given string is Nothing, return "", else return the original string.
         ''' </summary>
         ''' <param name="Str"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function NothingToEmptyString(Str As String) As String
             If Str Is Nothing Then
                 Return String.Empty
@@ -389,8 +376,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' If the given string is "", return Nothing, else return the original string.
         ''' </summary>
         ''' <param name="Str"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function EmptyStringToNothing(Str As String) As String
             If Str Is Nothing OrElse Str.Length = 0 Then
                 Return Nothing
@@ -405,8 +390,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         '''   is malformed, it returns the original file path.
         ''' </summary>
         ''' <param name="Path">The path to get the full path from.</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function GetFullPathTolerant(Path As String) As String
             Try
                 Return IO.Path.GetFullPath(Path)
@@ -425,7 +408,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' </summary>
         ''' <param name="Namespace1">First namespace or name.  May be Nothing.</param>
         ''' <param name="Namespace2">Second namespace or name.  May be Nothing.</param>
-        ''' <returns></returns>
         ''' <remarks>
         ''' Do not use this function to add a namespace onto a class (if the class name is empty, it will
         '''   return just the root namespace).  Instead, use AddNamespace for that.
@@ -449,7 +431,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         '''   returns empty.
         ''' </summary>
         ''' <param name="ClassName">The class name to prepend the namespace to.</param>
-        ''' <returns></returns>
         ''' <remarks>Handles values of Nothing, never returns Nothing.</remarks>
         Public Function AddNamespace([Namespace] As String, ClassName As String) As String
             If ClassName = "" Then
@@ -471,7 +452,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="FullyQualifiedNamespace">The fully-qualified namespace to remove the namespace from</param>
         ''' <param name="RootNamespace">The current root namespace to remove if it exists.</param>
         ''' <returns>FullyQualifiedNamespace without the root namespace.</returns>
-        ''' <remarks></remarks>
         Public Function RemoveRootNamespace(FullyQualifiedNamespace As String, RootNamespace As String) As String
             Dim RootNamespaceLength As Integer = 0
 
@@ -514,7 +494,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         '''       "Metafiles (*.wmf, *.emf)|*.wmf;*.emf"
         ''' 
         ''' </returns>
-        ''' <remarks></remarks>
         Public Function CreateDialogFilter(FilterText As String, ParamArray Extensions() As String) As String
             Dim Filter As New StringBuilder
             Dim i As Integer
@@ -557,8 +536,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <summary>
         ''' Returns a localized "All Files (*.*)|*.*" dialog filter string.  Can be used with CombineDialogFilters.
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function GetAllFilesDialogFilter() As String
             'We don't use CreateDialogFilter because we don't want *.* to be part of the user-friendly portion.
             '  We only want:  All Files|*.*
@@ -570,8 +547,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' Give a set of filter lines for file dialogs (e.g., by using CreateSingleDialogFilter), combines them all into a single filter.
         ''' </summary>
         ''' <param name="Filters">The individual filter entries</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function CombineDialogFilters(ParamArray Filters() As String) As String
             Dim CombinedFilter As New StringBuilder
 
@@ -594,8 +569,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="Condition">The condition to test.</param>
         ''' <param name="TrueExpression">What to return if the condition is True</param>
         ''' <param name="FalseExpression">What to return if the condition is False</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function IIf(Of T)(Condition As Boolean, TrueExpression As T, FalseExpression As T) As T
             If Condition Then
                 Return TrueExpression
@@ -609,7 +582,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' Set the drop-down width of a combobox wide enough to show the text of all entries in it
         ''' </summary>
         ''' <param name="ComboBox">The combobox to change the width for</param>
-        ''' <remarks></remarks>
         Public Sub SetComboBoxDropdownWidth(ComboBox As ComboBox)
             If ComboBox IsNot Nothing Then
                 ComboBox.DropDownWidth = Math.Max(MeasureMaxTextWidth(ComboBox, ComboBox.Items), ComboBox.Width)
@@ -639,8 +611,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' </summary>
         ''' <param name="ctrl"></param>
         ''' <param name="items"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function MeasureMaxTextWidth(ctrl As Control, items As IEnumerable) As Integer
             Dim MaxEntryWidth As Integer = 0
             Using g As Graphics = ctrl.CreateGraphics()
@@ -666,8 +636,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' Returns a given path with a backslash at the end, if not already there.
         ''' </summary>
         ''' <param name="Path">The path to add a backslash to.</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Function AppendBackslash(Path As String) As String
             If Path <> "" AndAlso Right(Path, 1) <> IO.Path.DirectorySeparatorChar AndAlso Right(Path, 1) <> IO.Path.AltDirectorySeparatorChar Then
                 Return Path & IO.Path.DirectorySeparatorChar
@@ -688,7 +656,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="MutiSelect">Whether we should support multi-selection</param>
         ''' <param name="NeedThrowError">Throw error when the dialog fails unexpectedly</param>
         ''' <returns>a collection of files</returns>
-        ''' <remarks></remarks>
         Friend Function GetFilesViaBrowse(ServiceProvider As IServiceProvider, ParentWindow As IntPtr,
                 InitialDirectory As String, DialogTitle As String,
                 Filter As String, FilterIndex As UInteger, MutiSelect As Boolean,
@@ -1079,8 +1046,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' Get the service provider associated with a hierarchy...
         ''' </summary>
         ''' <param name="pHier"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function ServiceProviderFromHierarchy(pHier As IVsHierarchy) As ServiceProvider
             If pHier IsNot Nothing Then
                 Dim OLEServiceProvider As OLE.Interop.IServiceProvider = Nothing
@@ -1120,7 +1085,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' </summary>
         ''' <param name="HwndParent">The container HWND.</param>
         ''' <param name="First">If True, sets focus to the first control, otherwise the last.</param>
-        ''' <remarks></remarks>
         Public Function FocusFirstOrLastTabItem(HwndParent As IntPtr, First As Boolean) As Boolean
             If HwndParent.Equals(IntPtr.Zero) Then
                 Return False
@@ -1192,8 +1156,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="ItemId"></param>
         ''' <param name="IncludeRootNamespace"></param>
         ''' <param name="SupportCustomToolNamespace"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Function GeneratedCodeNamespace(Hierarchy As IVsHierarchy, ItemId As UInteger, IncludeRootNamespace As Boolean, SupportCustomToolNamespace As Boolean) As String
             ' Try to get the root namespace property (if VB)
             Dim RootNamespace As String = ""
@@ -1303,8 +1265,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         '''     added before the targetPlatform is changed from 3.0 to 2.0.
         ''' </summary>
         ''' <param name="Hierarchy"></param>
-        ''' <return></return>
-        ''' <remarks></remarks>
         Private Function IsWCFReferenceValidInProject(Hierarchy As IVsHierarchy) As Boolean
             Requires.NotNull(Hierarchy, NameOf(Hierarchy))
 
@@ -1332,8 +1292,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' This function check whether Web Reference is supported by default.
         ''' </summary>
         ''' <param name="Hierarchy"></param>
-        ''' <return></return>
-        ''' <remarks></remarks>
         Friend Function IsWebReferenceSupportedByDefaultInProject(Hierarchy As IVsHierarchy) As Boolean
             Requires.NotNull(Hierarchy, NameOf(Hierarchy))
 
@@ -1359,8 +1317,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' Is this a VB project?
         ''' </summary>
         ''' <param name="Hierarchy"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Function IsVbProject(Hierarchy As IVsHierarchy) As Boolean
             Requires.NotNull(Hierarchy, NameOf(Hierarchy))
 
@@ -1379,8 +1335,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' Get Framework version number
         ''' </summary>
         ''' <param name="Hierarchy"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Function GetProjectTargetFrameworkVersion(Hierarchy As IVsHierarchy) As UInteger
             ' Get ".Net version" using TargetFrameworkMoniker property
             Dim objVersionNumber As Object = Nothing
@@ -1406,7 +1360,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' </summary>
         ''' <param name="Hierarchy"></param>
         ''' <returns>True is the current Framework Profile is Client</returns>
-        ''' <remarks></remarks>
         Friend Function IsClientFrameworkSubset(Hierarchy As IVsHierarchy) As Boolean
             Debug.Assert(Hierarchy IsNot Nothing, "Hierarchy is required")
             Dim service As MultiTargetService = New MultiTargetService(Hierarchy, VSConstants.VSITEMID_ROOT, False)
@@ -1466,8 +1419,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             ''' to report back to SQM what the values are...
             ''' </summary>
             ''' <param name="guid"></param>
-            ''' <returns></returns>
-            ''' <remarks></remarks>
             Friend Shared Function PageGuidToId(guid As Guid) As Byte
                 For i As Integer = 0 To s_sqmOrder.Length - 1
                     If s_sqmOrder(i).Equals(guid) Then
@@ -1499,7 +1450,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' from our unit tests. By changing the m_instance field, we can take provide fake implementations
         ''' of functions that otherwise would require significant mocking...
         ''' </summary>
-        ''' <remarks></remarks>
         Friend Class Helper
 
             Public Overridable Function ServiceProviderFromHierarchy(pHier As IVsHierarchy) As IServiceProvider ' Microsoft.VisualStudio.Shell.ServiceProvider
@@ -1515,8 +1465,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         '''   \r\n and reverse \n\r to \r\n
         ''' </summary>
         ''' <param name="text"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function NormalizeLineEndings(text As String) As String
             If text = "" Then
                 Return text
@@ -1637,8 +1585,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' Determines whether the given hierarchy is an appcontainer project
         ''' </summary>
         ''' <param name="hierarchy"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Function IsAppContainerProject(hierarchy As IVsHierarchy) As Boolean
 
             Dim propertyValue As Object = Nothing
@@ -1665,8 +1611,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' mscorlib.dll and Microsoft.VisualBasic.dll.
         ''' </summary>
         ''' <param name="Reference"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Function IsImplicitlyAddedReference(Reference As VSLangProj.Reference) As Boolean
             If Reference Is Nothing Then
                 Debug.Fail("Reference shouldn't be Nothing")

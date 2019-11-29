@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel
 Imports System.ComponentModel.Design
@@ -10,7 +10,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
     ''' <summary>
     ''' This class represents the root component of the Application Designer.
     ''' </summary>
-    ''' <remarks></remarks>
     <Designer(GetType(ApplicationDesignerRootDesigner), GetType(IRootDesigner))>
     Public NotInheritable Class ApplicationDesignerRootComponent
         Inherits Component
@@ -26,7 +25,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''   resx file to be edited by the user.
         ''' </summary>
         ''' <value>The associated ResourceEditorRootDesigner.</value>
-        ''' <remarks></remarks>
         Public ReadOnly Property RootDesigner() As ApplicationDesignerRootDesigner
             Get
                 If _rootDesigner Is Nothing Then
@@ -44,8 +42,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' The IVsHierarchy associated with the AppDesigner node
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public Property Hierarchy() As IVsHierarchy
             Get
                 Return _hierarchy
@@ -58,8 +54,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' The ItemId associated with the AppDesigner node
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Public Property ItemId() As UInteger
             Get
                 Return _itemId

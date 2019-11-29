@@ -23,7 +23,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
     ''' <summary>
     ''' Designer loader for the ApplicationDesigner
     ''' </summary>
-    ''' <remarks></remarks>
     Public NotInheritable Class ApplicationDesignerLoader
         Inherits BasicDesignerLoader
         Implements IDisposable
@@ -49,7 +48,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' NOTE: Remember to call RemoveService on any service object we don't own, when the Loader is disposed
         '''  Otherwise, the service container will dispose those objects. 
         ''' </summary>
-        ''' <remarks></remarks>
         Protected Overrides Sub Initialize()
             MyBase.Initialize()
 
@@ -89,7 +87,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="Hierarchy"></param>
         ''' <param name="ItemId"></param>
         ''' <param name="punkDocData"></param>
-        ''' <remarks></remarks>
         Public Sub InitializeEx(ServiceProvider As Shell.ServiceProvider, Hierarchy As IVsHierarchy, ItemId As UInteger, punkDocData As Object)
 
             If m_DocDataService IsNot Nothing Then
@@ -117,7 +114,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' it needs an updated version of the file contents).
         ''' </summary>
         ''' <param name="serializationManager"></param>
-        ''' <remarks></remarks>
         Protected Overrides Sub PerformFlush(serializationManager As IDesignerSerializationManager)
             Debug.Assert(Modified, "PerformFlush shouldn't get called if the designer's not dirty")
 
@@ -207,7 +203,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Dispose of managed and unmanaged resources
         ''' </summary>
         ''' <param name="disposing">True if calling from Dispose()</param>
-        ''' <remarks></remarks>
         Protected Overloads Sub Dispose(disposing As Boolean)
             If disposing Then
                 LoaderHost.RemoveService(GetType(DesignerDocDataService))

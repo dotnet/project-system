@@ -12,11 +12,6 @@ Imports VSLangProj80
 Imports VBStrings = Microsoft.VisualBasic.Strings
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
-
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <remarks></remarks>
     Partial Friend Class AdvBuildSettingsPropPage
         Inherits PropPageUserControlBase
 

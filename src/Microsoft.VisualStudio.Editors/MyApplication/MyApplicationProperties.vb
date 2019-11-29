@@ -131,7 +131,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
     ''' <summary>
     ''' Our implementation of IVsMyAppManager
     ''' </summary>
-    ''' <remarks></remarks>
     <ComVisible(True), Guid("29255174-ccb9-434d-8489-dae5b912b1d3"), CLSCompliant(False)>
     <Obsolete("MyApplication is automatically managed by the property pages. All usage of this class can be removed.")>
     Public NotInheritable Class MyApplicationManager
@@ -183,7 +182,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Public Event PropertyChanged(sender As Object, e As PropertyChangedEventArgs) Implements INotifyPropertyChanged.PropertyChanged
 #End Region
 
@@ -238,7 +236,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <summary>
         ''' Constructor.
         ''' </summary>
-        ''' <remarks></remarks>
         Friend Sub New()
 
         End Sub
@@ -247,7 +244,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' Initialization.  Called by the project system before requesting the MyApplicationProperties object.
         ''' </summary>
         ''' <param name="ProjectHierarchy"></param>
-        ''' <remarks></remarks>
         Friend Sub Init(ProjectHierarchy As IVsHierarchy)
             If _initialized Then Return
 
@@ -331,7 +327,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <summary>
         ''' Attempts to check out the doc data, if it is not already checked out.  This should be done prior to any property change.
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub CheckOutDocData()
             Debug.Assert(_serviceProvider IsNot Nothing, "m_ServiceProvider is nothing")
 
@@ -346,7 +341,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <summary>
         ''' Request the custom tool for MyApplication.myapp to be run 
         ''' </summary>
-        ''' <remarks></remarks>
         Friend Sub RunCustomTool() Implements IMyApplicationPropertiesInternal.RunCustomTool
             Dim item As ProjectItem = MyAppProjectItem
             If item IsNot Nothing Then
@@ -399,8 +393,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         '''   project's current state.  This can be important to access if the face of undo/redo
         '''   and other issues, but it's not what we public expose via DTE.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Friend ReadOnly Property CustomSubMainRaw() As Boolean Implements IMyApplicationPropertiesInternal.CustomSubMainRaw
             Get
                 Return Not _myAppData.MySubMain
@@ -431,7 +423,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <summary>
         ''' Retrieves the MainForm property, including the root namespace
         ''' </summary>
-        ''' <value></value>
         ''' <remarks>
         ''' If this property is not currently set to a meaningful value, we return empty string.
         ''' </remarks>
@@ -453,7 +444,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         '''   serialized and stored, so this specifically does not do the step of adding/removing the
         '''   root namespace of the project)
         ''' </summary>
-        ''' <value></value>
         ''' <remarks>
         ''' If this property is not currently set to a meaningful value, we return empty string.
         ''' </remarks>
@@ -578,7 +568,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <summary>
         ''' Retrieves the MainForm property, including the root namespace
         ''' </summary>
-        ''' <value></value>
         ''' If this property is not currently set to a meaningful value, we return empty string.
         Public Property SplashScreen() As String Implements IVsMyApplicationProperties.SplashScreen
             Get
@@ -598,7 +587,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         '''   serialized and stored, so this specifically does not do the step of adding/removing the
         '''   root namespace of the project)
         ''' </summary>
-        ''' <value></value>
         ''' <remarks>
         ''' If this property is not currently set to a meaningful value, we return empty string.
         ''' </remarks>
@@ -629,7 +617,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <summary>
         ''' Makes sure the .MyApp file exists, creates a doc data for it, etc.
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub PrepareMyAppDocData()
             If Not File.Exists(MyAppFileNameWithPath) Then
                 Dim FullPath As String = MyAppFileNameWithPath()
@@ -691,8 +678,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <summary>
         ''' Returns the full path/filename of the .myapp file
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function MyAppFileNameWithPath() As String
             Return Path.Combine(ProjectDesignerProjectItem.FileNames(1), _myAppFileName)
         End Function
@@ -701,8 +686,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <summary>
         ''' Returns the DTE ProjectItem for the .myapp file
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Private ReadOnly Property MyAppProjectItem() As ProjectItem
             Get
                 'First see if it is already in the project
@@ -726,8 +709,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <summary>
         ''' Returns the docdata after initializing for the .myapp file
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Private ReadOnly Property MyAppDocData() As DocData
             Get
                 Return _myAppDocData
@@ -737,8 +718,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <summary>
         ''' DocDataService provides SCC checkin/out interaction with VS
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Private ReadOnly Property DocDataService() As DesignerDocDataService
             Get
                 Return _docDataService
@@ -748,8 +727,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <summary>
         ''' Provides the TextReader for reading the .myapp file
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function GetMyAppTextReader() As TextReader
             Return New DocDataTextReader(DocDataService.PrimaryDocData, False)
         End Function
@@ -757,8 +734,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <summary>
         ''' Provides the TextWriter for writing the .myapp file
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function GetMyAppTextWriter() As TextWriter
             Return New MyAppTextWriter(DocDataService.PrimaryDocData, False)
         End Function
@@ -767,8 +742,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' Retrieves the given project item's property, if it exists, else Nothing
         ''' </summary>
         ''' <param name="PropertyName">The name of the property to retrieve.</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Shared Function GetProjectItemProperty(ProjectItem As ProjectItem, PropertyName As String) As [Property]
             If ProjectItem.Properties Is Nothing Then
                 Return Nothing
@@ -823,8 +796,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="MyEventsFileName">The name of the file to create</param>
         ''' <param name="MyEventsNamespaceName">The name of the namespace to use</param>
         ''' <param name="MyEventsClassName">The name of the partial class to use</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function CreateNewMyEventsFile(DestinationProjectItems As ProjectItems, MyEventsFileName As String, MyEventsNamespaceName As String, MyEventsClassName As String) As ProjectItem
             Debug.Assert(Path.GetExtension(MyEventsFileName) = ".vb", "Extension of MyEvents.vb file doesn't end in .vb?")
 
@@ -1011,8 +982,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' Returns the project item for the My Project node
         ''' </summary>
         ''' <param name="ProjectHierarchy"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Shared Function GetProjectItemForProjectDesigner(ProjectHierarchy As IVsHierarchy) As ProjectItem
             Dim SpecialFiles As IVsProjectSpecialFiles = CType(ProjectHierarchy, IVsProjectSpecialFiles)
             Dim ProjectDesignerItemId As UInteger
@@ -1037,7 +1006,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <summary>
         ''' Called by the project system upon closing a project.  Any unpersisted data at this point is discarded
         ''' </summary>
-        ''' <remarks></remarks>
         Friend Sub Close()
             If _myAppDocData IsNot Nothing Then
                 _myAppDocData = Nothing
@@ -1051,7 +1019,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' Called by the project system when we need to save all the MyApplication files.  Saves directly to disk.  Does not save
         '''   if not dirty.
         ''' </summary>
-        ''' <remarks></remarks>
         Friend Sub Save()
             If _myAppDocData IsNot Nothing Then
                 'Make sure the doc data is up to date (in reality in our current model, we shouldn't ever be in a dirty state
@@ -1103,8 +1070,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <summary>
         ''' Gets the root namespace for a given IVsHierarchy
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function GetRootNamespace() As String
             If _projectHierarchy IsNot Nothing Then
                 Dim ObjNamespace As Object = Nothing
@@ -1120,8 +1085,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <summary>
         ''' Returns the set of files that need to be checked out to change the given property
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Overrides Function FilesToCheckOut(CreateIfNotExist As Boolean) As String()
             If CreateIfNotExist Then
                 PrepareMyAppDocData()
@@ -1143,7 +1106,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub MyAppDocDataChanged(sender As Object, e As EventArgs) Handles _myAppDocData.DataChanged
             'Now read the data 
             Using Reader As TextReader = GetMyAppTextReader()
@@ -1167,7 +1129,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' </summary>
         ''' <param name="OldValues"></param>
         ''' <param name="NewValues"></param>
-        ''' <remarks></remarks>
         Private Sub FireChangeNotificationsForNewValues(OldValues As MyApplicationData, NewValues As MyApplicationData)
             'AuthenticationMode
             If OldValues.AuthenticationMode <> NewValues.AuthenticationMode Then
@@ -1216,8 +1177,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' </summary>
         ''' <param name="String1"></param>
         ''' <param name="String2"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Shared Function StringPropertyValuesEqual(String1 As String, String2 As String) As Boolean
             Return NothingToEmptyString(String1).Equals(NothingToEmptyString(String2), StringComparison.Ordinal)
         End Function
@@ -1227,7 +1186,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' Fires the PropertyChanged event
         ''' </summary>
         ''' <param name="PropertyName">The name of the property whose value has changed</param>
-        ''' <remarks></remarks>
         Private Sub OnPropertyChanged(PropertyName As String)
             RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(PropertyName))
         End Sub
@@ -1239,7 +1197,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <summary>
         ''' A text writer for the DocData behind the .myapp file
         ''' </summary>
-        ''' <remarks></remarks>
         Private Class MyAppTextWriter
             Inherits DocDataTextWriter
 
@@ -1291,8 +1248,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' </summary>
         ''' <param name="OutputType">Output type</param>
         ''' <param name="MyType">Current value of MyType in the project</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Shared Function ApplicationTypeFromOutputType(OutputType As UInteger, MyType As String) As ApplicationTypes
             Select Case OutputType
 
@@ -1358,8 +1313,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' Given an Application Type (a VB-only concept), return the Output Type for it (the project system's concept)
         ''' </summary>
         ''' <param name="AppType"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Shared Function OutputTypeFromApplicationType(AppType As ApplicationTypes) As UInteger
             Select Case AppType
 
@@ -1382,8 +1335,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <summary>
         ''' Do we support the My SubMain?
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Shared Function IsMySubMainSupported(Hierarchy As IVsHierarchy) As Boolean
             Try
                 ' Query the MyType and OutputType properties from the project properties

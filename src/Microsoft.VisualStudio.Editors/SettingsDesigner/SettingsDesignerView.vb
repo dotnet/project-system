@@ -26,7 +26,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
     ''' For each row in the grid, the Tag property should be set to a corresponding 
     ''' DesignTimeSettingInstance
     ''' </summary>
-    ''' <remarks></remarks>
     Friend NotInheritable Class SettingsDesignerView
         Inherits BaseDesignerView
         Implements IVsWindowPaneCommit
@@ -78,7 +77,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' that it is a really bad time to change the current cell while already committing
         ''' changes...
         ''' </summary>
-        ''' <remarks></remarks>
         Friend Class SettingsGridView
             Inherits DesignerDataGridView
 
@@ -131,19 +129,16 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Cached instance of the type name resolution service
         ''' </summary>
-        ''' <remarks></remarks>
         Private _typeNameResolver As SettingTypeNameResolutionService
 
         ''' <summary>
         ''' Cached instance of the setting type cache service
         ''' </summary>
-        ''' <remarks></remarks>
         Private _settingTypeCache As SettingsTypeCache
 
         ''' <summary>
         ''' Cached instance of the setting value cache
         ''' </summary>
-        ''' <remarks></remarks>
         Private _valueCache As SettingsValueCache
 
 
@@ -201,7 +196,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Dispose my resources
         ''' </summary>
         ''' <param name="disposing"></param>
-        ''' <remarks></remarks>
         Protected Overloads Overrides Sub Dispose(disposing As Boolean)
             If disposing Then
                 If _accessModifierCombobox IsNot Nothing Then
@@ -334,13 +328,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Reference to "our" root designer
         ''' </summary>
-        ''' <remarks></remarks>
         Private _rootDesigner As SettingsDesigner
 
         ''' <summary>
         ''' The settings we show in the grid
         ''' </summary>
-        ''' <remarks></remarks>
         Private _settingsProperty As DesignTimeSettings
 
         ' Private cached service
@@ -444,8 +436,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Gets the environment font for the shell.
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function GetEnvironmentFont() As Drawing.Font
             If UIService IsNot Nothing Then
                 Dim Font As Drawing.Font = DirectCast(UIService.Styles("DialogFont"), Drawing.Font)
@@ -460,7 +450,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Set the localized text and link part of the link label
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub SetLinkLabelText()
             Dim fullText As String = My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_FullDescriptionText
             Dim linkText As String = My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_LinkPartOfDescriptionText
@@ -478,7 +467,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Pop up the appropriate help context when the user clicks on the description link
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub DescriptionLinkLabel_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles _descriptionLinkLabel.LinkClicked
             DesignUtil.DisplayTopicFromF1Keyword(_rootDesigner, HelpIDs.SettingsDesignerDescription)
         End Sub
@@ -488,7 +476,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Initialize the fonts in the resource editor from the environment (or from the resx file,
         '''   if hard-coded there).
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub SetFonts()
             Dim DialogFont As Drawing.Font = GetEnvironmentFont()
             If DialogFont IsNot Nothing Then
@@ -502,8 +489,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' The settings we are currently displaying in the grid...
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Private Property Settings() As DesignTimeSettings
             Get
                 Return _settingsProperty
@@ -529,7 +514,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Our cached component change service
         ''' </summary>
-        ''' <value></value>
         ''' <remarks>
         ''' Will unhook event handlers from old component changed service and hook up handlers
         ''' to the new service
@@ -550,7 +534,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Hook up component changed/added/removed event handlers
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub SubscribeChangeServiceNotifications()
             If ChangeService IsNot Nothing Then
                 AddHandler ChangeService.ComponentChanged, AddressOf ComponentChangedHandler
@@ -562,7 +545,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Unhook component changed/added/removed event handlers
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub UnSubscribeChangeServiceNotifications()
             If ChangeService IsNot Nothing Then
                 RemoveHandler ChangeService.ComponentChanged, AddressOf ComponentChangedHandler
@@ -576,7 +558,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="Sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub ComponentChangedHandler(Sender As Object, e As ComponentChangedEventArgs)
             ' There is a slight possibility that we'll be called after the designer has been disposed (a web reference
             ' rename can cause a project file checkout, which may cause a project reload, which will dispose us and
@@ -603,7 +584,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="Sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub ComponentRemovedHandler(Sender As Object, e As ComponentEventArgs)
             If TypeOf e.Component Is DesignTimeSettingInstance Then
                 ' This was a setting instance - let's find the corresponding row and
@@ -634,7 +614,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="Sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub ComponentAddedHandler(Sender As Object, e As ComponentEventArgs)
             If GetType(DesignTimeSettingInstance).IsAssignableFrom(CType(e.Component, Object).GetType()) Then
                 ' A component was added - let's get the corresponding row from the grid...
@@ -666,7 +645,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Get a row from a component
         ''' </summary>
         ''' <param name="Instance"></param>
-        ''' <returns></returns>
         ''' <remarks>O(n) running time</remarks>
         Private Function RowFromComponent(Instance As DesignTimeSettingInstance) As DataGridViewRow
             For Each Row As DataGridViewRow In _settingsGridView.Rows
@@ -681,8 +659,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Get the instance from the current row, creating one if necessary
         ''' </summary>
         ''' <param name="Row"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function ComponentFromRow(Row As DataGridViewRow) As DesignTimeSettingInstance
             If Row.Tag IsNot Nothing Then
                 Debug.Assert(TypeOf Row.Tag Is DesignTimeSettingInstance, "Unknown tag of this object!")
@@ -706,8 +682,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' 2. We are showing the type picker dialog
         ''' 3. We are showing a UI type editor
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Private ReadOnly Property AllowCommitPendingChanges() As Boolean
             Get
                 If _isReportingError OrElse _isShowingTypePicker OrElse _inCellValidated OrElse _settingsGridView.CommittingChanges Then
@@ -725,7 +699,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' The function forces to refresh the status of all commands.
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub RefreshCommandStatus()
             If _menuCommands IsNot Nothing Then
                 For Each command As DesignerMenuCommand In _menuCommands
@@ -737,7 +710,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Commit any pending changes
         ''' </summary>
-        ''' <remarks></remarks>
         Public Function CommitPendingChanges(suppressValidationUI As Boolean, cancelOnValidationFailure As Boolean) As Boolean
             Dim savedSuppressValidationUI As Boolean = _suppressValidationUI
             Dim succeeded As Boolean = False
@@ -791,8 +763,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Type safe accessor for the type column
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Private ReadOnly Property TypeColumn() As DataGridViewComboBoxColumn
             Get
                 Return DirectCast(_settingsGridView.Columns(TypeColumnNo), DataGridViewComboBoxColumn)
@@ -802,8 +772,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Type safe accessor for the type column
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Private ReadOnly Property ScopeColumn() As DataGridViewComboBoxColumn
             Get
                 Return DirectCast(_settingsGridView.Columns(ScopeColumnNo), DataGridViewComboBoxColumn)
@@ -819,7 +787,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Completely refresh grid (remove current rows and re-create them from settings
         ''' in associated designer
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub RefreshGrid()
             If _settingsGridView.RowCount() > 0 Then
                 _settingsGridView.Rows.Clear()
@@ -834,7 +801,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Add a row to the grid, associate it with the the setting instance and update the UI
         ''' </summary>
         ''' <param name="Instance"></param>
-        ''' <remarks></remarks>
         Private Sub AddRow(Instance As DesignTimeSettingInstance)
             If Not _settingsGridView.IsHandleCreated Then
                 _settingsGridView.CreateControl()
@@ -850,7 +816,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Make sure the user sees the properties as the are set in the setting instance
         ''' </summary>
         ''' <param name="Row"></param>
-        ''' <remarks></remarks>
         Private Sub SetUIRowValues(Row As DataGridViewRow, Instance As DesignTimeSettingInstance)
             Row.Cells(NameColumnNo).Value = Instance.Name
             Row.Cells(NameColumnNo).ReadOnly = DesignTimeSettingInstance.IsNameReadOnly(Instance)
@@ -878,7 +843,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Update the value column of the current row and set the correct visual style
         ''' </summary>
         ''' <param name="row"></param>
-        ''' <remarks></remarks>
         Private Sub UpdateUIValueColumn(row As DataGridViewRow)
             Dim Instance As DesignTimeSettingInstance = CType(row.Tag, DesignTimeSettingInstance)
             Dim Cell As DataGridViewUITypeEditorCell = CType(row.Cells(ValueColumnNo), DataGridViewUITypeEditorCell)
@@ -919,7 +883,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' If files under source control, prompt the user if (s)he wants to check them out.
         ''' </summary>
         ''' <returns>True if not under source control or if the check out succeeded, false otherwise</returns>
-        ''' <remarks></remarks>
         Private Function EnsureCheckedOut() As Boolean
             If DesignerLoader Is Nothing Then
                 Debug.Fail("Failed to get the IDesignerLoaderService from out settings site (or the IDesignerLoaderService wasn't a SettingsDesignerLoader :(")
@@ -994,7 +957,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub OnSettingsGridViewUserDeletingRow(sender As Object, e As DataGridViewRowCancelEventArgs) Handles _settingsGridView.UserDeletingRow
             If _settingsGridView.SelectedRows.Count = 0 AndAlso e.Row.IsNewRow Then
                 ' The user cancelled an edit of the new row - we should not prevent the 
@@ -1023,7 +985,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub OnSettingsGridViewUserDeletedRow(sender As Object, e As DataGridViewRowEventArgs) Handles _settingsGridView.UserDeletedRow
             Dim InstanceToDelete As DesignTimeSettingInstance = CType(e.Row.Tag, DesignTimeSettingInstance)
             If InstanceToDelete IsNot Nothing Then
@@ -1039,7 +1000,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="FormattedValue"></param>
         ''' <param name="RowIndex"></param>
         ''' <param name="ColumnIndex"></param>
-        ''' <remarks></remarks>
         Private Function ValidateCell(FormattedValue As Object, RowIndex As Integer, ColumnIndex As Integer) As Boolean
             Dim Instance As DesignTimeSettingInstance = TryCast(_settingsGridView.Rows(RowIndex).Tag, DesignTimeSettingInstance)
             Select Case ColumnIndex
@@ -1062,7 +1022,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub OnSettingsGridViewCellValidating(sender As Object, e As DataGridViewCellValidatingEventArgs) Handles _settingsGridView.CellValidating
             ' We can get into this when delay-disposing due to project reloads...
             If Disposing Then Return
@@ -1112,7 +1071,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub OnSettingsGridViewCellValidated(sender As Object, e As DataGridViewCellEventArgs) Handles _settingsGridView.CellValidated
             If Disposing Then
                 Return
@@ -1226,7 +1184,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub OnSettingsGridViewOnCellClickBeginEdit(sender As Object, e As CancelEventArgs) Handles _settingsGridView.CellClickBeginEdit
             If DesignerLoader IsNot Nothing Then
                 e.Cancel = Not DesignerLoader.OkToEdit()
@@ -1240,7 +1197,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub OnSettingsGridViewCellBeginEdit(sender As Object, e As DataGridViewCellCancelEventArgs) Handles _settingsGridView.CellBeginEdit
             ' Check out , but we can't check out if settings file is readonly
             If Not EnsureCheckedOut() Then
@@ -1298,8 +1254,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Get access to a UI service - useful to pop up message boxes and getting fonts
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Private ReadOnly Property UIService() As IUIService
             Get
                 Dim Result As IUIService
@@ -1325,7 +1279,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub OnSettingsGridViewDefaultValuesNeeded(sender As Object, e As DataGridViewRowEventArgs) Handles _settingsGridView.DefaultValuesNeeded
             Dim SampleInstance As New DesignTimeSettingInstance()
             If Not _projectSystemSupportsUserScope Then
@@ -1339,7 +1292,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Change the type of the setting on the current row
         ''' </summary>
         ''' <param name="Row"></param>
-        ''' <remarks></remarks>
         Private Sub ChangeSettingType(Row As DataGridViewRow, TypeDisplayName As String)
             Dim addingNewSetting As Boolean = (Row.Tag Is Nothing)
 
@@ -1467,8 +1419,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' The user wants to view (and maybe add) code that extends the generated settings class
         ''' </summary>
-        ''' <remarks>
-        ''' </remarks>
         Private Sub ViewCode()
             Dim Hierarchy As IVsHierarchy = DirectCast(Settings.Site.GetService(GetType(IVsHierarchy)), IVsHierarchy)
             Dim ProjectItem As EnvDTE.ProjectItem = DirectCast(Settings.Site.GetService(GetType(EnvDTE.ProjectItem)), EnvDTE.ProjectItem)
@@ -1531,7 +1481,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Remove event handler for showing context menu
         ''' </summary>
         ''' <param name="Designer"></param>
-        ''' <remarks></remarks>
         Private Sub UnregisterMenuCommands(Designer As SettingsDesigner)
             RemoveHandler _settingsGridView.ContextMenuShow, AddressOf Designer.ShowContextMenu
         End Sub
@@ -1539,7 +1488,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Register the settings designer menu commands(context menus)
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub RegisterMenuCommands(Designer As SettingsDesigner)
             'Protect against recursively invoking this
             Static InThisMethod As Boolean
@@ -1597,7 +1545,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Tell the shell that our toolbar wants to be included in the translation of
         ''' accelerators/alt-shift navigation
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub UpdateToolbarFocus()
             If _toolbarPanel IsNot Nothing Then
                 _toolbarPanel.Activate(Handle)
@@ -1624,8 +1571,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Should the remove menu item be enabled?
         ''' </summary>
         ''' <param name="MenuCommand"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function MenuRemoveEnableHandler(MenuCommand As DesignerMenuCommand) As Boolean
             ' If we are not editable we shouldn't allow removal of rows...
             If Not IsDesignerEditable() Then
@@ -1651,8 +1596,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Is the EditCell command enabled?
         ''' </summary>
         ''' <param name="MenuCommand"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function MenuEditCellEnableHandler(MenuCommand As DesignerMenuCommand) As Boolean
             Return _settingsGridView.CurrentCell IsNot Nothing AndAlso Not _settingsGridView.IsCurrentCellInEditMode AndAlso IsDesignerEditable() AndAlso Not _settingsGridView.CurrentCell.ReadOnly
         End Function
@@ -1661,8 +1604,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Indicate if the view code button should be enabled?
         ''' </summary>
         ''' <param name="MenuCommand"></param>
-        ''' <remarks></remarks>
-        ''' <returns></returns>
         Private Function MenuViewCodeEnableHandler(MenuCommand As DesignerMenuCommand) As Boolean
             If Not IsDesignerEditable() Then
                 Return False
@@ -1696,7 +1637,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub MenuViewCode(sender As Object, e As EventArgs)
             ViewCode()
         End Sub
@@ -1705,8 +1645,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Is the Synchronize command on the settings designer toolbar enabled?
         ''' </summary>
         ''' <param name="MenuCommand"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function MenuSynchronizeUserConfigEnableHandler(MenuCommand As DesignerMenuCommand) As Boolean
             If Not IsDesignerEditable() Then
                 Return False
@@ -1724,8 +1662,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Is the Load Web Settings command on the settings designer toolbar enabled?
         ''' </summary>
         ''' <param name="MenuCommand"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function MenuLoadWebSettingsFromAppConfigEnableHandler(MenuCommand As DesignerMenuCommand) As Boolean
             If Not IsDesignerEditable() Then
                 Return False
@@ -1763,7 +1699,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub MenuSynchronizeUserConfig(sender As Object, e As EventArgs)
             Dim allDeletedFiles As New List(Of String)
             Dim allDeletedDirectories As New List(Of String)
@@ -1808,7 +1743,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub MenuLoadWebSettingsFromAppConfig(sender As Object, e As EventArgs)
 
             If Not IsDesignerEditable() Then
@@ -1900,7 +1834,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Whether this SettingsProperty allows anonymous access
         ''' </summary>
         ''' <param name="settingsProp">The SettingsProperty to check for AllowsAnonymous attribute</param>
-        ''' <remarks></remarks>
         Private Shared Function AllowsAnonymous(settingsProp As SettingsProperty) As Boolean
             If settingsProp IsNot Nothing AndAlso settingsProp.Attributes IsNot Nothing AndAlso
             settingsProp.Attributes.ContainsKey("AllowAnonymous") Then
@@ -1915,7 +1848,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' If there are unreferenced types, display an error dialog
         ''' </summary>
         ''' <param name="badNames">List of the bad names</param>
-        ''' <remarks></remarks>
         Private Sub ShowErrorIfThereAreUnreferencedTypes(badNames As List(Of String))
             If badNames.Count > 0 Then
                 Dim displayString As String = String.Join(System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ListSeparator, badNames.ToArray())
@@ -1927,7 +1859,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' If there are duplicate names, display an error dialog
         ''' </summary>
         ''' <param name="badNames">List of the bad names</param>
-        ''' <remarks></remarks>
         Private Sub ShowErrorIfThereAreDuplicateNames(badNames As List(Of String))
             If badNames.Count > 0 Then
                 Dim displayString As String = String.Join(System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ListSeparator, badNames.ToArray())
@@ -1938,7 +1869,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Remove all the WebProvider settings
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub RemoveAllWebProviderSettings()
             Dim settingsToRemove As New List(Of DesignTimeSettingInstance)
             Dim setting As DesignTimeSettingInstance
@@ -1958,8 +1888,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Should the Add setting menu command be enabled?
         ''' </summary>
         ''' <param name="menucommand"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function MenuAddSettingEnableHandler(menucommand As DesignerMenuCommand) As Boolean
             Return IsDesignerEditable()
         End Function
@@ -1969,7 +1897,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub MenuAddSetting(sender As Object, e As EventArgs)
             _settingsGridView.CurrentCell = _settingsGridView.Rows(_settingsGridView.Rows.Count - 1).Cells(NameColumnNo)
             Debug.Assert(_settingsGridView.CurrentRow.Tag Is Nothing, "Adding a new setting failed - there is already a setting associated with the new row!?")
@@ -1981,7 +1908,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub MenuEditCell(sender As Object, e As EventArgs)
             If _settingsGridView.CurrentCell IsNot Nothing AndAlso Not _settingsGridView.IsCurrentCellInEditMode Then
                 If EnsureCheckedOut() Then
@@ -1989,13 +1915,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 End If
             End If
         End Sub
-
-        ''' <summary>
-        ''' 
-        ''' </summary>
         ''' <param name="Sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub MenuRemove(Sender As Object, e As EventArgs)
             ' Gotta check out files before removing anything...
             If Not EnsureCheckedOut() Then
@@ -2048,7 +1969,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' When the "Browse" item in the types combobox is selected, we want to pop a 
         ''' the type picker dialog...
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub TypeComboBoxSelectedIndexChanged()
             Dim ptCurrent As Drawing.Point = _settingsGridView.CurrentCellAddress
 
@@ -2110,7 +2030,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="msg"></param>
         ''' <param name="wParam"></param>
         ''' <param name="lParam"></param>
-        ''' <remarks></remarks>
         Private Function OnBroadcastMessage(msg As UInteger, wParam As IntPtr, lParam As IntPtr) As Integer Implements IVsBroadcastMessageEvents.OnBroadcastMessage
             If msg = Interop.Win32Constant.WM_SETTINGCHANGE Then
                 SetFonts()
@@ -2121,7 +2040,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Helper method to get a service from either our settings object or from out root designer
         ''' </summary>
         ''' <param name="service"></param>
-        ''' <remarks></remarks>
         Protected Overrides Function GetService(service As Type) As Object
             Dim svc As Object = Nothing
             If Settings IsNot Nothing AndAlso Settings.Site IsNot Nothing Then
@@ -2144,7 +2062,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub OnRowAdded(sender As Object, e As DataGridViewRowsAddedEventArgs) Handles _settingsGridView.RowsAdded
             Dim newRow As DataGridViewRow = _settingsGridView.Rows(e.RowIndex)
             newRow.Height = newRow.GetPreferredHeight(e.RowIndex, DataGridViewAutoSizeRowMode.AllCells, True)
@@ -2154,7 +2071,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Whenever the font changes, we have to resize the row headers...
         ''' </summary>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Protected Overrides Sub OnFontChanged(e As EventArgs)
             MyBase.OnFontChanged(e)
             _settingsGridView.AutoResizeRows(DataGridViewAutoSizeRowsMode.AllCells)

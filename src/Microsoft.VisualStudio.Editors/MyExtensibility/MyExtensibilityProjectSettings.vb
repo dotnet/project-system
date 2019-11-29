@@ -276,7 +276,6 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Find MyExtensions folder, if it exists and is empty, remove it from the project.
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub RemoveMyExtensionsFolderIfEmpty()
             If _extensionFolderProjectItem IsNot Nothing AndAlso _extensionFolderProjectItem.ProjectItems.Count <= 0 Then
                 _extensionFolderProjectItem.Delete()

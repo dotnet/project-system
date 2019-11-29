@@ -329,7 +329,6 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Save the settings for triggering assemblies.
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub SaveAssemblySettings()
             Dim fileStream As FileStream = Nothing
             Dim xmlWriter As XmlTextWriter = Nothing
