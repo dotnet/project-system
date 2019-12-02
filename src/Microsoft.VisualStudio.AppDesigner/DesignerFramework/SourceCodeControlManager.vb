@@ -59,11 +59,11 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' <summary>
         ''' Get a list of the files currently managed by this service...
         ''' </summary>
-        Public Property ManagedFiles() As List(Of String)
+        Public Property ManagedFiles As List(Of String)
             Get
                 Return New List(Of String)(_managedFiles.Keys)
             End Get
-            Set(value As List(Of String))
+            Set
                 _managedFiles.Clear()
                 For Each file As String In value
                     _managedFiles(file) = True

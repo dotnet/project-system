@@ -984,19 +984,19 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return val & "/" & suffix
         End Function
 
-        Friend Shared ReadOnly Property AuthenticationSuffix() As String
+        Friend Shared ReadOnly Property AuthenticationSuffix As String
             Get
                 Return GetSuffix("Authentication")
             End Get
         End Property
 
-        Friend Shared ReadOnly Property RolesSuffix() As String
+        Friend Shared ReadOnly Property RolesSuffix As String
             Get
                 Return GetSuffix("Role")
             End Get
         End Property
 
-        Friend Shared ReadOnly Property ProfileSuffix() As String
+        Friend Shared ReadOnly Property ProfileSuffix As String
             Get
                 Return GetSuffix("Profile")
             End Get

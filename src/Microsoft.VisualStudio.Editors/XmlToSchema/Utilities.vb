@@ -48,16 +48,16 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
             HelpButton = True
         End Sub
 
-        Public Property ServiceProvider() As IServiceProvider
+        Public Property ServiceProvider As IServiceProvider
             Get
                 Return _serviceProvider
             End Get
-            Set(value As IServiceProvider)
+            Set
                 _serviceProvider = value
             End Set
         End Property
 
-        Protected ReadOnly Property DialogFont() As Font
+        Protected ReadOnly Property DialogFont As Font
             Get
                 Dim hostLocale As VsShell.IUIHostLocale2 = CType(_serviceProvider.GetService(GetType(VsShell.SUIHostLocale)), VsShell.IUIHostLocale2)
                 If hostLocale IsNot Nothing Then

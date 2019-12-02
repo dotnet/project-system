@@ -11,7 +11,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
     ''' to display them in a list view / list box.
     ''' </summary>
     Friend Interface INamedDescribedObject
-        ReadOnly Property DisplayName() As String
-        ReadOnly Property Description() As String
+        ReadOnly Property DisplayName As String
+        ReadOnly Property Description As String
     End Interface
 End Namespace

@@ -17,7 +17,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             MyBase.New(description)
         End Sub
 
-        Public Overrides ReadOnly Property DisplayName() As String
+        Public Overrides ReadOnly Property DisplayName As String
             Get
                 If Not _replaced Then
                     _replaced = True

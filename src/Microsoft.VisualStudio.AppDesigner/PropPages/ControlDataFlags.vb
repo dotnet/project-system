@@ -7,7 +7,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     ''' <summary>
     ''' Flags which help control the behavior of a PropertyControlData instance.
     ''' </summary>
-    <Flags()>
+    <Flags>
     Public Enum ControlDataFlags
         None = 0                 'No flags
         UserPersisted = &H10       'Property is persisted using custom code (see ReadUserDefinedProperty, WriteUserDefinedProperty, GetUserDefinedProperty).  Note that this is completely independent of whether a custom getter and setter are defined.

@@ -193,11 +193,11 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' Get/set the service provider
         ''' </summary>
         ''' <remarks>Not used by this class, may be useful for derived classes</remarks>
-        Protected Property ServiceProvider() As IServiceProvider
+        Protected Property ServiceProvider As IServiceProvider
             Get
                 Return _serviceProvider
             End Get
-            Set(Value As IServiceProvider)
+            Set
                 _serviceProvider = Value
             End Set
         End Property

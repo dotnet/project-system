@@ -421,7 +421,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             ''' <summary>
             ''' True iff the switch has a non-empty value
             ''' </summary>
-            Public ReadOnly Property ValueDefined() As Boolean
+            Public ReadOnly Property ValueDefined As Boolean
                 Get
                     Return MyBase.Value <> "" AndAlso CInt(Convert.ChangeType(Value, TypeCode.Int32)) <> 0
                 End Get
@@ -430,11 +430,11 @@ Namespace Microsoft.VisualStudio.Editors.Common
             ''' <summary>
             ''' Gets/sets the current value of the switch
             ''' </summary>
-            Public Shadows Property Value() As T
+            Public Shadows Property Value As T
                 Get
                     Return CType([Enum].Parse(GetType(T), MyBase.Value), T)
                 End Get
-                Set(value As T)
+                Set
                     MyBase.Value = value.ToString()
                 End Set
             End Property

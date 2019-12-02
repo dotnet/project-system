@@ -74,7 +74,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Returns the number of directories being watched.
         ''' </summary>
-        Public ReadOnly Property DirectoryWatchersCount() As Integer
+        Public ReadOnly Property DirectoryWatchersCount As Integer
             Get
                 Return _directoryWatchers.Count
             End Get
@@ -266,7 +266,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <summary>
             ''' The directory path being watched.
             ''' </summary>
-            Public ReadOnly Property DirectoryPath() As String
+            Public ReadOnly Property DirectoryPath As String
                 Get
                     Return _directoryPath
                 End Get
@@ -276,7 +276,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <summary>
             ''' Returns the number of files being watched in this directory
             ''' </summary>
-            Public ReadOnly Property FileCount() As Integer
+            Public ReadOnly Property FileCount As Integer
                 Get
                     Return _fileWatcherEntries.Count
                 End Get
@@ -503,7 +503,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <summary>
             ''' Gets the path and filename of the file.
             ''' </summary>
-            Public ReadOnly Property PathAndFileName() As String
+            Public ReadOnly Property PathAndFileName As String
                 Get
                     Return Path.Combine(_directoryWatcher.DirectoryPath, _fileNameOnly)
                 End Get
@@ -513,7 +513,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <summary>
             ''' Retrieves the current number of listeners.
             ''' </summary>
-            Public ReadOnly Property ListenerCount() As Integer
+            Public ReadOnly Property ListenerCount As Integer
                 Get
                     Return _listeners.Count
                 End Get

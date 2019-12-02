@@ -60,18 +60,18 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
     ''' <remarks>
     ''' This interface is defined in vseditors.idl
     ''' </remarks>
-    <ComImport(), Guid("365cb21a-0f0f-47bc-9653-3c81e0e3f9d6"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)>
+    <ComImport, Guid("365cb21a-0f0f-47bc-9653-3c81e0e3f9d6"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)>
     Friend Interface IVsMyAppManager
-        <PreserveSig()>
-        Function Init(<[In]()> ProjectHierarchy As IVsHierarchy) As Integer 'Initialize the MyApplicationProperties object, etc.
+        <PreserveSig>
+        Function Init(<[In]> ProjectHierarchy As IVsHierarchy) As Integer 'Initialize the MyApplicationProperties object, etc.
 
-        <PreserveSig()>
-        Function GetProperties(<Out(), MarshalAs(UnmanagedType.IDispatch)> ByRef MyAppProps As Object) As Integer 'Get MyApplicationProperties object
+        <PreserveSig>
+        Function GetProperties(<Out, MarshalAs(UnmanagedType.IDispatch)> ByRef MyAppProps As Object) As Integer 'Get MyApplicationProperties object
 
-        <PreserveSig()>
+        <PreserveSig>
         Function Save() As Integer 'Save any MyApplicationProperties changes to disk (in MyApplication.myapp), if dirty
 
-        <PreserveSig()>
+        <PreserveSig>
         Function Close() As Integer 'Called by the project system upon closing a project.  Any unpersisted data at this point is discarded
     End Interface
 
@@ -102,15 +102,15 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
     ''' </remarks>
     <ComVisible(True), Guid("6fec8bad-4bec-4447-a4ce-b48543a31165"), InterfaceType(ComInterfaceType.InterfaceIsDual)>
     Public Interface IVsMyApplicationProperties
-        <DispId(MyAppDISPIDs.CustomSubMain)> Property CustomSubMain() As Boolean
-        <DispId(MyAppDISPIDs.MainForm)> Property MainForm() As String
-        <DispId(MyAppDISPIDs.SingleInstance)> Property SingleInstance() As Boolean
-        <DispId(MyAppDISPIDs.ShutdownMode)> Property ShutdownMode() As Integer
-        <DispId(MyAppDISPIDs.EnableVisualStyles)> Property EnableVisualStyles() As Boolean
-        <DispId(MyAppDISPIDs.AuthenticationMode)> Property AuthenticationMode() As Integer
-        <DispId(MyAppDISPIDs.SplashScreen)> Property SplashScreen() As String
+        <DispId(MyAppDISPIDs.CustomSubMain)> Property CustomSubMain As Boolean
+        <DispId(MyAppDISPIDs.MainForm)> Property MainForm As String
+        <DispId(MyAppDISPIDs.SingleInstance)> Property SingleInstance As Boolean
+        <DispId(MyAppDISPIDs.ShutdownMode)> Property ShutdownMode As Integer
+        <DispId(MyAppDISPIDs.EnableVisualStyles)> Property EnableVisualStyles As Boolean
+        <DispId(MyAppDISPIDs.AuthenticationMode)> Property AuthenticationMode As Integer
+        <DispId(MyAppDISPIDs.SplashScreen)> Property SplashScreen As String
         ' <DispId(MyAppDISPIDs.ApplicationType)> Property ApplicationType() As Integer ' OBSOLETE
-        <DispId(MyAppDISPIDs.SaveMySettingsOnExit)> Property SaveMySettingsOnExit() As Boolean
+        <DispId(MyAppDISPIDs.SaveMySettingsOnExit)> Property SaveMySettingsOnExit As Boolean
     End Interface
 
 
@@ -119,9 +119,9 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         Inherits IVsMyApplicationProperties
 
         Sub RunCustomTool()
-        ReadOnly Property CustomSubMainRaw() As Boolean
-        Property SplashScreenNoRootNS() As String
-        Property MainFormNoRootNamespace() As String
+        ReadOnly Property CustomSubMainRaw As Boolean
+        Property SplashScreenNoRootNS As String
+        Property MainFormNoRootNamespace As String
         Sub NavigateToEvents()
     End Interface
 
@@ -367,13 +367,13 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Return ProjectItem
         End Function
 
-        Private ReadOnly Property ServiceProvider() As Shell.ServiceProvider
+        Private ReadOnly Property ServiceProvider As Shell.ServiceProvider
             Get
                 Return _serviceProvider
             End Get
         End Property
 
-        Private ReadOnly Property ProjectDesignerProjectItem() As ProjectItem
+        Private ReadOnly Property ProjectDesignerProjectItem As ProjectItem
             Get
                 Return _projectDesignerProjectItem
             End Get
@@ -393,18 +393,18 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         '''   project's current state.  This can be important to access if the face of undo/redo
         '''   and other issues, but it's not what we public expose via DTE.
         ''' </summary>
-        Friend ReadOnly Property CustomSubMainRaw() As Boolean Implements IMyApplicationPropertiesInternal.CustomSubMainRaw
+        Friend ReadOnly Property CustomSubMainRaw As Boolean Implements IMyApplicationPropertiesInternal.CustomSubMainRaw
             Get
                 Return Not _myAppData.MySubMain
             End Get
         End Property
 
 
-        Public Property CustomSubMain() As Boolean Implements IVsMyApplicationProperties.CustomSubMain
+        Public Property CustomSubMain As Boolean Implements IVsMyApplicationProperties.CustomSubMain
             Get
                 Return Not _myAppData.MySubMain AndAlso IsMySubMainSupported(_projectHierarchy)
             End Get
-            Set(value As Boolean)
+            Set
                 If _myAppData.MySubMain <> (Not value) Then
                     CheckOutDocData()
                     _myAppData.MySubMain = Not value
@@ -426,7 +426,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <remarks>
         ''' If this property is not currently set to a meaningful value, we return empty string.
         ''' </remarks>
-        Public Property MainForm() As String Implements IVsMyApplicationProperties.MainForm
+        Public Property MainForm As String Implements IVsMyApplicationProperties.MainForm
             Get
                 If _myAppData.MainFormNoRootNS = "" Then
                     Return ""
@@ -434,7 +434,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                     Return AddNamespace(GetRootNamespace(), _myAppData.MainFormNoRootNS)
                 End If
             End Get
-            Set(value As String)
+            Set
                 MainFormNoRootNamespace = RemoveRootNamespace(value, GetRootNamespace())
             End Set
         End Property
@@ -447,11 +447,11 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <remarks>
         ''' If this property is not currently set to a meaningful value, we return empty string.
         ''' </remarks>
-        Friend Property MainFormNoRootNamespace() As String Implements IMyApplicationPropertiesInternal.MainFormNoRootNamespace
+        Friend Property MainFormNoRootNamespace As String Implements IMyApplicationPropertiesInternal.MainFormNoRootNamespace
             Get
                 Return NothingToEmptyString(_myAppData.MainFormNoRootNS)
             End Get
-            Set(value As String)
+            Set
                 If String.CompareOrdinal(NothingToEmptyString(_myAppData.MainFormNoRootNS), NothingToEmptyString(value)) <> 0 Then
                     CheckOutDocData()
                     _myAppData.MainFormNoRootNS = EmptyStringToNothing(value)
@@ -467,11 +467,11 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             End Set
         End Property
 
-        Public Property SingleInstance() As Boolean Implements IVsMyApplicationProperties.SingleInstance
+        Public Property SingleInstance As Boolean Implements IVsMyApplicationProperties.SingleInstance
             Get
                 Return _myAppData.SingleInstance
             End Get
-            Set(value As Boolean)
+            Set
                 If _myAppData.SingleInstance <> value Then
                     CheckOutDocData()
                     _myAppData.SingleInstance = value
@@ -483,11 +483,11 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             End Set
         End Property
 
-        Public Property ShutdownMode() As Integer Implements IVsMyApplicationProperties.ShutdownMode
+        Public Property ShutdownMode As Integer Implements IVsMyApplicationProperties.ShutdownMode
             Get
                 Return _myAppData.ShutdownMode
             End Get
-            Set(value As Integer)
+            Set
                 Select Case value
                     Case _
                     ApplicationServices.ShutdownMode.AfterMainFormCloses,
@@ -508,11 +508,11 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             End Set
         End Property
 
-        Public Property EnableVisualStyles() As Boolean Implements IVsMyApplicationProperties.EnableVisualStyles
+        Public Property EnableVisualStyles As Boolean Implements IVsMyApplicationProperties.EnableVisualStyles
             Get
                 Return _myAppData.EnableVisualStyles
             End Get
-            Set(value As Boolean)
+            Set
                 If _myAppData.EnableVisualStyles <> value Then
                     CheckOutDocData()
                     _myAppData.EnableVisualStyles = value
@@ -524,11 +524,11 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             End Set
         End Property
 
-        Public Property SaveMySettingsOnExit() As Boolean Implements IVsMyApplicationProperties.SaveMySettingsOnExit
+        Public Property SaveMySettingsOnExit As Boolean Implements IVsMyApplicationProperties.SaveMySettingsOnExit
             Get
                 Return _myAppData.SaveMySettingsOnExit
             End Get
-            Set(value As Boolean)
+            Set
                 If _myAppData.SaveMySettingsOnExit <> value Then
                     CheckOutDocData()
                     _myAppData.SaveMySettingsOnExit = value
@@ -540,11 +540,11 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             End Set
         End Property
 
-        Public Property AuthenticationMode() As Integer Implements IVsMyApplicationProperties.AuthenticationMode
+        Public Property AuthenticationMode As Integer Implements IVsMyApplicationProperties.AuthenticationMode
             Get
                 Return _myAppData.AuthenticationMode
             End Get
-            Set(value As Integer)
+            Set
                 Select Case value
                     Case _
                     ApplicationServices.AuthenticationMode.Windows,
@@ -569,7 +569,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' Retrieves the MainForm property, including the root namespace
         ''' </summary>
         ''' If this property is not currently set to a meaningful value, we return empty string.
-        Public Property SplashScreen() As String Implements IVsMyApplicationProperties.SplashScreen
+        Public Property SplashScreen As String Implements IVsMyApplicationProperties.SplashScreen
             Get
                 If _myAppData.SplashScreenNoRootNS = "" Then
                     Return ""
@@ -577,7 +577,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                     Return AddNamespace(GetRootNamespace(), _myAppData.SplashScreenNoRootNS)
                 End If
             End Get
-            Set(value As String)
+            Set
                 SplashScreenNoRootNS = RemoveRootNamespace(value, GetRootNamespace())
             End Set
         End Property
@@ -590,11 +590,11 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <remarks>
         ''' If this property is not currently set to a meaningful value, we return empty string.
         ''' </remarks>
-        Friend Property SplashScreenNoRootNS() As String Implements IMyApplicationPropertiesInternal.SplashScreenNoRootNS
+        Friend Property SplashScreenNoRootNS As String Implements IMyApplicationPropertiesInternal.SplashScreenNoRootNS
             Get
                 Return NothingToEmptyString(_myAppData.SplashScreenNoRootNS)
             End Get
-            Set(value As String)
+            Set
                 If String.CompareOrdinal(NothingToEmptyString(_myAppData.SplashScreenNoRootNS), NothingToEmptyString(value)) <> 0 Then
                     CheckOutDocData()
                     _myAppData.SplashScreenNoRootNS = EmptyStringToNothing(value)
@@ -686,7 +686,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <summary>
         ''' Returns the DTE ProjectItem for the .myapp file
         ''' </summary>
-        Private ReadOnly Property MyAppProjectItem() As ProjectItem
+        Private ReadOnly Property MyAppProjectItem As ProjectItem
             Get
                 'First see if it is already in the project
                 For Each ProjectItem As ProjectItem In ProjectDesignerProjectItem.ProjectItems
@@ -709,7 +709,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <summary>
         ''' Returns the docdata after initializing for the .myapp file
         ''' </summary>
-        Private ReadOnly Property MyAppDocData() As DocData
+        Private ReadOnly Property MyAppDocData As DocData
             Get
                 Return _myAppDocData
             End Get
@@ -718,7 +718,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <summary>
         ''' DocDataService provides SCC checkin/out interaction with VS
         ''' </summary>
-        Private ReadOnly Property DocDataService() As DesignerDocDataService
+        Private ReadOnly Property DocDataService As DesignerDocDataService
             Get
                 Return _docDataService
             End Get
@@ -1209,7 +1209,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
             End Sub
 
-            Public Overrides ReadOnly Property Encoding() As System.Text.Encoding
+            Public Overrides ReadOnly Property Encoding As System.Text.Encoding
                 Get
                     Return System.Text.Encoding.UTF8
                 End Get

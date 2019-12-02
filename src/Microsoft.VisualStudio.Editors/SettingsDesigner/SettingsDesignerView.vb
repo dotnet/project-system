@@ -82,11 +82,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             Private _committingChanges As Boolean
 
-            Friend Property CommittingChanges() As Boolean
+            Friend Property CommittingChanges As Boolean
                 Get
                     Return _committingChanges
                 End Get
-                Set(value As Boolean)
+                Set
                     _committingChanges = value
                 End Set
             End Property
@@ -489,11 +489,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' The settings we are currently displaying in the grid...
         ''' </summary>
-        Private Property Settings() As DesignTimeSettings
+        Private Property Settings As DesignTimeSettings
             Get
                 Return _settingsProperty
             End Get
-            Set(Value As DesignTimeSettings)
+            Set
                 ' Setting the settings to the same instance is a NOOP
                 If Value IsNot Settings Then
                     ' Store this guy for later use!
@@ -518,11 +518,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Will unhook event handlers from old component changed service and hook up handlers
         ''' to the new service
         '''</remarks>
-        Friend Property ChangeService() As IComponentChangeService
+        Friend Property ChangeService As IComponentChangeService
             Get
                 Return _changeService
             End Get
-            Set(Value As IComponentChangeService)
+            Set
                 If Not Value Is _changeService Then
                     UnSubscribeChangeServiceNotifications()
                     _changeService = Value
@@ -682,7 +682,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' 2. We are showing the type picker dialog
         ''' 3. We are showing a UI type editor
         ''' </summary>
-        Private ReadOnly Property AllowCommitPendingChanges() As Boolean
+        Private ReadOnly Property AllowCommitPendingChanges As Boolean
             Get
                 If _isReportingError OrElse _isShowingTypePicker OrElse _inCellValidated OrElse _settingsGridView.CommittingChanges Then
                     Return False
@@ -763,7 +763,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Type safe accessor for the type column
         ''' </summary>
-        Private ReadOnly Property TypeColumn() As DataGridViewComboBoxColumn
+        Private ReadOnly Property TypeColumn As DataGridViewComboBoxColumn
             Get
                 Return DirectCast(_settingsGridView.Columns(TypeColumnNo), DataGridViewComboBoxColumn)
             End Get
@@ -772,7 +772,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Type safe accessor for the type column
         ''' </summary>
-        Private ReadOnly Property ScopeColumn() As DataGridViewComboBoxColumn
+        Private ReadOnly Property ScopeColumn As DataGridViewComboBoxColumn
             Get
                 Return DirectCast(_settingsGridView.Columns(ScopeColumnNo), DataGridViewComboBoxColumn)
             End Get
@@ -910,7 +910,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 #Region "Selection service"
 
         Private _selectionServiceProperty As ISelectionService
-        Private ReadOnly Property SelectionService() As ISelectionService
+        Private ReadOnly Property SelectionService As ISelectionService
             Get
                 If _selectionServiceProperty Is Nothing Then
                     _selectionServiceProperty = DirectCast(GetService(GetType(ISelectionService)), ISelectionService)
@@ -1254,7 +1254,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Get access to a UI service - useful to pop up message boxes and getting fonts
         ''' </summary>
-        Private ReadOnly Property UIService() As IUIService
+        Private ReadOnly Property UIService As IUIService
             Get
                 Dim Result As IUIService
                 Result = CType(GetService(GetType(IUIService)), IUIService)
@@ -2082,7 +2082,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Switches.TracePDPerf("   OnLayout END: SettingsDesignerView.OnLayout()")
         End Sub
 
-        Private ReadOnly Property DesignerLoader() As SettingsDesignerLoader
+        Private ReadOnly Property DesignerLoader As SettingsDesignerLoader
             Get
                 If _designerLoader Is Nothing Then
                     _designerLoader = TryCast(GetService(GetType(IDesignerLoaderService)), SettingsDesignerLoader)

@@ -27,7 +27,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Gets whether or not the strings handled by this resource type editor
         '''   are allowed to be edited by the user.
         ''' </summary>
-        Public Overrides ReadOnly Property StringValueCanBeEdited() As Boolean
+        Public Overrides ReadOnly Property StringValueCanBeEdited As Boolean
             Get
                 Return True
             End Get

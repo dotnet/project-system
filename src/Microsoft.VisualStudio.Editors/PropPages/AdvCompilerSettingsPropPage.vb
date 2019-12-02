@@ -39,7 +39,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             WARNINGS_NONE
         End Enum
 
-        Protected Overrides ReadOnly Property ControlData() As PropertyControlData()
+        Protected Overrides ReadOnly Property ControlData As PropertyControlData()
             Get
                 If m_ControlData Is Nothing Then
 

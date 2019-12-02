@@ -95,8 +95,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 _customToolValue = customToolValue
             End Sub
 
-            Public MustOverride ReadOnly Property DisplayName() As String
-            Public ReadOnly Property CustomToolValue() As String
+            Public MustOverride ReadOnly Property DisplayName As String
+            Public ReadOnly Property CustomToolValue As String
                 Get
                     Return _customToolValue
                 End Get
@@ -115,7 +115,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 _displayName = displayName
             End Sub
 
-            Public Overrides ReadOnly Property DisplayName() As String
+            Public Overrides ReadOnly Property DisplayName As String
                 Get
                     Return _displayName
                 End Get
@@ -137,7 +137,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 _serviceProvider = serviceProvider
             End Sub
 
-            Public Overrides ReadOnly Property DisplayName() As String
+            Public Overrides ReadOnly Property DisplayName As String
                 Get
                     Dim codeDomProvider As CodeDomProvider = Nothing
                     Dim vsmdCodeDomProvider As IVSMDCodeDomProvider = TryCast(_serviceProvider.GetService(GetType(IVSMDCodeDomProvider)), IVSMDCodeDomProvider)
@@ -351,7 +351,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             End If
         End Sub
 
-        Protected ReadOnly Property RootDesigner() As BaseRootDesigner
+        Protected ReadOnly Property RootDesigner As BaseRootDesigner
             Get
                 Return _rootDesigner
             End Get
@@ -540,7 +540,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <summary>
         ''' Demand check if the custom tools that we know about are registered for the current project system.
         ''' </summary>
-        Protected Overridable ReadOnly Property CustomToolRegistered() As Boolean
+        Protected Overridable ReadOnly Property CustomToolRegistered As Boolean
             Get
                 If Not _customToolsRegistered.HasValue Then
                     ' If one or more of the custom tools in the drop-down are not registered for the current
@@ -562,7 +562,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <summary>
         ''' Get the hierarchy from the associated project item
         ''' </summary>
-        Protected Overridable ReadOnly Property Hierarchy() As IVsHierarchy
+        Protected Overridable ReadOnly Property Hierarchy As IVsHierarchy
             Get
                 Return ShellUtil.VsHierarchyFromDTEProject(_serviceProvider, _projectItem.ContainingProject)
             End Get

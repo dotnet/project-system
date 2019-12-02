@@ -9,7 +9,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     '''   intended to be shown to the end user in an error dialog, rather than to be
     '''   programmatically manipulated (although that of course is possible).
     ''' </summary>
-    <Serializable()>
+    <Serializable>
     Public Class PropertyPageException
         Inherits ApplicationException
 
@@ -50,11 +50,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             MyBase.New(Info, Context)
         End Sub
 
-        Public Property ShowHeaderAndFooterInErrorControl() As Boolean
+        Public Property ShowHeaderAndFooterInErrorControl As Boolean
             Get
                 Return _showHeaderAndFooterInErrorControl
             End Get
-            Set(value As Boolean)
+            Set
                 _showHeaderAndFooterInErrorControl = value
             End Set
         End Property

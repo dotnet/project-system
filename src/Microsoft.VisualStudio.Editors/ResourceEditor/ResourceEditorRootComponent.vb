@@ -105,7 +105,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' True iff the root component is being torn down or is already torn down.
         ''' </summary>
-        Friend ReadOnly Property IsTearingDown() As Boolean
+        Friend ReadOnly Property IsTearingDown As Boolean
             Get
                 Return _tearingDown
             End Get
@@ -115,7 +115,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Gets the ResXResourceFile that is currently being edited.
         ''' </summary>
-        Friend ReadOnly Property ResourceFile() As ResourceFile
+        Friend ReadOnly Property ResourceFile As ResourceFile
             Get
                 Debug.Assert(Not _resourceFile Is Nothing, "m_ResourceFile should have already been created!  SetResXResourceFile not called?")
                 Return _resourceFile
@@ -125,7 +125,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Gets the ResXResourceFileName that is currently being edited.
         ''' </summary>
-        Friend Property ResourceFileName() As String
+        Friend Property ResourceFileName As String
             Get
                 Return _resourceFileName
             End Get
@@ -139,7 +139,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   designer which is showing the UI to the user which allows this component's
         '''   resx file to be edited by the user.
         ''' </summary>
-        Friend ReadOnly Property RootDesigner() As ResourceEditorRootDesigner
+        Friend ReadOnly Property RootDesigner As ResourceEditorRootDesigner
             Get
                 If _rootDesigner Is Nothing Then
                     'Not yet cached - get this info from the designer host
@@ -156,7 +156,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''<summary>
         ''' Whether the resource file belongs to another file (form/userControl)
         '''</summary>
-        Friend ReadOnly Property IsDependentFile() As Boolean
+        Friend ReadOnly Property IsDependentFile As Boolean
             Get
                 Return _isDependentFile
             End Get
@@ -165,7 +165,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''<summary>
         ''' Whether the resource item belongs to a device project
         '''</summary>
-        Friend ReadOnly Property IsInsideDeviceProject() As Boolean
+        Friend ReadOnly Property IsInsideDeviceProject As Boolean
             Get
                 Return _isInsideDeviceProject
             End Get
@@ -174,7 +174,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         '''  Whether the resource item belongs to the global resource folder in ASP .Net application
         ''' </summary>
-        Friend ReadOnly Property IsGlobalResourceInASP() As Boolean
+        Friend ReadOnly Property IsGlobalResourceInASP As Boolean
             Get
                 Return _isGlobalResourceInASP
             End Get

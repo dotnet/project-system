@@ -128,13 +128,13 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Returns the PropertyPageInfo for this designer panel, if it corresponds to a property page.
         ''' Otherwise returns Nothing.
         ''' </summary>
-        Public ReadOnly Property PropertyPageInfo() As PropertyPageInfo
+        Public ReadOnly Property PropertyPageInfo As PropertyPageInfo
             Get
                 Return _propertyPageInfo
             End Get
         End Property
 
-        Public ReadOnly Property IsPropertyPage() As Boolean
+        Public ReadOnly Property IsPropertyPage As Boolean
             Get
                 Dim ReturnValue As Boolean = (_propertyPageInfo IsNot Nothing)
                 Debug.Assert(Not ReturnValue OrElse EditorGuid.Equals(GetType(PropPageDesigner.PropPageDesignerEditorFactory).GUID),
@@ -143,19 +143,19 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             End Get
         End Property
 
-        Public ReadOnly Property Hierarchy() As IVsHierarchy
+        Public ReadOnly Property Hierarchy As IVsHierarchy
             Get
                 Return _hierarchy
             End Get
         End Property
 
-        Public ReadOnly Property ItemId() As UInteger
+        Public ReadOnly Property ItemId As UInteger
             Get
                 Return _itemId
             End Get
         End Property
 
-        Public ReadOnly Property DocCookie() As UInteger
+        Public ReadOnly Property DocCookie As UInteger
             Get
                 Return _docCookie
             End Get
@@ -165,11 +165,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Provides a custom view control that can be displayed instead of hosting a designer.  We can display either
         '''   a custom view provider or a hosted designer, but not both at once.
         ''' </summary>
-        Public Property CustomViewProvider() As CustomViewProvider
+        Public Property CustomViewProvider As CustomViewProvider
             Get
                 Return _customViewProvider
             End Get
-            Set(value As CustomViewProvider)
+            Set
                 If _customViewProvider Is value Then
                     Exit Property
                 End If
@@ -646,11 +646,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Get/set the window frame owned by this panel
         ''' </summary>
-        Public Property VsWindowFrame() As IVsWindowFrame
+        Public Property VsWindowFrame As IVsWindowFrame
             Get
                 Return _vsWindowFrame
             End Get
-            Set(Value As IVsWindowFrame)
+            Set
                 If Value IsNot _vsWindowFrame Then
                     Common.Switches.TracePDFocus(TraceLevel.Info, "ApplicationDesignerPanel.set_VsWindowFrame")
                     CloseFrame()
@@ -669,11 +669,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' The Guid used by the editor for this panel.  For property pages, this is always
         '''   PropPageDesignerView's guid.
         ''' </summary>
-        Public Property EditorGuid() As Guid
+        Public Property EditorGuid As Guid
             Get
                 Return _editorGuid
             End Get
-            Set(Value As Guid)
+            Set
                 If IsPropertyPage Then
                     Debug.Fail("Cannot change EditorGuid for property page designer panels")
                     Exit Property
@@ -687,7 +687,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' The Guid used by the object actually represented in this panel.  For property pages,
         '''   this is the guid of the property page.  For all others, this is the same as EditorGuid.
         ''' </summary>
-        Public ReadOnly Property ActualGuid() As Guid
+        Public ReadOnly Property ActualGuid As Guid
             Get
                 If _propertyPageInfo IsNot Nothing Then
                     Return _propertyPageInfo.Guid
@@ -700,11 +700,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Physical view guid for the editor
         ''' </summary>
-        Public Property PhysicalView() As String
+        Public Property PhysicalView As String
             Get
                 Return _physicalView
             End Get
-            Set(Value As String)
+            Set
                 _physicalView = Value
             End Set
         End Property
@@ -712,11 +712,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' The editor's caption
         ''' </summary>
-        Public Property EditorCaption() As String
+        Public Property EditorCaption As String
             Get
                 Return _editorCaption
             End Get
-            Set(Value As String)
+            Set
                 _editorCaption = Value
             End Set
         End Property
@@ -724,7 +724,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' The filename moniker of the file which is being edited by the editor
         ''' </summary>
-        Public Property MkDocument() As String
+        Public Property MkDocument As String
             Get
                 If _mkDocument <> "" Then
                     Return _mkDocument
@@ -734,7 +734,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     Return ""
                 End If
             End Get
-            Set(Value As String)
+            Set
                 Debug.Assert(_mkDocument Is Nothing, "MkDocument set multiple times")
                 _mkDocument = Value
             End Set
@@ -743,11 +743,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' The filename moniker of the file which is being edited by the editor
         ''' </summary>
-        Public Property CustomMkDocumentProvider() As CustomDocumentMonikerProvider
+        Public Property CustomMkDocumentProvider As CustomDocumentMonikerProvider
             Get
                 Return _customMkDocumentProvider
             End Get
-            Set(Value As CustomDocumentMonikerProvider)
+            Set
                 Debug.Assert(_customMkDocumentProvider Is Nothing OrElse Value Is Nothing, "m_CustomMkDocumentProvider set multiple times")
                 _customMkDocumentProvider = Value
             End Set
@@ -756,11 +756,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' The DocData for the editor
         ''' </summary>
-        Public Property DocData() As Object
+        Public Property DocData As Object
             Get
                 Return _docData
             End Get
-            Set(Value As Object)
+            Set
                 _docData = Value
             End Set
         End Property
@@ -768,11 +768,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' The DocView for the editor
         ''' </summary>
-        Public Property DocView() As Control
+        Public Property DocView As Control
             Get
                 Return _docView
             End Get
-            Set(Value As Control)
+            Set
                 _docView = Value
             End Set
         End Property
@@ -780,11 +780,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Flags to be passed to VsUIShellOpenDocument
         ''' </summary>
-        Public Property EditFlags() As UInteger
+        Public Property EditFlags As UInteger
             Get
                 Return _editFlags
             End Get
-            Set(Value As UInteger)
+            Set
                 _editFlags = Value
             End Set
         End Property
@@ -792,11 +792,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' The title that should be used for this panel's tab
         ''' </summary>
-        Public Property TabTitle() As String
+        Public Property TabTitle As String
             Get
                 Return _tabTitle
             End Get
-            Set(value As String)
+            Set
                 _tabTitle = value
 
                 ' We set Window.Text to be the page Title to help screen reader.
@@ -813,11 +813,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' The name for the tab that is not localized and is seen by QA automation tools
         ''' </summary>
-        Public Property TabAutomationName() As String
+        Public Property TabAutomationName As String
             Get
                 Return _tabAutomationName
             End Get
-            Set(value As String)
+            Set
                 _tabAutomationName = value
             End Set
         End Property
@@ -1033,7 +1033,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''<summary>
         ''' Initialize layout...
         '''</summary>
-        <DebuggerStepThrough()>
+        <DebuggerStepThrough>
         Private Sub InitializeComponent()
             _pageHostingPanel = New Panel
             _pageNameLabel = New Label

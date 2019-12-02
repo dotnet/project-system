@@ -80,7 +80,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Returns the type of the instance this property is bound to, which is Resource.
         ''' </summary>
         ''' <value>The Resource type.</value>
-        Public Overrides ReadOnly Property ComponentType() As Type
+        Public Overrides ReadOnly Property ComponentType As Type
             Get
                 Return GetType(Resource)
             End Get
@@ -91,7 +91,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''  Returns a value indicating whether this property is read-only.
         ''' </summary>
         ''' <value>True if the property is read-only, False otherwise.</value>
-        Public Overrides ReadOnly Property IsReadOnly() As Boolean
+        Public Overrides ReadOnly Property IsReadOnly As Boolean
             Get
                 Return _isReadOnly
             End Get
@@ -102,7 +102,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''  Returns the type of the property.
         ''' </summary>
         ''' <value>A Type that represents the type of the property.</value>
-        Public Overrides ReadOnly Property PropertyType() As Type
+        Public Overrides ReadOnly Property PropertyType As Type
             Get
                 Return _propertyType
             End Get

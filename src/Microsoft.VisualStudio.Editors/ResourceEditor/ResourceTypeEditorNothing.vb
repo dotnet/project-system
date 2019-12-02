@@ -31,7 +31,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <value>True if this resources handled by this ResourceTypeEditor should be displayed
         '''   in a string table, and False if they should be displayed in a listview.</value>
-        Public Overrides ReadOnly Property StringValueCanBeEdited() As Boolean
+        Public Overrides ReadOnly Property StringValueCanBeEdited As Boolean
             Get
                 'Can't change a Nothing/null value to anything else.
                 Return False

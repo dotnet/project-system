@@ -77,11 +77,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Set the datagridview instance I'm showing in
         ''' </summary>
-        Public Property DataGridView() As DataGridView Implements IDataGridViewEditingControl.EditingControlDataGridView
+        Public Property DataGridView As DataGridView Implements IDataGridViewEditingControl.EditingControlDataGridView
             Get
                 Return _dataGridView
             End Get
-            Set(Value As DataGridView)
+            Set
                 DisconnectDataGridViewEventHandlers()
                 _dataGridView = Value
                 ConnectDataGridViewEventHandlers()
@@ -92,17 +92,17 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Set the formatted representation of my current value
         ''' </summary>
         ''' <remarks>Will set my value to the deserialized value - nothing if deserialization fails</remarks>
-        Public Property FormattedValue() As Object Implements IDataGridViewEditingControl.EditingControlFormattedValue
+        Public Property FormattedValue As Object Implements IDataGridViewEditingControl.EditingControlFormattedValue
             Get
                 Return GetFormattedValue(DataGridViewDataErrorContexts.Formatting)
             End Get
-            Set(Value As Object)
+            Set
                 Debug.Assert(TypeOf Value Is String, String.Format("Why did someone try to set my formatted value to an object of type {0}? Expected type string!", Value.GetType().ToString()))
                 Text = DirectCast(Value, String)
             End Set
         End Property
 
-        Public ReadOnly Property IDataGridViewEditingPanel_Cursor() As Cursor Implements IDataGridViewEditingControl.EditingPanelCursor
+        Public ReadOnly Property IDataGridViewEditingPanel_Cursor As Cursor Implements IDataGridViewEditingControl.EditingPanelCursor
             Get
                 If _dataGridView IsNot Nothing Then
                     Return _dataGridView.Cursor
@@ -125,17 +125,17 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End If
         End Function
 
-        Public ReadOnly Property RepositionOnValueChange() As Boolean Implements IDataGridViewEditingControl.RepositionEditingControlOnValueChange
+        Public ReadOnly Property RepositionOnValueChange As Boolean Implements IDataGridViewEditingControl.RepositionEditingControlOnValueChange
             Get
                 Return False
             End Get
         End Property
 
-        Public Property RowIndex() As Integer Implements IDataGridViewEditingControl.EditingControlRowIndex
+        Public Property RowIndex As Integer Implements IDataGridViewEditingControl.EditingControlRowIndex
             Get
                 Return _rowIndex
             End Get
-            Set(Value As Integer)
+            Set
                 _rowIndex = Value
             End Set
         End Property
@@ -220,11 +220,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ForeColor = dataGridViewCellStyle.ForeColor
         End Sub
 
-        Public Property ValueChanged() As Boolean Implements IDataGridViewEditingControl.EditingControlValueChanged
+        Public Property ValueChanged As Boolean Implements IDataGridViewEditingControl.EditingControlValueChanged
             Get
                 Return _valueChanged
             End Get
-            Set(Value As Boolean)
+            Set
                 _valueChanged = Value
                 If _dataGridView.CurrentCellAddress.X = -1 OrElse _dataGridView.CurrentCellAddress.Y = -1 Then
                     Debug.Assert(_dataGridView.IsCurrentCellInEditMode, "Why did the value change when we aren't in edit mode!?")
@@ -241,11 +241,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
 #Region "Service provider stuff"
         Private _serviceProvider As IServiceProvider
-        Friend Property ServiceProvider() As IServiceProvider
+        Friend Property ServiceProvider As IServiceProvider
             Get
                 Return _serviceProvider
             End Get
-            Set(Value As IServiceProvider)
+            Set
                 _serviceProvider = Value
             End Set
         End Property
@@ -302,7 +302,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' ITypeDescriptorContext to pass into UITypeEditors providing services and access to the current instance
         ''' </summary>
-        Public Overrides ReadOnly Property Context() As System.ComponentModel.ITypeDescriptorContext
+        Public Overrides ReadOnly Property Context As System.ComponentModel.ITypeDescriptorContext
             Get
                 Return New EditContext(TryCast(DataGridView.CurrentRow.Tag, DesignTimeSettingInstance))
             End Get
@@ -323,7 +323,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' <summary>
             ''' The container (site) that the current instance is hosted in
             ''' </summary>
-            Public ReadOnly Property Container() As System.ComponentModel.IContainer Implements System.ComponentModel.ITypeDescriptorContext.Container
+            Public ReadOnly Property Container As System.ComponentModel.IContainer Implements System.ComponentModel.ITypeDescriptorContext.Container
                 Get
                     If _instance IsNot Nothing AndAlso _instance.Site IsNot Nothing Then
                         Return _instance.Site.Container
@@ -336,7 +336,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' <summary>
             ''' The instance this value is associated with
             ''' </summary>
-            Public ReadOnly Property Instance() As Object Implements System.ComponentModel.ITypeDescriptorContext.Instance
+            Public ReadOnly Property Instance As Object Implements System.ComponentModel.ITypeDescriptorContext.Instance
                 Get
                     Return _instance
                 End Get
@@ -359,7 +359,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' <summary>
             ''' Get the associated instance's value property descriptor
             ''' </summary>
-            Public ReadOnly Property PropertyDescriptor() As System.ComponentModel.PropertyDescriptor Implements System.ComponentModel.ITypeDescriptorContext.PropertyDescriptor
+            Public ReadOnly Property PropertyDescriptor As System.ComponentModel.PropertyDescriptor Implements System.ComponentModel.ITypeDescriptorContext.PropertyDescriptor
                 Get
                     Return System.ComponentModel.TypeDescriptor.GetProperties(GetType(DesignTimeSettingInstance)).Item("Value")
                 End Get

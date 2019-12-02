@@ -88,7 +88,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   passed in to the page through SetObjects.  However, it may be modified by subclasses to contain a superset
         '''   or subset for special purposes.
         ''' </summary>
-        Public Overrides ReadOnly Property RawPropertiesObjects() As Object()
+        Public Overrides ReadOnly Property RawPropertiesObjects As Object()
             Get
                 Dim AllObjects As Object() = MyBase.RawPropertiesObjects
                 Dim SpecificConfigIndex As Integer = IndexOfSpecificConfig(AllObjects)
@@ -110,7 +110,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   based on the set of objects passed in to the page through SetObjects.  However, it may be modified by subclasses to 
         '''   contain a superset or subset for special purposes.
         ''' </summary>
-        Public Overrides ReadOnly Property ExtendedPropertiesObjects() As Object()
+        Public Overrides ReadOnly Property ExtendedPropertiesObjects As Object()
             Get
                 'We must pass the raw setobjects array to IndexOfSpecificConfig - it won't work with the extended objects
                 '  because they will not be IVsCfg objects - but we return an array based on the extended objects.

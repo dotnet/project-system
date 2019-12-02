@@ -39,7 +39,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' The text of the link message to display.
         ''' </summary>
-        Public ReadOnly Property LinkText() As String
+        Public ReadOnly Property LinkText As String
             Get
                 Return _linkText
             End Get
@@ -48,7 +48,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' The ApplicationDesignerView which owns this view.
         ''' </summary>
-        Public ReadOnly Property DesignerView() As ApplicationDesignerView
+        Public ReadOnly Property DesignerView As ApplicationDesignerView
             Get
                 Return _designerView
             End Get
@@ -57,7 +57,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' The special file ID to create when the user clicks the link.  Used by IVsProjectSpecialFiles.
         ''' </summary>
-        Public ReadOnly Property SpecialFileId() As Integer
+        Public ReadOnly Property SpecialFileId As Integer
             Get
                 Return _specialFileId
             End Get
@@ -66,7 +66,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' The ApplicationDesignerPanel in which this view will be displayed.
         ''' </summary>
-        Public ReadOnly Property DesignerPanel() As ApplicationDesignerPanel
+        Public ReadOnly Property DesignerPanel As ApplicationDesignerPanel
             Get
                 Return _designerPanel
             End Get
@@ -76,7 +76,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Returns the view control (if already created)
         ''' </summary>
-        Public Overrides ReadOnly Property View() As Control
+        Public Overrides ReadOnly Property View As Control
             Get
                 Return _view
             End Get

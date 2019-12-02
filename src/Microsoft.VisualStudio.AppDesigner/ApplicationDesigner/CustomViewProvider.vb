@@ -18,7 +18,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Returns the view control (if already created)
         ''' </summary>
-        Public MustOverride ReadOnly Property View() As Control
+        Public MustOverride ReadOnly Property View As Control
 
         ''' <summary>
         ''' Creates the view control, if it doesn't already exist

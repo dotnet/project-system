@@ -123,12 +123,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <summary>
             ''' Returns whether or not the resource is a link to a file (True) or a non-linked value (False).
             ''' </summary>
-            ReadOnly Property IsLink() As Boolean
+            ReadOnly Property IsLink As Boolean
 
             ''' <summary>
             ''' If IsLinked = True, returns the absolute path and filename to the linked file.  Otherwise, returns Nothing.
             ''' </summary>
-            ReadOnly Property LinkedFilePath() As String
+            ReadOnly Property LinkedFilePath As String
 
         End Interface
 
@@ -141,7 +141,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <summary>
             ''' Returns whether the resource file is inside a device project
             ''' </summary>
-            ReadOnly Property IsInsideDeviceProject() As Boolean
+            ReadOnly Property IsInsideDeviceProject As Boolean
 
             ''' <summary>
             ''' Returns whether the provided type is supported in the project containing this resource file
@@ -198,7 +198,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <value>True if this resources handled by this ResourceTypeEditor should be displayed
         '''   in a string table, and False if they should be displayed in a listview.</value>
-        Public Overridable ReadOnly Property DisplayInStringTable() As Boolean
+        Public Overridable ReadOnly Property DisplayInStringTable As Boolean
             Get
                 Return False
             End Get
@@ -212,7 +212,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks>
         '''   If true, the GetImageForThumbnail property must return a same image object. We won't keep duplicated items in the cache to improve the performance of the designer.
         ''' </remarks>
-        Public Overridable ReadOnly Property IsImageForThumbnailShared() As Boolean
+        Public Overridable ReadOnly Property IsImageForThumbnailShared As Boolean
             Get
                 Return False
             End Get

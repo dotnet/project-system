@@ -89,25 +89,25 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             Return New MyExtensionTemplate(templateID, templateVersion, template, assemblyFullName)
         End Function
 
-        Public ReadOnly Property AssemblyFullName() As String
+        Public ReadOnly Property AssemblyFullName As String
             Get
                 Return _assemblyFullName
             End Get
         End Property
 
-        Public ReadOnly Property ID() As String
+        Public ReadOnly Property ID As String
             Get
                 Return _id
             End Get
         End Property
 
-        Public ReadOnly Property Version() As Version
+        Public ReadOnly Property Version As Version
             Get
                 Return _version
             End Get
         End Property
 
-        Public ReadOnly Property Description() As String Implements INamedDescribedObject.Description
+        Public ReadOnly Property Description As String Implements INamedDescribedObject.Description
             Get
                 Return _template.Description
             End Get
@@ -117,7 +117,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' The extension template's name specified in .vstemplate file, or the template ID specified in CustomData.xml.
         ''' </summary>
-        Public ReadOnly Property DisplayName() As String Implements INamedDescribedObject.DisplayName
+        Public ReadOnly Property DisplayName As String Implements INamedDescribedObject.DisplayName
             Get
                 If StringIsNullEmptyOrBlank(_template.Name) Then
                     Return _id
@@ -127,13 +127,13 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             End Get
         End Property
 
-        Public ReadOnly Property FilePath() As String
+        Public ReadOnly Property FilePath As String
             Get
                 Return _template.FilePath
             End Get
         End Property
 
-        Public ReadOnly Property BaseName() As String
+        Public ReadOnly Property BaseName As String
             Get
                 Return _template.BaseName
             End Get

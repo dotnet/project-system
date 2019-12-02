@@ -26,7 +26,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <value>True if this resources handled by this ResourceTypeEditor should be displayed
         '''   in a string table, and False if they should be displayed in a listview.</value>
-        Public NotOverridable Overrides ReadOnly Property DisplayInStringTable() As Boolean
+        Public NotOverridable Overrides ReadOnly Property DisplayInStringTable As Boolean
             Get
                 Return True
             End Get
@@ -37,7 +37,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Gets whether or not the strings handled by this resource type editor
         '''   are allowed to be edited by the user.
         ''' </summary>
-        Public MustOverride ReadOnly Property StringValueCanBeEdited() As Boolean
+        Public MustOverride ReadOnly Property StringValueCanBeEdited As Boolean
 
 
 

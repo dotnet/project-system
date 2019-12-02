@@ -146,7 +146,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 #End Region
 
 #Region "PropertyControlData"
-        Protected Overrides ReadOnly Property ControlData() As PropertyControlData()
+        Protected Overrides ReadOnly Property ControlData As PropertyControlData()
             Get
                 Dim ControlsThatDependOnStartupObjectOrUriProperty As Control() = {
                     StartupObjectOrUriLabel, UseApplicationFrameworkCheckBox, WindowsAppGroupBox
@@ -854,7 +854,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         '''   (depending on the setting of the Enable Application Framework
         '''   checkbox)
         ''' </summary>
-        <Serializable()>
+        <Serializable>
         Friend MustInherit Class StartupObjectOrUri
             Private ReadOnly _value As String
             Private ReadOnly _description As String
@@ -878,13 +878,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                 Return Description
             End Function
 
-            Public ReadOnly Property Value() As String
+            Public ReadOnly Property Value As String
                 Get
                     Return _value
                 End Get
             End Property
 
-            Public ReadOnly Property Description() As String
+            Public ReadOnly Property Description As String
                 Get
                     Return _description
                 End Get
@@ -908,7 +908,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
         End Class
 
-        <Serializable()>
+        <Serializable>
         Friend Class StartupObject
             Inherits StartupObjectOrUri
 
@@ -916,7 +916,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                 MyBase.New(value, description)
             End Sub
 
-            Protected Overridable ReadOnly Property IsEquivalentToSubMain() As Boolean
+            Protected Overridable ReadOnly Property IsEquivalentToSubMain As Boolean
                 Get
                     Return Value = "" OrElse Value.Equals(STARTUPOBJECT_SubMain, StringComparison.OrdinalIgnoreCase)
                 End Get
@@ -945,7 +945,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
         End Class
 
-        <Serializable()>
+        <Serializable>
         Friend Class StartupObjectNone
             Inherits StartupObject
 
@@ -953,7 +953,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                 MyBase.New("", s_noneText)
             End Sub
 
-            Protected Overrides ReadOnly Property IsEquivalentToSubMain() As Boolean
+            Protected Overrides ReadOnly Property IsEquivalentToSubMain As Boolean
                 Get
                     Return False
                 End Get
@@ -961,7 +961,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
         End Class
 
-        <Serializable()>
+        <Serializable>
         Friend Class StartupUri
             Inherits StartupObjectOrUri
 
@@ -1328,13 +1328,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                 _description = description
             End Sub
 
-            Public ReadOnly Property Value() As String
+            Public ReadOnly Property Value As String
                 Get
                     Return _value
                 End Get
             End Property
 
-            Public ReadOnly Property Description() As String
+            Public ReadOnly Property Description As String
                 Get
                     Return _description
                 End Get

@@ -457,7 +457,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         '''<summary>
         ''' a fake IVSDProjectProperties definition. We only use this to check whether the project supports this interface, but don't pay attention to the detail.
         '''</summary>
-        <System.Runtime.InteropServices.ComImport(), System.Runtime.InteropServices.ComVisible(False), System.Runtime.InteropServices.Guid("1A27878B-EE15-41CE-B427-58B10390C821"), System.Runtime.InteropServices.InterfaceType(System.Runtime.InteropServices.ComInterfaceType.InterfaceIsDual)>
+        <System.Runtime.InteropServices.ComImport, System.Runtime.InteropServices.ComVisible(False), System.Runtime.InteropServices.Guid("1A27878B-EE15-41CE-B427-58B10390C821"), System.Runtime.InteropServices.InterfaceType(System.Runtime.InteropServices.ComInterfaceType.InterfaceIsDual)>
         Private Interface IVSDProjectProperties
         End Interface
 

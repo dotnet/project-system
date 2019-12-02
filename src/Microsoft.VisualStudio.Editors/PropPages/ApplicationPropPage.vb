@@ -66,7 +66,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Sub AssemblyInfoButton_Click(sender As Object, e As EventArgs) Handles AssemblyInfoButton.Click
             ShowChildPage(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AssemblyInfo_Title, GetType(AssemblyInfoPropPage), HelpKeywords.VBProjPropAssemblyInfo)
         End Sub
-        Protected Overrides ReadOnly Property ControlData() As PropertyControlData()
+        Protected Overrides ReadOnly Property ControlData As PropertyControlData()
             Get
                 If m_ControlData Is Nothing Then
 
@@ -111,7 +111,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Get
         End Property
 
-        Protected Overrides ReadOnly Property ValidationControlGroups() As Control()()
+        Protected Overrides ReadOnly Property ValidationControlGroups As Control()()
             Get
                 If _controlGroup Is Nothing Then
                     _controlGroup = New Control()() {

@@ -48,7 +48,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Returns whether or not the property page hosted in this site should be with 
         '''   immediate-apply mode or not)
         ''' </summary>
-        Private ReadOnly Property IsImmediateApply() As Boolean Implements IPropertyPageSiteInternal.IsImmediateApply
+        Private ReadOnly Property IsImmediateApply As Boolean Implements IPropertyPageSiteInternal.IsImmediateApply
             Get
                 'Child pages are always non-immediate apply (we wait until the user clicks
                 '  OK or Cancel)

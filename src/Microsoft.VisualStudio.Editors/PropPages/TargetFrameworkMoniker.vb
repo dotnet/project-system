@@ -37,7 +37,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Gets the target framework moniker
         ''' </summary>
-        Public ReadOnly Property Moniker() As String
+        Public ReadOnly Property Moniker As String
             Get
                 Return _moniker
             End Get

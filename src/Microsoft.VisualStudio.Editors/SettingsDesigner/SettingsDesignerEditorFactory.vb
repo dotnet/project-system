@@ -32,7 +32,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' My commandUI GUID
         ''' </summary>
-        Protected Overrides ReadOnly Property CommandUIGuid() As Guid
+        Protected Overrides ReadOnly Property CommandUIGuid As Guid
             Get
                 Return Constants.MenuConstants.GUID_SETTINGSDESIGNER_CommandUI
             End Get
@@ -41,7 +41,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Return my editor GUID
         ''' </summary>
-        Protected Overrides ReadOnly Property EditorGuid() As Guid
+        Protected Overrides ReadOnly Property EditorGuid As Guid
             Get
                 Return New Guid(EditorGuidString)
             End Get

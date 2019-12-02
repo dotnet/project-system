@@ -29,7 +29,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         '''      interface to avoid confusion.  The IDisposable pattern is provided 
         '''      for languages that support a "using" syntax like C# and VB .NET.
         '''</remarks>
-        <Serializable()>
+        <Serializable>
         Private NotInheritable Class PropertyPageSerializationStore
             Inherits Serialization.SerializationStore
             Implements ISerializable
@@ -54,7 +54,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
             ' default impl of abstract base member.  see serialization store for details
             '	
-            Public Overrides ReadOnly Property Errors() As ICollection
+            Public Overrides ReadOnly Property Errors As ICollection
                 Get
                     Return Array.Empty(Of Object)
                 End Get
@@ -380,7 +380,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 ''' <summary>
                 ''' The component from which we want to serialize stuff.
                 ''' </summary>
-                Public ReadOnly Property Component() As PropPageDesignerRootComponent
+                Public ReadOnly Property Component As PropPageDesignerRootComponent
                     Get
                         Return _component
                     End Get
@@ -391,11 +391,11 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 ''' If True, the entire Component instance should be serialized.  If false,
                 '''   then only the properties in PropertiesToSerialize should be serialized.
                 ''' </summary>
-                Public Property IsEntireObject() As Boolean
+                Public Property IsEntireObject As Boolean
                     Get
                         Return _isEntireObject
                     End Get
-                    Set(Value As Boolean)
+                    Set
                         Debug.Assert(Value = False, "Not supported/needed")
                         If Value AndAlso _propertiesToSerialize IsNot Nothing Then
                             _propertiesToSerialize.Clear()
@@ -409,7 +409,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 ''' A list of PropertyDescriptors representing the properties on
                 '''   the Component which should be serialized.
                 ''' </summary>
-                Public ReadOnly Property PropertiesToSerialize() As IList
+                Public ReadOnly Property PropertiesToSerialize As IList
                     Get
                         If _propertiesToSerialize Is Nothing Then
                             _propertiesToSerialize = New ArrayList
@@ -444,7 +444,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             ''' <summary>
             ''' Stores a single binary serialized Component instance or Component property value
             ''' </summary>
-            <Serializable()>
+            <Serializable>
             Private NotInheritable Class SerializedProperty
 
                 'The name of the component from which this was serialized.
@@ -501,7 +501,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 ''' <summary>
                 ''' Gets the name of the component from which this was serialized.
                 ''' </summary>
-                Public ReadOnly Property ComponentName() As String
+                Public ReadOnly Property ComponentName As String
                     Get
                         Return _componentName
                     End Get
@@ -512,7 +512,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 ''' Gets the name of the property which was serialized (or Nothing if
                 '''   not a property serialization).
                 ''' </summary>
-                Public ReadOnly Property PropertyName() As String
+                Public ReadOnly Property PropertyName As String
                     Get
                         Return _propertyName
                     End Get
@@ -523,7 +523,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 ''' Returns True iff an entire Component object has been serialized, as opposed
                 '''   to just a property from it.
                 ''' </summary>
-                Public ReadOnly Property IsEntireComponentObject() As Boolean
+                Public ReadOnly Property IsEntireComponentObject As Boolean
                     Get
                         Return (PropertyName = "")
                     End Get

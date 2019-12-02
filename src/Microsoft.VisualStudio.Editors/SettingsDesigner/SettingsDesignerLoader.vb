@@ -229,7 +229,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Get access to "our" root component
         ''' </summary>
-        Private ReadOnly Property RootComponent() As DesignTimeSettings
+        Private ReadOnly Property RootComponent As DesignTimeSettings
             Get
                 Try
                     If LoaderHost Is Nothing Then
@@ -245,13 +245,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Get
         End Property
 
-        Friend ReadOnly Property GeneratedClassName() As String
+        Friend ReadOnly Property GeneratedClassName As String
             Get
                 Return SettingsDesigner.GeneratedClassName(VsHierarchy, ProjectItemid, RootComponent, DocData.Name)
             End Get
         End Property
 
-        Private ReadOnly Property GeneratedClassNamespace() As String
+        Private ReadOnly Property GeneratedClassNamespace As String
             Get
                 Return ProjectUtils.GeneratedSettingsClassNamespace(VsHierarchy, ProjectItemid)
             End Get
@@ -648,7 +648,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' We sometimes want to check out the project file (to add app.config) and sometimes we only want to 
         ''' check out the app.config file itself...
         ''' </summary>
-        Protected Overrides ReadOnly Property ManagingDynamicSetOfFiles() As Boolean
+        Protected Overrides ReadOnly Property ManagingDynamicSetOfFiles As Boolean
             Get
                 Return True
             End Get
@@ -658,7 +658,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Overridden in order to provide the app.config file name or the project name when as well as the project item
         ''' and dependent file...
         ''' </summary>
-        Friend Overrides ReadOnly Property FilesToCheckOut() As List(Of String)
+        Friend Overrides ReadOnly Property FilesToCheckOut As List(Of String)
             Get
                 Dim result As List(Of String) = MyBase.FilesToCheckOut
                 Dim projectItem As EnvDTE.ProjectItem = DTEUtils.ProjectItemFromItemId(VsHierarchy, ProjectItemid)

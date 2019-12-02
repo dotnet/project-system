@@ -204,7 +204,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         '   IMPORTANT: Do not attempt to use the event once this object has been
         '              released.
         '--------------------------------------------------------------------------
-        Public ReadOnly Property CompiledEvent() As IntPtr _
+        Public ReadOnly Property CompiledEvent As IntPtr _
             Implements IXmlIntellisenseSchemas.CompiledEvent
 
             Get
@@ -219,7 +219,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         '   Gets array of all result target namespaces, which will form the basis
         '   of a dropdown list for the user to pick from.
         '--------------------------------------------------------------------------
-        Public ReadOnly Property TargetNamespaces() As String() _
+        Public ReadOnly Property TargetNamespaces As String() _
             Implements IXmlIntellisenseSchemas.TargetNamespaces
 
             Get
@@ -235,7 +235,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         '   and attribute declaration in the schema set.  This list can be filtered
         '   by calling the various filter methods on IXmlIntellisenseMember.
         '--------------------------------------------------------------------------
-        Public ReadOnly Property MemberList() As IXmlIntellisenseMemberList _
+        Public ReadOnly Property MemberList As IXmlIntellisenseMemberList _
             Implements IXmlIntellisenseSchemas.MemberList
 
             Get
@@ -250,7 +250,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         '   If non-null, contains the source uri of the file which triggered the
         '   first error (not warning) while compiling the schema set.
         '--------------------------------------------------------------------------
-        Public ReadOnly Property FirstErrorSource() As String _
+        Public ReadOnly Property FirstErrorSource As String _
             Implements IXmlIntellisenseSchemas.FirstErrorSource
 
             Get
@@ -386,7 +386,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         '
         '   Shows element in XSD browser given namespace and local name.
         '--------------------------------------------------------------------------
-        Public ReadOnly Property IsEmpty() As <MarshalAs(UnmanagedType.Bool)> Boolean _
+        Public ReadOnly Property IsEmpty As <MarshalAs(UnmanagedType.Bool)> Boolean _
             Implements IXmlIntellisenseSchemas.IsEmpty
             Get
                 Return _data.SchemaSet Is Nothing OrElse _data.SchemaSet.Count = 0
@@ -400,8 +400,8 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         '   Shows element in XSD browser given namespace and local name.
         '--------------------------------------------------------------------------
         Public Sub ShowInXmlSchemaExplorer(
-            <[In](), MarshalAs(UnmanagedType.BStr)> NamespaceName As String,
-            <[In](), MarshalAs(UnmanagedType.BStr)> LocalName As String,
+            <[In], MarshalAs(UnmanagedType.BStr)> NamespaceName As String,
+            <[In], MarshalAs(UnmanagedType.BStr)> LocalName As String,
             <MarshalAs(UnmanagedType.Bool)> ByRef ElementFound As Boolean,
             <MarshalAs(UnmanagedType.Bool)> ByRef NamespaceFound As Boolean) _
             Implements IXmlIntellisenseSchemas.ShowInXmlSchemaExplorer
@@ -545,68 +545,68 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
             _name = Attribute.QualifiedName
         End Sub
 
-        Friend ReadOnly Property Element() As XmlSchemaElement
+        Friend ReadOnly Property Element As XmlSchemaElement
             Get
                 Return _element
             End Get
         End Property
 
-        Public Property Children() As XmlIntellisenseMember
+        Public Property Children As XmlIntellisenseMember
             Get
                 Return _children
             End Get
-            Set(Value As XmlIntellisenseMember)
+            Set
                 _children = Value
             End Set
         End Property
 
-        Public Property NextMember() As XmlIntellisenseMember
+        Public Property NextMember As XmlIntellisenseMember
             Get
                 Return _nextMember
             End Get
-            Set(Value As XmlIntellisenseMember)
+            Set
                 _nextMember = Value
             End Set
         End Property
 
-        Public Property IsRoot() As Boolean
+        Public Property IsRoot As Boolean
             Get
                 Return (_flags And Flags.IsRoot) <> 0
             End Get
-            Set(Value As Boolean)
+            Set
                 Debug.Assert(Value, "IsRoot can only be set to true")
                 _flags = _flags Or Flags.IsRoot
             End Set
         End Property
 
-        Public ReadOnly Property IsAny() As Boolean
+        Public ReadOnly Property IsAny As Boolean
             Get
                 Return _name.IsEmpty
             End Get
         End Property
 
-        Public ReadOnly Property IsElement() As Boolean _
+        Public ReadOnly Property IsElement As Boolean _
             Implements IXmlIntellisenseMember.IsElement
             Get
                 Return (_flags And Flags.IsElement) <> 0
             End Get
         End Property
 
-        Public ReadOnly Property NamespaceName() As String _
+        Public ReadOnly Property NamespaceName As String _
             Implements IXmlIntellisenseMember.NamespaceName
             Get
                 Return _name.Namespace
             End Get
         End Property
 
-        Public ReadOnly Property LocalName() As String _
+        Public ReadOnly Property LocalName As String _
             Implements IXmlIntellisenseMember.LocalName
             Get
                 Return _name.Name
             End Get
         End Property
 
-        Public ReadOnly Property Name() As XmlQualifiedName
+        Public ReadOnly Property Name As XmlQualifiedName
             Get
                 Return _name
             End Get
@@ -664,25 +664,25 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
 
         End Sub
 
-        Public ReadOnly Property All() As XmlIntellisenseMemberList
+        Public ReadOnly Property All As XmlIntellisenseMemberList
             Get
                 Return _all
             End Get
         End Property
 
-        Public ReadOnly Property Document() As XmlIntellisenseMemberList
+        Public ReadOnly Property Document As XmlIntellisenseMemberList
             Get
                 Return _document
             End Get
         End Property
 
-        Public ReadOnly Property Roots() As XmlIntellisenseMemberList
+        Public ReadOnly Property Roots As XmlIntellisenseMemberList
             Get
                 Return _roots
             End Get
         End Property
 
-        Public ReadOnly Property Elements() As XmlIntellisenseMemberList
+        Public ReadOnly Property Elements As XmlIntellisenseMemberList
             Get
                 Return _elements
             End Get
@@ -961,7 +961,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         '   of the schemas in the set.  More than one type may be matched only if
         '   the other types share the same expanded name.
         '--------------------------------------------------------------------------
-        Public ReadOnly Property MatchesNamedType() As Boolean _
+        Public ReadOnly Property MatchesNamedType As Boolean _
             Implements IXmlIntellisenseMemberList.MatchesNamedType
 
             Get
@@ -1088,7 +1088,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         '   Get child elements of this list having the specified namespace.
         '--------------------------------------------------------------------------
         Public Function ElementsByNamespace(
-            <[In](), MarshalAs(UnmanagedType.BStr)> NamespaceName As String
+            <[In], MarshalAs(UnmanagedType.BStr)> NamespaceName As String
             ) As IXmlIntellisenseMemberList _
             Implements IXmlIntellisenseMemberList.ElementsByNamespace
 
@@ -1100,8 +1100,8 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         '   Get child elements of this list having the specified name.
         '--------------------------------------------------------------------------
         Public Function ElementsByName(
-            <[In](), MarshalAs(UnmanagedType.BStr)> NamespaceName As String,
-            <[In](), MarshalAs(UnmanagedType.BStr)> LocalName As String
+            <[In], MarshalAs(UnmanagedType.BStr)> NamespaceName As String,
+            <[In], MarshalAs(UnmanagedType.BStr)> LocalName As String
             ) As IXmlIntellisenseMemberList _
             Implements IXmlIntellisenseMemberList.ElementsByName
 
@@ -1113,7 +1113,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         '   Get attributes of this list having the specified namespace.
         '--------------------------------------------------------------------------
         Public Function AttributesByNamespace(
-            <[In](), MarshalAs(UnmanagedType.BStr)> NamespaceName As String
+            <[In], MarshalAs(UnmanagedType.BStr)> NamespaceName As String
             ) As IXmlIntellisenseMemberList _
             Implements IXmlIntellisenseMemberList.AttributesByNamespace
 
@@ -1125,8 +1125,8 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         '   Get attributes of this list having the specified name.
         '--------------------------------------------------------------------------
         Public Function AttributesByName(
-            <[In](), MarshalAs(UnmanagedType.BStr)> NamespaceName As String,
-            <[In](), MarshalAs(UnmanagedType.BStr)> LocalName As String
+            <[In], MarshalAs(UnmanagedType.BStr)> NamespaceName As String,
+            <[In], MarshalAs(UnmanagedType.BStr)> LocalName As String
             ) As IXmlIntellisenseMemberList _
             Implements IXmlIntellisenseMemberList.AttributesByName
 
@@ -1138,7 +1138,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         '   Get descendant elements of this list having the specified namespace.
         '--------------------------------------------------------------------------
         Public Function DescendantsByNamespace(
-            <[In](), MarshalAs(UnmanagedType.BStr)> NamespaceName As String
+            <[In], MarshalAs(UnmanagedType.BStr)> NamespaceName As String
             ) As IXmlIntellisenseMemberList _
             Implements IXmlIntellisenseMemberList.DescendantsByNamespace
 
@@ -1150,8 +1150,8 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         '   Get descendant elements of this list having the specified name.
         '--------------------------------------------------------------------------
         Public Function DescendantsByName(
-            <[In](), MarshalAs(UnmanagedType.BStr)> NamespaceName As String,
-            <[In](), MarshalAs(UnmanagedType.BStr)> LocalName As String
+            <[In], MarshalAs(UnmanagedType.BStr)> NamespaceName As String,
+            <[In], MarshalAs(UnmanagedType.BStr)> LocalName As String
             ) As IXmlIntellisenseMemberList _
             Implements IXmlIntellisenseMemberList.DescendantsByName
 

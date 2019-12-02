@@ -249,7 +249,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Protected ReadOnly Property ObjectsPropertyDescriptorsArray() As PropertyDescriptorCollection()
+        Protected ReadOnly Property ObjectsPropertyDescriptorsArray As PropertyDescriptorCollection()
             Get
                 Return m_PropPage.m_ObjectsPropertyDescriptorsArray
             End Get
@@ -258,7 +258,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' The DISPID that corresponds to the property in the project.  See comments at top of PropertyControlData.vb.
         ''' </summary>
-        Public ReadOnly Property DispId() As Integer
+        Public ReadOnly Property DispId As Integer
             Get
                 Return _dispId
             End Get
@@ -269,7 +269,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''  are looked up by name (not DISPID).  This allows project flavors to hide one property and add another with the same name but
         '''  a different DISPID in order to "override" a property.
         ''' </summary>
-        Public ReadOnly Property PropertyName() As String
+        Public ReadOnly Property PropertyName As String
             Get
                 Return _propertyName
             End Get
@@ -278,7 +278,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Returns the page where this property is hosted.
         ''' </summary>
-        Protected ReadOnly Property PropPage() As PropPageUserControlBase
+        Protected ReadOnly Property PropPage As PropPageUserControlBase
             Get
                 Return m_PropPage
             End Get
@@ -289,7 +289,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Retrieves the object to be used for querying for common property values.  The object
         '''   used may vary, depending on the project type and what it supports.
         ''' </summary>
-        Protected ReadOnly Property CommonPropertiesObject() As Object
+        Protected ReadOnly Property CommonPropertiesObject As Object
             Get
                 Debug.Assert(m_PropPage IsNot Nothing, "PropertyControlData not initialized?")
                 Return m_PropPage.CommonPropertiesObject
@@ -307,7 +307,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   be cached after that.  Properties should return the same set of values when given the same set of 
         '''   objects and under the same circumstances.
         ''' </remarks>
-        Public Overridable ReadOnly Property RawPropertiesObjects() As Object()
+        Public Overridable ReadOnly Property RawPropertiesObjects As Object()
             Get
                 Debug.Assert(m_PropPage IsNot Nothing, "PropertyControlData not initialized?")
                 Debug.Assert(m_PropPage.m_Objects IsNot Nothing)
@@ -321,7 +321,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   based on the set of objects passed in to the page through SetObjects.  However, it may be modified by subclasses to 
         '''   contain a superset or subset for special purposes.
         ''' </summary>
-        Public Overridable ReadOnly Property ExtendedPropertiesObjects() As Object()
+        Public Overridable ReadOnly Property ExtendedPropertiesObjects As Object()
             Get
                 Debug.Assert(m_PropPage IsNot Nothing, "PropertyControlData not initialized?")
                 Debug.Assert(m_PropPage.m_ExtendedObjects IsNot Nothing, "Extended objects array is Nothing")
@@ -332,7 +332,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' The control, if any, which is automatically managed by this class instance to correspond to the property's value.  May be Nothing.
         ''' </summary>
-        Public ReadOnly Property FormControl() As Control
+        Public ReadOnly Property FormControl As Control
             Get
                 Return m_FormControl
             End Get
@@ -343,11 +343,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' True iff this property is user-persisted (i.e., rather than getting/setting it directly through the project
         '''   system, the storage/retrieval of the property's value is handled by the page).
         ''' </summary>
-        Public Property IsUserPersisted() As Boolean
+        Public Property IsUserPersisted As Boolean
             Get
                 Return ((Flags And ControlDataFlags.UserPersisted) <> 0)
             End Get
-            Set(Value As Boolean)
+            Set
                 If Value Then
                     Flags = Flags Or ControlDataFlags.UserPersisted
                 Else
@@ -356,11 +356,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Set
         End Property
 
-        Public Property IsUserHandledEvents() As Boolean
+        Public Property IsUserHandledEvents As Boolean
             Get
                 Return ((Flags And ControlDataFlags.UserHandledEvents) <> 0)
             End Get
-            Set(Value As Boolean)
+            Set
                 If Value Then
                     Flags = Flags Or ControlDataFlags.UserHandledEvents
                 Else
@@ -369,7 +369,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Set
         End Property
 
-        Private ReadOnly Property RefreshAllPropertiesWhenChanged() As Boolean
+        Private ReadOnly Property RefreshAllPropertiesWhenChanged As Boolean
             Get
                 Return 0 <> (Flags And ControlDataFlags.RefreshAllPropertiesWhenChanged)
             End Get
@@ -382,11 +382,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Note that this is *not* equivalent to whether or not the property is configuration-dependent - no properties on
         '''   a non-configuration-page are "common" properties, even though they are non-configuration-dependent
         ''' </summary>
-        Public Property IsCommonProperty() As Boolean
+        Public Property IsCommonProperty As Boolean
             Get
                 Return ((Flags And ControlDataFlags.CommonProperty) = ControlDataFlags.CommonProperty)
             End Get
-            Set(Value As Boolean)
+            Set
                 If Value Then
                     Flags = Flags Or ControlDataFlags.CommonProperty
                 Else
@@ -400,7 +400,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Returns true iff this property is configuration-specific.  This is not the opposite of
         '''   a "common" property (but all common properties are non-configuration-specific).
         ''' </summary>
-        Public ReadOnly Property IsConfigurationSpecificProperty() As Boolean
+        Public ReadOnly Property IsConfigurationSpecificProperty As Boolean
             Get
                 Debug.Assert(m_PropPage IsNot Nothing)
                 If m_PropPage.IsConfigurationSpecificPage Then
@@ -420,11 +420,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' True iff this property instance is currently dirty
         ''' </summary>
-        Public Property IsDirty() As Boolean
+        Public Property IsDirty As Boolean
             Get
                 Return ((Flags And ControlDataFlags.Dirty) = ControlDataFlags.Dirty)
             End Get
-            Set(Value As Boolean)
+            Set
                 If Value Then
                     If m_PropPage.m_fInsideInit OrElse m_Initializing Then
                         Return
@@ -472,7 +472,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   project.
         ''' </summary>
         <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
-        Public Shared ReadOnly Property MissingProperty() As Object
+        Public Shared ReadOnly Property MissingProperty As Object
             Get
                 'Note: what is referred to here as "missing" is simply that a flavor's implementation
                 '  of IFilterProperties has returned vsFilterPropertiesAll, indicating that the
@@ -496,7 +496,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   and therefore cannot be determined.
         ''' </summary>
         <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
-        Public Shared ReadOnly Property Indeterminate() As Object
+        Public Shared ReadOnly Property Indeterminate As Object
             Get
                 Return s_indeterminateValue
             End Get
@@ -507,7 +507,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   property has different values in the currently selected configurations
         '''   and therefore cannot be determined.
         ''' </summary>
-        Public ReadOnly Property IsIndeterminate() As Boolean
+        Public ReadOnly Property IsIndeterminate As Boolean
             Get
 #If DEBUG Then
                 Debug.Assert(_isInitialized, "Why are we checking if the property is indeterminate before the value is initialized!?")
@@ -521,7 +521,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   property represented by this class instance is missing in the current
         '''   project.
         ''' </summary>
-        Public ReadOnly Property IsMissing() As Boolean
+        Public ReadOnly Property IsMissing As Boolean
             Get
 #If DEBUG Then
                 Debug.Assert(_isInitialized, "Why are we checking if the property is missing before the value is initialized!?")
@@ -546,11 +546,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return (Value Is s_missingValue) OrElse (Value Is s_indeterminateValue)
         End Function
 
-        Public Property IsHidden() As Boolean
+        Public Property IsHidden As Boolean
             Get
                 Return (Flags And ControlDataFlags.Hidden) <> 0
             End Get
-            Set(Value As Boolean)
+            Set
                 If Value Then
                     Flags = Flags Or ControlDataFlags.Hidden
                 Else
@@ -565,7 +565,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   will have the value IndeterminateValue (and m_AllInitialValues will contain the array of differing values).
         '''   If the property was not found, this will have the value MissingValue.
         ''' </summary>
-        Public ReadOnly Property InitialValue() As Object
+        Public ReadOnly Property InitialValue As Object
             Get
                 Return _initialValue
             End Get
@@ -577,7 +577,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   for this property.  Generally only stored if the values were actually different.  Otherwise, this may
         '''   simply be Nothing.
         ''' </summary>
-        Public ReadOnly Property AllInitialValues() As Object()
+        Public ReadOnly Property AllInitialValues As Object()
             Get
                 Debug.Assert(_allInitialValues Is Nothing OrElse _allInitialValues.Length = RawPropertiesObjects.Length AndAlso _allInitialValues.Length = ExtendedPropertiesObjects.Length,
                     "AllInitialValues should always be the same length as the array returned by RawPropertiesObjects and ExtendedPropertiesObjects")
@@ -593,7 +593,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   as each element.  Never returns Nothing, but always returns an array of the same size
         '''   as RawPropertiesObjects.
         ''' </summary>
-        Public ReadOnly Property AllInitialValuesExpanded() As Object()
+        Public ReadOnly Property AllInitialValuesExpanded As Object()
             Get
                 Dim Values() As Object = AllInitialValues
                 If Values Is Nothing Then
@@ -1001,7 +1001,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
 #Region "Control getter/setter helpers"
-        Public ReadOnly Property IsReadOnly() As Boolean
+        Public ReadOnly Property IsReadOnly As Boolean
             Get
                 If PropDesc IsNot Nothing Then
                     Return PropDesc.IsReadOnly

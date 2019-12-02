@@ -229,11 +229,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Get whatever type name the user selected
         ''' </summary>
-        Public Property TypeName() As String
+        Public Property TypeName As String
             Get
                 Return _typeTextBox.Text.Trim()
             End Get
-            Set(Value As String)
+            Set
                 _typeTextBox.Text = Value
             End Set
         End Property
@@ -245,7 +245,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' A collection of available types
         ''' </summary>
-        Private ReadOnly Property AvailableTypes() As AutoCompleteStringCollection
+        Private ReadOnly Property AvailableTypes As AutoCompleteStringCollection
             Get
                 Return _typeTextBox.AutoCompleteCustomSource
             End Get
@@ -529,26 +529,26 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             End Sub
 
-            Public ReadOnly Property IsAssemblyNode() As Boolean
+            Public ReadOnly Property IsAssemblyNode As Boolean
                 Get
                     Return _nodeType = NodeType.ASSEMBLY_NODE
                 End Get
             End Property
 
-            Public ReadOnly Property HasDummyNode() As Boolean
+            Public ReadOnly Property HasDummyNode As Boolean
                 Get
                     Return Nodes.ContainsKey(DUMMY_ITEM_TEXT)
                 End Get
             End Property
 
 
-            Public ReadOnly Property IsNameSpaceNode() As Boolean
+            Public ReadOnly Property IsNameSpaceNode As Boolean
                 Get
                     Return _nodeType = NodeType.NAMESPACE_NODE
                 End Get
             End Property
 
-            Public ReadOnly Property IsTypeNode() As Boolean
+            Public ReadOnly Property IsTypeNode As Boolean
                 Get
                     Return _nodeType = NodeType.TYPE_NODE
                 End Get

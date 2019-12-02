@@ -231,11 +231,11 @@ Namespace Microsoft.VisualStudio.Editors.Common
             End If
         End Sub
 
-        Private Property State() As PushButtonState
+        Private Property State As PushButtonState
             Get
                 Return _state
             End Get
-            Set(value As PushButtonState)
+            Set
                 If Not _state.Equals(value) Then
                     _state = value
                     Invalidate()

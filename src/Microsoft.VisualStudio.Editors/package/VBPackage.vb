@@ -51,7 +51,7 @@ Namespace Microsoft.VisualStudio.Editors
         ' Map between unique project GUID and the last viewed tab in the project designer...
         Private _lastViewedProjectDesignerTab As Dictionary(Of Guid, Byte)
 
-        Public ReadOnly Property StickyProjectResourcePaths() As New Dictionary(Of Guid, Dictionary(Of String, String))
+        Public ReadOnly Property StickyProjectResourcePaths As New Dictionary(Of Guid, Dictionary(Of String, String))
 
         ''' <summary>
         ''' Constructor
@@ -119,7 +119,7 @@ Namespace Microsoft.VisualStudio.Editors
             _userConfigCleaner = New UserConfigCleaner(Me)
         End Sub 'New
 
-        Public ReadOnly Property MenuCommandService() As IMenuCommandService Implements IVBPackage.MenuCommandService
+        Public ReadOnly Property MenuCommandService As IMenuCommandService Implements IVBPackage.MenuCommandService
             Get
                 Return TryCast(GetService(GetType(IMenuCommandService)), IMenuCommandService)
             End Get
@@ -225,7 +225,7 @@ Namespace Microsoft.VisualStudio.Editors
 
         Private Shared s_instance As VBPackage
 
-        Public Shared ReadOnly Property Instance() As VBPackage
+        Public Shared ReadOnly Property Instance As VBPackage
             Get
                 Return s_instance
             End Get

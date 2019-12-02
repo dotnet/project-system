@@ -205,7 +205,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Retrieves the current root namespace property value
         ''' </summary>
-        Protected ReadOnly Property CurrentRootNamespace() As String
+        Protected ReadOnly Property CurrentRootNamespace As String
             Get
                 Return DirectCast(GetControlValue(Const_RootNamespace), String)
             End Get
@@ -346,25 +346,25 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Sub
 
 #Region "Trivial property get:ers"
-            Public ReadOnly Property ApplicationType() As ApplicationTypes
+            Public ReadOnly Property ApplicationType As ApplicationTypes
                 Get
                     Return _applicationType
                 End Get
             End Property
 
-            Public ReadOnly Property DisplayName() As String
+            Public ReadOnly Property DisplayName As String
                 Get
                     Return _displayName
                 End Get
             End Property
 
-            Public ReadOnly Property Name() As String
+            Public ReadOnly Property Name As String
                 Get
                     Return _name
                 End Get
             End Property
 
-            Public ReadOnly Property SupportedInExpress() As Boolean
+            Public ReadOnly Property SupportedInExpress As Boolean
                 Get
                     Return _supportedInExpress
                 End Get
@@ -375,7 +375,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ''' <summary>
             ''' Get the references required for each project type...
             ''' </summary>
-            Public ReadOnly Property References() As String()
+            Public ReadOnly Property References As String()
                 Get
                     Select Case ApplicationType
                         Case ApplicationTypes.WindowsApp

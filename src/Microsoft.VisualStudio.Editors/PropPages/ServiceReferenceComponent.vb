@@ -25,11 +25,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         <VBDescription(My.Resources.Microsoft_VisualStudio_Editors_Designer.ConstantResourceIDs.PPG_ServiceReferenceNamespaceDescription)>
         <MergableProperty(False)>
         <HelpKeyword("ServiceReference Properties.Namespace")>
-        Public Property [Namespace]() As String
+        Public Property [Namespace] As String
             Get
                 Return _referenceGroup.GetNamespace()
             End Get
-            Set(value As String)
+            Set
                 _referenceGroup.SetNamespace(value)
             End Set
         End Property
@@ -43,7 +43,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         <VBDescription(My.Resources.Microsoft_VisualStudio_Editors_Designer.ConstantResourceIDs.PPG_ServiceReferenceUrlDescription)>
         <HelpKeyword("ServiceReference Properties.ServiceReferenceURL")>
         <MergableProperty(False)>
-        Public Property ServiceReferenceURL() As String
+        Public Property ServiceReferenceURL As String
             Get
                 If _referenceGroup.GetReferenceCount() = 1 Then
                     Return _referenceGroup.GetReferenceUrl(0)
@@ -54,7 +54,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 End If
                 Return String.Empty
             End Get
-            Set(value As String)
+            Set
                 value = value.Trim()
                 Dim currentCount As Integer = _referenceGroup.GetReferenceCount()
                 If currentCount = 1 Then
@@ -88,7 +88,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Service reference instance
         ''' </summary>
-        Friend ReadOnly Property ReferenceGroup() As IVsWCFReferenceGroup
+        Friend ReadOnly Property ReferenceGroup As IVsWCFReferenceGroup
             Get
                 Return _referenceGroup
             End Get

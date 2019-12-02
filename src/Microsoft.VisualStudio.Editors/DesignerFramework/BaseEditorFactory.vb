@@ -173,13 +173,13 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' Must be overridden.  Be sure to use the same GUID on the GUID attribute
         '''   attached to the inheriting class.
         ''' </remarks>
-        Protected MustOverride ReadOnly Property EditorGuid() As Guid
+        Protected MustOverride ReadOnly Property EditorGuid As Guid
 
         ''' <summary>
         ''' Provides the (constant) GUID for the command UI.  This is the guid used in the
         '''   CTC file for keybindings, toolbars, etc.
         ''' </summary>
-        Protected MustOverride ReadOnly Property CommandUIGuid() As Guid
+        Protected MustOverride ReadOnly Property CommandUIGuid As Guid
 
 
 #Region "Private implementation"
@@ -451,7 +451,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <remarks>
         ''' Will not be available before OnSited is called.
         ''' </remarks>
-        Protected ReadOnly Property ServiceProvider() As Shell.ServiceProvider
+        Protected ReadOnly Property ServiceProvider As Shell.ServiceProvider
             Get
                 Return _serviceProvider
             End Get

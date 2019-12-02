@@ -17,7 +17,7 @@ Namespace Microsoft.VisualStudio.Editors
 
         ReadOnly Property GetService(serviceType As Type) As Object
 
-        ReadOnly Property MenuCommandService() As IMenuCommandService
+        ReadOnly Property MenuCommandService As IMenuCommandService
 
     End Interface
 

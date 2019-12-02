@@ -38,7 +38,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
         ' default impl of abstract base member.  see serialization store for details.
         '	
-        Public Overrides ReadOnly Property Errors() As ICollection
+        Public Overrides ReadOnly Property Errors As ICollection
             Get
                 Return Array.Empty(Of Object)
             End Get
@@ -332,7 +332,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '''   object instance. (either the entire object itself, or a set of
         '''   its properties)
         ''' </summary>
-        <Serializable()>
+        <Serializable>
         Protected Class ObjectData
 
             'Backing for public properties
@@ -369,7 +369,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' <summary>
             ''' Get tha name of this object
             ''' </summary>
-            Public ReadOnly Property Name() As String
+            Public ReadOnly Property Name As String
                 Get
                     Return _objectName
                 End Get
@@ -378,7 +378,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' <summary>
             ''' The object from which we want to serialize stuff.
             ''' </summary>
-            Public ReadOnly Property Value() As Object
+            Public ReadOnly Property Value As Object
                 Get
                     Return _value
                 End Get
@@ -389,11 +389,11 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' If True, the entire Resource instance should be serialized.  If false,
             '''   then only the properties in PropertiesToSerialize should be serialized.
             ''' </summary>
-            Public Property IsEntireObject() As Boolean
+            Public Property IsEntireObject As Boolean
                 Get
                     Return _isEntireObject
                 End Get
-                Set(Value As Boolean)
+                Set
                     If Value AndAlso _members IsNot Nothing Then
                         _members.Clear()
                     End If
@@ -406,7 +406,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' A list of PropertyDescriptors representing the properties on
             '''   the Resource which should be serialized.
             ''' </summary>
-            Public ReadOnly Property Members() As ArrayList
+            Public ReadOnly Property Members As ArrayList
                 Get
                     If _members Is Nothing Then
                         _members = New ArrayList
@@ -426,7 +426,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '''   Resource instance (either the entire Resource itself, or a set of
         '''   its properties)
         ''' </summary>
-        <Serializable()>
+        <Serializable>
         Private Class SerializedObjectData
 
             'Backing for public properties
@@ -462,19 +462,19 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' If True, the entire Resource instance should be serialized.  If false,
             '''   then only the properties in PropertiesToSerialize should be serialized.
             ''' </summary>
-            Friend ReadOnly Property IsEntireObject() As Boolean
+            Friend ReadOnly Property IsEntireObject As Boolean
                 Get
                     Return _propertyName = ""
                 End Get
             End Property
 
-            Friend ReadOnly Property ObjectName() As String
+            Friend ReadOnly Property ObjectName As String
                 Get
                     Return _objectName
                 End Get
             End Property
 
-            Friend ReadOnly Property PropertyName() As String
+            Friend ReadOnly Property PropertyName As String
                 Get
                     Return _propertyName
                 End Get

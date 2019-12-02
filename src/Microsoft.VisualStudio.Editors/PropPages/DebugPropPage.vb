@@ -57,7 +57,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 #End Region
 
-        Protected Overrides ReadOnly Property ControlData() As PropertyControlData()
+        Protected Overrides ReadOnly Property ControlData As PropertyControlData()
             Get
                 If m_ControlData Is Nothing Then
                     Dim datalist As List(Of PropertyControlData) = New List(Of PropertyControlData)
@@ -109,7 +109,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Property
 
 
-        Protected Overrides ReadOnly Property ValidationControlGroups() As Control()()
+        Protected Overrides ReadOnly Property ValidationControlGroups As Control()()
             Get
                 If _controlGroup Is Nothing Then
                     _controlGroup = New Control()() {

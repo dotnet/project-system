@@ -95,7 +95,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' All resource type editors that are displayed in this category.  A particular
         '''   resource type editor may only be displayed in a single category.
         ''' </summary>
-        Public ReadOnly Property AssociatedResourceTypeEditors() As ResourceTypeEditor()
+        Public ReadOnly Property AssociatedResourceTypeEditors As ResourceTypeEditor()
             Get
                 Return _associatedResourceTypeEditors
             End Get
@@ -106,7 +106,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Indicates whether this category displays its resources in a stringtable
         '''   or a listview.
         ''' </summary>
-        Public ReadOnly Property CategoryDisplay() As Display
+        Public ReadOnly Property CategoryDisplay As Display
             Get
                 Return _categoryDisplay
             End Get
@@ -116,7 +116,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Command to execute if you want to show this category
         ''' </summary>
-        Public ReadOnly Property CommandToShow() As MenuCommand
+        Public ReadOnly Property CommandToShow As MenuCommand
             Get
                 Return _menuCommand
             End Get
@@ -126,11 +126,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' The command used to add a new resources of appropriate type
         ''' for the current category
         ''' </summary>
-        Public Property AddCommand() As EventHandler
+        Public Property AddCommand As EventHandler
             Get
                 Return _addCommand
             End Get
-            Set(value As EventHandler)
+            Set
                 _addCommand = value
             End Set
         End Property
@@ -139,7 +139,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Returns the friendly (localized) category name, which is shown to the
         '''   user in the category buttons.
         ''' </summary>
-        Public ReadOnly Property LocalizedName() As String
+        Public ReadOnly Property LocalizedName As String
             Get
                 Return _localizedName
             End Get
@@ -150,7 +150,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Returns a programmatic name which is never localized and never shown to
         '''   the user.  Used when searching for a category by name key.
         ''' </summary>
-        Public ReadOnly Property ProgrammaticName() As String
+        Public ReadOnly Property ProgrammaticName As String
             Get
                 Return _programmaticName
             End Get
@@ -166,11 +166,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   button will be normal.  When there is at least one resource in this category,
         '''   the button's font will be made bold.
         ''' </remarks>
-        Public Property ResourceCount() As Integer
+        Public Property ResourceCount As Integer
             Get
                 Return _resourceCount
             End Get
-            Set(Value As Integer)
+            Set
                 Dim ResourcesExisted As Boolean = ResourcesExist
                 _resourceCount = Value
 
@@ -189,7 +189,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Returns true iff there are resources in this category (ResourceCount > 0)
         ''' </summary>
-        Public ReadOnly Property ResourcesExist() As Boolean
+        Public ReadOnly Property ResourcesExist As Boolean
             Get
                 Return _resourceCount > 0
             End Get
@@ -201,11 +201,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   a listview.  This is the "Details", "Icons", "List" option for
         '''   the display mode of the listview.
         ''' </summary>
-        Public Property ResourceView() As ResourceListView.ResourceView
+        Public Property ResourceView As ResourceListView.ResourceView
             Get
                 Return _resourceView
             End Get
-            Set(Value As ResourceListView.ResourceView)
+            Set
                 _resourceView = Value
             End Set
         End Property
@@ -215,11 +215,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' If this category uses a string table, indicates whether or not the "Type"
         '''   column is displayed (shows the type of resource, e.g. System.Drawing.Image)
         ''' </summary>
-        Public Property ShowTypeColumnInStringTable() As Boolean
+        Public Property ShowTypeColumnInStringTable As Boolean
             Get
                 Return _showTypeColumnInStringTable
             End Get
-            Set(Value As Boolean)
+            Set
                 Debug.Assert(_categoryDisplay = Display.StringTable, "This property only applies to string table categories")
                 _showTypeColumnInStringTable = Value
             End Set
@@ -228,7 +228,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         '''  how to sort the resource items in the category...
         ''' </summary>
-        Public Property Sorter() As IComparer(Of Resource)
+        Public Property Sorter As IComparer(Of Resource)
             Get
                 Return _sorter
             End Get
@@ -242,11 +242,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   to add new entries in this string table, via an add/new row at the bottom of
         '''   the table.
         ''' </summary>
-        Public Property AllowNewEntriesInStringTable() As Boolean
+        Public Property AllowNewEntriesInStringTable As Boolean
             Get
                 Return _allowNewEntriesInStringTable
             End Get
-            Set(Value As Boolean)
+            Set
                 Debug.Assert(_categoryDisplay = Display.StringTable, "This property only applies to string table categories")
                 _allowNewEntriesInStringTable = Value
             End Set

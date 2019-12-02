@@ -150,11 +150,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''   shell (e.g., colors will default to system or fallback colors instead of using the
         '''   shell's color service). 
         ''' </summary>
-        Public Property ServiceProvider() As IServiceProvider
+        Public Property ServiceProvider As IServiceProvider
             Get
                 Return _serviceProvider
             End Get
-            Set(value As IServiceProvider)
+            Set
                 _serviceProvider = value
                 _renderer.ServiceProvider = value
 
@@ -243,7 +243,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Returns an enumerable set of tab buttons
         ''' </summary>
-        Public ReadOnly Property TabButtons() As IEnumerable(Of ProjectDesignerTabButton)
+        Public ReadOnly Property TabButtons As IEnumerable(Of ProjectDesignerTabButton)
             Get
                 Return _buttonCollection
             End Get
@@ -271,7 +271,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' The number of tab buttons, including those not currently visible
         ''' </summary>
-        Public ReadOnly Property TabButtonCount() As Integer
+        Public ReadOnly Property TabButtonCount As Integer
             Get
                 Return _buttonCollection.Count
             End Get
@@ -281,7 +281,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Get the panel that is used to host controls on the right-hand side
         ''' </summary>
-        Public ReadOnly Property HostingPanel() As Panel
+        Public ReadOnly Property HostingPanel As Panel
             Get
                 Return _hostingPanel
             End Get
@@ -344,7 +344,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Tracks the last item for paint logic
         ''' </summary>
-        Public ReadOnly Property HoverItem() As ProjectDesignerTabButton
+        Public ReadOnly Property HoverItem As ProjectDesignerTabButton
             Get
                 Return _hoverItem
             End Get
@@ -354,11 +354,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Currently selected button
         ''' </summary>
-        Public Property SelectedItem() As ProjectDesignerTabButton
+        Public Property SelectedItem As ProjectDesignerTabButton
             Get
                 Return _selectedItem
             End Get
-            Set(value As ProjectDesignerTabButton)
+            Set
                 Dim oldSelectedItem As ProjectDesignerTabButton = Nothing
 
                 If _selectedItem Is value Then
@@ -397,7 +397,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Currently selected button
         ''' </summary>
-        Public Property SelectedIndex() As Integer
+        Public Property SelectedIndex As Integer
             Get
                 If _selectedItem Is Nothing Then
                     Return -1
@@ -405,7 +405,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
                 Return _selectedItem.ButtonIndex
             End Get
-            Set(value As Integer)
+            Set
                 If value = -1 Then
                     SelectedItem = Nothing
                 Else
@@ -493,7 +493,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Retrieves the renderer used for this tab control
         ''' </summary>
-        Public ReadOnly Property Renderer() As ProjectDesignerTabRenderer
+        Public ReadOnly Property Renderer As ProjectDesignerTabRenderer
             Get
                 Return _renderer
             End Get
@@ -673,7 +673,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             ''' <summary>
             ''' Description
             ''' </summary>
-            Public Overrides ReadOnly Property Description() As String
+            Public Overrides ReadOnly Property Description As String
                 Get
                     Return My.Resources.Designer.APPDES_TabListDescription
                 End Get
@@ -682,7 +682,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             ''' <summary>
             ''' Role - it is a tab List
             ''' </summary>
-            Public Overrides ReadOnly Property Role() As AccessibleRole
+            Public Overrides ReadOnly Property Role As AccessibleRole
                 Get
                     Return AccessibleRole.PageTabList
                 End Get
@@ -691,7 +691,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             ''' <summary>
             ''' Value - the name of the active page
             ''' </summary>
-            Public Overrides Property Value() As String
+            Public Overrides Property Value As String
                 Get
                     If _tabControl.SelectedItem IsNot Nothing Then
                         Return _tabControl.SelectedItem.Text
@@ -699,7 +699,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         Return Nothing
                     End If
                 End Get
-                Set(value As String)
+                Set
                 End Set
             End Property
 

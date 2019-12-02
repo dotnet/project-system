@@ -209,7 +209,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 #End Region
 
-        Protected Overrides ReadOnly Property ControlData() As PropertyControlData()
+        Protected Overrides ReadOnly Property ControlData As PropertyControlData()
             Get
                 If _objectCache IsNot Nothing Then
                     _objectCache.Reset(ProjectHierarchy, ServiceProvider, False)
@@ -683,7 +683,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' We shouldn't be in this situation unless the user has messed around manually with
         ''' the project file...
         ''' </remarks>
-        Private ReadOnly Property IndeterminateWarningsState() As Boolean
+        Private ReadOnly Property IndeterminateWarningsState As Boolean
             Get
                 If WarningsAsErrorCheckBox.CheckState = CheckState.Indeterminate Then
                     Return True
@@ -1415,7 +1415,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 ''' <summary>
                 ''' Private getter for the IVsCfgProvider2 for the associated proppage's hierarchy
                 ''' </summary>
-                Private ReadOnly Property VsCfgProvider() As IVsCfgProvider2
+                Private ReadOnly Property VsCfgProvider As IVsCfgProvider2
                     Get
                         If _vscfgprovider Is Nothing Then
                             Dim Value As Object = Nothing
@@ -1431,7 +1431,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 ''' Getter for the raw config objects. We override this to always return the properties for all
                 ''' configurations to make this property look like a config independent-ish property
                 ''' </summary>
-                Friend ReadOnly Property ConfigRawPropertiesObjects() As Object()
+                Friend ReadOnly Property ConfigRawPropertiesObjects As Object()
                     Get
                         Dim tmpRawObjects() As IVsCfg
                         Dim ConfigCount As UInteger() = New UInteger(0) {} 'Interop declaration requires us to use an array
@@ -1451,7 +1451,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 ''' Getter for the extended config objects. We override this to always return the properties for all
                 ''' configurations to make this property look like a config independent-ish property
                 ''' </summary>
-                Friend ReadOnly Property ConfigExtendedPropertiesObjects() As Object()
+                Friend ReadOnly Property ConfigExtendedPropertiesObjects As Object()
                     Get
                         If _extendedObjects Is Nothing Then
                             Dim aem As AutomationExtenderManager
@@ -1477,7 +1477,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ''' Getter for the raw config objects. We override this to always return the properties for all
             ''' configurations to make this property look like a config independent-ish property
             ''' </summary>
-            Public Overrides ReadOnly Property RawPropertiesObjects() As Object()
+            Public Overrides ReadOnly Property RawPropertiesObjects As Object()
                 Get
                     Return _configurationObjectCache.ConfigRawPropertiesObjects()
                 End Get
@@ -1487,7 +1487,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ''' Getter for the extended config objects. We override this to always return the properties for all
             ''' configurations to make this property look like a config independent-ish property
             ''' </summary>
-            Public Overrides ReadOnly Property ExtendedPropertiesObjects() As Object()
+            Public Overrides ReadOnly Property ExtendedPropertiesObjects As Object()
                 Get
                     Return _configurationObjectCache.ConfigExtendedPropertiesObjects()
                 End Get

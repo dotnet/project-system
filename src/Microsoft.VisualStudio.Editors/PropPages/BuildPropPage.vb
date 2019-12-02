@@ -59,7 +59,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             MyBase.EnableAllControls(enabled)
         End Sub
 
-        Protected Overrides ReadOnly Property ControlData() As PropertyControlData()
+        Protected Overrides ReadOnly Property ControlData As PropertyControlData()
             Get
                 If m_ControlData Is Nothing Then
                     m_ControlData = New PropertyControlData() {

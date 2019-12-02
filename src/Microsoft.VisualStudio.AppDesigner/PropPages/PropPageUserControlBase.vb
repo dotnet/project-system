@@ -310,7 +310,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''    There is one exception: the delay validation only works for warning messages, fatal errors are still reported immediately when the change is applied
         ''' </summary>
         ''' <remarks>Only pages supporting delay-validation need return value</remarks>
-        Protected Overridable ReadOnly Property ValidationControlGroups() As Control()()
+        Protected Overridable ReadOnly Property ValidationControlGroups As Control()()
             Get
                 Return Nothing
             End Get
@@ -319,13 +319,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         '''  Return a boolean value that indicates whether or not the control supports the color theming service
         ''' </summary>
-        Public Overridable ReadOnly Property SupportsTheming() As Boolean
+        Public Overridable ReadOnly Property SupportsTheming As Boolean
             Get
                 Return False
             End Get
         End Property
 
-        Public ReadOnly Property ProjectHierarchy() As IVsHierarchy
+        Public ReadOnly Property ProjectHierarchy As IVsHierarchy
             Get
                 Return _projectHierarchy
             End Get
@@ -336,11 +336,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   WARNING: It is recommended to turn this off and use AutoScaleMode.Font.
         ''' </summary>
         ''' <value>True if the page should not be scaled automatically</value>
-        Protected Property PageRequiresScaling() As Boolean 'CONSIDER: This should be opt-in, not opt-out
+        Protected Property PageRequiresScaling As Boolean 'CONSIDER: This should be opt-in, not opt-out
             Get
                 Return _pageRequiresScaling
             End Get
-            Set(Value As Boolean)
+            Set
                 _pageRequiresScaling = Value
             End Set
         End Property
@@ -350,11 +350,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <value>true if the page should not be scaled</value>
         ''' <remarks>Used only by the Publish page for now</remarks>
-        Protected Property ManualPageScaling() As Boolean
+        Protected Property ManualPageScaling As Boolean
             Get
                 Return _manualPageScaling
             End Get
-            Set(value As Boolean)
+            Set
                 _manualPageScaling = value
             End Set
         End Property
@@ -362,7 +362,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         '''  Return true if the page can be resized...
         ''' </summary>
-        Public Overridable ReadOnly Property PageResizable() As Boolean
+        Public Overridable ReadOnly Property PageResizable As Boolean
             Get
                 Return False
             End Get
@@ -374,11 +374,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   and keeps the page disabled during break mode.  Once the app stops, the page is set
         '''   to the state requested here.
         ''' </summary>
-        Protected Shadows Property Enabled() As Boolean
+        Protected Shadows Property Enabled As Boolean
             Get
                 Return _pageEnabledState
             End Get
-            Set(value As Boolean)
+            Set
                 _pageEnabledState = value
                 SetEnabledState()
             End Set
@@ -387,7 +387,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Determines whether the property page is activated
         ''' </summary>
-        Protected ReadOnly Property IsActivated() As Boolean
+        Protected ReadOnly Property IsActivated As Boolean
             Get
                 Return _activated
             End Get
@@ -442,7 +442,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Returns the actual site (IPropertyPageSite, rather than IPropertyPageSiteInternal) for the property page
         ''' </summary>
-        Protected ReadOnly Property PropertyPageSite() As OLE.Interop.IPropertyPageSite
+        Protected ReadOnly Property PropertyPageSite As OLE.Interop.IPropertyPageSite
             Get
                 If _site IsNot Nothing Then
                     Dim OleSite As OLE.Interop.IPropertyPageSite =
@@ -480,7 +480,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks>
         ''' See "About 'common' properties" in PropertyControlData for information on "common" properties.
         ''' </remarks>
-        Public ReadOnly Property CommonPropertiesObject() As Object
+        Public ReadOnly Property CommonPropertiesObject As Object
             Get
                 If _projectPropertiesObject IsNot Nothing Then
                     'Used by VB and C#-based projects
@@ -522,7 +522,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' True iff this property page is configuration-specific (like the compile page) instead of
         '''   configuration-independent (like the application pages)
         ''' </summary>
-        Public ReadOnly Property IsConfigurationSpecificPage() As Boolean
+        Public ReadOnly Property IsConfigurationSpecificPage As Boolean
             Get
                 Return _fConfigurationSpecificPage
             End Get
@@ -565,7 +565,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   behavior and display a different set of objects.  These are cached after the first call and not updated
         '''   again until another SetObjects call.
         ''' </remarks>
-        Private ReadOnly Property RawPropertiesObjectsOfAllProperties() As Object()
+        Private ReadOnly Property RawPropertiesObjectsOfAllProperties As Object()
             Get
                 If _cachedRawPropertiesSuperset Is Nothing Then
                     If m_Objects Is Nothing Then
@@ -723,13 +723,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <remarks>When the user selects multiple projects, certain functionality is disabled</remarks>
         <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
-        Public ReadOnly Property MultiProjectSelect() As Boolean
+        Public ReadOnly Property MultiProjectSelect As Boolean
             Get
                 Return _multiProjectSelect
             End Get
         End Property
         <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
-        Protected ReadOnly Property ServiceProvider() As ServiceProvider
+        Protected ReadOnly Property ServiceProvider As ServiceProvider
             Get
                 If _serviceProvider Is Nothing Then
                     Dim isp As OLE.Interop.IServiceProvider = Nothing
@@ -753,7 +753,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Returns the DTE object associated with the objects passed to SetObjects.  If there is none, returns Nothing.
         ''' </summary>
         <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
-        Protected ReadOnly Property DTE() As EnvDTE.DTE
+        Protected ReadOnly Property DTE As EnvDTE.DTE
             Get
                 Return _dte
             End Get
@@ -763,7 +763,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Returns the EnvDTE.Project object associated with the objects passed to SetObjects.  If there is none, returns Nothing.
         ''' </summary>
         <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
-        Public ReadOnly Property DTEProject() As EnvDTE.Project
+        Public ReadOnly Property DTEProject As EnvDTE.Project
             Get
                 Return _dteProject
             End Get
@@ -775,7 +775,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   project type.  Otherwise, use CommonPropertiesObject.
         ''' </summary>
         <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
-        Public ReadOnly Property ProjectProperties() As VSLangProj.ProjectProperties
+        Public ReadOnly Property ProjectProperties As VSLangProj.ProjectProperties
             Get
                 Return _projectPropertiesObject
             End Get
@@ -866,7 +866,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' If true, the project has been reloaded between a call to EnterProjectCheckoutSection and 
         '''   LeaveProjectCheckoutSection.  See EnterProjectCheckoutSection() for more information.
         ''' </summary>
-        Public ReadOnly Property ProjectReloadedDuringCheckout() As Boolean
+        Public ReadOnly Property ProjectReloadedDuringCheckout As Boolean
             Get
                 Return _projectReloadedDuringCheckout
             End Get
@@ -877,7 +877,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' If true, a call to EnterProjectCheckoutSection has been made, and the matching LeaveProjectCheckoutSection
         '''   call has not yet been made.
         ''' </summary>
-        Protected ReadOnly Property IsInProjectCheckoutSection() As Boolean
+        Protected ReadOnly Property IsInProjectCheckoutSection As Boolean
             Get
                 Return _checkoutSectionCount > 0
             End Get
@@ -1408,7 +1408,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   PropertyControlData.  No need to call the base's default version.
         ''' </remarks>
         <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
-        Protected Overridable ReadOnly Property ControlData() As PropertyControlData()
+        Protected Overridable ReadOnly Property ControlData As PropertyControlData()
             Get
                 Return Array.Empty(Of PropertyControlData)
             End Get
@@ -2734,11 +2734,11 @@ NextControl:
             Return False
         End Function
 
-        Protected Property CanApplyNow() As Boolean
+        Protected Property CanApplyNow As Boolean
             Get
                 Return _canApplyNow
             End Get
-            Set(Value As Boolean)
+            Set
                 _canApplyNow = Value
             End Set
         End Property
@@ -2747,11 +2747,11 @@ NextControl:
         ''' Indicates whether this property page is dirty or not.
         ''' </summary>
         <Browsable(False)>
-        Public Property IsDirty() As Boolean
+        Public Property IsDirty As Boolean
             Get
                 Return m_IsDirty
             End Get
-            Set(Value As Boolean)
+            Set
                 If m_fInsideInit Then
                     Return
                 End If
@@ -2823,7 +2823,7 @@ NextControl:
         End Sub
         <Browsable(False),
         DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
-        Protected ReadOnly Property VsUIShellService() As IVsUIShell
+        Protected ReadOnly Property VsUIShellService As IVsUIShell
             Get
                 If (_uiShellService Is Nothing) Then
                     _uiShellService = CType(ServiceProvider.GetService(GetType(IVsUIShell)), IVsUIShell)
@@ -2833,7 +2833,7 @@ NextControl:
         End Property
         <Browsable(False),
         DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
-        Protected ReadOnly Property VsUIShell2Service() As IVsUIShell2
+        Protected ReadOnly Property VsUIShell2Service As IVsUIShell2
             Get
                 If (_uiShell2Service Is Nothing) Then
                     Dim VsUiShell As IVsUIShell = Nothing
@@ -2849,7 +2849,7 @@ NextControl:
                 Return _uiShell2Service
             End Get
         End Property
-        Protected ReadOnly Property VsUIShell5Service() As IVsUIShell5
+        Protected ReadOnly Property VsUIShell5Service As IVsUIShell5
             Get
                 If (_uiShell5Service Is Nothing) Then
                     Dim VsUiShell As IVsUIShell = Nothing
@@ -3243,7 +3243,7 @@ NextControl:
             End If
         End Function
 
-        Protected ReadOnly Property IsUndoEnabled() As Boolean
+        Protected ReadOnly Property IsUndoEnabled As Boolean
             Get
                 Return (_propPageUndoSite IsNot Nothing)
             End Get
@@ -3259,7 +3259,7 @@ NextControl:
         ''' <remarks>
         ''' Don't cache this as it can change with a SetObjects call.
         ''' </remarks>
-        Protected ReadOnly Property ProjectKind() As String
+        Protected ReadOnly Property ProjectKind As String
             Get
                 Debug.Assert(_dteProject IsNot Nothing, "Can't get ProjectKind because DTEProject not available")
                 If _dteProject IsNot Nothing Then
@@ -3274,7 +3274,7 @@ NextControl:
         ''' If there is a DTEProject associated with the objects passed in to SetObjects, returns the language of project
         '''   that it is (a GUID as a string).  Otherwise, returns empty string.
         ''' </summary>
-        Protected ReadOnly Property ProjectLanguage() As String
+        Protected ReadOnly Property ProjectLanguage As String
             Get
                 Debug.Assert(_dteProject IsNot Nothing, "Can't get ProjectLanguage because DTEProject not available")
                 If _dteProject IsNot Nothing Then
@@ -3572,7 +3572,7 @@ NextControl:
         ''' <summary>
         ''' Pick font to use in this dialog page
         ''' </summary>
-        Protected ReadOnly Property GetDialogFont() As Font
+        Protected ReadOnly Property GetDialogFont As Font
             Get
                 If ServiceProvider IsNot Nothing Then
                     Dim uiSvc As IUIService = CType(ServiceProvider.GetService(GetType(IUIService)), IUIService)
@@ -3857,7 +3857,7 @@ NextControl:
         ''' <summary>
         ''' Determines whether the entire property page should be disabled while building.  Override to change default behavior.
         ''' </summary>
-        Protected Overridable ReadOnly Property DisableOnBuild() As Boolean
+        Protected Overridable ReadOnly Property DisableOnBuild As Boolean
             Get
                 Return True
             End Get
@@ -3866,7 +3866,7 @@ NextControl:
         ''' <summary>
         ''' Determines whether the entire property page should be disabled while in debugging mode.  Override to change default behavior.
         ''' </summary>
-        Protected Overridable ReadOnly Property DisableOnDebug() As Boolean
+        Protected Overridable ReadOnly Property DisableOnDebug As Boolean
             Get
                 Return True
             End Get

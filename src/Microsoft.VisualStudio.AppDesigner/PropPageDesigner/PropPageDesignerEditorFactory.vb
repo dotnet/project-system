@@ -29,14 +29,14 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         Private Shared ReadOnly s_commandUIGuid As New Guid("{86670efa-3c28-4115-8776-a4d5bb1f27cc}")
 
         'Exposing the GUID for the rest of the assembly to see
-        Public Shared ReadOnly Property EditorGuid() As Guid
+        Public Shared ReadOnly Property EditorGuid As Guid
             Get
                 Return s_editorGuid
             End Get
         End Property
 
         'Exposing the GUID for the rest of the assembly to see
-        Public Shared ReadOnly Property CommandUIGuid() As Guid
+        Public Shared ReadOnly Property CommandUIGuid As Guid
             Get
                 Return s_commandUIGuid
             End Get

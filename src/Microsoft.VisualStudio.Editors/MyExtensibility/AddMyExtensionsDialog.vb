@@ -65,7 +65,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' The selected extension templates to add to the project.
         ''' </summary>
-        Public ReadOnly Property ExtensionTemplatesToAdd() As List(Of MyExtensionTemplate)
+        Public ReadOnly Property ExtensionTemplatesToAdd As List(Of MyExtensionTemplate)
             Get
                 Return _extensionTemplatesToAdd
             End Get

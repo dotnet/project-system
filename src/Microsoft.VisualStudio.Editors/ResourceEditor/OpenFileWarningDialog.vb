@@ -47,7 +47,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' returns whether we need pop up a warning dialog for this extension again
         ''' </summary>
-        Public ReadOnly Property AlwaysCheckForThisExtension() As Boolean
+        Public ReadOnly Property AlwaysCheckForThisExtension As Boolean
             Get
                 Return alwaysCheckCheckBox.Checked
             End Get
@@ -79,7 +79,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         'NOTE: The following procedure is required by the Windows Form Designer
         'It can be modified using the Windows Form Designer.  
         'Do not modify it using the code editor.
-        <DebuggerStepThrough()>
+        <DebuggerStepThrough>
         Private Sub InitializeComponent()
             Dim resources As ComponentModel.ComponentResourceManager = New ComponentModel.ComponentResourceManager(GetType(OpenFileWarningDialog))
             dialogLayoutPanel = New Windows.Forms.TableLayoutPanel

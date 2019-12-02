@@ -57,7 +57,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   instances that no longer exist, or of re-applying old property values to
         '''   an existing Resource instance.
         ''' </summary>
-        <Serializable()>
+        <Serializable>
         Private NotInheritable Class ResourceSerializationStore
             Inherits Design.Serialization.SerializationStore
             Implements ISerializable
@@ -79,7 +79,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             ' default impl of abstract base member.  see serialization store for details.
             '	
-            Public Overrides ReadOnly Property Errors() As ICollection
+            Public Overrides ReadOnly Property Errors As ICollection
                 Get
                     Return Array.Empty(Of Object)
                 End Get
@@ -446,7 +446,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 ''' <summary>
                 ''' The Resource from which we want to serialize stuff.
                 ''' </summary>
-                Public ReadOnly Property Resource() As Resource
+                Public ReadOnly Property Resource As Resource
                     Get
                         Return _resource
                     End Get
@@ -457,11 +457,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 ''' If True, the entire Resource instance should be serialized.  If false,
                 '''   then only the properties in PropertiesToSerialize should be serialized.
                 ''' </summary>
-                Public Property EntireObject() As Boolean
+                Public Property EntireObject As Boolean
                     Get
                         Return _entireObject
                     End Get
-                    Set(Value As Boolean)
+                    Set
                         If Value AndAlso _propertiesToSerialize IsNot Nothing Then
                             _propertiesToSerialize.Clear()
                         End If
@@ -474,7 +474,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 ''' A list of PropertyDescriptors representing the properties on
                 '''   the Resource which should be serialized.
                 ''' </summary>
-                Public ReadOnly Property PropertiesToSerialize() As IList
+                Public ReadOnly Property PropertiesToSerialize As IList
                     Get
                         If _propertiesToSerialize Is Nothing Then
                             _propertiesToSerialize = New ArrayList
@@ -510,7 +510,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <summary>
             ''' Stores a single binary serialized Resource instance or Resource property value
             ''' </summary>
-            <Serializable()>
+            <Serializable>
             Private NotInheritable Class SerializedResourceOrProperty
 
                 'The name of the resource from which this was serialized.
@@ -572,7 +572,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 ''' <summary>
                 ''' Gets the name of the resource from which this was serialized.
                 ''' </summary>
-                Public ReadOnly Property ResourceName() As String
+                Public ReadOnly Property ResourceName As String
                     Get
                         Return _resourceName
                     End Get
@@ -583,7 +583,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 ''' Gets the name of the property which was serialized (or Nothing if
                 '''   not a property serialization).
                 ''' </summary>
-                Public ReadOnly Property PropertyName() As String
+                Public ReadOnly Property PropertyName As String
                     Get
                         Return _propertyName
                     End Get
@@ -594,7 +594,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 ''' The name of the value type for this resource (needed to create a
                 '''   new resource if necessary)
                 ''' </summary>
-                Public ReadOnly Property ResourceValueTypeName() As String
+                Public ReadOnly Property ResourceValueTypeName As String
                     Get
                         Return _resourceValueTypeName
                     End Get
@@ -605,7 +605,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 ''' Returns True iff an entire Resource object has been serialized, as opposed
                 '''   to just a property from it.
                 ''' </summary>
-                Public ReadOnly Property IsEntireResourceObject() As Boolean
+                Public ReadOnly Property IsEntireResourceObject As Boolean
                     Get
                         Return (PropertyName = "")
                     End Get

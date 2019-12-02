@@ -37,7 +37,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         End Function
 
         <Browsable(False)>
-        Public ReadOnly Property Count() As Integer
+        Public ReadOnly Property Count As Integer
             Get
                 Return _settings.Count
             End Get
@@ -48,11 +48,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Is the UseMySettingsClassName flag set in the underlying .settings file?
         ''' If so, we may want to special-case the class name...
         ''' </summary>
-        Friend Property UseSpecialClassName() As Boolean
+        Friend Property UseSpecialClassName As Boolean
             Get
                 Return _useSpecialClassName
             End Get
-            Set(value As Boolean)
+            Set
                 _useSpecialClassName = value
             End Set
         End Property
@@ -61,18 +61,18 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' The namespace as persisted in the .settings file
         ''' </summary>
         ''' <remarks>May return NULL if no namespace was persisted!!!</remarks>
-        Friend Property PersistedNamespace() As String
+        Friend Property PersistedNamespace As String
             Get
                 Return _persistedNamespace
             End Get
-            Set(value As String)
+            Set
                 _persistedNamespace = value
             End Set
         End Property
 
 #Region "Valid/unique name handling"
 
-        Private ReadOnly Property CodeProvider() As CodeDom.Compiler.CodeDomProvider
+        Private ReadOnly Property CodeProvider As CodeDom.Compiler.CodeDomProvider
             Get
                 Dim codeProviderInstance As CodeDom.Compiler.CodeDomProvider = Nothing
 

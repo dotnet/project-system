@@ -14,12 +14,12 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
     '--------------------------------------------------------------------------
     <Guid("94B71D3D-628F-4036-BF89-7FE1508E78AE")>
     <InterfaceType(ComInterfaceType.InterfaceIsIUnknown)>
-    <ComImport()>
+    <ComImport>
     Friend Interface IXmlIntellisenseService
 
         <MethodImpl(MethodImplOptions.InternalCall)>
         Function CreateSchemas(
-            <[In]()> ProjectGuid As Guid
+            <[In]> ProjectGuid As Guid
             ) _
             As IXmlIntellisenseSchemas
 
@@ -33,26 +33,26 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
     '--------------------------------------------------------------------------
     <Guid("1E9E02D2-0532-4BD2-8114-A24262CC9770")>
     <InterfaceType(ComInterfaceType.InterfaceIsIUnknown)>
-    <ComImport()>
+    <ComImport>
     Friend Interface IXmlIntellisenseSchemas
 
         <MethodImpl(MethodImplOptions.InternalCall)>
         Sub AsyncCompile()
 
-        ReadOnly Property CompiledEvent() As IntPtr
+        ReadOnly Property CompiledEvent As IntPtr
 
-        ReadOnly Property TargetNamespaces() As String()
+        ReadOnly Property TargetNamespaces As String()
 
-        ReadOnly Property MemberList() As IXmlIntellisenseMemberList
+        ReadOnly Property MemberList As IXmlIntellisenseMemberList
 
-        ReadOnly Property FirstErrorSource() As String
+        ReadOnly Property FirstErrorSource As String
 
-        ReadOnly Property IsEmpty() As <MarshalAs(UnmanagedType.Bool)> Boolean
+        ReadOnly Property IsEmpty As <MarshalAs(UnmanagedType.Bool)> Boolean
 
         <MethodImpl(MethodImplOptions.InternalCall)>
         Sub ShowInXmlSchemaExplorer(
-            <[In](), MarshalAs(UnmanagedType.BStr)> NamespaceName As String,
-            <[In](), MarshalAs(UnmanagedType.BStr)> LocalName As String,
+            <[In], MarshalAs(UnmanagedType.BStr)> NamespaceName As String,
+            <[In], MarshalAs(UnmanagedType.BStr)> LocalName As String,
             <MarshalAs(UnmanagedType.Bool)> ByRef ElementFound As Boolean,
             <MarshalAs(UnmanagedType.Bool)> ByRef NamespaceFound As Boolean)
 
@@ -66,7 +66,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
     '--------------------------------------------------------------------------
     <Guid("E90363FC-4246-4df8-869E-7BA42D29F526")>
     <InterfaceType(ComInterfaceType.InterfaceIsIUnknown)>
-    <ComImport()>
+    <ComImport>
     Friend Interface IXmlIntellisenseMemberList
 
         <MethodImpl(MethodImplOptions.InternalCall)>
@@ -83,41 +83,41 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
 
         <MethodImpl(MethodImplOptions.InternalCall)>
         Function ElementsByNamespace(
-            <[In](), MarshalAs(UnmanagedType.BStr)> NamespaceName As String
+            <[In], MarshalAs(UnmanagedType.BStr)> NamespaceName As String
             ) As IXmlIntellisenseMemberList
 
         <MethodImpl(MethodImplOptions.InternalCall)>
         Function ElementsByName(
-            <[In](), MarshalAs(UnmanagedType.BStr)> NamespaceName As String,
-            <[In](), MarshalAs(UnmanagedType.BStr)> LocalName As String
+            <[In], MarshalAs(UnmanagedType.BStr)> NamespaceName As String,
+            <[In], MarshalAs(UnmanagedType.BStr)> LocalName As String
             ) As IXmlIntellisenseMemberList
 
         <MethodImpl(MethodImplOptions.InternalCall)>
         Function AttributesByNamespace(
-            <[In](), MarshalAs(UnmanagedType.BStr)> NamespaceName As String
+            <[In], MarshalAs(UnmanagedType.BStr)> NamespaceName As String
             ) As IXmlIntellisenseMemberList
 
         <MethodImpl(MethodImplOptions.InternalCall)>
         Function AttributesByName(
-            <[In](), MarshalAs(UnmanagedType.BStr)> NamespaceName As String,
-            <[In](), MarshalAs(UnmanagedType.BStr)> LocalName As String
+            <[In], MarshalAs(UnmanagedType.BStr)> NamespaceName As String,
+            <[In], MarshalAs(UnmanagedType.BStr)> LocalName As String
             ) As IXmlIntellisenseMemberList
 
         <MethodImpl(MethodImplOptions.InternalCall)>
         Function DescendantsByNamespace(
-            <[In](), MarshalAs(UnmanagedType.BStr)> NamespaceName As String
+            <[In], MarshalAs(UnmanagedType.BStr)> NamespaceName As String
             ) As IXmlIntellisenseMemberList
 
         <MethodImpl(MethodImplOptions.InternalCall)>
         Function DescendantsByName(
-            <[In](), MarshalAs(UnmanagedType.BStr)> NamespaceName As String,
-            <[In](), MarshalAs(UnmanagedType.BStr)> LocalName As String
+            <[In], MarshalAs(UnmanagedType.BStr)> NamespaceName As String,
+            <[In], MarshalAs(UnmanagedType.BStr)> LocalName As String
             ) As IXmlIntellisenseMemberList
 
         <MethodImpl(MethodImplOptions.InternalCall)>
         Function GetEnumerator() As IXmlIntellisenseMemberEnumerator
 
-        ReadOnly Property MatchesNamedType() As Boolean
+        ReadOnly Property MatchesNamedType As Boolean
 
     End Interface
 
@@ -128,7 +128,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
     '--------------------------------------------------------------------------
     <Guid("C5E8D87C-674B-4966-9245-AA32914B05F7")>
     <InterfaceType(ComInterfaceType.InterfaceIsIUnknown)>
-    <ComImport()>
+    <ComImport>
     Friend Interface IXmlIntellisenseMemberEnumerator
 
         <MethodImpl(MethodImplOptions.InternalCall)>
@@ -143,14 +143,14 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
     '--------------------------------------------------------------------------
     <Guid("AB892676-9227-4c8e-AD84-DE887646D416")>
     <InterfaceType(ComInterfaceType.InterfaceIsIUnknown)>
-    <ComImport()>
+    <ComImport>
     Friend Interface IXmlIntellisenseMember
 
-        ReadOnly Property IsElement() As Boolean
+        ReadOnly Property IsElement As Boolean
 
-        ReadOnly Property NamespaceName() As String
+        ReadOnly Property NamespaceName As String
 
-        ReadOnly Property LocalName() As String
+        ReadOnly Property LocalName As String
 
     End Interface
 

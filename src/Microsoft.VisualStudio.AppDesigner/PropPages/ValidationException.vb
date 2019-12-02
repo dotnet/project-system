@@ -20,7 +20,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             _control = control
         End Sub
 
-        Public ReadOnly Property Result() As ValidationResult
+        Public ReadOnly Property Result As ValidationResult
             Get
                 Return _validationResult
             End Get

@@ -253,7 +253,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             End If
         End Sub
 
-        Public ReadOnly Property WindowFrame() As IVsWindowFrame
+        Public ReadOnly Property WindowFrame As IVsWindowFrame
             Get
                 Return CType(GetService(GetType(IVsWindowFrame)), IVsWindowFrame)
             End Get
@@ -262,13 +262,13 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Retrieves the DTE project object associated with this project designer instance.
         ''' </summary>
-        Public ReadOnly Property DTEProject() As Project
+        Public ReadOnly Property DTEProject As Project
             Get
                 Return _dteProject
             End Get
         End Property
 
-        Public ReadOnly Property SpecialFiles() As IVsProjectSpecialFiles
+        Public ReadOnly Property SpecialFiles As IVsProjectSpecialFiles
             Get
                 Return _specialFiles
             End Get
@@ -278,7 +278,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Instance of the loaded IVBPackage
         ''' </summary>
         ''' <remarks>Used to persist user data</remarks>
-        Private ReadOnly Property Package() As IVBPackage
+        Private ReadOnly Property Package As IVBPackage
             Get
                 If _editorsPackage Is Nothing Then
                     Dim shell As IVsShell = DirectCast(GetService(GetType(IVsShell)), IVsShell)
@@ -297,7 +297,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Get/set the last viewed tab of for this application page...
         ''' </summary>
-        Private Property LastShownTab() As Integer
+        Private Property LastShownTab As Integer
             Get
                 Dim editorsPackage As IVBPackage = Package
                 If editorsPackage IsNot Nothing Then
@@ -308,7 +308,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 End If
                 Return 0
             End Get
-            Set(value As Integer)
+            Set
                 Dim editorsPackage As IVBPackage = Package
                 If editorsPackage IsNot Nothing Then
                     editorsPackage.SetLastShownApplicationDesignerTab(_projectHierarchy, value)
@@ -564,7 +564,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         End Function
 
         Private _vsCfgProvider As IVsCfgProvider2
-        Private ReadOnly Property VsCfgProvider() As IVsCfgProvider2
+        Private ReadOnly Property VsCfgProvider As IVsCfgProvider2
             Get
                 If _vsCfgProvider Is Nothing Then
                     Dim Value As Object = Nothing
@@ -586,7 +586,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         End Function
 
 
-        Public Property ActiveView() As Guid
+        Public Property ActiveView As Guid
             Get
                 If _activePanelIndex < 0 OrElse _activePanelIndex >= _designerPanels.Length OrElse _designerPanels(_activePanelIndex) Is Nothing Then
                     Return Guid.Empty
@@ -597,7 +597,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 Return Panel.ActualGuid
             End Get
 
-            Set(Value As Guid)
+            Set
                 Common.Switches.TracePDFocus(TraceLevel.Info, "ApplicationDesignerView: set_ActiveView")
                 'Find the guid and switch to that tab
                 'Keep the current tab if guid not found
@@ -1328,7 +1328,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''   by ApplicationDesignerPanel to delay any window frame activations until after
         '''   initialization.
         ''' </summary>
-        Public ReadOnly Property InitializationComplete() As Boolean
+        Public ReadOnly Property InitializationComplete As Boolean
             Get
                 Return _initializationComplete
             End Get

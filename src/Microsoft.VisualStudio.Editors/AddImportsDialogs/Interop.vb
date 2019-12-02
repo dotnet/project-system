@@ -6,7 +6,7 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
 
     <Guid("544D52A6-04C6-4771-863D-EFB1542C8025")>
     <InterfaceType(ComInterfaceType.InterfaceIsIUnknown)>
-    <ComImport()>
+    <ComImport>
     Friend Interface IVBAddImportsDialogHelpCallback
         Sub InvokeHelp()
     End Interface
@@ -24,7 +24,7 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
 
     <Guid("71CC3B66-3E89-45eb-BDDA-D6A5599F4C20")>
     <InterfaceType(ComInterfaceType.InterfaceIsIUnknown)>
-    <ComImport()>
+    <ComImport>
     Friend Interface IVBAddImportsDialogService
         Function ShowDialog _
         (

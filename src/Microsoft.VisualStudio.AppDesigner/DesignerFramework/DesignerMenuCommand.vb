@@ -36,7 +36,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         '   m_AlwaysCheckStatus and m_StatusValid flag.
         '**************************************************************************
         <SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")>
-        Public Overrides ReadOnly Property OleStatus() As Integer
+        Public Overrides ReadOnly Property OleStatus As Integer
             Get
                 If _alwaysCheckStatus OrElse Not _statusValid Then
                     UpdateStatus()

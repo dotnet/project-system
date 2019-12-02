@@ -35,7 +35,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks>
         '''   If true, the GetImageForThumbnail property must return a same image object. We won't keep duplicated items in the cache to improve the performance of the designer.
         ''' </remarks>
-        Public Overrides ReadOnly Property IsImageForThumbnailShared() As Boolean
+        Public Overrides ReadOnly Property IsImageForThumbnailShared As Boolean
             Get
                 Return True
             End Get
