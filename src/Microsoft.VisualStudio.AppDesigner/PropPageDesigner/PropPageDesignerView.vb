@@ -576,8 +576,9 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 'Property page failed to load - just give empty page
             Else
                 'Set the Undo site before activation
-                If TypeOf PropPage Is IVsProjectDesignerPage Then
-                    CType(PropPage, IVsProjectDesignerPage).SetSite(Me)
+                Dim vsProjectDesignerPage = TryCast(PropPage, IVsProjectDesignerPage)
+                If vsProjectDesignerPage IsNot Nothing Then
+                    vsProjectDesignerPage.SetSite(Me)
                 End If
 
                 'Activate the page

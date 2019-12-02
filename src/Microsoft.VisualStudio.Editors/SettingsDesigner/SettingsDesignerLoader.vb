@@ -314,10 +314,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         Private Sub ComponentAddedHandler(sender As Object, e As ComponentEventArgs)
-            If TypeOf e.Component Is DesignTimeSettingInstance Then
+            Dim designTimeSettingInstance = TryCast(e.Component, DesignTimeSettingInstance)
+            If designTimeSettingInstance IsNot Nothing Then
                 ' Let's make sure our root component knows about this guy!
                 Debug.Assert(RootComponent IsNot Nothing, "No root component when adding design time setting instances")
-                RootComponent.Add(DirectCast(e.Component, DesignTimeSettingInstance))
+                RootComponent.Add(designTimeSettingInstance)
             End If
         End Sub
 
@@ -441,10 +442,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Return
             End If
 
-            If TypeOf e.Component Is DesignTimeSettingInstance Then
+            Dim designTimeSettingInstance = TryCast(e.Component, DesignTimeSettingInstance)
+            If designTimeSettingInstance IsNot Nothing Then
                 If RootComponent IsNot Nothing Then
                     ' Let's make sure our root component knows about this guy!
-                    RootComponent.Remove(DirectCast(e.Component, DesignTimeSettingInstance))
+                    RootComponent.Remove(designTimeSettingInstance)
 
                     ' We need to make sure that we run the custom tool whenever we remove a setting - if we don't 
                     ' we may run into problems later if we try to rename the setting to a setting that we

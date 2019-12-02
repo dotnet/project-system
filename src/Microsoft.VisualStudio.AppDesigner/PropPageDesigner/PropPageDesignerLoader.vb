@@ -111,8 +111,9 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         Protected Overloads Sub Dispose(disposing As Boolean)
             If disposing Then
                 ' Dispose of managed resources.
-                If TypeOf _punkDocData Is PropPageDesignerDocData Then
-                    DirectCast(_punkDocData, PropPageDesignerDocData).Dispose()
+                Dim docData = TryCast(_punkDocData, PropPageDesignerDocData)
+                If docData IsNot Nothing Then
+                    docData.Dispose()
                 End If
                 'Remove our ComponentSerializationService
                 LoaderHost.RemoveService(GetType(ComponentSerializationService))

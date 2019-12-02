@@ -457,8 +457,9 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                             Dim RootNSObject As Object = Nothing
 
                             VsHierarchy.GetProperty(VsItemId, CInt(__VSHPROPID.VSHPROPID_DefaultNamespace), RootNSObject)
-                            If TypeOf RootNSObject Is String Then
-                                Return DirectCast(RootNSObject, String)
+                            Dim nsObject = TryCast(RootNSObject, String)
+                            If nsObject IsNot Nothing Then
+                                Return nsObject
                             End If
                         End If
                     End If

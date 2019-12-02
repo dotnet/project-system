@@ -284,9 +284,10 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     Key = Win32.Registry.CurrentUser.OpenSubKey(KeyPath)
                     If Key IsNot Nothing Then
                         Dim ValueObject As Object = Key.GetValue(CachedTitleValueName)
-                        If TypeOf ValueObject Is String Then
+                        Dim ValueString = TryCast(ValueObject, String)
+                        If ValueString IsNot Nothing Then
                             'Found a cached version
-                            Return DirectCast(ValueObject, String)
+                            Return ValueString
                         End If
                     End If
                 Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(CachedTitle), NameOf(PropertyPageInfo))

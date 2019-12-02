@@ -3445,8 +3445,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 'And those are the semantics that we want...
                 VSErrorHandler.ThrowOnFailure(OpenDocumentService.OpenDocumentViaProject(ResourceFullPathTolerant, OpenLogView, ServiceProvider, Hierarchy, ItemId, WindowFrame))
             Catch ex As Exception When ReportWithoutCrash(ex, NameOf(EditOrOpenWith), NameOf(ResourceEditorView))
-                If TypeOf ex Is COMException Then
-                    If CType(ex, COMException).ErrorCode = Win32Constant.OLE_E_PROMPTSAVECANCELLED Then
+                Dim comException = TryCast(ex, COMException)
+                If comException IsNot Nothing Then
+                    If comException.ErrorCode = Win32Constant.OLE_E_PROMPTSAVECANCELLED Then
                         'We get this error when the user cancels the Open With dialog.  Obviously, we ignore this error and cancel.
                         Exit Sub
                     End If
@@ -5225,8 +5226,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Hierarchy.GetProperty(ItemId, __VSHPROPID.VSHPROPID_DefaultNamespace, objDefaultNamespace)
 
             Dim DefaultNamespace As String = String.Empty
-            If TypeOf objDefaultNamespace Is String Then
-                DefaultNamespace = DirectCast(objDefaultNamespace, String)
+            Dim ns = TryCast(objDefaultNamespace, String)
+            If ns IsNot Nothing Then
+                DefaultNamespace = ns
                 DefaultNamespace = DesignUtil.GenerateValidLanguageIndependentNamespace(DefaultNamespace)
             End If
 

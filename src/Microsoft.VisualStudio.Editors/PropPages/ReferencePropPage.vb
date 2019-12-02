@@ -1006,11 +1006,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Private Sub referenceToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles referenceToolStripMenuItem.Click, addSplitButton.Click
-            Dim UIHier As IVsUIHierarchy
-            If TypeOf ProjectHierarchy Is IVsUIHierarchy Then
+            Dim UIHier = TryCast(ProjectHierarchy, IVsUIHierarchy)
+            If UIHier IsNot Nothing Then
                 Try
-                    UIHier = CType(ProjectHierarchy, IVsUIHierarchy)
-
                     Const ECMD_ADDREFERENCE As Integer = 1113
 
                     Dim CmdCount As UInteger = 1

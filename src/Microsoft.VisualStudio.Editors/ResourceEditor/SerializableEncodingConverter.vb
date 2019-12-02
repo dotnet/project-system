@@ -38,9 +38,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Converts the specified value object to a SerializableEncoding object.
         ''' </summary>
         Public Overrides Function ConvertFrom(Context As ITypeDescriptorContext, Culture As CultureInfo, Value As Object) As Object
-            If TypeOf Value Is String Then
-                Dim EncodingName As String = DirectCast(Value, String)
-
+            Dim EncodingName = TryCast(Value, String)
+            If EncodingName IsNot Nothing Then
                 'Try empty (indicates an Encoding of Nothing [default] - won't be written to the resx)
                 If EncodingName = "" Then
                     Return New SerializableEncoding(Nothing)

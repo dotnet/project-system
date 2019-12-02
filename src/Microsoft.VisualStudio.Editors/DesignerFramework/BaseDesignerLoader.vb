@@ -461,9 +461,10 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ' If a random editor opens the file and locks it using an incompatible buffer, we need 
             ' to detect this.
             '
-            If TypeOf punkDocData Is IVsTextBufferProvider Then
+            Dim vsTextBufferProvider = TryCast(punkDocData, IVsTextBufferProvider)
+            If vsTextBufferProvider IsNot Nothing Then
                 Dim VsTextLines As IVsTextLines = Nothing
-                VSErrorHandler.ThrowOnFailure(CType(punkDocData, IVsTextBufferProvider).GetTextBuffer(VsTextLines))
+                VSErrorHandler.ThrowOnFailure(vsTextBufferProvider.GetTextBuffer(VsTextLines))
                 punkDocData = VsTextLines
             End If
 
@@ -478,10 +479,11 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 'Nope, this doc data is not in a format that we understand.  Throw an 
                 '  intelligent error message (need to get the filename for the message)
                 Dim FileName As String = String.Empty
-                If TypeOf punkDocData Is IVsUserData Then
+                Dim vsUserData = TryCast(punkDocData, IVsUserData)
+                If vsUserData IsNot Nothing Then
                     Dim Guid As Guid = GetType(IVsUserData).GUID
                     Dim vt As Object = Nothing
-                    VSErrorHandler.ThrowOnFailure(CType(punkDocData, IVsUserData).GetData(Guid, vt))
+                    VSErrorHandler.ThrowOnFailure(vsUserData.GetData(Guid, vt))
                     If TypeOf vt Is String Then
                         FileName = CStr(vt)
                         FileName = Path.GetFileName(FileName)

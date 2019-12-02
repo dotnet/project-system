@@ -62,8 +62,8 @@ Namespace Microsoft.VisualStudio.Editors.Common
         '''  Get String Value of one column
         ''' </summary>
         Private Shared Function GetColumnValue(obj As Object, column As Integer) As String
-            If TypeOf obj Is ListViewItem Then
-                Dim listItem As ListViewItem = CType(obj, ListViewItem)
+            Dim listItem = TryCast(obj, ListViewItem)
+            If listItem IsNot Nothing Then
                 Return listItem.SubItems.Item(column).Text
             End If
 

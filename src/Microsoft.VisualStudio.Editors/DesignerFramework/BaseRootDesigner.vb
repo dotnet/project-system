@@ -142,8 +142,9 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Friend Sub RefreshMenuStatus()
             For Each MenuItem As MenuCommand In MenuCommands
                 Debug.Assert(MenuItem IsNot Nothing, "MenuItem IsNot Nothing!")
-                If TypeOf MenuItem Is DesignerMenuCommand Then
-                    CType(MenuItem, DesignerMenuCommand).RefreshStatus()
+                Dim designerMenuCommand = TryCast(MenuItem, DesignerMenuCommand)
+                If designerMenuCommand IsNot Nothing Then
+                    designerMenuCommand.RefreshStatus()
                 End If
             Next
         End Sub

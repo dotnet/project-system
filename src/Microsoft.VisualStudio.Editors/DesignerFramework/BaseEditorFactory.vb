@@ -342,8 +342,9 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
                     'Site the TextStream
                     If ExistingDocData Is Nothing Then
-                        If TypeOf NewDocData Is IObjectWithSite Then
-                            CType(NewDocData, IObjectWithSite).SetSite(_site)
+                        Dim objectWithSite = TryCast(NewDocData, IObjectWithSite)
+                        If objectWithSite IsNot Nothing Then
+                            objectWithSite.SetSite(_site)
                         End If
                     End If
 
@@ -484,8 +485,9 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 _serviceProvider = Nothing
             End If
             _site = Site
-            If TypeOf Site Is IServiceProvider Then
-                _serviceProvider = New Shell.ServiceProvider(CType(Site, IServiceProvider))
+            Dim serviceProvider = TryCast(Site, IServiceProvider)
+            If serviceProvider IsNot Nothing Then
+                _serviceProvider = New Shell.ServiceProvider(serviceProvider)
             End If
 
             OnSited()

@@ -322,10 +322,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 If WindowFrame IsNot Nothing Then
                     Dim punkDocData As Object = __VSFPROPID.VSFPROPID_DocData
                     If punkDocData IsNot Nothing Then
-                        If TypeOf punkDocData Is IVsUserData Then
+                        Dim vsUserData = TryCast(punkDocData, IVsUserData)
+                        If vsUserData IsNot Nothing Then
                             Dim Guid As Guid = GetType(IVsUserData).GUID
                             Dim vt As Object = Nothing
-                            VSErrorHandler.ThrowOnFailure(CType(punkDocData, IVsUserData).GetData(Guid, vt))
+                            VSErrorHandler.ThrowOnFailure(vsUserData.GetData(Guid, vt))
                             If TypeOf vt Is String Then
                                 Return IO.Path.GetFileName(CStr(vt))
                             End If

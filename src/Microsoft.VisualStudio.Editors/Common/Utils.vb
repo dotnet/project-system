@@ -1183,8 +1183,9 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 If ItemId = VSConstants.VSITEMID_ROOT Then
                     ' Support VSITEMID_ROOT, get the default namespace of the project
                     VSErrorHandler.ThrowOnFailure(Hierarchy.GetProperty(ItemId, __VSHPROPID.VSHPROPID_DefaultNamespace, objDefaultNamespace))
-                    If TypeOf objDefaultNamespace Is String Then
-                        DefaultNamespace = DesignerFramework.DesignUtil.GenerateValidLanguageIndependentNamespace(DirectCast(objDefaultNamespace, String))
+                    Dim value = TryCast(objDefaultNamespace, String)
+                    If value IsNot Nothing Then
+                        DefaultNamespace = DesignerFramework.DesignUtil.GenerateValidLanguageIndependentNamespace(value)
                     End If
                 Else
                     Dim item As EnvDTE.ProjectItem = DTEUtils.ProjectItemFromItemId(Hierarchy, ItemId)
@@ -1203,8 +1204,9 @@ Namespace Microsoft.VisualStudio.Editors.Common
                             CustomToolNamespace = DesignerFramework.DesignUtil.GenerateValidLanguageIndependentNamespace(CStr(prop.Value))
                         Else
                             VSErrorHandler.ThrowOnFailure(Hierarchy.GetProperty(ItemId, __VSHPROPID.VSHPROPID_DefaultNamespace, objDefaultNamespace))
-                            If TypeOf objDefaultNamespace Is String Then
-                                DefaultNamespace = DesignerFramework.DesignUtil.GenerateValidLanguageIndependentNamespace(DirectCast(objDefaultNamespace, String))
+                            Dim value = TryCast(objDefaultNamespace, String)
+                            If value IsNot Nothing Then
+                                DefaultNamespace = DesignerFramework.DesignUtil.GenerateValidLanguageIndependentNamespace(value)
                             End If
                         End If
                     End If

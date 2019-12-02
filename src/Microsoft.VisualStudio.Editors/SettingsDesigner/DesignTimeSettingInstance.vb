@@ -675,11 +675,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Function
 
             Public Overrides Function ConvertFrom(context As ITypeDescriptorContext, culture As Globalization.CultureInfo, value As Object) As Object
-                If TypeOf value Is String Then
-                    If String.Equals(DirectCast(value, String), My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ComboBoxItem_ApplicationScope, StringComparison.Ordinal) Then
+                Dim stringValue = TryCast(value, String)
+                If stringValue IsNot Nothing Then
+                    If String.Equals(stringValue, My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ComboBoxItem_ApplicationScope, StringComparison.Ordinal) Then
                         Return SettingScope.Application
                     End If
-                    If String.Equals(DirectCast(value, String), My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ComboBoxItem_UserScope, StringComparison.Ordinal) Then
+                    If String.Equals(stringValue, My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ComboBoxItem_UserScope, StringComparison.Ordinal) Then
                         Return SettingScope.User
                     End If
                 End If

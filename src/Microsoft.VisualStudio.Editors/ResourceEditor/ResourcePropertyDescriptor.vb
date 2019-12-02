@@ -139,8 +139,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Debug.Assert(Component IsNot Nothing, "ResourcePropertyDescriptor.SetValue: Component is Nothing")
             If Component IsNot Nothing Then
                 Debug.Assert(TypeOf Component Is Resource, "ResourcePropertyDescriptor.SetValue: Component is not a Resource")
-                If TypeOf Component Is Resource Then
-                    Dim Resource As Resource = DirectCast(Component, Resource)
+                Dim Resource = TryCast(Component, Resource)
+                If Resource IsNot Nothing Then
                     Dim Site As ISite = GetSite(Resource)
                     Dim ChangeService As IComponentChangeService = Nothing
                     Dim oldValue As Object = Nothing
@@ -222,8 +222,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Debug.Assert(Component IsNot Nothing, "ResourcePropertyDescriptor.ResetValue: Component is Nothing")
             If Component IsNot Nothing Then
                 Debug.Assert(TypeOf Component Is Resource, "ResourcePropertyDescriptor.ResetValue: Component is not a Resource")
-                If TypeOf Component Is Resource Then
-                    Dim Resource As Resource = DirectCast(Component, Resource)
+                Dim Resource = TryCast(Component, Resource)
+                If Resource IsNot Nothing Then
                     Resource.ResetPropertyValue(Name)
                 End If
             End If
