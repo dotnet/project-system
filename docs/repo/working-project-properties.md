@@ -21,8 +21,6 @@ In the CPS world, the object returned through `IVsCfgBrowseObject` implementatio
 
 ![future](https://cloud.githubusercontent.com/assets/10550513/26237655/ed3cb60c-3c2a-11e7-923f-9908ddc641a4.png)
 
-In the future, we would like to get to a design similar to the legacy project system, where the browse object and the automation object are both the same.
-
 To achieve this,
 
 1. Managed project system will export an implementation of the public VS interfaces, which gets ComAggregated over ProjectConfig.
