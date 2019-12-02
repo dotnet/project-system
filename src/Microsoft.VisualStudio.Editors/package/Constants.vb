@@ -40,9 +40,9 @@ Namespace Microsoft.VisualStudio.Editors
         '
         ' Common Window Styles
         '
-        Public Const WS_OVERLAPPEDWINDOW As Integer = (WS_OVERLAPPED Or WS_CAPTION Or WS_SYSMENU Or WS_THICKFRAME Or WS_MINIMIZEBOX Or WS_MAXIMIZEBOX)
-        Public Const WS_POPUPWINDOW As Integer = (WS_POPUP Or WS_BORDER Or WS_SYSMENU)
-        Public Const WS_CHILDWINDOW As Integer = (WS_CHILD)
+        Public Const WS_OVERLAPPEDWINDOW As Integer = WS_OVERLAPPED Or WS_CAPTION Or WS_SYSMENU Or WS_THICKFRAME Or WS_MINIMIZEBOX Or WS_MAXIMIZEBOX
+        Public Const WS_POPUPWINDOW As Integer = WS_POPUP Or WS_BORDER Or WS_SYSMENU
+        Public Const WS_CHILDWINDOW As Integer = WS_CHILD
 
         Public Const WS_EX_RIGHT As Integer = &H1000
         Public Const WS_EX_LEFT As Integer = &H0
@@ -55,8 +55,8 @@ Namespace Microsoft.VisualStudio.Editors
         Public Const WS_EX_STATICEDGE As Integer = &H20000
         Public Const WS_EX_APPWINDOW As Integer = &H40000
 
-        Public Const WS_EX_OVERLAPPEDWINDOW As Integer = (WS_EX_WINDOWEDGE Or WS_EX_CLIENTEDGE)
-        Public Const WS_EX_PALETTEWINDOW As Integer = (WS_EX_WINDOWEDGE Or WS_EX_TOOLWINDOW Or WS_EX_TOPMOST)
+        Public Const WS_EX_OVERLAPPEDWINDOW As Integer = WS_EX_WINDOWEDGE Or WS_EX_CLIENTEDGE
+        Public Const WS_EX_PALETTEWINDOW As Integer = WS_EX_WINDOWEDGE Or WS_EX_TOOLWINDOW Or WS_EX_TOPMOST
 
         '
         ' Extended Window Styles

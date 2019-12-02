@@ -41,7 +41,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="oValue"></param>
         ''' <remarks>Does not use the IWindowsFormsEditorService service to show it's dialog...</remarks>
         Public Overrides Function EditValue(context As ComponentModel.ITypeDescriptorContext, ServiceProvider As IServiceProvider, oValue As Object) As Object
-            Using (DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware))
+            Using DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware)
                 Dim dataConnectionDialogFactory As IVsDataConnectionDialogFactory = DirectCast(ServiceProvider.GetService(GetType(IVsDataConnectionDialogFactory)), IVsDataConnectionDialogFactory)
 
                 If dataConnectionDialogFactory Is Nothing Then
@@ -139,10 +139,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                         End If
                     End If
 
-                    If (dataConnectionDialog.ShowDialog() AndAlso dataConnectionDialog.DisplayConnectionString <> "") Then
+                    If dataConnectionDialog.ShowDialog() AndAlso dataConnectionDialog.DisplayConnectionString <> "" Then
                         ' If the user press OK and we have a connection string, lets return this new value!
                         dataConnectionDialog.SaveProviderSelections()
-                        If (dataConnectionDialog.SaveSelection) Then
+                        If dataConnectionDialog.SaveSelection Then
                             dataConnectionDialog.SaveSourceSelection()
                         End If
 

@@ -621,7 +621,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Dim currentResource As Resource = Nothing
             Dim selectedResources() As Resource
 
-            Using (New Common.WaitCursor)
+            Using New Common.WaitCursor
                 BeginUpdate()
                 Try
 
@@ -1141,7 +1141,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Try
                 'Currently we only draw borders for the "Thumbnails" view
-                Dim DrawBorder As Boolean = (View = ResourceView.Thumbnail)
+                Dim DrawBorder As Boolean = View = ResourceView.Thumbnail
 
                 'NOTE: This is a slow operation, we should prevent to do so if it is possible...
                 Thumbnail = CreateThumbnail(ThumbnailSourceImage, ThumbnailSize, DrawBorder, _borderWidth, _selectionBorderWidth, _thumbnailImageList.TransparentColor)
@@ -1267,7 +1267,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
         Private Const LVIF_STATE As Integer = &H8
         Private Const LVIS_SELECTED As Integer = &H2
-        Private Const LVM_SETITEMSTATE As Integer = (&H1000 + 43)
+        Private Const LVM_SETITEMSTATE As Integer = &H1000 + 43
 
 
         Private Sub SetItemState(index As Integer, state As Integer, mask As Integer)

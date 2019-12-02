@@ -189,7 +189,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 RemoveButton.Enabled = enabled
 
                 ' indicate if we have references to remove on apply()
-                If (enabled) Then
+                If enabled Then
                     SetDirty(Me)
                     RemoveButton.DialogResult = DialogResult.OK
                 Else

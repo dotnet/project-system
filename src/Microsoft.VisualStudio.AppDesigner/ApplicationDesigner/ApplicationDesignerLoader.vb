@@ -66,10 +66,10 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         End Sub
 
         Private Function OnCreateService(container As IServiceContainer, serviceType As Type) As Object
-            If (serviceType Is GetType(WindowPaneProviderService)) Then
+            If serviceType Is GetType(WindowPaneProviderService) Then
                 Return New DeferrableWindowPaneProviderService(container, m_DocDataService.PrimaryDocData)
             End If
-            If (serviceType Is GetType(DesignerDocDataService)) Then
+            If serviceType Is GetType(DesignerDocDataService) Then
                 If m_DocDataService Is Nothing Then
                     Debug.Fail("DesignerDocDataService has not been created")
                 End If

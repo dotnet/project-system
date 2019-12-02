@@ -135,7 +135,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
                 ' And even more special handling for the default VB file...
                 '
-                Dim shouldGenerateMyStuff As Boolean = (isVB AndAlso IsDefaultSettingsFile(wszInputFilePath))
+                Dim shouldGenerateMyStuff As Boolean = isVB AndAlso IsDefaultSettingsFile(wszInputFilePath)
 
                 Dim typeAttrs As TypeAttributes
 
@@ -147,7 +147,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 '   appropriate code.
                 '
                 Dim projectRootNamespace As String = String.Empty
-                If (isVB) Then
+                If isVB Then
                     projectRootNamespace = GetProjectRootNamespace()
                 End If
 
@@ -580,11 +580,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             Dim fullTypeName As String = String.Empty
 
-            If (projectRootNamespace <> "") Then
+            If projectRootNamespace <> "" Then
                 fullTypeName = projectRootNamespace & "."
             End If
 
-            If (defaultNamespace <> "") Then
+            If defaultNamespace <> "" Then
                 fullTypeName &= defaultNamespace & "."
             End If
 
@@ -736,12 +736,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 GetSite(vsBrowseObjectGuid, punkVsBrowseObject)
 
                 Try
-                    If (punkVsBrowseObject <> IntPtr.Zero) Then
+                    If punkVsBrowseObject <> IntPtr.Zero Then
 
                         Dim vsBrowseObject As IVsBrowseObject = TryCast(Marshal.GetObjectForIUnknown(punkVsBrowseObject), IVsBrowseObject)
                         Debug.Assert(vsBrowseObject IsNot Nothing, "Generator invoked by Site that is not IVsBrowseObject?")
 
-                        If (vsBrowseObject IsNot Nothing) Then
+                        If vsBrowseObject IsNot Nothing Then
                             Dim vsHierarchy As IVsHierarchy = Nothing
                             Dim itemid As UInteger = 0
 
@@ -753,7 +753,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                             Debug.Assert(vsHierarchy IsNot Nothing, "GetProjectItem should have thrown or returned a valid IVsHierarchy")
                             Debug.Assert(itemid <> VSITEMID.NIL, "GetProjectItem should have thrown or returned a valid VSITEMID")
 
-                            If ((vsHierarchy IsNot Nothing) AndAlso (itemid <> VSITEMID.NIL)) Then
+                            If (vsHierarchy IsNot Nothing) AndAlso (itemid <> VSITEMID.NIL) Then
 
                                 Dim obj As Object = Nothing
 
@@ -772,7 +772,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                         End If
                     End If
                 Finally
-                    If (punkVsBrowseObject <> IntPtr.Zero) Then
+                    If punkVsBrowseObject <> IntPtr.Zero Then
                         Marshal.Release(punkVsBrowseObject)
                     End If
                 End Try
@@ -880,7 +880,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     Throw New Win32Exception(NativeMethods.E_NOINTERFACE)
                 End If
             Finally
-                If (pUnknownPointer <> IntPtr.Zero) Then
+                If pUnknownPointer <> IntPtr.Zero Then
                     Marshal.Release(pUnknownPointer)
                 End If
             End Try
@@ -926,7 +926,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     Dim objectService As Design.GlobalObjectService = New Design.GlobalObjectService(sp, proj, GetType(Design.Serialization.CodeDomSerializer))
                     If objectService IsNot Nothing Then
                         Dim objectCollection As Design.GlobalObjectCollection = objectService.GetGlobalObjects(GetType(Configuration.ApplicationSettingsBase))
-                        If Not objectCollection Is Nothing Then
+                        If objectCollection IsNot Nothing Then
                             ' Note: We are currently calling refresh on all settings global objects for each
                             '   refactor notify, which effectively makes this an O(n^2) operation where n is the
                             '   number of .settings files in the project. We are OK with this because:

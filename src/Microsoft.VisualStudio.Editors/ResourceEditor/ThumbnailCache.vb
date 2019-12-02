@@ -435,7 +435,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Dim MruIndex As Integer = Index + 1
             If MruIndex >= _mruList.Length Then
                 Return False
-            ElseIf (_mruList(MruIndex).PreviousIndex = 0 AndAlso _mruList(0).NextIndex <> MruIndex) Then
+            ElseIf _mruList(MruIndex).PreviousIndex = 0 AndAlso _mruList(0).NextIndex <> MruIndex Then
                 Debug.Assert(_mruList(MruIndex).NextIndex = 0)
                 Return False
             End If

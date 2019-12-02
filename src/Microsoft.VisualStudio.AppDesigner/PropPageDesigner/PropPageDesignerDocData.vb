@@ -87,11 +87,11 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                         Marshal.Release(objPtr)
 
                         Dim ows As OLE.Interop.IObjectWithSite = TryCast(_vsTextBuffer, OLE.Interop.IObjectWithSite)
-                        If (ows IsNot Nothing) Then
+                        If ows IsNot Nothing Then
                             Dim sp As OLE.Interop.IServiceProvider = TryCast(_baseProvider.GetService(GetType(OLE.Interop.IServiceProvider)), OLE.Interop.IServiceProvider)
                             Debug.Assert(sp IsNot Nothing, "Expected to get a native service provider from our managed service provider")
 
-                            If (sp IsNot Nothing) Then
+                            If sp IsNot Nothing Then
                                 ows.SetSite(sp)
                             End If
                         End If

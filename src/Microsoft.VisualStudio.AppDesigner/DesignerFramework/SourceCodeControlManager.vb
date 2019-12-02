@@ -162,7 +162,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
                 Dim hr As Integer = qEdit2.QueryEditFiles(flags, filesToCheckOut.Length, filesToCheckOut, rgrf, Nothing, editVerdict, result)
                 VSErrorHandler.ThrowOnFailure(hr)
 
-                Dim success As Boolean = (editVerdict = CUInt(tagVSQueryEditResult.QER_EditOK))
+                Dim success As Boolean = editVerdict = CUInt(tagVSQueryEditResult.QER_EditOK)
 
                 ' If this was reloaded, we better add it to the list of reloaded files...
                 If (result And tagVSQueryEditResultFlags2.QER_Reloaded) = tagVSQueryEditResultFlags2.QER_Reloaded Then
@@ -178,7 +178,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
                         '
                         If Not allowFileReload AndAlso fileReloaded Then
                             Throw New ComponentModel.Design.CheckoutException(My.Resources.Designer.DFX_OneOrMoreFilesReloaded)
-                        ElseIf ((result And CUInt(tagVSQueryEditResultFlags.QER_CheckoutCanceledOrFailed)) <> 0) Then
+                        ElseIf (result And CUInt(tagVSQueryEditResultFlags.QER_CheckoutCanceledOrFailed)) <> 0 Then
                             Throw ComponentModel.Design.CheckoutException.Canceled
                         Else
                             Throw New ComponentModel.Design.CheckoutException(My.Resources.Designer.DFX_UnableToCheckout)
@@ -266,7 +266,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
 
                 VSErrorHandler.ThrowOnFailure(qEdit2.QuerySaveFiles(flags, filesToCheckOut.Length, filesToCheckOut, rgrf, Nothing, result))
 
-                Dim success As Boolean = (result = CInt(tagVSQuerySaveResult.QSR_SaveOK))
+                Dim success As Boolean = result = CInt(tagVSQuerySaveResult.QSR_SaveOK)
 
                 If success Then
                     Return True
@@ -275,7 +275,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
                         ' Failed the checkout.  We need to throw a checkout exception, but we should 
                         ' check to see if the failure happened because the user canceled.
                         '
-                        If ((result And CUInt(tagVSQuerySaveResult.QSR_NoSave_UserCanceled)) <> 0) Then
+                        If (result And CUInt(tagVSQuerySaveResult.QSR_NoSave_UserCanceled)) <> 0 Then
                             Throw ComponentModel.Design.CheckoutException.Canceled
                         Else
                             Throw New ComponentModel.Design.CheckoutException(My.Resources.Designer.DFX_UnableToCheckout)

@@ -22,13 +22,13 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
         Public Function ShowDialog([namespace] As String, identifier As String, minimallyQualifiedName As String, dialogType As AddImportsDialogType, helpCallBack As IVBAddImportsDialogHelpCallback) As AddImportsResult Implements IVBAddImportsDialogService.ShowDialog
             Select Case dialogType
                 Case AddImportsDialogType.AddImportsCollisionDialog
-                    Using (DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware))
+                    Using DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware)
                         Using d As New AutoAddImportsCollisionDialog([namespace], identifier, minimallyQualifiedName, helpCallBack, _serviceProvider)
                             Dim result As DialogResult = d.ShowDialog
 
-                            If (result = DialogResult.Cancel) Then
+                            If result = DialogResult.Cancel Then
                                 Return AddImportsResult.AddImports_Cancel
-                            ElseIf (d.ShouldImportAnyways) Then
+                            ElseIf d.ShouldImportAnyways Then
                                 Return AddImportsResult.AddImports_ImportsAnyways
                             Else
                                 Return AddImportsResult.AddImports_QualifyCurrentLine
@@ -36,7 +36,7 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
                         End Using
                     End Using
                 Case AddImportsDialogType.AddImportsExtensionCollisionDialog
-                    Using (DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware))
+                    Using DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware)
                         Using d As New AutoAddImportsExtensionCollisionDialog([namespace], identifier, minimallyQualifiedName, helpCallBack, _serviceProvider)
                             Dim result As DialogResult = d.ShowDialog
 

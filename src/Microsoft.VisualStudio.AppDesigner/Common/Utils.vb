@@ -129,12 +129,12 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <remarks>Throws an internal exception if the bitmap cannot be found or loaded.</remarks>
         Public Function GetManifestImage(ImageID As String, Optional ByRef assembly As Assembly = Nothing) As Image
             Dim BitmapStream As Stream = GetType(Utils).Assembly.GetManifestResourceStream(ImageID)
-            If Not assembly Is Nothing Then
+            If assembly IsNot Nothing Then
                 BitmapStream = assembly.GetManifestResourceStream(ImageID)
             End If
-            If Not BitmapStream Is Nothing Then
+            If BitmapStream IsNot Nothing Then
                 Dim Image As Image = Image.FromStream(BitmapStream)
-                If Not Image Is Nothing Then
+                If Image IsNot Nothing Then
                     Return Image
                 End If
                 Debug.Fail("Unable to find image resource from manifest: " & ImageID)

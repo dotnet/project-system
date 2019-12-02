@@ -260,10 +260,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim FolderText As String = GetCurrentFolderPathAbsolute()
 
             'Enable/Disable RemoveFolder button
-            RemoveFolder.Enabled = (SelectedCount > 0)
+            RemoveFolder.Enabled = SelectedCount > 0
 
             'Enable/Disable Add/UpdateFolder buttons
-            Dim HasFolderEntry As Boolean = (Len(FolderText) > 0)
+            Dim HasFolderEntry As Boolean = Len(FolderText) > 0
             AddFolder.Enabled = HasFolderEntry
             UpdateFolder.Enabled = HasFolderEntry AndAlso (SelectedCount = 1) AndAlso Not String.Equals(FolderText, DirectCast(ReferencePath.SelectedItem, String), StringComparison.OrdinalIgnoreCase)
 

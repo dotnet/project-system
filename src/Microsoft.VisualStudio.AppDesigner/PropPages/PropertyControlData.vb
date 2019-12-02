@@ -345,7 +345,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         Public Property IsUserPersisted As Boolean
             Get
-                Return ((Flags And ControlDataFlags.UserPersisted) <> 0)
+                Return (Flags And ControlDataFlags.UserPersisted) <> 0
             End Get
             Set
                 If Value Then
@@ -358,7 +358,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Public Property IsUserHandledEvents As Boolean
             Get
-                Return ((Flags And ControlDataFlags.UserHandledEvents) <> 0)
+                Return (Flags And ControlDataFlags.UserHandledEvents) <> 0
             End Get
             Set
                 If Value Then
@@ -384,7 +384,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         Public Property IsCommonProperty As Boolean
             Get
-                Return ((Flags And ControlDataFlags.CommonProperty) = ControlDataFlags.CommonProperty)
+                Return (Flags And ControlDataFlags.CommonProperty) = ControlDataFlags.CommonProperty
             End Get
             Set
                 If Value Then
@@ -422,7 +422,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         Public Property IsDirty As Boolean
             Get
-                Return ((Flags And ControlDataFlags.Dirty) = ControlDataFlags.Dirty)
+                Return (Flags And ControlDataFlags.Dirty) = ControlDataFlags.Dirty
             End Get
             Set
                 If Value Then
@@ -512,7 +512,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 #If DEBUG Then
                 Debug.Assert(_isInitialized, "Why are we checking if the property is indeterminate before the value is initialized!?")
 #End If
-                Return (InitialValue Is s_indeterminateValue)
+                Return InitialValue Is s_indeterminateValue
             End Get
         End Property
 
@@ -676,7 +676,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     PropDesc = GetUserDefinedPropertyDescriptor()
                     Debug.Assert(PropDesc IsNot Nothing, "Call to GetUserDefinedPropertyDescriptor() returned Nothing for a user-persisted property.  Did you forget to override GetUserDefinedPropertyDescriptor()?")
 
-                ElseIf (PropertyName Is Nothing AndAlso (GetCallback IsNot Nothing)) Then
+                ElseIf PropertyName Is Nothing AndAlso (GetCallback IsNot Nothing) Then
                     '
                     'just skip, let GetCallback handle this one
                     '
@@ -1025,7 +1025,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 If value Is Indeterminate Then
                     value = ""
                 Else
-                    If (_TypeConverter IsNot Nothing) Then 'AndAlso _TypeConverter.GetStandardValuesSupported Then
+                    If _TypeConverter IsNot Nothing Then 'AndAlso _TypeConverter.GetStandardValuesSupported Then
                         value = _TypeConverter.ConvertToString(value)
                     End If
                 End If
@@ -1037,7 +1037,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                 If value Is Indeterminate Then
                     StringValue = ""
-                ElseIf (_TypeConverter IsNot Nothing) Then
+                ElseIf _TypeConverter IsNot Nothing Then
                     StringValue = _TypeConverter.ConvertToString(value)
                 ElseIf TypeOf value Is String Then
                     'nothing to do
@@ -1171,7 +1171,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 StringText = Trim(DirectCast(control, TextBox).Text)
                 'IF textbox emptied, treat as indeterminate when using multiple objects
 
-                Debug.Assert(Not ExtendedPropertiesObjects Is Nothing, "ExtendedPropertiesObjects was null!")
+                Debug.Assert(ExtendedPropertiesObjects IsNot Nothing, "ExtendedPropertiesObjects was null!")
                 If ExtendedPropertiesObjects IsNot Nothing Then
                     If ExtendedPropertiesObjects.Length > 1 _
                     AndAlso TypeOf InitialValue Is String _
@@ -1238,7 +1238,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
 
             If (value IsNot Nothing) And (Not value Is Indeterminate) Then
-                If (_TypeConverter IsNot Nothing) Then
+                If _TypeConverter IsNot Nothing Then
                     If _TypeConverter.CanConvertFrom(Nothing, value.GetType()) Then
                         'If Not _TypeConverter.IsValid(value) AndAlso _
                         '_TypeConverter.GetStandardValuesSupported Then
@@ -1390,7 +1390,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim Value As Object = Values(0)
             For i As Integer = 0 + 1 To Values.Length - 1
                 'Perform object comparison
-                If (Value Is Nothing OrElse Values(i) Is Nothing) Then
+                If Value Is Nothing OrElse Values(i) Is Nothing Then
                     If Value IsNot Values(i) Then
                         Return Indeterminate
                     End If

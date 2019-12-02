@@ -265,7 +265,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If sp IsNot Nothing Then
                 ServiceProvider = sp
             End If
-            Using (DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware))
+            Using DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware)
                 If ServiceProvider IsNot Nothing Then
                     Dim uiService As IUIService = CType(ServiceProvider.GetService(GetType(IUIService)), IUIService)
                     If uiService IsNot Nothing Then

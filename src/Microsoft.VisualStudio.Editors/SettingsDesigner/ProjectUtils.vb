@@ -240,7 +240,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
                     VSErrorHandler.ThrowOnFailure(vsproj.GenerateUniqueItemName(ParentId, "." & CodeProvider.FileExtension, IO.Path.GetFileNameWithoutExtension(NewItemName), NewItemName))
                 End If
                 ' CONSIDER: Using different mechanism to figure out if this is VB than checking the file extension...
-                Dim supportsDeclarativeEventHandlers As Boolean = (CodeProvider.FileExtension.Equals("vb", StringComparison.OrdinalIgnoreCase))
+                Dim supportsDeclarativeEventHandlers As Boolean = CodeProvider.FileExtension.Equals("vb", StringComparison.OrdinalIgnoreCase)
                 ExtendingItem = AddNewProjectItemExtendingClass(cc2, NewFilePath & NewItemName, CodeProvider, supportsDeclarativeEventHandlers, CollectionToAddTo)
             End If
 

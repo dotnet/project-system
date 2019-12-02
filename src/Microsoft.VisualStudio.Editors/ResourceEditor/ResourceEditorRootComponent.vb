@@ -117,7 +117,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         Friend ReadOnly Property ResourceFile As ResourceFile
             Get
-                Debug.Assert(Not _resourceFile Is Nothing, "m_ResourceFile should have already been created!  SetResXResourceFile not called?")
+                Debug.Assert(_resourceFile IsNot Nothing, "m_ResourceFile should have already been created!  SetResXResourceFile not called?")
                 Return _resourceFile
             End Get
         End Property
@@ -143,12 +143,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Get
                 If _rootDesigner Is Nothing Then
                     'Not yet cached - get this info from the designer host
-                    Debug.Assert(Not Container Is Nothing)
+                    Debug.Assert(Container IsNot Nothing)
                     Dim Host As IDesignerHost = CType(Container, IDesignerHost)
                     _rootDesigner = CType(Host.GetDesigner(Me), ResourceEditorRootDesigner)
                 End If
 
-                Debug.Assert(Not _rootDesigner Is Nothing, "Don't have an associated designer?!?")
+                Debug.Assert(_rootDesigner IsNot Nothing, "Don't have an associated designer?!?")
                 Return _rootDesigner
             End Get
         End Property
@@ -191,7 +191,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="NewResourceFile"></param>
         Friend Sub LoadResXResourceFile(NewResourceFile As ResourceFile)
             Debug.Assert(NewResourceFile.RootComponent Is Me)
-            Debug.Assert(Not NewResourceFile Is Nothing)
+            Debug.Assert(NewResourceFile IsNot Nothing)
             Debug.Assert(_resourceFile Is Nothing, "ResourceEditorRootComponent.LoadResXResourceFile(): a resource file has already been loaded")
 
             'Set our reference to the new resx file
@@ -202,7 +202,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             'Now let the root designer know of the change.  It will
             '  cause the designer UI to be changed.
-            If Not RootDesigner Is Nothing Then
+            If RootDesigner IsNot Nothing Then
                 RootDesigner.SetResourceFile(NewResourceFile)
             End If
         End Sub

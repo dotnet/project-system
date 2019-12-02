@@ -280,7 +280,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
                     _undoEngine = Nothing
                     UnLoadPage()
-                    If Not (_components Is Nothing) Then
+                    If _components IsNot Nothing Then
                         _components.Dispose()
                     End If
                     _configurationState = Nothing
@@ -326,7 +326,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         Private ReadOnly Property VsUIShellService As IVsUIShell
             Get
-                If (_uiShellService Is Nothing) Then
+                If _uiShellService Is Nothing Then
                     If VBPackageInstance IsNot Nothing Then
                         _uiShellService = TryCast(VBPackageInstance.GetService(GetType(IVsUIShell)), IVsUIShell)
                     Else
@@ -343,7 +343,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         Private ReadOnly Property VsUIShell5Service As IVsUIShell5
             Get
-                If (_uiShell5Service Is Nothing) Then
+                If _uiShell5Service Is Nothing Then
                     Dim VsUiShell As IVsUIShell = VsUIShellService
                     If VsUiShell IsNot Nothing Then
                         _uiShell5Service = TryCast(VsUiShell, IVsUIShell5)
@@ -658,7 +658,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             UnLoadPage()
             PropertyPagePanel.SuspendLayout()
             ConfigurationPanel.Visible = False
-            If TypeOf (ex) Is PropertyPageException AndAlso Not DirectCast(ex, PropertyPageException).ShowHeaderAndFooterInErrorControl Then
+            If TypeOf ex Is PropertyPageException AndAlso Not DirectCast(ex, PropertyPageException).ShowHeaderAndFooterInErrorControl Then
                 _errorControl = New ErrorControl(ex.Message)
             Else
                 _errorControl = New ErrorControl(My.Resources.Designer.APPDES_ErrorLoadingPropPage & vbCrLf & DebugMessageFromException(ex))
@@ -1388,8 +1388,8 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
             Debug.Assert(MultiValues IsNot Nothing)
 
-            Dim SelectAllConfigs As Boolean = (MultiValues.SelectedConfigName = "")
-            Dim SelectAllPlatforms As Boolean = (MultiValues.SelectedPlatformName = "")
+            Dim SelectAllConfigs As Boolean = MultiValues.SelectedConfigName = ""
+            Dim SelectAllPlatforms As Boolean = MultiValues.SelectedPlatformName = ""
 
             _configurationState.ChangeSelection(
                 MultiValues.SelectedConfigName, IIf(SelectAllConfigs, ConfigurationState.SelectionTypes.All, ConfigurationState.SelectionTypes.Normal),
@@ -1457,7 +1457,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
             If _isNativeHostedPropertyPage Then
                 'Try tabbing to another control in the property page designer view
-                If (SelectNextControl(ActiveControl, forward, True, True, False)) Then
+                If SelectNextControl(ActiveControl, forward, True, True, False) Then
                     Switches.TracePDMessageRouting(TraceLevel.Info, "  ...PropPageDesignerView.SelectNextControl handled it")
                     Return True
                 End If
@@ -1474,7 +1474,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     Return True
                 End If
             Else
-                If (SelectNextControl(ActiveControl, forward, tabStopOnly:=True, nested:=True, wrap:=False)) Then
+                If SelectNextControl(ActiveControl, forward, tabStopOnly:=True, nested:=True, wrap:=False) Then
                     Return True
                 Else
                     Dim appDesView As ApplicationDesignerView = CType(_loadedPageSite.Owner, ApplicationDesignerView)

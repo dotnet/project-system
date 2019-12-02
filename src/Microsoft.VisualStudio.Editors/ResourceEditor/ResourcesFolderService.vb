@@ -442,7 +442,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                     'Is there already a projectitem with that name?  (Different from FileAlreadyExists if the projectitem is a link to a file.)
                     Dim ExistingLinkedItem As ProjectItem = QueryProjectItems(DestinationFolder, SourceFileNameOnly)
-                    Dim ProjectItemAlreadyExists As Boolean = (ExistingLinkedItem IsNot Nothing)
+                    Dim ProjectItemAlreadyExists As Boolean = ExistingLinkedItem IsNot Nothing
 
                     If CopyFileIfExists AndAlso (FileAlreadyExists OrElse ProjectItemAlreadyExists) Then
                         'We need to copy the file

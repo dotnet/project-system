@@ -19,7 +19,7 @@
 
             ' If the designer Is asking for the abstract control,
             ' return the "concrete" version of it instead
-            If (objectType = GetType(TAbstract)) Then
+            If objectType = GetType(TAbstract) Then
                 Return GetType(TDerived)
             End If
 
@@ -31,7 +31,7 @@
 
             ' If the designer Is asking to create the abstract 
             ' control, instantiate the "concrete" version of it instead
-            If (objectType = GetType(TAbstract)) Then
+            If objectType = GetType(TAbstract) Then
                 objectType = GetType(TDerived)
             End If
 

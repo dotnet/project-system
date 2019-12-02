@@ -88,8 +88,8 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
                 _uiService = CType(GetService(GetType(IUIService)), IUIService)
             End If
 
-            Using (DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware))
-                If Not (_uiService Is Nothing) Then
+            Using DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware)
+                If _uiService IsNot Nothing Then
                     Return _uiService.ShowDialog(Me)
                 Else
                     Return MyBase.ShowDialog()
@@ -184,7 +184,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         '**************************************************************************
         Protected Overrides Function GetService(ServiceType As Type) As Object
 
-            If (ServiceProvider Is Nothing) Then
+            If ServiceProvider Is Nothing Then
                 Return MyBase.GetService(ServiceType)
             End If
 

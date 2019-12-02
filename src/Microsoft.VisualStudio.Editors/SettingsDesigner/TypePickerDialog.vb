@@ -62,7 +62,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         'Form overrides dispose to clean up the component list.
         Protected Overloads Overrides Sub Dispose(disposing As Boolean)
             If disposing Then
-                If Not (_components Is Nothing) Then
+                If _components IsNot Nothing Then
                     _components.Dispose()
                 End If
             End If
@@ -197,7 +197,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 If Node IsNot Nothing AndAlso Node.IsAssemblyNode AndAlso Node.HasDummyNode Then
                     Node.RemoveDummyNode()
                     Using mtsrv As New VSDesigner.MultiTargetService(_vsHierarchy, _projectItemid, False)
-                        If (mtsrv IsNot Nothing) Then
+                        If mtsrv IsNot Nothing Then
                             Dim availableTypes As Type() = mtsrv.GetSupportedTypes(Node.Text, AddressOf GetAssemblyCallback)
                             For Each availableType As Type In availableTypes
 

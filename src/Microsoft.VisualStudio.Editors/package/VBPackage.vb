@@ -134,7 +134,7 @@ Namespace Microsoft.VisualStudio.Editors
 
             ' Is the Permission Set Service being requested?
             If serviceType Is GetType(VBAttributeEditor.Interop.IVbPermissionSetService) Then
-                If (_permissionSetService Is Nothing) Then
+                If _permissionSetService Is Nothing Then
                     _permissionSetService = New VBAttributeEditor.PermissionSetService(container)
                 End If
 
@@ -150,7 +150,7 @@ Namespace Microsoft.VisualStudio.Editors
 
             ' Is the IVsBuildEventCommandLineDialogService being requested?
             If serviceType Is GetType(Interop.IVsBuildEventCommandLineDialogService) Then
-                If (_buildEventCommandLineDialogService Is Nothing) Then
+                If _buildEventCommandLineDialogService Is Nothing Then
                     _buildEventCommandLineDialogService = New PropertyPages.BuildEventCommandLineDialogService(container)
                 End If
 
@@ -159,7 +159,7 @@ Namespace Microsoft.VisualStudio.Editors
             End If
 
             If serviceType Is GetType(ResourceEditor.ResourceEditorRefactorNotify) Then
-                If (_resourceEditorRefactorNotify Is Nothing) Then
+                If _resourceEditorRefactorNotify Is Nothing Then
                     _resourceEditorRefactorNotify = New ResourceEditor.ResourceEditorRefactorNotify()
                 End If
 
@@ -168,7 +168,7 @@ Namespace Microsoft.VisualStudio.Editors
             End If
 
             If serviceType Is GetType(AddImports.IVBAddImportsDialogService) Then
-                If (_addImportsDialogService Is Nothing) Then
+                If _addImportsDialogService Is Nothing Then
                     _addImportsDialogService = New AddImports.AddImportsDialogService(Me)
                 End If
 
@@ -196,7 +196,7 @@ Namespace Microsoft.VisualStudio.Editors
         ''' This code is factored out of OnCreateService in order to delay loading Microsoft.VisualStudio.XmlEditor.dll
         ''' </remarks>
         Private Function GetXmlIntellisenseService(container As IServiceContainer) As XmlIntellisense.XmlIntellisenseService
-            If (_xmlIntellisenseService Is Nothing) Then
+            If _xmlIntellisenseService Is Nothing Then
                 ' Xml Intellisense Service is only available if the Xml Editor Schema Service is available as well
                 Dim schemaService As XmlSchemaService = DirectCast(container.GetService(GetType(XmlSchemaService)), XmlSchemaService)
 

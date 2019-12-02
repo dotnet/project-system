@@ -303,7 +303,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             Dim stValue As String = CType(value, String)
 
-            If (Not stValue Is Nothing) AndAlso (stValue.Trim().Length > 0) Then
+            If (stValue IsNot Nothing) AndAlso (stValue.Trim().Length > 0) Then
                 _myType = stValue
             Else
                 _myType = Nothing
@@ -444,7 +444,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Private Shared Function IsClassLibrary(AppType As ApplicationTypes) As Boolean
-            If (AppType = ApplicationTypes.WindowsClassLib OrElse AppType = ApplicationTypes.WebControl) Then
+            If AppType = ApplicationTypes.WindowsClassLib OrElse AppType = ApplicationTypes.WebControl Then
                 Return True
             End If
             Return False
@@ -1295,7 +1295,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     ' Save the new MyType
                     Dim stValue As String = CType(NewMyType, String)
 
-                    If (Not stValue Is Nothing) AndAlso (stValue.Trim().Length > 0) Then
+                    If (stValue IsNot Nothing) AndAlso (stValue.Trim().Length > 0) Then
                         _myType = stValue
                     Else
                         _myType = Nothing
@@ -1655,7 +1655,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Protected Overloads Overrides Sub Dispose(disposing As Boolean)
             If disposing Then
-                If Not (_components Is Nothing) Then
+                If _components IsNot Nothing Then
                     _components.Dispose()
                 End If
 

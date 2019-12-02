@@ -210,7 +210,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     End If
                 End If
 
-                If Not (_components Is Nothing) Then
+                If _components IsNot Nothing Then
                     _components.Dispose()
                 End If
                 ' Forget about any component change service
@@ -1293,7 +1293,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="Row"></param>
         Private Sub ChangeSettingType(Row As DataGridViewRow, TypeDisplayName As String)
-            Dim addingNewSetting As Boolean = (Row.Tag Is Nothing)
+            Dim addingNewSetting As Boolean = Row.Tag Is Nothing
 
             ' Get the current setting instance.
             Dim Instance As DesignTimeSettingInstance = ComponentFromRow(Row)
@@ -1768,7 +1768,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                                     'to the Auth Service
                                     servicesAuthForm.LoadAnonymously = True
                                 Else
-                                    Using (DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware))
+                                    Using DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware)
                                         Dim result As DialogResult = servicesAuthForm.ShowDialog()
                                         If result = DialogResult.Cancel Then Exit Sub
                                     End Using
@@ -1983,7 +1983,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Try
                 _isShowingTypePicker = True
                 If Not DBNull.Value.Equals(_settingsGridView.CurrentCell.Value) Then
-                    Using (DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware))
+                    Using DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware)
                         Dim TypePickerDlg As New TypePickerDialog(Settings.Site, DesignerLoader.VsHierarchy, DesignerLoader.ProjectItemid)
 
                         TypePickerDlg.SetProjectReferencedAssemblies()

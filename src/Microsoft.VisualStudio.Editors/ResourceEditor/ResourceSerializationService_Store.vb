@@ -607,7 +607,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 ''' </summary>
                 Public ReadOnly Property IsEntireResourceObject As Boolean
                     Get
-                        Return (PropertyName = "")
+                        Return PropertyName = ""
                     End Get
                 End Property
 

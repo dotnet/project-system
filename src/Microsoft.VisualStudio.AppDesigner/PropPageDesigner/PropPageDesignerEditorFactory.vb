@@ -103,7 +103,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                         Debug.Fail("DocData does not implement IObjectWithSite")
                     End If
 
-                    Debug.Assert(Not (Designer Is Nothing), "Designer service should have thrown if it had a problem.")
+                    Debug.Assert(Designer IsNot Nothing, "Designer service should have thrown if it had a problem.")
 
                     'Set the out params
                     DocView = Designer.View 'Gets the object that can support IVsWindowPane
@@ -174,10 +174,10 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 FCanceled = 0
             End If
 
-            If Not (DocView Is Nothing) Then
+            If DocView IsNot Nothing Then
                 DocViewPtr = Marshal.GetIUnknownForObject(DocView)
             End If
-            If Not (DocData Is Nothing) Then
+            If DocData IsNot Nothing Then
                 DocDataPtr = Marshal.GetIUnknownForObject(DocData)
             End If
         End Function

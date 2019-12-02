@@ -374,7 +374,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Try
                 VSErrorHandler.ThrowOnFailure(rdt.FindAndLockDocument(CType(_VSRDTFLAGS.RDT_NoLock, UInteger), fileName, hierarchy, itemid, localPunk, docCookie))
             Finally
-                If (localPunk <> IntPtr.Zero) Then
+                If localPunk <> IntPtr.Zero Then
                     System.Runtime.InteropServices.Marshal.Release(localPunk)
                     localPunk = IntPtr.Zero
                 End If
@@ -383,7 +383,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Try
                 VSErrorHandler.ThrowOnFailure(rdt.GetDocumentInfo(docCookie, flags, readLocks, editLocks, localFileName, hierarchy, itemid, localPunk))
             Finally
-                If (localPunk <> IntPtr.Zero) Then
+                If localPunk <> IntPtr.Zero Then
                     System.Runtime.InteropServices.Marshal.Release(localPunk)
                 End If
             End Try

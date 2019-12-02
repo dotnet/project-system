@@ -650,7 +650,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
             Dim candidateProjectItemName As String = templateBaseName
             Dim postfix As Integer = 1
-            While (DTEUtils.FindProjectItem(_extensionFolderProjectItem.ProjectItems, candidateProjectItemName) IsNot Nothing)
+            While DTEUtils.FindProjectItem(_extensionFolderProjectItem.ProjectItems, candidateProjectItemName) IsNot Nothing
                 candidateProjectItemName = baseName & postfix.ToString() & baseExtension
                 postfix += 1
             End While

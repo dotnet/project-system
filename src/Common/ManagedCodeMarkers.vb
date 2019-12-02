@@ -115,7 +115,7 @@ Namespace Microsoft.Internal.Performance
         ' Checks to see if code markers are enabled by looking for a named ATOM
         Private Sub New()
             ' This ATOM will be set by the native Code Markers host
-            _fUseCodeMarkers = (NativeMethods.FindAtom(AtomName) <> 0)
+            _fUseCodeMarkers = NativeMethods.FindAtom(AtomName) <> 0
         End Sub 'New
 
         ' Implements sending the code marker value nTimerID.
@@ -158,7 +158,7 @@ Namespace Microsoft.Internal.Performance
             ' does the subkey exist
             Dim str As String = Nothing
             Using key As RegistryKey = hKey.OpenSubKey(strRegRoot & "\Performance")
-                If Not key Is Nothing Then
+                If key IsNot Nothing Then
                     ' reads the default value
                     str = key.GetValue("").ToString()
                 End If

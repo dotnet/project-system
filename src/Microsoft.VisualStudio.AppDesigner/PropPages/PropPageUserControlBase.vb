@@ -100,7 +100,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Debug.Assert(_suspendPropertyChangeListeningDispIds.Count = 0, "Missing a ResumePropertyChangeListening() call?")
 
                     RemoveFromRunningTable()
-                    If Not (_components Is Nothing) Then
+                    If _components IsNot Nothing Then
                         _components.Dispose()
                     End If
 
@@ -641,7 +641,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 '  sometimes succeed (if it's found in an open property page) and sometimes not (when that other
                 '  page isn't open).
 
-                Dim IsCommonProperty As Boolean = (GetCommonPropertyDescriptor(PropertyName) IsNot Nothing)
+                Dim IsCommonProperty As Boolean = GetCommonPropertyDescriptor(PropertyName) IsNot Nothing
                 Dim IsPropertyOnThisPage As Boolean = False
 
                 For Each _controlData As PropertyControlData In ControlData
@@ -1010,7 +1010,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 FirstProj = GetProjectHierarchyFromObject(objects(0))
                 For i As Integer = 1 To objects.Length - 1
                     NextProj = GetProjectHierarchyFromObject(objects(i))
-                    If (NextProj Is Nothing OrElse NextProj IsNot FirstProj) Then
+                    If NextProj Is Nothing OrElse NextProj IsNot FirstProj Then
                         _multiProjectSelect = True
                         Return
                     End If
@@ -1163,7 +1163,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   or they may be something else.
         '''</remarks>
         Public Overridable Sub SetObjects(objects() As Object)
-            Debug.Assert(_site IsNot Nothing OrElse (objects Is Nothing OrElse objects.Length = 0), "SetObjects() called (with non-null objects), but we are not sited!")
+            Debug.Assert(_site IsNot Nothing OrElse objects Is Nothing OrElse objects.Length = 0, "SetObjects() called (with non-null objects), but we are not sited!")
             m_Objects = Nothing
 
             _fConfigurationSpecificPage = False
@@ -1829,7 +1829,7 @@ NextControl:
         Private Sub VerifyPropertiesWhichMayReloadProjectAreLast()
             Dim APreviousPropertyHadProjectMayBeReloadedDuringPropertySetFlag As Boolean = False
             For Each _controlData As PropertyControlData In ControlData
-                Dim ProjectMayBeReloadedDuringPropertySet As Boolean = (0 <> (_controlData.GetFlags() And ControlDataFlags.ProjectMayBeReloadedDuringPropertySet))
+                Dim ProjectMayBeReloadedDuringPropertySet As Boolean = 0 <> (_controlData.GetFlags() And ControlDataFlags.ProjectMayBeReloadedDuringPropertySet)
                 If ProjectMayBeReloadedDuringPropertySet Then
                     APreviousPropertyHadProjectMayBeReloadedDuringPropertySetFlag = True
                 ElseIf APreviousPropertyHadProjectMayBeReloadedDuringPropertySetFlag Then
@@ -1896,7 +1896,7 @@ NextControl:
                     '   releases its batch lock count, even if we're still in the middle of setting
                     '   properties. To guard against that, we need to lock both batch mechanisms.
                     '
-                    If (vsProjectBuildSystem IsNot Nothing) Then
+                    If vsProjectBuildSystem IsNot Nothing Then
                         vsProjectBuildSystem.StartBatchEdit()
                     End If
 
@@ -1939,7 +1939,7 @@ NextControl:
                     Transaction = GetTransaction()
 
                     For Each _controlData As PropertyControlData In ControlData
-                        Dim ProjectMayBeReloadedDuringPropertySet As Boolean = (0 <> (_controlData.GetFlags() And ControlDataFlags.ProjectMayBeReloadedDuringPropertySet))
+                        Dim ProjectMayBeReloadedDuringPropertySet As Boolean = 0 <> (_controlData.GetFlags() And ControlDataFlags.ProjectMayBeReloadedDuringPropertySet)
 
                         'Track the current control for determining which control focus
                         'should be returned when an exception occurs
@@ -2825,7 +2825,7 @@ NextControl:
         DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
         Protected ReadOnly Property VsUIShellService As IVsUIShell
             Get
-                If (_uiShellService Is Nothing) Then
+                If _uiShellService Is Nothing Then
                     _uiShellService = CType(ServiceProvider.GetService(GetType(IVsUIShell)), IVsUIShell)
                 End If
                 Return _uiShellService
@@ -2835,7 +2835,7 @@ NextControl:
         DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
         Protected ReadOnly Property VsUIShell2Service As IVsUIShell2
             Get
-                If (_uiShell2Service Is Nothing) Then
+                If _uiShell2Service Is Nothing Then
                     Dim VsUiShell As IVsUIShell = Nothing
                     If Common.VBPackageInstance IsNot Nothing Then
                         VsUiShell = TryCast(Common.VBPackageInstance.GetService(GetType(IVsUIShell)), IVsUIShell)
@@ -2851,7 +2851,7 @@ NextControl:
         End Property
         Protected ReadOnly Property VsUIShell5Service As IVsUIShell5
             Get
-                If (_uiShell5Service Is Nothing) Then
+                If _uiShell5Service Is Nothing Then
                     Dim VsUiShell As IVsUIShell = Nothing
                     If Common.VBPackageInstance IsNot Nothing Then
                         VsUiShell = TryCast(Common.VBPackageInstance.GetService(GetType(IVsUIShell)), IVsUIShell)
@@ -3245,7 +3245,7 @@ NextControl:
 
         Protected ReadOnly Property IsUndoEnabled As Boolean
             Get
-                Return (_propPageUndoSite IsNot Nothing)
+                Return _propPageUndoSite IsNot Nothing
             End Get
         End Property
 
@@ -3876,7 +3876,7 @@ NextControl:
         ''' Determines if the given mode should cause us to be disabled.
         ''' </summary>
         Protected Overridable Function DisableWhenDebugMode(mode As DBGMODE) As Boolean
-            Return (mode <> DBGMODE.DBGMODE_Design)
+            Return mode <> DBGMODE.DBGMODE_Design
         End Function
 
 

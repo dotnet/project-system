@@ -52,16 +52,16 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     MinimumSize = Drawing.Size.Empty
                     AutoSize = True
 
-                    If (_propPage.PageResizable) Then
+                    If _propPage.PageResizable Then
                         FormBorderStyle = FormBorderStyle.Sizable
                     Else
                         FormBorderStyle = FormBorderStyle.FixedDialog
                     End If
 
                     _propPage.Margin = New Padding(0, 0, 0, 0)
-                    _propPage.Anchor = CType((((AnchorStyles.Top Or AnchorStyles.Bottom) _
-                        Or AnchorStyles.Left) _
-                        Or AnchorStyles.Right), AnchorStyles)
+                    _propPage.Anchor = CType(AnchorStyles.Top Or AnchorStyles.Bottom _
+                        Or AnchorStyles.Left _
+                        Or AnchorStyles.Right, AnchorStyles)
                     _propPage.TabIndex = 0
                     'overArchingTableLayoutPanel.SuspendLayout()
                     overArchingTableLayoutPanel.Controls.Add(_propPage, 0, 0)
@@ -80,7 +80,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         'Form overrides dispose to clean up the component list.
         Protected Overloads Overrides Sub Dispose(disposing As Boolean)
             If disposing Then
-                If Not (_components Is Nothing) Then
+                If _components IsNot Nothing Then
                     _components.Dispose()
                 End If
             End If

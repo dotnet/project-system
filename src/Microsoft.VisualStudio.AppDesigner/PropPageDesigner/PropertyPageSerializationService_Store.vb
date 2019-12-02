@@ -525,7 +525,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 ''' </summary>
                 Public ReadOnly Property IsEntireComponentObject As Boolean
                     Get
-                        Return (PropertyName = "")
+                        Return PropertyName = ""
                     End Get
                 End Property
 

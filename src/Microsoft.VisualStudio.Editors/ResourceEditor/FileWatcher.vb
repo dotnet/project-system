@@ -105,7 +105,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             'Look for a (or create a new) DirectoryWatcher for this file's directory.
             Dim DirectoryWatcher As DirectoryWatcher = GetWatcherForDirectory(DirectoryPath, CreateIfNotFound:=True)
-            Debug.Assert(Not DirectoryWatcher Is Nothing, "This shouldn't happen")
+            Debug.Assert(DirectoryWatcher IsNot Nothing, "This shouldn't happen")
 
             'Add the listener.
             DirectoryWatcher.AddFileListener(FileName, Listener)
@@ -220,7 +220,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 
             Public Sub New(DirectoryPath As String, ParentFileWatcher As FileWatcher)
-                Debug.Assert(Not ParentFileWatcher Is Nothing)
+                Debug.Assert(ParentFileWatcher IsNot Nothing)
                 _parentFileWatcher = ParentFileWatcher
                 Debug.Assert(DirectoryPath <> "")
 
@@ -255,7 +255,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' Dispose
             ''' </summary>
             Public Sub Dispose() Implements IDisposable.Dispose
-                If Not _fileSystemWatcher Is Nothing Then
+                If _fileSystemWatcher IsNot Nothing Then
                     _fileSystemWatcher.Dispose()
                     _fileSystemWatcher = Nothing
                 End If
@@ -492,7 +492,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' Dispose.
             ''' </summary>
             Public Sub Dispose() Implements IDisposable.Dispose
-                If Not _timer Is Nothing Then
+                If _timer IsNot Nothing Then
                     _timer.Dispose()
                     _timer = Nothing
                 End If

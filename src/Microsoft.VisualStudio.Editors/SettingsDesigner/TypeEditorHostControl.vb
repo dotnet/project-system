@@ -36,7 +36,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         'UserControl1 overrides dispose to clean up the component list. 
         Protected Overloads Overrides Sub Dispose(disposing As Boolean)
             If disposing Then
-                If Not (_components Is Nothing) Then
+                If _components IsNot Nothing Then
                     _components.Dispose()
                 End If
             End If
@@ -156,7 +156,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 ' If we have a type editor, let's see if it supports preview of 
                 ' the value... 
                 Dim PreviewSupported As Boolean = False
-                If Not _typeEditor Is Nothing Then
+                If _typeEditor IsNot Nothing Then
                     PreviewSupported = _typeEditor.GetPaintValueSupported()
                 End If
                 _previewPanel.Visible = PreviewSupported
@@ -164,7 +164,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 ' We should show the "button" if (and only if) we have a valid 
                 ' UITypeEditor!
                 Dim ShowEditorButtonVisible As Boolean = False
-                If Not _typeEditor Is Nothing Then
+                If _typeEditor IsNot Nothing Then
                     Select Case _typeEditor.GetEditStyle()
                         Case UITypeEditorEditStyle.DropDown
                             _showEditorButton.PaintStyle = ComboBoxDotDotDotButton.PaintStyles.DropDown
@@ -249,7 +249,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         Private Sub PreviewPanel_Paint(sender As Object, e As PaintEventArgs) Handles _previewPanel.Paint
-            If Not _typeEditor Is Nothing Then
+            If _typeEditor IsNot Nothing Then
                 If _typeEditor.GetPaintValueSupported Then
                     Using ForegroundPen As New Pen(ForeColor)
                         Dim DrawRect As New Rectangle(1, 1, _previewPanel.ClientRectangle.Width - 4, _previewPanel.ClientRectangle.Height - 4)
@@ -315,7 +315,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         Private Sub ShowEditorButton_Click(sender As Object, e As EventArgs) Handles _showEditorButton.Click
-            Debug.Assert(Not _typeEditor Is Nothing)
+            Debug.Assert(_typeEditor IsNot Nothing)
             ShowUITypeEditor()
         End Sub
 
@@ -502,8 +502,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
         Public Function ShowDialog(dialog As Form) As DialogResult Implements IWindowsFormsEditorService.ShowDialog
             Dim UiSvc As IUIService = DirectCast(GetService(GetType(IUIService)), IUIService)
-            Using (DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware))
-                If Not UiSvc Is Nothing Then
+            Using DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware)
+                If UiSvc IsNot Nothing Then
                     Return UiSvc.ShowDialog(dialog)
                 Else
                     Return dialog.ShowDialog(_showEditorButton)
@@ -592,7 +592,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 End Get
                 Set
                     Controls.Clear()
-                    If Not Value Is Nothing Then
+                    If Value IsNot Nothing Then
                         Value.Dock = DockStyle.Fill
                         Controls.Add(Value)
                     End If
@@ -793,7 +793,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                             Return True
                         End If
                     Case Keys.A
-                        If (m.Msg = Interop.NativeMethods.WM_KEYDOWN AndAlso ModifierKeys = Keys.Control) Then
+                        If m.Msg = Interop.NativeMethods.WM_KEYDOWN AndAlso ModifierKeys = Keys.Control Then
                             SelectAll()
                             Return True
                         End If

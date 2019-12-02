@@ -129,7 +129,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 GetTokenValues(values, valueHelper)
                 dialog.SetTokensAndValues(s_tokenNames, values)
 
-                If (dialog.ShowDialog(ServiceProvider) = System.Windows.Forms.DialogResult.OK) Then
+                If dialog.ShowDialog(ServiceProvider) = System.Windows.Forms.DialogResult.OK Then
                     CommandLine = dialog.EventCommandLine
                 End If
             End Using

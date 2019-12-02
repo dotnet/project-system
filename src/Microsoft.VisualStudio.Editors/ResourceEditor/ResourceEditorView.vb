@@ -234,11 +234,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     _components.Dispose()
                 End If
 
-                If Not _resourceFile Is Nothing Then
+                If _resourceFile IsNot Nothing Then
                     _resourceFile.Dispose()
                 End If
 
-                If Not _fileWatcher Is Nothing Then
+                If _fileWatcher IsNot Nothing Then
                     Debug.Assert(_fileWatcher.DirectoryWatchersCount = 0, "All file watch entries should already have been cleared")
                     _fileWatcher.Dispose()
                     _fileWatcher = Nothing
@@ -408,7 +408,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         Friend ReadOnly Property RootDesigner As ResourceEditorRootDesigner
             Get
-                Debug.Assert(Not _rootDesigner Is Nothing, "Can't call RootDesigner before SetRootDesigner() - we don't have a root designer cached yet")
+                Debug.Assert(_rootDesigner IsNot Nothing, "Can't call RootDesigner before SetRootDesigner() - we don't have a root designer cached yet")
                 Return _rootDesigner
             End Get
         End Property
@@ -530,9 +530,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             '
             'StringTable
             '
-            StringTable.Anchor = CType((((AnchorStyles.Top Or AnchorStyles.Bottom) _
-                        Or AnchorStyles.Left) _
-                        Or AnchorStyles.Right), AnchorStyles)
+            StringTable.Anchor = CType(AnchorStyles.Top Or AnchorStyles.Bottom _
+                        Or AnchorStyles.Left _
+                        Or AnchorStyles.Right, AnchorStyles)
             StringTable.Location = New Point(71, 65)
             StringTable.Name = "StringTable"
             StringTable.Size = New Size(690, 429)
@@ -672,8 +672,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="ResourceFile">The ResourceFile to load.</param>
         Public Sub SetResourceFile(ResourceFile As ResourceFile)
-            Debug.Assert(Not (ResourceFile Is Nothing))
-            If Not _resourceFile Is Nothing Then
+            Debug.Assert(ResourceFile IsNot Nothing)
+            If _resourceFile IsNot Nothing Then
                 _resourceFile.Dispose()
             End If
             _resourceFile = ResourceFile
@@ -978,7 +978,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             'Make sure current edits are saved
             CommitPendingChanges()
 
-            Using (New WaitCursor)
+            Using New WaitCursor
                 'Switch to the new category
                 _currentCategory = NewCategory
 
@@ -2197,7 +2197,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Dim value As Object = cell.Value
                     If value IsNot Nothing Then
                         Try
-                            Return (Not String.IsNullOrEmpty(value.ToString()))
+                            Return Not String.IsNullOrEmpty(value.ToString())
                         Catch ex As Exception
                         End Try
                     End If
@@ -3457,7 +3457,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             'If the file was opened in an intrinsic editor (as opposed to an external editor), then WindowFrame will 
             '  have a non-Nothing value.
-            If Not WindowFrame Is Nothing Then
+            If WindowFrame IsNot Nothing Then
                 'Okay, it was an intrinsic editor.  We are responsible for making sure the editor is visible.
                 VSErrorHandler.ThrowOnFailure(WindowFrame.Show())
             End If
@@ -4419,7 +4419,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="DefaultPath">The path to start out with.</param>
         ''' <returns>The selected folder, or Nothing if the user canceled.</returns>
         Public Function ShowFolderBrowserDialog(ByRef UserCanceled As Boolean, Title As String, ShowNewFolderButton As Boolean, Optional DefaultPath As String = Nothing) As String
-            Using (DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware))
+            Using DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware)
                 UserCanceled = False
                 Dim Dialog As New FolderBrowserDialog
                 With Dialog
@@ -5024,7 +5024,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Project"></param>
         Private Function IsVBProject(Project As Project) As Boolean
-            Return Project IsNot Nothing AndAlso (New Guid(Project.Kind).Equals(_projectGuid_VB))
+            Return Project IsNot Nothing AndAlso New Guid(Project.Kind).Equals(_projectGuid_VB)
         End Function
 
         ''' <summary>

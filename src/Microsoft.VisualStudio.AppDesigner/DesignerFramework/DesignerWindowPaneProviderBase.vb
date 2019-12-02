@@ -191,7 +191,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
                         _view = Nothing
                         DisableUndo()
                         Dim ds As DesignSurface = Surface
-                        If (ds IsNot Nothing) Then
+                        If ds IsNot Nothing Then
                             RemoveHandler ds.Loaded, AddressOf OnLoaded
                             RemoveHandler ds.Unloading, AddressOf OnSurfaceUnloading
                             RemoveHandler ds.Unloaded, AddressOf OnSurfaceUnloaded
@@ -200,7 +200,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
 
                     MyBase.Dispose(disposing)
                 Finally
-                    If (disposing AndAlso disposedView IsNot Nothing) Then
+                    If disposing AndAlso disposedView IsNot Nothing Then
                         RemoveHandler disposedView.GotFocus, AddressOf OnViewFocus
                         disposedView.Dispose()
                     End If
@@ -219,12 +219,12 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
                 ' IOleUndoManager are both present.  If they're not,
                 ' don't hook up undo because it will throw anyway.
                 '
-                If (GetService(GetType(ComponentSerializationService)) IsNot Nothing) Then
+                If GetService(GetType(ComponentSerializationService)) IsNot Nothing Then
                     _undoEngine = New OleUndoEngine(Surface)
                     AddHandler _undoEngine.Undoing, AddressOf OnUndoing
                     AddHandler _undoEngine.Undone, AddressOf OnUndone
                     Dim c As IServiceContainer = DirectCast(GetService(GetType(IServiceContainer)), IServiceContainer)
-                    If (c IsNot Nothing) Then
+                    If c IsNot Nothing Then
                         c.AddService(GetType(UndoEngine), _undoEngine)
                     End If
                 End If
@@ -249,7 +249,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
                 MyBase.OnCreate()
 
                 _host = DirectCast(GetService(GetType(IDesignerHost)), IDesignerHost)
-                If (_host IsNot Nothing AndAlso Not _host.Loading) Then
+                If _host IsNot Nothing AndAlso Not _host.Loading Then
                     EnableUndo()
                 End If
 
@@ -295,7 +295,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
             ''' <param name="sender"></param>
             ''' <param name="e"></param>
             Private Sub OnSurfaceUnloaded(sender As Object, e As EventArgs)
-                If (_view IsNot Nothing AndAlso _view.Controls.Count > 0) Then
+                If _view IsNot Nothing AndAlso _view.Controls.Count > 0 Then
                     Dim ctrl(_view.Controls.Count - 1) As Control
                     _view.Controls.CopyTo(ctrl, 0)
                     For Each c As Control In ctrl
@@ -311,7 +311,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
             ''' <param name="sender"></param>
             ''' <param name="e"></param>
             Private Sub OnUndoing(sender As Object, e As EventArgs)
-                If (_view IsNot Nothing AndAlso _view.IsHandleCreated) Then
+                If _view IsNot Nothing AndAlso _view.IsHandleCreated Then
                     NativeMethods.SendMessage(New HandleRef(_view, _view.Handle), NativeMethods.WM_SETREDRAW, 0, 0)
                     _undoCursor = Cursor.Current
                     Cursor.Current = Cursors.WaitCursor
@@ -325,7 +325,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
             ''' <param name="sender"></param>
             ''' <param name="e"></param>
             Private Sub OnUndone(sender As Object, e As EventArgs)
-                If (_view IsNot Nothing AndAlso _view.IsHandleCreated) Then
+                If _view IsNot Nothing AndAlso _view.IsHandleCreated Then
                     NativeMethods.SendMessage(New HandleRef(_view, _view.Handle), NativeMethods.WM_SETREDRAW, 1, 0)
                     _view.Invalidate(True)
                     Cursor.Current = _undoCursor
@@ -341,7 +341,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
             ''' <param name="e"></param>
             Private Sub OnViewFocus(sender As Object, e As EventArgs)
                 Common.Switches.TracePDFocus(TraceLevel.Warning, "DeferrableWindowPaneProviderServiceBase.DesignerWindowPaneBase.m_View.OnGotFocus (OnViewFocus)")
-                If (_view IsNot Nothing AndAlso _view.Controls.Count > 0) Then
+                If _view IsNot Nothing AndAlso _view.Controls.Count > 0 Then
                     'The view's first child should be the designer root view.  Since
                     '  our m_View is simply a Control and not a container control, we
                     '  need to forward focus manually to the designer's root view, otherwise
@@ -378,13 +378,13 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
                     _loadError = False
                 Catch loadError As Exception
 
-                    Do While (TypeOf loadError Is TargetInvocationException AndAlso loadError.InnerException IsNot Nothing)
+                    Do While TypeOf loadError Is TargetInvocationException AndAlso loadError.InnerException IsNot Nothing
                         loadError = loadError.InnerException
                     Loop
 
                     Dim message As String = loadError.Message
 
-                    If (message Is Nothing OrElse message.Length = 0) Then
+                    If message Is Nothing OrElse message.Length = 0 Then
                         message = loadError.ToString()
                     End If
 
@@ -395,7 +395,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
                     _loadError = True
                 End Try
 
-                If (viewChild Is Nothing) Then
+                If viewChild Is Nothing Then
                     Dim er As String = My.Resources.Designer.DFX_WindowPane_UnknownError
                     Dim errors As ArrayList = New ArrayList From {
                         er

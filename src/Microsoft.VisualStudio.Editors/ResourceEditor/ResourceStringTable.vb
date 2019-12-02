@@ -907,7 +907,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Row"></param>
         Public Function GetResourceFromRow(Row As DataGridViewRow) As Resource
-            Debug.Assert(Not Row Is Nothing, "Row is Nothing")
+            Debug.Assert(Row IsNot Nothing, "Row is Nothing")
             Debug.Assert(Row.Index >= 0 AndAlso Row.Index < Rows.Count, "Huh?")
             Return GetResourceFromRowIndex(Row.Index, True)
         End Function
@@ -1473,7 +1473,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="columnIndex"></param>
         ''' <param name="inReverseOrder"></param>
         Private Sub SortOnColumn(columnIndex As Integer, inReverseOrder As Boolean)
-            Using (New WaitCursor)
+            Using New WaitCursor
                 Dim currentCellColumnIndex As Integer = -1
                 Dim currentResource As Resource = Nothing
                 Dim selectedResources() As Resource
@@ -1743,13 +1743,13 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 ' we want to let the multiline editbox to handle up/down key, when the current position is not the first/last line in the control
                 '  The default logic of this editbox doesn't handle wrapped text correctly.
                 Dim firstCharIndexInCurrentLine As Integer = GetFirstCharIndexOfCurrentLine()
-                Select Case (keyData And Keys.KeyCode)
+                Select Case keyData And Keys.KeyCode
                     Case Keys.Down
                         Dim currentLineNumber As Integer = GetLineFromCharIndex(firstCharIndexInCurrentLine)
                         ' GetFirstCharIndexFromLine will return -1 when the linenumber exceeds the number of lines in the control
-                        Return (GetFirstCharIndexFromLine(currentLineNumber + 1) > 0)
+                        Return GetFirstCharIndexFromLine(currentLineNumber + 1) > 0
                     Case Keys.Up
-                        Return (firstCharIndexInCurrentLine > 0)
+                        Return firstCharIndexInCurrentLine > 0
                 End Select
 
                 Return MyBase.EditingControlWantsInputKey(keyData, dataGridViewWantsInputKey)

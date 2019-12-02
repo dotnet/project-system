@@ -565,7 +565,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             MyBase.PostInitPage()
 
             'OutputPath browse button should only be enabled when the text box is enabled and Not ReadOnly
-            BuildOutputPathButton.Enabled = (BuildOutputPathTextBox.Enabled AndAlso Not BuildOutputPathTextBox.ReadOnly)
+            BuildOutputPathButton.Enabled = BuildOutputPathTextBox.Enabled AndAlso Not BuildOutputPathTextBox.ReadOnly
             EnableControl(RegisterForComInteropCheckBox, RegisterForComInteropSupported())
 
             'Populate Error/Warnings list
@@ -656,15 +656,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 #Region "Helper methods to map UI values to properties"
 
         Private Function IsOptionStrictOn() As Boolean
-            Return (_optionStrictOnText.Equals(CStr(OptionStrictComboBox.SelectedItem), StringComparison.Ordinal))
+            Return _optionStrictOnText.Equals(CStr(OptionStrictComboBox.SelectedItem), StringComparison.Ordinal)
         End Function
 
         Private Function IsOptionStrictOff() As Boolean
-            Return (_optionStrictOffText.Equals(CStr(OptionStrictComboBox.SelectedItem), StringComparison.Ordinal))
+            Return _optionStrictOffText.Equals(CStr(OptionStrictComboBox.SelectedItem), StringComparison.Ordinal)
         End Function
 
         Private Function IsOptionStrictCustom() As Boolean
-            Return (_optionStrictCustomText.Equals(CStr(OptionStrictComboBox.SelectedItem), StringComparison.Ordinal))
+            Return _optionStrictCustomText.Equals(CStr(OptionStrictComboBox.SelectedItem), StringComparison.Ordinal)
         End Function
 
         Private Function TreatAllWarningsAsErrors() As Boolean
@@ -1077,7 +1077,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If PropertyControlData.IsSpecialValue(value) Then
                 TargetCPUComboBox.SelectedIndex = -1
             Else
-                If (IsNothing(TryCast(value, String)) OrElse TryCast(value, String) = "") Then
+                If IsNothing(TryCast(value, String)) OrElse TryCast(value, String) = "" Then
                     TargetCPUComboBox.SelectedItem = AnyCPUPropertyValue
                 Else
                     TargetCPUComboBox.SelectedItem = TryCast(value, String)
@@ -1305,7 +1305,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             localEvidence.AddHostEvidence(New Security.Policy.Zone(Security.SecurityZone.MyComputer))
 
             Dim localPSet As Security.PermissionSet = Security.SecurityManager.GetStandardSandbox(localEvidence)
-            localPSet.RemovePermission((New Security.Permissions.ZoneIdentityPermission(Security.SecurityZone.MyComputer)).GetType())
+            localPSet.RemovePermission(New Security.Permissions.ZoneIdentityPermission(Security.SecurityZone.MyComputer).GetType())
 
             ' Return true if permission set that would be granted to code in
             ' target folder is equal (or greater than) that granted to local code.

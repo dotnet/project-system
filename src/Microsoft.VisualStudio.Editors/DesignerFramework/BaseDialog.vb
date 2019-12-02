@@ -85,8 +85,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 _uiService = CType(GetService(GetType(IUIService)), IUIService)
             End If
 
-            Using (DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware))
-                If Not (_uiService Is Nothing) Then
+            Using DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware)
+                If _uiService IsNot Nothing Then
                     Return _uiService.ShowDialog(Me)
                 Else
                     Return MyBase.ShowDialog()

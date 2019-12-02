@@ -73,7 +73,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
         Public Function Read2_MyApplicationData(isNullable As Boolean, checkType As Boolean) As MyApplicationData
             Dim xsiType As Xml.XmlQualifiedName = Nothing
-            If (checkType) Then xsiType = GetXsiType()
+            If checkType Then xsiType = GetXsiType()
 
             Dim isNull As Boolean = False
 
@@ -82,7 +82,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             End If
 
             If checkType Then
-                If isNull AndAlso Not (xsiType Is Nothing) Then
+                If isNull AndAlso xsiType IsNot Nothing Then
                     Return CType(ReadTypedNull(xsiType), MyApplicationData)
                 End If
                 If (xsiType Is Nothing) OrElse (CType(xsiType, Xml.XmlQualifiedName).Name = _id1_MyApplicationData AndAlso CType(xsiType, Xml.XmlQualifiedName).Namespace = _id2_Item) Then
@@ -118,19 +118,19 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
             While Reader.NodeType <> Xml.XmlNodeType.EndElement AndAlso Reader.NodeType <> Xml.XmlNodeType.None
                 If Reader.NodeType = System.Xml.XmlNodeType.Element Then
-                    If Not paramsRead(0) AndAlso (Reader.LocalName = _id3_MySubMain AndAlso Reader.NamespaceURI = _id2_Item) Then
+                    If Not paramsRead(0) AndAlso Reader.LocalName = _id3_MySubMain AndAlso Reader.NamespaceURI = _id2_Item Then
                         o.MySubMain = Xml.XmlConvert.ToBoolean(Reader.ReadElementString())
                         paramsRead(0) = True
 
-                    ElseIf Not paramsRead(1) AndAlso (Reader.LocalName = _id4_MainForm AndAlso Reader.NamespaceURI = _id2_Item) Then
+                    ElseIf Not paramsRead(1) AndAlso Reader.LocalName = _id4_MainForm AndAlso Reader.NamespaceURI = _id2_Item Then
                         o.MainFormNoRootNS = Reader.ReadElementString()
                         paramsRead(1) = True
 
-                    ElseIf Not paramsRead(2) AndAlso (Reader.LocalName = _id5_SingleInstance AndAlso Reader.NamespaceURI = _id2_Item) Then
+                    ElseIf Not paramsRead(2) AndAlso Reader.LocalName = _id5_SingleInstance AndAlso Reader.NamespaceURI = _id2_Item Then
                         o.SingleInstance = Xml.XmlConvert.ToBoolean(Reader.ReadElementString())
                         paramsRead(2) = True
 
-                    ElseIf Not paramsRead(3) AndAlso (Reader.LocalName = _id6_ShutdownMode AndAlso Reader.NamespaceURI = _id2_Item) Then
+                    ElseIf Not paramsRead(3) AndAlso Reader.LocalName = _id6_ShutdownMode AndAlso Reader.NamespaceURI = _id2_Item Then
                         o.ShutdownMode = Xml.XmlConvert.ToInt32(Reader.ReadElementString())
                         paramsRead(3) = True
 
@@ -263,7 +263,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
         Protected Overrides Sub Serialize(objectToSerialize As Object, writer As XmlSerializationWriter)
 
-            If Not (objectToSerialize Is Nothing) AndAlso Not Equals(objectToSerialize.GetType(), GetType(MyApplicationData)) Then
+            If objectToSerialize IsNot Nothing AndAlso Not Equals(objectToSerialize.GetType(), GetType(MyApplicationData)) Then
                 Debug.Fail("Cannot serialize object of type " + objectToSerialize.GetType().FullName + " with MyApplicationDataSerializer. Object of type " + GetType(MyApplicationDataSerializer).FullName + " expected.")
                 Throw New Package.InternalException()
             End If

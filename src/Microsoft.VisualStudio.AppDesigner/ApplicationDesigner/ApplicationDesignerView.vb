@@ -351,7 +351,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         If TypeOf obj Is IVsPersistDocData Then
                             Dim dirty As Integer
                             If VSErrorHandler.Succeeded(TryCast(obj, IVsPersistDocData).IsDocDataDirty(dirty)) Then
-                                Return (dirty <> 0)
+                                Return dirty <> 0
                             End If
                         ElseIf TypeOf obj Is IPersistFileFormat Then
                             Dim dirty As Integer

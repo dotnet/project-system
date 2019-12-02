@@ -166,7 +166,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
         Protected ReadOnly Property VsUIShellService As IVsUIShell
             Get
-                If (_uiShellService Is Nothing) Then
+                If _uiShellService Is Nothing Then
                     If Common.VBPackageInstance IsNot Nothing Then
                         _uiShellService = TryCast(Common.VBPackageInstance.GetService(GetType(IVsUIShell)), IVsUIShell)
                     ElseIf ServiceProvider IsNot Nothing Then
@@ -180,10 +180,10 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
         Protected ReadOnly Property VsUIShell2Service As IVsUIShell2
             Get
-                If (_uiShell2Service Is Nothing) Then
+                If _uiShell2Service Is Nothing Then
                     Dim VsUIShell = VsUIShellService
 
-                    If (VsUIShell IsNot Nothing) Then
+                    If VsUIShell IsNot Nothing Then
                         _uiShell2Service = TryCast(VsUIShell, IVsUIShell2)
                     End If
                 End If
@@ -194,10 +194,10 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
         Protected ReadOnly Property VsUIShell5Service As IVsUIShell5
             Get
-                If (_uiShell5Service Is Nothing) Then
+                If _uiShell5Service Is Nothing Then
                     Dim VsUIShell = VsUIShellService
 
-                    If (VsUIShell IsNot Nothing) Then
+                    If VsUIShell IsNot Nothing Then
                         _uiShell5Service = TryCast(VsUIShell, IVsUIShell5)
                     End If
                 End If

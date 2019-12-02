@@ -119,7 +119,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Friend ReadOnly Property RootComponent As ResourceEditorRootComponent
             Get
                 Dim Root As ResourceEditorRootComponent = CType(MyBase.Component, ResourceEditorRootComponent)
-                Debug.Assert(Not Root Is Nothing)
+                Debug.Assert(Root IsNot Nothing)
                 Return Root
             End Get
         End Property
@@ -448,7 +448,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                             _delayRegisteringViewHelper = True
 
                             ' VS Whidbey #260046 -- Make sure the control is created before calling Invoke/BeginInvoke                                                      
-                            If (_view.Created = False) Then
+                            If _view.Created = False Then
                                 _view.CreateControl()
                             End If
 

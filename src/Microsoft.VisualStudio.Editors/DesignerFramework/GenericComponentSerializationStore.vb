@@ -485,7 +485,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     Return Array.Empty(Of Byte)
                 Else
                     Dim MemoryStream As New MemoryStream
-                    Call (New BinaryFormatter()).Serialize(MemoryStream, [Object])
+                    Call New BinaryFormatter().Serialize(MemoryStream, [Object])
                     Return MemoryStream.ToArray()
                 End If
             End Function

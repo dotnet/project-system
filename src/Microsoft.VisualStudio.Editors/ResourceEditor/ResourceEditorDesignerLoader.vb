@@ -91,7 +91,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     '   and hook it up to the component)
                     Dim NewResourceEditorRoot As ResourceEditorRootComponent = CType(LoaderHost.CreateComponent(GetType(ResourceEditorRootComponent)), ResourceEditorRootComponent)
 
-                    Debug.Assert(Not NewResourceEditorRoot Is Nothing, "should have thrown on failure")
+                    Debug.Assert(NewResourceEditorRoot IsNot Nothing, "should have thrown on failure")
 
                     'Figure out the base path to use for relative links in the resx file.  This should be the directory where the resx file
                     '  lives.
