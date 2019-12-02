@@ -880,7 +880,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Private Sub RemoveSelectedReference()
-            Dim theVSProject As VSLangProj.VSProject = CType(DTEProject.Object, VSLangProj.VSProject)
             Dim ItemIndices As ListView.SelectedIndexCollection = ReferenceList.SelectedIndices
             Dim ItemIndex As Integer
             Dim ref As ReferenceComponent

@@ -87,7 +87,6 @@ namespace Microsoft.VisualStudio.Threading.Tasks
             var tasks = new List<Task>();
             for (int i = 0; i < NumberOfTasks; i++)
             {
-                int num = i;
                 tasks.Add(sequencer.ExecuteTask(async () =>
                 {
                     static async Task func()

@@ -284,7 +284,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="Value">The value to turn into a displayable string.</param>
         Public Function DebugToString(Value As Object) As String
 #If DEBUG Then
-            Dim StringValue As String = ""
             Try
                 If Value Is Nothing Then
                     Return "<Nothing>"

@@ -449,7 +449,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 // See if the cache file needs refreshing and if so, kick off a task to do so
                 if (_versionDataCacheFile != null && _versionDataCacheFile.CacheFileIsStale())
                 {
-                    Task noWait = _versionDataCacheFile.TryToUpdateCacheFileAsync(() =>
+                    _ = _versionDataCacheFile.TryToUpdateCacheFileAsync(() =>
                     {
                         // Invalidate the in-memory cached data on success
                         _timeCurVersionDataLastUpdatedUtc = DateTime.MinValue;

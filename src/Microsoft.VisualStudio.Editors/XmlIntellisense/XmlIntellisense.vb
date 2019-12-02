@@ -294,7 +294,6 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         '   Called from CompileCallback when schemas need to be compiled
         '--------------------------------------------------------------------------
         Private Shared Sub Compile(ProjectSchemas As IList(Of XmlSchemaReference), data As XmlIntellisenseSchemasData)
-            Dim ExcludeDirectories As Dictionary(Of Uri, Uri) = data.ExcludeDirectories
 
             ' Now signal that we are not done with compilation yet
             data.SchemasCompiledEvent.Reset()

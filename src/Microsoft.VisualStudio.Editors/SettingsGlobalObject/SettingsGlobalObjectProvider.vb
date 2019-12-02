@@ -1877,7 +1877,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                         appConfigDocData.CheckoutFile(_provider)
 
                         Using appConfigDocData
-                            Using appConfigChangeMarker As IDisposable = appConfigDocData.CreateChangeMarker()
+                            Using appConfigDocData.CreateChangeMarker()
                                 ' let's serialize the contents of this guy...
                                 AppConfigSerializer.Serialize(Settings,
                                                             _typeCache,

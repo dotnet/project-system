@@ -132,8 +132,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         [Fact]
         public async Task SingleDesignTimeInput_AnotherAdded_OneInEachChange()
         {
-            var inputs = new DesignTimeInputs(new string[] { "File1.cs" }, new string[] { });
-
             await VerifyOutput(2, () =>
             {
                 SendDesignTimeInputs(new DesignTimeInputs(new string[] { "File1.cs" }, new string[] { }));

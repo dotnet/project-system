@@ -510,7 +510,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         '''   the property is not set in the xaml, an empty string is returned.
         ''' </summary>
         Public Function GetApplicationPropertyValue(propertyName As String) As String
-            Using lock As New BufferLock(_vsTextLines, Me)
+            Using New BufferLock(_vsTextLines, Me)
                 Dim reader As XmlTextReader = CreateXmlTextReader()
                 Dim prop As XamlProperty = FindApplicationPropertyInXaml(reader, propertyName)
                 If prop IsNot Nothing Then
@@ -811,7 +811,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         '''   correct position.
         ''' </summary>
         Private Function FindLocationToAddNewApplicationAttribute() As Location
-            Using lock As New BufferLock(_vsTextLines, Me)
+            Using New BufferLock(_vsTextLines, Me)
                 Dim reader As XmlTextReader = CreateXmlTextReader()
                 MoveToApplicationRootElement(reader)
                 Return FindClosingAngleBracket(New Location(reader))
@@ -827,7 +827,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                 value = ""
             End If
 
-            Using lock As New BufferLock(_vsTextLines, Me)
+            Using New BufferLock(_vsTextLines, Me)
                 Dim reader As XmlTextReader = CreateXmlTextReader()
                 Dim prop As XamlProperty = FindApplicationPropertyInXaml(reader, propertyName)
 
@@ -1005,7 +1005,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         '''   problems are found.
         ''' </summary>
         Public Sub VerifyAppXamlIsValidAndThrowIfNot()
-            Using lock As New BufferLock(_vsTextLines, Me)
+            Using New BufferLock(_vsTextLines, Me)
                 Dim reader As XmlTextReader = CreateXmlTextReader()
                 MoveToApplicationRootElement(reader)
 

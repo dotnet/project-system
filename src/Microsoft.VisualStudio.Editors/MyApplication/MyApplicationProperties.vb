@@ -763,7 +763,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <remarks>Caller is responsible for catching exceptions</remarks>
         Private Shared Sub SetCustomTool(ProjectItem As ProjectItem, Value As String)
             Dim ToolProperty As [Property] = GetProjectItemProperty(ProjectItem, PROJECTPROPERTY_CUSTOMTOOL)
-            Dim NamespaceProperty As [Property] = GetProjectItemProperty(ProjectItem, PROJECTPROPERTY_CUSTOMTOOLNAMESPACE)
 
             Try
                 If ToolProperty Is Nothing Then
@@ -886,7 +885,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Const Const_MyEventsClassName As String = "MyApplication"
             Const Const_MyEventsDefaultEventHandlerName As String = "MyApplication_StartUp"
             Const Const_MyEventsDefaultEventName As String = "Me.StartUp"
-            Dim Const_MyEventsDefaultEventEventArgsType As Type = GetType(ApplicationServices.StartupEventArgs)
 
             'Search for the Application.vb (used to be MyEvents.vb) file
             Dim FileIsNew As Boolean

@@ -122,9 +122,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
                                     'We hit the last tabbable control in the property page designer, set focus to the first (or last)
                                     '  control in the property page itself.
-                                    Dim PropPageDesignerHwnd As IntPtr = NativeMethods.GetWindow(View.Handle, Win32Constant.GW_CHILD)
-                                    'Dim NextTabStop As IntPtr
-
                                     Dim PPDView As PropPageDesignerView = GetPropPageDesignerView()
                                     If PPDView Is Nothing Then
                                         Debug.Fail("Couldn't find the property page designer view")

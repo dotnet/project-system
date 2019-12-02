@@ -1007,7 +1007,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Dim StringResourceEditor As ResourceTypeEditorStringBase = DirectCast(Resource.ResourceTypeEditor, ResourceTypeEditorStringBase)
                     e.ErrorText = ResourceFile.GetResourceTaskMessage(Resource, ResourceFile.ResourceTaskType.CantInstantiateResource)
                     Try
-                        Dim value As Object = StringResourceEditor.StringGetFormattedCellValue(Resource, Resource.GetValue())
+                        StringResourceEditor.StringGetFormattedCellValue(Resource, Resource.GetValue())
                     Catch ex As Exception When ReportWithoutCrash(ex, NameOf(OnCellErrorTextNeeded), NameOf(ResourceStringTable))
                         If e.ErrorText = "" Then
                             'If there wasn't already an error message stored, use the exception we just got.

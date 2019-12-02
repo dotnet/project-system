@@ -220,7 +220,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             If PropertyName = "RootNamespace" Then
                 'The root namespace has changed.  We have changes to make to app.config files.
-                Dim NewRootNamespace As String = CurrentRootNamespace()
                 OnRootNamespaceChanged(DTEProject, ServiceProvider, DirectCast(OldValue, String), DirectCast(NewValue, String))
             End If
         End Sub

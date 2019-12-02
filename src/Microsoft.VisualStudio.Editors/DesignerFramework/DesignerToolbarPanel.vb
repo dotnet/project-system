@@ -167,8 +167,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="borders"></param>
         Public Function GetBorder(borders() As OLE.Interop.RECT) As Integer Implements IVsToolWindowToolbar.GetBorder
-            Dim rect As Drawing.Rectangle = Bounds
-
             Debug.Assert(borders.Length = 1)
             borders(0).left = ClientRectangle.Left
             borders(0).top = ClientRectangle.Top

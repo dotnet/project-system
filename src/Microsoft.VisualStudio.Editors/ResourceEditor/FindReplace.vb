@@ -493,7 +493,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Dim charArray As Char() = SearchText.ToCharArray()
             Dim textArray As UShort() = New UShort(charArray.Length - 1) {}
             charArray.CopyTo(textArray, 0)
-            Dim hr As Integer = Helper.FindInText(SearchPattern, Nothing, grfFindOptions, CUInt(BufferFlags), CUInt(textArray.Length), textArray, iFound, cchFound, bstrReplaceText, fFound)
+            Helper.FindInText(SearchPattern, Nothing, grfFindOptions, CUInt(BufferFlags), CUInt(textArray.Length), textArray, iFound, cchFound, bstrReplaceText, fFound)
 
             Return fFound <> 0
         End Function

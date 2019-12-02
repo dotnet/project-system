@@ -404,7 +404,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
                             'Add the Document Cookie to our list
                             Dim CookieObj As Object = Nothing
-                            Dim DocDataObj As Object = Nothing
                             Dim EditorCaptionObject As Object = Nothing
                             Dim DocViewObject As Object = Nothing
 
@@ -904,7 +903,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Protected Overridable Sub CloseFrameInternal(WindowFrame As IVsWindowFrame, flags As __FRAMECLOSE)
             If WindowFrame IsNot Nothing Then
                 UnadviseWindowFrameNotify(WindowFrame)
-                Dim hr As Integer = WindowFrame.CloseFrame(Common.NoOverflowCUInt(flags))
+                WindowFrame.CloseFrame(Common.NoOverflowCUInt(flags))
             End If
         End Sub
 
@@ -941,7 +940,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 Else
                     Common.Switches.TracePDFocus(TraceLevel.Warning, "ApplicationDesignerPanel_VisibleChanged - Visible=False => WindowFrame.Hide()")
                     Common.Switches.TracePDPerf("ApplicationDesignerPanel_VisibleChanged - Visible=False => WindowFrame.Hide()")
-                    Dim hr As Integer = VsWindowFrame.Hide()
+                    VsWindowFrame.Hide()
                     _windowFrameShown = False
                 End If
             End If

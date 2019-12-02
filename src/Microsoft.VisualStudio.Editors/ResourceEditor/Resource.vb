@@ -2665,7 +2665,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 '  was not valid for that enum.  Let's catch that up front before setting the value into the
                 '  resource, or it will be too late and cause problems.
                 Try
-                    Dim DummyString As String = StringResourceEditor.StringGetFormattedCellValue(Me, ConvertedValue)
+                    StringResourceEditor.StringGetFormattedCellValue(Me, ConvertedValue)
                 Catch ex As Exception When ReportWithoutCrash(ex, NameOf(ValidateValueAsString), NameOf(Resource))
                     FailureException = ex
                 End Try
