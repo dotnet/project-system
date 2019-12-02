@@ -54,7 +54,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         '''  Return true if the page can be resized...
         ''' </summary>
-        Public Overrides ReadOnly Property PageResizable() As Boolean
+        Public Overrides ReadOnly Property PageResizable As Boolean
             Get
                 Return True
             End Get

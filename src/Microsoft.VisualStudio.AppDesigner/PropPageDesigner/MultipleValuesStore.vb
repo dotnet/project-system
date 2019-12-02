@@ -11,7 +11,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
     ''' for different configurations, to enable undo/redo in "All configurations" and 
     ''' "All Platforms" modes.
     ''' </summary>
-    <Serializable()>
+    <Serializable>
     Public Class MultipleValuesStore
 
         'Note: the sizes of these arrays are all the same

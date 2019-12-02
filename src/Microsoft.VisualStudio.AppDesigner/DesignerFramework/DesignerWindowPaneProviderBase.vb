@@ -103,7 +103,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
             ''' <summary>
             ''' Returns the view control for the window pane.
             ''' </summary>
-            Protected ReadOnly Property View() As Control
+            Protected ReadOnly Property View As Control
                 Get
                     Return _view
                 End Get
@@ -135,7 +135,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
             ''' <summary>
             ''' Retrieves our view.
             ''' </summary>
-            Public Overrides ReadOnly Property Window() As IWin32Window
+            Public Overrides ReadOnly Property Window As IWin32Window
                 Get
                     ' This should always happen, but in case we never
                     ' got a load event we check.  We might not receive
@@ -470,7 +470,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
                 ''' <summary>
                 ''' Overrides CreateParams to make sure it is created as a child window
                 ''' </summary>
-                Protected Overrides ReadOnly Property CreateParams() As CreateParams
+                Protected Overrides ReadOnly Property CreateParams As CreateParams
                     Get
                         Dim cp As CreateParams = MyBase.CreateParams()
                         cp.Style = cp.Style Or Constants.WS_CHILD Or Constants.WS_CLIPSIBLINGS

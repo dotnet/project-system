@@ -117,7 +117,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             CommonControls = New CommonPageControls(
                 IconCombobox, IconLabel, IconPicturebox)
         End Sub
-        Protected Overrides ReadOnly Property ControlData() As PropertyControlData()
+        Protected Overrides ReadOnly Property ControlData As PropertyControlData()
             Get
                 Dim ControlsThatDependOnStartupObjectProperty As Control() = {
                     StartupObjectLabel, UseApplicationFrameworkCheckBox, WindowsAppGroupBox
@@ -207,7 +207,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
 
-        Private ReadOnly Property MyApplicationPropertiesSupported() As Boolean
+        Private ReadOnly Property MyApplicationPropertiesSupported As Boolean
             Get
                 Return MyApplicationProperties IsNot Nothing
             End Get
@@ -218,7 +218,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Gets the MyApplication.MyApplicationProperties object returned by the project system (which the project system creates by calling into us)
         ''' </summary>
         ''' <value>The value of the MyApplication property, or else Nothing if it is not supported.</value>
-        Private ReadOnly Property MyApplicationProperties() As IMyApplicationPropertiesInternal
+        Private ReadOnly Property MyApplicationProperties As IMyApplicationPropertiesInternal
             Get
                 Debug.Assert(Implies(_myApplicationPropertiesCache IsNot Nothing, _isMyApplicationPropertiesCached))
                 Debug.Assert(Implies(_myApplicationPropertiesNotifyPropertyChanged IsNot Nothing, _isMyApplicationPropertiesCached))

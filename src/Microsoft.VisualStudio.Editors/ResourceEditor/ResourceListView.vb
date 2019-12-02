@@ -226,7 +226,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' The current view of the listview (in ResourceView terms - shadows the
         '''   base ListView's View property)
         ''' </summary>
-        Public Shadows Property View() As ResourceView
+        Public Shadows Property View As ResourceView
             Get
                 Select Case MyBase.View
                     Case Windows.Forms.View.Details
@@ -239,7 +239,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         Debug.Fail("MyBase.View should not have been any other value")
                 End Select
             End Get
-            Set(Value As ResourceView)
+            Set
                 Select Case Value
                     Case ResourceView.Details
                         InitializeColumns()
@@ -259,11 +259,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' If this is turned on, attempted retrieval of listview items will simply return
         '''   a blank entry.  This is useful when the resource editor is being disposed of.
         ''' </summary>
-        Public Property DisableItemRetrieval() As Boolean
+        Public Property DisableItemRetrieval As Boolean
             Get
                 Return _disableItemRetrieval
             End Get
-            Set(Value As Boolean)
+            Set
                 _disableItemRetrieval = Value
             End Set
         End Property
@@ -271,7 +271,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Gets the Parent of this ResourceListView control, which must be an instance of ResourceEditorView.
         ''' </summary>
-        Private ReadOnly Property ParentView() As ResourceEditorView
+        Private ReadOnly Property ParentView As ResourceEditorView
             Get
                 If TypeOf Parent Is ResourceEditorView Then
                     Return DirectCast(Parent, ResourceEditorView)
@@ -287,7 +287,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Gets the ResourceFile that was used to populate this listview.
         ''' </summary>
         ''' <remarks>Can be called only after population</remarks>
-        Private ReadOnly Property ResourceFile() As ResourceFile
+        Private ReadOnly Property ResourceFile As ResourceFile
             Get
                 Debug.Assert(_resourceFile IsNot Nothing, "Has Populate not yet been called?  m_ResourceFile is nothing")
                 Return _resourceFile
@@ -1417,11 +1417,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <summary>
             ''' which column is used to sort the list 
             ''' </summary>
-            Friend Property ColumnIndex() As Integer
+            Friend Property ColumnIndex As Integer
                 Get
                     Return _columnIndex
                 End Get
-                Set(value As Integer)
+                Set
                     _columnIndex = value
                 End Set
             End Property
@@ -1429,11 +1429,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <summary>
             ''' whether it is in reverseOrder
             ''' </summary>
-            Friend Property InReverseOrder() As Boolean
+            Friend Property InReverseOrder As Boolean
                 Get
                     Return _reverseOrder
                 End Get
-                Set(value As Boolean)
+                Set
                     _reverseOrder = value
                 End Set
             End Property

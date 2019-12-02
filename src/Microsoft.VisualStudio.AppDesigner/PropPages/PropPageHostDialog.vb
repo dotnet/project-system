@@ -22,7 +22,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Gets the F1 keyword to push into the user context for this property page
         ''' </summary>
-        Protected Overrides Property F1Keyword() As String
+        Protected Overrides Property F1Keyword As String
             Get
                 Dim keyword As String = MyBase.F1Keyword
                 If String.IsNullOrEmpty(keyword) AndAlso _propPage IsNot Nothing Then
@@ -30,16 +30,16 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 End If
                 Return keyword
             End Get
-            Set(Value As String)
+            Set
                 MyBase.F1Keyword = Value
             End Set
         End Property
 
-        Public Property PropPage() As PropPageUserControlBase
+        Public Property PropPage As PropPageUserControlBase
             Get
                 Return _propPage
             End Get
-            Set(Value As PropPageUserControlBase)
+            Set
                 SuspendLayout()
                 If _propPage IsNot Nothing Then
                     'Remove previous page if any

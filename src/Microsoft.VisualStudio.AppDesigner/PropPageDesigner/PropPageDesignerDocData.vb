@@ -60,7 +60,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Creates VsTextBuffer if necessary and returns the instance of VsTextBuffer
         ''' </summary>
-        Private ReadOnly Property VsTextStream() As IVsTextBuffer
+        Private ReadOnly Property VsTextStream As IVsTextBuffer
             Get
                 If _vsTextBuffer IsNot Nothing Then
                     Return _vsTextBuffer

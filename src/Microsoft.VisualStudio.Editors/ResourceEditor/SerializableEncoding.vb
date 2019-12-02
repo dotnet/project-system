@@ -15,7 +15,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     '''   property on Resource for text files.  The Undo engine requires all the properties to be serializable, and 
     '''   System.Text.Encoding is not.
     ''' </summary>
-    <Serializable()>
+    <Serializable>
     Friend NotInheritable Class SerializableEncoding
         Implements ISerializable
 
@@ -51,11 +51,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Returns/sets the encoding wrapped by this class.  Nothing is an okay value (indicates a default encoding).
         ''' </summary>
-        Public Property Encoding() As Encoding
+        Public Property Encoding As Encoding
             Get
                 Return _encoding
             End Get
-            Set(Value As Encoding)
+            Set
                 _encoding = Encoding
             End Set
         End Property

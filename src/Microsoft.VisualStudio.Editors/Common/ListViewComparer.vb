@@ -23,11 +23,11 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <summary>
         '''  Which column should be used to sort the list. Start from 0
         ''' </summary>
-        Public Property SortColumn() As Integer
+        Public Property SortColumn As Integer
             Get
                 Return _sortColumn
             End Get
-            Set(value As Integer)
+            Set
                 _sortColumn = value
             End Set
         End Property
@@ -35,11 +35,11 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <summary>
         '''  which order, Ascending or Descending
         ''' </summary>
-        Public Property Sorting() As SortOrder
+        Public Property Sorting As SortOrder
             Get
                 Return _sorting
             End Get
-            Set(value As SortOrder)
+            Set
                 _sorting = value
             End Set
         End Property

@@ -55,7 +55,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
         End Sub
 
-        Public Overrides ReadOnly Property EditorView() As Object
+        Public Overrides ReadOnly Property EditorView As Object
             Get
                 Return Me
             End Get
@@ -125,7 +125,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             End Select
         End Sub
 
-        Public Overrides ReadOnly Property Window() As IWin32Window
+        Public Overrides ReadOnly Property Window As IWin32Window
             Get
                 Return _view
             End Get
@@ -286,7 +286,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         End Sub
 
 
-        Public ReadOnly Property AppDesignerView() As ApplicationDesignerView
+        Public ReadOnly Property AppDesignerView As ApplicationDesignerView
             Get
                 If _view IsNot Nothing AndAlso _view.Controls.Count > 0 Then
                     Return TryCast(_view.Controls(0), ApplicationDesignerView)
@@ -452,7 +452,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Retrieves the IVsUIShell service
         ''' </summary>
-        Public ReadOnly Property VsUIShellService() As IVsUIShell
+        Public ReadOnly Property VsUIShellService As IVsUIShell
             Get
                 If (_uiShellService Is Nothing) Then
                     If Common.VBPackageInstance IsNot Nothing Then
@@ -469,7 +469,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Retrieves the IVsUIShell2 service
         ''' </summary>
-        Public ReadOnly Property VsUIShell2Service() As IVsUIShell2
+        Public ReadOnly Property VsUIShell2Service As IVsUIShell2
             Get
                 If (_uiShell2Service Is Nothing) Then
                     Dim VsUiShell As IVsUIShell = VsUIShellService
@@ -485,7 +485,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Retrieves the IVsUIShell5 service
         ''' </summary>
-        Public ReadOnly Property VsUIShell5Service() As IVsUIShell5
+        Public ReadOnly Property VsUIShell5Service As IVsUIShell5
             Get
                 If (_uiShell5Service Is Nothing) Then
                     Dim VsUiShell As IVsUIShell = VsUIShellService

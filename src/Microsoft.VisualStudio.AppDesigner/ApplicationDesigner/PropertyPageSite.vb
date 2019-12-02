@@ -55,11 +55,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' The service provider to delegate to when responding to QueryService requests (for both
         '''   native and managed IServiceProvider).
         ''' </summary>
-        Public Property BackingServiceProvider() As IServiceProvider
+        Public Property BackingServiceProvider As IServiceProvider
             Get
                 Return _backingServiceProvider
             End Get
-            Set(value As IServiceProvider)
+            Set
 #If DEBUG Then
                 If value IsNot Nothing Then
                     Dim NativeServiceProvider As OleInterop.IServiceProvider = TryCast(value.GetService(GetType(OleInterop.IServiceProvider)), OleInterop.IServiceProvider)
@@ -79,16 +79,16 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''   point or another.  The flag will have to be set to False when the project designer is saved, because it
         '''   won't normally be set to False by the page.
         ''' </summary>
-        Public Property HasBeenSetDirty() As Boolean
+        Public Property HasBeenSetDirty As Boolean
             Get
                 Return _hasBeenSetDirty
             End Get
-            Set(value As Boolean)
+            Set
                 _hasBeenSetDirty = value
             End Set
         End Property
 
-        Friend ReadOnly Property Owner() As IPropertyPageSiteOwner
+        Friend ReadOnly Property Owner As IPropertyPageSiteOwner
             Get
                 Return _appDesView
             End Get

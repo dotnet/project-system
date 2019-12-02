@@ -48,7 +48,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Must overridde the base.  Be sure to use the same GUID on the GUID attribute
         '''    attached to the inheriting class.
         ''' </remarks>
-        Protected Overrides ReadOnly Property EditorGuid() As Guid
+        Protected Overrides ReadOnly Property EditorGuid As Guid
             Get
                 Return New Guid(ResourceEditor_EditorGuid)
             End Get
@@ -58,7 +58,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Provides the (constant) GUID for the command UI.
         ''' </summary>
-        Protected Overrides ReadOnly Property CommandUIGuid() As Guid
+        Protected Overrides ReadOnly Property CommandUIGuid As Guid
             Get
                 'This is required for key bindings hook-up to work properly.
                 Return Constants.MenuConstants.GUID_RESXEditorCommandUI

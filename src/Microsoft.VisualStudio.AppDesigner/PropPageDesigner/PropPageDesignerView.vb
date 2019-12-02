@@ -295,7 +295,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Get DesignerHost
         ''' </summary>
-        Public ReadOnly Property DesignerHost() As IDesignerHost
+        Public ReadOnly Property DesignerHost As IDesignerHost
             Get
                 Return TryCast(GetService(GetType(IDesignerHost)), IDesignerHost)
             End Get
@@ -305,18 +305,18 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Property page we host
         ''' </summary>
-        Public ReadOnly Property PropPage() As OleInterop.IPropertyPage
+        Public ReadOnly Property PropPage As OleInterop.IPropertyPage
             Get
                 Return _loadedPage
             End Get
         End Property
 
         Private _isConfigPage As Boolean
-        Public Property IsConfigPage() As Boolean
+        Public Property IsConfigPage As Boolean
             Get
                 Return _isConfigPage
             End Get
-            Set(Value As Boolean)
+            Set
                 _isConfigPage = Value
             End Set
         End Property
@@ -324,7 +324,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Retrieves the IVsUIShell service
         ''' </summary>
-        Private ReadOnly Property VsUIShellService() As IVsUIShell
+        Private ReadOnly Property VsUIShellService As IVsUIShell
             Get
                 If (_uiShellService Is Nothing) Then
                     If VBPackageInstance IsNot Nothing Then
@@ -341,7 +341,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Retrieves the IVsUIShell5 service
         ''' </summary>
-        Private ReadOnly Property VsUIShell5Service() As IVsUIShell5
+        Private ReadOnly Property VsUIShell5Service As IVsUIShell5
             Get
                 If (_uiShell5Service Is Nothing) Then
                     Dim VsUiShell As IVsUIShell = VsUIShellService
@@ -357,7 +357,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
         Private _dteProject As EnvDTE.Project
 
-        Public ReadOnly Property DTEProject() As EnvDTE.Project
+        Public ReadOnly Property DTEProject As EnvDTE.Project
             Get
                 Return _dteProject
             End Get
@@ -368,7 +368,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' True iff the property page is hosted through native SetParent and not as a Windows Form child control.
         ''' Returns False if the property page is not currently activated
         ''' </summary>
-        Public ReadOnly Property IsNativeHostedPropertyPageActivated() As Boolean
+        Public ReadOnly Property IsNativeHostedPropertyPageActivated As Boolean
             Get
                 Return _isPageActivated AndAlso _isNativeHostedPropertyPage
             End Get
@@ -386,7 +386,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
 
         Private _vsCfgProvider As IVsCfgProvider2
-        Private ReadOnly Property VsCfgProvider() As IVsCfgProvider2
+        Private ReadOnly Property VsCfgProvider As IVsCfgProvider2
             Get
                 If _vsCfgProvider Is Nothing Then
                     Dim Value As Object = Nothing
@@ -844,7 +844,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Pick font to use in this dialog page
         ''' </summary>
-        Private ReadOnly Property GetDialogFont() As Font
+        Private ReadOnly Property GetDialogFont As Font
             Get
                 Dim uiSvc As IUIService = CType(GetService(GetType(IUIService)), IUIService)
                 If uiSvc IsNot Nothing Then

@@ -25,11 +25,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             RaiseEvent EditXamlClicked()
         End Sub
 
-        Public Property ErrorText() As String
+        Public Property ErrorText As String
             Get
                 Return ErrorControl.Text
             End Get
-            Set(value As String)
+            Set
                 ErrorControl.Text = value
             End Set
         End Property

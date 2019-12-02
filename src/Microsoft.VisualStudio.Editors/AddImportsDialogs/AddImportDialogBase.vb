@@ -26,7 +26,7 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
             MyBase.OnLoad(e)
         End Sub
 
-        Protected ReadOnly Property DialogFont() As Font
+        Protected ReadOnly Property DialogFont As Font
             Get
                 Dim hostLocale As VsShell.IUIHostLocale2 = CType(_serviceProvider.GetService(GetType(VsShell.SUIHostLocale)), VsShell.IUIHostLocale2)
                 If hostLocale IsNot Nothing Then

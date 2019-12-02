@@ -10,7 +10,7 @@ Namespace Microsoft.VisualStudio.Editors.Package
     '''   (obviously not very helpful, but it doesn't make sense to localize and doc messages for errors which shouldn't
     '''   be happening).
     ''' </summary>
-    <Serializable()>
+    <Serializable>
     Friend Class InternalException
         Inherits ApplicationException
 

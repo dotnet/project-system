@@ -23,7 +23,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Returns the PropPageDesignerRootComponent component that is being edited by this designer.
         ''' </summary>
         ''' <value>The PropPageDesignerRootComponent object.</value>
-        Public Shadows ReadOnly Property Component() As PropPageDesignerRootComponent
+        Public Shadows ReadOnly Property Component As PropPageDesignerRootComponent
             Get
                 Dim RootComponent As PropPageDesignerRootComponent = CType(MyBase.Component, PropPageDesignerRootComponent)
                 Debug.Assert(Not RootComponent Is Nothing)
@@ -52,7 +52,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <remarks>
         ''' The view technology we support, which is currently only Windows Forms
         ''' </remarks>
-        Private ReadOnly Property IRootDesigner_SupportedTechnologies() As ViewTechnology() Implements IRootDesigner.SupportedTechnologies
+        Private ReadOnly Property IRootDesigner_SupportedTechnologies As ViewTechnology() Implements IRootDesigner.SupportedTechnologies
             Get
                 Return New ViewTechnology() {ViewTechnology.Default}
             End Get

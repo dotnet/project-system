@@ -189,7 +189,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             '''   appears in the .xaml file.  If DefinitionIncludesQuotes=True, then this
             '''   includes the beginning/ending quote
             ''' </summary>
-            Public Overridable ReadOnly Property ActualDefinitionText() As String
+            Public Overridable ReadOnly Property ActualDefinitionText As String
                 Get
                     Dim buffer As String = Nothing
                     ErrorHandler.ThrowOnFailure(VsTextLines.GetLineText(DefinitionStart.LineIndex, DefinitionStart.CharIndex, DefinitionEndPlusOne.LineIndex, DefinitionEndPlusOne.CharIndex, buffer))
@@ -197,19 +197,19 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                 End Get
             End Property
 
-            Public ReadOnly Property UnescapedValue() As String
+            Public ReadOnly Property UnescapedValue As String
                 Get
                     Return _unescapedValue
                 End Get
             End Property
 
-            Public ReadOnly Property DefinitionStart() As Location
+            Public ReadOnly Property DefinitionStart As Location
                 Get
                     Return _startLocation
                 End Get
             End Property
 
-            Public ReadOnly Property DefinitionEndPlusOne() As Location
+            Public ReadOnly Property DefinitionEndPlusOne As Location
                 Get
                     Return _endLocationPlusOne
                 End Get
@@ -297,7 +297,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                 _fullyQualifiedPropertyName = fullyQualifiedPropertyName
             End Sub
 
-            Public Overrides ReadOnly Property ActualDefinitionText() As String
+            Public Overrides ReadOnly Property ActualDefinitionText As String
                 Get
                     Return ""
                 End Get

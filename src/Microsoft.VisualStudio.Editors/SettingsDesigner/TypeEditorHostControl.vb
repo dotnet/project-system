@@ -132,11 +132,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
 #Region "Value & value type properties for value to edit"
 
-        Public Property ValueType() As Type
+        Public Property ValueType As Type
             Get
                 Return _innerValueType
             End Get
-            Set(Value As Type)
+            Set
                 _innerValueType = Value
 
                 ' Let's try and get a UITypeEditor for this type! 
@@ -200,7 +200,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Set
         End Property
 
-        Public Property Value() As Object
+        Public Property Value As Object
             Get
                 If TextValueDirty Then
                     _innerValue = ParseValue(EditControl.Text, ValueType)
@@ -208,7 +208,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 End If
                 Return _innerValue
             End Get
-            Set(Value As Object)
+            Set
                 If Value IsNot Nothing Then
                     ValueType = Value.GetType()
                 End If
@@ -222,7 +222,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Set
         End Property
 
-        Protected ReadOnly Property InnerValue() As Object
+        Protected ReadOnly Property InnerValue As Object
             Get
                 Return _innerValue
             End Get
@@ -322,8 +322,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Display the associated type editor if not already showing
         ''' </summary>
-        <Security.SecurityCritical()>
-        <System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptions()>
+        <Security.SecurityCritical>
+        <System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptions>
         Private Sub ShowUITypeEditor()
             If _typeEditor IsNot Nothing Then
                 If _isShowingUITypeEditor Then
@@ -516,7 +516,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Are we currently showing the UI type editor?
         ''' </summary>
-        Public ReadOnly Property IsShowingUITypeEditor() As Boolean
+        Public ReadOnly Property IsShowingUITypeEditor As Boolean
             Get
                 Return _isShowingUITypeEditor
             End Get
@@ -550,7 +550,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' <summary>
             ''' Override default create parameters for window
             ''' </summary>
-            Protected Overrides ReadOnly Property CreateParams() As CreateParams
+            Protected Overrides ReadOnly Property CreateParams As CreateParams
                 Get
                     Dim BaseParams As CreateParams = MyBase.CreateParams
 
@@ -582,7 +582,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' <summary>
             ''' Get/set the UI type editor that I'm hosting...
             ''' </summary>
-            Public Property Editor() As Control
+            Public Property Editor As Control
                 Get
                     If Controls.Count = 1 Then
                         Return Controls.Item(0)
@@ -590,7 +590,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                         Return Nothing
                     End If
                 End Get
-                Set(Value As Control)
+                Set
                     Controls.Clear()
                     If Not Value Is Nothing Then
                         Value.Dock = DockStyle.Fill
@@ -628,11 +628,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Is the text in the currently selected edit control dirty?
         ''' </summary>
-        Private Property TextValueDirty() As Boolean
+        Private Property TextValueDirty As Boolean
             Get
                 Return _textValueDirty
             End Get
-            Set(value As Boolean)
+            Set
                 _textValueDirty = value
             End Set
         End Property
@@ -652,7 +652,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Map the selection length property to the currently selected edit control
         ''' </summary>
-        Public Property SelectionLength() As Integer
+        Public Property SelectionLength As Integer
             Get
                 If _valueComboBox.Visible Then
                     Return _valueComboBox.SelectionLength
@@ -661,7 +661,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     Return _valueTextBox.SelectionLength
                 End If
             End Get
-            Set(value As Integer)
+            Set
                 If _valueComboBox.Visible Then
                     _valueComboBox.SelectionLength = value
                 Else
@@ -674,7 +674,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Map the selection start property to the currently selected edit control
         ''' </summary>
-        Public Property SelectionStart() As Integer
+        Public Property SelectionStart As Integer
             Get
                 If _valueComboBox.Visible Then
                     Return _valueComboBox.SelectionStart
@@ -683,7 +683,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     Return _valueTextBox.SelectionStart
                 End If
             End Get
-            Set(value As Integer)
+            Set
                 If _valueComboBox.Visible Then
                     _valueComboBox.SelectionStart = value
                 Else
@@ -696,7 +696,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Map the selected text to the currently selected edit control
         ''' </summary>
-        Public Property SelectedText() As String
+        Public Property SelectedText As String
             Get
                 If _valueComboBox.Visible Then
                     Return _valueComboBox.SelectedText
@@ -705,7 +705,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     Return _valueTextBox.SelectedText
                 End If
             End Get
-            Set(value As String)
+            Set
                 If _valueComboBox.Visible Then
                     _valueComboBox.SelectedText = value
                 Else
@@ -718,11 +718,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Get the text in the edit control
         ''' </summary>
-        Public Overrides Property Text() As String
+        Public Overrides Property Text As String
             Get
                 Return EditControl.Text
             End Get
-            Set(value As String)
+            Set
                 Dim savedIgnoreTextChangeEvents As Boolean = _ignoreTextChangeEvents
                 Try
                     _ignoreTextChangeEvents = True
@@ -736,7 +736,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Get the currently active edit control (textbox or combobox)
         ''' </summary>
-        Friend Property EditControl() As Control
+        Friend Property EditControl As Control
             Get
                 If _currentEditControl IsNot Nothing Then
                     Return _currentEditControl
@@ -744,7 +744,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     Return _valueTextBox
                 End If
             End Get
-            Set(value As Control)
+            Set
                 For Each ctrl As Control In _editControls
                     If ctrl Is value Then
                         ctrl.Visible = True
@@ -759,7 +759,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Get an instance of a ITypeDescriptorContext to pass into the UITypeEditor
         ''' </summary>
-        Public Overridable ReadOnly Property Context() As ITypeDescriptorContext
+        Public Overridable ReadOnly Property Context As ITypeDescriptorContext
             Get
                 Return Nothing
             End Get
@@ -826,11 +826,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' Do we want to look like a browse button or like a 
             ''' combobox dropdown?
             ''' </summary>
-            Public Property PaintStyle() As PaintStyles
+            Public Property PaintStyle As PaintStyles
                 Get
                     Return _paintStyle
                 End Get
-                Set(value As PaintStyles)
+                Set
                     Select Case value
                         Case PaintStyles.DotDotDot, PaintStyles.DropDown
                             ' Everything is cool

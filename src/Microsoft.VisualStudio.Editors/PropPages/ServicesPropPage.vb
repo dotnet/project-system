@@ -62,11 +62,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Try
         End Sub
 
-        Private Property CurrentAppConfigDocument() As XmlDocument
+        Private Property CurrentAppConfigDocument As XmlDocument
             Get
                 Return _currentAppConfigDocument
             End Get
-            Set(value As XmlDocument)
+            Set
                 _currentAppConfigDocument = value
                 If value IsNot Nothing Then SetApplicationServicesEnabled(ServicesPropPageAppConfigHelper.ApplicationServicesAreEnabled(CurrentAppConfigDocument, ProjectHierarchy))
             End Set

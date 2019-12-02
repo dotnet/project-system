@@ -62,7 +62,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Returns the default visibility of this properties
         ''' </summary>
         ''' <remarks>MemberAttributes indicating what visibility to make the generated properties.</remarks>
-        Friend Shared ReadOnly Property SettingsPropertyVisibility() As MemberAttributes
+        Friend Shared ReadOnly Property SettingsPropertyVisibility As MemberAttributes
             Get
                 Return MemberAttributes.Public Or MemberAttributes.Final
             End Get
@@ -72,7 +72,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Returns the default visibility of this properties
         ''' </summary>
         ''' <value>MemberAttributes indicating what visibility to make the generated properties.</value>
-        Friend Overridable ReadOnly Property SettingsClassVisibility() As TypeAttributes
+        Friend Overridable ReadOnly Property SettingsClassVisibility As TypeAttributes
             Get
                 Return TypeAttributes.Sealed Or TypeAttributes.NestedAssembly
             End Get
@@ -244,7 +244,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                                       IsDesignTime As Boolean,
                                       GeneratedClassVisibility As TypeAttributes,
                                       Optional GenerateVBMyAutoSave As Boolean = False,
-                                      <Out()> Optional ByRef generatedType As CodeTypeDeclaration = Nothing) As CodeCompileUnit
+                                      <Out> Optional ByRef generatedType As CodeTypeDeclaration = Nothing) As CodeCompileUnit
 
             Dim CompileUnit As New CodeCompileUnit
 
@@ -530,7 +530,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Get the type of the class that our strongly typed wrapper class is supposed to inherit from
         ''' </summary>
-        Friend Shared ReadOnly Property SettingsBaseClass() As Type
+        Friend Shared ReadOnly Property SettingsBaseClass As Type
             Get
                 Return GetType(Configuration.ApplicationSettingsBase)
             End Get
@@ -821,7 +821,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Demand-create a CodeDomProvider corresponding to my projects current language
         ''' </summary>
         ''' <value>A CodeDomProvider</value>
-        Private Property CodeDomProvider() As CodeDomProvider
+        Private Property CodeDomProvider As CodeDomProvider
             Get
                 If _codeDomProvider Is Nothing Then
                     Dim VSMDCodeDomProvider As IVSMDCodeDomProvider = CType(GetService(GetType(IVSMDCodeDomProvider)), IVSMDCodeDomProvider)
@@ -832,7 +832,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 End If
                 Return _codeDomProvider
             End Get
-            Set(Value As CodeDomProvider)
+            Set
                 If Value Is Nothing Then
                     Throw New ArgumentNullException()
                 End If
@@ -843,7 +843,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Demand-create service provider from my site
         ''' </summary>
-        Private ReadOnly Property ServiceProvider() As ServiceProvider
+        Private ReadOnly Property ServiceProvider As ServiceProvider
             Get
                 If _serviceProvider Is Nothing AndAlso _site IsNot Nothing Then
                     Dim OleSp As IServiceProvider = CType(_site, IServiceProvider)

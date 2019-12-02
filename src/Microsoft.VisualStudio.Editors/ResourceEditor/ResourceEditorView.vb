@@ -346,7 +346,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Retrieves the set of categories handled by this instance of the resource editor.
         ''' </summary>
-        Public ReadOnly Property Categories() As CategoryCollection
+        Public ReadOnly Property Categories As CategoryCollection
             Get
                 Return _categories
             End Get
@@ -356,7 +356,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Retrieves the file watcher for this instance of the resource editor.  Creates one if necessary.
         ''' </summary>
-        Public ReadOnly Property FileWatcher() As FileWatcher
+        Public ReadOnly Property FileWatcher As FileWatcher
             Get
                 If _fileWatcher Is Nothing Then
                     If Handle.Equals(0) Then
@@ -372,7 +372,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Return true when we are editing a name label
         ''' </summary>
-        Friend ReadOnly Property IsInEditing() As Boolean
+        Friend ReadOnly Property IsInEditing As Boolean
             Get
                 Return _inEditingItem
             End Get
@@ -381,7 +381,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Return true when we are undoing/redoing
         ''' </summary>
-        Friend ReadOnly Property IsUndoing() As Boolean
+        Friend ReadOnly Property IsUndoing As Boolean
             Get
                 Return _inUndoing
             End Get
@@ -391,11 +391,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' ReadOnly Mode
         ''' </summary>
-        Friend Property ReadOnlyMode() As Boolean
+        Friend Property ReadOnlyMode As Boolean
             Get
                 Return _readOnlyMode
             End Get
-            Set(value As Boolean)
+            Set
                 If _readOnlyMode <> value Then
                     _readOnlyMode = value
                     RefreshCommandStatus()
@@ -406,7 +406,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Gets the RootDesigner associated with this resource editor instance.
         ''' </summary>
-        Friend ReadOnly Property RootDesigner() As ResourceEditorRootDesigner
+        Friend ReadOnly Property RootDesigner As ResourceEditorRootDesigner
             Get
                 Debug.Assert(Not _rootDesigner Is Nothing, "Can't call RootDesigner before SetRootDesigner() - we don't have a root designer cached yet")
                 Return _rootDesigner
@@ -417,7 +417,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Gets the ResourceFile that is being viewed/edited in this view.
         ''' </summary>
-        Public ReadOnly Property ResourceFile() As ResourceFile
+        Public ReadOnly Property ResourceFile As ResourceFile
             Get
                 Return _resourceFile
             End Get
@@ -427,7 +427,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' The component being edited - ResourceEditorRootComponent
         ''' </summary>
-        Friend ReadOnly Property RootComponent() As ResourceEditorRootComponent
+        Friend ReadOnly Property RootComponent As ResourceEditorRootComponent
             Get
                 If _rootDesigner IsNot Nothing AndAlso _rootDesigner.Component IsNot Nothing Then
                     Return _rootDesigner.Component
@@ -439,7 +439,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         End Property
 
 
-        Public ReadOnly Property CurrentCategory() As Category
+        Public ReadOnly Property CurrentCategory As Category
             Get
                 Debug.Assert(_currentCategory IsNot Nothing)
                 Return _currentCategory
@@ -449,7 +449,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Return the root Registry key of the Resource Editor
         ''' </summary>
-        Private ReadOnly Property RegistryRoot() As String
+        Private ReadOnly Property RegistryRoot As String
             Get
                 If _registryRoot Is Nothing Then
                     Dim localRegistry As ILocalRegistry2 = DirectCast(RootDesigner.GetService(GetType(ILocalRegistry)), ILocalRegistry2)
@@ -467,7 +467,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''  We save a list of file extensions in the registry. All extensions were approved by the customer that they don't want to see
         '''  a warning dialog when they double-click the item to open it.
         ''' </summary>
-        Private Property SafeExtensions() As String
+        Private Property SafeExtensions As String
             Get
                 Dim registryPath As String = RegistryRoot
                 If registryPath IsNot Nothing Then
@@ -483,7 +483,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 End If
                 Return String.Empty
             End Get
-            Set(value As String)
+            Set
                 Dim registryPath As String = RegistryRoot
                 If registryPath IsNot Nothing Then
                     Try
@@ -2524,7 +2524,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Clipboard format for intra-editor and between resource editor instances.  Essentially just a list of
         '''   serialized Resources.
         ''' </summary>
-        <Serializable()>
+        <Serializable>
         Private NotInheritable Class ResourcesDataFormat
             'List of resources
             Private ReadOnly _resources() As Resource
@@ -2540,7 +2540,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <summary>
             ''' Retrives the list of resources stored in this format.
             ''' </summary>
-            Public ReadOnly Property Resources() As Resource()
+            Public ReadOnly Property Resources As Resource()
                 Get
                     Return _resources
                 End Get
@@ -4681,7 +4681,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <summary>
             ''' The error glyph used in a large thumbnail
             ''' </summary>
-            Public ReadOnly Property ErrorGlyphLarge() As Image
+            Public ReadOnly Property ErrorGlyphLarge As Image
                 Get
                     Return _errorGlyphLarge
                 End Get
@@ -4690,7 +4690,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <summary>
             ''' The error glyph used in a small thumbnail (details or list view)
             ''' </summary>
-            Public ReadOnly Property ErrorGlyphSmall() As Image
+            Public ReadOnly Property ErrorGlyphSmall As Image
                 Get
                     Return _errorGlyphSmall
                 End Get
@@ -4699,7 +4699,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <summary>
             ''' The error glyph used next to a thumbnail as a state image
             ''' </summary>
-            Public ReadOnly Property ErrorGlyphState() As Image
+            Public ReadOnly Property ErrorGlyphState As Image
                 Get
                     Return _errorGlyphState
                 End Get
@@ -4708,7 +4708,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <summary>
             ''' The arrow glyph used in the ListView to show that it is column being sorted
             ''' </summary>
-            Public ReadOnly Property SortUpGlyph() As Image
+            Public ReadOnly Property SortUpGlyph As Image
                 Get
                     Return _sortUpGlyph
                 End Get
@@ -4717,7 +4717,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <summary>
             ''' The arrow glyph used in the ListView to show that it is column being sorted
             ''' </summary>
-            Public ReadOnly Property SortDownGlyph() As Image
+            Public ReadOnly Property SortDownGlyph As Image
                 Get
                     Return _sortDownGlyph
                 End Get
@@ -4729,7 +4729,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Retrieves the set of internal resources that we cache for this instance of the resource editor
         ''' </summary>
-        Public ReadOnly Property CachedResources() As CachedResourcesForView
+        Public ReadOnly Property CachedResources As CachedResourcesForView
             Get
                 Return _cachedResources
             End Get

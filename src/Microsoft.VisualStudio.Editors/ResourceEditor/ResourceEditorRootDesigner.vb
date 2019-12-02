@@ -106,7 +106,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   encourage the use of the strongly-typed RootComponent instead.
         ''' </summary>
         <EditorBrowsable(EditorBrowsableState.Never)>
-        Friend Shadows ReadOnly Property Component() As ResourceEditorRootComponent
+        Friend Shadows ReadOnly Property Component As ResourceEditorRootComponent
             Get
                 Return RootComponent
             End Get
@@ -116,7 +116,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Returns the ResourceEditorRoot component that is being edited by this designer.
         ''' </summary>
-        Friend ReadOnly Property RootComponent() As ResourceEditorRootComponent
+        Friend ReadOnly Property RootComponent As ResourceEditorRootComponent
             Get
                 Dim Root As ResourceEditorRootComponent = CType(MyBase.Component, ResourceEditorRootComponent)
                 Debug.Assert(Not Root Is Nothing)
@@ -129,7 +129,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''  Returns the IDesignerHost from the RootDesigner.
         ''' </summary>
         ''' <value>An instance of IDesignerHost.</value>
-        Friend ReadOnly Property DesignerHost() As IDesignerHost
+        Friend ReadOnly Property DesignerHost As IDesignerHost
             Get
                 Debug.Assert(_designerHost IsNot Nothing, "Cannot get IDesignerHost!!!")
                 Return _designerHost
@@ -141,7 +141,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''  Returns the DesignerLoader associated with this RootDesigner.
         ''' </summary>
         ''' <value>The ResourceEditorDesignerLoader instance.</value>
-        Friend ReadOnly Property DesignerLoader() As ResourceEditorDesignerLoader
+        Friend ReadOnly Property DesignerLoader As ResourceEditorDesignerLoader
             Get
                 Dim DesignerLoaderService As Object = GetService(GetType(IDesignerLoaderService))
                 If DesignerLoaderService IsNot Nothing Then
@@ -159,11 +159,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''  The designer will be destroyed, and a new designer will be created later, so we will never set it back.
         ''' </summary>
         ''' <value>Whether we are in reloading mode</value>
-        Friend Property IsInReloading() As Boolean
+        Friend Property IsInReloading As Boolean
             Get
                 Return _isInReloading
             End Get
-            Set(value As Boolean)
+            Set
                 _isInReloading = value
             End Set
         End Property
@@ -186,7 +186,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Returns True iff there a View has already been created.
         ''' </summary>
-        Public ReadOnly Property HasView() As Boolean
+        Public ReadOnly Property HasView As Boolean
             Get
                 Return _view IsNot Nothing
             End Get
@@ -198,7 +198,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   We currently support only "Default" (i.e., our designer view, ResourceEditorView,
         '''   inherits from System.Windows.Forms.Control).
         ''' </summary>
-        Private ReadOnly Property IRootDesigner_SupportedTechnologies() As ViewTechnology() Implements IRootDesigner.SupportedTechnologies
+        Private ReadOnly Property IRootDesigner_SupportedTechnologies As ViewTechnology() Implements IRootDesigner.SupportedTechnologies
             Get
                 Return New ViewTechnology() {ViewTechnology.Default}
             End Get

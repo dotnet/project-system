@@ -67,11 +67,11 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' <summary>
         ''' Constructor
         ''' </summary>
-        Public Overrides Property Text() As String
+        Public Overrides Property Text As String
             Get
                 Return ErrorText.Text
             End Get
-            Set(value As String)
+            Set
                 MyBase.Text = value
                 ErrorText.Text = value
             End Set

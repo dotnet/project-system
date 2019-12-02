@@ -631,7 +631,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Returns the resource editor view associated with this designer.
         ''' </summary>
-        Private ReadOnly Property View() As ResourceEditorView
+        Private ReadOnly Property View As ResourceEditorView
             Get
                 Return _rootDesigner.GetView()
             End Get
@@ -641,7 +641,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Returns True iff there a View has already been created.
         ''' </summary>
-        Private ReadOnly Property HasView() As Boolean
+        Private ReadOnly Property HasView As Boolean
             Get
                 Return _rootDesigner.HasView()
             End Get

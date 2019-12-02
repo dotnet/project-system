@@ -65,11 +65,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Function GetLocaleID() As Integer
         Function TranslateAccelerator(msg As Message) As Integer
         Function GetService(ServiceType As Type) As Object
-        ReadOnly Property IsImmediateApply() As Boolean
+        ReadOnly Property IsImmediateApply As Boolean
     End Interface
 
 
-    <Flags(), ComVisible(False)>
+    <Flags, ComVisible(False)>
     Public Enum PROPPAGESTATUS
         Dirty = 1
         Validate = 2
@@ -186,7 +186,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Returns whether or not the property page hosted in this site should be with 
         '''   immediate-apply mode or not
         ''' </summary>
-        Private ReadOnly Property IsImmediateApply() As Boolean Implements IPropertyPageSiteInternal.IsImmediateApply
+        Private ReadOnly Property IsImmediateApply As Boolean Implements IPropertyPageSiteInternal.IsImmediateApply
             Get
                 'Current implementation is always immediate-apply for
                 '  modeless property pages
@@ -198,47 +198,47 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 #End Region
 
 
-        Protected Overridable Property DocString() As String
+        Protected Overridable Property DocString As String
             Get
                 Return _docString
             End Get
-            Set(value As String)
+            Set
                 _docString = value
             End Set
         End Property
 
 
-        Protected MustOverride ReadOnly Property ControlType() As Type
+        Protected MustOverride ReadOnly Property ControlType As Type
 
-        Protected Overridable ReadOnly Property ControlTypeForResources() As Type
+        Protected Overridable ReadOnly Property ControlTypeForResources As Type
             Get
                 Return ControlType
             End Get
         End Property
 
 
-        Protected MustOverride ReadOnly Property Title() As String
+        Protected MustOverride ReadOnly Property Title As String
 
-        Protected Overridable Property HelpFile() As String
+        Protected Overridable Property HelpFile As String
             Get
                 Return _helpFile
             End Get
-            Set(value As String)
+            Set
                 _helpFile = value
             End Set
         End Property
 
 
-        Protected Overridable Property HelpContext() As UInteger
+        Protected Overridable Property HelpContext As UInteger
             Get
                 Return _helpContext
             End Get
-            Set(value As UInteger)
+            Set
                 _helpContext = value
             End Set
         End Property
 
-        Protected Overridable Property DefaultSize() As Drawing.Size
+        Protected Overridable Property DefaultSize As Drawing.Size
             Get
                 If _defaultSize.Width = 0 Then 'CONSIDER: Need a better mechanism than assuming the resources are available.  Perf hit?
                     Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(ControlTypeForResources)
@@ -251,19 +251,19 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 End If
                 Return _defaultSize
             End Get
-            Set(value As Drawing.Size)
+            Set
                 _defaultSize = value
             End Set
         End Property
 
 
-        Protected Overridable ReadOnly Property Objects() As Object()
+        Protected Overridable ReadOnly Property Objects As Object()
             Get
                 Return _objects
             End Get
         End Property
 
-        Public Overridable ReadOnly Property SupportsTheming() As Boolean
+        Public Overridable ReadOnly Property SupportsTheming As Boolean
             Get
                 Return False
             End Get

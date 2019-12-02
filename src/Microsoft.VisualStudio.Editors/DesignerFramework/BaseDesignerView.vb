@@ -82,7 +82,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' If true, the project has been reloaded between a call to EnterProjectCheckoutSection and 
         '''   LeaveProjectCheckoutSection.  See EnterProjectCheckoutSection() for more information.
         ''' </summary>
-        Protected Friend ReadOnly Property ProjectReloadedDuringCheckout() As Boolean
+        Protected Friend ReadOnly Property ProjectReloadedDuringCheckout As Boolean
             Get
                 Return _projectReloadedDuringCheckout
             End Get
@@ -93,7 +93,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' If true, a call to EnterProjectCheckoutSection has been made, and the matching LeaveProjectCheckoutSection
         '''   call has not yet been made.
         ''' </summary>
-        Protected ReadOnly Property IsInProjectCheckoutSection() As Boolean
+        Protected ReadOnly Property IsInProjectCheckoutSection As Boolean
             Get
                 Return _checkoutSectionCount > 0
             End Get

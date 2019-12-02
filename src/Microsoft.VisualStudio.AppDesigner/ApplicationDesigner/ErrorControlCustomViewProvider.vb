@@ -37,7 +37,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Returns the view control (if already created)
         ''' </summary>
-        Public Overrides ReadOnly Property View() As Control
+        Public Overrides ReadOnly Property View As Control
             Get
                 Return _view
             End Get

@@ -24,7 +24,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Returns the ApplicationDesignerRootComponent component that is being edited by this designer.
         ''' </summary>
         ''' <value>The ApplicationDesignerRootComponent object.</value>
-        Public Shadows ReadOnly Property Component() As ApplicationDesignerRootComponent
+        Public Shadows ReadOnly Property Component As ApplicationDesignerRootComponent
             Get
                 Dim RootComponent As ApplicationDesignerRootComponent = CType(MyBase.Component, ApplicationDesignerRootComponent)
                 Debug.Assert(Not RootComponent Is Nothing)
@@ -77,7 +77,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <remarks>
         ''' The view technology we support, which is currently only Windows Forms
         ''' </remarks>
-        Private ReadOnly Property IRootDesigner_SupportedTechnologies() As ViewTechnology() Implements IRootDesigner.SupportedTechnologies
+        Private ReadOnly Property IRootDesigner_SupportedTechnologies As ViewTechnology() Implements IRootDesigner.SupportedTechnologies
             Get
                 Return New ViewTechnology() {ViewTechnology.Default}
             End Get

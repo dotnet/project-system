@@ -322,73 +322,73 @@ Namespace Microsoft.VisualStudio.Editors.Interop
             CERT_CLOSE_STORE_FORCE_FLAG = 1
         End Enum
 
-        <PreserveSig()> Friend Declare Function _
+        <PreserveSig> Friend Declare Function _
              SetParent _
                  Lib "user32" (hwnd As IntPtr, hWndParent As IntPtr) As IntPtr
 
 
-        <PreserveSig()> Friend Declare Function _
+        <PreserveSig> Friend Declare Function _
             GetParent _
                 Lib "user32" (hwnd As IntPtr) As IntPtr
 
-        <PreserveSig()> Friend Declare Function _
+        <PreserveSig> Friend Declare Function _
             GetFocus _
                 Lib "user32" () As IntPtr
 
-        <PreserveSig()> Friend Declare Function _
+        <PreserveSig> Friend Declare Function _
             SetFocus _
                 Lib "user32" (hwnd As IntPtr) As Integer
 
-        <PreserveSig()> Friend Declare Auto Function _
+        <PreserveSig> Friend Declare Auto Function _
             SendMessage _
                 Lib "user32" (hwnd As HandleRef, msg As Integer, wParam As Integer, lParam As Integer) As IntPtr
 
-        <PreserveSig()> Friend Declare Auto Function _
+        <PreserveSig> Friend Declare Auto Function _
             SendMessage _
                 Lib "user32" (hwnd As HandleRef, msg As Integer, wParam As Integer, ByRef lParam As TVITEM) As IntPtr
 
-        <PreserveSig()> Friend Declare Auto Function _
+        <PreserveSig> Friend Declare Auto Function _
             SendMessage _
                 Lib "user32" (hwnd As IntPtr, msg As Integer, wParam As IntPtr, lParam As IntPtr) As IntPtr
 
-        <PreserveSig()> Friend Declare Auto Function _
+        <PreserveSig> Friend Declare Auto Function _
             PostMessage _
                 Lib "user32" (hwnd As IntPtr, msg As Integer, wParam As Integer, lParam As Integer) As IntPtr
 
-        <PreserveSig()> Friend Declare Auto Function _
+        <PreserveSig> Friend Declare Auto Function _
             WaitMessage _
                 Lib "user32" () As Boolean
 
         ''' <summary>
         ''' The GetNextDlgTabItem function retrieves a handle to the first control that has the WS_TABSTOP style that precedes (or follows) the specified control. 
         ''' </summary>
-        <PreserveSig()> Friend Declare Auto Function _
+        <PreserveSig> Friend Declare Auto Function _
             GetNextDlgTabItem _
                 Lib "user32" (hDlg As IntPtr, hCtl As IntPtr, bPrevious As Boolean) As IntPtr
 
 
-        <PreserveSig()>
+        <PreserveSig>
         Friend Declare Auto Function GetWindow Lib "user32" (Hwnd As IntPtr, uCmd As UInteger) As IntPtr
 
-        <PreserveSig()>
+        <PreserveSig>
         Friend Declare Auto Function DragQueryFile Lib "shell32" (hDrop As IntPtr, iFile As Integer, lpszFile As String, cch As Integer) As Integer
 
-        <PreserveSig()>
+        <PreserveSig>
         Friend Declare Function GetUserDefaultLCID Lib "kernel32" () As UInteger
 
-        <PreserveSig()>
+        <PreserveSig>
         Friend Declare Function GetTopWindow Lib "user32" (Hwnd As IntPtr) As IntPtr
 
-        <PreserveSig()>
+        <PreserveSig>
         Friend Declare Auto Function SetWindowLong Lib "user32" (hWnd As IntPtr, Index As Integer, Value As IntPtr) As IntPtr
-        <PreserveSig()>
+        <PreserveSig>
         Friend Declare Auto Function GetWindowLong Lib "user32" (Hwnd As IntPtr, Index As Integer) As IntPtr
 
         ' Windows theme
-        <PreserveSig()>
+        <PreserveSig>
         Friend Declare Auto Function SetWindowTheme Lib "uxtheme" (Hwnd As IntPtr, appName As String, subIdList As String) As Integer
 
-        <PreserveSig()>
+        <PreserveSig>
         Friend Declare Auto Function GetWindowText Lib "user32" (hWnd As IntPtr, lpString As String, nMaxCount As Integer) As Integer
 
         <DllImport("user32", CharSet:=CharSet.Auto)>
@@ -410,10 +410,10 @@ Namespace Microsoft.VisualStudio.Editors.Interop
             Public bottom As Integer
         End Structure
 
-        <PreserveSig()>
+        <PreserveSig>
         Friend Declare Auto Function IsChild Lib "user32" (hWndParent As IntPtr, hWnd As IntPtr) As Boolean
 
-        <PreserveSig()>
+        <PreserveSig>
         Friend Declare Auto Function EnableWindow Lib "user32" (hWnd As IntPtr, bEnable As Boolean) As Boolean
 
         '<System.Runtime.InteropServices.PreserveSig()> _
@@ -423,10 +423,10 @@ Namespace Microsoft.VisualStudio.Editors.Interop
         'Friend Declare Auto Function SetWindowPos Lib "user32" (Hwnd As IntPtr, HwndInsertAfter As IntPtr, x As Integer, _
         '    y As Integer, cx As Integer, cy As Integer, flags As Integer) As Boolean
 
-        <PreserveSig()>
+        <PreserveSig>
         Friend Declare Auto Function SystemParametersInfo Lib "user32" (uiAction As UInteger, uiParam As UInteger, pvParam As IntPtr, fWinIni As UInteger) As Integer
 
-        <PreserveSig()>
+        <PreserveSig>
         Friend Declare Auto Function MsgWaitForMultipleObjects Lib "user32" (nCount As Integer, pHandles As IntPtr, fWaitAll As Boolean, dwMilliSeconds As Integer, dwWakeMask As Integer) As Integer
 
         Friend Const GWL_EXSTYLE As Integer = -20
@@ -476,29 +476,29 @@ Namespace Microsoft.VisualStudio.Editors.Interop
     '
     ' ILangPropertyProvideBatchUpdate
     '
-    <ComImport(), Guid("F8828A38-5208-4497-991A-F8034C8D5A69"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)>
+    <ComImport, Guid("F8828A38-5208-4497-991A-F8034C8D5A69"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)>
     Friend Interface ILangPropertyProvideBatchUpdate
         Sub BeginBatch()
         Sub EndBatch()
-        Sub IsBatchModeEnabled(<[In](), Out()> ByRef BatchModeEnabled As Boolean)
+        Sub IsBatchModeEnabled(<[In], Out> ByRef BatchModeEnabled As Boolean)
         Sub PushOptionsToCompiler(dispid As UInteger)
     End Interface
 
-    <ComImport()>
+    <ComImport>
     <Guid("E5CB7A31-7512-11d2-89CE-0080C792E5D8")>
     <TypeLibType(TypeLibTypeFlags.FCanCreate)>
     <ClassInterface(ClassInterfaceType.None)>
     Friend Class CorMetaDataDispenser
     End Class
 
-    <ComImport()>
+    <ComImport>
     <Guid("809c652e-7396-11d2-9771-00a0c9b4d50c")>
     <InterfaceType(ComInterfaceType.InterfaceIsIUnknown)>
     <TypeLibType(TypeLibTypeFlags.FRestricted)>
     Friend Interface IMetaDataDispenser
-        Function DefineScope(<[In]()> ByRef rclsid As Guid, <[In]()> dwCreateFlags As UInteger, <[In]()> ByRef riid As Guid) As <MarshalAs(UnmanagedType.Interface)> Object
-        <PreserveSig()> Function OpenScope(<[In](), MarshalAs(UnmanagedType.LPWStr)> szScope As String, <[In]()> dwOpenFlags As UInteger, <[In]()> ByRef riid As Guid, <Out(), MarshalAs(UnmanagedType.Interface)> ByRef obj As Object) As Integer
-        Function OpenScopeOnMemory(<[In]()> pData As IntPtr, <[In]()> cbData As UInteger, <[In]()> dwOpenFlags As UInteger, <[In]()> ByRef riid As Guid) As <MarshalAs(UnmanagedType.Interface)> Object
+        Function DefineScope(<[In]> ByRef rclsid As Guid, <[In]> dwCreateFlags As UInteger, <[In]> ByRef riid As Guid) As <MarshalAs(UnmanagedType.Interface)> Object
+        <PreserveSig> Function OpenScope(<[In], MarshalAs(UnmanagedType.LPWStr)> szScope As String, <[In]> dwOpenFlags As UInteger, <[In]> ByRef riid As Guid, <Out, MarshalAs(UnmanagedType.Interface)> ByRef obj As Object) As Integer
+        Function OpenScopeOnMemory(<[In]> pData As IntPtr, <[In]> cbData As UInteger, <[In]> dwOpenFlags As UInteger, <[In]> ByRef riid As Guid) As <MarshalAs(UnmanagedType.Interface)> Object
     End Interface
 
     <StructLayout(LayoutKind.Sequential)>

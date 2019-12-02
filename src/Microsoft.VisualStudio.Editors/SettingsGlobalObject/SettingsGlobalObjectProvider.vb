@@ -63,7 +63,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         Protected Overrides Sub Finalize()
             Dispose(False)
         End Sub
-        Friend Shared ReadOnly Property GlobalSettings() As TraceSwitch
+        Friend Shared ReadOnly Property GlobalSettings As TraceSwitch
             Get
                 If (s_globalSettings Is Nothing) Then
                     s_globalSettings = New TraceSwitch("GlobalSettings", "Enable tracing for the Typed Settings GlobalObjectProvider.")
@@ -77,7 +77,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' gets the running-doc-table for the instance of VS
         ''' </summary>
         ''' <value>running-doc-table</value>
-        Friend ReadOnly Property RunningDocTable() As IVsRunningDocumentTable
+        Friend ReadOnly Property RunningDocTable As IVsRunningDocumentTable
             Get
                 If (_rdt Is Nothing) Then
                     Dim rdt As IVsRunningDocumentTable = TryCast(GetService(GetType(IVsRunningDocumentTable)), IVsRunningDocumentTable)
@@ -685,11 +685,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' the settings objects... That will only affect that particular object, and it should raise
         ''' it's own change notifications!
         ''' </summary>
-        Friend Property IgnoreAppConfigChanges() As Boolean
+        Friend Property IgnoreAppConfigChanges As Boolean
             Get
                 Return _ignoreAppConfigChanges
             End Get
-            Set(value As Boolean)
+            Set
 #If DEBUG Then
                 Debug.WriteLineIf(GlobalSettings.TraceVerbose, String.Format("SettingsGlobalObject:IgnoreAppConfigChanges set to {0}", value))
 #End If
@@ -1193,7 +1193,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' <summary>
         ''' access to the DesignTimeSettings class this global-object represents
         ''' </summary>
-        Friend ReadOnly Property Settings() As DesignTimeSettings
+        Friend ReadOnly Property Settings As DesignTimeSettings
             Get
                 Debug.Assert(_dtSettings IsNot Nothing, "missing the design-time settings collection?")
                 Return _dtSettings
@@ -1213,11 +1213,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' gets/sets the DocData associated with this global object, appropriately adding
         ''' or removing event listeners
         ''' </summary>
-        Private Property DocData() As DocData
+        Private Property DocData As DocData
             Get
                 Return _docData
             End Get
-            Set(Value As DocData)
+            Set
 
 #If DEBUG Then
                 Debug.WriteLineIf(SettingsGlobalObjectProvider.GlobalSettings.TraceVerbose, "SettingsFileGlobalObject.DocData-setter(" & Name & "), _docData is " _
@@ -1246,7 +1246,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' Interesting to know what project item we're related to.
         ''' </summary>
         ''' <value>the project we are contained in</value>
-        Friend ReadOnly Property ProjectItem() As ProjectItem
+        Friend ReadOnly Property ProjectItem As ProjectItem
             Get
                 Return _item
             End Get
@@ -1256,7 +1256,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' Interesting to know what file name our project item has
         ''' </summary>
         ''' <value>the project we are contained in</value>
-        Friend ReadOnly Property FileName() As String
+        Friend ReadOnly Property FileName As String
             Get
                 Return _fileName
             End Get
@@ -1956,7 +1956,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' <summary>
         ''' This class is the code serializer for SettingsFile global object.
         ''' </summary>
-        <Serializable()>
+        <Serializable>
         Private NotInheritable Class SettingsFileCodeDomSerializer
             Inherits CodeDomSerializer
 
@@ -1965,7 +1965,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             ''' <summary>
             ''' Provides a stock serializer instance.
             ''' </summary>
-            Friend Shared ReadOnly Property [Default]() As SettingsFileCodeDomSerializer
+            Friend Shared ReadOnly Property [Default] As SettingsFileCodeDomSerializer
                 Get
                     If (s_default Is Nothing) Then
                         s_default = New SettingsFileCodeDomSerializer()
@@ -2260,7 +2260,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             ''' be changed as well, so any client that cached a reference to this instance/collection should have released
             ''' it when it got a type changed event from the dynamic type service)
             ''' </remarks>
-            Public Overrides ReadOnly Property Properties() As SettingsPropertyCollection
+            Public Overrides ReadOnly Property Properties As SettingsPropertyCollection
                 Get
 #If DEBUG Then
                     Debug.WriteLineIf(SettingsGlobalObjectProvider.GlobalSettings.TraceVerbose, "ConcreteApplicationSettings.Properties-getter(" & CStr(_globalObject._className) & ")...")
@@ -2464,7 +2464,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             ''' <summary>
             ''' gets the GlobalObject associated with this value
             ''' </summary>
-            Friend ReadOnly Property GlobalObject() As SettingsFileGlobalObject
+            Friend ReadOnly Property GlobalObject As SettingsFileGlobalObject
                 Get
                     Return _globalObject
                 End Get
@@ -2473,7 +2473,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             ''' <summary>
             ''' Gets the property-name associated with this value
             ''' </summary>
-            Friend ReadOnly Property PropertyName() As String
+            Friend ReadOnly Property PropertyName As String
                 Get
                     Return _propertyName
                 End Get

@@ -99,7 +99,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         End Sub
 #End If
 
-        Public ReadOnly Property OptionChecked() As Boolean
+        Public ReadOnly Property OptionChecked As Boolean
             Get
                 Return checkBoxOption.Checked
             End Get

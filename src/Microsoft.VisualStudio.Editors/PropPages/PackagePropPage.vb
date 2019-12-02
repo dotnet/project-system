@@ -249,7 +249,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return ValidationResult.Succeeded
         End Function
 
-        Protected Overrides ReadOnly Property ControlData() As PropertyControlData()
+        Protected Overrides ReadOnly Property ControlData As PropertyControlData()
             Get
                 If (m_ControlData Is Nothing) Then
 

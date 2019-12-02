@@ -28,7 +28,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ' <devdoc>
         '     We override this to always get the current extension from the doc data.
         ' </devdoc>
-        Protected Overrides ReadOnly Property Extension() As String
+        Protected Overrides ReadOnly Property Extension As String
             Get
                 If _docData Is Nothing Then
                     Return ""

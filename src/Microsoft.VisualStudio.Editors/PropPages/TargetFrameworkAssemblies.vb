@@ -25,13 +25,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 _description = description
             End Sub
 
-            Public ReadOnly Property Version() As UInteger
+            Public ReadOnly Property Version As UInteger
                 Get
                     Return _version
                 End Get
             End Property
 
-            Public ReadOnly Property Description() As String
+            Public ReadOnly Property Description As String
                 Get
                     Return _description
                 End Get

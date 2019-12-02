@@ -42,7 +42,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             _parent.PaintValue(e)
         End Sub
 
-        Public Overrides ReadOnly Property IsDropDownResizable() As Boolean
+        Public Overrides ReadOnly Property IsDropDownResizable As Boolean
             Get
                 Return _parent.IsDropDownResizable()
             End Get

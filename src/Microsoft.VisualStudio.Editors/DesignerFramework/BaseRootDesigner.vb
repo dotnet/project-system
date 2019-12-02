@@ -60,7 +60,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '''  Returns a cached ISelectionService.
         ''' </summary>
         ''' <value>The cached ISelectionService.</value>
-        Friend ReadOnly Property SelectionService() As ISelectionService
+        Friend ReadOnly Property SelectionService As ISelectionService
             Get
                 If _selectionService Is Nothing Then
                     SyncLock _syncLockObject
@@ -158,7 +158,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <value>The IMenuCommandService from the shell.</value>
         ''' <remarks>Don't want to expose this one to other classes to encourage using RegisterMenuCommands.</remarks>
-        Private ReadOnly Property MenuCommandService() As IMenuCommandService
+        Private ReadOnly Property MenuCommandService As IMenuCommandService
             Get
                 If _menuCommandService Is Nothing Then
                     SyncLock _syncLockObject
@@ -176,7 +176,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '''  Returns an arraylist containing all the current registered commands from this designer.
         ''' </summary>
         ''' <value>An ArrayList contains MenuCommand.</value>
-        Private ReadOnly Property MenuCommands() As ArrayList
+        Private ReadOnly Property MenuCommands As ArrayList
             Get
                 Return _menuCommands
             End Get

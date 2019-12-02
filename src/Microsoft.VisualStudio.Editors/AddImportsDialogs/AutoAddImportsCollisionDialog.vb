@@ -73,7 +73,7 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
             End If
         End Sub
 
-        Public ReadOnly Property ShouldImportAnyways() As Boolean
+        Public ReadOnly Property ShouldImportAnyways As Boolean
             Get
                 Return m_rbImportsAnyways.Checked
             End Get

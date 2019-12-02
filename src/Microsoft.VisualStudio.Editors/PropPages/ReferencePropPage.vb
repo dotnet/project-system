@@ -111,7 +111,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             GetPropertyControlData("ImportList").EnableControls(enabled)
         End Sub
 
-        Protected Overrides ReadOnly Property ControlData() As PropertyControlData()
+        Protected Overrides ReadOnly Property ControlData As PropertyControlData()
             Get
                 If m_ControlData Is Nothing Then
                     m_ControlData = New PropertyControlData() {
@@ -126,7 +126,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' The designer host of this page
         ''' NOTE: we currently get the designer host from the propertyPageDesignerView, it is a workaround. The right solution should be the parent page pass in the right serviceProvider when it creates/initializes this page
         ''' </summary>
-        Private ReadOnly Property DesignerHost() As IDesignerHost
+        Private ReadOnly Property DesignerHost As IDesignerHost
             Get
                 If _designerHost Is Nothing Then
                     Dim designerView As PropPageDesigner.PropPageDesignerView = FindPropPageDesignerView()
@@ -145,7 +145,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' not we are hiding the selection currently to work around the by-design CheckedListBox
         ''' behavior of visually looking like it has focus when it really doesn't.
         ''' </summary>
-        Private ReadOnly Property ImportListSelectedItem() As String
+        Private ReadOnly Property ImportListSelectedItem As String
             Get
                 Debug.Assert(ImportList.SelectedItems.Count <= 1, "the ImportList is not set up to support multiple selection")
 
@@ -164,7 +164,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' ITrackSelection -- we are using this service to push objects to the propertyPage.
         '''  We should get this service from DesignerHost, but not other service provider. Each designer has its own ITrackSelection
         ''' </summary>
-        Private ReadOnly Property TrackSelection() As ITrackSelection
+        Private ReadOnly Property TrackSelection As ITrackSelection
             Get
                 If _trackSelection Is Nothing Then
                     Dim host As IDesignerHost = DesignerHost
@@ -1934,25 +1934,25 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 _serviceReference = item
             End Sub
 
-            Friend ReadOnly Property UpdateType() As ReferenceUpdateType
+            Friend ReadOnly Property UpdateType As ReferenceUpdateType
                 Get
                     Return _updateType
                 End Get
             End Property
 
-            Friend ReadOnly Property Reference() As VSLangProj.Reference
+            Friend ReadOnly Property Reference As VSLangProj.Reference
                 Get
                     Return _reference
                 End Get
             End Property
 
-            Friend ReadOnly Property WebReference() As EnvDTE.ProjectItem
+            Friend ReadOnly Property WebReference As EnvDTE.ProjectItem
                 Get
                     Return _webReference
                 End Get
             End Property
 
-            Friend ReadOnly Property ServiceReference() As IVsWCFReferenceGroup
+            Friend ReadOnly Property ServiceReference As IVsWCFReferenceGroup
                 Get
                     Return _serviceReference
                 End Get

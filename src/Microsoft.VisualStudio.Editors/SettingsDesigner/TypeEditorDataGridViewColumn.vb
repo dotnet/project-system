@@ -13,11 +13,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             MyBase.New(New DataGridViewUITypeEditorCell)
         End Sub
 
-        Public Overrides Property CellTemplate() As DataGridViewCell
+        Public Overrides Property CellTemplate As DataGridViewCell
             Get
                 Return MyBase.CellTemplate
             End Get
-            Set(Value As DataGridViewCell)
+            Set
                 If Value IsNot Nothing AndAlso Not TypeOf Value Is DataGridViewUITypeEditorCell Then
                     Throw New InvalidCastException()
                 End If

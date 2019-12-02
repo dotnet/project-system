@@ -114,7 +114,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' file isn't in the project and needs to be added) or the newly added file. One example is the settings designer's handling
         ''' of the app.config file
         '''</remarks>
-        Protected Overridable ReadOnly Property ManagingDynamicSetOfFiles() As Boolean
+        Protected Overridable ReadOnly Property ManagingDynamicSetOfFiles As Boolean
             Get
                 Return False
             End Get
@@ -123,7 +123,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <summary>
         ''' Get the list of files that you want to check out in the ManualCheckout
         ''' </summary>
-        Friend Overridable ReadOnly Property FilesToCheckOut() As List(Of String)
+        Friend Overridable ReadOnly Property FilesToCheckOut As List(Of String)
             Get
                 Dim projItem As EnvDTE.ProjectItem = ProjectItem
                 Return ShellUtil.FileNameAndGeneratedFileName(projItem)
@@ -235,7 +235,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '  being designed by this editor.  This information is required by the managed VSIP classes.
         Protected MustOverride Function GetBaseComponentClassName() As String
 
-        Protected ReadOnly Property DocData() As DocData
+        Protected ReadOnly Property DocData As DocData
             Get
                 Debug.Assert(m_DocData IsNot Nothing)
                 Return m_DocData
@@ -277,13 +277,13 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Private _vsHierarchy As IVsHierarchy
         Private _punkDocData As Object
 
-        Friend ReadOnly Property VsHierarchy() As IVsHierarchy
+        Friend ReadOnly Property VsHierarchy As IVsHierarchy
             Get
                 Return _vsHierarchy
             End Get
         End Property
 
-        Friend ReadOnly Property ProjectItemid() As UInteger
+        Friend ReadOnly Property ProjectItemid As UInteger
             Get
                 Return _projectItemid
             End Get
@@ -292,7 +292,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <summary>
         ''' Project Item of the current Document
         ''' </summary>
-        Friend ReadOnly Property ProjectItem() As EnvDTE.ProjectItem
+        Friend ReadOnly Property ProjectItem As EnvDTE.ProjectItem
             Get
                 Return DTEUtils.ProjectItemFromItemId(VsHierarchy, ProjectItemid)
             End Get
@@ -354,7 +354,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '      Determines if this file is read only.
         ' </devdoc>
 
-        Public ReadOnly Property DocDataIsReadOnly() As Boolean
+        Public ReadOnly Property DocDataIsReadOnly As Boolean
             Get
                 Return GetDocDataState(BUFFERSTATEFLAGS.BSF_FILESYS_READONLY Or BUFFERSTATEFLAGS.BSF_USER_READONLY)
             End Get
@@ -604,7 +604,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' For performance reasons, this defaults to false.  If the designer should support the toolbox, override
         '''   this and return True.
         ''' </remarks>
-        Protected Overridable ReadOnly Property SupportToolbox() As Boolean
+        Protected Overridable ReadOnly Property SupportToolbox As Boolean
             Get
                 Return False
             End Get

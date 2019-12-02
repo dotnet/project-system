@@ -46,23 +46,23 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return ParseAndPopulateTokens()
         End Function
 
-        Public WriteOnly Property DTE() As EnvDTE.DTE
-            Set(Value As EnvDTE.DTE)
+        Public WriteOnly Property DTE As EnvDTE.DTE
+            Set
                 _dte = Value
             End Set
         End Property
 
-        Public WriteOnly Property Page() As PropPageUserControlBase
-            Set(Value As PropPageUserControlBase)
+        Public WriteOnly Property Page As PropPageUserControlBase
+            Set
                 _page = Value
             End Set
         End Property
 
-        Public Property EventCommandLine() As String
+        Public Property EventCommandLine As String
             Get
                 Return _eventCommandLine
             End Get
-            Set(Value As String)
+            Set
                 _eventCommandLine = Value
                 CommandLine.Text = _eventCommandLine
 
@@ -73,7 +73,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Set
         End Property
 
-        Public Property HelpTopic() As String
+        Public Property HelpTopic As String
             Get
                 If _helpTopic Is Nothing Then
                     If _page IsNot Nothing AndAlso _page.IsVBProject() Then
@@ -85,12 +85,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                 Return _helpTopic
             End Get
-            Set(value As String)
+            Set
                 _helpTopic = value
             End Set
         End Property
 
-        Private Property ServiceProvider() As IServiceProvider
+        Private Property ServiceProvider As IServiceProvider
             Get
                 If _serviceProvider Is Nothing AndAlso _dte IsNot Nothing Then
                     Dim isp As OLE.Interop.IServiceProvider = CType(_dte, OLE.Interop.IServiceProvider)
@@ -100,7 +100,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 End If
                 Return _serviceProvider
             End Get
-            Set(value As IServiceProvider)
+            Set
                 _serviceProvider = value
             End Set
         End Property

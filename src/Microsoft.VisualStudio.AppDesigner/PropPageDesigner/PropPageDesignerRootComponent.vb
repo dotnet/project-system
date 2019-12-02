@@ -20,7 +20,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         Private _rootDesigner As PropPageDesignerRootDesigner
         Private ReadOnly _name As String = "PropPageDesignerRootComponent"
 
-        Public ReadOnly Property Name() As String
+        Public ReadOnly Property Name As String
             Get
                 Return _name
             End Get
@@ -34,7 +34,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         '''   resx file to be edited by the user.
         ''' </summary>
         ''' <value>The associated ResourceEditorRootDesigner.</value>
-        Public ReadOnly Property RootDesigner() As PropPageDesignerRootDesigner
+        Public ReadOnly Property RootDesigner As PropPageDesignerRootDesigner
             Get
                 If _rootDesigner Is Nothing Then
                     'Not yet cached - get this info from the designer host
@@ -51,11 +51,11 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' The IVsHierarchy associated with the AppDesigner node
         ''' </summary>
-        Public Property Hierarchy() As IVsHierarchy
+        Public Property Hierarchy As IVsHierarchy
             Get
                 Return _hierarchy
             End Get
-            Set(Value As IVsHierarchy)
+            Set
                 _hierarchy = Value
             End Set
         End Property
@@ -63,11 +63,11 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' The ItemId associated with the AppDesigner node
         ''' </summary>
-        Public Property ItemId() As UInteger
+        Public Property ItemId As UInteger
             Get
                 Return _itemId
             End Get
-            Set(Value As UInteger)
+            Set
                 _itemId = Value
             End Set
         End Property

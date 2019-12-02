@@ -78,7 +78,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Is the current language case sensitive?
         ''' </summary>
-        Public ReadOnly Property IsCaseSensitive() As Boolean
+        Public ReadOnly Property IsCaseSensitive As Boolean
             Get
                 Return _caseSensitive
             End Get
@@ -134,14 +134,14 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         End Function
 
 #Region "Localized name of virtual types"
-        Private Shared ReadOnly Property DisplayTypeNameConnectionString() As String
+        Private Shared ReadOnly Property DisplayTypeNameConnectionString As String
             Get
                 Static VirtualTypeNameConnectionString As String = "(" & My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ComboBoxItem_ConnectionStringType & ")"
                 Return VirtualTypeNameConnectionString
             End Get
         End Property
 
-        Private Shared ReadOnly Property DisplayTypeNameWebReference() As String
+        Private Shared ReadOnly Property DisplayTypeNameWebReference As String
             Get
                 Static VirtualTypeNameWebReference As String = "(" & My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ComboBoxItem_WebReferenceType & ")"
                 Return VirtualTypeNameWebReference

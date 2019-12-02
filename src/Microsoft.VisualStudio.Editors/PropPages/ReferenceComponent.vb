@@ -16,13 +16,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' The original reference object in DTE.Project
         ''' </summary>
-        Friend ReadOnly Property CodeReference() As VSLangProj.Reference
+        Friend ReadOnly Property CodeReference As VSLangProj.Reference
             Get
                 Return CType(CurrentObject, VSLangProj.Reference)
             End Get
         End Property
 
-        Friend ReadOnly Property Name() As String
+        Friend ReadOnly Property Name As String
             Get
                 Return CodeReference.Name
             End Get

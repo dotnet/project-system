@@ -27,7 +27,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Trace switch used by all SettingsDesigner components - should be moved to the common Switches file
         ''' </summary>
-        Friend Shared ReadOnly Property TraceSwitch() As TraceSwitch
+        Friend Shared ReadOnly Property TraceSwitch As TraceSwitch
             Get
                 Static MyTraceSwitch As New TraceSwitch("SettingsDesigner", "Tracing for settings designer")
                 Return MyTraceSwitch
@@ -37,7 +37,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Demand-crete our designer view 
         ''' </summary>
-        Private ReadOnly Property View() As SettingsDesignerView
+        Private ReadOnly Property View As SettingsDesignerView
             Get
                 If _settingsDesignerViewProperty Is Nothing Then
                     Debug.WriteLineIf(TraceSwitch.TraceVerbose, "Creating SettingsDesignerView")
@@ -51,7 +51,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Have we already created a view?
         ''' </summary>
-        Friend ReadOnly Property HasView() As Boolean
+        Friend ReadOnly Property HasView As Boolean
             Get
                 Return _settingsDesignerViewProperty IsNot Nothing
             End Get
@@ -75,7 +75,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Our supported technologies
         ''' </summary>
-        Public ReadOnly Property SupportedTechnologies() As ViewTechnology() Implements IRootDesigner.SupportedTechnologies
+        Public ReadOnly Property SupportedTechnologies As ViewTechnology() Implements IRootDesigner.SupportedTechnologies
             Get
                 Return New ViewTechnology() {ViewTechnology.Default}
             End Get
@@ -84,7 +84,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Get access to all our settings
         ''' </summary>
-        Friend ReadOnly Property Settings() As DesignTimeSettings
+        Friend ReadOnly Property Settings As DesignTimeSettings
             Get
                 Return Component
             End Get
@@ -105,7 +105,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Make component property type safe if we want to access the component through
         ''' a SettingsDesigner instance
         ''' </summary>
-        Public Shadows ReadOnly Property Component() As DesignTimeSettings
+        Public Shadows ReadOnly Property Component As DesignTimeSettings
             Get
                 Return CType(MyBase.Component, DesignTimeSettings)
             End Get

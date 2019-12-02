@@ -26,7 +26,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Return the custom editing control used by this type
         ''' </summary>
-        Public Overrides ReadOnly Property EditType() As Type
+        Public Overrides ReadOnly Property EditType As Type
             Get
                 Return GetType(DataGridViewUITypeEditorEditingControl)
             End Get
@@ -54,7 +54,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Type of formatted value
         ''' </summary>
-        Public Overrides ReadOnly Property FormattedValueType() As Type
+        Public Overrides ReadOnly Property FormattedValueType As Type
             Get
                 Return GetType(String)
             End Get
@@ -267,17 +267,17 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
 #End Region
 
-        Friend Property ServiceProvider() As IServiceProvider
+        Friend Property ServiceProvider As IServiceProvider
             Get
                 Return _serviceProvider
             End Get
-            Set(Value As IServiceProvider)
+            Set
                 _serviceProvider = Value
             End Set
         End Property
 
 
-        Private ReadOnly Property UITypeEditor() As UITypeEditor
+        Private ReadOnly Property UITypeEditor As UITypeEditor
             Get
                 If ValueType IsNot Nothing Then
                     Return DirectCast(TypeDescriptor.GetEditor(ValueType, GetType(UITypeEditor)), UITypeEditor)

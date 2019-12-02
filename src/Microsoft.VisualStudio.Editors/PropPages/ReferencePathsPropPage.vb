@@ -56,7 +56,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             AddHandler SystemEvents.UserPreferenceChanged, AddressOf SystemEvents_UserPreferenceChanged
         End Sub
 
-        Protected Overrides ReadOnly Property ControlData() As PropertyControlData()
+        Protected Overrides ReadOnly Property ControlData As PropertyControlData()
             Get
                 If m_ControlData Is Nothing Then
                     m_ControlData = New PropertyControlData() {
@@ -69,7 +69,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         '''  Return true if the page can be resized...
         ''' </summary>
-        Public Overrides ReadOnly Property PageResizable() As Boolean
+        Public Overrides ReadOnly Property PageResizable As Boolean
             Get
                 Return True
             End Get

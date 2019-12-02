@@ -98,11 +98,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   but is less than this value, out of memory exceptions will be thrown.
         ''' </summary>
         ''' <remarks>Does not change the number of images in the cache, only affects future behavior.</remarks>
-        Public Property MinimumSizeBeforeRecycling() As Integer
+        Public Property MinimumSizeBeforeRecycling As Integer
             Get
                 Return _minimumSizeBeforeRecycling
             End Get
-            Set(Value As Integer)
+            Set
                 If Value > 0 Then
                     _minimumSizeBeforeRecycling = Value
                 Else
@@ -121,11 +121,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   number of images in the cache (because the caching hints from the ListView are not very accurate, no
         '''   need to get rid of items from the cache that we already had the memory to create).
         ''' </remarks>
-        Public Property MaximumSuggestedCacheSize() As Integer
+        Public Property MaximumSuggestedCacheSize As Integer
             Get
                 Return _maximumSuggestedCacheSize
             End Get
-            Set(Value As Integer)
+            Set
                 Debug.Assert(Value > 0)
                 _maximumSuggestedCacheSize = Value
             End Set
@@ -135,7 +135,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Gets the number of thumbnails currently in the cache (not including the number of reserved images)
         ''' </summary>
-        Public ReadOnly Property ThumbnailCount() As Integer
+        Public ReadOnly Property ThumbnailCount As Integer
             Get
                 Debug.Assert(_imageList.Images.Count - _reservedImagesCount >= 0)
                 Return _imageList.Images.Count - _reservedImagesCount
@@ -147,7 +147,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Retrieves the actual, effective maximum size to which the cache can grow.  This is equal to 
         '''   the largest of the MaximumSuggestedCacheSize and MinimumSizeBeforeRecycling properties.
         ''' </summary>
-        Private ReadOnly Property EffectiveMaximumSuggestedCacheSize() As Integer
+        Private ReadOnly Property EffectiveMaximumSuggestedCacheSize As Integer
             Get
                 Return Math.Max(_minimumSizeBeforeRecycling, _maximumSuggestedCacheSize)
             End Get

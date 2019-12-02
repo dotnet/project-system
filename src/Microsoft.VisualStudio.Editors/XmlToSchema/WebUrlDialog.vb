@@ -8,16 +8,16 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
     <HelpKeyword("vb.XmlToSchemaWizard")>
     Friend NotInheritable Class WebUrlDialog
         Private _url As String
-        Public ReadOnly Property Url() As String
-            <DebuggerStepThrough()>
+        Public ReadOnly Property Url As String
+            <DebuggerStepThrough>
             Get
                 Return _url
             End Get
         End Property
 
         Private _xml As XElement
-        Public ReadOnly Property Xml() As XElement
-            <DebuggerStepThrough()>
+        Public ReadOnly Property Xml As XElement
+            <DebuggerStepThrough>
             Get
                 Return _xml
             End Get

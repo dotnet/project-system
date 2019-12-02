@@ -103,7 +103,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         '''  Return true if the user selected whole lines in the DataGridView...
         ''' </summary>
-        Friend ReadOnly Property InLineSelectionMode() As Boolean
+        Friend ReadOnly Property InLineSelectionMode As Boolean
             Get
                 If MyBase.SelectionMode = DataGridViewSelectionMode.FullRowSelect Then
                     Return True
@@ -143,12 +143,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Indicates whether or not the "Type" column is visible to the user.  This
         '''   column is always present, but its visibility can be turned on/off.
         ''' </summary>
-        Public Property TypeColumnVisible() As Boolean
+        Public Property TypeColumnVisible As Boolean
             Get
                 Debug.Assert(ColumnCount >= COLUMN_TYPE, "Columns not set up properly?")
                 Return Columns(COLUMN_TYPE).Visible
             End Get
-            Set(Value As Boolean)
+            Set
                 Debug.Assert(ColumnCount >= COLUMN_TYPE, "Columns not set up properly?")
                 Debug.Assert(RowCountVirtual = 0, "Shouldn't be changing TypeColumnVisible after it's already been populated with data")
                 Columns(COLUMN_TYPE).Visible = Value
@@ -160,7 +160,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Return the ResourceEditorView which is the parent of this
         '''   control.
         ''' </summary>
-        Private ReadOnly Property ParentView() As ResourceEditorView
+        Private ReadOnly Property ParentView As ResourceEditorView
             Get
                 If TypeOf Parent Is ResourceEditorView Then
                     Return DirectCast(Parent, ResourceEditorView)
@@ -176,7 +176,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Gets the ResourceFile that was used to populate this grid.
         ''' </summary>
         ''' <remarks>Can be called only after population</remarks>
-        Private ReadOnly Property ResourceFile() As ResourceFile
+        Private ReadOnly Property ResourceFile As ResourceFile
             Get
                 Debug.Assert(_resourceFile IsNot Nothing, "Has Populate not yet been called?  m_ResourceFile is nothing")
                 Return _resourceFile
@@ -830,7 +830,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Gets the number of Resource rows in this grid.  Does not include the "addnew" row at the bottom.
         ''' </summary>
-        Public ReadOnly Property RowCountVirtual() As Integer
+        Public ReadOnly Property RowCountVirtual As Integer
             Get
                 Return _virtualResourceList.Count
             End Get
@@ -845,7 +845,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <remarks>Marked invisible so it's less likely to be accidentally used.</remarks>
         <System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>
-        Public Shadows ReadOnly Property RowCount() As Integer
+        Public Shadows ReadOnly Property RowCount As Integer
             Get
                 Debug.Fail("Don't use this function - use RowCountVirtual instead - it doesn't include the add/new row at the bottom, just the actual entries")
                 Return RowCountVirtual 'defensive
@@ -1554,11 +1554,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <summary>
             ''' which column is used to sort the list 
             ''' </summary>
-            Friend Property ColumnIndex() As Integer
+            Friend Property ColumnIndex As Integer
                 Get
                     Return _columnIndex
                 End Get
-                Set(value As Integer)
+                Set
                     _columnIndex = value
                 End Set
             End Property
@@ -1566,11 +1566,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <summary>
             ''' whether it is in reverseOrder
             ''' </summary>
-            Friend Property InReverseOrder() As Boolean
+            Friend Property InReverseOrder As Boolean
                 Get
                     Return _reverseOrder
                 End Get
-                Set(value As Boolean)
+                Set
                     _reverseOrder = value
                 End Set
             End Property
@@ -1717,7 +1717,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             '''  We override it to replace the default DataGridViewTextBoxEditingControl with ResourceStringTextBoxEditingControl
             '''  so we can handle some events to handle CheckOut correctly...
             ''' </summary>
-            Public Overrides ReadOnly Property EditType() As Type
+            Public Overrides ReadOnly Property EditType As Type
                 Get
                     Return GetType(ResourceStringTextBoxEditingControl)
                 End Get

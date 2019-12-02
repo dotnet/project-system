@@ -47,7 +47,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <summary>
         ''' Return whether the DataGridView is in MultiSelection Mode...
         ''' </summary>
-        Friend ReadOnly Property InMultiSelectionMode() As Boolean
+        Friend ReadOnly Property InMultiSelectionMode As Boolean
             Get
                 Return _inMultiSelectionMode
             End Get
@@ -245,11 +245,11 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 End If
             End Sub
 
-            Public Overrides Property [ReadOnly]() As Boolean
+            Public Overrides Property [ReadOnly] As Boolean
                 Get
                     Return MyBase.ReadOnly
                 End Get
-                Set(value As Boolean)
+                Set
                     MyBase.ReadOnly = value
                     If value Then
                         DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing

@@ -29,7 +29,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Indicate what changes were performed during deserialization
         ''' </summary>
-        <Flags()>
+        <Flags>
         Friend Enum DirtyState
             NoChange = 0            ' No changes made
             ValueAdded = 1          ' At least one value was modified

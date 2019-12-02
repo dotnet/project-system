@@ -52,7 +52,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Returns the product SKU as an enum.
         ''' </summary>
-        Public Shared ReadOnly Property ProductSKU() As VSASKUEdition
+        Public Shared ReadOnly Property ProductSKU As VSASKUEdition
             Get
                 EnsureInited()
                 Return s_productSKU
@@ -62,7 +62,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Returns the product Sub-SKU as an enum.
         ''' </summary>
-        Public Shared ReadOnly Property ProductSubSKU() As VSASubSKUEdition
+        Public Shared ReadOnly Property ProductSubSKU As VSASubSKUEdition
             Get
                 EnsureInited()
                 Return s_productSubSKU
@@ -73,7 +73,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Returns True iff this is a Standard SKU
         ''' </summary>
         ''' <remarks>From a macro in vsappid.idl</remarks>
-        Public Shared ReadOnly Property IsStandard() As Boolean
+        Public Shared ReadOnly Property IsStandard As Boolean
             Get
                 EnsureInited()
                 Return (s_productSKU >= VSASKUEdition.Standard AndAlso s_productSKU < VSASKUEdition.VSTO)
@@ -84,7 +84,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Returns True iff this is a VSTO SKU
         ''' </summary>
-        Public Shared ReadOnly Property IsVSTO() As Boolean
+        Public Shared ReadOnly Property IsVSTO As Boolean
             Get
                 EnsureInited()
                 Return (s_productSKU >= VSASKUEdition.VSTO AndAlso s_productSKU < VSASKUEdition.Professional)
@@ -95,7 +95,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Returns True iff this is a Professional SKU
         ''' </summary>
         ''' <remarks>From a macro in vsappid.idl</remarks>
-        Public Shared ReadOnly Property IsProfessional() As Boolean
+        Public Shared ReadOnly Property IsProfessional As Boolean
             Get
                 EnsureInited()
                 Return (s_productSKU >= VSASKUEdition.Professional AndAlso s_productSKU < VSASKUEdition.Enterprise)
@@ -107,7 +107,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Returns True iff this is an Express SKU
         ''' </summary>
         ''' <remarks>From a macro in vsappid.idl</remarks>
-        Public Shared ReadOnly Property IsExpress() As Boolean
+        Public Shared ReadOnly Property IsExpress As Boolean
             Get
                 EnsureInited()
                 Return (s_productSKU = VSASKUEdition.Express)
@@ -119,7 +119,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Returns True iff this is an Academic SKU
         ''' </summary>
         ''' <remarks>From a macro in vsappid.idl</remarks>
-        Public Shared ReadOnly Property IsAcademic() As Boolean
+        Public Shared ReadOnly Property IsAcademic As Boolean
             Get
                 EnsureInited()
                 Return (s_productSKU = VSASKUEdition.AcademicStudent)
@@ -131,7 +131,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Returns True iff this is an Enterprise SKU
         ''' </summary>
         ''' <remarks>From a macro in vsappid.idl</remarks>
-        Public Shared ReadOnly Property IsEnterprise() As Boolean
+        Public Shared ReadOnly Property IsEnterprise As Boolean
             Get
                 EnsureInited()
                 Return (s_productSKU >= VSASKUEdition.Enterprise)
@@ -142,7 +142,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Returns True iff this is a VB SKU
         ''' </summary>
-        Public Shared ReadOnly Property IsVB() As Boolean
+        Public Shared ReadOnly Property IsVB As Boolean
             Get
                 EnsureInited()
                 Return (s_productSubSKU = VSASubSKUEdition.VB)
@@ -153,7 +153,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Returns True iff this is a VC SKU
         ''' </summary>
-        Public Shared ReadOnly Property IsVC() As Boolean
+        Public Shared ReadOnly Property IsVC As Boolean
             Get
                 EnsureInited()
                 Return (s_productSubSKU = VSASubSKUEdition.VC)

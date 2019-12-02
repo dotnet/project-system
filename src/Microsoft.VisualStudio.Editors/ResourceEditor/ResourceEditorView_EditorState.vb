@@ -54,7 +54,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <summary>
             ''' Returns whether or not state has actually been persisted into this object.
             ''' </summary>
-            Public ReadOnly Property StatePersisted() As Boolean
+            Public ReadOnly Property StatePersisted As Boolean
                 Get
                     Return _statePersisted
                 End Get

@@ -46,7 +46,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Retrieves the last set value for the Icon (as a path)
         ''' </summary>
-        Protected ReadOnly Property LastIconImage() As String
+        Protected ReadOnly Property LastIconImage As String
             Get
                 Return _lastIconImage
             End Get

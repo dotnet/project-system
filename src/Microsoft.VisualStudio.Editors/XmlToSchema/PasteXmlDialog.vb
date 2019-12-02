@@ -8,8 +8,8 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
     <HelpKeyword("vb.XmlToSchemaWizard")>
     Friend NotInheritable Class PasteXmlDialog
         Private _xml As XElement
-        Public ReadOnly Property Xml() As XElement
-            <DebuggerStepThrough()>
+        Public ReadOnly Property Xml As XElement
+            <DebuggerStepThrough>
             Get
                 Return _xml
             End Get

@@ -234,7 +234,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Return (CType(color.A, UInteger) << 24 Or CType(color.R, UInteger) << 16 Or CType(color.G, UInteger) << 8 Or CType(color.B, UInteger))
         End Function
 
-        Private ReadOnly Property ImageService() As IVsImageService2
+        Private ReadOnly Property ImageService As IVsImageService2
             Get
                 If (s_imageService Is Nothing) Then
                     Dim serviceProvider As ServiceProvider
@@ -1435,7 +1435,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
         Private s_instance As New Helper
 
-        Friend ReadOnly Property Instance() As Helper
+        Friend ReadOnly Property Instance As Helper
             Get
                 Return s_instance
             End Get

@@ -36,7 +36,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' Returns a type for System.Diagnostics.DebuggerStepThrough so that we can create
         ''' attribute-declarations for the CodeDom to spit them out.
         ''' </summary>
-        Private Shared ReadOnly Property DebuggerStepThroughAttribute() As Type
+        Private Shared ReadOnly Property DebuggerStepThroughAttribute As Type
             Get
                 Return GetType(DebuggerStepThroughAttribute)
             End Get
@@ -406,7 +406,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' Demand-create a CodeDomProvider corresponding to my projects current language
         ''' </summary>
         ''' <value>A CodeDomProvider</value>
-        Private Property CodeDomProvider() As CodeDomProvider
+        Private Property CodeDomProvider As CodeDomProvider
             Get
                 If _codeDomProvider Is Nothing Then
                     Dim VSMDCodeDomProvider As IVSMDCodeDomProvider = CType(GetService(GetType(IVSMDCodeDomProvider)), IVSMDCodeDomProvider)
@@ -417,7 +417,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 End If
                 Return _codeDomProvider
             End Get
-            Set(Value As CodeDomProvider)
+            Set
                 If Value Is Nothing Then
                     Throw New ArgumentNullException()
                 End If
@@ -794,7 +794,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <summary>
         ''' Demand-create service provider from my site
         ''' </summary>
-        Private ReadOnly Property ServiceProvider() As ServiceProvider
+        Private ReadOnly Property ServiceProvider As ServiceProvider
             Get
                 If _serviceProvider Is Nothing Then
                     Dim OleSp As IServiceProvider = CType(_site, IServiceProvider)

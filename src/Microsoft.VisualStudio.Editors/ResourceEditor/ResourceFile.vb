@@ -210,7 +210,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' The service provider provided by the designer host
         ''' </summary>
-        Public ReadOnly Property ServiceProvider() As IServiceProvider
+        Public ReadOnly Property ServiceProvider As IServiceProvider
             Get
                 Return _serviceProvider
             End Get
@@ -222,11 +222,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   change events, set this property to Nothing.  It does not need to be set up initially - it gets it
         '''   automatically from the service provider passed in.
         ''' </summary>
-        Public Property ComponentChangeService() As IComponentChangeService
+        Public Property ComponentChangeService As IComponentChangeService
             Get
                 Return _componentChangeService
             End Get
-            Set(Value As IComponentChangeService)
+            Set
                 _componentChangeService = Value
             End Set
         End Property
@@ -236,7 +236,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Gets the ResourceEditorView associated with this ResourceFile.
         ''' </summary>
         ''' <remarks>Overridable for unit testing.</remarks>
-        Public Overridable ReadOnly Property View() As ResourceEditorView
+        Public Overridable ReadOnly Property View As ResourceEditorView
             Get
                 Return RootComponent.RootDesigner.GetView()
             End Get
@@ -246,7 +246,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Gets the root component associated with this resource file.
         ''' </summary>
-        Public ReadOnly Property RootComponent() As ResourceEditorRootComponent
+        Public ReadOnly Property RootComponent As ResourceEditorRootComponent
             Get
                 Return _rootComponent
             End Get
@@ -256,7 +256,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Retrieves the designer host for the resource editor
         ''' </summary>
-        Private ReadOnly Property DesignerHost() As IDesignerHost
+        Private ReadOnly Property DesignerHost As IDesignerHost
             Get
                 If RootComponent.RootDesigner Is Nothing Then
                     Debug.Fail("No root designer")
@@ -273,7 +273,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Returns the resources from this resource file
         ''' </summary>
-        Friend ReadOnly Property Resources() As Dictionary(Of String, Resource)
+        Friend ReadOnly Property Resources As Dictionary(Of String, Resource)
             Get
                 Return _resources
             End Get
@@ -284,7 +284,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' The base path to use for resolving relative paths in the resx file.  This should be the
         '''   directory where the resx file lives.
         ''' </summary>
-        Public ReadOnly Property BasePath() As String
+        Public ReadOnly Property BasePath As String
             Get
                 Return _basePath
             End Get
@@ -295,7 +295,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''  Get the taskProvider
         '''   directory where the resx file lives.
         ''' </summary>
-        Private ReadOnly Property ErrorListProvider() As ErrorListProvider
+        Private ReadOnly Property ErrorListProvider As ErrorListProvider
             Get
                 If _errorListProvider Is Nothing Then
                     If RootComponent.RootDesigner IsNot Nothing Then
@@ -310,7 +310,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         '''  Whether the resource item belongs to a device project
         ''' </summary>
-        Public ReadOnly Property IsInsideDeviceProject() As Boolean Implements ResourceTypeEditor.IResourceContentFile.IsInsideDeviceProject
+        Public ReadOnly Property IsInsideDeviceProject As Boolean Implements ResourceTypeEditor.IResourceContentFile.IsInsideDeviceProject
             Get
                 Return RootComponent IsNot Nothing AndAlso RootComponent.IsInsideDeviceProject()
             End Get
@@ -1096,7 +1096,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <summary>
             ''' Gets the array (indexed by ResourceTaskType) of tasks in this set
             ''' </summary>
-            Public ReadOnly Property Tasks() As ResourceTask()
+            Public ReadOnly Property Tasks As ResourceTask()
                 Get
                     Return _tasks
                 End Get
@@ -1133,7 +1133,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <summary>
             ''' The resource associated with this task list entry.
             ''' </summary>
-            Public ReadOnly Property Resource() As Resource
+            Public ReadOnly Property Resource As Resource
                 Get
                     Return _resource
                 End Get

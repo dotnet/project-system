@@ -189,7 +189,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Returns the index of the item to be the currently selected item in the configuration dropdown of all
         '''   config-dependent property pages
         ''' </summary>
-        Public ReadOnly Property SelectedConfigIndex() As Integer
+        Public ReadOnly Property SelectedConfigIndex As Integer
             Get
                 Return _selectedConfigIndex
             End Get
@@ -200,7 +200,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Returns the index of the item to be the currently selected item in the platform dropdown of all
         '''   config-dependent property pages        
         ''' </summary>
-        Public ReadOnly Property SelectedPlatformIndex() As Integer
+        Public ReadOnly Property SelectedPlatformIndex As Integer
             Get
                 Return _selectedPlatformIndex
             End Get
@@ -220,7 +220,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' All current entries to be displayed in each pages' configuration combobox
         ''' </summary>
-        Public ReadOnly Property ConfigurationDropdownEntries() As DropdownItem()
+        Public ReadOnly Property ConfigurationDropdownEntries As DropdownItem()
             Get
                 If _platformDropdownEntries Is Nothing OrElse _configurationDropdownEntries Is Nothing Then
                     UpdateDropdownEntries()
@@ -233,7 +233,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' All current entries to be displayed in each pages' platform combobox
         ''' </summary>
-        Public ReadOnly Property PlatformDropdownEntries() As DropdownItem()
+        Public ReadOnly Property PlatformDropdownEntries As DropdownItem()
             Get
                 If _platformDropdownEntries Is Nothing OrElse _configurationDropdownEntries Is Nothing Then
                     UpdateDropdownEntries()
@@ -317,7 +317,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Retrieves the project associated with this configuration state
         ''' </summary>
-        Public ReadOnly Property Project() As EnvDTE.Project
+        Public ReadOnly Property Project As EnvDTE.Project
             Get
                 Debug.Assert(_project IsNot Nothing)
                 Return _project
@@ -328,7 +328,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Configuration provider for the project (IVsCfgProvider2)
         ''' </summary>
-        Public ReadOnly Property VsCfgProvider() As IVsCfgProvider2
+        Public ReadOnly Property VsCfgProvider As IVsCfgProvider2
             Get
                 Debug.Assert(_vsCfgProvider IsNot Nothing)
                 Return _vsCfgProvider
@@ -340,7 +340,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Returns whether or not we're in simplified config mode for this project, which means that
         '''   we hide the configuration/platform comboboxes.
         ''' </summary>
-        Public ReadOnly Property IsSimplifiedConfigMode() As Boolean
+        Public ReadOnly Property IsSimplifiedConfigMode As Boolean
             Get
                 Return Common.ShellUtil.GetIsSimplifiedConfigMode(_projectHierarchy)
             End Get
@@ -731,7 +731,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             ''' <summary>
             ''' Returns the display string to show in the combobox
             ''' </summary>
-            Public ReadOnly Property DisplayName() As String
+            Public ReadOnly Property DisplayName As String
                 Get
                     Select Case SelectionType
                         Case SelectionTypes.Active

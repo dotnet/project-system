@@ -35,7 +35,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '   We also update the status of this menu item in this property based on 
         '   m_AlwaysCheckStatus and m_StatusValid flag.
         '**************************************************************************
-        Public Overrides ReadOnly Property OleStatus() As Integer
+        Public Overrides ReadOnly Property OleStatus As Integer
             Get
                 If _alwaysCheckStatus OrElse Not _statusValid Then
                     UpdateStatus()
@@ -363,7 +363,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <summary>
         ''' Get the collection of commands that are in this group
         ''' </summary>
-        Public ReadOnly Property Commands() As ICollection
+        Public ReadOnly Property Commands As ICollection
             Get
                 Return _commands.Values
             End Get

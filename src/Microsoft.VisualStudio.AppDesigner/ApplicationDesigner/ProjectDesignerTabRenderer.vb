@@ -138,11 +138,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''   shell (e.g., colors will default to system or fallback colors instead of using the
         '''   shell's color service). 
         ''' </summary>
-        Public Property ServiceProvider() As IServiceProvider
+        Public Property ServiceProvider As IServiceProvider
             Get
                 Return _serviceProvider
             End Get
-            Set(value As IServiceProvider)
+            Set
                 _serviceProvider = value
                 If _gdiObjectsCreated Then
                     'If we've already created GDI stuff/layout, we will need to re-create them.  Otherwise
@@ -158,7 +158,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <value>The IVsUIShell service if found, otherwise null</value>
         ''' <remarks>Uses the publicly-obtained ServiceProvider property, if it was set.</remarks>
-        Private ReadOnly Property VsUIShellService() As IVsUIShell
+        Private ReadOnly Property VsUIShellService As IVsUIShell
             Get
                 If (_uiShellService Is Nothing) Then
                     If Common.VBPackageInstance IsNot Nothing Then
@@ -177,7 +177,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <value>The IVsUIShell5 service if found, otherwise null</value>
         ''' <remarks>Uses the publicly-obtained ServiceProvider property, if it was set.</remarks>
-        Private ReadOnly Property VsUIShell5Service() As IVsUIShell5
+        Private ReadOnly Property VsUIShell5Service As IVsUIShell5
             Get
                 If (_uiShell5Service Is Nothing) Then
                     Dim VsUIShell = VsUIShellService
@@ -202,11 +202,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Note: this is not necessarily the same as the currently-selected button, because once a button
         '''   is pulled into the switchable slot, we want it to stay there unless we have to change it.
         ''' </summary>
-        Public Property PreferredButtonForSwitchableSlot() As ProjectDesignerTabButton
+        Public Property PreferredButtonForSwitchableSlot As ProjectDesignerTabButton
             Get
                 Return _preferredButtonForSwitchableSlot
             End Get
-            Set(value As ProjectDesignerTabButton)
+            Set
                 If value IsNot _preferredButtonForSwitchableSlot Then
                     _preferredButtonForSwitchableSlot = value
                     _owner.Invalidate()
