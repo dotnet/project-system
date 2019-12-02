@@ -65,7 +65,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             If StringIsNullEmptyOrBlank(assemblyFullName) Then
                 Return String.Empty
             End If
-            Return (New AssemblyName(assemblyFullName)).Name
+            Return New AssemblyName(assemblyFullName).Name
         End Function
 
         Private Sub New()

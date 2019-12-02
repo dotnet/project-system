@@ -110,7 +110,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Private Function ErrorReportSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
-            If (Not (PropertyControlData.IsSpecialValue(value))) Then
+            If Not PropertyControlData.IsSpecialValue(value) Then
                 Dim stValue As String = CType(value, String)
                 If stValue <> "" Then
                     SelectComboItem(cboReportCompilerErrors, stValue)
@@ -148,7 +148,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Private Function BaseAddressSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
-            If (IsExeProject()) Then
+            If IsExeProject() Then
                 ' EXE's don't support base addresses so just disable the control and set the text to the default for 
                 ' EXE's.
 
@@ -161,8 +161,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Dim iBaseAddress As UInteger
 
                 Dim throwAwayObject As Decimal = Nothing
-                If (TypeOf (value) Is UInteger OrElse
-                    (CpsPropertyDescriptorWrapper.IsAnyCpsComponent(m_Objects) AndAlso Decimal.TryParse(DirectCast(value, String), throwAwayObject))) Then
+                If TypeOf value Is UInteger OrElse
+                    (CpsPropertyDescriptorWrapper.IsAnyCpsComponent(m_Objects) AndAlso Decimal.TryParse(DirectCast(value, String), throwAwayObject)) Then
                     iBaseAddress = CUInt(value)
                 Else
                     ' Since it's bogus just use the default for DLLs
@@ -195,7 +195,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 OutputType = VSLangProj.prjOutputType.prjOutputTypeLibrary
             End Try
 
-            If (OutputType = VSLangProj.prjOutputType.prjOutputTypeLibrary) Then
+            If OutputType = VSLangProj.prjOutputType.prjOutputTypeLibrary Then
                 Return False
             Else
                 Return True

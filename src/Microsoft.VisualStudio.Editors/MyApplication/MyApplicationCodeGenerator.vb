@@ -488,7 +488,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                     Throw New Win32Exception(NativeMethods.E_NOINTERFACE)
                 End If
             Finally
-                If (pUnknownPointer <> IntPtr.Zero) Then
+                If pUnknownPointer <> IntPtr.Zero Then
                     Marshal.Release(pUnknownPointer)
                 End If
             End Try
@@ -516,22 +516,22 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Dim changesRequired As Boolean = False
 
             Dim designerPrjItem As ProjectItem = GetDesignerProjectItem(phier, itemId)
-            If (designerPrjItem IsNot Nothing) Then
+            If designerPrjItem IsNot Nothing Then
                 Dim applicationData As MyApplicationData = Nothing
                 Using dd As New Design.Serialization.DocData(Common.ServiceProviderFromHierarchy(phier), designerPrjItem.FileNames(1))
                     applicationData = GetApplicationData(dd)
                 End Using
-                If (applicationData IsNot Nothing) Then
+                If applicationData IsNot Nothing Then
                     Dim oldSymbolName As String = GetSymbolNameNoRootNamespace(rglpszRQName(0), designerPrjItem.ContainingProject)
-                    If (oldSymbolName IsNot Nothing) Then
+                    If oldSymbolName IsNot Nothing Then
                         ' if the old class name matches the MainForm name or the SplashScreen name modify it.
                         Dim comparisonType As StringComparison = StringComparison.OrdinalIgnoreCase
-                        If (designerPrjItem.ContainingProject.CodeModel.IsCaseSensitive) Then
+                        If designerPrjItem.ContainingProject.CodeModel.IsCaseSensitive Then
                             comparisonType = StringComparison.Ordinal
                         End If
 
-                        If (String.Equals(oldSymbolName, applicationData.MainFormNoRootNS, comparisonType) _
-                            Or String.Equals(oldSymbolName, applicationData.SplashScreenNoRootNS, comparisonType)) Then
+                        If String.Equals(oldSymbolName, applicationData.MainFormNoRootNS, comparisonType) _
+                            Or String.Equals(oldSymbolName, applicationData.SplashScreenNoRootNS, comparisonType) Then
                             changesRequired = True
                         End If
                     End If
@@ -547,7 +547,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 Dim fileFullPath As String = designerPrjItem.Properties.Item("FullPath").Value.ToString()
 
                 VSErrorHandler.ThrowOnFailure(project.IsDocumentInProject(fileFullPath, iFound, pdwPriority, schemaItemId))
-                If (schemaItemId <> 0) Then
+                If schemaItemId <> 0 Then
                     prgAdditionalCheckoutVSITEMIDS = Array.CreateInstance(GetType(UInteger), 1)
                     prgAdditionalCheckoutVSITEMIDS.SetValue(schemaItemId, prgAdditionalCheckoutVSITEMIDS.GetLowerBound(0))
                 End If
@@ -569,13 +569,13 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Debug.Assert(cRQNames = 1, String.Format("Why Do we get {0} symbols to rename?", cRQNames))
 
             Dim designerPrjItem As ProjectItem = GetDesignerProjectItem(phier, itemId)
-            If (designerPrjItem IsNot Nothing) Then
+            If designerPrjItem IsNot Nothing Then
                 Try
                     Using dd As New Design.Serialization.DocData(Common.ServiceProviderFromHierarchy(phier), designerPrjItem.FileNames(1))
                         Dim data As MyApplicationData = GetApplicationData(dd)
-                        If (data IsNot Nothing) Then
+                        If data IsNot Nothing Then
                             Dim oldSymbolName As String = GetSymbolNameNoRootNamespace(rglpszRQName(0), designerPrjItem.ContainingProject)
-                            If (oldSymbolName IsNot Nothing) Then
+                            If oldSymbolName IsNot Nothing Then
                                 Dim namespaceNoClass As String = String.Empty
                                 Dim i As Integer = oldSymbolName.LastIndexOf(".")
                                 If i >= 0 Then
@@ -585,19 +585,19 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                                 Dim madeChanges As Boolean = False
                                 ' if the old class name matches the MainForm name or the SplashScreen name modify it.
                                 Dim comparisonType As StringComparison = StringComparison.OrdinalIgnoreCase
-                                If (designerPrjItem.ContainingProject.CodeModel.IsCaseSensitive) Then
+                                If designerPrjItem.ContainingProject.CodeModel.IsCaseSensitive Then
                                     comparisonType = StringComparison.Ordinal
                                 End If
 
-                                If (String.Equals(oldSymbolName, data.MainFormNoRootNS, comparisonType)) Then
+                                If String.Equals(oldSymbolName, data.MainFormNoRootNS, comparisonType) Then
                                     data.MainFormNoRootNS = namespaceNoClass + lpszNewName
                                     madeChanges = True
-                                ElseIf (String.Equals(oldSymbolName, data.SplashScreenNoRootNS, comparisonType)) Then
+                                ElseIf String.Equals(oldSymbolName, data.SplashScreenNoRootNS, comparisonType) Then
                                     data.SplashScreenNoRootNS = namespaceNoClass + lpszNewName
                                     madeChanges = True
                                 End If
 
-                                If (madeChanges) Then
+                                If madeChanges Then
                                     Using myappWriter As New Design.Serialization.DocDataTextWriter(dd)
                                         MyApplicationSerializer.Serialize(data, myappWriter)
                                         myappWriter.Close()
@@ -728,7 +728,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Debug.Assert(TypeOf o Is ProjectItem, "returned object is not a ProjectItem?")
             Dim projItem As ProjectItem = TryCast(o, ProjectItem)
 
-            If (projItem IsNot Nothing AndAlso projItem.Collection IsNot Nothing) Then
+            If projItem IsNot Nothing AndAlso projItem.Collection IsNot Nothing Then
                 ' get the parent project item, it's the one we want to modify
                 Return TryCast(projItem.Collection.Parent, ProjectItem)
             End If
@@ -743,7 +743,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <returns>the ApplicationData loaded from the ProjectItem</returns>
         Private Shared Function GetApplicationData(dd As Shell.Design.Serialization.DocData) As MyApplicationData
             Dim data As MyApplicationData = Nothing
-            If (dd IsNot Nothing) Then
+            If dd IsNot Nothing Then
                 ' read the content of this ProjectItem into a MyApplicationData object
                 Using myApplicationReader As New Design.Serialization.DocDataTextReader(dd)
                     data = MyApplicationSerializer.Deserialize(myApplicationReader)
@@ -764,9 +764,9 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
             ' if the symbol name starts with the current project's root namespace, remove it
             Dim namespaceProperty As [Property] = currentProject.Properties.Item("RootNamespace")
-            If (namespaceProperty IsNot Nothing) Then
+            If namespaceProperty IsNot Nothing Then
                 Dim rootNamespace As String = DirectCast(namespaceProperty.Value, String)
-                If (symbolName IsNot Nothing AndAlso symbolName.StartsWith(rootNamespace)) Then
+                If symbolName IsNot Nothing AndAlso symbolName.StartsWith(rootNamespace) Then
                     symbolName = symbolName.Substring(rootNamespace.Length + 1)
                 End If
             End If

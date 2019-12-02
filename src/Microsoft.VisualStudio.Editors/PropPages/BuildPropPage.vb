@@ -153,7 +153,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             MyBase.PostInitPage()
 
             'OutputPath browse button should only be enabled when the text box is enabled and Not ReadOnly
-            btnOutputPathBrowse.Enabled = (txtOutputPath.Enabled AndAlso Not txtOutputPath.ReadOnly)
+            btnOutputPathBrowse.Enabled = txtOutputPath.Enabled AndAlso Not txtOutputPath.ReadOnly
 
             rbWarningNone.Enabled = rbWarningAll.Enabled
             rbWarningSpecific.Enabled = rbWarningAll.Enabled
@@ -206,7 +206,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Private Function RegisterForCOMInteropSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
-            If (Not (PropertyControlData.IsSpecialValue(value))) Then
+            If Not PropertyControlData.IsSpecialValue(value) Then
                 Dim bRegisterForCOM As Boolean = False
                 Dim propRegisterForCOM As PropertyDescriptor
                 Dim obj As Object
@@ -214,8 +214,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 propRegisterForCOM = GetPropertyDescriptor("RegisterForComInterop")
                 obj = TryGetNonCommonPropertyValue(propRegisterForCOM)
 
-                If Not (obj Is PropertyControlData.MissingProperty) Then
-                    If Not (obj Is PropertyControlData.Indeterminate) Then
+                If Not obj Is PropertyControlData.MissingProperty Then
+                    If Not obj Is PropertyControlData.Indeterminate Then
                         bRegisterForCOM = If(CType(obj, String) = "", False, CType(obj, Boolean))
                     End If
 
@@ -241,7 +241,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Private Function RegisterForCOMInteropGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
-            If (chkRegisterForCOM.CheckState <> CheckState.Indeterminate) Then
+            If chkRegisterForCOM.CheckState <> CheckState.Indeterminate Then
                 value = chkRegisterForCOM.Checked
                 Return True
             Else
@@ -268,11 +268,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Dim bIndeterminateState As Boolean = False
                 Dim warnings As TreatWarningsSetting
 
-                If (Not (PropertyControlData.IsSpecialValue(value))) Then
+                If Not PropertyControlData.IsSpecialValue(value) Then
                     Dim stSpecificWarnings As String
 
                     stSpecificWarnings = CType(value, String)
-                    If (stSpecificWarnings <> "") Then
+                    If stSpecificWarnings <> "" Then
                         warnings = TreatWarningsSetting.WARNINGS_SPECIFIC
                         txtSpecificWarnings.Text = stSpecificWarnings
 
@@ -285,10 +285,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                         obj = TryGetNonCommonPropertyValue(propTreatAllWarnings)
 
-                        If Not (PropertyControlData.IsSpecialValue(obj)) Then
+                        If Not PropertyControlData.IsSpecialValue(obj) Then
                             txtSpecificWarnings.Text = ""
                             Dim bTreatAllWarningsAsErrors = CType(obj, Boolean)
-                            If (bTreatAllWarningsAsErrors) Then
+                            If bTreatAllWarningsAsErrors Then
                                 warnings = TreatWarningsSetting.WARNINGS_ALL
                             Else
                                 warnings = TreatWarningsSetting.WARNINGS_NONE
@@ -305,11 +305,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     bIndeterminateState = True
                 End If
 
-                If (Not bIndeterminateState) Then
-                    rbWarningAll.Checked = (warnings = TreatWarningsSetting.WARNINGS_ALL)
-                    rbWarningSpecific.Checked = (warnings = TreatWarningsSetting.WARNINGS_SPECIFIC)
-                    txtSpecificWarnings.Enabled = (warnings = TreatWarningsSetting.WARNINGS_SPECIFIC)
-                    rbWarningNone.Checked = (warnings = TreatWarningsSetting.WARNINGS_NONE)
+                If Not bIndeterminateState Then
+                    rbWarningAll.Checked = warnings = TreatWarningsSetting.WARNINGS_ALL
+                    rbWarningSpecific.Checked = warnings = TreatWarningsSetting.WARNINGS_SPECIFIC
+                    txtSpecificWarnings.Enabled = warnings = TreatWarningsSetting.WARNINGS_SPECIFIC
+                    rbWarningNone.Checked = warnings = TreatWarningsSetting.WARNINGS_NONE
                 Else
                     rbWarningAll.Checked = False
                     rbWarningSpecific.Checked = False
@@ -375,7 +375,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 value = False
                 bRetVal = True
             ElseIf rbWarningNone.Checked Then
-                value = Not (rbWarningNone.Checked)    ' If none is checked we want value to be false
+                value = Not rbWarningNone.Checked    ' If none is checked we want value to be false
                 bRetVal = True
             Else
                 ' We're in the indeterminate state. Let the architecture handle it.
@@ -386,12 +386,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Private Sub rbStartAction_CheckedChanged(sender As Object, e As EventArgs) Handles rbWarningAll.CheckedChanged, rbWarningSpecific.CheckedChanged, rbWarningNone.CheckedChanged
-            If (Not InsideInternalUpdate) Then
+            If Not InsideInternalUpdate Then
                 Dim warnings As TreatWarningsSetting = TreatSpecificWarningsGetValue()
-                rbWarningAll.Checked = (warnings = TreatWarningsSetting.WARNINGS_ALL)
-                rbWarningSpecific.Checked = (warnings = TreatWarningsSetting.WARNINGS_SPECIFIC)
-                txtSpecificWarnings.Enabled = (warnings = TreatWarningsSetting.WARNINGS_SPECIFIC)
-                rbWarningNone.Checked = (warnings = TreatWarningsSetting.WARNINGS_NONE)
+                rbWarningAll.Checked = warnings = TreatWarningsSetting.WARNINGS_ALL
+                rbWarningSpecific.Checked = warnings = TreatWarningsSetting.WARNINGS_SPECIFIC
+                txtSpecificWarnings.Enabled = warnings = TreatWarningsSetting.WARNINGS_SPECIFIC
+                rbWarningNone.Checked = warnings = TreatWarningsSetting.WARNINGS_NONE
                 IsDirty = True
 
                 ' Dirty both of the properties since either one could have changed
@@ -410,8 +410,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim objDocumentationFile As Object
             objDocumentationFile = PropertyControlData.GetValueOrIndeterminateFromArray(DocumentationFile)
 
-            If (Not (PropertyControlData.IsSpecialValue(objDocumentationFile))) Then
-                If (Trim(TryCast(objDocumentationFile, String)) <> "") Then
+            If Not PropertyControlData.IsSpecialValue(objDocumentationFile) Then
+                If Trim(TryCast(objDocumentationFile, String)) <> "" Then
                     txtXMLDocumentationFile.Text = Trim(TryCast(objDocumentationFile, String))
                     chkXMLDocumentationFile.Checked = True
                     txtXMLDocumentationFile.Enabled = True
@@ -444,7 +444,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Private Function WarningLevelSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
-            If (Not (PropertyControlData.IsSpecialValue(value))) Then
+            If Not PropertyControlData.IsSpecialValue(value) Then
                 cboWarningLevel.SelectedIndex = CType(value, Integer)
                 Return True
             Else
@@ -460,8 +460,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Private Function PlatformTargetSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
-            If (Not (PropertyControlData.IsSpecialValue(value))) Then
-                If (IsNothing(TryCast(value, String)) OrElse TryCast(value, String) = "") Then
+            If Not PropertyControlData.IsSpecialValue(value) Then
+                If IsNothing(TryCast(value, String)) OrElse TryCast(value, String) = "" Then
                     cboPlatformTarget.SelectedIndex = 0     ' AnyCPU
                 Else
                     Dim strPlatform As String = TryCast(value, String)
@@ -471,21 +471,21 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     ' convert to the one with the space for this specific case
 
                     ' Convert the no-space to one with a space
-                    If (String.Equals(strPlatform, "AnyCPU", StringComparison.Ordinal)) Then
+                    If String.Equals(strPlatform, "AnyCPU", StringComparison.Ordinal) Then
                         strPlatform = "Any CPU"
                     End If
 
                     cboPlatformTarget.SelectedItem = strPlatform
 
-                    If (cboPlatformTarget.SelectedIndex = -1) Then   ' If we can't find a match
-                        If (VSProductSKU.IsStandard) Then
+                    If cboPlatformTarget.SelectedIndex = -1 Then   ' If we can't find a match
+                        If VSProductSKU.IsStandard Then
                             ' For the standard SKU, we do not include Itanium in the list. However,
                             ' if the property is already set to Itanium (most likely from the project file set from
                             ' a non-Standard SKU then add it to the list so we do not report the wrong
                             ' platform target to the user.
 
                             Dim stValue As String = TryCast(value, String)
-                            If (String.Equals(Trim(stValue), "Itanium", StringComparison.Ordinal)) Then
+                            If String.Equals(Trim(stValue), "Itanium", StringComparison.Ordinal) Then
                                 cboPlatformTarget.Items.Add("Itanium")
                                 cboPlatformTarget.SelectedItem = stValue
                             Else
@@ -559,30 +559,30 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         stProjectDirectory &= "\"
                     End If
 
-                    If (Not IsNothing(DocumentationFile)) Then
+                    If Not IsNothing(DocumentationFile) Then
                         ' Loop through each config and calculate what we think the output path should be
                         Dim i As Integer
 
                         For i = 0 To DocumentationFile.Length - 1
 
-                            If (Not IsNothing(OutputPathData)) Then
+                            If Not IsNothing(OutputPathData) Then
                                 stOutputPath = TryCast(OutputPathData(i), String)
                             Else
                                 GetProperty(VsProjPropId.VBPROJPROPID_OutputPath, obj)
                                 stOutputPath = CType(obj, String)
                             End If
 
-                            If (Not IsNothing(stOutputPath)) Then
+                            If Not IsNothing(stOutputPath) Then
                                 If VisualBasic.Right(stOutputPath, 1) <> "\" Then
                                     stOutputPath &= "\"
                                 End If
 
-                                If (Path.IsPathRooted(stOutputPath)) Then
+                                If Path.IsPathRooted(stOutputPath) Then
                                     ' stOutputPath is an Absolute path so check to see if its within the project path
 
-                                    If (String.Equals(Path.GetFullPath(stProjectDirectory),
+                                    If String.Equals(Path.GetFullPath(stProjectDirectory),
                                                       VisualBasic.Left(Path.GetFullPath(stOutputPath), Len(stProjectDirectory)),
-                                                      StringComparison.Ordinal)) Then
+                                                      StringComparison.Ordinal) Then
 
                                         ' The output path is within the project so suggest the output directory (or suggest just the filename
                                         ' which will put it in the default location
@@ -609,7 +609,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         Dim objDocumentationFile As Object
                         objDocumentationFile = PropertyControlData.GetValueOrIndeterminateFromArray(DocumentationFile)
 
-                        If (Not (PropertyControlData.IsSpecialValue(objDocumentationFile))) Then
+                        If Not PropertyControlData.IsSpecialValue(objDocumentationFile) Then
                             txtXMLDocumentationFile.Text = TryCast(objDocumentationFile, String)
                         End If
                     End If
@@ -789,7 +789,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             OtherConstants = DefineConstantsFullValue
 
             'Check for DEBUG
-            If (FindSymbol(OtherConstants, Const_CondConstantDEBUG)) Then
+            If FindSymbol(OtherConstants, Const_CondConstantDEBUG) Then
                 DebugDefined = True
 
                 'Strip it out
@@ -799,7 +799,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
 
             'Check for TRACE
-            If (FindSymbol(OtherConstants, Const_CondConstantTRACE)) Then
+            If FindSymbol(OtherConstants, Const_CondConstantTRACE) Then
                 TraceDefined = True
 
                 'Strip it out
@@ -963,14 +963,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim rgConstants() As String
             Dim bFound As Boolean = False
 
-            If (Not (IsNothing(stOldCondCompConstants))) Then
+            If Not IsNothing(stOldCondCompConstants) Then
                 rgConstants = stOldCondCompConstants.Split(New Char() {";"c})
 
                 Dim stTemp As String
 
-                If (Not (IsNothing(rgConstants))) Then
+                If Not IsNothing(rgConstants) Then
                     For Each stTemp In rgConstants
-                        If (String.Equals(Trim(stTemp), stSymbol, StringComparison.Ordinal)) Then
+                        If String.Equals(Trim(stTemp), stSymbol, StringComparison.Ordinal) Then
                             bFound = True
                             Exit For
                         End If
@@ -978,7 +978,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 End If
             End If
 
-            If (Not bFound) Then
+            If Not bFound Then
                 ' Add it to the beginning
                 Dim stNewConstants As String = stSymbol
 
@@ -1001,14 +1001,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ' See if we find it
             Dim rgConstants() As String
 
-            If (Not (IsNothing(stOldCondCompConstants))) Then
+            If Not IsNothing(stOldCondCompConstants) Then
                 rgConstants = stOldCondCompConstants.Split(New Char() {";"c})
 
                 Dim stTemp As String
 
-                If (Not (IsNothing(rgConstants))) Then
+                If Not IsNothing(rgConstants) Then
                     For Each stTemp In rgConstants
-                        If (String.Equals(Trim(stTemp), stSymbol, StringComparison.Ordinal)) Then
+                        If String.Equals(Trim(stTemp), stSymbol, StringComparison.Ordinal) Then
                             Return True
                         End If
                     Next
@@ -1027,15 +1027,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim rgConstants() As String
             Dim stNewConstants As String = ""
 
-            If (Not (IsNothing(stOldCondCompConstants))) Then
+            If Not IsNothing(stOldCondCompConstants) Then
                 rgConstants = stOldCondCompConstants.Split(New Char() {";"c})
 
                 Dim stTemp As String
 
-                If (Not (IsNothing(rgConstants))) Then
+                If Not IsNothing(rgConstants) Then
                     For Each stTemp In rgConstants
                         If Not String.Equals(Trim(stTemp), stSymbol, StringComparison.Ordinal) Then
-                            If (stNewConstants <> "") Then
+                            If stNewConstants <> "" Then
                                 stNewConstants += ";"
                             End If
 

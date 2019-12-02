@@ -74,7 +74,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
                     .ServiceProvider = Common.ShellUtil.GetServiceProvider(dte)
                 }
                 Dim uiService As IUIService = CType(inputForm.ServiceProvider.GetService(GetType(IUIService)), IUIService)
-                Using (DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware))
+                Using DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware)
                     uiService.ShowDialog(inputForm)
                 End Using
 

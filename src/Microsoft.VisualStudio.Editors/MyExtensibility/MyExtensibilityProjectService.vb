@@ -287,12 +287,12 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                 Dim addExtensionDialog As AssemblyOptionDialog =
                     AssemblyOptionDialog.GetAssemblyOptionDialog(
                     assemblyFullName, _vbPackage, extensionTemplates, AddRemoveAction.Add)
-                addExtensions = (addExtensionDialog.ShowDialog() = DialogResult.Yes)
+                addExtensions = addExtensionDialog.ShowDialog() = DialogResult.Yes
                 If addExtensionDialog.OptionChecked Then
                     _extensibilitySettings.SetAssemblyAutoAdd(assemblyFullName, addExtensions)
                 End If
             Else
-                addExtensions = (assemblyOption = MyExtensibility.AssemblyOption.Yes)
+                addExtensions = assemblyOption = MyExtensibility.AssemblyOption.Yes
             End If
 
             If addExtensions Then
@@ -369,12 +369,12 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                 Dim removeExtensionDialog As AssemblyOptionDialog =
                     AssemblyOptionDialog.GetAssemblyOptionDialog(
                     assemblyFullName, _vbPackage, itemList, AddRemoveAction.Remove)
-                removeExtensions = (removeExtensionDialog.ShowDialog() = DialogResult.Yes)
+                removeExtensions = removeExtensionDialog.ShowDialog() = DialogResult.Yes
                 If removeExtensionDialog.OptionChecked Then
                     _extensibilitySettings.SetAssemblyAutoRemove(assemblyFullName, removeExtensions)
                 End If
             Else
-                removeExtensions = (assemblyOption = MyExtensibility.AssemblyOption.Yes)
+                removeExtensions = assemblyOption = MyExtensibility.AssemblyOption.Yes
             End If
 
             If removeExtensions Then

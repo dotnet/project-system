@@ -448,7 +448,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                             _delayRegisteringViewHelper = True
 
                             ' VS Whidbey #260046 -- Make sure the control is created before calling Invoke/BeginInvoke                                                      
-                            If (_view.Created = False) Then
+                            If _view.Created = False Then
                                 _view.CreateControl()
                             End If
 

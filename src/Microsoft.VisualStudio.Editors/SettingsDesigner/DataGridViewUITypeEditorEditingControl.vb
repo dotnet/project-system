@@ -142,7 +142,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
         Public Function IDataGridViewEditingControl_IsInputKey(keyData As Keys, dataGridViewWantsInputKey As Boolean) As Boolean Implements IDataGridViewEditingControl.EditingControlWantsInputKey
             ' This code was copied from the DataGridViewTextBoxEditingControl
-            Select Case (keyData And Keys.KeyCode)
+            Select Case keyData And Keys.KeyCode
                 Case Keys.Right
                     ' If the end of the selection is at the end of the string
                     ' let the DataGridView treat the key message

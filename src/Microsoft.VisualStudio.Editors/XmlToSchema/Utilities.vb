@@ -111,7 +111,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
         <SecurityPermission(SecurityAction.InheritanceDemand, Flags:=SecurityPermissionFlag.UnmanagedCode)>
         Protected Overrides Sub WndProc(ByRef m As Message)
             Try
-                Select Case (m.Msg)
+                Select Case m.Msg
                     Case Interop.Win32Constant.WM_SYSCOMMAND
                         If CInt(m.WParam) = Interop.Win32Constant.SC_CONTEXTHELP Then
                             ShowHelp()

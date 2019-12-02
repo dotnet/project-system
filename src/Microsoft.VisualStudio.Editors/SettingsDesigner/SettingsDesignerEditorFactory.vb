@@ -135,7 +135,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             'The default view must have the value of Nothing.
             PhysicalViewOut = Nothing
 
-            If (LogicalView.Equals(LOGVIEWID.LOGVIEWID_Primary) OrElse LogicalView.Equals(LOGVIEWID.LOGVIEWID_Designer)) Then
+            If LogicalView.Equals(LOGVIEWID.LOGVIEWID_Primary) OrElse LogicalView.Equals(LOGVIEWID.LOGVIEWID_Designer) Then
                 ' if it's primary or designer, then that's our bread & butter, so return S_OK
                 '
                 Return NativeMethods.S_OK

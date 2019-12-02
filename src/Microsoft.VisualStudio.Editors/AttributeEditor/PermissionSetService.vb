@@ -134,7 +134,7 @@ Namespace Microsoft.VisualStudio.Editors.VBAttributeEditor
                 isAvailable = True
 
                 ' Validate the project permission set
-                If (ProjectPermissionSet IsNot Nothing) AndAlso (TypeOf (ProjectPermissionSet) Is PermissionSet) Then
+                If (ProjectPermissionSet IsNot Nothing) AndAlso (TypeOf ProjectPermissionSet Is PermissionSet) Then
 
                     ' Load the string permission set
                     Dim permissionSet As PermissionSet = LoadPermissionSet(strPermissionSet)

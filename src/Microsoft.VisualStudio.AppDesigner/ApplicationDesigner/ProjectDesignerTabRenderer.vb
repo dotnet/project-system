@@ -160,7 +160,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <remarks>Uses the publicly-obtained ServiceProvider property, if it was set.</remarks>
         Private ReadOnly Property VsUIShellService As IVsUIShell
             Get
-                If (_uiShellService Is Nothing) Then
+                If _uiShellService Is Nothing Then
                     If Common.VBPackageInstance IsNot Nothing Then
                         _uiShellService = TryCast(Common.VBPackageInstance.GetService(GetType(IVsUIShell)), IVsUIShell)
                     ElseIf ServiceProvider IsNot Nothing Then
@@ -179,10 +179,10 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <remarks>Uses the publicly-obtained ServiceProvider property, if it was set.</remarks>
         Private ReadOnly Property VsUIShell5Service As IVsUIShell5
             Get
-                If (_uiShell5Service Is Nothing) Then
+                If _uiShell5Service Is Nothing Then
                     Dim VsUIShell = VsUIShellService
 
-                    If (VsUIShell IsNot Nothing) Then
+                    If VsUIShell IsNot Nothing Then
                         _uiShell5Service = TryCast(VsUIShell, IVsUIShell5)
                     End If
                 End If
@@ -421,7 +421,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 #If DEBUG Then
             Dim SwitchableSlotShown As Boolean = False 'Whether we have shown a button in the switchable slot
 #End If
-            Dim OverflowNeeded As Boolean = (_visibleButtonSlots < _owner.TabButtonCount)
+            Dim OverflowNeeded As Boolean = _visibleButtonSlots < _owner.TabButtonCount
 
             'Find the preferred button for the switchable slot
             PreferredButtonIndex = -1
@@ -454,7 +454,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         'There is no preference for which button is in the switchable slot (or the preferred
                         '  button is already visible above the switchable slot), so 
                         '  we choose the button whose index matches that slot.
-                        ShowButtonInSwitchableSlot = (Index = SwitchableSlotIndex)
+                        ShowButtonInSwitchableSlot = Index = SwitchableSlotIndex
                     ElseIf Button Is PreferredButton Then
                         ShowButtonInSwitchableSlot = True
                     Else
@@ -546,7 +546,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Const TriangleHeight As Integer = 12
 
             ' Triangle starts at the width of the control minus the width of the triangle
-            Dim triangleHorizontalStart As Integer = (button.Width - TriangleWidth)
+            Dim triangleHorizontalStart As Integer = button.Width - TriangleWidth
 
             ' Find relative start of triangle, half of the height of the control minus half of the height of the triangle
             Dim triangleVerticalStart As Single = (CSng(button.Height) / 2) - (CSng(TriangleHeight) / 2)

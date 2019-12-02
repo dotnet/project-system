@@ -272,10 +272,10 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     FCanceled = 0
                 End If
 
-                If Not (DocView Is Nothing) Then
+                If Not DocView Is Nothing Then
                     DocViewPtr = Marshal.GetIUnknownForObject(DocView)
                 End If
-                If Not (DocData Is Nothing) Then
+                If Not DocData Is Nothing Then
                     DocDataPtr = Marshal.GetIUnknownForObject(DocData)
                 End If
                 Return VSConstants.S_OK
@@ -357,7 +357,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     If DesignerLoaderObject Is Nothing Then
                         Debug.Fail("DesignerService.CreateDesignerLoader() returned Nothing")
                     End If
-                    If Not TypeOf (DesignerLoaderObject) Is BaseDesignerLoader Then
+                    If Not TypeOf DesignerLoaderObject Is BaseDesignerLoader Then
                         Debug.Fail("DesignerLoader was of an unexpected type.  This likely means that Microsoft.VisualStudio.Editors.dll was " _
                             & "loaded twice from two different locations (or from the same location but one with 8.3 and the other long paths).  " _
                             & vbCrLf & DesignerLoaderObject.GetType.AssemblyQualifiedName)
@@ -373,7 +373,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     '... Get a managed Designer (this will expose an IVsWindowPane to the shell)
                     Dim OleProvider As IServiceProvider = CType(_serviceProvider.GetService(GetType(IServiceProvider)), IServiceProvider)
                     Dim Designer As IVSMDDesigner = DesignerService.CreateDesigner(OleProvider, DesignerLoader)
-                    Debug.Assert(Not (Designer Is Nothing), "Designer service should have thrown if it had a problem.")
+                    Debug.Assert(Not Designer Is Nothing, "Designer service should have thrown if it had a problem.")
 
                     'Set the out params
                     DocView = Designer.View 'Gets the object that can support IVsWindowPane
@@ -383,7 +383,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     '  read only or not)
                     Dim CaptionReadOnlyStatus As BaseDesignerLoader.EditorCaptionState = BaseDesignerLoader.EditorCaptionState.NotReadOnly
                     Try
-                        If ((New FileInfo(FileName)).Attributes And FileAttributes.ReadOnly) <> 0 Then
+                        If (New FileInfo(FileName).Attributes And FileAttributes.ReadOnly) <> 0 Then
                             CaptionReadOnlyStatus = BaseDesignerLoader.EditorCaptionState.ReadOnly
                         End If
                     Catch ex As Exception When ReportWithoutCrash(ex, "Failed to get file read-only status", NameOf(BaseEditorFactory))

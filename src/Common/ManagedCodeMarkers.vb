@@ -115,7 +115,7 @@ Namespace Microsoft.Internal.Performance
         ' Checks to see if code markers are enabled by looking for a named ATOM
         Private Sub New()
             ' This ATOM will be set by the native Code Markers host
-            _fUseCodeMarkers = (NativeMethods.FindAtom(AtomName) <> 0)
+            _fUseCodeMarkers = NativeMethods.FindAtom(AtomName) <> 0
         End Sub 'New
 
         ' Implements sending the code marker value nTimerID.

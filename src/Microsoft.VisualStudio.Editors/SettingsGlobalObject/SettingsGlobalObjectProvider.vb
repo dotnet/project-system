@@ -65,7 +65,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         End Sub
         Friend Shared ReadOnly Property GlobalSettings As TraceSwitch
             Get
-                If (s_globalSettings Is Nothing) Then
+                If s_globalSettings Is Nothing Then
                     s_globalSettings = New TraceSwitch("GlobalSettings", "Enable tracing for the Typed Settings GlobalObjectProvider.")
                 End If
 
@@ -79,10 +79,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' <value>running-doc-table</value>
         Friend ReadOnly Property RunningDocTable As IVsRunningDocumentTable
             Get
-                If (_rdt Is Nothing) Then
+                If _rdt Is Nothing Then
                     Dim rdt As IVsRunningDocumentTable = TryCast(GetService(GetType(IVsRunningDocumentTable)), IVsRunningDocumentTable)
 
-                    Debug.Assert((rdt IsNot Nothing), "What?  No RDT?")
+                    Debug.Assert(rdt IsNot Nothing, "What?  No RDT?")
                     VSErrorHandler.ThrowOnFailure(rdt.AdviseRunningDocTableEvents(Me, _rdtEventsCookie))
                     _rdt = rdt
                 End If
@@ -108,23 +108,23 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             ' There's a bucket of things all global objects will need, so let's get them now.
             '
             Dim dts As DynamicTypeService = TryCast(GetService(GetType(DynamicTypeService)), DynamicTypeService)
-            If (dts Is Nothing) Then
+            If dts Is Nothing Then
                 Throw New NotSupportedException(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.General_MissingService, GetType(DynamicTypeService).Name))
             End If
 
             Dim hierarchy As IVsHierarchy = ProjectUtilities.GetVsHierarchy(Me, project)
-            Debug.Assert((hierarchy IsNot Nothing), "Unable to get hierarchy for project")
+            Debug.Assert(hierarchy IsNot Nothing, "Unable to get hierarchy for project")
 
             Dim oldObjects As GlobalObjectCollection = Nothing
 
-            If (_oldGlobalObjects IsNot Nothing) Then
+            If _oldGlobalObjects IsNot Nothing Then
                 _oldGlobalObjects.TryGetValue(project, oldObjects)
             End If
 
             ' get the main .settings file using the IVsProjectSpecialFiles interface
             '
             Dim specialFiles As IVsProjectSpecialFiles = TryCast(hierarchy, IVsProjectSpecialFiles)
-            If (specialFiles IsNot Nothing) Then
+            If specialFiles IsNot Nothing Then
 
                 Dim itemid As UInteger
                 Dim filePath As String = Nothing
@@ -136,7 +136,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                     '
                     Debug.Assert((itemid = VSConstants.VSITEMID_NIL) OrElse (filePath IsNot Nothing AndAlso itemid <> VSConstants.VSITEMID_NIL), "specialFiles.GetFile should fill in both or neither params")
 
-                    If (itemid <> VSConstants.VSITEMID_NIL) Then
+                    If itemid <> VSConstants.VSITEMID_NIL Then
                         ' now we need to map this hierarchy/itemid to a ProjectItem
                         '
                         Dim o As Object = Nothing
@@ -145,10 +145,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                         Debug.Assert(NativeMethods.Succeeded(hr), "GetProperty(ExtObject) failed?")
                         Debug.Assert(TypeOf o Is ProjectItem, "returned object is not a ProjectItem?")
 
-                        If (NativeMethods.Succeeded(hr) AndAlso o IsNot Nothing) Then
+                        If NativeMethods.Succeeded(hr) AndAlso o IsNot Nothing Then
                             Dim projItem As ProjectItem = TryCast(o, ProjectItem)
 
-                            If (projItem IsNot Nothing) Then
+                            If projItem IsNot Nothing Then
 
                                 ' we only want to enable global objects if the .settings file has our SingleFileGenerator
                                 '   associated with it.
@@ -175,7 +175,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                     '
                     Dim gob As SettingsFileGlobalObject = Nothing
 
-                    If (oldObjects IsNot Nothing) Then
+                    If oldObjects IsNot Nothing Then
 
                         For Each g As GlobalObject In oldObjects
 
@@ -191,7 +191,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                         Next g
                     End If
 
-                    If (gob Is Nothing) Then
+                    If gob Is Nothing Then
 
                         ' we only want to enable global objects if the .settings file has our SingleFileGenerator
                         '   associated with it.
@@ -201,7 +201,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                         gob = New SettingsFileGlobalObject(Me, hierarchy, item, name, typeResolver)
                     End If
 
-                    If (gob IsNot Nothing) Then
+                    If gob IsNot Nothing Then
 
                         ' add the settings-file global object
                         '
@@ -228,8 +228,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             Debug.WriteLineIf(GlobalSettings.TraceVerbose, "SettingsGlobalObjectProvider.Dispose(" & disposing & ")...")
 #End If
 
-            If (disposing) Then
-                If (_solutionEvents IsNot Nothing) Then
+            If disposing Then
+                If _solutionEvents IsNot Nothing Then
                     RemoveHandler _solutionEvents.ProjectRemoved, AddressOf OnProjectRemoved
                     RemoveHandler _solutionEvents.BeforeClosing, AddressOf OnBeforeSolutionClosed
                     _solutionEvents = Nothing
@@ -246,7 +246,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
 
                 End If
 
-                If (_rdt IsNot Nothing) Then
+                If _rdt IsNot Nothing Then
                     VSErrorHandler.ThrowOnFailure(_rdt.UnadviseRunningDocTableEvents(_rdtEventsCookie))
                     _rdt = Nothing
                 End If
@@ -264,7 +264,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' </summary>
         Private Sub DisposeAllGlobalObjects()
 
-            If (_globalObjects IsNot Nothing) Then
+            If _globalObjects IsNot Nothing Then
 
                 For Each de As KeyValuePair(Of Project, GlobalObjectCollection) In _globalObjects
                     DisposeGlobalObjects(de.Value)
@@ -289,7 +289,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             For Each gob As GlobalObject In col
 
                 Dim settingGob As SettingsFileGlobalObject = TryCast(gob, SettingsFileGlobalObject)
-                If (settingGob IsNot Nothing) Then
+                If settingGob IsNot Nothing Then
                     settingGob.Dispose()
                 End If
             Next gob
@@ -330,7 +330,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             Debug.WriteLineIf(GlobalSettings.TraceVerbose, "SettingsGlobalObjectProvider.GetGlobalObjectsCore(" & DebugGetId(project) & ", " & DebugGetStr(baseType) & ")...")
 #End If
 
-            If (_globalObjects Is Nothing) Then
+            If _globalObjects Is Nothing Then
                 _globalObjects = New Dictionary(Of Project, GlobalObjectCollection)
 
                 ' Start tracking solution events so we can be notified when a project is removed
@@ -341,7 +341,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                 ' Listen for item added/removed events...
                 If _vsTrackProjectDocuments Is Nothing Then
                     _vsTrackProjectDocuments = DirectCast(GetService(GetType(SVsTrackProjectDocuments)), IVsTrackProjectDocuments2)
-                    If (_vsTrackProjectDocuments IsNot Nothing) Then
+                    If _vsTrackProjectDocuments IsNot Nothing Then
                         VSErrorHandler.ThrowOnFailure(_vsTrackProjectDocuments.AdviseTrackProjectDocumentsEvents(Me, _vsTrackProjectDocumentsEventsCookie))
                         Debug.Assert(_vsTrackProjectDocumentsEventsCookie <> 0, "AdviseTrackProjectDocumentsEvents gave us a 0 cookie!")
                     End If
@@ -360,10 +360,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                 result = objects
             End If
 
-            If (baseType IsNot Nothing) Then
+            If baseType IsNot Nothing Then
                 ' If we were given a base type, limit our result by that type.
                 '
-                If (_typedGlobalObjects Is Nothing) Then
+                If _typedGlobalObjects Is Nothing Then
                     _typedGlobalObjects = New Dictionary(Of Project, Dictionary(Of Type, GlobalObjectCollection))
                 End If '
 
@@ -386,7 +386,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                     '   retrieve values, and they won't be able to bind unless we're generating code, so we 
                     '   need to make sure we enable generation for any of these instances.
                     '
-                    Dim needToEnsureGenerator As Boolean = (GetType(SettingsBase).IsAssignableFrom(baseType))
+                    Dim needToEnsureGenerator As Boolean = GetType(SettingsBase).IsAssignableFrom(baseType)
 
                     Dim gob As GlobalObject
                     For Each gob In result
@@ -394,12 +394,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
 
                             Dim addToResults As Boolean = True
 
-                            If (needToEnsureGenerator) Then
+                            If needToEnsureGenerator Then
 
                                 Dim settingGob As SettingsFileGlobalObject = TryCast(gob, SettingsFileGlobalObject)
                                 Debug.Assert(settingGob IsNot Nothing, "how did we put a global-object other than a SettingsFileGlobalObject in our list?")
 
-                                If (settingGob IsNot Nothing) Then
+                                If settingGob IsNot Nothing Then
                                     Try
                                         settingGob.EnsureGeneratingSettingClass()
                                     Catch ex As CheckoutException
@@ -408,7 +408,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                                 End If
                             End If
 
-                            If (addToResults) Then
+                            If addToResults Then
                                 typedResult.Add(gob)
                             End If
                         End If
@@ -438,7 +438,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                     If NativeMethods.Succeeded(hr) Then
                         If itemid <> VSITEMID.NIL Then
                             Dim dts As DynamicTypeService = TryCast(GetService(GetType(DynamicTypeService)), DynamicTypeService)
-                            If (dts Is Nothing) Then
+                            If dts Is Nothing Then
                                 Throw New NotSupportedException(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.General_MissingService, GetType(DynamicTypeService).Name))
                             End If
 
@@ -457,7 +457,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' <param name="o"></param>
         Friend Shared Function DebugGetId(o As Object) As String
 #If DEBUG Then
-            If (o Is Nothing) Then
+            If o Is Nothing Then
                 Return "<nada>"
             Else
                 Return CStr(o.GetHashCode().ToString("x8"))
@@ -469,7 +469,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' <param name="o"></param>
         Friend Shared Function DebugGetStr(o As Object) As String
 #If DEBUG Then
-            If (o Is Nothing) Then
+            If o Is Nothing Then
                 Return "<nada>"
             Else
                 Return o.ToString()
@@ -502,9 +502,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             Dim localPunk As IntPtr = IntPtr.Zero
             Dim rdt As IVsRunningDocumentTable = RunningDocTable
 
-            Debug.Assert((rdt IsNot Nothing), "Only call with a valid RDT")
+            Debug.Assert(rdt IsNot Nothing, "Only call with a valid RDT")
 
-            If (rdt IsNot Nothing) Then
+            If rdt IsNot Nothing Then
                 VSErrorHandler.ThrowOnFailure(rdt.GetDocumentInfo(docCookie, flags, readLocks, editLocks, fileName, hierarchy, itemid, localPunk))
                 Try
                     Dim obj As Object = Nothing
@@ -514,12 +514,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                     If NativeMethods.Succeeded(hr) AndAlso (proj IsNot Nothing) Then
 
                         Dim gobs As GlobalObjectCollection = Nothing
-                        If (_globalObjects.TryGetValue(proj, gobs)) Then
+                        If _globalObjects.TryGetValue(proj, gobs) Then
 
                             For Each gob As GlobalObject In gobs
                                 Dim settingGob As SettingsFileGlobalObject = TryCast(gob, SettingsFileGlobalObject)
 
-                                If (settingGob IsNot Nothing) AndAlso (String.Equals(GetFileNameForProjectItem(settingGob.ProjectItem), fileName, StringComparison.OrdinalIgnoreCase)) Then
+                                If (settingGob IsNot Nothing) AndAlso String.Equals(GetFileNameForProjectItem(settingGob.ProjectItem), fileName, StringComparison.OrdinalIgnoreCase) Then
                                     result = settingGob
                                     punk = localPunk
                                     localPunk = IntPtr.Zero ' xfer ref
@@ -529,7 +529,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                         End If
                     End If
                 Finally
-                    If (localPunk <> IntPtr.Zero) Then
+                    If localPunk <> IntPtr.Zero Then
                         Marshal.Release(localPunk)
                     End If
                 End Try
@@ -559,16 +559,16 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             Debug.WriteLineIf(GlobalSettings.TraceVerbose, "SettingsGlobalObjectProvider.OnBeforeSolutionClosed...")
 #End If
 
-            If ((_globalObjects IsNot Nothing) AndAlso (_globalObjects.Count > 0)) Then
+            If (_globalObjects IsNot Nothing) AndAlso (_globalObjects.Count > 0) Then
                 DisposeAllGlobalObjects()
                 OnCollectionChanged(EventArgs.Empty)
             End If
 
-            If (_typedGlobalObjects IsNot Nothing) Then
+            If _typedGlobalObjects IsNot Nothing Then
                 _typedGlobalObjects.Clear()
             End If
 
-            If (_oldGlobalObjects IsNot Nothing) Then
+            If _oldGlobalObjects IsNot Nothing Then
                 _oldGlobalObjects.Clear()
             End If
 
@@ -589,16 +589,16 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             Debug.WriteLineIf(GlobalSettings.TraceVerbose, "SettingsGlobalObjectProvider.OnProjectItemAdded(" & DebugGetId(projectItem) & ")...")
 #End If
 
-            If (projectItem.Name.EndsWith(SettingsDesigner.SettingsDesigner.SETTINGS_FILE_EXTENSION, StringComparison.OrdinalIgnoreCase)) Then
+            If projectItem.Name.EndsWith(SettingsDesigner.SettingsDesigner.SETTINGS_FILE_EXTENSION, StringComparison.OrdinalIgnoreCase) Then
 
-                If (_globalObjects IsNot Nothing) Then
+                If _globalObjects IsNot Nothing Then
 
                     Dim project As Project = projectItem.ContainingProject
                     Dim existing As GlobalObjectCollection = Nothing
 
                     If _globalObjects.TryGetValue(project, existing) Then
 
-                        If (_oldGlobalObjects Is Nothing) Then
+                        If _oldGlobalObjects Is Nothing Then
                             _oldGlobalObjects = New Dictionary(Of Project, GlobalObjectCollection)
                         End If
 
@@ -622,17 +622,17 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             Debug.WriteLineIf(GlobalSettings.TraceVerbose, "SettingsGlobalObjectProvider.OnProjectRemoved(" & DebugGetId(target) & ")...")
 #End If
 
-            If (_globalObjects IsNot Nothing) AndAlso (_globalObjects.ContainsKey(target)) Then
+            If (_globalObjects IsNot Nothing) AndAlso _globalObjects.ContainsKey(target) Then
                 DisposeGlobalObjects(_globalObjects(target))
                 _globalObjects.Remove(target)
                 OnCollectionChanged(EventArgs.Empty)
             End If
 
-            If ((_typedGlobalObjects IsNot Nothing) AndAlso (_typedGlobalObjects.ContainsKey(target))) Then
+            If (_typedGlobalObjects IsNot Nothing) AndAlso _typedGlobalObjects.ContainsKey(target) Then
                 _typedGlobalObjects.Remove(target)
             End If
 
-            If ((_oldGlobalObjects IsNot Nothing) AndAlso (_oldGlobalObjects.ContainsKey(target))) Then
+            If (_oldGlobalObjects IsNot Nothing) AndAlso _oldGlobalObjects.ContainsKey(target) Then
                 _oldGlobalObjects.Remove(target)
             End If
 
@@ -651,7 +651,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             ' if it does, we keep it and we begin tracking changes.  Otherwise, we
             ' let it get disposed.
             '
-            Debug.Assert((RunningDocTable IsNot Nothing), "What?  No RDT?")
+            Debug.Assert(RunningDocTable IsNot Nothing, "What?  No RDT?")
 
             Dim localPunk As IntPtr = IntPtr.Zero
             Try
@@ -661,7 +661,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                 '
                 VSErrorHandler.ThrowOnFailure(RunningDocTable.GetDocumentInfo(docCookie, Nothing, Nothing, Nothing, Nothing, hier, itemid, localPunk))
             Finally
-                If (localPunk <> IntPtr.Zero) Then
+                If localPunk <> IntPtr.Zero Then
                     Marshal.Release(localPunk)
                 End If
             End Try
@@ -733,14 +733,14 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                         End If
                     Next
                 End If
-            ElseIf ((attributes And __VSRDTATTRIB.RDTA_DocDataReloaded) <> 0) Then
+            ElseIf (attributes And __VSRDTATTRIB.RDTA_DocDataReloaded) <> 0 Then
                 Dim punk As IntPtr
                 Dim settingGob As SettingsFileGlobalObject = GetObjectForCookie(docCookie, punk)
 
-                If (settingGob IsNot Nothing) Then
+                If settingGob IsNot Nothing Then
 
 #If DEBUG Then
-                    If (GlobalSettings.TraceVerbose) Then
+                    If GlobalSettings.TraceVerbose Then
                         Try
                             Dim attrs As __VSRDTATTRIB = CType([Enum].ToObject(GetType(__VSRDTATTRIB), attributes), __VSRDTATTRIB)
                             Debug.WriteLine("SettingsGlobalObjectProvider.OnAfterAttributeChange(" & attrs.ToString("G") & ")...")
@@ -768,13 +768,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         Private Function OnAfterFirstDocumentLock(docCookie As UInteger, lockType As UInteger, readLocksRemaining As UInteger, editLocksRemaining As UInteger) As Integer _
             Implements IVsRunningDocTableEvents.OnAfterFirstDocumentLock
 
-            If ((lockType And _VSRDTFLAGS.RDT_EditLock) = _VSRDTFLAGS.RDT_EditLock) Then
+            If (lockType And _VSRDTFLAGS.RDT_EditLock) = _VSRDTFLAGS.RDT_EditLock Then
                 Dim punk As IntPtr
                 Dim settingGob As SettingsFileGlobalObject = GetObjectForCookie(docCookie, punk)
 
-                If (settingGob IsNot Nothing) Then
+                If settingGob IsNot Nothing Then
 #If DEBUG Then
-                    If (GlobalSettings.TraceVerbose) Then
+                    If GlobalSettings.TraceVerbose Then
                         Try
                             Dim flags As _VSRDTFLAGS = CType([Enum].ToObject(GetType(_VSRDTFLAGS), lockType), _VSRDTFLAGS)
                             Debug.WriteLine("SettingsGlobalObjectProvider.OnAfterFirstDocumentLock(" & flags.ToString("G") & ")...")
@@ -804,15 +804,15 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         Private Function OnBeforeLastDocumentUnlock(docCookie As UInteger, lockType As UInteger, readLocksRemaining As UInteger, editLocksRemaining As UInteger) As Integer _
             Implements IVsRunningDocTableEvents.OnBeforeLastDocumentUnlock
 
-            If ((lockType And _VSRDTFLAGS.RDT_EditLock) = _VSRDTFLAGS.RDT_EditLock) Then
+            If (lockType And _VSRDTFLAGS.RDT_EditLock) = _VSRDTFLAGS.RDT_EditLock Then
 
                 Dim punk As IntPtr
                 Dim settingGob As SettingsFileGlobalObject = GetObjectForCookie(docCookie, punk)
 
-                If (settingGob IsNot Nothing) Then
+                If settingGob IsNot Nothing Then
 
 #If DEBUG Then
-                    If (GlobalSettings.TraceVerbose) Then
+                    If GlobalSettings.TraceVerbose Then
                         Try
                             Dim flags As _VSRDTFLAGS = CType([Enum].ToObject(GetType(_VSRDTFLAGS), lockType), _VSRDTFLAGS)
                             Debug.WriteLine("SettingsGlobalObjectProvider.OnBeforeLastDocumentUnlock(" & flags.ToString("G") & ")...")
@@ -859,19 +859,19 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             ' Validate arguments....
             Debug.Assert(rgpProjects IsNot Nothing AndAlso rgpProjects.Length = cProjects, "null rgpProjects or bad-length array")
             Requires.NotNull(rgpProjects, NameOf(rgpProjects))
-            If (rgpProjects.Length <> cProjects) Then Throw Common.CreateArgumentException(NameOf(rgpProjects))
+            If rgpProjects.Length <> cProjects Then Throw Common.CreateArgumentException(NameOf(rgpProjects))
 
             Debug.Assert(rgFirstIndices IsNot Nothing AndAlso rgFirstIndices.Length = cProjects, "null rgFirstIndices or bad-length array")
             Requires.NotNull(rgFirstIndices, NameOf(rgFirstIndices))
-            If (rgFirstIndices.Length <> cProjects) Then Throw Common.CreateArgumentException(NameOf(rgFirstIndices))
+            If rgFirstIndices.Length <> cProjects Then Throw Common.CreateArgumentException(NameOf(rgFirstIndices))
 
             Debug.Assert(rgpszMkDocuments IsNot Nothing AndAlso rgpszMkDocuments.Length = cFiles, "null rgpszMkDocuments or bad-length array")
             Requires.NotNull(rgpszMkDocuments, NameOf(rgpszMkDocuments))
-            If (rgpszMkDocuments.Length <> cFiles) Then Throw Common.CreateArgumentException(NameOf(rgpszMkDocuments))
+            If rgpszMkDocuments.Length <> cFiles Then Throw Common.CreateArgumentException(NameOf(rgpszMkDocuments))
 
             Debug.Assert(rgFlags IsNot Nothing AndAlso rgFlags.Length = cFiles, "null rgFlags or bad-length array")
             Requires.NotNull(rgFlags, NameOf(rgFlags))
-            If (rgFlags.Length <> cFiles) Then Throw Common.CreateArgumentException(NameOf(rgFlags))
+            If rgFlags.Length <> cFiles Then Throw Common.CreateArgumentException(NameOf(rgFlags))
 
             ' CONSIDER: Check/pass the flags to the MapToSettingsFileProjectItems to exclude special/dependent/nested files from being added
             Dim expandedHierarchies() As IVsHierarchy = GetCorrespondingProjects(rgpProjects, rgFirstIndices, cFiles)
@@ -894,19 +894,19 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             ' Validate arguments....
             Debug.Assert(rgpProjects IsNot Nothing AndAlso rgpProjects.Length = cProjects, "null rgpProjects or bad-length array")
             Requires.NotNull(rgpProjects, NameOf(rgpProjects))
-            If (rgpProjects.Length <> cProjects) Then Throw Common.CreateArgumentException(NameOf(rgpProjects))
+            If rgpProjects.Length <> cProjects Then Throw Common.CreateArgumentException(NameOf(rgpProjects))
 
             Debug.Assert(rgFirstIndices IsNot Nothing AndAlso rgFirstIndices.Length = cProjects, "null rgFirstIndices or bad-length array")
             Requires.NotNull(rgFirstIndices, NameOf(rgFirstIndices))
-            If (rgFirstIndices.Length <> cProjects) Then Throw Common.CreateArgumentException(NameOf(rgFirstIndices))
+            If rgFirstIndices.Length <> cProjects Then Throw Common.CreateArgumentException(NameOf(rgFirstIndices))
 
             Debug.Assert(rgpszMkDocuments IsNot Nothing AndAlso rgpszMkDocuments.Length = cFiles, "null rgpszMkDocuments or bad-length array")
             Requires.NotNull(rgpszMkDocuments, NameOf(rgpszMkDocuments))
-            If (rgpszMkDocuments.Length <> cFiles) Then Throw Common.CreateArgumentException(NameOf(rgpszMkDocuments))
+            If rgpszMkDocuments.Length <> cFiles Then Throw Common.CreateArgumentException(NameOf(rgpszMkDocuments))
 
             Debug.Assert(rgFlags IsNot Nothing AndAlso rgFlags.Length = cFiles, "null rgFlags or bad-length array")
             Requires.NotNull(rgFlags, NameOf(rgFlags))
-            If (rgFlags.Length <> cFiles) Then Throw Common.CreateArgumentException(NameOf(rgFlags))
+            If rgFlags.Length <> cFiles Then Throw Common.CreateArgumentException(NameOf(rgFlags))
 
             Dim expandedHierarchies() As IVsHierarchy = GetCorrespondingProjects(rgpProjects, rgFirstIndices, cFiles)
             For i As Integer = 0 To cFiles - 1
@@ -925,23 +925,23 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             ' Validate arguments....
             Debug.Assert(rgpProjects IsNot Nothing AndAlso rgpProjects.Length = cProjects, "null rgpProjects or bad-length array")
             Requires.NotNull(rgpProjects, NameOf(rgpProjects))
-            If (rgpProjects.Length <> cProjects) Then Throw Common.CreateArgumentException(NameOf(rgpProjects))
+            If rgpProjects.Length <> cProjects Then Throw Common.CreateArgumentException(NameOf(rgpProjects))
 
             Debug.Assert(rgFirstIndices IsNot Nothing AndAlso rgFirstIndices.Length = cProjects, "null rgFirstIndices or bad-length array")
             Requires.NotNull(rgFirstIndices, NameOf(rgFirstIndices))
-            If (rgFirstIndices.Length <> cProjects) Then Throw Common.CreateArgumentException(NameOf(rgFirstIndices))
+            If rgFirstIndices.Length <> cProjects Then Throw Common.CreateArgumentException(NameOf(rgFirstIndices))
 
             Debug.Assert(rgszMkOldNames IsNot Nothing AndAlso rgszMkOldNames.Length = cFiles, "null rgszMkOldNames or bad-length array")
             Requires.NotNull(rgszMkOldNames, NameOf(rgszMkOldNames))
-            If (rgszMkOldNames.Length <> cFiles) Then Throw Common.CreateArgumentException(NameOf(rgszMkOldNames))
+            If rgszMkOldNames.Length <> cFiles Then Throw Common.CreateArgumentException(NameOf(rgszMkOldNames))
 
             Debug.Assert(rgszMkNewNames IsNot Nothing AndAlso rgszMkNewNames.Length = cFiles, "null rgszMkNewNames or bad-length array")
             Requires.NotNull(rgszMkNewNames, NameOf(rgszMkNewNames))
-            If (rgszMkNewNames.Length <> cFiles) Then Throw Common.CreateArgumentException(NameOf(rgszMkNewNames))
+            If rgszMkNewNames.Length <> cFiles Then Throw Common.CreateArgumentException(NameOf(rgszMkNewNames))
 
             Debug.Assert(rgFlags IsNot Nothing AndAlso rgFlags.Length = cFiles, "null rgFlags or bad-length array")
             Requires.NotNull(rgFlags, NameOf(rgFlags))
-            If (rgFlags.Length <> cFiles) Then Throw Common.CreateArgumentException(NameOf(rgFlags))
+            If rgFlags.Length <> cFiles Then Throw Common.CreateArgumentException(NameOf(rgFlags))
 
 
             Dim expandedHierarchies() As IVsHierarchy = GetCorrespondingProjects(rgpProjects, rgFirstIndices, cFiles)
@@ -1038,8 +1038,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' <param name="fileName">Name of the file in the project that we are removing</param>
         Private Sub RemoveItem(hierarchy As IVsHierarchy, fileName As String)
             ' Search for this project item
-            If (_globalObjects IsNot Nothing) Then
-                If (fileName.EndsWith(SettingsDesigner.SettingsDesigner.SETTINGS_FILE_EXTENSION, StringComparison.OrdinalIgnoreCase)) Then
+            If _globalObjects IsNot Nothing Then
+                If fileName.EndsWith(SettingsDesigner.SettingsDesigner.SETTINGS_FILE_EXTENSION, StringComparison.OrdinalIgnoreCase) Then
                     Dim targetObject As SettingsFileGlobalObject = Nothing
                     Dim ProjectObj As Object = Nothing
                     VSErrorHandler.ThrowOnFailure(hierarchy.GetProperty(VSITEMID.ROOT, __VSHPROPID.VSHPROPID_ExtObject, ProjectObj))
@@ -1049,14 +1049,14 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
 
                     Dim objects As GlobalObjectCollection = Nothing
                     _globalObjects.TryGetValue(project, objects)
-                    If (objects IsNot Nothing) Then
+                    If objects IsNot Nothing Then
 
                         Dim gob As GlobalObject
                         For Each gob In objects
                             Dim settingGob As SettingsFileGlobalObject = TryCast(gob, SettingsFileGlobalObject)
 
-                            If (settingGob IsNot Nothing) Then
-                                If (settingGob.FileName.Equals(fileName, StringComparison.OrdinalIgnoreCase)) Then
+                            If settingGob IsNot Nothing Then
+                                If settingGob.FileName.Equals(fileName, StringComparison.OrdinalIgnoreCase) Then
                                     Debug.Assert(targetObject Is Nothing, "We have multiple global objects pointing to the same project item!")
                                     targetObject = settingGob
                                 Else
@@ -1066,7 +1066,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                         Next gob
                     End If
 
-                    If (targetObject IsNot Nothing) Then
+                    If targetObject IsNot Nothing Then
 
                         targetObject.RaiseRemove()
                         _globalObjects.Item(project) = New GlobalObjectCollection(newObjects, True)
@@ -1100,7 +1100,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                     Debug.Assert(TypeOf o Is ProjectItem, "returned object is not a ProjectItem?")
 
                     Dim projItem As ProjectItem = TryCast(o, ProjectItem)
-                    If (projItem IsNot Nothing) Then
+                    If projItem IsNot Nothing Then
                         OnProjectItemAdded(projItem)
                     End If
                 Catch Ex As Exception When Common.ReportWithoutCrash(Ex, "Caught exception while trying to map added/removed files to project items", NameOf(SettingsGlobalObjectProvider))
@@ -1224,7 +1224,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                                 & SettingsGlobalObjectProvider.DebugGetStr(_docData) & ", value is " & SettingsGlobalObjectProvider.DebugGetStr(Value) & "...")
 #End If
 
-                If (_docData IsNot Nothing) Then
+                If _docData IsNot Nothing Then
                     RemoveHandler _docData.DataChanged, AddressOf OnDocDataChanged
                     Dim d As DocData = _docData
                     _docData = Nothing
@@ -1234,7 +1234,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                     d.Dispose()
                 End If
 
-                If (Value IsNot Nothing) Then
+                If Value IsNot Nothing Then
                     AddHandler Value.DataChanged, AddressOf OnDocDataChanged
                     _docData = Value
                 End If
@@ -1272,7 +1272,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             Debug.WriteLineIf(SettingsGlobalObjectProvider.GlobalSettings.TraceVerbose, "SettingsFileGlobalObject.BuildType(" & CStr(_className) & ")...")
 #End If
 
-            If (_dtSettings IsNot Nothing) Then
+            If _dtSettings IsNot Nothing Then
                 _dtSettings.Dispose()
                 _dtSettings = Nothing
             End If
@@ -1407,7 +1407,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             Try
                 customTool = TryCast(ProjectItem.Properties.Item("CustomTool").Value, String)
 
-                If ((customTool IsNot Nothing) AndAlso (customTool.Length = 0)) Then
+                If (customTool IsNot Nothing) AndAlso (customTool.Length = 0) Then
                     ' non-Nothing + 0-length means we're not generating a class for
                     '   this .settings file, so turn on our generator
                     '
@@ -1430,7 +1430,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' <param name="docCookie">OUT: A cookie for the doc, 0 if the doc isn't found in the RDT</param>
         Private Sub GetDocumentInfo(fileName As String, ByRef readLocks As UInteger, ByRef editLocks As UInteger, ByRef itemid As UInteger, ByRef docCookie As UInteger)
             Dim rdt As IVsRunningDocumentTable = _provider.RunningDocTable
-            Debug.Assert((rdt IsNot Nothing), "What?  No RDT?")
+            Debug.Assert(rdt IsNot Nothing, "What?  No RDT?")
 
             Dim foundHierarchy As IVsHierarchy = Nothing
             Common.ShellUtil.GetDocumentInfo(fileName, rdt, foundHierarchy, readLocks, editLocks, itemid, docCookie)
@@ -1469,7 +1469,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ' </devdoc>
         Public Overrides Function GetSerializerCore(serializerType As Type) As Object
 
-            If (serializerType Is GetType(CodeDomSerializer)) Then
+            If serializerType Is GetType(CodeDomSerializer) Then
 #If DEBUG Then
                 Debug.WriteLineIf(SettingsGlobalObjectProvider.GlobalSettings.TraceVerbose, "SettingsFileGlobalObject.GetSerializerCore(" & CStr(_className) & ") -- returning GetType(CodeDomSerializer)...")
 #End If
@@ -1504,7 +1504,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                 _loadingSettings = True
                 Dim data As DocData = DocData
 
-                If (data Is Nothing) Then
+                If data Is Nothing Then
                     Dim savedIgnoreDocLock As Boolean = _ignoreDocLock
                     Try
                         _ignoreDocLock = True
@@ -1532,7 +1532,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                     ' case we will create an empty setting set until the file becomes
                     ' available again.
                     '
-                    If (data.Buffer IsNot Nothing) Then
+                    If data.Buffer IsNot Nothing Then
 
                         Dim bufferSize As Integer
                         VSErrorHandler.ThrowOnFailure(data.Buffer.GetSize(bufferSize))
@@ -1540,16 +1540,16 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                         ' if the buffer-size is 0, then this is an empty file, and we should
                         '   proceed as if it's empty (which is where dtSettings is now)
                         '
-                        If (bufferSize > 0) Then
+                        If bufferSize > 0 Then
                             Dim textReader As New DocDataTextReader(data)
-                            Using (textReader)
+                            Using textReader
                                 SettingsSerializer.Deserialize(dtSettings, textReader, False)
                             End Using
                         End If
 
                         ' We've got one edit lock - do anyone else have it too? If so, 
                         ' we shouldn't try to save the document from under them....
-                        If ((editLocks > 1) AndAlso (DocData Is Nothing)) Then
+                        If (editLocks > 1) AndAlso (DocData Is Nothing) Then
                             DocData = data
                             data = Nothing
                         End If
@@ -1581,7 +1581,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                 Finally
                     ' if DocData is not null, then data should be a ref to DocData (and we don't want to dispose that)
                     '
-                    If ((DocData Is Nothing) AndAlso (data IsNot Nothing)) Then
+                    If (DocData Is Nothing) AndAlso (data IsNot Nothing) Then
                         data.Dispose()
                     End If
                 End Try
@@ -1621,7 +1621,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ' </devdoc>
         Friend Sub OnFirstLock(punkDocData As IntPtr)
 
-            If (Not _ignoreDocLock) Then
+            If Not _ignoreDocLock Then
 #If DEBUG Then
                 Debug.WriteLineIf(SettingsGlobalObjectProvider.GlobalSettings.TraceVerbose, "SettingsFileGlobalObject.OnFirstLock(" & CStr(_className) & ")...")
 #End If
@@ -1639,11 +1639,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' </summary>
         Friend Sub OnLastUnlock()
 
-            If (Not _ignoreDocLock) Then
+            If Not _ignoreDocLock Then
 #If DEBUG Then
                 Debug.WriteLineIf(SettingsGlobalObjectProvider.GlobalSettings.TraceVerbose, "SettingsFileGlobalObject.OnLastUnlock(" & CStr(_className) & ")...")
 #End If
-                If (_docData IsNot Nothing) Then
+                If _docData IsNot Nothing Then
                     DocData = Nothing
                 End If
             End If
@@ -1734,7 +1734,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                 ' if we haven't stashed off the docdata (because the .settings file is not opened in another editor),
                 '   then we need to open the file & note that we should close/dispose it once we're done saving the file
                 '
-                If (docDataTemp Is Nothing) Then
+                If docDataTemp Is Nothing Then
                     Dim fileName As String = SettingsGlobalObjectProvider.GetFileNameForProjectItem(_item)
 
                     ' create a temporary DocData for this file
@@ -1776,13 +1776,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                 Finally
                     ' and then clean up the DocData if we only opened it for this save operation
                     '
-                    If (docCookie <> 0) Then
+                    If docCookie <> 0 Then
 
                         ' if we opened the document just for this save operation, then we need to persist
                         '   the change before disposing the doc
                         '
                         Dim rdt As IVsRunningDocumentTable = _provider.RunningDocTable
-                        Debug.Assert((rdt IsNot Nothing), "What?  No RDT?")
+                        Debug.Assert(rdt IsNot Nothing, "What?  No RDT?")
 
                         VSErrorHandler.ThrowOnFailure(rdt.SaveDocuments(CUInt(__VSRDTSAVEOPTIONS.RDTSAVEOPT_SaveIfDirty), _hierarchy, itemid, docCookie))
 
@@ -1862,7 +1862,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                             _provider.RunningDocTable.FindAndLockDocument(rdtLockType, AppConfigFileName, appConfigHier, appConfigItemid, pAppConfigUnkDocData, appConfigCookie)
                             )
                         '... and the way we decide that is by checking the returned native docdata
-                        shouldSaveAppConfig = (pAppConfigUnkDocData = IntPtr.Zero)
+                        shouldSaveAppConfig = pAppConfigUnkDocData = IntPtr.Zero
                     End If
                 Finally
                     If pAppConfigUnkDocData <> IntPtr.Zero Then
@@ -1895,7 +1895,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                                         GetDocumentInfo(AppConfigFileName, appConfigReadLocks, appConfigEditLocks, appConfigItemid, appConfigCookie)
                                     End If
                                     Dim rdt As IVsRunningDocumentTable = _provider.RunningDocTable
-                                    Debug.Assert((rdt IsNot Nothing), "What?  No RDT?")
+                                    Debug.Assert(rdt IsNot Nothing, "What?  No RDT?")
                                     VSErrorHandler.ThrowOnFailure(rdt.SaveDocuments(CUInt(__VSRDTSAVEOPTIONS.RDTSAVEOPT_SaveIfDirty), _hierarchy, appConfigItemid, appConfigCookie))
                                 End If
                             End Using
@@ -1925,14 +1925,14 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                     Dim cnt As Integer = t.Members.Count
                     Dim idx As Integer = 0
 
-                    While (idx < cnt)
+                    While idx < cnt
 
                         Dim attrs As MemberAttributes = t.Members(idx).Attributes
 
                         ' we only allow properties that match the SFG.Visibility 
                         '   (Public|Friend instance properties, that is)
                         '
-                        If ((attrs And allowed) <> attrs) Then
+                        If (attrs And allowed) <> attrs Then
                             t.Members.RemoveAt(idx)
                             idx -= 1
                             cnt -= 1
@@ -1967,7 +1967,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             ''' </summary>
             Friend Shared ReadOnly Property [Default] As SettingsFileCodeDomSerializer
                 Get
-                    If (s_default Is Nothing) Then
+                    If s_default Is Nothing Then
                         s_default = New SettingsFileCodeDomSerializer()
                     End If
                     Return s_default
@@ -2081,8 +2081,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                 ' DefaultInstance should return the GlobalObject that this represents since DefaultInstance
                 '   returns an instance of itself
                 '
-                If (prop.Name.Equals(SettingsSingleFileGeneratorBase.DefaultInstancePropertyName, StringComparison.Ordinal)) Then
-                    Return (_globalObject.Instance)
+                If prop.Name.Equals(SettingsSingleFileGeneratorBase.DefaultInstancePropertyName, StringComparison.Ordinal) Then
+                    Return _globalObject.Instance
                 End If
 
 #If DEBUG Then
@@ -2091,7 +2091,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                 ' note that after Whidbey ships, we could really remove this code since changing the
                 '   name after we ship would be a breaking change
                 '
-                If (True) Then
+                If True Then
                     Dim propertyCheckerInstance As New ConcreteApplicationSettings(_globalObject)
                     Dim propColl As SettingsPropertyCollection = propertyCheckerInstance.Properties
                 End If
@@ -2100,7 +2100,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                 ' the Forms designer will ask for this collection in order to add or remove properties
                 '   to/from our collection.
                 '
-                If (prop.Name.Equals("Properties", StringComparison.Ordinal)) Then
+                If prop.Name.Equals("Properties", StringComparison.Ordinal) Then
                     Return New GlobalSettingsPropertyCollection(_globalObject)
                 End If
 
@@ -2108,7 +2108,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
 
                     ' comparing code-names should use OrdinalComparison
                     '
-                    If (setting.Name.Equals(prop.Name, StringComparison.Ordinal)) Then
+                    If setting.Name.Equals(prop.Name, StringComparison.Ordinal) Then
                         ' Debug.Assert(prop.PropertyType.FullName = setting.SettingTypeName, "Type mismatch!") ' Can't assert this since unfortunately we return serializableconnectionstrings instead of strings
                         Dim settingType As Type = _globalObject.ResolveType(setting.SettingTypeName)
                         If settingType IsNot Nothing Then
@@ -2119,17 +2119,17 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                             '
                             If Not value Is Nothing Then
                                 Dim attributes As AttributeCollection = TypeDescriptor.GetAttributes(value)
-                                If (attributes IsNot Nothing AndAlso attributes(GetType(DesignerSerializerAttribute)) Is Nothing) Then
+                                If attributes IsNot Nothing AndAlso attributes(GetType(DesignerSerializerAttribute)) Is Nothing Then
                                     Dim serializer As Object = _globalObject.GetSerializer(GetType(CodeDomSerializer))
                                     Debug.Assert(serializer IsNot Nothing, "we provide this -- why can't we get it?")
-                                    If (serializer IsNot Nothing) Then
+                                    If serializer IsNot Nothing Then
                                         ' Dev10 Bug 838702 -- VS crashed after repeat open-close Sync Designer due to stack overflow.  
                                         ' Need to check to see if DesignTimeVisibleAttribute or SettingsGlobalObjectValueAttribute 
                                         ' does not exist before adding them.  
                                         ' See also VSWhidby bug 417560, consider to remove the comment and the check on 
                                         ' DesignerSerializerAttribute  
                                         '
-                                        If (attributes(GetType(SettingsGlobalObjectValueAttribute)) Is Nothing OrElse attributes(GetType(DesignTimeVisibleAttribute)) Is Nothing) Then
+                                        If attributes(GetType(SettingsGlobalObjectValueAttribute)) Is Nothing OrElse attributes(GetType(DesignTimeVisibleAttribute)) Is Nothing Then
                                             TypeDescriptor.AddAttributes(value,
                                                                         New DesignTimeVisibleAttribute(False),
                                                                         New SettingsGlobalObjectValueAttribute(_globalObject, setting.Name))
@@ -2142,7 +2142,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                     End If
                 Next
 
-                Debug.Fail(("Property " + prop.Name + " could not be located in our global object collection."))
+                Debug.Fail("Property " + prop.Name + " could not be located in our global object collection.")
                 Return Nothing
             End Function 'GetPropertyValue
             ''' <param name="ctor"></param>
@@ -2182,7 +2182,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                 '
                 For Each setting As DesignTimeSettingInstance In _globalObject.Settings
 
-                    If (prop.Name.Equals(setting.Name, StringComparison.Ordinal)) Then
+                    If prop.Name.Equals(setting.Name, StringComparison.Ordinal) Then
 
                         Dim settingType As Type = _globalObject.ResolveType(setting.SettingTypeName)
                         Dim settingValue As Object = Nothing
@@ -2192,8 +2192,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
 
                         ' only poke in the new value if the two values are different
                         '
-                        If ((settingValue Is Nothing AndAlso value IsNot Nothing) _
-                            OrElse (settingValue IsNot Nothing AndAlso Not settingValue.Equals(value))) Then
+                        If (settingValue Is Nothing AndAlso value IsNot Nothing) _
+                            OrElse (settingValue IsNot Nothing AndAlso Not settingValue.Equals(value)) Then
                             Try
                                 ' poke in the new value (which should set it as the value in
                                 '   the currently selected profile)
@@ -2217,7 +2217,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                     End If
                 Next
 
-                Debug.Fail(("Property " + prop.Name + " could not be located in our global object collection, so we could not set the value."))
+                Debug.Fail("Property " + prop.Name + " could not be located in our global object collection, so we could not set the value.")
 
             End Sub
 
@@ -2266,7 +2266,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                     Debug.WriteLineIf(SettingsGlobalObjectProvider.GlobalSettings.TraceVerbose, "ConcreteApplicationSettings.Properties-getter(" & CStr(_globalObject._className) & ")...")
 #End If
 
-                    If (_properties Is Nothing) Then
+                    If _properties Is Nothing Then
                         _properties = New GlobalSettingsPropertyCollection(_globalObject)
                     End If
                     Return _properties
@@ -2352,7 +2352,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                     '   just added has the app-scoped attribute. default will be user-scoped if neither attribue
                     '   is applied.
                     '
-                    If (prop.Attributes.Contains(GetType(ApplicationScopedSettingAttribute))) Then
+                    If prop.Attributes.Contains(GetType(ApplicationScopedSettingAttribute)) Then
                         setting.SetScope(DesignTimeSettingInstance.SettingScope.Application)
                     Else
                         setting.SetScope(DesignTimeSettingInstance.SettingScope.User)
@@ -2495,7 +2495,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             ' DTE doesn't define that.  There is no way to go between a DTE project
             ' and a VSIP hierarchy other than the slow workaround below:
             Dim solution As IVsSolution = CType(provider.GetService(GetType(IVsSolution)), IVsSolution)
-            If (solution Is Nothing) Then
+            If solution Is Nothing Then
                 Debug.Fail("No solution.")
                 Return Nothing
             End If
@@ -2504,8 +2504,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
 
             VSErrorHandler.ThrowOnFailure(solution.GetProjectOfUniqueName(project.UniqueName, hier))
 
-            If (hier Is Nothing) Then
-                Debug.Fail(("No project for name " + project.UniqueName))
+            If hier Is Nothing Then
+                Debug.Fail("No project for name " + project.UniqueName)
                 Return Nothing
             Else
                 Return hier

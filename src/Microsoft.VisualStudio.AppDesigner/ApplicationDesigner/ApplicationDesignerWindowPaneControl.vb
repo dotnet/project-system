@@ -24,7 +24,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Protected Overrides Function ProcessTabKey(forward As Boolean) As Boolean
             Common.Switches.TracePDMessageRouting(TraceLevel.Warning, "ApplicationDesignerWindowPaneControl.ProcessTabKey")
 
-            If (SelectNextControl(ActiveControl, forward, True, True, False)) Then
+            If SelectNextControl(ActiveControl, forward, True, True, False) Then
                 Common.Switches.TracePDMessageRouting(TraceLevel.Info, "  ...SelectNextControl handled it")
                 Return True
             End If

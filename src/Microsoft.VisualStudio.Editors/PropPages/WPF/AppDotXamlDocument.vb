@@ -685,8 +685,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                 Dim afterAttributeName As New Location(startLocation.LineIndex, startLocation.CharIndex + foundPropertyName.Length)
 #If DEBUG Then
                 Dim attributeNameBuffer As String = Nothing
-                If (ErrorHandler.Failed(_vsTextLines.GetLineText(startLocation.LineIndex, startLocation.CharIndex, afterAttributeName.LineIndex, afterAttributeName.CharIndex, attributeNameBuffer)) _
-                            OrElse Not foundPropertyName.Equals(attributeNameBuffer, StringComparison.Ordinal)) Then
+                If ErrorHandler.Failed(_vsTextLines.GetLineText(startLocation.LineIndex, startLocation.CharIndex, afterAttributeName.LineIndex, afterAttributeName.CharIndex, attributeNameBuffer)) _
+                            OrElse Not foundPropertyName.Equals(attributeNameBuffer, StringComparison.Ordinal) Then
                     Debug.Fail("Didn't find the attribute name at the expected location")
                 End If
 #End If
@@ -694,21 +694,21 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                 'Find the equals sign ('=')
                 Dim equalsLine, equalsIndex As Integer
                 Const EqualsSign As String = "="
-                If (ErrorHandler.Failed(vsTextFind.Find(EqualsSign, afterAttributeName.LineIndex, afterAttributeName.CharIndex, boundedEndLocation.LineIndex, boundedEndLocation.CharIndex, 0, equalsLine, equalsIndex))) Then
+                If ErrorHandler.Failed(vsTextFind.Find(EqualsSign, afterAttributeName.LineIndex, afterAttributeName.CharIndex, boundedEndLocation.LineIndex, boundedEndLocation.CharIndex, 0, equalsLine, equalsIndex)) Then
                     ThrowUnexpectedFormatException(startLocation)
                 End If
                 Debug.Assert(EqualsSign.Equals(GetText(equalsLine, equalsIndex, 1), StringComparison.Ordinal))
 
                 'Find the starting quote
                 Dim startQuoteLine, startQuoteIndex As Integer
-                If (ErrorHandler.Failed(vsTextFind.Find(quoteCharacterUsedByAttribute, equalsLine, equalsIndex, boundedEndLocation.LineIndex, boundedEndLocation.CharIndex, 0, startQuoteLine, startQuoteIndex))) Then
+                If ErrorHandler.Failed(vsTextFind.Find(quoteCharacterUsedByAttribute, equalsLine, equalsIndex, boundedEndLocation.LineIndex, boundedEndLocation.CharIndex, 0, startQuoteLine, startQuoteIndex)) Then
                     ThrowUnexpectedFormatException(startLocation)
                 End If
                 Debug.Assert(quoteCharacterUsedByAttribute.Equals(GetText(startQuoteLine, startQuoteIndex, 1), StringComparison.Ordinal))
 
                 'Find the ending quote, assuming it's on the same line
                 Dim endQuoteLine, endQuoteIndex As Integer
-                If (ErrorHandler.Failed(vsTextFind.Find(quoteCharacterUsedByAttribute, startQuoteLine, startQuoteIndex + 1, boundedEndLocation.LineIndex, boundedEndLocation.CharIndex, 0, endQuoteLine, endQuoteIndex))) Then
+                If ErrorHandler.Failed(vsTextFind.Find(quoteCharacterUsedByAttribute, startQuoteLine, startQuoteIndex + 1, boundedEndLocation.LineIndex, boundedEndLocation.CharIndex, 0, endQuoteLine, endQuoteIndex)) Then
                     ThrowUnexpectedFormatException(startLocation)
                 End If
                 Debug.Assert(quoteCharacterUsedByAttribute.Equals(GetText(endQuoteLine, endQuoteIndex, 1), StringComparison.Ordinal))
@@ -870,7 +870,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                 Catch ex As Exception When Common.ReportWithoutCrash(ex, "Got an exception trying to verify the new property value in SetApplicationPropertyValue", NameOf(AppDotXamlDocument))
                 End Try
 
-                If (Not value.Equals(newPropertyValue, StringComparison.Ordinal)) Then
+                If Not value.Equals(newPropertyValue, StringComparison.Ordinal) Then
                     Debug.Fail("SetApplicationPropertyValue() didn't seem to work properly.  New .xaml text: " & vbCrLf & GetAllText())
                 End If
 #End If

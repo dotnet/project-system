@@ -56,8 +56,8 @@ Namespace Microsoft.VisualStudio.Editors.Interop
 
         Friend Const LVM_FIRST As Integer = &H1000     ' ListView messages
         Friend Const LVS_EX_DOUBLEBUFFER As Integer = &H10000
-        Friend Const LVM_SETEXTENDEDLISTVIEWSTYLE As Integer = (LVM_FIRST + 54)
-        Friend Const LVM_GETEXTENDEDLISTVIEWSTYLE As Integer = (LVM_FIRST + 55)
+        Friend Const LVM_SETEXTENDEDLISTVIEWSTYLE As Integer = LVM_FIRST + 54
+        Friend Const LVM_GETEXTENDEDLISTVIEWSTYLE As Integer = LVM_FIRST + 55
 
         Friend Shared Function Succeeded(hr As Integer) As Boolean
             Return hr >= 0
@@ -92,7 +92,7 @@ Namespace Microsoft.VisualStudio.Editors.Interop
         'Friend Const WM_SYSKEYUP As Integer = &H105
         'Friend Const WM_SYSCHAR As Integer = &H106
         Friend Const WM_SETREDRAW As Integer = &HB
-        Friend Const LVM_SETCOLUMNWIDTH As Integer = (&H1000 + 30)
+        Friend Const LVM_SETCOLUMNWIDTH As Integer = &H1000 + 30
         Friend Const LVSCW_AUTOSIZE As Integer = -1
         Friend Const LVSCW_AUTOSIZE_USEHEADER As Integer = -2
 

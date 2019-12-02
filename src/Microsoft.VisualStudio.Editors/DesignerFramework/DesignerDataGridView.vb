@@ -204,7 +204,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Protected Overrides Function ProcessDialogKey(keyData As Keys) As Boolean
             Const CtrlD0 As Keys = Keys.D0 Or Keys.Control
 
-            Dim key As Keys = (keyData And Keys.KeyCode)
+            Dim key As Keys = keyData And Keys.KeyCode
 
             If (keyData And CtrlD0) = CtrlD0 Then
                 Return False

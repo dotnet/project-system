@@ -164,7 +164,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '**************************************************************************
         Private Overloads Shared Sub SetFontStyles(TopControl As Control, Parent As Control, ReferenceFont As Font)
             For Each ChildControl As Control In Parent.Controls
-                If Not (ChildControl.Controls Is Nothing) AndAlso ChildControl.Controls.Count > 0 Then
+                If Not ChildControl.Controls Is Nothing AndAlso ChildControl.Controls.Count > 0 Then
                     SetFontStyles(TopControl, ChildControl, ReferenceFont)
                 End If
 
@@ -191,7 +191,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="Number">The IntPtr to get the word from</param>
         ''' <returns>The signed lo word</returns>
         Public Shared Function SignedLoWord(Number As IntPtr) As Integer
-            Return (CType(Number, Integer) And &HFFFF)
+            Return CType(Number, Integer) And &HFFFF
         End Function
 
 
@@ -253,7 +253,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             Dim result As New System.Text.StringBuilder
 
             ' First char cannot be a number
-            If (Char.GetUnicodeCategory(chars(0)) = System.Globalization.UnicodeCategory.DecimalDigitNumber) Then
+            If Char.GetUnicodeCategory(chars(0)) = System.Globalization.UnicodeCategory.DecimalDigitNumber Then
                 result.Append(replacementChar)
             End If
 

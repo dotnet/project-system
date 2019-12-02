@@ -76,7 +76,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Public Shared ReadOnly Property IsStandard As Boolean
             Get
                 EnsureInited()
-                Return (s_productSKU >= VSASKUEdition.Standard AndAlso s_productSKU < VSASKUEdition.VSTO)
+                Return s_productSKU >= VSASKUEdition.Standard AndAlso s_productSKU < VSASKUEdition.VSTO
             End Get
         End Property
 
@@ -87,7 +87,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Public Shared ReadOnly Property IsVSTO As Boolean
             Get
                 EnsureInited()
-                Return (s_productSKU >= VSASKUEdition.VSTO AndAlso s_productSKU < VSASKUEdition.Professional)
+                Return s_productSKU >= VSASKUEdition.VSTO AndAlso s_productSKU < VSASKUEdition.Professional
             End Get
         End Property
 
@@ -98,7 +98,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Public Shared ReadOnly Property IsProfessional As Boolean
             Get
                 EnsureInited()
-                Return (s_productSKU >= VSASKUEdition.Professional AndAlso s_productSKU < VSASKUEdition.Enterprise)
+                Return s_productSKU >= VSASKUEdition.Professional AndAlso s_productSKU < VSASKUEdition.Enterprise
             End Get
         End Property
 
@@ -110,7 +110,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Public Shared ReadOnly Property IsExpress As Boolean
             Get
                 EnsureInited()
-                Return (s_productSKU = VSASKUEdition.Express)
+                Return s_productSKU = VSASKUEdition.Express
             End Get
         End Property
 
@@ -122,7 +122,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Public Shared ReadOnly Property IsAcademic As Boolean
             Get
                 EnsureInited()
-                Return (s_productSKU = VSASKUEdition.AcademicStudent)
+                Return s_productSKU = VSASKUEdition.AcademicStudent
             End Get
         End Property
 
@@ -134,7 +134,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Public Shared ReadOnly Property IsEnterprise As Boolean
             Get
                 EnsureInited()
-                Return (s_productSKU >= VSASKUEdition.Enterprise)
+                Return s_productSKU >= VSASKUEdition.Enterprise
             End Get
         End Property
 
@@ -145,7 +145,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Public Shared ReadOnly Property IsVB As Boolean
             Get
                 EnsureInited()
-                Return (s_productSubSKU = VSASubSKUEdition.VB)
+                Return s_productSubSKU = VSASubSKUEdition.VB
             End Get
         End Property
 
@@ -156,7 +156,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Public Shared ReadOnly Property IsVC As Boolean
             Get
                 EnsureInited()
-                Return (s_productSubSKU = VSASubSKUEdition.VC)
+                Return s_productSubSKU = VSASubSKUEdition.VC
             End Get
         End Property
 

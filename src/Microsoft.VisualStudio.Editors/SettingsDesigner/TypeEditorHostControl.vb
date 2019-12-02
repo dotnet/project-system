@@ -36,7 +36,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         'UserControl1 overrides dispose to clean up the component list. 
         Protected Overloads Overrides Sub Dispose(disposing As Boolean)
             If disposing Then
-                If Not (_components Is Nothing) Then
+                If Not _components Is Nothing Then
                     _components.Dispose()
                 End If
             End If
@@ -502,7 +502,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
         Public Function ShowDialog(dialog As Form) As DialogResult Implements IWindowsFormsEditorService.ShowDialog
             Dim UiSvc As IUIService = DirectCast(GetService(GetType(IUIService)), IUIService)
-            Using (DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware))
+            Using DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware)
                 If Not UiSvc Is Nothing Then
                     Return UiSvc.ShowDialog(dialog)
                 Else
@@ -793,7 +793,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                             Return True
                         End If
                     Case Keys.A
-                        If (m.Msg = Interop.NativeMethods.WM_KEYDOWN AndAlso ModifierKeys = Keys.Control) Then
+                        If m.Msg = Interop.NativeMethods.WM_KEYDOWN AndAlso ModifierKeys = Keys.Control Then
                             SelectAll()
                             Return True
                         End If

@@ -128,7 +128,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Dim sp As New Shell.ServiceProvider(siteServiceProvider)
                 Dim vsFrameworkMultiTargeting As IVsFrameworkMultiTargeting = TryCast(sp.GetService(GetType(SVsFrameworkMultiTargeting).GUID), IVsFrameworkMultiTargeting)
                 ' TODO: Remove IsTargetFrameworksDefined check after issue #800 is resolved.
-                If (TargetFrameworksDefined() = False And vsFrameworkMultiTargeting IsNot Nothing) Then
+                If TargetFrameworksDefined() = False And vsFrameworkMultiTargeting IsNot Nothing Then
 
                     Dim supportedTargetFrameworksDescriptor = GetPropertyDescriptor("SupportedTargetFrameworks")
                     Dim supportedFrameworks As IEnumerable(Of TargetFrameworkMoniker) = TargetFrameworkMoniker.GetSupportedTargetFrameworkMonikers(vsFrameworkMultiTargeting, DTEProject, supportedTargetFrameworksDescriptor)
@@ -161,7 +161,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             propTargetFrameworks = GetPropertyDescriptor("TargetFrameworks")
             obj = TryGetNonCommonPropertyValue(propTargetFrameworks)
             Dim stTargetFrameworks As String = TryCast(obj, String)
-            If (String.IsNullOrEmpty(stTargetFrameworks)) Then
+            If String.IsNullOrEmpty(stTargetFrameworks) Then
                 Return False
             End If
             Return True

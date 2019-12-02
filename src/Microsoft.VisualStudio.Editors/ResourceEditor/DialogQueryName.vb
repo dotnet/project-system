@@ -39,7 +39,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         'Form overrides dispose to clean up the component list.
         Protected Overloads Overrides Sub Dispose(disposing As Boolean)
             If disposing Then
-                If Not (_components Is Nothing) Then
+                If Not _components Is Nothing Then
                     _components.Dispose()
                 End If
             End If

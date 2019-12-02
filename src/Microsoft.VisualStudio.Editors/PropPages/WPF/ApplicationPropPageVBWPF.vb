@@ -71,7 +71,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             '  function, which is called by the base in its Dispose method and also
             '  when requested by the property page host.
             If disposing Then
-                If Not (_components Is Nothing) Then
+                If Not _components Is Nothing Then
                     _components.Dispose()
                 End If
 
@@ -324,7 +324,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             If _applicationXamlDocData IsNot Nothing AndAlso ServiceProvider IsNot Nothing Then
                 Try
                     Dim rdt As IVsRunningDocumentTable = TryCast(ServiceProvider.GetService(GetType(IVsRunningDocumentTable)), IVsRunningDocumentTable)
-                    Debug.Assert((rdt IsNot Nothing), "What?  No RDT?")
+                    Debug.Assert(rdt IsNot Nothing, "What?  No RDT?")
                     If rdt Is Nothing Then Throw New PropertyPageException("No RDT")
 
                     Dim hier As IVsHierarchy = Nothing

@@ -108,7 +108,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' </returns>
             ''' <seealso cref='TypeConverter' />
             Public Overrides Function ConvertFrom(context As ITypeDescriptorContext, culture As CultureInfo, value As Object) As Object
-                If TypeOf (value) Is String Then
+                If TypeOf value Is String Then
                     Dim strValue As String = CStr(value)
                     If String.Equals(strValue, _linkedDisplayValue, StringComparison.OrdinalIgnoreCase) Then
                         Return ResourcePersistenceMode.Linked
@@ -146,7 +146,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' </returns>
             Public Overrides Function ConvertTo(context As ITypeDescriptorContext, culture As CultureInfo, value As Object, destinationType As Type) As Object
                 If destinationType.Equals(GetType(String)) Then
-                    If value IsNot Nothing AndAlso TypeOf (value) Is ResourcePersistenceMode Then
+                    If value IsNot Nothing AndAlso TypeOf value Is ResourcePersistenceMode Then
                         Select Case CType(value, ResourcePersistenceMode)
                             Case ResourcePersistenceMode.Linked
                                 Return _linkedDisplayValue
@@ -1171,7 +1171,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Shared ReadOnly Property IsResXNullRef(ValueTypeName As String) As Boolean
             Get
                 Dim Match As Boolean = ValueTypeName.Equals(s_resXNullRefValueTypeName, StringComparison.Ordinal)
-                Debug.Assert(Match = (ValueTypeName.Equals(s_resXNullRefValueTypeName, StringComparison.OrdinalIgnoreCase)),
+                Debug.Assert(Match = ValueTypeName.Equals(s_resXNullRefValueTypeName, StringComparison.OrdinalIgnoreCase),
                     "ResXNullRef type name not should vary in case")
                 Return Match
             End Get

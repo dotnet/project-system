@@ -519,7 +519,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     ' Ignore those items which is actually not web reference (but random items added by user into the directory.)
                 End Try
             End If
-            Return (webRefProperty IsNot Nothing)
+            Return webRefProperty IsNot Nothing
         End Function
 
         Public Function GetReferencedNamespaceList() As IList(Of String)
@@ -1127,13 +1127,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Sub EnableReferenceGroup()
             Dim items As ListView.SelectedListViewItemCollection = ReferenceList.SelectedItems
 
-            Dim removeReferencesButtonEnabled As Boolean = (items.Count > 0)
+            Dim removeReferencesButtonEnabled As Boolean = items.Count > 0
 
             ' if the remove-reference button is enabled AND if it is going to be disabled AND if
             '   the button contains focus, then the logical place to put focus is on the ReferenceList
             '   ListView so the user can continue to interact with references
             '
-            If (RemoveReference.Enabled AndAlso Not removeReferencesButtonEnabled AndAlso RemoveReference.ContainsFocus) Then
+            If RemoveReference.Enabled AndAlso Not removeReferencesButtonEnabled AndAlso RemoveReference.ContainsFocus Then
                 ActiveControl = ReferenceList
             End If
 
@@ -1148,7 +1148,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 End If
             Next
 
-            UpdateReferences.Enabled = (items.Count > 0)
+            UpdateReferences.Enabled = items.Count > 0
         End Sub
 
         Private Sub EnableImportGroup()
@@ -1184,7 +1184,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     '   contain the currently selected item in the imports list box
                     '   (we can't modify those imports...)
                     Debug.Assert(ImportListSelectedItem IsNot Nothing, "ImportListSelectedItem should not return Nothing")
-                    If ((ImportListSelectedItem IsNot Nothing) AndAlso (ImportListSelectedItem.Length > 0)) Then
+                    If (ImportListSelectedItem IsNot Nothing) AndAlso (ImportListSelectedItem.Length > 0) Then
                         EnableUpdateUserImportButton = True
                         Dim selectedItemIdentity As New ImportIdentity(DirectCast(ImportListSelectedItem, String))
                         For Each NamespaceKnownByTheCompiler As String In GetReferencedNamespaceList()
@@ -1203,7 +1203,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     '  is the same as the key of the item in the textbox, and the full text of the two is not the
                     '  same, then we enable the Update User Import button.
                     Debug.Assert(ImportListSelectedItem IsNot Nothing, "ImportListSelectedItem should not return Nothing")
-                    If ((ImportListSelectedItem IsNot Nothing) AndAlso (ImportListSelectedItem.Length > 0)) Then
+                    If (ImportListSelectedItem IsNot Nothing) AndAlso (ImportListSelectedItem.Length > 0) Then
                         Dim selectedItemIdentity As New ImportIdentity(DirectCast(ImportListSelectedItem, String))
                         If userImportId.Equals(selectedItemIdentity) _
                                     AndAlso Not ScrubbedUserImportText.Equals(ImportListSelectedItem,
@@ -1220,7 +1220,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             '   the button contains focus, then the logical place to put focus is on the ImportList
             '   CheckedListBox so the user can continue to interact with imports
             '
-            If (UpdateUserImportButton.Enabled AndAlso Not EnableUpdateUserImportButton AndAlso UpdateUserImportButton.ContainsFocus) Then
+            If UpdateUserImportButton.Enabled AndAlso Not EnableUpdateUserImportButton AndAlso UpdateUserImportButton.ContainsFocus Then
                 ActiveControl = ImportList
             End If
             UpdateUserImportButton.Enabled = EnableUpdateUserImportButton
@@ -1337,8 +1337,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Sub RestoreImportListSelection()
             _hidingImportListSelectedItem = True
             Try
-                If (_importListSelectedItem IsNot Nothing) Then
-                    If (ImportList.SelectedItem Is Nothing) Then
+                If _importListSelectedItem IsNot Nothing Then
+                    If ImportList.SelectedItem Is Nothing Then
                         ImportList.SelectedItem = _importListSelectedItem
                     End If
                     _importListSelectedItem = Nothing
@@ -1546,11 +1546,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         AutoSizeMethod(REFCOLUMN_NAME) = NativeMethods.LVSCW_AUTOSIZE
                     End If
 
-                    If (.SubItems.Count > REFCOLUMN_VERSION + ColOffset AndAlso .SubItems(REFCOLUMN_VERSION + ColOffset).Text <> "") Then
+                    If .SubItems.Count > REFCOLUMN_VERSION + ColOffset AndAlso .SubItems(REFCOLUMN_VERSION + ColOffset).Text <> "" Then
                         AutoSizeMethod(REFCOLUMN_VERSION) = NativeMethods.LVSCW_AUTOSIZE
                     End If
 
-                    If (.SubItems.Count > REFCOLUMN_PATH + ColOffset AndAlso .SubItems(REFCOLUMN_PATH + ColOffset).Text <> "") Then
+                    If .SubItems.Count > REFCOLUMN_PATH + ColOffset AndAlso .SubItems(REFCOLUMN_PATH + ColOffset).Text <> "" Then
                         AutoSizeMethod(REFCOLUMN_PATH) = NativeMethods.LVSCW_AUTOSIZE
                     End If
                 End With
@@ -1645,7 +1645,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim ScrubbedUpdatedUserImport As String = UserImportTextBox.Text.Trim()
 
             Debug.Assert(UserImportToUpdate IsNot Nothing, "ImportListSelectedItem should not return Nothing")
-            If (UserImportToUpdate Is Nothing) Then
+            If UserImportToUpdate Is Nothing Then
                 UserImportToUpdate = String.Empty
             End If
 
@@ -2079,7 +2079,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     End While
 
                     ' we will update the selection area if there is new item inserted...
-                    If (updateComponents.Count > 0) Then
+                    If updateComponents.Count > 0 Then
                         Dim indices As ListView.SelectedIndexCollection = ReferenceList.SelectedIndices()
                         indices.Clear()
                         For Each compo As Object In updateComponents

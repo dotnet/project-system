@@ -136,7 +136,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ' Enable support of pre-Beta2 settings namespace files -- if we didn't find the root node
             '   using the new namespace, then try the old one
             '
-            If (RootNode Is Nothing) Then
+            If RootNode Is Nothing Then
 
                 XmlNamespaceManager.RemoveNamespace("Settings", SettingsSchemaUri)
                 XmlNamespaceManager.AddNamespace("Settings", SettingsSchemaUriOLD)

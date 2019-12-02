@@ -136,10 +136,10 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
         Public ReadOnly Property IsPropertyPage As Boolean
             Get
-                Dim ReturnValue As Boolean = (_propertyPageInfo IsNot Nothing)
+                Dim ReturnValue As Boolean = _propertyPageInfo IsNot Nothing
                 Debug.Assert(Not ReturnValue OrElse EditorGuid.Equals(GetType(PropPageDesigner.PropPageDesignerEditorFactory).GUID),
                     "If it's a property page, the EditorGuid should be the PropPageDesigner's guid")
-                Return (_propertyPageInfo IsNot Nothing)
+                Return _propertyPageInfo IsNot Nothing
             End Get
         End Property
 
@@ -208,9 +208,9 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 ShowWindowFrame()
             Else
                 'Hide
-                If (_vsWindowFrame IsNot Nothing) Then
+                If _vsWindowFrame IsNot Nothing Then
                     Common.Switches.TracePDFocus(TraceLevel.Warning, "ShowDesigner(False) on panel """ & TabAutomationName & "/" & TabTitle & """ (WindowFrame.Hide)")
-                    Dim WindowFrameIsVisible As Boolean = (_vsWindowFrame.IsVisible() = NativeMethods.S_OK)
+                    Dim WindowFrameIsVisible As Boolean = _vsWindowFrame.IsVisible() = NativeMethods.S_OK
                     If WindowFrameIsVisible Then
                         Dim hr As Integer = _vsWindowFrame.Hide()
                         Debug.Assert(VSErrorHandler.Succeeded(hr), "Failure trying to hide WindowFrame, hr=0x" & Hex(hr))
@@ -876,7 +876,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     If vsWindowPanelCommit IsNot Nothing Then
                         Dim commitFailed As Integer = 0
                         hr = vsWindowPanelCommit.CommitPendingEdit(commitFailed)
-                        Return (NativeMethods.Succeeded(hr) AndAlso commitFailed = 0)
+                        Return NativeMethods.Succeeded(hr) AndAlso commitFailed = 0
                     End If
                 End If
             End If

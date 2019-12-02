@@ -588,7 +588,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         ' It is ported from wizard\vsdesigner\designer\microsoft\vsdesigner\ProjectWizard\AppManifestTemplateWizard.cs
                         Dim appManifestPath As String = Nothing
 
-                        If ((Not String.IsNullOrEmpty(MkDocument)) AndAlso (IO.Path.IsPathRooted(MkDocument))) Then
+                        If (Not String.IsNullOrEmpty(MkDocument)) AndAlso IO.Path.IsPathRooted(MkDocument) Then
 
                             Dim fullPathProperty As EnvDTE.Property = DTEProject.Properties.Item("FullPath")
                             If fullPathProperty IsNot Nothing AndAlso fullPathProperty.Value IsNot Nothing Then

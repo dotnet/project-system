@@ -75,10 +75,10 @@ Namespace Microsoft.VisualStudio.Editors.Common
             srpSelection = CType(VBPackage.Instance.GetService(GetType(IVsMonitorSelection)), IVsMonitorSelection)
             If srpSelection IsNot Nothing Then
                 Dim hr As Integer = srpSelection.GetCmdUIContextCookie(VSConstants.UICONTEXT_SolutionBuilding, pdwCmdUICookie)
-                If (NativeMethods.Succeeded(hr)) Then
+                If NativeMethods.Succeeded(hr) Then
                     hr = srpSelection.IsCmdUIContextActive(pdwCmdUICookie, pfActive)
-                    If (NativeMethods.Succeeded(hr)) Then
-                        If (pfActive > 0) Then
+                    If NativeMethods.Succeeded(hr) Then
+                        If pfActive > 0 Then
                             Return True
                         Else
                             Return False
@@ -202,7 +202,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         End Function
 
         Public Function GetImageFromImageService(imageMoniker As ImageMoniker, width As Integer, height As Integer, background As Color) As Image
-            If (ImageService IsNot Nothing) Then
+            If ImageService IsNot Nothing Then
                 Dim attributes As New Imaging.Interop.ImageAttributes With {
                     .StructSize = Marshal.SizeOf(GetType(Imaging.Interop.ImageAttributes)),
                     .ImageType = CType(_UIImageType.IT_Bitmap, UInteger),
@@ -222,7 +222,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
                 Dim uIOjb As IVsUIObject
                 uIOjb = ImageService.GetImage(imageMoniker, attributes)
-                If (uIOjb IsNot Nothing) Then
+                If uIOjb IsNot Nothing Then
                     Return CType(GelUtilities.GetObjectData(uIOjb), Bitmap)
                 End If
             End If
@@ -231,12 +231,12 @@ Namespace Microsoft.VisualStudio.Editors.Common
         End Function
 
         Private Function ConvertColorToUInteger(color As Color) As UInteger
-            Return (CType(color.A, UInteger) << 24 Or CType(color.R, UInteger) << 16 Or CType(color.G, UInteger) << 8 Or CType(color.B, UInteger))
+            Return CType(color.A, UInteger) << 24 Or CType(color.R, UInteger) << 16 Or CType(color.G, UInteger) << 8 Or CType(color.B, UInteger)
         End Function
 
         Private ReadOnly Property ImageService As IVsImageService2
             Get
-                If (s_imageService Is Nothing) Then
+                If s_imageService Is Nothing Then
                     Dim serviceProvider As ServiceProvider
                     serviceProvider = ServiceProvider.GlobalProvider
                     s_imageService = CType(serviceProvider.GetService(GetType(SVsImageService)), IVsImageService2)
@@ -924,7 +924,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Dim RelativePath As New StringBuilder
 
             ' Calculate how many directories to go up to common directory from base path.
-            While (Index < BaseDirectory.Length)
+            While Index < BaseDirectory.Length
                 If BaseDirectory.Chars(Index) = IO.Path.DirectorySeparatorChar Then
                     RelativePath.Append(".." & IO.Path.DirectorySeparatorChar)
                 End If
@@ -1365,7 +1365,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Dim service As MultiTargetService = New MultiTargetService(Hierarchy, VSConstants.VSITEMID_ROOT, False)
             ' AuthenticationService is present only in server frameworks. We want to test for presence of this type 
             ' before enabling server-specific functionality
-            Return Not (service.IsSupportedType(GetType(Web.ApplicationServices.AuthenticationService)))
+            Return Not service.IsSupportedType(GetType(Web.ApplicationServices.AuthenticationService))
 
         End Function
 

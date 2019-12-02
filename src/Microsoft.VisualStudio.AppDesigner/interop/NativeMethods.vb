@@ -75,7 +75,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
         Public Const WM_UPDATEUISTATE As Integer = &H128
         'Public Const WM_CTLCOLOR As Integer = &H19
         Public Const WM_SETREDRAW As Integer = &HB
-        Public Const LVM_SETCOLUMNWIDTH As Integer = (&H1000 + 30)
+        Public Const LVM_SETCOLUMNWIDTH As Integer = &H1000 + 30
         Public Const LVSCW_AUTOSIZE As Integer = -1
         Public Const LVSCW_AUTOSIZE_USEHEADER As Integer = -2
 

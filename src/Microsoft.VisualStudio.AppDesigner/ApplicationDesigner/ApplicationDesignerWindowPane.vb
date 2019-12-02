@@ -164,12 +164,12 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         Throw New InvalidOperationException("Only ApplicationDesignerView should be created by this window pane")
                     End If
                 Catch loadError As Exception When Common.ReportWithoutCrash(loadError, "Got an exception trying to populate the project designer's view", NameOf(ApplicationDesignerWindowPane))
-                    Do While (TypeOf loadError Is TargetInvocationException AndAlso loadError.InnerException IsNot Nothing)
+                    Do While TypeOf loadError Is TargetInvocationException AndAlso loadError.InnerException IsNot Nothing
                         loadError = loadError.InnerException
                     Loop
 
                     Dim message As String = loadError.Message
-                    If (message Is Nothing OrElse message.Length = 0) Then
+                    If message Is Nothing OrElse message.Length = 0 Then
                         message = loadError.ToString()
                     End If
 
@@ -182,7 +182,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     }
                 End Try
 
-                If (childView Is Nothing) Then
+                If childView Is Nothing Then
                     childView = New ErrorControl With {
                         .Text = My.Resources.Designer.GetString(My.Resources.Designer.APPDES_ErrorLoading_Msg, "")
                     }
@@ -214,7 +214,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '     in which case we should dispose it.
         ' </devdoc>
         Private Sub OnSurfaceUnloaded(sender As Object, e As EventArgs)
-            If (_view IsNot Nothing AndAlso _view.Controls.Count > 0) Then
+            If _view IsNot Nothing AndAlso _view.Controls.Count > 0 Then
                 Dim controls As Control() = New Control(_view.Controls.Count - 1) {}
                 _view.Controls.CopyTo(controls, 0)
                 For Each c As Control In controls
@@ -454,7 +454,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         Public ReadOnly Property VsUIShellService As IVsUIShell
             Get
-                If (_uiShellService Is Nothing) Then
+                If _uiShellService Is Nothing Then
                     If Common.VBPackageInstance IsNot Nothing Then
                         _uiShellService = TryCast(Common.VBPackageInstance.GetService(GetType(IVsUIShell)), IVsUIShell)
                     Else
@@ -471,7 +471,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         Public ReadOnly Property VsUIShell2Service As IVsUIShell2
             Get
-                If (_uiShell2Service Is Nothing) Then
+                If _uiShell2Service Is Nothing Then
                     Dim VsUiShell As IVsUIShell = VsUIShellService
                     If VsUiShell IsNot Nothing Then
                         _uiShell2Service = TryCast(VsUiShell, IVsUIShell2)
@@ -487,7 +487,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         Public ReadOnly Property VsUIShell5Service As IVsUIShell5
             Get
-                If (_uiShell5Service Is Nothing) Then
+                If _uiShell5Service Is Nothing Then
                     Dim VsUiShell As IVsUIShell = VsUIShellService
                     If VsUiShell IsNot Nothing Then
                         _uiShell5Service = TryCast(VsUiShell, IVsUIShell5)
@@ -552,7 +552,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Dim disposedView As Control = _view
 
             Try
-                If (disposing) Then
+                If disposing Then
                     ClearViewHelper()
 
                     ' The base class will try to dispose our view if
@@ -568,17 +568,17 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     _uiShell5Service = Nothing
                     _view = Nothing
                     Dim DesSurface As DesignSurface = Surface
-                    If (DesSurface IsNot Nothing) Then
+                    If DesSurface IsNot Nothing Then
                         RemoveHandler DesSurface.Unloaded, AddressOf OnSurfaceUnloaded
                     End If
-                    If (_broadcastMessageEventsHelper IsNot Nothing) Then
+                    If _broadcastMessageEventsHelper IsNot Nothing Then
                         _broadcastMessageEventsHelper.Dispose()
                         _broadcastMessageEventsHelper = Nothing
                     End If
                 End If
 
             Finally
-                If (disposing AndAlso disposedView IsNot Nothing) Then
+                If disposing AndAlso disposedView IsNot Nothing Then
                     RemoveHandler disposedView.GotFocus, AddressOf OnViewFocus
                     disposedView.Dispose()
                 End If

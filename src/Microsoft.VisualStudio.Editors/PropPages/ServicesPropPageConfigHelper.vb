@@ -150,7 +150,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         <SuppressMessage("Microsoft.Globalization", "CA1303:DoNotPassLiteralsAsLocalizedParameters")>
         Private Shared Sub SaveAppConfig(fileName As String, provider As IServiceProvider, hierarchy As IVsHierarchy)
             Dim rdt As IVsRunningDocumentTable = TryCast(provider.GetService(GetType(IVsRunningDocumentTable)), IVsRunningDocumentTable)
-            Debug.Assert((rdt IsNot Nothing), "What?  No RDT?")
+            Debug.Assert(rdt IsNot Nothing, "What?  No RDT?")
             If rdt Is Nothing Then Throw New InvalidOperationException("No RDT")
 
             Dim hier As IVsHierarchy = Nothing
@@ -166,7 +166,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 VSErrorHandler.ThrowOnFailure(hierarchy.ParseCanonicalName(fileName, itemId))
                 VSErrorHandler.ThrowOnFailure(rdt.FindAndLockDocument(CType(_VSRDTFLAGS.RDT_NoLock, UInteger), fileName, hier, itemId, localPunk, docCookie))
             Finally
-                If (localPunk <> IntPtr.Zero) Then
+                If localPunk <> IntPtr.Zero Then
                     Marshal.Release(localPunk)
                     localPunk = IntPtr.Zero
                 End If
@@ -175,7 +175,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Try
                 VSErrorHandler.ThrowOnFailure(rdt.GetDocumentInfo(docCookie, flags, readLocks, editLocks, localFileName, hier, itemId, localPunk))
             Finally
-                If (localPunk <> IntPtr.Zero) Then
+                If localPunk <> IntPtr.Zero Then
                     Marshal.Release(localPunk)
                 End If
             End Try

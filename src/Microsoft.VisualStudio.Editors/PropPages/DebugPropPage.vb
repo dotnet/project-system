@@ -132,10 +132,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     action = CType(value, VSLangProj.prjStartAction)
                 End If
 
-                rbStartProject.Checked = (action = VSLangProj.prjStartAction.prjStartActionProject)
-                rbStartProgram.Checked = (action = VSLangProj.prjStartAction.prjStartActionProgram)
-                rbStartURL.Checked = (action = VSLangProj.prjStartAction.prjStartActionURL)
-                StartURL.Enabled = (action = VSLangProj.prjStartAction.prjStartActionURL)
+                rbStartProject.Checked = action = VSLangProj.prjStartAction.prjStartActionProject
+                rbStartProgram.Checked = action = VSLangProj.prjStartAction.prjStartActionProgram
+                rbStartURL.Checked = action = VSLangProj.prjStartAction.prjStartActionURL
+                StartURL.Enabled = action = VSLangProj.prjStartAction.prjStartActionURL
             Finally
                 m_fInsideInit = originalInsideInit
             End Try
@@ -239,9 +239,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Sub rbStartAction_CheckedChanged(sender As Object, e As EventArgs) Handles rbStartProgram.CheckedChanged, rbStartProject.CheckedChanged, rbStartURL.CheckedChanged
             Dim action As VSLangProj.prjStartAction = StartActionGetValue()
-            StartProgram.Enabled = (action = VSLangProj.prjStartAction.prjStartActionProgram)
+            StartProgram.Enabled = action = VSLangProj.prjStartAction.prjStartActionProgram
             StartProgramBrowse.Enabled = StartProgram.Enabled
-            StartURL.Enabled = (action = VSLangProj.prjStartAction.prjStartActionURL)
+            StartURL.Enabled = action = VSLangProj.prjStartAction.prjStartActionURL
 
             If Not m_fInsideInit Then
                 Dim button As RadioButton = CType(sender, RadioButton)

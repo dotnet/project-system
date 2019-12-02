@@ -49,7 +49,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         '   May be called multiple times safely.
         '**************************************************************************
         Public Sub Dispose() Implements IDisposable.Dispose
-            If Not (_previousCursor Is Nothing) Then
+            If Not _previousCursor Is Nothing Then
                 Cursor.Current = _previousCursor
                 _previousCursor = Nothing
             Else

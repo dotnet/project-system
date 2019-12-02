@@ -12,7 +12,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Public Overrides Sub InitPropertyValue()
             MyBase.InitPropertyValue()
 
-            If (IsMissing) Then
+            If IsMissing Then
                 IsHidden = True
             End If
         End Sub

@@ -255,7 +255,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             _settings.Add(Instance)
             If Site IsNot Nothing AndAlso Site.Container IsNot Nothing Then
                 ' Let's make sure we have this instance in "our" container (if any)
-                If Instance.Site Is Nothing OrElse Not (Site.Container Is Instance.Site.Container) Then
+                If Instance.Site Is Nothing OrElse Not Site.Container Is Instance.Site.Container Then
                     Static uniqueNumber As Integer
                     uniqueNumber += 1
                     Dim newName As String = "Setting" & uniqueNumber.ToString()

@@ -45,7 +45,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Sub ProjectItemFinishedGenerating(projectItem As ProjectItem) Implements IWizard.ProjectItemFinishedGenerating
 
             Debug.Assert(projectItem IsNot Nothing, "Null projectItem?")
-            If (projectItem IsNot Nothing AndAlso _propertiesToSet IsNot Nothing) Then
+            If projectItem IsNot Nothing AndAlso _propertiesToSet IsNot Nothing Then
 
                 Dim fileName As String = projectItem.FileNames(1)
                 Debug.Assert(fileName IsNot Nothing AndAlso fileName.Length > 0, "bogus ProjectItem.FileNames(1) value?")
@@ -54,7 +54,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Dim itemProperties As Properties = projectItem.Properties
 
                 Debug.Assert(itemProperties IsNot Nothing, "null projectItem.Properties?")
-                If (itemProperties IsNot Nothing) Then
+                If itemProperties IsNot Nothing Then
 
                     For Each propertyEntry As DictionaryEntry In _propertiesToSet
 
@@ -70,7 +70,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         '   multiple times. [of course, the logic is written as: if this is not a customtool
                         '   related property or this is not a localizable resx file, then set the property]
                         '
-                        If ((Not name.ToUpperInvariant().Contains("CUSTOMTOOL") OrElse (Not isLocalizedResxFile))) Then
+                        If Not name.ToUpperInvariant().Contains("CUSTOMTOOL") OrElse (Not isLocalizedResxFile) Then
 
                             Dim itemProperty As [Property] = Nothing
 
@@ -81,7 +81,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                                 Debug.Fail("error getting property named '" & CStr(name) & "': " & ex.Message)
                             End Try
 
-                            If (itemProperty IsNot Nothing) Then
+                            If itemProperty IsNot Nothing Then
                                 Try
                                     itemProperty.Value = value
                                 Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(ProjectItemFinishedGenerating), NameOf(ResxItemWizard))
@@ -114,9 +114,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ' we can't do any work if the dictionary is nothing...
             '
             Debug.Assert(replacementsDictionary IsNot Nothing, "Null dictionary param?")
-            If (replacementsDictionary IsNot Nothing) Then
+            If replacementsDictionary IsNot Nothing Then
 
-                If (replacementsDictionary.ContainsKey("$itemproperties$")) Then
+                If replacementsDictionary.ContainsKey("$itemproperties$") Then
 
                     _propertiesToSet = New StringDictionary()
 
@@ -126,11 +126,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                         Dim trimmedPropertyName As String = propertyName.Trim()
 
-                        If (trimmedPropertyName.Length > 0) Then
+                        If trimmedPropertyName.Length > 0 Then
 
                             Dim macroName As String = "$" & trimmedPropertyName & "$"
 
-                            If (replacementsDictionary.ContainsKey(macroName) AndAlso Not _propertiesToSet.ContainsKey(trimmedPropertyName)) Then
+                            If replacementsDictionary.ContainsKey(macroName) AndAlso Not _propertiesToSet.ContainsKey(trimmedPropertyName) Then
                                 _propertiesToSet.Add(trimmedPropertyName, replacementsDictionary(macroName))
                             End If
                         End If

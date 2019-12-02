@@ -232,7 +232,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </remarks>
         Public Sub Find(pszSearch As String, grfOptions As UInteger, fResetStartPoint As Integer,
                             pHelper As IVsFindHelper, ByRef pResult As UInteger)
-            Dim FindReset As Boolean = (fResetStartPoint <> 0)
+            Dim FindReset As Boolean = fResetStartPoint <> 0
             Dim FindBackwards As Boolean = CheckFindOption(grfOptions, __VSFINDOPTIONS.FR_Backwards)
             Dim FindInSelection As Boolean = CheckFindOption(grfOptions, __VSFINDOPTIONS.FR_Selection)
             Dim FindJustStarted As Boolean = False ' We just started a find loop.

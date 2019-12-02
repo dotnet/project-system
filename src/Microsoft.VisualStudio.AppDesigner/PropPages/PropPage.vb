@@ -486,7 +486,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Sub Show(nCmdShow As UInteger)
 
-            If (_propPage Is Nothing) Then
+            If _propPage Is Nothing Then
                 Throw New InvalidOperationException("Form not created")
             End If
 
@@ -694,7 +694,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="Value"></param>
         Protected Overridable Sub SetProperty(PropertyName As String, Value As Object) Implements IVsProjectDesignerPage.SetProperty
             Dim Page As IVsProjectDesignerPage = TryCast(_propPage, IVsProjectDesignerPage)
-            If (Page IsNot Nothing) Then
+            If Page IsNot Nothing Then
                 Page.SetProperty(PropertyName, Value)
             End If
         End Sub

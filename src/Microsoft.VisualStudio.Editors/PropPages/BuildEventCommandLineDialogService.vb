@@ -51,7 +51,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             frm.SetTokensAndValues(Names, Values)
 
             ' Show the form
-            If (frm.ShowDialog(_serviceProvider) = System.Windows.Forms.DialogResult.OK) Then
+            If frm.ShowDialog(_serviceProvider) = System.Windows.Forms.DialogResult.OK Then
                 Result = frm.EventCommandLine
                 Return 0
             Else

@@ -247,7 +247,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Dim middle = New Point(Convert.ToInt32(dropDownRect.Left + dropDownRect.Width / 2), Convert.ToInt32(dropDownRect.Top + dropDownRect.Height / 2))
 
             ' if the width is odd - favor pushing it over one pixel right.
-            middle.X += (dropDownRect.Width Mod 2)
+            middle.X += dropDownRect.Width Mod 2
 
             Dim leftOffset = DpiAwareness.LogicalToDeviceUnits(Handle, 3)
             Dim rightOffset = DpiAwareness.LogicalToDeviceUnits(Handle, 3)

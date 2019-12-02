@@ -444,7 +444,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Private Shared Function IsClassLibrary(AppType As ApplicationTypes) As Boolean
-            If (AppType = ApplicationTypes.WindowsClassLib OrElse AppType = ApplicationTypes.WebControl) Then
+            If AppType = ApplicationTypes.WindowsClassLib OrElse AppType = ApplicationTypes.WebControl Then
                 Return True
             End If
             Return False
@@ -1655,7 +1655,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Protected Overloads Overrides Sub Dispose(disposing As Boolean)
             If disposing Then
-                If Not (_components Is Nothing) Then
+                If Not _components Is Nothing Then
                     _components.Dispose()
                 End If
 
