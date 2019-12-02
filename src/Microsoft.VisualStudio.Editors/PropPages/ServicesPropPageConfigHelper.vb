@@ -932,7 +932,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 RemoveAttribute(GetDefaultClientServicesRoleManagerProviderNode(doc, projectHierarchy), ConnectionStringName)
                 RemoveAttribute(GetDefaultClientServicesMembershipProviderNode(doc, projectHierarchy), ConnectionStringName)
                 EnsureAppSettingsNodeExists(doc, projectHierarchy)
-                If Not appSettingsConnectionStringNameNode Is Nothing Then
+                If appSettingsConnectionStringNameNode IsNot Nothing Then
                     GetAppSettingsNode(doc).RemoveChild(appSettingsConnectionStringNameNode)
                 End If
             Else

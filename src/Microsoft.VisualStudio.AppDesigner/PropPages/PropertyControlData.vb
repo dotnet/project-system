@@ -1171,7 +1171,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 StringText = Trim(DirectCast(control, TextBox).Text)
                 'IF textbox emptied, treat as indeterminate when using multiple objects
 
-                Debug.Assert(Not ExtendedPropertiesObjects Is Nothing, "ExtendedPropertiesObjects was null!")
+                Debug.Assert(ExtendedPropertiesObjects IsNot Nothing, "ExtendedPropertiesObjects was null!")
                 If ExtendedPropertiesObjects IsNot Nothing Then
                     If ExtendedPropertiesObjects.Length > 1 _
                     AndAlso TypeOf InitialValue Is String _

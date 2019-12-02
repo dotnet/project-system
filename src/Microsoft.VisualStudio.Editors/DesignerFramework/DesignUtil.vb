@@ -164,7 +164,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '**************************************************************************
         Private Overloads Shared Sub SetFontStyles(TopControl As Control, Parent As Control, ReferenceFont As Font)
             For Each ChildControl As Control In Parent.Controls
-                If Not ChildControl.Controls Is Nothing AndAlso ChildControl.Controls.Count > 0 Then
+                If ChildControl.Controls IsNot Nothing AndAlso ChildControl.Controls.Count > 0 Then
                     SetFontStyles(TopControl, ChildControl, ReferenceFont)
                 End If
 

@@ -240,7 +240,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
                     If invalidIdentifier Then
                         Dim errorMsg As String = My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_InvalidIdentifierStartupForm_1Arg, MyApplication.MainFormNoRootNS)
-                        If Not pGenerateProgress Is Nothing Then
+                        If pGenerateProgress IsNot Nothing Then
                             VSErrorHandler.ThrowOnFailure(pGenerateProgress.GeneratorError(0,
                                                                                            1,
                                                                                            My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SingleFileGenerator_FailedToGenerateFile_1Arg, errorMsg),
@@ -273,7 +273,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
                     If Not CodeDomProvider.IsValidIdentifier(MyApplication.SplashScreenNoRootNS) Then
                         Dim errorMsg As String = My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_InvalidIdentifierSplashScreenForm_1Arg, MyApplication.SplashScreenNoRootNS)
-                        If Not pGenerateProgress Is Nothing Then
+                        If pGenerateProgress IsNot Nothing Then
                             VSErrorHandler.ThrowOnFailure(pGenerateProgress.GeneratorError(0,
                                                                                            1,
                                                                                            My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SingleFileGenerator_FailedToGenerateFile_1Arg, errorMsg),

@@ -323,7 +323,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Protected Overridable Sub Apply()
-            If Not _propPage Is Nothing Then
+            If _propPage IsNot Nothing Then
                 Dim page As IPropertyPageInternal = CType(_propPage, IPropertyPageInternal)
                 page.Apply()
             End If
@@ -335,7 +335,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Protected Overridable Sub Deactivate()
 
-            If Not _propPage Is Nothing Then
+            If _propPage IsNot Nothing Then
 
                 _propPage.SuspendLayout() 'No need for more layouts...
                 If _propPage.Parent IsNot Nothing AndAlso Not _hostedInNative Then
@@ -563,7 +563,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return NativeMethods.E_POINTER
             End If
 
-            If Not _propPage Is Nothing Then
+            If _propPage IsNot Nothing Then
                 Dim m As Message = Message.Create(pMsg(0).hwnd, CType(pMsg(0).message, Integer), pMsg(0).wParam, pMsg(0).lParam)
                 Dim used As Boolean = False
 
@@ -654,7 +654,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 End If
 
                 'If the SetObjects call was cached, we need to do the SetObjects now
-                If (Not _objects Is Nothing) AndAlso (_objects.Length > 0) Then
+                If (_objects IsNot Nothing) AndAlso (_objects.Length > 0) Then
                     Dim page As IPropertyPageInternal = CType(_propPage, IPropertyPageInternal)
                     page.SetObjects(_objects)
                 End If

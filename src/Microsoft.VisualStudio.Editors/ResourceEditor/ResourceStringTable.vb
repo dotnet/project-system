@@ -907,7 +907,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Row"></param>
         Public Function GetResourceFromRow(Row As DataGridViewRow) As Resource
-            Debug.Assert(Not Row Is Nothing, "Row is Nothing")
+            Debug.Assert(Row IsNot Nothing, "Row is Nothing")
             Debug.Assert(Row.Index >= 0 AndAlso Row.Index < Rows.Count, "Huh?")
             Return GetResourceFromRowIndex(Row.Index, True)
         End Function

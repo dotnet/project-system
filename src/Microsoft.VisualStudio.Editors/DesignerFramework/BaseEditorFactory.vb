@@ -76,7 +76,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '''     Creates a new editor factory.
         ''' </summary>
         Public Sub New(DesignerLoaderType As Type)
-            Debug.Assert(Not DesignerLoaderType Is Nothing)
+            Debug.Assert(DesignerLoaderType IsNot Nothing)
             _designerLoaderType = DesignerLoaderType
         End Sub
 
@@ -272,10 +272,10 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     FCanceled = 0
                 End If
 
-                If Not DocView Is Nothing Then
+                If DocView IsNot Nothing Then
                     DocViewPtr = Marshal.GetIUnknownForObject(DocView)
                 End If
-                If Not DocData Is Nothing Then
+                If DocData IsNot Nothing Then
                     DocDataPtr = Marshal.GetIUnknownForObject(DocData)
                 End If
                 Return VSConstants.S_OK
@@ -373,7 +373,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     '... Get a managed Designer (this will expose an IVsWindowPane to the shell)
                     Dim OleProvider As IServiceProvider = CType(_serviceProvider.GetService(GetType(IServiceProvider)), IServiceProvider)
                     Dim Designer As IVSMDDesigner = DesignerService.CreateDesigner(OleProvider, DesignerLoader)
-                    Debug.Assert(Not Designer Is Nothing, "Designer service should have thrown if it had a problem.")
+                    Debug.Assert(Designer IsNot Nothing, "Designer service should have thrown if it had a problem.")
 
                     'Set the out params
                     DocView = Designer.View 'Gets the object that can support IVsWindowPane

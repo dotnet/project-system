@@ -210,7 +210,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     End If
                 End If
 
-                If Not _components Is Nothing Then
+                If _components IsNot Nothing Then
                     _components.Dispose()
                 End If
                 ' Forget about any component change service

@@ -56,7 +56,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         'Form overrides dispose to clean up the component list.
         Protected Overloads Overrides Sub Dispose(disposing As Boolean)
             If disposing Then
-                If Not components Is Nothing Then
+                If components IsNot Nothing Then
                     components.Dispose()
                 End If
             End If

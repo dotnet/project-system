@@ -119,7 +119,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Friend ReadOnly Property RootComponent As ResourceEditorRootComponent
             Get
                 Dim Root As ResourceEditorRootComponent = CType(MyBase.Component, ResourceEditorRootComponent)
-                Debug.Assert(Not Root Is Nothing)
+                Debug.Assert(Root IsNot Nothing)
                 Return Root
             End Get
         End Property

@@ -231,7 +231,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 cboDebugInfo.SelectedIndex = -1
             Else
                 Dim stValue As String = TryCast(value, String)
-                If (Not stValue Is Nothing) AndAlso (stValue.Trim().Length > 0) Then
+                If (stValue IsNot Nothing) AndAlso (stValue.Trim().Length > 0) Then
                     SelectComboItem(cboDebugInfo, stValue)
                 Else
                     cboDebugInfo.SelectedIndex = 0        ' Zero is the (none) entry in the list

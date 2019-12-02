@@ -158,7 +158,7 @@ Namespace Microsoft.Internal.Performance
             ' does the subkey exist
             Dim str As String = Nothing
             Using key As RegistryKey = hKey.OpenSubKey(strRegRoot & "\Performance")
-                If Not key Is Nothing Then
+                If key IsNot Nothing Then
                     ' reads the default value
                     str = key.GetValue("").ToString()
                 End If

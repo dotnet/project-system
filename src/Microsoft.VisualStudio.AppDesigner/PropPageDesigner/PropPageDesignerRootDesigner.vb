@@ -26,7 +26,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         Public Shadows ReadOnly Property Component As PropPageDesignerRootComponent
             Get
                 Dim RootComponent As PropPageDesignerRootComponent = CType(MyBase.Component, PropPageDesignerRootComponent)
-                Debug.Assert(Not RootComponent Is Nothing)
+                Debug.Assert(RootComponent IsNot Nothing)
                 Return RootComponent
             End Get
         End Property

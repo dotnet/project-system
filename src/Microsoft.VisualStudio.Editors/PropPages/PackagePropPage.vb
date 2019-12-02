@@ -397,7 +397,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Sub LicenseFileNameTextBox_LostFocus(sender As Object, e As EventArgs) Handles LicenseFileNameTextBox.LostFocus
             If Not String.Equals(LicenseFileNameTextBox.Text, RetrievePreviousProperty(_packageLicenseFilePropName)) Then
                 Dim TryConvertToAbsolutePath As String = RelativeToAbsolutePath(LicenseFileNameTextBox.Text)
-                If Not TryConvertToAbsolutePath Is Nothing AndAlso String.Equals(TryConvertToAbsolutePath, LicenseFileNameTextBox.Text) Then
+                If TryConvertToAbsolutePath IsNot Nothing AndAlso String.Equals(TryConvertToAbsolutePath, LicenseFileNameTextBox.Text) Then
                     'If these are equal then the path is absolute
                     AddItemToProject(AbsoluteToRelativePath(LicenseFileNameTextBox.Text), _packageLicenseFilePropName)
                 Else
@@ -417,7 +417,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Sub PackageIconFile_LostFocus(sender As Object, e As EventArgs) Handles PackageIcon.LostFocus
             If Not String.Equals(PackageIcon.Text, RetrievePreviousProperty(_packageIconFilePropName)) Then
                 Dim TryConvertToAbsolutePath As String = RelativeToAbsolutePath(PackageIcon.Text)
-                If Not TryConvertToAbsolutePath Is Nothing AndAlso String.Equals(TryConvertToAbsolutePath, PackageIcon.Text) Then
+                If TryConvertToAbsolutePath IsNot Nothing AndAlso String.Equals(TryConvertToAbsolutePath, PackageIcon.Text) Then
                     'If these are equal then the path is absolute
                     AddItemToProject(AbsoluteToRelativePath(PackageIcon.Text), _packageIconFilePropName)
                     SetPackageIconUrlWarninglWarningActive(False)

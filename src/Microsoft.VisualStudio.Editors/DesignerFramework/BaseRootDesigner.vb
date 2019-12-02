@@ -164,7 +164,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     SyncLock _syncLockObject
                         If _menuCommandService Is Nothing Then
                             _menuCommandService = CType(GetService(GetType(IMenuCommandService)), IMenuCommandService)
-                            Debug.Assert(Not _menuCommandService Is Nothing, "Cannot get menu command service!")
+                            Debug.Assert(_menuCommandService IsNot Nothing, "Cannot get menu command service!")
                         End If
                     End SyncLock
                 End If

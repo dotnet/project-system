@@ -59,7 +59,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Public Overrides Sub Invoke()
             MyBase.Invoke()
 
-            If Not _rootDesigner Is Nothing Then
+            If _rootDesigner IsNot Nothing Then
                 ' Refresh the status of all the menus for the current designer.
                 _rootDesigner.RefreshMenuStatus()
             End If
@@ -68,7 +68,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Public Overrides Sub Invoke(inArg As Object, outArg As IntPtr)
             MyBase.Invoke(inArg, outArg)
 
-            If Not _rootDesigner Is Nothing Then
+            If _rootDesigner IsNot Nothing Then
                 ' Refresh the status of all the menus for the current designer.
                 _rootDesigner.RefreshMenuStatus()
             End If
@@ -77,7 +77,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Public Overrides Sub Invoke(inArg As Object)
             MyBase.Invoke(inArg)
 
-            If Not _rootDesigner Is Nothing Then
+            If _rootDesigner IsNot Nothing Then
                 ' Refresh the status of all the menus for the current designer.
                 _rootDesigner.RefreshMenuStatus()
             End If
@@ -154,13 +154,13 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '   Calls the command status handlers (if any) to set the status of the command.
         '**************************************************************************
         Private Sub UpdateStatus()
-            If Not _commandEnabledHandler Is Nothing Then
+            If _commandEnabledHandler IsNot Nothing Then
                 Enabled = _commandEnabledHandler(Me)
             End If
-            If Not _commandCheckedHandler Is Nothing Then
+            If _commandCheckedHandler IsNot Nothing Then
                 Checked = _commandCheckedHandler(Me)
             End If
-            If Not _commandVisibleHandler Is Nothing Then
+            If _commandVisibleHandler IsNot Nothing Then
                 Visible = _commandVisibleHandler(Me)
             End If
             _statusValid = True

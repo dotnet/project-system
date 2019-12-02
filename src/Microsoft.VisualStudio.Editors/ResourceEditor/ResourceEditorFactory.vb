@@ -68,9 +68,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 
         Protected Overrides Sub OnSited()
-            If _vsTrackProjectDocuments Is Nothing AndAlso Not ServiceProvider Is Nothing Then
+            If _vsTrackProjectDocuments Is Nothing AndAlso ServiceProvider IsNot Nothing Then
                 _vsTrackProjectDocuments = TryCast(ServiceProvider.GetService(GetType(SVsTrackProjectDocuments)), IVsTrackProjectDocuments2)
-                If Not _vsTrackProjectDocuments Is Nothing Then
+                If _vsTrackProjectDocuments IsNot Nothing Then
                     ErrorHandler.ThrowOnFailure(_vsTrackProjectDocuments.AdviseTrackProjectDocumentsEvents(Me, _vsTrackProjectDocumentsEventsCookie))
                     Debug.Assert(_vsTrackProjectDocumentsEventsCookie <> 0)
                 End If
@@ -81,7 +81,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Protected Overrides Sub Dispose(disposing As Boolean)
             If disposing Then
                 If _vsTrackProjectDocumentsEventsCookie <> 0 Then
-                    If Not _vsTrackProjectDocuments Is Nothing Then
+                    If _vsTrackProjectDocuments IsNot Nothing Then
                         ErrorHandler.ThrowOnFailure(_vsTrackProjectDocuments.UnadviseTrackProjectDocumentsEvents(_vsTrackProjectDocumentsEventsCookie))
                         _vsTrackProjectDocumentsEventsCookie = 0
                         _vsTrackProjectDocuments = Nothing
@@ -141,13 +141,13 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             For i As Integer = 0 To cFiles - 1
                 If HasResourceFileExtension(rgszMkNewNames(i)) Then
                     Dim designerEventService As IDesignerEventService = TryCast(ServiceProvider.GetService(GetType(IDesignerEventService)), IDesignerEventService)
-                    Debug.Assert(Not designerEventService Is Nothing)
-                    If Not designerEventService Is Nothing Then
+                    Debug.Assert(designerEventService IsNot Nothing)
+                    If designerEventService IsNot Nothing Then
                         For Each host As IDesignerHost In designerEventService.Designers
                             Dim comp As ResourceEditorRootComponent = TryCast(host.RootComponent, ResourceEditorRootComponent)
-                            If Not comp Is Nothing AndAlso (String.Equals(rgszMkNewNames(i), comp.ResourceFileName, StringComparison.Ordinal) OrElse String.Equals(rgszMkOldNames(i), comp.ResourceFileName, StringComparison.Ordinal)) Then
+                            If comp IsNot Nothing AndAlso (String.Equals(rgszMkNewNames(i), comp.ResourceFileName, StringComparison.Ordinal) OrElse String.Equals(rgszMkOldNames(i), comp.ResourceFileName, StringComparison.Ordinal)) Then
                                 Dim loaderService As IDesignerLoaderService = TryCast(host.GetService(GetType(IDesignerLoaderService)), IDesignerLoaderService)
-                                If Not loaderService Is Nothing Then
+                                If loaderService IsNot Nothing Then
                                     comp.RootDesigner.IsInReloading = True
                                     loaderService.Reload()
                                 End If

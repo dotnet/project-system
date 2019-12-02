@@ -65,7 +65,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Sub New(ProgrammaticName As String, LocalizedName As String, CategoryDisplay As Display, MenuCommand As MenuCommand, addCommand As EventHandler, ParamArray AssociatedResourceTypeEditors() As ResourceTypeEditor)
             Debug.Assert(ProgrammaticName <> "", "programmatic name must be non-empty")
             Debug.Assert(LocalizedName <> "", "localized name should be non-empty")
-            Debug.Assert(Not AssociatedResourceTypeEditors Is Nothing, "Must be at least one resource type editor per category.")
+            Debug.Assert(AssociatedResourceTypeEditors IsNot Nothing, "Must be at least one resource type editor per category.")
             Debug.Assert(MenuCommand IsNot Nothing, "You must supply a MenuCommand")
 
             _programmaticName = ProgrammaticName

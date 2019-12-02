@@ -29,12 +29,12 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Get
                 If _rootDesigner Is Nothing Then
                     'Not yet cached - get this info from the designer host
-                    Debug.Assert(Not Container Is Nothing)
+                    Debug.Assert(Container IsNot Nothing)
                     Dim Host As IDesignerHost = CType(Container, IDesignerHost)
                     _rootDesigner = CType(Host.GetDesigner(Me), ApplicationDesignerRootDesigner)
                 End If
 
-                Debug.Assert(Not _rootDesigner Is Nothing, "Don't have an associated designer?!?")
+                Debug.Assert(_rootDesigner IsNot Nothing, "Don't have an associated designer?!?")
                 Return _rootDesigner
             End Get
         End Property

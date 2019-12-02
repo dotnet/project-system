@@ -106,7 +106,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="ServiceProvider">The service provider provided by the designer host</param>
         ''' <param name="BasePath">The base path to use for resolving relative paths in the resx file.</param>
         Public Sub New(mtsrv As MultiTargetService, RootComponent As ResourceEditorRootComponent, ServiceProvider As IServiceProvider, BasePath As String)
-            Debug.Assert(Not RootComponent Is Nothing)
+            Debug.Assert(RootComponent IsNot Nothing)
             Debug.Assert(ServiceProvider IsNot Nothing)
 
             _resources = New Dictionary(Of String, Resource)(StringComparers.ResourceNames)
@@ -514,7 +514,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Resource">The Resource to remove.  Must exist in the ResourceFile</param>
         ''' <param name="DisposeResource">If True, the Resource is also disposed.</param>
         Public Sub RemoveResource(Resource As Resource, DisposeResource As Boolean)
-            Debug.Assert(Not Resource Is Nothing)
+            Debug.Assert(Resource IsNot Nothing)
             Debug.Assert(FindResource(Resource.Name) Is Resource, "RemoveResource: not found by Name")
             Debug.Assert(_resources.ContainsValue(Resource), "RemoveResource: not found")
 
@@ -940,9 +940,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="ResXWriter">The ResXResourceWriter instance to use</param>
         Private Sub WriteResources(ResXWriter As IResourceWriter)
-            Debug.Assert(Not ResXWriter Is Nothing, "ResXWriter must exist.")
+            Debug.Assert(ResXWriter IsNot Nothing, "ResXWriter must exist.")
 
-            If Not _resources Is Nothing Then
+            If _resources IsNot Nothing Then
                 ' NOTE: We save all meta data first...  We don't have a way maintain the right order between Meta data items and resource items today.
                 ' Keep all meta data items if it is possible...
                 If _resourceFileMetadata IsNot Nothing AndAlso _resourceFileMetadata.Count > 0 Then

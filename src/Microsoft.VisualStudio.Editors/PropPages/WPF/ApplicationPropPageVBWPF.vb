@@ -71,7 +71,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             '  function, which is called by the base in its Dispose method and also
             '  when requested by the property page host.
             If disposing Then
-                If Not _components Is Nothing Then
+                If _components IsNot Nothing Then
                     _components.Dispose()
                 End If
 

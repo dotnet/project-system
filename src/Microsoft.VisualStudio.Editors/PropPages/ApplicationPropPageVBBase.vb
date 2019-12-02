@@ -256,7 +256,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Dim objectService As Shell.Design.GlobalObjectService = New Shell.Design.GlobalObjectService(ServiceProvider, Project, GetType(Serialization.CodeDomSerializer))
                 If objectService IsNot Nothing Then
                     Dim objectCollection As Shell.Design.GlobalObjectCollection = objectService.GetGlobalObjects(GetType(Configuration.ApplicationSettingsBase))
-                    If Not objectCollection Is Nothing Then
+                    If objectCollection IsNot Nothing Then
                         For Each gob As Shell.Design.GlobalObject In objectCollection
                             Dim sgob As SettingsGlobalObjects.SettingsFileGlobalObject = TryCast(gob, SettingsGlobalObjects.SettingsFileGlobalObject)
                             If sgob IsNot Nothing Then
@@ -673,7 +673,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                     'If the file was opened in an intrinsic editor (as opposed to an external editor), then WindowFrame will 
                     '  have a non-Nothing value.
-                    If Not WindowFrame Is Nothing Then
+                    If WindowFrame IsNot Nothing Then
                         'Okay, it was an intrinsic editor.  We are responsible for making sure the editor is visible.
                         VSErrorHandler.ThrowOnFailure(WindowFrame.Show())
                     End If

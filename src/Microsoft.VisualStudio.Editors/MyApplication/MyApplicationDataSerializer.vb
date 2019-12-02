@@ -82,7 +82,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             End If
 
             If checkType Then
-                If isNull AndAlso Not xsiType Is Nothing Then
+                If isNull AndAlso xsiType IsNot Nothing Then
                     Return CType(ReadTypedNull(xsiType), MyApplicationData)
                 End If
                 If (xsiType Is Nothing) OrElse (CType(xsiType, Xml.XmlQualifiedName).Name = _id1_MyApplicationData AndAlso CType(xsiType, Xml.XmlQualifiedName).Namespace = _id2_Item) Then
@@ -263,7 +263,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
         Protected Overrides Sub Serialize(objectToSerialize As Object, writer As XmlSerializationWriter)
 
-            If Not objectToSerialize Is Nothing AndAlso Not Equals(objectToSerialize.GetType(), GetType(MyApplicationData)) Then
+            If objectToSerialize IsNot Nothing AndAlso Not Equals(objectToSerialize.GetType(), GetType(MyApplicationData)) Then
                 Debug.Fail("Cannot serialize object of type " + objectToSerialize.GetType().FullName + " with MyApplicationDataSerializer. Object of type " + GetType(MyApplicationDataSerializer).FullName + " expected.")
                 Throw New Package.InternalException()
             End If

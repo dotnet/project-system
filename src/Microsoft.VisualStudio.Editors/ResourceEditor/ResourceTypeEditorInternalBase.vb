@@ -62,7 +62,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Protected Shared Sub SaveFileFromManifestResource(ManifestResourceId As String, FilePath As String)
             Debug.Assert(ManifestResourceId <> "")
             Dim DataStream As Stream = GetType(ResourceEditorView).Assembly.GetManifestResourceStream(GetType(ResourceEditorView), ManifestResourceId)
-            If Not DataStream Is Nothing Then
+            If DataStream IsNot Nothing Then
                 Dim FileStream As New FileStream(FilePath, FileMode.Create)
                 Try
                     Debug.Assert(DataStream.Length < Integer.MaxValue)

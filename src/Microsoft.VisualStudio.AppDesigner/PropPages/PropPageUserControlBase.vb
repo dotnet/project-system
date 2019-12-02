@@ -100,7 +100,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Debug.Assert(_suspendPropertyChangeListeningDispIds.Count = 0, "Missing a ResumePropertyChangeListening() call?")
 
                     RemoveFromRunningTable()
-                    If Not _components Is Nothing Then
+                    If _components IsNot Nothing Then
                         _components.Dispose()
                     End If
 

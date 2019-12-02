@@ -2117,7 +2117,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                             ' if this instance doesn't have a DesignerSerializerAttribute on it, then we need to
                             '   put one on it now so serialization works
                             '
-                            If Not value Is Nothing Then
+                            If value IsNot Nothing Then
                                 Dim attributes As AttributeCollection = TypeDescriptor.GetAttributes(value)
                                 If attributes IsNot Nothing AndAlso attributes(GetType(DesignerSerializerAttribute)) Is Nothing Then
                                     Dim serializer As Object = _globalObject.GetSerializer(GetType(CodeDomSerializer))

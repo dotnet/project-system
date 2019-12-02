@@ -117,7 +117,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     Dim OleProvider As OLE.Interop.IServiceProvider = CType(_siteProvider.GetService(GetType(OLE.Interop.IServiceProvider)), OLE.Interop.IServiceProvider)
                     Dim Designer As IVSMDDesigner = DesignerService.CreateDesigner(OleProvider, DesignerLoader)
 
-                    Debug.Assert(Not Designer Is Nothing, "Designer service should have thrown if it had a problem.")
+                    Debug.Assert(Designer IsNot Nothing, "Designer service should have thrown if it had a problem.")
 
                     'Set the out params
                     DocView = Designer.View 'Gets the object that can support IVsWindowPane
@@ -191,11 +191,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 Return hr
             End If
 
-            If Not DocView Is Nothing Then
+            If DocView IsNot Nothing Then
                 DocViewPtr = Marshal.GetIUnknownForObject(DocView)
             End If
 
-            If Not DocData Is Nothing Then
+            If DocData IsNot Nothing Then
                 DocDataPtr = Marshal.GetIUnknownForObject(DocData)
             End If
 

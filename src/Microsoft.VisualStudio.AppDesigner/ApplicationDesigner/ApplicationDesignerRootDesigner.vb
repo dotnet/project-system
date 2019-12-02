@@ -27,7 +27,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Public Shadows ReadOnly Property Component As ApplicationDesignerRootComponent
             Get
                 Dim RootComponent As ApplicationDesignerRootComponent = CType(MyBase.Component, ApplicationDesignerRootComponent)
-                Debug.Assert(Not RootComponent Is Nothing)
+                Debug.Assert(RootComponent IsNot Nothing)
                 Return RootComponent
             End Get
         End Property
