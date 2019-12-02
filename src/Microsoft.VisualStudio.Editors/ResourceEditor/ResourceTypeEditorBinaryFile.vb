@@ -112,8 +112,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <returns>The friendly size string.</returns>
         Public Overrides Function GetResourceFriendlySize(Resource As IResource) As String
             ValidateResourceValue(Resource, BinaryFileValueType)
-            Debug.Assert(Resource.GetValueType().Equals(BinaryFileValueType))
-            Debug.Assert(BinaryFileValueType.Equals(GetType(Byte())), "Need to change implementation - type of binary files has changed")
+            Debug.Assert(Resource.GetValueType() Is BinaryFileValueType)
+            Debug.Assert(BinaryFileValueType Is GetType(Byte()), "Need to change implementation - type of binary files has changed")
             Debug.Assert(Resource.IsLink)
 
             Return GetLinkedResourceFriendlySize(Resource)

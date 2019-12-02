@@ -99,7 +99,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Private Shared Function SerializeImpl(value As Object, culture As Globalization.CultureInfo) As String
             If value Is Nothing Then
                 Return ""
-            ElseIf value.GetType().Equals(GetType(String)) Then
+            ElseIf TypeOf value Is String Then
                 Return DirectCast(value, String)
             Else
                 Dim prop As New SettingsProperty("") ' We don't care about the name of the setting!

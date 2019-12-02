@@ -17,7 +17,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             End If
             If Not needType Then
                 Dim t As Type = o.GetType()
-                If Equals(t, GetType(MyApplicationData)) Then
+                If t Is GetType(MyApplicationData) Then
                 Else
                     Throw CreateUnknownTypeException(o)
                 End If
@@ -263,7 +263,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
         Protected Overrides Sub Serialize(objectToSerialize As Object, writer As XmlSerializationWriter)
 
-            If objectToSerialize IsNot Nothing AndAlso Not Equals(objectToSerialize.GetType(), GetType(MyApplicationData)) Then
+            If objectToSerialize IsNot Nothing AndAlso Not TypeOf objectToSerialize Is MyApplicationData Then
                 Debug.Fail("Cannot serialize object of type " + objectToSerialize.GetType().FullName + " with MyApplicationDataSerializer. Object of type " + GetType(MyApplicationDataSerializer).FullName + " expected.")
                 Throw New Package.InternalException()
             End If

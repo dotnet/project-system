@@ -112,7 +112,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 If ExpectedTypes IsNot Nothing AndAlso ExpectedTypes.Length > 0 Then
                     Dim MatchedAType As Boolean = False
                     For Each ExpectedType As Type In ExpectedTypes
-                        If ResourceValueType.Equals(ExpectedType) OrElse ResourceValueType.IsSubclassOf(ExpectedType) Then
+                        If ResourceValueType Is ExpectedType OrElse ResourceValueType.IsSubclassOf(ExpectedType) Then
                             MatchedAType = True
                             Exit For
                         End If

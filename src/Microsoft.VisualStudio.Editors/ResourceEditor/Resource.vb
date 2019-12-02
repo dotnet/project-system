@@ -12,6 +12,7 @@ Imports System.Reflection
 Imports System.Resources
 Imports System.Runtime.Serialization
 Imports System.Text
+Imports System.Windows.Forms
 
 Imports Microsoft.VisualStudio.Editors.Common.Utils
 Imports Microsoft.VisualStudio.Shell
@@ -145,7 +146,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             '''      The converted object.
             ''' </returns>
             Public Overrides Function ConvertTo(context As ITypeDescriptorContext, culture As CultureInfo, value As Object, destinationType As Type) As Object
-                If destinationType.Equals(GetType(String)) Then
+                If destinationType Is GetType(String) Then
                     If value IsNot Nothing AndAlso TypeOf value Is ResourcePersistenceMode Then
                         Select Case CType(value, ResourcePersistenceMode)
                             Case ResourcePersistenceMode.Linked
@@ -948,9 +949,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Property FileType As FileTypes
             Get
                 If TypeOf ResourceTypeEditor Is ResourceTypeEditorFileBase Then
-                    If TryGetValueType().Equals(ResourceTypeEditorTextFile.TextFileValueType) Then
+                    If TryGetValueType() Is ResourceTypeEditorTextFile.TextFileValueType Then
                         Return FileTypes.Text
-                    ElseIf TryGetValueType().Equals(ResourceTypeEditorBinaryFile.BinaryFileValueType) Then
+                    ElseIf TryGetValueType() Is ResourceTypeEditorBinaryFile.BinaryFileValueType Then
                         Return FileTypes.Binary
                     Else
                         Debug.Fail("Unexpected resource value type for a file resource")
@@ -993,7 +994,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         Return
                 End Select
 
-                If NewResourceTypeEditor.Equals(ResourceTypeEditor) AndAlso NewResourceValueType.Equals(TryGetValueType) Then
+                If NewResourceTypeEditor.Equals(ResourceTypeEditor) AndAlso NewResourceValueType Is TryGetValueType() Then
                     'Nothing to do
                     Exit Property
                 End If
@@ -1481,11 +1482,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     'Value is not Nothing
 
                     'Verify that the new value is of the same type as before.
-                    If Not GetValueType().Equals(NewResourceValue.GetType()) Then
+                    If GetValueType() IsNot NewResourceValue.GetType() Then
                         'Exception to this rule.  We need to handle Byte() <-> MemoryStream conversion automatically
-                        If NewResourceValue.GetType().Equals(GetType(Byte())) AndAlso GetValueType().Equals(GetType(MemoryStream)) Then
+                        If TypeOf NewResourceValue Is Byte() AndAlso GetValueType() Is GetType(MemoryStream) Then
                             NewResourceValue = New MemoryStream(DirectCast(NewResourceValue, Byte()))
-                        ElseIf NewResourceValue.GetType().Equals(GetType(MemoryStream)) AndAlso GetValueType().Equals(GetType(Byte())) Then
+                        ElseIf TypeOf NewResourceValue Is MemoryStream AndAlso GetValueType() Is GetType(Byte()) Then
                             NewResourceValue = DirectCast(NewResourceValue, MemoryStream).ToArray()
                         Else
                             Throw NewException(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_UnexpectedResourceType, HelpIDs.Err_UnexpectedResourceType)
@@ -1684,13 +1685,13 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     'Apparently we couldn't load the type (assembly not found, etc.).  This item will have to show
                     '  up in the "Others" category.
                     TypeEditor = ResourceTypeEditors.NonStringConvertible
-                ElseIf IsLink AndAlso ValueType.Equals(ResourceTypeEditorTextFile.TextFileValueType) Then
+                ElseIf IsLink AndAlso ValueType Is ResourceTypeEditorTextFile.TextFileValueType Then
                     'It's a link to a text file
                     TypeEditor = ResourceTypeEditors.TextFile
-                ElseIf ValueType.Equals(GetType(Byte())) OrElse ValueType.Equals(GetType(MemoryStream)) Then
+                ElseIf ValueType Is GetType(Byte()) OrElse ValueType Is GetType(MemoryStream) Then
                     'It's a link to a binary or audio file or it might be an embedded audio file
 
-                    If IsLink AndAlso ValueType.Equals(GetType(Byte())) Then
+                    If IsLink AndAlso ValueType Is GetType(Byte()) Then
                         'Unless we decide specifically otherwise, we will normally treat binary files as
                         '  binary data.
                         TypeEditor = ResourceTypeEditors.BinaryFile
@@ -1701,7 +1702,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     If IsLink AndAlso ResourceTypeEditors.Audio.GetExtensionPriority(Path.GetExtension(AbsoluteLinkPathAndFileName)) > 0 Then
                         'Audio type editor says it can handle this extension - let it handle it.
                         TypeEditor = ResourceTypeEditors.Audio
-                    ElseIf IsLink AndAlso ValueType.Equals(GetType(Byte())) Then
+                    ElseIf IsLink AndAlso ValueType Is GetType(Byte()) Then
 
                         ' Bitmap and icons may be stored as a linked resource with byte array as the type.
                         ' Select the resource type editor using the extension of the file name in the link.
@@ -2112,7 +2113,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Shared Function IsConvertibleFromToString(Value As Object, ValueTypeName As String, IsResXNullRef As Boolean) As Boolean
             Dim TC As TypeConverter = GetTypeConverter(Value, ValueTypeName, IsResXNullRef)
             If TC IsNot Nothing Then
-                If TC.GetType.Equals(GetType(Windows.Forms.CursorConverter)) Then
+                If TypeOf TC Is CursorConverter Then
                     'The CursorConverter lies to us - says it's convertible from/to string.  But this is only true from the
                     '  property sheet for the standard cursors that they support from the Windows Forms designer.  If we happen
                     '  upon a custom cursor in the resx file (possible but not likely), this would get us into trouble.
@@ -2704,7 +2705,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <returns>The new ResXDataNode instance</returns>
         Private Function NewResXDataNode(Name As String, Comment As String, Value As Object) As ResXDataNode
             Dim Node As ResXDataNode
-            If Value IsNot Nothing AndAlso Value.GetType().Equals(GetType(ResXFileRef)) Then
+            If Value IsNot Nothing AndAlso TypeOf Value Is ResXFileRef Then
                 Node = New ResXDataNode(Name, DirectCast(Value, ResXFileRef), AddressOf TypeNameConverter)
             Else
                 Node = New ResXDataNode(Name, Value, AddressOf TypeNameConverter)

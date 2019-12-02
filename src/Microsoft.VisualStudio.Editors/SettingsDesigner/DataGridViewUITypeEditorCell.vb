@@ -43,7 +43,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Protected Overrides Function GetFormattedValue(value As Object, rowIndex As Integer, ByRef cellStyle As DataGridViewCellStyle, valueTypeConverter As TypeConverter, formattedValueTypeConverter As TypeConverter, context As DataGridViewDataErrorContexts) As Object
             If (context And DataGridViewDataErrorContexts.Display) <> 0 AndAlso
                 value IsNot Nothing AndAlso
-                value.GetType().Equals(GetType(VSDesigner.VSDesignerPackage.SerializableConnectionString)) Then
+                TypeOf value Is VSDesigner.VSDesignerPackage.SerializableConnectionString Then
                 'Begin
                 Return DirectCast(value, VSDesigner.VSDesignerPackage.SerializableConnectionString).ConnectionString
             Else

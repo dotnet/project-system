@@ -527,7 +527,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
 #Region "IServiceProvider implementation"
         Public Function IServiceProvider_GetService(serviceType As Type) As Object Implements IServiceProvider.GetService
-            If serviceType.Equals(GetType(IWindowsFormsEditorService)) Then
+            If serviceType Is GetType(IWindowsFormsEditorService) Then
                 Return Me
             Else
                 Return GetService(serviceType)

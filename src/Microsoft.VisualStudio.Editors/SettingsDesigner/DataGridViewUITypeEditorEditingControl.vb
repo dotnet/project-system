@@ -113,7 +113,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         End Property
 
         Public Function GetFormattedValue(context As DataGridViewDataErrorContexts) As Object Implements IDataGridViewEditingControl.GetEditingControlFormattedValue
-            If (context And DataGridViewDataErrorContexts.Parsing) <> 0 AndAlso ValueType.Equals(GetType(SerializableConnectionString)) Then
+            If (context And DataGridViewDataErrorContexts.Parsing) <> 0 AndAlso ValueType Is GetType(SerializableConnectionString) Then
                 Dim scs As SerializableConnectionString = TryCast(Value, SerializableConnectionString)
                 If scs Is Nothing Then
                     scs = New SerializableConnectionString
@@ -263,7 +263,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
 
         Protected Overrides Function FormatValue(ValueToFormat As Object) As String
-            If ValueToFormat IsNot Nothing AndAlso ValueToFormat.GetType().Equals(GetType(SerializableConnectionString)) Then
+            If ValueToFormat IsNot Nothing AndAlso TypeOf ValueToFormat Is SerializableConnectionString Then
                 Return DirectCast(ValueToFormat, SerializableConnectionString).ConnectionString
             Else
                 Return SettingsValueSerializer.Serialize(ValueToFormat, System.Threading.Thread.CurrentThread.CurrentCulture)

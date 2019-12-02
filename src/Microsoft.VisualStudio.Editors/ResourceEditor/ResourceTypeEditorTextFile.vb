@@ -240,8 +240,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Overrides Function GetResourceFriendlySize(Resource As IResource) As String
             ValidateResourceValue(Resource, TextFileValueType)
             Debug.Assert(Resource.IsLink)
-            Debug.Assert(Resource.GetValueType.Equals(TextFileValueType))
-            Debug.Assert(TextFileValueType.Equals(GetType(String)), "Type of text files has changed?")
+            Debug.Assert(Resource.GetValueType Is TextFileValueType)
+            Debug.Assert(TextFileValueType Is GetType(String), "Type of text files has changed?")
 
             Return GetLinkedResourceFriendlySize(Resource)
         End Function

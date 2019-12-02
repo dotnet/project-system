@@ -169,7 +169,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="ServiceType"></param>
         Protected Function GetService(ServiceType As Type) As Object Implements IPropertyPageSiteInternal.GetService
             'Proffer the actual IPropertyPageSite as a service
-            If ServiceType.Equals(GetType(IPropertyPageSite)) Then
+            If ServiceType Is GetType(IPropertyPageSite) Then
                 Return _pageSite
             End If
 

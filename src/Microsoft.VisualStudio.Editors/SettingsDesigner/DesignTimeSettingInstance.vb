@@ -659,7 +659,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Sub
 
             Public Overrides Function CanConvertFrom(context As ITypeDescriptorContext, type As Type) As Boolean
-                If GetType(String).Equals(type) Then
+                If type Is GetType(String) Then
                     Return True
                 Else
                     Return MyBase.CanConvertFrom(context, type)
@@ -667,7 +667,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Function
 
             Public Overrides Function CanConvertTo(context As ITypeDescriptorContext, type As Type) As Boolean
-                If GetType(String).Equals(type) Then
+                If type Is GetType(String) Then
                     Return True
                 Else
                     Return MyBase.CanConvertTo(context, type)
@@ -688,7 +688,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Function
 
             Public Overrides Function ConvertTo(context As ITypeDescriptorContext, culture As Globalization.CultureInfo, value As Object, destinationType As Type) As Object
-                If GetType(String).Equals(destinationType) Then
+                If destinationType Is GetType(String) Then
                     Dim instance As DesignTimeSettingInstance = Nothing
                     If context IsNot Nothing Then
                         instance = TryCast(context.Instance, DesignTimeSettingInstance)

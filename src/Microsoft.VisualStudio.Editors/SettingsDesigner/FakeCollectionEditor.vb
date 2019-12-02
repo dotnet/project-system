@@ -61,8 +61,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Return Nothing
             End If
 
-            If value.GetType().Equals(GetType(StringCollection)) Then
-                Dim strCol As StringCollection = DirectCast(value, StringCollection)
+            Dim strCol = TryCast(value, StringCollection)
+            If strCol IsNot Nothing Then
                 Dim result(strCol.Count - 1) As String
                 strCol.CopyTo(result, 0)
                 Return result
@@ -79,8 +79,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Return Nothing
             End If
 
-            If value.GetType().Equals(GetType(String())) Then
-                Dim strings() As String = DirectCast(value, String())
+            Dim strings = TryCast(value, String())
+            If strings IsNot Nothing Then
                 Dim result As New StringCollection
                 result.AddRange(strings)
                 Return result

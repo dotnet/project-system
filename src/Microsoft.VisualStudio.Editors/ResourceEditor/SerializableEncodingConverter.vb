@@ -26,7 +26,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   type to a SerializableEncoding object using the specified context.
         ''' </summary>
         Public Overrides Function CanConvertFrom(Context As ITypeDescriptorContext, SourceType As Type) As Boolean
-            If SourceType.Equals(GetType(String)) Then
+            If SourceType Is GetType(String) Then
                 Return True
             End If
 
@@ -64,7 +64,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Overrides Function ConvertTo(Context As ITypeDescriptorContext, Culture As CultureInfo, Value As Object, DestinationType As Type) As Object
             Requires.NotNull(DestinationType, NameOf(DestinationType))
 
-            If DestinationType.Equals(GetType(String)) AndAlso TypeOf Value Is SerializableEncoding Then
+            If DestinationType Is GetType(String) AndAlso TypeOf Value Is SerializableEncoding Then
                 Dim SerializableEncoding As SerializableEncoding = DirectCast(Value, SerializableEncoding)
 
                 'Here we return the localized encoding name.  That's what actually shows up
