@@ -17,6 +17,8 @@
     <PackageTags>Roslyn Project Property Page Editors VisualStudio</PackageTags>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.Internal.VisualStudio.Shell.Embeddable" />
+    <PackageReference Include="Microsoft.VisualStudio.RpcContracts" />
     <PackageReference Include="Microsoft.VisualStudio.Setup.Configuration.Interop" />
   </ItemGroup>
   <ItemGroup>
