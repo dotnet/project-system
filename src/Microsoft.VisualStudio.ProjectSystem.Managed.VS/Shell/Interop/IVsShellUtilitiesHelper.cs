@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Interop;
 
 namespace Microsoft.VisualStudio.Shell.Interop
 {
-    [ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
+    [ProjectSystemContract(ProjectSystemContractScope.ProjectService, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface IVsShellUtilitiesHelper
     {
         /// <summary>
