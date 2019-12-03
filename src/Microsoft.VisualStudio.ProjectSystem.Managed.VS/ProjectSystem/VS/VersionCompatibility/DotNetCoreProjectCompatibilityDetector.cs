@@ -21,9 +21,7 @@ using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
-    /// <summary>
-    /// <see cref="IDotNetCoreProjectCompatibilityDetector"/>
-    /// </summary>
+    /// <inheritdoc cref="IDotNetCoreProjectCompatibilityDetector"/>
     [Export(typeof(IDotNetCoreProjectCompatibilityDetector))]
     internal partial class DotNetCoreProjectCompatibilityDetector : IDotNetCoreProjectCompatibilityDetector, IVsSolutionEvents, IVsSolutionLoadEvents, IDisposable
     {
@@ -48,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private readonly IVsService<IVsShell> _vsShellService;
         private RemoteCacheFile? _versionDataCacheFile;
         private uint _solutionCookie = VSConstants.VSCOOKIE_NIL;
-        private DateTime _timeCurVersionDataLastUpdatedUtc = DateTime.MinValue; // Tracks how often we meed to look for new data
+        private DateTime _timeCurVersionDataLastUpdatedUtc = DateTime.MinValue; // Tracks how often we need to look for new data
         private IVsSolution? _vsSolution;
 
         // These are internal for unit testing
@@ -97,7 +95,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             VisualStudioVersion = await _shellUtilitiesHelper.Value.GetVSVersionAsync(_vsAppIdService);
 
             _vsSolution = await _vsSolutionService.GetValueAsync();
-            Verify.HResult(_vsSolution!.AdviseSolutionEvents(this, out _solutionCookie));
+            Assumes.Present(_vsSolution);
+
+            Verify.HResult(_vsSolution.AdviseSolutionEvents(this, out _solutionCookie));
 
             // Check to see if a solution is already open. If so we set _solutionOpened to true so that subsequent projects added to 
             // this solution are processed.
@@ -184,8 +184,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
 
             ISettingsManager? settings = await _settingsManagerService.GetValueAsync();
-
-            return settings!.GetValueOrDefault<bool>(UsePreviewSdkSettingKey);
+            Assumes.Present(settings);
+            
+            return settings.GetValueOrDefault<bool>(UsePreviewSdkSettingKey);
         }
 
         private async Task<bool> IsPrereleaseAsync()
@@ -271,7 +272,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 CompatibilityLevelWarnedForCurrentSolution = compatLevel;
 
                 IVsUIShell? uiShell = await _vsUIShellService.GetValueAsync();
-                uiShell!.GetAppName(out string caption);
+                Assumes.Present(uiShell);
+
+                uiShell.GetAppName(out string caption);
 
                 if (compatLevel == CompatibilityLevel.Supported)
                 {
@@ -336,11 +339,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 if (!string.IsNullOrEmpty(tfm))
                 {
                     var fw = new FrameworkName(tfm);
-                    if (fw.Identifier.Equals(".NETCoreApp", StringComparison.OrdinalIgnoreCase))
+                    if (fw.Identifier.Equals(".NETCoreApp", StringComparisons.FrameworkIdentifiers))
                     {
                         return GetCompatibilityLevelFromVersion(fw.Version, compatData, isPreviewSDKInUse);
                     }
-                    else if (fw.Identifier.Equals(".NETFramework", StringComparison.OrdinalIgnoreCase))
+                    else if (fw.Identifier.Equals(".NETFramework", StringComparisons.FrameworkIdentifiers))
                     {
                         // The interesting case here is Asp.Net Core on full framework
                         IImmutableSet<IUnresolvedPackageReference> pkgReferences = await activeConfiguredProject.Services.PackageReferences.GetUnresolvedReferencesAsync();
@@ -348,8 +351,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                         // Look through the package references
                         foreach (IUnresolvedPackageReference pkgRef in pkgReferences)
                         {
-                            if (string.Equals(pkgRef.EvaluatedInclude, "Microsoft.AspNetCore.All", StringComparison.OrdinalIgnoreCase) ||
-                                string.Equals(pkgRef.EvaluatedInclude, "Microsoft.AspNetCore", StringComparison.OrdinalIgnoreCase))
+                            if (string.Equals(pkgRef.EvaluatedInclude, "Microsoft.AspNetCore.All", StringComparisons.ItemNames) ||
+                                string.Equals(pkgRef.EvaluatedInclude, "Microsoft.AspNetCore", StringComparisons.ItemNames))
                             {
                                 string verString = await pkgRef.Metadata.GetEvaluatedPropertyValueAsync("Version");
                                 if (!string.IsNullOrWhiteSpace(verString))
@@ -446,7 +449,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 // See if the cache file needs refreshing and if so, kick off a task to do so
                 if (_versionDataCacheFile != null && _versionDataCacheFile.CacheFileIsStale())
                 {
-                    Task noWait = _versionDataCacheFile.TryToUpdateCacheFileAsync(() =>
+                    _ = _versionDataCacheFile.TryToUpdateCacheFileAsync(() =>
                     {
                         // Invalidate the in-memory cached data on success
                         _timeCurVersionDataLastUpdatedUtc = DateTime.MinValue;

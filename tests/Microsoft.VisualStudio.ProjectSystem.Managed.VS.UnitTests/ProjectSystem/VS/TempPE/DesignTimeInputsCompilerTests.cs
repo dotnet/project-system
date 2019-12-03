@@ -183,8 +183,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         [Fact]
         public async Task SingleDesignTimeInput_AnotherAdded_ShouldCompileBoth()
         {
-            var inputs = new DesignTimeInputs(new string[] { "File1.cs" }, new string[] { });
-
             await VerifyDLLsCompiled(2, () =>
             {
                 SendDesignTimeInputs(new DesignTimeInputs(new string[] { "File1.cs" }, new string[] { }));
@@ -326,8 +324,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         private async Task VerifyDLLsCompiled(int numberOfDLLsExpected, Action actionThatCausesCompilation)
         {
-            int initialComplations = _compilationResults.Count;
-            _expectedCompilations = initialComplations + numberOfDLLsExpected;
+            int initialCompilations = _compilationResults.Count;
+            _expectedCompilations = initialCompilations + numberOfDLLsExpected;
             _compilationOccurredCompletionSource = new TaskCompletionSource<bool>();
 
             actionThatCausesCompilation();
@@ -337,7 +335,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             if (await Task.WhenAny(_compilationOccurredCompletionSource.Task, delay) == delay)
             {
-                var actualDLLs = _compilationResults.Count - initialComplations;
+                var actualDLLs = _compilationResults.Count - initialCompilations;
                 if (numberOfDLLsExpected != actualDLLs)
                 {
                     throw new AssertActualExpectedException(numberOfDLLsExpected, actualDLLs, $"Timed out after {TestTimeoutMillisecondsDelay}ms");

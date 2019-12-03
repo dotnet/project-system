@@ -11,19 +11,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     /// </summary>
     internal abstract class InterceptingPropertyValueProviderBase : IInterceptingPropertyValueProvider
     {
-        /// <inheritdoc />
         public virtual Task<string> OnGetEvaluatedPropertyValueAsync(string evaluatedPropertyValue, IProjectProperties defaultProperties)
         {
             return Task.FromResult(evaluatedPropertyValue);
         }
 
-        /// <inheritdoc />
         public virtual Task<string> OnGetUnevaluatedPropertyValueAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties)
         {
             return Task.FromResult(unevaluatedPropertyValue);
         }
 
-        /// <inheritdoc />
         public virtual Task<string?> OnSetPropertyValueAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
             return Task.FromResult<string?>(unevaluatedPropertyValue);

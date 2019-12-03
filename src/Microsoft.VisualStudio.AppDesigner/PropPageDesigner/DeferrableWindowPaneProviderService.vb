@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel.Design
 
@@ -14,7 +14,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
     '''   instead of the one that the base one provides.
     ''' This allows us to have more control of the WindowPane.
     ''' </summary>
-    ''' <remarks></remarks>
     Public NotInheritable Class DeferrableWindowPaneProviderService
         Inherits AppDesDesignerFramework.DeferrableWindowPaneProviderServiceBase
 
@@ -23,7 +22,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         '''   to create a PropPageDesignerWindowPane when needed (i.e., its creation is deferred).
         ''' </summary>
         ''' <param name="provider"></param>
-        ''' <remarks></remarks>
         Public Sub New(provider As IServiceProvider)
             MyBase.New(provider, Nothing)
         End Sub
@@ -34,8 +32,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         '''   property page designer.
         ''' </summary>
         ''' <param name="surface"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Overrides Function CreateWindowPane(surface As DesignSurface) As DesignerWindowPane
             Return New PropPageDesignerWindowPane(surface)
         End Function

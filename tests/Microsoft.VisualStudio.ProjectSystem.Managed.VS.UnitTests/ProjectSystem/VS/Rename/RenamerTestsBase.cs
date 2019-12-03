@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
@@ -46,9 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         internal async Task RenameAsync(string sourceCode, string oldFilePath, string newFilePath, IUserNotificationServices userNotificationServices, IRoslynServices roslynServices, string language)
         {
             using var ws = new AdhocWorkspace();
-            var projectId = ProjectId.CreateNewId();
-            Solution solution = ws.AddSolution(InitializeWorkspace(projectId, newFilePath, sourceCode, language));
-            Project project = (from d in solution.Projects where d.Id == projectId select d).FirstOrDefault();
+            ws.AddSolution(InitializeWorkspace(ProjectId.CreateNewId(), newFilePath, sourceCode, language));
 
             var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: $@"C:\project1.{ProjectFileExtension}");
             var projectServices = IUnconfiguredProjectVsServicesFactory.Implement(

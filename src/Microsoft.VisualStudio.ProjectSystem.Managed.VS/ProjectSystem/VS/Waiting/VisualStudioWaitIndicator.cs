@@ -111,6 +111,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         }
 
         private IWaitContext StartWait(string title, string message, bool allowCancel)
-            => new VisualStudioWaitContext(_waitDialogFactoryService.Value!, title, message, allowCancel);
+        {
+            IVsThreadedWaitDialogFactory? vsThreadedWaitDialogFactory = _waitDialogFactoryService.Value;
+            Assumes.Present(vsThreadedWaitDialogFactory);
+
+            return new VisualStudioWaitContext(vsThreadedWaitDialogFactory, title, message, allowCancel);
+        }
     }
 }

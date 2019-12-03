@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.Windows.Forms
 
@@ -21,12 +21,10 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Selects the next available control and makes it the active control.
         ''' </summary>
         ''' <param name="forward"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Protected Overrides Function ProcessTabKey(forward As Boolean) As Boolean
             Common.Switches.TracePDMessageRouting(TraceLevel.Warning, "ApplicationDesignerWindowPaneControl.ProcessTabKey")
 
-            If (SelectNextControl(ActiveControl, forward, True, True, False)) Then
+            If SelectNextControl(ActiveControl, forward, True, True, False) Then
                 Common.Switches.TracePDMessageRouting(TraceLevel.Info, "  ...SelectNextControl handled it")
                 Return True
             End If

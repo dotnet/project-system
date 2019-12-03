@@ -14,7 +14,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             _borderPen = New Pen(VisualStyleInformation.TextControlBorder)
         End Sub
 
-        Protected Overrides ReadOnly Property CreateParams() As CreateParams
+        Protected Overrides ReadOnly Property CreateParams As CreateParams
             Get
                 Dim cp As CreateParams = MyBase.CreateParams
                 cp.ExStyle = cp.ExStyle And Not WS_EX_CLIENTEDGE
@@ -53,13 +53,13 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             MyBase.OnPaint(e)
         End Sub
 
-        Protected Overrides ReadOnly Property DefaultPadding() As Padding
+        Protected Overrides ReadOnly Property DefaultPadding As Padding
             Get
                 Return New Padding(1)
             End Get
         End Property
 
-        Private Shared ReadOnly Property UseVisualStyles() As Boolean
+        Private Shared ReadOnly Property UseVisualStyles As Boolean
             Get
                 Return VisualStyleRenderer.IsSupported
             End Get

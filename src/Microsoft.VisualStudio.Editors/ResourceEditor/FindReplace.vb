@@ -16,7 +16,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         '''  The fields of the resource we're going to find the pattern in.
         ''' </summary>
-        ''' <remarks></remarks>
         Public Enum Field
             Name
             Value
@@ -68,7 +67,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Constructor
         ''' </summary>
         ''' <param name="RootDesigner">Pointer to the root designer</param>
-        ''' <remarks></remarks>
         Public Sub New(RootDesigner As ResourceEditorRootDesigner)
             Requires.NotNull(RootDesigner, NameOf(RootDesigner))
             _rootDesigner = RootDesigner
@@ -79,7 +77,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Does debug-only tracing for this class.
         ''' </summary>
         ''' <param name="Message"></param>
-        ''' <remarks></remarks>
         <Conditional("DEBUG")>
         Public Shared Sub Trace(Message As String)
             Debug.WriteLineIf(Switches.RSEFindReplace.TraceVerbose, "RSE Find/Replace: " & Message)
@@ -114,7 +111,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="pfImage">Set to True if supporting GetSearchImage - seaching in a text image.</param>
         ''' <param name="pgrfOptions">Specifies supported options, syntax and options, taken from __VSFINDOPTIONS.</param>
-        ''' <remarks></remarks>
         Public Sub GetCapabilities(pfImage() As Boolean, pgrfOptions() As UInteger)
             Trace("GetCapabilities called.")
 
@@ -214,7 +210,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Sets the find state object that we hold for the find engine.
         ''' </summary>
         ''' <param name="pUnk">The find state object to hold.</param>
-        ''' <remarks></remarks>
         Public Sub SetFindState(pUnk As Object)
             _findState = pUnk
         End Sub
@@ -237,7 +232,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </remarks>
         Public Sub Find(pszSearch As String, grfOptions As UInteger, fResetStartPoint As Integer,
                             pHelper As IVsFindHelper, ByRef pResult As UInteger)
-            Dim FindReset As Boolean = (fResetStartPoint <> 0)
+            Dim FindReset As Boolean = fResetStartPoint <> 0
             Dim FindBackwards As Boolean = CheckFindOption(grfOptions, __VSFINDOPTIONS.FR_Backwards)
             Dim FindInSelection As Boolean = CheckFindOption(grfOptions, __VSFINDOPTIONS.FR_Selection)
             Dim FindJustStarted As Boolean = False ' We just started a find loop.
@@ -410,7 +405,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="grfOptions">The options passed in from the shell.</param>
         ''' <param name="Flag">The option we want to know.</param>
         ''' <returns>Value of the option, TRUE or FALSE.</returns>
-        ''' <remarks></remarks>
         Private Shared Function CheckFindOption(grfOptions As UInteger, Flag As __VSFINDOPTIONS) As Boolean
             Return (CType(grfOptions, __VSFINDOPTIONS) And Flag) <> 0
         End Function
@@ -422,7 +416,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   fields in the same resource.
         ''' </summary>
         ''' <param name="Resource">The resource to check</param>
-        ''' <returns></returns>
         ''' <remarks>
         ''' This returns True for resources which are displayed in a listview, because there is no easy way to 
         '''   highlight separate parts of the resource.
@@ -436,7 +429,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Increments the current index pointer to the next resource
         ''' </summary>
         ''' <param name="FindBackwards">True if we're searching backwards</param>
-        ''' <remarks></remarks>
         Private Sub IncrementCurrentIndex(FindBackwards As Boolean)
             If FindBackwards Then
                 _currentIndex -= 1
@@ -456,7 +448,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''  Calculate the next index and field to search based on the current index/field and the direction of find
         ''' </summary>
         ''' <param name="FindBackwards">TRUE indicates finding backwards; otherwise, FALSE.</param>
-        ''' <remarks></remarks>
         Private Sub IncrementCurrentIndexAndField(FindBackwards As Boolean)
             Dim NextFieldIndex As Integer
 
@@ -488,7 +479,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="SearchText">The text to search in.</param>
         ''' <param name="Helper">The IVsFindHelper from VisualStudio</param>
         ''' <returns>TRUE if a match was found; otherwise, FALSE.</returns>
-        ''' <remarks></remarks>
         Private Shared Function IsMatch(SearchPattern As String, SearchText As String,
                                     Helper As IVsFindHelper, grfFindOptions As UInteger) As Boolean
             If String.IsNullOrEmpty(SearchText) Then
@@ -503,7 +493,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Dim charArray As Char() = SearchText.ToCharArray()
             Dim textArray As UShort() = New UShort(charArray.Length - 1) {}
             charArray.CopyTo(textArray, 0)
-            Dim hr As Integer = Helper.FindInText(SearchPattern, Nothing, grfFindOptions, CUInt(BufferFlags), CUInt(textArray.Length), textArray, iFound, cchFound, bstrReplaceText, fFound)
+            Helper.FindInText(SearchPattern, Nothing, grfFindOptions, CUInt(BufferFlags), CUInt(textArray.Length), textArray, iFound, cchFound, bstrReplaceText, fFound)
 
             Return fFound <> 0
         End Function
@@ -514,7 +504,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="FindInSelection">Whether or not to search only in the current selection</param>
         ''' <value>An ArrayList containing Resource instances ordered by category and names.</value>
-        ''' <remarks></remarks>
         Private ReadOnly Property GetResourcesToSearch(FindInSelection As Boolean) As Resource()
             Get
                 Dim ResourcesToSearch = New List(Of Resource)(View.ResourceFile.Resources.Count)
@@ -642,9 +631,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Returns the resource editor view associated with this designer.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Private ReadOnly Property View() As ResourceEditorView
+        Private ReadOnly Property View As ResourceEditorView
             Get
                 Return _rootDesigner.GetView()
             End Get
@@ -654,9 +641,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Returns True iff there a View has already been created.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Private ReadOnly Property HasView() As Boolean
+        Private ReadOnly Property HasView As Boolean
             Get
                 Return _rootDesigner.HasView()
             End Get

@@ -10,8 +10,6 @@ Namespace My.Resources
         ''' Just returns the input string unless there are arguments, in which case it calls String.Format.
         ''' </summary>
         ''' <param name="s"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         <ComponentModel.EditorBrowsable(ComponentModel.EditorBrowsableState.Never)>
         Friend Shared Function GetString(s As String, ParamArray Arguments() As Object) As String
             If Arguments Is Nothing OrElse Arguments.Length = 0 Then
@@ -26,7 +24,6 @@ Namespace My.Resources
         '''   actual string value).  These are not automatically kept up to date from
         '''   the .resx file, so they must be edited manually.
         ''' </summary>
-        ''' <remarks></remarks>
         Friend Class ConstantResourceIDs
 
             'IMPORTANT: These must be kept manually up to date, they are not automatically

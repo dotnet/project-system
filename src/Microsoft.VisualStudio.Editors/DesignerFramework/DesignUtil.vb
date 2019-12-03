@@ -88,8 +88,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' Get the default caption from IVsUIShell, or fall back to localized resource
         ''' </summary>
         ''' <param name="sp"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Shared Function GetDefaultCaption(sp As IServiceProvider) As String
             Dim caption As String = ""
             Dim uiShell As IVsUIShell = Nothing
@@ -109,7 +107,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="ServiceProvider"></param>
         ''' <param name="keyword"></param>
-        ''' <remarks></remarks>
         Friend Shared Sub DisplayTopicFromF1Keyword(ServiceProvider As IServiceProvider, keyword As String)
             If ServiceProvider Is Nothing Then
                 Debug.Fail("NULL serviceprovider - can't show help!")
@@ -167,7 +164,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '**************************************************************************
         Private Overloads Shared Sub SetFontStyles(TopControl As Control, Parent As Control, ReferenceFont As Font)
             For Each ChildControl As Control In Parent.Controls
-                If Not (ChildControl.Controls Is Nothing) AndAlso ChildControl.Controls.Count > 0 Then
+                If ChildControl.Controls IsNot Nothing AndAlso ChildControl.Controls.Count > 0 Then
                     SetFontStyles(TopControl, ChildControl, ReferenceFont)
                 End If
 
@@ -183,7 +180,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="Number">The IntPtr to get the word from</param>
         ''' <returns>The signed hi word</returns>
-        ''' <remarks></remarks>
         Public Shared Function SignedHiWord(Number As IntPtr) As Integer
             Return (CType(Number, Integer) >> 16) And &HFFFF
         End Function
@@ -194,9 +190,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="Number">The IntPtr to get the word from</param>
         ''' <returns>The signed lo word</returns>
-        ''' <remarks></remarks>
         Public Shared Function SignedLoWord(Number As IntPtr) As Integer
-            Return (CType(Number, Integer) And &HFFFF)
+            Return CType(Number, Integer) And &HFFFF
         End Function
 
 
@@ -205,7 +200,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="m">Window's message.</param>
         ''' <returns>The context event args to use for raising the event.</returns>
-        ''' <remarks></remarks>
         Public Shared Function GetContextMenuMouseEventArgs(ByRef m As Message) As MouseEventArgs
             Dim x As Integer = SignedLoWord(m.LParam)
             Dim y As Integer = SignedHiWord(m.LParam)
@@ -226,8 +220,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' by allowing "." embedded in the string and zero length strings...
         ''' </summary>
         ''' <param name="value"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Shared Function GenerateValidLanguageIndependentNamespace(value As String) As String
             If value = "" Then
                 Return value
@@ -244,7 +236,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' Generate a valid language independent identifier from the given string value
         ''' </summary>
         ''' <param name="value"></param>
-        ''' <returns></returns>
         ''' <remarks>Will throw an ArgumentException if it fails</remarks>
         Friend Shared Function GenerateValidLanguageIndependentIdentifier(value As String) As String
             Const replacementChar As Char = "_"c
@@ -262,7 +253,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             Dim result As New System.Text.StringBuilder
 
             ' First char cannot be a number
-            If (Char.GetUnicodeCategory(chars(0)) = System.Globalization.UnicodeCategory.DecimalDigitNumber) Then
+            If Char.GetUnicodeCategory(chars(0)) = System.Globalization.UnicodeCategory.DecimalDigitNumber Then
                 result.Append(replacementChar)
             End If
 
@@ -299,8 +290,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' Try to get the encoding used by a DocData
         ''' </summary>
         ''' <param name="dd"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Shared Function GetEncoding(dd As Shell.Design.Serialization.DocData) As System.Text.Encoding
             ' Try to get the encoding of the textbuffer that we are going to write to...
             Try

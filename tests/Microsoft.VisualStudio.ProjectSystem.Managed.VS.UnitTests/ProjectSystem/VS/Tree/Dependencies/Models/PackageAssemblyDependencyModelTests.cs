@@ -3,7 +3,6 @@
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.RuleHandlers;
 using Xunit;
 
@@ -36,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.True(model.Resolved);
             Assert.False(model.Implicit);
             Assert.Equal(properties, model.Properties);
-            Assert.Equal(Dependency.PackageAssemblyNodePriority, model.Priority);
+            Assert.Equal(GraphNodePriority.PackageAssembly, model.Priority);
             Assert.Equal(KnownMonikers.Reference, model.Icon);
             Assert.Equal(KnownMonikers.Reference, model.ExpandedIcon);
             Assert.Equal(KnownMonikers.ReferenceWarning, model.UnresolvedIcon);
@@ -73,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.False(model.Resolved);
             Assert.False(model.Implicit);
             Assert.Equal(properties, model.Properties);
-            Assert.Equal(Dependency.UnresolvedReferenceNodePriority, model.Priority);
+            Assert.Equal(GraphNodePriority.UnresolvedReference, model.Priority);
             Assert.Equal(KnownMonikers.Reference, model.Icon);
             Assert.Equal(KnownMonikers.Reference, model.ExpandedIcon);
             Assert.Equal(KnownMonikers.ReferenceWarning, model.UnresolvedIcon);

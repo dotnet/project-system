@@ -38,7 +38,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Creates a new WinformsWindowPane.
         ''' </summary>
         ''' <param name="surface"></param>
-        ''' <remarks></remarks>
         Public Sub New(surface As DesignSurface)
             MyBase.New(surface)
             'Create our view control and hook its focus event.
@@ -56,7 +55,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
         End Sub
 
-        Public Overrides ReadOnly Property EditorView() As Object
+        Public Overrides ReadOnly Property EditorView As Object
             Get
                 Return Me
             End Get
@@ -103,7 +102,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub OnViewFocus(sender As Object, e As EventArgs)
             'Note: this sub never seems to get hit when controls count > 0
             Common.Switches.TracePDFocus(TraceLevel.Warning, "ApplicationDesignerWindowPane.OnViewFocus (Project Designer's window pane)")
@@ -116,7 +114,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         End Sub
 
         Private Sub OnThemeChanged()
-            Dim VsUIShell5 = VsUIShell5Service
             _view.BackColor = Common.ShellUtil.GetProjectDesignerThemeColor(VsUIShell5Service, "Background", __THEMEDCOLORTYPE.TCT_Background, SystemColors.Window)
         End Sub
 
@@ -127,7 +124,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             End Select
         End Sub
 
-        Public Overrides ReadOnly Property Window() As IWin32Window
+        Public Overrides ReadOnly Property Window As IWin32Window
             Get
                 Return _view
             End Get
@@ -139,7 +136,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''  design surface.  If there was an error encountered
         '''  it will display the error control.
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub PopulateView()
 
             Common.Switches.TracePDFocus(TraceLevel.Warning, "ApplicationDesignerWindowPane.PopulateView")
@@ -167,12 +163,12 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         Throw New InvalidOperationException("Only ApplicationDesignerView should be created by this window pane")
                     End If
                 Catch loadError As Exception When Common.ReportWithoutCrash(loadError, "Got an exception trying to populate the project designer's view", NameOf(ApplicationDesignerWindowPane))
-                    Do While (TypeOf loadError Is TargetInvocationException AndAlso loadError.InnerException IsNot Nothing)
+                    Do While TypeOf loadError Is TargetInvocationException AndAlso loadError.InnerException IsNot Nothing
                         loadError = loadError.InnerException
                     Loop
 
                     Dim message As String = loadError.Message
-                    If (message Is Nothing OrElse message.Length = 0) Then
+                    If message Is Nothing OrElse message.Length = 0 Then
                         message = loadError.ToString()
                     End If
 
@@ -185,7 +181,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     }
                 End Try
 
-                If (childView Is Nothing) Then
+                If childView Is Nothing Then
                     childView = New ErrorControl With {
                         .Text = My.Resources.Designer.GetString(My.Resources.Designer.APPDES_ErrorLoading_Msg, "")
                     }
@@ -217,7 +213,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '     in which case we should dispose it.
         ' </devdoc>
         Private Sub OnSurfaceUnloaded(sender As Object, e As EventArgs)
-            If (_view IsNot Nothing AndAlso _view.Controls.Count > 0) Then
+            If _view IsNot Nothing AndAlso _view.Controls.Count > 0 Then
                 Dim controls As Control() = New Control(_view.Controls.Count - 1) {}
                 _view.Controls.CopyTo(controls, 0)
                 For Each c As Control In controls
@@ -237,7 +233,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Sets the active view to the one that matches the given GUID.  If guid is empty or unrecognized, keeps the current tab.
         ''' </summary>
         ''' <param name="LogicalView"></param>
-        ''' <remarks></remarks>
         Private Sub SetActiveView(LogicalView As Guid)
             If AppDesignerView IsNot Nothing Then
                 AppDesignerView.ActiveView = LogicalView
@@ -285,13 +280,12 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' The OnClose method is called by the base class in response to the ClosePane method on
         '''    IVsWindowPane.  The default implementation calls Dispose()
         ''' </summary>
-        ''' <remarks></remarks>
         Protected Overrides Sub OnClose()
             MyBase.OnClose() 'Calls Dispose()
         End Sub
 
 
-        Public ReadOnly Property AppDesignerView() As ApplicationDesignerView
+        Public ReadOnly Property AppDesignerView As ApplicationDesignerView
             Get
                 If _view IsNot Nothing AndAlso _view.Controls.Count > 0 Then
                     Return TryCast(_view.Controls(0), ApplicationDesignerView)
@@ -304,7 +298,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Moves to the next tab in the project designer
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub NextTab()
             If AppDesignerView IsNot Nothing Then
                 AppDesignerView.SwitchTab(True)
@@ -314,7 +307,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Moves to the previous tab in the project designer
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub PrevTab()
             If AppDesignerView IsNot Nothing Then
                 AppDesignerView.SwitchTab(False)
@@ -324,10 +316,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
         ''' <summary>
         ''' Closes the application designer, but first prompts the user which of the open children
-        '''   documents s/he wants to save, and saves the ones selected.
+        '''   documents they want to save, and saves the ones selected.
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function ClosePromptSave() As Integer
             Dim hr As Integer = SaveChildren(__VSRDTSAVEOPTIONS.RDTSAVEOPT_DocClose Or __VSRDTSAVEOPTIONS.RDTSAVEOPT_PromptSave)
             If Not VSErrorHandler.Succeeded(hr) Then
@@ -342,7 +332,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Closes the window frame for the project designer.  Any children with unsaved DocData will be discarded
         '''   without saving.
         ''' </summary>
-        ''' <returns></returns>
         ''' <remarks>
         ''' This will cause the IVsWindowFrameNotify3.OnClose notification on CmdTargetHelper to fire.
         ''' </remarks>
@@ -369,8 +358,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="WindowFrame"></param>
         ''' <param name="flags"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Shared Function CloseFrameInternal(WindowFrame As IVsWindowFrame, flags As __FRAMECLOSE) As Integer
             If WindowFrame IsNot Nothing Then
                 Dim hr As Integer = WindowFrame.CloseFrame(Common.NoOverflowCUInt(flags))
@@ -464,10 +451,9 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Retrieves the IVsUIShell service
         ''' </summary>
-        ''' <remarks></remarks>
-        Public ReadOnly Property VsUIShellService() As IVsUIShell
+        Public ReadOnly Property VsUIShellService As IVsUIShell
             Get
-                If (_uiShellService Is Nothing) Then
+                If _uiShellService Is Nothing Then
                     If Common.VBPackageInstance IsNot Nothing Then
                         _uiShellService = TryCast(Common.VBPackageInstance.GetService(GetType(IVsUIShell)), IVsUIShell)
                     Else
@@ -482,10 +468,9 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Retrieves the IVsUIShell2 service
         ''' </summary>
-        ''' <remarks></remarks>
-        Public ReadOnly Property VsUIShell2Service() As IVsUIShell2
+        Public ReadOnly Property VsUIShell2Service As IVsUIShell2
             Get
-                If (_uiShell2Service Is Nothing) Then
+                If _uiShell2Service Is Nothing Then
                     Dim VsUiShell As IVsUIShell = VsUIShellService
                     If VsUiShell IsNot Nothing Then
                         _uiShell2Service = TryCast(VsUiShell, IVsUIShell2)
@@ -499,10 +484,9 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Retrieves the IVsUIShell5 service
         ''' </summary>
-        ''' <remarks></remarks>
-        Public ReadOnly Property VsUIShell5Service() As IVsUIShell5
+        Public ReadOnly Property VsUIShell5Service As IVsUIShell5
             Get
-                If (_uiShell5Service Is Nothing) Then
+                If _uiShell5Service Is Nothing Then
                     Dim VsUiShell As IVsUIShell = VsUIShellService
                     If VsUiShell IsNot Nothing Then
                         _uiShell5Service = TryCast(VsUiShell, IVsUIShell5)
@@ -541,7 +525,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Clears the viewhelper on the frame (our view helper is a CmdTargetHelper class instance)
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub ClearViewHelper()
             Dim WindowFrame As IVsWindowFrame
             WindowFrame = TryCast(GetService(GetType(IVsWindowFrame)), IVsWindowFrame)
@@ -564,12 +547,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Unhook events and prepare for takeoff
         ''' </summary>
         ''' <param name="disposing"></param>
-        ''' <remarks></remarks>
         Protected Overloads Sub Dispose(disposing As Boolean)
             Dim disposedView As Control = _view
 
             Try
-                If (disposing) Then
+                If disposing Then
                     ClearViewHelper()
 
                     ' The base class will try to dispose our view if
@@ -585,17 +567,17 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     _uiShell5Service = Nothing
                     _view = Nothing
                     Dim DesSurface As DesignSurface = Surface
-                    If (DesSurface IsNot Nothing) Then
+                    If DesSurface IsNot Nothing Then
                         RemoveHandler DesSurface.Unloaded, AddressOf OnSurfaceUnloaded
                     End If
-                    If (_broadcastMessageEventsHelper IsNot Nothing) Then
+                    If _broadcastMessageEventsHelper IsNot Nothing Then
                         _broadcastMessageEventsHelper.Dispose()
                         _broadcastMessageEventsHelper = Nothing
                     End If
                 End If
 
             Finally
-                If (disposing AndAlso disposedView IsNot Nothing) Then
+                If disposing AndAlso disposedView IsNot Nothing Then
                     RemoveHandler disposedView.GotFocus, AddressOf OnViewFocus
                     disposedView.Dispose()
                 End If

@@ -36,13 +36,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' True if the dirty indicator should be display
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public Property DirtyIndicator() As Boolean
+        Public Property DirtyIndicator As Boolean
             Get
                 Return _dirtyIndicator
             End Get
-            Set(value As Boolean)
+            Set
                 If value <> _dirtyIndicator Then
                     _dirtyIndicator = value
                     Invalidate()
@@ -54,9 +52,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Returns the text of the tab button, with the dirty indicator if it is on.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public ReadOnly Property TextWithDirtyIndicator() As String
+        Public ReadOnly Property TextWithDirtyIndicator As String
             Get
                 'If the dirty indicator is on, append "*" to the text
                 Dim ButtonText As String = Text
@@ -73,20 +69,17 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' The location of the button.  Should not be changed directly except
         '''   by the tab control itself.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-
-        Public Shadows Property Location() As Point
+        Public Shadows Property Location As Point
             Get
                 Return MyBase.Location
             End Get
-            Set(value As Point) 'Make inaccessible except to this assembly 'CONSIDER: this is non-CLS-compliant, should change if make control public
+            Set 'Make inaccessible except to this assembly 'CONSIDER: this is non-CLS-compliant, should change if make control public
                 MyBase.Location = value
             End Set
         End Property
 
 
-        Public ReadOnly Property ButtonIndex() As Integer
+        Public ReadOnly Property ButtonIndex As Integer
             Get
                 Return _index
             End Get
@@ -97,7 +90,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         End Sub
 
 
-        Private ReadOnly Property ParentTabControl() As ProjectDesignerTabControl
+        Private ReadOnly Property ParentTabControl As ProjectDesignerTabControl
             Get
                 Return DirectCast(Parent, ProjectDesignerTabControl)
             End Get
@@ -110,10 +103,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 parent.Renderer.RenderButton(e.Graphics, Me, Me Is parent.SelectedItem, Me Is parent.HoverItem)
             End If
         End Sub
-
-
-        '''<summary>
-        '''</summary>
         '''<remarks> We need handle OnClick to make Accessibility work... </remarks>
         Protected Overrides Sub OnClick(e As EventArgs)
             MyBase.OnClick(e)
@@ -206,7 +195,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Get
                 Return _focusedFromKeyboardNav
             End Get
-            Set(value As Boolean)
+            Set
                 _focusedFromKeyboardNav = value
             End Set
         End Property
@@ -239,7 +228,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' accessible state
         ''' </summary>
-        Public ReadOnly Property AccessibleState() As AccessibleStates
+        Public ReadOnly Property AccessibleState As AccessibleStates
             Get
                 Dim parent As ProjectDesignerTabControl = ParentTabControl
                 If parent IsNot Nothing AndAlso Me Is parent.SelectedItem Then
@@ -267,7 +256,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             ''' <summary>
             ''' accessible state
             ''' </summary>
-            Public Overrides ReadOnly Property State() As AccessibleStates
+            Public Overrides ReadOnly Property State As AccessibleStates
                 Get
                     Return MyBase.State Or _button.AccessibleState
                 End Get
@@ -276,7 +265,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             ''' <summary>
             ''' Default action name.
             ''' </summary>
-            Public Overrides ReadOnly Property DefaultAction() As String
+            Public Overrides ReadOnly Property DefaultAction As String
                 Get
                     Return My.Resources.Designer.APPDES_TabButtonDefaultAction
                 End Get
@@ -285,7 +274,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             ''' <summary>
             ''' Role - it is a tab page
             ''' </summary>
-            Public Overrides ReadOnly Property Role() As AccessibleRole
+            Public Overrides ReadOnly Property Role As AccessibleRole
                 Get
                     Return AccessibleRole.PageTab
                 End Get

@@ -12,11 +12,6 @@ Imports VSLangProj80
 Imports VBStrings = Microsoft.VisualBasic.Strings
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
-
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <remarks></remarks>
     Partial Friend Class AdvBuildSettingsPropPage
         Inherits PropPageUserControlBase
 
@@ -49,7 +44,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             TelemetryLogger.LogAdvBuildSettingsPropPageEvent(TelemetryLogger.AdvBuildSettingsPropPageEvent.FormOpened)
         End Sub
 
-        Protected Overrides ReadOnly Property ControlData() As PropertyControlData()
+        Protected Overrides ReadOnly Property ControlData As PropertyControlData()
             Get
                 If m_ControlData Is Nothing Then
                     m_ControlData = New PropertyControlData() {
@@ -115,16 +110,16 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Private Function ErrorReportSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
-            If (Not (PropertyControlData.IsSpecialValue(value))) Then
+            If Not PropertyControlData.IsSpecialValue(value) Then
                 Dim stValue As String = CType(value, String)
                 If stValue <> "" Then
                     SelectComboItem(cboReportCompilerErrors, stValue)
                 Else
-                    cboReportCompilerErrors.SelectedIndex = 0        '// Zero is the (none) entry in the list
+                    cboReportCompilerErrors.SelectedIndex = 0        ' Zero is the (none) entry in the list
                 End If
                 Return True
             Else
-                cboReportCompilerErrors.SelectedIndex = -1        '// Indeterminate state
+                cboReportCompilerErrors.SelectedIndex = -1        ' Indeterminate state
             End If
         End Function
 
@@ -134,7 +129,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 value = item.Value
                 Return True
             Else
-                Return False         '// Indeterminate - let the architecture handle it
+                Return False         ' Indeterminate - let the architecture handle it
             End If
         End Function
 
@@ -153,25 +148,25 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Private Function BaseAddressSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
-            If (IsExeProject()) Then
-                '// EXE's don't support base addresses so just disable the control and set the text to the default for 
-                '// EXE's.
+            If IsExeProject() Then
+                ' EXE's don't support base addresses so just disable the control and set the text to the default for 
+                ' EXE's.
 
                 txtDLLBase.Enabled = False
                 txtDLLBase.Text = "0x00400000"
             Else
-                '// The default for DLL projects is 0x11000000
+                ' The default for DLL projects is 0x11000000
                 txtDLLBase.Enabled = True
 
                 Dim iBaseAddress As UInteger
 
                 Dim throwAwayObject As Decimal = Nothing
-                If (TypeOf (value) Is UInteger OrElse
-                    (CpsPropertyDescriptorWrapper.IsAnyCpsComponent(m_Objects) AndAlso Decimal.TryParse(DirectCast(value, String), throwAwayObject))) Then
+                If TypeOf value Is UInteger OrElse
+                    (CpsPropertyDescriptorWrapper.IsAnyCpsComponent(m_Objects) AndAlso Decimal.TryParse(DirectCast(value, String), throwAwayObject)) Then
                     iBaseAddress = CUInt(value)
                 Else
-                    '// Since it's bogus just use the default for DLLs
-                    iBaseAddress = &H11000000   '// 0x11000000
+                    ' Since it's bogus just use the default for DLLs
+                    iBaseAddress = &H11000000   ' 0x11000000
                 End If
 
                 Dim stHexValue As String = "0x" & iBaseAddress.ToString("x", CultureInfo.CurrentUICulture)
@@ -193,14 +188,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 GetCurrentProperty(VsProjPropId.VBPROJPROPID_OutputType, "OutputType", obj)
                 OutputType = CType(obj, VSLangProj.prjOutputType)
             Catch ex As InvalidCastException
-                '// When all else fails assume dll (so they can edit it)
+                ' When all else fails assume dll (so they can edit it)
                 OutputType = VSLangProj.prjOutputType.prjOutputTypeLibrary
             Catch ex As TargetInvocationException
                 ' Property must be missing for this project flavor
                 OutputType = VSLangProj.prjOutputType.prjOutputTypeLibrary
             End Try
 
-            If (OutputType = VSLangProj.prjOutputType.prjOutputTypeLibrary) Then
+            If OutputType = VSLangProj.prjOutputType.prjOutputTypeLibrary Then
                 Return False
             Else
                 Return True
@@ -236,10 +231,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 cboDebugInfo.SelectedIndex = -1
             Else
                 Dim stValue As String = TryCast(value, String)
-                If (Not stValue Is Nothing) AndAlso (stValue.Trim().Length > 0) Then
+                If (stValue IsNot Nothing) AndAlso (stValue.Trim().Length > 0) Then
                     SelectComboItem(cboDebugInfo, stValue)
                 Else
-                    cboDebugInfo.SelectedIndex = 0        '// Zero is the (none) entry in the list
+                    cboDebugInfo.SelectedIndex = 0        ' Zero is the (none) entry in the list
                 End If
             End If
             Return True
@@ -259,7 +254,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Sub DebugInfo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboDebugInfo.SelectedIndexChanged
             If cboDebugInfo.SelectedIndex = 0 Then
-                '// user selected none
+                ' user selected none
                 DebugSymbols = False
             Else
                 DebugSymbols = True
@@ -279,7 +274,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 If stValue <> "" Then
                     cboFileAlignment.Text = stValue
                 Else
-                    cboFileAlignment.SelectedIndex = 0        '// Zero is the (none) entry in the list
+                    cboFileAlignment.SelectedIndex = 0        ' Zero is the (none) entry in the list
                 End If
             End If
             Return True
@@ -321,7 +316,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Process.Start(url)
             Catch ex As Exception
                 ' This could throw an exception if the user has no default URL handler installed.
-                ' There's no point in letting such an exception propogate.
+                ' There's no point in letting such an exception propagate.
             End Try
         End Sub
     End Class

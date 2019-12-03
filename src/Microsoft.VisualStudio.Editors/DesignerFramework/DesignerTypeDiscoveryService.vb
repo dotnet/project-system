@@ -10,7 +10,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
     ''' The DesignerTypeDiscoveryService differs from the "normal" VS Type Discovery service
     ''' in that it filters out types defined in the current project
     ''' </summary>
-    ''' <remarks></remarks>
     Friend Class DesignerTypeDiscoveryService
         Implements ComponentModel.Design.ITypeDiscoveryService
 
@@ -22,7 +21,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="sp"></param>
         ''' <param name="hierarchy"></param>
-        ''' <remarks></remarks>
         Public Sub New(sp As IServiceProvider, hierarchy As IVsHierarchy)
             Requires.NotNull(sp, NameOf(sp))
             Requires.NotNull(hierarchy, NameOf(hierarchy))
@@ -43,8 +41,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <summary>
         ''' Get all known types, excluding types in the current project
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Overridable Function GetReferencedTypes() As ICollection(Of Type)
             Return GetReferencedTypes(GetType(Object), False)
         End Function
@@ -54,8 +50,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="baseType">Only return types inheriting from this class</param>
         ''' <param name="shouldExcludeGlobalTypes">Exclude types in the GAC?</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Overridable Function GetReferencedTypes(baseType As Type, shouldExcludeGlobalTypes As Boolean) As List(Of Type)
             Dim dynamicTypeService As Shell.Design.DynamicTypeService =
                 DirectCast(_serviceProvider.GetService(GetType(Shell.Design.DynamicTypeService)), Shell.Design.DynamicTypeService)
@@ -97,8 +91,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="provider"></param>
         ''' <param name="hierarchy"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Protected Overridable Function GetProjectOutputs(provider As IServiceProvider, hierarchy As IVsHierarchy) As String()
             Try
                 Dim buildManager As IVsSolutionBuildManager = TryCast(provider.GetService(GetType(IVsSolutionBuildManager)), IVsSolutionBuildManager)
@@ -140,8 +132,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="typeResolutionService"></param>
         ''' <param name="projectOutput"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Protected Overridable Function AssemblyFromProjectOutput(typeResolutionService As ComponentModel.Design.ITypeResolutionService, projectOutput As String) As System.Reflection.Assembly
             Requires.NotNull(typeResolutionService, NameOf(typeResolutionService))
 

@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.IO;
 using Microsoft.VisualStudio.GraphModel;
 using Microsoft.VisualStudio.GraphModel.Schemas;
@@ -49,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
 
                 string? projectPath = inputGraphNode.Id.GetValue(CodeGraphNodeIdName.Assembly);
 
-                if (string.IsNullOrEmpty(projectPath))
+                if (Strings.IsNullOrEmpty(projectPath))
                 {
                     continue;
                 }
@@ -69,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                 }
 
                 using var scope = new GraphTransactionScope();
-                ProcessInputNode(graphContext, inputGraphNode, dependency, snapshot, viewProvider, projectPath!, ref trackChanges);
+                ProcessInputNode(graphContext, inputGraphNode, dependency, snapshot, viewProvider, projectPath, ref trackChanges);
 
                 scope.Complete();
             }
@@ -81,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
         {
             string? projectPath = inputGraphNode.Id.GetValue(CodeGraphNodeIdName.Assembly);
 
-            if (string.IsNullOrWhiteSpace(projectPath))
+            if (Strings.IsNullOrWhiteSpace(projectPath))
             {
                 snapshot = null;
                 return null;
@@ -111,7 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                     return null;
                 }
 
-                if (id.StartsWith(projectFolder, StringComparison.OrdinalIgnoreCase))
+                if (id.StartsWith(projectFolder, StringComparisons.Paths))
                 {
                     int startIndex = projectFolder.Length;
 
@@ -131,7 +130,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                 topLevel = false;
             }
 
-            snapshot = AggregateSnapshotProvider.GetSnapshot(projectPath!);
+            snapshot = AggregateSnapshotProvider.GetSnapshot(projectPath);
 
             return snapshot?.FindDependency(id, topLevel);
         }

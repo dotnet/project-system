@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.RuleHandlers;
 using Xunit;
 
@@ -34,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.False(model.Resolved);
             Assert.False(model.Implicit);
             Assert.Equal(properties, model.Properties);
-            Assert.Equal(Dependency.DiagnosticsErrorNodePriority, model.Priority);
+            Assert.Equal(GraphNodePriority.DiagnosticsError, model.Priority);
             Assert.Null(model.SchemaItemType);
             Assert.Equal(ManagedImageMonikers.ErrorSmall, model.Icon);
             Assert.Equal(ManagedImageMonikers.ErrorSmall, model.ExpandedIcon);
@@ -72,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.False(model.Resolved);
             Assert.False(model.Implicit);
             Assert.Equal(properties, model.Properties);
-            Assert.Equal(Dependency.DiagnosticsWarningNodePriority, model.Priority);
+            Assert.Equal(GraphNodePriority.DiagnosticsWarning, model.Priority);
             Assert.Null(model.SchemaItemType);
             Assert.Equal(ManagedImageMonikers.WarningSmall, model.Icon);
             Assert.Equal(ManagedImageMonikers.WarningSmall, model.ExpandedIcon);

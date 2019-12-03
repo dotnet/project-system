@@ -20,9 +20,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
         public static Guid GetGuidProperty(this IVsHierarchy hierarchy, VsHierarchyPropID property)
         {
             Requires.NotNull(hierarchy, nameof(hierarchy));
-            HResult hr = hierarchy.GetGuidProperty(HierarchyId.Root, (int)property, out Guid result);
-            if (hr.Failed)
-                throw hr.Exception;
+            Verify.HResult(hierarchy.GetGuidProperty(HierarchyId.Root, (int)property, out Guid result));
 
             return result;
         }
@@ -40,9 +38,9 @@ namespace Microsoft.VisualStudio.Shell.Interop
         /// </summary>
         public static T GetProperty<T>(this IVsHierarchy hierarchy, HierarchyId item, VsHierarchyPropID property, [MaybeNull]T defaultValue = default)
         {
-            HResult hr = GetProperty(hierarchy, item, property, defaultValue, out T result);
-            if (hr.Failed)
-                throw hr.Exception;
+#pragma warning disable CS8717 // Needs https://github.com/dotnet/roslyn/issues/38638
+            Verify.HResult(GetProperty(hierarchy, item, property, defaultValue, out T result));
+#pragma warning restore CS8717
 
             return result;
         }
@@ -52,7 +50,9 @@ namespace Microsoft.VisualStudio.Shell.Interop
         /// </summary>
         public static int GetProperty<T>(this IVsHierarchy hierarchy, VsHierarchyPropID property, T defaultValue, [MaybeNull]out T result)
         {
+#pragma warning disable CS8717 // Needs https://github.com/dotnet/roslyn/issues/38638
             return GetProperty(hierarchy, HierarchyId.Root, property, defaultValue, out result);
+#pragma warning restore CS8717 
         }
 
         /// <summary>

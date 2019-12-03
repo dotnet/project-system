@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.Windows.Forms
 
@@ -28,7 +28,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '''  to interpret it as meaning that the project file was checked out and updated, causing a project
         '''  reload.
         ''' </summary>
-        ''' <remarks></remarks>
         Protected Friend Sub EnterProjectCheckoutSection()
             Debug.Assert(_checkoutSectionCount >= 0, "Bad m_CheckoutCriticalSectionCount count")
             _checkoutSectionCount += 1
@@ -60,7 +59,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '''    LeaveProjectCheckoutSection()
         '''  End Try
         ''' </summary>
-        ''' <remarks></remarks>
         Protected Friend Sub LeaveProjectCheckoutSection()
             _checkoutSectionCount -= 1
             Debug.Assert(_checkoutSectionCount >= 0, "Mismatched EnterProjectCheckoutSection/LeaveProjectCheckoutSection calls")
@@ -84,10 +82,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' If true, the project has been reloaded between a call to EnterProjectCheckoutSection and 
         '''   LeaveProjectCheckoutSection.  See EnterProjectCheckoutSection() for more information.
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Protected Friend ReadOnly Property ProjectReloadedDuringCheckout() As Boolean
+        Protected Friend ReadOnly Property ProjectReloadedDuringCheckout As Boolean
             Get
                 Return _projectReloadedDuringCheckout
             End Get
@@ -98,8 +93,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' If true, a call to EnterProjectCheckoutSection has been made, and the matching LeaveProjectCheckoutSection
         '''   call has not yet been made.
         ''' </summary>
-        ''' <remarks></remarks>
-        Protected ReadOnly Property IsInProjectCheckoutSection() As Boolean
+        Protected ReadOnly Property IsInProjectCheckoutSection As Boolean
             Get
                 Return _checkoutSectionCount > 0
             End Get
@@ -110,7 +104,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' Dispose
         ''' </summary>
         ''' <param name="disposing"></param>
-        ''' <remarks></remarks>
         Protected Overrides Sub Dispose(disposing As Boolean)
             If disposing Then
                 If IsInProjectCheckoutSection Then
@@ -137,7 +130,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' Called in a delayed fashion (via PostMessage) after a LeaveProjectCheckoutSection call if the
         '''   project was forcibly reloaded during the project checkout section.
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub DelayedMyBaseDispose()
             'Set this flag back to false so that subclasses which override Dispose() know when it's
             '  safe to Dispose of their controls.

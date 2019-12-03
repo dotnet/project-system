@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Explicit On
 Option Strict On
@@ -18,7 +18,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
         'All common file extensions handled by this resource type editor.
         '  This is just a suggested list of files likely to be intended as text files.
-        '  If the user doesn't like these showing up as text files, he can always change
+        '  If the user doesn't like these showing up as text files, they can always change
         '  it to a binary file from the properties window.
         Public Const EXT_TXT As String = ".txt"
         Private ReadOnly _safeExtensions() As String = {
@@ -161,7 +161,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks>
         '''   If true, the GetImageForThumbnail property must return a same image object. We won't keep duplicated items in the cache to improve the performance of the designer.
         ''' </remarks>
-        Public Overrides ReadOnly Property IsImageForThumbnailShared() As Boolean
+        Public Overrides ReadOnly Property IsImageForThumbnailShared As Boolean
             Get
                 Return True
             End Get
@@ -225,7 +225,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Resource">The IResource instance.  May not be Nothing.  The value of the resource to save.  Must be of the type handled by this ResourceTypeEditor.</param>
         ''' <returns>The friendly description of the resource's type.</returns>
-        ''' <remarks></remarks>
         Public Overrides Function GetResourceFriendlyTypeDescription(Resource As IResource) As String
             ValidateResourceValue(Resource, TextFileValueType)
             Debug.Assert(Resource.IsLink)
@@ -238,7 +237,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Resource">The IResource instance.  May not be Nothing.  The value of the resource to save.  Must be of the type handled by this ResourceTypeEditor.</param>
         ''' <returns>The friendly size string.</returns>
-        ''' <remarks></remarks>
         Public Overrides Function GetResourceFriendlySize(Resource As IResource) As String
             ValidateResourceValue(Resource, TextFileValueType)
             Debug.Assert(Resource.IsLink)
@@ -337,8 +335,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   handled by this resource type editor, the suggested names could take the form 
         '''   of "id01", "id02", etc.
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Overrides Function GetSuggestedNamePrefix() As String
             Return "TextFile"
         End Function

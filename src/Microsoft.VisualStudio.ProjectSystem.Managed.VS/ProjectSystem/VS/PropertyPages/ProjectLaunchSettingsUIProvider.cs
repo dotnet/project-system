@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.ComponentModel.Composition;
 using System.Windows.Controls;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
@@ -38,8 +37,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// </summary>
         public bool ShouldEnableProperty(string propertyName)
         {
-            return !string.Equals(propertyName, UIProfilePropertyName.Executable, StringComparison.OrdinalIgnoreCase) &&
-                   !string.Equals(propertyName, UIProfilePropertyName.LaunchUrl, StringComparison.OrdinalIgnoreCase);
+            return !string.Equals(propertyName, UIProfilePropertyName.Executable, StringComparisons.UIPropertyNames) &&
+                   !string.Equals(propertyName, UIProfilePropertyName.LaunchUrl, StringComparisons.UIPropertyNames);
         }
 
         /// <summary>

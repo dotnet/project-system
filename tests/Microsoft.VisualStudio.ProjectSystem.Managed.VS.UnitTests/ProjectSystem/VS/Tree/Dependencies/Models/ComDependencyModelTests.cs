@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.RuleHandlers;
 using Xunit;
 
@@ -30,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.True(model.Resolved);
             Assert.False(model.Implicit);
             Assert.Equal(properties, model.Properties);
-            Assert.Equal(Dependency.ComNodePriority, model.Priority);
+            Assert.Equal(GraphNodePriority.ComNodePriority, model.Priority);
             Assert.Equal(ComReference.PrimaryDataSourceItemType, model.SchemaItemType);
             Assert.Equal(ManagedImageMonikers.Component, model.Icon);
             Assert.Equal(ManagedImageMonikers.Component, model.ExpandedIcon);
@@ -62,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.False(model.Resolved);
             Assert.False(model.Implicit);
             Assert.Equal(properties, model.Properties);
-            Assert.Equal(Dependency.ComNodePriority, model.Priority);
+            Assert.Equal(GraphNodePriority.ComNodePriority, model.Priority);
             Assert.Equal(ComReference.PrimaryDataSourceItemType, model.SchemaItemType);
             Assert.Equal(ManagedImageMonikers.Component, model.Icon);
             Assert.Equal(ManagedImageMonikers.Component, model.ExpandedIcon);
@@ -94,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.True(model.Resolved);
             Assert.True(model.Implicit);
             Assert.Equal(properties, model.Properties);
-            Assert.Equal(Dependency.ComNodePriority, model.Priority);
+            Assert.Equal(GraphNodePriority.ComNodePriority, model.Priority);
             Assert.Equal(ComReference.PrimaryDataSourceItemType, model.SchemaItemType);
             Assert.Equal(ManagedImageMonikers.ComponentPrivate, model.Icon);
             Assert.Equal(ManagedImageMonikers.ComponentPrivate, model.ExpandedIcon);

@@ -11,7 +11,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
     ''' <summary>
     ''' Designer loader for the PropPageDesigner
     ''' </summary>
-    ''' <remarks></remarks>
     Public NotInheritable Class PropPageDesignerLoader
         Inherits BasicDesignerLoader
         Implements IDisposable
@@ -25,7 +24,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         '''   remove any custom services you add here by overriding
         '''   Dispose.
         ''' </summary>
-        ''' <remarks></remarks>
         Protected Overrides Sub Initialize()
             MyBase.Initialize()
 
@@ -48,7 +46,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="Hierarchy"></param>
         ''' <param name="ItemId"></param>
         ''' <param name="punkDocData"></param>
-        ''' <remarks></remarks>
         Public Sub InitializeEx(ServiceProvider As Shell.ServiceProvider, Hierarchy As IVsHierarchy, ItemId As UInteger, punkDocData As Object)
 
             If punkDocData Is Nothing Then
@@ -69,7 +66,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' it needs an updated version of the file contents).
         ''' </summary>
         ''' <param name="serializationManager"></param>
-        ''' <remarks></remarks>
         Protected Overrides Sub PerformFlush(serializationManager As IDesignerSerializationManager)
             Debug.Assert(Modified, "PerformFlush shouldn't get called if the designer's not dirty")
 
@@ -112,12 +108,12 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Dispose of managed and unmanaged resources
         ''' </summary>
         ''' <param name="disposing">True if calling from Dispose()</param>
-        ''' <remarks></remarks>
         Protected Overloads Sub Dispose(disposing As Boolean)
             If disposing Then
                 ' Dispose of managed resources.
-                If TypeOf _punkDocData Is PropPageDesignerDocData Then
-                    DirectCast(_punkDocData, PropPageDesignerDocData).Dispose()
+                Dim docData = TryCast(_punkDocData, PropPageDesignerDocData)
+                If docData IsNot Nothing Then
+                    docData.Dispose()
                 End If
                 'Remove our ComponentSerializationService
                 LoaderHost.RemoveService(GetType(ComponentSerializationService))

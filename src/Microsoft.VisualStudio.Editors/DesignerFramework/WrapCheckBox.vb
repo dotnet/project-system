@@ -53,7 +53,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     newConstraints.Height = 0
                 End If
 
-                If (Not _preferredSizeHash.ContainsKey(newConstraints)) Then
+                If Not _preferredSizeHash.ContainsKey(newConstraints) Then
                     prefSize = bordersAndPadding + TextRenderer.MeasureText(Text, Font,
                         newConstraints, TextFormatFlags.WordBreak)
                     _preferredSizeHash(newConstraints) = prefSize

@@ -16,7 +16,7 @@ using Task = System.Threading.Tasks.Task;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
     /// <summary>
-    /// The exported CPS debugger for all types of K projects (web, consoles, classlibraries). Defers to
+    /// The exported CPS debugger for all types of K projects (web, consoles, class libraries). Defers to
     /// other types to get the DebugTarget information to launch.
     /// </summary>
     [ExportDebugger(ProjectDebugger.SchemaName)]
@@ -93,8 +93,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             const string NetStandardPrefix = ".NetStandard";
             const string NetCorePrefix = ".NetCore";
-            return targetFramework.StartsWith(NetCorePrefix, StringComparison.OrdinalIgnoreCase) ||
-                   targetFramework.StartsWith(NetStandardPrefix, StringComparison.OrdinalIgnoreCase);
+            return targetFramework.StartsWith(NetCorePrefix, StringComparisons.FrameworkIdentifiers) ||
+                   targetFramework.StartsWith(NetStandardPrefix, StringComparisons.FrameworkIdentifiers);
         }
 
         /// <summary>
@@ -199,8 +199,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 await ThreadingService.SwitchToUIThread();
 
                 IVsDebugger4? shellDebugger = await _vsDebuggerService.GetValueAsync();
+                Assumes.Present(shellDebugger);
                 var launchResults = new VsDebugTargetProcessInfo[launchSettingsNative.Length];
-                shellDebugger!.LaunchDebugTargets4((uint)launchSettingsNative.Length, launchSettingsNative, launchResults);
+                shellDebugger.LaunchDebugTargets4((uint)launchSettingsNative.Length, launchSettingsNative, launchResults);
                 return launchResults;
             }
             finally

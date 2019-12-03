@@ -12,8 +12,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
     ''' A DesignTimeSettingInstance wraps a single setting. Each setting will generate 
     ''' a property with the appropriate attributes in the generated file.
     ''' </summary>
-    ''' <remarks></remarks>
-    <Serializable()>
+    <Serializable>
     Friend Class DesignTimeSettingInstance
         Inherits Component
         Implements ICustomTypeDescriptor, System.Runtime.Serialization.ISerializable
@@ -21,7 +20,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Application or user scoped setting?
         ''' </summary>
-        ''' <remarks></remarks>
         <TypeConverter(GetType(ScopeConverter))>
         Friend Enum SettingScope
             ' Don't use zero in the enum since that hides CType(NULL, SettingScope) 
@@ -33,43 +31,36 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' The name of this setting instance
         ''' </summary>
-        ''' <remarks></remarks>
         Private _name As String
 
         ''' <summary>
         ''' The type name (as persisted in the .settings file) of this setting
         ''' </summary>
-        ''' <remarks></remarks>
         Private _settingTypeName As String = GetType(String).FullName
 
         ''' <summary>
         ''' The setting scope (application or user) for this setting
         ''' </summary>
-        ''' <remarks></remarks>
         Private _settingScope As SettingScope = SettingScope.User
 
         ''' <summary>
         ''' Is this setting a roaming setting?
         ''' </summary>
-        ''' <remarks></remarks>
         Private _roaming As Boolean = False
 
         ''' <summary>
         ''' The serialized representation of this setting
         ''' </summary>
-        ''' <remarks></remarks>
         Private _serializedValue As String = ""
 
         ''' <summary>
         ''' The setting provider if any
         ''' </summary>
-        ''' <remarks></remarks>
         Private _provider As String
 
         ''' <summary>
         ''' The description for this setting
         ''' </summary>
-        ''' <remarks></remarks>
         Private _description As String
 
         ''' <summary>
@@ -78,7 +69,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' contains sensitive information, the user can set this to false
         ''' through the property grid...
         ''' </summary>
-        ''' <remarks></remarks>
         Private _generateDefaultValueInCode As Boolean = True
 
 #Region "Cached property descriptors with this instance as the owner"
@@ -172,7 +162,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' behavior and overrides to make it more explicit what we expect from each
         ''' propertydescriptor.
         ''' </summary>
-        ''' <remarks></remarks>
         Private MustInherit Class DesignTimeSettingInstanceCustomPropertyDescriptorBase
             Inherits PropertyDescriptor
 
@@ -183,13 +172,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 _owner = owner
             End Sub
 
-            Public ReadOnly Property Owner() As DesignTimeSettingInstance
+            Public ReadOnly Property Owner As DesignTimeSettingInstance
                 Get
                     Return _owner
                 End Get
             End Property
 
-            Public Overrides ReadOnly Property ComponentType() As Type
+            Public Overrides ReadOnly Property ComponentType As Type
                 Get
                     Return GetType(DesignTimeSettingInstance)
                 End Get
@@ -222,17 +211,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' Override to set the description (shown in the properties window) for this
             ''' property
             ''' </summary>
-            ''' <value></value>
-            ''' <returns></returns>
-            ''' <remarks></remarks>
-            Protected MustOverride ReadOnly Property DescriptionAttributeText() As String
+            Protected MustOverride ReadOnly Property DescriptionAttributeText As String
 
             ''' <summary>
             ''' Override to get the value for the current component in a type-safe way
             ''' </summary>
             ''' <param name="component"></param>
-            ''' <returns></returns>
-            ''' <remarks></remarks>
             Protected MustOverride Overloads Function GetValue(component As DesignTimeSettingInstance) As Object
         End Class
 
@@ -240,7 +224,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Add Undo support (component change notifications and designer transactions w. descriptions)
         ''' whenever we change the value
         ''' </summary>
-        ''' <remarks></remarks>
         Private MustInherit Class DesignTimeSettingInstanceCustomPropertyDescriptor
             Inherits DesignTimeSettingInstanceCustomPropertyDescriptorBase
 
@@ -256,7 +239,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' </summary>
             ''' <param name="component"></param>
             ''' <param name="value"></param>
-            ''' <remarks></remarks>
             Public NotOverridable Overrides Sub SetValue(component As Object, value As Object)
                 Dim instance As DesignTimeSettingInstance = DirectCast(component, DesignTimeSettingInstance)
                 Dim ccsvc As Design.IComponentChangeService = Nothing
@@ -305,17 +287,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' <summary>
             ''' Override to provide the description showing up in the undo menu
             ''' </summary>
-            ''' <value></value>
-            ''' <returns></returns>
-            ''' <remarks></remarks>
-            Protected MustOverride ReadOnly Property UndoDescription() As String
+            Protected MustOverride ReadOnly Property UndoDescription As String
 
             ''' <summary>
             ''' Override for the actual set of the value
             ''' </summary>
             ''' <param name="component"></param>
             ''' <param name="value"></param>
-            ''' <remarks></remarks>
             Protected MustOverride Overloads Sub SetValue(component As DesignTimeSettingInstance, value As Object)
 
 
@@ -335,13 +313,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Return component.GenerateDefaultValueInCode
             End Function
 
-            Public Overrides ReadOnly Property IsReadOnly() As Boolean
+            Public Overrides ReadOnly Property IsReadOnly As Boolean
                 Get
                     Return False
                 End Get
             End Property
 
-            Public Overrides ReadOnly Property PropertyType() As Type
+            Public Overrides ReadOnly Property PropertyType As Type
                 Get
                     Return GetType(Boolean)
                 End Get
@@ -351,13 +329,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 component.SetGenerateDefaultValueInCode(CBool(value))
             End Sub
 
-            Protected Overrides ReadOnly Property UndoDescription() As String
+            Protected Overrides ReadOnly Property UndoDescription As String
                 Get
                     Return My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_UndoTran_GenerateDefaultValueInCode
                 End Get
             End Property
 
-            Protected Overrides ReadOnly Property DescriptionAttributeText() As String
+            Protected Overrides ReadOnly Property DescriptionAttributeText As String
                 Get
                     Return My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_DESCR_GenerateDefaultValueInCode
                 End Get
@@ -379,13 +357,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Return component.Name
             End Function
 
-            Public Overrides ReadOnly Property IsReadOnly() As Boolean
+            Public Overrides ReadOnly Property IsReadOnly As Boolean
                 Get
                     Return IsNameReadOnly(Owner)
                 End Get
             End Property
 
-            Public Overrides ReadOnly Property PropertyType() As Type
+            Public Overrides ReadOnly Property PropertyType As Type
                 Get
                     Return GetType(String)
                 End Get
@@ -395,13 +373,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 component.SetName(DirectCast(value, String))
             End Sub
 
-            Protected Overrides ReadOnly Property UndoDescription() As String
+            Protected Overrides ReadOnly Property UndoDescription As String
                 Get
                     Return My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_UndoTran_NameChanged
                 End Get
             End Property
 
-            Protected Overrides ReadOnly Property DescriptionAttributeText() As String
+            Protected Overrides ReadOnly Property DescriptionAttributeText As String
                 Get
                     Return My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_DESCR_Name
                 End Get
@@ -419,13 +397,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Return component.Roaming
             End Function
 
-            Public Overrides ReadOnly Property IsReadOnly() As Boolean
+            Public Overrides ReadOnly Property IsReadOnly As Boolean
                 Get
                     Return IsRoamingReadOnly(Owner)
                 End Get
             End Property
 
-            Public Overrides ReadOnly Property PropertyType() As Type
+            Public Overrides ReadOnly Property PropertyType As Type
                 Get
                     Return GetType(Boolean)
                 End Get
@@ -435,13 +413,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 component.SetRoaming(CBool(value))
             End Sub
 
-            Protected Overrides ReadOnly Property UndoDescription() As String
+            Protected Overrides ReadOnly Property UndoDescription As String
                 Get
                     Return My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_UndoTran_RoamingChanged
                 End Get
             End Property
 
-            Protected Overrides ReadOnly Property DescriptionAttributeText() As String
+            Protected Overrides ReadOnly Property DescriptionAttributeText As String
                 Get
                     Return My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_DESCR_Roaming
                 End Get
@@ -459,13 +437,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Return component.Description
             End Function
 
-            Public Overrides ReadOnly Property IsReadOnly() As Boolean
+            Public Overrides ReadOnly Property IsReadOnly As Boolean
                 Get
                     Return False
                 End Get
             End Property
 
-            Public Overrides ReadOnly Property PropertyType() As Type
+            Public Overrides ReadOnly Property PropertyType As Type
                 Get
                     Return GetType(String)
                 End Get
@@ -475,13 +453,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 component.SetDescription(DirectCast(value, String))
             End Sub
 
-            Protected Overrides ReadOnly Property UndoDescription() As String
+            Protected Overrides ReadOnly Property UndoDescription As String
                 Get
                     Return My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_UndoTran_DescriptionChanged
                 End Get
             End Property
 
-            Protected Overrides ReadOnly Property DescriptionAttributeText() As String
+            Protected Overrides ReadOnly Property DescriptionAttributeText As String
                 Get
                     Return My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_DESCR_Description
                 End Get
@@ -499,13 +477,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Return component.Provider
             End Function
 
-            Public Overrides ReadOnly Property IsReadOnly() As Boolean
+            Public Overrides ReadOnly Property IsReadOnly As Boolean
                 Get
                     Return False
                 End Get
             End Property
 
-            Public Overrides ReadOnly Property PropertyType() As Type
+            Public Overrides ReadOnly Property PropertyType As Type
                 Get
                     Return GetType(String)
                 End Get
@@ -515,13 +493,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 component.SetProvider(DirectCast(value, String))
             End Sub
 
-            Protected Overrides ReadOnly Property UndoDescription() As String
+            Protected Overrides ReadOnly Property UndoDescription As String
                 Get
                     Return My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_UndoTran_ProviderChanged
                 End Get
             End Property
 
-            Protected Overrides ReadOnly Property DescriptionAttributeText() As String
+            Protected Overrides ReadOnly Property DescriptionAttributeText As String
                 Get
                     Return My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_DESCR_Provider
                 End Get
@@ -539,14 +517,14 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Return component.Scope
             End Function
 
-            Public Overrides ReadOnly Property IsReadOnly() As Boolean
+            Public Overrides ReadOnly Property IsReadOnly As Boolean
                 Get
                     ' Connection string typed settings are application scoped only...
                     Return IsScopeReadOnly(Owner, ProjectSupportsUserScopedSettings(Owner))
                 End Get
             End Property
 
-            Public Overrides ReadOnly Property PropertyType() As Type
+            Public Overrides ReadOnly Property PropertyType As Type
                 Get
                     Return GetType(SettingScope)
                 End Get
@@ -560,19 +538,19 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 component.SetScope(CType(value, SettingScope))
             End Sub
 
-            Protected Overrides ReadOnly Property UndoDescription() As String
+            Protected Overrides ReadOnly Property UndoDescription As String
                 Get
                     Return My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_UndoTran_ScopeChanged
                 End Get
             End Property
 
-            Protected Overrides ReadOnly Property DescriptionAttributeText() As String
+            Protected Overrides ReadOnly Property DescriptionAttributeText As String
                 Get
                     Return My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_DESCR_Scope
                 End Get
             End Property
 
-            Public Overrides ReadOnly Property Converter() As TypeConverter
+            Public Overrides ReadOnly Property Converter As TypeConverter
                 Get
                     Return New ScopeConverter
                 End Get
@@ -591,14 +569,14 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Return component.SettingTypeName
             End Function
 
-            Public Overrides ReadOnly Property IsReadOnly() As Boolean
+            Public Overrides ReadOnly Property IsReadOnly As Boolean
                 Get
                     ' The type name is always read-only in the property grid...
                     Return True
                 End Get
             End Property
 
-            Public Overrides ReadOnly Property PropertyType() As Type
+            Public Overrides ReadOnly Property PropertyType As Type
                 Get
                     Return GetType(String)
                 End Get
@@ -608,13 +586,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 component.SetSettingTypeName(DirectCast(value, String))
             End Sub
 
-            Protected Overrides ReadOnly Property UndoDescription() As String
+            Protected Overrides ReadOnly Property UndoDescription As String
                 Get
                     Return My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_UndoTran_TypeChanged
                 End Get
             End Property
 
-            Protected Overrides ReadOnly Property DescriptionAttributeText() As String
+            Protected Overrides ReadOnly Property DescriptionAttributeText As String
                 Get
                     Return My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_DESCR_SerializedSettingType
                 End Get
@@ -632,13 +610,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Return component.SerializedValue
             End Function
 
-            Public Overrides ReadOnly Property IsReadOnly() As Boolean
+            Public Overrides ReadOnly Property IsReadOnly As Boolean
                 Get
                     Return False
                 End Get
             End Property
 
-            Public Overrides ReadOnly Property PropertyType() As Type
+            Public Overrides ReadOnly Property PropertyType As Type
                 Get
                     Return GetType(String)
                 End Get
@@ -648,7 +626,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 component.SetSerializedValue(DirectCast(value, String))
             End Sub
 
-            Protected Overrides ReadOnly Property UndoDescription() As String
+            Protected Overrides ReadOnly Property UndoDescription As String
                 Get
                     Return My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_UndoTran_SerializedValueChanged
                 End Get
@@ -659,7 +637,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 attributeList.Add(New BrowsableAttribute(False))
             End Sub
 
-            Protected Overrides ReadOnly Property DescriptionAttributeText() As String
+            Protected Overrides ReadOnly Property DescriptionAttributeText As String
                 Get
                     Return My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_DESCR_Value
                 End Get
@@ -673,7 +651,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Translate to/from localized string representation of User and Application
         ''' </summary>
-        ''' <remarks></remarks>
         Friend Class ScopeConverter
             Inherits EnumConverter
 
@@ -698,11 +675,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Function
 
             Public Overrides Function ConvertFrom(context As ITypeDescriptorContext, culture As Globalization.CultureInfo, value As Object) As Object
-                If TypeOf value Is String Then
-                    If String.Equals(DirectCast(value, String), My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ComboBoxItem_ApplicationScope, StringComparison.Ordinal) Then
+                Dim stringValue = TryCast(value, String)
+                If stringValue IsNot Nothing Then
+                    If String.Equals(stringValue, My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ComboBoxItem_ApplicationScope, StringComparison.Ordinal) Then
                         Return SettingScope.Application
                     End If
-                    If String.Equals(DirectCast(value, String), My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ComboBoxItem_UserScope, StringComparison.Ordinal) Then
+                    If String.Equals(stringValue, My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ComboBoxItem_UserScope, StringComparison.Ordinal) Then
                         Return SettingScope.User
                     End If
                 End If
@@ -774,16 +752,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' The name of a setting
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public ReadOnly Property NameProperty() As PropertyDescriptor
+        Public ReadOnly Property NameProperty As PropertyDescriptor
             Get
                 Return _namePropertyDescriptor
             End Get
         End Property
 
-        Public ReadOnly Property Name() As String
+        Public ReadOnly Property Name As String
             Get
                 Return _name
             End Get
@@ -819,16 +794,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' The scope for a setting
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public ReadOnly Property ScopeProperty() As PropertyDescriptor
+        Public ReadOnly Property ScopeProperty As PropertyDescriptor
             Get
                 Return _scopePropertyDescriptor
             End Get
         End Property
 
-        Public ReadOnly Property Scope() As SettingScope
+        Public ReadOnly Property Scope As SettingScope
             Get
                 Return _settingScope
             End Get
@@ -844,16 +816,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' The name of the type for a setting
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public ReadOnly Property TypeNameProperty() As PropertyDescriptor
+        Public ReadOnly Property TypeNameProperty As PropertyDescriptor
             Get
                 Return _settingTypeNamePropertyDescriptor
             End Get
         End Property
 
-        Public ReadOnly Property SettingTypeName() As String
+        Public ReadOnly Property SettingTypeName As String
             Get
                 Return _settingTypeName
             End Get
@@ -869,16 +838,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' The serialized (string) representation of the value of this setting
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public ReadOnly Property SerializedValueProperty() As PropertyDescriptor
+        Public ReadOnly Property SerializedValueProperty As PropertyDescriptor
             Get
                 Return _serializedValuePropertyDescriptor
             End Get
         End Property
 
-        Public ReadOnly Property SerializedValue() As String
+        Public ReadOnly Property SerializedValue As String
             Get
                 Return _serializedValue
             End Get
@@ -895,10 +861,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Flag indicating if this is a roaming setting 
         ''' (value is stored in the roaming user.config by the runtime)
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public ReadOnly Property Roaming() As Boolean
+        Public ReadOnly Property Roaming As Boolean
             Get
                 Return _roaming
             End Get
@@ -914,10 +877,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' The description for this setting
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public ReadOnly Property Description() As String
+        Public ReadOnly Property Description As String
             Get
                 Return _description
             End Get
@@ -933,10 +893,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' The settings provider for this setting
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public ReadOnly Property Provider() As String
+        Public ReadOnly Property Provider As String
             Get
                 Return _provider
             End Get
@@ -956,10 +913,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Flag indicating if we should generate a defaultsettingsvalue attribute
         ''' on this setting
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public ReadOnly Property GenerateDefaultValueInCode() As Boolean
+        Public ReadOnly Property GenerateDefaultValueInCode As Boolean
             Get
                 Return _generateDefaultValueInCode
             End Get
@@ -1038,8 +992,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Does the current project system support user scoped settings?
         ''' </summary>
         ''' <param name="instance"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Shared Function ProjectSupportsUserScopedSettings(instance As DesignTimeSettingInstance) As Boolean
             If instance Is Nothing OrElse instance.Site Is Nothing Then
                 Return True
@@ -1052,8 +1004,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Does the current project system support user scoped settings?
         ''' </summary>
         ''' <param name="hierarchy"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Shared Function ProjectSupportsUserScopedSettings(hierarchy As IVsHierarchy) As Boolean
             If hierarchy Is Nothing Then
                 Return True

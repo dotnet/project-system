@@ -33,14 +33,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             public string GetFileFullPath(string? projectFile)
             {
                 string? baseFilePath = ProjectFile;
-                if (string.IsNullOrEmpty(baseFilePath))
+                if (Strings.IsNullOrEmpty(baseFilePath))
                 {
                     baseFilePath = projectFile;
                 }
 
-                if (!string.IsNullOrEmpty(baseFilePath) && !string.IsNullOrEmpty(File))
+                if (!Strings.IsNullOrEmpty(baseFilePath) && !Strings.IsNullOrEmpty(File))
                 {
-                    return TryMakeRooted(baseFilePath!, File);
+                    return TryMakeRooted(baseFilePath, File);
                 }
 
                 return string.Empty;

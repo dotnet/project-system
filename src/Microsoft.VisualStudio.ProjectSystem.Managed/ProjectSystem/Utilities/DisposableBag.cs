@@ -97,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
 
             ImmutableInterlocked.Update(
                 ref _disposables,
-                (set, item) => set?.Remove(item)!,
+                (set, item) => set?.Remove(item),
                 disposable);
         }
 

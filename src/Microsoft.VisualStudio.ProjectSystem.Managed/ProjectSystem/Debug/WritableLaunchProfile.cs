@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             if (profile.OtherSettings != null)
             {
-                OtherSettings = new Dictionary<string, object>(profile.OtherSettings, StringComparer.Ordinal);
+                OtherSettings = new Dictionary<string, object>(profile.OtherSettings, StringComparers.LaunchProfileProperties);
             }
         }
 
@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         public Dictionary<string, string> EnvironmentVariables { get; } = new Dictionary<string, string>(StringComparer.Ordinal);
 
-        public Dictionary<string, object> OtherSettings { get; } = new Dictionary<string, object>(StringComparer.Ordinal);
+        public Dictionary<string, object> OtherSettings { get; } = new Dictionary<string, object>(StringComparers.LaunchProfileProperties);
 
         /// <summary>
         /// Converts back to the immutable form
@@ -67,17 +67,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public static bool ProfilesAreEqual(IWritableLaunchProfile debugProfile1, IWritableLaunchProfile debugProfile2)
         {
             // Same instance are equal
-            if (debugProfile1 == debugProfile2)
+            if (ReferenceEquals(debugProfile1, debugProfile2))
             {
                 return true;
             }
 
-            if (!string.Equals(debugProfile1.Name, debugProfile2.Name, StringComparison.Ordinal) ||
-               !string.Equals(debugProfile1.CommandName, debugProfile2.CommandName, StringComparison.Ordinal) ||
-               !string.Equals(debugProfile1.ExecutablePath, debugProfile2.ExecutablePath, StringComparison.Ordinal) ||
-               !string.Equals(debugProfile1.CommandLineArgs, debugProfile2.CommandLineArgs, StringComparison.Ordinal) ||
-               !string.Equals(debugProfile1.WorkingDirectory, debugProfile2.WorkingDirectory, StringComparison.Ordinal) ||
-               !string.Equals(debugProfile1.LaunchUrl, debugProfile2.LaunchUrl, StringComparison.Ordinal) ||
+            if (!string.Equals(debugProfile1.Name, debugProfile2.Name, StringComparisons.LaunchProfileProperties) ||
+               !string.Equals(debugProfile1.CommandName, debugProfile2.CommandName, StringComparisons.LaunchProfileCommandNames) ||
+               !string.Equals(debugProfile1.ExecutablePath, debugProfile2.ExecutablePath, StringComparisons.LaunchProfileProperties) ||
+               !string.Equals(debugProfile1.CommandLineArgs, debugProfile2.CommandLineArgs, StringComparisons.LaunchProfileProperties) ||
+               !string.Equals(debugProfile1.WorkingDirectory, debugProfile2.WorkingDirectory, StringComparisons.LaunchProfileProperties) ||
+               !string.Equals(debugProfile1.LaunchUrl, debugProfile2.LaunchUrl, StringComparisons.LaunchProfileProperties) ||
                debugProfile1.LaunchBrowser != debugProfile2.LaunchBrowser ||
                !DictionaryEqualityComparer<string, object>.Instance.Equals(debugProfile1.OtherSettings.ToImmutableDictionary(), debugProfile2.OtherSettings.ToImmutableDictionary()) ||
                !DictionaryEqualityComparer<string, string>.Instance.Equals(debugProfile1.EnvironmentVariables.ToImmutableDictionary(), debugProfile2.EnvironmentVariables.ToImmutableDictionary())

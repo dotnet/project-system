@@ -15,7 +15,7 @@ Namespace Microsoft.VisualStudio.Editors.Interop
     End Enum
 
 
-    <ComImport(), Guid("12636E2C-D42A-4db3-8795-6F9A6ABD120D"),
+    <ComImport, Guid("12636E2C-D42A-4db3-8795-6F9A6ABD120D"),
     InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
     CLSCompliant(False)>
     Friend Interface IVBReferenceUsageProvider

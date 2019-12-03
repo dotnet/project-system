@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Explicit On
 Option Strict On
@@ -10,7 +10,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     ''' A base class for resource type editors that support strings, or more specifically,
     '''   which should have their resources displayed in a string table.
     ''' </summary>
-    ''' <remarks></remarks>
     Friend MustInherit Class ResourceTypeEditorStringBase
         Inherits ResourceTypeEditorInternalBase
 
@@ -27,8 +26,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <value>True if this resources handled by this ResourceTypeEditor should be displayed
         '''   in a string table, and False if they should be displayed in a listview.</value>
-        ''' <remarks></remarks>
-        Public NotOverridable Overrides ReadOnly Property DisplayInStringTable() As Boolean
+        Public NotOverridable Overrides ReadOnly Property DisplayInStringTable As Boolean
             Get
                 Return True
             End Get
@@ -39,9 +37,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Gets whether or not the strings handled by this resource type editor
         '''   are allowed to be edited by the user.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public MustOverride ReadOnly Property StringValueCanBeEdited() As Boolean
+        Public MustOverride ReadOnly Property StringValueCanBeEdited As Boolean
 
 
 
@@ -50,8 +46,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   Persistence property changed.
         ''' </summary>
         ''' <param name="ResourceContentFile">The resource file that contains the resource</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Overrides ReadOnly Property CanChangePersistenceProperty(ResourceContentFile As IResourceContentFile) As Boolean
             Get
                 Return False

@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
@@ -59,14 +58,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             await _joinableTaskContext.Factory.SwitchToMainThreadAsync(cancellationToken);
 
-            return _settingsManager.Value!.GetValueOrDefault(name, defaultValue);
+            ISettingsManager? settingsManager = _settingsManager.Value;
+            Assumes.Present(settingsManager);
+            
+            return settingsManager.GetValueOrDefault(name, defaultValue);
         }
 
         private async Task SetSettingValueAsync(string name, object value, CancellationToken cancellationToken)
         {
             await _joinableTaskContext.Factory.SwitchToMainThreadAsync(cancellationToken);
 
-            await _settingsManager.Value!.SetValueAsync(name, value, isMachineLocal: false);
+            ISettingsManager? settingsManager = _settingsManager.Value;
+            Assumes.Present(settingsManager);
+
+            await settingsManager.SetValueAsync(name, value, isMachineLocal: false);
         }
 
         private bool IsEnvironmentVariableEnabled(string variable, ref bool? result)
@@ -75,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             {
                 string value = _environment.GetEnvironmentVariable(variable);
 
-                result = string.Equals(value, "1", StringComparison.OrdinalIgnoreCase);
+                result = string.Equals(value, "1", StringComparisons.EnvironmentVariables);
             }
 
             return result.Value;

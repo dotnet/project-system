@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Explicit On
 Option Strict On
@@ -26,7 +26,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="ObjectType">The type of the class to return the type descriptor for. In our case, Resource.</param>
         ''' <param name="Instance">Instance of the class. In our case, a Resource instance.</param>
         ''' <returns>A new ResourceTypeDescriptor for the specified Resource instance.</returns>
-        ''' <remarks></remarks>
         Public Overrides Function GetTypeDescriptor(ObjectType As Type, Instance As Object) As ICustomTypeDescriptor
             If Instance Is Nothing Then
                 Return MyBase.GetTypeDescriptor(ObjectType, Instance)

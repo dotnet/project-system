@@ -60,9 +60,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [ImportingConstructor]
         public ActiveConfiguredProjectsProvider(IUnconfiguredProjectServices services, UnconfiguredProject project)
         {
-            Requires.NotNull(services, nameof(services));
-            Requires.NotNull(project, nameof(project));
-
             _services = services;
             _project = project;
 
@@ -134,7 +131,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 return null;
             }
 
-            IImmutableSet<ProjectConfiguration> configurations = await _services.ProjectConfigurationsService!.GetKnownProjectConfigurationsAsync();
+            IProjectConfigurationsService? projectConfigurationsService = _services.ProjectConfigurationsService;
+            Assumes.Present(projectConfigurationsService);
+
+            IImmutableSet<ProjectConfiguration> configurations = await projectConfigurationsService.GetKnownProjectConfigurationsAsync();
 
             var builder = PooledArray<ProjectConfiguration>.GetInstance();
             IImmutableSet<string> dimensionNames = GetDimensionNames();
@@ -173,7 +173,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 }
 
                 if (!configuration.Dimensions.TryGetValue(dimensionName, out string otherDimensionValue) ||
-                    !string.Equals(dimensionValue, otherDimensionValue, StringComparison.Ordinal))
+                    !string.Equals(dimensionValue, otherDimensionValue, StringComparisons.ConfigurationDimensionNames))
                 {
                     return false;
                 }

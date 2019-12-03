@@ -46,23 +46,23 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return ParseAndPopulateTokens()
         End Function
 
-        Public WriteOnly Property DTE() As EnvDTE.DTE
-            Set(Value As EnvDTE.DTE)
+        Public WriteOnly Property DTE As EnvDTE.DTE
+            Set
                 _dte = Value
             End Set
         End Property
 
-        Public WriteOnly Property Page() As PropPageUserControlBase
-            Set(Value As PropPageUserControlBase)
+        Public WriteOnly Property Page As PropPageUserControlBase
+            Set
                 _page = Value
             End Set
         End Property
 
-        Public Property EventCommandLine() As String
+        Public Property EventCommandLine As String
             Get
                 Return _eventCommandLine
             End Get
-            Set(Value As String)
+            Set
                 _eventCommandLine = Value
                 CommandLine.Text = _eventCommandLine
 
@@ -73,7 +73,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Set
         End Property
 
-        Public Property HelpTopic() As String
+        Public Property HelpTopic As String
             Get
                 If _helpTopic Is Nothing Then
                     If _page IsNot Nothing AndAlso _page.IsVBProject() Then
@@ -85,12 +85,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                 Return _helpTopic
             End Get
-            Set(value As String)
+            Set
                 _helpTopic = value
             End Set
         End Property
 
-        Private Property ServiceProvider() As IServiceProvider
+        Private Property ServiceProvider As IServiceProvider
             Get
                 If _serviceProvider Is Nothing AndAlso _dte IsNot Nothing Then
                     Dim isp As OLE.Interop.IServiceProvider = CType(_dte, OLE.Interop.IServiceProvider)
@@ -100,13 +100,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 End If
                 Return _serviceProvider
             End Get
-            Set(value As IServiceProvider)
+            Set
                 _serviceProvider = value
             End Set
         End Property
 
         Private Sub OKButton_Click(sender As Object, e As EventArgs) Handles OKButton.Click
-            '// Store the command line
+            ' Store the command line
             _eventCommandLine = CommandLine.Text
 
             Close()
@@ -122,7 +122,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Private Function ParseAndPopulateTokens() As Boolean
-            '// Walk through the array and add each row to the listview
+            ' Walk through the array and add each row to the listview
             Dim i As Integer
             Dim NameItem As ListViewItem
 
@@ -147,7 +147,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Sub BuildEventCommandLineDialog_Load(sender As Object, e As EventArgs) Handles MyBase.Load
             InitializeControlLocations()
 
-            '// Never let them resize to something smaller than the default form size
+            ' Never let them resize to something smaller than the default form size
             MinimumSize = Size
         End Sub
 
@@ -156,7 +156,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Private Function ShowCollapsedForm() As Boolean
-            '// Show the ShowMacros button
+            ' Show the ShowMacros button
             ShowMacrosButton.Visible = True
 
             MacrosPanel.Visible = False
@@ -165,14 +165,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             ShowMacrosButton.Focus()
 
-            '// Disable and hide the Insert button
+            ' Disable and hide the Insert button
             SetInsertButtonState(False)
 
             Return True
         End Function
 
         Private Function ShowExpandedForm() As Boolean
-            '// Hide this button
+            ' Hide this button
             ShowMacrosButton.Visible = False
 
             MacrosPanel.Visible = True
@@ -181,7 +181,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             HideMacrosButton.Focus()
 
-            '// Show the Insert button
+            ' Show the Insert button
             SetInsertButtonState(True)
             Return True
         End Function
@@ -265,7 +265,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If sp IsNot Nothing Then
                 ServiceProvider = sp
             End If
-            Using (DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware))
+            Using DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware)
                 If ServiceProvider IsNot Nothing Then
                     Dim uiService As IUIService = CType(ServiceProvider.GetService(GetType(IUIService)), IUIService)
                     If uiService IsNot Nothing Then

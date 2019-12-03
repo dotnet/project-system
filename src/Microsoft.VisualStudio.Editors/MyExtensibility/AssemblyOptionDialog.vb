@@ -65,7 +65,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             If StringIsNullEmptyOrBlank(assemblyFullName) Then
                 Return String.Empty
             End If
-            Return (New AssemblyName(assemblyFullName)).Name
+            Return New AssemblyName(assemblyFullName).Name
         End Function
 
         Private Sub New()
@@ -99,7 +99,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         End Sub
 #End If
 
-        Public ReadOnly Property OptionChecked() As Boolean
+        Public ReadOnly Property OptionChecked As Boolean
             Get
                 Return checkBoxOption.Checked
             End Get

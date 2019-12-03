@@ -8,7 +8,9 @@ information on how it works in detail, see [this document](repo/up-to-date-check
 
 Note that the _fast_ up-to-date check is intended to speed up the majority of cases where a build is not required,
 yet it cannot reliably cover all cases correctly. Where necessary, it errs on the side of caution as triggering a
-redundant build is better than not triggering a required build.
+redundant build is better than not triggering a required build. MSBuild performs its own checks, so even if the 
+fast up-to-date check incorrectly determines the project is out-of-date, MSBuild may still not perform a full
+build.
 
 ## Customization
 
@@ -19,9 +21,10 @@ check work correctly.
 For customized builds, you may add to the following item types:
 
 - `UpToDateCheckInput` &mdash; Describes an input file that MSBuild would not otherwise know about
-- `UpToDateCheckOutput` &mdash; Describes an output file that MSBuild would not otherwise know about
-- `UpToDateCheckBuilt` &mdash; Similar to `UpToDateCheckOutput` but with optional `Original` property that denotes
-  that the output was copied, not built.
+- `UpToDateCheckBuilt` &mdash; Describes an output file that MSBuild would not otherwise know about
+
+Note that `UpToDateCheckOutput` exists but is deprecated and only maintained for backwards compatability.
+Projects should use to `UpToDateCheckBuilt` instead.
 
 You may add to these item types declaratively. For example:
 
@@ -36,11 +39,45 @@ allows custom logic to be executed when determining the set of items. The releva
 `Microsoft.Managed.DesignTime.targets` with names:
 
 - `CollectUpToDateCheckInputDesignTime`
-- `CollectUpToDateCheckOutputDesignTime`
 - `CollectUpToDateCheckBuiltDesignTime`
 
 Note that changes to inputs **must** result in changes to outputs. If this rule is not observed, then an input may
-have a timestamp after all outputs, which leads the up-to-date check to consider the project out-of-date after building.
+have a timestamp after all outputs, which leads the up-to-date check to consider the project out-of-date after building
+indefinitely. This can lead to longer build times.
+
+### Grouping inputs and outputs into sets
+
+For some advanced scenarios, it's necessary to partition inputs and outputs into groups and consider each separately.
+This can be achieved by adding `Set` metadata to the relevant items.
+
+For example, an ASP.NET project may use sets to group Razor `.cshtml` files with their output assembly `MyProject.Views.dll`,
+which is distinct from the other compilation target `MyProject.dll`. This could be achieved with something like:
+
+```xml
+<ItemGroup>
+  <UpToDateCheckInput Include="Home.cshtml" Set="Views" />
+  <UpToDateCheckOutput Include="MyProject.Views.dll" Set="Views" />
+</ItemGroup>
+```
+
+Items that do not specify a `Set` are included in the default set. Items may be added to multiple sets by separating
+their names with a semicolon (e.g. `Set="Set1;Set2"`).
+
+### Copied files
+
+Builds may copy files from a source location to a destination location. Information about these locations should be
+captured in the project so that the up-to-date check can determine if the source file is newer than the destination,
+in which case the project is out-of-date and a build will be allowed.
+
+To model this, use:
+
+```xml
+<UpToDateCheckBuilt Include="Source\File.txt" Original="Destination\File.txt" />
+```
+
+When specifying `Original` metadata, the `Set` property has no effect. Each copied file is considered in isolation,
+looking only at the timestamps of the source and destination. Sets are used to compare groups of items, so these
+features do not compose. If both properties are present, `Original` will take effect and `Set` is ignored.
 
 ## Debugging
 
@@ -59,8 +96,12 @@ To debug issues with the up-to-date check, enable its logging.
 
 ![Projects and Solutions, .NET Core options](repo/images/options.png)
 
-With a log level of info or verbose, you'll see messages prefixed with `FastUpToDate:` in Visual Studio's build output.
-These messages will explain why the project is considered up-to-date or not.
+Setting this level to a value other than `None` results in messages prefixed with `FastUpToDate:` in Visual Studio's
+build output.
+
+- `None` disables log output.
+- `Minimal` produces a single message per out-of-date project.
+- `Info` and `Verbose` provide increasingly detailed information about the inner workings of the check, which are useful for debugging.
 
 ## Disabling the Up-to-date Check
 

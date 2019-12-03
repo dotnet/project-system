@@ -65,9 +65,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.Equal(string.Empty, dependency.Path);
             Assert.Equal("Folder", dependency.SchemaName);
             Assert.Equal("Folder", dependency.SchemaItemType);
-            AssertEx.CollectionLength(dependency.Properties, 2);
-            Assert.True(dependency.Properties.ContainsKey("Identity"));
-            Assert.True(dependency.Properties.ContainsKey("FullPath"));
+            AssertEx.CollectionLength(dependency.BrowseObjectProperties, 2);
+            Assert.True(dependency.BrowseObjectProperties.ContainsKey("Identity"));
+            Assert.True(dependency.BrowseObjectProperties.ContainsKey("FullPath"));
             Assert.Empty(dependency.DependencyIDs);
         }
 
@@ -114,8 +114,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.Equal(mockModel.Implicit, dependency.Implicit);
             Assert.Equal(mockModel.Visible, dependency.Visible);
             Assert.Equal(mockModel.Priority, dependency.Priority);
-            Assert.Single(dependency.Properties);
-            Assert.True(dependency.Properties.ContainsKey("prop1"));
+            Assert.Single(dependency.BrowseObjectProperties);
+            Assert.True(dependency.BrowseObjectProperties.ContainsKey("prop1"));
             Assert.Single(dependency.DependencyIDs);
             Assert.Equal("Tfm1\\xxx\\otherid", dependency.DependencyIDs[0]);
             Assert.True(dependency.Flags.Contains(DependencyTreeFlags.Resolved));

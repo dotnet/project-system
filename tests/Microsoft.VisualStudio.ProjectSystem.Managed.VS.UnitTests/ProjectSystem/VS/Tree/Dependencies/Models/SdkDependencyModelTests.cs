@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.RuleHandlers;
 using Xunit;
 
@@ -30,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.True(model.Resolved);
             Assert.False(model.Implicit);
             Assert.Equal(properties, model.Properties);
-            Assert.Equal(Dependency.SdkNodePriority, model.Priority);
+            Assert.Equal(GraphNodePriority.SdkNodePriority, model.Priority);
             Assert.Equal(SdkReference.PrimaryDataSourceItemType, model.SchemaItemType);
             Assert.Equal(ManagedImageMonikers.Sdk, model.Icon);
             Assert.Equal(ManagedImageMonikers.Sdk, model.ExpandedIcon);
@@ -63,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.False(model.Resolved);
             Assert.False(model.Implicit);
             Assert.Equal(properties, model.Properties);
-            Assert.Equal(Dependency.SdkNodePriority, model.Priority);
+            Assert.Equal(GraphNodePriority.SdkNodePriority, model.Priority);
             Assert.Equal(SdkReference.PrimaryDataSourceItemType, model.SchemaItemType);
             Assert.Equal(ManagedImageMonikers.Sdk, model.Icon);
             Assert.Equal(ManagedImageMonikers.Sdk, model.ExpandedIcon);
@@ -96,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.True(model.Resolved);
             Assert.True(model.Implicit);
             Assert.Equal(properties, model.Properties);
-            Assert.Equal(Dependency.SdkNodePriority, model.Priority);
+            Assert.Equal(GraphNodePriority.SdkNodePriority, model.Priority);
             Assert.Equal(SdkReference.PrimaryDataSourceItemType, model.SchemaItemType);
             Assert.Equal(ManagedImageMonikers.SdkPrivate, model.Icon);
             Assert.Equal(ManagedImageMonikers.SdkPrivate, model.ExpandedIcon);

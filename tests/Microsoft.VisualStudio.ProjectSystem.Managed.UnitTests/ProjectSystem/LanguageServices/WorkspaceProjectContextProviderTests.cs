@@ -119,14 +119,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         [Fact]
         public async Task CreateProjectContextAsync_PassesThroughDataToCreateProjectContext()
         {
-            var projectRuleSnapshot = IProjectRuleSnapshotFactory.FromJson(
-@"{
-    ""Properties"": {
-        ""MSBuildProjectFullPath"": ""C:\\Project\\Project.csproj"",
-        ""LanguageServiceName"": ""CSharp"",
-        ""TargetPath"": ""C:\\Target.dll""
-    }
-}");
             var projectGuid = new Guid("{72B509BD-C502-4707-ADFD-E2D43867CF45}");
             var projectGuidService = ISafeProjectGuidServiceFactory.ImplementGetProjectGuidAsync(projectGuid);
 
@@ -169,7 +161,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             var result = await provider.CreateProjectContextAsync(project);
 
-            Assert.NotNull(context);
+            Assert.NotNull(result);
             Assert.False(context.LastDesignTimeBuildSucceeded);
         }
 

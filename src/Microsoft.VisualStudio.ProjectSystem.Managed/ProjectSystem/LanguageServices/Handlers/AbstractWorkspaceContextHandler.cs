@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             {
                 Assumes.NotNull(_context);
 
-                return _context!;
+                return _context;
             }
         }
 

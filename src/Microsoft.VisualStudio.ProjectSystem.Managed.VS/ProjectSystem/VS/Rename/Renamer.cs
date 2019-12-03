@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         internal async Task HandleRenameAsync(string oldFilePath, string newFilePath)
         {
             // Do not offer to rename types if the user changes the file extensions
-            if (!oldFilePath.EndsWith(Path.GetExtension(newFilePath), StringComparison.OrdinalIgnoreCase))
+            if (!oldFilePath.EndsWith(Path.GetExtension(newFilePath), StringComparisons.Paths))
             {
                 return;
             }
@@ -138,9 +138,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
                 DTE? dte = _dte.Value;
 
-                Assumes.NotNull(dte);
+                Assumes.Present(dte);
 
-                using var undo = UndoScope.Create(dte, renameOperationName);
+                using var _ = UndoScope.Create(dte, renameOperationName);
 
                 // Notify other VS features that symbol is about to be renamed
                 NotifyBeforeRename(newName, rqName, changes);
@@ -214,8 +214,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                   oldName,
                   newName,
                   isCaseSensitive
-                    ? StringComparison.Ordinal
-                    : StringComparison.OrdinalIgnoreCase));
+                    ? StringComparisons.LanguageIdentifiers
+                    : StringComparisons.LanguageIdentifiersIgnoreCase));
 
         private static async Task<ISymbol?> TryGetSymbolToRename(string oldName,
                                                                  string oldFilePath,

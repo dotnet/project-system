@@ -100,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         // Tracks when we last read or wrote to the file. Prevents picking up needless changes
         protected DateTime LastSettingsFileSyncTime { get; set; }
 
-        protected int WaitForFirstSnapshotDelay = 5000; // 5 seconds
+        protected const int WaitForFirstSnapshotDelayMillis = 5000;
 
         [Obsolete("Use GetLaunchSettingsFilePathAsync instead.")]
         public string LaunchSettingsFile
@@ -118,14 +118,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// Returns the active profile. Looks up the value of the ActiveProfile property. If the value doesn't match the
         /// any of the profiles, the first one is returned
         /// </summary>
-        public ILaunchProfile ActiveProfile
-        {
-            get
-            {
-                ILaunchSettings snapshot = CurrentSnapshot;
-                return snapshot?.ActiveProfile;
-            }
-        }
+        public ILaunchProfile ActiveProfile => CurrentSnapshot?.ActiveProfile;
+
         /// <summary>
         /// Link to this source block to be notified when the snapshot is changed.
         /// </summary>
@@ -171,8 +165,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             _broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<ILaunchSettings>();
             _changedSourceBlock = _broadcastBlock.SafePublicize();
 
-
-            // Subscribe to changes to the broadcast block using the idle scheduler. This should filter out a lot of the intermediates
+            // Subscribe to changes to the broadcast block using the idle scheduler. This should filter out a lot of the intermediate
             // states that files can be in.
             if (_projectSubscriptionService != null)
             {
@@ -284,9 +277,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 // display the error when run
                 if (CurrentSnapshot == null)
                 {
-                    var errorProfile = new LaunchProfile() { Name = Resources.NoActionProfileName, CommandName = ErrorProfileCommandName, DoNotPersist = true };
-                    errorProfile.OtherSettings = ImmutableStringDictionary<object>.EmptyOrdinal.Add("ErrorString", ex.Message);
-                    var snapshot = new LaunchSettings(new List<ILaunchProfile>() { errorProfile }, null, errorProfile.Name);
+                    var errorProfile = new LaunchProfile
+                    {
+                        Name = Resources.NoActionProfileName,
+                        CommandName = ErrorProfileCommandName,
+                        DoNotPersist = true,
+                        OtherSettings = ImmutableStringDictionary<object>.EmptyOrdinal.Add("ErrorString", ex.Message)
+                    };
+                    var snapshot = new LaunchSettings(new[] { errorProfile }, null, errorProfile.Name);
                     await FinishUpdateAsync(snapshot, ensureProfileProperty: false);
                 }
             }
@@ -366,6 +364,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         protected async Task FinishUpdateAsync(ILaunchSettings newSnapshot, bool ensureProfileProperty)
         {
             CurrentSnapshot = newSnapshot;
+
             if (ensureProfileProperty)
             {
                 ProjectDebugger props = await _commonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync();
@@ -378,10 +377,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 }
             }
 
-            if (_broadcastBlock != null)
-            {
-                _broadcastBlock.Post(newSnapshot);
-            }
+            _broadcastBlock?.Post(newSnapshot);
         }
 
         /// <summary>
@@ -404,15 +400,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             string fileName = await GetLaunchSettingsFilePathAsync();
 
-            LaunchSettingsData settings;
-            if (_fileSystem.FileExists(fileName))
-            {
-                settings = await ReadSettingsFileFromDiskAsync();
-            }
-            else
-            {
-                settings = new LaunchSettingsData();
-            }
+            LaunchSettingsData settings = _fileSystem.FileExists(fileName)
+                ? await ReadSettingsFileFromDiskAsync()
+                : new LaunchSettingsData();
 
             // Make sure there is at least an empty profile list
             if (settings.Profiles == null)
@@ -435,14 +425,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             // Since the sections in the settings file are extensible we iterate through each one and have the appropriate provider
             // serialize their section. Unfortunately, this means the data is string to object which is messy to deal with
-            var launchSettingsData = new LaunchSettingsData() { OtherSettings = new Dictionary<string, object>(StringComparer.Ordinal) };
+            var launchSettingsData = new LaunchSettingsData() { OtherSettings = new Dictionary<string, object>(StringComparers.LaunchProfileProperties) };
             var jsonObject = JObject.Parse(jsonString);
             foreach ((string key, JToken jToken) in jsonObject)
             {
-                if (key.Equals(ProfilesSectionName, StringComparison.Ordinal) && jToken is JObject jObject)
+                if (key.Equals(ProfilesSectionName, StringComparisons.LaunchSettingsPropertyNames) && jToken is JObject jObject)
                 {
                     Dictionary<string, LaunchProfileData> profiles = LaunchProfileData.DeserializeProfiles(jObject);
-                    launchSettingsData.Profiles = FixupProfilesAndLogErrors(profiles);
+                    launchSettingsData.Profiles = FixUpProfilesAndLogErrors(profiles);
                 }
                 else
                 {
@@ -476,7 +466,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// Does a quick validation to make sure at least a name is present in each profile. Removes bad ones and
         /// logs errors. Returns the resultant profiles as a list
         /// </summary>
-        private static List<LaunchProfileData> FixupProfilesAndLogErrors(Dictionary<string, LaunchProfileData> profilesData)
+        private static List<LaunchProfileData> FixUpProfilesAndLogErrors(Dictionary<string, LaunchProfileData> profilesData)
         {
             if (profilesData == null)
             {
@@ -498,7 +488,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         /// <summary>
-        /// Saves the launch settings to the launch settings file. Adds an errorstring and throws if an exception. Note
+        /// Saves the launch settings to the launch settings file. Adds an error string and throws if an exception. Note
         /// that the caller is responsible for checking out the file
         /// </summary>
         protected async Task SaveSettingsToDiskAsync(ILaunchSettings newSettings)
@@ -533,7 +523,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         protected static Dictionary<string, object> GetSettingsToSerialize(ILaunchSettings curSettings)
         {
-            var profileData = new Dictionary<string, Dictionary<string, object>>(StringComparer.Ordinal);
+            var profileData = new Dictionary<string, Dictionary<string, object>>(StringComparers.LaunchProfileNames);
             foreach (ILaunchProfile profile in curSettings.Profiles)
             {
                 if (ProfileShouldBePersisted(profile))
@@ -542,7 +532,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 }
             }
 
-            var dataToSave = new Dictionary<string, object>(StringComparer.Ordinal);
+            var dataToSave = new Dictionary<string, object>(StringComparers.LaunchProfileProperties);
 
             foreach ((string key, object value) in curSettings.GlobalSettings)
             {
@@ -561,7 +551,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         /// <summary>
-        /// Helper returns true if this is a profile which should be persisted. Filters out noaction profiles
+        /// Helper returns true if this is a profile which should be persisted.
+        /// Filters out <see cref="IPersistOption.DoNotPersist"/> profiles.
         /// </summary>
         private static bool ProfileShouldBePersisted(ILaunchProfile profile)
         {
@@ -574,7 +565,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         protected async Task CheckoutSettingsFileAsync()
         {
             Lazy<ISourceCodeControlIntegration, IOrderPrecedenceMetadataView> sourceControlIntegration = SourceControlIntegrations.FirstOrDefault();
-            if (sourceControlIntegration != null && sourceControlIntegration.Value != null)
+            if (sourceControlIntegration?.Value != null)
             {
                 string fileName = await GetLaunchSettingsFilePathAsync();
 
@@ -890,8 +881,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         public async Task<ILaunchSettings> GetSnapshotThrowIfErrors()
         {
-            ILaunchSettings currentSettings = await WaitForFirstSnapshot(WaitForFirstSnapshotDelay);
-            if (currentSettings == null || (currentSettings.Profiles.Count == 1 && string.Equals(currentSettings.Profiles[0].CommandName, ErrorProfileCommandName, StringComparison.Ordinal)))
+            ILaunchSettings currentSettings = await WaitForFirstSnapshot(WaitForFirstSnapshotDelayMillis);
+            if (currentSettings == null || (currentSettings.Profiles.Count == 1 && string.Equals(currentSettings.Profiles[0].CommandName, ErrorProfileCommandName, StringComparisons.LaunchProfileCommandNames)))
             {
                 string fileName = await GetLaunchSettingsFilePathAsync();
 

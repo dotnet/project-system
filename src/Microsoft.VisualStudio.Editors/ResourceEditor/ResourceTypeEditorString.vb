@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Explicit On
 Option Strict On
@@ -12,7 +12,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     ''' A resource type editor for strings (displayed in a string table).  Does not handle
     '''   linked text files.
     ''' </summary>
-    ''' <remarks></remarks>
     Friend NotInheritable Class ResourceTypeEditorString
         Inherits ResourceTypeEditorStringBase
 
@@ -28,9 +27,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Gets whether or not the strings handled by this resource type editor
         '''   are allowed to be edited by the user.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public Overrides ReadOnly Property StringValueCanBeEdited() As Boolean
+        Public Overrides ReadOnly Property StringValueCanBeEdited As Boolean
             Get
                 Return True
             End Get
@@ -99,8 +96,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   handled by this resource type editor, the suggested names could take the form 
         '''   of "id01", "id02", etc.
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Overrides Function GetSuggestedNamePrefix() As String
             Return "String"
         End Function

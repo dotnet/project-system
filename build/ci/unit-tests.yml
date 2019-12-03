@@ -8,13 +8,7 @@ trigger:
   branches:
     include:
     - master
-    - dev15.0.x
-    - dev15.9.x
-    - dev16.0.x
-    - dev16.1.x
-    - dev16.2.x
-    - dev16.3.x
-    - dev16.4.x
+    - dev*
     - feature/*
 
 # Branches that trigger builds on PR
@@ -22,13 +16,7 @@ pr:
   branches:
     include:
     - master
-    - dev15.0.x
-    - dev15.9.x
-    - dev16.0.x
-    - dev16.1.x
-    - dev16.2.x
-    - dev16.3.x
-    - dev16.4.x
+    - dev*
     - feature/*
   paths:
     exclude: # don't trigger the CI if only a doc file was changed

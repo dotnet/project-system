@@ -22,7 +22,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Creates a new WinformsWindowPane.
         ''' </summary>
         ''' <param name="surface"></param>
-        ''' <remarks></remarks>
         Public Sub New(surface As DesignSurface)
             MyBase.New(surface, SupportToolbox:=False)
         End Sub
@@ -31,8 +30,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Retrieves the PropPageDesignerView associated with this window, if any.
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function GetPropPageDesignerView() As PropPageDesignerView
             If View IsNot Nothing AndAlso View.Controls IsNot Nothing AndAlso View.Controls.Count > 0 Then
                 Return TryCast(View.Controls(0), PropPageDesignerView)
@@ -50,8 +47,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         '''   tabbing from the property page to the property page designer.
         ''' </summary>
         ''' <param name="m"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Protected Overrides Function PreProcessMessage(ByRef m As Message) As Boolean
             Common.Switches.TracePDMessageRouting(TraceLevel.Warning, "PropPageDesignerWindowPane.PreProcessMessage", m)
 
@@ -127,9 +122,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
                                     'We hit the last tabbable control in the property page designer, set focus to the first (or last)
                                     '  control in the property page itself.
-                                    Dim PropPageDesignerHwnd As IntPtr = NativeMethods.GetWindow(View.Handle, Win32Constant.GW_CHILD)
-                                    'Dim NextTabStop As IntPtr
-
                                     Dim PPDView As PropPageDesignerView = GetPropPageDesignerView()
                                     If PPDView Is Nothing Then
                                         Debug.Fail("Couldn't find the property page designer view")

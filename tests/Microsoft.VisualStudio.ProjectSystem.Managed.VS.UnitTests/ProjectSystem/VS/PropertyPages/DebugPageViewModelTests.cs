@@ -11,22 +11,25 @@ using Moq;
 using Moq.Protected;
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
     public class DebugPageViewModelTests
     {
         private class ViewModelData
         {
-            public IList<ILaunchProfile> Profiles { get; set; }
-            public ILaunchSettingsProvider ProfileProvider { get; set; }
-            public ILaunchSettings LaunchProfiles { get; set; }
+            public IList<ILaunchProfile>? Profiles { get; set; }
+            public ILaunchSettingsProvider? ProfileProvider { get; set; }
+            public ILaunchSettings? LaunchProfiles { get; set; }
             public IList<Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView>> UIProviders { get; set; } = new List<Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView>>();
-            public TaskCompletionSource<bool> FirstSnapshotComplete { get; set; }
+            public TaskCompletionSource<bool>? FirstSnapshotComplete { get; set; }
         }
 
-        private Mock<DebugPageViewModel> CreateViewModel(ViewModelData data)
+        private class EmptyDisposable : IDisposable
+        {
+            public void Dispose() {}
+        }
+
+        private static Mock<DebugPageViewModel> CreateViewModel(ViewModelData data)
         {
             // Setup the debug profiles
             var mockSourceBlock = new Mock<IReceivableSourceBlock<ILaunchSettings>>();
@@ -43,11 +46,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                         targetBlock.Post(mockProfiles.Object);
                         targetBlock.Complete();
                     }
-                ).Returns(() => null);
+                ).Returns(() => new EmptyDisposable());
 
             mockProfiles.Setup(m => m.Profiles).Returns(() =>
             {
-                return data.Profiles?.ToImmutableList();
+                return data.Profiles?.ToImmutableList() ?? ImmutableList<ILaunchProfile>.Empty;
             });
 
             data.LaunchProfiles = mockProfiles.Object;
@@ -108,7 +111,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             var profiles = new List<ILaunchProfile>()
             {
-                {new LaunchProfile() {Name="p1", CommandName="test", DoNotPersist = true}}
+                new LaunchProfile {Name="p1", CommandName="test", DoNotPersist = true}
             };
 
             var viewModelData = new ViewModelData()
@@ -116,20 +119,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 Profiles = profiles,
                 UIProviders = new List<Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView>>()
                 {
-                    {new Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView>(() =>
+                    new Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView>(() =>
                     {
                         var uiProvider = new Mock<ILaunchSettingsUIProvider>();
-                        uiProvider.Setup(m => m.CustomUI).Returns((UserControl)null);
+                        uiProvider.Setup(m => m.CustomUI).Returns((UserControl?)null);
                         uiProvider.Setup(m => m.ShouldEnableProperty(It.IsAny<string>())).Returns(true);
                         uiProvider.Setup(m => m.CommandName).Returns("test");
                         return uiProvider.Object;
-                    }, new Mock<IOrderPrecedenceMetadataView>().Object)}
+                    }, new Mock<IOrderPrecedenceMetadataView>().Object)
                 }
             };
 
             var viewModel = CreateViewModel(viewModelData);
             await viewModel.Object.Initialize();
-            await viewModelData.FirstSnapshotComplete.Task;
+            
+            Assert.NotNull(viewModelData.FirstSnapshotComplete);
+            await viewModelData.FirstSnapshotComplete!.Task;
 
             Assert.True(viewModel.Object.HasProfiles);
             Assert.True(viewModel.Object.IsProfileSelected);

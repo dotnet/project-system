@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Explicit On
 Option Strict On
@@ -31,8 +31,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <value>True if this resources handled by this ResourceTypeEditor should be displayed
         '''   in a string table, and False if they should be displayed in a listview.</value>
-        ''' <remarks></remarks>
-        Public Overrides ReadOnly Property StringValueCanBeEdited() As Boolean
+        Public Overrides ReadOnly Property StringValueCanBeEdited As Boolean
             Get
                 'Can't change a Nothing/null value to anything else.
                 Return False

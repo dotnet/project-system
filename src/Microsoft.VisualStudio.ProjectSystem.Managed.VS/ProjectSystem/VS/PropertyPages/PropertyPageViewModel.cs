@@ -4,16 +4,14 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
     internal abstract class PropertyPageViewModel : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
-        public UnconfiguredProject Project { get; set; }
-        public PropertyPageControl ParentControl { get; set; }
+        public UnconfiguredProject? Project { get; set; }
+        public PropertyPageControl? ParentControl { get; set; }
 
         /// <summary>
         /// Since calls to ignore events can be nested, a downstream call could change the outer 
@@ -21,7 +19,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// PushIgnoreEvents\PopIgnoreEvents  are used instead to control the count.
         /// </summary>
         private int _ignoreEventsNestingCount = 0;
-        public bool IgnoreEvents { get { return _ignoreEventsNestingCount > 0; } }
+        
+        public bool IgnoreEvents => _ignoreEventsNestingCount > 0;
+
         public void PushIgnoreEvents()
         {
             _ignoreEventsNestingCount++;
@@ -36,23 +36,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         }
 
         public abstract Task Initialize();
+
         public abstract Task<int> Save();
 
-        protected virtual void OnPropertyChanged(string propertyName, bool suppressInvalidation = false)
+        protected virtual void OnPropertyChanged(string? propertyName, bool suppressInvalidation = false)
         {
             // For some properties we don't want to invalidate the property page
             if (suppressInvalidation)
             {
                 PushIgnoreEvents();
             }
+
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            
             if (suppressInvalidation)
             {
                 PopIgnoreEvents();
             }
         }
 
-        protected virtual bool OnPropertyChanged<T>(ref T propertyRef, T value, bool suppressInvalidation, [CallerMemberName] string propertyName = null)
+        protected virtual bool OnPropertyChanged<T>(ref T propertyRef, T value, bool suppressInvalidation, [CallerMemberName] string? propertyName = null)
         {
             if (!Equals(propertyRef, value))
             {
@@ -60,10 +63,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 OnPropertyChanged(propertyName, suppressInvalidation);
                 return true;
             }
+
             return false;
         }
 
-        protected virtual bool OnPropertyChanged<T>(ref T propertyRef, T value, [CallerMemberName] string propertyName = null)
+        protected virtual bool OnPropertyChanged<T>(ref T propertyRef, T value, [CallerMemberName] string? propertyName = null)
         {
             return OnPropertyChanged(ref propertyRef, value, suppressInvalidation: false, propertyName: propertyName);
         }
@@ -73,6 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             if (!string.IsNullOrEmpty(value))
             {
                 property = bool.Parse(value);
+
                 if (invert)
                 {
                     property = !property;
@@ -93,4 +98,3 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         }
     }
 }
-

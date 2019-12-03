@@ -7,7 +7,6 @@ using System.ComponentModel.Composition;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using Microsoft.VisualStudio.Threading;
 using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
@@ -93,6 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             DesignTimeInputs designTimeInputs = input.Value;
 
             IVsAsyncFileChangeEx? vsAsyncFileChangeEx = await _fileChangeService.GetValueAsync();
+            Assumes.Present(vsAsyncFileChangeEx);
 
             // we don't care about the difference between types of inputs, so we just construct one hashset for fast comparisons later
             var allFiles = new HashSet<string>(StringComparers.Paths);
@@ -105,7 +105,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             {
                 if (!allFiles.Contains(file))
                 {
-                    await vsAsyncFileChangeEx!.UnadviseFileChangeAsync(cookie);
+                    await vsAsyncFileChangeEx.UnadviseFileChangeAsync(cookie);
                     removedFiles.Add(file);
                 }
             }
@@ -121,7 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 if (!_fileWatcherCookies.ContainsKey(file))
                 {
                     // We don't care about delete and add here, as they come through data flow, plus they are really bouncy - every file change is a Time, Del and Add event)
-                    uint cookie = await vsAsyncFileChangeEx!.AdviseFileChangeAsync(file, _VSFILECHANGEFLAGS.VSFILECHG_Time | _VSFILECHANGEFLAGS.VSFILECHG_Size, sink: this);
+                    uint cookie = await vsAsyncFileChangeEx.AdviseFileChangeAsync(file, _VSFILECHANGEFLAGS.VSFILECHG_Time | _VSFILECHANGEFLAGS.VSFILECHG_Size, sink: this);
 
                     _fileWatcherCookies.Add(file, cookie);
                 }
@@ -155,11 +155,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                         await _actionBlock.Completion;
 
                         IVsAsyncFileChangeEx? vsAsyncFileChangeEx = await _fileChangeService.GetValueAsync();
+                        Assumes.Present(vsAsyncFileChangeEx);
 
                         // Unsubscribe from all files
                         foreach (uint cookie in _fileWatcherCookies.Values)
                         {
-                            await vsAsyncFileChangeEx!.UnadviseFileChangeAsync(cookie);
+                            await vsAsyncFileChangeEx.UnadviseFileChangeAsync(cookie);
                         }
                     });
                 }

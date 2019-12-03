@@ -16,7 +16,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
     ''' Simple UI type editor that launches a IVsDataConnectionDialog dialog to let 
     ''' the user create/edit connection strings
     ''' </summary>
-    ''' <remarks></remarks>
     Friend NotInheritable Class ConnectionStringUITypeEditor
         Inherits UITypeEditor
 
@@ -24,8 +23,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' This is a modal dialog...
         ''' </summary>
         ''' <param name="context">The context parameter is ignored...</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Overrides Function GetEditStyle(context As ComponentModel.ITypeDescriptorContext) As UITypeEditorEditStyle
             Return UITypeEditorEditStyle.Modal
         End Function
@@ -42,10 +39,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         '''   IUIService (will work without it)
         ''' </param>
         ''' <param name="oValue"></param>
-        ''' <returns></returns>
         ''' <remarks>Does not use the IWindowsFormsEditorService service to show it's dialog...</remarks>
         Public Overrides Function EditValue(context As ComponentModel.ITypeDescriptorContext, ServiceProvider As IServiceProvider, oValue As Object) As Object
-            Using (DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware))
+            Using DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware)
                 Dim dataConnectionDialogFactory As IVsDataConnectionDialogFactory = DirectCast(ServiceProvider.GetService(GetType(IVsDataConnectionDialogFactory)), IVsDataConnectionDialogFactory)
 
                 If dataConnectionDialogFactory Is Nothing Then
@@ -100,7 +96,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     value = TryCast(oValue, SerializableConnectionString)
 
                     ' We keep track of if there was sensitive data in the string when we were called - if not, we've gotta prompt the user
-                    ' about the potential security implications if (s)he adds sensitive data
+                    ' about the potential security implications if they add sensitive data
                     Dim containedSensitiveData As Boolean = False
 
                     ' If we have a value coming in, we should feed the dialog with this value
@@ -143,10 +139,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                         End If
                     End If
 
-                    If (dataConnectionDialog.ShowDialog() AndAlso dataConnectionDialog.DisplayConnectionString <> "") Then
+                    If dataConnectionDialog.ShowDialog() AndAlso dataConnectionDialog.DisplayConnectionString <> "" Then
                         ' If the user press OK and we have a connection string, lets return this new value!
                         dataConnectionDialog.SaveProviderSelections()
-                        If (dataConnectionDialog.SaveSelection) Then
+                        If dataConnectionDialog.SaveSelection Then
                             dataConnectionDialog.SaveSourceSelection()
                         End If
 
@@ -179,8 +175,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="ProviderManager"></param>
         ''' <param name="DataProvider"></param>
         ''' <param name="ConnectionString"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Shared Function ContainsSensitiveData(ProviderManager As IVsDataProviderManager, DataProvider As Guid, ConnectionString As String) As Boolean
             If ConnectionString = "" Then
                 Return False
@@ -201,8 +195,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="ServiceProvider"></param>
         ''' <param name="DataProvider"></param>
         ''' <param name="ConnectionString"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Shared Function ContainsSensitiveData(ServiceProvider As IServiceProvider, DataProvider As Guid, ConnectionString As String) As Boolean
             Dim providerManager As IVsDataProviderManager = DirectCast(ServiceProvider.GetService(GetType(IVsDataProviderManager)), IVsDataProviderManager)
             If providerManager IsNot Nothing Then
@@ -223,7 +215,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Unencrypted ConnectionString with or without the user-entered password depending on if
         ''' there exists sensitive information in the string and whether the user chooses to persist it
         '''</returns>
-        ''' <remarks></remarks>
         Private Shared Function GetConnectionString(ServiceProvider As IServiceProvider, Dialog As IVsDataConnectionDialog, PromptIfContainsSensitiveData As Boolean) As String
             Requires.NotNull(Dialog, NameOf(Dialog))
             Requires.NotNull(ServiceProvider, NameOf(ServiceProvider))
@@ -258,8 +249,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="ProviderManager"></param>
         ''' <param name="ProviderGUID"></param>
         ''' <param name="ConnectionString"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Shared Function GetConnectionStringProperties(ProviderManager As IVsDataProviderManager, ProviderGUID As Guid, ConnectionString As String) As IVsDataConnectionProperties
             Dim provider As IVsDataProvider = Nothing
             If ProviderManager.Providers.ContainsKey(ProviderGUID) Then
@@ -277,8 +266,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Does the given connection string contain sensitive data?
         ''' </summary>
         ''' <param name="ConnectionProperties"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Shared Function ContainsSensitiveData(ConnectionProperties As IVsDataConnectionProperties) As Boolean
             If ConnectionProperties Is Nothing Then
                 Debug.Fail("We can't tell if it contains sensitive data if we didn't get a bag of properties!")

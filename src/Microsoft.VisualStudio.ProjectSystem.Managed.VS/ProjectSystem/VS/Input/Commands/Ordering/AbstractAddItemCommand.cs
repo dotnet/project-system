@@ -6,8 +6,6 @@ using Microsoft.VisualStudio.ProjectSystem.Input;
 using Microsoft.VisualStudio.ProjectSystem.VS.UI;
 using Task = System.Threading.Tasks.Task;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 {
     internal abstract class AbstractAddItemCommand : AbstractSingleNodeProjectCommand
@@ -30,9 +28,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 
         protected abstract Task OnAddingNodesAsync(IProjectTree nodeToAddTo);
 
-        protected override Task<CommandStatusResult> GetCommandStatusAsync(IProjectTree node, bool focused, string commandText, CommandStatus progressiveStatus)
+        protected override Task<CommandStatusResult> GetCommandStatusAsync(IProjectTree node, bool focused, string? commandText, CommandStatus progressiveStatus)
         {
-            if (_addItemDialogService.CanAddNewOrExistingItemTo(GetNodeToAddTo(node)) && CanAdd(node))
+            IProjectTree? nodeToAddTo = GetNodeToAddTo(node);
+            
+            if (nodeToAddTo != null && _addItemDialogService.CanAddNewOrExistingItemTo(nodeToAddTo) && CanAdd(node))
             {
                 return GetCommandStatusResult.Handled(commandText, CommandStatus.Enabled);
             }
@@ -46,7 +46,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 
         protected override async Task<bool> TryHandleCommandAsync(IProjectTree node, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut)
         {
-            IProjectTree nodeToAddTo = GetNodeToAddTo(node);
+            IProjectTree? nodeToAddTo = GetNodeToAddTo(node);
+
+            if (nodeToAddTo == null)
+            {
+                return false;
+            }
 
             // We use a hint receiver that listens for when a file gets added.
             // The reason is so we can modify the MSBuild project inside the same write lock of when a file gets added internally in CPS.
@@ -56,9 +61,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             return true;
         }
 
-        private IProjectTree GetNodeToAddTo(IProjectTree node)
+        private IProjectTree? GetNodeToAddTo(IProjectTree node)
         {
-            IProjectTree target;
+            IProjectTree? target;
             switch (Action)
             {
                 case OrderingMoveAction.MoveAbove:

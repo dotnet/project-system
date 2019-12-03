@@ -22,7 +22,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
     '''   create a DesignerWindowPaneBase
     ''' This allows us to have more control of the WindowPane
     ''' </summary>
-    ''' <remarks></remarks>
     Friend Class DeferrableWindowPaneProviderServiceBase
         Inherits WindowPaneProviderService
 
@@ -35,7 +34,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="provider"></param>
         ''' <param name="SupportToolbox"></param>
-        ''' <remarks></remarks>
         Friend Sub New(provider As IServiceProvider, SupportToolbox As Boolean)
             MyBase.New(provider)
             _supportToolbox = SupportToolbox
@@ -51,7 +49,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' that we would get for "free" is to allow us to receive IVsWindowPaneCommit.
         ''' 
         ''' </summary>
-        ''' <remarks></remarks>
         Friend Class DesignerWindowPaneBase
             Inherits DesignerWindowPane
             Implements IVsWindowPaneCommit
@@ -73,17 +70,16 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' </summary>
             ''' <param name="surface"></param>
             ''' <param name="SupportToolbox"></param>
-            ''' <remarks></remarks>
             Public Sub New(surface As DesignSurface, SupportToolbox As Boolean)
                 MyBase.New(surface)
 
                 _supportToolbox = SupportToolbox
 
-                '// Create our view control and hook its focus event.
-                '// Do not be tempted to create a container control here
-                '// and use it for focus management!  It will steal key
-                '// events from the shell and break things
-                '//
+                ' Create our view control and hook its focus event.
+                ' Do not be tempted to create a container control here
+                ' and use it for focus management!  It will steal key
+                ' events from the shell and break things
+                '
                 _view = New TopLevelControl()
                 AddHandler _view.GotFocus, AddressOf OnViewFocus
                 _view.BackColor = SystemColors.Window
@@ -107,9 +103,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' <summary>
             ''' Returns the view control for the window pane.
             ''' </summary>
-            ''' <value></value>
-            ''' <remarks></remarks>
-            Protected ReadOnly Property View() As Control
+            Protected ReadOnly Property View As Control
                 Get
                     Return _view
                 End Get
@@ -141,9 +135,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' <summary>
             ''' Retrieves our view.
             ''' </summary>
-            ''' <value></value>
-            ''' <remarks></remarks>
-            Public Overrides ReadOnly Property Window() As IWin32Window
+            Public Overrides ReadOnly Property Window As IWin32Window
                 Get
                     ' This should always happen, but in case we never
                     ' got a load event we check.  We might not receive
@@ -161,7 +153,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' <summary>
             ''' Called to disable OLE undo.
             ''' </summary>
-            ''' <remarks></remarks>
             Private Sub DisableUndo()
                 If _undoEngine IsNot Nothing Then
 
@@ -183,7 +174,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' Called when our view is disposed.
             ''' </summary>
             ''' <param name="disposing"></param>
-            ''' <remarks></remarks>
             Protected Overrides Sub Dispose(disposing As Boolean)
 
                 Dim disposedView As Control = _view
@@ -201,7 +191,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                         _view = Nothing
                         DisableUndo()
                         Dim ds As DesignSurface = Surface
-                        If (ds IsNot Nothing) Then
+                        If ds IsNot Nothing Then
                             RemoveHandler ds.Loaded, AddressOf OnLoaded
                             RemoveHandler ds.Unloading, AddressOf OnSurfaceUnloading
                             RemoveHandler ds.Unloaded, AddressOf OnSurfaceUnloaded
@@ -210,7 +200,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
                     MyBase.Dispose(disposing)
                 Finally
-                    If (disposing AndAlso disposedView IsNot Nothing) Then
+                    If disposing AndAlso disposedView IsNot Nothing Then
                         RemoveHandler disposedView.GotFocus, AddressOf OnViewFocus
                         disposedView.Dispose()
                     End If
@@ -221,7 +211,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' <summary>
             ''' Called to enable OLE undo.
             ''' </summary>
-            ''' <remarks></remarks>
             Private Sub EnableUndo()
 
                 Debug.Assert(_undoEngine Is Nothing, "EnableUndo should only be called once.  Call DisableUndo before calling this again.")
@@ -230,12 +219,12 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 ' IOleUndoManager are both present.  If they're not,
                 ' don't hook up undo because it will throw anyway.
                 '
-                If (GetService(GetType(ComponentSerializationService)) IsNot Nothing) Then
+                If GetService(GetType(ComponentSerializationService)) IsNot Nothing Then
                     _undoEngine = New OleUndoEngine(Surface)
                     AddHandler _undoEngine.Undoing, AddressOf OnUndoing
                     AddHandler _undoEngine.Undone, AddressOf OnUndone
                     Dim c As IServiceContainer = DirectCast(GetService(GetType(IServiceContainer)), IServiceContainer)
-                    If (c IsNot Nothing) Then
+                    If c IsNot Nothing Then
                         c.AddService(GetType(UndoEngine), _undoEngine)
                     End If
                 End If
@@ -246,7 +235,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' We override this to enable / disable undo.  The undo engine
             ''' should be disabled if our view is cached for later.
             ''' </summary>
-            ''' <remarks></remarks>
             Protected Overrides Sub OnClose()
                 DisableUndo()
                 MyBase.OnClose()
@@ -257,12 +245,11 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' We override this to enable / disable undo.  The undo engine
             ''' should be disabled if our view is cached for later.
             ''' </summary>
-            ''' <remarks></remarks>
             Protected Overrides Sub OnCreate()
                 MyBase.OnCreate()
 
                 _host = DirectCast(GetService(GetType(IDesignerHost)), IDesignerHost)
-                If (_host IsNot Nothing AndAlso Not _host.Loading) Then
+                If _host IsNot Nothing AndAlso Not _host.Loading Then
                     EnableUndo()
                 End If
             End Sub
@@ -274,7 +261,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' </summary>
             ''' <param name="sender"></param>
             ''' <param name="e"></param>
-            ''' <remarks></remarks>
             Private Sub OnLoaded(sender As Object, e As LoadedEventArgs)
                 PopulateView()
                 EnableUndo()
@@ -288,7 +274,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' </summary>
             ''' <param name="sender"></param>
             ''' <param name="e"></param>
-            ''' <remarks></remarks>
             Private Sub OnSurfaceUnloading(sender As Object, e As EventArgs)
                 DisableUndo()
             End Sub
@@ -303,9 +288,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' </summary>
             ''' <param name="sender"></param>
             ''' <param name="e"></param>
-            ''' <remarks></remarks>
             Private Sub OnSurfaceUnloaded(sender As Object, e As EventArgs)
-                If (_view IsNot Nothing AndAlso _view.Controls.Count > 0) Then
+                If _view IsNot Nothing AndAlso _view.Controls.Count > 0 Then
                     Dim ctrl(_view.Controls.Count - 1) As Control
                     _view.Controls.CopyTo(ctrl, 0)
                     For Each c As Control In ctrl
@@ -320,9 +304,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' </summary>
             ''' <param name="sender"></param>
             ''' <param name="e"></param>
-            ''' <remarks></remarks>
             Private Sub OnUndoing(sender As Object, e As EventArgs)
-                If (_view IsNot Nothing AndAlso _view.IsHandleCreated) Then
+                If _view IsNot Nothing AndAlso _view.IsHandleCreated Then
                     NativeMethods.SendMessage(New HandleRef(_view, _view.Handle), NativeMethods.WM_SETREDRAW, 0, 0)
                     _undoCursor = Cursor.Current
                     Cursor.Current = Cursors.WaitCursor
@@ -335,9 +318,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' </summary>
             ''' <param name="sender"></param>
             ''' <param name="e"></param>
-            ''' <remarks></remarks>
             Private Sub OnUndone(sender As Object, e As EventArgs)
-                If (_view IsNot Nothing AndAlso _view.IsHandleCreated) Then
+                If _view IsNot Nothing AndAlso _view.IsHandleCreated Then
                     NativeMethods.SendMessage(New HandleRef(_view, _view.Handle), NativeMethods.WM_SETREDRAW, 1, 0)
                     _view.Invalidate(True)
                     Cursor.Current = _undoCursor
@@ -351,10 +333,9 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' </summary>
             ''' <param name="sender"></param>
             ''' <param name="e"></param>
-            ''' <remarks></remarks>
             Private Sub OnViewFocus(sender As Object, e As EventArgs)
                 Switches.TracePDFocus(TraceLevel.Warning, "DeferrableWindowPaneProviderServiceBase.DesignerWindowPaneBase.m_View.OnGotFocus (OnViewFocus)")
-                If (_view IsNot Nothing AndAlso _view.Controls.Count > 0) Then
+                If _view IsNot Nothing AndAlso _view.Controls.Count > 0 Then
                     'The view's first child should be the designer root view.  Since
                     '  our m_View is simply a Control and not a container control, we
                     '  need to forward focus manually to the designer's root view, otherwise
@@ -380,7 +361,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             '''    design surface.  If there was an error encountered
             '''    it will display the WSOD.
             ''' </summary>
-            ''' <remarks></remarks>
             Private Sub PopulateView()
 
                 _view.SuspendLayout()
@@ -392,13 +372,13 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     _loadError = False
                 Catch loadError As Exception
 
-                    Do While (TypeOf loadError Is TargetInvocationException AndAlso loadError.InnerException IsNot Nothing)
+                    Do While TypeOf loadError Is TargetInvocationException AndAlso loadError.InnerException IsNot Nothing
                         loadError = loadError.InnerException
                     Loop
 
                     Dim message As String = loadError.Message
 
-                    If (message Is Nothing OrElse message.Length = 0) Then
+                    If message Is Nothing OrElse message.Length = 0 Then
                         message = loadError.ToString()
                     End If
 
@@ -409,7 +389,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     _loadError = True
                 End Try
 
-                If (viewChild Is Nothing) Then
+                If viewChild Is Nothing Then
                     Dim er As String = My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_WindowPane_UnknownError
                     Dim errors As ArrayList = New ArrayList From {
                         er
@@ -449,8 +429,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' it will forward the command to the view.
             ''' </summary>
             ''' <param name="pfCommitFailed"></param>
-            ''' <returns></returns>
-            ''' <remarks></remarks>
             Public Function IVsWindowPaneCommit_CommitPendingEdit(ByRef pfCommitFailed As Integer) As Integer Implements IVsWindowPaneCommit.CommitPendingEdit
                 Dim viewAsIVsWindowPaneCommit As IVsWindowPaneCommit = Nothing
                 If Not _loadError AndAlso Surface IsNot Nothing Then
@@ -486,7 +464,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 ''' <summary>
                 ''' Overrides CreateParams to make sure it is created as a child window
                 ''' </summary>
-                Protected Overrides ReadOnly Property CreateParams() As CreateParams
+                Protected Overrides ReadOnly Property CreateParams As CreateParams
                     Get
                         Dim cp As CreateParams = MyBase.CreateParams()
                         cp.Style = cp.Style Or Constants.WS_CHILD Or Constants.WS_CLIPSIBLINGS

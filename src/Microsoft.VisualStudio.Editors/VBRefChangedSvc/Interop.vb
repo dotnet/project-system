@@ -12,25 +12,25 @@ Namespace Microsoft.VisualStudio.Editors.VBRefChangedSvc.Interop
     <Guid("B3017D1B-2FF7-4f22-828C-CD74B6A702DC")>
     <InterfaceType(ComInterfaceType.InterfaceIsIUnknown)>
     <CLSCompliant(False)>
-    <ComImport()>
+    <ComImport>
     Friend Interface IVbReferenceChangedService
 
-        <MethodImpl(MethodImplOptions.InternalCall), PreserveSig()>
+        <MethodImpl(MethodImplOptions.InternalCall), PreserveSig>
         Function ReferenceAdded(
-            <[In](), MarshalAs(UnmanagedType.IUnknown)> pHierarchy As Object,
-            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyPath As String,
-            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyName As String,
-            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyVersion As String,
-            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyInfo As String
+            <[In], MarshalAs(UnmanagedType.IUnknown)> pHierarchy As Object,
+            <[In], MarshalAs(UnmanagedType.BStr)> strAssemblyPath As String,
+            <[In], MarshalAs(UnmanagedType.BStr)> strAssemblyName As String,
+            <[In], MarshalAs(UnmanagedType.BStr)> strAssemblyVersion As String,
+            <[In], MarshalAs(UnmanagedType.BStr)> strAssemblyInfo As String
         ) As Integer
 
-        <MethodImpl(MethodImplOptions.InternalCall), PreserveSig()>
+        <MethodImpl(MethodImplOptions.InternalCall), PreserveSig>
         Function ReferenceRemoved(
-            <[In](), MarshalAs(UnmanagedType.IUnknown)> pHierarchy As Object,
-            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyPath As String,
-            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyName As String,
-            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyVersion As String,
-            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyInfo As String
+            <[In], MarshalAs(UnmanagedType.IUnknown)> pHierarchy As Object,
+            <[In], MarshalAs(UnmanagedType.BStr)> strAssemblyPath As String,
+            <[In], MarshalAs(UnmanagedType.BStr)> strAssemblyName As String,
+            <[In], MarshalAs(UnmanagedType.BStr)> strAssemblyVersion As String,
+            <[In], MarshalAs(UnmanagedType.BStr)> strAssemblyInfo As String
         ) As Integer
 
     End Interface

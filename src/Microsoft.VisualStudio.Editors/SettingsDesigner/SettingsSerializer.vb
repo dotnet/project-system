@@ -10,7 +10,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
     ''' Utility class to (de)serialize the contents of a DesignTimeSetting object 
     ''' given a stream reader/writer
     ''' </summary>
-    ''' <remarks></remarks>
     Friend NotInheritable Class SettingsSerializer
 
         Friend Class SettingsSerializerException
@@ -44,8 +43,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Demand create an XML Schema instance for .settings files
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         Private Shared ReadOnly Property Schema() As System.Xml.Schema.XmlSchema
             Get
                 Static schemaInstance As System.Xml.Schema.XmlSchema
@@ -63,7 +60,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Shared Sub SchemaValidationEventHandler(sender As Object, e As System.Xml.Schema.ValidationEventArgs)
             System.Diagnostics.Debug.Fail("Failed to load XML schema from manifest resource stream!")
             s_SchemaLoadFailed = True
@@ -72,7 +68,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Stores all validation errors from a ValidatingReader
         ''' </summary>
-        ''' <remarks></remarks>
         Private Class ValidationErrorBag
             Private m_ValidationErrors As New System.Collections.ArrayList
 
@@ -93,7 +88,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="Settings">Instance to populate</param>
         ''' <param name="Reader">Text reader on stream containing serialized settings</param>
-        ''' <remarks></remarks>
         Public Shared Sub Deserialize(Settings As DesignTimeSettings, Reader As TextReader, getRuntimeValue As Boolean)
             Dim XmlDoc As New XmlDocument With {
                 .XmlResolver = Nothing
@@ -142,7 +136,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ' Enable support of pre-Beta2 settings namespace files -- if we didn't find the root node
             '   using the new namespace, then try the old one
             '
-            If (RootNode Is Nothing) Then
+            If RootNode Is Nothing Then
 
                 XmlNamespaceManager.RemoveNamespace("Settings", SettingsSchemaUri)
                 XmlNamespaceManager.AddNamespace("Settings", SettingsSchemaUriOLD)
@@ -223,7 +217,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 '
                 Dim ValueNode As XmlNode = Nothing
                 ' First, unless explicitly told to only get runtime values, 
-                ' let's check if we have design-time specific values for this guy...
+                ' let's check if we have design-time specific values for this setting...
                 If Not getRuntimeValue Then
                     ValueNode = SettingNode.SelectSingleNode("./Settings:DesignTimeValue[@Profile=""(Default)""]", XmlNamespaceManager)
                 End If
@@ -244,7 +238,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="Settings">Instance to serialize</param>
         ''' <param name="Writer">Text writer on stream to serialize settings to</param>
-        ''' <remarks></remarks>
         Public Shared Sub Serialize(Settings As DesignTimeSettings, GeneratedClassNameSpace As String, ClassName As String, Writer As TextWriter, DeclareEncodingAs As System.Text.Encoding)
             Common.Switches.TraceSDSerializeSettings(TraceLevel.Info, "Serializing {0} settings", Settings.Count)
 

@@ -23,7 +23,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public T GetOption<T>(string category, string page, string option, T defaultValue)
         {
-            EnvDTE.Properties? properties = _dte.Value!.Properties[category, page];
+            DTE2? dte = _dte.Value;
+            Assumes.Present(dte);
+
+            EnvDTE.Properties? properties = dte.Properties[category, page];
 
             if (properties != null)
             {

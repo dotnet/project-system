@@ -20,7 +20,6 @@ namespace Microsoft.VisualStudio
         ///     </para>
         ///     <paramref name="comparable"/> is <see langword="null"/>.
         /// </exception>
-        /// <returns></returns>
         public static bool IsLaterThan(this IComparable source, IComparable comparable)
         {
             Requires.NotNull(source, nameof(source));
@@ -40,7 +39,6 @@ namespace Microsoft.VisualStudio
         ///     </para>
         ///     <paramref name="comparable"/> is <see langword="null"/>.
         /// </exception>
-        /// <returns></returns>
         public static bool IsLaterThanOrEqualTo(this IComparable source, IComparable comparable)
         {
             Requires.NotNull(source, nameof(source));
@@ -60,7 +58,6 @@ namespace Microsoft.VisualStudio
         ///     </para>
         ///     <paramref name="comparable"/> is <see langword="null"/>.
         /// </exception>
-        /// <returns></returns>
         public static bool IsEarlierThan(this IComparable source, IComparable comparable)
         {
             Requires.NotNull(source, nameof(source));
@@ -80,7 +77,6 @@ namespace Microsoft.VisualStudio
         ///     </para>
         ///     <paramref name="comparable"/> is <see langword="null"/>.
         /// </exception>
-        /// <returns></returns>
         public static bool IsEarlierThanOrEqualTo(this IComparable source, IComparable comparable)
         {
             Requires.NotNull(source, nameof(source));

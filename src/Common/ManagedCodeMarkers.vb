@@ -18,7 +18,7 @@ Namespace Microsoft.Internal.Performance
             End Sub
 
             ' ********************* Imported Win32 functions *********************
-            '///// Code markers test function imports
+            ' Code markers test function imports
 #If Codemarkers_IncludeAppEnum Then
             <DllImport(TestDllName, EntryPoint:="InitPerf")> _
             Public Shared Sub TestDllInitPerf(iApp As Integer)
@@ -33,7 +33,7 @@ Namespace Microsoft.Internal.Performance
             Public Shared Sub TestDllPerfCodeMarker(nTimerID As Integer, uiLow As UInteger, uiHigh As UInteger)
             End Sub
 
-            '///// Code markers product function imports
+            ' Code markers product function imports
 #If Codemarkers_IncludeAppEnum Then
             <DllImport(ProductDllName, EntryPoint:="InitPerf")> _
             Public Shared Sub ProductDllInitPerf(iApp As Integer)
@@ -48,7 +48,7 @@ Namespace Microsoft.Internal.Performance
             Public Shared Sub ProductDllPerfCodeMarker(nTimerID As Integer, uiLow As UInteger, uiHigh As UInteger)
             End Sub
 
-            '///// global native method imports
+            ' global native method imports
             <DllImport("kernel32.dll", CharSet:=CharSet.Unicode)>
             Public Shared Function FindAtom(lpString As String) As UShort
             End Function
@@ -115,7 +115,7 @@ Namespace Microsoft.Internal.Performance
         ' Checks to see if code markers are enabled by looking for a named ATOM
         Private Sub New()
             ' This ATOM will be set by the native Code Markers host
-            _fUseCodeMarkers = (NativeMethods.FindAtom(AtomName) <> 0)
+            _fUseCodeMarkers = NativeMethods.FindAtom(AtomName) <> 0
         End Sub 'New
 
         ' Implements sending the code marker value nTimerID.
@@ -158,7 +158,7 @@ Namespace Microsoft.Internal.Performance
             ' does the subkey exist
             Dim str As String = Nothing
             Using key As RegistryKey = hKey.OpenSubKey(strRegRoot & "\Performance")
-                If Not key Is Nothing Then
+                If key IsNot Nothing Then
                     ' reads the default value
                     str = key.GetValue("").ToString()
                 End If

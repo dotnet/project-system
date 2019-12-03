@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Explicit On
 Option Strict On
@@ -17,7 +17,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     '''   simply to create a new resource editor designer when requested by the
     '''   shell.
     ''' </summary>
-    ''' <remarks></remarks>
     <CLSCompliant(False),
     Guid("0407F754-C199-403e-B89B-1D8E1FF3DC79")>
     Friend NotInheritable Class ResourceEditorRefactorNotify
@@ -39,7 +38,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' nothing to do since we don't really store any state...
         ''' </summary>
-        ''' <remarks></remarks>
         Friend Sub New()
         End Sub
 

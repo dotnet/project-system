@@ -10,7 +10,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
     ''' <summary>
     ''' Utilities related to DTE projects and project items
     ''' </summary>
-    ''' <remarks></remarks>
     Friend NotInheritable Class DTEUtils
 
         Private Const PROJECTPROPERTY_BUILDACTION As String = "BuildAction"
@@ -18,7 +17,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <summary>
         ''' This is a shared class - disallow instantiation.
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub New()
         End Sub
 
@@ -26,8 +24,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' Retrieves the given project item's property, if it exists, else Nothing
         ''' </summary>
         ''' <param name="PropertyName">The name of the property to retrieve.</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Shared Function GetProjectItemProperty(ProjectItem As ProjectItem, PropertyName As String) As [Property]
             If ProjectItem.Properties Is Nothing Then
                 Return Nothing
@@ -48,8 +44,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' </summary>
         ''' <param name="Project">The DTE project</param>
         ''' <param name="VsCfgProvider">The IVsCfgProvider2 interface instance to look up the active configuration from</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Shared Function GetActiveConfiguration(Project As Project, VsCfgProvider As IVsCfgProvider2) As IVsCfg
             Dim VsCfg As IVsCfg = Nothing
             With GetActiveDTEConfiguration(Project)
@@ -63,8 +57,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' Given a DTE project, returns the active DTE configuration object for it
         ''' </summary>
         ''' <param name="Project">The DTE project</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Shared Function GetActiveDTEConfiguration(Project As Project) As Configuration
             Try
                 Return Project.ConfigurationManager.ActiveConfiguration
@@ -83,7 +75,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         '''   If this project system doesn't have that property, this call is a NOP.
         ''' </summary>
         ''' <param name="Item">The ProjectItem on which to set the property</param>
-        ''' <remarks></remarks>
         Public Shared Sub SetBuildAction(Item As ProjectItem, BuildAction As VSLangProj.prjBuildAction)
             Dim BuildActionProperty As [Property] = GetProjectItemProperty(Item, PROJECTPROPERTY_BUILDACTION)
             If BuildActionProperty IsNot Nothing Then

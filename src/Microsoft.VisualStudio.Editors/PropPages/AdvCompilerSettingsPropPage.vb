@@ -39,7 +39,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             WARNINGS_NONE
         End Enum
 
-        Protected Overrides ReadOnly Property ControlData() As PropertyControlData()
+        Protected Overrides ReadOnly Property ControlData As PropertyControlData()
             Get
                 If m_ControlData Is Nothing Then
 
@@ -174,10 +174,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 DebugInfoComboBox.SelectedIndex = -1
             Else
                 Dim stValue As String = TryCast(value, String)
-                If (Not stValue Is Nothing) AndAlso (stValue.Trim().Length > 0) Then
+                If (stValue IsNot Nothing) AndAlso (stValue.Trim().Length > 0) Then
 
-                    '// Need to special case pdb-only because it's stored in the property without the dash but it's
-                    '// displayed in the dialog with a dash.
+                    ' Need to special case pdb-only because it's stored in the property without the dash but it's
+                    ' displayed in the dialog with a dash.
 
                     If Not String.Equals(stValue, "pdbonly", StringComparison.OrdinalIgnoreCase) Then
                         DebugInfoComboBox.Text = stValue
@@ -185,7 +185,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         DebugInfoComboBox.Text = "pdb-only"
                     End If
                 Else
-                    DebugInfoComboBox.SelectedIndex = 0        '// Zero is the (none) entry in the list
+                    DebugInfoComboBox.SelectedIndex = 0        ' Zero is the (none) entry in the list
                 End If
             End If
             Return True

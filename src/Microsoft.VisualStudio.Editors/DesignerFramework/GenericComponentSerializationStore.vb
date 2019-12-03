@@ -30,7 +30,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <remarks>
         ''' 'cause this is a serializable, there is also a private Sub new - if we want to be able to 
-        ''' create instances of this class without using serialization, we better define this guy!
+        ''' create instances of this class without using serialization, we better define this constructor!
         '''</remarks>
         Public Sub New()
         End Sub
@@ -38,7 +38,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
         ' default impl of abstract base member.  see serialization store for details.
         '	
-        Public Overrides ReadOnly Property Errors() As ICollection
+        Public Overrides ReadOnly Property Errors As ICollection
             Get
                 Return Array.Empty(Of Object)
             End Get
@@ -50,7 +50,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '''   from being serialized into it.  Once closed, the serialization store 
         '''   may be saved (or deserialized).
         ''' </summary>
-        ''' <remarks></remarks>
         Public Overrides Sub Close()
             If _serializedState Is Nothing Then
                 Dim SerializedState As New ArrayList(_hashedObjectsToSerialize.Count)
@@ -92,7 +91,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="info">Serialization info</param>
         ''' <param name="context">Serialization context</param>
-        ''' <remarks></remarks>
         <Security.Permissions.SecurityPermission(Security.Permissions.SecurityAction.Demand, SerializationFormatter:=True)>
         Public Sub GetObjectData(info As SerializationInfo, context As StreamingContext) Implements ISerializable.GetObjectData
             info.AddValue(KEY_STATE, _serializedState)
@@ -105,7 +103,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="Info">Serialization info</param>
         ''' <param name="Context">Serialization context</param>
-        ''' <remarks></remarks>
         Private Sub New(Info As SerializationInfo, Context As StreamingContext)
             _serializedState = DirectCast(Info.GetValue(KEY_STATE, GetType(ArrayList)), ArrayList)
         End Sub
@@ -118,8 +115,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' Loads our state from a stream.
         ''' </summary>
         ''' <param name="Stream">The stream to load from</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Shared Function Load(Stream As Stream) As GenericComponentSerializationStore
             Dim f As New BinaryFormatter
             Return DirectCast(f.Deserialize(Stream), GenericComponentSerializationStore)
@@ -132,7 +127,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '''     to different streams.
         ''' </summary>
         ''' <param name="stream">The stream to save to</param>
-        ''' <remarks></remarks>
         Public Overrides Sub Save(Stream As Stream)
             Close()
 
@@ -200,7 +194,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="Component">The component from which we want to serialize something.</param>
         ''' <returns>The DataToSerialize object associated with this component.</returns>
-        ''' <remarks></remarks>
         Private Function GetSerializationData(Component As Object) As ObjectData
             Dim Data As ObjectData
             If _hashedObjectsToSerialize.ContainsKey(Component) Then
@@ -233,7 +226,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '''     object to be used.
         ''' </summary>
         ''' <param name="Container">The container to add deserialized objects to (or Nothing if none)</param>
-        ''' <remarks></remarks>
         Friend Sub DeserializeTo(Container As IContainer)
             DeserializeHelper(Container, True)
         End Sub
@@ -246,7 +238,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '''     that are created that implement IComponent will be added to the container. 
         ''' </summary>
         ''' <returns>The set of components that were deserialized.</returns>
-        ''' <remarks></remarks>
         Friend Function Deserialize() As ICollection
             Return DeserializeHelper(Nothing, False)
         End Function
@@ -260,7 +251,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="Container">The container to add deserialized objects to (or Nothing if none)</param>
         ''' <returns>The list of objects that were deserialized.</returns>
-        ''' <remarks></remarks>
         Friend Function Deserialize(Container As IContainer) As ICollection
             Return DeserializeHelper(Container, False)
         End Function
@@ -274,7 +264,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="RecycleInstances">If True, we are applying property changes to existing
         '''   instances of components (this is always the case for Undo/Redo).</param>
         ''' <returns>The objects which have been serialized.</returns>
-        ''' <remarks></remarks>
         Private Function DeserializeHelper(Container As IContainer, RecycleInstances As Boolean) As ICollection
             Dim NewObjects As New ArrayList(_serializedState.Count)
 
@@ -343,8 +332,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '''   object instance. (either the entire object itself, or a set of
         '''   its properties)
         ''' </summary>
-        ''' <remarks></remarks>
-        <Serializable()>
+        <Serializable>
         Protected Class ObjectData
 
             'Backing for public properties
@@ -357,21 +345,18 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' Constructor
             ''' </summary>
             ''' <param name="Value">The component from which we want to serialize stuff.</param>
-            ''' <remarks></remarks>
             Public Sub New(Value As Object)
                 Requires.NotNull(Value, NameOf(Value))
 
                 ' If it is an IComponent, we'll try to get its name from 
                 ' its site
-                If TypeOf Value Is IComponent Then
-                    Dim comp As IComponent = DirectCast(Value, IComponent)
-                    If comp.Site IsNot Nothing Then
-                        _objectName = comp.Site.Name
-                    End If
+                Dim comp = TryCast(Value, IComponent)
+                If comp IsNot Nothing AndAlso comp.Site IsNot Nothing Then
+                    _objectName = comp.Site.Name
                 End If
 
                 If _objectName = "" Then
-                    ' We better create a unique name for this guy...
+                    ' We better create a unique name for this...
                     _objectName = Guid.NewGuid.ToString().Replace("-", "_")
                 End If
 
@@ -382,9 +367,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' <summary>
             ''' Get tha name of this object
             ''' </summary>
-            ''' <value></value>
-            ''' <remarks></remarks>
-            Public ReadOnly Property Name() As String
+            Public ReadOnly Property Name As String
                 Get
                     Return _objectName
                 End Get
@@ -393,9 +376,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' <summary>
             ''' The object from which we want to serialize stuff.
             ''' </summary>
-            ''' <value></value>
-            ''' <remarks></remarks>
-            Public ReadOnly Property Value() As Object
+            Public ReadOnly Property Value As Object
                 Get
                     Return _value
                 End Get
@@ -406,13 +387,11 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' If True, the entire Resource instance should be serialized.  If false,
             '''   then only the properties in PropertiesToSerialize should be serialized.
             ''' </summary>
-            ''' <value></value>
-            ''' <remarks></remarks>
-            Public Property IsEntireObject() As Boolean
+            Public Property IsEntireObject As Boolean
                 Get
                     Return _isEntireObject
                 End Get
-                Set(Value As Boolean)
+                Set
                     If Value AndAlso _members IsNot Nothing Then
                         _members.Clear()
                     End If
@@ -425,9 +404,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' A list of PropertyDescriptors representing the properties on
             '''   the Resource which should be serialized.
             ''' </summary>
-            ''' <value></value>
-            ''' <remarks></remarks>
-            Public ReadOnly Property Members() As ArrayList
+            Public ReadOnly Property Members As ArrayList
                 Get
                     If _members Is Nothing Then
                         _members = New ArrayList
@@ -447,8 +424,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '''   Resource instance (either the entire Resource itself, or a set of
         '''   its properties)
         ''' </summary>
-        ''' <remarks></remarks>
-        <Serializable()>
+        <Serializable>
         Private Class SerializedObjectData
 
             'Backing for public properties
@@ -460,7 +436,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' Constructor
             ''' </summary>
             ''' <param name="Value">The component from which we want to serialize stuff.</param>
-            ''' <remarks></remarks>
             Friend Sub New(Value As ObjectData)
                 Requires.NotNull(Value, NameOf(Value))
 
@@ -472,7 +447,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' Constructor
             ''' </summary>
             ''' <param name="Value">The component from which we want to serialize stuff.</param>
-            ''' <remarks></remarks>
             Public Sub New(Value As ObjectData, [Property] As PropertyDescriptor)
                 Requires.NotNull(Value, NameOf(Value))
                 Requires.NotNull([Property], NameOf([Property]))
@@ -486,21 +460,19 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' If True, the entire Resource instance should be serialized.  If false,
             '''   then only the properties in PropertiesToSerialize should be serialized.
             ''' </summary>
-            ''' <value></value>
-            ''' <remarks></remarks>
-            Friend ReadOnly Property IsEntireObject() As Boolean
+            Friend ReadOnly Property IsEntireObject As Boolean
                 Get
                     Return _propertyName = ""
                 End Get
             End Property
 
-            Friend ReadOnly Property ObjectName() As String
+            Friend ReadOnly Property ObjectName As String
                 Get
                     Return _objectName
                 End Get
             End Property
 
-            Friend ReadOnly Property PropertyName() As String
+            Friend ReadOnly Property PropertyName As String
                 Get
                     Return _propertyName
                 End Get
@@ -511,7 +483,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     Return Array.Empty(Of Byte)
                 Else
                     Dim MemoryStream As New MemoryStream
-                    Call (New BinaryFormatter()).Serialize(MemoryStream, [Object])
+                    Call New BinaryFormatter().Serialize(MemoryStream, [Object])
                     Return MemoryStream.ToArray()
                 End If
             End Function

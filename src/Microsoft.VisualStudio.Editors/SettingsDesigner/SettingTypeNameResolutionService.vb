@@ -13,7 +13,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
     '''    types
     ''' 3) The .NET FX type name. This is what we present to the single file generator and the settings global object.
     ''' </summary>
-    ''' <remarks></remarks>
     Friend Class SettingTypeNameResolutionService
 
         Private Enum Language
@@ -58,31 +57,28 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             _fxTypeNameToLanguageSpecific = New Dictionary(Of String, String)(16, comparer)
             If language <> Language.UNKNOWN Then
                 ' add language specific type names for C# and VB respectively
-                AddEntry((GetType(Boolean).FullName), New String() {"bool", "Boolean"}(language))
-                AddEntry((GetType(Byte).FullName), New String() {"byte", "Byte"}(language))
-                AddEntry((GetType(Char).FullName), New String() {"char", "Char"}(language))
-                AddEntry((GetType(Decimal).FullName), New String() {"decimal", "Decimal"}(language))
-                AddEntry((GetType(Double).FullName), New String() {"double", "Double"}(language))
-                AddEntry((GetType(Short).FullName), New String() {"short", "Short"}(language))
-                AddEntry((GetType(Integer).FullName), New String() {"int", "Integer"}(language))
-                AddEntry((GetType(Long).FullName), New String() {"long", "Long"}(language))
-                AddEntry((GetType(SByte).FullName), New String() {"sbyte", "SByte"}(language))
-                AddEntry((GetType(Single).FullName), New String() {"float", "Single"}(language))
-                AddEntry((GetType(UShort).FullName), New String() {"ushort", "UShort"}(language))
-                AddEntry((GetType(UInteger).FullName), New String() {"uint", "UInteger"}(language))
-                AddEntry((GetType(ULong).FullName), New String() {"ulong", "ULong"}(language))
-                AddEntry((GetType(String).FullName), New String() {"string", "String"}(language))
-                AddEntry((GetType(Date).FullName), New String() {Nothing, "Date"}(language))
+                AddEntry(GetType(Boolean).FullName, New String() {"bool", "Boolean"}(language))
+                AddEntry(GetType(Byte).FullName, New String() {"byte", "Byte"}(language))
+                AddEntry(GetType(Char).FullName, New String() {"char", "Char"}(language))
+                AddEntry(GetType(Decimal).FullName, New String() {"decimal", "Decimal"}(language))
+                AddEntry(GetType(Double).FullName, New String() {"double", "Double"}(language))
+                AddEntry(GetType(Short).FullName, New String() {"short", "Short"}(language))
+                AddEntry(GetType(Integer).FullName, New String() {"int", "Integer"}(language))
+                AddEntry(GetType(Long).FullName, New String() {"long", "Long"}(language))
+                AddEntry(GetType(SByte).FullName, New String() {"sbyte", "SByte"}(language))
+                AddEntry(GetType(Single).FullName, New String() {"float", "Single"}(language))
+                AddEntry(GetType(UShort).FullName, New String() {"ushort", "UShort"}(language))
+                AddEntry(GetType(UInteger).FullName, New String() {"uint", "UInteger"}(language))
+                AddEntry(GetType(ULong).FullName, New String() {"ulong", "ULong"}(language))
+                AddEntry(GetType(String).FullName, New String() {"string", "String"}(language))
+                AddEntry(GetType(Date).FullName, New String() {Nothing, "Date"}(language))
             End If
         End Sub
 
         ''' <summary>
         ''' Is the current language case sensitive?
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public ReadOnly Property IsCaseSensitive() As Boolean
+        Public ReadOnly Property IsCaseSensitive As Boolean
             Get
                 Return _caseSensitive
             End Get
@@ -92,8 +88,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' show in the UI
         ''' </summary>
         ''' <param name="typeName"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function PersistedSettingTypeNameToTypeDisplayName(typeName As String) As String
             Dim displayName As String = Nothing
             If String.Equals(typeName, SettingsSerializer.CultureInvariantVirtualTypeNameConnectionString, StringComparison.Ordinal) Then
@@ -111,8 +105,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' that we'll use when building the CodeDom tree
         ''' </summary>
         ''' <param name="typeName"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Shared Function PersistedSettingTypeNameToFxTypeName(typeName As String) As String
             If String.Equals(typeName, SettingsSerializer.CultureInvariantVirtualTypeNameConnectionString, StringComparison.Ordinal) Then
                 Return GetType(String).FullName
@@ -128,8 +120,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' .settings file
         ''' </summary>
         ''' <param name="typeName"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function TypeDisplayNameToPersistedSettingTypeName(typeName As String) As String
             Dim persistedTypeName As String = Nothing
             If String.Equals(typeName, DisplayTypeNameConnectionString, StringComparison.Ordinal) Then
@@ -144,14 +134,14 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         End Function
 
 #Region "Localized name of virtual types"
-        Private Shared ReadOnly Property DisplayTypeNameConnectionString() As String
+        Private Shared ReadOnly Property DisplayTypeNameConnectionString As String
             Get
                 Static VirtualTypeNameConnectionString As String = "(" & My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ComboBoxItem_ConnectionStringType & ")"
                 Return VirtualTypeNameConnectionString
             End Get
         End Property
 
-        Private Shared ReadOnly Property DisplayTypeNameWebReference() As String
+        Private Shared ReadOnly Property DisplayTypeNameWebReference As String
             Get
                 Static VirtualTypeNameWebReference As String = "(" & My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ComboBoxItem_WebReferenceType & ")"
                 Return VirtualTypeNameWebReference

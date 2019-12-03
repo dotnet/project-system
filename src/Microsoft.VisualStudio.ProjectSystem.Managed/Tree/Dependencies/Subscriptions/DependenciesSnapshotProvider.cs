@@ -84,11 +84,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider)
             : base(commonServices.ThreadingService.JoinableTaskContext)
         {
-            Requires.NotNull(tasksService, nameof(tasksService));
-            Requires.NotNull(activeConfiguredProjectSubscriptionService, nameof(activeConfiguredProjectSubscriptionService));
-            Requires.NotNull(targetFrameworkProvider, nameof(targetFrameworkProvider));
-            Requires.NotNull(aggregateSnapshotProvider, nameof(aggregateSnapshotProvider));
-
             _commonServices = commonServices;
             _tasksService = tasksService;
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
@@ -207,7 +202,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             }
         }
 
-        /// <inheritdoc />
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
             await UpdateProjectContextAndSubscriptionsAsync();
@@ -273,15 +267,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 }
 
                 ITargetFramework targetFramework =
-                    string.IsNullOrEmpty(e.TargetShortOrFullName) || TargetFramework.Any.Equals(e.TargetShortOrFullName)
+                    Strings.IsNullOrEmpty(e.TargetShortOrFullName) || TargetFramework.Any.Equals(e.TargetShortOrFullName)
                         ? TargetFramework.Any
-                        : _targetFrameworkProvider.GetTargetFramework(e.TargetShortOrFullName!) ?? TargetFramework.Any;
+                        : _targetFrameworkProvider.GetTargetFramework(e.TargetShortOrFullName) ?? TargetFramework.Any;
 
                 UpdateDependenciesSnapshot(targetFramework, e.Changes, catalogs: null, targetFrameworks: default, activeTargetFramework: null, e.Token);
             }
         }
 
-        /// <inheritdoc />
         protected override Task DisposeCoreAsync(bool initialized)
         {
             DisposeCore();
@@ -337,7 +330,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     return null;
                 }
 
-                ImmutableHashSet<string>.Builder itemSpecs = ImmutableHashSet.CreateBuilder(StringComparer.OrdinalIgnoreCase);
+                ImmutableHashSet<string>.Builder itemSpecs = ImmutableHashSet.CreateBuilder(StringComparers.ItemNames);
 
                 foreach (ProjectItemInstance item in projectItems)
                 {
@@ -358,7 +351,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             }
         }
 
-        /// <inheritdoc />
         public async Task<AggregateCrossTargetProjectContext?> GetCurrentAggregateProjectContextAsync()
         {
             if (IsDisposing || IsDisposed)
@@ -371,7 +363,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             return _context.Current;
         }
 
-        /// <inheritdoc />
         public ConfiguredProject? GetConfiguredProject(ITargetFramework target)
         {
             return _context.Current!.GetInnerConfiguredProject(target);

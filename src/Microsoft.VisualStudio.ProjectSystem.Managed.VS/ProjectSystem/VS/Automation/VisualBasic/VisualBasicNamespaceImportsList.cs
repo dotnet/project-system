@@ -78,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
             {
                 lock (_lock)
                 {
-                    IOrderedEnumerable<string> sortedItems = projectChange.After.Items.Keys.OrderBy(s => s, StringComparer.OrdinalIgnoreCase);
+                    IOrderedEnumerable<string> sortedItems = projectChange.After.Items.Keys.OrderBy(s => s, StringComparers.ItemNames);
                     int newListCount = sortedItems.Count();
                     int oldListCount = _list.Count;
 
@@ -87,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
                     while (trackingIndex < oldListCount && trackingIndex < newListCount)
                     {
                         string incomingItem = sortedItems.ElementAt(trackingIndex);
-                        if (string.Equals(_list[trackingIndex], incomingItem, StringComparison.OrdinalIgnoreCase))
+                        if (string.Equals(_list[trackingIndex], incomingItem, StringComparisons.ItemNames))
                         {
                             trackingIndex++;
                             continue;
@@ -159,7 +159,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
 
             lock (_lock)
             {
-                return _list.Any(l => string.Equals(bstrImport, l, StringComparison.OrdinalIgnoreCase));
+                return _list.Any(l => string.Equals(bstrImport, l, StringComparisons.ItemNames));
             }
         }
 

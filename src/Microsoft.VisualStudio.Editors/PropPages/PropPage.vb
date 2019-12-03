@@ -29,13 +29,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     Public NotInheritable Class ApplicationPropPageComClass 'See class hierarchy comments above
         Inherits VBPropPageBase
 
-        Protected Overrides ReadOnly Property Title() As String
+        Protected Overrides ReadOnly Property Title As String
             Get
                 Return My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_ApplicationTitle
             End Get
         End Property
 
-        Protected Overrides ReadOnly Property ControlType() As Type
+        Protected Overrides ReadOnly Property ControlType As Type
             Get
                 Return GetType(ApplicationPropPage)
             End Get
@@ -56,13 +56,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     Public NotInheritable Class ApplicationWithMyPropPageComClass 'See class hierarchy comments above
         Inherits VBPropPageBase
 
-        Protected Overrides ReadOnly Property Title() As String
+        Protected Overrides ReadOnly Property Title As String
             Get
                 Return My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_ApplicationTitle
             End Get
         End Property
 
-        Protected Overrides ReadOnly Property ControlType() As Type
+        Protected Overrides ReadOnly Property ControlType As Type
             Get
                 Return GetType(ApplicationPropPageVBWinForms)
             End Get
@@ -83,13 +83,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Inherits VBPropPageBase
 
 
-        Protected Overrides ReadOnly Property Title() As String
+        Protected Overrides ReadOnly Property Title As String
             Get
                 Return My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_ApplicationTitle
             End Get
         End Property
 
-        Protected Overrides ReadOnly Property ControlType() As Type
+        Protected Overrides ReadOnly Property ControlType As Type
             Get
                 Return GetType(WPF.ApplicationPropPageVBWPF)
             End Get
@@ -109,13 +109,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     Public NotInheritable Class CSharpApplicationPropPageComClass 'See class hierarchy comments above
         Inherits VBPropPageBase
 
-        Protected Overrides ReadOnly Property Title() As String
+        Protected Overrides ReadOnly Property Title As String
             Get
                 Return My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_ApplicationTitle
             End Get
         End Property
 
-        Protected Overrides ReadOnly Property ControlType() As Type
+        Protected Overrides ReadOnly Property ControlType As Type
             Get
                 Return GetType(CSharpApplicationPropPage)
             End Get
@@ -137,13 +137,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     Public NotInheritable Class PackagePropPageComClass 'See class hierarchy comments above
         Inherits VBPropPageBase
 
-        Protected Overrides ReadOnly Property Title() As String
+        Protected Overrides ReadOnly Property Title As String
             Get
                 Return My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_PackageTitle
             End Get
         End Property
 
-        Protected Overrides ReadOnly Property ControlType() As Type
+        Protected Overrides ReadOnly Property ControlType As Type
             Get
                 Return GetType(PackagePropPage)
             End Get
@@ -163,13 +163,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     Public NotInheritable Class CompilePropPageComClass
         Inherits VBPropPageBase
 
-        Protected Overrides ReadOnly Property Title() As String
+        Protected Overrides ReadOnly Property Title As String
             Get
                 Return My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_CompileTitle
             End Get
         End Property
 
-        Protected Overrides ReadOnly Property ControlType() As Type
+        Protected Overrides ReadOnly Property ControlType As Type
             Get
                 Return GetType(CompilePropPage2)
             End Get
@@ -180,7 +180,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
 
-        Protected Overrides Property DefaultSize() As Drawing.Size
+        Protected Overrides Property DefaultSize As Drawing.Size
             Get
                 ' This is somewhat hacky, but the compile's size page can sometimes exceed the default
                 ' minimum size for a property page. The PropPageDesignerView will query for this in order to
@@ -190,7 +190,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 ' should be fine
                 Return New Drawing.Size(Integer.MaxValue, Integer.MaxValue)
             End Get
-            Set(value As Drawing.Size)
+            Set
                 MyBase.DefaultSize = value
             End Set
         End Property
@@ -205,13 +205,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     Public NotInheritable Class ServicesPropPageComClass
         Inherits VBPropPageBase
 
-        Protected Overrides ReadOnly Property Title() As String
+        Protected Overrides ReadOnly Property Title As String
             Get
                 Return My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Services
             End Get
         End Property
 
-        Protected Overrides ReadOnly Property ControlType() As Type
+        Protected Overrides ReadOnly Property ControlType As Type
             Get
                 Return GetType(ServicesPropPage)
             End Get
@@ -231,13 +231,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     Public NotInheritable Class DebugPropPageComClass
         Inherits VBPropPageBase
 
-        Protected Overrides ReadOnly Property Title() As String
+        Protected Overrides ReadOnly Property Title As String
             Get
                 Return My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_DebugTitle
             End Get
         End Property
 
-        Protected Overrides ReadOnly Property ControlType() As Type
+        Protected Overrides ReadOnly Property ControlType As Type
             Get
                 Return GetType(DebugPropPage)
             End Get
@@ -257,13 +257,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     Public NotInheritable Class ReferencePropPageComClass
         Inherits VBPropPageBase
 
-        Protected Overrides ReadOnly Property Title() As String
+        Protected Overrides ReadOnly Property Title As String
             Get
                 Return My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_ReferencesTitle
             End Get
         End Property
 
-        Protected Overrides ReadOnly Property ControlType() As Type
+        Protected Overrides ReadOnly Property ControlType As Type
             Get
                 Return GetType(ReferencePropPage)
             End Get
@@ -283,13 +283,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     Public NotInheritable Class BuildPropPageComClass
         Inherits VBPropPageBase
 
-        Protected Overrides ReadOnly Property Title() As String
+        Protected Overrides ReadOnly Property Title As String
             Get
                 Return My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_BuildTitle
             End Get
         End Property
 
-        Protected Overrides ReadOnly Property ControlType() As Type
+        Protected Overrides ReadOnly Property ControlType As Type
             Get
                 Return GetType(BuildPropPage)
             End Get
@@ -308,13 +308,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     Public NotInheritable Class BuildEventsPropPageComClass
         Inherits VBPropPageBase
 
-        Protected Overrides ReadOnly Property Title() As String
+        Protected Overrides ReadOnly Property Title As String
             Get
                 Return My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_BuildEventsTitle
             End Get
         End Property
 
-        Protected Overrides ReadOnly Property ControlType() As Type
+        Protected Overrides ReadOnly Property ControlType As Type
             Get
                 Return GetType(BuildEventsPropPage)
             End Get
@@ -333,13 +333,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     Public NotInheritable Class ReferencePathsPropPageComClass
         Inherits VBPropPageBase
 
-        Protected Overrides ReadOnly Property Title() As String
+        Protected Overrides ReadOnly Property Title As String
             Get
                 Return My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_ReferencePathsTitle
             End Get
         End Property
 
-        Protected Overrides ReadOnly Property ControlType() As Type
+        Protected Overrides ReadOnly Property ControlType As Type
             Get
                 Return GetType(ReferencePathsPropPage)
             End Get
@@ -358,13 +358,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     Public NotInheritable Class CodeAnalysisPropPageComClass 'See class hierarchy comments above
         Inherits VBPropPageBase
 
-        Protected Overrides ReadOnly Property Title() As String
+        Protected Overrides ReadOnly Property Title As String
             Get
                 Return My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_CodeAnalysisTitle
             End Get
         End Property
 
-        Protected Overrides ReadOnly Property ControlType() As Type
+        Protected Overrides ReadOnly Property ControlType As Type
             Get
                 Return GetType(CodeAnalysisPropPage)
             End Get

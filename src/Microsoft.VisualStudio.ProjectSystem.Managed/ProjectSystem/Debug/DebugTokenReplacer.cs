@@ -6,8 +6,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     /// <summary>
@@ -97,7 +95,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 return Task.FromResult(rawString);
             }
 
-            string expandedString = expandEnvironmentVars ? EnvironmentHelper.ExpandEnvironmentVariables(rawString) : rawString;
+            string expandedString = expandEnvironmentVars
+                ? EnvironmentHelper.ExpandEnvironmentVariables(rawString)
+                : rawString;
 
             return ReplaceMSBuildTokensInStringAsync(expandedString);
         }
@@ -108,7 +108,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             if (matches.Count == 0)
                 return rawString;
 
-            ConfiguredProject configuredProject = await ActiveDebugFrameworkService.GetConfiguredProjectForActiveFrameworkAsync();
+            ConfiguredProject? configuredProject = await ActiveDebugFrameworkService.GetConfiguredProjectForActiveFrameworkAsync();
+
+            Assumes.NotNull(configuredProject);
 
             return await ProjectAccessor.OpenProjectForReadAsync(configuredProject, project =>
             {

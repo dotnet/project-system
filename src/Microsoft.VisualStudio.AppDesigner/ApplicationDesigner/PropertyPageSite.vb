@@ -12,7 +12,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
     ''' Provides specific limited functionality we need from the owner of the
     '''   property page site (ApplicationDesignerView).
     ''' </summary>
-    ''' <remarks></remarks>
     Public Interface IPropertyPageSiteOwner
         Function GetLocaleID() As UInteger
         Sub DsMsgBox(ex As Exception, Optional HelpLink As String = Nothing)
@@ -24,7 +23,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
     ''' This class provides the IPropertyPageSite implementation for the property pages
     ''' It also drives immediate apply functionality when 
     ''' </summary>
-    ''' <remarks></remarks>
     Public Class PropertyPageSite
         Implements OleInterop.IPropertyPageSite
         Implements IDisposable
@@ -45,7 +43,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="View">An IPropertyPageSiteOwner implementation.  Generally this is the
         '''   ApplicationDesignerView, except for unit testing.</param>
         ''' <param name="PropPage"></param>
-        ''' <remarks></remarks>
         Public Sub New(View As IPropertyPageSiteOwner, PropPage As OleInterop.IPropertyPage)
             Debug.Assert(View IsNot Nothing AndAlso PropPage IsNot Nothing)
             _appDesView = View
@@ -58,13 +55,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' The service provider to delegate to when responding to QueryService requests (for both
         '''   native and managed IServiceProvider).
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public Property BackingServiceProvider() As IServiceProvider
+        Public Property BackingServiceProvider As IServiceProvider
             Get
                 Return _backingServiceProvider
             End Get
-            Set(value As IServiceProvider)
+            Set
 #If DEBUG Then
                 If value IsNot Nothing Then
                     Dim NativeServiceProvider As OleInterop.IServiceProvider = TryCast(value.GetService(GetType(OleInterop.IServiceProvider)), OleInterop.IServiceProvider)
@@ -84,16 +79,16 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''   point or another.  The flag will have to be set to False when the project designer is saved, because it
         '''   won't normally be set to False by the page.
         ''' </summary>
-        Public Property HasBeenSetDirty() As Boolean
+        Public Property HasBeenSetDirty As Boolean
             Get
                 Return _hasBeenSetDirty
             End Get
-            Set(value As Boolean)
+            Set
                 _hasBeenSetDirty = value
             End Set
         End Property
 
-        Friend ReadOnly Property Owner() As IPropertyPageSiteOwner
+        Friend ReadOnly Property Owner As IPropertyPageSiteOwner
             Get
                 Return _appDesView
             End Get
@@ -190,7 +185,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Commits any pending changes on the page
         ''' </summary>
         ''' <returns>return False if it failed</returns>
-        ''' <remarks></remarks>
         Public Function CommitPendingChanges() As Boolean
             If Not ApplyStatusChange(PROPPAGESTATUS_VALIDATE) Then
                 Return False
@@ -202,7 +196,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Instructs the page site to process a keystroke if it desires.
         ''' </summary>
         ''' <param name="pMsg"></param>
-        ''' <returns></returns>
         ''' <remarks>
         ''' This function can be called by a property page to give the site a chance to a process a message
         '''   before the page does.  Return S_OK to indicate we have handled it, S_FALSE to indicate we did not
@@ -220,7 +213,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Disposes of any the doc data
         ''' </summary>
-        ''' <remarks></remarks>
         Public Overloads Sub Dispose() Implements IDisposable.Dispose
             Dispose(True)
         End Sub
@@ -244,8 +236,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''   it to the service provider passed in through the constructor.
         ''' </summary>
         ''' <param name="serviceType"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function GetService(serviceType As Type) As Object Implements IServiceProvider.GetService
             'A couple of specific services we delegate to the application designer, but other than
             '  those exceptions, we want the services coming from the passed-in backing service (which
@@ -280,7 +270,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="guidService"></param>
         ''' <param name="riid"></param>
         ''' <param name="ppvObject"></param>
-        ''' <returns></returns>
         ''' <remarks>
         ''' This is important to allow native property pages to get to services
         '''   like the IVsWindowFrame that the property page is hosted in, which is

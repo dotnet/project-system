@@ -90,7 +90,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         private static VisualStudioWaitContext CreateWrongType(string title, string message, bool allowCancel)
         {
             var threadedWaitDialogFactoryMock = new Mock<IVsThreadedWaitDialogFactory>();
-            var threadedWaitDialog = new Mock<IVsThreadedWaitDialog2>().Object;
             threadedWaitDialogFactoryMock
                 .Setup(m => m.CreateInstance(out It.Ref<IVsThreadedWaitDialog2>.IsAny))
                 .Callback(new CreateInstanceCallback((out IVsThreadedWaitDialog2 ppIVsThreadedWaitDialog) =>

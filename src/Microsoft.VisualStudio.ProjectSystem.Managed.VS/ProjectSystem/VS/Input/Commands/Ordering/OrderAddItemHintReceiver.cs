@@ -24,8 +24,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         [ImportingConstructor]
         public OrderAddItemHintReceiver(IProjectAccessor accessor)
         {
-            Requires.NotNull(accessor, nameof(accessor));
-
             _accessor = accessor;
         }
 

@@ -160,7 +160,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             await applyChangesToWorkspace.DisposeAsync();
 
-            var context = IWorkspaceProjectContextMockFactory.Create();
             Assert.Throws<ObjectDisposedException>(() =>
             {
                 applyChangesToWorkspace.GetProjectEvaluationRules();
@@ -174,7 +173,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             await applyChangesToWorkspace.DisposeAsync();
 
-            var context = IWorkspaceProjectContextMockFactory.Create();
             Assert.Throws<ObjectDisposedException>(() =>
             {
                 applyChangesToWorkspace.GetProjectBuildRules();

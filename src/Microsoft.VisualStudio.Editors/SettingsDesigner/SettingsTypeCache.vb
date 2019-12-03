@@ -8,7 +8,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
     ''' Wrapper class for the settings type resolver that caches previously resolved
     ''' type names.
     ''' </summary>
-    ''' <remarks></remarks>
     Friend Class SettingsTypeCache
         Implements IDisposable
 
@@ -46,7 +45,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Given a "normal" ITypeResolutionService, create an instance of the settingstypecache
         ''' </summary>
         ''' <param name="typeResolutionService"></param>
-        ''' <remarks></remarks>
         Public Sub New(vsHierarchy As IVsHierarchy, ItemId As UInteger, typeResolutionService As ComponentModel.Design.ITypeResolutionService, caseSensitive As Boolean)
             If typeResolutionService Is Nothing OrElse vsHierarchy Is Nothing Then
                 Debug.Fail("We really need a type resolution service or IVsHierarchy in order to do anything interesting!")
@@ -80,8 +78,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' The cache is updated with the returned type to improve performance of subsequent resolves...
         ''' </summary>
         ''' <param name="typeName"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function GetSettingType(typeName As String) As Type
             ' First, check our list of well known types...
             For Each wellKnownType As Type In GetWellKnownTypes()
@@ -97,8 +93,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Get the list of "well known" types (i.e. types that we don't need any type resolution service
         ''' in order to resolve...
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function GetWellKnownTypes() As Type()
             Return _multiTargetService.GetSupportedTypes(_wellKnownTypes)
         End Function
@@ -107,8 +101,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Is the given type a well known type?
         ''' </summary>
         ''' <param name="type"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function IsWellKnownType(type As Type) As Boolean
             For Each wellKnownType As Type In GetWellKnownTypes()
                 If wellKnownType Is type Then
@@ -124,8 +116,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="persistedSettingTypeName"></param>
         ''' <param name="caseSensitive"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function ResolveType(persistedSettingTypeName As String, caseSensitive As Boolean) As Type
             Dim t As Type
 

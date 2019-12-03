@@ -57,16 +57,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                 return;
             }
 
-            var cachedDependencyToMatchingResultsMap = new Dictionary<string, HashSet<IDependency>>(StringComparer.OrdinalIgnoreCase);
-            var searchResultsPerContext = new Dictionary<string, HashSet<IDependency>>(StringComparer.OrdinalIgnoreCase);
+            var cachedDependencyToMatchingResultsMap = new Dictionary<string, HashSet<IDependency>>(StringComparers.DependencyTreeIds);
+            var searchResultsPerContext = new Dictionary<string, HashSet<IDependency>>(StringComparers.Paths);
 
             System.Collections.Generic.IReadOnlyCollection<DependenciesSnapshot> snapshots = AggregateSnapshotProvider.GetSnapshots();
 
             foreach (DependenciesSnapshot snapshot in snapshots)
             {
-                searchResultsPerContext[snapshot.ProjectPath] = SearchFlat(
-                    searchTerm,
-                    snapshot);
+                searchResultsPerContext[snapshot.ProjectPath] = SearchFlat(searchTerm, snapshot);
             }
 
             foreach (DependenciesSnapshot snapshot in snapshots)
@@ -75,12 +73,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                 HashSet<IDependency> matchedDependencies = searchResultsPerContext[snapshot.ProjectPath];
 
                 using var scope = new GraphTransactionScope();
+
                 foreach (IDependency topLevelDependency in allTopLevelDependencies)
                 {
                     TargetedDependenciesSnapshot targetedSnapshot = snapshot.DependenciesByTargetFramework[topLevelDependency.TargetFramework];
 
-                    if (!cachedDependencyToMatchingResultsMap
-                            .TryGetValue(topLevelDependency.Id, out HashSet<IDependency>? topLevelDependencyMatches))
+                    if (!cachedDependencyToMatchingResultsMap.TryGetValue(
+                        topLevelDependency.Id,
+                        out HashSet<IDependency>? topLevelDependencyMatches))
                     {
                         IDependenciesGraphViewProvider? viewProvider = FindViewProvider(topLevelDependency);
 
@@ -106,28 +106,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                                 cachedDependencyToMatchingResultsMap);
                         }
 
-                        cachedDependencyToMatchingResultsMap[topLevelDependency.Id] = topLevelDependencyMatches!;
+                        cachedDependencyToMatchingResultsMap[topLevelDependency.Id] = topLevelDependencyMatches;
                     }
 
-                    if (topLevelDependencyMatches!.Count == 0)
+                    if (topLevelDependencyMatches.Count == 0)
                     {
                         continue;
                     }
 
-                    GraphNode topLevelNode = _builder.AddTopLevelGraphNode(graphContext,
-                                                            snapshot.ProjectPath,
-                                                            topLevelDependency.ToViewModel(targetedSnapshot));
+                    GraphNode topLevelNode = _builder.AddTopLevelGraphNode(
+                        graphContext,
+                        snapshot.ProjectPath,
+                        topLevelDependency.ToViewModel(targetedSnapshot));
+
                     foreach (IDependency matchedDependency in topLevelDependencyMatches)
                     {
-                        GraphNode matchedDependencyNode = _builder.AddGraphNode(graphContext,
-                                                                snapshot.ProjectPath,
-                                                                topLevelNode,
-                                                                matchedDependency.ToViewModel(targetedSnapshot));
+                        GraphNode matchedDependencyNode = _builder.AddGraphNode(
+                            graphContext,
+                            snapshot.ProjectPath,
+                            topLevelNode,
+                            matchedDependency.ToViewModel(targetedSnapshot));
 
-                        graphContext.Graph.Links.GetOrCreate(topLevelNode,
-                                                             matchedDependencyNode,
-                                                             label: null,
-                                                             GraphCommonSchema.Contains);
+                        graphContext.Graph.Links.GetOrCreate(
+                            topLevelNode,
+                            matchedDependencyNode,
+                            label: null,
+                            GraphCommonSchema.Contains);
                     }
 
                     if (topLevelNode != null)
@@ -156,7 +160,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
             {
                 foreach ((string _, IDependency dependency) in targetedSnapshot.DependenciesWorld)
                 {
-                    if (dependency.Visible && dependency.Caption.IndexOf(searchTerm, StringComparison.CurrentCultureIgnoreCase) != -1)
+                    if (dependency.Visible && dependency.Caption.IndexOf(searchTerm, StringComparisons.UserEnteredSearchTermIgnoreCase) != -1)
                     {
                         matchedDependencies.Add(dependency);
                     }

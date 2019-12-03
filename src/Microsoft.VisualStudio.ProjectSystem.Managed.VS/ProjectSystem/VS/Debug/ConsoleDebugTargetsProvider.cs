@@ -29,6 +29,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     internal class ConsoleDebugTargetsProvider : IDebugProfileLaunchTargetsProvider, IDebugProfileLaunchTargetsProvider2
     {
         private static readonly char[] s_escapedChars = new[] { '^', '<', '>', '&' };
+        private readonly ConfiguredProject _project;
+        private readonly IUnconfiguredProjectVsServices _unconfiguredProjectVsServices;
         private readonly IDebugTokenReplacer _tokenReplacer;
         private readonly IFileSystem _fileSystem;
         private readonly IEnvironmentHelper _environment;
@@ -36,18 +38,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private readonly ProjectProperties _properties;
         private readonly IProjectThreadingService _threadingService;
         private readonly IVsUIService<IVsDebugger10> _debugger;
-        private readonly UnconfiguredProject _project;
 
         [ImportingConstructor]
-        public ConsoleDebugTargetsProvider(UnconfiguredProject project,
-                                           IDebugTokenReplacer tokenReplacer,
-                                           IFileSystem fileSystem,
-                                           IEnvironmentHelper environment,
-                                           IActiveDebugFrameworkServices activeDebugFramework,
-                                           ProjectProperties properties,
-                                           IProjectThreadingService threadingService,
-                                           IVsUIService<SVsShellDebugger, IVsDebugger10> debugger)
+        public ConsoleDebugTargetsProvider(
+            IUnconfiguredProjectVsServices unconfiguredProjectVsServices,
+            ConfiguredProject project,
+            IDebugTokenReplacer tokenReplacer,
+            IFileSystem fileSystem,
+            IEnvironmentHelper environment,
+            IActiveDebugFrameworkServices activeDebugFramework,
+            ProjectProperties properties,
+            IProjectThreadingService threadingService,
+            IVsUIService<SVsShellDebugger, IVsDebugger10> debugger)
         {
+            _project = project;
+            _unconfiguredProjectVsServices = unconfiguredProjectVsServices;
             _tokenReplacer = tokenReplacer;
             _fileSystem = fileSystem;
             _environment = environment;
@@ -55,7 +60,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _properties = properties;
             _threadingService = threadingService;
             _debugger = debugger;
-            _project = project;
         }
 
         private Task<ConfiguredProject> GetConfiguredProjectForDebugAsync()
@@ -103,7 +107,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             // pause to end of window when CTRL+F5'ing a console application
             ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync();
 
-
             var actualOutputType = (IEnumValue)await configuration.OutputType.GetValueAsync();
 
             return StringComparers.PropertyLiteralValues.Equals(actualOutputType.Name, outputType);
@@ -125,16 +128,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         private async Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsAsync(DebugLaunchOptions launchOptions, ILaunchProfile activeProfile, bool validateSettings)
         {
-            var launchSettings = new List<DebugLaunchSettings>();
-
             // Resolve the tokens in the profile
             ILaunchProfile resolvedProfile = await _tokenReplacer.ReplaceTokensInProfileAsync(activeProfile);
 
             DebugLaunchSettings consoleTarget = await GetConsoleTargetForProfile(resolvedProfile, launchOptions, validateSettings);
 
-            launchSettings.Add(consoleTarget);
-
-            return launchSettings.ToArray();
+            return new DebugLaunchSettings[] { consoleTarget };
         }
 
         /// <summary>
@@ -177,16 +176,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         private static bool IsRunExecutableCommand(ILaunchProfile profile)
         {
-            return string.Equals(profile.CommandName, LaunchSettingsProvider.RunExecutableCommandName, StringComparison.OrdinalIgnoreCase);
+            return string.Equals(profile.CommandName, LaunchSettingsProvider.RunExecutableCommandName, StringComparisons.LaunchProfileCommandNames);
         }
 
         private static bool IsRunProjectCommand(ILaunchProfile profile)
         {
-            return string.Equals(profile.CommandName, LaunchSettingsProvider.RunProjectCommandName, StringComparison.OrdinalIgnoreCase);
+            return string.Equals(profile.CommandName, LaunchSettingsProvider.RunProjectCommandName, StringComparisons.LaunchProfileCommandNames);
         }
 
         private async Task<bool> IsIntegratedConsoleEnabledAsync()
         {
+            if (!_project.Capabilities.Contains(ProjectCapabilities.IntegratedConsoleDebugging))
+                return false;
+
             await _threadingService.SwitchToUIThread();
 
             _debugger.Value.IsIntegratedConsoleEnabled(out bool enabled);
@@ -204,7 +206,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             string executable, arguments;
 
-            string projectFolder = Path.GetDirectoryName(_project.FullPath);
+            string projectFolder = Path.GetDirectoryName(_project.UnconfiguredProject.FullPath);
             ConfiguredProject configuredProject = await GetConfiguredProjectForDebugAsync();
 
             // If no working directory specified in the profile, we default to output directory. If for some reason the output directory
@@ -232,12 +234,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             if (IsRunProjectCommand(resolvedProfile))
             {
                 // Get the executable to run, the arguments and the default working directory
-                Tuple<string, string, string> runData = await GetRunnableProjectInformationAsync(configuredProject, validateSettings);
-                executable = runData.Item1;
-                arguments = runData.Item2;
-                if (!string.IsNullOrWhiteSpace(runData.Item3))
+                string workingDirectory;
+                (executable, arguments, workingDirectory) = await GetRunnableProjectInformationAsync(configuredProject, validateSettings);
+
+                if (!string.IsNullOrWhiteSpace(workingDirectory))
                 {
-                    defaultWorkingDir = runData.Item3;
+                    defaultWorkingDir = workingDirectory;
                 }
 
                 if (!string.IsNullOrWhiteSpace(resolvedProfile.CommandLineArgs))
@@ -283,7 +285,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                     else
                     {
                         // Try to resolve against the current working directory (for compat) and failing that, the environment path.
-                        string exeName = executable.EndsWith(".exe", StringComparison.OrdinalIgnoreCase) ? executable : executable + ".exe";
+                        string exeName = executable.EndsWith(".exe", StringComparisons.Paths) ? executable : executable + ".exe";
                         string fullPath = _fileSystem.GetFullPath(exeName);
                         if (_fileSystem.FileExists(fullPath))
                         {
@@ -349,6 +351,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             settings.Executable = finalExecutable;
             settings.Arguments = finalArguments;
             settings.CurrentDirectory = workingDir;
+            settings.Project = _unconfiguredProjectVsServices.VsHierarchy;
 
             return settings;
         }
@@ -371,7 +374,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// Queries properties from the project to get information on how to run the application. The returned Tuple contains:
         /// exeToRun, arguments, workingDir
         /// </summary>
-        private async Task<Tuple<string, string, string>> GetRunnableProjectInformationAsync(
+        private async Task<(string Command, string Arguments, string WorkingDirectory)> GetRunnableProjectInformationAsync(
             ConfiguredProject configuredProject,
             bool validateSettings)
         {
@@ -389,10 +392,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             // If the working directory is relative, it will be relative to the project root so make it a full path
             if (!string.IsNullOrWhiteSpace(runWorkingDirectory) && !Path.IsPathRooted(runWorkingDirectory))
             {
-                runWorkingDirectory = Path.Combine(Path.GetDirectoryName(_project.FullPath), runWorkingDirectory);
+                runWorkingDirectory = Path.Combine(Path.GetDirectoryName(_project.UnconfiguredProject.FullPath), runWorkingDirectory);
             }
 
-            return new Tuple<string, string, string>(runCommand, runArguments, runWorkingDirectory);
+            return (runCommand, runArguments, runWorkingDirectory);
         }
 
         private async Task<string> GetTargetCommandAsync(
@@ -417,7 +420,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             return runCommand;
         }
 
-
         private async Task<string> GetRunCommandAsync(IProjectProperties properties)
         {
             string runCommand = await properties.GetEvaluatedPropertyValueAsync("RunCommand");
@@ -427,7 +429,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             // If dotnet.exe is used runCommand returns just "dotnet". The debugger is going to require a full path so we need to append the .exe
             // extension.
-            if (!runCommand.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
+            if (!runCommand.EndsWith(".exe", StringComparisons.Paths))
             {
                 runCommand += ".exe";
             }
@@ -452,6 +454,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             return outdir;
         }
+
         private static async Task<Guid> GetDebuggingEngineAsync(ConfiguredProject configuredProject)
         {
             IProjectProperties properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
@@ -535,7 +538,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                             finalBuilder.Append('^');
                         }
 
-                        finalBuilder.Append(currentChar);
                         break;
                     case StringState.EscapedCharacter:
                         // If a '\' was the previous character, then we blindly append to the string, escaping if necessary,
@@ -545,7 +547,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                             finalBuilder.Append('^');
                         }
 
-                        finalBuilder.Append(currentChar);
                         currentState = StringState.NormalCharacter;
                         break;
                     case StringState.QuotedString:
@@ -561,18 +562,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                             currentState = StringState.NormalCharacter;
                         }
 
-                        finalBuilder.Append(currentChar);
                         break;
                     case StringState.QuotedStringEscapedCharacter:
                         // If we have one slash, then we blindly append to the string, no escaping, and move back to
                         // QuotedString. This handles escaped '"' inside strings.
-                        finalBuilder.Append(currentChar);
                         currentState = StringState.QuotedString;
                         break;
                     default:
                         // We can't get here.
                         throw new InvalidOperationException();
                 }
+
+                finalBuilder.Append(currentChar);
             }
 
             return finalBuilder.ToStringAndFree();

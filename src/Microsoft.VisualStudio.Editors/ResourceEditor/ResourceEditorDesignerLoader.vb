@@ -19,7 +19,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     ''' <summary>
     ''' Designer loader for the Resource Editor.  Handles serialization and services.
     ''' </summary>
-    ''' <remarks></remarks>
     Friend Class ResourceEditorDesignerLoader
         Inherits DesignerFramework.BaseDesignerLoader
 
@@ -69,8 +68,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' This must be overloaded to return the assembly-qualified name of the base component that is 
         '''   being designed by this editor.  This information is required by the managed VSIP classes.
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Protected Overrides Function GetBaseComponentClassName() As String
             Return GetType(ResourceEditorRootComponent).AssemblyQualifiedName
         End Function
@@ -94,7 +91,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     '   and hook it up to the component)
                     Dim NewResourceEditorRoot As ResourceEditorRootComponent = CType(LoaderHost.CreateComponent(GetType(ResourceEditorRootComponent)), ResourceEditorRootComponent)
 
-                    Debug.Assert(Not NewResourceEditorRoot Is Nothing, "should have thrown on failure")
+                    Debug.Assert(NewResourceEditorRoot IsNot Nothing, "should have thrown on failure")
 
                     'Figure out the base path to use for relative links in the resx file.  This should be the directory where the resx file
                     '  lives.
@@ -165,7 +162,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' OnDesignerLoadCompleted will be called when we finish loading the designer
         ''' </summary>
-        ''' <remarks></remarks>
         Protected Overrides Sub OnDesignerLoadCompleted()
             If _rootComponent IsNot Nothing Then
                 _rootComponent.RootDesigner.OnDesignerLoadCompleted()
@@ -177,7 +173,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="ResXFile"></param>
         ''' <returns>The ResX in a string.</returns>
-        ''' <remarks></remarks>
         Private Function SerializeResourcesToText(ResXFile As ResourceFile) As String
             If _rootComponent IsNot Nothing Then
                 ' Make sure the ResourceFile is up to date with any pending user changes
@@ -215,7 +210,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   remove any custom services you add here by overriding
         '''   Dispose.
         ''' </summary>
-        ''' <remarks></remarks>
         Protected Overrides Sub Initialize()
             MyBase.Initialize()
 
@@ -239,7 +233,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Overrides base Dispose.
         ''' </summary>
-        ''' <remarks></remarks>
         Public Overrides Sub Dispose()
             'Remove any services we proffered.
             '
@@ -256,7 +249,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Called when the document's window is activated or deactivated
         ''' </summary>
         ''' <param name="Activated"></param>
-        ''' <remarks></remarks>
         Protected Overrides Sub OnDesignerWindowActivated(Activated As Boolean)
             MyBase.OnDesignerWindowActivated(Activated)
             If _rootComponent IsNot Nothing AndAlso _rootComponent.RootDesigner IsNot Nothing Then
@@ -276,7 +268,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' ManualCheckOut without the ProjectReloaded flag because it is not needed in
         '''   the resource editor.
         ''' </summary>
-        ''' <remarks></remarks>
         Friend Overloads Sub ManualCheckOut()
             Dim ProjectReloaded As Boolean
             ManualCheckOut(ProjectReloaded)
@@ -334,8 +325,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''  The function in the baseclass checks whether the file has been checked out. For the resource designer, we should check whether
         '''  it is a dependent file (for example: a resx file of a winForm). We shouldn't enter the edit mode until the user said 'yes'.
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Overrides Function OkToEdit() As Boolean
             If Not _allowToUpdateDependentFile Then
                 If _rootComponent IsNot Nothing Then

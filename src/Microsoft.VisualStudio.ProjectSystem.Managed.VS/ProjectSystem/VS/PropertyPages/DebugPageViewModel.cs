@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -22,39 +23,28 @@ using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
-    internal class DebugPageViewModel : PropertyPageViewModel, INotifyDataErrorInfo
+    internal partial class DebugPageViewModel : PropertyPageViewModel, INotifyDataErrorInfo
     {
         private readonly string _executableFilter = string.Format("{0} (*.exe)|*.exe|{1} (*.*)|*.*", PropertyPageResources.ExecutableFiles, PropertyPageResources.AllFiles);
         private IDisposable _debugProfileProviderLink;
-
-        // Unit Tests only
-        private readonly TaskCompletionSource<bool> _firstSnapshotCompleteSource = null;
-
+        private bool _removeEnvironmentVariablesRow;
+        private bool _debugTargetsCoreInitialized = false;
+        private bool _environmentVariablesValid = true;
+        private int _environmentVariablesRowSelectedIndex = -1;
+        private ILaunchSettingsProvider _launchSettingsProvider;
+        private ObservableList<NameValuePair> _environmentVariables;
         private IProjectThreadingService _projectThreadingService;
-        private IProjectThreadingService ProjectThreadingService
-        {
-            get
-            {
-                if (_projectThreadingService == null)
-                {
-                    IUnconfiguredProjectVsServices _projectVsServices = Project.Services.ExportProvider.GetExportedValue<IUnconfiguredProjectVsServices>();
-                    _projectThreadingService = _projectVsServices.ThreadingService;
-                }
-
-                return _projectThreadingService;
-            }
-        }
-
-        // The collection of UI providers.
+        private List<LaunchType> _launchTypes;
+        private List<LaunchType> _providerLaunchTypes;
+        private LaunchType _selectedLaunchType;        
         private OrderPrecedenceImportCollection<ILaunchSettingsUIProvider> _uiProviders;
-
-        // Tracks the current set of settings being worked on
-        private IWritableLaunchSettings CurrentLaunchSettings { get; set; }
-
-        public event EventHandler ClearEnvironmentVariablesGridError;
-        public event EventHandler FocusEnvironmentVariablesGridRow;
-
-        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
+        private readonly TaskCompletionSource<bool> _firstSnapshotCompleteSource = null;
+        private ICommand _addEnvironmentVariableRowCommand;
+        private ICommand _removeEnvironmentVariableRowCommand;
+        private ICommand _browseDirectoryCommand;
+        private ICommand _browseExecutableCommand;
+        private ICommand _newProfileCommand;
+        private ICommand _deleteProfileCommand;
 
         public DebugPageViewModel()
         {
@@ -62,13 +52,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             PropertyChanged += ViewModel_PropertyChanged;
         }
 
-
         // for unit testing
         internal DebugPageViewModel(TaskCompletionSource<bool> snapshotComplete, UnconfiguredProject project)
         {
             _firstSnapshotCompleteSource = snapshotComplete;
             Project = project;
             PropertyChanged += ViewModel_PropertyChanged;
+        }
+
+        public event EventHandler ClearEnvironmentVariablesGridError;
+        public event EventHandler FocusEnvironmentVariablesGridRow;
+        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
+
+        private IWritableLaunchSettings CurrentLaunchSettings { get; set; }
+
+        private IProjectThreadingService ProjectThreadingService
+        {
+            get
+            {
+                if (_projectThreadingService == null)
+                {
+                    IUnconfiguredProjectVsServices projectVsServices = Project.Services.ExportProvider.GetExportedValue<IUnconfiguredProjectVsServices>();
+                    _projectThreadingService = projectVsServices.ThreadingService;
+                }
+
+                return _projectThreadingService;
+            }
         }
 
         /// <summary>
@@ -86,7 +95,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
-        private List<LaunchType> _launchTypes;
         public List<LaunchType> LaunchTypes
         {
             get
@@ -99,7 +107,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
-        private LaunchType _selectedLaunchType;
         public LaunchType SelectedLaunchType
         {
             get
@@ -145,52 +152,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     }
                 }
             }
-        }
-
-        /// <summary>
-        /// If we have an existing CustomControl, we disconnect from its change notifications
-        /// and hook into the new ones. Assumes the activeProvider has already been changed
-        /// </summary>
-        public void SwitchProviders(ILaunchSettingsUIProvider oldProvider)
-        {
-            // Get the old custom control and disconnect from notifications
-            if (oldProvider?.CustomUI?.DataContext is INotifyPropertyChanged context)
-            {
-                context.PropertyChanged -= OnCustomUIStateChanged;
-                if (context is INotifyDataErrorInfo)
-                {
-                    ((INotifyDataErrorInfo)context).ErrorsChanged -= OnCustomUIErrorsChanged;
-                }
-            }
-
-            // Now hook into the current providers notifications. We do that after having set the profile on the provider
-            // so that we don't get notifications while the control is initializing. Note that this is likely the first time the 
-            // custom control is asked for and we want to call it and have it created prior to setting the active profile
-            UserControl customControl = ActiveProvider?.CustomUI;
-            if (customControl != null)
-            {
-                ActiveProvider.ProfileSelected(CurrentLaunchSettings);
-
-                context = customControl.DataContext as INotifyPropertyChanged;
-                if (context != null)
-                {
-                    context.PropertyChanged += OnCustomUIStateChanged;
-                }
-
-                if (context is INotifyDataErrorInfo notifyDataErrorInfo)
-                {
-                    notifyDataErrorInfo.ErrorsChanged += OnCustomUIErrorsChanged;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Called from the CustomUI when a change occurs. This just fires a dummy property change
-        /// to dirty the page.
-        /// </summary>
-        private void OnCustomUIStateChanged(object sender, PropertyChangedEventArgs e)
-        {
-            OnPropertyChanged("CustomUIDirty");
         }
 
         public string CommandLineArguments
@@ -330,8 +291,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
-
-
         public bool SqlDebugging
         {
             get
@@ -364,99 +323,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
-        public bool SupportNativeDebugging
-        {
-            get
-            {
-                return ActiveProviderSupportsProperty(UIProfilePropertyName.NativeDebugging);
-            }
-        }
+        public bool SupportNativeDebugging       => ActiveProviderSupportsProperty(UIProfilePropertyName.NativeDebugging);
+        public bool SupportSqlDebugging          => ActiveProviderSupportsProperty(UIProfilePropertyName.SqlDebugging);
+        public bool SupportsExecutable           => ActiveProviderSupportsProperty(UIProfilePropertyName.Executable);
+        public bool SupportsArguments            => ActiveProviderSupportsProperty(UIProfilePropertyName.Arguments);
+        public bool SupportsWorkingDirectory     => ActiveProviderSupportsProperty(UIProfilePropertyName.WorkingDirectory);
+        public bool SupportsLaunchUrl            => ActiveProviderSupportsProperty(UIProfilePropertyName.LaunchUrl);
+        public bool SupportsEnvironmentVariables => ActiveProviderSupportsProperty(UIProfilePropertyName.EnvironmentVariables);
 
-        public bool SupportSqlDebugging
-        {
-            get
-            {
-                return ActiveProviderSupportsProperty(UIProfilePropertyName.SqlDebugging);
-            }
-        }
+        public bool IsProfileSelected => SelectedDebugProfile != null;
 
-        public bool SupportsExecutable
-        {
-            get
-            {
-                return ActiveProviderSupportsProperty(UIProfilePropertyName.Executable);
-            }
-        }
+        public ObservableCollection<IWritableLaunchProfile> LaunchProfiles { get; } = new ObservableCollection<IWritableLaunchProfile>();
 
-        public bool SupportsArguments
-        {
-            get
-            {
-                return ActiveProviderSupportsProperty(UIProfilePropertyName.Arguments);
-            }
-        }
-
-        public bool SupportsWorkingDirectory
-        {
-            get
-            {
-                return ActiveProviderSupportsProperty(UIProfilePropertyName.WorkingDirectory);
-            }
-        }
-
-        public bool SupportsLaunchUrl
-        {
-            get
-            {
-                return ActiveProviderSupportsProperty(UIProfilePropertyName.LaunchUrl);
-            }
-        }
-
-        public bool SupportsEnvironmentVariables
-        {
-            get
-            {
-                return ActiveProviderSupportsProperty(UIProfilePropertyName.EnvironmentVariables);
-            }
-        }
-
-        /// <summary>
-        /// Helper returns true if there is an active provider and it supports the specified property
-        /// </summary>
-        private bool ActiveProviderSupportsProperty(string propertyName)
-        {
-            ILaunchSettingsUIProvider activeProvider = ActiveProvider;
-            return activeProvider?.ShouldEnableProperty(propertyName) ?? false;
-        }
-
-        public bool IsProfileSelected
-        {
-            get
-            {
-                return SelectedDebugProfile != null;
-            }
-        }
-
-        private readonly ObservableCollection<IWritableLaunchProfile> _launchProfiles = new ObservableCollection<IWritableLaunchProfile>();
-        public ObservableCollection<IWritableLaunchProfile> LaunchProfiles
-        {
-            get
-            {
-                return _launchProfiles;
-            }
-        }
-
-        /// <summary>
-        /// Helper called when a profile is added (new profile command), or a profile is deleted (delete profile command)
-        /// </summary>
-        private void NotifyProfileCollectionChanged()
-        {
-            OnPropertyChanged(nameof(HasProfiles));
-            OnPropertyChanged(nameof(HasProfilesOrNotInitialized));
-            OnPropertyChanged(nameof(NewProfileEnabled));
-        }
-
-        private bool _debugTargetsCoreInitialized = false;
         public bool HasProfilesOrNotInitialized
         {
             get
@@ -464,7 +342,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 return !_debugTargetsCoreInitialized || HasProfiles;
             }
         }
-
 
         public bool HasProfiles
         {
@@ -494,7 +371,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
-        private bool _removeEnvironmentVariablesRow;
         public bool RemoveEnvironmentVariablesRow
         {
             get
@@ -507,7 +383,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
-        private int _environmentVariablesRowSelectedIndex = -1;
+
         public int EnvironmentVariablesRowSelectedIndex
         {
             get { return _environmentVariablesRowSelectedIndex; }
@@ -523,7 +399,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     }
                     else
                     {
-                        RemoveEnvironmentVariablesRow = (EnvironmentVariablesValid) ? true : ((EnvironmentVariables[_environmentVariablesRowSelectedIndex] as NameValuePair).HasValidationError == true);
+                        RemoveEnvironmentVariablesRow = EnvironmentVariablesValid || EnvironmentVariables[_environmentVariablesRowSelectedIndex].HasValidationError;
                     }
 
                     OnPropertyChanged(nameof(EnvironmentVariablesRowSelectedIndex), suppressInvalidation: true);
@@ -531,15 +407,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
-        private bool _environmentVariablesValid = true;
         public bool EnvironmentVariablesValid
         {
             get
             {
-                if (EnvironmentVariables == null)
-                { return true; }
-                else
-                { return _environmentVariablesValid; }
+                return EnvironmentVariables == null || _environmentVariablesValid;
             }
             set
             {
@@ -555,7 +427,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
-        private ObservableList<NameValuePair> _environmentVariables;
         public ObservableList<NameValuePair> EnvironmentVariables
         {
             get
@@ -569,14 +440,211 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         }
 
         /// <summary>
-        /// Provides binding to the current UI Provider usercontrol. 
+        /// Provides binding to the current UI Provider user control. 
         /// </summary>
-        public UserControl ActiveProviderUserControl
+        public UserControl ActiveProviderUserControl => ActiveProvider?.CustomUI;
+
+        /// <summary>
+        /// Returns the active UI provider for the current selected launchType or mull if no selection or the selected item
+        /// does not have a provider installed
+        /// </summary>
+        private ILaunchSettingsUIProvider ActiveProvider
         {
             get
             {
-                return ActiveProvider?.CustomUI;
+                if (SelectedLaunchType == null)
+                {
+                    return null;
+                }
+
+                Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView> activeProvider = _uiProviders.FirstOrDefault((p) => string.Equals(p.Value.CommandName, SelectedLaunchType.CommandName, StringComparisons.LaunchProfileCommandNames));
+                return activeProvider?.Value;
             }
+        }
+
+        public ICommand AddEnvironmentVariableRowCommand
+        {
+            get
+            {
+                return LazyInitializer.EnsureInitialized(ref _addEnvironmentVariableRowCommand, () =>
+                    new DelegateCommand(state =>
+                    {
+                        var newRow = new NameValuePair(PropertyPageResources.EnvVariableNameWatermark, PropertyPageResources.EnvVariableValueWatermark, EnvironmentVariables);
+                        EnvironmentVariables.Add(newRow);
+                        EnvironmentVariablesRowSelectedIndex = EnvironmentVariables.Count - 1;
+                        //Raise event to focus on 
+                        FocusEnvironmentVariablesGridRow?.Invoke(this, EventArgs.Empty);
+                    }));
+            }
+        }
+
+        public ICommand RemoveEnvironmentVariableRowCommand
+        {
+            get
+            {
+                return LazyInitializer.EnsureInitialized(ref _removeEnvironmentVariableRowCommand, () =>
+                    new DelegateCommand(state =>
+                    {
+                        int oldIndex = EnvironmentVariablesRowSelectedIndex;
+                        EnvironmentVariables.RemoveAt(EnvironmentVariablesRowSelectedIndex);
+                        EnvironmentVariablesValid = true;
+                        EnvironmentVariablesRowSelectedIndex = (oldIndex == EnvironmentVariables.Count) ? oldIndex - 1 : oldIndex;
+                    }));
+            }
+        }
+                
+        public ICommand BrowseDirectoryCommand
+        {
+            get
+            {
+                return LazyInitializer.EnsureInitialized(ref _browseDirectoryCommand, () =>
+                    new DelegateCommand(state =>
+                    {
+                        using var dialog = new System.Windows.Forms.FolderBrowserDialog();
+                        string folder = WorkingDirectory;
+                        if (!string.IsNullOrEmpty(folder) && Directory.Exists(folder))
+                        {
+                            dialog.SelectedPath = folder;
+                        }
+                        DialogResult result = dialog.ShowDialog();
+                        if (result == DialogResult.OK)
+                        {
+                            WorkingDirectory = dialog.SelectedPath;
+                        }
+                    }));
+            }
+        }
+                
+        public ICommand BrowseExecutableCommand
+        {
+            get
+            {
+                return LazyInitializer.EnsureInitialized(ref _browseExecutableCommand, () =>
+                    new DelegateCommand(state =>
+                    {
+                        using var dialog = new System.Windows.Forms.OpenFileDialog();
+                        string file = ExecutablePath;
+                        if (!string.IsNullOrEmpty(file) && (file.IndexOfAny(Path.GetInvalidPathChars()) == -1) && Path.IsPathRooted(file))
+                        {
+                            dialog.InitialDirectory = Path.GetDirectoryName(file);
+                            dialog.FileName = file;
+                        }
+                        dialog.Multiselect = false;
+                        dialog.Filter = _executableFilter;
+                        DialogResult result = dialog.ShowDialog();
+                        if (result == DialogResult.OK)
+                        {
+                            ExecutablePath = dialog.FileName;
+                        }
+                    }));
+            }
+        }
+
+        public bool NewProfileEnabled => LaunchProfiles != null;
+
+        public ICommand NewProfileCommand
+        {
+            get
+            {
+                return LazyInitializer.EnsureInitialized(ref _newProfileCommand, () =>
+                 new DelegateCommand(state =>
+                 {
+                     var dialog = new GetProfileNameDialog(Project.Services.ExportProvider.GetExportedValue<SVsServiceProvider>(),
+                                                            ProjectThreadingService,
+                                                            GetNewProfileName(),
+                                                            IsNewProfileNameValid);
+                     if (dialog.ShowModal() == true)
+                     {
+                         CreateProfile(dialog.ProfileName, ProfileCommandNames.Executable);
+                     }
+                 }));
+            }
+        }
+
+        public bool DeleteProfileEnabled => IsProfileSelected;
+        
+        public ICommand DeleteProfileCommand
+        {
+            get
+            {
+                return LazyInitializer.EnsureInitialized(ref _deleteProfileCommand, () =>
+                    new DelegateCommand(state =>
+                    {
+                        IWritableLaunchProfile profileToRemove = SelectedDebugProfile;
+                        SelectedDebugProfile = null;
+
+                        CurrentLaunchSettings.Profiles.Remove(profileToRemove);
+                        LaunchProfiles.Remove(profileToRemove);
+
+                        SelectedDebugProfile = LaunchProfiles.Count > 0 ? LaunchProfiles[0] : null;
+                        NotifyProfileCollectionChanged();
+                    }));
+            }
+        }
+
+        /// <summary>
+        /// If we have an existing CustomControl, we disconnect from its change notifications
+        /// and hook into the new ones. Assumes the activeProvider has already been changed
+        /// </summary>
+        public void SwitchProviders(ILaunchSettingsUIProvider oldProvider)
+        {
+            // Get the old custom control and disconnect from notifications
+            if (oldProvider?.CustomUI?.DataContext is INotifyPropertyChanged context)
+            {
+                context.PropertyChanged -= OnCustomUIStateChanged;
+
+                if (context is INotifyDataErrorInfo notifyDataErrorInfo)
+                {
+                    notifyDataErrorInfo.ErrorsChanged -= OnCustomUIErrorsChanged;
+                }
+            }
+
+            // Now hook into the current providers notifications. We do that after having set the profile on the provider
+            // so that we don't get notifications while the control is initializing. Note that this is likely the first time the 
+            // custom control is asked for and we want to call it and have it created prior to setting the active profile
+            UserControl customControl = ActiveProvider?.CustomUI;
+            if (customControl != null)
+            {
+                ActiveProvider.ProfileSelected(CurrentLaunchSettings);
+
+                context = customControl.DataContext as INotifyPropertyChanged;
+                if (context != null)
+                {
+                    context.PropertyChanged += OnCustomUIStateChanged;
+                }
+
+                if (context is INotifyDataErrorInfo notifyDataErrorInfo)
+                {
+                    notifyDataErrorInfo.ErrorsChanged += OnCustomUIErrorsChanged;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Called from the CustomUI when a change occurs. This just fires a dummy property change
+        /// to dirty the page.
+        /// </summary>
+        private void OnCustomUIStateChanged(object sender, PropertyChangedEventArgs e)
+        {
+            OnPropertyChanged("CustomUIDirty");
+        }
+
+        /// <summary>
+        /// Helper returns true if there is an active provider and it supports the specified property
+        /// </summary>
+        private bool ActiveProviderSupportsProperty(string propertyName)
+        {
+            return ActiveProvider?.ShouldEnableProperty(propertyName) ?? false;
+        }
+
+        /// <summary>
+        /// Helper called when a profile is added (new profile command), or a profile is deleted (delete profile command)
+        /// </summary>
+        private void NotifyProfileCollectionChanged()
+        {
+            OnPropertyChanged(nameof(HasProfiles));
+            OnPropertyChanged(nameof(HasProfilesOrNotInitialized));
+            OnPropertyChanged(nameof(NewProfileEnabled));
         }
 
         /// <summary>
@@ -739,7 +807,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     // Note that we have to be careful since the collection can be empty. 
                     if (profiles.ActiveProfile != null && !string.IsNullOrEmpty(profiles.ActiveProfile.Name))
                     {
-                        SelectedDebugProfile = LaunchProfiles.Where(p => LaunchProfile.IsSameProfileName(p.Name, profiles.ActiveProfile.Name)).Single();
+                        SelectedDebugProfile = LaunchProfiles.Single(p => LaunchProfile.IsSameProfileName(p.Name, profiles.ActiveProfile.Name));
                     }
                     else
                     {
@@ -755,17 +823,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 }
                 else
                 {
-                    SelectedDebugProfile = LaunchProfiles.Where(p => LaunchProfile.IsSameProfileName(p.Name, curProfileName)).Single();
+                    SelectedDebugProfile = LaunchProfiles.Single(p => LaunchProfile.IsSameProfileName(p.Name, curProfileName));
                 }
             }
             finally
             {
                 PopIgnoreEvents();
-                if (_firstSnapshotCompleteSource != null)
-                {
-                    _firstSnapshotCompleteSource.TrySetResult(true);
-                }
-
+                _firstSnapshotCompleteSource?.TrySetResult(true);
                 _debugTargetsCoreInitialized = true;
             }
         }
@@ -817,29 +881,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             return Project.Services.ExportProvider.GetExports<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView>();
         }
 
-        /// <summary>
-        /// Returns the active UI provider for the current selected launchType or mull if no selection or the selected item
-        /// does not have a provider installed
-        /// </summary>
-        private ILaunchSettingsUIProvider ActiveProvider
-        {
-            get
-            {
-                if (SelectedLaunchType == null)
-                {
-                    return null;
-                }
-
-                Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView> activeProvider = _uiProviders.FirstOrDefault((p) => string.Equals(p.Value.CommandName, SelectedLaunchType.CommandName, StringComparison.OrdinalIgnoreCase));
-                return activeProvider?.Value;
-            }
-        }
-
         public override Task Initialize()
         {
             // Initialize the page
             InitializePropertyPage();
-            return System.Threading.Tasks.Task.CompletedTask;
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -855,155 +901,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             await SaveLaunchSettings();
 
             return HResult.OK;
-        }
-
-
-        private ICommand _addEnvironmentVariableRowCommand;
-        public ICommand AddEnvironmentVariableRowCommand
-        {
-            get
-            {
-                return LazyInitializer.EnsureInitialized(ref _addEnvironmentVariableRowCommand, () =>
-                    new DelegateCommand((state) =>
-                    {
-                        var newRow = new NameValuePair(PropertyPageResources.EnvVariableNameWatermark, PropertyPageResources.EnvVariableValueWatermark, EnvironmentVariables);
-                        EnvironmentVariables.Add(newRow);
-                        EnvironmentVariablesRowSelectedIndex = EnvironmentVariables.Count - 1;
-                        //Raise event to focus on 
-                        FocusEnvironmentVariablesGridRow?.Invoke(this, EventArgs.Empty);
-                    }));
-            }
-        }
-
-        private ICommand _removeEnvironmentVariableRowCommand;
-        public ICommand RemoveEnvironmentVariableRowCommand
-        {
-            get
-            {
-                return LazyInitializer.EnsureInitialized(ref _removeEnvironmentVariableRowCommand, () =>
-                    new DelegateCommand(state =>
-                    {
-                        int oldIndex = EnvironmentVariablesRowSelectedIndex;
-                        EnvironmentVariables.RemoveAt(EnvironmentVariablesRowSelectedIndex);
-                        EnvironmentVariablesValid = true;
-                        EnvironmentVariablesRowSelectedIndex = (oldIndex == EnvironmentVariables.Count) ? oldIndex - 1 : oldIndex;
-                    }));
-            }
-        }
-
-        private ICommand _browseDirectoryCommand;
-        public ICommand BrowseDirectoryCommand
-        {
-            get
-            {
-                return LazyInitializer.EnsureInitialized(ref _browseDirectoryCommand, () =>
-                    new DelegateCommand(state =>
-                    {
-                        using var dialog = new System.Windows.Forms.FolderBrowserDialog();
-                        string folder = WorkingDirectory;
-                        if (!string.IsNullOrEmpty(folder) && Directory.Exists(folder))
-                        {
-                            dialog.SelectedPath = folder;
-                        }
-                        DialogResult result = dialog.ShowDialog();
-                        if (result == DialogResult.OK)
-                        {
-                            WorkingDirectory = dialog.SelectedPath;
-                        }
-                    }));
-            }
-        }
-
-        private ICommand _browseExecutableCommand;
-        public ICommand BrowseExecutableCommand
-        {
-            get
-            {
-                return LazyInitializer.EnsureInitialized(ref _browseExecutableCommand, () =>
-                    new DelegateCommand(state =>
-                    {
-                        using var dialog = new System.Windows.Forms.OpenFileDialog();
-                        string file = ExecutablePath;
-                        if (!string.IsNullOrEmpty(file) && (file.IndexOfAny(Path.GetInvalidPathChars()) == -1) && Path.IsPathRooted(file))
-                        {
-                            dialog.InitialDirectory = Path.GetDirectoryName(file);
-                            dialog.FileName = file;
-                        }
-                        dialog.Multiselect = false;
-                        dialog.Filter = _executableFilter;
-                        DialogResult result = dialog.ShowDialog();
-                        if (result == DialogResult.OK)
-                        {
-                            ExecutablePath = dialog.FileName;
-                        }
-                    }));
-            }
-        }
-
-        public bool NewProfileEnabled
-        {
-            get
-            {
-                return LaunchProfiles != null;
-            }
-        }
-
-        private ICommand _newProfileCommand;
-        public ICommand NewProfileCommand
-        {
-            get
-            {
-                return LazyInitializer.EnsureInitialized(ref _newProfileCommand, () =>
-                 new DelegateCommand(state =>
-                 {
-                     var dialog = new GetProfileNameDialog(Project.Services.ExportProvider.GetExportedValue<SVsServiceProvider>(),
-                                                            ProjectThreadingService,
-                                                            GetNewProfileName(),
-                                                            IsNewProfileNameValid);
-                     if (dialog.ShowModal() == true)
-                     {
-                         CreateProfile(dialog.ProfileName, ProfileCommandNames.Executable);
-                     }
-                 }));
-            }
-        }
-
-        public bool DeleteProfileEnabled
-        {
-            get
-            {
-                if (!IsProfileSelected)
-                {
-                    return false;
-                }
-
-                return true;
-            }
-        }
-
-        private ICommand _deleteProfileCommand;
-        public ICommand DeleteProfileCommand
-        {
-            get
-            {
-                return LazyInitializer.EnsureInitialized(ref _deleteProfileCommand, () =>
-                    new DelegateCommand(state =>
-                    {
-                        IWritableLaunchProfile profileToRemove = SelectedDebugProfile;
-                        SelectedDebugProfile = null;
-
-                        CurrentLaunchSettings.Profiles.Remove(profileToRemove);
-                        LaunchProfiles.Remove(profileToRemove);
-
-                        SelectedDebugProfile = LaunchProfiles.Count > 0 ? LaunchProfiles[0] : null;
-                        NotifyProfileCollectionChanged();
-                    }));
-            }
-        }
+        }            
 
         internal void CreateProfile(string name, string commandName)
         {
-            var profile = new WritableLaunchProfile() { Name = name, CommandName = commandName };
+            var profile = new WritableLaunchProfile { Name = name, CommandName = commandName };
             CurrentLaunchSettings.Profiles.Add(profile);
             LaunchProfiles.Add(profile);
 
@@ -1040,8 +942,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         ///     The list of UI providers as each provider provides a name
         ///     The command name in the profile if it doesn't match one of the existing providers.
         ///     
-        /// </summary>
-        private List<LaunchType> _providerLaunchTypes;
+        /// </summary>        
         private void UpdateLaunchTypes()
         {
             // Populate the set of unique launch types from the list of providers since there can be duplicates with different priorities. However,
@@ -1051,9 +952,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 _providerLaunchTypes = new List<LaunchType>();
                 foreach (Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView> provider in _uiProviders)
                 {
-                    if (_providerLaunchTypes.FirstOrDefault((lt) => lt.CommandName.Equals(provider.Value.CommandName)) == null)
+                    if (_providerLaunchTypes.FirstOrDefault(launchType => launchType.CommandName.Equals(provider.Value.CommandName)) == null)
                     {
-                        _providerLaunchTypes.Add(new LaunchType() { CommandName = provider.Value.CommandName, Name = provider.Value.FriendlyName });
+                        _providerLaunchTypes.Add(new LaunchType(provider.Value.CommandName, provider.Value.FriendlyName));
                     }
                 }
             }
@@ -1066,10 +967,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             {
                 _launchTypes.AddRange(_providerLaunchTypes);
 
-                selectedLaunchType = _launchTypes.FirstOrDefault((launchType) => string.Equals(launchType.CommandName, selectedProfile.CommandName));
+                selectedLaunchType = _launchTypes.FirstOrDefault(launchType => string.Equals(launchType.CommandName, selectedProfile.CommandName));
                 if (selectedLaunchType == null)
                 {
-                    selectedLaunchType = new LaunchType() { CommandName = selectedProfile.CommandName, Name = selectedProfile.CommandName };
+                    selectedLaunchType = new LaunchType(selectedProfile.CommandName, selectedProfile.CommandName);
                     _launchTypes.Insert(0, selectedLaunchType);
                 }
             }
@@ -1080,7 +981,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             SelectedLaunchType = selectedLaunchType;
         }
 
-        private void EnvironmentVariables_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void EnvironmentVariables_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             // cause the property page to be dirtied when a row is added or removed
             OnPropertyChanged("EnvironmentVariables_Contents");
@@ -1106,7 +1007,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             PropertyChanged -= ViewModel_PropertyChanged;
         }
 
-        private ILaunchSettingsProvider _launchSettingsProvider;
         protected virtual ILaunchSettingsProvider GetDebugProfileProvider()
         {
             if (_launchSettingsProvider == null)
@@ -1139,50 +1039,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             get
             {
-                if (ActiveProvider?.CustomUI?.DataContext is INotifyDataErrorInfo notifyDataError)
-                {
-                    return notifyDataError.HasErrors;
-                }
-
-                return false;
+                return ActiveProvider?.CustomUI?.DataContext is INotifyDataErrorInfo notifyDataError && notifyDataError.HasErrors;
             }
         }
 
-        public bool DoesNotHaveErrors
-        {
-            get
-            {
-                return !HasErrors;
-            }
-        }
-
-        public class LaunchType
-        {
-            public string CommandName { get; set; }
-            public string Name { get; set; }
-
-            public override bool Equals(object obj)
-            {
-                if (obj is LaunchType oth)
-                {
-                    return CommandName?.Equals(oth.CommandName) ?? oth.CommandName == null;
-                }
-
-                return false;
-            }
-
-            public override int GetHashCode()
-            {
-                return CommandName?.GetHashCode() ?? 0;
-            }
-        }
-    }
-
-    public static class ProfileCommandNames
-    {
-        public const string Project = "Project";
-        public const string IISExpress = "IISExpress";
-        public const string Executable = "Executable";
-        public const string NoAction = "NoAction";
+        public bool DoesNotHaveErrors => !HasErrors;
     }
 }

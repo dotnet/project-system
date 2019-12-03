@@ -14,14 +14,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
     ''' <summary>
     ''' Helper class for (de)serializing the contents app.config
     ''' </summary>
-    ''' <remarks></remarks>
     Friend NotInheritable Class AppConfigSerializer
 
         ''' <summary>
         ''' Indicate how we should handle conflicts between value in app.config file
         ''' and in settings object passed in
         ''' </summary>
-        ''' <remarks></remarks>
         Friend Enum MergeValueMode
             UseSettingsFileValue    ' The value in the settings file wins
             UseAppConfigFileValue   ' The value in the app.config file wins
@@ -31,8 +29,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Indicate what changes were performed during deserialization
         ''' </summary>
-        ''' <remarks></remarks>
-        <Flags()>
+        <Flags>
         Friend Enum DirtyState
             NoChange = 0            ' No changes made
             ValueAdded = 1          ' At least one value was modified
@@ -42,14 +39,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Get settings from app.config file.
         ''' If the serialized representation in the app.config file differs from the value in the DesignTimeSettings
-        ''' object passed in to the function, the user will be prompted if (s)he want to replace the value in the .settings
+        ''' object passed in to the function, the user will be prompted if they want to replace the value in the .settings
         ''' file with the value in app.config
         ''' If the setting name from the app.config file doesn't exist in the DesignTimeSettings object passed to the function,
         ''' new setting will be added to it. 
         ''' If one or more values have been added to the settings object, the user is notified after deserialization is complete.
         ''' </summary>
         ''' <returns>True if we made any changes to the object, false otherwise</returns>
-        ''' <remarks></remarks>
         Friend Shared Function Deserialize(Settings As DesignTimeSettings, typeCache As SettingsTypeCache, SectionName As String, AppConfigDocData As DocData, mergeMode As MergeValueMode, Optional UIService As IUIService = Nothing) As DirtyState
             Dim objectDirty As DirtyState = DirtyState.NoChange
 
@@ -70,7 +66,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             For Each Instance As DesignTimeSettingInstance In ExistingSettings.Values
                 Dim settingType As Type = typeCache.GetSettingType(Instance.SettingTypeName)
-                ' We need a name and a type to be able to serialize this guy... unless it is a connection string, of course!
+                ' We need a name and a type to be able to serialize this... unless it is a connection string, of course!
                 If Instance.Name <> "" AndAlso settingType IsNot Nothing AndAlso settingType IsNot GetType(SerializableConnectionString) Then
                     Dim NewProp As New SettingsProperty(Instance.Name) With {
                         .PropertyType = settingType,
@@ -108,13 +104,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     scs.ProviderName = cs.ProviderName
                 End If
                 If ExistingSettings.ContainsKey(cs.Name) Then
-                    ' We already know about this guy - let's see if the values are different...
+                    ' We already know about this connection string - let's see if the values are different...
                     ' (by comparing the serialized values of the corresponding SerializedConnectionStrings)
                     Dim serializedValueInSettings As String = ExistingSettings.Item(cs.Name).SerializedValue
                     Dim serializedValueInAppConfig As String = SettingsValueSerializer.Serialize(scs, Globalization.CultureInfo.InvariantCulture)
                     Dim valueChanged As Boolean = Not String.Equals(serializedValueInSettings, serializedValueInAppConfig, StringComparison.Ordinal)
                     If valueChanged Then
-                        ' Yep! Ask the user what (s)he wants to do...
+                        ' Yep! Ask the user what they want to do...
                         Dim Instance As DesignTimeSettingInstance = ExistingSettings.Item(cs.Name)
                         objectDirty = objectDirty Or QueryReplaceValue(Settings, Instance, serializedValueInAppConfig, DesignTimeSettingInstance.SettingScope.Application, mergeMode, UIService)
                     End If
@@ -175,8 +171,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' DocDataService will be checked out
         ''' </param>
         ''' <param name="DocDataService">If specified, the DesignerDocDataService to add/get this DocData to/from</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Shared Function GetAppConfigDocData(ServiceProvider As IServiceProvider, Hierarchy As IVsHierarchy, CreateIfNotExists As Boolean, Writable As Boolean, Optional DocDataService As DesignerDocDataService = Nothing) As DocData
             Dim ProjSpecialFiles As IVsProjectSpecialFiles = TryCast(Hierarchy, IVsProjectSpecialFiles)
             Dim AppConfigDocData As DocData = Nothing
@@ -243,7 +237,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="ClassName"></param>
         ''' <param name="NamespaceName"></param>
         ''' <param name="AppConfigDocData"></param>
-        ''' <remarks></remarks>
         Friend Shared Sub Serialize(Settings As DesignTimeSettings, typeCache As SettingsTypeCache, valueCache As SettingsValueCache, ClassName As String, NamespaceName As String, AppConfigDocData As DocData, Hierarchy As IVsHierarchy, SynchronizeUserConfig As Boolean)
             Common.Switches.TraceSDSerializeSettings(TraceLevel.Info, "Serializing {0} settings to App.Config", Settings.Count)
             Requires.NotNull(Settings, NameOf(Settings))
@@ -254,9 +247,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Debug.Fail("Must provide a valid class name!")
                 Throw Common.CreateArgumentException(NameOf(ClassName))
             End If
-
-            Dim AppConfigReader As DocDataTextReader = Nothing
-            Dim AppConfigWriter As DocDataTextWriter = Nothing
 
             Dim ConfigHelperService As New ConfigurationHelperService(AddressOf typeCache.TypeTransformer)
             Dim FullyQualifiedClassName As String = ProjectUtils.FullyQualifiedClassName(NamespaceName, ClassName)
@@ -274,7 +264,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="AppConfigDocData"></param>
         ''' <param name="Hierarchy"></param>
         ''' <param name="ShouldSynchronizeUserConfig"></param>
-        ''' <remarks></remarks>
         Private Shared Sub Serialize(Settings As DesignTimeSettings, typeCache As SettingsTypeCache, valueCache As SettingsValueCache, SectionName As String, AppConfigDocData As DocData, Hierarchy As IVsHierarchy, ShouldSynchronizeUserConfig As Boolean)
             ' Populate settingspropertyvalue collections for user & application scoped settings respectively
             Dim ExistingUserScopedSettings As New SettingsPropertyValueCollection
@@ -346,7 +335,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="ConfigHelperService"></param>
         ''' <param name="Settings"></param>
         ''' <param name="AppConfigDocData"></param>
-        ''' <remarks></remarks>
         Private Shared Sub SynchronizeUserConfig(SectionName As String, Hierarchy As IVsHierarchy, ConfigHelperService As ConfigurationHelperService, Settings As DesignTimeSettings, AppConfigDocData As DocData)
             ' We list all the USER scoped settings that we know about and set the value to true or false depending
             ' on if the setting is roaming...
@@ -371,7 +359,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="ConfigHelperService"></param>
         ''' <param name="SettingsTheDesignerKnownsAbout"></param>
         ''' <param name="AppConfigDocData"></param>
-        ''' <remarks></remarks>
         Private Shared Sub SynchronizeUserConfig(SectionName As String, Hierarchy As IVsHierarchy, ConfigHelperService As ConfigurationHelperService, SettingsTheDesignerKnownsAbout As Dictionary(Of String, Boolean), AppConfigDocData As DocData)
             Dim hierSp As IServiceProvider = Common.ServiceProviderFromHierarchy(Hierarchy)
             Dim project As EnvDTE.Project = Common.DTEUtils.EnvDTEProject(Hierarchy)
@@ -446,14 +433,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' If the value in the app.config file differs from the value in the .settings file,
         ''' or the scope has been changed,
-        ''' propmpt the user if (s)he wants to update the value in the .settings file
+        ''' propmpt the user if they want to update the value in the .settings file
         ''' </summary>
         ''' <param name="DeserializedPropertyValue"></param>
         ''' <param name="Scope">The scope in which the deserialized property value was found</param>
         ''' <param name="ExistingSettings"></param>
         ''' <param name="UIService"></param>
         ''' <returns>True if a new instance was added to the the root component</returns>
-        ''' <remarks></remarks>
         Private Shared Function MergeAndMaybeAddValue(Settings As DesignTimeSettings, DeserializedPropertyValue As SettingsPropertyValue, Scope As DesignTimeSettingInstance.SettingScope, ExistingSettings As Dictionary(Of String, DesignTimeSettingInstance), mergeMode As MergeValueMode, UIService As IUIService) As DirtyState
             If Not ExistingSettings.ContainsKey(DeserializedPropertyValue.Name) Then
                 If Settings.IsValidName(DeserializedPropertyValue.Name) Then
@@ -493,14 +479,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         End Function
 
         ''' <summary>
-        ''' Ask the user if (s)he wants to replace the current value of a setting with a new value found in the app.config file...
+        ''' Ask the user if they want to replace the current value of a setting with a new value found in the app.config file...
         ''' </summary>
         ''' <param name="Settings">The owner of the setting</param>
         ''' <param name="Instance">The existing setting instance</param>
         ''' <param name="SerializedAppConfigValue">The serialized representation of the value found in the app.config file</param>
         ''' <param name="AppConfigScope">The scope of the value found in the app.config file</param>
         ''' <param name="UIService">An option UI service to help us pop up a nice dialog</param>
-        ''' <remarks></remarks>
         Private Shared Function QueryReplaceValue(Settings As DesignTimeSettings, Instance As DesignTimeSettingInstance, SerializedAppConfigValue As String, AppConfigScope As DesignTimeSettingInstance.SettingScope, mergeMode As MergeValueMode, UIService As IUIService) As DirtyState
             Dim ReplaceValue As Boolean
             Select Case mergeMode
@@ -511,9 +496,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Case Else
                     Debug.Assert(mergeMode = MergeValueMode.Prompt, "Unknown MergeValueMode: " & mergeMode)
                     If UIService IsNot Nothing Then
-                        ReplaceValue = (UIService.ShowMessage(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ReplaceValueWithAppConfigValue, Instance.SerializedValue, SerializedAppConfigValue), My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ReplaceValueWithAppConfigValueTitle, Instance.Name), System.Windows.Forms.MessageBoxButtons.YesNo) = System.Windows.Forms.DialogResult.Yes)
+                        ReplaceValue = UIService.ShowMessage(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ReplaceValueWithAppConfigValue, Instance.SerializedValue, SerializedAppConfigValue), My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ReplaceValueWithAppConfigValueTitle, Instance.Name), System.Windows.Forms.MessageBoxButtons.YesNo) = System.Windows.Forms.DialogResult.Yes
                     Else
-                        ReplaceValue = (System.Windows.Forms.MessageBox.Show(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ReplaceValueWithAppConfigValueTitle, Instance.Name) & VisualBasic.vbNewLine & VisualBasic.vbNewLine & My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ReplaceValueWithAppConfigValue, Instance.SerializedValue, SerializedAppConfigValue), DesignerFramework.DesignUtil.GetDefaultCaption(VBPackage.Instance), System.Windows.Forms.MessageBoxButtons.YesNo) = System.Windows.Forms.DialogResult.Yes)
+                        ReplaceValue = System.Windows.Forms.MessageBox.Show(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ReplaceValueWithAppConfigValueTitle, Instance.Name) & VisualBasic.vbNewLine & VisualBasic.vbNewLine & My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ReplaceValueWithAppConfigValue, Instance.SerializedValue, SerializedAppConfigValue), DesignerFramework.DesignUtil.GetDefaultCaption(VBPackage.Instance), System.Windows.Forms.MessageBoxButtons.YesNo) = System.Windows.Forms.DialogResult.Yes
                     End If
             End Select
 

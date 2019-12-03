@@ -167,7 +167,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Requires.NotNullOrEmpty(projectPath, nameof(projectPath));
             Requires.NotNull(targetFramework, nameof(targetFramework));
             Requires.NotNull(dependenciesWorld, nameof(dependenciesWorld));
-            Assumes.True(Equals(dependenciesWorld.KeyComparer, StringComparer.OrdinalIgnoreCase), $"{nameof(dependenciesWorld)} must have an {nameof(StringComparer.OrdinalIgnoreCase)} key comparer.");
+            Assumes.True(Equals(dependenciesWorld.KeyComparer, StringComparers.DependencyTreeIds), $"{nameof(dependenciesWorld)} must have an {nameof(StringComparers.DependencyTreeIds)} key comparer.");
 
             ProjectPath = projectPath;
             TargetFramework = targetFramework;
@@ -199,7 +199,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 ImmutableArray<IDependency>.Builder topLevelDependencies = ImmutableArray.CreateBuilder<IDependency>();
 
                 bool hasVisibleUnresolvedDependency = false;
-                var topLevelDependencyByPath = new Dictionary<string, IDependency>(StringComparer.OrdinalIgnoreCase);
+                var topLevelDependencyByPath = new Dictionary<string, IDependency>(StringComparers.DependencyTreeIds);
 
                 foreach ((string id, IDependency dependency) in dependenciesWorld)
                 {
@@ -238,7 +238,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
                 bool hasReachableVisibleUnresolvedDependency = false;
 
-                var hasReachableVisibleUnresolvedById = new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
+                var hasReachableVisibleUnresolvedById = new Dictionary<string, bool>(StringComparers.DependencyTreeIds);
 
                 // 'spine' is a stack containing an enumerator for each level of the graph, which is updated as
                 // we walk the graph. We are working with struct enumerators so need this array. It will grow
@@ -436,7 +436,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// Returns a list of direct child nodes for given dependency
         /// </summary>
         /// <param name="dependency"></param>
-        /// <returns></returns>
         public ImmutableArray<IDependency> GetDependencyChildren(IDependency dependency)
         {
             if (dependency.DependencyIDs.Length == 0)

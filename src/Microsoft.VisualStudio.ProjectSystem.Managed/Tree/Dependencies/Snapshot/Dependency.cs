@@ -11,21 +11,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     internal sealed class Dependency : IDependency
     {
-        // These priorities are for graph nodes only and are used to group graph nodes 
-        // appropriately in order groups predefined order instead of alphabetically.
-        // Order is not changed for top dependency nodes only for graph hierarchies.
-        public const int DiagnosticsErrorNodePriority = 100;
-        public const int DiagnosticsWarningNodePriority = 101;
-        public const int UnresolvedReferenceNodePriority = 110;
-        public const int ProjectNodePriority = 120;
-        public const int PackageNodePriority = 130;
-        public const int FrameworkAssemblyNodePriority = 140;
-        public const int PackageAssemblyNodePriority = 150;
-        public const int AnalyzerNodePriority = 160;
-        public const int ComNodePriority = 170;
-        public const int SdkNodePriority = 180;
-        public const int FrameworkReferenceNodePriority = 190;
-
         public Dependency(IDependencyModel dependencyModel, ITargetFramework targetFramework, string containingProjectPath)
         {
             Requires.NotNull(dependencyModel, nameof(dependencyModel));
@@ -83,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 IconSet = DependencyIconSetCache.Instance.GetOrAddIconSet(dependencyModel.Icon, dependencyModel.ExpandedIcon, dependencyModel.UnresolvedIcon, dependencyModel.UnresolvedExpandedIcon);
             }
 
-            Properties = dependencyModel.Properties
+            BrowseObjectProperties = dependencyModel.Properties
                 ?? ImmutableStringDictionary<string>.EmptyOrdinal
                      .Add(Folder.IdentityProperty, Caption)
                      .Add(Folder.FullPathProperty, Path);
@@ -130,7 +115,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             TopLevel = dependency.TopLevel;
             Visible = dependency.Visible;
             Priority = dependency.Priority;
-            Properties = dependency.Properties;
+            BrowseObjectProperties = dependency.BrowseObjectProperties;
             Caption = caption ?? dependency.Caption; // TODO if Properties contains "Folder.IdentityProperty" should we update it? (see public ctor)
             Resolved = resolved ?? dependency.Resolved;
             Flags = flags ?? dependency.Flags;
@@ -205,7 +190,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public int Priority { get; }
         public ProjectTreeFlags Flags { get; }
 
-        public IImmutableDictionary<string, string> Properties { get; }
+        public IImmutableDictionary<string, string> BrowseObjectProperties { get; }
 
         public ImmutableArray<string> DependencyIDs { get; }
 
@@ -264,7 +249,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             if (id.Length != length)
                 return false;
-            if (!id.StartsWith(targetFramework.ShortName, StringComparison.OrdinalIgnoreCase))
+            if (!id.StartsWith(targetFramework.ShortName, StringComparisons.DependencyTreeIds))
                 return false;
             int index = targetFramework.ShortName.Length;
             if (id[index++] != '\\')
@@ -280,7 +265,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             // reimplementing OrdinalIgnoreCase comparison.
             modelId = modelId.Replace('/', '\\').Replace("..", "__");
 
-            if (string.Compare(id, index, modelId, 0, modelId.Length - modelSlashCount, StringComparison.OrdinalIgnoreCase) != 0)
+            if (string.Compare(id, index, modelId, 0, modelId.Length - modelSlashCount, StringComparisons.DependencyTreeIds) != 0)
                 return false;
 
             return true;
@@ -301,7 +286,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// <param name="targetFramework"></param>
         /// <param name="providerType"></param>
         /// <param name="modelId"></param>
-        /// <returns></returns>
         public static string GetID(ITargetFramework targetFramework, string providerType, string modelId)
         {
             Requires.NotNull(targetFramework, nameof(targetFramework));

@@ -13,7 +13,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
     ''' We place an instance of this class into the project designer's window frame's ViewHelper property.
     '''   It allows us to gain access to command routing in the shell and also window frame events
     ''' </summary>
-    ''' <remarks></remarks>
     Public Class CmdTargetHelper
         Implements OleInterop.IOleCommandTarget
         Implements IVsWindowFrameNotify3
@@ -41,7 +40,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="nCmdexecopt">[in] Values taken from the OLECMDEXECOPT enumeration, which describe how the object should execute the command. </param>
         ''' <param name="pvaIn">[unique][in] Pointer to a VARIANTARG structure containing input arguments. Can be NULL. </param>
         ''' <param name="pvaOut">[unique][in,out] Pointer to a VARIANTARG structure to receive command output. Can be NULL. </param>
-        ''' <returns></returns>
         ''' <remarks>
         ''' This method supports the standard return values E_FAIL and E_UNEXPECTED, as well as the following: 
         '''   S_OK 
@@ -153,7 +151,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Saves the project designer and all its child designers
         ''' </summary>
         ''' <returns>An HRESULT</returns>
-        ''' <remarks></remarks>
         Private Function HrSaveProjectDesigner() As Integer
             'Execute a Save for the App Designer (saves all DocData pages)
             Dim hr As Integer = _windowPane.SaveChildren(__VSRDTSAVEOPTIONS.RDTSAVEOPT_ForceSave)
@@ -172,7 +169,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="cCmds">[in] The number of commands in the prgCmds array. </param>
         ''' <param name="prgCmds">[in,out] A caller-allocated array of OLECMD structures that indicate the commands for which the caller needs status information. This method fills the cmdf member of each structure with values taken from the OLECMDF enumeration. </param>
         ''' <param name="pCmdText">[unique][in,out] Pointer to an OLECMDTEXT structure in which to return name and/or status information of a single command. Can be NULL to indicate that the caller does not need this information. </param>
-        ''' <returns></returns>
         ''' <remarks>
         ''' This method supports the standard return values E_FAIL and E_UNEXPECTED, as well as the following: 
         '''   S_OK 
@@ -256,7 +252,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Notifies the VSPackage that a window frame is closing and tells the environment what action to take.
         ''' </summary>
         ''' <param name="pgrfSaveOptions"></param>
-        ''' <returns></returns>
         ''' <remarks>
         ''' Implementers should develop code to notify users and prompt for save and close and relay those decisions to the environment through pgrfSaveOptions.
         ''' </remarks>
@@ -293,7 +288,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     flags = __VSRDTSAVEOPTIONS.RDTSAVEOPT_DocClose Or __VSRDTSAVEOPTIONS.RDTSAVEOPT_PromptSave 'defensive
             End Select
 
-            'Ask the user if s/he wants to save the child documents (depending on flags).  If so, go ahead and save them now.
+            'Ask the user if they want to save the child documents (depending on flags).  If so, go ahead and save them now.
             Dim hr As Integer = _windowPane.SaveChildren(flags)
             If NativeMethods.Failed(hr) Then
                 'Fails (among other possible cases) when the user chooses Cancel.  Return the hresult so the
@@ -321,8 +316,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="y"></param>
         ''' <param name="w"></param>
         ''' <param name="h"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function OnDockableChange(fDockable As Integer, x As Integer, y As Integer, w As Integer, h As Integer) As Integer Implements IVsWindowFrameNotify3.OnDockableChange
             Return NativeMethods.S_OK
         End Function
@@ -335,8 +328,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="y"></param>
         ''' <param name="w"></param>
         ''' <param name="h"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function OnMove(x As Integer, y As Integer, w As Integer, h As Integer) As Integer Implements IVsWindowFrameNotify3.OnMove
             Return NativeMethods.S_OK
         End Function
@@ -346,8 +337,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Notifies the VSPackage of a change in the window's display state.
         ''' </summary>
         ''' <param name="fShow"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function OnShow(fShow As Integer) As Integer Implements IVsWindowFrameNotify3.OnShow
             'NOTE: In error cases, m_WindowPane.AppDesignerView may be Nothing, so we must guard against
             '  its use.
@@ -373,8 +362,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="y"></param>
         ''' <param name="w"></param>
         ''' <param name="h"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function OnSize(x As Integer, y As Integer, w As Integer, h As Integer) As Integer Implements IVsWindowFrameNotify3.OnSize
             Return NativeMethods.S_OK
         End Function

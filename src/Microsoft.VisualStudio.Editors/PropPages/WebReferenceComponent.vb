@@ -23,7 +23,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         <VBDescription(My.Resources.Microsoft_VisualStudio_Editors_Designer.ConstantResourceIDs.PPG_WebReferenceNameDescription)>
         <MergableProperty(False)>
         <HelpKeyword("Folder Properties.FileName")>
-        Public Property Name() As String
+        Public Property Name As String
             Get
                 Try
                     Return _projectItem.Name
@@ -31,7 +31,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Return String.Empty
                 End Try
             End Get
-            Set(value As String)
+            Set
                 _projectItem.Name = value
                 _page.OnWebReferencePropertyChanged(Me)
             End Set
@@ -42,7 +42,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return False
         End Function
 
-        Friend ReadOnly Property WebReference() As EnvDTE.ProjectItem
+        Friend ReadOnly Property WebReference As EnvDTE.ProjectItem
             Get
                 Return _projectItem
             End Get
@@ -51,7 +51,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         <VBDisplayName(My.Resources.Microsoft_VisualStudio_Editors_Designer.ConstantResourceIDs.PPG_UrlBehaviorName)>
         <VBDescription(My.Resources.Microsoft_VisualStudio_Editors_Designer.ConstantResourceIDs.PPG_UrlBehaviorDescription)>
         <HelpKeyword("Folder Properties.UrlBehavior")>
-        Public Property UrlBehavior() As UrlBehaviorType
+        Public Property UrlBehavior As UrlBehaviorType
             Get
                 Dim prop As EnvDTE.[Property] = GetItemProperty(NameOf(UrlBehavior))
                 If prop IsNot Nothing Then
@@ -61,7 +61,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Return UrlBehaviorType.Static
                 End If
             End Get
-            Set(value As UrlBehaviorType)
+            Set
                 Dim prop As EnvDTE.[Property] = GetItemProperty(NameOf(UrlBehavior))
                 If prop IsNot Nothing Then
                     prop.Value = CInt(value)
@@ -81,7 +81,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         <VBDescription(My.Resources.Microsoft_VisualStudio_Editors_Designer.ConstantResourceIDs.PPG_WebReferenceUrlDescription)>
         <HelpKeyword("Folder Properties.WebReference")>
         <MergableProperty(False)>
-        Public Property WebReferenceURL() As String
+        Public Property WebReferenceURL As String
             Get
                 Dim prop As EnvDTE.[Property] = GetItemProperty(NameOf(WebReference))
                 If prop IsNot Nothing Then
@@ -91,7 +91,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Return String.Empty
                 End If
             End Get
-            Set(value As String)
+            Set
                 If value Is Nothing Then
                     value = String.Empty
                 End If
@@ -215,7 +215,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Shared s_displayValues As String()
 
         ' a help collection to hold localized strings
-        Private Shared ReadOnly Property DisplayValues() As String()
+        Private Shared ReadOnly Property DisplayValues As String()
             Get
                 If s_displayValues Is Nothing Then
                     s_displayValues = New String() {My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_UrlBehavior_Static, My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_UrlBehavior_Dynamic}

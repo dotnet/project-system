@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Build.Construction;
@@ -58,13 +59,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             Requires.NotNull(accessor, nameof(accessor));
 
             return accessor.OpenProjectForReadAsync(configuredProject, project =>
-                project.AllEvaluatedItems.Select(x => x.EvaluatedInclude).ToImmutableHashSet(StringComparer.OrdinalIgnoreCase));
+                project.AllEvaluatedItems.Select(x => x.EvaluatedInclude).ToImmutableHashSet(StringComparers.ItemNames));
         }
 
         /// <summary>
         /// Checks to see if the project tree has a valid display order.
         /// </summary>
-        public static bool HasValidDisplayOrder(IProjectTree? projectTree)
+        public static bool HasValidDisplayOrder([NotNullWhen(returnValue: true)] IProjectTree? projectTree)
         {
             return IsValidDisplayOrder(GetDisplayOrder(projectTree));
         }
@@ -194,7 +195,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             Requires.NotNull(project, nameof(project));
             Requires.NotNull(projectTree, nameof(projectTree));
 
-            var includes = GetEvaluatedIncludes(projectTree).Except(excludeIncludes, StringComparer.OrdinalIgnoreCase).ToImmutableArray();
+            var includes = GetEvaluatedIncludes(projectTree).Except(excludeIncludes, StringComparers.ItemNames).ToImmutableArray();
             return GetItemElements(project, includes);
         }
 
@@ -231,7 +232,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         {
             var treeQueue = new Queue<IProjectTree>();
 
-            var hashSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            var hashSet = new HashSet<string>(StringComparers.ItemNames);
             var includes = new SortedList<int, string>();
 
             treeQueue.Enqueue(projectTree);
@@ -475,7 +476,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
                 // We are excluding folder elements until CPS allows empty folders to be part of the order; when they do, we can omit checking the item type for "Folder".
                 // Related changes will also need to happen in TryMoveElementsToTop when CPS allows empty folders in ordering.
                 // Don't choose items that were imported. Most likely won't happen on added elements, but just in case for sanity.
-                .Where(x => !previousIncludes.Contains(x.EvaluatedInclude, StringComparer.OrdinalIgnoreCase) && !x.ItemType.Equals("Folder", StringComparisons.ItemTypes) && !x.IsImported)
+                .Where(x => !previousIncludes.Contains(x.EvaluatedInclude, StringComparers.ItemNames) && !x.ItemType.Equals("Folder", StringComparisons.ItemTypes) && !x.IsImported)
                 .Select(x => x.Xml)
                 .ToImmutableArray();
         }

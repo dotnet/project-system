@@ -10,7 +10,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     ''' <summary>
     ''' C# application property page - see comments in proppage.vb: "Application property pages (VB and C#)"
     ''' </summary>
-    ''' <remarks></remarks>
     Partial Friend Class CSharpApplicationPropPage
         Inherits ApplicationPropPage
 
@@ -27,7 +26,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Populates the start-up object combobox box dropdown
         ''' </summary>
         ''' <param name="PopulateDropdown">If false, only the current text in the combobox is set.  If true, the entire dropdown list is populated.  For performance reasons, False should be used until the user actually drops down the list.</param>
-        ''' <remarks></remarks>
         Protected Overrides Sub PopulateStartupObject(StartUpObjectSupported As Boolean, PopulateDropdown As Boolean)
             Dim InsideInitSave As Boolean = m_fInsideInit
             m_fInsideInit = True
@@ -42,7 +40,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         .Items.Clear()
                         .SelectedItem = .Items.Add(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_StartupObjectNotSet)
                         .Text = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_StartupObjectNotSet
-                        .SelectedIndex = 0  '// Set it to NotSet
+                        .SelectedIndex = 0  ' Set it to NotSet
                     End With
 
                     If StartupObjectPropertyControlData.IsMissing Then
@@ -104,7 +102,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         If String.Compare(StartupObjectText, My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_StartupObjectNotSet) <> 0 Then
                             value = StartupObjectText
                         Else
-                            '// the value is (Not Set) so just leave it empty
+                            ' the value is (Not Set) so just leave it empty
                             value = ""
                         End If
                     Else

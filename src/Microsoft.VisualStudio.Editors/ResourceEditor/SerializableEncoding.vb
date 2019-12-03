@@ -15,8 +15,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     '''   property on Resource for text files.  The Undo engine requires all the properties to be serializable, and 
     '''   System.Text.Encoding is not.
     ''' </summary>
-    ''' <remarks></remarks>
-    <Serializable()>
+    <Serializable>
     Friend NotInheritable Class SerializableEncoding
         Implements ISerializable
 
@@ -31,7 +30,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Constructor.
         ''' </summary>
         ''' <param name="Encoding">The encoding to wrap.  Nothing is acceptable (indicates a default value - won't be written out to the resx if Nothing).</param>
-        ''' <remarks></remarks>
         Public Sub New(Encoding As Encoding)
             _encoding = Encoding
         End Sub
@@ -42,7 +40,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="info"></param>
         ''' <param name="context"></param>
-        ''' <remarks></remarks>
         Private Sub New(info As SerializationInfo, context As StreamingContext)
             Dim EncodingName As String = info.GetString(KEY_NAME)
             If EncodingName <> "" Then
@@ -54,13 +51,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Returns/sets the encoding wrapped by this class.  Nothing is an okay value (indicates a default encoding).
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public Property Encoding() As Encoding
+        Public Property Encoding As Encoding
             Get
                 Return _encoding
             End Get
-            Set(Value As Encoding)
+            Set
                 _encoding = Encoding
             End Set
         End Property
@@ -69,8 +64,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Gets the display name (localized) of the encoding.
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function DisplayName() As String
             If _encoding IsNot Nothing Then
                 Return My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_EncodingDisplayName, _encoding.EncodingName, CStr(_encoding.CodePage))
@@ -86,7 +79,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="info"></param>
         ''' <param name="context"></param>
-        ''' <remarks></remarks>
         Private Sub GetObjectData(info As SerializationInfo, context As StreamingContext) Implements ISerializable.GetObjectData
             If _encoding IsNot Nothing Then
                 info.AddValue(KEY_NAME, _encoding.WebName)

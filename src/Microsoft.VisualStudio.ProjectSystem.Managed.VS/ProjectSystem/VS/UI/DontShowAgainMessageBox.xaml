@@ -8,7 +8,10 @@
         ResizeMode="NoResize"
         WindowStartupLocation="CenterOwner"                    
         Title="{Binding Path=DialogCaption, Mode=OneWay}"
-        Width="500" SizeToContent="Height">
+        Width="500" SizeToContent="Height"
+        UseLayoutRounding="true"
+        TextOptions.TextFormattingMode="Display"
+        >
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

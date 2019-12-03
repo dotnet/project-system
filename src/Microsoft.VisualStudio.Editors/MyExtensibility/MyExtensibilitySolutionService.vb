@@ -40,7 +40,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' Shared property to obtain the instance of MyExtensibilityManager associated with
         ''' the current VS environment.
         ''' </summary>
-        Public Shared ReadOnly Property Instance() As MyExtensibilitySolutionService
+        Public Shared ReadOnly Property Instance As MyExtensibilitySolutionService
             Get
                 If s_sharedInstance Is Nothing Then
                     s_sharedInstance = New MyExtensibilitySolutionService(VBPackage.Instance)
@@ -55,7 +55,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Shared property to obtain the current VS status bar.
         ''' </summary>
-        Public Shared ReadOnly Property IdeStatusBar() As VsStatusBarWrapper
+        Public Shared ReadOnly Property IdeStatusBar As VsStatusBarWrapper
             Get
                 If s_ideStatusBar Is Nothing Then
                     Dim vsStatusBar As IVsStatusbar = TryCast(
@@ -168,7 +168,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
         End Function
 
-        Public ReadOnly Property TrackProjectDocumentsEvents() As TrackProjectDocumentsEventsHelper
+        Public ReadOnly Property TrackProjectDocumentsEvents As TrackProjectDocumentsEventsHelper
             Get
                 If _trackProjectDocumentsEvents Is Nothing Then
                     _trackProjectDocumentsEvents = TrackProjectDocumentsEventsHelper.GetInstance(_vbPackage)
@@ -192,7 +192,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Lazy-initialized My Extensibility settings containing information about extension templates.
         ''' </summary>
-        Private ReadOnly Property ExtensibilitySettings() As MyExtensibilitySettings
+        Private ReadOnly Property ExtensibilitySettings As MyExtensibilitySettings
             Get
                 If _extensibilitySettings Is Nothing Then
 
@@ -298,7 +298,6 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Handle solution's AfterClosing events and clear our collection of project services.
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub SolutionEvents_AfterClosing()
             Switches.TraceMyExtensibility(TraceLevel.Verbose, "MyExtensibilitySolutionService.SolutionEvents_AfterClosing: Entry. Clear project services dictionary.")
             _projectServices.Clear()
@@ -335,7 +334,6 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Handle DTE OnBeginShutDown event to remove our event handlers.
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub DTEEvents_OnBeginShutDown()
             Switches.TraceMyExtensibility(TraceLevel.Verbose, "MyExtensibilitySolutionService.DTEEvents_OnBeginShutDown: Entry. Call AfterClosing.")
             SolutionEvents_AfterClosing() ' Dispose all project services.

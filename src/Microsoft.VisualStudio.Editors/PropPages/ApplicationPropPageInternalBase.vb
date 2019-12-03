@@ -117,7 +117,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Fill up the allowed values in the target framework combo box
         ''' </summary>
-        ''' <remarks></remarks>
         Protected Sub PopulateTargetFrameworkComboBox(targetFrameworkComboBox As ComboBox)
             Dim targetFrameworkSupported As Boolean = False
             targetFrameworkComboBox.Items.Clear()
@@ -129,7 +128,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Dim sp As New Shell.ServiceProvider(siteServiceProvider)
                 Dim vsFrameworkMultiTargeting As IVsFrameworkMultiTargeting = TryCast(sp.GetService(GetType(SVsFrameworkMultiTargeting).GUID), IVsFrameworkMultiTargeting)
                 ' TODO: Remove IsTargetFrameworksDefined check after issue #800 is resolved.
-                If (TargetFrameworksDefined() = False And vsFrameworkMultiTargeting IsNot Nothing) Then
+                If TargetFrameworksDefined() = False And vsFrameworkMultiTargeting IsNot Nothing Then
 
                     Dim supportedTargetFrameworksDescriptor = GetPropertyDescriptor("SupportedTargetFrameworks")
                     Dim supportedFrameworks As IEnumerable(Of TargetFrameworkMoniker) = TargetFrameworkMoniker.GetSupportedTargetFrameworkMonikers(vsFrameworkMultiTargeting, DTEProject, supportedTargetFrameworksDescriptor)
@@ -162,7 +161,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             propTargetFrameworks = GetPropertyDescriptor("TargetFrameworks")
             obj = TryGetNonCommonPropertyValue(propTargetFrameworks)
             Dim stTargetFrameworks As String = TryCast(obj, String)
-            If (String.IsNullOrEmpty(stTargetFrameworks)) Then
+            If String.IsNullOrEmpty(stTargetFrameworks) Then
                 Return False
             End If
             Return True
@@ -174,8 +173,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="control"></param>
         ''' <param name="prop"></param>
         ''' <param name="value"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Protected Function SetTargetFrameworkMoniker(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             Dim combobox As ComboBox = CType(control, ComboBox)
             Dim previouslySelectedIndex = combobox.SelectedIndex
@@ -210,8 +207,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="control"></param>
         ''' <param name="prop"></param>
         ''' <param name="value"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Protected Function GetTargetFrameworkMoniker(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
             Dim currentTarget As TargetFrameworkMoniker = CType(CType(control, ComboBox).SelectedItem, TargetFrameworkMoniker)
             If currentTarget IsNot Nothing Then

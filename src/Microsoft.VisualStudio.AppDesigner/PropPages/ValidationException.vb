@@ -7,7 +7,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     ''' <summary>
     ''' The exception will be thrown when validation failed...
     ''' </summary>
-    ''' <remarks></remarks>
     Friend Class ValidationException
         Inherits ApplicationException
 
@@ -21,7 +20,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             _control = control
         End Sub
 
-        Public ReadOnly Property Result() As ValidationResult
+        Public ReadOnly Property Result As ValidationResult
             Get
                 Return _validationResult
             End Get
@@ -30,8 +29,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Public Sub RestoreFocus()
             If _control IsNot Nothing Then
                 _control.Focus()
-                If TypeOf _control Is TextBox Then
-                    CType(_control, TextBox).SelectAll()
+                Dim textBox = TryCast(_control, TextBox)
+                If textBox IsNot Nothing Then
+                    textBox.SelectAll()
                 End If
             End If
         End Sub

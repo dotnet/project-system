@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
                 SVsServiceProviderFactory.Create(), ConfiguredProjectFactory.Create(), null!));
         }
 
-        abstract internal long GetCommandId();
+        internal abstract long GetCommandId();
 
         internal AbstractMoveCommand CreateAbstractInstance(
             IPhysicalProjectTree? projectTree = null,

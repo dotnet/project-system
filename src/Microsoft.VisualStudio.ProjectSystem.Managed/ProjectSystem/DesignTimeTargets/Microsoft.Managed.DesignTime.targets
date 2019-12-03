@@ -99,6 +99,7 @@
                           DeclaredSourceItems;
                           UserSourceItems;
                           SupportAvailableItemName;
+                          IntegratedConsoleDebugging;
                           PersistDesignTimeDataOutOfProject;" />
 
     <!-- Reference Manager capabilities -->

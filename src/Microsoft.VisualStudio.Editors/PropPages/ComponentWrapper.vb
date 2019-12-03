@@ -20,11 +20,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' the original object
         ''' </summary>
-        Protected Friend Property CurrentObject() As Object
+        Protected Friend Property CurrentObject As Object
             Get
                 Return _currentObject
             End Get
-            Set(value As Object)
+            Set
                 Debug.Assert(value IsNot Nothing, "can not support Nothing")
                 _currentObject = value
             End Set

@@ -12,7 +12,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
     ''' - Sort the ListView based on the current column or the first column if current column values are equal.
     ''' - Shared method to handle a column click event and sort the list view.
     ''' </summary>
-    ''' <remarks></remarks>
     Friend Class ListViewComparer
         Implements IComparer
 
@@ -24,11 +23,11 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <summary>
         '''  Which column should be used to sort the list. Start from 0
         ''' </summary>
-        Public Property SortColumn() As Integer
+        Public Property SortColumn As Integer
             Get
                 Return _sortColumn
             End Get
-            Set(value As Integer)
+            Set
                 _sortColumn = value
             End Set
         End Property
@@ -36,11 +35,11 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <summary>
         '''  which order, Ascending or Descending
         ''' </summary>
-        Public Property Sorting() As SortOrder
+        Public Property Sorting As SortOrder
             Get
                 Return _sorting
             End Get
-            Set(value As SortOrder)
+            Set
                 _sorting = value
             End Set
         End Property
@@ -63,8 +62,8 @@ Namespace Microsoft.VisualStudio.Editors.Common
         '''  Get String Value of one column
         ''' </summary>
         Private Shared Function GetColumnValue(obj As Object, column As Integer) As String
-            If TypeOf obj Is ListViewItem Then
-                Dim listItem As ListViewItem = CType(obj, ListViewItem)
+            Dim listItem = TryCast(obj, ListViewItem)
+            If listItem IsNot Nothing Then
                 Return listItem.SubItems.Item(column).Text
             End If
 

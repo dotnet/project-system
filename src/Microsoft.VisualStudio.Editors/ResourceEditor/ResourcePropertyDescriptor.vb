@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Explicit On
 Option Strict On
@@ -11,7 +11,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     ''' <summary>
     ''' Provides information about a specific property of a Resource instance.
     ''' </summary>
-    ''' <remarks></remarks>
     Friend NotInheritable Class ResourcePropertyDescriptor
         Inherits PropertyDescriptor
 
@@ -81,8 +80,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Returns the type of the instance this property is bound to, which is Resource.
         ''' </summary>
         ''' <value>The Resource type.</value>
-        ''' <remarks></remarks>
-        Public Overrides ReadOnly Property ComponentType() As Type
+        Public Overrides ReadOnly Property ComponentType As Type
             Get
                 Return GetType(Resource)
             End Get
@@ -93,8 +91,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''  Returns a value indicating whether this property is read-only.
         ''' </summary>
         ''' <value>True if the property is read-only, False otherwise.</value>
-        ''' <remarks></remarks>
-        Public Overrides ReadOnly Property IsReadOnly() As Boolean
+        Public Overrides ReadOnly Property IsReadOnly As Boolean
             Get
                 Return _isReadOnly
             End Get
@@ -105,8 +102,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''  Returns the type of the property.
         ''' </summary>
         ''' <value>A Type that represents the type of the property.</value>
-        ''' <remarks></remarks>
-        Public Overrides ReadOnly Property PropertyType() As Type
+        Public Overrides ReadOnly Property PropertyType As Type
             Get
                 Return _propertyType
             End Get
@@ -143,8 +139,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Debug.Assert(Component IsNot Nothing, "ResourcePropertyDescriptor.SetValue: Component is Nothing")
             If Component IsNot Nothing Then
                 Debug.Assert(TypeOf Component Is Resource, "ResourcePropertyDescriptor.SetValue: Component is not a Resource")
-                If TypeOf Component Is Resource Then
-                    Dim Resource As Resource = DirectCast(Component, Resource)
+                Dim Resource = TryCast(Component, Resource)
+                If Resource IsNot Nothing Then
                     Dim Site As ISite = GetSite(Resource)
                     Dim ChangeService As IComponentChangeService = Nothing
                     Dim oldValue As Object = Nothing
@@ -226,8 +222,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Debug.Assert(Component IsNot Nothing, "ResourcePropertyDescriptor.ResetValue: Component is Nothing")
             If Component IsNot Nothing Then
                 Debug.Assert(TypeOf Component Is Resource, "ResourcePropertyDescriptor.ResetValue: Component is not a Resource")
-                If TypeOf Component Is Resource Then
-                    Dim Resource As Resource = DirectCast(Component, Resource)
+                Dim Resource = TryCast(Component, Resource)
+                If Resource IsNot Nothing Then
                     Resource.ResetPropertyValue(Name)
                 End If
             End If

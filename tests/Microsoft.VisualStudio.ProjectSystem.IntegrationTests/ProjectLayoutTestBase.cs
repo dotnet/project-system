@@ -198,7 +198,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// Creates <paramref name="project"/> on disk and opens it, returning its test extension object.
         /// </summary>
         /// <param name="project"></param>
-        /// <returns></returns>
         protected ProjectTestExtension CreateProject(Project project)
         {
             var rootPath = CreateRootPath();

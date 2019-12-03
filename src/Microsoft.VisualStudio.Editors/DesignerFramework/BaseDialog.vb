@@ -85,8 +85,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 _uiService = CType(GetService(GetType(IUIService)), IUIService)
             End If
 
-            Using (DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware))
-                If Not (_uiService Is Nothing) Then
+            Using DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware)
+                If _uiService IsNot Nothing Then
                     Return _uiService.ShowDialog(Me)
                 Else
                     Return MyBase.ShowDialog()
@@ -102,12 +102,12 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         'Summary:
         '   Gets or sets the IServiceProvider for this dialog.
         '**************************************************************************
-        Friend Property ServiceProvider() As IServiceProvider
+        Friend Property ServiceProvider As IServiceProvider
             Get
                 Debug.Assert(_serviceProvider IsNot Nothing, "No service provider.  Did you call the wrong constructor?")
                 Return _serviceProvider
             End Get
-            Set(Value As IServiceProvider)
+            Set
                 Debug.Assert(Value IsNot Nothing, "Bad service provider")
                 _serviceProvider = Value
             End Set
@@ -124,11 +124,11 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         'Summary:
         '   Gets or sets the help keyword for this dialog.
         '**************************************************************************
-        Protected Overridable Property F1Keyword() As String
+        Protected Overridable Property F1Keyword As String
             Get
                 Return _helpKeyword
             End Get
-            Set(Value As String)
+            Set
                 _helpKeyword = Value
             End Set
         End Property
@@ -139,7 +139,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         'Summary:
         '   Gets the current designer host.
         '**************************************************************************
-        Protected ReadOnly Property CurrentDesignerHost() As IDesignerHost
+        Protected ReadOnly Property CurrentDesignerHost As IDesignerHost
             Get
                 Return CType(GetService(GetType(IDesignerHost)), IDesignerHost)
             End Get

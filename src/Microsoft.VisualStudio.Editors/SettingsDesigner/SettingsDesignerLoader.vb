@@ -16,7 +16,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
     ''' <summary>
     ''' Designer loader for settings files
     ''' </summary>
-    ''' <remarks></remarks>
     Friend NotInheritable Class SettingsDesignerLoader
         Inherits DesignerFramework.BaseDesignerLoader
         Implements INameCreationService, IVsDebuggerEvents
@@ -57,7 +56,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' NOTE: Remember to call RemoveService on any service object we don't own, when the Loader is disposed
         '''  Otherwise, the service container will dispose those objects.
         ''' </summary>
-        ''' <remarks></remarks>
         Protected Overrides Sub Initialize()
             MyBase.Initialize()
 
@@ -110,7 +108,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="Hierarchy">Hierarchy (project) for item to load</param>
         ''' <param name="ItemId">ItemId in Hierarchy to load</param>
         ''' <param name="punkDocData">Document data to load</param>
-        ''' <remarks></remarks>
         Friend Overrides Sub InitializeEx(ServiceProvider As ServiceProvider, moniker As String, Hierarchy As IVsHierarchy, ItemId As UInteger, punkDocData As Object)
             MyBase.InitializeEx(ServiceProvider, moniker, Hierarchy, ItemId, punkDocData)
 
@@ -122,7 +119,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Overrides base Dispose.
         ''' </summary>
-        ''' <remarks></remarks>
         Public Overrides Sub Dispose()
             'Remove services we proffered.
             '
@@ -141,7 +137,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Name of base component this loader (de)serializes
         ''' </summary>
         ''' <returns>Name of base component this loader (de)serializes</returns>
-        ''' <remarks></remarks>
         Protected Overrides Function GetBaseComponentClassName() As String
             Return GetType(DesignTimeSettings).Name
         End Function
@@ -150,7 +145,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Flush any changes to underlying docdata(s)
         ''' </summary>
         ''' <param name="SerializationManager"></param>
-        ''' <remarks></remarks>
         Protected Overrides Sub HandleFlush(SerializationManager As IDesignerSerializationManager)
             Try
                 _flushing = True
@@ -185,7 +179,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' the contents of "my" docdata.
         ''' </summary>
         ''' <param name="SerializationManager">My serialization manager</param>
-        ''' <remarks></remarks>
         Protected Overrides Sub HandleLoad(SerializationManager As IDesignerSerializationManager)
             Switches.TraceSDSerializeSettings(TraceLevel.Info, "SettingsDesignerLoader: Start loading settings")
             Debug.Assert(LoaderHost IsNot Nothing, "Asked to load settings designer without a LoaderHost!?")
@@ -236,9 +229,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Get access to "our" root component
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Private ReadOnly Property RootComponent() As DesignTimeSettings
+        Private ReadOnly Property RootComponent As DesignTimeSettings
             Get
                 Try
                     If LoaderHost Is Nothing Then
@@ -254,13 +245,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Get
         End Property
 
-        Friend ReadOnly Property GeneratedClassName() As String
+        Friend ReadOnly Property GeneratedClassName As String
             Get
                 Return SettingsDesigner.GeneratedClassName(VsHierarchy, ProjectItemid, RootComponent, DocData.Name)
             End Get
         End Property
 
-        Private ReadOnly Property GeneratedClassNamespace() As String
+        Private ReadOnly Property GeneratedClassNamespace As String
             Get
                 Return ProjectUtils.GeneratedSettingsClassNamespace(VsHierarchy, ProjectItemid)
             End Get
@@ -279,7 +270,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Get a DocData for the App.Config file (if any)
         ''' </summary>
-        ''' <remarks></remarks>
         Private Function AttachAppConfigDocData(CreateIfNotExist As Boolean) As Boolean
             ' Now, Let's try and get to the app.config file
             If _appConfigDocData Is Nothing Then
@@ -295,7 +285,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Make sure that we have a custom tool associated with this file
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub SetSingleFileGenerator()
             Dim ProjectItem As EnvDTE.ProjectItem = DTEUtils.ProjectItemFromItemId(VsHierarchy, ProjectItemid)
             If ProjectItem IsNot Nothing AndAlso ProjectItem.Properties IsNot Nothing Then
@@ -324,12 +313,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub ComponentAddedHandler(sender As Object, e As ComponentEventArgs)
-            If TypeOf e.Component Is DesignTimeSettingInstance Then
-                ' Let's make sure our root component knows about this guy!
+            Dim designTimeSettingInstance = TryCast(e.Component, DesignTimeSettingInstance)
+            If designTimeSettingInstance IsNot Nothing Then
+                ' Let's make sure our root component knows about this setting instance!
                 Debug.Assert(RootComponent IsNot Nothing, "No root component when adding design time setting instances")
-                RootComponent.Add(DirectCast(e.Component, DesignTimeSettingInstance))
+                RootComponent.Add(designTimeSettingInstance)
             End If
         End Sub
 
@@ -338,7 +327,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub ComponentChangingHandler(sender As Object, e As ComponentChangingEventArgs)
             Dim instance As DesignTimeSettingInstance = TryCast(e.Component, DesignTimeSettingInstance)
             ' If this is a rename of a web reference, we have to check out the project file in order to update
@@ -367,7 +355,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub ComponentChangedHandler(sender As Object, e As ComponentChangedEventArgs)
             ' If the name property of a designtimesetting instance (or derived class) has changed in a project item
             ' that has "our" custom tool associated with it, we want to invoke a global rename of the setting
@@ -448,7 +435,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub ComponentRemovedHandler(sender As Object, e As ComponentEventArgs)
             If LoaderHost IsNot Nothing AndAlso LoaderHost.Loading Then
                 ' If we are currently (re)loading the design surface, we don't want to force-run the custom tool
@@ -456,10 +442,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Return
             End If
 
-            If TypeOf e.Component Is DesignTimeSettingInstance Then
+            Dim designTimeSettingInstance = TryCast(e.Component, DesignTimeSettingInstance)
+            If designTimeSettingInstance IsNot Nothing Then
                 If RootComponent IsNot Nothing Then
-                    ' Let's make sure our root component knows about this guy!
-                    RootComponent.Remove(DirectCast(e.Component, DesignTimeSettingInstance))
+                    ' Let's make sure our root component knows about this setting instance!
+                    RootComponent.Remove(designTimeSettingInstance)
 
                     ' We need to make sure that we run the custom tool whenever we remove a setting - if we don't 
                     ' we may run into problems later if we try to rename the setting to a setting that we
@@ -477,7 +464,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub ExternalChange(sender As Object, e As EventArgs)
             If Not _flushing Then
                 Debug.Assert(_appConfigDocData IsNot Nothing, "Why did we get a change notification for a NULL App.Config DocData?")
@@ -489,7 +475,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Load the contents of the app.config file
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub LoadAppConfig()
             Debug.Assert(_appConfigDocData IsNot Nothing, "Can't load a non-existing app.config file!")
             Try
@@ -523,7 +508,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="successful"></param>
         ''' <param name="errors"></param>
-        ''' <remarks></remarks>
         Protected Overrides Sub OnEndLoad(successful As Boolean, errors As ICollection)
             MyBase.OnEndLoad(successful, errors)
             ConnectDebuggerEvents()
@@ -550,7 +534,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Persist our values to the app.config file...
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub FlushAppConfig()
             If AttachAppConfigDocData(True) Then
                 Debug.Assert(_appConfigDocData IsNot Nothing, "Why did AttachAppConfigDocData return true when we don't have an app.config docdata!?")
@@ -575,7 +558,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Called when the document's window is activated or deactivated
         ''' </summary>
         ''' <param name="Activated"></param>
-        ''' <remarks></remarks>
         Protected Overrides Sub OnDesignerWindowActivated(Activated As Boolean)
             MyBase.OnDesignerWindowActivated(Activated)
 
@@ -596,7 +578,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         '''  Dispose any owned resources
         ''' </summary>
         ''' <param name="Disposing"></param>
-        ''' <remarks></remarks>
         Protected Overrides Sub Dispose(Disposing As Boolean)
             If Disposing Then
                 ' The LoaderHost will remove all services all by itself...
@@ -669,10 +650,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' We sometimes want to check out the project file (to add app.config) and sometimes we only want to 
         ''' check out the app.config file itself...
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Protected Overrides ReadOnly Property ManagingDynamicSetOfFiles() As Boolean
+        Protected Overrides ReadOnly Property ManagingDynamicSetOfFiles As Boolean
             Get
                 Return True
             End Get
@@ -682,10 +660,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Overridden in order to provide the app.config file name or the project name when as well as the project item
         ''' and dependent file...
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Friend Overrides ReadOnly Property FilesToCheckOut() As List(Of String)
+        Friend Overrides ReadOnly Property FilesToCheckOut As List(Of String)
             Get
                 Dim result As List(Of String) = MyBase.FilesToCheckOut
                 Dim projectItem As EnvDTE.ProjectItem = DTEUtils.ProjectItemFromItemId(VsHierarchy, ProjectItemid)
@@ -751,7 +726,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Start listening to build events and set our initial build status
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub ConnectBuildEvents()
             Dim dte As EnvDTE.DTE
             dte = CType(GetService(GetType(EnvDTE.DTE)), EnvDTE.DTE)
@@ -766,7 +740,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         '''     Returns a value indicating whether the designer is currently editable; that is, 
         '''     we're not debugging in any form and the solution is not currently building.
         ''' </summary>
-        ''' <returns></returns>
         Friend Function IsDesignerEditable() As Boolean
 
             Return InDesignMode() AndAlso Not _readOnly
@@ -787,7 +760,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="scope"></param>
         ''' <param name="action"></param>
-        ''' <remarks></remarks>
         Private Sub BuildDone(scope As EnvDTE.vsBuildScope, action As EnvDTE.vsBuildAction) Handles _buildEvents.OnBuildDone
             SetReadOnlyMode(False, String.Empty)
             _readOnly = False
@@ -797,7 +769,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Refresh the status of Settings view commands
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub RefreshView()
             Dim Designer As SettingsDesigner = DirectCast(LoaderHost.GetDesigner(RootComponent), SettingsDesigner)
             If Designer IsNot Nothing AndAlso Designer.HasView Then
@@ -809,7 +780,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Hook up with the debugger event mechanism to determine current debug mode
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub ConnectDebuggerEvents()
             If _vsDebuggerEventsCookie = 0 Then
                 _vsDebugger = CType(GetService(GetType(IVsDebugger)), IVsDebugger)
@@ -830,7 +800,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Unhook event notification for debugger 
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub DisconnectDebuggerEvents()
             Try
                 If _vsDebugger IsNot Nothing AndAlso _vsDebuggerEventsCookie <> 0 Then

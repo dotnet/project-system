@@ -12,7 +12,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// This is true for a project with an explicit "TargetFrameworks" property, but no "TargetFrameworkMoniker" or "TargetFramework" property.
         /// </summary>
         /// <param name="projectConfiguration"></param>
-        /// <returns></returns>
         internal static bool IsCrossTargeting(this ProjectConfiguration projectConfiguration)
         {
             return projectConfiguration.Dimensions.ContainsKey(ConfigurationGeneral.TargetFrameworkProperty);
@@ -46,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
                 // Dimension values must be compared in a case-sensitive manner.
                 if (!projectConfiguration2.Dimensions.TryGetValue(dimensionName, out string activeValue) ||
-                    !string.Equals(dimensionValue, activeValue, StringComparison.Ordinal))
+                    !string.Equals(dimensionValue, activeValue, StringComparisons.ConfigurationDimensionNames))
                 {
                     return false;
                 }

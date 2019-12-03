@@ -19,7 +19,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '''   state for a group of objects.
         ''' </summary>
         ''' <param name="Provider">.</param>
-        ''' <remarks></remarks>
         Public Sub New(Provider As IServiceProvider)
             _serviceProvider = Provider
         End Sub
@@ -30,7 +29,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '''  state for a group of objects.
         ''' </summary>
         ''' <returns>An instance of a new serialization store for objects</returns>
-        ''' <remarks></remarks>
         Public Overrides Function CreateStore() As SerializationStore
             Return New GenericComponentSerializationStore
         End Function
@@ -43,7 +41,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="Stream">The stream to load from.</param>
         ''' <returns>The loaded store for objects.</returns>
-        ''' <remarks></remarks>
         Public Overrides Function LoadStore(Stream As Stream) As SerializationStore
             Requires.NotNull(Stream, NameOf(Stream))
 
@@ -58,7 +55,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="Store">The store to serialize into.</param>
         ''' <param name="Value">The object to serialize into the store.</param>
-        ''' <remarks></remarks>
         Public Overrides Sub Serialize(Store As SerializationStore, Value As Object)
             Requires.NotNull(Store, NameOf(Store))
             Requires.NotNull(Value, NameOf(Value))
@@ -119,7 +115,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="Store">The store to serialize into.</param>
         ''' <param name="OwningObject">The object whose property (member) you are trying to serialize into the store.</param>
         ''' <param name="Member">The property whose value needs to be serialized into the store.</param>
-        ''' <remarks></remarks>
         Public Overrides Sub SerializeMemberAbsolute(Store As SerializationStore, OwningObject As Object, Member As MemberDescriptor)
             'This method is intended for properties such as collections which might have had only some of their
             '  members changed.
@@ -135,7 +130,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="Store">The store to serialize into.</param>
         ''' <returns>The set of components that were deserialized.</returns>
-        ''' <remarks></remarks>
         Public Overrides Function Deserialize(Store As SerializationStore) As ICollection
             Requires.NotNull(Store, NameOf(Store))
 
@@ -156,7 +150,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="Store">The store to serialize into.</param>
         ''' <param name="Container">The container to add deserialized objects to (or Nothing if none)</param>
         ''' <returns>The list of objects that were deserialized.</returns>
-        ''' <remarks></remarks>
         Public Overrides Function Deserialize(Store As SerializationStore, Container As IContainer) As ICollection
             Requires.NotNull(Store, NameOf(Store))
             Requires.NotNull(Container, NameOf(Container))
@@ -184,7 +177,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="Store">The store to serialize into.</param>
         ''' <param name="Container">The container to add deserialized objects to (or Nothing if none)</param>
-        ''' <remarks></remarks>
         Public Overrides Sub DeserializeTo(Store As SerializationStore, Container As IContainer, ValidateRecycledTypes As Boolean, applyDefaults As Boolean)
             Requires.NotNull(Store, NameOf(Store))
             Requires.NotNull(Container, NameOf(Container))
@@ -200,13 +192,12 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <summary>
         ''' Get/set the service provider
         ''' </summary>
-        ''' <value></value>
         ''' <remarks>Not used by this class, may be useful for derived classes</remarks>
-        Protected Property ServiceProvider() As IServiceProvider
+        Protected Property ServiceProvider As IServiceProvider
             Get
                 Return _serviceProvider
             End Get
-            Set(Value As IServiceProvider)
+            Set
                 _serviceProvider = Value
             End Set
         End Property

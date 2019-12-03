@@ -85,7 +85,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="Hierarchy"></param>
         ''' <param name="ItemId"></param>
         ''' <param name="PropertyPageInfo"></param>
-        ''' <remarks></remarks>
         Public Sub New(View As ApplicationDesignerView, Hierarchy As IVsHierarchy, ItemId As UInteger, PropertyPageInfo As PropertyPageInfo)
             Me.New(View, Hierarchy, ItemId)
 
@@ -105,7 +104,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="View">The owning project designer view</param>
         ''' <param name="Hierarchy"></param>
         ''' <param name="ItemId"></param>
-        ''' <remarks></remarks>
         Public Sub New(View As ApplicationDesignerView, Hierarchy As IVsHierarchy, ItemId As UInteger)
             Debug.Assert(View IsNot Nothing)
             Debug.Assert(Hierarchy IsNot Nothing)
@@ -130,36 +128,34 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Returns the PropertyPageInfo for this designer panel, if it corresponds to a property page.
         ''' Otherwise returns Nothing.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public ReadOnly Property PropertyPageInfo() As PropertyPageInfo
+        Public ReadOnly Property PropertyPageInfo As PropertyPageInfo
             Get
                 Return _propertyPageInfo
             End Get
         End Property
 
-        Public ReadOnly Property IsPropertyPage() As Boolean
+        Public ReadOnly Property IsPropertyPage As Boolean
             Get
-                Dim ReturnValue As Boolean = (_propertyPageInfo IsNot Nothing)
+                Dim ReturnValue As Boolean = _propertyPageInfo IsNot Nothing
                 Debug.Assert(Not ReturnValue OrElse EditorGuid.Equals(GetType(PropPageDesigner.PropPageDesignerEditorFactory).GUID),
                     "If it's a property page, the EditorGuid should be the PropPageDesigner's guid")
-                Return (_propertyPageInfo IsNot Nothing)
+                Return _propertyPageInfo IsNot Nothing
             End Get
         End Property
 
-        Public ReadOnly Property Hierarchy() As IVsHierarchy
+        Public ReadOnly Property Hierarchy As IVsHierarchy
             Get
                 Return _hierarchy
             End Get
         End Property
 
-        Public ReadOnly Property ItemId() As UInteger
+        Public ReadOnly Property ItemId As UInteger
             Get
                 Return _itemId
             End Get
         End Property
 
-        Public ReadOnly Property DocCookie() As UInteger
+        Public ReadOnly Property DocCookie As UInteger
             Get
                 Return _docCookie
             End Get
@@ -169,13 +165,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Provides a custom view control that can be displayed instead of hosting a designer.  We can display either
         '''   a custom view provider or a hosted designer, but not both at once.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public Property CustomViewProvider() As CustomViewProvider
+        Public Property CustomViewProvider As CustomViewProvider
             Get
                 Return _customViewProvider
             End Get
-            Set(value As CustomViewProvider)
+            Set
                 If _customViewProvider Is value Then
                     Exit Property
                 End If
@@ -214,9 +208,9 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 ShowWindowFrame()
             Else
                 'Hide
-                If (_vsWindowFrame IsNot Nothing) Then
+                If _vsWindowFrame IsNot Nothing Then
                     Common.Switches.TracePDFocus(TraceLevel.Warning, "ShowDesigner(False) on panel """ & TabAutomationName & "/" & TabTitle & """ (WindowFrame.Hide)")
-                    Dim WindowFrameIsVisible As Boolean = (_vsWindowFrame.IsVisible() = NativeMethods.S_OK)
+                    Dim WindowFrameIsVisible As Boolean = _vsWindowFrame.IsVisible() = NativeMethods.S_OK
                     If WindowFrameIsVisible Then
                         Dim hr As Integer = _vsWindowFrame.Hide()
                         Debug.Assert(VSErrorHandler.Succeeded(hr), "Failure trying to hide WindowFrame, hr=0x" & Hex(hr))
@@ -410,7 +404,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
                             'Add the Document Cookie to our list
                             Dim CookieObj As Object = Nothing
-                            Dim DocDataObj As Object = Nothing
                             Dim EditorCaptionObject As Object = Nothing
                             Dim DocViewObject As Object = Nothing
 
@@ -432,8 +425,9 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
                             'Get the editor caption to use as the tab text
                             VSErrorHandler.ThrowOnFailure(WindowFrame.GetProperty(__VSFPROPID.VSFPROPID_EditorCaption, EditorCaptionObject))
-                            If TypeOf EditorCaptionObject Is String Then '(might be Nothing)
-                                EditorCaption = DirectCast(EditorCaptionObject, String)
+                            Dim captionObject = TryCast(EditorCaptionObject, String)
+                            If captionObject IsNot Nothing Then
+                                EditorCaption = captionObject
                             End If
 
                             If _propertyPageInfo IsNot Nothing AndAlso _propertyPageInfo.Site IsNot Nothing Then
@@ -572,7 +566,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Notify the shell of the current selection so that the Project menus etc. are correct
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub UpdateSelection()
             Common.Switches.TracePDPerfBegin("ApplicationDesignerPanel.UpdateSelection")
             'When we call IVsWindowFrame.Hide() on a tab (when changing to another tab), the shell nulls out the 
@@ -653,14 +646,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Get/set the window frame owned by this panel
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Property VsWindowFrame() As IVsWindowFrame
+        Public Property VsWindowFrame As IVsWindowFrame
             Get
                 Return _vsWindowFrame
             End Get
-            Set(Value As IVsWindowFrame)
+            Set
                 If Value IsNot _vsWindowFrame Then
                     Common.Switches.TracePDFocus(TraceLevel.Info, "ApplicationDesignerPanel.set_VsWindowFrame")
                     CloseFrame()
@@ -679,13 +669,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' The Guid used by the editor for this panel.  For property pages, this is always
         '''   PropPageDesignerView's guid.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public Property EditorGuid() As Guid
+        Public Property EditorGuid As Guid
             Get
                 Return _editorGuid
             End Get
-            Set(Value As Guid)
+            Set
                 If IsPropertyPage Then
                     Debug.Fail("Cannot change EditorGuid for property page designer panels")
                     Exit Property
@@ -699,9 +687,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' The Guid used by the object actually represented in this panel.  For property pages,
         '''   this is the guid of the property page.  For all others, this is the same as EditorGuid.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public ReadOnly Property ActualGuid() As Guid
+        Public ReadOnly Property ActualGuid As Guid
             Get
                 If _propertyPageInfo IsNot Nothing Then
                     Return _propertyPageInfo.Guid
@@ -714,13 +700,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Physical view guid for the editor
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public Property PhysicalView() As String
+        Public Property PhysicalView As String
             Get
                 Return _physicalView
             End Get
-            Set(Value As String)
+            Set
                 _physicalView = Value
             End Set
         End Property
@@ -728,13 +712,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' The editor's caption
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public Property EditorCaption() As String
+        Public Property EditorCaption As String
             Get
                 Return _editorCaption
             End Get
-            Set(Value As String)
+            Set
                 _editorCaption = Value
             End Set
         End Property
@@ -742,9 +724,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' The filename moniker of the file which is being edited by the editor
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public Property MkDocument() As String
+        Public Property MkDocument As String
             Get
                 If _mkDocument <> "" Then
                     Return _mkDocument
@@ -754,7 +734,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     Return ""
                 End If
             End Get
-            Set(Value As String)
+            Set
                 Debug.Assert(_mkDocument Is Nothing, "MkDocument set multiple times")
                 _mkDocument = Value
             End Set
@@ -763,13 +743,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' The filename moniker of the file which is being edited by the editor
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public Property CustomMkDocumentProvider() As CustomDocumentMonikerProvider
+        Public Property CustomMkDocumentProvider As CustomDocumentMonikerProvider
             Get
                 Return _customMkDocumentProvider
             End Get
-            Set(Value As CustomDocumentMonikerProvider)
+            Set
                 Debug.Assert(_customMkDocumentProvider Is Nothing OrElse Value Is Nothing, "m_CustomMkDocumentProvider set multiple times")
                 _customMkDocumentProvider = Value
             End Set
@@ -778,13 +756,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' The DocData for the editor
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public Property DocData() As Object
+        Public Property DocData As Object
             Get
                 Return _docData
             End Get
-            Set(Value As Object)
+            Set
                 _docData = Value
             End Set
         End Property
@@ -792,13 +768,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' The DocView for the editor
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public Property DocView() As Control
+        Public Property DocView As Control
             Get
                 Return _docView
             End Get
-            Set(Value As Control)
+            Set
                 _docView = Value
             End Set
         End Property
@@ -806,13 +780,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Flags to be passed to VsUIShellOpenDocument
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public Property EditFlags() As UInteger
+        Public Property EditFlags As UInteger
             Get
                 Return _editFlags
             End Get
-            Set(Value As UInteger)
+            Set
                 _editFlags = Value
             End Set
         End Property
@@ -820,13 +792,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' The title that should be used for this panel's tab
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public Property TabTitle() As String
+        Public Property TabTitle As String
             Get
                 Return _tabTitle
             End Get
-            Set(value As String)
+            Set
                 _tabTitle = value
 
                 ' We set Window.Text to be the page Title to help screen reader.
@@ -843,13 +813,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' The name for the tab that is not localized and is seen by QA automation tools
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public Property TabAutomationName() As String
+        Public Property TabAutomationName As String
             Get
                 Return _tabAutomationName
             End Get
-            Set(value As String)
+            Set
                 _tabAutomationName = value
             End Set
         End Property
@@ -860,7 +828,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''   same size as the hosting panel (as if it were dock filled).  This sets the native
         '''   window's size to the size of the hosting panel.
         ''' </summary>
-        ''' <remarks></remarks>
         Protected Sub UpdateWindowFrameBounds()
             'Note: don't need to worry about updating size of CustomView because it's set to dock fill
             If VsWindowFrame IsNot Nothing Then
@@ -900,7 +867,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Commits any pending changes on the designer
         ''' </summary>
         ''' <returns>return False if it failed</returns>
-        ''' <remarks></remarks>
         Public Function CommitPendingEdit() As Boolean
             If VsWindowFrame IsNot Nothing Then
                 Dim docViewObject As Object = Nothing
@@ -910,7 +876,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     If vsWindowPanelCommit IsNot Nothing Then
                         Dim commitFailed As Integer = 0
                         hr = vsWindowPanelCommit.CommitPendingEdit(commitFailed)
-                        Return (NativeMethods.Succeeded(hr) AndAlso commitFailed = 0)
+                        Return NativeMethods.Succeeded(hr) AndAlso commitFailed = 0
                     End If
                 End If
             End If
@@ -938,7 +904,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Protected Overridable Sub CloseFrameInternal(WindowFrame As IVsWindowFrame, flags As __FRAMECLOSE)
             If WindowFrame IsNot Nothing Then
                 UnadviseWindowFrameNotify(WindowFrame)
-                Dim hr As Integer = WindowFrame.CloseFrame(Common.NoOverflowCUInt(flags))
+                WindowFrame.CloseFrame(Common.NoOverflowCUInt(flags))
             End If
         End Sub
 
@@ -975,7 +941,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 Else
                     Common.Switches.TracePDFocus(TraceLevel.Warning, "ApplicationDesignerPanel_VisibleChanged - Visible=False => WindowFrame.Hide()")
                     Common.Switches.TracePDPerf("ApplicationDesignerPanel_VisibleChanged - Visible=False => WindowFrame.Hide()")
-                    Dim hr As Integer = VsWindowFrame.Hide()
+                    VsWindowFrame.Hide()
                     _windowFrameShown = False
                 End If
             End If
@@ -996,8 +962,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Returns true if this page should show the '*' dirty indicator in its tab
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function IsDirty() As Boolean
             If IsPropertyPage Then
                 'CONSIDER: If we decide to support IVsDocDataContainer, then DocDatas contained by the property
@@ -1030,7 +994,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub PageHostingPanel_HandleCreated(sender As Object, e As EventArgs) Handles _pageHostingPanel.HandleCreated
             If _vsWindowFrame IsNot Nothing Then
                 Debug.Fail("PageHostingPanel handle was recreated after the nested window frame's ParentHwnd property was set to its HWND.  " _
@@ -1045,7 +1008,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Disposes of contained objects
         ''' </summary>
         ''' <param name="disposing"></param>
-        ''' <remarks></remarks>
         Protected Overloads Overrides Sub Dispose(disposing As Boolean)
             If disposing Then
                 ' Dispose managed resources.
@@ -1071,7 +1033,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''<summary>
         ''' Initialize layout...
         '''</summary>
-        <DebuggerStepThrough()>
+        <DebuggerStepThrough>
         Private Sub InitializeComponent()
             _pageHostingPanel = New Panel
             _pageNameLabel = New Label
@@ -1145,8 +1107,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' to avoid that we just close this property page and leave the app designer open...
         ''' </summary>
         ''' <param name="pgrfSaveOptions"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function OnClose(ByRef pgrfSaveOptions As UInteger) As Integer Implements IVsWindowFrameNotify2.OnClose
             If _inOnClose Then
                 Return NativeMethods.S_OK

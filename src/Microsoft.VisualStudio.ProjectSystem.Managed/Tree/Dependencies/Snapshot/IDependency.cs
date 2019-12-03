@@ -95,6 +95,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         string SchemaItemType { get; }
 
         /// <summary>
+        /// Used in <see cref="IDependenciesTreeServices.GetBrowseObjectRuleAsync"/> to populate the browse
+        /// object for resolved dependencies, to be displayed in property pages (in BrowsableObject context).
+        /// </summary>
+        IImmutableDictionary<string, string> BrowseObjectProperties { get; }
+
+        /// <summary>
         /// Specifies if dependency is resolved or not
         /// </summary>
         bool Resolved { get; }
@@ -129,12 +135,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         int Priority { get; }
 
         ProjectTreeFlags Flags { get; }
-
-        /// <summary>
-        /// A list of properties that might be displayed in property pages
-        /// (in BrowsableObject context).
-        /// </summary>
-        IImmutableDictionary<string, string> Properties { get; }
 
         /// <summary>
         /// Gets the set of child dependency IDs. May be empty, but never <see cref="ImmutableArray{T}.IsDefault"/>.

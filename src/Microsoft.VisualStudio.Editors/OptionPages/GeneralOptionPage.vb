@@ -39,10 +39,6 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
         Private _optionsControl As GeneralOptionPageControl
 
         Public Sub New()
-            ' If we're in a cloud environment we want the settings to be saved to the server
-            ' rather than the local system.
-            MyBase.New(isServerAware:=True)
-
             _optionsControlUpdateSuspender = New Suspender(Sub() _shouldUpdateOptionsControlOnPropertyChange = True)
 
             AddHandler SDKStyleProjectOptionsData.MainInstance.PropertyChanged, AddressOf OptionsDataPropertyChangedHandler

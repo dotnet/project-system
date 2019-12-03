@@ -4,8 +4,6 @@ using System.Threading.Tasks;
 using Microsoft.Build.Construction;
 using Xunit;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.VisualBasic
 {
     public class VisualBasicProjectCompatibilityProviderTests
@@ -33,7 +31,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.VisualBasic
 
             Assert.False(result);
         }
-
 
         private static VisualBasicProjectCompatibilityProvider CreateInstance()
         {

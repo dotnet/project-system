@@ -18,7 +18,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     ''' Watches for changes on files, and notifies any listeners when those
     '''   changes happen.
     ''' </summary>
-    ''' <remarks></remarks>
     Friend NotInheritable Class FileWatcher
         Implements IDisposable
 
@@ -37,7 +36,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   This is the most efficient manner of using the FileSystemWatcher, since it
         '''   is based on directories, and allocates system resources per directory.
         ''' </summary>
-        ''' <remarks></remarks>
         Private ReadOnly _directoryWatchers As New Dictionary(Of String, DirectoryWatcher)(StringComparers.Paths)
 
         'Any Windows Forms control on the primary thread.  This is used for invoking 
@@ -52,7 +50,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Constructor.
         ''' </summary>
         ''' <param name="ControlForSynchronizingThreads">Any Windows Forms control on the primary thread.  This is used for invoking the system filewatch events (called on a secondary thread) back to the main thread.</param>
-        ''' <remarks></remarks>
         Public Sub New(ControlForSynchronizingThreads As Control)
             Debug.Assert(ControlForSynchronizingThreads IsNot Nothing)
             _controlForSynchronizingThreads = ControlForSynchronizingThreads
@@ -62,7 +59,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Dispose
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub Dispose() Implements IDisposable.Dispose
             For Each Watcher In _directoryWatchers.Values
                 Watcher.Dispose()
@@ -78,9 +74,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Returns the number of directories being watched.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public ReadOnly Property DirectoryWatchersCount() As Integer
+        Public ReadOnly Property DirectoryWatchersCount As Integer
             Get
                 Return _directoryWatchers.Count
             End Get
@@ -111,7 +105,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             'Look for a (or create a new) DirectoryWatcher for this file's directory.
             Dim DirectoryWatcher As DirectoryWatcher = GetWatcherForDirectory(DirectoryPath, CreateIfNotFound:=True)
-            Debug.Assert(Not DirectoryWatcher Is Nothing, "This shouldn't happen")
+            Debug.Assert(DirectoryWatcher IsNot Nothing, "This shouldn't happen")
 
             'Add the listener.
             DirectoryWatcher.AddFileListener(FileName, Listener)
@@ -158,8 +152,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="DirectoryPath">Directory path to watch.</param>
         ''' <param name="CreateIfNotFound">If True, will create a new DirectoryWatcher if none is found matching the file.</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         ''' CONSIDER: be tolerant of 8.3 paths
         Private Function GetWatcherForDirectory(DirectoryPath As String, CreateIfNotFound As Boolean) As DirectoryWatcher
             DirectoryPath = NormalizeDirectoryPath(DirectoryPath)
@@ -181,8 +173,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Normalizes a directory path so we can use it as a key.
         ''' </summary>
         ''' <param name="DirectoryPath">The directory path to normalize</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Shared Function NormalizeDirectoryPath(DirectoryPath As String) As String
             Debug.Assert(DirectoryPath <> "")
             DirectoryPath = GetFullPathTolerant(DirectoryPath)
@@ -197,7 +187,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   call is marshalled to the thread on which m_ControlForSynchronizingThreads exists.
         ''' </summary>
         ''' <param name="Entry">The file watcher entry to invoke.</param>
-        ''' <remarks></remarks>
         Private Sub MarshallFileChangedEvent(Entry As FileWatcherEntry)
             _controlForSynchronizingThreads.BeginInvoke(New MethodInvoker(AddressOf Entry.OnFileChanged))
         End Sub
@@ -211,7 +200,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' A private class that watches a single directory and manages a list of single
         '''   file watchers (each with multiple listeners).
         ''' </summary>
-        ''' <remarks></remarks>
         Private NotInheritable Class DirectoryWatcher
             Implements IDisposable
 
@@ -232,7 +220,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 
             Public Sub New(DirectoryPath As String, ParentFileWatcher As FileWatcher)
-                Debug.Assert(Not ParentFileWatcher Is Nothing)
+                Debug.Assert(ParentFileWatcher IsNot Nothing)
                 _parentFileWatcher = ParentFileWatcher
                 Debug.Assert(DirectoryPath <> "")
 
@@ -266,9 +254,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <summary>
             ''' Dispose
             ''' </summary>
-            ''' <remarks></remarks>
             Public Sub Dispose() Implements IDisposable.Dispose
-                If Not _fileSystemWatcher Is Nothing Then
+                If _fileSystemWatcher IsNot Nothing Then
                     _fileSystemWatcher.Dispose()
                     _fileSystemWatcher = Nothing
                 End If
@@ -279,9 +266,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <summary>
             ''' The directory path being watched.
             ''' </summary>
-            ''' <value></value>
-            ''' <remarks></remarks>
-            Public ReadOnly Property DirectoryPath() As String
+            Public ReadOnly Property DirectoryPath As String
                 Get
                     Return _directoryPath
                 End Get
@@ -291,9 +276,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <summary>
             ''' Returns the number of files being watched in this directory
             ''' </summary>
-            ''' <value></value>
-            ''' <remarks></remarks>
-            Public ReadOnly Property FileCount() As Integer
+            Public ReadOnly Property FileCount As Integer
                 Get
                     Return _fileWatcherEntries.Count
                 End Get
@@ -305,7 +288,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' </summary>
             ''' <param name="FileNameOnly">The FileName (no path) to watch</param>
             ''' <param name="Listener">The listener to add for this file</param>
-            ''' <remarks></remarks>
             Public Sub AddFileListener(FileNameOnly As String, Listener As IFileWatcherListener)
                 FileNameOnly = NormalizeFileName(FileNameOnly)
 
@@ -362,8 +344,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' Normalizes a filename so we can make comparisons between files
             ''' </summary>
             ''' <param name="FileNameOnly">The file (no path) to normalize</param>
-            ''' <returns></returns>
-            ''' <remarks></remarks>
             Private Shared Function NormalizeFileName(FileNameOnly As String) As String
                 Debug.Assert(Path.GetDirectoryName(FileNameOnly) = "" AndAlso Not Path.IsPathRooted(FileNameOnly),
                     "DirectoryWatcher does not accept paths with the filename - should be relative to the directory path in DirectoryWatcher")
@@ -378,7 +358,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' </summary>
             ''' <param name="FullDirectoryPath">Full path of the directory where the file was (should be our directory)</param>
             ''' <param name="FileName">The file name (no path) of the file in this directory that has changed.</param>
-            ''' <remarks></remarks>
             Private Sub OnFileChanged(FullDirectoryPath As String, FileName As String)
                 Debug.Assert(Not String.IsNullOrEmpty(FileName))
                 Debug.Assert(String.Equals(Path.GetDirectoryName(FullDirectoryPath), _directoryPath, StringComparison.OrdinalIgnoreCase))
@@ -408,7 +387,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' </summary>
             ''' <param name="sender"></param>
             ''' <param name="e"></param>
-            ''' <remarks></remarks>
             Private Sub FileSystemWatcher_Changed(sender As Object, e As FileSystemEventArgs) Handles _fileSystemWatcher.Changed
                 Debug.WriteLineIf(Switches.RSEFileWatcher.TraceVerbose, "DirectoryWatcher: Raw changed event: " & e.ChangeType & ", " & e.FullPath & ": " & e.Name & ", Thread = " & Hex(System.Threading.Thread.CurrentThread.GetHashCode))
                 OnFileChanged(e.FullPath, e.Name)
@@ -420,7 +398,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' </summary>
             ''' <param name="sender"></param>
             ''' <param name="e"></param>
-            ''' <remarks></remarks>
             Private Sub FileSystemWatcher_Renamed(sender As Object, e As RenamedEventArgs) Handles _fileSystemWatcher.Renamed
                 Debug.WriteLineIf(Switches.RSEFileWatcher.TraceVerbose, "DirectoryWatcher: Raw renamed event: " & e.ChangeType & ", " & e.FullPath & ": " & e.Name & ", Thread = " & Hex(System.Threading.Thread.CurrentThread.GetHashCode))
 
@@ -445,7 +422,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' </summary>
             ''' <param name="sender"></param>
             ''' <param name="e"></param>
-            ''' <remarks></remarks>
             Private Sub FileSystemWatcher_Created(sender As Object, e As FileSystemEventArgs) Handles _fileSystemWatcher.Created
                 OnFileChanged(e.FullPath, e.Name)
             End Sub
@@ -456,7 +432,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' </summary>
             ''' <param name="sender"></param>
             ''' <param name="e"></param>
-            ''' <remarks></remarks>
             Private Sub FileSystemWatcher_Deleted(sender As Object, e As FileSystemEventArgs) Handles _fileSystemWatcher.Deleted
                 OnFileChanged(e.FullPath, e.Name)
             End Sub
@@ -472,7 +447,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Private class that represents a single file being watched.  It can
         '''   handle multiple listeners.
         ''' </summary>
-        ''' <remarks></remarks>
         Private NotInheritable Class FileWatcherEntry
             Implements IDisposable
 
@@ -506,7 +480,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' </summary>
             ''' <param name="Directory">The DirectoryWatcher for the directory that this file is in.</param>
             ''' <param name="FileNameOnly">The filename (no path) of the file to watch.</param>
-            ''' <remarks></remarks>
             Friend Sub New(Directory As DirectoryWatcher, FileNameOnly As String)
                 Debug.Assert(Directory IsNot Nothing)
                 Debug.Assert(FileNameOnly <> "")
@@ -518,9 +491,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <summary>
             ''' Dispose.
             ''' </summary>
-            ''' <remarks></remarks>
             Public Sub Dispose() Implements IDisposable.Dispose
-                If Not _timer Is Nothing Then
+                If _timer IsNot Nothing Then
                     _timer.Dispose()
                     _timer = Nothing
                 End If
@@ -531,9 +503,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <summary>
             ''' Gets the path and filename of the file.
             ''' </summary>
-            ''' <value></value>
-            ''' <remarks></remarks>
-            Public ReadOnly Property PathAndFileName() As String
+            Public ReadOnly Property PathAndFileName As String
                 Get
                     Return Path.Combine(_directoryWatcher.DirectoryPath, _fileNameOnly)
                 End Get
@@ -543,9 +513,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <summary>
             ''' Retrieves the current number of listeners.
             ''' </summary>
-            ''' <value></value>
-            ''' <remarks></remarks>
-            Public ReadOnly Property ListenerCount() As Integer
+            Public ReadOnly Property ListenerCount As Integer
                 Get
                     Return _listeners.Count
                 End Get
@@ -556,7 +524,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' Adds a new listener for this file.
             ''' </summary>
             ''' <param name="Listener">The listener to add.</param>
-            ''' <remarks></remarks>
             Public Sub AddListener(Listener As IFileWatcherListener)
                 If _listeners.Contains(Listener) Then
                     Debug.WriteLineIf(Switches.RSEFileWatcher.TraceInfo, "FileWatcher: There's already an entry for this listener on this file - Ignoring")
@@ -586,8 +553,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <summary>
             ''' ToString() override for debugging purposes.
             ''' </summary>
-            ''' <returns></returns>
-            ''' <remarks></remarks>
             Public Overrides Function ToString() As String
                 Return "FileWatcherEntry: PathAndFileName = """ & PathAndFileName & """, " & ListenerCount & " listeners"
             End Function
@@ -597,7 +562,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' Called when the file referred to by this entry is changed.  This
             '''   method must be called on the synchronizing control's thread.
             ''' </summary>
-            ''' <remarks></remarks>
             Friend Sub OnFileChanged()
                 Debug.WriteLineIf(Switches.RSEFileWatcher.TraceVerbose, "    FileWatcherEntry: Received file change on main thread: " & ToString() & ", Thread = " & Hex(System.Threading.Thread.CurrentThread.GetHashCode) & ", Milliseconds = " & Now.Millisecond)
 

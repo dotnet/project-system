@@ -3,9 +3,9 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Shell.Interop;
+using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
@@ -37,9 +37,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             await _threadingService.SwitchToUIThread(cancellationToken);
 
-            HResult result = _solution.Value!.AdviseSolutionEvents(this, out _cookie);
-            if (result.Failed)
-                throw result.Exception;
+            IVsSolution? solution = _solution.Value;
+            Assumes.Present(solution);
+
+            Verify.HResult(solution.AdviseSolutionEvents(this, out _cookie));
         }
 
         protected override async Task DisposeCoreAsync(bool initialized)
@@ -50,9 +51,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 {
                     await _threadingService.SwitchToUIThread();
 
-                    HResult result = _solution.Value!.UnadviseSolutionEvents(_cookie);
-                    if (result.Failed)
-                        throw result.Exception;
+                    IVsSolution? solution = _solution.Value;
+                    Assumes.Present(solution);
+
+                    Verify.HResult(solution.UnadviseSolutionEvents(_cookie));
 
                     _cookie = VSConstants.VSCOOKIE_NIL;
                 }

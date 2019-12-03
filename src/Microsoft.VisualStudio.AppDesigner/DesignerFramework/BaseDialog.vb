@@ -88,8 +88,8 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
                 _uiService = CType(GetService(GetType(IUIService)), IUIService)
             End If
 
-            Using (DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware))
-                If Not (_uiService Is Nothing) Then
+            Using DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware)
+                If _uiService IsNot Nothing Then
                     Return _uiService.ShowDialog(Me)
                 Else
                     Return MyBase.ShowDialog()
@@ -105,11 +105,11 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         'Summary:
         '   Gets or sets the IServiceProvider for this dialog.
         '**************************************************************************
-        Public Property ServiceProvider() As IServiceProvider
+        Public Property ServiceProvider As IServiceProvider
             Get
                 Return _serviceProvider
             End Get
-            Set(Value As IServiceProvider)
+            Set
                 Debug.Assert(Value IsNot Nothing, "Bad service provider")
                 _serviceProvider = Value
             End Set
@@ -126,11 +126,11 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         'Summary:
         '   Gets or sets the help keyword for this dialog.
         '**************************************************************************
-        Protected Overridable Property F1Keyword() As String
+        Protected Overridable Property F1Keyword As String
             Get
                 Return _helpKeyword
             End Get
-            Set(Value As String)
+            Set
                 _helpKeyword = Value
             End Set
         End Property
@@ -141,7 +141,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         'Summary:
         '   Gets the current designer host.
         '**************************************************************************
-        Protected ReadOnly Property CurrentDesignerHost() As IDesignerHost
+        Protected ReadOnly Property CurrentDesignerHost As IDesignerHost
             Get
                 Return CType(GetService(GetType(IDesignerHost)), IDesignerHost)
             End Get
@@ -184,7 +184,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         '**************************************************************************
         Protected Overrides Function GetService(ServiceType As Type) As Object
 
-            If (ServiceProvider Is Nothing) Then
+            If ServiceProvider Is Nothing Then
                 Return MyBase.GetService(ServiceType)
             End If
 

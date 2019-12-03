@@ -3,7 +3,7 @@
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     /// <summary>
-    /// Extends ILaunchProfile to support in-memory (not persisted) profiles
+    /// Extends <see cref="ILaunchProfile"/> to support in-memory (not persisted) profiles.
     /// </summary>
     public interface IPersistOption
     {

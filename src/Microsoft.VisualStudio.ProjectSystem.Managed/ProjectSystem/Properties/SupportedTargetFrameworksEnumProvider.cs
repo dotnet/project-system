@@ -67,7 +67,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             /// persisted value in the project. So this method should never be called.
             /// </summary>
             /// <param name="userSuppliedValue"></param>
-            /// <returns></returns>
             public Task<IEnumValue?> TryCreateEnumValueAsync(string userSuppliedValue)
             {
                 throw new NotImplementedException();

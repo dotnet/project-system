@@ -152,7 +152,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Populate the neutral language combobox with cultures
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub PopulateNeutralLanguageComboBox(NeutralLanguageComboBox As Windows.Forms.ComboBox)
             'The list of cultures can't change on us, no reason to
             '  re-populate every time it's dropped down.

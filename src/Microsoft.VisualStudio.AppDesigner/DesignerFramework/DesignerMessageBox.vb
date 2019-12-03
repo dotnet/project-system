@@ -28,7 +28,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' <param name="RootDesigner">A root designer inherited from BaseRootDesigner, which has the ability to get services.</param>
         ''' <param name="Caption">The text to display in the title bar of the message box.</param>
         ''' <param name="HelpLink">Link to the help topic for this message box.</param>
-        ''' <remarks></remarks>
 #Disable Warning RS0026 ' Do not add multiple public overloads with optional parameters
         Public Shared Function Show(RootDesigner As BaseRootDesigner, Message As String,
                 Caption As String, Buttons As MessageBoxButtons, Icon As MessageBoxIcon,
@@ -47,7 +46,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' <param name="ex">The exception to include in the message.</param>
         ''' <param name="Caption">The text to display in the title bar of the message box.</param>
         ''' <param name="HelpLink">Link to the help topic for this message box.</param>
-        ''' <remarks></remarks>
 #Disable Warning RS0026 ' Do not add multiple public overloads with optional parameters
         Public Shared Sub Show(ServiceProvider As IServiceProvider, ex As Exception,
                 Caption As String, Optional HelpLink As String = Nothing)
@@ -83,7 +81,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
             End If
 
             If AppDesCommon.IsCheckoutCanceledException(ex) Then
-                'The user knows he just canceled the checkout.  We don't have to tell him.  (Yes, other editors and the
+                'The user knows they just canceled the checkout.  We don't have to tell them.  (Yes, other editors and the
                 '  Fx framework itself does it this way, too.)
                 Return
             End If
@@ -122,7 +120,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' <param name="Icon">One of the MessageBoxIcon values that specifies which icon to display in the message box.</param>
         ''' <param name="HelpLink">Link to the help topic for this message box.</param>
         ''' <param name="DefaultButton">One of the MessageBoxDefaultButton values that specifies the default button of the message box.</param>
-        ''' <remarks></remarks>
 #Disable Warning RS0026 ' Do not add multiple public overloads with optional parameters
         Public Shared Function Show(ServiceProvider As IServiceProvider, Message As String,
                 Caption As String, Buttons As MessageBoxButtons, Icon As MessageBoxIcon,
@@ -144,7 +141,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         ''' <param name="Icon">One of the MessageBoxIcon values that specifies which icon to display in the message box.</param>
         ''' <param name="HelpLink">Link to the help topic for this message box.</param>
         ''' <param name="DefaultButton">One of the MessageBoxDefaultButton values that specifies the default button of the message box.</param>
-        ''' <remarks></remarks>
         Private Shared Function ShowHelper(ServiceProvider As IServiceProvider, Message As String,
                 Caption As String, Buttons As MessageBoxButtons, Icon As MessageBoxIcon,
                 Optional DefaultButton As MessageBoxDefaultButton = MessageBoxDefaultButton.Button1,

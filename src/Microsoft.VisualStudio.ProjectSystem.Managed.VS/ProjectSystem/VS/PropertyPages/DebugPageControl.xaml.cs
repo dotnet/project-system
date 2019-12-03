@@ -8,13 +8,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Telemetry;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
-    /// <summary>
-    /// Interaction logic for DebugPageControl.xaml
-    /// </summary>
     internal partial class DebugPageControl : PropertyPageControl
     {
         private bool _customControlLayoutUpdateRequired = false;
@@ -50,17 +45,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         private void OnFocusEnvironmentVariableGridRow(object sender, EventArgs e)
         {
-            if (DataContext != null && DataContext is DebugPageViewModel)
+            if (DataContext is DebugPageViewModel viewModel)
             {
 #pragma warning disable RS0030 // Do not used banned APIs
                 ThreadHelper.JoinableTaskFactory.StartOnIdle(async () =>
                 {
                     await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-                    if ((DataContext as DebugPageViewModel).EnvironmentVariables.Count > 0)
+                    if (viewModel.EnvironmentVariables.Count > 0)
                     {
                         // get the new cell, set focus, then open for edit
-                        DataGridCell cell = WpfHelper.GetCell(dataGridEnvironmentVariables, (DataContext as DebugPageViewModel).EnvironmentVariables.Count - 1, 0);
-                        cell.Focus();
+                        DataGridCell? cell = WpfHelper.GetCell(dataGridEnvironmentVariables, viewModel.EnvironmentVariables.Count - 1, 0);
+                        cell?.Focus();
                         dataGridEnvironmentVariables.BeginEdit();
                     }
                 }).FileAndForget(TelemetryEventName.Prefix);
@@ -75,8 +70,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 BindingFlags bindingFlags = BindingFlags.NonPublic | BindingFlags.Instance;
                 PropertyInfo cellErrorInfo = dataGrid.GetType().GetProperty("HasCellValidationError", bindingFlags);
                 PropertyInfo rowErrorInfo = dataGrid.GetType().GetProperty("HasRowValidationError", bindingFlags);
-                cellErrorInfo.SetValue(dataGrid, false, null);
-                rowErrorInfo.SetValue(dataGrid, false, null);
+                cellErrorInfo?.SetValue(dataGrid, false, null);
+                rowErrorInfo?.SetValue(dataGrid, false, null);
             }
             catch (Exception)
             {
@@ -101,12 +96,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// </summary>
         private void DebugPageControl_LayoutUpdated(object sender, EventArgs e)
         {
-            if (_customControlLayoutUpdateRequired && _mainGrid != null && DataContext != null)
+            if (_customControlLayoutUpdateRequired && _mainGrid != null && DataContext is DebugPageViewModel viewModel)
             {
                 _customControlLayoutUpdateRequired = false;
 
                 // Get the control that was added to the grid
-                UserControl customControl = ((DebugPageViewModel)DataContext).ActiveProviderUserControl;
+                UserControl customControl = viewModel.ActiveProviderUserControl;
                 if (customControl != null)
                 {
                     if (customControl.Content is Grid childGrid && childGrid.ColumnDefinitions.Count == _mainGrid.ColumnDefinitions.Count)

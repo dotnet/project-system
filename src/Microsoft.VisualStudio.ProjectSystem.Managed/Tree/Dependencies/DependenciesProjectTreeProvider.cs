@@ -553,7 +553,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     schema,
                     context,
                     dependency.Name,
-                    dependency.Properties);
+                    dependency.BrowseObjectProperties);
             }
 
             return browseObjectsCatalog.BindToContext(schema.Name, context);

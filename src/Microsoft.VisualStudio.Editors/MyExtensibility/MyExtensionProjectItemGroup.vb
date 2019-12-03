@@ -33,31 +33,31 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             _extensionDescription = extensionDescription
         End Sub
 
-        Public ReadOnly Property ExtensionProjectItems() As List(Of ProjectItem)
+        Public ReadOnly Property ExtensionProjectItems As List(Of ProjectItem)
             Get
                 Return _projectItems
             End Get
         End Property
 
-        Public ReadOnly Property ExtensionID() As String
+        Public ReadOnly Property ExtensionID As String
             Get
                 Return _extensionID
             End Get
         End Property
 
-        Public ReadOnly Property ExtensionVersion() As Version
+        Public ReadOnly Property ExtensionVersion As Version
             Get
                 Return _extensionVersion
             End Get
         End Property
 
-        Public ReadOnly Property ExtensionDescription() As String Implements INamedDescribedObject.Description
+        Public ReadOnly Property ExtensionDescription As String Implements INamedDescribedObject.Description
             Get
                 Return _extensionDescription
             End Get
         End Property
 
-        Public ReadOnly Property DisplayName() As String Implements INamedDescribedObject.DisplayName
+        Public ReadOnly Property DisplayName As String Implements INamedDescribedObject.DisplayName
             Get
                 If StringIsNullEmptyOrBlank(_extensionName) Then
                     Return _extensionID

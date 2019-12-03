@@ -61,12 +61,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             RefreshInstalledFxCopAnalyzersVersionAndButtons()
         End Sub
 
-        Protected Overrides ReadOnly Property ControlData() As PropertyControlData()
+        Protected Overrides ReadOnly Property ControlData As PropertyControlData()
             Get
                 If m_ControlData Is Nothing Then
                     m_ControlData = New PropertyControlData() {
                         New PropertyControlData(1, "RunAnalyzersDuringBuild", RunAnalyzersDuringBuild, ControlDataFlags.None),
-                        New PropertyControlData(2, "RunAnalyzersDuringLiveAnalysis", RunAnalyzersDuringLiveAnalysis, ControlDataFlags.None)
+                        New PropertyControlData(2, "RunAnalyzersDuringLiveAnalysis", RunAnalyzersDuringLiveAnalysis, ControlDataFlags.PersistedInProjectUserFile)
                     }
                 End If
                 Return m_ControlData

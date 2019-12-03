@@ -37,17 +37,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
             var notifyService = new UserNotificationServices(_serviceProvider, _threadingService);
 
-            if (string.IsNullOrEmpty(newName))
+            if (Strings.IsNullOrEmpty(newName))
             {
                 notifyService.ShowError(PropertyPageResources.ProfileNameRequired);
             }
-            else if (!_validator(newName!))
+            else if (!_validator(newName))
             {
                 notifyService.ShowError(PropertyPageResources.ProfileNameInvalid);
             }
             else
             {
-                ProfileName = newName!;
+                ProfileName = newName;
                 DialogResult = true;
             }
         }

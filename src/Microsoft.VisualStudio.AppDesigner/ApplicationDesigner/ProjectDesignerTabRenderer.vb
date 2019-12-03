@@ -122,7 +122,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Constructor.
         ''' </summary>
         ''' <param name="owner">The ProjectDesignerTabControl control which owns and contains this control.</param>
-        ''' <remarks></remarks>
         Public Sub New(owner As ProjectDesignerTabControl)
             Requires.NotNull(owner, NameOf(owner))
 
@@ -139,13 +138,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''   shell (e.g., colors will default to system or fallback colors instead of using the
         '''   shell's color service). 
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public Property ServiceProvider() As IServiceProvider
+        Public Property ServiceProvider As IServiceProvider
             Get
                 Return _serviceProvider
             End Get
-            Set(value As IServiceProvider)
+            Set
                 _serviceProvider = value
                 If _gdiObjectsCreated Then
                     'If we've already created GDI stuff/layout, we will need to re-create them.  Otherwise
@@ -161,9 +158,9 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <value>The IVsUIShell service if found, otherwise null</value>
         ''' <remarks>Uses the publicly-obtained ServiceProvider property, if it was set.</remarks>
-        Private ReadOnly Property VsUIShellService() As IVsUIShell
+        Private ReadOnly Property VsUIShellService As IVsUIShell
             Get
-                If (_uiShellService Is Nothing) Then
+                If _uiShellService Is Nothing Then
                     If Common.VBPackageInstance IsNot Nothing Then
                         _uiShellService = TryCast(Common.VBPackageInstance.GetService(GetType(IVsUIShell)), IVsUIShell)
                     ElseIf ServiceProvider IsNot Nothing Then
@@ -180,12 +177,12 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <value>The IVsUIShell5 service if found, otherwise null</value>
         ''' <remarks>Uses the publicly-obtained ServiceProvider property, if it was set.</remarks>
-        Private ReadOnly Property VsUIShell5Service() As IVsUIShell5
+        Private ReadOnly Property VsUIShell5Service As IVsUIShell5
             Get
-                If (_uiShell5Service Is Nothing) Then
+                If _uiShell5Service Is Nothing Then
                     Dim VsUIShell = VsUIShellService
 
-                    If (VsUIShell IsNot Nothing) Then
+                    If VsUIShell IsNot Nothing Then
                         _uiShell5Service = TryCast(VsUIShell, IVsUIShell5)
                     End If
                 End If
@@ -205,13 +202,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Note: this is not necessarily the same as the currently-selected button, because once a button
         '''   is pulled into the switchable slot, we want it to stay there unless we have to change it.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public Property PreferredButtonForSwitchableSlot() As ProjectDesignerTabButton
+        Public Property PreferredButtonForSwitchableSlot As ProjectDesignerTabButton
             Get
                 Return _preferredButtonForSwitchableSlot
             End Get
-            Set(value As ProjectDesignerTabButton)
+            Set
                 If value IsNot _preferredButtonForSwitchableSlot Then
                     _preferredButtonForSwitchableSlot = value
                     _owner.Invalidate()
@@ -226,7 +221,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Creates GDI objects that we keep around, if they have not already been created
         ''' </summary>
         ''' <param name="ForceUpdate">If True, the GDI objects are updated if they have already been created.</param>
-        ''' <remarks></remarks>
         Public Sub CreateGDIObjects(Optional ForceUpdate As Boolean = False)
             If _creatingGDIObjects Then
                 Exit Sub
@@ -313,7 +307,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Computes all layout-related, cached state, if it is not currently valid.
         '''   Otherwise immediately returns.
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub UpdateCacheState()
             If _updatingCache Then
                 Exit Sub
@@ -357,8 +350,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Retrieves the width in pixels of the widest text in any of the buttons.
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function GetLargestButtonTextSize() As Size
             'Calculate required text width
             Dim maxTextWidth As Integer = 0
@@ -391,9 +382,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             'Now calculate required height 
             minimumHeight = _owner.HostingPanel.MinimumSize.Height + 1 + _buttonPagePadding.Bottom + 1
 
-            ' Calculate the required height by tab button area...
-            Dim panelMinimumHeight As Integer = _buttonHeight * _visibleButtonSlots + 1 + _buttonPagePadding.Bottom + 1
-
             _owner.MinimumSize = New Size(minimumWidth, minimumHeight)
 
             'Add 2 for extra horizontal line above first tab and after last tab
@@ -411,7 +399,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Sets the positions of all the owner's buttons.
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub SetButtonPositions()
             'Adjust all the button positions
 
@@ -431,7 +418,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 #If DEBUG Then
             Dim SwitchableSlotShown As Boolean = False 'Whether we have shown a button in the switchable slot
 #End If
-            Dim OverflowNeeded As Boolean = (_visibleButtonSlots < _owner.TabButtonCount)
+            Dim OverflowNeeded As Boolean = _visibleButtonSlots < _owner.TabButtonCount
 
             'Find the preferred button for the switchable slot
             PreferredButtonIndex = -1
@@ -464,7 +451,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         'There is no preference for which button is in the switchable slot (or the preferred
                         '  button is already visible above the switchable slot), so 
                         '  we choose the button whose index matches that slot.
-                        ShowButtonInSwitchableSlot = (Index = SwitchableSlotIndex)
+                        ShowButtonInSwitchableSlot = Index = SwitchableSlotIndex
                     ElseIf Button Is PreferredButton Then
                         ShowButtonInSwitchableSlot = True
                     Else
@@ -511,7 +498,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' The main painting routine.
         ''' </summary>
         ''' <param name="g">The Graphics object to paint to.</param>
-        ''' <remarks></remarks>
         Public Sub RenderBackground(g As Graphics)
             CreateGDIObjects()
 
@@ -557,7 +543,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Const TriangleHeight As Integer = 12
 
             ' Triangle starts at the width of the control minus the width of the triangle
-            Dim triangleHorizontalStart As Integer = (button.Width - TriangleWidth)
+            Dim triangleHorizontalStart As Integer = button.Width - TriangleWidth
 
             ' Find relative start of triangle, half of the height of the control minus half of the height of the triangle
             Dim triangleVerticalStart As Single = (CSng(button.Height) / 2) - (CSng(TriangleHeight) / 2)

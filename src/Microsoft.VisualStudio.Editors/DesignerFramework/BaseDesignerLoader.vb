@@ -94,8 +94,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <summary>
         ''' Indicate if it is OK to edit the current set of managed files from a SCC perspective...
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Overridable Function OkToEdit() As Boolean
             If _readOnlyMode Then
                 Return False
@@ -111,14 +109,12 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' Indicate if we are managing a dynamic set of files (if the set of files to check out as a result of editing 
         ''' the primary file changes over time)
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
         ''' <remarks>
         ''' This can be used by editors that sometimes add files to the project system to either specify the project file (if the 
         ''' file isn't in the project and needs to be added) or the newly added file. One example is the settings designer's handling
         ''' of the app.config file
         '''</remarks>
-        Protected Overridable ReadOnly Property ManagingDynamicSetOfFiles() As Boolean
+        Protected Overridable ReadOnly Property ManagingDynamicSetOfFiles As Boolean
             Get
                 Return False
             End Get
@@ -127,10 +123,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <summary>
         ''' Get the list of files that you want to check out in the ManualCheckout
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Friend Overridable ReadOnly Property FilesToCheckOut() As List(Of String)
+        Friend Overridable ReadOnly Property FilesToCheckOut As List(Of String)
             Get
                 Dim projItem As EnvDTE.ProjectItem = ProjectItem
                 Return ShellUtil.FileNameAndGeneratedFileName(projItem)
@@ -143,7 +136,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="ReadOnlyMode"></param>
         ''' <param name="Message"></param>
-        ''' <remarks></remarks>
         Friend Sub SetReadOnlyMode(ReadOnlyMode As Boolean, Message As String)
             _readOnlyMode = ReadOnlyMode
             _readOnlyPrompt = Message
@@ -160,7 +152,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '''   additional work, such as checking out a file from source
         '''   code control.
         ''' </summary>
-        ''' <remarks></remarks>
         Protected Overrides Sub OnModifying()
             Switches.TraceSCC("BaseDesignerLoader.OnModifying()")
 
@@ -224,7 +215,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' Provide a WindowPaneProviderService. Override if you want to provide a different provider pane
         ''' </summary>
         ''' <returns>A window pane provider service or NULL to indicate that no provider should be registered</returns>
-        ''' <remarks></remarks>
         Protected Overridable Function GetWindowPaneProviderService() As Shell.Design.WindowPaneProviderService
             Try
                 If _paneProviderService Is Nothing Then
@@ -245,7 +235,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '  being designed by this editor.  This information is required by the managed VSIP classes.
         Protected MustOverride Function GetBaseComponentClassName() As String
 
-        Protected ReadOnly Property DocData() As DocData
+        Protected ReadOnly Property DocData As DocData
             Get
                 Debug.Assert(m_DocData IsNot Nothing)
                 Return m_DocData
@@ -287,13 +277,13 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Private _vsHierarchy As IVsHierarchy
         Private _punkDocData As Object
 
-        Friend ReadOnly Property VsHierarchy() As IVsHierarchy
+        Friend ReadOnly Property VsHierarchy As IVsHierarchy
             Get
                 Return _vsHierarchy
             End Get
         End Property
 
-        Friend ReadOnly Property ProjectItemid() As UInteger
+        Friend ReadOnly Property ProjectItemid As UInteger
             Get
                 Return _projectItemid
             End Get
@@ -302,18 +292,18 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <summary>
         ''' Project Item of the current Document
         ''' </summary>
-        Friend ReadOnly Property ProjectItem() As EnvDTE.ProjectItem
+        Friend ReadOnly Property ProjectItem As EnvDTE.ProjectItem
             Get
                 Return DTEUtils.ProjectItemFromItemId(VsHierarchy, ProjectItemid)
             End Get
         End Property
 
 #Region "IDisposeable design pattern"
-        '/ <devdoc>
-        '/     Disposes this designer loader.  The designer host will call this method
-        '/     when the design document itself is being destroyed.  Once called, the
-        '/     designer loader will never be called again.
-        '/ </devdoc>
+        ' <devdoc>
+        '     Disposes this designer loader.  The designer host will call this method
+        '     when the design document itself is being destroyed.  Once called, the
+        '     designer loader will never be called again.
+        ' </devdoc>
         Public Overloads Overrides Sub Dispose() Implements IDisposable.Dispose
             Dispose(True)
 
@@ -330,7 +320,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' Dispose any resources owned by this instance
         ''' </summary>
         ''' <param name="Disposing"></param>
-        ''' <remarks></remarks>
         Protected Overridable Overloads Sub Dispose(Disposing As Boolean)
             If Disposing Then
                 Disconnect()
@@ -360,12 +349,12 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 #End Region
 
 
-        '/ <include file='doc\ShellTextBuffer.uex' path='docs/doc[@for="ShellTextBuffer.ReadOnly"]/*' />
-        '/ <devdoc>
-        '/      Determines if this file is read only.
-        '/ </devdoc>
+        ' <include file='doc\ShellTextBuffer.uex' path='docs/doc[@for="ShellTextBuffer.ReadOnly"]/*' />
+        ' <devdoc>
+        '      Determines if this file is read only.
+        ' </devdoc>
 
-        Public ReadOnly Property DocDataIsReadOnly() As Boolean
+        Public ReadOnly Property DocDataIsReadOnly As Boolean
             Get
                 Return GetDocDataState(BUFFERSTATEFLAGS.BSF_FILESYS_READONLY Or BUFFERSTATEFLAGS.BSF_USER_READONLY)
             End Get
@@ -421,7 +410,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' have a loader host here.
         ''' This is the place where we add services!
         ''' </summary>
-        ''' <remarks></remarks>
         Protected Overrides Sub Initialize()
             MyBase.Initialize()
 
@@ -444,12 +432,12 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             LoaderHost.AddService(GetType(IVsHierarchy), VsHierarchy)
         End Sub
 
-        '/ <include file='doc\VSDDesignerLoader.uex' path='docs/doc[@for="VSDDesignerLoader.IVSMDDesignerLoader.Initialize"]/*' />
-        '/ <devdoc>
-        '/     This method is called to initialize the designer loader with the text
-        '/     buffer to read from and a service provider through which we
-        '/     can ask for services.
-        '/ </devdoc>
+        ' <include file='doc\VSDDesignerLoader.uex' path='docs/doc[@for="VSDDesignerLoader.IVSMDDesignerLoader.Initialize"]/*' />
+        ' <devdoc>
+        '     This method is called to initialize the designer loader with the text
+        '     buffer to read from and a service provider through which we
+        '     can ask for services.
+        ' </devdoc>
         Friend Overridable Sub InitializeEx(ServiceProvider As Shell.ServiceProvider, moniker As String, Hierarchy As IVsHierarchy, ItemId As UInteger, punkDocData As Object)
 
             If m_DocData IsNot Nothing Then
@@ -473,9 +461,10 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ' If a random editor opens the file and locks it using an incompatible buffer, we need 
             ' to detect this.
             '
-            If TypeOf punkDocData Is IVsTextBufferProvider Then
+            Dim vsTextBufferProvider = TryCast(punkDocData, IVsTextBufferProvider)
+            If vsTextBufferProvider IsNot Nothing Then
                 Dim VsTextLines As IVsTextLines = Nothing
-                VSErrorHandler.ThrowOnFailure(CType(punkDocData, IVsTextBufferProvider).GetTextBuffer(VsTextLines))
+                VSErrorHandler.ThrowOnFailure(vsTextBufferProvider.GetTextBuffer(VsTextLines))
                 punkDocData = VsTextLines
             End If
 
@@ -490,10 +479,11 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 'Nope, this doc data is not in a format that we understand.  Throw an 
                 '  intelligent error message (need to get the filename for the message)
                 Dim FileName As String = String.Empty
-                If TypeOf punkDocData Is IVsUserData Then
+                Dim vsUserData = TryCast(punkDocData, IVsUserData)
+                If vsUserData IsNot Nothing Then
                     Dim Guid As Guid = GetType(IVsUserData).GUID
                     Dim vt As Object = Nothing
-                    VSErrorHandler.ThrowOnFailure(CType(punkDocData, IVsUserData).GetData(Guid, vt))
+                    VSErrorHandler.ThrowOnFailure(vsUserData.GetData(Guid, vt))
                     If TypeOf vt Is String Then
                         FileName = CStr(vt)
                         FileName = Path.GetFileName(FileName)
@@ -579,7 +569,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <summary>
         ''' OnDesignerLoadCompleted will be called when we finish loading the designer
         ''' </summary>
-        ''' <remarks></remarks>
         Protected Overridable Sub OnDesignerLoadCompleted()
         End Sub
 
@@ -613,12 +602,11 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <summary>
         ''' Indicates whether the window frame for this designer loader's designer should support the shell toolbox.
         ''' </summary>
-        ''' <value></value>
         ''' <remarks>
         ''' For performance reasons, this defaults to false.  If the designer should support the toolbox, override
         '''   this and return True.
         ''' </remarks>
-        Protected Overridable ReadOnly Property SupportToolbox() As Boolean
+        Protected Overridable ReadOnly Property SupportToolbox As Boolean
             Get
                 Return False
             End Get
@@ -628,7 +616,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' Run the custom tool (if any)
         ''' </summary>
         ''' <param name="flushBeforeRun">If true, flush before running the custom tool</param>
-        ''' <remarks></remarks>
         Friend Overridable Sub RunSingleFileGenerator(flushBeforeRun As Boolean)
             If flushBeforeRun Then
                 HandleFlush(Nothing)
@@ -703,7 +690,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' Called when the document's window is activated or deactivated
         ''' </summary>
         ''' <param name="Activated">True if the document window has been activated, False if deactivated.</param>
-        ''' <remarks></remarks>
         Protected Overridable Sub OnDesignerWindowActivated(Activated As Boolean)
         End Sub
 
@@ -712,7 +698,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <summary>
         ''' Start listening to RDT events
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub AdviseRunningDocTableEvents()
             If _rdt IsNot Nothing Then
                 VSErrorHandler.ThrowOnFailure(_rdt.AdviseRunningDocTableEvents(Me, _rdtEventsCookie))
@@ -722,7 +707,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <summary>
         ''' Stop listening to RDT events
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub UnadviseRunningDocTableEvents()
             If _rdtEventsCookie <> 0 Then
                 If _rdt IsNot Nothing Then

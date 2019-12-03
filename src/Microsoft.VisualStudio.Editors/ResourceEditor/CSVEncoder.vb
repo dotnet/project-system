@@ -15,7 +15,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     ''' This class contains routines for reading and writing CSV format (for communicating
     '''   via the clipboard with Excel and other applications)
     ''' </summary>
-    ''' <remarks></remarks>
     Friend NotInheritable Class CsvEncoder
 
         Public Enum EncodingType
@@ -28,7 +27,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Text">The CSV text to encode</param>
         ''' <param name="EncodingType"></param>
-        ''' <remarks></remarks>
         Public Shared Function IsSimpleString(Text As String, EncodingType As EncodingType, ByRef SimpleString As String) As Boolean
             If Text Is Nothing Then
                 Text = String.Empty
@@ -73,7 +71,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Text">The CSV text to decode</param>
         ''' <param name="View">The ResourceEditorView.  This is used for displaying messageboxes and creating resources.</param>
         ''' <param name="EncodingType"></param>
-        ''' <remarks></remarks>
         Public Shared Function DecodeResources(Text As String, View As ResourceEditorView, EncodingType As EncodingType) As Resource()
             Dim ResourceList As New List(Of Resource)
 
@@ -222,7 +219,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Given a string, escape it for use as a field in a CSV line
         ''' </summary>
         ''' <param name="Field">The string field to encode.</param>
-        ''' <remarks></remarks>
         Private Shared Function EscapeField(Field As String, EncodingType As EncodingType) As String
             If Field Is Nothing Then
                 Field = ""

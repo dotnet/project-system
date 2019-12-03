@@ -15,7 +15,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
     ''' <summary>
     ''' Show a dialog allowing the user to pick a type
     ''' </summary>
-    ''' <remarks></remarks>
     Friend NotInheritable Class TypePickerDialog
         'Inherits System.Windows.Forms.Form
         Inherits BaseDialog
@@ -63,7 +62,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         'Form overrides dispose to clean up the component list.
         Protected Overloads Overrides Sub Dispose(disposing As Boolean)
             If disposing Then
-                If Not (_components Is Nothing) Then
+                If _components IsNot Nothing Then
                     _components.Dispose()
                 End If
             End If
@@ -198,7 +197,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 If Node IsNot Nothing AndAlso Node.IsAssemblyNode AndAlso Node.HasDummyNode Then
                     Node.RemoveDummyNode()
                     Using mtsrv As New VSDesigner.MultiTargetService(_vsHierarchy, _projectItemid, False)
-                        If (mtsrv IsNot Nothing) Then
+                        If mtsrv IsNot Nothing Then
                             Dim availableTypes As Type() = mtsrv.GetSupportedTypes(Node.Text, AddressOf GetAssemblyCallback)
                             For Each availableType As Type In availableTypes
 
@@ -230,13 +229,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Get whatever type name the user selected
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public Property TypeName() As String
+        Public Property TypeName As String
             Get
                 Return _typeTextBox.Text.Trim()
             End Get
-            Set(Value As String)
+            Set
                 _typeTextBox.Text = Value
             End Set
         End Property
@@ -248,9 +245,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' A collection of available types
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Private ReadOnly Property AvailableTypes() As AutoCompleteStringCollection
+        Private ReadOnly Property AvailableTypes As AutoCompleteStringCollection
             Get
                 Return _typeTextBox.AutoCompleteCustomSource
             End Get
@@ -303,7 +298,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub OnOkButtonClick(sender As Object, e As EventArgs) Handles _okButton.Click
             If QueryClose() Then
                 DialogResult = DialogResult.OK
@@ -317,7 +311,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <returns>
         ''' True if validation successful OR validation unsuccessful, but user chooses to save type anyway
         '''</returns>
-        ''' <remarks></remarks>
         Private Function QueryClose() As Boolean
             Dim ShouldClose As Boolean
 
@@ -374,8 +367,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' type names (i.e. int for System.Int32) as well as type names in imported namespaces
         ''' </summary>
         ''' <param name="displayName"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function NormalizeTypeName(displayName As String) As String
             Dim typeNameResolutionService As SettingTypeNameResolutionService =
                 DirectCast(GetService(GetType(SettingTypeNameResolutionService)), SettingTypeNameResolutionService)
@@ -421,8 +412,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Get the project level imports
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function GetProjectImports() As List(Of String)
             Dim Result As New List(Of String)
             Dim vsProject As VSLangProj.VSProject
@@ -540,26 +529,26 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             End Sub
 
-            Public ReadOnly Property IsAssemblyNode() As Boolean
+            Public ReadOnly Property IsAssemblyNode As Boolean
                 Get
                     Return _nodeType = NodeType.ASSEMBLY_NODE
                 End Get
             End Property
 
-            Public ReadOnly Property HasDummyNode() As Boolean
+            Public ReadOnly Property HasDummyNode As Boolean
                 Get
                     Return Nodes.ContainsKey(DUMMY_ITEM_TEXT)
                 End Get
             End Property
 
 
-            Public ReadOnly Property IsNameSpaceNode() As Boolean
+            Public ReadOnly Property IsNameSpaceNode As Boolean
                 Get
                     Return _nodeType = NodeType.NAMESPACE_NODE
                 End Get
             End Property
 
-            Public ReadOnly Property IsTypeNode() As Boolean
+            Public ReadOnly Property IsTypeNode As Boolean
                 Get
                     Return _nodeType = NodeType.TYPE_NODE
                 End Get
@@ -621,7 +610,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub TypePickerDialog_FormClosed(sender As Object, e As FormClosedEventArgs) Handles Me.FormClosed
             s_previousSize = Size
         End Sub

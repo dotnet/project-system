@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.GraphModel.Schemas;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
-    internal static class IProjectTreeExtensions1
+    internal static class GraphNodeIdExtensions
     {
         internal static string? GetValue(this GraphNodeId id, GraphNodeIdName idPartName)
         {

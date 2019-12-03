@@ -18,7 +18,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     Public Class MyExtensibilityPropPageComClass
         Inherits VBPropPageBase
 
-        Protected Overrides ReadOnly Property ControlType() As Type
+        Protected Overrides ReadOnly Property ControlType As Type
             Get
                 Return GetType(MyExtensibilityPropPage)
             End Get
@@ -28,7 +28,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return New MyExtensibilityPropPage()
         End Function
 
-        Protected Overrides ReadOnly Property Title() As String
+        Protected Overrides ReadOnly Property Title As String
             Get
                 Return Res.PropertyPageTab
             End Get

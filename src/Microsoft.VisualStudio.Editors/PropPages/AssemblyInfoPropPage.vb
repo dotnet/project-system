@@ -53,7 +53,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 AssemblyVersionMajorTextBox, AssemblyVersionMinorTextBox, AssemblyVersionBuildTextBox, AssemblyVersionRevisionTextBox}
         End Sub
 
-        Protected Overrides ReadOnly Property ControlData() As PropertyControlData()
+        Protected Overrides ReadOnly Property ControlData As PropertyControlData()
             Get
                 If m_ControlData Is Nothing Then
 
@@ -100,7 +100,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Function VersionGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
             Dim Version As String = Nothing
 
-            If (control Is FileVersionLayoutPanel) Then
+            If control Is FileVersionLayoutPanel Then
                 ValidateAssemblyFileVersion(Version)
             Else
                 Debug.Assert(control Is AssemblyVersionLayoutPanel)
@@ -133,7 +133,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ReDim Preserve Values(3)
 
             Dim Textboxes As TextBox()
-            If (control Is FileVersionLayoutPanel) Then
+            If control Is FileVersionLayoutPanel Then
                 Textboxes = _fileVersionTextBoxes
             Else
                 Debug.Assert(control Is AssemblyVersionLayoutPanel)
