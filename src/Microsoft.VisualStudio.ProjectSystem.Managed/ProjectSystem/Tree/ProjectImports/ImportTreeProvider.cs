@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
     /// </remarks>
     [Export(ExportContractNames.ProjectTreeProviders.PhysicalViewRootGraft, typeof(IProjectTreeProvider))]
     [AppliesTo(ProjectCapability.ProjectImportsTree)]
-    internal sealed partial class ProjectImportsSubTreeProvider : ProjectTreeProviderBase, IProjectTreeProvider, IShowAllFilesProjectTreeProvider
+    internal sealed partial class ImportTreeProvider : ProjectTreeProviderBase, IProjectTreeProvider, IShowAllFilesProjectTreeProvider
     {
         private static readonly ProjectImageMoniker s_rootIcon = ManagedImageMonikers.ProjectImports.ToProjectSystemType();
         private static readonly ProjectImageMoniker s_nodeIcon = ManagedImageMonikers.TargetFile.ToProjectSystemType();
@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
         private bool _showAllFiles;
 
         [ImportingConstructor]
-        internal ProjectImportsSubTreeProvider(
+        internal ImportTreeProvider(
             IProjectThreadingService threadingService,
             IActiveConfiguredProjectSubscriptionService projectSubscriptionService,
             IUnconfiguredProjectTasksService unconfiguredProjectTasksService,

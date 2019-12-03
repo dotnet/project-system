@@ -4,7 +4,7 @@ using System;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
 {
-    internal sealed partial class ProjectImportsSubTreeProvider
+    internal sealed partial class ImportTreeProvider
     {
         private sealed class ImplicitProjectCheck
         {

@@ -115,7 +115,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.ProjectImports
                         RunningDocumentInfo rdtInfo = rdt.GetDocumentInfo(item.FilePath);
 
                         // Set it as read only if necessary.
-                        bool isReadOnly = item.Flags.Contains(ProjectImportsSubTreeProvider.ProjectImportImplicit);
+                        bool isReadOnly = item.Flags.Contains(ImportTreeProvider.ProjectImportImplicit);
 
                         if (isReadOnly && rdtInfo.DocData is IVsTextBuffer textBuffer)
                         {
@@ -142,7 +142,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.ProjectImports
             }
         }
 
-        private static bool CanOpenFile(IProjectTree node) => node.Flags.Contains(ProjectImportsSubTreeProvider.ProjectImport);
+        private static bool CanOpenFile(IProjectTree node) => node.Flags.Contains(ImportTreeProvider.ProjectImport);
 
         /// <summary>
         /// Calls <paramref name="action"/> for each of <paramref name="items"/>. If any action
