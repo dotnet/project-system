@@ -58,9 +58,9 @@ namespace Microsoft.VisualStudio.Shell.Interop
 
             Assumes.Present(shell);
 
-            if (ErrorHandler.Succeeded(shell.GetProperty((int)__VSSPROPID4.VSSPROPID_LocalAppDataDir, out object objDataFolder)) && objDataFolder is string appDataFolder)
+            if (ErrorHandler.Succeeded(shell.GetProperty((int)__VSSPROPID4.VSSPROPID_LocalAppDataDir, out object value)))
             {
-                return appDataFolder;
+                return value as string;
             }
 
             return null;
