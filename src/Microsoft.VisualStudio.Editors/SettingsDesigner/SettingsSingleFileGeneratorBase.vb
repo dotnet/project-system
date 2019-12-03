@@ -451,7 +451,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 CodeProperty.SetStatements.AddRange(GenerateSetterStatements(Instance))
             End If
 
-            ' Make sure we have a CustomAttributes collection for this guy!
+            ' Make sure we have a CustomAttributes collection!
             CodeProperty.CustomAttributes = New CodeAttributeDeclarationCollection
             ' Add scope attribute
             Dim ScopeAttribute As CodeAttributeDeclaration

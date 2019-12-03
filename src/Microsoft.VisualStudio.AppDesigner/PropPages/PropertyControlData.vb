@@ -1887,7 +1887,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="e"></param>
         Private Sub Control_LostFocus(sender As Object, e As EventArgs)
             'If the user leaves the property page to, say, a tool window, we will receive the 
-            '  notification here.  If the page is dirty (s/he has typed something into the 
+            '  notification here.  If the page is dirty (they had typed something into the 
             '  textbox previously), then go ahead and commit the changes (if in immediate apply).
             If IsDirty() Then
                 SetDirty(True)

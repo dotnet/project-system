@@ -496,14 +496,14 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Set
                 ' Setting the settings to the same instance is a NOOP
                 If Value IsNot Settings Then
-                    ' Store this guy for later use!
+                    ' Store this value for later use!
                     _settingsProperty = Value
 
                     If Settings IsNot Nothing Then
                         RefreshGrid()
                         ' We want to give the name column a reasonable start width. If we did this by using auto fill/fill weight, 
                         ' changing the value column would change the size of the name column, which looks weird. We'll just default the
-                        ' size to 1/3 of the value column's width and leave it at that (the user can resize if (s)he wants to)
+                        ' size to 1/3 of the value column's width and leave it at that (the user can resize if they want to)
                         _settingsGridView.Columns(NameColumnNo).Width = CInt(TypeColumn.Width / 2)
                     End If
                 End If
@@ -880,7 +880,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         End Sub
 
         ''' <summary>
-        ''' If files under source control, prompt the user if (s)he wants to check them out.
+        ''' If files under source control, prompt the user if they want to check them out.
         ''' </summary>
         ''' <returns>True if not under source control or if the check out succeeded, false otherwise</returns>
         Private Function EnsureCheckedOut() As Boolean

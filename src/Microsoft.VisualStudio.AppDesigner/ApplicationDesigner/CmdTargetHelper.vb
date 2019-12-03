@@ -288,7 +288,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     flags = __VSRDTSAVEOPTIONS.RDTSAVEOPT_DocClose Or __VSRDTSAVEOPTIONS.RDTSAVEOPT_PromptSave 'defensive
             End Select
 
-            'Ask the user if s/he wants to save the child documents (depending on flags).  If so, go ahead and save them now.
+            'Ask the user if they want to save the child documents (depending on flags).  If so, go ahead and save them now.
             Dim hr As Integer = _windowPane.SaveChildren(flags)
             If NativeMethods.Failed(hr) Then
                 'Fails (among other possible cases) when the user chooses Cancel.  Return the hresult so the

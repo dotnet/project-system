@@ -1878,7 +1878,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
 
                         Using appConfigDocData
                             Using appConfigDocData.CreateChangeMarker()
-                                ' let's serialize the contents of this guy...
+                                ' let's serialize contents...
                                 AppConfigSerializer.Serialize(Settings,
                                                             _typeCache,
                                                             _valueCache,
@@ -1889,7 +1889,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                                                             True)
                                 If shouldSaveAppConfig Then
                                     If appConfigItemid = VSITEMID.NIL OrElse appConfigCookie = 0 Then
-                                        ' Let's make sure we have all the nescessary info for this guy...
+                                        ' Let's make sure we have all the nescessary info for this...
                                         Dim appConfigReadLocks As UInteger
                                         Dim appConfigEditLocks As UInteger
                                         GetDocumentInfo(AppConfigFileName, appConfigReadLocks, appConfigEditLocks, appConfigItemid, appConfigCookie)

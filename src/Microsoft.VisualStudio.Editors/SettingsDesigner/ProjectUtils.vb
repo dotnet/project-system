@@ -201,7 +201,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
                             ' We need to bail ASAP if the project was reloaded during checkout - this will have brought down a new version of
                             ' the project file and potentially a file containing the user part of the settings class....
                             '
-                            ' The user will see this as if nothing happened the first time they clicked on ViewCode, and (s)he will hopefully 
+                            ' The user will see this as if nothing happened the first time they clicked on ViewCode, and they will hopefully 
                             ' try again...
                             Return
                         End If
@@ -631,7 +631,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
 
         ''' <summary>
         ''' If the generated language doesn't support declarative event handlers, we
-        ''' add a stub to make sure the user isn't totally lost when (s)he is presented
+        ''' add a stub to make sure the user isn't totally lost when they are presented
         ''' with the user code...
         ''' </summary>
         ''' <param name="ct"></param>
@@ -691,7 +691,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' <param name="generator"></param>
         ''' <param name="doubleCommentComments">
         ''' If "statement" is already a comment, we can choose to add another level of comments by
-        ''' settings this guy to true
+        ''' settings this to true
         ''' </param>
         Private Function CommentStatement(statement As CodeStatement, generator As CodeDomProvider, doubleCommentComments As Boolean) As CodeCommentStatement
             ' If this is already a comment and we don't want to double comment it, just return the statement...

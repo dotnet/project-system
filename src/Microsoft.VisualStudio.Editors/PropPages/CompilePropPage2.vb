@@ -832,11 +832,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         ' Option Strict ON overrides everything below
                         ComboboxCell.Value = _notifyError
                     ElseIf DisableAllWarnings() Then
-                        ' If the DisableAllWarnings checkbox is checked we will set this guy to NotifyNone
+                        ' If the DisableAllWarnings checkbox is checked we will set this to NotifyNone
                         ' and not care about warning levels for specific warnings...
                         ComboboxCell.Value = _notifyNone
                     ElseIf TreatAllWarningsAsErrors() AndAlso _noWarn IsNot Nothing AndAlso AreNumbersInList(_noWarn, ErrorInfo.ErrList) = TriState.False Then
-                        ' If the TreatWarningsAsErrors checkbox is checked we will set this guy to NotifyError
+                        ' If the TreatWarningsAsErrors checkbox is checked we will set this to NotifyError
                         ' (since we already know that DisableAllWarnings wasn't checked)
                         ComboboxCell.Value = _notifyError
                     Else
@@ -1326,7 +1326,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' If we have indeterminate values for either the noWarn or specWarnAsError, we have got to
         ''' reset the properties in a known state before we can make any changes.
         '''
-        ''' Let's prompt the user so (s)he can make this decision.
+        ''' Let's prompt the user so they can make this decision.
         ''' </summary>
         Private Sub EnsureNotConflictingSettings(sender As Object, e As DataGridViewCellCancelEventArgs) Handles WarningsGridView.CellBeginEdit
             If IndeterminateWarningsState Then

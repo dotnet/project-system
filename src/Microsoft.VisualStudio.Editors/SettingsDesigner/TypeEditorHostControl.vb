@@ -483,7 +483,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 _dialog = New DropDownHolder
             End If
 
-            ' Let's make sure we don't have any child controls in this guy! 
+            ' Let's make sure we don't have any child controls! 
             _dialog.Controls.Clear()
             DropDownHolderSize(control)
             AddHandler control.SizeChanged, AddressOf DropDownHolderSizeChanged
@@ -543,7 +543,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Inherits Form
 
             Public Sub New()
-                ' We don't want this guy showing up in the task bar...
+                ' We don't want this form showing up in the task bar...
                 ShowInTaskbar = False
             End Sub
 

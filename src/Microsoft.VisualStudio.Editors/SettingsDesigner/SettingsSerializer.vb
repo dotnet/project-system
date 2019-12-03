@@ -217,7 +217,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 '
                 Dim ValueNode As XmlNode = Nothing
                 ' First, unless explicitly told to only get runtime values, 
-                ' let's check if we have design-time specific values for this guy...
+                ' let's check if we have design-time specific values for this setting...
                 If Not getRuntimeValue Then
                     ValueNode = SettingNode.SelectSingleNode("./Settings:DesignTimeValue[@Profile=""(Default)""]", XmlNamespaceManager)
                 End If

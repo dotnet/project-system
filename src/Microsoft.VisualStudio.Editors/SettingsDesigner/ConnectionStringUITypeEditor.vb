@@ -96,7 +96,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     value = TryCast(oValue, SerializableConnectionString)
 
                     ' We keep track of if there was sensitive data in the string when we were called - if not, we've gotta prompt the user
-                    ' about the potential security implications if (s)he adds sensitive data
+                    ' about the potential security implications if they add sensitive data
                     Dim containedSensitiveData As Boolean = False
 
                     ' If we have a value coming in, we should feed the dialog with this value

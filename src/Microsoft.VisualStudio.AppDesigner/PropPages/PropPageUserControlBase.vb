@@ -3787,7 +3787,7 @@ NextControl:
                             Return True 'We handled the message
                         End If
 
-                        'User pressed <RETURN> on a textbox?  Then commit his/her changes.
+                        'User pressed <RETURN> on a textbox?  Then commit their changes.
                         '...But only if the currently active, focused control is a TextBox (not a derived class), and 
                         '  the form is dirty, and it's immediate commit and not in a dialog, and it's not a multi-line 
                         '  textbox.

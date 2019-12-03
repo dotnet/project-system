@@ -1630,7 +1630,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                                     False)
 
                                 If FinalPathAndFileName = "" Then
-                                    'The user canceled (because a file already exists and s/he didn't want to replace it).
+                                    'The user canceled (because a file already exists and they didn't want to replace it).
                                     'Continue to the next resource.
                                     Resource.Dispose()
                                 Else
@@ -1773,7 +1773,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                                     CopyFileIfExists)
 
                                 If FinalPathAndFileName.Length = 0 Then
-                                    'The user canceled (because a file already exists and s/he didn't want to replace it).
+                                    'The user canceled (because a file already exists and they didn't want to replace it).
                                     'Continue to the next resource.
                                 Else
                                     'The file might have been copied into the project.  We need to update the link to point to the
@@ -3346,7 +3346,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
 
             If Not Resource.IsLink Then
-                'It's a non-linked resource.  Ask the user if s/he wants to change it to linked so we can
+                'It's a non-linked resource.  Ask the user if they want to change it to linked so we can
                 '  open it.
                 If DsMsgBox(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_CantEditEmbeddedResource, MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2, HelpIDs.Dlg_OpenEmbedded) = DialogResult.OK Then
                     'User said yes.
@@ -3432,7 +3432,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Try
                 Dim OpenLogView As Guid
                 If UseOpenWithDialog Then
-                    'This will cause the Open With... dialog to appear, allowing the user to choose which editor he wants to use
+                    'This will cause the Open With... dialog to appear, allowing the user to choose which editor they want to use
                     OpenLogView = LOGVIEWID.LOGVIEWID_UserChooseView
                 Else
                     'This causes the default editor (using its primary view type) for the extension to be used.

@@ -30,7 +30,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <remarks>
         ''' 'cause this is a serializable, there is also a private Sub new - if we want to be able to 
-        ''' create instances of this class without using serialization, we better define this guy!
+        ''' create instances of this class without using serialization, we better define this constructor!
         '''</remarks>
         Public Sub New()
         End Sub
@@ -356,7 +356,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 End If
 
                 If _objectName = "" Then
-                    ' We better create a unique name for this guy...
+                    ' We better create a unique name for this...
                     _objectName = Guid.NewGuid.ToString().Replace("-", "_")
                 End If
 

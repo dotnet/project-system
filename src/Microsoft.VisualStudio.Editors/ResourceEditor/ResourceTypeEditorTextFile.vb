@@ -18,7 +18,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
         'All common file extensions handled by this resource type editor.
         '  This is just a suggested list of files likely to be intended as text files.
-        '  If the user doesn't like these showing up as text files, he can always change
+        '  If the user doesn't like these showing up as text files, they can always change
         '  it to a binary file from the properties window.
         Public Const EXT_TXT As String = ".txt"
         Private ReadOnly _safeExtensions() As String = {
