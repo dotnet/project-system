@@ -81,7 +81,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
             End If
 
             If AppDesCommon.IsCheckoutCanceledException(ex) Then
-                'The user knows he just canceled the checkout.  We don't have to tell him.  (Yes, other editors and the
+                'The user knows they just canceled the checkout.  We don't have to tell them.  (Yes, other editors and the
                 '  Fx framework itself does it this way, too.)
                 Return
             End If

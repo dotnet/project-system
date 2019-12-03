@@ -316,7 +316,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
         ''' <summary>
         ''' Closes the application designer, but first prompts the user which of the open children
-        '''   documents s/he wants to save, and saves the ones selected.
+        '''   documents they want to save, and saves the ones selected.
         ''' </summary>
         Public Function ClosePromptSave() As Integer
             Dim hr As Integer = SaveChildren(__VSRDTSAVEOPTIONS.RDTSAVEOPT_DocClose Or __VSRDTSAVEOPTIONS.RDTSAVEOPT_PromptSave)

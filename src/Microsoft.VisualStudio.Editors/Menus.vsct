@@ -205,7 +205,7 @@
       <Group guid="GUID_RESX_MenuGroup" id="IDG_RESX_AddExisting" priority="0x0100">
         <Annotation>
           <Documentation>
-            Let's also put these guys on the main resource menu so that they get a nice canonical name
+            Let's also put these items on the main resource menu so that they get a nice canonical name
           </Documentation>
         </Annotation>
         <Parent guid="GUID_RESX_MenuGroup" id="IDM_VS_MENU_Resources"/>

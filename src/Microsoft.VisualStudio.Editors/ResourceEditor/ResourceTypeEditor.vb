@@ -168,7 +168,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Shared constructor.  This construct sets up an association between the types of resources
         '''   that the resource editor handles internally and the resource type editor classes that
         '''   handle them.
-        ''' If we make this class public, a third party would associate his resource type editor with
+        ''' If we make this class public, a third party would associate their resource type editor with
         '''   the class that it handles by using the Editor() attribute on that class.  Since the
         '''   resource editor handles resource types that it does not own (e.g. Bitmap), this method
         '''   is not possible.

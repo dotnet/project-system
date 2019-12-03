@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 ' All help keywords for anything inside this assembly should be defined here,
 '   so that it is easier for UE to find them.
@@ -143,7 +143,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Public Const MySettingsHelpKeyword As String = "My.Settings"
 
 
-        ' Can't create this guy!
+        ' Can't create this!
         Private Sub New()
         End Sub
     End Class

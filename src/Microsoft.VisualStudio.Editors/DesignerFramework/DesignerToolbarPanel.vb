@@ -61,7 +61,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 Throw New ArgumentNullException()
             End If
 
-            ' Keep these guys around for later...
+            ' Keep these values around for later...
             _guid = guid
             _id = id
             _uiShell = uiShell

@@ -39,7 +39,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Get settings from app.config file.
         ''' If the serialized representation in the app.config file differs from the value in the DesignTimeSettings
-        ''' object passed in to the function, the user will be prompted if (s)he want to replace the value in the .settings
+        ''' object passed in to the function, the user will be prompted if they want to replace the value in the .settings
         ''' file with the value in app.config
         ''' If the setting name from the app.config file doesn't exist in the DesignTimeSettings object passed to the function,
         ''' new setting will be added to it. 
@@ -66,7 +66,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             For Each Instance As DesignTimeSettingInstance In ExistingSettings.Values
                 Dim settingType As Type = typeCache.GetSettingType(Instance.SettingTypeName)
-                ' We need a name and a type to be able to serialize this guy... unless it is a connection string, of course!
+                ' We need a name and a type to be able to serialize this... unless it is a connection string, of course!
                 If Instance.Name <> "" AndAlso settingType IsNot Nothing AndAlso settingType IsNot GetType(SerializableConnectionString) Then
                     Dim NewProp As New SettingsProperty(Instance.Name) With {
                         .PropertyType = settingType,
@@ -104,13 +104,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     scs.ProviderName = cs.ProviderName
                 End If
                 If ExistingSettings.ContainsKey(cs.Name) Then
-                    ' We already know about this guy - let's see if the values are different...
+                    ' We already know about this connection string - let's see if the values are different...
                     ' (by comparing the serialized values of the corresponding SerializedConnectionStrings)
                     Dim serializedValueInSettings As String = ExistingSettings.Item(cs.Name).SerializedValue
                     Dim serializedValueInAppConfig As String = SettingsValueSerializer.Serialize(scs, Globalization.CultureInfo.InvariantCulture)
                     Dim valueChanged As Boolean = Not String.Equals(serializedValueInSettings, serializedValueInAppConfig, StringComparison.Ordinal)
                     If valueChanged Then
-                        ' Yep! Ask the user what (s)he wants to do...
+                        ' Yep! Ask the user what they want to do...
                         Dim Instance As DesignTimeSettingInstance = ExistingSettings.Item(cs.Name)
                         objectDirty = objectDirty Or QueryReplaceValue(Settings, Instance, serializedValueInAppConfig, DesignTimeSettingInstance.SettingScope.Application, mergeMode, UIService)
                     End If
@@ -433,7 +433,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' If the value in the app.config file differs from the value in the .settings file,
         ''' or the scope has been changed,
-        ''' propmpt the user if (s)he wants to update the value in the .settings file
+        ''' propmpt the user if they want to update the value in the .settings file
         ''' </summary>
         ''' <param name="DeserializedPropertyValue"></param>
         ''' <param name="Scope">The scope in which the deserialized property value was found</param>
@@ -479,7 +479,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         End Function
 
         ''' <summary>
-        ''' Ask the user if (s)he wants to replace the current value of a setting with a new value found in the app.config file...
+        ''' Ask the user if they want to replace the current value of a setting with a new value found in the app.config file...
         ''' </summary>
         ''' <param name="Settings">The owner of the setting</param>
         ''' <param name="Instance">The existing setting instance</param>

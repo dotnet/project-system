@@ -178,7 +178,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                     'NoOptimisticFileCheckout - this property is stored in either the project file or the
                     '  application definition file, depending on whether we're storing a startup URI or a
                     '  startup object.  So we turn off the automatic file checkout so we don't require
-                    '  the user to check out files s/he doesn't need to.  This is okay - the property change
+                    '  the user to check out files they don't need to.  This is okay - the property change
                     '  will still cause a file checkout, it just won't be grouped together if there are
                     '  any other files needing to be checked out at the same time.
                     list.Add(New PropertyControlData(

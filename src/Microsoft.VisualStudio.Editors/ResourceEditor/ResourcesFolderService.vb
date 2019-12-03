@@ -101,7 +101,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <returns>The final file and path of the file after it was added to the project, or else its original location if
         '''   it was not added to the project or was not copied while being added to the project.  Returns Nothing if the
         '''  user canceled the operation.</returns>
-        ''' <remarks>The user is given the choice to cancel the operation when he is asked to overwrite an existing file or link.</remarks>
+        ''' <remarks>The user is given the choice to cancel the operation when they are asked to overwrite an existing file or link.</remarks>
         Public Shared Function AddFileToProject(EditorName As String, Project As Project, ResXProjectItem As ProjectItem, MessageBoxOwner As IWin32Window, SourceFilePath As String) As String
             Return AddFileToProjectHelper(EditorName, Project, ResXProjectItem, MessageBoxOwner, SourceFilePath, CopyFileIfExists:=False)
         End Function
@@ -158,7 +158,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <returns>The final file and path of the file after it was added to the project, or else its original location if
         '''   it was not added to the project or was not copied while being added to the project.  Returns Nothing if the
         '''  user canceled the operation.</returns>
-        ''' <remarks>The user is given the choice to cancel the operation when he is asked to overwrite an existing file or link.</remarks>
+        ''' <remarks>The user is given the choice to cancel the operation when they are asked to overwrite an existing file or link.</remarks>
         Private Shared Function AddFileToProjectHelper(EditorName As String, Project As Project, ResXProjectItem As ProjectItem, MessageBoxOwner As IWin32Window, SourceFilePath As String, CopyFileIfExists As Boolean) As String
             If EditorName = "" Then
                 Throw New ArgumentNullException(NameOf(EditorName))
@@ -405,7 +405,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <returns>The final file and path of the file after it was added to the project, or else its original location if
         '''   it was not added to the project or was not copied while being added to the project.  Returns Nothing if the
         '''  user canceled the operation.</returns>
-        ''' <remarks>The user is given the choice to cancel the operation when he is asked to overwrite an existing file or link.</remarks>
+        ''' <remarks>The user is given the choice to cancel the operation when they are asked to overwrite an existing file or link.</remarks>
         Private Shared Function AddOutsideFileToProject(EditorName As String, Project As Project, ResXProjectItem As ProjectItem, MessageBoxOwner As IWin32Window, FullSourceFilePath As String, Behavior As ResourcesFolderBehavior, ResourcesFolderName As String, CopyFileIfExists As Boolean) As String
             Dim SourceFileNameOnly As String = Path.GetFileName(FullSourceFilePath)
 

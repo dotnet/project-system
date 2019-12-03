@@ -572,7 +572,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 ParentView.OnItemBeginEdit()
             Catch ex As Exception
                 'Cancel and show an error messagebox (actually, DsMsgBox knows not to show anything if it's dealing
-                'with a CheckoutCanceled exception; the user is already aware he canceled)
+                'with a CheckoutCanceled exception; the user is already aware they canceled)
                 e.Cancel = True
                 ParentView.DsMsgBox(ex)
             End Try
@@ -627,7 +627,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         ParentView.RootDesigner.DesignerLoader.ManualCheckOut()
                     Catch ex As Exception
                         'Cancel and show an error messagebox (actually, DsMsgBox knows not to show anything if it's dealing
-                        'with a CheckoutCanceled exception; the user is already aware he canceled)
+                        'with a CheckoutCanceled exception; the user is already aware they canceled)
                         ParentView.DsMsgBox(ex)
 
                         _checkOutFailedInTheAction = True
@@ -1045,7 +1045,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 ParentView.RootDesigner.DesignerLoader.ManualCheckOut()
             Catch ex As Exception
                 'Cancel and show an error messagebox (actually, DsMsgBox knows not to show anything if it's dealing
-                'with a CheckoutCanceled exception; the user is already aware he canceled)
+                'with a CheckoutCanceled exception; the user is already aware they canceled)
                 ParentView.DsMsgBox(ex)
                 Return
             End Try
