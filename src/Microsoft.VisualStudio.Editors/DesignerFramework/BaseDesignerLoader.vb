@@ -290,6 +290,12 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             End Get
         End Property
 
+        Friend ReadOnly Property Moniker() As String
+            Get
+                Return _moniker
+            End Get
+        End Property
+
         ''' <summary>
         ''' Project Item of the current Document
         ''' </summary>
@@ -434,7 +440,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
             'Add the single-file generator as a service
             If KnownUIContexts.CloudEnvironmentConnectedContext.IsActive Then
-                LoaderHost.AddService(GetType(ISingleFileGenerator), New CloudEnvironmentSingleFileGenerator())
+                LoaderHost.AddService(GetType(ISingleFileGenerator), New CloudEnvironmentSingleFileGenerator(LoaderHost, Me))
             Else
                 LoaderHost.AddService(GetType(ISingleFileGenerator), New LocalSingleFileGenerator(LoaderHost))
             End If
