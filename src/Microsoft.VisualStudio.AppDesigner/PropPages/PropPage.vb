@@ -318,22 +318,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return NativeMethods.S_OK
         End Function
 
-        Private Sub IPropertyPage2_Apply() Implements IPropertyPage2.Apply
-            Apply()
-        End Sub
-
-        Protected Overridable Sub Apply()
+        Protected Overridable Sub Apply() Implements IPropertyPage2.Apply
             If _propPage IsNot Nothing Then
                 Dim page As IPropertyPageInternal = CType(_propPage, IPropertyPageInternal)
                 page.Apply()
             End If
         End Sub
 
-        Private Sub IPropertyPage2_Deactivate() Implements IPropertyPage2.Deactivate, IPropertyPage.Deactivate
-            Deactivate()
-        End Sub
-
-        Protected Overridable Sub Deactivate()
+        Protected Overridable Sub Deactivate() Implements IPropertyPage2.Deactivate, IPropertyPage.Deactivate
 
             If _propPage IsNot Nothing Then
 
@@ -353,11 +345,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         End Sub
 
-        Private Sub IPropertyPage2_GetPageInfo(pPageInfo() As PROPPAGEINFO) Implements IPropertyPage2.GetPageInfo, IPropertyPage.GetPageInfo
-            GetPageInfo(pPageInfo)
-        End Sub
-
-        Private Sub GetPageInfo(pPageInfo() As PROPPAGEINFO)
+        Private Sub GetPageInfo(pPageInfo() As PROPPAGEINFO) Implements IPropertyPage2.GetPageInfo, IPropertyPage.GetPageInfo
             Requires.NotNull(pPageInfo, NameOf(pPageInfo))
 
             pPageInfo(0).cb = 4 + 4 + 8 + 4 + 4 + 4
@@ -370,12 +358,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         End Sub
 
-
-        Private Sub IPropertyPage2_Help(strHelpDir As String) Implements IPropertyPage2.Help, IPropertyPage.Help
-            Help(strHelpDir)
-        End Sub
-
-        Protected Overridable Sub Help(strHelpDir As String)
+        Protected Overridable Sub Help(strHelpDir As String) Implements IPropertyPage2.Help, IPropertyPage.Help
 
             If _propPage Is Nothing Then
                 Return
@@ -386,11 +369,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         End Sub
 
-        Private Function IPropertyPage2_IsPageDirty() As Integer Implements IPropertyPage2.IsPageDirty, IPropertyPage.IsPageDirty
-            Return IsPageDirty()
-        End Function
-
-        Protected Overridable Function IsPageDirty() As Integer
+        Protected Overridable Function IsPageDirty() As Integer Implements IPropertyPage2.IsPageDirty, IPropertyPage.IsPageDirty
 
             If _propPage Is Nothing Then
                 Return NativeMethods.S_FALSE
@@ -408,12 +387,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         End Function
 
-
-        Private Sub IPropertyPage2_Move(pRect() As RECT) Implements IPropertyPage2.Move, IPropertyPage.Move
-            Move(pRect)
-        End Sub
-
-        Private Sub Move(pRect() As RECT)
+        Private Sub Move(pRect() As RECT) Implements IPropertyPage2.Move, IPropertyPage.Move
             ' we need to adjust the size of the page if it's autosize or if we're native (in which
             ' case we're going to adjust the size of our secret usercontrol instead) See the Create
             ' for more info about the panel
@@ -446,12 +420,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         End Sub
 
-
-        Private Sub IPropertyPage2_SetObjects(cObjects As UInteger, objects() As Object) Implements IPropertyPage2.SetObjects, IPropertyPage.SetObjects
-            SetObjects(cObjects, objects)
-        End Sub
-
-        Protected Overridable Sub SetObjects(cObjects As UInteger, objects() As Object)
+        Protected Overridable Sub SetObjects(cObjects As UInteger, objects() As Object) Implements IPropertyPage2.SetObjects, IPropertyPage.SetObjects
 
             'Debug.Assert seems to have problems during shutdown - don't do the check
             'Debug.Assert((objects Is Nothing AndAlso cObjects = 0) OrElse (objects IsNot Nothing AndAlso objects.Length = cObjects), "Unexpected arguments")
@@ -467,12 +436,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         End Sub
 
-
-        Private Sub IPropertyPage2_SetPageSite(PageSite As IPropertyPageSite) Implements IPropertyPage2.SetPageSite, IPropertyPage.SetPageSite
-            SetPageSite(PageSite)
-        End Sub
-
-        Private Sub SetPageSite(PageSite As IPropertyPageSite)
+        Private Sub SetPageSite(PageSite As IPropertyPageSite) Implements IPropertyPage2.SetPageSite, IPropertyPage.SetPageSite
             If PageSite IsNot Nothing AndAlso _pageSite IsNot Nothing Then
                 Throw New COMException("PageSite", NativeMethods.E_UNEXPECTED)
             End If
@@ -480,11 +444,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             _pageSite = PageSite
         End Sub
 
-        Private Sub IPropertyPage2_Show(nCmdShow As UInteger) Implements IPropertyPage2.Show, IPropertyPage.Show
-            Show(nCmdShow)
-        End Sub
-
-        Private Sub Show(nCmdShow As UInteger)
+        Private Sub Show(nCmdShow As UInteger) Implements IPropertyPage2.Show, IPropertyPage.Show
 
             If _propPage Is Nothing Then
                 Throw New InvalidOperationException("Form not created")
@@ -545,20 +505,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' S_OK if the property page handled the accelerator, S_FALSE if the property page handles accelerators, but this one was not useful to it,
         '''   S_NOTIMPL if the property page does not handle accelerators, or E_POINTER if the address in pMsg is not valid. For example, it may be NULL.
         ''' </returns>
-        Private Function IPropertyPage2_TranslateAccelerator(pMsg() As MSG) As Integer Implements IPropertyPage2.TranslateAccelerator, IPropertyPage.TranslateAccelerator
-            Return TranslateAccelerator(pMsg)
-        End Function
-
-
-        ''' <summary>
-        ''' Instructs the property page to process the keystroke described in pMsg.
-        ''' </summary>
-        ''' <param name="pMsg"></param>
-        ''' <returns>
-        ''' S_OK if the property page handled the accelerator, S_FALSE if the property page handles accelerators, but this one was not useful to it,
-        '''   S_NOTIMPL if the property page does not handle accelerators, or E_POINTER if the address in pMsg is not valid. For example, it may be NULL.
-        ''' </returns>
-        Protected Overridable Function TranslateAccelerator(pMsg() As MSG) As Integer
+        Protected Overridable Function TranslateAccelerator(pMsg() As MSG) As Integer Implements IPropertyPage2.TranslateAccelerator, IPropertyPage.TranslateAccelerator
             If pMsg Is Nothing Then
                 Return NativeMethods.E_POINTER
             End If
@@ -586,13 +533,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return NativeMethods.S_FALSE
         End Function
 
-
-        Private Sub IPropertyPage2_EditProperty(dispid As Integer) Implements IPropertyPage2.EditProperty
-            EditProperty(dispid)
-        End Sub
-
-        Private Function EditProperty(dispid As Integer) As Integer
-            Dim retVal As Integer = NativeMethods.S_OK
+        Private Sub EditProperty(dispid As Integer) Implements IPropertyPage2.EditProperty
 
             _dispidFocus = dispid
 
@@ -601,8 +542,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 page.EditProperty(dispid)
             End If
 
-            Return retVal
-        End Function
+        End Sub
 
         Private Function Create(hWndParent As IntPtr) As IntPtr
 

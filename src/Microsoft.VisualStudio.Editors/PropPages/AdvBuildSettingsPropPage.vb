@@ -316,7 +316,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Process.Start(url)
             Catch ex As Exception
                 ' This could throw an exception if the user has no default URL handler installed.
-                ' There's no point in letting such an exception propogate.
+                ' There's no point in letting such an exception propagate.
             End Try
         End Sub
     End Class
