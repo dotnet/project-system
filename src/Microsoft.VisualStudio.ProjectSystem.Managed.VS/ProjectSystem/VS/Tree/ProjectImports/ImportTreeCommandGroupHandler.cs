@@ -117,13 +117,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.ProjectImports
                         // Set it as read only if necessary.
                         bool isReadOnly = item.Flags.Contains(ProjectImportsSubTreeProvider.ProjectImportImplicit);
 
-                        if (isReadOnly)
+                        if (isReadOnly && rdtInfo.DocData is IVsTextBuffer textBuffer)
                         {
-                            if (rdtInfo.DocData is IVsTextBuffer textBuffer)
-                            {
-                                textBuffer.GetStateFlags(out uint flags);
-                                textBuffer.SetStateFlags(flags | (uint)BUFFERSTATEFLAGS.BSF_USER_READONLY);
-                            }
+                            textBuffer.GetStateFlags(out uint flags);
+                            textBuffer.SetStateFlags(flags | (uint)BUFFERSTATEFLAGS.BSF_USER_READONLY);
                         }
 
                         // Detach the document from this project.
