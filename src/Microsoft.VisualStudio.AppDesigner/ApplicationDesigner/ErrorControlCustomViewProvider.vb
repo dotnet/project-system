@@ -9,7 +9,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
     ''' <summary>
     ''' Provides a custom view for DesignerPanel that creates an Error control for its view.
     ''' </summary>
-    ''' <remarks></remarks>
     Public Class ErrorControlCustomViewProvider
         Inherits CustomViewProvider
 
@@ -22,7 +21,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Constructor
         ''' </summary>
         ''' <param name="ErrorText">The error text to display in the error control.</param>
-        ''' <remarks></remarks>
         Public Sub New(ErrorText As String)
             _errorText = ErrorText
         End Sub
@@ -31,7 +29,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Constructor
         ''' </summary>
         ''' <param name="Exception">The exception to display in the error control.</param>
-        ''' <remarks></remarks>
         Public Sub New(Exception As Exception)
             _exception = Exception
         End Sub
@@ -40,9 +37,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Returns the view control (if already created)
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public Overrides ReadOnly Property View() As Control
+        Public Overrides ReadOnly Property View As Control
             Get
                 Return _view
             End Get
@@ -51,7 +46,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Creates the view control, if it doesn't already exist
         ''' </summary>
-        ''' <remarks></remarks>
         Public Overrides Sub CreateView()
             If _view Is Nothing Then
                 If _exception IsNot Nothing Then
@@ -65,7 +59,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Close the view control, if not already closed
         ''' </summary>
-        ''' <remarks></remarks>
         Public Overrides Sub CloseView()
             If _view IsNot Nothing Then
                 _view.Dispose()
@@ -80,7 +73,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Disposes of contained objects
         ''' </summary>
         ''' <param name="disposing"></param>
-        ''' <remarks></remarks>
         Protected Overloads Overrides Sub Dispose(Disposing As Boolean)
             If Disposing Then
                 ' Dispose managed resources.

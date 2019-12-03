@@ -4,7 +4,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
     ''' <summary>
     ''' Caching implementation for value serializations. 
     ''' </summary>
-    ''' <remarks></remarks>
     Friend Class SettingsValueCache
 
         ' We cache the values in a hashtable of hashtables:
@@ -23,8 +22,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="settingType"></param>
         ''' <param name="serializedValue"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function GetValue(settingType As Type, serializedValue As String) As Object
             Dim valueDictionary As Dictionary(Of String, Object) = Nothing
             If Not _cachedSettingValues.TryGetValue(settingType, valueDictionary) Then

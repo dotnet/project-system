@@ -15,7 +15,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         [ImportingConstructor]
         public ProjectPropertiesItemHandler(UnconfiguredProject project)
         {
-            Requires.NotNull(project, nameof(project));
         }
 
         public string ProjectEvaluationRule

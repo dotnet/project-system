@@ -20,12 +20,12 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         Public Event AddExtension(sender As Object, e As EventArgs)
         Public Event RemoveExtension(sender As Object, e As EventArgs)
 
-        Public Property MenuCommandService() As IMenuCommandService
+        Public Property MenuCommandService As IMenuCommandService
             Get
                 Debug.Assert(_menuCommandService IsNot Nothing)
                 Return _menuCommandService
             End Get
-            Set(value As IMenuCommandService)
+            Set
                 Debug.Assert(value IsNot Nothing)
                 UnregisterMenuCommands()
                 _menuCommandService = value

@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Namespace My.Resources
 
@@ -10,8 +10,6 @@ Namespace My.Resources
         ''' Just returns the input string unless there are arguments, in which case it calls String.Format.
         ''' </summary>
         ''' <param name="s"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         <ComponentModel.EditorBrowsable(ComponentModel.EditorBrowsableState.Never)>
         Public Shared Function GetString(s As String, ParamArray Arguments() As Object) As String
             If Arguments Is Nothing OrElse Arguments.Length = 0 Then

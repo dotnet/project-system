@@ -164,9 +164,9 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
             Assert.False(result.Status.HasFlag(CommandStatus.Enabled));
         }
 
-        override internal long GetCommandId() => FSharpProjectCommandId.MoveUp;
+        internal override long GetCommandId() => FSharpProjectCommandId.MoveUp;
 
-        override internal AbstractMoveCommand CreateInstance(IPhysicalProjectTree projectTree, Shell.SVsServiceProvider serviceProvider, ConfiguredProject configuredProject, IProjectAccessor accessor)
+        internal override AbstractMoveCommand CreateInstance(IPhysicalProjectTree projectTree, Shell.SVsServiceProvider serviceProvider, ConfiguredProject configuredProject, IProjectAccessor accessor)
         {
             return new MoveUpCommand(projectTree, serviceProvider, configuredProject, accessor);
         }

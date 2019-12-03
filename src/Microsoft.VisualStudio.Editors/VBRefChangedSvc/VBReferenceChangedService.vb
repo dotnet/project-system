@@ -27,11 +27,11 @@ Namespace Microsoft.VisualStudio.Editors.VBRefChangedSvc
         End Sub
 
         Private Function ReferenceAdded(
-            <[In](), MarshalAs(UnmanagedType.IUnknown)> pHierarchy As Object,
-            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyPath As String,
-            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyName As String,
-            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyVersion As String,
-            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyInfo As String
+            <[In], MarshalAs(UnmanagedType.IUnknown)> pHierarchy As Object,
+            <[In], MarshalAs(UnmanagedType.BStr)> strAssemblyPath As String,
+            <[In], MarshalAs(UnmanagedType.BStr)> strAssemblyName As String,
+            <[In], MarshalAs(UnmanagedType.BStr)> strAssemblyVersion As String,
+            <[In], MarshalAs(UnmanagedType.BStr)> strAssemblyInfo As String
         ) As Integer _
         Implements Interop.IVbReferenceChangedService.ReferenceAdded
 
@@ -42,11 +42,11 @@ Namespace Microsoft.VisualStudio.Editors.VBRefChangedSvc
         End Function
 
         Private Function ReferenceRemoved(
-            <[In](), MarshalAs(UnmanagedType.IUnknown)> pHierarchy As Object,
-            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyPath As String,
-            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyName As String,
-            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyVersion As String,
-            <[In](), MarshalAs(UnmanagedType.BStr)> strAssemblyInfo As String
+            <[In], MarshalAs(UnmanagedType.IUnknown)> pHierarchy As Object,
+            <[In], MarshalAs(UnmanagedType.BStr)> strAssemblyPath As String,
+            <[In], MarshalAs(UnmanagedType.BStr)> strAssemblyName As String,
+            <[In], MarshalAs(UnmanagedType.BStr)> strAssemblyVersion As String,
+            <[In], MarshalAs(UnmanagedType.BStr)> strAssemblyInfo As String
         ) As Integer _
         Implements Interop.IVbReferenceChangedService.ReferenceRemoved
 

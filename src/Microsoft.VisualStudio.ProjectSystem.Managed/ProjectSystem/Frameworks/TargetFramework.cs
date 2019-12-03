@@ -37,16 +37,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
             FriendlyName = moniker;
         }
 
-        /// <inheritdoc />
         public FrameworkName? FrameworkName { get; }
 
-        /// <inheritdoc />
         public string FullName { get; }
 
-        /// <inheritdoc />
         public string ShortName { get; }
 
-        /// <inheritdoc />
         public string FriendlyName { get; }
 
         /// <summary>

@@ -4,7 +4,7 @@ Imports System.Runtime.InteropServices
 
 Namespace Microsoft.VisualStudio.Editors.Interop
 
-    <ComImport(), Guid("3EB048DA-F881-4a7f-A9D4-0258E19978AA"),
+    <ComImport, Guid("3EB048DA-F881-4a7f-A9D4-0258E19978AA"),
     InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
     CLSCompliant(False)>
     Friend Interface IVBEntryPointProvider
@@ -19,10 +19,10 @@ Namespace Microsoft.VisualStudio.Editors.Interop
         '                                       cItems As UInteger, _
         '                                      <MarshalAs(UnmanagedType.LPArray, arraysubtype:=UnmanagedType.BStr), [In](), Out()> ByRef c() As String, _
         '                                     <Out()> ByRef pcActualItems As UInteger) As Integer
-        Function GetFormEntryPointsList(<MarshalAs(UnmanagedType.IUnknown), [In]()> pHierarchy As Object,
+        Function GetFormEntryPointsList(<MarshalAs(UnmanagedType.IUnknown), [In]> pHierarchy As Object,
                                         cItems As UInteger,
-                                        <Out(), MarshalAs(UnmanagedType.LPArray)> bstrList As String(),
-                                        <Out()> ByRef pcActualItems As UInteger) As Integer
+                                        <Out, MarshalAs(UnmanagedType.LPArray)> bstrList As String(),
+                                        <Out> ByRef pcActualItems As UInteger) As Integer
 
     End Interface
 

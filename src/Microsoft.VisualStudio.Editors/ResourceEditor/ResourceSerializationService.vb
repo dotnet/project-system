@@ -40,7 +40,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     '''     format best suited for them.
     '''
     ''' </summary>
-    ''' <remarks></remarks>
     Friend NotInheritable Class ResourceSerializationService
         Inherits ComponentSerializationService
 
@@ -66,7 +65,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Message">The message to displaying, including optional formatting parameters "{0}" etc.</param>
         ''' <param name="FormatArguments">Arguments for "{0}", "{1}", etc.</param>
-        ''' <remarks></remarks>
         <Conditional("DEBUG")>
         Public Shared Sub Trace(Message As String, ParamArray FormatArguments() As Object)
             Debug.WriteLineIf(Switches.RSEResourceSerializationService.TraceVerbose, "ResourceSerializationService: " & String.Format(Message, FormatArguments))
@@ -79,7 +77,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''  state for a group of objects.
         ''' </summary>
         ''' <returns>An instance of a new serialization store for resources</returns>
-        ''' <remarks></remarks>
         Public Overrides Function CreateStore() As SerializationStore
             Return New ResourceSerializationStore()
         End Function
@@ -92,7 +89,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Stream">The stream to load from.</param>
         ''' <returns>The loaded store for resources.</returns>
-        ''' <remarks></remarks>
         Public Overrides Function LoadStore(Stream As Stream) As SerializationStore
             Requires.NotNull(Stream, NameOf(Stream))
 
@@ -107,7 +103,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Store">The store to serialize into.</param>
         ''' <param name="Value">The object (must be a Resource instance) to serialize into the store.</param>
-        ''' <remarks></remarks>
         Public Overrides Sub Serialize(Store As SerializationStore, Value As Object)
             Requires.NotNull(Store, NameOf(Store))
             Requires.NotNull(Value, NameOf(Value))
@@ -173,7 +168,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Store">The store to serialize into.</param>
         ''' <param name="OwningObject">The object (must be a Resource instance) whose property (member) you are trying to serialize into the store.</param>
         ''' <param name="Member">The property whose value needs to be serialized into the store.</param>
-        ''' <remarks></remarks>
         Public Overrides Sub SerializeMemberAbsolute(Store As SerializationStore, OwningObject As Object, Member As MemberDescriptor)
             'This method is intended for properties such as collections which might have had only some of their
             '  members changed.
@@ -191,7 +185,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Store">The store to serialize into.</param>
         ''' <returns>The set of components that were deserialized.</returns>
-        ''' <remarks></remarks>
         Public Overrides Function Deserialize(Store As SerializationStore) As ICollection
             Requires.NotNull(Store, NameOf(Store))
 
@@ -212,7 +205,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Store">The store to serialize into.</param>
         ''' <param name="Container">The container to add deserialized objects to (or Nothing if none)</param>
         ''' <returns>The list of objects that were deserialized.</returns>
-        ''' <remarks></remarks>
         Public Overrides Function Deserialize(Store As SerializationStore, Container As IContainer) As ICollection
             Requires.NotNull(Store, NameOf(Store))
             Requires.NotNull(Container, NameOf(Container))
@@ -240,7 +232,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Store">The store to serialize into.</param>
         ''' <param name="Container">The container to add deserialized objects to (or Nothing if none)</param>
-        ''' <remarks></remarks>
         Public Overrides Sub DeserializeTo(Store As SerializationStore, Container As IContainer, ValidateRecycledTypes As Boolean, applyDefault As Boolean)
             Requires.NotNull(Store, NameOf(Store))
             Requires.NotNull(Container, NameOf(Container))

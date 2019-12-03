@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Strict On
 Option Explicit On
@@ -25,10 +25,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
         Private ReadOnly _projectBuildSystem As IVsProjectBuildSystem
         Private _batchCount As Integer
-
-
-        ''' <summary>
-        ''' </summary>
         ''' <param name="projectHierarchy"> The VS project object</param>
         ''' <param name="startBatch">If true, we start a batch process immediately</param>
         Friend Sub New(projectHierarchy As IVsHierarchy, Optional startBatch As Boolean = True)

@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel
 Imports System.ComponentModel.Design
@@ -10,7 +10,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
     ''' <summary>
     ''' This class represents the root component of the Application Designer.
     ''' </summary>
-    ''' <remarks></remarks>
     <Designer(GetType(PropPageDesignerRootDesigner), GetType(IRootDesigner))>
     Public NotInheritable Class PropPageDesignerRootComponent
         Inherits Component
@@ -21,7 +20,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         Private _rootDesigner As PropPageDesignerRootDesigner
         Private ReadOnly _name As String = "PropPageDesignerRootComponent"
 
-        Public ReadOnly Property Name() As String
+        Public ReadOnly Property Name As String
             Get
                 Return _name
             End Get
@@ -35,17 +34,16 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         '''   resx file to be edited by the user.
         ''' </summary>
         ''' <value>The associated ResourceEditorRootDesigner.</value>
-        ''' <remarks></remarks>
-        Public ReadOnly Property RootDesigner() As PropPageDesignerRootDesigner
+        Public ReadOnly Property RootDesigner As PropPageDesignerRootDesigner
             Get
                 If _rootDesigner Is Nothing Then
                     'Not yet cached - get this info from the designer host
-                    Debug.Assert(Not Container Is Nothing)
+                    Debug.Assert(Container IsNot Nothing)
                     Dim Host As IDesignerHost = CType(Container, IDesignerHost)
                     _rootDesigner = CType(Host.GetDesigner(Me), PropPageDesignerRootDesigner)
                 End If
 
-                Debug.Assert(Not _rootDesigner Is Nothing, "Don't have an associated designer?!?")
+                Debug.Assert(_rootDesigner IsNot Nothing, "Don't have an associated designer?!?")
                 Return _rootDesigner
             End Get
         End Property
@@ -53,13 +51,11 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' The IVsHierarchy associated with the AppDesigner node
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public Property Hierarchy() As IVsHierarchy
+        Public Property Hierarchy As IVsHierarchy
             Get
                 Return _hierarchy
             End Get
-            Set(Value As IVsHierarchy)
+            Set
                 _hierarchy = Value
             End Set
         End Property
@@ -67,13 +63,11 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' The ItemId associated with the AppDesigner node
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public Property ItemId() As UInteger
+        Public Property ItemId As UInteger
             Get
                 Return _itemId
             End Get
-            Set(Value As UInteger)
+            Set
                 _itemId = Value
             End Set
         End Property

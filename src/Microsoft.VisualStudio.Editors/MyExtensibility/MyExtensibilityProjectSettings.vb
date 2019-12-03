@@ -276,7 +276,6 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Find MyExtensions folder, if it exists and is empty, remove it from the project.
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub RemoveMyExtensionsFolderIfEmpty()
             If _extensionFolderProjectItem IsNot Nothing AndAlso _extensionFolderProjectItem.ProjectItems.Count <= 0 Then
                 _extensionFolderProjectItem.Delete()
@@ -651,7 +650,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
             Dim candidateProjectItemName As String = templateBaseName
             Dim postfix As Integer = 1
-            While (DTEUtils.FindProjectItem(_extensionFolderProjectItem.ProjectItems, candidateProjectItemName) IsNot Nothing)
+            While DTEUtils.FindProjectItem(_extensionFolderProjectItem.ProjectItems, candidateProjectItemName) IsNot Nothing
                 candidateProjectItemName = baseName & postfix.ToString() & baseExtension
                 postfix += 1
             End While

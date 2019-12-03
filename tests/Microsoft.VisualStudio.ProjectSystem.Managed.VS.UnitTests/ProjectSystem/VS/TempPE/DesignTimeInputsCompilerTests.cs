@@ -183,8 +183,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         [Fact]
         public async Task SingleDesignTimeInput_AnotherAdded_ShouldCompileBoth()
         {
-            var inputs = new DesignTimeInputs(new string[] { "File1.cs" }, new string[] { });
-
             await VerifyDLLsCompiled(2, () =>
             {
                 SendDesignTimeInputs(new DesignTimeInputs(new string[] { "File1.cs" }, new string[] { }));

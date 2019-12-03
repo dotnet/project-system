@@ -29,14 +29,14 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         Private Shared ReadOnly s_commandUIGuid As New Guid("{86670efa-3c28-4115-8776-a4d5bb1f27cc}")
 
         'Exposing the GUID for the rest of the assembly to see
-        Public Shared ReadOnly Property EditorGuid() As Guid
+        Public Shared ReadOnly Property EditorGuid As Guid
             Get
                 Return s_editorGuid
             End Get
         End Property
 
         'Exposing the GUID for the rest of the assembly to see
-        Public Shared ReadOnly Property CommandUIGuid() As Guid
+        Public Shared ReadOnly Property CommandUIGuid As Guid
             Get
                 Return s_commandUIGuid
             End Get
@@ -103,7 +103,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                         Debug.Fail("DocData does not implement IObjectWithSite")
                     End If
 
-                    Debug.Assert(Not (Designer Is Nothing), "Designer service should have thrown if it had a problem.")
+                    Debug.Assert(Designer IsNot Nothing, "Designer service should have thrown if it had a problem.")
 
                     'Set the out params
                     DocView = Designer.View 'Gets the object that can support IVsWindowPane
@@ -129,7 +129,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Disconnect from the owning site
         ''' </summary>
-        ''' <remarks></remarks>
         Public Function Close() As Integer Implements IVsEditorFactory.Close
             _siteProvider = Nothing
             _site = Nothing
@@ -138,7 +137,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Wrapper of COM interface which delegates to Internal
         ''' </summary>
-        ''' <remarks></remarks>
         Private Function IVsEditorFactory_CreateEditorInstance(
                 vscreateeditorflags As UInteger,
                 FileName As String,
@@ -176,10 +174,10 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 FCanceled = 0
             End If
 
-            If Not (DocView Is Nothing) Then
+            If DocView IsNot Nothing Then
                 DocViewPtr = Marshal.GetIUnknownForObject(DocView)
             End If
-            If Not (DocData Is Nothing) Then
+            If DocData IsNot Nothing Then
                 DocDataPtr = Marshal.GetIUnknownForObject(DocData)
             End If
         End Function
@@ -189,7 +187,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <param name="rguidLogicalView"></param>
         ''' <param name="pbstrPhysicalView"></param>
-        ''' <remarks></remarks>
         Public Function MapLogicalView(ByRef rguidLogicalView As Guid, ByRef pbstrPhysicalView As String) As Integer Implements IVsEditorFactory.MapLogicalView
             pbstrPhysicalView = Nothing
         End Function
@@ -198,7 +195,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Called by owning site after creation
         ''' </summary>
         ''' <param name="Site"></param>
-        ''' <remarks></remarks>
         Public Function SetSite(Site As IServiceProvider) As Integer Implements IVsEditorFactory.SetSite
             'This same Site already set?  Or Site not yet initialized (= Nothing)?  If so, NOP.
             If _site Is Site Then

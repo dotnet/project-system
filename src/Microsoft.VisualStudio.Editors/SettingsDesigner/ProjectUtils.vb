@@ -13,7 +13,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' Get the file name from a project item. 
         ''' </summary>
         ''' <param name="ProjectItem"></param>
-        ''' <returns></returns>
         ''' <remarks>If the item contains of multiple files, the first one is returned</remarks>
         Friend Function FileName(ProjectItem As EnvDTE.ProjectItem) As String
             If ProjectItem Is Nothing Then
@@ -35,8 +34,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' </summary>
         ''' <param name="Hierarchy"></param>
         ''' <param name="ProjectItem"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Function ItemId(Hierarchy As IVsHierarchy, ProjectItem As EnvDTE.ProjectItem) As UInteger
             Dim FoundItemId As UInteger
             VSErrorHandler.ThrowOnFailure(Hierarchy.ParseCanonicalName(FileName(ProjectItem), FoundItemId))
@@ -48,8 +45,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' </summary>
         ''' <param name="project"></param>
         ''' <param name="FullFilePath"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Function IsFileInProject(project As IVsProject, FullFilePath As String) As Boolean
             Dim found As Integer
             Dim prio(0) As VSDOCUMENTPRIORITY
@@ -77,8 +72,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' </summary>
         ''' <param name="Namespace"></param>
         ''' <param name="ClassName"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Function FullyQualifiedClassName([Namespace] As String, ClassName As String) As String
             Dim sectionName As String
 
@@ -97,8 +90,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' </summary>
         ''' <param name="Hierarchy"></param>
         ''' <param name="ItemId"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Function GeneratedSettingsClassNamespace(Hierarchy As IVsHierarchy, ItemId As UInteger) As String
             Dim IncludeRootNamespace As Boolean = PersistedNamespaceIncludesRootNamespace(Hierarchy)
             Return GeneratedSettingsClassNamespace(Hierarchy, ItemId, IncludeRootNamespace)
@@ -110,8 +101,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' <param name="Hierarchy"></param>
         ''' <param name="ItemId"></param>
         ''' <param name="IncludeRootNamespace"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Function GeneratedSettingsClassNamespace(Hierarchy As IVsHierarchy, ItemId As UInteger, IncludeRootNamespace As Boolean) As String
             Return Common.GeneratedCodeNamespace(Hierarchy, ItemId, IncludeRootNamespace, True)
         End Function
@@ -121,8 +110,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' </summary>
         ''' <param name="Hierarchy"></param>
         ''' <param name="Item"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Function IsDefaultSettingsFile(Hierarchy As IVsHierarchy, Item As EnvDTE.ProjectItem) As Boolean
             If Hierarchy Is Nothing Then
                 Debug.Fail("Can't get the special files from a NULL Hierarchy!")
@@ -162,7 +149,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' <param name="Hierarchy"></param>
         ''' <param name="ProjectItem"></param>
         ''' <param name="CodeProvider"></param>
-        ''' <remarks></remarks>
         Friend Sub OpenAndMaybeAddExtendingFile(ClassName As String, SuggestedFileName As String, sp As IServiceProvider, Hierarchy As IVsHierarchy, ProjectItem As EnvDTE.ProjectItem, CodeProvider As CodeDomProvider, View As DesignerFramework.BaseDesignerView)
             Dim SettingClassElement As EnvDTE.CodeElement = FindElement(ProjectItem, False, True, New KnownClassName(ClassName))
 
@@ -254,7 +240,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
                     VSErrorHandler.ThrowOnFailure(vsproj.GenerateUniqueItemName(ParentId, "." & CodeProvider.FileExtension, IO.Path.GetFileNameWithoutExtension(NewItemName), NewItemName))
                 End If
                 ' CONSIDER: Using different mechanism to figure out if this is VB than checking the file extension...
-                Dim supportsDeclarativeEventHandlers As Boolean = (CodeProvider.FileExtension.Equals("vb", StringComparison.OrdinalIgnoreCase))
+                Dim supportsDeclarativeEventHandlers As Boolean = CodeProvider.FileExtension.Equals("vb", StringComparison.OrdinalIgnoreCase)
                 ExtendingItem = AddNewProjectItemExtendingClass(cc2, NewFilePath & NewItemName, CodeProvider, supportsDeclarativeEventHandlers, CollectionToAddTo)
             End If
 
@@ -279,8 +265,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' <param name="NewFilePath">Fully specified name and path for new file</param>
         ''' <param name="Generator">Code generator to use to generate the code</param>
         ''' <param name="CollectionToAddTo"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function AddNewProjectItemExtendingClass(cc2 As EnvDTE80.CodeClass2, NewFilePath As String, Generator As CodeDomProvider, supportsDeclarativeEventHandlers As Boolean, Optional CollectionToAddTo As EnvDTE.ProjectItems = Nothing) As EnvDTE.ProjectItem
             If cc2 Is Nothing Then
                 Debug.Fail("CodeClass2 isntance to extend can't be NULL!")
@@ -315,7 +299,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
                 Dim ExtendingNamespace As CodeNamespace = Nothing
                 If cc2.Namespace IsNot Nothing Then
                     Debug.Assert(cc2.Namespace.FullName IsNot Nothing, "Couldn't get a FullName from the CodeClass2.Namespace!?")
-                    Dim NamespaceName As String = ""
                     If String.Equals(cc2.Language, EnvDTE.CodeModelLanguageConstants.vsCMLanguageVB, StringComparison.OrdinalIgnoreCase) Then
                         Dim rootNamespace As String = ""
                         Try
@@ -366,7 +349,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' <summary>
         ''' Indicates whether to search for a class or a module or either
         ''' </summary>
-        ''' <remarks></remarks>
         Friend Enum ClassOrModule
             ClassOnly
             ModuleOnly
@@ -376,7 +358,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' <summary>
         ''' Look for a CodeClass with a known name in the project
         ''' </summary>
-        ''' <remarks></remarks>
         Friend Class KnownClassName
             Implements IFindFilter
 
@@ -413,14 +394,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' <summary>
         ''' Filter that finds a class expanding a known class specified by a CodeClass2 instance
         ''' </summary>
-        ''' <remarks></remarks>
         Private Class ExpandsKnownClass
             Implements IFindFilter
 
             ''' <summary>
             ''' The class to expand
             ''' </summary>
-            ''' <remarks></remarks>
             Private ReadOnly _classToExpand As EnvDTE80.CodeClass2
 
             Friend Sub New(ClassToExpand As EnvDTE80.CodeClass2)
@@ -448,7 +427,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' <summary>
         ''' Find a CodeElement representing a property with a known name in a known class
         ''' </summary>
-        ''' <remarks></remarks>
         Friend Class FindPropertyFilter
             Implements IFindFilter
 
@@ -506,7 +484,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' <summary>
         ''' Find a CodeElement representing a method with a known name in a known class
         ''' </summary>
-        ''' <remarks></remarks>
         Friend Class FindFunctionFilter
             Implements IFindFilter
 
@@ -575,7 +552,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' <param name="ExpandChildItems">If we should recurse to ProjectItem children</param>
         ''' <param name="Filter">The IFilter to satisfy</param>
         ''' <returns>The found element, NULL if no matching element found</returns>
-        ''' <remarks></remarks>
         Friend Function FindElement(Project As EnvDTE.Project, ExpandChildElements As Boolean, ExpandChildItems As Boolean, Filter As IFindFilter) As EnvDTE.CodeElement
             For Each Item As EnvDTE.ProjectItem In Project.ProjectItems
                 Dim Result As EnvDTE.CodeElement = FindElement(Item, ExpandChildElements, ExpandChildItems, Filter)
@@ -595,7 +571,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' <param name="ExpandChildItems">If we should recurse to ProjectItem children</param>
         ''' <param name="Filter">The IFilter to satisfy</param>
         ''' <returns>The found element, NULL if no matching element found</returns>
-        ''' <remarks></remarks>
         Friend Function FindElement(ProjectItem As EnvDTE.ProjectItem, ExpandChildElements As Boolean, ExpandChildItems As Boolean, Filter As IFindFilter) As EnvDTE.CodeElement
             If ProjectItem.FileCodeModel IsNot Nothing Then
                 For Each Element As EnvDTE.CodeElement In ProjectItem.FileCodeModel.CodeElements
@@ -623,8 +598,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' <param name="Element">The element to check</param>
         ''' <param name="ExpandChildren">If we want to recurse through this elements children</param>
         ''' <param name="Filter">The filter to satisfy</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function FindElement(Element As EnvDTE.CodeElement, ExpandChildren As Boolean, Filter As IFindFilter) As EnvDTE.CodeElement
             If Filter.IsMatch(Element) Then
                 Return Element
@@ -663,7 +636,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' </summary>
         ''' <param name="ct"></param>
         ''' <param name="generator"></param>
-        ''' <remarks></remarks>
         Private Sub GenerateExtendingClassInstructions(ct As CodeTypeDeclaration, generator As CodeDomProvider)
             Const SettingChangingEventName As String = "SettingChanging"
             Const SettingsSavingEventName As String = "SettingsSaving"
@@ -721,8 +693,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' If "statement" is already a comment, we can choose to add another level of comments by
         ''' settings this guy to true
         ''' </param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function CommentStatement(statement As CodeStatement, generator As CodeDomProvider, doubleCommentComments As Boolean) As CodeCommentStatement
             ' If this is already a comment and we don't want to double comment it, just return the statement...
             If TypeOf statement Is CodeCommentStatement AndAlso Not doubleCommentComments Then
@@ -744,8 +714,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' </summary>
         ''' <param name="ProjectItem"></param>
         ''' <param name="VsHierarchy"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Function AppConfigOrProjectFileNameForCheckout(ProjectItem As EnvDTE.ProjectItem, VsHierarchy As IVsHierarchy) As String
             ' We also want to check out the app.config and possibly the project file(s)...
             If ProjectItem IsNot Nothing Then
@@ -775,8 +743,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
         ''' to what CodeDom expects
         ''' </summary>
         ''' <param name="cc2"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Function CodeModelToCodeDomTypeAttributes(cc2 As EnvDTE80.CodeClass2) As TypeAttributes
             Requires.NotNull(cc2, NameOf(cc2))
 

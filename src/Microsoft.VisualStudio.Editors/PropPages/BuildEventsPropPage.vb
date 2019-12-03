@@ -68,7 +68,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             "SolutionExt"
         }
 
-        Protected Overrides ReadOnly Property ControlData() As PropertyControlData()
+        Protected Overrides ReadOnly Property ControlData As PropertyControlData()
             Get
                 If m_ControlData Is Nothing Then
                     m_ControlData = New PropertyControlData() {
@@ -129,7 +129,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 GetTokenValues(values, valueHelper)
                 dialog.SetTokensAndValues(s_tokenNames, values)
 
-                If (dialog.ShowDialog(ServiceProvider) = System.Windows.Forms.DialogResult.OK) Then
+                If dialog.ShowDialog(ServiceProvider) = System.Windows.Forms.DialogResult.OK Then
                     CommandLine = dialog.EventCommandLine
                 End If
             End Using

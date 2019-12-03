@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Strict On
 Option Explicit On
@@ -17,7 +17,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     ''' file-name. If it is a localized .resx file (e.g. foo.en.resx), this class will skip setting
     ''' any CustomTool-related properties [CustomTool is the project-property name for a generator]
     ''' </summary>
-    ''' <remarks></remarks>
     Public Class ResxItemWizard
         Implements IWizard
 
@@ -27,7 +26,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Do nothing
         ''' </summary>
         ''' <param name="projectItem"></param>
-        ''' <remarks></remarks>
         Public Sub BeforeOpeningFile(projectItem As ProjectItem) Implements IWizard.BeforeOpeningFile
         End Sub
 
@@ -35,7 +33,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Do nothing
         ''' </summary>
         ''' <param name="project"></param>
-        ''' <remarks></remarks>
         Public Sub ProjectFinishedGenerating(project As Project) Implements IWizard.ProjectFinishedGenerating
         End Sub
 
@@ -45,11 +42,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' CultureInfo string).
         ''' </summary>
         ''' <param name="projectItem"></param>
-        ''' <remarks></remarks>
         Public Sub ProjectItemFinishedGenerating(projectItem As ProjectItem) Implements IWizard.ProjectItemFinishedGenerating
 
             Debug.Assert(projectItem IsNot Nothing, "Null projectItem?")
-            If (projectItem IsNot Nothing AndAlso _propertiesToSet IsNot Nothing) Then
+            If projectItem IsNot Nothing AndAlso _propertiesToSet IsNot Nothing Then
 
                 Dim fileName As String = projectItem.FileNames(1)
                 Debug.Assert(fileName IsNot Nothing AndAlso fileName.Length > 0, "bogus ProjectItem.FileNames(1) value?")
@@ -58,7 +54,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Dim itemProperties As Properties = projectItem.Properties
 
                 Debug.Assert(itemProperties IsNot Nothing, "null projectItem.Properties?")
-                If (itemProperties IsNot Nothing) Then
+                If itemProperties IsNot Nothing Then
 
                     For Each propertyEntry As DictionaryEntry In _propertiesToSet
 
@@ -74,7 +70,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         '   multiple times. [of course, the logic is written as: if this is not a customtool
                         '   related property or this is not a localizable resx file, then set the property]
                         '
-                        If ((Not name.ToUpperInvariant().Contains("CUSTOMTOOL") OrElse (Not isLocalizedResxFile))) Then
+                        If Not name.ToUpperInvariant().Contains("CUSTOMTOOL") OrElse (Not isLocalizedResxFile) Then
 
                             Dim itemProperty As [Property] = Nothing
 
@@ -85,7 +81,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                                 Debug.Fail("error getting property named '" & CStr(name) & "': " & ex.Message)
                             End Try
 
-                            If (itemProperty IsNot Nothing) Then
+                            If itemProperty IsNot Nothing Then
                                 Try
                                     itemProperty.Value = value
                                 Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(ProjectItemFinishedGenerating), NameOf(ResxItemWizard))
@@ -102,7 +98,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Do nothing
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub RunFinished() Implements IWizard.RunFinished
         End Sub
 
@@ -114,15 +109,14 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="replacementsDictionary"></param>
         ''' <param name="runKind"></param>
         ''' <param name="customParams"></param>
-        ''' <remarks></remarks>
         Public Sub RunStarted(automationObject As Object, replacementsDictionary As Dictionary(Of String, String), runKind As WizardRunKind, customParams() As Object) Implements IWizard.RunStarted
 
             ' we can't do any work if the dictionary is nothing...
             '
             Debug.Assert(replacementsDictionary IsNot Nothing, "Null dictionary param?")
-            If (replacementsDictionary IsNot Nothing) Then
+            If replacementsDictionary IsNot Nothing Then
 
-                If (replacementsDictionary.ContainsKey("$itemproperties$")) Then
+                If replacementsDictionary.ContainsKey("$itemproperties$") Then
 
                     _propertiesToSet = New StringDictionary()
 
@@ -132,11 +126,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                         Dim trimmedPropertyName As String = propertyName.Trim()
 
-                        If (trimmedPropertyName.Length > 0) Then
+                        If trimmedPropertyName.Length > 0 Then
 
                             Dim macroName As String = "$" & trimmedPropertyName & "$"
 
-                            If (replacementsDictionary.ContainsKey(macroName) AndAlso Not _propertiesToSet.ContainsKey(trimmedPropertyName)) Then
+                            If replacementsDictionary.ContainsKey(macroName) AndAlso Not _propertiesToSet.ContainsKey(trimmedPropertyName) Then
                                 _propertiesToSet.Add(trimmedPropertyName, replacementsDictionary(macroName))
                             End If
                         End If
@@ -156,8 +150,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Do nothing and simply return true
         ''' </summary>
         ''' <param name="filePath"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function ShouldAddProjectItem(filePath As String) As Boolean Implements IWizard.ShouldAddProjectItem
             Return True
         End Function

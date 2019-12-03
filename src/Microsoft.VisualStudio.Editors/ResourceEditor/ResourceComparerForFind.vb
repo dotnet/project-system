@@ -10,7 +10,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     ''' This is an Icomparer implementation used to sort Resources for Find/Replace purposes.  It sorts according
     '''   to both category (in a given order) and resource name.
     ''' </summary>
-    ''' <remarks></remarks>
     Friend NotInheritable Class ResourceComparerForFind
         Implements IComparer(Of Resource)
 
@@ -26,7 +25,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Constructor.
         ''' </summary>
         ''' <param name="OrderedCategories">List of all categories, in order of desired search order</param>
-        ''' <remarks></remarks>
         Public Sub New(OrderedCategories As CategoryCollection)
             Debug.Assert(OrderedCategories IsNot Nothing)
             _categories = OrderedCategories
@@ -47,7 +45,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Sorts a <see cref="List(Of Resource)"/> for UI purposes
         ''' </summary>
         ''' <param name="Resources"><see cref="List(Of Resource)"/> to sort (will be sorted in place)</param>
-        ''' <remarks></remarks>
         Public Sub SortResources(Resources As List(Of Resource))
             Resources.Sort(Me)
         End Sub

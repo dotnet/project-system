@@ -43,7 +43,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         '''  Listen for font/color changes from the shell
         ''' </summary>
-        ''' <remarks></remarks>
         Private WithEvents _broadcastMessageEventsHelper As Common.ShellUtil.BroadcastMessageEventsHelper
 
         Public Event ThemeChanged(sender As Object, args As EventArgs)
@@ -103,7 +102,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Initialization
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub Initialize()
             _hostingPanel = New Panel With {
                 .Visible = True,
@@ -129,7 +127,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Create the tab overflow button.
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub SetUpOverflowButton()
             'Note: the renderer will position the button, so we don't need to.
             OverflowButton = New ImageButton("Microsoft.VisualStudio.Editors.ApplicationDesigner.OverflowImage", Color.Lime)
@@ -153,13 +150,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''   shell (e.g., colors will default to system or fallback colors instead of using the
         '''   shell's color service). 
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public Property ServiceProvider() As IServiceProvider
+        Public Property ServiceProvider As IServiceProvider
             Get
                 Return _serviceProvider
             End Get
-            Set(value As IServiceProvider)
+            Set
                 _serviceProvider = value
                 _renderer.ServiceProvider = value
 
@@ -171,7 +166,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
         Protected ReadOnly Property VsUIShellService As IVsUIShell
             Get
-                If (_uiShellService Is Nothing) Then
+                If _uiShellService Is Nothing Then
                     If Common.VBPackageInstance IsNot Nothing Then
                         _uiShellService = TryCast(Common.VBPackageInstance.GetService(GetType(IVsUIShell)), IVsUIShell)
                     ElseIf ServiceProvider IsNot Nothing Then
@@ -185,10 +180,10 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
         Protected ReadOnly Property VsUIShell2Service As IVsUIShell2
             Get
-                If (_uiShell2Service Is Nothing) Then
+                If _uiShell2Service Is Nothing Then
                     Dim VsUIShell = VsUIShellService
 
-                    If (VsUIShell IsNot Nothing) Then
+                    If VsUIShell IsNot Nothing Then
                         _uiShell2Service = TryCast(VsUIShell, IVsUIShell2)
                     End If
                 End If
@@ -199,10 +194,10 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
         Protected ReadOnly Property VsUIShell5Service As IVsUIShell5
             Get
-                If (_uiShell5Service Is Nothing) Then
+                If _uiShell5Service Is Nothing Then
                     Dim VsUIShell = VsUIShellService
 
-                    If (VsUIShell IsNot Nothing) Then
+                    If VsUIShell IsNot Nothing Then
                         _uiShell5Service = TryCast(VsUIShell, IVsUIShell5)
                     End If
                 End If
@@ -215,7 +210,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Called when a non-empty service provider is given to the control.
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub OnGotServiceProvider()
             'We now should have access to the color provider service
             OnThemeChanged()
@@ -231,7 +225,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
         Protected Overridable Sub OnThemeChanged()
             'Update our themed colors
-            Dim VsUIShell5 = VsUIShell5Service
             _hostingPanel.BackColor = Common.ShellUtil.GetProjectDesignerThemeColor(VsUIShell5Service, "Background", __THEMEDCOLORTYPE.TCT_Background, SystemColors.Window)
 
             'Update our system colors
@@ -249,9 +242,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Returns an enumerable set of tab buttons
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public ReadOnly Property TabButtons() As IEnumerable(Of ProjectDesignerTabButton)
+        Public ReadOnly Property TabButtons As IEnumerable(Of ProjectDesignerTabButton)
             Get
                 Return _buttonCollection
             End Get
@@ -261,7 +252,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Clears all the tab buttons off of the control
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub ClearTabs()
             _buttonCollection.Clear()
             InvalidateLayout()
@@ -272,8 +262,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Gets a tab button by index
         ''' </summary>
         ''' <param name="index"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function GetTabButton(index As Integer) As ProjectDesignerTabButton
             Return _buttonCollection(index)
         End Function
@@ -282,9 +270,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' The number of tab buttons, including those not currently visible
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public ReadOnly Property TabButtonCount() As Integer
+        Public ReadOnly Property TabButtonCount As Integer
             Get
                 Return _buttonCollection.Count
             End Get
@@ -294,9 +280,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Get the panel that is used to host controls on the right-hand side
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public ReadOnly Property HostingPanel() As Panel
+        Public ReadOnly Property HostingPanel As Panel
             Get
                 Return _hostingPanel
             End Get
@@ -307,7 +291,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Perform layout
         ''' </summary>
         ''' <param name="levent"></param>
-        ''' <remarks></remarks>
         Protected Overrides Sub OnLayout(levent As LayoutEventArgs)
             Common.Switches.TracePDPerfBegin(levent, "ProjectDesignerTabControl.OnLayout()")
 
@@ -322,7 +305,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Causes the layout to be refreshed
         ''' </summary>
-        ''' <remarks></remarks>
         Protected Sub InvalidateLayout()
             PerformLayout()
         End Sub
@@ -333,8 +315,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="Title">The user-friendly, localizable text for the tab that will be displayed.</param>
         ''' <param name="AutomationName">Non-localizable name to be used for QA automation.</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function AddTab(Title As String, AutomationName As String) As Integer
             SuspendLayout()
             Dim newIndex As Integer
@@ -363,9 +343,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Tracks the last item for paint logic
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public ReadOnly Property HoverItem() As ProjectDesignerTabButton
+        Public ReadOnly Property HoverItem As ProjectDesignerTabButton
             Get
                 Return _hoverItem
             End Get
@@ -375,13 +353,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Currently selected button
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public Property SelectedItem() As ProjectDesignerTabButton
+        Public Property SelectedItem As ProjectDesignerTabButton
             Get
                 Return _selectedItem
             End Get
-            Set(value As ProjectDesignerTabButton)
+            Set
                 Dim oldSelectedItem As ProjectDesignerTabButton = Nothing
 
                 If _selectedItem Is value Then
@@ -420,9 +396,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Currently selected button
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public Property SelectedIndex() As Integer
+        Public Property SelectedIndex As Integer
             Get
                 If _selectedItem Is Nothing Then
                     Return -1
@@ -430,7 +404,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
                 Return _selectedItem.ButtonIndex
             End Get
-            Set(value As Integer)
+            Set
                 If value = -1 Then
                     SelectedItem = Nothing
                 Else
@@ -444,7 +418,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Keep painting from happening during WM_PAINT.  We'll paint everything during OnPaintBackground.
         ''' </summary>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Protected Overrides Sub OnPaint(e As PaintEventArgs)
         End Sub
 
@@ -453,7 +426,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Everything will paint in the background, except buttons which handle their own painting
         ''' </summary>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Protected Overrides Sub OnPaintBackground(e As PaintEventArgs)
             Renderer.RenderBackground(e.Graphics)
         End Sub
@@ -463,7 +435,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Occurs when a button is clicked.
         ''' </summary>
         ''' <param name="item">The tab button which has been clicked.</param>
-        ''' <remarks></remarks>
         Public Overridable Sub OnItemClick(item As ProjectDesignerTabButton)
             OnItemClick(item, reactivatePage:=False)
         End Sub
@@ -481,7 +452,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="e"></param>
         ''' <param name="item"></param>
-        ''' <remarks></remarks>
         Public Sub OnItemEnter(e As EventArgs, item As ProjectDesignerTabButton)
             If _hoverItem IsNot item Then
                 _hoverItem = item
@@ -495,7 +465,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="e"></param>
         ''' <param name="item"></param>
-        ''' <remarks></remarks>
         Public Sub OnItemLeave(e As EventArgs, item As ProjectDesignerTabButton)
             If _hoverItem Is item Then
                 _hoverItem = Nothing
@@ -509,7 +478,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="e"></param>
         ''' <param name="item"></param>
-        ''' <remarks></remarks>
         Public Overridable Sub OnItemGotFocus(e As EventArgs, item As ProjectDesignerTabButton)
         End Sub
 
@@ -524,9 +492,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Retrieves the renderer used for this tab control
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public ReadOnly Property Renderer() As ProjectDesignerTabRenderer
+        Public ReadOnly Property Renderer As ProjectDesignerTabRenderer
             Get
                 Return _renderer
             End Get
@@ -537,7 +503,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub OverflowButton_Click(sender As Object, e As EventArgs) Handles OverflowButton.Click
             'Set up to use VS colors
             If _serviceProvider IsNot Nothing Then
@@ -601,7 +566,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub OverflowMenuItemClick(sender As Object, e As EventArgs)
             Dim MenuItem As ToolStripMenuItem = DirectCast(sender, ToolStripMenuItem)
             Dim Button As ProjectDesignerTabButton = DirectCast(MenuItem.Tag, ProjectDesignerTabButton)
@@ -624,7 +588,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="msg"></param>
         ''' <param name="wparam"></param>
         ''' <param name="lparam"></param>
-        ''' <remarks></remarks>
         Private Sub OnBroadcastMessageEventsHelperBroadcastMessage(msg As UInteger, wParam As IntPtr, lParam As IntPtr) Handles _broadcastMessageEventsHelper.BroadcastMessage
             Select Case msg
                 Case AppDesInterop.Win32Constant.WM_PALETTECHANGED, AppDesInterop.Win32Constant.WM_SYSCOLORCHANGE, AppDesInterop.Win32Constant.WM_THEMECHANGED
@@ -642,7 +605,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''   b) has flatstyle
         '''   c) shows a border only when the mouse hovers over it
         ''' </summary>
-        ''' <remarks></remarks>
         Private Class ImageButton
             Inherits Button
 
@@ -670,7 +632,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             ''' Occurs when the mouse enters the button
             ''' </summary>
             ''' <param name="e"></param>
-            ''' <remarks></remarks>
             Protected Overrides Sub OnMouseEnter(e As EventArgs)
                 MyBase.OnMouseEnter(e)
 
@@ -684,7 +645,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             ''' Occurs when the mouse leaves the button
             ''' </summary>
             ''' <param name="e"></param>
-            ''' <remarks></remarks>
             Protected Overrides Sub OnMouseLeave(e As EventArgs)
                 MyBase.OnMouseLeave(e)
 
@@ -712,7 +672,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             ''' <summary>
             ''' Description
             ''' </summary>
-            Public Overrides ReadOnly Property Description() As String
+            Public Overrides ReadOnly Property Description As String
                 Get
                     Return My.Resources.Designer.APPDES_TabListDescription
                 End Get
@@ -721,7 +681,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             ''' <summary>
             ''' Role - it is a tab List
             ''' </summary>
-            Public Overrides ReadOnly Property Role() As AccessibleRole
+            Public Overrides ReadOnly Property Role As AccessibleRole
                 Get
                     Return AccessibleRole.PageTabList
                 End Get
@@ -730,7 +690,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             ''' <summary>
             ''' Value - the name of the active page
             ''' </summary>
-            Public Overrides Property Value() As String
+            Public Overrides Property Value As String
                 Get
                     If _tabControl.SelectedItem IsNot Nothing Then
                         Return _tabControl.SelectedItem.Text
@@ -738,7 +698,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         Return Nothing
                     End If
                 End Get
-                Set(value As String)
+                Set
                 End Set
             End Property
 

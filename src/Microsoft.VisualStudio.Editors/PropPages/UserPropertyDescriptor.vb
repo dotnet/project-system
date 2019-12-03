@@ -11,7 +11,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     ''' Should be returned by an overriden GetUserDefinedPropertyDescriptor.
     ''' This is used mainly in integrating with the Undo/Redo capabilities.
     ''' </summary>
-    ''' <remarks></remarks>
     Public Class UserPropertyDescriptor
         Inherits PropertyDescriptor
 
@@ -27,7 +26,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return False
         End Function
 
-        Public Overrides ReadOnly Property ComponentType() As Type
+        Public Overrides ReadOnly Property ComponentType As Type
             Get
                 Return Nothing
             End Get
@@ -40,13 +39,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return Nothing
         End Function
 
-        Public Overrides ReadOnly Property IsReadOnly() As Boolean
+        Public Overrides ReadOnly Property IsReadOnly As Boolean
             Get
                 Return _isReadOnly
             End Get
         End Property
 
-        Public Overrides ReadOnly Property PropertyType() As Type
+        Public Overrides ReadOnly Property PropertyType As Type
             Get
                 Return _propertyType
             End Get

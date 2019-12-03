@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel.Design
 
@@ -9,14 +9,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
     ''' we can't assume that we can create a transaction. This class allows the use of a "Using" statement
     ''' regardless of if a designer host is available or not...
     ''' </summary>
-    ''' <remarks></remarks>
     Friend NotInheritable Class SettingsDesignerUndoTransaction
         Implements IDisposable
 
         ''' <summary>
         ''' Our wrapped transaction, or nothing if not designer host is available
         ''' </summary>
-        ''' <remarks></remarks>
         Private _transaction As DesignerTransaction
 
         ''' <summary>
@@ -24,7 +22,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="Provider"></param>
         ''' <param name="Description"></param>
-        ''' <remarks></remarks>
         Public Sub New(Provider As IServiceProvider, Description As String)
             If Provider IsNot Nothing Then
                 Initialize(DirectCast(Provider.GetService(GetType(IDesignerHost)), IDesignerHost), Description)
@@ -38,7 +35,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="DesignerHost"></param>
         ''' <param name="Description"></param>
-        ''' <remarks></remarks>
         Public Sub New(DesignerHost As IDesignerHost, Description As String)
             Initialize(DesignerHost, Description)
         End Sub
@@ -48,7 +44,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="DesignerHost"></param>
         ''' <param name="Description"></param>
-        ''' <remarks></remarks>
         Private Sub Initialize(DesignerHost As IDesignerHost, Description As String)
             If DesignerHost IsNot Nothing Then
                 _transaction = DesignerHost.CreateTransaction(Description)

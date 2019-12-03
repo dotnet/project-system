@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
@@ -7,7 +7,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
     ''' <summary>
     ''' Display an error control with an error icon, a text message, and an Edit Xaml button
     ''' </summary>
-    ''' <remarks></remarks>
     Friend Class AppDotXamlErrorControl
 
         Public Event EditXamlClicked()
@@ -26,11 +25,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             RaiseEvent EditXamlClicked()
         End Sub
 
-        Public Property ErrorText() As String
+        Public Property ErrorText As String
             Get
                 Return ErrorControl.Text
             End Get
-            Set(value As String)
+            Set
                 ErrorControl.Text = value
             End Set
         End Property

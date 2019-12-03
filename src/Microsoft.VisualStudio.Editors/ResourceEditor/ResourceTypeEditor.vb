@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+ï»¿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Explicit On
 Option Strict On
@@ -16,7 +16,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     '''   class as Public), the architecture was designed to handle this easily if we decided to publicly
     '''   expose it in a future version.
     ''' </summary>
-    ''' <remarks></remarks>
     <Security.Permissions.PermissionSet(Security.Permissions.SecurityAction.InheritanceDemand, Name:="FullTrust"),
     Security.Permissions.PermissionSet(Security.Permissions.SecurityAction.LinkDemand, Name:="FullTrust")>
     Friend MustInherit Class ResourceTypeEditor
@@ -36,7 +35,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '   future flexibility (perhaps we want the resource editor to be hostable from Loc Studio, for example), 
         '   and also so that assemblies which contain custom editors only have to reference the DLL with 
         '   ResourceTypeEditor, and not the larger and more arbitrary Microsoft.VisualStudio.Editors.dll.  
-        '   (Note that only the custom editor assembly actually has to reference ResourceTypeEditor – the 
+        '   (Note that only the custom editor assembly actually has to reference ResourceTypeEditor â€“ the 
         '   class which the editor edits can specify type names rather than actual types and thus does not 
         '   need a reference either to the ResourceTypeEditor assembly or to the assembly with its custom 
         '   editor.)  We could either create a new DLL or look for an existing DLL with a similar function of 
@@ -50,7 +49,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '       <Editor(GetType(MyFunkyResourceCustomResourceEditor), GetType(ResourceTypeEditor)), _
         '         Serializable()> _
         '       Public Class MyFunkyResource
-        '   	…
+        '   	â€¦
         '       End Class
         '   
         '   This associates the MyFunkyResourceCustomResourceEditor custom editor with the .resx-persistable 
@@ -59,9 +58,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '   
         '   To ensure our pluggable architecture is working, the native types that are supported in the 
         '   resource editor (bitmap, icon, etc.) are all implemented using this same architecture.  We use 
-        '   TypeDescriptor.AddEditorTable in ResourceTypeEditor’s Shared Sub New to associate our intrinsic 
+        '   TypeDescriptor.AddEditorTable in ResourceTypeEditorâ€™s Shared Sub New to associate our intrinsic 
         '   type editors with their corresponding types in the frameworks classes (since we own editors for 
-        '   classes that we do not own, such as Bitmap and therefore can’t place an attribute directly on 
+        '   classes that we do not own, such as Bitmap and therefore canâ€™t place an attribute directly on 
         '   the class).  Note that it is not possible for 3rd parties to use TypeDescriptor.AddEditorTable.  
         '   Since a custom type editor is associated with that resource class that it edits by placing an 
         '   attribute on the resource class, in general a custom resource type editor must be created by the 
@@ -75,13 +74,13 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '   there is no actual instance of that type in the .resx file, we would not know to add them to 
         '   the categories list.  To make it possible for programmers to create new resources of such 
         '   custom types, we would need to allow the user to specify new types to add to the categories 
-        '   list.  BrianPe has suggested we create a dialog which searches through the installed SDK’s 
+        '   list.  BrianPe has suggested we create a dialog which searches through the installed SDKâ€™s 
         '   searching for public types with custom resource type editors.  (Note: He says we can steal 
         '   similar code from the toolbox code and modify it for our use probably within a couple of 
         '   days.)  Once a type has been added to the category list, it would persist through multiple 
         '   sessions of using the VS shell until it is explicitly removed.  Once the new type is installed 
         '   in the category list, it would be possible to create a new instance of that resource type in 
-        '   the .resx file using the editor.  The advantage of the dialog is that 3rd parties aren’t 
+        '   the .resx file using the editor.  The advantage of the dialog is that 3rd parties arenâ€™t 
         '   required to register themselves somehow.
 
 
@@ -93,7 +92,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Pre-defined values for use with GetExtensionPriority
         ''' </summary>
-        ''' <remarks></remarks>
         Public Enum ExtensionPriorities
             NotHandled = 0 'Extension is not handled by this resource type editor
             Lowest = 1     'Lowest priority (used by binary files for *.*)
@@ -110,36 +108,27 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   it's a link (and to what file), etc.  If the type editor doesn't need to know the current value for
         '''   an operation, that's a performance gain.
         ''' </summary>
-        ''' <remarks></remarks>
         Public Interface IResource
 
             ''' <summary>
             ''' Attempts to get the type of the given resource.
             ''' </summary>
-            ''' <returns></returns>
-            ''' <remarks></remarks>
             Function GetValueType() As Type
 
             ''' <summary>
             ''' Attempts to get the current value of the resource.
             ''' </summary>
-            ''' <returns></returns>
-            ''' <remarks></remarks>
             Function GetValue() As Object
 
             ''' <summary>
             ''' Returns whether or not the resource is a link to a file (True) or a non-linked value (False).
             ''' </summary>
-            ''' <value></value>
-            ''' <remarks></remarks>
-            ReadOnly Property IsLink() As Boolean
+            ReadOnly Property IsLink As Boolean
 
             ''' <summary>
             ''' If IsLinked = True, returns the absolute path and filename to the linked file.  Otherwise, returns Nothing.
             ''' </summary>
-            ''' <value></value>
-            ''' <remarks></remarks>
-            ReadOnly Property LinkedFilePath() As String
+            ReadOnly Property LinkedFilePath As String
 
         End Interface
 
@@ -147,15 +136,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' This gives a very simple view of a resource file containing resources. 
         ''' </summary>
-        ''' <remarks></remarks>
         Public Interface IResourceContentFile
 
             ''' <summary>
             ''' Returns whether the resource file is inside a device project
             ''' </summary>
-            ''' <value></value>
-            ''' <remarks></remarks>
-            ReadOnly Property IsInsideDeviceProject() As Boolean
+            ReadOnly Property IsInsideDeviceProject As Boolean
 
             ''' <summary>
             ''' Returns whether the provided type is supported in the project containing this resource file
@@ -174,7 +160,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Constructor.
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub New()
         End Sub
 
@@ -188,7 +173,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   resource editor handles resource types that it does not own (e.g. Bitmap), this method
         '''   is not possible.
         ''' </summary>
-        ''' <remarks></remarks>
         Shared Sub New()
             Dim IntrinsicEditors As New Hashtable
 
@@ -214,8 +198,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <value>True if this resources handled by this ResourceTypeEditor should be displayed
         '''   in a string table, and False if they should be displayed in a listview.</value>
-        ''' <remarks></remarks>
-        Public Overridable ReadOnly Property DisplayInStringTable() As Boolean
+        Public Overridable ReadOnly Property DisplayInStringTable As Boolean
             Get
                 Return False
             End Get
@@ -229,7 +212,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks>
         '''   If true, the GetImageForThumbnail property must return a same image object. We won't keep duplicated items in the cache to improve the performance of the designer.
         ''' </remarks>
-        Public Overridable ReadOnly Property IsImageForThumbnailShared() As Boolean
+        Public Overridable ReadOnly Property IsImageForThumbnailShared As Boolean
             Get
                 Return False
             End Get
@@ -286,7 +269,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Returns a hash code for this resource type editor.  The algorithm is such that 
         '''   if A.Equals(B), then A and B will return the same hash code.
         ''' </summary>
-        ''' <returns></returns>
         ''' <remarks>This is overridden from Object's version of GetHashCode(), which is based on
         '''   referential equality, to equality based simply on the objects being of the same type.
         '''   This override is necessary in order to get proper behavior when using ResourceTypeEditor
@@ -307,7 +289,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="FilePath"></param>
         ''' <param name="ResourceContentFile">The resource file contains the resource item. </param>
-        ''' <returns></returns>
         ''' <remarks>
         ''' Default implementation uses a ResXFileRef to automatically load the resource from the file.  Can be
         '''   overriden if this behavior is insufficient.
@@ -355,7 +336,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Resource">The IResource instance.  May not be Nothing.  The value of the resource to save.  Must be of the type handled by this ResourceTypeEditor.</param>
         ''' <returns>True iff the resource type editor supports saving the specific resource value to a file.</returns>
-        ''' <remarks></remarks>
         Public Overridable Function CanSaveResourceToFile(Resource As IResource) As Boolean
             Return False
         End Function
@@ -488,7 +468,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Resource">The IResource instance.  May not be Nothing.  The value of the resource to save.  Must be of the type handled by this ResourceTypeEditor.</param>
         ''' <returns>The friendly description of the resource's type.</returns>
-        ''' <remarks></remarks>
         Public Overridable Function GetResourceFriendlyTypeDescription(Resource As IResource) As String
             Return ""
         End Function
@@ -499,7 +478,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Resource">The IResource instance.  May not be Nothing.  The value of the resource to save.  Must be of the type handled by this ResourceTypeEditor.</param>
         ''' <returns>The friendly size string.</returns>
-        ''' <remarks></remarks>
         Public Overridable Function GetResourceFriendlySize(Resource As IResource) As String
             Return ""
         End Function
@@ -527,8 +505,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   handled by this resource type editor, the suggested names could take the form 
         '''   of "id01", "id02", etc.
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Overridable Function GetSuggestedNamePrefix() As String
             'By default, this is simply "id"
             Return "id"
@@ -539,8 +515,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Attempts to call CanSaveResourceToFile, and returns False if there are any exceptions.
         ''' </summary>
         ''' <param name="Resource">The IResource instance.  May not be Nothing.  The value of the resource.  Must be of the type handled by this ResourceTypeEditor.</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Function TryCanSaveResourceToFile(Resource As IResource) As Boolean
             Try
                 Return CanSaveResourceToFile(Resource)
@@ -556,8 +530,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   Persistence property changed.
         ''' </summary>
         ''' <param name="ResourceContentFile">The resource file that contains the resource</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Overridable ReadOnly Property CanChangePersistenceProperty(ResourceContentFile As IResourceContentFile) As Boolean
             Get
                 Return True

@@ -14,7 +14,10 @@
     SizeToContent="Height"
     Loaded="GetProfileNameDialogWindow_Loaded"
     ResizeMode="NoResize"
-    Width="400">
+    Width="400"
+    UseLayoutRounding="true"
+    TextOptions.TextFormattingMode="Display"
+    >
     <Grid x:Uid="MainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>

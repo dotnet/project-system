@@ -165,8 +165,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   handled by this resource type editor, the suggested names could take the form 
         '''   of "id01", "id02", etc.
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Overrides Function GetSuggestedNamePrefix() As String
             Return "Image"
         End Function

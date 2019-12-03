@@ -329,7 +329,6 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Save the settings for triggering assemblies.
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub SaveAssemblySettings()
             Dim fileStream As FileStream = Nothing
             Dim xmlWriter As XmlTextWriter = Nothing
@@ -454,7 +453,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Cached and lazy-init TypeConverter for AssemblyOption enumeration.
         ''' </summary>
-        Private Shared ReadOnly Property AssemblyOptionConverter() As TypeConverter
+        Private Shared ReadOnly Property AssemblyOptionConverter As TypeConverter
             Get
                 If s_assemblyOptionConverter Is Nothing Then
                     s_assemblyOptionConverter = TypeDescriptor.GetConverter(GetType(AssemblyOption))

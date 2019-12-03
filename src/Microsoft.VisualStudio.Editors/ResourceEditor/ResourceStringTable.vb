@@ -15,7 +15,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     ''' <summary>
     ''' This is a virtualized grid capable of displaying Resource items as strings.
     ''' </summary>
-    ''' <remarks></remarks>
     Friend NotInheritable Class ResourceStringTable
         Inherits DesignerFramework.DesignerDataGridView
 
@@ -77,7 +76,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Constructor
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub New()
             InitializeColumns()
 
@@ -105,9 +103,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         '''  Return true if the user selected whole lines in the DataGridView...
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Friend ReadOnly Property InLineSelectionMode() As Boolean
+        Friend ReadOnly Property InLineSelectionMode As Boolean
             Get
                 If MyBase.SelectionMode = DataGridViewSelectionMode.FullRowSelect Then
                     Return True
@@ -147,14 +143,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Indicates whether or not the "Type" column is visible to the user.  This
         '''   column is always present, but its visibility can be turned on/off.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public Property TypeColumnVisible() As Boolean
+        Public Property TypeColumnVisible As Boolean
             Get
                 Debug.Assert(ColumnCount >= COLUMN_TYPE, "Columns not set up properly?")
                 Return Columns(COLUMN_TYPE).Visible
             End Get
-            Set(Value As Boolean)
+            Set
                 Debug.Assert(ColumnCount >= COLUMN_TYPE, "Columns not set up properly?")
                 Debug.Assert(RowCountVirtual = 0, "Shouldn't be changing TypeColumnVisible after it's already been populated with data")
                 Columns(COLUMN_TYPE).Visible = Value
@@ -166,9 +160,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Return the ResourceEditorView which is the parent of this
         '''   control.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Private ReadOnly Property ParentView() As ResourceEditorView
+        Private ReadOnly Property ParentView As ResourceEditorView
             Get
                 If TypeOf Parent Is ResourceEditorView Then
                     Return DirectCast(Parent, ResourceEditorView)
@@ -183,9 +175,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Gets the ResourceFile that was used to populate this grid.
         ''' </summary>
-        ''' <value></value>
         ''' <remarks>Can be called only after population</remarks>
-        Private ReadOnly Property ResourceFile() As ResourceFile
+        Private ReadOnly Property ResourceFile As ResourceFile
             Get
                 Debug.Assert(_resourceFile IsNot Nothing, "Has Populate not yet been called?  m_ResourceFile is nothing")
                 Return _resourceFile
@@ -203,7 +194,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Sets up all the columns properly
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub InitializeColumns()
             'There are four columns in the string table:
             '
@@ -294,7 +284,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="ResourceFile">The source of the Resources</param>
         ''' <param name="CategoryToFilterOn">Which category of resources to show.</param>
-        ''' <remarks></remarks>
         Public Sub Populate(ResourceFile As ResourceFile, CategoryToFilterOn As Category)
             _resourceFile = ResourceFile
             Rows.Clear()
@@ -347,7 +336,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Clear all entries
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub Clear()
             Rows.Clear()
             _virtualResourceList.Clear()
@@ -358,8 +346,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Creates a new row with blank values
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function CreateNewResourceRow() As DataGridViewRow
             'The error glyphs don't show up if the row height is below the glyph size.  We don't want that
             '  to happen, so restrict the minimum height.
@@ -405,8 +391,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Icon"></param>
         ''' <param name="DefaultButton"></param>
         ''' <param name="HelpLink"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function DsMsgBox(Message As String,
                     Buttons As MessageBoxButtons,
                     Icon As MessageBoxIcon,
@@ -421,7 +405,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Commits all pending changes that the user has made in the grid.
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub CommitPendingChanges()
             If IsCurrentCellDirty Then
                 'We have a cell dirty.  We should commit it.  However, we need to verify that it's okay to commit
@@ -448,7 +431,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   new data at the next paint.
         ''' </summary>
         ''' <param name="Resource">The Resource whose row should be invalidated.</param>
-        ''' <remarks></remarks>
         Public Sub InvalidateResource(Resource As Resource)
             Dim RowIndex As Integer = GetRowIndexFromResource(Resource)
             If RowIndex >= 0 Then
@@ -460,7 +442,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' When the font has changed, adjust the height of rows, so it could show at least one line of text
         ''' </summary>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Protected Overrides Sub OnFontChanged(e As EventArgs)
             MyBase.OnFontChanged(e)
 
@@ -477,7 +458,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   to assert in case.
         ''' </summary>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Protected Overrides Sub OnDataError(displayErrorDialogIfNoHandler As Boolean, e As DataGridViewDataErrorEventArgs)
             MyBase.OnDataError(displayErrorDialogIfNoHandler, e)
 
@@ -497,7 +477,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="FormattedValue">The string value which the user has typed</param>
         ''' <param name="Exception">The exception to show if the validation fails</param>
         ''' <returns>True if the cell validates, or False if it fails.</returns>
-        ''' <remarks></remarks>
         Protected Function ValidateCell(RowIndex As Integer, ColumnIndex As Integer, FormattedValue As String, Optional ByRef Exception As Exception = Nothing) As Boolean
             If Rows(RowIndex).ReadOnly OrElse Rows.SharedRow(RowIndex).Cells(ColumnIndex).ReadOnly Then
                 'No reason to do any checking for cells that we don't allow the user to change
@@ -532,7 +511,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''  validate it, and if the validation fails, we show a messagebox.
         ''' </summary>
         ''' <param name="e">Event args</param>
-        ''' <remarks></remarks>
         Protected Overrides Sub OnCellValidating(e As DataGridViewCellValidatingEventArgs)
             MyBase.OnCellValidating(e)
 
@@ -561,7 +539,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Before we rush into edit mode on a single cell click, we make sure that everything is checked out OK...
         ''' </summary>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Friend Overrides Sub OnCellClickBeginEdit(e As System.ComponentModel.CancelEventArgs)
             MyBase.OnCellClickBeginEdit(e)
             If Not e.Cancel Then
@@ -577,7 +554,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Occurs when the user starts to edit values in the grid.
         ''' </summary>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Protected Overrides Sub OnCellBeginEdit(e As DataGridViewCellCancelEventArgs)
             ' First of all, we should never enter edit mode if we are in read-only mode...
             If ParentView.ReadOnlyMode Then
@@ -613,7 +589,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Expands the height of the row to show all its text
         ''' </summary>
         ''' <param name="rowIndex"></param>
-        ''' <remarks></remarks>
         Private Sub ExpandRowHeightIfNeeded(rowIndex As Integer)
             Dim preferredHeight As Integer = Rows(rowIndex).GetPreferredHeight(rowIndex, DataGridViewAutoSizeRowMode.AllCells, True)
             Dim currentHeight As Integer = Rows(rowIndex).Height
@@ -635,7 +610,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Occurs when the user end to edit values in the grid.
         ''' </summary>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Protected Overrides Sub OnCellEndEdit(e As DataGridViewCellEventArgs)
             ParentView.OnItemEndEdit()
             MyBase.OnCellEndEdit(e)
@@ -704,7 +678,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Adds a set of Resources to the grid (i.e., resources that were added since calling Populate).
         ''' </summary>
         ''' <param name="Resources">The Resources to add.  They must already be present in the ResourceFile.</param>
-        ''' <remarks></remarks>
         Public Sub AddResources(Resources As IList)
             UnselectAll()
             Debug.Assert(_virtualResourceList.Count = RowCountVirtual)
@@ -823,7 +796,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''  Does *not* remove the resource from the resource file, just from this control's view.
         ''' </summary>
         ''' <param name="Resources">The set of Resources to remove.  Must already be present in this grid.</param>
-        ''' <remarks></remarks>
         Public Sub RemoveResources(Resources As IList)
             UnselectAll()
 
@@ -858,9 +830,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Gets the number of Resource rows in this grid.  Does not include the "addnew" row at the bottom.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public ReadOnly Property RowCountVirtual() As Integer
+        Public ReadOnly Property RowCountVirtual As Integer
             Get
                 Return _virtualResourceList.Count
             End Get
@@ -873,10 +843,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   the bottom, then use MyBase.RowCount.  But note that that includes the add/new row
         '''   and is therefore *not* a correct count of the resources in the grid
         ''' </summary>
-        ''' <value></value>
         ''' <remarks>Marked invisible so it's less likely to be accidentally used.</remarks>
         <System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>
-        Public Shadows ReadOnly Property RowCount() As Integer
+        Public Shadows ReadOnly Property RowCount As Integer
             Get
                 Debug.Fail("Don't use this function - use RowCountVirtual instead - it doesn't include the add/new row at the bottom, just the actual entries")
                 Return RowCountVirtual 'defensive
@@ -889,7 +858,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="SearchResource">The Resource to find.</param>
         ''' <returns>The row index of that Resource, or -1 if not found.</returns>
-        ''' <remarks></remarks>
         Public Function GetRowIndexFromResource(SearchResource As Resource) As Integer
             Debug.Assert(SearchResource IsNot Nothing)
             Dim IndexFound As Integer = _virtualResourceList.IndexOf(SearchResource)
@@ -919,7 +887,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="RowIndex">The index of the row to get the resource from.</param>
         ''' <param name="AllowUncommittedRow">If True, then RowIndex is allowed to be past the rows which actually contain a valid resource.  In this case, it is assumed that the uncommitted resource (the one created for the add/new row but not yet added to the ResourceFile) is intended, and is returned.</param>
         ''' <returns>The Resource for that row, or possibly the uncommitted Resource (if AllowUncommittedRow = True).  Returns Nothing if there's a problem (and asserts).</returns>
-        ''' <remarks></remarks>
         Public Function GetResourceFromRowIndex(RowIndex As Integer, AllowUncommittedRow As Boolean) As Resource
             If RowIndex >= 0 AndAlso RowIndex < RowCountVirtual Then
                 Return DirectCast(_virtualResourceList(RowIndex), Resource)
@@ -939,10 +906,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Retrieves the Resource associated with a particular grid row.
         ''' </summary>
         ''' <param name="Row"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function GetResourceFromRow(Row As DataGridViewRow) As Resource
-            Debug.Assert(Not Row Is Nothing, "Row is Nothing")
+            Debug.Assert(Row IsNot Nothing, "Row is Nothing")
             Debug.Assert(Row.Index >= 0 AndAlso Row.Index < Rows.Count, "Huh?")
             Return GetResourceFromRowIndex(Row.Index, True)
         End Function
@@ -952,7 +917,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Called by the grid when its need data for a particular grid cell.
         ''' </summary>
         ''' <param name="e">Event args.</param>
-        ''' <remarks></remarks>
         Protected Overrides Sub OnCellValueNeeded(e As DataGridViewCellValueEventArgs)
             MyBase.OnCellValueNeeded(e)
             e.Value = GetCellStringValue(e.RowIndex, e.ColumnIndex)
@@ -964,7 +928,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="RowIndex"></param>
         ''' <param name="ColumnIndex"></param>
-        ''' <remarks></remarks>
         Private Function GetCellStringValue(RowIndex As Integer, ColumnIndex As Integer) As String
             Dim Resource As Resource = GetResourceFromRowIndex(RowIndex, True)
             If Resource Is Nothing Then
@@ -978,7 +941,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Resource"></param>
         ''' <param name="ColumnIndex"></param>
-        ''' <remarks></remarks>
         Friend Shared Function GetResourceCellStringValue(Resource As Resource, ColumnIndex As Integer) As String
             Dim Value As String = String.Empty
 
@@ -1017,7 +979,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Called by the grid when it needs the error text for a particular grid cell.
         ''' </summary>
         ''' <param name="e">Event args.</param>
-        ''' <remarks></remarks>
         Protected Overrides Sub OnCellErrorTextNeeded(e As DataGridViewCellErrorTextNeededEventArgs)
             MyBase.OnCellErrorTextNeeded(e)
 
@@ -1046,7 +1007,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Dim StringResourceEditor As ResourceTypeEditorStringBase = DirectCast(Resource.ResourceTypeEditor, ResourceTypeEditorStringBase)
                     e.ErrorText = ResourceFile.GetResourceTaskMessage(Resource, ResourceFile.ResourceTaskType.CantInstantiateResource)
                     Try
-                        Dim value As Object = StringResourceEditor.StringGetFormattedCellValue(Resource, Resource.GetValue())
+                        StringResourceEditor.StringGetFormattedCellValue(Resource, Resource.GetValue())
                     Catch ex As Exception When ReportWithoutCrash(ex, NameOf(OnCellErrorTextNeeded), NameOf(ResourceStringTable))
                         If e.ErrorText = "" Then
                             'If there wasn't already an error message stored, use the exception we just got.
@@ -1070,7 +1031,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   needs to be pushed to the virtualized store.
         ''' </summary>
         ''' <param name="e">Event args</param>
-        ''' <remarks></remarks>
         Protected Overrides Sub OnCellValuePushed(e As DataGridViewCellValueEventArgs)
             MyBase.OnCellValuePushed(e)
 
@@ -1156,7 +1116,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   is committed).
         ''' </summary>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Protected Overrides Sub OnNewRowNeeded(e As DataGridViewRowEventArgs)
             MyBase.OnNewRowNeeded(e)
 
@@ -1187,7 +1146,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''  we would need to remove this and handle RowEnter and CancelRowEdit.
         ''' </summary>
         ''' <param name="e">Event args</param>
-        ''' <remarks></remarks>
         Protected Overrides Sub OnRowDirtyStateNeeded(e As QuestionEventArgs)
             MyBase.OnRowDirtyStateNeeded(e)
 
@@ -1203,7 +1161,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Commit the uncommitted row by adding it to the ResourceFile.
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub CommitTheUncommittedRow()
             If _uncommittedResource IsNot Nothing Then
                 Debug.Assert(Not ResourceFile.Contains(_uncommittedResource), "The uncommitted resource is already in the resource list!")
@@ -1243,7 +1200,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   the uncommitted resource.
         ''' </summary>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Protected Overrides Sub OnUserAddedRow(e As DataGridViewRowEventArgs)
             MyBase.OnUserAddedRow(e)
 
@@ -1267,7 +1223,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   user pressing ESC.
         ''' </summary>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Protected Overrides Sub OnUserDeletingRow(e As DataGridViewRowCancelEventArgs)
             MyBase.OnUserDeletingRow(e)
 
@@ -1299,7 +1254,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Places the cursor on the bottom row of the string table, ready for the user to enter a new string.
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub NewString()
             If AllowUserToAddRows Then
                 UnselectAll()
@@ -1320,7 +1274,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Resource">The Resource to highlight</param>
         ''' <param name="Field">The field in the resource's row to highlight.</param>
-        ''' <remarks></remarks>
         Friend Sub HighlightResource(Resource As Resource, Field As FindReplace.Field)
             Dim Row As DataGridViewRow = GetRowFromResource(Resource)
             If Row IsNot Nothing Then
@@ -1351,7 +1304,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Highlights (selects) the specified resource and scrolls it into view.
         ''' </summary>
         ''' <param name="Resources">The Resources to highlight</param>
-        ''' <remarks></remarks>
         Friend Sub HighlightResources(Resources As ICollection)
             Dim firstOne As Boolean = True
             For Each Resource As Resource In Resources
@@ -1373,7 +1325,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Unselect all resources in this grid.
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub UnselectAll()
             For Each Row As DataGridViewRow In SelectedRows
                 Row.Selected = False
@@ -1388,7 +1339,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Gets all resources currently selected in this grid.
         ''' </summary>
         ''' <returns>An array of selected Resources (returns an empty array instead of Nothing)</returns>
-        ''' <remarks></remarks>
         Public Function GetSelectedResources() As Resource()
             Dim indexArray As Integer() = Nothing
             Dim rowCount As Integer = 0
@@ -1457,8 +1407,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Gets the find/replace field for the current cell.  Returns Name if there's no current cell or
         '''   if it isn't a column that has a FindReplace.Field match.
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function GetCurrentCellFindField() As FindReplace.Field
             If CurrentCell IsNot Nothing Then
                 Select Case CurrentCell.ColumnIndex
@@ -1472,11 +1420,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
             Return FindReplace.Field.Name
         End Function
-
-        ''' <summary>
-        ''' </summary>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Protected Overrides Sub OnMouseDown(e As MouseEventArgs)
             MyBase.OnMouseDown(e)
 
@@ -1500,7 +1444,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   We need sort the whole list
         ''' </summary>
         ''' <param name="e">Event args</param>
-        ''' <remarks></remarks>
         Protected Overrides Sub OnColumnHeaderMouseClick(e As DataGridViewCellMouseEventArgs)
             MyBase.OnColumnHeaderMouseClick(e)
 
@@ -1515,7 +1458,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''  Restore Sorter -- used when we need restore view state
         ''' </summary>
         ''' <param name="originalSorter"></param>
-        ''' <remarks></remarks>
         Friend Sub RestoreSorter(originalSorter As IComparer(Of Resource))
             Dim stringSorter As StringTableSorter = TryCast(originalSorter, StringTableSorter)
             If stringSorter IsNot Nothing Then
@@ -1530,9 +1472,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="columnIndex"></param>
         ''' <param name="inReverseOrder"></param>
-        ''' <remarks></remarks>
         Private Sub SortOnColumn(columnIndex As Integer, inReverseOrder As Boolean)
-            Using (New WaitCursor)
+            Using New WaitCursor
                 Dim currentCellColumnIndex As Integer = -1
                 Dim currentResource As Resource = Nothing
                 Dim selectedResources() As Resource
@@ -1613,11 +1554,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <summary>
             ''' which column is used to sort the list 
             ''' </summary>
-            Friend Property ColumnIndex() As Integer
+            Friend Property ColumnIndex As Integer
                 Get
                     Return _columnIndex
                 End Get
-                Set(value As Integer)
+                Set
                     _columnIndex = value
                 End Set
             End Property
@@ -1625,11 +1566,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <summary>
             ''' whether it is in reverseOrder
             ''' </summary>
-            Friend Property InReverseOrder() As Boolean
+            Friend Property InReverseOrder As Boolean
                 Get
                     Return _reverseOrder
                 End Get
-                Set(value As Boolean)
+                Set
                     _reverseOrder = value
                 End Set
             End Property
@@ -1669,7 +1610,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Delete values from selected cells
         ''' </summary>
-        ''' <remarks></remarks>
         Friend Sub ClearSelectedCells()
             Dim cells As DataGridViewSelectedCellCollection = SelectedCells
             If cells.Count = 0 Then
@@ -1757,9 +1697,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Process windows message to handle special keys...
         ''' </summary>
-        ''' <returns></returns>
         ''' <param name="m"></param>
-        ''' <remarks></remarks>
         Public Overrides Function PreProcessMessage(ByRef m As Message) As Boolean
             If m.Msg = Interop.Win32Constant.WM_KEYDOWN AndAlso CInt(m.WParam) = Keys.F2 Then
                 Return ProcessF2Key(Keys.F2 Or ModifierKeys)
@@ -1779,7 +1717,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             '''  We override it to replace the default DataGridViewTextBoxEditingControl with ResourceStringTextBoxEditingControl
             '''  so we can handle some events to handle CheckOut correctly...
             ''' </summary>
-            Public Overrides ReadOnly Property EditType() As Type
+            Public Overrides ReadOnly Property EditType As Type
                 Get
                     Return GetType(ResourceStringTextBoxEditingControl)
                 End Get
@@ -1800,29 +1738,23 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' </summary>
             ''' <param name="keyData"></param>
             ''' <param name="dataGridViewWantsInputKey"></param>
-            ''' <return></return>
-            ''' <remarks></remarks>
             Public Overrides Function EditingControlWantsInputKey(keyData As Keys, dataGridViewWantsInputKey As Boolean) As Boolean
                 ' The following code is added to fix devdiv bug 874
                 ' we want to let the multiline editbox to handle up/down key, when the current position is not the first/last line in the control
                 '  The default logic of this editbox doesn't handle wrapped text correctly.
                 Dim firstCharIndexInCurrentLine As Integer = GetFirstCharIndexOfCurrentLine()
-                Select Case (keyData And Keys.KeyCode)
+                Select Case keyData And Keys.KeyCode
                     Case Keys.Down
                         Dim currentLineNumber As Integer = GetLineFromCharIndex(firstCharIndexInCurrentLine)
                         ' GetFirstCharIndexFromLine will return -1 when the linenumber exceeds the number of lines in the control
-                        Return (GetFirstCharIndexFromLine(currentLineNumber + 1) > 0)
+                        Return GetFirstCharIndexFromLine(currentLineNumber + 1) > 0
                     Case Keys.Up
-                        Return (firstCharIndexInCurrentLine > 0)
+                        Return firstCharIndexInCurrentLine > 0
                 End Select
 
                 Return MyBase.EditingControlWantsInputKey(keyData, dataGridViewWantsInputKey)
             End Function
-
-            ''' <summary>
-            ''' </summary>
             ''' <param name="m"></param>
-            ''' <remarks></remarks>
             <SecurityPermission(SecurityAction.LinkDemand, Flags:=SecurityPermissionFlag.UnmanagedCode)>
             Protected Overrides Sub WndProc(ByRef m As Message)
                 ' CONSIDER: should we take care of other events?

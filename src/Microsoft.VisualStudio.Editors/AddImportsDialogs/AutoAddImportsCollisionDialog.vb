@@ -68,12 +68,12 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
         End Sub
 
         Private Sub RequestHelp(sender As Object, hlpevent As HelpEventArgs) Handles Me.HelpRequested
-            If (_helpCallBack IsNot Nothing) Then
+            If _helpCallBack IsNot Nothing Then
                 _helpCallBack.InvokeHelp()
             End If
         End Sub
 
-        Public ReadOnly Property ShouldImportAnyways() As Boolean
+        Public ReadOnly Property ShouldImportAnyways As Boolean
             Get
                 Return m_rbImportsAnyways.Checked
             End Get

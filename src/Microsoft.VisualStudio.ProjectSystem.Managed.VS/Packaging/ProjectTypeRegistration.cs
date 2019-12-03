@@ -14,6 +14,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS;
     resourcePackageGuid: ManagedProjectSystemPackage.PackageGuid,
     Capabilities = ProjectTypeCapabilities.VisualBasic,
     DisableAsynchronousProjectTreeLoad = true)]
+[assembly: ProvideDiffSupportedContentType(".vbproj", "")]   // Empty string because content type is not important, we just want to tell the diff that the file type is supported
+[assembly: ProvideEditorFactoryMapping("{f6819a78-a205-47b5-be1c-675b3c7f0b8e}", ".vbproj")] // Use the XML editor
 
 // F#
 [assembly: ProjectTypeRegistration(
@@ -25,6 +27,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS;
     resourcePackageGuid: ManagedProjectSystemPackage.PackageGuid,
     Capabilities = ProjectTypeCapabilities.FSharp,
     DisableAsynchronousProjectTreeLoad = true)]
+[assembly: ProvideDiffSupportedContentType(".fsproj", "")]   // Empty string because content type is not important, we just want to tell the diff that the file type is supported
+[assembly: ProvideEditorFactoryMapping("{f6819a78-a205-47b5-be1c-675b3c7f0b8e}", ".fsproj")] // Use the XML editor
 
 // C#
 [assembly: ProjectTypeRegistration(
@@ -36,3 +40,5 @@ using Microsoft.VisualStudio.ProjectSystem.VS;
     resourcePackageGuid: ManagedProjectSystemPackage.PackageGuid,
     Capabilities = ProjectTypeCapabilities.CSharp,
     DisableAsynchronousProjectTreeLoad = true)]
+[assembly: ProvideDiffSupportedContentType(".csproj", "")]   // Empty string because content type is not important, we just want to tell the diff that the file type is supported
+[assembly: ProvideEditorFactoryMapping("{f6819a78-a205-47b5-be1c-675b3c7f0b8e}", ".csproj")] // Use the XML editor

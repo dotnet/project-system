@@ -23,7 +23,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     '''   is the top-level designer.  In spite of the fancy term, it doesn't really do much except to dish out
     '''   the actual design surface for the resource editor - ResourceEditorView.
     ''' </summary>
-    ''' <remarks></remarks>
     Friend NotInheritable Class ResourceEditorRootDesigner
         Inherits DesignerFramework.BaseRootDesigner
         Implements IRootDesigner, IVsFindTarget, OLE.Interop.IOleCommandTarget, IVsDebuggerEvents
@@ -77,7 +76,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Overrides base Dispose()
         ''' </summary>
         ''' <param name="Disposing"></param>
-        ''' <remarks></remarks>
         Protected Overrides Sub Dispose(Disposing As Boolean)
             If Disposing Then
                 'We might be being disposed in order to perform a reload on the DocData.  If
@@ -107,10 +105,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Shadows MyBase.Component, just so we can hide it from Intellisense and
         '''   encourage the use of the strongly-typed RootComponent instead.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
         <EditorBrowsable(EditorBrowsableState.Never)>
-        Friend Shadows ReadOnly Property Component() As ResourceEditorRootComponent
+        Friend Shadows ReadOnly Property Component As ResourceEditorRootComponent
             Get
                 Return RootComponent
             End Get
@@ -120,12 +116,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Returns the ResourceEditorRoot component that is being edited by this designer.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Friend ReadOnly Property RootComponent() As ResourceEditorRootComponent
+        Friend ReadOnly Property RootComponent As ResourceEditorRootComponent
             Get
                 Dim Root As ResourceEditorRootComponent = CType(MyBase.Component, ResourceEditorRootComponent)
-                Debug.Assert(Not Root Is Nothing)
+                Debug.Assert(Root IsNot Nothing)
                 Return Root
             End Get
         End Property
@@ -135,9 +129,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''  Returns the IDesignerHost from the RootDesigner.
         ''' </summary>
         ''' <value>An instance of IDesignerHost.</value>
-        ''' <remarks> 
-        ''' </remarks>
-        Friend ReadOnly Property DesignerHost() As IDesignerHost
+        Friend ReadOnly Property DesignerHost As IDesignerHost
             Get
                 Debug.Assert(_designerHost IsNot Nothing, "Cannot get IDesignerHost!!!")
                 Return _designerHost
@@ -149,9 +141,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''  Returns the DesignerLoader associated with this RootDesigner.
         ''' </summary>
         ''' <value>The ResourceEditorDesignerLoader instance.</value>
-        ''' <remarks> 
-        ''' </remarks>
-        Friend ReadOnly Property DesignerLoader() As ResourceEditorDesignerLoader
+        Friend ReadOnly Property DesignerLoader As ResourceEditorDesignerLoader
             Get
                 Dim DesignerLoaderService As Object = GetService(GetType(IDesignerLoaderService))
                 If DesignerLoaderService IsNot Nothing Then
@@ -169,13 +159,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''  The designer will be destroyed, and a new designer will be created later, so we will never set it back.
         ''' </summary>
         ''' <value>Whether we are in reloading mode</value>
-        ''' <remarks> 
-        ''' </remarks>
-        Friend Property IsInReloading() As Boolean
+        Friend Property IsInReloading As Boolean
             Get
                 Return _isInReloading
             End Get
-            Set(value As Boolean)
+            Set
                 _isInReloading = value
             End Set
         End Property
@@ -190,8 +178,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   user sees and associates as being the resource editor).  If one doesn't exist, a new
         '''   one will be created.
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function GetView() As ResourceEditorView
             Return CType(IRootDesigner_GetView(ViewTechnology.Default), ResourceEditorView)
         End Function
@@ -200,9 +186,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Returns True iff there a View has already been created.
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public ReadOnly Property HasView() As Boolean
+        Public ReadOnly Property HasView As Boolean
             Get
                 Return _view IsNot Nothing
             End Get
@@ -214,9 +198,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   We currently support only "Default" (i.e., our designer view, ResourceEditorView,
         '''   inherits from System.Windows.Forms.Control).
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Private ReadOnly Property IRootDesigner_SupportedTechnologies() As ViewTechnology() Implements IRootDesigner.SupportedTechnologies
+        Private ReadOnly Property IRootDesigner_SupportedTechnologies As ViewTechnology() Implements IRootDesigner.SupportedTechnologies
             Get
                 Return New ViewTechnology() {ViewTechnology.Default}
             End Get
@@ -228,8 +210,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   our resource editor's designer surface.  In this case, we return an instance of ResourceEditorView.
         ''' </summary>
         ''' <param name="Technology"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function IRootDesigner_GetView(Technology As ViewTechnology) As Object Implements IRootDesigner.GetView
             If Technology <> ViewTechnology.Default Then
                 Throw New ArgumentException("Not a supported view technology", NameOf(Technology))
@@ -278,7 +258,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         '''  We need create a ErrorListProvider to support the error list
         ''' </summary>
-        ''' <remarks></remarks>
         Friend Function GetErrorListProvider() As ErrorListProvider
             If _errorListProvider Is Nothing Then
                 _errorListProvider = New ErrorListProvider(DesignerHost)
@@ -319,7 +298,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Used to set the ResourceFile which should be displayed in the designer view.
         ''' </summary>
         ''' <param name="ResXResourceFile"></param>
-        ''' <remarks></remarks>
         Friend Sub SetResourceFile(ResXResourceFile As ResourceFile)
             GetView().SetResourceFile(ResXResourceFile)
         End Sub
@@ -328,8 +306,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Attempts to retrieve the filename and path of the .resx file being edited.
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function GetResXFileNameAndPath() As String
             Try
                 Dim ProjectItem As EnvDTE.ProjectItem = TryCast(GetService(GetType(EnvDTE.ProjectItem)), EnvDTE.ProjectItem)
@@ -346,10 +322,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 If WindowFrame IsNot Nothing Then
                     Dim punkDocData As Object = __VSFPROPID.VSFPROPID_DocData
                     If punkDocData IsNot Nothing Then
-                        If TypeOf punkDocData Is IVsUserData Then
+                        Dim vsUserData = TryCast(punkDocData, IVsUserData)
+                        If vsUserData IsNot Nothing Then
                             Dim Guid As Guid = GetType(IVsUserData).GUID
                             Dim vt As Object = Nothing
-                            VSErrorHandler.ThrowOnFailure(CType(punkDocData, IVsUserData).GetData(Guid, vt))
+                            VSErrorHandler.ThrowOnFailure(vsUserData.GetData(Guid, vt))
                             If TypeOf vt Is String Then
                                 Return IO.Path.GetFileName(CStr(vt))
                             End If
@@ -367,8 +344,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Returns whether the designer is editing a resw file
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function IsEditingResWFile() As Boolean
             Return HasResWExtension(GetResXFileNameAndPath())
         End Function
@@ -455,7 +430,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Register this root designer as a view helper with the current frame so the shell will can find our
         '''   implementations of IVsFindTarget, IOleCommandTarget, etc.
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub RegisterViewHelper()
             Try
                 Dim VsWindowFrame As IVsWindowFrame = CType(GetService(GetType(IVsWindowFrame)), IVsWindowFrame)
@@ -475,7 +449,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                             _delayRegisteringViewHelper = True
 
                             ' VS Whidbey #260046 -- Make sure the control is created before calling Invoke/BeginInvoke                                                      
-                            If (_view.Created = False) Then
+                            If _view.Created = False Then
                                 _view.CreateControl()
                             End If
 
@@ -493,7 +467,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         '''  Unregister our IVsFindTarget with the current frame so the shell will call us to find / replace.
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub UnRegisterViewHelper()
             Try
                 Dim VsWindowFrame As IVsWindowFrame = CType(GetService(GetType(IVsWindowFrame)), IVsWindowFrame)
@@ -524,7 +497,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="pfImage">Set to True if supporting GetSearchImage - searching in a text image.</param>
         ''' <param name="pgrfOptions">Specifies supported options, syntax and options, taken from __VSFINDOPTIONS.</param>
-        ''' <remarks></remarks>
         Private Function GetCapabilities(pfImage() As Boolean, pgrfOptions() As UInteger) As Integer Implements IVsFindTarget.GetCapabilities
             _findReplace.GetCapabilities(pfImage, pgrfOptions)
             Return NativeMethods.S_OK
@@ -537,7 +509,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="propid">Property identifier of the requested property, taken from VSFTPROPID enum.</param>
         ''' <param name="pvar">Property value.</param>
         ''' <returns>S_OK if success, otherwise an error code.</returns>
-        ''' <remarks></remarks>
         Private Function GetProperty(propid As UInteger, ByRef pvar As Object) As Integer Implements IVsFindTarget.GetProperty
             Return _findReplace.GetProperty(propid, pvar)
         End Function
@@ -558,7 +529,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Sets the find state object that we hold for the find engine.
         ''' </summary>
         ''' <param name="pUnk">The find state object to hold.</param>
-        ''' <remarks></remarks>
         Private Function SetFindState(pUnk As Object) As Integer Implements IVsFindTarget.SetFindState
             _findReplace.SetFindState(pUnk)
             Return NativeMethods.S_OK
@@ -679,8 +649,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="cCmds">The number of commands in the prgCmds array. </param>
         ''' <param name="prgCmds">[in,out] A caller-allocated array of OLECMD structures that indicate the commands for which the caller needs status information. This method fills the cmdf member of each structure with values taken from the OLECMDF enumeration. </param>
         ''' <param name="pCmdText">[unique][in,out] Pointer to an OLECMDTEXT structure in which to return name and/or status information of a single command. Can be NULL to indicate that the caller does not need this information. </param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function IOleCommandTarget_QueryStatus(ByRef pguidCmdGroup As Guid, cCmds As UInteger, prgCmds As OLE.Interop.OLECMD(), pCmdText As IntPtr) As Integer _
         Implements OLE.Interop.IOleCommandTarget.QueryStatus
             'We don't implement this.
@@ -690,7 +658,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' OnDesignerLoadCompleted will be called when we finish loading the designer
         ''' </summary>
-        ''' <remarks></remarks>
         Friend Sub OnDesignerLoadCompleted()
             ConnectDebuggerEvents()
             ' BUGFIX: Dev11#45255 
@@ -711,7 +678,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' We need get undoEngine to monitor undo state. But it is not available when the designer is just loaded. We do this on the first transaction (change) happens in the designer.
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub DesignerHost_TransactionOpening(sender As Object, e As EventArgs) Handles _designerHost.TransactionOpening
             If _undoEngine Is Nothing Then
                 _undoEngine = DirectCast(GetService(GetType(UndoEngine)), UndoEngine)
@@ -743,7 +709,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="scope"></param>
         ''' <param name="action"></param>
-        ''' <remarks></remarks>
         Private Sub BuildBegin(scope As EnvDTE.vsBuildScope, action As EnvDTE.vsBuildAction) Handles _buildEvents.OnBuildBegin
             Dim DesignerLoaderService As Object = GetService(GetType(IDesignerLoaderService))
             If DesignerLoaderService IsNot Nothing Then
@@ -757,7 +722,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="scope"></param>
         ''' <param name="action"></param>
-        ''' <remarks></remarks>
         Private Sub BuildDone(scope As EnvDTE.vsBuildScope, action As EnvDTE.vsBuildAction) Handles _buildEvents.OnBuildDone
             Dim DesignerLoaderService As Object = GetService(GetType(IDesignerLoaderService))
             If DesignerLoaderService IsNot Nothing Then
@@ -769,7 +733,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Hook up with the debugger event mechanism to determine current debug mode
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub ConnectDebuggerEvents()
             If _vsDebuggerEventsCookie = 0 Then
                 _vsDebugger = CType(GetService(GetType(IVsDebugger)), IVsDebugger)
@@ -790,7 +753,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Unhook event notification for debugger 
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub DisconnectDebuggerEvents()
             If _vsDebugger IsNot Nothing AndAlso _vsDebuggerEventsCookie <> 0 Then
                 VSErrorHandler.ThrowOnFailure(_vsDebugger.UnadviseDebuggerEvents(_vsDebuggerEventsCookie))
@@ -832,7 +794,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub UndoEngine_Undoing(sender As Object, e As EventArgs) Handles _undoEngine.Undoing
             If _view IsNot Nothing Then
                 _view.OnUndoing()
@@ -844,7 +805,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub UndoEngine_Undone(sender As Object, e As EventArgs) Handles _undoEngine.Undone
             If _view IsNot Nothing Then
                 _view.OnUndone()

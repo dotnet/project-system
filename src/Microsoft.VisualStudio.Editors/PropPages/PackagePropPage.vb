@@ -58,9 +58,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Shared Function GetUnconfiguredProject(hierarchy As IVsHierarchy) As UnconfiguredProject
             Dim context = DirectCast(hierarchy, IVsBrowseObjectContext)
-            If (context IsNot Nothing) Then
+            If context IsNot Nothing Then
                 Dim dteProject = DirectCast(GetDTEProject(hierarchy), EnvDTE.Project)
-                If (dteProject IsNot Nothing) Then
+                If dteProject IsNot Nothing Then
                     context = DirectCast(dteProject.Object, IVsBrowseObjectContext)
                 End If
             End If
@@ -69,7 +69,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Shared Function GetDTEProject(hierarchy As IVsHierarchy) As EnvDTE.Project
             Dim extObject As Object = Nothing
-            If (ErrorHandler.Succeeded(hierarchy.GetProperty(VSConstants.VSITEMID.Root, __VSHPROPID.VSHPROPID_ExtObject, <Out>DirectCast(extObject, Object)</Out>))) Then
+            If ErrorHandler.Succeeded(hierarchy.GetProperty(VSConstants.VSITEMID.Root, __VSHPROPID.VSHPROPID_ExtObject, <Out>DirectCast(extObject, Object)</Out>)) Then
                 Return DirectCast(extObject, EnvDTE.Project)
             End If
             Return Nothing
@@ -103,19 +103,19 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Sub InitializeLicensing()
             GetProjectsAndProvider()
             Dim PackageLicenseFileSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor(_packageLicenseFilePropName)), String)
-            If (Not String.IsNullOrEmpty(PackageLicenseFileSet)) Then
+            If Not String.IsNullOrEmpty(PackageLicenseFileSet) Then
                 _newLicensePropertyDetectedAtInit = True
                 LicenseFileNameTextBox.Text = FileTryGetExistingFileItemPath(PackageLicenseFileSet)
                 _previousProperties(_packageLicenseFilePropName) = LicenseFileNameTextBox.Text
                 SetLicenseRadioButtons(False)
             End If
             Dim PackageLicenseExpressionSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor("PackageLicenseExpression")), String)
-            If (Not String.IsNullOrEmpty(PackageLicenseExpressionSet)) Then
+            If Not String.IsNullOrEmpty(PackageLicenseExpressionSet) Then
                 _newLicensePropertyDetectedAtInit = True
                 SetLicenseRadioButtons(True)
             End If
             Dim PackageLicenseUrlSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor("PackageLicenseUrl")), String)
-            If (Not String.IsNullOrEmpty(PackageLicenseUrlSet)) Then
+            If Not String.IsNullOrEmpty(PackageLicenseUrlSet) Then
                 SetLicenseUrlWarningActive(True)
                 _licenseUrlDetected = True
             End If
@@ -124,11 +124,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Sub InitializeIconFile()
             GetProjectsAndProvider()
             Dim PackageIconUrlSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor(_packageIconUrlPropName)), String)
-            If (Not String.IsNullOrEmpty(PackageIconUrlSet)) Then
+            If Not String.IsNullOrEmpty(PackageIconUrlSet) Then
                 SetPackageIconUrlWarninglWarningActive(True)
             End If
             Dim PackageIconFileSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor(_packageIconFilePropName)), String)
-            If (Not String.IsNullOrEmpty(PackageIconFileSet)) Then
+            If Not String.IsNullOrEmpty(PackageIconFileSet) Then
                 PackageIcon.Text = FileTryGetExistingFileItemPath(PackageIconFileSet)
                 _previousProperties(_packageIconFilePropName) = PackageIcon.Text
             End If
@@ -140,7 +140,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Function VersionGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
             Dim Version As String = Nothing
 
-            If (control Is FileVersionLayoutPanel) Then
+            If control Is FileVersionLayoutPanel Then
                 ValidateAssemblyFileVersion(Version)
             Else
                 ValidateAssemblyVersion(Version)
@@ -157,13 +157,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim Version As String
             Dim Values As String()
 
-            If (PropertyControlData.IsSpecialValue(value)) Then
+            If PropertyControlData.IsSpecialValue(value) Then
                 Version = ""
             Else
                 Version = Trim(CStr(value))
             End If
 
-            If (Version <> "") Then
+            If Version <> "" Then
                 'Dim VersionAttr As AssemblyVersionAttribute = New AssemblyVersionAttribute(Version)
                 Values = Split(Version, ".")
             End If
@@ -171,7 +171,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ReDim Preserve Values(3)
 
             Dim Textboxes As TextBox()
-            If (control Is FileVersionLayoutPanel) Then
+            If control Is FileVersionLayoutPanel Then
                 Textboxes = _fileVersionTextBoxes
             Else
                 Textboxes = _assemblyVersionTextBoxes
@@ -218,7 +218,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Validation properties
         ''' </summary>
         Protected Overrides Function ValidateProperty(controlData As PropertyControlData, ByRef message As String, ByRef returnControl As Control) As ValidationResult
-            If (controlData.FormControl Is AssemblyVersionLayoutPanel) Then
+            If controlData.FormControl Is AssemblyVersionLayoutPanel Then
                 Try
                     Dim Version As String = Nothing
                     ValidateAssemblyVersion(Version)
@@ -227,7 +227,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     returnControl = _assemblyVersionTextBoxes(0)
                     Return ValidationResult.Failed
                 End Try
-            ElseIf (controlData.FormControl Is FileVersionLayoutPanel) Then
+            ElseIf controlData.FormControl Is FileVersionLayoutPanel Then
                 Try
                     Dim Version As String = Nothing
                     ValidateAssemblyFileVersion(Version)
@@ -236,7 +236,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     returnControl = _fileVersionTextBoxes(0)
                     Return ValidationResult.Failed
                 End Try
-            ElseIf (controlData.FormControl Is PackageVersion) Then
+            ElseIf controlData.FormControl Is PackageVersion Then
                 Try
                     Dim Version As String = Nothing
                     ValidatePackageVersion(Version)
@@ -249,9 +249,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return ValidationResult.Succeeded
         End Function
 
-        Protected Overrides ReadOnly Property ControlData() As PropertyControlData()
+        Protected Overrides ReadOnly Property ControlData As PropertyControlData()
             Get
-                If (m_ControlData Is Nothing) Then
+                If m_ControlData Is Nothing Then
 
                     Dim datalist As List(Of PropertyControlData) = New List(Of PropertyControlData)
                     Dim data As PropertyControlData = New PropertyControlData(100, "GeneratePackageOnBuild", GeneratePackageOnBuild, ControlDataFlags.None)
@@ -320,7 +320,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <param name="setLicenseExpression">Sets the radio button for LicensesExpression, if false sets to LicenseFile</param>
         Private Sub SetLicenseRadioButtons(setLicenseExpression As Boolean)
-            If (Not _newLicensePropertyDetectedAtInit) Then
+            If Not _newLicensePropertyDetectedAtInit Then
                 LicenseTypeFirstSelected()
                 _newLicensePropertyDetectedAtInit = False
             End If
@@ -329,12 +329,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             PackageLicenseExpression.Enabled = setLicenseExpression
             LicenseFileNameTextBox.Enabled = Not setLicenseExpression
             LicenseBrowseButton.Enabled = Not setLicenseExpression
-            If (setLicenseExpression AndAlso Not LicenseFileNameTextBox.Text = "") Then
+            If setLicenseExpression AndAlso Not LicenseFileNameTextBox.Text = "" Then
                 RemoveItem(LicenseFileNameTextBox.Text)
                 SetCommonPropertyValue(GetPropertyDescriptor(_packageLicenseFilePropName), "")
                 LicenseFileNameTextBox.Text = ""
                 _previousProperties(_packageLicenseFilePropName) = LicenseFileNameTextBox.Text
-            ElseIf (Not setLicenseExpression AndAlso Not PackageLicenseExpression.Text = "") Then
+            ElseIf Not setLicenseExpression AndAlso Not PackageLicenseExpression.Text = "" Then
                 PackageLicenseExpression.Text = ""
                 SetDirty(PackageLicenseExpression)
             End If
@@ -345,7 +345,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             LicenseLineLabel.Visible = Not setActive
             LicenseUrlWarning.Visible = setActive
             LicenseUrlWarning.Enabled = setActive
-            If (setActive) Then
+            If setActive Then
                 TableLayoutPanel.SetColumn(LicenseUrlWarning, 1)
                 TableLayoutPanel.SetColumn(LicenseLineLabel, 2)
             Else
@@ -357,26 +357,26 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Sub LicenseTypeFirstSelected()
             'When the project has neither of the new license properties AND it has the license URL property and a new license type is selected
-            If (_licenseUrlDetected) Then
+            If _licenseUrlDetected Then
                 SetLicenseUrlWarningActive(False)
                 _licenseUrlDetected = False
             End If
         End Sub
 
         Private Sub LicenseExpressionRadioButton_CheckedChanged(sender As Object, e As EventArgs) Handles LicenseExpressionRadioButton.CheckedChanged
-            If (LicenseExpressionRadioButton.Checked) Then
+            If LicenseExpressionRadioButton.Checked Then
                 SetLicenseRadioButtons(True)
             End If
         End Sub
 
         Private Sub LicenseFileRadioButton_CheckChanged(sender As Object, e As EventArgs) Handles LicenseFileRadioButton.CheckedChanged
-            If (LicenseFileRadioButton.Checked) Then
+            If LicenseFileRadioButton.Checked Then
                 SetLicenseRadioButtons(False)
             End If
         End Sub
 
         Private Sub PackageLicenseExpression_Changed(sender As Object, e As EventArgs) Handles PackageLicenseExpression.TextChanged
-            If (PackageLicenseExpression.Text IsNot "" And Not PackageLicenseExpression.Enabled) Then
+            If PackageLicenseExpression.Text IsNot "" And Not PackageLicenseExpression.Enabled Then
                 'The license expression is not selected, and the text was changed while it was disabled
                 'This means there was probably an undo which populated the textbox with text, so give it back control
                 'I don't believe that undo will work with the license file text box because it is not user populated
@@ -397,11 +397,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Sub LicenseFileNameTextBox_LostFocus(sender As Object, e As EventArgs) Handles LicenseFileNameTextBox.LostFocus
             If Not String.Equals(LicenseFileNameTextBox.Text, RetrievePreviousProperty(_packageLicenseFilePropName)) Then
                 Dim TryConvertToAbsolutePath As String = RelativeToAbsolutePath(LicenseFileNameTextBox.Text)
-                If Not TryConvertToAbsolutePath Is Nothing AndAlso String.Equals(TryConvertToAbsolutePath, LicenseFileNameTextBox.Text) Then
+                If TryConvertToAbsolutePath IsNot Nothing AndAlso String.Equals(TryConvertToAbsolutePath, LicenseFileNameTextBox.Text) Then
                     'If these are equal then the path is absolute
                     AddItemToProject(AbsoluteToRelativePath(LicenseFileNameTextBox.Text), _packageLicenseFilePropName)
                 Else
-                    If (Not String.IsNullOrEmpty(LicenseFileNameTextBox.Text)) Then
+                    If Not String.IsNullOrEmpty(LicenseFileNameTextBox.Text) Then
                         'If it is not definitely an absolute path, assume relative 
                         AddItemToProject(LicenseFileNameTextBox.Text, _packageLicenseFilePropName)
                     Else
@@ -415,14 +415,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Private Sub PackageIconFile_LostFocus(sender As Object, e As EventArgs) Handles PackageIcon.LostFocus
-            If (Not String.Equals(PackageIcon.Text, RetrievePreviousProperty(_packageIconFilePropName))) Then
+            If Not String.Equals(PackageIcon.Text, RetrievePreviousProperty(_packageIconFilePropName)) Then
                 Dim TryConvertToAbsolutePath As String = RelativeToAbsolutePath(PackageIcon.Text)
-                If (Not TryConvertToAbsolutePath Is Nothing AndAlso String.Equals(TryConvertToAbsolutePath, PackageIcon.Text)) Then
+                If TryConvertToAbsolutePath IsNot Nothing AndAlso String.Equals(TryConvertToAbsolutePath, PackageIcon.Text) Then
                     'If these are equal then the path is absolute
                     AddItemToProject(AbsoluteToRelativePath(PackageIcon.Text), _packageIconFilePropName)
                     SetPackageIconUrlWarninglWarningActive(False)
                 Else
-                    If (Not String.IsNullOrEmpty(PackageIcon.Text)) Then
+                    If Not String.IsNullOrEmpty(PackageIcon.Text) Then
                         AddItemToProject(PackageIcon.Text, _packageIconFilePropName)
                         SetPackageIconUrlWarninglWarningActive(False)
                     Else
@@ -442,7 +442,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             PackageIconUrlWarning.Enabled = setActive
 
             'Swaps the label and textbox location, as done for license warning
-            If (setActive) Then
+            If setActive Then
                 TableLayoutPanel.SetColumn(PackageIconUrlWarning, 1)
                 TableLayoutPanel.SetColumn(PackageIconLineLabel, 2)
             Else
@@ -470,20 +470,20 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         'This is for checking if the project file changed and updating the textbox with the new value
         Protected Overrides Sub OnExternalPropertyChanged(data As PropertyControlData, source As PropertyChangeSource)
             MyBase.OnExternalPropertyChanged(data, source)
-            If (String.Equals(data.PropertyName, _packageLicenseFilePropName)) Then
+            If String.Equals(data.PropertyName, _packageLicenseFilePropName) Then
                 Dim PackageLicenseFileSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor(_packageLicenseFilePropName)), String)
                 'Because this will be called even when we set the value, we need to check to make sure we are not trying to set it twice
                 Dim ExistingItemPath = FileTryGetExistingFileItemPath(PackageLicenseFileSet)
-                If (Not String.Equals(LicenseFileNameTextBox.Text, ExistingItemPath)) Then
+                If Not String.Equals(LicenseFileNameTextBox.Text, ExistingItemPath) Then
                     'If trying to resolve the existing item path fails, we should not modify anything
                     LicenseFileNameTextBox.Text = ExistingItemPath
                     _previousProperties(_packageLicenseFilePropName) = LicenseFileNameTextBox.Text
                 End If
-            ElseIf (String.Equals(data.PropertyName, _packageIconFilePropName)) Then
+            ElseIf String.Equals(data.PropertyName, _packageIconFilePropName) Then
                 Dim PackageIconFileSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor(_packageIconFilePropName)), String)
                 'Because this will be called even when we set the value, we need to check to make sure we are not trying to set it twice
                 Dim ExistingItemPath = FileTryGetExistingFileItemPath(PackageIconFileSet)
-                If (Not String.Equals(PackageIcon.Text, ExistingItemPath)) Then
+                If Not String.Equals(PackageIcon.Text, ExistingItemPath) Then
                     'If trying to resolve the existing item path fails, we should not modify anything
                     PackageIcon.Text = ExistingItemPath
                     _previousProperties(_packageIconFilePropName) = PackageIcon.Text
@@ -501,9 +501,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         Async Function(access)
                             Await access.CheckoutAsync(_unconfiguredProject.FullPath)
                             Dim projectXML = Await access.GetProjectXmlAsync(_unconfiguredProject.FullPath)
-                            If (Not String.IsNullOrEmpty(oldInclude)) Then
+                            If Not String.IsNullOrEmpty(oldInclude) Then
                                 Dim foundItem = projectXML.ItemGroups.SelectMany(Function(x) x.Items).FirstOrDefault(Function(x) x.Include = oldInclude Or x.Include = newInclude)
-                                If (foundItem IsNot Nothing) Then
+                                If foundItem IsNot Nothing Then
                                     foundItem.Include = newInclude
                                 Else
                                     'We couldn't find one to change so we should add it as a new item
@@ -540,7 +540,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Private Function RelativeToAbsolutePath(relativePath As String) As String
-            If (relativePath Is Nothing) Then
+            If relativePath Is Nothing Then
                 Return Nothing
             End If
             Try
@@ -552,7 +552,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Private Function RetrievePreviousProperty(propertyName As String) As String
-            If (_previousProperties.ContainsKey(propertyName)) Then
+            If _previousProperties.ContainsKey(propertyName) Then
                 Return _previousProperties(propertyName)
             Else
                 Return String.Empty
@@ -560,15 +560,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Private Sub AddItemToProject(relativeFilePath As String, propertyName As String)
-            If (_unconfiguredProject Is Nothing OrElse _configuredProject Is Nothing) Then
+            If _unconfiguredProject Is Nothing OrElse _configuredProject Is Nothing Then
                 GetProjectsAndProvider()
             End If
-            If (relativeFilePath.IndexOfAny(Path.GetInvalidPathChars()) = -1) Then
+            If relativeFilePath.IndexOfAny(Path.GetInvalidPathChars()) = -1 Then
                 'The TextBox needs to have the relative path, so the property isn't linked to the TextBox. It must be set manually.
                 AddOrChangeItem(RetrievePreviousProperty(propertyName), relativeFilePath)
-                If (String.Equals(_packageLicenseFilePropName, propertyName)) Then
+                If String.Equals(_packageLicenseFilePropName, propertyName) Then
                     LicenseFileNameTextBox.Text = relativeFilePath
-                ElseIf (String.Equals(_packageIconFilePropName, propertyName)) Then
+                ElseIf String.Equals(_packageIconFilePropName, propertyName) Then
                     PackageIcon.Text = relativeFilePath
                 End If
 
@@ -576,7 +576,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                 'If the user has changed the directory on their PackageLicenseFile, we should keep it there
                 Dim PackageLicenseFileSet = TryCast(TryGetNonCommonPropertyValue(GetPropertyDescriptor(propertyName)), String)
-                If (Not String.IsNullOrEmpty(PackageLicenseFileSet)) Then
+                If Not String.IsNullOrEmpty(PackageLicenseFileSet) Then
                     Dim currentPackageLicenseFileDirectory = Path.GetDirectoryName(PackageLicenseFileSet)
                     Dim potentialFullString = Path.Combine(currentPackageLicenseFileDirectory, Path.GetFileName(relativeFilePath))
                     SetCommonPropertyValue(GetPropertyDescriptor(propertyName), potentialFullString)
@@ -591,7 +591,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             GetProjectsAndProvider()
             For Each item As IProjectItem In _allItems
                 'PackageFile can have a package path as a prefix, so we need to just look at file name
-                If (Path.GetFileName(packageFile) = Path.GetFileName(item.EvaluatedIncludeAsRelativePath)) Then
+                If Path.GetFileName(packageFile) = Path.GetFileName(item.EvaluatedIncludeAsRelativePath) Then
                     Return item.EvaluatedIncludeAsRelativePath
                 End If
             Next
@@ -607,9 +607,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         GetAllFilesDialogFilter()
                         ),
                         0, False, fileName)
-            If (fileNames IsNot Nothing AndAlso fileNames.Count = 1) Then
+            If fileNames IsNot Nothing AndAlso fileNames.Count = 1 Then
                 fileName = DirectCast(fileNames(0), String)
-                If (File.Exists(fileName)) Then
+                If File.Exists(fileName) Then
                     AddItemToProject(AbsoluteToRelativePath(fileName), _packageLicenseFilePropName)
                 End If
             End If
@@ -624,9 +624,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         GetAllFilesDialogFilter()
                         ),
                         0, False, fileName)
-            If (fileNames IsNot Nothing AndAlso fileNames.Count = 1) Then
+            If fileNames IsNot Nothing AndAlso fileNames.Count = 1 Then
                 fileName = DirectCast(fileNames(0), String)
-                If (File.Exists(fileName)) Then
+                If File.Exists(fileName) Then
                     AddItemToProject(AbsoluteToRelativePath(fileName), _packageIconFilePropName)
                     SetPackageIconUrlWarninglWarningActive(False)
                 End If

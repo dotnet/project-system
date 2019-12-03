@@ -56,7 +56,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             AddHandler SystemEvents.UserPreferenceChanged, AddressOf SystemEvents_UserPreferenceChanged
         End Sub
 
-        Protected Overrides ReadOnly Property ControlData() As PropertyControlData()
+        Protected Overrides ReadOnly Property ControlData As PropertyControlData()
             Get
                 If m_ControlData Is Nothing Then
                     m_ControlData = New PropertyControlData() {
@@ -69,7 +69,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         '''  Return true if the page can be resized...
         ''' </summary>
-        Public Overrides ReadOnly Property PageResizable() As Boolean
+        Public Overrides ReadOnly Property PageResizable As Boolean
             Get
                 Return True
             End Get
@@ -260,10 +260,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim FolderText As String = GetCurrentFolderPathAbsolute()
 
             'Enable/Disable RemoveFolder button
-            RemoveFolder.Enabled = (SelectedCount > 0)
+            RemoveFolder.Enabled = SelectedCount > 0
 
             'Enable/Disable Add/UpdateFolder buttons
-            Dim HasFolderEntry As Boolean = (Len(FolderText) > 0)
+            Dim HasFolderEntry As Boolean = Len(FolderText) > 0
             AddFolder.Enabled = HasFolderEntry
             UpdateFolder.Enabled = HasFolderEntry AndAlso (SelectedCount = 1) AndAlso Not String.Equals(FolderText, DirectCast(ReferencePath.SelectedItem, String), StringComparison.OrdinalIgnoreCase)
 
@@ -310,7 +310,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <returns>True iff the ENTER key is actually used.  False indicates it should be allowed
         '''   to be passed along and processed normally.</returns>
-        ''' <remarks></remarks>
         Private Function ProcessEnterKey() As Boolean
             'If the focus is on the Folder textbox, and the AddFolder button is enabled, then 
             '  we interpret ENTER as meaning, "Add this folder", i.e., click on the AddFolder button.
@@ -332,8 +331,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Gets the absolute path to the path currently in the Folder textbox.  If the path is invalid (contains bad
         '''   characters, etc.), returns simply the current text.
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function GetCurrentFolderPathAbsolute() As String
             Dim FolderText As String = Trim(Folder.Text)
             If FolderText.Length > 0 Then

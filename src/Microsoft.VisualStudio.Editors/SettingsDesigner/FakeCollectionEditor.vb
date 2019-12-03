@@ -9,7 +9,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
     ''' Since the stringcollection isn't associated with the stringcollectioneditor class, we
     ''' invent our own little editor that uses the stringarrayeditor instead.
     ''' </summary>
-    ''' <remarks></remarks>
     Friend Class StringArrayEditorForStringCollections
         Inherits UITypeEditor
 
@@ -18,7 +17,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Create a new StringArrayEditorForStringCollections
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub New()
             _parent = DirectCast(ComponentModel.TypeDescriptor.GetEditor(GetType(String()), GetType(UITypeEditor)), UITypeEditor)
         End Sub
@@ -30,8 +28,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="context"></param>
         ''' <param name="provider"></param>
         ''' <param name="value"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Overrides Function EditValue(context As ComponentModel.ITypeDescriptorContext, provider As IServiceProvider, value As Object) As Object
             Dim result As Object = _parent.EditValue(context, provider, ConvertToUITypeEditorSource(value))
             Return ConvertToOriginal(result)
@@ -46,7 +42,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             _parent.PaintValue(e)
         End Sub
 
-        Public Overrides ReadOnly Property IsDropDownResizable() As Boolean
+        Public Overrides ReadOnly Property IsDropDownResizable As Boolean
             Get
                 Return _parent.IsDropDownResizable()
             End Get
@@ -60,8 +56,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Convert from StringCollection to string()
         ''' </summary>
         ''' <param name="value"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Shared Function ConvertToUITypeEditorSource(value As Object) As Object
             If value Is Nothing Then
                 Return Nothing
@@ -80,8 +74,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Convert back from String() to StringCollection
         ''' </summary>
         ''' <param name="value"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Shared Function ConvertToOriginal(value As Object) As Object
             If value Is Nothing Then
                 Return Nothing

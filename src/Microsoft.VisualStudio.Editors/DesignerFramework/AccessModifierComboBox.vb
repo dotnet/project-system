@@ -15,7 +15,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
     ''' <summary>
     ''' Gets the language-dependent terminology for Public/Friend
     ''' </summary>
-    ''' <remarks></remarks>
     Friend Class AccessModifierConverter
         Private ReadOnly _converter As TypeConverter
 
@@ -40,8 +39,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' Gets the language-dependent terminology for Public/Friend
         ''' </summary>
         ''' <param name="accessibility"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function ConvertToString(accessibility As Access) As String
             Select Case accessibility
                 Case Access.Friend
@@ -98,8 +95,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 _customToolValue = customToolValue
             End Sub
 
-            Public MustOverride ReadOnly Property DisplayName() As String
-            Public ReadOnly Property CustomToolValue() As String
+            Public MustOverride ReadOnly Property DisplayName As String
+            Public ReadOnly Property CustomToolValue As String
                 Get
                     Return _customToolValue
                 End Get
@@ -118,7 +115,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 _displayName = displayName
             End Sub
 
-            Public Overrides ReadOnly Property DisplayName() As String
+            Public Overrides ReadOnly Property DisplayName As String
                 Get
                     Return _displayName
                 End Get
@@ -140,7 +137,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 _serviceProvider = serviceProvider
             End Sub
 
-            Public Overrides ReadOnly Property DisplayName() As String
+            Public Overrides ReadOnly Property DisplayName As String
                 Get
                     Dim codeDomProvider As CodeDomProvider = Nothing
                     Dim vsmdCodeDomProvider As IVSMDCodeDomProvider = TryCast(_serviceProvider.GetService(GetType(IVSMDCodeDomProvider)), IVSMDCodeDomProvider)
@@ -178,7 +175,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '''   when the designer is not focused and the command gets routed through 
         '''   the package.
         ''' </summary>
-        ''' <remarks></remarks>
         Friend Class DesignerMenuCommandForwarder
 
 
@@ -240,7 +236,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' <returns>
             ''' The first command at the head of the queue, or NULL if no the queue is empty
             ''' </returns>
-            ''' <remarks></remarks>
             Protected Shared Function GetMenuCommandAtHeadOfInternalList(cmdId As CommandID) As DesignerMenuCommand
                 Dim list As LinkedList(Of DesignerMenuCommand) = Nothing
                 If (Not s_packageCommandForwarderLists.TryGetValue(cmdId, list)) OrElse list Is Nothing OrElse list.Count = 0 Then
@@ -254,7 +249,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' Add a menu command forwarder to our internal LIFO queue. 
             ''' If the command is in the list, but isn't the first command, we move it to the head of the list
             ''' </summary>
-            ''' <remarks></remarks>
             Protected Shared Sub AddMenuCommandForwarderToInternalList(cmdId As CommandID, command As DesignerMenuCommand)
                 Dim list As LinkedList(Of DesignerMenuCommand) = Nothing
 
@@ -275,7 +269,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' <summary>
             ''' Remove a menu command forwarder from our internal LIFO queue. 
             ''' </summary>
-            ''' <remarks></remarks>
             Protected Shared Sub RemoveMenuCommandForwarderFromInternalList(cmdId As CommandID, command As DesignerMenuCommand)
                 Dim list As LinkedList(Of DesignerMenuCommand) = Nothing
                 If s_packageCommandForwarderLists.TryGetValue(cmdId, list) Then
@@ -305,7 +298,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '''   the user turns on code generation, we want to also set the custom tool namespace to the
         '''   default for VB (My.Resources).
         ''' </param>
-        ''' <remarks></remarks>
         Public Sub New(rootDesigner As BaseRootDesigner, serviceProvider As IServiceProvider, projectItem As EnvDTE.ProjectItem, namespaceToOverrideIfCustomToolIsEmpty As String)
             Requires.NotNull(rootDesigner, NameOf(rootDesigner))
             Requires.NotNull(projectItem, NameOf(projectItem))
@@ -322,7 +314,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="accessibility"></param>
         ''' <param name="customToolValue"></param>
-        ''' <remarks></remarks>
         Public Sub AddCodeGeneratorEntry(accessibility As AccessModifierConverter.Access, customToolValue As String)
             Debug.Assert([Enum].IsDefined(GetType(AccessModifierConverter.Access), accessibility))
 
@@ -337,7 +328,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="displayName"></param>
         ''' <param name="customToolValue"></param>
-        ''' <remarks></remarks>
         Public Sub AddCodeGeneratorEntry(displayName As String, customToolValue As String)
             Dim entry As New CodeGeneratorWithName(displayName, customToolValue)
             _codeGeneratorEntries.Add(entry)
@@ -352,7 +342,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '''   AddCodeGeneratorEntry will automatically be added here, too.
         ''' </summary>
         ''' <param name="customToolValue"></param>
-        ''' <remarks></remarks>
         Public Sub AddRecognizedCustomToolValue(customToolValue As String)
             If Not _recognizedCustomToolValues.Contains(customToolValue) Then
                 _recognizedCustomToolValues.Add(customToolValue)
@@ -362,7 +351,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             End If
         End Sub
 
-        Protected ReadOnly Property RootDesigner() As BaseRootDesigner
+        Protected ReadOnly Property RootDesigner As BaseRootDesigner
             Get
                 Return _rootDesigner
             End Get
@@ -387,8 +376,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '''   property in this project, returns False.
         ''' </summary>
         ''' <param name="value"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function TryGetCustomToolPropertyValue(ByRef value As String) As Boolean
             value = Nothing
 
@@ -456,7 +443,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '''   there's an error.
         ''' </summary>
         ''' <param name="value"></param>
-        ''' <remarks></remarks>
         Private Sub TrySetCustomToolValue(value As String)
             Try
                 Dim ToolProperty As EnvDTE.Property = DTEUtils.GetProjectItemProperty(_projectItem, DTEUtils.PROJECTPROPERTY_CUSTOMTOOL)
@@ -521,8 +507,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <summary>
         ''' Is the AccessModifier combobox on the settings designer toolbar enabled?
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Protected Overridable Function ShouldBeEnabled() As Boolean
             If Not IsDesignerEditable() Then
                 Return False
@@ -556,9 +540,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <summary>
         ''' Demand check if the custom tools that we know about are registered for the current project system.
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Protected Overridable ReadOnly Property CustomToolRegistered() As Boolean
+        Protected Overridable ReadOnly Property CustomToolRegistered As Boolean
             Get
                 If Not _customToolsRegistered.HasValue Then
                     ' If one or more of the custom tools in the drop-down are not registered for the current
@@ -580,7 +562,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <summary>
         ''' Get the hierarchy from the associated project item
         ''' </summary>
-        Protected Overridable ReadOnly Property Hierarchy() As IVsHierarchy
+        Protected Overridable ReadOnly Property Hierarchy As IVsHierarchy
             Get
                 Return ShellUtil.VsHierarchyFromDTEProject(_serviceProvider, _projectItem.ContainingProject)
             End Get

@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Explicit On
 Option Strict On
@@ -42,8 +42,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   Persistence property changed.
         ''' </summary>
         ''' <param name="ResourceContentFile">The resource file that contains the resource</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Friend Overrides ReadOnly Property CanChangePersistenceProperty(ResourceContentFile As IResourceContentFile) As Boolean
             Get
                 Return False

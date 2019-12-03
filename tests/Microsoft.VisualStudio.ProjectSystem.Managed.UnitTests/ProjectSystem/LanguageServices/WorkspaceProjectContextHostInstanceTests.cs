@@ -80,7 +80,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             Assert.Equal(0, callCount);
         }
 
-
         [Fact]
         public async Task InitializedAsync_WhenInitializedWithContext_RegistersContextWithTracker()
         {
@@ -92,7 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             var provider = new WorkspaceProjectContextProviderMock();
             provider.ImplementCreateProjectContextAsync(project => accessor);
 
-            var instance = await CreateInitializedInstanceAsync(workspaceProjectContextProvider: provider.Object, activeWorkspaceProjectContextTracker: activeWorkspaceProjectContextTracker);
+            await CreateInitializedInstanceAsync(workspaceProjectContextProvider: provider.Object, activeWorkspaceProjectContextTracker: activeWorkspaceProjectContextTracker);
 
             Assert.Equal("ContextId", contextIdResult);
         }

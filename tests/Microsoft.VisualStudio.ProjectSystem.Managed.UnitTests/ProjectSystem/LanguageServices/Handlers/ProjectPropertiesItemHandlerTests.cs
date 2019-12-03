@@ -1,20 +1,10 @@
-﻿using System;
-using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+﻿using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
     public class ProjectPropertiesItemHandlerTests : EvaluationHandlerTestBase
     {
-        [Fact]
-        public void Constructor_NullAsProject_ThrowsArgumentNull()
-        {
-            Assert.Throws<ArgumentNullException>("project", () =>
-            {
-                new ProjectPropertiesItemHandler(null!);
-            });
-        }
-
         [Fact]
         public void Handle_WhenPropertyIsChanged_CallsSetProperty()
         {

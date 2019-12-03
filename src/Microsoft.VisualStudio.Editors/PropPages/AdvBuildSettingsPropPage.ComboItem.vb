@@ -29,7 +29,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ''' <summary>
             ''' Gets the value
             ''' </summary>
-            Public ReadOnly Property Value() As String
+            Public ReadOnly Property Value As String
                 Get
                     Return _value
                 End Get

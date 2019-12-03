@@ -14,7 +14,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     '''   allow the user to filter the currently-displayed resources by 
     '''   a single category at a time.
     ''' </summary>
-    ''' <remarks></remarks>
     Friend NotInheritable Class Category
 
         ''' <summary>
@@ -22,7 +21,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Public Event ResourcesExistChanged(sender As Object, e As EventArgs)
 
 
@@ -30,7 +28,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Indicates whether this category displays its resources in a stringtable
         '''   or a listview.
         ''' </summary>
-        ''' <remarks></remarks>
         Public Enum Display
             StringTable 'Resources in this category displayed in a string table
             ListView    'Resources in this category displayed in a listview
@@ -65,11 +62,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="LocalizedName">A localized name for the category.  This name is the one shown to the user.</param>
         ''' <param name="CategoryDisplay">Whether this category uses a stringtable or listview.</param>
         ''' <param name="AssociatedResourceTypeEditors">A list of all resource type editors which are shown in this category (a resource type editor can only be shown in a single category).</param>
-        ''' <remarks></remarks>
         Public Sub New(ProgrammaticName As String, LocalizedName As String, CategoryDisplay As Display, MenuCommand As MenuCommand, addCommand As EventHandler, ParamArray AssociatedResourceTypeEditors() As ResourceTypeEditor)
             Debug.Assert(ProgrammaticName <> "", "programmatic name must be non-empty")
             Debug.Assert(LocalizedName <> "", "localized name should be non-empty")
-            Debug.Assert(Not AssociatedResourceTypeEditors Is Nothing, "Must be at least one resource type editor per category.")
+            Debug.Assert(AssociatedResourceTypeEditors IsNot Nothing, "Must be at least one resource type editor per category.")
             Debug.Assert(MenuCommand IsNot Nothing, "You must supply a MenuCommand")
 
             _programmaticName = ProgrammaticName
@@ -99,9 +95,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' All resource type editors that are displayed in this category.  A particular
         '''   resource type editor may only be displayed in a single category.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public ReadOnly Property AssociatedResourceTypeEditors() As ResourceTypeEditor()
+        Public ReadOnly Property AssociatedResourceTypeEditors As ResourceTypeEditor()
             Get
                 Return _associatedResourceTypeEditors
             End Get
@@ -112,9 +106,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Indicates whether this category displays its resources in a stringtable
         '''   or a listview.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public ReadOnly Property CategoryDisplay() As Display
+        Public ReadOnly Property CategoryDisplay As Display
             Get
                 Return _categoryDisplay
             End Get
@@ -124,9 +116,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Command to execute if you want to show this category
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public ReadOnly Property CommandToShow() As MenuCommand
+        Public ReadOnly Property CommandToShow As MenuCommand
             Get
                 Return _menuCommand
             End Get
@@ -136,13 +126,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' The command used to add a new resources of appropriate type
         ''' for the current category
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public Property AddCommand() As EventHandler
+        Public Property AddCommand As EventHandler
             Get
                 Return _addCommand
             End Get
-            Set(value As EventHandler)
+            Set
                 _addCommand = value
             End Set
         End Property
@@ -151,9 +139,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Returns the friendly (localized) category name, which is shown to the
         '''   user in the category buttons.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public ReadOnly Property LocalizedName() As String
+        Public ReadOnly Property LocalizedName As String
             Get
                 Return _localizedName
             End Get
@@ -164,9 +150,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Returns a programmatic name which is never localized and never shown to
         '''   the user.  Used when searching for a category by name key.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public ReadOnly Property ProgrammaticName() As String
+        Public ReadOnly Property ProgrammaticName As String
             Get
                 Return _programmaticName
             End Get
@@ -176,18 +160,17 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' The number of resources currently in this category.
         ''' </summary>
-        ''' <value></value>
         ''' <remarks>
         ''' The boldness of the category button associated with this category is automatically
         '''   updated with the resource count.  I.e., when the count is zero, the font on the
         '''   button will be normal.  When there is at least one resource in this category,
         '''   the button's font will be made bold.
         ''' </remarks>
-        Public Property ResourceCount() As Integer
+        Public Property ResourceCount As Integer
             Get
                 Return _resourceCount
             End Get
-            Set(Value As Integer)
+            Set
                 Dim ResourcesExisted As Boolean = ResourcesExist
                 _resourceCount = Value
 
@@ -206,9 +189,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Returns true iff there are resources in this category (ResourceCount > 0)
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public ReadOnly Property ResourcesExist() As Boolean
+        Public ReadOnly Property ResourcesExist As Boolean
             Get
                 Return _resourceCount > 0
             End Get
@@ -220,13 +201,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   a listview.  This is the "Details", "Icons", "List" option for
         '''   the display mode of the listview.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public Property ResourceView() As ResourceListView.ResourceView
+        Public Property ResourceView As ResourceListView.ResourceView
             Get
                 Return _resourceView
             End Get
-            Set(Value As ResourceListView.ResourceView)
+            Set
                 _resourceView = Value
             End Set
         End Property
@@ -236,13 +215,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' If this category uses a string table, indicates whether or not the "Type"
         '''   column is displayed (shows the type of resource, e.g. System.Drawing.Image)
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public Property ShowTypeColumnInStringTable() As Boolean
+        Public Property ShowTypeColumnInStringTable As Boolean
             Get
                 Return _showTypeColumnInStringTable
             End Get
-            Set(Value As Boolean)
+            Set
                 Debug.Assert(_categoryDisplay = Display.StringTable, "This property only applies to string table categories")
                 _showTypeColumnInStringTable = Value
             End Set
@@ -251,9 +228,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         '''  how to sort the resource items in the category...
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public Property Sorter() As IComparer(Of Resource)
+        Public Property Sorter As IComparer(Of Resource)
             Get
                 Return _sorter
             End Get
@@ -267,13 +242,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   to add new entries in this string table, via an add/new row at the bottom of
         '''   the table.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public Property AllowNewEntriesInStringTable() As Boolean
+        Public Property AllowNewEntriesInStringTable As Boolean
             Get
                 Return _allowNewEntriesInStringTable
             End Get
-            Set(Value As Boolean)
+            Set
                 Debug.Assert(_categoryDisplay = Display.StringTable, "This property only applies to string table categories")
                 _allowNewEntriesInStringTable = Value
             End Set

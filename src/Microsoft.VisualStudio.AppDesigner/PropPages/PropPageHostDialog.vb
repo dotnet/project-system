@@ -22,9 +22,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Gets the F1 keyword to push into the user context for this property page
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Protected Overrides Property F1Keyword() As String
+        Protected Overrides Property F1Keyword As String
             Get
                 Dim keyword As String = MyBase.F1Keyword
                 If String.IsNullOrEmpty(keyword) AndAlso _propPage IsNot Nothing Then
@@ -32,16 +30,16 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 End If
                 Return keyword
             End Get
-            Set(Value As String)
+            Set
                 MyBase.F1Keyword = Value
             End Set
         End Property
 
-        Public Property PropPage() As PropPageUserControlBase
+        Public Property PropPage As PropPageUserControlBase
             Get
                 Return _propPage
             End Get
-            Set(Value As PropPageUserControlBase)
+            Set
                 SuspendLayout()
                 If _propPage IsNot Nothing Then
                     'Remove previous page if any
@@ -54,16 +52,16 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     MinimumSize = Drawing.Size.Empty
                     AutoSize = True
 
-                    If (_propPage.PageResizable) Then
+                    If _propPage.PageResizable Then
                         FormBorderStyle = FormBorderStyle.Sizable
                     Else
                         FormBorderStyle = FormBorderStyle.FixedDialog
                     End If
 
                     _propPage.Margin = New Padding(0, 0, 0, 0)
-                    _propPage.Anchor = CType((((AnchorStyles.Top Or AnchorStyles.Bottom) _
-                        Or AnchorStyles.Left) _
-                        Or AnchorStyles.Right), AnchorStyles)
+                    _propPage.Anchor = CType(AnchorStyles.Top Or AnchorStyles.Bottom _
+                        Or AnchorStyles.Left _
+                        Or AnchorStyles.Right, AnchorStyles)
                     _propPage.TabIndex = 0
                     'overArchingTableLayoutPanel.SuspendLayout()
                     overArchingTableLayoutPanel.Controls.Add(_propPage, 0, 0)
@@ -82,7 +80,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         'Form overrides dispose to clean up the component list.
         Protected Overloads Overrides Sub Dispose(disposing As Boolean)
             If disposing Then
-                If Not (_components Is Nothing) Then
+                If _components IsNot Nothing Then
                     _components.Dispose()
                 End If
             End If
@@ -169,7 +167,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Constructor.
         ''' </summary>
         ''' <param name="ServiceProvider"></param>
-        ''' <remarks></remarks>
         Public Sub New(ServiceProvider As IServiceProvider, F1Keyword As String)
             MyBase.New(ServiceProvider)
 

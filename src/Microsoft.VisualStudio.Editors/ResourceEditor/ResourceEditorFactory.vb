@@ -18,7 +18,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     '''   simply to create a new resource editor designer when requested by the
     '''   shell.
     ''' </summary>
-    ''' <remarks></remarks>
     <CLSCompliant(False),
     Guid("ff4d6aca-9352-4a5f-821e-f4d6ebdcab11")>
     Friend NotInheritable Class ResourceEditorFactory
@@ -37,7 +36,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   by the DesignerPackage when it gets sited.
         ''' We pass in our designer loader type to the base.
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub New()
             MyBase.New(GetType(ResourceEditorDesignerLoader))
         End Sub
@@ -46,12 +44,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Provides the (constant) GUID for the subclassed editor factory.
         ''' </summary>
-        ''' <value></value>
         ''' <remarks>
         ''' Must overridde the base.  Be sure to use the same GUID on the GUID attribute
         '''    attached to the inheriting class.
         ''' </remarks>
-        Protected Overrides ReadOnly Property EditorGuid() As Guid
+        Protected Overrides ReadOnly Property EditorGuid As Guid
             Get
                 Return New Guid(ResourceEditor_EditorGuid)
             End Get
@@ -61,9 +58,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Provides the (constant) GUID for the command UI.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Protected Overrides ReadOnly Property CommandUIGuid() As Guid
+        Protected Overrides ReadOnly Property CommandUIGuid As Guid
             Get
                 'This is required for key bindings hook-up to work properly.
                 Return Constants.MenuConstants.GUID_RESXEditorCommandUI
@@ -73,9 +68,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 
         Protected Overrides Sub OnSited()
-            If _vsTrackProjectDocuments Is Nothing AndAlso Not ServiceProvider Is Nothing Then
+            If _vsTrackProjectDocuments Is Nothing AndAlso ServiceProvider IsNot Nothing Then
                 _vsTrackProjectDocuments = TryCast(ServiceProvider.GetService(GetType(SVsTrackProjectDocuments)), IVsTrackProjectDocuments2)
-                If Not (_vsTrackProjectDocuments Is Nothing) Then
+                If _vsTrackProjectDocuments IsNot Nothing Then
                     ErrorHandler.ThrowOnFailure(_vsTrackProjectDocuments.AdviseTrackProjectDocumentsEvents(Me, _vsTrackProjectDocumentsEventsCookie))
                     Debug.Assert(_vsTrackProjectDocumentsEventsCookie <> 0)
                 End If
@@ -86,7 +81,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Protected Overrides Sub Dispose(disposing As Boolean)
             If disposing Then
                 If _vsTrackProjectDocumentsEventsCookie <> 0 Then
-                    If Not (_vsTrackProjectDocuments Is Nothing) Then
+                    If _vsTrackProjectDocuments IsNot Nothing Then
                         ErrorHandler.ThrowOnFailure(_vsTrackProjectDocuments.UnadviseTrackProjectDocumentsEvents(_vsTrackProjectDocumentsEventsCookie))
                         _vsTrackProjectDocumentsEventsCookie = 0
                         _vsTrackProjectDocuments = Nothing
@@ -125,34 +120,34 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ' Validate arguments....
             Debug.Assert(rgpProjects IsNot Nothing AndAlso rgpProjects.Length = cProjects, "null rgpProjects or bad-length array")
             Requires.NotNull(rgpProjects, NameOf(rgpProjects))
-            If (rgpProjects.Length <> cProjects) Then Throw Common.CreateArgumentException(NameOf(rgpProjects))
+            If rgpProjects.Length <> cProjects Then Throw Common.CreateArgumentException(NameOf(rgpProjects))
 
             Debug.Assert(rgFirstIndices IsNot Nothing AndAlso rgFirstIndices.Length = cProjects, "null rgFirstIndices or bad-length array")
             Requires.NotNull(rgFirstIndices, NameOf(rgFirstIndices))
-            If (rgFirstIndices.Length <> cProjects) Then Throw Common.CreateArgumentException(NameOf(rgFirstIndices))
+            If rgFirstIndices.Length <> cProjects Then Throw Common.CreateArgumentException(NameOf(rgFirstIndices))
 
             Debug.Assert(rgszMkOldNames IsNot Nothing AndAlso rgszMkOldNames.Length = cFiles, "null rgszMkOldNames or bad-length array")
             Requires.NotNull(rgszMkOldNames, NameOf(rgszMkOldNames))
-            If (rgszMkOldNames.Length <> cFiles) Then Throw Common.CreateArgumentException(NameOf(rgszMkOldNames))
+            If rgszMkOldNames.Length <> cFiles Then Throw Common.CreateArgumentException(NameOf(rgszMkOldNames))
 
             Debug.Assert(rgszMkNewNames IsNot Nothing AndAlso rgszMkNewNames.Length = cFiles, "null rgszMkNewNames or bad-length array")
             Requires.NotNull(rgszMkNewNames, NameOf(rgszMkNewNames))
-            If (rgszMkNewNames.Length <> cFiles) Then Throw Common.CreateArgumentException(NameOf(rgszMkNewNames))
+            If rgszMkNewNames.Length <> cFiles Then Throw Common.CreateArgumentException(NameOf(rgszMkNewNames))
 
             Debug.Assert(rgFlags IsNot Nothing AndAlso rgFlags.Length = cFiles, "null rgFlags or bad-length array")
             Requires.NotNull(rgFlags, NameOf(rgFlags))
-            If (rgFlags.Length <> cFiles) Then Throw Common.CreateArgumentException(NameOf(rgFlags))
+            If rgFlags.Length <> cFiles Then Throw Common.CreateArgumentException(NameOf(rgFlags))
 
             For i As Integer = 0 To cFiles - 1
                 If HasResourceFileExtension(rgszMkNewNames(i)) Then
                     Dim designerEventService As IDesignerEventService = TryCast(ServiceProvider.GetService(GetType(IDesignerEventService)), IDesignerEventService)
-                    Debug.Assert(Not designerEventService Is Nothing)
-                    If (Not designerEventService Is Nothing) Then
+                    Debug.Assert(designerEventService IsNot Nothing)
+                    If designerEventService IsNot Nothing Then
                         For Each host As IDesignerHost In designerEventService.Designers
                             Dim comp As ResourceEditorRootComponent = TryCast(host.RootComponent, ResourceEditorRootComponent)
-                            If (Not comp Is Nothing AndAlso (String.Equals(rgszMkNewNames(i), comp.ResourceFileName, StringComparison.Ordinal) OrElse String.Equals(rgszMkOldNames(i), comp.ResourceFileName, StringComparison.Ordinal))) Then
+                            If comp IsNot Nothing AndAlso (String.Equals(rgszMkNewNames(i), comp.ResourceFileName, StringComparison.Ordinal) OrElse String.Equals(rgszMkOldNames(i), comp.ResourceFileName, StringComparison.Ordinal)) Then
                                 Dim loaderService As IDesignerLoaderService = TryCast(host.GetService(GetType(IDesignerLoaderService)), IDesignerLoaderService)
-                                If (Not loaderService Is Nothing) Then
+                                If loaderService IsNot Nothing Then
                                     comp.RootDesigner.IsInReloading = True
                                     loaderService.Reload()
                                 End If
@@ -230,7 +225,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             'The default view must have the value of Nothing.
             PhysicalViewOut = Nothing
 
-            If (LogicalView.Equals(LOGVIEWID.LOGVIEWID_Primary) OrElse LogicalView.Equals(LOGVIEWID.LOGVIEWID_Designer)) Then
+            If LogicalView.Equals(LOGVIEWID.LOGVIEWID_Primary) OrElse LogicalView.Equals(LOGVIEWID.LOGVIEWID_Designer) Then
                 ' if it's primary or designer, then that's our bread & butter, so return S_OK
                 '
                 Return NativeMethods.S_OK

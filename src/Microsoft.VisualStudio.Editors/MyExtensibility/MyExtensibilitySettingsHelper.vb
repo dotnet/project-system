@@ -18,20 +18,20 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                 _autoRemove = autoRemove
             End Sub
 
-            Public Property AutoAdd() As AssemblyOption
+            Public Property AutoAdd As AssemblyOption
                 Get
                     Return _autoAdd
                 End Get
-                Set(value As AssemblyOption)
+                Set
                     _autoAdd = value
                 End Set
             End Property
 
-            Public Property AutoRemove() As AssemblyOption
+            Public Property AutoRemove As AssemblyOption
                 Get
                     Return _autoRemove
                 End Get
-                Set(value As AssemblyOption)
+                Set
                     _autoRemove = value
                 End Set
             End Property

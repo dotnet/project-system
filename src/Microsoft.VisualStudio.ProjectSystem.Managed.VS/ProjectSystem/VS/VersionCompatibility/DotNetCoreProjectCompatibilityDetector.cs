@@ -21,9 +21,7 @@ using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
-    /// <summary>
-    /// <see cref="IDotNetCoreProjectCompatibilityDetector"/>
-    /// </summary>
+    /// <inheritdoc cref="IDotNetCoreProjectCompatibilityDetector"/>
     [Export(typeof(IDotNetCoreProjectCompatibilityDetector))]
     internal partial class DotNetCoreProjectCompatibilityDetector : IDotNetCoreProjectCompatibilityDetector, IVsSolutionEvents, IVsSolutionLoadEvents, IDisposable
     {
@@ -48,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private readonly IVsService<IVsShell> _vsShellService;
         private RemoteCacheFile? _versionDataCacheFile;
         private uint _solutionCookie = VSConstants.VSCOOKIE_NIL;
-        private DateTime _timeCurVersionDataLastUpdatedUtc = DateTime.MinValue; // Tracks how often we meed to look for new data
+        private DateTime _timeCurVersionDataLastUpdatedUtc = DateTime.MinValue; // Tracks how often we need to look for new data
         private IVsSolution? _vsSolution;
 
         // These are internal for unit testing
@@ -451,7 +449,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 // See if the cache file needs refreshing and if so, kick off a task to do so
                 if (_versionDataCacheFile != null && _versionDataCacheFile.CacheFileIsStale())
                 {
-                    Task noWait = _versionDataCacheFile.TryToUpdateCacheFileAsync(() =>
+                    _ = _versionDataCacheFile.TryToUpdateCacheFileAsync(() =>
                     {
                         // Invalidate the in-memory cached data on success
                         _timeCurVersionDataLastUpdatedUtc = DateTime.MinValue;

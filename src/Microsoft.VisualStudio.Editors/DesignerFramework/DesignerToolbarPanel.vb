@@ -12,7 +12,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
     ''' <summary>
     ''' Host window for MSO toolbars
     ''' </summary>
-    ''' <remarks></remarks>
     Friend Class DesignerToolbarPanel
         Inherits Panel
         Implements IVsToolWindowToolbar
@@ -35,7 +34,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <summary>
         ''' Constructor
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub New()
             MyBase.New()
             Margin = New Padding(0)
@@ -46,7 +44,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' Tell the shell that our toolbar should be the active toolbar
         ''' </summary>
         ''' <param name="h"></param>
-        ''' <remarks></remarks>
         Public Sub Activate(h As IntPtr)
             ' It seems that designers don't set the active secondary toolbar when activated -
             ' this should take care of that!
@@ -59,7 +56,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="uiShell"></param>
         ''' <param name="guid">GUID for the toolbar as specified in the CTC file</param>
         ''' <param name="id">Id for the toolbar as specified in the CTC file</param>
-        ''' <remarks></remarks>
         Public Sub SetToolbar(uiShell As IVsUIShell, guid As Guid, id As UInteger)
             If uiShell Is Nothing Then
                 Throw New ArgumentNullException()
@@ -85,7 +81,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' need to associate the new window handle with the toolbar
         ''' </summary>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Protected Overrides Sub OnHandleCreated(e As EventArgs)
             MyBase.OnHandleCreated(e)
             If _associateToolbarOnHandleCreate Then
@@ -98,7 +93,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' with the toolbar host (and delete the new toolbar host)
         ''' </summary>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Protected Overrides Sub OnHandleDestroyed(e As EventArgs)
             MyBase.OnHandleDestroyed(e)
             If _toolbarHost IsNot Nothing Then
@@ -114,7 +108,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <summary>
         ''' Associate the current window handle with the toolbar host
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub InternalAssociateToolbarWithHandle()
             Debug.Assert(IsHandleCreated, "No handle created when calling InternaleAssociateToolbarWithHandle")
             If _uiShell IsNot Nothing Then
@@ -130,7 +123,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' Tell the toolbar that we host that it needs to update its size
         ''' </summary>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Protected Overrides Sub OnSizeChanged(e As EventArgs)
             MyBase.OnSizeChanged(e)
             If _toolbarHost IsNot Nothing Then
@@ -143,7 +135,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' WndProc for the DesignerToolbarPanel
         ''' </summary>
         ''' <param name="m"></param>
-        ''' <remarks></remarks>
         Protected Overrides Sub WndProc(ByRef m As Message)
             If m.Msg = Win32Constant.WM_SETFOCUS Then
                 'The DesignerToolbarPanel should never get focus, but the hosted
@@ -175,11 +166,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' The toolbar's border is the same as our client rectangle
         ''' </summary>
         ''' <param name="borders"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function GetBorder(borders() As OLE.Interop.RECT) As Integer Implements IVsToolWindowToolbar.GetBorder
-            Dim rect As Drawing.Rectangle = Bounds
-
             Debug.Assert(borders.Length = 1)
             borders(0).left = ClientRectangle.Left
             borders(0).top = ClientRectangle.Top
@@ -193,8 +180,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' Set our size based on what the toolbar wants
         ''' </summary>
         ''' <param name="borders"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function SetBorderSpace(borders() As OLE.Interop.RECT) As Integer Implements IVsToolWindowToolbar.SetBorderSpace
             Debug.Assert(borders IsNot Nothing)
             Debug.Assert(borders.Length = 1)
@@ -210,7 +195,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' Cleanup
         ''' </summary>
         ''' <param name="disposing"></param>
-        ''' <remarks></remarks>
         Protected Overrides Sub Dispose(disposing As Boolean)
             If disposing Then
                 If _toolbarHost IsNot Nothing Then

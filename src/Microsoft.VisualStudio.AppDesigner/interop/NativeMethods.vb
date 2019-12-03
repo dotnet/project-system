@@ -16,10 +16,10 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
         Private Const VB_COMPILER_GUID As String = "019971d6-4685-11d2-b48a-0000f87572eb"
         Public Shared ReadOnly VBCompilerGuid As Guid = New Guid(VB_COMPILER_GUID)
 
-        '/ <summary>
-        '/     Handle type for HDC's that count against the Win98 limit of five DC's.  HDC's
-        '/     which are not scarce, such as HDC's for bitmaps, are counted as GDIHANDLE's.
-        '/ </summary>
+        ''' <summary>
+        '''     Handle type for HDC's that count against the Win98 limit of five DC's.  HDC's
+        '''     which are not scarce, such as HDC's for bitmaps, are counted as GDIHANDLE's.
+        ''' </summary>
         Public Shared InvalidIntPtr As IntPtr = New IntPtr(-1)
         Public Const S_OK As Integer = &H0
         Public Const S_FALSE As Integer = &H1
@@ -75,7 +75,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
         Public Const WM_UPDATEUISTATE As Integer = &H128
         'Public Const WM_CTLCOLOR As Integer = &H19
         Public Const WM_SETREDRAW As Integer = &HB
-        Public Const LVM_SETCOLUMNWIDTH As Integer = (&H1000 + 30)
+        Public Const LVM_SETCOLUMNWIDTH As Integer = &H1000 + 30
         Public Const LVSCW_AUTOSIZE As Integer = -1
         Public Const LVSCW_AUTOSIZE_USEHEADER As Integer = -2
 
@@ -93,21 +93,21 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
 #End If
 
 
-            '/ <include file='doc\NativeMethods.uex' path='docs/doc[@for="NativeMethods.ConnectionPointCookie.ConnectionPointCookie"]/*' />
-            '/ <devdoc>
-            '/ Creates a connection point to of the given interface type.
-            '/ which will call on a managed code sink that implements that interface.
-            '/ </devdoc>
+            ' <include file='doc\NativeMethods.uex' path='docs/doc[@for="NativeMethods.ConnectionPointCookie.ConnectionPointCookie"]/*' />
+            ' <devdoc>
+            ' Creates a connection point to of the given interface type.
+            ' which will call on a managed code sink that implements that interface.
+            ' </devdoc>
             Public Sub New([source] As Object, sink As Object, eventInterface As Type)
                 MyClass.New([source], sink, eventInterface, True)
             End Sub 'New
 
 
-            '/ <include file='doc\NativeMethods.uex' path='docs/doc[@for="NativeMethods.ConnectionPointCookie.ConnectionPointCookie1"]/*' />
-            '/ <devdoc>
-            '/ Creates a connection point to of the given interface type.
-            '/ which will call on a managed code sink that implements that interface.
-            '/ </devdoc>
+            ' <include file='doc\NativeMethods.uex' path='docs/doc[@for="NativeMethods.ConnectionPointCookie.ConnectionPointCookie1"]/*' />
+            ' <devdoc>
+            ' Creates a connection point to of the given interface type.
+            ' which will call on a managed code sink that implements that interface.
+            ' </devdoc>
             Public Sub New([source] As Object, sink As Object, eventInterface As Type, throwException As Boolean)
                 Dim ex As Exception = Nothing
                 If sink Is Nothing OrElse Not eventInterface.IsInstanceOfType(sink) Then
@@ -174,21 +174,21 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
             End Sub 'New
 
 
-            '/ <include file='doc\NativeMethods.uex' path='docs/doc[@for="NativeMethods.ConnectionPointCookie.Disconnect"]/*' />
-            '/ <devdoc>
-            '/ Disconnect the current connection point.  If the object is not connected,
-            '/ this method will do nothing.
-            '/ </devdoc>
+            ' <include file='doc\NativeMethods.uex' path='docs/doc[@for="NativeMethods.ConnectionPointCookie.Disconnect"]/*' />
+            ' <devdoc>
+            ' Disconnect the current connection point.  If the object is not connected,
+            ' this method will do nothing.
+            ' </devdoc>
             Public Overloads Sub Disconnect()
                 Disconnect(False)
             End Sub 'Disconnect
 
 
-            '/ <include file='doc\NativeMethods.uex' path='docs/doc[@for="NativeMethods.ConnectionPointCookie.Disconnect1"]/*' />
-            '/ <devdoc>
-            '/ Disconnect the current connection point.  If the object is not connected,
-            '/ this method will do nothing.
-            '/ </devdoc>
+            ' <include file='doc\NativeMethods.uex' path='docs/doc[@for="NativeMethods.ConnectionPointCookie.Disconnect1"]/*' />
+            ' <devdoc>
+            ' Disconnect the current connection point.  If the object is not connected,
+            ' this method will do nothing.
+            ' </devdoc>
             Public Overloads Sub Disconnect(release As Boolean)
                 If _cookie <> 0 Then
                     Try
@@ -215,8 +215,8 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
             End Sub 'Disconnect
 
 
-            '/ <include file='doc\NativeMethods.uex' path='docs/doc[@for="NativeMethods.ConnectionPointCookie.Finalize"]/*' />
-            '/ <internalonly/>
+            ' <include file='doc\NativeMethods.uex' path='docs/doc[@for="NativeMethods.ConnectionPointCookie.Finalize"]/*' />
+            ' <internalonly/>
             Protected Overrides Sub Finalize()
 
 #If DEBUG Then
@@ -235,83 +235,81 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
         '
         'Public Declare Unicode Sub StrongNameFreeBuffer Lib "mscoree.dll" (ppbKeyBlob As IntPtr)
 
-        <PreserveSig()> Public Declare Function _
+        <PreserveSig> Public Declare Function _
             SetParent _
                 Lib "user32" (hwnd As IntPtr, hWndParent As IntPtr) As IntPtr
 
 
-        <PreserveSig()> Public Declare Function _
+        <PreserveSig> Public Declare Function _
             GetParent _
                 Lib "user32" (hwnd As IntPtr) As IntPtr
 
-        <PreserveSig()> Public Declare Function _
+        <PreserveSig> Public Declare Function _
             GetFocus _
                 Lib "user32" () As IntPtr
 
-        <PreserveSig()> Public Declare Function _
+        <PreserveSig> Public Declare Function _
             SetFocus _
                 Lib "user32" (hwnd As IntPtr) As Integer
 
-        <PreserveSig()> Public Declare Auto Function _
+        <PreserveSig> Public Declare Auto Function _
             SendMessage _
                 Lib "user32" (hwnd As HandleRef, msg As Integer, wParam As Integer, lParam As Integer) As IntPtr
 
-        <PreserveSig()> Public Declare Auto Function _
+        <PreserveSig> Public Declare Auto Function _
             SendMessage _
                 Lib "user32" (hwnd As HandleRef, msg As Integer, wParam As Integer, ByRef lParam As TVITEM) As IntPtr
 
-        <PreserveSig()> Public Declare Auto Function _
+        <PreserveSig> Public Declare Auto Function _
             SendMessage _
                 Lib "user32" (hwnd As IntPtr, msg As Integer, wParam As IntPtr, lParam As IntPtr) As IntPtr
 
-        <PreserveSig()> Public Declare Auto Function _
+        <PreserveSig> Public Declare Auto Function _
             PostMessage _
                 Lib "user32" (hwnd As IntPtr, msg As Integer, wParam As Integer, lParam As Integer) As IntPtr
 
-        <PreserveSig()> Public Declare Auto Function _
+        <PreserveSig> Public Declare Auto Function _
             WaitMessage _
                 Lib "user32" () As Boolean
 
-        <PreserveSig()> Public Declare Auto Function _
+        <PreserveSig> Public Declare Auto Function _
             IsDialogMessage _
                 Lib "user32" (hwnd As HandleRef, ByRef msg As MSG) As Boolean
 
-        <PreserveSig()> Public Declare Auto Function _
+        <PreserveSig> Public Declare Auto Function _
             TranslateMessage _
                 Lib "user32" (ByRef msg As MSG) As Boolean
 
-        <PreserveSig()> Public Declare Auto Function _
+        <PreserveSig> Public Declare Auto Function _
             GetKeyState _
                 Lib "user32" (nVirtKey As Keys) As Short
 
         ''' <summary>
         ''' The GetNextDlgTabItem function retrieves a handle to the first control that has the WS_TABSTOP style that precedes (or follows) the specified control. 
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        <PreserveSig()> Public Declare Auto Function _
+        <PreserveSig> Public Declare Auto Function _
             GetNextDlgTabItem _
                 Lib "user32" (hDlg As IntPtr, hCtl As IntPtr, bPrevious As Boolean) As IntPtr
 
 
-        <PreserveSig()>
+        <PreserveSig>
         Public Declare Auto Function GetWindow Lib "user32" (Hwnd As IntPtr, uCmd As UInteger) As IntPtr
 
-        <PreserveSig()>
+        <PreserveSig>
         Public Declare Auto Function DragQueryFile Lib "shell32" (hDrop As IntPtr, iFile As Integer, lpszFile As String, cch As Integer) As Integer
 
-        <PreserveSig()>
+        <PreserveSig>
         Public Declare Function GetUserDefaultLCID Lib "kernel32" () As UInteger
 
-        <PreserveSig()>
+        <PreserveSig>
         Public Declare Function GetTopWindow Lib "user32" (Hwnd As IntPtr) As IntPtr
 
-        <PreserveSig()>
+        <PreserveSig>
         Public Declare Auto Function SetWindowLong Lib "user32" (hWnd As IntPtr, Index As Integer, Value As IntPtr) As IntPtr
-        <PreserveSig()>
+        <PreserveSig>
         Public Declare Auto Function GetWindowLong Lib "user32" (Hwnd As IntPtr, Index As Integer) As IntPtr
 
-        <PreserveSig()>
+        <PreserveSig>
         Public Declare Auto Function GetWindowText Lib "user32" (hWnd As IntPtr, lpString As String, nMaxCount As Integer) As Integer
 
         <DllImport("user32", CharSet:=CharSet.Auto)>
@@ -333,10 +331,10 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
             Public bottom As Integer
         End Structure
 
-        <PreserveSig()>
+        <PreserveSig>
         Public Declare Auto Function IsChild Lib "user32" (hWndParent As IntPtr, hWnd As IntPtr) As Boolean
 
-        <PreserveSig()>
+        <PreserveSig>
         Public Declare Auto Function EnableWindow Lib "user32" (hWnd As IntPtr, bEnable As Boolean) As Boolean
 
         '<PreserveSig()> _
@@ -346,10 +344,10 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
         'Public Declare Auto Function SetWindowPos Lib "user32" (Hwnd As IntPtr, HwndInsertAfter As IntPtr, x As Integer, _
         '    y As Integer, cx As Integer, cy As Integer, flags As Integer) As Boolean
 
-        <PreserveSig()>
+        <PreserveSig>
         Public Declare Auto Function SystemParametersInfo Lib "user32" (uiAction As UInteger, uiParam As UInteger, pvParam As IntPtr, fWinIni As UInteger) As Integer
 
-        <PreserveSig()>
+        <PreserveSig>
         Public Declare Auto Function MsgWaitForMultipleObjects Lib "user32" (nCount As Integer, pHandles As IntPtr, fWaitAll As Boolean, dwMilliSeconds As Integer, dwWakeMask As Integer) As Integer
 
         Public Const GWL_EXSTYLE As Integer = -20
@@ -396,18 +394,18 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
 
     End Class 'NativeMethods
 
-    '//
-    '// ILangPropertyProvideBatchUpdate
-    '//
-    <ComImport(), Guid("F8828A38-5208-4497-991A-F8034C8D5A69"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)>
+    '
+    ' ILangPropertyProvideBatchUpdate
+    '
+    <ComImport, Guid("F8828A38-5208-4497-991A-F8034C8D5A69"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)>
     Public Interface ILangPropertyProvideBatchUpdate
         Sub BeginBatch()
         Sub EndBatch()
-        Sub IsBatchModeEnabled(<[In](), Out()> ByRef BatchModeEnabled As Boolean)
+        Sub IsBatchModeEnabled(<[In], Out> ByRef BatchModeEnabled As Boolean)
         Sub PushOptionsToCompiler(dispid As UInteger)
     End Interface
 
-    <ComImport()>
+    <ComImport>
     <Guid("E5CB7A31-7512-11d2-89CE-0080C792E5D8")>
     <TypeLibType(TypeLibTypeFlags.FCanCreate)>
     <ClassInterface(ClassInterfaceType.None)>

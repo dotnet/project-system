@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.Runtime.Serialization
 
@@ -9,8 +9,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     '''   intended to be shown to the end user in an error dialog, rather than to be
     '''   programmatically manipulated (although that of course is possible).
     ''' </summary>
-    ''' <remarks></remarks>
-    <Serializable()>
+    <Serializable>
     Public Class PropertyPageException
         Inherits ApplicationException
 
@@ -51,11 +50,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             MyBase.New(Info, Context)
         End Sub
 
-        Public Property ShowHeaderAndFooterInErrorControl() As Boolean
+        Public Property ShowHeaderAndFooterInErrorControl As Boolean
             Get
                 Return _showHeaderAndFooterInErrorControl
             End Get
-            Set(value As Boolean)
+            Set
                 _showHeaderAndFooterInErrorControl = value
             End Set
         End Property

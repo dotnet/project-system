@@ -177,7 +177,7 @@ Root (flags: {ProjectRoot})
 
             tree = tree.SetIcon(icon);
 
-            var result = propertiesProvider.ChangePropertyValuesForEntireTree(tree);
+            propertiesProvider.ChangePropertyValuesForEntireTree(tree);
 
             Assert.Same(icon, tree.Icon);
         }

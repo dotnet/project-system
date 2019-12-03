@@ -11,7 +11,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
-    /// <inheritdoc />
+    /// <inheritdoc cref="IAggregateDependenciesSnapshotProvider"/>
     [Export(typeof(IAggregateDependenciesSnapshotProvider))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     internal sealed class AggregateDependenciesSnapshotProvider : IAggregateDependenciesSnapshotProvider
@@ -42,13 +42,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             _snapshotProviderByPath = ImmutableDictionary<string, DependenciesSnapshotProvider>.Empty.WithComparers(StringComparers.Paths);
         }
 
-        /// <inheritdoc />
         public event EventHandler<SnapshotChangedEventArgs>? SnapshotChanged;
 
-        /// <inheritdoc />
         public event EventHandler<SnapshotProviderUnloadingEventArgs>? SnapshotProviderUnloading;
 
-        /// <inheritdoc />
         public IDisposable RegisterSnapshotProvider(DependenciesSnapshotProvider snapshotProvider)
         {
             Requires.NotNull(snapshotProvider, nameof(snapshotProvider));
@@ -118,7 +115,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             }
         }
 
-        /// <inheritdoc />
         public DependenciesSnapshot? GetSnapshot(string projectFilePath)
         {
             Requires.NotNullOrEmpty(projectFilePath, nameof(projectFilePath));
@@ -128,7 +124,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             return provider?.CurrentSnapshot;
         }
 
-        /// <inheritdoc />
         public TargetedDependenciesSnapshot? GetSnapshot(IDependency dependency)
         {
             DependenciesSnapshot? snapshot = GetSnapshot(dependency.FullPath);
@@ -149,7 +144,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             return snapshot.DependenciesByTargetFramework[targetFramework];
         }
 
-        /// <inheritdoc />
         public IReadOnlyCollection<DependenciesSnapshot> GetSnapshots()
         {
             return _snapshotProviderByPath.Values.Select(provider => provider.CurrentSnapshot).ToList();

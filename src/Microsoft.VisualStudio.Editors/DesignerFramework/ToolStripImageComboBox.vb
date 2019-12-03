@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Explicit On
 Option Strict On
@@ -12,7 +12,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
     ''' This class is a toolstrip item that contains a combobox which is capable
     '''   of holding images and having a different font for each entry in it.
     ''' </summary>
-    ''' <remarks></remarks>
     Friend Class ToolStripImageComboBox
         Inherits ToolStripComboBox
 
@@ -40,7 +39,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' The collection class that we return for the Items property.  This simply
         '''   makes it possible to use code like ImageComboBox.Items.Add(...)
         ''' </summary>
-        ''' <remarks></remarks>
         Friend Shadows Class ObjectCollection
             'The actual underlying combobox
             Private m_UnderlyingComboBox As ComboBox
@@ -50,7 +48,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' Constructor
             ''' </summary>
             ''' <param name="UnderlyingComboBox">The actual underlying combobox control that we're wrapping with our collection</param>
-            ''' <remarks></remarks>
             Friend Sub New(ByVal UnderlyingComboBox As ComboBox)
                 Debug.Assert(UnderlyingComboBox IsNot Nothing)
                 m_UnderlyingComboBox = UnderlyingComboBox
@@ -64,7 +61,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' <param name="ItemImage">The image for this combobox entry (Nothing is acceptable)</param>
             ''' <param name="UserData">[Optional] User-defined data for this combobox entry</param>
             ''' <returns>The newly-inserted ImageComboBoxItem</returns>
-            ''' <remarks></remarks>
             Public Function Add(ByVal ItemText As String, ByVal ItemImage As Image, Optional ByVal UserData As Object = Nothing) As ImageComboBoxItem
                 Dim Item As New ImageComboBoxItem(m_UnderlyingComboBox, ItemText, ItemImage, UserData)
                 m_UnderlyingComboBox.Items.Add(Item)
@@ -76,8 +72,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' Retrieves an item from the collection
             ''' </summary>
             ''' <param name="Index">Zero-based index of the item</param>
-            ''' <value></value>
-            ''' <remarks></remarks>
             Default Public ReadOnly Property Item(ByVal Index As Integer) As ImageComboBoxItem
                 Get
                     Return DirectCast(m_UnderlyingComboBox.Items(Index), ImageComboBoxItem)
@@ -88,8 +82,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' <summary>
             ''' Count of the number of items in this collection
             ''' </summary>
-            ''' <value></value>
-            ''' <remarks></remarks>
             Public ReadOnly Property Count() As Integer
                 Get
                     Return m_UnderlyingComboBox.Items.Count
@@ -100,8 +92,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' <summary>
             ''' Gets an enumerator for this collection
             ''' </summary>
-            ''' <returns></returns>
-            ''' <remarks></remarks>
             Public Function GetEnumerator() As System.Collections.IEnumerator
                 Return m_UnderlyingComboBox.Items.GetEnumerator()
             End Function
@@ -115,7 +105,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <summary>
         ''' Represents a single item in the image combo box
         ''' </summary>
-        ''' <remarks></remarks>
         Public Class ImageComboBoxItem
             'Backing fields for public properties
             Private m_Text As String
@@ -133,7 +122,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' <param name="Text">The text for this combobox entry</param>
             ''' <param name="Image">The image for this combobox entry (Nothing is acceptable)</param>
             ''' <param name="UserData">[Optional] User-defined data for this combobox entry</param>
-            ''' <remarks></remarks>
             Public Sub New(ByVal Parent As ComboBox, ByVal Text As String, ByVal Image As Image, Optional ByVal UserData As Object = Nothing)
                 Debug.Assert(Parent IsNot Nothing)
                 m_Text = Text
@@ -146,8 +134,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' <summary>
             ''' Converts the item to a string.
             ''' </summary>
-            ''' <returns></returns>
-            ''' <remarks></remarks>
             Public Overrides Function ToString() As String
                 Return m_Text
             End Function
@@ -156,8 +142,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' <summary>
             ''' The text for this combobox entry
             ''' </summary>
-            ''' <value></value>
-            ''' <remarks></remarks>
             Public Property Text() As String
                 Get
                     Return m_Text
@@ -172,8 +156,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' <summary>
             ''' The image for this combobox entry.  May be Nothing.
             ''' </summary>
-            ''' <value></value>
-            ''' <remarks></remarks>
             Public Property Image() As Image
                 Get
                     Return m_Image
@@ -190,8 +172,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' <summary>
             ''' User-defined data for this combobox entry.  May be Nothing.
             ''' </summary>
-            ''' <value></value>
-            ''' <remarks></remarks>
             Public Property UserData() As Object
                 Get
                     Return m_UserData
@@ -205,8 +185,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' <summary>
             ''' The font for this combobox entry.
             ''' </summary>
-            ''' <value></value>
-            ''' <remarks></remarks>
             Public Property Font() As Font
                 Get
                     If m_Font Is Nothing Then
@@ -229,7 +207,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             '''   is, causes the combobox to refresh itself (because something in
             '''   the item has changed)
             ''' </summary>
-            ''' <remarks></remarks>
             Private Sub RefreshComboBoxIfShowingThisItem()
                 If m_Parent.DroppedDown OrElse m_Parent.SelectedItem Is Me Then
                     m_Parent.Refresh()
@@ -245,7 +222,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <summary>
         ''' Constructor.
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub New()
             MyBase.New()
 
@@ -263,7 +239,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <summary>
         ''' Items property.  Allows stuff like ImageComboBox.Items.Add(...)
         ''' </summary>
-        ''' <remarks></remarks>
         <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)> Public Shadows ReadOnly Property Items() As ObjectCollection
             Get
                 Return m_ImageComboItems
@@ -276,8 +251,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '''   size.
         ''' </summary>
         ''' <param name="ConstrainingSize">The size that must be fit into.</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Overrides Function GetPreferredSize(ByVal ConstrainingSize As Size) As Size
             Dim BasePreferredSize As Size = MyBase.GetPreferredSize(ConstrainingSize)
 
@@ -326,7 +299,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <summary>
         ''' Event handler for when the combobox is dropped down.
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub ImageComboBox_DropDown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.DropDown
             SetDropdownHeight()
         End Sub
@@ -337,7 +309,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub ImageComboBox_MeasureItem(ByVal sender As Object, ByVal e As System.Windows.Forms.MeasureItemEventArgs) Handles UnderlyingComboBox.MeasureItem
             If e.Index >= 0 Then
                 Dim Size As Size = GetItemSize(e.Index, e.Graphics)
@@ -352,7 +323,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub ImageComboBox_DrawItem(ByVal sender As Object, ByVal e As System.Windows.Forms.DrawItemEventArgs) Handles UnderlyingComboBox.DrawItem
             'Index = 0 if there are no entries
             If e.Index >= 0 Then
@@ -389,8 +359,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="Index">Index of the item to measure</param>
         ''' <param name="Graphics">The graphics object to use for measuring</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function GetItemSize(ByVal Index As Integer, ByVal Graphics As Graphics) As Size
             Dim Item As ImageComboBoxItem = Items(Index)
             Dim TextSize As SizeF = Graphics.MeasureString(Item.Text, Item.Font, New PointF(0, 0), StringFormat.GenericDefault)

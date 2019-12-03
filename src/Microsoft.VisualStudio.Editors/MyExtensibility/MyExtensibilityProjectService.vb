@@ -177,7 +177,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' this will be __VSHPROPID2.VSHPROPID_AddItemTemplatesGuid, or __VSHPROPID.VSHPROPID_TypeGuid,
         ''' or EnvDTE.Project.Kind.
         ''' </summary>
-        Private ReadOnly Property ProjectTypeID() As String
+        Private ReadOnly Property ProjectTypeID As String
             Get
                 If _projectTypeID Is Nothing Then
                     Dim projGuid As Guid = Guid.Empty
@@ -287,12 +287,12 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                 Dim addExtensionDialog As AssemblyOptionDialog =
                     AssemblyOptionDialog.GetAssemblyOptionDialog(
                     assemblyFullName, _vbPackage, extensionTemplates, AddRemoveAction.Add)
-                addExtensions = (addExtensionDialog.ShowDialog() = DialogResult.Yes)
+                addExtensions = addExtensionDialog.ShowDialog() = DialogResult.Yes
                 If addExtensionDialog.OptionChecked Then
                     _extensibilitySettings.SetAssemblyAutoAdd(assemblyFullName, addExtensions)
                 End If
             Else
-                addExtensions = (assemblyOption = MyExtensibility.AssemblyOption.Yes)
+                addExtensions = assemblyOption = MyExtensibility.AssemblyOption.Yes
             End If
 
             If addExtensions Then
@@ -369,12 +369,12 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                 Dim removeExtensionDialog As AssemblyOptionDialog =
                     AssemblyOptionDialog.GetAssemblyOptionDialog(
                     assemblyFullName, _vbPackage, itemList, AddRemoveAction.Remove)
-                removeExtensions = (removeExtensionDialog.ShowDialog() = DialogResult.Yes)
+                removeExtensions = removeExtensionDialog.ShowDialog() = DialogResult.Yes
                 If removeExtensionDialog.OptionChecked Then
                     _extensibilitySettings.SetAssemblyAutoRemove(assemblyFullName, removeExtensions)
                 End If
             Else
-                removeExtensions = (assemblyOption = MyExtensibility.AssemblyOption.Yes)
+                removeExtensions = assemblyOption = MyExtensibility.AssemblyOption.Yes
             End If
 
             If removeExtensions Then
@@ -562,32 +562,32 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                 _changeType = actionType
             End Sub
 
-            Public ReadOnly Property AssemblyName() As String
+            Public ReadOnly Property AssemblyName As String
                 Get
                     Return _assemblyName
                 End Get
             End Property
 
-            Public ReadOnly Property ChangeType() As AddRemoveAction
+            Public ReadOnly Property ChangeType As AddRemoveAction
                 Get
                     Return _changeType
                 End Get
             End Property
 
-            Public Property ExtensionTemplates() As List(Of MyExtensionTemplate)
+            Public Property ExtensionTemplates As List(Of MyExtensionTemplate)
                 Get
                     Return _extensionTemplates
                 End Get
-                Set(value As List(Of MyExtensionTemplate))
+                Set
                     _extensionTemplates = value
                 End Set
             End Property
 
-            Public Property ExtensionProjectItemGroups() As List(Of MyExtensionProjectItemGroup)
+            Public Property ExtensionProjectItemGroups As List(Of MyExtensionProjectItemGroup)
                 Get
                     Return _extensionProjectFiles
                 End Get
-                Set(value As List(Of MyExtensionProjectItemGroup))
+                Set
                     _extensionProjectFiles = value
                 End Set
             End Property

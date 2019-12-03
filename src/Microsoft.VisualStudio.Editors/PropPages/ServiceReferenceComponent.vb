@@ -25,11 +25,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         <VBDescription(My.Resources.Microsoft_VisualStudio_Editors_Designer.ConstantResourceIDs.PPG_ServiceReferenceNamespaceDescription)>
         <MergableProperty(False)>
         <HelpKeyword("ServiceReference Properties.Namespace")>
-        Public Property [Namespace]() As String
+        Public Property [Namespace] As String
             Get
                 Return _referenceGroup.GetNamespace()
             End Get
-            Set(value As String)
+            Set
                 _referenceGroup.SetNamespace(value)
             End Set
         End Property
@@ -43,7 +43,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         <VBDescription(My.Resources.Microsoft_VisualStudio_Editors_Designer.ConstantResourceIDs.PPG_ServiceReferenceUrlDescription)>
         <HelpKeyword("ServiceReference Properties.ServiceReferenceURL")>
         <MergableProperty(False)>
-        Public Property ServiceReferenceURL() As String
+        Public Property ServiceReferenceURL As String
             Get
                 If _referenceGroup.GetReferenceCount() = 1 Then
                     Return _referenceGroup.GetReferenceUrl(0)
@@ -54,7 +54,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 End If
                 Return String.Empty
             End Get
-            Set(value As String)
+            Set
                 value = value.Trim()
                 Dim currentCount As Integer = _referenceGroup.GetReferenceCount()
                 If currentCount = 1 Then
@@ -88,9 +88,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Service reference instance
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Friend ReadOnly Property ReferenceGroup() As IVsWCFReferenceGroup
+        Friend ReadOnly Property ReferenceGroup As IVsWCFReferenceGroup
             Get
                 Return _referenceGroup
             End Get
@@ -99,8 +97,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Remove the service reference...
         ''' </summary>
-        ''' <return></return>
-        ''' <remarks></remarks>
         Private Sub Remove() Implements IReferenceComponent.Remove
             _collection.Remove(_referenceGroup)
         End Sub
@@ -161,8 +157,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''    - Makes the Metadata Location property readonly.
         ''' </summary>
         ''' <param name="orig">The original property list</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function GetModifiedPropertyList(orig As PropertyDescriptorCollection) As PropertyDescriptorCollection
             Dim modified As PropertyDescriptor() = New PropertyDescriptor(orig.Count - 1) {}
 

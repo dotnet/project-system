@@ -12,7 +12,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// This is true for a project with an explicit "TargetFrameworks" property, but no "TargetFrameworkMoniker" or "TargetFramework" property.
         /// </summary>
         /// <param name="projectConfiguration"></param>
-        /// <returns></returns>
         internal static bool IsCrossTargeting(this ProjectConfiguration projectConfiguration)
         {
             return projectConfiguration.Dimensions.ContainsKey(ConfigurationGeneral.TargetFrameworkProperty);

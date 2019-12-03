@@ -11,8 +11,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
     ''' for different configurations, to enable undo/redo in "All configurations" and 
     ''' "All Platforms" modes.
     ''' </summary>
-    ''' <remarks></remarks>
-    <Serializable()>
+    <Serializable>
     Public Class MultipleValuesStore
 
         'Note: the sizes of these arrays are all the same
@@ -31,7 +30,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="Values">The values to persist</param>
         ''' <param name="SelectedConfigName">The selected configuration in the drop-down combobox.  Empty string indicates "All Configurations".</param>
         ''' <param name="SelectedPlatformName">The selected platform in the drop-down combobox.  Empty string indicates "All Platforms".</param>
-        ''' <remarks></remarks>
         Public Sub New(VsCfgProvider As IVsCfgProvider2, Objects() As Object, Values() As Object, SelectedConfigName As String, SelectedPlatformName As String)
             Requires.NotNull(Values, NameOf(Values))
             Requires.NotNull(Objects, NameOf(Objects))
@@ -78,8 +76,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         '''   configuration names and platforms.
         ''' </summary>
         ''' <param name="VsCfgProvider"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function GetObjects(VsCfgProvider As IVsCfgProvider2) As Object()
             Debug.Assert(ConfigNames IsNot Nothing AndAlso PlatformNames IsNot Nothing AndAlso Values IsNot Nothing)
             Debug.Assert(Values.Length = ConfigNames.Length AndAlso ConfigNames.Length = PlatformNames.Length, "Huh?")

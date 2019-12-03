@@ -76,7 +76,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '''     Creates a new editor factory.
         ''' </summary>
         Public Sub New(DesignerLoaderType As Type)
-            Debug.Assert(Not DesignerLoaderType Is Nothing)
+            Debug.Assert(DesignerLoaderType IsNot Nothing)
             _designerLoaderType = DesignerLoaderType
         End Sub
 
@@ -94,8 +94,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <summary>
         ''' Creates a new native TextBuffer by CoCreating it from COM.
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Protected Function CreateNewTextStreamBuffer() As IVsTextStream
             Dim LocalRegistry As ILocalRegistry = CType(_serviceProvider.GetService(GetType(ILocalRegistry)), ILocalRegistry)
             Dim TextStreamInstance As IVsTextStream = Nothing
@@ -135,8 +133,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '''   compatible, it uses that.  Otherwise it creates a new native TextBuffer.
         ''' </summary>
         ''' <param name="ExistingDocData">The existing DocData pointer, if any</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Protected Overridable Function GetOrCreateDocDataForNewEditor(ExistingDocData As Object) As Object
             Dim TextStreamInstance As IVsTextStream
 
@@ -166,7 +162,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' Called in base classes when the editor factory is sited.  Before this time, ServiceProvider will not be available (and
         '''   should not be assumed afterwards).
         ''' </summary>
-        ''' <remarks></remarks>
         Protected Overridable Sub OnSited()
         End Sub
 
@@ -174,20 +169,17 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <summary>
         ''' Provides the (constant) GUID for the subclassed editor factory.
         ''' </summary>
-        ''' <value></value>
         ''' <remarks>
         ''' Must be overridden.  Be sure to use the same GUID on the GUID attribute
         '''   attached to the inheriting class.
         ''' </remarks>
-        Protected MustOverride ReadOnly Property EditorGuid() As Guid
+        Protected MustOverride ReadOnly Property EditorGuid As Guid
 
         ''' <summary>
         ''' Provides the (constant) GUID for the command UI.  This is the guid used in the
         '''   CTC file for keybindings, toolbars, etc.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Protected MustOverride ReadOnly Property CommandUIGuid() As Guid
+        Protected MustOverride ReadOnly Property CommandUIGuid As Guid
 
 
 #Region "Private implementation"
@@ -280,10 +272,10 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     FCanceled = 0
                 End If
 
-                If Not (DocView Is Nothing) Then
+                If DocView IsNot Nothing Then
                     DocViewPtr = Marshal.GetIUnknownForObject(DocView)
                 End If
-                If Not (DocData Is Nothing) Then
+                If DocData IsNot Nothing Then
                     DocDataPtr = Marshal.GetIUnknownForObject(DocData)
                 End If
                 Return VSConstants.S_OK
@@ -309,7 +301,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="Caption"></param>
         ''' <param name="CmdUIGuid"></param>
         ''' <param name="Canceled"></param>
-        ''' <remarks></remarks>
         Protected Overridable Sub CreateEditorInstance(VsCreateEditorFlags As UInteger,
                 FileName As String,
                 PhysicalView As String,
@@ -351,8 +342,9 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
                     'Site the TextStream
                     If ExistingDocData Is Nothing Then
-                        If TypeOf NewDocData Is IObjectWithSite Then
-                            CType(NewDocData, IObjectWithSite).SetSite(_site)
+                        Dim objectWithSite = TryCast(NewDocData, IObjectWithSite)
+                        If objectWithSite IsNot Nothing Then
+                            objectWithSite.SetSite(_site)
                         End If
                     End If
 
@@ -366,7 +358,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     If DesignerLoaderObject Is Nothing Then
                         Debug.Fail("DesignerService.CreateDesignerLoader() returned Nothing")
                     End If
-                    If Not TypeOf (DesignerLoaderObject) Is BaseDesignerLoader Then
+                    If Not TypeOf DesignerLoaderObject Is BaseDesignerLoader Then
                         Debug.Fail("DesignerLoader was of an unexpected type.  This likely means that Microsoft.VisualStudio.Editors.dll was " _
                             & "loaded twice from two different locations (or from the same location but one with 8.3 and the other long paths).  " _
                             & vbCrLf & DesignerLoaderObject.GetType.AssemblyQualifiedName)
@@ -382,7 +374,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     '... Get a managed Designer (this will expose an IVsWindowPane to the shell)
                     Dim OleProvider As IServiceProvider = CType(_serviceProvider.GetService(GetType(IServiceProvider)), IServiceProvider)
                     Dim Designer As IVSMDDesigner = DesignerService.CreateDesigner(OleProvider, DesignerLoader)
-                    Debug.Assert(Not (Designer Is Nothing), "Designer service should have thrown if it had a problem.")
+                    Debug.Assert(Designer IsNot Nothing, "Designer service should have thrown if it had a problem.")
 
                     'Set the out params
                     DocView = Designer.View 'Gets the object that can support IVsWindowPane
@@ -392,7 +384,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     '  read only or not)
                     Dim CaptionReadOnlyStatus As BaseDesignerLoader.EditorCaptionState = BaseDesignerLoader.EditorCaptionState.NotReadOnly
                     Try
-                        If ((New FileInfo(FileName)).Attributes And FileAttributes.ReadOnly) <> 0 Then
+                        If (New FileInfo(FileName).Attributes And FileAttributes.ReadOnly) <> 0 Then
                             CaptionReadOnlyStatus = BaseDesignerLoader.EditorCaptionState.ReadOnly
                         End If
                     Catch ex As Exception When ReportWithoutCrash(ex, "Failed to get file read-only status", NameOf(BaseEditorFactory))
@@ -457,11 +449,10 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <summary>
         ''' Returns the ServiceProvider
         ''' </summary>
-        ''' <value></value>
         ''' <remarks>
         ''' Will not be available before OnSited is called.
         ''' </remarks>
-        Protected ReadOnly Property ServiceProvider() As Shell.ServiceProvider
+        Protected ReadOnly Property ServiceProvider As Shell.ServiceProvider
             Get
                 Return _serviceProvider
             End Get
@@ -480,7 +471,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' Called by the VS shell when it first initializes us.  
         ''' </summary>
         ''' <param name="Site">The Site that will own this editor factory</param>
-        ''' <remarks></remarks>
         Private Sub SetSiteInternal(Site As Object)
             'This same Site already set?  Or Site not yet initialized (= Nothing)?  If so, NOP.
             If _site Is Site Then
@@ -495,8 +485,9 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 _serviceProvider = Nothing
             End If
             _site = Site
-            If TypeOf Site Is IServiceProvider Then
-                _serviceProvider = New Shell.ServiceProvider(CType(Site, IServiceProvider))
+            Dim serviceProvider = TryCast(Site, IServiceProvider)
+            If serviceProvider IsNot Nothing Then
+                _serviceProvider = New Shell.ServiceProvider(serviceProvider)
             End If
 
             OnSited()

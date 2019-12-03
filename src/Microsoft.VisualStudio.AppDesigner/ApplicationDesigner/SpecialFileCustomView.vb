@@ -14,7 +14,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
     '''   using IVsProjectSpecialFiles, then the view is changed to display the editor
     '''   for the new file.
     ''' </summary>
-    ''' <remarks></remarks>
     Public Class SpecialFileCustomView
         Inherits Windows.Forms.UserControl
 
@@ -27,7 +26,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''   Used to access the special file ID, etc.
         ''' </summary>
         ''' <param name="ViewProvider"></param>
-        ''' <remarks></remarks>
         Public Sub SetSite(ViewProvider As SpecialFileCustomViewProvider)
             _viewProvider = ViewProvider
             If ViewProvider IsNot Nothing Then
@@ -41,7 +39,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        ''' <remarks></remarks>
         Private Sub LinkLabel_LinkClicked(sender As Object, e As Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LinkLabel.LinkClicked
             CreateNewSpecialFile()
         End Sub
@@ -49,7 +46,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Create the special file associated with this view.
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub CreateNewSpecialFile()
             If _viewProvider IsNot Nothing Then
                 Debug.Assert(_viewProvider.DesignerView IsNot Nothing)

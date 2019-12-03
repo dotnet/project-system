@@ -21,7 +21,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
     ''' <summary>
     ''' Generator for strongly MyApplication class
     ''' </summary>
-    ''' <remarks></remarks>
     <Guid("4d35b437-4197-4241-8d24-8ac3ab6f0e0c")>
     Public NotInheritable Class MyApplicationCodeGenerator
         Implements IVsSingleFileGenerator, IObjectWithSite, System.IServiceProvider, IVsRefactorNotify
@@ -37,10 +36,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' Returns a type for System.Diagnostics.DebuggerStepThrough so that we can create
         ''' attribute-declarations for the CodeDom to spit them out.
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Private Shared ReadOnly Property DebuggerStepThroughAttribute() As Type
+        Private Shared ReadOnly Property DebuggerStepThroughAttribute As Type
             Get
                 Return GetType(DebuggerStepThroughAttribute)
             End Get
@@ -51,7 +47,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' Get the default extension for the generated class.
         ''' </summary>
         ''' <param name="pbstrDefaultExtension"></param>
-        ''' <remarks></remarks>
         Private Function DefaultExtension(ByRef pbstrDefaultExtension As String) As Integer Implements IVsSingleFileGenerator.DefaultExtension
             If CodeDomProvider IsNot Nothing Then
                 ' For some reason some the code providers seem to be inconsistent in the way that they 
@@ -77,7 +72,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="rgbOutputFileContents"></param>
         ''' <param name="pcbOutput"></param>
         ''' <param name="pGenerateProgress"></param>
-        ''' <remarks></remarks>
         Private Function Generate(wszInputFilePath As String, bstrInputFileContents As String, wszDefaultNamespace As String, rgbOutputFileContents() As IntPtr, ByRef pcbOutput As UInteger, pGenerateProgress As IVsGeneratorProgress) As Integer Implements IVsSingleFileGenerator.Generate
             Dim BufPtr As IntPtr
             Try
@@ -246,7 +240,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
                     If invalidIdentifier Then
                         Dim errorMsg As String = My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_InvalidIdentifierStartupForm_1Arg, MyApplication.MainFormNoRootNS)
-                        If Not pGenerateProgress Is Nothing Then
+                        If pGenerateProgress IsNot Nothing Then
                             VSErrorHandler.ThrowOnFailure(pGenerateProgress.GeneratorError(0,
                                                                                            1,
                                                                                            My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SingleFileGenerator_FailedToGenerateFile_1Arg, errorMsg),
@@ -279,7 +273,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
                     If Not CodeDomProvider.IsValidIdentifier(MyApplication.SplashScreenNoRootNS) Then
                         Dim errorMsg As String = My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_InvalidIdentifierSplashScreenForm_1Arg, MyApplication.SplashScreenNoRootNS)
-                        If Not pGenerateProgress Is Nothing Then
+                        If pGenerateProgress IsNot Nothing Then
                             VSErrorHandler.ThrowOnFailure(pGenerateProgress.GeneratorError(0,
                                                                                            1,
                                                                                            My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SingleFileGenerator_FailedToGenerateFile_1Arg, errorMsg),
@@ -313,7 +307,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="Member">The type member to add the attribute to</param>
         ''' <param name="AttributeType">The type of the attribute, e.g. GetType(System.Diagnostics.DebuggerStepThroughAttribute)</param>
         ''' <param name="PrependGlobal">If true, then "Global." is prepended to the attribute name</param>
-        ''' <remarks></remarks>
         Private Shared Sub AddAttribute(Member As CodeTypeMember, AttributeType As Type, PrependGlobal As Boolean)
 
             If Member.CustomAttributes Is Nothing Then
@@ -374,7 +367,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="FieldName">The name of the field for the left-hand side of the assignment</param>
         ''' <param name="RootNamespace">The root namespace, if any (including empty string if none), or else Nothing if reference should be declared without using the root namespace.</param>
         ''' <param name="FormNameWithoutRootNamespace">The name of the form, without the root namespace.</param>
-        ''' <remarks></remarks>
         Private Shared Sub AddDefaultFormAssignment(Method As CodeMemberMethod, FieldName As String, RootNamespace As String, FormNameWithoutRootNamespace As String)
             '
             '  GENERATED CODE:
@@ -414,8 +406,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' Demand-create a CodeDomProvider corresponding to my projects current language
         ''' </summary>
         ''' <value>A CodeDomProvider</value>
-        ''' <remarks></remarks>
-        Private Property CodeDomProvider() As CodeDomProvider
+        Private Property CodeDomProvider As CodeDomProvider
             Get
                 If _codeDomProvider Is Nothing Then
                     Dim VSMDCodeDomProvider As IVSMDCodeDomProvider = CType(GetService(GetType(IVSMDCodeDomProvider)), IVSMDCodeDomProvider)
@@ -426,7 +417,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 End If
                 Return _codeDomProvider
             End Get
-            Set(Value As CodeDomProvider)
+            Set
                 If Value Is Nothing Then
                     Throw New ArgumentNullException()
                 End If
@@ -466,8 +457,9 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                             Dim RootNSObject As Object = Nothing
 
                             VsHierarchy.GetProperty(VsItemId, CInt(__VSHPROPID.VSHPROPID_DefaultNamespace), RootNSObject)
-                            If TypeOf RootNSObject Is String Then
-                                Return DirectCast(RootNSObject, String)
+                            Dim nsObject = TryCast(RootNSObject, String)
+                            If nsObject IsNot Nothing Then
+                                Return nsObject
                             End If
                         End If
                     End If
@@ -497,7 +489,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                     Throw New Win32Exception(NativeMethods.E_NOINTERFACE)
                 End If
             Finally
-                If (pUnknownPointer <> IntPtr.Zero) Then
+                If pUnknownPointer <> IntPtr.Zero Then
                     Marshal.Release(pUnknownPointer)
                 End If
             End Try
@@ -525,22 +517,22 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Dim changesRequired As Boolean = False
 
             Dim designerPrjItem As ProjectItem = GetDesignerProjectItem(phier, itemId)
-            If (designerPrjItem IsNot Nothing) Then
+            If designerPrjItem IsNot Nothing Then
                 Dim applicationData As MyApplicationData = Nothing
                 Using dd As New Design.Serialization.DocData(Common.ServiceProviderFromHierarchy(phier), designerPrjItem.FileNames(1))
                     applicationData = GetApplicationData(dd)
                 End Using
-                If (applicationData IsNot Nothing) Then
+                If applicationData IsNot Nothing Then
                     Dim oldSymbolName As String = GetSymbolNameNoRootNamespace(rglpszRQName(0), designerPrjItem.ContainingProject)
-                    If (oldSymbolName IsNot Nothing) Then
+                    If oldSymbolName IsNot Nothing Then
                         ' if the old class name matches the MainForm name or the SplashScreen name modify it.
                         Dim comparisonType As StringComparison = StringComparison.OrdinalIgnoreCase
-                        If (designerPrjItem.ContainingProject.CodeModel.IsCaseSensitive) Then
+                        If designerPrjItem.ContainingProject.CodeModel.IsCaseSensitive Then
                             comparisonType = StringComparison.Ordinal
                         End If
 
-                        If (String.Equals(oldSymbolName, applicationData.MainFormNoRootNS, comparisonType) _
-                            Or String.Equals(oldSymbolName, applicationData.SplashScreenNoRootNS, comparisonType)) Then
+                        If String.Equals(oldSymbolName, applicationData.MainFormNoRootNS, comparisonType) _
+                            Or String.Equals(oldSymbolName, applicationData.SplashScreenNoRootNS, comparisonType) Then
                             changesRequired = True
                         End If
                     End If
@@ -556,7 +548,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 Dim fileFullPath As String = designerPrjItem.Properties.Item("FullPath").Value.ToString()
 
                 VSErrorHandler.ThrowOnFailure(project.IsDocumentInProject(fileFullPath, iFound, pdwPriority, schemaItemId))
-                If (schemaItemId <> 0) Then
+                If schemaItemId <> 0 Then
                     prgAdditionalCheckoutVSITEMIDS = Array.CreateInstance(GetType(UInteger), 1)
                     prgAdditionalCheckoutVSITEMIDS.SetValue(schemaItemId, prgAdditionalCheckoutVSITEMIDS.GetLowerBound(0))
                 End If
@@ -578,13 +570,13 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Debug.Assert(cRQNames = 1, String.Format("Why Do we get {0} symbols to rename?", cRQNames))
 
             Dim designerPrjItem As ProjectItem = GetDesignerProjectItem(phier, itemId)
-            If (designerPrjItem IsNot Nothing) Then
+            If designerPrjItem IsNot Nothing Then
                 Try
                     Using dd As New Design.Serialization.DocData(Common.ServiceProviderFromHierarchy(phier), designerPrjItem.FileNames(1))
                         Dim data As MyApplicationData = GetApplicationData(dd)
-                        If (data IsNot Nothing) Then
+                        If data IsNot Nothing Then
                             Dim oldSymbolName As String = GetSymbolNameNoRootNamespace(rglpszRQName(0), designerPrjItem.ContainingProject)
-                            If (oldSymbolName IsNot Nothing) Then
+                            If oldSymbolName IsNot Nothing Then
                                 Dim namespaceNoClass As String = String.Empty
                                 Dim i As Integer = oldSymbolName.LastIndexOf(".")
                                 If i >= 0 Then
@@ -594,19 +586,19 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                                 Dim madeChanges As Boolean = False
                                 ' if the old class name matches the MainForm name or the SplashScreen name modify it.
                                 Dim comparisonType As StringComparison = StringComparison.OrdinalIgnoreCase
-                                If (designerPrjItem.ContainingProject.CodeModel.IsCaseSensitive) Then
+                                If designerPrjItem.ContainingProject.CodeModel.IsCaseSensitive Then
                                     comparisonType = StringComparison.Ordinal
                                 End If
 
-                                If (String.Equals(oldSymbolName, data.MainFormNoRootNS, comparisonType)) Then
+                                If String.Equals(oldSymbolName, data.MainFormNoRootNS, comparisonType) Then
                                     data.MainFormNoRootNS = namespaceNoClass + lpszNewName
                                     madeChanges = True
-                                ElseIf (String.Equals(oldSymbolName, data.SplashScreenNoRootNS, comparisonType)) Then
+                                ElseIf String.Equals(oldSymbolName, data.SplashScreenNoRootNS, comparisonType) Then
                                     data.SplashScreenNoRootNS = namespaceNoClass + lpszNewName
                                     madeChanges = True
                                 End If
 
-                                If (madeChanges) Then
+                                If madeChanges Then
                                     Using myappWriter As New Design.Serialization.DocDataTextWriter(dd)
                                         MyApplicationSerializer.Serialize(data, myappWriter)
                                         myappWriter.Close()
@@ -737,7 +729,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Debug.Assert(TypeOf o Is ProjectItem, "returned object is not a ProjectItem?")
             Dim projItem As ProjectItem = TryCast(o, ProjectItem)
 
-            If (projItem IsNot Nothing AndAlso projItem.Collection IsNot Nothing) Then
+            If projItem IsNot Nothing AndAlso projItem.Collection IsNot Nothing Then
                 ' get the parent project item, it's the one we want to modify
                 Return TryCast(projItem.Collection.Parent, ProjectItem)
             End If
@@ -752,7 +744,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <returns>the ApplicationData loaded from the ProjectItem</returns>
         Private Shared Function GetApplicationData(dd As Shell.Design.Serialization.DocData) As MyApplicationData
             Dim data As MyApplicationData = Nothing
-            If (dd IsNot Nothing) Then
+            If dd IsNot Nothing Then
                 ' read the content of this ProjectItem into a MyApplicationData object
                 Using myApplicationReader As New Design.Serialization.DocDataTextReader(dd)
                     data = MyApplicationSerializer.Deserialize(myApplicationReader)
@@ -773,9 +765,9 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
             ' if the symbol name starts with the current project's root namespace, remove it
             Dim namespaceProperty As [Property] = currentProject.Properties.Item("RootNamespace")
-            If (namespaceProperty IsNot Nothing) Then
+            If namespaceProperty IsNot Nothing Then
                 Dim rootNamespace As String = DirectCast(namespaceProperty.Value, String)
-                If (symbolName IsNot Nothing AndAlso symbolName.StartsWith(rootNamespace)) Then
+                If symbolName IsNot Nothing AndAlso symbolName.StartsWith(rootNamespace) Then
                     symbolName = symbolName.Substring(rootNamespace.Length + 1)
                 End If
             End If
@@ -792,7 +784,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' </summary>
         ''' <param name="serviceType">The type of service requested</param>
         ''' <returns>An instance of the service, or nothing if service not found</returns>
-        ''' <remarks></remarks>
         Private Function GetService(serviceType As Type) As Object Implements System.IServiceProvider.GetService
             If ServiceProvider IsNot Nothing Then
                 Return ServiceProvider.GetService(serviceType)
@@ -804,9 +795,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <summary>
         ''' Demand-create service provider from my site
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Private ReadOnly Property ServiceProvider() As ServiceProvider
+        Private ReadOnly Property ServiceProvider As ServiceProvider
             Get
                 If _serviceProvider Is Nothing Then
                     Dim OleSp As IServiceProvider = CType(_site, IServiceProvider)

@@ -1,6 +1,7 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.Collections.Immutable
+Imports EnvDTE
 Imports Microsoft.VisualStudio.Editors.Interop
 Imports Microsoft.VisualStudio.Shell
 Imports Microsoft.VisualStudio.Shell.Interop
@@ -46,8 +47,8 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Dim ExtObject As Object = Nothing
             hr = projectHierarchy.GetProperty(VSITEMID.ROOT, __VSHPROPID.VSHPROPID_ExtObject, ExtObject)
             If NativeMethods.Succeeded(hr) Then
-                If TypeOf ExtObject Is EnvDTE.Project Then
-                    Dim project = DirectCast(ExtObject, EnvDTE.Project)
+                Dim project = TryCast(ExtObject, Project)
+                If project IsNot Nothing Then
                     Return _rdt.GetDocumentInfo(project.FullName).DocCookie
                 End If
             End If
@@ -55,7 +56,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         End Function
 
         Private Function IVsRunningDocTableEvents_OnAfterSave(docCookie As UInteger) As Integer Implements IVsRunningDocTableEvents.OnAfterSave
-            Dim rdtInfo = _rdt.GetDocumentInfo(docCookie)
             Dim properties As MyApplicationProperties = Nothing
             If _managerInstances.TryGetValue(docCookie, properties) Then
                 properties.Save()

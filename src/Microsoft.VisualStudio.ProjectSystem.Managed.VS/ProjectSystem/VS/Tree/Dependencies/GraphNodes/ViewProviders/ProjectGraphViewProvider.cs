@@ -84,7 +84,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
         /// Returns true if the updated dependency's path matches the updated snapshot's project path,
         /// meaning the project dependency has changed and we want to try and update.
         /// </summary>
-        /// <inheritdoc />
         public override bool ShouldApplyChanges(string nodeProjectPath, string updatedSnapshotProjectPath, IDependency updatedDependency)
         {
             string dependencyProjectPath = updatedDependency.FullPath;

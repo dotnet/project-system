@@ -10,7 +10,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
     ''' Serialize object in the same way that the runtime will serialize them, with the additional twist that you can pass
     ''' a culture info.
     ''' </summary>
-    ''' <remarks></remarks>
     Friend NotInheritable Class SettingsValueSerializer
 
         Private Sub New()
@@ -142,8 +141,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="serializedValue"></param>
         ''' <param name="type"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Shared Function Normalize(serializedValue As String, type As Type) As String
             If SettingTypeValidator.IsTypeObsolete(type) Then
                 Return serializedValue

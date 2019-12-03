@@ -7,12 +7,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.FSharp
 {
     public class FSharpProjectSelectorTests
     {
-        [Fact]
-        public void Constructor_DoesNotThrow()
-        {
-            new FSharpProjectSelector();
-        }
-
         [Theory]
         [InlineData(@"<Project Sdk = ""FSharp.SDK""> </Project>", ProjectType.FSharp)]
         [InlineData(@"<Project ToolsVersion=""15.0""> </Project>", ProjectType.LegacyFSharp)]

@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel
 Imports System.Reflection
@@ -8,15 +8,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
     ''' Manages the decisions on if a type is valid as a setting type and/or
     ''' is obsolete
     ''' </summary>
-    ''' <remarks></remarks>
     Friend Class SettingTypeValidator
 
         ''' <summary>
         ''' Indicate if the type has changed from the version that is currently loaded in this app domain
         ''' </summary>
         ''' <param name="type"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Shared Function IsTypeObsolete(type As Type) As Boolean
             Dim typeInLoadedAssembly As Type = Type.GetType(type.AssemblyQualifiedName)
 

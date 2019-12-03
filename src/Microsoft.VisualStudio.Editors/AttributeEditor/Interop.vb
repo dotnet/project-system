@@ -15,28 +15,28 @@ Namespace Microsoft.VisualStudio.Editors.VBAttributeEditor.Interop
     <Guid("9DDDA35B-A903-4eca-AAFF-5716AF592D74")>
     <InterfaceType(ComInterfaceType.InterfaceIsIUnknown)>
     <CLSCompliant(False)>
-    <ComImport()>
+    <ComImport>
     Friend Interface IVbPermissionSetService
 
         <MethodImpl(MethodImplOptions.InternalCall)>
         Function ComputeZonePermissionSet(
-            <[In](), MarshalAs(UnmanagedType.BStr)> strAppManifestFileName As String,
-            <[In](), MarshalAs(UnmanagedType.BStr)> strTargetZone As String,
-            <[In](), MarshalAs(UnmanagedType.BStr)> strExcludedPermissions As String) _
+            <[In], MarshalAs(UnmanagedType.BStr)> strAppManifestFileName As String,
+            <[In], MarshalAs(UnmanagedType.BStr)> strTargetZone As String,
+            <[In], MarshalAs(UnmanagedType.BStr)> strExcludedPermissions As String) _
             As <MarshalAs(UnmanagedType.IUnknown)> Object
 
-        <MethodImpl(MethodImplOptions.InternalCall), PreserveSig()>
+        <MethodImpl(MethodImplOptions.InternalCall), PreserveSig>
         Function IsAvailableInProject(
-            <[In](), MarshalAs(UnmanagedType.BStr)> strPermissionSet As String,
-            <[In](), MarshalAs(UnmanagedType.IUnknown)> ProjectPermissionSet As Object,
-            <Out(), MarshalAs(UnmanagedType.Bool)> ByRef isAvailable As Boolean) _
+            <[In], MarshalAs(UnmanagedType.BStr)> strPermissionSet As String,
+            <[In], MarshalAs(UnmanagedType.IUnknown)> ProjectPermissionSet As Object,
+            <Out, MarshalAs(UnmanagedType.Bool)> ByRef isAvailable As Boolean) _
             As Integer
 
         ' Returns S_FALSE if there is no tip
-        <MethodImpl(MethodImplOptions.InternalCall), PreserveSig()>
+        <MethodImpl(MethodImplOptions.InternalCall), PreserveSig>
         Function GetRequiredPermissionsTip(
-            <[In](), MarshalAs(UnmanagedType.BStr)> strPermissionSet As String,
-            <Out(), MarshalAs(UnmanagedType.BStr)> ByRef strTip As String) _
+            <[In], MarshalAs(UnmanagedType.BStr)> strPermissionSet As String,
+            <Out, MarshalAs(UnmanagedType.BStr)> ByRef strTip As String) _
             As Integer
 
     End Interface

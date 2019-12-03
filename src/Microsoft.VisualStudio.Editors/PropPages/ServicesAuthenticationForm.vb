@@ -20,19 +20,19 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 
         <SuppressMessage("Microsoft.Design", "CA1056:UriPropertiesShouldNotBeStrings")>
-        Public ReadOnly Property AuthenticationUrl() As String
+        Public ReadOnly Property AuthenticationUrl As String
             Get
                 Return _authenticationUrl
             End Get
         End Property
 
-        Public ReadOnly Property UserName() As String
+        Public ReadOnly Property UserName As String
             Get
                 Return UserNameTextBox.Text
             End Get
         End Property
 
-        Public ReadOnly Property Password() As String
+        Public ReadOnly Property Password As String
             Get
                 Return PasswordTextBox.Text
             End Get
@@ -60,11 +60,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Private _loadAnonymous As Boolean
-        Public Property LoadAnonymously() As Boolean
+        Public Property LoadAnonymously As Boolean
             Get
                 Return _loadAnonymous
             End Get
-            Set(value As Boolean)
+            Set
                 _loadAnonymous = value
             End Set
         End Property

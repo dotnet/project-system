@@ -5,7 +5,7 @@ Imports System.ComponentModel.Design
 
 Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
-    '// {E18B7249-8322-44c3-9A57-FE5FF3889F89}
+    ' {E18B7249-8322-44c3-9A57-FE5FF3889F89}
     'static const GUID <<name>> = 
     '{ 0xe18b7249, 0x8322, 0x44c3, { 0x9a, 0x57, 0xfe, 0x5f, 0xf3, 0x88, 0x9f, 0x89 } };
 
@@ -13,7 +13,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
     ''' This is the designer for the top-level resource editor component (ApplicationDesigner).  I.e., this
     ''' is the top-level designer.  
     ''' </summary>
-    ''' <remarks></remarks>
     Public NotInheritable Class ApplicationDesignerRootDesigner
         Inherits AppDesDesignerFramework.BaseRootDesigner
         Implements IRootDesigner
@@ -25,11 +24,10 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Returns the ApplicationDesignerRootComponent component that is being edited by this designer.
         ''' </summary>
         ''' <value>The ApplicationDesignerRootComponent object.</value>
-        ''' <remarks></remarks>
-        Public Shadows ReadOnly Property Component() As ApplicationDesignerRootComponent
+        Public Shadows ReadOnly Property Component As ApplicationDesignerRootComponent
             Get
                 Dim RootComponent As ApplicationDesignerRootComponent = CType(MyBase.Component, ApplicationDesignerRootComponent)
-                Debug.Assert(Not RootComponent Is Nothing)
+                Debug.Assert(RootComponent IsNot Nothing)
                 Return RootComponent
             End Get
         End Property
@@ -60,7 +58,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Disposes of the root designer
         ''' </summary>
         ''' <param name="Disposing"></param>
-        ''' <remarks></remarks>
         Protected Overloads Overrides Sub Dispose(Disposing As Boolean)
             If Disposing Then
                 If _view IsNot Nothing Then
@@ -77,11 +74,10 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' We currently support only Windows Forms technology (i.e., our designer view, ResourceEditorView,
         ''' inherits from System.Windows.Forms.Control)
         ''' </summary>
-        ''' <value></value>
         ''' <remarks>
         ''' The view technology we support, which is currently only Windows Forms
         ''' </remarks>
-        Private ReadOnly Property IRootDesigner_SupportedTechnologies() As ViewTechnology() Implements IRootDesigner.SupportedTechnologies
+        Private ReadOnly Property IRootDesigner_SupportedTechnologies As ViewTechnology() Implements IRootDesigner.SupportedTechnologies
             Get
                 Return New ViewTechnology() {ViewTechnology.Default}
             End Get
@@ -92,7 +88,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''   our resource editor's designer surface.  In this case, we return an instance of ResourceEditorView.
         ''' </summary>
         ''' <param name="Technology"></param>
-        ''' <returns></returns>
         ''' <remarks>
         '''   The newly-instantiated ResourceEditorView object.
         ''' </remarks>
@@ -114,8 +109,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Wrapper function to expose our UI object
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Function GetView() As ApplicationDesignerView
             Return CType(RootDesigner_GetView(ViewTechnology.Default), ApplicationDesignerView)
         End Function

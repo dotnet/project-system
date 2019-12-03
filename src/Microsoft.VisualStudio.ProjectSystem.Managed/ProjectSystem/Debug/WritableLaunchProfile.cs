@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public static bool ProfilesAreEqual(IWritableLaunchProfile debugProfile1, IWritableLaunchProfile debugProfile2)
         {
             // Same instance are equal
-            if (debugProfile1 == debugProfile2)
+            if (ReferenceEquals(debugProfile1, debugProfile2))
             {
                 return true;
             }

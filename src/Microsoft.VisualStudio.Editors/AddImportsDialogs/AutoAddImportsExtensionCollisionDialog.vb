@@ -42,7 +42,7 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
         End Sub
 
         Private Sub RequestHelp(sender As Object, hlpevent As HelpEventArgs) Handles Me.HelpRequested
-            If (_helpCallback IsNot Nothing) Then
+            If _helpCallback IsNot Nothing Then
                 _helpCallback.InvokeHelp()
             End If
         End Sub

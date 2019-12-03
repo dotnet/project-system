@@ -34,7 +34,7 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
             Get
                 Return _fastUpToDateCheckEnabled
             End Get
-            Set(value As Boolean)
+            Set
                 If value = _fastUpToDateCheckEnabled Then
                     Return
                 End If
@@ -49,7 +49,7 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
             Get
                 Return _fastUpToDateCheckLogLevel
             End Get
-            Set(value As LogLevel)
+            Set
                 If value = _fastUpToDateCheckLogLevel Then
                     Return
                 End If

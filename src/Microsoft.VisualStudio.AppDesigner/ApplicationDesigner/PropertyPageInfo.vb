@@ -13,7 +13,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
     ''' <summary>
     ''' This page encapsulates all the data for a property page
     ''' </summary>
-    ''' <remarks></remarks>
     Public Class PropertyPageInfo
         Implements IDisposable
 
@@ -34,7 +33,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="Guid">The GUID to create the property page</param>
         ''' <param name="IsConfigurationDependentPage">Whether or not the page has different values for each configuration (e.g. the Debug page)</param>
-        ''' <remarks></remarks>
         Public Sub New(ParentView As ApplicationDesignerView, Guid As Guid, IsConfigurationDependentPage As Boolean)
             Debug.Assert(Not Guid.Equals(Guid.Empty), "Empty guid?")
             Debug.Assert(ParentView IsNot Nothing)
@@ -49,7 +47,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Disposes of any the doc data
         ''' </summary>
-        ''' <remarks></remarks>
         Public Overloads Sub Dispose() Implements IDisposable.Dispose
             Dispose(True)
         End Sub
@@ -83,9 +80,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' The GUID for the property page
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public ReadOnly Property Guid() As Guid
+        Public ReadOnly Property Guid As Guid
             Get
                 Return _guid
             End Get
@@ -95,9 +90,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' True if the page's properties can have different values in different configurations
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public ReadOnly Property IsConfigPage() As Boolean
+        Public ReadOnly Property IsConfigPage As Boolean
             Get
                 Return _isConfigPage
             End Get
@@ -107,9 +100,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' The exception that occurred while loading the page, if any
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public ReadOnly Property LoadException() As Exception
+        Public ReadOnly Property LoadException As Exception
             Get
                 Return _loadException
             End Get
@@ -119,8 +110,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Returns the IPropertyPage for the property page
         ''' </summary>
-        ''' <remarks></remarks>
-        Public ReadOnly Property ComPropPageInstance() As OleInterop.IPropertyPage
+        Public ReadOnly Property ComPropPageInstance As OleInterop.IPropertyPage
             Get
                 TryLoadPropertyPage()
                 Return _comPropPageInstance
@@ -131,9 +121,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Returns the PropertyPageSite for the property page
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public ReadOnly Property Site() As PropertyPageSite
+        Public ReadOnly Property Site As PropertyPageSite
             Get
                 TryLoadPropertyPage()
                 Return _site
@@ -231,12 +219,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''   this property tries *not* load the property page if it's not
         '''   already loaded.
         ''' </summary>
-        ''' <value></value>
         ''' <remarks>
         ''' PERF: This property used a cached version of the title to avoid having to
         '''   instantiate the COM object for the property page.
         ''' </remarks>
-        Public ReadOnly Property Title() As String
+        Public ReadOnly Property Title As String
             Get
                 If _loadAlreadyAttempted Then
                     If _loadException Is Nothing AndAlso _info.pszTitle <> "" Then
@@ -266,9 +253,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Gets the current locale ID that's being used by the project designer.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Private ReadOnly Property CurrentLocaleID() As UInteger
+        Private ReadOnly Property CurrentLocaleID As UInteger
             Get
                 Return CType(_parentView, IPropertyPageSiteOwner).GetLocaleID()
             End Get
@@ -279,9 +264,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Retrieves the name of the registry value name to place into the
         '''   registry for this property page.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Private ReadOnly Property CachedTitleValueName() As String
+        Private ReadOnly Property CachedTitleValueName As String
             Get
                 'We must include both the property page GUID and the locale ID
                 '  so that we react properly to user language changes.
@@ -293,9 +276,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <summary>
         ''' Attempts to retrieve or set the cached title of this page from the registry.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Private Property CachedTitle() As String
+        Private Property CachedTitle As String
             Get
                 Dim KeyPath As String = _parentView.DTEProject.DTE.RegistryRoot & REGKEY_CachedPageTitles
                 Dim Key As Win32.RegistryKey = Nothing
@@ -303,9 +284,10 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     Key = Win32.Registry.CurrentUser.OpenSubKey(KeyPath)
                     If Key IsNot Nothing Then
                         Dim ValueObject As Object = Key.GetValue(CachedTitleValueName)
-                        If TypeOf ValueObject Is String Then
+                        Dim ValueString = TryCast(ValueObject, String)
+                        If ValueString IsNot Nothing Then
                             'Found a cached version
-                            Return DirectCast(ValueObject, String)
+                            Return ValueString
                         End If
                     End If
                 Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(CachedTitle), NameOf(PropertyPageInfo))
@@ -318,7 +300,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 'No cached title yet.
                 Return Nothing
             End Get
-            Set(value As String)
+            Set
                 If value Is Nothing Then
                     value = String.Empty
                 End If

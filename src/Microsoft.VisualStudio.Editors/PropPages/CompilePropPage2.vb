@@ -93,7 +93,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' properties, we need to make sure that we have the right items/display text in
         ''' the option strict combobox
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub QueueUpdateOptionStrictComboBox()
             If _optionStrictComboBoxUpdateQueued Then
                 Return
@@ -109,7 +108,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' This method does *not* change the underlying property, it only updates the
         ''' UI.
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub UpdateOptionStrictComboBox()
             Try
                 If IsOptionStrictOn() Then
@@ -190,7 +188,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 enabled = False
             End If
 
-            Dim NotifyColumn As DataGridViewComboBoxColumn = CType(WarningsGridView.Columns.Item(NotifyColumnIndex), DataGridViewComboBoxColumn)
             If enabled AndAlso DisableAllWarningsCheckBox.CheckState = CheckState.Unchecked AndAlso WarningsAsErrorCheckBox.CheckState = CheckState.Unchecked Then
                 For Each column As DataGridViewColumn In WarningsGridView.Columns
                     column.DefaultCellStyle.BackColor = WarningsGridView.DefaultCellStyle.BackColor
@@ -211,7 +208,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 #End Region
 
-        Protected Overrides ReadOnly Property ControlData() As PropertyControlData()
+        Protected Overrides ReadOnly Property ControlData As PropertyControlData()
             Get
                 If _objectCache IsNot Nothing Then
                     _objectCache.Reset(ProjectHierarchy, ServiceProvider, False)
@@ -296,8 +293,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="control"></param>
         ''' <param name="prop"></param>
         ''' <param name="value"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function NoWarnGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
             If _noWarn IsNot Nothing Then
                 value = ConcatenateNumbers(_noWarn)
@@ -315,8 +310,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="control"></param>
         ''' <param name="prop"></param>
         ''' <param name="value"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function NoWarnSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             If value Is PropertyControlData.Indeterminate OrElse value Is PropertyControlData.MissingProperty Then
                 _noWarn = Nothing
@@ -344,8 +337,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="control"></param>
         ''' <param name="prop"></param>
         ''' <param name="value"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function SpecWarnAsErrorGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
             Debug.Assert(_specWarnAsError IsNot Nothing)
             value = ConcatenateNumbers(_specWarnAsError)
@@ -360,8 +351,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="control"></param>
         ''' <param name="prop"></param>
         ''' <param name="value"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function SpecWarnAsErrorSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             If value Is PropertyControlData.Indeterminate OrElse value Is PropertyControlData.MissingProperty Then
                 _specWarnAsError = Nothing
@@ -387,8 +376,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="control"></param>
         ''' <param name="prop"></param>
         ''' <param name="value"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function WarningLevelGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
             Select Case DisableAllWarningsCheckBox.CheckState
                 Case CheckState.Checked
@@ -408,8 +395,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="control"></param>
         ''' <param name="prop"></param>
         ''' <param name="value"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function WarningLevelSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             If value Is PropertyControlData.Indeterminate Then
                 DisableAllWarningsCheckBox.CheckState = CheckState.Indeterminate
@@ -483,7 +468,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' For some reason, AnyCPU includes as space when returned by the IVsConfigProvider.Get*PlatformNames
         ''' but should *not* include a space when passed to the compiler/set the property value
         ''' </summary>
-        ''' <remarks></remarks>
         Private Const AnyCPUPropertyValue As String = "AnyCPU"
         Private Const AnyCPUPlatformName As String = "Any CPU"
 
@@ -580,7 +564,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             MyBase.PostInitPage()
 
             'OutputPath browse button should only be enabled when the text box is enabled and Not ReadOnly
-            BuildOutputPathButton.Enabled = (BuildOutputPathTextBox.Enabled AndAlso Not BuildOutputPathTextBox.ReadOnly)
+            BuildOutputPathButton.Enabled = BuildOutputPathTextBox.Enabled AndAlso Not BuildOutputPathTextBox.ReadOnly
             EnableControl(RegisterForComInteropCheckBox, RegisterForComInteropSupported())
 
             'Populate Error/Warnings list
@@ -591,13 +575,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'Hide all non-Express controls
             If VSProductSKU.IsExpress Then
                 BuildEventsButton.Visible = False
-            End If
-            ' Only show the separator/all configurations label if we have the
-            ' ShowAllConfigurations setting on...
-            Dim ConfigurationState As PropPageDesigner.ConfigurationState = TryCast(GetServiceFromPropertyPageSite(GetType(PropPageDesigner.ConfigurationState)), PropPageDesigner.ConfigurationState)
-            Debug.Assert(ConfigurationState IsNot Nothing, "Couldn't QS for ConfigurationState")
-            If ConfigurationState IsNot Nothing Then
-                Dim SimplifiedConfigMode As Boolean = ConfigurationState.IsSimplifiedConfigMode
             End If
 
             RefreshEnabledStatusForPrefer32Bit(Prefer32BitCheckBox)
@@ -642,8 +619,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             New ErrorInfo(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Compile_42029, "42029,42031", ErrorNotification.None, False, New Integer() {42029, 42031})}
 
         Private Sub PopulateErrorList()
-            Dim NotificationColumn As DataGridViewComboBoxColumn = CType(WarningsGridView.Columns.Item(NotifyColumnIndex), DataGridViewComboBoxColumn)
-            Dim ConditionColumn As DataGridViewTextBoxColumn = CType(WarningsGridView.Columns.Item(ConditionColumnIndex), DataGridViewTextBoxColumn)
             Dim Index As Integer
             Dim row As DataGridViewRow
 
@@ -671,15 +646,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 #Region "Helper methods to map UI values to properties"
 
         Private Function IsOptionStrictOn() As Boolean
-            Return (_optionStrictOnText.Equals(CStr(OptionStrictComboBox.SelectedItem), StringComparison.Ordinal))
+            Return _optionStrictOnText.Equals(CStr(OptionStrictComboBox.SelectedItem), StringComparison.Ordinal)
         End Function
 
         Private Function IsOptionStrictOff() As Boolean
-            Return (_optionStrictOffText.Equals(CStr(OptionStrictComboBox.SelectedItem), StringComparison.Ordinal))
+            Return _optionStrictOffText.Equals(CStr(OptionStrictComboBox.SelectedItem), StringComparison.Ordinal)
         End Function
 
         Private Function IsOptionStrictCustom() As Boolean
-            Return (_optionStrictCustomText.Equals(CStr(OptionStrictComboBox.SelectedItem), StringComparison.Ordinal))
+            Return _optionStrictCustomText.Equals(CStr(OptionStrictComboBox.SelectedItem), StringComparison.Ordinal)
         End Function
 
         Private Function TreatAllWarningsAsErrors() As Boolean
@@ -694,12 +669,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' We are in an indeterminate state if we have conflicting settings in
         ''' different configurations
         ''' </summary>
-        ''' <value></value>
         ''' <remarks>
         ''' We shouldn't be in this situation unless the user has messed around manually with
         ''' the project file...
         ''' </remarks>
-        Private ReadOnly Property IndeterminateWarningsState() As Boolean
+        Private ReadOnly Property IndeterminateWarningsState As Boolean
             Get
                 If WarningsAsErrorCheckBox.CheckState = CheckState.Indeterminate Then
                     Return True
@@ -824,7 +798,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Disables warnings which are not generated when Option Strict is on
         ''' (Option Strict On will generate error ids, not the warning ids)
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub UpdateWarningList()
             ' Depending on the order that we are populating the controls,
             ' we may get called to update the warnings list before we have
@@ -1094,7 +1067,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If PropertyControlData.IsSpecialValue(value) Then
                 TargetCPUComboBox.SelectedIndex = -1
             Else
-                If (IsNothing(TryCast(value, String)) OrElse TryCast(value, String) = "") Then
+                If IsNothing(TryCast(value, String)) OrElse TryCast(value, String) = "" Then
                     TargetCPUComboBox.SelectedItem = AnyCPUPropertyValue
                 Else
                     TargetCPUComboBox.SelectedItem = TryCast(value, String)
@@ -1305,7 +1278,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Check if the path is a trusted path or not
         ''' </summary>
         ''' <param name="path"></param>
-        ''' <returns></returns>
         ''' <remarks>
         ''' This code was ported from langutil.cpp (function LuCheckSecurityLevel)
         ''' If that code ever changes, we've gotta update this as well...
@@ -1323,7 +1295,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             localEvidence.AddHostEvidence(New Security.Policy.Zone(Security.SecurityZone.MyComputer))
 
             Dim localPSet As Security.PermissionSet = Security.SecurityManager.GetStandardSandbox(localEvidence)
-            localPSet.RemovePermission((New Security.Permissions.ZoneIdentityPermission(Security.SecurityZone.MyComputer)).GetType())
+            localPSet.RemovePermission(New Security.Permissions.ZoneIdentityPermission(Security.SecurityZone.MyComputer).GetType())
 
             ' Return true if permission set that would be granted to code in
             ' target folder is equal (or greater than) that granted to local code.
@@ -1433,7 +1405,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 ''' <summary>
                 ''' Private getter for the IVsCfgProvider2 for the associated proppage's hierarchy
                 ''' </summary>
-                Private ReadOnly Property VsCfgProvider() As IVsCfgProvider2
+                Private ReadOnly Property VsCfgProvider As IVsCfgProvider2
                     Get
                         If _vscfgprovider Is Nothing Then
                             Dim Value As Object = Nothing
@@ -1449,9 +1421,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 ''' Getter for the raw config objects. We override this to always return the properties for all
                 ''' configurations to make this property look like a config independent-ish property
                 ''' </summary>
-                ''' <value></value>
-                ''' <remarks></remarks>
-                Friend ReadOnly Property ConfigRawPropertiesObjects() As Object()
+                Friend ReadOnly Property ConfigRawPropertiesObjects As Object()
                     Get
                         Dim tmpRawObjects() As IVsCfg
                         Dim ConfigCount As UInteger() = New UInteger(0) {} 'Interop declaration requires us to use an array
@@ -1471,9 +1441,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 ''' Getter for the extended config objects. We override this to always return the properties for all
                 ''' configurations to make this property look like a config independent-ish property
                 ''' </summary>
-                ''' <value></value>
-                ''' <remarks></remarks>
-                Friend ReadOnly Property ConfigExtendedPropertiesObjects() As Object()
+                Friend ReadOnly Property ConfigExtendedPropertiesObjects As Object()
                     Get
                         If _extendedObjects Is Nothing Then
                             Dim aem As AutomationExtenderManager
@@ -1499,7 +1467,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ''' Getter for the raw config objects. We override this to always return the properties for all
             ''' configurations to make this property look like a config independent-ish property
             ''' </summary>
-            Public Overrides ReadOnly Property RawPropertiesObjects() As Object()
+            Public Overrides ReadOnly Property RawPropertiesObjects As Object()
                 Get
                     Return _configurationObjectCache.ConfigRawPropertiesObjects()
                 End Get
@@ -1509,7 +1477,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ''' Getter for the extended config objects. We override this to always return the properties for all
             ''' configurations to make this property look like a config independent-ish property
             ''' </summary>
-            Public Overrides ReadOnly Property ExtendedPropertiesObjects() As Object()
+            Public Overrides ReadOnly Property ExtendedPropertiesObjects As Object()
                 Get
                     Return _configurationObjectCache.ConfigExtendedPropertiesObjects()
                 End Get

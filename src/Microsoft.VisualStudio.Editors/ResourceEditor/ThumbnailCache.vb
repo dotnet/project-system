@@ -25,7 +25,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     '''   (esp. since we're using a virtualized listview and doing other work to delay load images from disk),
     '''   therefore we need to take the caching approach.
     ''' </summary>
-    ''' <remarks></remarks>
     Friend NotInheritable Class ThumbnailCache
 
         'The ImageList which contains the thumbnail images
@@ -98,13 +97,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   to ensure that there is no thrashing from displaying a single page.  If the cache cannot grow
         '''   but is less than this value, out of memory exceptions will be thrown.
         ''' </summary>
-        ''' <value></value>
         ''' <remarks>Does not change the number of images in the cache, only affects future behavior.</remarks>
-        Public Property MinimumSizeBeforeRecycling() As Integer
+        Public Property MinimumSizeBeforeRecycling As Integer
             Get
                 Return _minimumSizeBeforeRecycling
             End Get
-            Set(Value As Integer)
+            Set
                 If Value > 0 Then
                     _minimumSizeBeforeRecycling = Value
                 Else
@@ -119,16 +117,15 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   MinimumSizeBeforeRecycling is greater than MaximumSuggestedCacheSize, then MinimumSizeBeforeRecycling is used
         '''   as the maximum cache size instead.
         ''' </summary>
-        ''' <value></value>
         ''' <remarks>Method does not try to remove any images if you set this to a lower value than the current
         '''   number of images in the cache (because the caching hints from the ListView are not very accurate, no
         '''   need to get rid of items from the cache that we already had the memory to create).
         ''' </remarks>
-        Public Property MaximumSuggestedCacheSize() As Integer
+        Public Property MaximumSuggestedCacheSize As Integer
             Get
                 Return _maximumSuggestedCacheSize
             End Get
-            Set(Value As Integer)
+            Set
                 Debug.Assert(Value > 0)
                 _maximumSuggestedCacheSize = Value
             End Set
@@ -138,9 +135,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Gets the number of thumbnails currently in the cache (not including the number of reserved images)
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Public ReadOnly Property ThumbnailCount() As Integer
+        Public ReadOnly Property ThumbnailCount As Integer
             Get
                 Debug.Assert(_imageList.Images.Count - _reservedImagesCount >= 0)
                 Return _imageList.Images.Count - _reservedImagesCount
@@ -152,9 +147,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Retrieves the actual, effective maximum size to which the cache can grow.  This is equal to 
         '''   the largest of the MaximumSuggestedCacheSize and MinimumSizeBeforeRecycling properties.
         ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        Private ReadOnly Property EffectiveMaximumSuggestedCacheSize() As Integer
+        Private ReadOnly Property EffectiveMaximumSuggestedCacheSize As Integer
             Get
                 Return Math.Max(_minimumSizeBeforeRecycling, _maximumSuggestedCacheSize)
             End Get
@@ -269,7 +262,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   key, it is removed.  If if is not found, nothing happens.
         ''' </summary>
         ''' <param name="Key">Key to remove if found.</param>
-        ''' <remarks></remarks>
         Public Sub InvalidateThumbnail(Key As Object)
             Dim Index As Integer
             If GetCachedImageListIndexInternal(Key, Index) Then
@@ -281,7 +273,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''  Check whether the object has already been cached.
         ''' </summary>
         ''' <param name="Key">Key to remove if found.</param>
-        ''' <remarks></remarks>
         Public Function IsThumbnailInCache(Key As Object) As Boolean
             Return _keys.ContainsKey(Key)
         End Function
@@ -293,7 +284,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Key">The key to search for in the cache.</param>
         ''' <param name="ThumbnailFound">Returns true iff the key was found in the cache.</param>
         ''' <param name="Index">The index of the found image.  If ThumbnailFail is False, this value is undefined.</param>
-        ''' <remarks></remarks>
         Public Sub GetCachedImageListIndex(Key As Object, ByRef ThumbnailFound As Boolean, ByRef Index As Integer)
             ThumbnailFound = GetCachedImageListIndexInternal(Key, Index)
             If ThumbnailFound AndAlso IsInMruList(Index) Then
@@ -310,7 +300,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Key">The key to search for in the cache.</param>
         ''' <param name="Index">The index of the found image.  If ThumbnailFail is False, this value is undefined.</param>
         ''' <returns>True if we found one</returns>
-        ''' <remarks></remarks>
         Private Function GetCachedImageListIndexInternal(Key As Object, ByRef Index As Integer) As Boolean
             Dim ThumbnailFound As Boolean
             Debug.Assert(Key IsNot Nothing)
@@ -383,7 +372,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Key">Key to be removed.</param>
         ''' <param name="Index">Index at which that key is currently found.</param>
-        ''' <remarks></remarks>
         Private Sub RemoveKey(Key As Object, Index As Integer)
             ' NOTE: It could be a reserved item (shared icon), in this case, it is not in the MRU list, and we shouldn't update the LIST.
             If IsInMruList(Index) Then
@@ -443,13 +431,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Check whether an item is in the MRU list
         ''' </summary>
         ''' <param name="Index">Index in the ImageList.</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function IsInMruList(Index As Integer) As Boolean
             Dim MruIndex As Integer = Index + 1
             If MruIndex >= _mruList.Length Then
                 Return False
-            ElseIf (_mruList(MruIndex).PreviousIndex = 0 AndAlso _mruList(0).NextIndex <> MruIndex) Then
+            ElseIf _mruList(MruIndex).PreviousIndex = 0 AndAlso _mruList(0).NextIndex <> MruIndex Then
                 Debug.Assert(_mruList(MruIndex).NextIndex = 0)
                 Return False
             End If
@@ -459,7 +445,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         ''' Debug code that checks the integrity of the cache's data structures.
         ''' </summary>
-        ''' <remarks></remarks>
         <Conditional("DEBUG")>
         Private Sub DebugCheckQueueInvariant()
             Dim count As Integer = 0

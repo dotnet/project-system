@@ -51,12 +51,11 @@ Namespace Microsoft.VisualStudio.Editors
         ' Map between unique project GUID and the last viewed tab in the project designer...
         Private _lastViewedProjectDesignerTab As Dictionary(Of Guid, Byte)
 
-        Public ReadOnly Property StickyProjectResourcePaths() As New Dictionary(Of Guid, Dictionary(Of String, String))
+        Public ReadOnly Property StickyProjectResourcePaths As New Dictionary(Of Guid, Dictionary(Of String, String))
 
         ''' <summary>
         ''' Constructor
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub New()
 
             ' Make sure we persist this 
@@ -66,7 +65,6 @@ Namespace Microsoft.VisualStudio.Editors
         ''' <summary>
         ''' Initialize package (register editor factories, add services)
         ''' </summary>
-        ''' <remarks></remarks>
         Protected Overrides Sub Initialize()
             Debug.Assert(s_instance Is Nothing, "VBPackage initialized multiple times?")
             s_instance = Me
@@ -121,7 +119,7 @@ Namespace Microsoft.VisualStudio.Editors
             _userConfigCleaner = New UserConfigCleaner(Me)
         End Sub 'New
 
-        Public ReadOnly Property MenuCommandService() As IMenuCommandService Implements IVBPackage.MenuCommandService
+        Public ReadOnly Property MenuCommandService As IMenuCommandService Implements IVBPackage.MenuCommandService
             Get
                 Return TryCast(GetService(GetType(IMenuCommandService)), IMenuCommandService)
             End Get
@@ -132,13 +130,11 @@ Namespace Microsoft.VisualStudio.Editors
         ''' </summary>
         ''' <param name="container"></param>
         ''' <param name="serviceType"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Private Function OnCreateService(container As IServiceContainer, serviceType As Type) As Object
 
             ' Is the Permission Set Service being requested?
             If serviceType Is GetType(VBAttributeEditor.Interop.IVbPermissionSetService) Then
-                If (_permissionSetService Is Nothing) Then
+                If _permissionSetService Is Nothing Then
                     _permissionSetService = New VBAttributeEditor.PermissionSetService(container)
                 End If
 
@@ -154,7 +150,7 @@ Namespace Microsoft.VisualStudio.Editors
 
             ' Is the IVsBuildEventCommandLineDialogService being requested?
             If serviceType Is GetType(Interop.IVsBuildEventCommandLineDialogService) Then
-                If (_buildEventCommandLineDialogService Is Nothing) Then
+                If _buildEventCommandLineDialogService Is Nothing Then
                     _buildEventCommandLineDialogService = New PropertyPages.BuildEventCommandLineDialogService(container)
                 End If
 
@@ -163,7 +159,7 @@ Namespace Microsoft.VisualStudio.Editors
             End If
 
             If serviceType Is GetType(ResourceEditor.ResourceEditorRefactorNotify) Then
-                If (_resourceEditorRefactorNotify Is Nothing) Then
+                If _resourceEditorRefactorNotify Is Nothing Then
                     _resourceEditorRefactorNotify = New ResourceEditor.ResourceEditorRefactorNotify()
                 End If
 
@@ -172,7 +168,7 @@ Namespace Microsoft.VisualStudio.Editors
             End If
 
             If serviceType Is GetType(AddImports.IVBAddImportsDialogService) Then
-                If (_addImportsDialogService Is Nothing) Then
+                If _addImportsDialogService Is Nothing Then
                     _addImportsDialogService = New AddImports.AddImportsDialogService(Me)
                 End If
 
@@ -200,7 +196,7 @@ Namespace Microsoft.VisualStudio.Editors
         ''' This code is factored out of OnCreateService in order to delay loading Microsoft.VisualStudio.XmlEditor.dll
         ''' </remarks>
         Private Function GetXmlIntellisenseService(container As IServiceContainer) As XmlIntellisense.XmlIntellisenseService
-            If (_xmlIntellisenseService Is Nothing) Then
+            If _xmlIntellisenseService Is Nothing Then
                 ' Xml Intellisense Service is only available if the Xml Editor Schema Service is available as well
                 Dim schemaService As XmlSchemaService = DirectCast(container.GetService(GetType(XmlSchemaService)), XmlSchemaService)
 
@@ -217,7 +213,6 @@ Namespace Microsoft.VisualStudio.Editors
         ''' Dispose our resources....
         ''' </summary>
         ''' <param name="disposing"></param>
-        ''' <remarks></remarks>
         Protected Overrides Sub Dispose(disposing As Boolean)
             If disposing Then
                 If _userConfigCleaner IsNot Nothing Then
@@ -230,7 +225,7 @@ Namespace Microsoft.VisualStudio.Editors
 
         Private Shared s_instance As VBPackage
 
-        Public Shared ReadOnly Property Instance() As VBPackage
+        Public Shared ReadOnly Property Instance As VBPackage
             Get
                 Return s_instance
             End Get
@@ -249,7 +244,6 @@ Namespace Microsoft.VisualStudio.Editors
         ''' </summary>
         ''' <param name="key">Added in the constructor using AddOptionKey </param>
         ''' <param name="stream">Stream to read from</param>
-        ''' <remarks></remarks>
         Protected Overrides Sub OnLoadOptions(key As String, stream As IO.Stream)
             If String.Equals(key, ProjectDesignerSUOKey, StringComparison.Ordinal) Then
                 Dim reader As New IO.BinaryReader(stream)
@@ -276,7 +270,6 @@ Namespace Microsoft.VisualStudio.Editors
         ''' </summary>
         ''' <param name="key">Added in the constructor using AddOptionKey</param>
         ''' <param name="stream">Stream to read data from</param>
-        ''' <remarks></remarks>
         Protected Overrides Sub OnSaveOptions(key As String, stream As IO.Stream)
             If String.Equals(key, ProjectDesignerSUOKey, StringComparison.Ordinal) Then
                 ' This is the project designer's last active tab
@@ -311,8 +304,6 @@ Namespace Microsoft.VisualStudio.Editors
         ''' Get the project guid (VSHPROPID_ProjectIDGuid) from a IVsHierarchy
         ''' </summary>
         ''' <param name="hierarchy"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Shared Function ProjectGUID(hierarchy As IVsHierarchy) As Guid
             Dim projGuid As Guid = Guid.Empty
             Try
@@ -330,7 +321,6 @@ Namespace Microsoft.VisualStudio.Editors
         ''' </summary>
         ''' <param name="projectHierarchy"></param>
         ''' <returns>Last active tab number</returns>
-        ''' <remarks></remarks>
         Public Function GetLastShownApplicationDesignerTab(projectHierarchy As IVsHierarchy) As Integer Implements IVBPackage.GetLastShownApplicationDesignerTab
             Dim value As Byte
             If _lastViewedProjectDesignerTab IsNot Nothing AndAlso _lastViewedProjectDesignerTab.TryGetValue(ProjectGUID(projectHierarchy), value) Then
@@ -346,7 +336,6 @@ Namespace Microsoft.VisualStudio.Editors
         ''' </summary>
         ''' <param name="projectHierarchy">Hierarchy</param>
         ''' <param name="tab">Tab number</param>
-        ''' <remarks></remarks>
         Public Sub SetLastShownApplicationDesignerTab(projectHierarchy As IVsHierarchy, tab As Integer) Implements IVBPackage.SetLastShownApplicationDesignerTab
             If _lastViewedProjectDesignerTab Is Nothing Then
                 _lastViewedProjectDesignerTab = New Dictionary(Of Guid, Byte)
@@ -367,7 +356,6 @@ Namespace Microsoft.VisualStudio.Editors
         ''' The User.config files are created by the ClientConfig API, which is used by the runtime to
         ''' save user scoped settings created by the settings designer.
         ''' </summary>
-        ''' <remarks></remarks>
         Private Class UserConfigCleaner
             Implements IVsSolutionEvents, IDisposable
 
@@ -384,7 +372,6 @@ Namespace Microsoft.VisualStudio.Editors
             ''' Create a new instance of this class
             ''' </summary>
             ''' <param name="sp"></param>
-            ''' <remarks></remarks>
             Public Sub New(sp As IServiceProvider)
                 _solution = TryCast(sp.GetService(GetType(IVsSolution)), IVsSolution)
                 Debug.Assert(_solution IsNot Nothing, "Failed to get IVsSolution - clean up of user config files in ZIP projects will not work...")
@@ -402,7 +389,6 @@ Namespace Microsoft.VisualStudio.Editors
             ''' <summary>
             ''' Unadvise solution events
             ''' </summary>
-            ''' <remarks></remarks>
             Private Sub UnadviseSolutionEvents()
                 If _cookie <> 0 AndAlso _solution IsNot Nothing Then
                     Dim hr As Integer = _solution.UnadviseSolutionEvents(_cookie)
@@ -420,8 +406,6 @@ Namespace Microsoft.VisualStudio.Editors
             ''' solution is actually closed...
             ''' </summary>
             ''' <param name="pUnkReserved"></param>
-            ''' <returns></returns>
-            ''' <remarks></remarks>
             Public Function OnAfterCloseSolution(pUnkReserved As Object) As Integer Implements IVsSolutionEvents.OnAfterCloseSolution
                 SettingsDesigner.SettingsDesigner.DeleteFilesAndDirectories(_filesToCleanUp, Nothing)
                 _filesToCleanUp.Clear()
@@ -434,8 +418,6 @@ Namespace Microsoft.VisualStudio.Editors
             ''' we'll delete when the solution is closed
             ''' </summary>
             ''' <param name="pUnkReserved"></param>
-            ''' <returns></returns>
-            ''' <remarks></remarks>
             Public Function OnBeforeCloseSolution(pUnkReserved As Object) As Integer Implements IVsSolutionEvents.OnBeforeCloseSolution
                 Try
                     _filesToCleanUp.Clear()

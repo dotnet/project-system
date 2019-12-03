@@ -60,7 +60,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
         End Sub
 
         Private Sub _addFromFileButton_Click(sender As Object, e As EventArgs) Handles _addFromFileButton.Click
-            Using (DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware))
+            Using DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware)
                 _xmlFileDialog.InitialDirectory = _projectPath
                 If _xmlFileDialog.ShowDialog() = DialogResult.OK Then
                     Dim anyInvalid = False
@@ -92,7 +92,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
         End Sub
 
         Private Sub _addFromWebButton_Click(sender As Object, e As EventArgs) Handles _addFromWebButton.Click
-            Using (DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware))
+            Using DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware)
                 Using dialog As New WebUrlDialog()
                     dialog.ServiceProvider = ServiceProvider
                     Dim uiService As IUIService = CType(ServiceProvider.GetService(GetType(IUIService)), IUIService)
@@ -110,7 +110,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
         End Sub
 
         Private Sub _addAsTextButton_Click(sender As Object, e As EventArgs) Handles _addAsTextButton.Click
-            Using (DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware))
+            Using DpiAwareness.EnterDpiScope(DpiAwarenessContext.SystemAware)
                 Using dialog As New PasteXmlDialog()
                     dialog.ServiceProvider = ServiceProvider
                     Dim uiService As IUIService = CType(ServiceProvider.GetService(GetType(IUIService)), IUIService)
