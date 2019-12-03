@@ -1754,8 +1754,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Try
                         While reader.Read()
                             If reader.NodeType = XmlNodeType.Element Then
-                                Dim s As String = reader.LocalName
-
                                 ' We only want to parse data nodes,
                                 ' the mimetype attribute gives the serializer
                                 ' that's requested.

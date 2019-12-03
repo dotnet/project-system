@@ -355,7 +355,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return _manualPageScaling
             End Get
             Set
-                _manualPageScaling = value
+                _manualPageScaling = Value
             End Set
         End Property
 
@@ -379,7 +379,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return _pageEnabledState
             End Get
             Set
-                _pageEnabledState = value
+                _pageEnabledState = Value
                 SetEnabledState()
             End Set
         End Property
@@ -1589,7 +1589,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         Throw New ValidationException(finalResult, finalMessage, firstControl)
                     Else
                         Dim caption As String = My.Resources.Designer.APPDES_Title
-                        Dim dialogResult As DialogResult = AppDesDesignerFramework.DesignerMessageBox.Show(ServiceProvider, finalMessage, caption, MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                        AppDesDesignerFramework.DesignerMessageBox.Show(ServiceProvider, finalMessage, caption, MessageBoxButtons.OK, MessageBoxIcon.Warning)
                         If firstControl IsNot Nothing Then
                             firstControl.Focus()
                             If TypeOf firstControl Is TextBox Then
@@ -2880,7 +2880,6 @@ NextControl:
         ''' <param name="FileName">Full path to the file to add</param>
         ''' <param name="CopyFile">If true, the file is copied to the project using DTEProject.AddFromFileCopy, otherwise DTEProject.AddFromFile is used</param>
         Protected Overloads Function AddFileToProject(FileName As String, CopyFile As Boolean) As EnvDTE.ProjectItem
-            Dim ProjectItems As EnvDTE.ProjectItems = DTEProject.ProjectItems
             Return AddFileToProject(DTEProject.ProjectItems, FileName, CopyFile)
         End Function
 

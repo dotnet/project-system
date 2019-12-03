@@ -55,7 +55,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         End Function
 
         Private Function IVsRunningDocTableEvents_OnAfterSave(docCookie As UInteger) As Integer Implements IVsRunningDocTableEvents.OnAfterSave
-            Dim rdtInfo = _rdt.GetDocumentInfo(docCookie)
             Dim properties As MyApplicationProperties = Nothing
             If _managerInstances.TryGetValue(docCookie, properties) Then
                 properties.Save()

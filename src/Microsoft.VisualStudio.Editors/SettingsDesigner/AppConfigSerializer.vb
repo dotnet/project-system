@@ -248,9 +248,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Throw Common.CreateArgumentException(NameOf(ClassName))
             End If
 
-            Dim AppConfigReader As DocDataTextReader = Nothing
-            Dim AppConfigWriter As DocDataTextWriter = Nothing
-
             Dim ConfigHelperService As New ConfigurationHelperService(AddressOf typeCache.TypeTransformer)
             Dim FullyQualifiedClassName As String = ProjectUtils.FullyQualifiedClassName(NamespaceName, ClassName)
             Serialize(Settings, typeCache, valueCache, ConfigHelperService.GetSectionName(FullyQualifiedClassName, String.Empty), AppConfigDocData, Hierarchy, SynchronizeUserConfig)

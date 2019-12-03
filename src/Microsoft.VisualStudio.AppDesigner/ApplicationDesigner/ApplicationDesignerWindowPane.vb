@@ -114,7 +114,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         End Sub
 
         Private Sub OnThemeChanged()
-            Dim VsUIShell5 = VsUIShell5Service
             _view.BackColor = Common.ShellUtil.GetProjectDesignerThemeColor(VsUIShell5Service, "Background", __THEMEDCOLORTYPE.TCT_Background, SystemColors.Window)
         End Sub
 

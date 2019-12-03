@@ -382,9 +382,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             'Now calculate required height 
             minimumHeight = _owner.HostingPanel.MinimumSize.Height + 1 + _buttonPagePadding.Bottom + 1
 
-            ' Calculate the required height by tab button area...
-            Dim panelMinimumHeight As Integer = _buttonHeight * _visibleButtonSlots + 1 + _buttonPagePadding.Bottom + 1
-
             _owner.MinimumSize = New Size(minimumWidth, minimumHeight)
 
             'Add 2 for extra horizontal line above first tab and after last tab

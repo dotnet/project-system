@@ -164,7 +164,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         End If
 
                         'ResourceView mode for all categories
-                        Dim NeedsRefresh As Boolean = False
                         For Each Entry As DictionaryEntry In _resourceViewHash
                             Dim Category As Category = View._categories(CStr(Entry.Key))
                             If Category IsNot Nothing Then

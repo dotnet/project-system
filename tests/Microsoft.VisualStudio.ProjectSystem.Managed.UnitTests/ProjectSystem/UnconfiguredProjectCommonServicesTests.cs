@@ -26,7 +26,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public void Constructor_ValueAsThreadingService_SetsThreadingServiceProperty()
         {
             var project = UnconfiguredProjectFactory.Create();
-            var projectTree = new Lazy<IPhysicalProjectTree>(() => IPhysicalProjectTreeFactory.Create());
             var threadingService = new Lazy<IProjectThreadingService>(() => IProjectThreadingServiceFactory.Create());
             var projectProperties = ProjectPropertiesFactory.Create(project);
             var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties.ConfiguredProject);
@@ -42,7 +41,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public void Constructor_ValueAsActiveConfiguredProject_SetsActiveConfiguredProjectProperty()
         {
             var project = UnconfiguredProjectFactory.Create();
-            var projectTree = new Lazy<IPhysicalProjectTree>(() => IPhysicalProjectTreeFactory.Create());
             var threadingService = new Lazy<IProjectThreadingService>(() => IProjectThreadingServiceFactory.Create());
             var projectProperties = ProjectPropertiesFactory.Create(project);
             var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties.ConfiguredProject);
@@ -58,7 +56,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public void Constructor_ValueAsActiveConfiguredProjectProperties_SetsActiveConfiguredProjectPropertiesProperty()
         {
             var project = UnconfiguredProjectFactory.Create();
-            var projectTree = new Lazy<IPhysicalProjectTree>(() => IPhysicalProjectTreeFactory.Create());
             var threadingService = new Lazy<IProjectThreadingService>(() => IProjectThreadingServiceFactory.Create());
             var projectProperties = ProjectPropertiesFactory.Create(project);
             var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties.ConfiguredProject);
@@ -74,7 +71,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public void Constructor_ValueAsProjectAccessor_SetsProjectAccessorProperty()
         {
             var project = UnconfiguredProjectFactory.Create();
-            var projectTree = new Lazy<IPhysicalProjectTree>(() => IPhysicalProjectTreeFactory.Create());
             var threadingService = new Lazy<IProjectThreadingService>(() => IProjectThreadingServiceFactory.Create());
             var projectProperties = ProjectPropertiesFactory.Create(project);
             var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties.ConfiguredProject);

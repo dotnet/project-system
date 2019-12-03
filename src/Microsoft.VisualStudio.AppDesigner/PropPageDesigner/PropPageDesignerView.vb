@@ -525,7 +525,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         End Sub
 
         Private Sub OnThemeChanged()
-            Dim VsUIShell5 = VsUIShell5Service
             If TypeOf PropPage Is PropPageBase AndAlso CType(PropPage, PropPageBase).SupportsTheming Then
                 BackColor = ShellUtil.GetProjectDesignerThemeColor(VsUIShell5Service, "Background", __THEMEDCOLORTYPE.TCT_Background, SystemColors.Control)
             Else

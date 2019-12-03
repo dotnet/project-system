@@ -188,7 +188,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 enabled = False
             End If
 
-            Dim NotifyColumn As DataGridViewComboBoxColumn = CType(WarningsGridView.Columns.Item(NotifyColumnIndex), DataGridViewComboBoxColumn)
             If enabled AndAlso DisableAllWarningsCheckBox.CheckState = CheckState.Unchecked AndAlso WarningsAsErrorCheckBox.CheckState = CheckState.Unchecked Then
                 For Each column As DataGridViewColumn In WarningsGridView.Columns
                     column.DefaultCellStyle.BackColor = WarningsGridView.DefaultCellStyle.BackColor
@@ -577,13 +576,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If VSProductSKU.IsExpress Then
                 BuildEventsButton.Visible = False
             End If
-            ' Only show the separator/all configurations label if we have the
-            ' ShowAllConfigurations setting on...
-            Dim ConfigurationState As PropPageDesigner.ConfigurationState = TryCast(GetServiceFromPropertyPageSite(GetType(PropPageDesigner.ConfigurationState)), PropPageDesigner.ConfigurationState)
-            Debug.Assert(ConfigurationState IsNot Nothing, "Couldn't QS for ConfigurationState")
-            If ConfigurationState IsNot Nothing Then
-                Dim SimplifiedConfigMode As Boolean = ConfigurationState.IsSimplifiedConfigMode
-            End If
 
             RefreshEnabledStatusForPrefer32Bit(Prefer32BitCheckBox)
 
@@ -627,8 +619,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             New ErrorInfo(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Compile_42029, "42029,42031", ErrorNotification.None, False, New Integer() {42029, 42031})}
 
         Private Sub PopulateErrorList()
-            Dim NotificationColumn As DataGridViewComboBoxColumn = CType(WarningsGridView.Columns.Item(NotifyColumnIndex), DataGridViewComboBoxColumn)
-            Dim ConditionColumn As DataGridViewTextBoxColumn = CType(WarningsGridView.Columns.Item(ConditionColumnIndex), DataGridViewTextBoxColumn)
             Dim Index As Integer
             Dim row As DataGridViewRow
 

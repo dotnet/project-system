@@ -1289,7 +1289,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             Dim startupObjects As New List(Of Object)
 
             Dim startupObjectPropertyControlData As PropertyControlData = GetPropertyControlData(VsProjPropId.VBPROJPROPID_StartupObject)
-            Dim startupObjectPropertyDescriptor As PropertyDescriptor = startupObjectPropertyControlData.PropDesc
 
             If Not startupObjectPropertyControlData.IsMissing Then
                 Using New WaitCursor

@@ -334,7 +334,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
         {
             var options = IProjectSystemOptionsFactory.ImplementIsProjectOutputPaneEnabled(() => enabled);
             var outputWindowProvider = IProjectOutputWindowPaneProviderFactory.ImplementGetOutputWindowPaneAsync(pane);
-            var logger = CreateInstance(options: options, outputWindowProvider: outputWindowProvider);
 
             return CreateInstance(options: options, outputWindowProvider: outputWindowProvider);
         }
