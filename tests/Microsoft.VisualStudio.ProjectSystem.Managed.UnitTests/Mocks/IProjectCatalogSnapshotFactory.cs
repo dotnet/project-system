@@ -23,7 +23,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var propertyPageCatalog = new Mock<IPropertyPagesCatalog>();
             propertyPageCatalog.Setup(o => o.GetSchema(It.IsAny<string>())).Returns<string>(n => ruleNameToRule[n]);
 
-            projectCatalogSnapshot.Setup(o => o.NamedCatalogs["File"]).Returns(propertyPageCatalog.Object);
+            var namedCatalogs = ImmutableDictionary<string, IPropertyPagesCatalog>.Empty.Add("File", propertyPageCatalog.Object);
+
+            projectCatalogSnapshot.SetupGet(o => o.NamedCatalogs).Returns(namedCatalogs);
 
             return projectCatalogSnapshot.Object;
         }
