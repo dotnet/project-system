@@ -146,8 +146,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Try
                 Dim allowUntrustedFiles As Object = Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\.NETFramework\SDK", "AllowProcessOfUntrustedResourceFiles", Nothing)
-                If TypeOf allowUntrustedFiles Is String Then
-                    _allowMOTW = DirectCast(allowUntrustedFiles, String).Equals("true", StringComparison.OrdinalIgnoreCase)
+                Dim untrustedFiles = TryCast(allowUntrustedFiles, String)
+                If untrustedFiles IsNot Nothing Then
+                    _allowMOTW = untrustedFiles.Equals("true", StringComparison.OrdinalIgnoreCase)
                 End If
             Catch ex As Exception
                 ' Deliberately empty

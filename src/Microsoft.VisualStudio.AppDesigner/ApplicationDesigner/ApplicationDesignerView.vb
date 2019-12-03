@@ -210,8 +210,9 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 If NativeMethods.Succeeded(hr) Then
                     Dim DTE As DTE
 
-                    If TypeOf ExtObject Is Project Then
-                        _dteProject = CType(ExtObject, Project)
+                    Dim project = TryCast(ExtObject, Project)
+                    If project IsNot Nothing Then
+                        _dteProject = project
                         DTE = DTEProject.DTE
                     End If
 
@@ -922,10 +923,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' </summary>
         ''' <param name="BrowseObject"></param>
         Private Shared Function GetPageGuids(BrowseObject As Object) As Guid()
-            If TypeOf BrowseObject Is IVsSpecifyProjectDesignerPages Then
+            Dim vsSpecifyProjectDesignerPages = TryCast(BrowseObject, IVsSpecifyProjectDesignerPages)
+            If vsSpecifyProjectDesignerPages IsNot Nothing Then
                 Dim CauuidPages() As OleInterop.CAUUID = New OleInterop.CAUUID(1) {}
                 Try
-                    CType(BrowseObject, IVsSpecifyProjectDesignerPages).GetProjectDesignerPages(CauuidPages)
+                    vsSpecifyProjectDesignerPages.GetProjectDesignerPages(CauuidPages)
                     Return CAUUIDMarshaler.GetData(CauuidPages(0))
                 Finally
                     If Not CauuidPages(0).pElems.Equals(IntPtr.Zero) Then

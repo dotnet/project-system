@@ -2832,12 +2832,13 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Message.Append("""")
 
             'Value
-            If TypeOf ResourceTypeEditor Is ResourceTypeEditorStringBase Then
+            Dim resourceTypeEditorStringBase = TryCast(ResourceTypeEditor, ResourceTypeEditorStringBase)
+            If resourceTypeEditorStringBase IsNot Nothing Then
                 Message.Append(", Value=""")
                 Dim Value As String
                 If ParentResourceFile IsNot Nothing Then
                     Try
-                        Value = DirectCast(ResourceTypeEditor, ResourceTypeEditorStringBase).StringGetFormattedCellValue(Me, GetValue)
+                        Value = resourceTypeEditorStringBase.StringGetFormattedCellValue(Me, GetValue)
                     Catch ex As Exception When ReportWithoutCrash(ex, NameOf(ToString), NameOf(Resource))
                         Value = ex.Message
                     End Try

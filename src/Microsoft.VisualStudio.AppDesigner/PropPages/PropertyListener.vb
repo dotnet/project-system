@@ -59,7 +59,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Debug.Assert(ProjectHierarchy IsNot Nothing)
             Common.Switches.TracePDProperties(TraceLevel.Info, "Attempting to hook up IPropertyNotifySink to object '" & DebugSourceName & "' of type " & TypeName(EventSource))
 
-            If TypeOf EventSource Is IVsCfg Then
+            Dim vsCfg = TryCast(EventSource, IVsCfg)
+            If vsCfg IsNot Nothing Then
                 'We need to get an IDispatch for the configuration, which we can do through IVsExtensibleObject off
                 '  of the configuration provider of the project.
                 'From there, we can QI for ProjectConfigurationProperties, which implements IConnectionPointContainer for IPropertyNotifySink
@@ -70,7 +71,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     If VsExtensibleObject IsNot Nothing Then
                         Dim Dispatch As Object = Nothing
                         Dim ConfigFullName As String = Nothing
-                        DirectCast(EventSource, IVsCfg).get_DisplayName(ConfigFullName)
+                        vsCfg.get_DisplayName(ConfigFullName)
                         Debug.Assert(ConfigFullName <> "", "Unable to get display name of config")
                         If ConfigFullName <> "" Then
                             VsExtensibleObject.GetAutomationObject(ConfigFullName, Dispatch)

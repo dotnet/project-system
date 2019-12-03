@@ -425,8 +425,9 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
                             'Get the editor caption to use as the tab text
                             VSErrorHandler.ThrowOnFailure(WindowFrame.GetProperty(__VSFPROPID.VSFPROPID_EditorCaption, EditorCaptionObject))
-                            If TypeOf EditorCaptionObject Is String Then '(might be Nothing)
-                                EditorCaption = DirectCast(EditorCaptionObject, String)
+                            Dim captionObject = TryCast(EditorCaptionObject, String)
+                            If captionObject IsNot Nothing Then
+                                EditorCaption = captionObject
                             End If
 
                             If _propertyPageInfo IsNot Nothing AndAlso _propertyPageInfo.Site IsNot Nothing Then

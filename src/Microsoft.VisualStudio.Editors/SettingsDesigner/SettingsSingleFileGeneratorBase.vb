@@ -761,12 +761,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                                 '
                                 VSErrorHandler.ThrowOnFailure(vsHierarchy.GetProperty(VSITEMID.ROOT, __VSHPROPID.VSHPROPID_DefaultNamespace, obj))
 
-                                Debug.Assert(TypeOf obj Is String, "DefaultNamespace didn't return a string?")
-                                If (TypeOf obj Is String) Then
-
+                                Dim o = TryCast(obj, String)
+                                If o IsNot Nothing Then
                                     ' now we finally have the default-namespace
                                     '
-                                    rootNamespace = CType(obj, String)
+                                    rootNamespace = o
+                                Else
+                                    Debug.Fail("DefaultNamespace didn't return a string?")
                                 End If
                             End If
                         End If

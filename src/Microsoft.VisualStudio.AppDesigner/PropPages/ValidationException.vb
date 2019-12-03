@@ -29,8 +29,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Public Sub RestoreFocus()
             If _control IsNot Nothing Then
                 _control.Focus()
-                If TypeOf _control Is TextBox Then
-                    CType(_control, TextBox).SelectAll()
+                Dim textBox = TryCast(_control, TextBox)
+                If textBox IsNot Nothing Then
+                    textBox.SelectAll()
                 End If
             End If
         End Sub

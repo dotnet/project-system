@@ -568,13 +568,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Return
             End If
 
-            If TypeOf e.Component Is DesignTimeSettingInstance Then
-                Dim Instance As DesignTimeSettingInstance = DirectCast(e.Component, DesignTimeSettingInstance)
-                Dim Row As DataGridViewRow = RowFromComponent(Instance)
+            Dim designTimeSettingInstance = TryCast(e.Component, DesignTimeSettingInstance)
+            If (designTimeSettingInstance IsNot Nothing) Then
+                Dim Row As DataGridViewRow = RowFromComponent(designTimeSettingInstance)
                 If Row Is Nothing Then
                     Debug.Fail("ComponentChanged: Failed to find row...")
                 Else
-                    SetUIRowValues(Row, Instance)
+                    SetUIRowValues(Row, designTimeSettingInstance)
                 End If
             End If
         End Sub

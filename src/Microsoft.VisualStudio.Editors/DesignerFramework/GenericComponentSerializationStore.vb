@@ -350,11 +350,9 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
                 ' If it is an IComponent, we'll try to get its name from 
                 ' its site
-                If TypeOf Value Is IComponent Then
-                    Dim comp As IComponent = DirectCast(Value, IComponent)
-                    If comp.Site IsNot Nothing Then
-                        _objectName = comp.Site.Name
-                    End If
+                Dim comp = TryCast(Value, IComponent)
+                If comp IsNot Nothing AndAlso comp.Site IsNot Nothing Then
+                    _objectName = comp.Site.Name
                 End If
 
                 If _objectName = "" Then

@@ -891,11 +891,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             End Property
 
             Public Overrides Function Equals(obj As Object) As Boolean
-                If TypeOf obj Is StartupObjectOrUri Then
+                Dim startupObjectOrUri = TryCast(obj, StartupObjectOrUri)
+                If startupObjectOrUri IsNot Nothing Then
                     If obj.GetType() IsNot [GetType]() Then
                         Return False
                     Else
-                        Return Value.Equals(CType(obj, StartupObjectOrUri).Value, StringComparison.OrdinalIgnoreCase)
+                        Return Value.Equals(startupObjectOrUri.Value, StringComparison.OrdinalIgnoreCase)
                     End If
                 End If
 
@@ -923,13 +924,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             End Property
 
             Public Overrides Function Equals(obj As Object) As Boolean
-                If TypeOf obj Is StartupObject Then
+                Dim startupObject = TryCast(obj, StartupObject)
+                If startupObject IsNot Nothing Then
+
                     If [GetType]() IsNot obj.GetType() Then
                         Return False
-                    ElseIf IsEquivalentToSubMain AndAlso CType(obj, StartupObject).IsEquivalentToSubMain Then
+                    ElseIf IsEquivalentToSubMain AndAlso startupObject.IsEquivalentToSubMain Then
                         Return True
                     Else
-                        Return Value.Equals(CType(obj, StartupObject).Value, StringComparison.OrdinalIgnoreCase)
+                        Return Value.Equals(startupObject.Value, StringComparison.OrdinalIgnoreCase)
                     End If
                 End If
 
