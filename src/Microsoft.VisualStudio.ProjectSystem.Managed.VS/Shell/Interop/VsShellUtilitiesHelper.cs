@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Interop;
 namespace Microsoft.VisualStudio.Shell.Interop
 {
     /// <summary>
-    /// Wrapper for VsShellUtilities to allow for testing.
+    /// Wrapper for <see cref="VsShellUtilities"/> to allow for testing.
     /// </summary>
     [Export(typeof(IVsShellUtilitiesHelper))]
     internal class VsShellUtilitiesHelper : IVsShellUtilitiesHelper
@@ -23,9 +23,6 @@ namespace Microsoft.VisualStudio.Shell.Interop
             _threadingService = threadingService;
         }
 
-        /// <summary>
-        /// <see cref="IVsShellUtilitiesHelper.GetVSVersionAsync"/>
-        /// </summary>
         public async Task<Version?> GetVSVersionAsync(IVsService<IVsAppId> vsAppIdService)
         {
             await _threadingService.SwitchToUIThread();

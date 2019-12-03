@@ -10,10 +10,13 @@ namespace Microsoft.VisualStudio.Shell.Interop
     internal interface IVsShellUtilitiesHelper
     {
         /// <summary>
-        /// Returns the version of VS as defined by VSVSAPROPID_ProductSemanticVersion with the trailing sem version stripped, or null on failure. 
+        /// Returns the version of VS as defined by <see cref="VSAPropID.VSAPROPID_ProductSemanticVersion"/> with the trailing sem version stripped, or <see langword="null"/> on failure.
         /// </summary>
         Task<Version?> GetVSVersionAsync(IVsService<IVsAppId> vsAppIdService);
 
+        /// <summary>
+        /// Returns the local app data folder as defined by <see cref="__VSSPROPID4.VSSPROPID_LocalAppDataDir"/>.
+        /// </summary>
         Task<string?> GetLocalAppDataFolderAsync(IVsService<IVsShell> vsShellService);
     }
 }
