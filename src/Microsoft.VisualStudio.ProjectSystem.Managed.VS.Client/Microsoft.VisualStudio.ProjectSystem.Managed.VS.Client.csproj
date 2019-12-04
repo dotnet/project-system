@@ -1,0 +1,26 @@
+﻿<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\..\build\import\VisualStudio.props" />
+  <PropertyGroup>
+    <RootNamespace>Microsoft.VisualStudio</RootNamespace>
+    
+    <!-- VSIX -->
+    <GeneratePkgDefFile>true</GeneratePkgDefFile>
+    <CreateVsixContainer>false</CreateVsixContainer>
+    
+    <!-- Nuget -->
+    <IsPackable>true</IsPackable>
+    <Description>Microsoft VisualStudio ProjectSystem for Managed Languages Project hosts that interact with VisualStudio interfaces.</Description>
+    <Summary>Microsoft VisualStudio Managed Project System VS Components</Summary>
+    <PackageTags>Roslyn Managed Project System VisualStudio</PackageTags>
+    <NoWarn>$(NoWarn);NU5125</NoWarn>    
+  </PropertyGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client.UnitTests" />
+    <InternalsVisibleTo Include="DynamicProxyGenAssembly2" Key="$(MoqPublicKey)" />
+  </ItemGroup>
+  <ItemGroup>
+    <AdditionalFiles Include="PublicAPI.Shipped.txt" />
+    <AdditionalFiles Include="PublicAPI.Unshipped.txt" />
+  </ItemGroup>
+</Project>
