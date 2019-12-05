@@ -146,6 +146,9 @@
   <data name="FrameworkAssembliesNodeName" xml:space="preserve">
     <value>Framework Assemblies</value>
   </data>
+  <data name="ImportsTreeNodeName" xml:space="preserve">
+    <value>Imports</value>
+  </data>
   <data name="PackagesNodeName" xml:space="preserve">
     <value>Packages</value>
   </data>

@@ -55,6 +55,7 @@ static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.LibraryWarni
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.NuGetGrey.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.NuGetGreyPrivate.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.NuGetGreyWarning.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ProjectImports.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ReferenceGroup.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ReferenceGroupWarning.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ReferencePrivate.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
@@ -64,6 +65,8 @@ static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.SdkWarning.g
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.SharedProject.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.SharedProjectPrivate.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.SharedProjectWarning.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.TargetFile.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.TargetFilePrivate.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.WarningSmall.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 static readonly Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependencyTreeFlags.BaseReferenceFlags -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
 static readonly Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependencyTreeFlags.DependencyFlags -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags

@@ -1,4 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -7,6 +8,7 @@ using System.Threading.Tasks.Dataflow;
 using System.Windows.Controls;
 using Microsoft.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
+using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Moq;
 using Moq.Protected;
 using Xunit;
@@ -22,11 +24,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             public ILaunchSettings? LaunchProfiles { get; set; }
             public IList<Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView>> UIProviders { get; set; } = new List<Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView>>();
             public TaskCompletionSource<bool>? FirstSnapshotComplete { get; set; }
-        }
-
-        private class EmptyDisposable : IDisposable
-        {
-            public void Dispose() {}
         }
 
         private static Mock<DebugPageViewModel> CreateViewModel(ViewModelData data)

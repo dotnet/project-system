@@ -103,6 +103,10 @@
   <StringProperty Name="MSBuildProjectFullPath"
                   Visible="false" />
 
+  <StringProperty Name="MSBuildProjectExtensionsPath"
+                  ReadOnly="True"
+                  Visible="False" />
+
   <StringProperty Name="Name"
                   DisplayName="Name" />
 
