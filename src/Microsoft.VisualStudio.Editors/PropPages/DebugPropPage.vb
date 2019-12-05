@@ -100,6 +100,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     data = New PropertyControlData(VsProjPropId.VBPROJPROPID_RemoteDebugEnabled, "RemoteDebugEnabled", RemoteDebugEnabled, ControlDataFlags.PersistedInProjectUserFile)
                     datalist.Add(data)
 
+                    data = New PropertyControlData(18000, "AuthenticationMode", AuthenticationMode, ControlDataFlags.PersistedInProjectUserFile, New Control() {AuthenticationModeLabel})
+                    datalist.Add(data)
+
                     m_ControlData = datalist.ToArray()
 
 
@@ -107,7 +110,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return m_ControlData
             End Get
         End Property
-
 
         Protected Overrides ReadOnly Property ValidationControlGroups As Control()()
             Get

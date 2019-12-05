@@ -12,6 +12,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Friend WithEvents StartArguments As MultilineTextBoxRejectsEnter
         Friend WithEvents StartWorkingDirectory As TextBoxWithWorkaroundForAutoCompleteAppend
         Friend WithEvents RemoteDebugMachine As System.Windows.Forms.TextBox
+        Friend WithEvents AuthenticationModeLabel As System.Windows.Forms.Label
+        Friend WithEvents AuthenticationMode As System.Windows.Forms.ComboBox
         Friend WithEvents EnableUnmanagedDebugging As System.Windows.Forms.CheckBox
         Friend WithEvents StartProgramBrowse As System.Windows.Forms.Button
         Friend WithEvents StartWorkingDirectoryBrowse As System.Windows.Forms.Button
@@ -57,6 +59,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.StartArguments = New Microsoft.VisualStudio.Editors.PropertyPages.DebugPropPage.MultilineTextBoxRejectsEnter()
             Me.StartWorkingDirectory = New Microsoft.VisualStudio.Editors.PropertyPages.TextBoxWithWorkaroundForAutoCompleteAppend()
             Me.RemoteDebugMachine = New System.Windows.Forms.TextBox()
+            Me.AuthenticationModeLabel = New System.Windows.Forms.Label()
+            Me.AuthenticationMode = New System.Windows.Forms.ComboBox()
             Me.StartWorkingDirectoryBrowse = New System.Windows.Forms.Button()
             Me.EnableDebuggerLabelLine = New System.Windows.Forms.Label()
             Me.EnableDebuggerLabel = New System.Windows.Forms.Label()
@@ -162,6 +166,17 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             resources.ApplyResources(Me.RemoteDebugMachine, "RemoteDebugMachine")
             Me.RemoteDebugMachine.Name = "RemoteDebugMachine"
             '
+            'AuthenticationModeLabel
+            '
+            resources.ApplyResources(Me.AuthenticationModeLabel, "AuthenticationModeLabel")
+            Me.AuthenticationModeLabel.Name = "AuthenticationModeLabel"
+            '
+            'AuthenticationMode
+            '
+            resources.ApplyResources(Me.AuthenticationMode, "AuthenticationMode")
+            Me.AuthenticationMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.AuthenticationMode.Name = "AuthenticationMode"
+            '
             'StartWorkingDirectoryBrowse
             '
             resources.ApplyResources(Me.StartWorkingDirectoryBrowse, "StartWorkingDirectoryBrowse")
@@ -201,11 +216,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.overarchingTableLayoutPanel.Controls.Add(Me.StartWorkingDirectory, 1, 6)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.StartWorkingDirectoryBrowse, 2, 6)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.RemoteDebugEnabled, 0, 7)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.enableDebuggersTableLayoutPanel, 0, 9)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.EnableUnmanagedDebugging, 0, 10)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.EnableSQLServerDebugging, 0, 11)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.enableDebuggersTableLayoutPanel, 0, 10)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.EnableUnmanagedDebugging, 0, 11)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.EnableSQLServerDebugging, 0, 12)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.StartURL, 1, 3)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.RemoteDebugMachine, 1, 7)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.AuthenticationModeLabel, 0, 8)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.AuthenticationMode, 1, 8)
             Me.overarchingTableLayoutPanel.Name = "overarchingTableLayoutPanel"
             '
             'startActionTableLayoutPanel
