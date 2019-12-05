@@ -34,9 +34,7 @@ namespace Microsoft.VisualStudio.Packaging
             
             IEnumerable<IPackageService> packageServices = componentModel.GetExtensions<IPackageService>();
 
-#pragma warning disable RS0030 // Do not used banned APIs
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-#pragma warning restore RS0030 // Do not used banned APIs
+            await JoinableTaskFactory.SwitchToMainThreadAsync();
 
             foreach (IPackageService packageService in packageServices)
             {
