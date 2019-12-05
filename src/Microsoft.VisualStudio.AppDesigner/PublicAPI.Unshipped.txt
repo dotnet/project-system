@@ -1,0 +1,3 @@
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.ConfigurationState -> Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.GetSelectedConfigItem() -> Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.DropdownItem
+Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerView.GetSelectedPlatformItem() -> Microsoft.VisualStudio.Editors.PropPageDesigner.ConfigurationState.DropdownItem

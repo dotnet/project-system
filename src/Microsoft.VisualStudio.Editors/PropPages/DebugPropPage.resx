@@ -538,7 +538,7 @@
     <value>23, 254</value>
   </data>
   <data name="RemoteDebugEnabled.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>23, 3, 3, 11</value>
+    <value>23, 3, 3, 3</value>
   </data>
   <data name="RemoteDebugEnabled.Size" type="System.Drawing.Size, System.Drawing">
     <value>123, 17</value>
@@ -628,7 +628,7 @@
     <value>166, 253</value>
   </data>
   <data name="RemoteDebugMachine.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 11</value>
+    <value>3, 3, 3, 3</value>
   </data>
   <data name="RemoteDebugMachine.Size" type="System.Drawing.Size, System.Drawing">
     <value>292, 20</value>
@@ -647,6 +647,69 @@
   </data>
   <data name="&gt;&gt;RemoteDebugMachine.ZOrder" xml:space="preserve">
     <value>17</value>
+  </data>
+  <data name="AuthenticationModeLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="AuthenticationModeLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="AuthenticationModeLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>20, 340</value>
+  </data>
+  <data name="AuthenticationModeLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>20, 4, 3, 17</value>
+  </data>
+  <data name="AuthenticationModeLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>160, 13</value>
+  </data>
+  <data name="AuthenticationModeLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>15</value>
+  </data>
+  <data name="AuthenticationModeLabel.Text" xml:space="preserve">
+    <value>Authentication &amp;mode:</value>
+  </data>
+  <data name="&gt;&gt;AuthenticationModeLabel.Name" xml:space="preserve">
+    <value>AuthenticationModeLabel</value>
+  </data>
+  <data name="&gt;&gt;AuthenticationModeLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;AuthenticationModeLabel.Parent" xml:space="preserve">
+    <value>overarchingTableLayoutPanel</value>
+  </data>
+  <data name="&gt;&gt;AuthenticationModeLabel.ZOrder" xml:space="preserve">
+    <value>14</value>
+  </data>
+  <data name="AuthenticationModeComboBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="AuthenticationModeComboBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>237, 440</value>
+  </data>
+  <data name="AuthenticationModeComboBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 4, 3, 17</value>
+  </data>
+  <data name="AuthenticationModeComboBox.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>186, 0</value>
+  </data>
+  <data name="AuthenticationModeComboBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>186, 28</value>
+  </data>
+  <data name="AuthenticationModeComboBox.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="&gt;&gt;AuthenticationModeComboBox.Name" xml:space="preserve">
+    <value>AuthenticationModeComboBox</value>
+  </data>
+  <data name="&gt;&gt;AuthenticationModeComboBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;AuthenticationModeComboBox.Parent" xml:space="preserve">
+    <value>overarchingTableLayoutPanel</value>
+  </data>
+  <data name="&gt;&gt;AuthenticationModeComboBox.ZOrder" xml:space="preserve">
+    <value>15</value>
   </data>
   <data name="StartWorkingDirectoryBrowse.AccessibleName" xml:space="preserve">
     <value>Browse for working directory</value>
@@ -916,7 +979,7 @@
     <value>overarchingTableLayoutPanel</value>
   </data>
   <data name="&gt;&gt;EnableSQLServerDebugging.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>17</value>
   </data>
   <data name="overarchingTableLayoutPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -949,7 +1012,7 @@
     <value>0</value>
   </data>
   <data name="overarchingTableLayoutPanel.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="startActionTableLayoutPanel" Row="0" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="rbStartProject" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="rbStartProgram" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="StartProgram" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="StartProgramBrowse" Row="2" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="rbStartURL" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="startOptionsTableLayoutPanel" Row="4" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="CommandLineArgsLabel" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="StartArguments" Row="5" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="WorkingDirLabel" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="StartWorkingDirectory" Row="6" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="StartWorkingDirectoryBrowse" Row="6" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="RemoteDebugEnabled" Row="7" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="enableDebuggersTableLayoutPanel" Row="9" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="EnableUnmanagedDebugging" Row="10" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="EnableSQLServerDebugging" Row="11" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="StartURL" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="RemoteDebugMachine" Row="7" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100,AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="startActionTableLayoutPanel" Row="0" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="rbStartProject" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="rbStartProgram" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="StartProgram" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="StartProgramBrowse" Row="2" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="rbStartURL" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="startOptionsTableLayoutPanel" Row="4" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="CommandLineArgsLabel" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="StartArguments" Row="5" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="WorkingDirLabel" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="StartWorkingDirectory" Row="6" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="StartWorkingDirectoryBrowse" Row="6" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="RemoteDebugEnabled" Row="7" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="enableDebuggersTableLayoutPanel" Row="10" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="EnableUnmanagedDebugging" Row="11" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="EnableSQLServerDebugging" Row="12" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="StartURL" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="RemoteDebugMachine" Row="7" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="AuthenticationModeLabel" Row="8" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="AuthenticationModeComboBox" Row="8" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100,AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="EnableUnmanagedDebugging.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -979,7 +1042,7 @@
     <value>overarchingTableLayoutPanel</value>
   </data>
   <data name="&gt;&gt;EnableUnmanagedDebugging.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>16</value>
   </data>
   <data name="$this.Localizable" type="System.Boolean, mscorlib">
     <value>True</value>

@@ -100,6 +100,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     data = New PropertyControlData(VsProjPropId.VBPROJPROPID_RemoteDebugEnabled, "RemoteDebugEnabled", RemoteDebugEnabled, ControlDataFlags.PersistedInProjectUserFile)
                     datalist.Add(data)
 
+                    data = New RemoteDebuggerAuthenticationModePropertyControlData(Me, AuthenticationModeComboBox, New Control() {AuthenticationModeLabel})
+
+                    datalist.Add(data)
+
                     m_ControlData = datalist.ToArray()
 
 
@@ -108,14 +112,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Get
         End Property
 
-
         Protected Overrides ReadOnly Property ValidationControlGroups As Control()()
             Get
                 If _controlGroup Is Nothing Then
                     _controlGroup = New Control()() {
-                        New Control() {rbStartProject, rbStartProgram, rbStartURL, StartProgram, StartURL, StartProgramBrowse},
-                        New Control() {RemoteDebugEnabled, StartWorkingDirectory, RemoteDebugMachine, StartWorkingDirectoryBrowse}
-                        }
+                            New Control() {rbStartProject, rbStartProgram, rbStartURL, StartProgram, StartURL, StartProgramBrowse},
+                            New Control() {RemoteDebugEnabled, StartWorkingDirectory, RemoteDebugMachine, StartWorkingDirectoryBrowse}
+                            }
                 End If
                 Return _controlGroup
             End Get

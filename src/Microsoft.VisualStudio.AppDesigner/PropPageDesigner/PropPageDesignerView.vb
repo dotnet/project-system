@@ -232,7 +232,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
         ' The ConfigurationState object from the project designer.  This is shared among all the prop page designers
         '   for this project designer.
-        Private _configurationState As ConfigurationState
+        Public ConfigurationState As ConfigurationState
 
         'True if we should check for simplified config mode having changed (used to keep from checking multiple times in a row)
         Private _needToCheckForModeChanges As Boolean
@@ -283,7 +283,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     If _components IsNot Nothing Then
                         _components.Dispose()
                     End If
-                    _configurationState = Nothing
+                    ConfigurationState = Nothing
                 Catch ex As Exception When ReportWithoutCrash(ex, NameOf(Dispose), NameOf(PropPageDesignerView))
                     'Don't throw here trying to cleanup
                 End Try
@@ -436,22 +436,22 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             _rootDesigner.RegisterMenuCommands(menuCommands)
 
             ' Get the ConfigurationState object from the project designer
-            _configurationState = DirectCast(_loadedPageSite.GetService(GetType(ConfigurationState)), ConfigurationState)
-            If _configurationState Is Nothing Then
+            ConfigurationState = DirectCast(_loadedPageSite.GetService(GetType(ConfigurationState)), ConfigurationState)
+            If ConfigurationState Is Nothing Then
                 Debug.Fail("Couldn't get ConfigurationState service")
                 Throw New Package.InternalException
             End If
             If IsConfigPage Then
-                AddHandler _configurationState.SelectedConfigurationChanged, AddressOf ConfigurationState_SelectedConfigurationChanged
-                AddHandler _configurationState.ConfigurationListAndSelectionChanged, AddressOf ConfigurationState_ConfigurationListAndSelectionChanged
+                AddHandler ConfigurationState.SelectedConfigurationChanged, AddressOf ConfigurationState_SelectedConfigurationChanged
+                AddHandler ConfigurationState.ConfigurationListAndSelectionChanged, AddressOf ConfigurationState_ConfigurationListAndSelectionChanged
 
                 'Note: we only hook this up for config pages because the situations where we (currently) need to clear the undo/redo stack only
                 '  affects config pages (when a config/platform is deleted or renamed).
-                AddHandler _configurationState.ClearConfigPageUndoRedoStacks, AddressOf ConfigurationState_ClearConfigPageUndoRedoStacks
+                AddHandler ConfigurationState.ClearConfigPageUndoRedoStacks, AddressOf ConfigurationState_ClearConfigPageUndoRedoStacks
             End If
 
             'This notification is needed by config and non-config pages
-            AddHandler _configurationState.SimplifiedConfigModeChanged, AddressOf ConfigurationState_SimplifiedConfigModeChanged
+            AddHandler ConfigurationState.SimplifiedConfigModeChanged, AddressOf ConfigurationState_SimplifiedConfigModeChanged
 
             'Scale the comboboxes widths if necessary, for High-DPI
             ConfigurationComboBox.Size = DpiAwareness.LogicalToDeviceSize(Handle, ConfigurationComboBox.Size)
@@ -463,7 +463,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
             'Set the initial dropdown selections
             If IsConfigPage Then
-                ChangeSelectedComboBoxIndicesWithoutNotification(_configurationState.SelectedConfigIndex, _configurationState.SelectedPlatformIndex)
+                ChangeSelectedComboBoxIndicesWithoutNotification(ConfigurationState.SelectedConfigIndex, ConfigurationState.SelectedPlatformIndex)
             End If
 
             'Populate the page initially
@@ -692,11 +692,11 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 _errorControl = Nothing
             End If
 
-            If _configurationState IsNot Nothing Then
-                RemoveHandler _configurationState.SelectedConfigurationChanged, AddressOf ConfigurationState_SelectedConfigurationChanged
-                RemoveHandler _configurationState.ConfigurationListAndSelectionChanged, AddressOf ConfigurationState_ConfigurationListAndSelectionChanged
-                RemoveHandler _configurationState.ClearConfigPageUndoRedoStacks, AddressOf ConfigurationState_ClearConfigPageUndoRedoStacks
-                RemoveHandler _configurationState.SimplifiedConfigModeChanged, AddressOf ConfigurationState_SimplifiedConfigModeChanged
+            If ConfigurationState IsNot Nothing Then
+                RemoveHandler ConfigurationState.SelectedConfigurationChanged, AddressOf ConfigurationState_SelectedConfigurationChanged
+                RemoveHandler ConfigurationState.ConfigurationListAndSelectionChanged, AddressOf ConfigurationState_ConfigurationListAndSelectionChanged
+                RemoveHandler ConfigurationState.ClearConfigPageUndoRedoStacks, AddressOf ConfigurationState_ClearConfigPageUndoRedoStacks
+                RemoveHandler ConfigurationState.SimplifiedConfigModeChanged, AddressOf ConfigurationState_SimplifiedConfigModeChanged
             End If
         End Sub
 
@@ -897,7 +897,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Sets whether or not the configuration/platform dropdowns are visible
         ''' </summary>
         Private Sub SetConfigDropdownVisibility()
-            ConfigurationPanel.Visible = Not _configurationState.IsSimplifiedConfigMode()
+            ConfigurationPanel.Visible = Not ConfigurationState.IsSimplifiedConfigMode()
 
             If IsConfigPage Then
                 ConfigurationPanel.Enabled = True
@@ -947,7 +947,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 Debug.Assert(IsConfigPage)
                 If IsConfigPage Then
                     'Notify the ConfigurationState of the change.  It will in turn notify us via SelectedConfigurationChanged
-                    _configurationState.ChangeSelection(ConfigurationComboBox.SelectedIndex, PlatformComboBox.SelectedIndex, FireNotifications:=True)
+                    ConfigurationState.ChangeSelection(ConfigurationComboBox.SelectedIndex, PlatformComboBox.SelectedIndex, FireNotifications:=True)
                 End If
             End If
         End Sub
@@ -965,7 +965,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             Debug.Assert(IsConfigPage)
             If IsConfigPage Then
                 'Update combobox selections
-                ChangeSelectedComboBoxIndicesWithoutNotification(_configurationState.SelectedConfigIndex, _configurationState.SelectedPlatformIndex)
+                ChangeSelectedComboBoxIndicesWithoutNotification(ConfigurationState.SelectedConfigIndex, ConfigurationState.SelectedPlatformIndex)
 
                 '... and tell the page to update based on the new selection 'CONSIDER delaying this call until we're the active designer
                 SetObjectsForSelectedConfigs()
@@ -990,7 +990,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 UpdateConfigLists()
 
                 '... and our selection state
-                ChangeSelectedComboBoxIndicesWithoutNotification(_configurationState.SelectedConfigIndex, _configurationState.SelectedPlatformIndex)
+                ChangeSelectedComboBoxIndicesWithoutNotification(ConfigurationState.SelectedConfigIndex, ConfigurationState.SelectedPlatformIndex)
 
                 '.. and tell the page to update based on the new selection 'CONSIDER delaying this call until we're the active designer
                 SetObjectsForSelectedConfigs()
@@ -1025,8 +1025,8 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         '''   of a change)
         ''' </summary>
         Private Sub CheckForModeChanges()
-            If _configurationState IsNot Nothing AndAlso _fInitialized AndAlso _needToCheckForModeChanges Then
-                _configurationState.CheckForModeChanges()
+            If ConfigurationState IsNot Nothing AndAlso _fInitialized AndAlso _needToCheckForModeChanges Then
+                ConfigurationState.CheckForModeChanges()
                 _needToCheckForModeChanges = False
             End If
         End Sub
@@ -1046,10 +1046,10 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             ConfigurationComboBox.BeginUpdate()
             PlatformComboBox.BeginUpdate()
             Try
-                For Each ConfigEntry As ConfigurationState.DropdownItem In _configurationState.ConfigurationDropdownEntries
+                For Each ConfigEntry As ConfigurationState.DropdownItem In ConfigurationState.ConfigurationDropdownEntries
                     ConfigurationComboBox.Items.Add(ConfigEntry.DisplayName)
                 Next
-                For Each PlatformEntry As ConfigurationState.DropdownItem In _configurationState.PlatformDropdownEntries
+                For Each PlatformEntry As ConfigurationState.DropdownItem In ConfigurationState.PlatformDropdownEntries
                     PlatformComboBox.Items.Add(PlatformEntry.DisplayName)
                 Next
             Finally
@@ -1065,11 +1065,11 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Returns the currently selected config combobox item
         ''' </summary>
-        Private Function GetSelectedConfigItem() As ConfigurationState.DropdownItem
+        Public Function GetSelectedConfigItem() As ConfigurationState.DropdownItem
             Debug.Assert(ConfigurationComboBox.SelectedIndex >= 0)
-            Debug.Assert(ConfigurationComboBox.Items.Count = _configurationState.ConfigurationDropdownEntries.Length,
+            Debug.Assert(ConfigurationComboBox.Items.Count = ConfigurationState.ConfigurationDropdownEntries.Length,
                 "The combobox is not in sync")
-            Dim ConfigItem As ConfigurationState.DropdownItem = _configurationState.ConfigurationDropdownEntries(ConfigurationComboBox.SelectedIndex)
+            Dim ConfigItem As ConfigurationState.DropdownItem = ConfigurationState.ConfigurationDropdownEntries(ConfigurationComboBox.SelectedIndex)
             Debug.Assert(ConfigItem IsNot Nothing)
             Return ConfigItem
         End Function
@@ -1078,11 +1078,11 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Returns the currently selected platform combobox item
         ''' </summary>
-        Private Function GetSelectedPlatformItem() As ConfigurationState.DropdownItem
+        Public Function GetSelectedPlatformItem() As ConfigurationState.DropdownItem
             Debug.Assert(PlatformComboBox.SelectedIndex >= 0)
-            Debug.Assert(PlatformComboBox.Items.Count = _configurationState.PlatformDropdownEntries.Length,
+            Debug.Assert(PlatformComboBox.Items.Count = ConfigurationState.PlatformDropdownEntries.Length,
                 "The combobox is not in sync")
-            Dim PlatformItem As ConfigurationState.DropdownItem = _configurationState.PlatformDropdownEntries(PlatformComboBox.SelectedIndex)
+            Dim PlatformItem As ConfigurationState.DropdownItem = ConfigurationState.PlatformDropdownEntries(PlatformComboBox.SelectedIndex)
             Debug.Assert(PlatformItem IsNot Nothing)
             Return PlatformItem
         End Function
@@ -1132,7 +1132,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
                 If AllConfigurations AndAlso AllPlatforms Then
                     'All configurations and platforms
-                    Dim Configs() As IVsCfg = _configurationState.GetAllConfigs()
+                    Dim Configs() As IVsCfg = ConfigurationState.GetAllConfigs()
 
                     'Must have an array of object, not IVsCfg
                     ConfigObjects = New Object(Configs.Length - 1) {}
@@ -1391,7 +1391,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             Dim SelectAllConfigs As Boolean = MultiValues.SelectedConfigName = ""
             Dim SelectAllPlatforms As Boolean = MultiValues.SelectedPlatformName = ""
 
-            _configurationState.ChangeSelection(
+            ConfigurationState.ChangeSelection(
                 MultiValues.SelectedConfigName, IIf(SelectAllConfigs, ConfigurationState.SelectionTypes.All, ConfigurationState.SelectionTypes.Normal),
                 MultiValues.SelectedPlatformName, IIf(SelectAllPlatforms, ConfigurationState.SelectionTypes.All, ConfigurationState.SelectionTypes.Normal),
                 PreferExactMatch:=False, FireNotifications:=True)
@@ -1633,7 +1633,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             If isSetFocusMessage Then
                 'Since there's no notification of tools.option changes, on WM_SETFOCUS we check if the
                 '  user has changed the simplified configs mode and update the page.
-                If _configurationState IsNot Nothing AndAlso IsHandleCreated AndAlso Not _needToCheckForModeChanges Then
+                If ConfigurationState IsNot Nothing AndAlso IsHandleCreated AndAlso Not _needToCheckForModeChanges Then
                     _needToCheckForModeChanges = True
                     BeginInvoke(New MethodInvoker(AddressOf CheckForModeChanges)) 'Make sure we're not in the middle of something when doing the check...
                 End If
