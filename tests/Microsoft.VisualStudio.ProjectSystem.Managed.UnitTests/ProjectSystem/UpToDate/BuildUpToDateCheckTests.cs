@@ -127,7 +127,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
 
             var value = IProjectVersionedValueFactory.Create(
-                Tuple.Create(
+                ValueTuple.Create(
                     CreateUpdate(projectSnapshot),
                     CreateUpdate(sourceSnapshot),
                     IProjectItemSchemaFactory.Create(_itemTypes)),

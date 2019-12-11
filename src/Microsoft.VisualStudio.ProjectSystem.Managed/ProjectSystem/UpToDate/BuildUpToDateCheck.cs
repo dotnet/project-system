@@ -109,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 _configuredProject.Services.ProjectSubscription.JointRuleSource.SourceBlock.SyncLinkOptions(DataflowOption.WithRuleNames(ProjectPropertiesSchemas)),
                 _configuredProject.Services.ProjectSubscription.SourceItemsRuleSource.SourceBlock.SyncLinkOptions(),
                 _projectItemSchemaService.SourceBlock.SyncLinkOptions(),
-                target: DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectItemSchema>>>(OnChanged),
+                target: DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<ValueTuple<IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectItemSchema>>>(OnChanged),
                 linkOptions: DataflowOption.PropagateCompletion);
 
             return Task.CompletedTask;
@@ -122,7 +122,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return Task.CompletedTask;
         }
 
-        internal void OnChanged(IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectItemSchema>> e)
+        internal void OnChanged(IProjectVersionedValue<ValueTuple<IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectItemSchema>> e)
         {
             lock (_stateLock)
             {
