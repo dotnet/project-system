@@ -116,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
             var instance = await CreateInitializedInstance(dataProgressTrackerService: dataProgressTrackerService);
 
-            var tuple = Tuple.Create(projectSnapshot, restoreData);
+            var tuple = ValueTuple.Create(projectSnapshot, restoreData);
             var value = IProjectVersionedValueFactory.Create(tuple);
 
             instance.OnRestoreCompleted(value);

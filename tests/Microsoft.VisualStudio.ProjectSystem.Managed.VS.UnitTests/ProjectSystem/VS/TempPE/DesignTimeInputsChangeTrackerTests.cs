@@ -317,7 +317,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             _lastIntermediateOutputPath = _intermediateOutputPath;
 
-            _changeTracker.ProcessDataflowChanges(new ProjectVersionedValue<Tuple<DesignTimeInputs, IProjectSubscriptionUpdate>>(new Tuple<DesignTimeInputs, IProjectSubscriptionUpdate>(inputs, subscriptionUpdate), ImmutableDictionary<NamedIdentity, IComparable>.Empty));
+            _changeTracker.ProcessDataflowChanges(new ProjectVersionedValue<ValueTuple<DesignTimeInputs, IProjectSubscriptionUpdate>>(new ValueTuple<DesignTimeInputs, IProjectSubscriptionUpdate>(inputs, subscriptionUpdate), ImmutableDictionary<NamedIdentity, IComparable>.Empty));
         }
 
         private void SendFileChange(params string[] files)
