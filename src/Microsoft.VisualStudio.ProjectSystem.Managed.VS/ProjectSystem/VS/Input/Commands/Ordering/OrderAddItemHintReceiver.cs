@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
     [Export(typeof(IProjectChangeHintReceiver))]
     [Export(typeof(OrderAddItemHintReceiver))]
     [ProjectChangeHintKind(ProjectChangeFileSystemEntityHint.AddedFileAsString)]
-    [AppliesTo(ProjectCapability.SortByDisplayOrder)]
+    [AppliesTo(ProjectCapability.SortByDisplayOrder + " & " + ProjectCapability.EditableDisplayOrder)]
     internal class OrderAddItemHintReceiver : IProjectChangeHintReceiver
     {
         private readonly IProjectAccessor _accessor;

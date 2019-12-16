@@ -82,6 +82,12 @@
     <ProjectCapability Include="LaunchProfiles" />
     <ProjectCapability Include="NoGeneralDependentFileIcon"/>
     <!--
+      We want the tree to respect IProjectTree2.DisplayOrder when it is set.
+      This is different to capability EditableDisplayOrder, used by F# for example, which
+      allows the user to manipulate display order values.
+    -->
+    <ProjectCapability Include="SortByDisplayOrder"/>
+    <!--
       List of capabilities below is adding back common capabilities defined in imported targets.
       We disabled them with the property DefineCommonCapabilities=false to get rid of default
       References capability, but everything else we want back.

@@ -191,18 +191,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
                                 {
                                     IProjectTree updatedTree = SyncNode(
                                         imports: e.Value.Item1.Value,
-                                        tree: currentTree.Value.Tree);
+                                        tree: (IProjectTree2)currentTree.Value.Tree);
 
                                     return Task.FromResult(new TreeUpdateResult(updatedTree, e.DataSourceVersions));
                                 });
 
                             return;
 
-                            IProjectTree SyncNode(IReadOnlyList<IProjectImportSnapshot> imports, IProjectTree tree)
+                            IProjectTree2 SyncNode(IReadOnlyList<IProjectImportSnapshot> imports, IProjectTree2 tree)
                             {
-                                var existingChildByPath = new Dictionary<string, IProjectTree>(StringComparers.Paths);
+                                var existingChildByPath = new Dictionary<string, IProjectTree2>(StringComparers.Paths);
 
-                                foreach (IProjectTree existingNode in tree.Children)
+                                foreach (IProjectTree2 existingNode in tree.Children)
                                 {
                                     Assumes.NotNullOrEmpty(existingNode.FilePath);
 
@@ -211,7 +211,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
                                         // Remove child that's no longer present
                                         if (tree.TryFind(existingNode.Identity, out IProjectTree? child))
                                         {
-                                            tree = child.Remove();
+                                            tree = (IProjectTree2)child.Remove();
                                         }
                                     }
                                     else
@@ -220,39 +220,49 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
                                     }
                                 }
 
-                                foreach (IProjectImportSnapshot import in imports)
+                                for (int displayOrder = 0; displayOrder < imports.Count; displayOrder++)
                                 {
-                                    if (!existingChildByPath.TryGetValue(import.ProjectPath, out IProjectTree child))
+                                    IProjectImportSnapshot import = imports[displayOrder];
+                                    if (!existingChildByPath.TryGetValue(import.ProjectPath, out IProjectTree2 child))
                                     {
                                         // No child exists for this import, so add it
                                         bool isImplicit = _importPathCheck.IsImplicit(import.ProjectPath);
                                         ProjectTreeFlags flags = isImplicit ? s_projectImportImplicitFlags : s_projectImportFlags;
                                         ProjectImageMoniker icon = isImplicit ? s_nodeImplicitIcon : s_nodeIcon;
 
-                                        IProjectTree newChild = NewTree(
+                                        IProjectTree2 newChild = NewTree(
                                             Path.GetFileName(import.ProjectPath),
                                             filePath: import.ProjectPath,
                                             flags: flags,
-                                            icon: icon);
+                                            icon: icon,
+                                            displayOrder: displayOrder);
 
                                         // Recur down the tree
                                         newChild = SyncNode(import.Imports, newChild);
 
-                                        tree = tree.Add(newChild).Parent!;
+                                        tree = AddChild(newChild);
+                                    }
+                                    else if (child.DisplayOrder != displayOrder)
+                                    {
+                                        // Child exists but with the wrong display order
+                                        tree = ReplaceChild(child, child.SetDisplayOrder(displayOrder));
                                     }
                                     else
                                     {
-                                        // Child exists, so continue walking tree
-                                        IProjectTree newChild = SyncNode(import.Imports, child);
+                                        // Child exists with correct display order, so continue walking tree
+                                        IProjectTree2 newChild = SyncNode(import.Imports, child);
 
                                         if (!ReferenceEquals(child, newChild))
                                         {
-                                            tree = tree.Remove(child).Add(newChild).Parent!;
+                                            tree = ReplaceChild(child, newChild);
                                         }
                                     }
                                 }
 
                                 return tree;
+
+                                IProjectTree2 AddChild(IProjectTree2 child) => (IProjectTree2)tree.Add(child).Parent!;
+                                IProjectTree2 ReplaceChild(IProjectTree2 oldChild, IProjectTree2 newChild) => (IProjectTree2)tree.Remove(oldChild).Add(newChild).Parent!;
                             }
                         }
 

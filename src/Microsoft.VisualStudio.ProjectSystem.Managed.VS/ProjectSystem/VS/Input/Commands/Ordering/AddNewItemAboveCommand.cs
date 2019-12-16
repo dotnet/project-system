@@ -9,7 +9,7 @@ using Task = System.Threading.Tasks.Task;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 {
     [ProjectCommand(CommandGroup.ManagedProjectSystemOrder, ManagedProjectSystemOrderCommandId.AddNewItemAbove)]
-    [AppliesTo(ProjectCapability.SortByDisplayOrder)]
+    [AppliesTo(ProjectCapability.SortByDisplayOrder + " & " + ProjectCapability.EditableDisplayOrder)]
     internal class AddNewItemAboveCommand : AbstractAddItemCommand
     {
         private readonly IAddItemDialogService _addItemDialogService;
