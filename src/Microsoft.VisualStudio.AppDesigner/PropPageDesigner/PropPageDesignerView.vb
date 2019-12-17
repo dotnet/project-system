@@ -232,7 +232,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
         ' The ConfigurationState object from the project designer.  This is shared among all the prop page designers
         '   for this project designer.
-        Public ConfigurationState As ConfigurationState
+        Friend ReadOnly Property ConfigurationState As ConfigurationState
 
         'True if we should check for simplified config mode having changed (used to keep from checking multiple times in a row)
         Private _needToCheckForModeChanges As Boolean
@@ -283,7 +283,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     If _components IsNot Nothing Then
                         _components.Dispose()
                     End If
-                    ConfigurationState = Nothing
+                    _ConfigurationState = Nothing
                 Catch ex As Exception When ReportWithoutCrash(ex, NameOf(Dispose), NameOf(PropPageDesignerView))
                     'Don't throw here trying to cleanup
                 End Try
@@ -436,7 +436,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             _rootDesigner.RegisterMenuCommands(menuCommands)
 
             ' Get the ConfigurationState object from the project designer
-            ConfigurationState = DirectCast(_loadedPageSite.GetService(GetType(ConfigurationState)), ConfigurationState)
+            _ConfigurationState = DirectCast(_loadedPageSite.GetService(GetType(ConfigurationState)), ConfigurationState)
             If ConfigurationState Is Nothing Then
                 Debug.Fail("Couldn't get ConfigurationState service")
                 Throw New Package.InternalException
@@ -1065,7 +1065,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Returns the currently selected config combobox item
         ''' </summary>
-        Public Function GetSelectedConfigItem() As ConfigurationState.DropdownItem
+        Friend Function GetSelectedConfigItem() As ConfigurationState.DropdownItem
             Debug.Assert(ConfigurationComboBox.SelectedIndex >= 0)
             Debug.Assert(ConfigurationComboBox.Items.Count = ConfigurationState.ConfigurationDropdownEntries.Length,
                 "The combobox is not in sync")
@@ -1078,7 +1078,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Returns the currently selected platform combobox item
         ''' </summary>
-        Public Function GetSelectedPlatformItem() As ConfigurationState.DropdownItem
+        Friend Function GetSelectedPlatformItem() As ConfigurationState.DropdownItem
             Debug.Assert(PlatformComboBox.SelectedIndex >= 0)
             Debug.Assert(PlatformComboBox.Items.Count = ConfigurationState.PlatformDropdownEntries.Length,
                 "The combobox is not in sync")

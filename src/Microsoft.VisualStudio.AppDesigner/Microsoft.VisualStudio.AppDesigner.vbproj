@@ -18,6 +18,9 @@
     <PackageReference Include="Microsoft.VisualStudio.TemplateWizardInterface" />
   </ItemGroup>
   <ItemGroup>
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.Editors" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="..\Common\ManagedCodeMarkers.vb">
       <Link>ManagedCodeMarkers.vb</Link>
     </Compile>
