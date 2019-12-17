@@ -16,6 +16,7 @@ namespace Microsoft.VisualStudio.Packaging
                                       ProjectCapability.PreserveFormatting + "; " +
                                       ProjectCapability.ProjectConfigurationsDeclaredDimensions + "; " +
                                       ProjectCapability.LanguageService + "; " +
+                                      ProjectCapability.SortByDisplayOrder + "; " + // Respect IProjectTree2.DisplayOrder
                                       ProjectCapability.DotNet;
 
         /// <summary>
@@ -23,7 +24,6 @@ namespace Microsoft.VisualStudio.Packaging
         /// </summary>
         public const string FSharp = Default + "; " +
                                      ProjectCapability.FSharp + "; " +
-                                     ProjectCapability.SortByDisplayOrder + "; " +
                                      ProjectCapability.EditableDisplayOrder;
 
         /// <summary>
