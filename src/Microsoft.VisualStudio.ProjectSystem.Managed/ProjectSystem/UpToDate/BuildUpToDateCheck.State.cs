@@ -66,9 +66,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             public ImmutableArray<string> SetNames { get; }
 
             public ImmutableDictionary<string, ImmutableHashSet<string>> UpToDateCheckInputItemsBySetName { get; }
-            
+
             public ImmutableDictionary<string, ImmutableHashSet<string>> UpToDateCheckOutputItemsBySetName { get; }
-            
+
             public ImmutableDictionary<string, ImmutableHashSet<string>> UpToDateCheckBuiltItemsBySetName { get; }
 
             /// <summary>

@@ -150,7 +150,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
                 if (!_roslynServices.ApplyChangesToSolution(renamedSolution.Workspace, renamedSolution))
                     return false;
-                
+
                 // Notify other VS features that symbol has been renamed
                 NotifyAfterRename(newName, rqName, changes);
                 return true;

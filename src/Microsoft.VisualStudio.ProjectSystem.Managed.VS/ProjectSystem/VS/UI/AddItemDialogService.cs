@@ -27,9 +27,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
 
         public Task<bool> ShowAddNewItemDialogAsync(IProjectTree node)
         {
-            return ShowDialogAsync(node, 
-                __VSADDITEMFLAGS.VSADDITEM_AddNewItems | 
-                __VSADDITEMFLAGS.VSADDITEM_SuggestTemplateName | 
+            return ShowDialogAsync(node,
+                __VSADDITEMFLAGS.VSADDITEM_AddNewItems |
+                __VSADDITEMFLAGS.VSADDITEM_SuggestTemplateName |
                 __VSADDITEMFLAGS.VSADDITEM_AllowHiddenTreeView);
         }
 
@@ -48,10 +48,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
 
         public Task<bool> ShowAddExistingItemsDialogAsync(IProjectTree node)
         {
-            return ShowDialogAsync(node, 
-                __VSADDITEMFLAGS.VSADDITEM_AddExistingItems | 
-                __VSADDITEMFLAGS.VSADDITEM_AllowMultiSelect | 
-                __VSADDITEMFLAGS.VSADDITEM_AllowStickyFilter | 
+            return ShowDialogAsync(node,
+                __VSADDITEMFLAGS.VSADDITEM_AddExistingItems |
+                __VSADDITEMFLAGS.VSADDITEM_AllowMultiSelect |
+                __VSADDITEMFLAGS.VSADDITEM_AllowStickyFilter |
                 __VSADDITEMFLAGS.VSADDITEM_ProjectHandlesLinks);
         }
 

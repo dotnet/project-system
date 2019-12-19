@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
             var mock = new Mock<IAddItemDialogService>();
             mock.Setup(s => s.CanAddNewOrExistingItemTo(It.IsAny<IProjectTree>()))
                 .Returns(true);
-            
+
             mock.Setup(s => s.ShowAddNewItemDialogAsync(It.IsAny<IProjectTree>(), It.IsAny<string>(), It.IsAny<string>()))
                 .ReturnsAsync(action);
 

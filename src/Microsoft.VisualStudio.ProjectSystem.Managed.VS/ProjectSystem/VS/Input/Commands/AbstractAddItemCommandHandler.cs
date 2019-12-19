@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             Requires.NotNull(nodes, nameof(nodes));
 
             if (nodes.Count == 1 && _addItemDialogService.CanAddNewOrExistingItemTo(nodes.First()) && TryGetTemplateDetails(commandId, out TemplateDetails? result))
-            { 
+            {
                 IVsShell? vsShell = _vsShell.Value;
                 Assumes.Present(vsShell);
 

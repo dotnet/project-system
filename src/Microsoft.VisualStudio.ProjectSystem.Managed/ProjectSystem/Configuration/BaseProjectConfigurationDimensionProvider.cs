@@ -186,7 +186,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             }
 
             return Task.CompletedTask;
-            
+
             async Task UpdateUnderLockAsync(UnconfiguredProject project, Action<ProjectRootElement, string> action)
             {
                 ConfiguredProject? configuredProject = await project.GetSuggestedConfiguredProjectAsync();
@@ -203,7 +203,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                     });
                 });
             }
-        }    
+        }
 
         private async Task<string?> FindDefaultValueFromDimensionPropertyAsync(UnconfiguredProject project)
         {

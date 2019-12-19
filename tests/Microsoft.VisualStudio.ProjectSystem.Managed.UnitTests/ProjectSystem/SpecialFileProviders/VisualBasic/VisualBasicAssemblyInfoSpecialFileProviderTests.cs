@@ -4,7 +4,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders.VisualBasic
 {
     public class VisualBasicAssemblyInfoSpecialFileProviderTests : AbstractFindByNameUnderAppDesignerSpecialFileProviderTestBase
     {
-        public VisualBasicAssemblyInfoSpecialFileProviderTests() 
+        public VisualBasicAssemblyInfoSpecialFileProviderTests()
             : base("AssemblyInfo.vb")
         {
         }

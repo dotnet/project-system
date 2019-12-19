@@ -362,7 +362,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// Maps each top-level dependency by its path, where path is composed of targetFramework/providerType/dependencyPath.
         /// </summary>
         private readonly Dictionary<string, IDependency> _topLevelDependencyByPath;
-        
+
         /// <summary>
         /// A map whose keys are the IDs of all reachable dependencies, and whose values are <see langword="true" /> if
         /// the dependency has a reachable, visible, unresolved descendant, otherwise <see langword="false" />.
@@ -442,7 +442,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             {
                 return ImmutableArray<IDependency>.Empty;
             }
-            
+
             ImmutableArray<IDependency>.Builder children = ImmutableArray.CreateBuilder<IDependency>(dependency.DependencyIDs.Length);
 
             foreach (string id in dependency.DependencyIDs)

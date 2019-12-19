@@ -4,7 +4,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
     public class AppSettingsSpecialFileProviderTests : AbstractFindByNameUnderAppDesignerSpecialFileProviderTestBase
     {
-        public AppSettingsSpecialFileProviderTests() 
+        public AppSettingsSpecialFileProviderTests()
             : base("Settings.settings")
         {
         }

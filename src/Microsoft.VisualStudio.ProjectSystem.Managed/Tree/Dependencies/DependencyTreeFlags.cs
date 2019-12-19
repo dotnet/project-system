@@ -90,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         internal static readonly ProjectTreeFlags TargetNode = ProjectTreeFlags.Create("TargetNode");
         internal static readonly ProjectTreeFlags SubTreeRootNode = ProjectTreeFlags.Create(ProjectTreeFlags.Common.VirtualFolder) +
                                                                     ProjectTreeFlags.Create(ProjectTreeFlags.Common.ReferencesFolder);
-        
+
 
         internal static readonly ProjectTreeFlags AnalyzerDependency = ProjectTreeFlags.Create("AnalyzerDependency");
 

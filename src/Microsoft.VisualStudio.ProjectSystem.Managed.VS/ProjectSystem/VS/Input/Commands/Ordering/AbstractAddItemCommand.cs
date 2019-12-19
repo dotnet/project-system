@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         protected override Task<CommandStatusResult> GetCommandStatusAsync(IProjectTree node, bool focused, string? commandText, CommandStatus progressiveStatus)
         {
             IProjectTree? nodeToAddTo = GetNodeToAddTo(node);
-            
+
             if (nodeToAddTo != null && _addItemDialogService.CanAddNewOrExistingItemTo(nodeToAddTo) && CanAdd(node))
             {
                 return GetCommandStatusResult.Handled(commandText, CommandStatus.Enabled);
