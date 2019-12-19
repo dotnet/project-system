@@ -139,7 +139,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 new Dictionary<string, IProjectDependenciesSubTreeProvider> { { providerType, subTreeProvider } },
                 ImmutableHashSet<string>.Empty,
                 context);
-            
+
             var acceptedDependency = context.GetResult(filter);
 
             // Returns changed dependency

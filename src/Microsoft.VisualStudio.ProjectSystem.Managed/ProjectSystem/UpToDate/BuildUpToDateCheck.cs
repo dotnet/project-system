@@ -183,7 +183,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             foreach (string setName in state.SetNames)
             {
                 log.Verbose("Comparing timestamps of inputs and outputs in set '{0}':", setName);
-        
+
                 if (!CheckInputsAndOutputs(CollectSetInputs(setName), CollectSetOutputs(setName), timestampCache, setName))
                 {
                     return false;

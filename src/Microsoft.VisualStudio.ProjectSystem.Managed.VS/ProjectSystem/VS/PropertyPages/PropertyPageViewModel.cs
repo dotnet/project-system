@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// PushIgnoreEvents\PopIgnoreEvents  are used instead to control the count.
         /// </summary>
         private int _ignoreEventsNestingCount = 0;
-        
+
         public bool IgnoreEvents => _ignoreEventsNestingCount > 0;
 
         public void PushIgnoreEvents()
@@ -48,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            
+
             if (suppressInvalidation)
             {
                 PopIgnoreEvents();

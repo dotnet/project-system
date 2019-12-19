@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 .Returns(service);
 
             mock.Setup(t => t.TreeStorage)
-           .    Returns(storage);
+           .Returns(storage);
 
             return mock.Object;
         }

@@ -64,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Assert.Contains(@"C:\ProjectFolder\Assembly2.dll", referencesPushedToWorkspace);
             Assert.Contains(@"C:\ProjectFolder\Assembly3.dll", referencesPushedToWorkspace);
         }
-        
+
         internal override ICommandLineHandler CreateInstance()
         {
             return CreateInstance(null, null);

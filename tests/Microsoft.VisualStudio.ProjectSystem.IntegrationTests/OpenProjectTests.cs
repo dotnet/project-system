@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             using (Scope.Enter("Verify Build Succeeded"))
             {
-                var success = 
+                var success =
                     solution.BuildManager.Verify.ProjectBuilt(consoleProject) &&
                     solution.BuildManager.Verify.Succeeded();
 

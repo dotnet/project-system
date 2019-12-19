@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         private IProjectThreadingService _projectThreadingService;
         private List<LaunchType> _launchTypes;
         private List<LaunchType> _providerLaunchTypes;
-        private LaunchType _selectedLaunchType;        
+        private LaunchType _selectedLaunchType;
         private OrderPrecedenceImportCollection<ILaunchSettingsUIProvider> _uiProviders;
         private readonly TaskCompletionSource<bool> _firstSnapshotCompleteSource = null;
         private ICommand _addEnvironmentVariableRowCommand;
@@ -492,7 +492,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     }));
             }
         }
-                
+
         public ICommand BrowseDirectoryCommand
         {
             get
@@ -514,7 +514,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     }));
             }
         }
-                
+
         public ICommand BrowseExecutableCommand
         {
             get
@@ -562,7 +562,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         }
 
         public bool DeleteProfileEnabled => IsProfileSelected;
-        
+
         public ICommand DeleteProfileCommand
         {
             get
@@ -901,7 +901,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             await SaveLaunchSettings();
 
             return HResult.OK;
-        }            
+        }
 
         internal void CreateProfile(string name, string commandName)
         {

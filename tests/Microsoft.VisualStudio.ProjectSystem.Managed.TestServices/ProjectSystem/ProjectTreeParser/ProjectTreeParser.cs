@@ -324,7 +324,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         private string ReadPropertyValue()
-        {   
+        {
             Tokenizer tokenizer = Tokenizer(Delimiters.PropertyValue);
 
             return tokenizer.ReadIdentifier(IdentifierParseOptions.None);

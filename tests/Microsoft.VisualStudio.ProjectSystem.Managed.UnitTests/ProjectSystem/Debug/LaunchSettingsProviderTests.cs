@@ -278,7 +278,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             using var provider = GetLaunchSettingsProvider(moqFS);
             await Assert.ThrowsAsync<FileNotFoundException>(() =>
 {
-return provider.ReadSettingsFileFromDiskTestAsync();
+    return provider.ReadSettingsFileFromDiskTestAsync();
 });
         }
 

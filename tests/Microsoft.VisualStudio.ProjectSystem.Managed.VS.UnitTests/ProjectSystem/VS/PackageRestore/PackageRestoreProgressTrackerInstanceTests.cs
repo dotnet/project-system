@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             var restoreData = new RestoreData(projectAssetsFile, currentTimestamp);
             var snapshot = IProjectSnapshot2Factory.WithAdditionalDependentFileTime(
                 projectAssetsFile,
-                evaluationTimestamp) ;
+                evaluationTimestamp);
 
             var result = await OnRestoreCompleted(snapshot, restoreData);
 

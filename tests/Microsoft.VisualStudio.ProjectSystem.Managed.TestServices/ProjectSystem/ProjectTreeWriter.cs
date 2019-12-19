@@ -99,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             if (visibility)
             {
-                WriteVisibility(tree);                
+                WriteVisibility(tree);
             }
 
             if (flags)

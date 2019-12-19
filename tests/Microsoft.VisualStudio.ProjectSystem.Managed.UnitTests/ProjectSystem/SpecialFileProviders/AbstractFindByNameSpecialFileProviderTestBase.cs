@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 
         [Fact]
         public async Task GetFileAsync_ReturnsPathUnderProjectRoot()
-        {   
+        {
             var tree = ProjectTreeParser.Parse($@"
 Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
 ");

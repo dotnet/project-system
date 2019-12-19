@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
         [Fact]
         public void UpdateNamespaceImportListTest()
         {
-            IEnumerable<(string[] names, string[] expected)> updates = new []
+            IEnumerable<(string[] names, string[] expected)> updates = new[]
             {
                 (new [] { "A", "B", "C", "D" },      new [] { "A", "B", "C", "D" }),      // Initial add
                 (new [] { "A", "B", "C" },           new [] { "A", "B", "C" }),           // Remove from the end

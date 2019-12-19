@@ -185,7 +185,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             ISettingsManager? settings = await _settingsManagerService.GetValueAsync();
             Assumes.Present(settings);
-            
+
             return settings.GetValueOrDefault<bool>(UsePreviewSdkSettingKey);
         }
 

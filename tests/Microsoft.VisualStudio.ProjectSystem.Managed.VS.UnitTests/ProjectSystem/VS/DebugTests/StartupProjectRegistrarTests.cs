@@ -155,7 +155,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             {
                 debuggerLaunchProviders.Debuggers.Add(launchProvider, orderPrecedence: orderPrecedence++);
             }
-            
+
             return CreateInitializedInstanceAsync(vsStartupProjectsListService: vsStartupProjectsListService,
                                                   projectGuidService: projectGuidService,
                                                   launchProviders: ActiveConfiguredProjectFactory.ImplementValue(() => debuggerLaunchProviders));

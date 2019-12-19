@@ -129,7 +129,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
             var viewModel = CreateViewModel(viewModelData);
             await viewModel.Object.Initialize();
-            
+
             Assert.NotNull(viewModelData.FirstSnapshotComplete);
             await viewModelData.FirstSnapshotComplete!.Task;
 

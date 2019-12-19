@@ -99,13 +99,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             var broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<RestoreData>>();
 
             return new PackageRestoreServiceInstance(
-                project, 
-                dataSource, 
-                threadingService, 
-                projectAsynchronousTasksService, 
-                solutionRestoreService, 
-                fileSystem, 
-                logger, 
+                project,
+                dataSource,
+                threadingService,
+                projectAsynchronousTasksService,
+                solutionRestoreService,
+                fileSystem,
+                logger,
                 broadcastBlock);
         }
     }

@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
 
             public ImplicitProjectCheck()
             {
-                _windows        = Environment.GetFolderPath(Environment.SpecialFolder.Windows);
+                _windows = Environment.GetFolderPath(Environment.SpecialFolder.Windows);
                 _programFiles86 = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
 
                 // In a 32-bit process, SpecialFolder.ProgramFiles returns the 32-bit path.
