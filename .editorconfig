@@ -132,6 +132,7 @@ dotnet_naming_style.pascal_case_and_prefix_with_I_style.capitalization          
 
 # CSharp code style settings:
 [*.cs]
+
 # Prefer "var" only when the type is apparent
 csharp_style_var_for_built_in_types = false:suggestion
 csharp_style_var_when_type_is_apparent = true:suggestion
@@ -146,6 +147,9 @@ csharp_style_expression_bodied_operators = false:none
 csharp_style_expression_bodied_properties = true:none
 csharp_style_expression_bodied_indexers = true:none
 csharp_style_expression_bodied_accessors = true:none
+
+# Use block body for local functions
+csharp_style_expression_bodied_local_functions = when_on_single_line:silent
 
 # Suggest more modern language features when available
 csharp_style_pattern_matching_over_is_with_cast_check = true:error
