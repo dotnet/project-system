@@ -215,7 +215,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 editor.Editor.Verify.ContainsText("<OutputType>Library</OutputType>");
             }
 
-            using (Scope.Enter("Verify Project Unchanged"))
+            using (Scope.Enter("Verify Project Changed"))
             {
                 // project reload is on a one second delay
                 Services.Synchronization.WaitFor(TimeSpan.FromSeconds(1), () => consoleProject.Properties.Verify.PropertyValueIs(ProjectProperty.OutputType, prjOutputType.prjOutputTypeLibrary));
