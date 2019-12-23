@@ -220,6 +220,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
                                     }
                                 }
 
+                                var observedCaptions = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
                                 for (int displayOrder = 0; displayOrder < imports.Count; displayOrder++)
                                 {
                                     IProjectImportSnapshot import = imports[displayOrder];
@@ -229,9 +231,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
                                         bool isImplicit = _importPathCheck.IsImplicit(import.ProjectPath);
                                         ProjectTreeFlags flags = isImplicit ? s_projectImportImplicitFlags : s_projectImportFlags;
                                         ProjectImageMoniker icon = isImplicit ? s_nodeImplicitIcon : s_nodeIcon;
+                                        string caption = Path.GetFileName(import.ProjectPath);
+
+                                        // Skip nodes with duplicate captions
+                                        // TODO remove this once we enable DisplayOrder for the subtree, as that supports duplicate captions
+                                        if (!observedCaptions.Add(caption))
+                                            continue;
 
                                         IProjectTree2 newChild = NewTree(
-                                            Path.GetFileName(import.ProjectPath),
+                                            caption,
                                             filePath: import.ProjectPath,
                                             flags: flags,
                                             icon: icon,
