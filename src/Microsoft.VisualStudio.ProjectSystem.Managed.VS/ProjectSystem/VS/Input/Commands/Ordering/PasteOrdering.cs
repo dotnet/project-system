@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
     /// </summary>
     [Export(typeof(IPasteDataObjectProcessor))]
     [Export(typeof(IPasteHandler))]
-    [AppliesTo(ProjectCapabilities.SortByDisplayOrder)]
+    [AppliesTo(ProjectCapabilities.SortByDisplayOrder + " & " + ProjectCapability.EditableDisplayOrder)]
     [Order(OrderPrecedence)]
     internal class PasteOrdering : IPasteHandler, IPasteDataObjectProcessor
     {

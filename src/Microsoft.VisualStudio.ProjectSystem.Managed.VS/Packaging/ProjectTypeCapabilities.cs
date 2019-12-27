@@ -21,7 +21,10 @@ namespace Microsoft.VisualStudio.Packaging
         /// <summary>
         ///     Represents F#'s set of capabilities that are always present.
         /// </summary>
-        public const string FSharp = Default + "; " + ProjectCapability.FSharp + "; " + ProjectCapability.SortByDisplayOrder;
+        public const string FSharp = Default + "; " +
+                                     ProjectCapability.FSharp + "; " +
+                                     ProjectCapability.SortByDisplayOrder + "; " +
+                                     ProjectCapability.EditableDisplayOrder;
 
         /// <summary>
         ///     Represents C#'s set of capabilities that are always present.

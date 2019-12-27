@@ -9,10 +9,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
 {
     /// <summary>
     /// Setup the dataflow for a provider that updates solution tree item properties with 
-    /// display order metadata derived from IOrderedSourceItemsDataSourceService
+    /// display order metadata derived from <see cref="IOrderedSourceItemsDataSourceService"/>.
     /// </summary>
     [Export(typeof(IProjectTreePropertiesProviderDataSource))]
-    [AppliesTo(ProjectCapability.SortByDisplayOrder)]
+    [AppliesTo(ProjectCapability.SortByDisplayOrder + " & " + ProjectCapability.EditableDisplayOrder)]
     internal class TreeItemOrderPropertyProviderSource : ChainedProjectValueDataSourceBase<IProjectTreePropertiesProvider>, IProjectTreePropertiesProviderDataSource
     {
         private readonly UnconfiguredProject _project;
