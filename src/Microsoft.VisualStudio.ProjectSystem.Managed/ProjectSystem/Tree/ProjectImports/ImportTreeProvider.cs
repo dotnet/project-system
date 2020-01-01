@@ -220,7 +220,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
                                     }
                                 }
 
-                                var observedCaptions = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                                var observedCaptions = new HashSet<string>(
+                                    tree.Children.Select(node => node.Caption),
+                                    StringComparer.OrdinalIgnoreCase);
 
                                 for (int displayOrder = 0; displayOrder < imports.Count; displayOrder++)
                                 {
