@@ -144,6 +144,9 @@
     <PackageReference Update="Microsoft.Build.Engine"                                                 Version="16.1.76"/>
     <PackageReference Update="Microsoft.Build.Tasks.Core"                                             Version="16.1.76"/>
 
+    <!-- Live Share -->
+    <PackageReference Update="Microsoft.VisualStudio.LiveShare"                                       Version="1.1.57" />
+    
     <!-- Libraries -->
     <PackageReference Update="Newtonsoft.Json"                                                        Version="12.0.2"/>
 

@@ -1,6 +1,7 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.Threading
+Imports Microsoft.VisualStudio.Editors.Common
 Imports Microsoft.VisualStudio.Shell
 
 Namespace Microsoft.VisualStudio.Editors.DesignerFramework
@@ -31,7 +32,13 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                         Dim serviceBroker = serviceContainer.GetFullAccessServiceBroker()
 
                         sfgService = Await serviceBroker.GetProxyAsync(Of RpcContracts.SingleFileGenerators.ISingleFileGenerator)(VisualStudioServices.VS2019_5.SingleFileGenerator)
-                        Await sfgService.GenerateCodeAsync(_loader.Moniker, String.Empty, CancellationToken.None)
+
+                        ' We know the local (client) path of the file, but we need to convert that to the path on
+                        ' the server for the single file generator service.
+                        Dim localPath As String = _loader.Moniker
+                        Dim serverPath As String = RemotePathService.TranslateToSharedPathIfNecessary(localPath, isDirectory:=False)
+
+                        Await sfgService.GenerateCodeAsync(serverPath, String.Empty, CancellationToken.None)
                     Finally
                         TryCast(sfgService, IDisposable)?.Dispose()
                     End Try
