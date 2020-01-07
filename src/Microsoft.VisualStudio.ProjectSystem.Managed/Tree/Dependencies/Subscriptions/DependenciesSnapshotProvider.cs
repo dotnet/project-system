@@ -241,7 +241,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             return;
 
-            Task OnUnconfiguredProjectUnloadingAsync(object sender, EventArgs args)
+            Task OnUnconfiguredProjectUnloadingAsync(object? sender, EventArgs args)
             {
                 // If our project unloads, we have no more work to do. Notify listeners and clean everything up.
 
@@ -252,7 +252,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 return Task.CompletedTask;
             }
 
-            Task OnUnconfiguredProjectRenamedAsync(object sender, ProjectRenamedEventArgs e)
+            Task OnUnconfiguredProjectRenamedAsync(object? sender, ProjectRenamedEventArgs e)
             {
                 SnapshotRenamed?.Invoke(this, e);
 
