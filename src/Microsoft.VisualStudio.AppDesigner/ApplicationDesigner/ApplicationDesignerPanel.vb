@@ -275,6 +275,13 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
                         If DocData IsNot Nothing Then
                             ExistingDocDataPtr = Marshal.GetIUnknownForObject(DocData)
+                        Else
+                            ' See if there is doc data in the RDT
+                            Dim rdt As New Shell.RunningDocumentTable(_serviceProvider)
+                            Dim rdtInfo As Shell.RunningDocumentInfo = rdt.GetDocumentInfo(MkDocument)
+                            If rdtInfo.DocData IsNot Nothing Then
+                                ExistingDocDataPtr = Marshal.GetIUnknownForObject(rdtInfo.DocData)
+                            End If
                         End If
                         OleServiceProvider = CType(_serviceProvider.GetService(GetType(OLE.Interop.IServiceProvider)), OLE.Interop.IServiceProvider)
                         Debug.Assert(OleServiceProvider IsNot Nothing, "Unable to get OleServiceProvider")
