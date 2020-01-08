@@ -122,6 +122,11 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     DesignerLoader.Dispose()
                 End If
 
+                ' If we created the doc data then we should dispose it for a failure
+                If ExistingDocData Is Nothing Then
+                    DirectCast(DocData, PropPageDesignerDocData).Dispose()
+                End If
+
                 Throw New Exception(My.Resources.Designer.GetString(My.Resources.Designer.DFX_CreateEditorInstanceFailed_Ex, ex.Message))
             End Try
         End Sub
