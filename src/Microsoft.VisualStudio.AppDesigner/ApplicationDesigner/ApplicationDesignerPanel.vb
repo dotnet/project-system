@@ -170,13 +170,13 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 Return _customViewProvider
             End Get
             Set
-                If _customViewProvider Is value Then
+                If _customViewProvider Is Value Then
                     Exit Property
                 End If
 
                 'Close anything currently showing
                 CloseFrame()
-                _customViewProvider = value
+                _customViewProvider = Value
                 If Visible Then
                     ShowDesigner()
                 End If
@@ -797,13 +797,13 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 Return _tabTitle
             End Get
             Set
-                _tabTitle = value
+                _tabTitle = Value
 
                 ' We set Window.Text to be the page Title to help screen reader.
-                If String.IsNullOrEmpty(value) Then
+                If String.IsNullOrEmpty(Value) Then
                     Text = String.Empty
                 Else
-                    Text = My.Resources.Designer.GetString(My.Resources.Designer.APPDES_PageName, value)
+                    Text = My.Resources.Designer.GetString(My.Resources.Designer.APPDES_PageName, Value)
                 End If
 
                 _pageNameLabel.Text = Text
@@ -818,7 +818,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 Return _tabAutomationName
             End Get
             Set
-                _tabAutomationName = value
+                _tabAutomationName = Value
             End Set
         End Property
 
