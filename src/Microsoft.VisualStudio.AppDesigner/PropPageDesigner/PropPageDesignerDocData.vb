@@ -24,6 +24,8 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         Implements IVsPersistDocData2
         Implements OLE.Interop.IObjectWithSite
         Implements IVsTextBufferProvider
+        Implements IVsRunningDocTableEvents
+        Implements IVsRunningDocTableEvents4
 
         'Event support for IVsTextBufferDataEvents
         Public Delegate Sub LoadCompletedDelegate(Reload As Integer)
@@ -47,6 +49,9 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ' Dirty and readonly state
         Private _isReadOnly As Boolean
         Private _isDirty As Boolean
+
+        ' Cookie for RunningDocumentTable events
+        Private _rdtCookie As UInteger
 
         ''' <summary>
         ''' Constructor
@@ -215,6 +220,9 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         Public Function LoadDocData2(pszMkDocument As String) As Integer Implements IVsPersistDocData2.LoadDocData
             'Nothing to do here, no real file to load
             _mkDocument = pszMkDocument
+            ' Sign up for RDT events so we know when to dispose ourselves - there is no point doing this until we have the document moniker to compare to
+            Dim rdt As New Shell.RunningDocumentTable
+            _rdtCookie = rdt.Advise(DirectCast(Me, IVsRunningDocTableEvents))
             RaiseEvent OnLoadCompleted(0) 'FALSE == 0
         End Function
 
@@ -336,6 +344,12 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             If disposing Then
                 ' Dispose managed resources.
                 _baseProvider = Nothing
+
+                If _rdtCookie <> 0 Then
+                    Dim rdt As New Shell.RunningDocumentTable
+                    rdt.Unadvise(_rdtCookie)
+                End If
+
                 If _vsTextBuffer IsNot Nothing Then
                     ' Close IVsPersistDocData
                     Dim docData As IVsPersistDocData = TryCast(_vsTextBuffer, IVsPersistDocData)
@@ -351,7 +365,46 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             ' only the following code is executed.
 
         End Sub
+
 #End Region
+
+        Private Function OnBeforeFirstDocumentLock(pHier As IVsHierarchy, itemid As UInteger, pszMkDocument As String) As Integer Implements IVsRunningDocTableEvents4.OnBeforeFirstDocumentLock
+            Return VSConstants.S_OK
+        End Function
+
+        Private Function OnAfterSaveAll() As Integer Implements IVsRunningDocTableEvents4.OnAfterSaveAll
+            Return VSConstants.S_OK
+        End Function
+
+        Private Function OnAfterLastDocumentUnlock(pHier As IVsHierarchy, itemid As UInteger, pszMkDocument As String, fClosedWithoutSaving As Integer) As Integer Implements IVsRunningDocTableEvents4.OnAfterLastDocumentUnlock
+            If pszMkDocument.Equals(_mkDocument, StringComparison.OrdinalIgnoreCase) Then
+                Dispose(True)
+            End If
+        End Function
+
+        Private Function OnAfterFirstDocumentLock(docCookie As UInteger, dwRDTLockType As UInteger, dwReadLocksRemaining As UInteger, dwEditLocksRemaining As UInteger) As Integer Implements IVsRunningDocTableEvents.OnAfterFirstDocumentLock
+            Return VSConstants.S_OK
+        End Function
+
+        Private Function OnBeforeLastDocumentUnlock(docCookie As UInteger, dwRDTLockType As UInteger, dwReadLocksRemaining As UInteger, dwEditLocksRemaining As UInteger) As Integer Implements IVsRunningDocTableEvents.OnBeforeLastDocumentUnlock
+            Return VSConstants.S_OK
+        End Function
+
+        Private Function OnAfterSave(docCookie As UInteger) As Integer Implements IVsRunningDocTableEvents.OnAfterSave
+            Return VSConstants.S_OK
+        End Function
+
+        Private Function OnAfterAttributeChange(docCookie As UInteger, grfAttribs As UInteger) As Integer Implements IVsRunningDocTableEvents.OnAfterAttributeChange
+            Return VSConstants.S_OK
+        End Function
+
+        Private Function OnBeforeDocumentWindowShow(docCookie As UInteger, fFirstShow As Integer, pFrame As IVsWindowFrame) As Integer Implements IVsRunningDocTableEvents.OnBeforeDocumentWindowShow
+            Return VSConstants.S_OK
+        End Function
+
+        Private Function OnAfterDocumentWindowHide(docCookie As UInteger, pFrame As IVsWindowFrame) As Integer Implements IVsRunningDocTableEvents.OnAfterDocumentWindowHide
+            Return VSConstants.S_OK
+        End Function
 
     End Class
 
