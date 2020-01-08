@@ -4,7 +4,6 @@ Imports System.ComponentModel.Design.Serialization
 Imports System.Diagnostics.CodeAnalysis
 
 Imports Microsoft.VisualStudio.Editors.AppDesCommon
-Imports Microsoft.VisualStudio.Shell.Interop
 
 Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
@@ -14,8 +13,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
     Public NotInheritable Class PropPageDesignerLoader
         Inherits BasicDesignerLoader
         Implements IDisposable
-
-        Private _punkDocData As Object
 
         ''' <summary>
         ''' This method is called immediately after the first time
@@ -34,30 +31,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 New DeferrableWindowPaneProviderService(LoaderHost))
             Debug.Assert(GetService(GetType(ComponentSerializationService)) IsNot Nothing,
                 "We just made the ComponentSerializationService service available.  Why isn't it there?")
-        End Sub
-
-
-        ''' <summary>
-        ''' This method is called to initialize the designer loader with the text
-        ''' buffer to read from and a service provider through which we
-        ''' can ask for services.
-        ''' </summary>
-        ''' <param name="ServiceProvider"></param>
-        ''' <param name="Hierarchy"></param>
-        ''' <param name="ItemId"></param>
-        ''' <param name="punkDocData"></param>
-        Public Sub InitializeEx(ServiceProvider As Shell.ServiceProvider, Hierarchy As IVsHierarchy, ItemId As UInteger, punkDocData As Object)
-
-            If punkDocData Is Nothing Then
-                Debug.Fail("Docdata must be supplied")
-                Throw New InvalidOperationException()
-            End If
-
-            Debug.Assert(TypeOf punkDocData Is PropPageDesignerDocData, "Unexpected docdata type")
-            If TypeOf punkDocData Is PropPageDesignerDocData Then
-                _punkDocData = punkDocData
-            End If
-
         End Sub
 
         ''' <summary>
@@ -110,11 +83,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="disposing">True if calling from Dispose()</param>
         Protected Overloads Sub Dispose(disposing As Boolean)
             If disposing Then
-                ' Dispose of managed resources.
-                Dim docData = TryCast(_punkDocData, PropPageDesignerDocData)
-                If docData IsNot Nothing Then
-                    docData.Dispose()
-                End If
                 'Remove our ComponentSerializationService
                 LoaderHost.RemoveService(GetType(ComponentSerializationService))
             End If

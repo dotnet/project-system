@@ -93,7 +93,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     End If
 
                     DesignerLoader = CType(DesignerService.CreateDesignerLoader(GetType(PropPageDesignerLoader).AssemblyQualifiedName), PropPageDesignerLoader)
-                    DesignerLoader.InitializeEx(_siteProvider, Hierarchy, ItemId, DocData)
 
                     Dim OleProvider As IServiceProvider = CType(_siteProvider.GetService(GetType(IServiceProvider)), IServiceProvider)
                     Dim Designer As IVSMDDesigner = DesignerService.CreateDesigner(OleProvider, DesignerLoader)
