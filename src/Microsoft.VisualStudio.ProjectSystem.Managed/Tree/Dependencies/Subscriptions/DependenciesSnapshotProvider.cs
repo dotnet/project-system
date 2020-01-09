@@ -241,7 +241,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             return;
 
-            Task OnUnconfiguredProjectUnloadingAsync(object sender, EventArgs args)
+            Task OnUnconfiguredProjectUnloadingAsync(object? sender, EventArgs args)
             {
                 // If our project unloads, we have no more work to do. Notify listeners and clean everything up.
 
@@ -252,14 +252,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 return Task.CompletedTask;
             }
 
-            Task OnUnconfiguredProjectRenamedAsync(object sender, ProjectRenamedEventArgs e)
+            Task OnUnconfiguredProjectRenamedAsync(object? sender, ProjectRenamedEventArgs e)
             {
                 SnapshotRenamed?.Invoke(this, e);
 
                 return Task.CompletedTask;
             }
 
-            void OnSubtreeProviderDependenciesChanged(object sender, DependenciesChangedEventArgs e)
+            void OnSubtreeProviderDependenciesChanged(object? sender, DependenciesChangedEventArgs e)
             {
                 if (IsDisposing || IsDisposed || !e.Changes.AnyChanges())
                 {
@@ -302,7 +302,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         {
             Assumes.NotNull(_commonServices.Project.FullPath);
 
-            IImmutableSet<string>? projectItemSpecs = GetProjectItemSpecs(catalogs?.Project.ProjectInstance.Items);
+            IImmutableSet<string>? projectItemSpecs = GetProjectItemSpecs(catalogs?.Project?.ProjectInstance.Items);
 
             _snapshot.TryUpdate(
                 previousSnapshot => DependenciesSnapshot.FromChanges(

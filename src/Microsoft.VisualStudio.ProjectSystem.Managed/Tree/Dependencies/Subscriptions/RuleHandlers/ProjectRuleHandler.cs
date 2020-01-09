@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             return;
 
-            Task OnUnconfiguredProjectUnloading(object sender, EventArgs e)
+            Task OnUnconfiguredProjectUnloading(object? sender, EventArgs e)
             {
                 commonServices.Project.ProjectUnloading -= OnUnconfiguredProjectUnloading;
                 aggregateSnapshotProvider.SnapshotChanged -= OnAggregateSnapshotChanged;
