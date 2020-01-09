@@ -184,8 +184,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         End Function
 #End Region
         Public Function Close2() As Integer Implements IVsPersistDocData2.Close
-            'Nothing to do here, no real file to close
-            Return NativeMethods.S_OK
+            Dispose(True)
         End Function
 
         Public Function GetGuidEditorType2(ByRef pClassID As Guid) As Integer Implements IVsPersistDocData2.GetGuidEditorType
@@ -336,6 +335,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             If disposing Then
                 ' Dispose managed resources.
                 _baseProvider = Nothing
+
                 If _vsTextBuffer IsNot Nothing Then
                     ' Close IVsPersistDocData
                     Dim docData As IVsPersistDocData = TryCast(_vsTextBuffer, IVsPersistDocData)
@@ -351,6 +351,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             ' only the following code is executed.
 
         End Sub
+
 #End Region
 
     End Class

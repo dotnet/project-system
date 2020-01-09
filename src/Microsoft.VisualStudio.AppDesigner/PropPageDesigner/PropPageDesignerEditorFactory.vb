@@ -86,12 +86,13 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
                     If ExistingDocData Is Nothing Then
                         DocData = New PropPageDesignerDocData(_siteProvider)
+                    ElseIf TypeOf ExistingDocData Is PropPageDesignerDocData Then
+                        DocData = ExistingDocData
                     Else
                         Throw New COMException(My.Resources.Designer.DFX_IncompatibleBuffer, AppDesInterop.NativeMethods.VS_E_INCOMPATIBLEDOCDATA)
                     End If
 
                     DesignerLoader = CType(DesignerService.CreateDesignerLoader(GetType(PropPageDesignerLoader).AssemblyQualifiedName), PropPageDesignerLoader)
-                    DesignerLoader.InitializeEx(_siteProvider, Hierarchy, ItemId, DocData)
 
                     Dim OleProvider As IServiceProvider = CType(_siteProvider.GetService(GetType(IServiceProvider)), IServiceProvider)
                     Dim Designer As IVSMDDesigner = DesignerService.CreateDesigner(OleProvider, DesignerLoader)
@@ -119,6 +120,11 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 If DesignerLoader IsNot Nothing Then
                     'We need to let the DesignerLoader disconnect from events
                     DesignerLoader.Dispose()
+                End If
+
+                ' If we created the doc data then we should dispose it for a failure
+                If ExistingDocData Is Nothing Then
+                    DirectCast(DocData, PropPageDesignerDocData).Dispose()
                 End If
 
                 Throw New Exception(My.Resources.Designer.GetString(My.Resources.Designer.DFX_CreateEditorInstanceFailed_Ex, ex.Message))

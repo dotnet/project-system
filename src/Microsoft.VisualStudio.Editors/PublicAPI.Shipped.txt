@@ -373,7 +373,6 @@ Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerEditorFactory.Ma
 Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerEditorFactory.New() -> Void (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
 Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerEditorFactory.SetSite(Site As Microsoft.VisualStudio.OLE.Interop.IServiceProvider) -> Integer (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
 Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerLoader (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
-Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerLoader.InitializeEx(ServiceProvider As Microsoft.VisualStudio.Shell.ServiceProvider, Hierarchy As Microsoft.VisualStudio.Shell.Interop.IVsHierarchy, ItemId As UInteger, punkDocData As Object) -> Void (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
 Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerLoader.New() -> Void (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
 Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerRootComponent (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
 Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerRootComponent.Hierarchy() -> Microsoft.VisualStudio.Shell.Interop.IVsHierarchy (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
