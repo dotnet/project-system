@@ -27,11 +27,6 @@
         <target state="translated">アプリケーション アイコン</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|OutDir|DisplayName">
-        <source>Output Directory</source>
-        <target state="new">Output Directory</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|TargetFrameworkIdentifier|DisplayName">
         <source>Target Framework Identifier</source>
         <target state="translated">ターゲット フレームワーク ID</target>
