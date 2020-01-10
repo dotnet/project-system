@@ -200,7 +200,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                                                     .ToArray();
 
                 if (exceptions.Length == 0)
-                    return ex.Types.Where(t => t != null).ToArray();
+                    return ex.Types.WhereNotNull().ToArray();
 
                 string message = ex.ToString();
 

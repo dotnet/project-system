@@ -86,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             // Hook this so we can unregister the snapshot change event when the project unloads
             unconfiguredProject.ProjectUnloading += OnUnconfiguredProjectUnloading;
 
-            Task OnUnconfiguredProjectUnloading(object sender, EventArgs args)
+            Task OnUnconfiguredProjectUnloading(object? sender, EventArgs args)
             {
                 UnconfiguredProject.ProjectUnloading -= OnUnconfiguredProjectUnloading;
                 _snapshotEventListener?.Dispose();

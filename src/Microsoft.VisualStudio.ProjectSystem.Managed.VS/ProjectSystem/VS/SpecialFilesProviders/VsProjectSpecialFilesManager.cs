@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.SpecialFilesProviders
             if (result.IsNotImplemented)
                 return null;    // Not handled
 
-            throw result.Exception;
+            throw result.Exception!;
         }
     }
 }

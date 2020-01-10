@@ -90,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
                 void ToggleTree()
                 {
                     // Queue up an operation that will toggle the import tree
-                    _unconfiguredProjectTasksService.LoadedProjectAsync(
+                    _ = _unconfiguredProjectTasksService.LoadedProjectAsync(
                         async () =>
                         {
                             await TaskScheduler.Default.SwitchTo(alwaysYield: true);
@@ -123,7 +123,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
                         Assumes.Null(_subscriptions);
 
                         // Set a visible root
-                        SubmitTreeUpdateAsync(
+                        _ = SubmitTreeUpdateAsync(
                             (currentTree, configuredProjectExports, token) =>
                             {
                                 // Update (make visible) or create a new tree if no prior one exists
@@ -186,7 +186,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
                                 _importPathCheck.ProjectExtensionsPath = projectExtensionsPath;
                             }
 
-                            SubmitTreeUpdateAsync(
+                            _ = SubmitTreeUpdateAsync(
                                 (currentTree, configuredProjectExports, token) =>
                                 {
                                     IProjectTree updatedTree = SyncNode(
@@ -290,7 +290,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
                         _subscriptions.Dispose();
                         _subscriptions = null;
 
-                        SubmitTreeUpdateAsync(
+                        _ = SubmitTreeUpdateAsync(
                             (currentTree, configuredProjectExports, token) =>
                             {
                                 IProjectTree tree = currentTree.Value.Tree;

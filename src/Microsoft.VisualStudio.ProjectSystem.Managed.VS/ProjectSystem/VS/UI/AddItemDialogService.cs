@@ -85,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
                 return false;
 
             if (result.Failed)
-                throw result.Exception;
+                throw result.Exception!;
 
             return true;
         }
