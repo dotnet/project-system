@@ -261,4 +261,7 @@
   <data name="RemoteDebugMachineWatermark" xml:space="preserve">
     <value>Remote machine hostname</value>
   </data>
+  <data name="RemoteHostNameRequired" xml:space="preserve">
+    <value>You must specify a remote machine's hostname.</value>
+  </data>
 </root>

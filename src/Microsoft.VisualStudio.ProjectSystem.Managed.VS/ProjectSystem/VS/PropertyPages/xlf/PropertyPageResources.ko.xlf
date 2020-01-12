@@ -102,6 +102,11 @@
         <target state="new">Remote machine hostname</target>
         <note />
       </trans-unit>
+      <trans-unit id="RemoteHostNameRequired">
+        <source>You must specify a remote machine's hostname.</source>
+        <target state="new">You must specify a remote machine's hostname.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="ValueCannotBeEmpty">
         <source>Value cannot be empty.</source>
         <target state="translated">값은 비워 둘 수 없습니다.</target>

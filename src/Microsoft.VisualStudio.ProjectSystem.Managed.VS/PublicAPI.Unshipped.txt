@@ -8,6 +8,7 @@ static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResourc
 static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.OKBtnHelpText.get -> string
 static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.RemoteDebug.get -> string
 static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.RemoteDebugMachineWatermark.get -> string
+static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.RemoteHostNameRequired.get -> string
 static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.chkLaunchBrowserHelpText.get -> string
 static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.chkNativeCodeDebuggingText.get -> string
 static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.chkRemoteDebugEnabledHelpText.get -> string

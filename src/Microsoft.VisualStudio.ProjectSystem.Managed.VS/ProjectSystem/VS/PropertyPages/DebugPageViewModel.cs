@@ -256,6 +256,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 {
                     profile2.RemoteDebugEnabled = value;
                     OnPropertyChanged(nameof(RemoteDebugEnabled));
+                    OnErrorsChanged(nameof(RemoteDebugMachine)); // this property effects another's validation
                 }
             }
         }
@@ -277,6 +278,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 {
                     profile2.RemoteDebugMachine = value;
                     OnPropertyChanged(nameof(RemoteDebugMachine));
+                    OnErrorsChanged(nameof(RemoteDebugMachine));
                 }
             }
         }
@@ -1068,7 +1070,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         private void OnCustomUIErrorsChanged(object sender, DataErrorsChangedEventArgs e)
         {
             ErrorsChanged?.Invoke(this, e);
+            OnPropertyChanged(nameof(DoesNotHaveErrors));
+        }
 
+        private void OnErrorsChanged(string propertyName)
+        {
+            ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
             OnPropertyChanged(nameof(DoesNotHaveErrors));
         }
 
@@ -1081,6 +1088,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     yield return error;
                 }
             }
+
+            if (propertyName == nameof(RemoteDebugMachine) && RemoteDebugEnabled && string.IsNullOrWhiteSpace(RemoteDebugMachine))
+            {
+                yield return PropertyPageResources.RemoteHostNameRequired;
+            }
         }
 
         /// <summary>
@@ -1090,7 +1102,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             get
             {
-                return ActiveProvider?.CustomUI?.DataContext is INotifyDataErrorInfo notifyDataError && notifyDataError.HasErrors;
+                bool hasRemoteDebugMachineError = RemoteDebugEnabled && string.IsNullOrWhiteSpace(RemoteDebugMachine);
+
+                return hasRemoteDebugMachineError ||
+                    ActiveProvider?.CustomUI?.DataContext is INotifyDataErrorInfo notifyDataError && notifyDataError.HasErrors;
             }
         }
 

@@ -448,6 +448,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You must specify a remote machine&apos;s hostname..
+        /// </summary>
+        public static string RemoteHostNameRequired {
+            get {
+                return ResourceManager.GetString("RemoteHostNameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remove.
         /// </summary>
         public static string RemoveBtn {
