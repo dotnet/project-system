@@ -82,7 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         /// <summary>
         /// This is here so that we can clear the in-memory status of the active profile if it has been edited. This is
-        /// so that the profile, and hence the users customizations, will be saved to disk
+        /// so that the profile, and hence the user's customizations, will be saved to disk
         /// </summary>
         private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
