@@ -39,8 +39,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
-        public abstract Task InitializeAsync();
-
         public abstract Task<int> Save();
 
         protected void OnPropertyChanged(string? propertyName, bool suppressInvalidation = false)

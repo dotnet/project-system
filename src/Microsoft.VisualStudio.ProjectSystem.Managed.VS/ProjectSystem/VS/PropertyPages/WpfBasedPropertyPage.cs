@@ -25,20 +25,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         protected abstract PropertyPageControl CreatePropertyPageControl();
 
-        protected override async Task OnSetObjects(bool isClosing)
+        protected override Task OnSetObjects(bool isClosing)
         {
             if (isClosing)
             {
                 _control?.DetachViewModel();
-                return;
+                return Task.CompletedTask;
             }
 
             //viewModel can be non-null when the configuration is changed.
             _control ??= CreatePropertyPageControl();
 
             _viewModel = CreatePropertyPageViewModel();
-            await _viewModel.InitializeAsync();
             _control.InitializePropertyPage(_viewModel);
+            
+            return Task.CompletedTask;
         }
 
         protected override Task<int> OnApply()

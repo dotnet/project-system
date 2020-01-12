@@ -31,13 +31,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         private bool _debugTargetsCoreInitialized = false;
         private bool _environmentVariablesValid = true;
         private int _environmentVariablesRowSelectedIndex = -1;
-        private ILaunchSettingsProvider _launchSettingsProvider;
+        private readonly ILaunchSettingsProvider _launchSettingsProvider;
         private ObservableList<NameValuePair> _environmentVariables;
         private IProjectThreadingService _projectThreadingService;
         private List<LaunchType> _launchTypes;
         private List<LaunchType> _providerLaunchTypes;
         private LaunchType _selectedLaunchType;
-        private OrderPrecedenceImportCollection<ILaunchSettingsUIProvider> _uiProviders;
+        private readonly OrderPrecedenceImportCollection<ILaunchSettingsUIProvider> _uiProviders;
         private ICommand _addEnvironmentVariableRowCommand;
         private ICommand _removeEnvironmentVariableRowCommand;
         private ICommand _browseDirectoryCommand;
@@ -50,6 +50,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             // Hook into our own property changed event. This is solely to know when an active profile has been edited
             PropertyChanged += ViewModel_PropertyChanged;
+
+            _launchSettingsProvider = Project.Services.ExportProvider.GetExportedValue<ILaunchSettingsProvider>();
+
+            _debugProfileProviderLink = _launchSettingsProvider.SourceBlock.LinkToAsyncAction(InitializeDebugTargetsCoreAsync);
+
+            _uiProviders = new OrderPrecedenceImportCollection<ILaunchSettingsUIProvider>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, Project);
+            IEnumerable<Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView>> uiProviderExports = Project.Services.ExportProvider.GetExports<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView>();
+            foreach (Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView> uiProviderExport in uiProviderExports)
+            {
+                _uiProviders.Add(uiProviderExport);
+            }
         }
 
         public event EventHandler ClearEnvironmentVariablesGridError;
@@ -717,7 +728,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// </summary>
         private async Task SaveLaunchSettings()
         {
-            ILaunchSettingsProvider provider = GetDebugProfileProvider();
             if (EnvironmentVariables != null && EnvironmentVariables.Count > 0 && SelectedDebugProfile != null)
             {
                 SelectedDebugProfile.EnvironmentVariables.Clear();
@@ -731,7 +741,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 SelectedDebugProfile.EnvironmentVariables.Clear();
             }
 
-            await provider.UpdateAndSaveSettingsAsync(CurrentLaunchSettings.ToLaunchSettings());
+            await _launchSettingsProvider.UpdateAndSaveSettingsAsync(CurrentLaunchSettings.ToLaunchSettings());
         }
 
         private void SetEnvironmentGrid(IWritableLaunchProfile oldProfile)
@@ -779,8 +789,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// called. It looks for changes and applies them to the UI as needed. Switching profiles
         /// will also cause this to change as the active profile is stored in the profiles snapshot.
         /// </summary>
-        private void InitializeDebugTargetsCore(ILaunchSettings profiles)
+        private async Task InitializeDebugTargetsCoreAsync(ILaunchSettings profiles)
         {
+            await ProjectThreadingService.SwitchToUIThread();
+
             IWritableLaunchSettings newSettings = profiles.ToWritableLaunchSettings();
 
             // Since this get's reentered if the user saves or the user switches active profiles.
@@ -844,57 +856,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 PopIgnoreEvents();
                 _debugTargetsCoreInitialized = true;
             }
-        }
-
-        /// <summary>
-        /// The initialization entry point for the page It also hooks into debug provider so that it can update when the profile changes
-        /// </summary>
-        private void InitializePropertyPage()
-        {
-            if (_debugProfileProviderLink == null)
-            {
-                ILaunchSettingsProvider profileProvider = GetDebugProfileProvider();
-                _debugProfileProviderLink = profileProvider.SourceBlock.LinkToAsyncAction(OnLaunchSettingsChanged);
-
-                // We need to get the set of UI providers, if any.
-                InitializeUIProviders();
-            }
-        }
-
-        private async Task OnLaunchSettingsChanged(ILaunchSettings profiles)
-        {
-            await ProjectThreadingService.SwitchToUIThread();
-
-            InitializeDebugTargetsCore(profiles);
-        }
-
-        /// <summary>
-        /// initializes the collection of UI providers.
-        /// </summary>
-        private void InitializeUIProviders()
-        {
-            // We need to get the set of UI providers, if any.
-            _uiProviders = new OrderPrecedenceImportCollection<ILaunchSettingsUIProvider>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, Project);
-            IEnumerable<Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView>> uiProviders = GetUIProviders();
-            foreach (Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView> uiProvider in uiProviders)
-            {
-                _uiProviders.Add(uiProvider);
-            }
-        }
-
-        /// <summary>
-        /// Gets the UI providers
-        /// </summary>
-        private IEnumerable<Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView>> GetUIProviders()
-        {
-            return Project.Services.ExportProvider.GetExports<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView>();
-        }
-
-        public override Task InitializeAsync()
-        {
-            // Initialize the page
-            InitializePropertyPage();
-            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -1014,16 +975,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
 
             PropertyChanged -= ViewModel_PropertyChanged;
-        }
-
-        private ILaunchSettingsProvider GetDebugProfileProvider()
-        {
-            if (_launchSettingsProvider == null)
-            {
-                _launchSettingsProvider = Project.Services.ExportProvider.GetExportedValue<ILaunchSettingsProvider>();
-            }
-
-            return _launchSettingsProvider;
         }
 
         /// <summary>

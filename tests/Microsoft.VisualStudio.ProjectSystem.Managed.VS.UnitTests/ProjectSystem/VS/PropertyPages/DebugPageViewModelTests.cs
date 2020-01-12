@@ -82,7 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         }
 
         [Fact]
-        public async Task DebugPageViewModel_NoProfiles()
+        public void DebugPageViewModel_NoProfiles()
         {
             var profiles = new List<ILaunchProfile>();
 
@@ -92,7 +92,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             };
 
             var viewModel = CreateViewModel(viewModelData);
-            await viewModel.Object.InitializeAsync();
             Assert.False(viewModel.Object.HasProfiles);
             Assert.False(viewModel.Object.IsProfileSelected);
             Assert.False(viewModel.Object.SupportsExecutable);
@@ -128,7 +127,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             };
 
             var viewModel = CreateViewModel(viewModelData);
-            await viewModel.Object.InitializeAsync();
 
             Assert.NotNull(viewModelData.FirstSnapshotComplete);
             await viewModelData.FirstSnapshotComplete!.Task;
