@@ -566,17 +566,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             get
             {
                 return LazyInitializer.EnsureInitialized(ref _newProfileCommand, () =>
-                 new DelegateCommand(state =>
-                 {
-                     var dialog = new GetProfileNameDialog(Project.Services.ExportProvider.GetExportedValue<SVsServiceProvider>(),
-                                                            ProjectThreadingService,
-                                                            GetNewProfileName(),
-                                                            IsNewProfileNameValid);
-                     if (dialog.ShowModal() == true)
-                     {
-                         CreateProfile(dialog.ProfileName, ProfileCommandNames.Executable);
-                     }
-                 }));
+                    new DelegateCommand(state =>
+                    {
+                        var dialog = new GetProfileNameDialog(Project.Services.ExportProvider.GetExportedValue<SVsServiceProvider>(),
+                                                               ProjectThreadingService,
+                                                               GetNewProfileName(),
+                                                               IsNewProfileNameValid);
+                        if (dialog.ShowModal() == true)
+                        {
+                            CreateProfile(dialog.ProfileName, ProfileCommandNames.Executable);
+                        }
+                    }));
             }
         }
 
