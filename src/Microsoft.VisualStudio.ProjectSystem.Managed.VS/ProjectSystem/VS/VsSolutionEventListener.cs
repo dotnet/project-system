@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
-            await _threadingService.SwitchToUIThread(cancellationToken);
+            await _threadingService.SwitchToUIThreadAsync(cancellationToken);
 
             IVsSolution? solution = _solution.Value;
             Assumes.Present(solution);

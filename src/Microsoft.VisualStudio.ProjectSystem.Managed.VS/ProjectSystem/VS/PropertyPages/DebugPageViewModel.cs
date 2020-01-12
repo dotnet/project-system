@@ -881,7 +881,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             return Project.Services.ExportProvider.GetExports<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView>();
         }
 
-        public override Task Initialize()
+        public override Task InitializeAsync()
         {
             // Initialize the page
             InitializePropertyPage();
