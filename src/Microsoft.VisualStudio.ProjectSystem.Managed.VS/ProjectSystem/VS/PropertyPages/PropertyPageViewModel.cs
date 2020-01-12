@@ -11,7 +11,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public UnconfiguredProject? Project { get; set; }
-        public PropertyPageControl? ParentControl { get; set; }
 
         /// <summary>
         /// Since calls to ignore events can be nested, a downstream call could change the outer 
