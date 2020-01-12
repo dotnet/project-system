@@ -23,7 +23,7 @@ using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
-    internal partial class DebugPageViewModel : PropertyPageViewModel, INotifyDataErrorInfo
+    internal sealed partial class DebugPageViewModel : PropertyPageViewModel, INotifyDataErrorInfo
     {
         private readonly string _executableFilter = string.Format("{0} (*.exe)|*.exe|{1} (*.*)|*.*", PropertyPageResources.ExecutableFiles, PropertyPageResources.AllFiles);
         private IDisposable _debugProfileProviderLink;
@@ -93,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             {
                 return _launchTypes;
             }
-            set
+            private set
             {
                 OnPropertyChanged(ref _launchTypes, value);
             }
@@ -389,7 +389,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             {
                 return _removeEnvironmentVariablesRow;
             }
-            set
+            private set
             {
                 OnPropertyChanged(ref _removeEnvironmentVariablesRow, value, suppressInvalidation: true);
             }
@@ -424,7 +424,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             {
                 return EnvironmentVariables == null || _environmentVariablesValid;
             }
-            set
+            private set
             {
                 if (_environmentVariablesValid != value)
                 {
@@ -597,7 +597,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// If we have an existing CustomControl, we disconnect from its change notifications
         /// and hook into the new ones. Assumes the activeProvider has already been changed
         /// </summary>
-        public void SwitchProviders(ILaunchSettingsUIProvider oldProvider)
+        private void SwitchProviders(ILaunchSettingsUIProvider oldProvider)
         {
             // Get the old custom control and disconnect from notifications
             if (oldProvider?.CustomUI?.DataContext is INotifyPropertyChanged context)
@@ -662,7 +662,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// Called when the selection does change. Note that this code relies on the fact the current selection has been
         /// updated
         /// </summary>
-        protected virtual void NotifySelectedChanged(IWritableLaunchProfile oldProfile)
+        private void NotifySelectedChanged(IWritableLaunchProfile oldProfile)
         {
             // we need to keep the property page control from setting IsDirty when we are just switching between profiles.
             // we still need to notify the display of the changes though
@@ -715,7 +715,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// Functions which actually does the save of the settings. Persists the changes to the launch settings
         /// file and configures IIS if needed.
         /// </summary>
-        public virtual async Task SaveLaunchSettings()
+        private async Task SaveLaunchSettings()
         {
             ILaunchSettingsProvider provider = GetDebugProfileProvider();
             if (EnvironmentVariables != null && EnvironmentVariables.Count > 0 && SelectedDebugProfile != null)
@@ -779,7 +779,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// called. It looks for changes and applies them to the UI as needed. Switching profiles
         /// will also cause this to change as the active profile is stored in the profiles snapshot.
         /// </summary>
-        internal virtual void InitializeDebugTargetsCore(ILaunchSettings profiles)
+        private void InitializeDebugTargetsCore(ILaunchSettings profiles)
         {
             IWritableLaunchSettings newSettings = profiles.ToWritableLaunchSettings();
 
@@ -849,7 +849,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// <summary>
         /// The initialization entry point for the page It also hooks into debug provider so that it can update when the profile changes
         /// </summary>
-        protected void InitializePropertyPage()
+        private void InitializePropertyPage()
         {
             if (_debugProfileProviderLink == null)
             {
@@ -885,7 +885,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// <summary>
         /// Gets the UI providers
         /// </summary>
-        protected virtual IEnumerable<Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView>> GetUIProviders()
+        private IEnumerable<Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView>> GetUIProviders()
         {
             return Project.Services.ExportProvider.GetExports<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView>();
         }
@@ -912,7 +912,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             return HResult.OK;
         }
 
-        internal void CreateProfile(string name, string commandName)
+        private void CreateProfile(string name, string commandName)
         {
             var profile = new WritableLaunchProfile { Name = name, CommandName = commandName };
             CurrentLaunchSettings.Profiles.Add(profile);
@@ -925,13 +925,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             SelectedDebugProfile = profile;
         }
 
-        internal bool IsNewProfileNameValid(string name)
+        private bool IsNewProfileNameValid(string name)
         {
             return !LaunchProfiles.Any(
                 profile => LaunchProfile.IsSameProfileName(profile.Name, name));
         }
 
-        internal string GetNewProfileName()
+        private string GetNewProfileName()
         {
             for (int i = 1; i < int.MaxValue; i++)
             {
@@ -1016,7 +1016,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             PropertyChanged -= ViewModel_PropertyChanged;
         }
 
-        protected virtual ILaunchSettingsProvider GetDebugProfileProvider()
+        private ILaunchSettingsProvider GetDebugProfileProvider()
         {
             if (_launchSettingsProvider == null)
             {

@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             AutoScroll = false;
         }
 
-        internal UnconfiguredProject? UnconfiguredProject { get; set; }
+        internal UnconfiguredProject? UnconfiguredProject { get; private set; }
 
         /// <summary>
         /// Property. Gets or sets whether the page is dirty. Dirty status is pushed to owner property sheet
@@ -179,7 +179,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// <summary>
         /// Informs derived classes that configuration has changed
         /// </summary>
-        internal void SetObjects(bool isClosing)
+        private void SetObjects(bool isClosing)
         {
             Assumes.NotNull(_threadHandling);
 
@@ -247,7 +247,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// <summary>
         /// Initialize and listen to debug mode changes
         /// </summary>
-        internal void AdviseDebugger()
+        private void AdviseDebugger()
         {
             if (_site is System.IServiceProvider sp)
             {

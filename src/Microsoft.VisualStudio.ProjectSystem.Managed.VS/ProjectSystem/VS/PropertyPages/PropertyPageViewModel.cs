@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             Project = Requires.NotNull(project, nameof(project));
         }
 
-        public UnconfiguredProject Project { get; }
+        protected UnconfiguredProject Project { get; }
 
         /// <summary>
         /// Since calls to ignore events can be nested, a downstream call could change the outer 
@@ -26,12 +26,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         public bool IgnoreEvents => _ignoreEventsNestingCount > 0;
 
-        public void PushIgnoreEvents()
+        protected void PushIgnoreEvents()
         {
             _ignoreEventsNestingCount++;
         }
 
-        public void PopIgnoreEvents()
+        protected void PopIgnoreEvents()
         {
             if (_ignoreEventsNestingCount > 0)
             {
@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         public abstract Task<int> Save();
 
-        protected virtual void OnPropertyChanged(string? propertyName, bool suppressInvalidation = false)
+        protected void OnPropertyChanged(string? propertyName, bool suppressInvalidation = false)
         {
             // For some properties we don't want to invalidate the property page
             if (suppressInvalidation)
@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
-        protected virtual bool OnPropertyChanged<T>(ref T propertyRef, T value, bool suppressInvalidation, [CallerMemberName] string? propertyName = null)
+        protected bool OnPropertyChanged<T>(ref T propertyRef, T value, bool suppressInvalidation, [CallerMemberName] string? propertyName = null)
         {
             if (!Equals(propertyRef, value))
             {
@@ -71,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             return false;
         }
 
-        protected virtual bool OnPropertyChanged<T>(ref T propertyRef, T value, [CallerMemberName] string? propertyName = null)
+        protected bool OnPropertyChanged<T>(ref T propertyRef, T value, [CallerMemberName] string? propertyName = null)
         {
             return OnPropertyChanged(ref propertyRef, value, suppressInvalidation: false, propertyName: propertyName);
         }

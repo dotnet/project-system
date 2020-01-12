@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             {
                 return DataContext as PropertyPageViewModel;
             }
-            set
+            private set
             {
                 DataContext = value;
             }
