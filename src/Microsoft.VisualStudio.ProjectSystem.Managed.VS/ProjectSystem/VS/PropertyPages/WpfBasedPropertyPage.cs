@@ -37,7 +37,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             _control ??= CreatePropertyPageControl();
 
             _viewModel = CreatePropertyPageViewModel();
-            _viewModel.Project = UnconfiguredProject;
             await _viewModel.InitializeAsync();
             _control.InitializePropertyPage(_viewModel);
         }

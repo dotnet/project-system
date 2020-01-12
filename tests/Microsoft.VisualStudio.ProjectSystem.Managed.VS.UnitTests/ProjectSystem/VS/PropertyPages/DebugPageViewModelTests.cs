@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         public void DebugPageViewModel_UICommands()
         {
             var project = UnconfiguredProjectFactory.Create(filePath: @"C:\Foo\foo.proj");
-            var viewModel = new DebugPageViewModel(null, project);
+            var viewModel = new DebugPageViewModel(project, null);
 
             Assert.IsType<DelegateCommand>(viewModel.BrowseDirectoryCommand);
             Assert.IsType<DelegateCommand>(viewModel.BrowseExecutableCommand);

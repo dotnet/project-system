@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         protected override PropertyPageViewModel CreatePropertyPageViewModel()
         {
-            return new DebugPageViewModel();
+            return new DebugPageViewModel(UnconfiguredProject);
         }
 
         protected override PropertyPageControl CreatePropertyPageControl()

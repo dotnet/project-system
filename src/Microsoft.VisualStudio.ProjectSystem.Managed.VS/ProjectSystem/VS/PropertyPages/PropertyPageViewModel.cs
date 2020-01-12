@@ -10,7 +10,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public UnconfiguredProject? Project { get; set; }
+        protected PropertyPageViewModel(UnconfiguredProject project)
+        {
+            Project = Requires.NotNull(project, nameof(project));
+        }
+
+        public UnconfiguredProject Project { get; }
 
         /// <summary>
         /// Since calls to ignore events can be nested, a downstream call could change the outer 

@@ -46,18 +46,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         private ICommand _newProfileCommand;
         private ICommand _deleteProfileCommand;
 
-        public DebugPageViewModel()
+        public DebugPageViewModel(UnconfiguredProject project)
+            : base(project)
         {
             // Hook into our own property changed event. This is solely to know when an active profile has been edited
             PropertyChanged += ViewModel_PropertyChanged;
         }
 
         // for unit testing
-        internal DebugPageViewModel(TaskCompletionSource<bool> snapshotComplete, UnconfiguredProject project)
+        internal DebugPageViewModel(UnconfiguredProject project, TaskCompletionSource<bool> snapshotComplete)
+            : this(project)
         {
             _firstSnapshotCompleteSource = snapshotComplete;
-            Project = project;
-            PropertyChanged += ViewModel_PropertyChanged;
         }
 
         public event EventHandler ClearEnvironmentVariablesGridError;
