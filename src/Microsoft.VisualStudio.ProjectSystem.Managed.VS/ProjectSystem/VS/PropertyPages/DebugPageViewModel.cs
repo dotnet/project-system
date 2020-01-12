@@ -38,7 +38,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         private List<LaunchType> _providerLaunchTypes;
         private LaunchType _selectedLaunchType;
         private OrderPrecedenceImportCollection<ILaunchSettingsUIProvider> _uiProviders;
-        private readonly TaskCompletionSource<bool> _firstSnapshotCompleteSource = null;
         private ICommand _addEnvironmentVariableRowCommand;
         private ICommand _removeEnvironmentVariableRowCommand;
         private ICommand _browseDirectoryCommand;
@@ -51,13 +50,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             // Hook into our own property changed event. This is solely to know when an active profile has been edited
             PropertyChanged += ViewModel_PropertyChanged;
-        }
-
-        // for unit testing
-        internal DebugPageViewModel(UnconfiguredProject project, TaskCompletionSource<bool> snapshotComplete)
-            : this(project)
-        {
-            _firstSnapshotCompleteSource = snapshotComplete;
         }
 
         public event EventHandler ClearEnvironmentVariablesGridError;
@@ -850,7 +842,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             finally
             {
                 PopIgnoreEvents();
-                _firstSnapshotCompleteSource?.TrySetResult(true);
                 _debugTargetsCoreInitialized = true;
             }
         }
@@ -872,10 +863,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         private async Task OnLaunchSettingsChanged(ILaunchSettings profiles)
         {
-            if (_firstSnapshotCompleteSource == null)
-            {
-                await ProjectThreadingService.SwitchToUIThread();
-            }
+            await ProjectThreadingService.SwitchToUIThread();
 
             InitializeDebugTargetsCore(profiles);
         }
