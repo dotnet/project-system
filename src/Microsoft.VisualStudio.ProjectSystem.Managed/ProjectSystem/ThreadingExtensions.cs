@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <exception cref="OperationCanceledException">
         ///     The result is awaited and <paramref name="cancellationToken"/> is cancelled.
         /// </exception>
-        public static JoinableTaskFactory.MainThreadAwaitable SwitchToUIThread(this IProjectThreadingService threading, CancellationToken cancellationToken)
+        public static JoinableTaskFactory.MainThreadAwaitable SwitchToUIThreadAsync(this IProjectThreadingService threading, CancellationToken cancellationToken)
         {
             Requires.NotNull(threading, nameof(threading));
 

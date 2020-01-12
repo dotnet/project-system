@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
-        public abstract Task Initialize();
+        public abstract Task InitializeAsync();
 
         public abstract Task<int> Save();
 
