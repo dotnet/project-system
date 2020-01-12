@@ -778,7 +778,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         private void EnvironmentVariables_ValidationStatusChanged(object sender, EventArgs e)
         {
-            var args = e as ValidationStatusChangedEventArgs;
+            var args = (ValidationStatusChangedEventArgs)e;
             EnvironmentVariablesValid = args.ValidationStatus;
         }
 
