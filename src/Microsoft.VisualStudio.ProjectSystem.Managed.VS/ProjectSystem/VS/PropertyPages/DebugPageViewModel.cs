@@ -749,14 +749,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 ((INotifyPropertyChanged)EnvironmentVariables).PropertyChanged -= DebugPageViewModel_EnvironmentVariables_PropertyChanged;
             }
 
-            if (SelectedDebugProfile != null)
-            {
-                EnvironmentVariables = SelectedDebugProfile.EnvironmentVariables.CreateList();
-            }
-            else
-            {
-                EnvironmentVariables = new ObservableList<NameValuePair>();
-            }
+            EnvironmentVariables = SelectedDebugProfile?.EnvironmentVariables.CreateList() ?? new ObservableList<NameValuePair>();
             EnvironmentVariables.ValidationStatusChanged += EnvironmentVariables_ValidationStatusChanged;
             EnvironmentVariables.CollectionChanged += EnvironmentVariables_CollectionChanged;
             ((INotifyPropertyChanged)EnvironmentVariables).PropertyChanged += DebugPageViewModel_EnvironmentVariables_PropertyChanged;
