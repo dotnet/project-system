@@ -142,6 +142,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enable remote debugging.
+        /// </summary>
+        public static string chkRemoteDebugEnabledHelpText {
+            get {
+                return ResourceManager.GetString("chkRemoteDebugEnabledHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enable SQL Server debugging.
         /// </summary>
         public static string chkSqlCodeDebuggingText {
@@ -149,7 +158,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
                 return ResourceManager.GetString("chkSqlCodeDebuggingText", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Debug.
         /// </summary>
@@ -417,6 +426,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         public static string ProfileNameRequired {
             get {
                 return ResourceManager.GetString("ProfileNameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use remote m_achine.
+        /// </summary>
+        public static string RemoteDebug {
+            get {
+                return ResourceManager.GetString("RemoteDebug", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remote machine hostname.
+        /// </summary>
+        public static string RemoteDebugMachineWatermark {
+            get {
+                return ResourceManager.GetString("RemoteDebugMachineWatermark", resourceCulture);
             }
         }
         

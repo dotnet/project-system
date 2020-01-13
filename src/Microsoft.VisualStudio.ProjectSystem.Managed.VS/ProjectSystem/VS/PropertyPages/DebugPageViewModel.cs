@@ -143,6 +143,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                         OnPropertyChanged(nameof(SupportsExecutable));
                         OnPropertyChanged(nameof(SupportsArguments));
                         OnPropertyChanged(nameof(SupportsWorkingDirectory));
+                        OnPropertyChanged(nameof(SupportsRemoteDebug));
                         OnPropertyChanged(nameof(SupportsLaunchUrl));
                         OnPropertyChanged(nameof(SupportsEnvironmentVariables));
                         OnPropertyChanged(nameof(SupportNativeDebugging));
@@ -238,6 +239,48 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
+        public bool RemoteDebugEnabled
+        {
+            get
+            {
+                if (SelectedDebugProfile is IWritableLaunchProfile2 profile2)
+                {
+                    return profile2.RemoteDebugEnabled;
+                }
+
+                return false;
+            }
+            set
+            {
+                if (SelectedDebugProfile is IWritableLaunchProfile2 profile2 && profile2.RemoteDebugEnabled != value)
+                {
+                    profile2.RemoteDebugEnabled = value;
+                    OnPropertyChanged(nameof(RemoteDebugEnabled));
+                }
+            }
+        }
+
+        public string RemoteDebugMachine
+        {
+            get
+            {
+                if (SelectedDebugProfile is IWritableLaunchProfile2 profile2)
+                {
+                    return profile2.RemoteDebugMachine ?? "";
+                }
+                
+                return "";
+            }
+            set
+            {
+                if (SelectedDebugProfile is IWritableLaunchProfile2 profile2 && profile2.RemoteDebugMachine != value)
+                {
+                    profile2.RemoteDebugMachine = value;
+                    OnPropertyChanged(nameof(RemoteDebugMachine));
+                }
+            }
+        }
+
         public bool HasLaunchOption
         {
             get
@@ -328,6 +371,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         public bool SupportsExecutable           => ActiveProviderSupportsProperty(UIProfilePropertyName.Executable);
         public bool SupportsArguments            => ActiveProviderSupportsProperty(UIProfilePropertyName.Arguments);
         public bool SupportsWorkingDirectory     => ActiveProviderSupportsProperty(UIProfilePropertyName.WorkingDirectory);
+        public bool SupportsRemoteDebug          => ActiveProviderSupportsProperty(UIProfilePropertyName.RemoteDebug);
         public bool SupportsLaunchUrl            => ActiveProviderSupportsProperty(UIProfilePropertyName.LaunchUrl);
         public bool SupportsEnvironmentVariables => ActiveProviderSupportsProperty(UIProfilePropertyName.EnvironmentVariables);
 
@@ -382,7 +426,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 OnPropertyChanged(ref _removeEnvironmentVariablesRow, value, suppressInvalidation: true);
             }
         }
-
 
         public int EnvironmentVariablesRowSelectedIndex
         {
@@ -669,6 +712,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 OnPropertyChanged(nameof(NativeCodeDebugging));
                 OnPropertyChanged(nameof(SqlDebugging));
                 OnPropertyChanged(nameof(WorkingDirectory));
+                OnPropertyChanged(nameof(RemoteDebugEnabled));
+                OnPropertyChanged(nameof(RemoteDebugMachine));
 
                 UpdateLaunchTypes();
 

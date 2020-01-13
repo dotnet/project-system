@@ -92,6 +92,16 @@
         <target state="translated">プロファイル名を指定する必要があります。</target>
         <note />
       </trans-unit>
+      <trans-unit id="RemoteDebug">
+        <source>Use remote m_achine</source>
+        <target state="new">Use remote m_achine</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RemoteDebugMachineWatermark">
+        <source>Remote machine hostname</source>
+        <target state="new">Remote machine hostname</target>
+        <note />
+      </trans-unit>
       <trans-unit id="ValueCannotBeEmpty">
         <source>Value cannot be empty.</source>
         <target state="translated">値を空にすることはできません。</target>
@@ -220,6 +230,11 @@
       <trans-unit id="chkNativeCodeDebuggingText">
         <source>Enable native code debugging</source>
         <target state="translated">ネイティブ コードのデバッグを有効にする</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="chkRemoteDebugEnabledHelpText">
+        <source>Enable remote debugging</source>
+        <target state="new">Enable remote debugging</target>
         <note />
       </trans-unit>
       <trans-unit id="chkSqlCodeDebuggingText">

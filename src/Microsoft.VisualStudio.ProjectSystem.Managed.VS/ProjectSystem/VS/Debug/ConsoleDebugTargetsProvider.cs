@@ -353,6 +353,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             settings.CurrentDirectory = workingDir;
             settings.Project = _unconfiguredProjectVsServices.VsHierarchy;
 
+            if (resolvedProfile is ILaunchProfile2 resolvedProfile2)
+            {
+                if (resolvedProfile2.RemoteDebugEnabled)
+                {
+                    settings.RemoteMachine = resolvedProfile2.RemoteDebugMachine;
+                }
+            }
+
             return settings;
         }
 

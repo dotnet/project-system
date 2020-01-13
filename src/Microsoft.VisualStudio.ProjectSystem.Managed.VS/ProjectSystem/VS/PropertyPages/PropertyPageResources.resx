@@ -252,4 +252,13 @@
   <data name="chkSqlCodeDebuggingText" xml:space="preserve">
     <value>Enable SQL Server debugging</value>
   </data>
+  <data name="chkRemoteDebugEnabledHelpText" xml:space="preserve">
+    <value>Enable remote debugging</value>
+  </data>
+  <data name="RemoteDebug" xml:space="preserve">
+    <value>Use remote m_achine</value>
+  </data>
+  <data name="RemoteDebugMachineWatermark" xml:space="preserve">
+    <value>Remote machine hostname</value>
+  </data>
 </root>

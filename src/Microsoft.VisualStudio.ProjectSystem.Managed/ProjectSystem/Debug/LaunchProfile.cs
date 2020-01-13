@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     /// <summary>
     /// Represents one launch profile read from the launchSettings file.
     /// </summary>
-    internal class LaunchProfile : ILaunchProfile, IPersistOption
+    internal class LaunchProfile : ILaunchProfile, ILaunchProfile2, IPersistOption
     {
         public LaunchProfile()
         {
@@ -27,6 +27,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             EnvironmentVariables = data.EnvironmentVariables?.ToImmutableDictionary();
             OtherSettings = data.OtherSettings?.ToImmutableDictionary();
             DoNotPersist = data.InMemoryProfile;
+            RemoteDebugEnabled = data.RemoteDebugEnabled ?? false;
+            RemoteDebugMachine = data.RemoteDebugMachine;
         }
 
         /// <summary>
@@ -44,6 +46,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             EnvironmentVariables = existingProfile.EnvironmentVariables;
             OtherSettings = existingProfile.OtherSettings;
             DoNotPersist = existingProfile.IsInMemoryObject();
+
+            if (existingProfile is ILaunchProfile2 profile2)
+            {
+                RemoteDebugEnabled = profile2.RemoteDebugEnabled;
+                RemoteDebugMachine = profile2.RemoteDebugMachine;
+            }
         }
 
         public LaunchProfile(IWritableLaunchProfile writableProfile)
@@ -60,6 +68,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // If there are no env variables or settings we want to set them to null
             EnvironmentVariables = writableProfile.EnvironmentVariables.Count == 0 ? null : writableProfile.EnvironmentVariables.ToImmutableDictionary();
             OtherSettings = writableProfile.OtherSettings.Count == 0 ? null : writableProfile.OtherSettings.ToImmutableDictionary();
+
+            if (writableProfile is IWritableLaunchProfile2 profile2)
+            {
+                RemoteDebugEnabled = profile2.RemoteDebugEnabled;
+                RemoteDebugMachine = profile2.RemoteDebugMachine;
+            }
         }
 
         public string Name { get; set; }
@@ -73,6 +87,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         public ImmutableDictionary<string, string> EnvironmentVariables { get; set; }
         public ImmutableDictionary<string, object> OtherSettings { get; set; }
+
+#nullable enable
+        public bool RemoteDebugEnabled { get; set; }
+        public string? RemoteDebugMachine { get; set; }
+#nullable restore
 
         /// <summary>
         /// Compares two profile names. Using this function ensures case comparison consistency

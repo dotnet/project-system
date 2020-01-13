@@ -20,6 +20,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         private const string Prop_launchBrowser = "launchBrowser";
         private const string Prop_launchUrl = "launchUrl";
         private const string Prop_environmentVariables = "environmentVariables";
+        private const string Prop_remoteDebugEnabled = "remoteDebugEnabled";
+        private const string Prop_remoteDebugMachine = "remoteDebugMachine";
 
         private static readonly HashSet<string> s_knownProfileProperties = new HashSet<string>(StringComparers.LaunchProfileProperties)
         {
@@ -29,7 +31,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Prop_workingDirectory,
             Prop_launchBrowser,
             Prop_launchUrl,
-            Prop_environmentVariables
+            Prop_environmentVariables,
+            Prop_remoteDebugEnabled,
+            Prop_remoteDebugMachine
         };
 
         public static bool IsKnownProfileProperty(string propertyName)
@@ -63,6 +67,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         [JsonProperty(PropertyName = Prop_environmentVariables)]
         public IDictionary<string, string>? EnvironmentVariables { get; set; }
+
+        [JsonProperty(PropertyName = Prop_remoteDebugEnabled)]
+        public bool? RemoteDebugEnabled { get; set; }
+
+        [JsonProperty(PropertyName = Prop_remoteDebugMachine)]
+        public string? RemoteDebugMachine { get; set; }
 
         public IDictionary<string, object>? OtherSettings { get; set; }
 
@@ -180,6 +190,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 }
             }
 
+            if (profile is ILaunchProfile2 profile2)
+            {
+                if (profile2.RemoteDebugEnabled)
+                {
+                    data.Add(Prop_remoteDebugEnabled, profile2.RemoteDebugEnabled);
+                }
+
+                if (!Strings.IsNullOrEmpty(profile2.RemoteDebugMachine))
+                {
+                    data.Add(Prop_remoteDebugMachine, profile2.RemoteDebugMachine);
+                }
+            }
+
             return data;
         }
 
@@ -189,7 +212,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         public static LaunchProfileData FromILaunchProfile(ILaunchProfile profile)
         {
-            return new LaunchProfileData()
+            var profileData = new LaunchProfileData
             {
                 Name = profile.Name,
                 ExecutablePath = profile.ExecutablePath,
@@ -202,6 +225,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 OtherSettings = profile.OtherSettings,
                 InMemoryProfile = profile.IsInMemoryObject()
             };
+
+            if (profile is ILaunchProfile2 profile2)
+            {
+                profileData.RemoteDebugEnabled = profile2.RemoteDebugEnabled;
+                profileData.RemoteDebugMachine = profile2.RemoteDebugMachine;
+            }
+
+            return profileData;
         }
     }
 }
