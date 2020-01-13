@@ -1029,7 +1029,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         public IEnumerable GetErrors(string propertyName)
         {
-            return null;
+            if (ActiveProvider?.CustomUI?.DataContext is INotifyDataErrorInfo notifyDataError)
+            {
+                foreach (object error in notifyDataError.GetErrors(propertyName))
+                {
+                    yield return error;
+                }
+            }
         }
 
         /// <summary>
