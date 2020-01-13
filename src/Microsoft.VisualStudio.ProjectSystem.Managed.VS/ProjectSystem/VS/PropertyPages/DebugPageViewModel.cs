@@ -734,18 +734,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             if (EnvironmentVariables != null && oldProfile != null)
             {
+                oldProfile.EnvironmentVariables.Clear();
+            
                 if (EnvironmentVariables.Count > 0)
                 {
-                    oldProfile.EnvironmentVariables.Clear();
                     foreach (NameValuePair kvp in EnvironmentVariables)
                     {
                         oldProfile.EnvironmentVariables.Add(kvp.Name, kvp.Value);
                     }
                 }
-                else
-                {
-                    oldProfile.EnvironmentVariables.Clear();
-                }
+
                 EnvironmentVariables.ValidationStatusChanged -= EnvironmentVariables_ValidationStatusChanged;
                 EnvironmentVariables.CollectionChanged -= EnvironmentVariables_CollectionChanged;
                 ((INotifyPropertyChanged)EnvironmentVariables).PropertyChanged -= DebugPageViewModel_EnvironmentVariables_PropertyChanged;
