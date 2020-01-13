@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         protected override Task<int> OnApply()
         {
-            return _control?.Apply() ?? Task.FromResult((int)HResult.Fail);
+            return _control?.ApplyAsync() ?? Task.FromResult((int)HResult.Fail);
         }
 
         protected override Task OnDeactivate()

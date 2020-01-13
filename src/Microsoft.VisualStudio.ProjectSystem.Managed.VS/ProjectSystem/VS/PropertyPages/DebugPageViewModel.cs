@@ -847,7 +847,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// <summary>
         /// Called when then the user saves the form.
         /// </summary>
-        public override async Task<int> Save()
+        public override async Task<int> SaveAsync()
         {
             if (HasErrors)
             {
