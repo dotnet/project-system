@@ -52,7 +52,6 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             
             <!-- Launch profile -->
@@ -202,7 +201,7 @@
             
             <!-- Arguments -->
             <Label 
-                Grid.Row="4"
+                Grid.Row="3"
                 x:Uid="argumentsLabel"
                 Margin="4,4,3,0"
                 Content="{x:Static Member=local:PropertyPageResources.ApplicationArguments}"
@@ -211,7 +210,7 @@
                 Visibility="{Binding Path=SupportsArguments, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
                 Target="{Binding ElementName=txtArguments}"/>
             <local:WatermarkTextBox 
-                Grid.Row="4"
+                Grid.Row="3"
                 Grid.Column="1"
                 x:Name="txtArguments"
                 Watermark="{x:Static Member=local:PropertyPageResources.ApplicationArgumentsWatermark}"
@@ -228,7 +227,7 @@
             
             <!-- Working directory -->
             <Label 
-                Grid.Row="5"
+                Grid.Row="4"
                 x:Uid="workingDirectoryLabel"
                 Margin="4,4,3,5"
                 Content="{x:Static Member=local:PropertyPageResources.WorkingDirectory}"
@@ -236,7 +235,7 @@
                 Visibility="{Binding Path=SupportsWorkingDirectory, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
                 Target="{Binding ElementName=txtWorkingDirectory}"/>
             <local:WatermarkTextBox  
-                Grid.Row="5"
+                Grid.Row="4"
                 Grid.Column="1"
                 x:Name="txtWorkingDirectory" 
                 Watermark="{x:Static Member=local:PropertyPageResources.WorkingDirectoryWatermark}"
@@ -250,7 +249,7 @@
                 MinWidth="200"
                 AutomationProperties.Name="{x:Static Member=local:PropertyPageResources.WorkingDirectory}"/>
             <Button
-                Grid.Row="5"
+                Grid.Row="4"
                 Grid.Column="2"
                 x:Uid="btnWorkingDirectory"
                 x:Name="btnWorkingDirectory"
@@ -267,7 +266,7 @@
 
             <!-- Launch URL -->
             <CheckBox 
-                Grid.Row="6"
+                Grid.Row="5"
                 Grid.Column="0"
                 x:Uid="chkLaunchBrowser"
                 x:Name="chkLaunchBrowser"
@@ -280,7 +279,7 @@
                 AutomationProperties.HelpText="{x:Static Member=local:PropertyPageResources.chkLaunchBrowserHelpText}"
                 Content="{x:Static Member=local:PropertyPageResources.LaunchURL}"/>
             <local:WatermarkTextBox 
-                Grid.Row="6"
+                Grid.Row="5"
                 Grid.Column="1"
                 x:Name="txtLaunchPage"
                 Watermark="{x:Static Member=local:PropertyPageResources.LaunchUrlWatermark}"
@@ -302,7 +301,7 @@
 
             <!-- Remote debugging -->
             <CheckBox
-                Grid.Row="7"
+                Grid.Row="6"
                 Grid.Column="0"
                 x:Uid="chkRemoteDebugEnabled"
                 x:Name="chkRemoteDebugEnabled"
@@ -315,7 +314,7 @@
                 AutomationProperties.HelpText="{x:Static Member=local:PropertyPageResources.chkRemoteDebugEnabledHelpText}"
                 Content="{x:Static Member=local:PropertyPageResources.RemoteDebug}"/>
             <local:WatermarkTextBox
-                Grid.Row="7"
+                Grid.Row="6"
                 Grid.Column="1"
                 x:Name="txtRemoteDebugMachine"
                 Watermark="{x:Static Member=local:PropertyPageResources.RemoteDebugMachineWatermark}"
@@ -337,7 +336,7 @@
 
             <!-- Environment variables -->
             <Label 
-                Grid.Row="8"
+                Grid.Row="7"
                 x:Uid="envVarsLabel"
                 Margin="4,4,3,0"
                 IsTabStop="False"
@@ -346,7 +345,7 @@
                 Content="{x:Static Member=local:PropertyPageResources.EnvironmentVariables}"/>
             <DataGrid
                 x:Name="dataGridEnvironmentVariables"
-                Grid.Row="8"
+                Grid.Row="7"
                 Grid.Column="1"
                 Background="White"
                 Margin="5,4,2,4"
@@ -426,7 +425,7 @@
                     </local:EnvironmentDataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
-            <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="6,20,0,0" Grid.Row="8" Grid.Column="2" 
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="6,20,0,0" Grid.Row="7" Grid.Column="2" 
                         Visibility="{Binding Path=SupportsEnvironmentVariables, Mode=OneWay, Converter={StaticResource visibilityConverter}}">
                 <Button 
                     x:Uid="AddEnvironmentVariableButton" 
@@ -460,7 +459,7 @@
 
             <!-- Native code debugging -->
             <CheckBox 
-                Grid.Row="9"
+                Grid.Row="8"
                 Grid.Column="0"
                 x:Uid="chkNativeCodeDebugging"
                 x:Name="chkNativeCodeDebugging"
@@ -474,7 +473,7 @@
             
             <!-- SQL debugging -->
             <CheckBox
-                Grid.Row="10"
+                Grid.Row="9"
                 Grid.Column="0"
                 x:Uid="chkSqlCodeDebugging"
                 x:Name="chkSqlCodeDebugging"
@@ -487,7 +486,7 @@
                 Content="{x:Static Member=local:PropertyPageResources.chkSqlCodeDebuggingText}"/>
             
             <!-- Where the custom control is placed for the active provider -->
-            <ContentPresenter Grid.Row="11" Grid.Column="0"  Grid.ColumnSpan="3" Content="{Binding ActiveProviderUserControl, Mode=OneWay}" />
+            <ContentPresenter Grid.Row="10" Grid.Column="0"  Grid.ColumnSpan="3" Content="{Binding ActiveProviderUserControl, Mode=OneWay}" />
         </Grid>
     </Grid>
 </local:PropertyPageControl>
