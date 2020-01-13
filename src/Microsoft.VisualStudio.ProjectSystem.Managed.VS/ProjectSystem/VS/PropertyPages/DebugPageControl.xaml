@@ -54,6 +54,8 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
+            
+            <!-- Launch profile -->
             <Label
                 Grid.Row="0"
                 x:Uid="profileLabel" 
@@ -120,6 +122,8 @@
                     Command="{Binding Path=DeleteProfileCommand}">
                 </Button>
             </StackPanel>
+            
+            <!-- Launch type -->
             <Label
                 x:Uid="launchLabel"
                 Grid.Row="1" 
@@ -156,6 +160,8 @@
                     </MultiBinding>
                 </ComboBox.IsEnabled>
             </ComboBox>
+            
+            <!-- Executable path -->
             <Label 
                 Grid.Row="2"
                 x:Uid="executableLabel"
@@ -193,6 +199,8 @@
                 IsEnabled="{Binding Path=IsProfileSelected, Mode=OneWay}"
                 Visibility="{Binding Path=SupportsExecutable, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
                 Command="{Binding Path=BrowseExecutableCommand}"/>
+            
+            <!-- Arguments -->
             <Label 
                 Grid.Row="4"
                 x:Uid="argumentsLabel"
@@ -217,6 +225,8 @@
                 IsEnabled="{Binding Path=IsProfileSelected, Mode=OneWay}"
                 Visibility="{Binding Path=SupportsArguments, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
                 AutomationProperties.Name="{x:Static Member=local:PropertyPageResources.ApplicationArguments}"/>
+            
+            <!-- Working directory -->
             <Label 
                 Grid.Row="5"
                 x:Uid="workingDirectoryLabel"
@@ -255,6 +265,7 @@
                 Visibility="{Binding Path=SupportsWorkingDirectory, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
                 Command="{Binding Path=BrowseDirectoryCommand}"/>
 
+            <!-- Launch URL -->
             <CheckBox 
                 Grid.Row="6"
                 Grid.Column="0"
@@ -447,6 +458,7 @@
                 </Button>
             </StackPanel>
 
+            <!-- Native code debugging -->
             <CheckBox 
                 Grid.Row="9"
                 Grid.Column="0"
@@ -460,6 +472,7 @@
                 VerticalContentAlignment="Center"
                 Content="{x:Static Member=local:PropertyPageResources.chkNativeCodeDebuggingText}"/>
             
+            <!-- SQL debugging -->
             <CheckBox
                 Grid.Row="10"
                 Grid.Column="0"
