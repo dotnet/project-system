@@ -101,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 _customControlLayoutUpdateRequired = false;
 
                 // Get the control that was added to the grid
-                UserControl customControl = viewModel.ActiveProviderUserControl;
+                UserControl? customControl = viewModel.ActiveProviderUserControl;
                 if (customControl != null)
                 {
                     if (customControl.Content is Grid childGrid && childGrid.ColumnDefinitions.Count == _mainGrid.ColumnDefinitions.Count)

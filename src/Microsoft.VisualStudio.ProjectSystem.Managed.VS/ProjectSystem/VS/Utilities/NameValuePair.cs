@@ -11,25 +11,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
     {
         private readonly ObservableList<NameValuePair>? _parentCollection;
 
-        private string? _name;
-        private string? _value;
+        private string _name;
+        private string _value;
 
-        public bool HasValidationError { get; set; }
+        public bool HasValidationError { get; private set; }
 
-        public NameValuePair(string? name, string? value, ObservableList<NameValuePair>? parentCollection = null)
+        public NameValuePair(string name, string value, ObservableList<NameValuePair>? parentCollection = null)
         {
             _parentCollection = parentCollection;
-            Name = name;
-            Value = value;
+            _name = name;
+            _value = value;
         }
 
-        public string? Name
+        public string Name
         {
             get { return _name; }
             set { NotifyPropertyChanged(ref _name, value); }
         }
 
-        public string? Value
+        public string Value
         {
             get { return _value; }
             set { NotifyPropertyChanged(ref _value, value); }

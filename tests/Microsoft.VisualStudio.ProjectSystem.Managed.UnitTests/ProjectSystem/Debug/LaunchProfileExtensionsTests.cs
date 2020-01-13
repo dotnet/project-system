@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [InlineData(true)]
         public void IsInMemoryProfile_IWritableLaunchProfile(bool isInMemory)
         {
-            var data = new WritableLaunchProfile()
+            var data = new WritableLaunchProfile("Name", "CommandName")
             {
                 DoNotPersist = isInMemory
             };

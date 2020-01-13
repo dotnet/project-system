@@ -133,11 +133,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
             Assert.True(viewModel.Object.HasProfiles);
             Assert.True(viewModel.Object.IsProfileSelected);
-            Assert.True(viewModel.Object.SelectedDebugProfile.IsInMemoryObject());
+            Assert.True(viewModel.Object.SelectedDebugProfile!.IsInMemoryObject());
 
             // Change a property, should trigger the selected profile to no longer be in-memory
             viewModel.Object.CommandLineArguments = "-arg";
-            Assert.False(viewModel.Object.SelectedDebugProfile.IsInMemoryObject());
+            Assert.False(viewModel.Object.SelectedDebugProfile!.IsInMemoryObject());
         }
     }
 }

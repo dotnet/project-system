@@ -5,8 +5,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.Collections;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     /// <summary>
@@ -14,15 +12,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     /// </summary>
     internal class WritableLaunchProfile : IWritableLaunchProfile, IWritablePersistOption
     {
-        public WritableLaunchProfile()
+        public WritableLaunchProfile(string name, string commandName)
         {
+            Name = name;
+            CommandName = commandName;
+            ExecutablePath = "";
+            CommandLineArgs = "";
+            WorkingDirectory = "";
+            LaunchUrl = "";
         }
 
         public WritableLaunchProfile(ILaunchProfile profile)
         {
             Name = profile.Name;
-            ExecutablePath = profile.ExecutablePath;
             CommandName = profile.CommandName;
+            ExecutablePath = profile.ExecutablePath;
             CommandLineArgs = profile.CommandLineArgs;
             WorkingDirectory = profile.WorkingDirectory;
             LaunchBrowser = profile.LaunchBrowser;
