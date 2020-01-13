@@ -744,21 +744,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     }
                 }
 
-                EnvironmentVariables.ValidationStatusChanged -= EnvironmentVariables_ValidationStatusChanged;
-                EnvironmentVariables.CollectionChanged -= EnvironmentVariables_CollectionChanged;
-                ((INotifyPropertyChanged)EnvironmentVariables).PropertyChanged -= DebugPageViewModel_EnvironmentVariables_PropertyChanged;
+                EnvironmentVariables.ValidationStatusChanged -= OnValidationStatusChanged;
+                EnvironmentVariables.CollectionChanged -= OnCollectionChanged;
+                ((INotifyPropertyChanged)EnvironmentVariables).PropertyChanged -= OnCollectionPropertyChanged;
             }
 
             EnvironmentVariables = SelectedDebugProfile?.EnvironmentVariables.CreateList() ?? new ObservableList<NameValuePair>();
-            EnvironmentVariables.ValidationStatusChanged += EnvironmentVariables_ValidationStatusChanged;
-            EnvironmentVariables.CollectionChanged += EnvironmentVariables_CollectionChanged;
-            ((INotifyPropertyChanged)EnvironmentVariables).PropertyChanged += DebugPageViewModel_EnvironmentVariables_PropertyChanged;
-        }
+            EnvironmentVariables.ValidationStatusChanged += OnValidationStatusChanged;
+            EnvironmentVariables.CollectionChanged += OnCollectionChanged;
+            ((INotifyPropertyChanged)EnvironmentVariables).PropertyChanged += OnCollectionPropertyChanged;
 
-        private void EnvironmentVariables_ValidationStatusChanged(object sender, EventArgs e)
-        {
-            var args = (ValidationStatusChangedEventArgs)e;
-            EnvironmentVariablesValid = args.ValidationStatus;
+            void OnValidationStatusChanged(object sender, EventArgs e)
+            {
+                var args = (ValidationStatusChangedEventArgs)e;
+                EnvironmentVariablesValid = args.ValidationStatus;
+            }
+
+            void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+            {
+                // cause the property page to be dirtied when a row is added or removed
+                OnPropertyChanged("EnvironmentVariables_Contents");
+            }
+
+            void OnCollectionPropertyChanged(object sender, PropertyChangedEventArgs e)
+            {
+                // cause the property page to be dirtied when a cell is updated
+                OnPropertyChanged("EnvironmentVariables_Contents");
+            }
         }
 
         /// <summary>
@@ -928,18 +940,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             OnPropertyChanged(nameof(LaunchTypes));
 
             SelectedLaunchType = selectedLaunchType;
-        }
-
-        private void EnvironmentVariables_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            // cause the property page to be dirtied when a row is added or removed
-            OnPropertyChanged("EnvironmentVariables_Contents");
-        }
-
-        private void DebugPageViewModel_EnvironmentVariables_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            // cause the property page to be dirtied when a cell is updated
-            OnPropertyChanged("EnvironmentVariables_Contents");
         }
 
         /// <summary>
