@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.ProjectImports
 
         public Task<CommandStatusResult> GetCommandStatusAsync(IImmutableSet<IProjectTree> items, long commandId, bool focused, string? commandText, CommandStatus status)
         {
-            if (items.Count != 0 && IsOpenCommand(commandId) && items.All(CanOpenFile))
+            if (IsOpenCommand(commandId) && items.All(CanOpenFile))
             {
                 status |= CommandStatus.Enabled | CommandStatus.Supported;
                 return new CommandStatusResult(true, commandText, status).AsTask();
@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.ProjectImports
 
         public Task<bool> TryHandleCommandAsync(IImmutableSet<IProjectTree> items, long commandId, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut)
         {
-            if (items.Count != 0 && IsOpenCommand(commandId) && items.All(CanOpenFile))
+            if (IsOpenCommand(commandId) && items.All(CanOpenFile))
             {
                 OpenItems();
 
