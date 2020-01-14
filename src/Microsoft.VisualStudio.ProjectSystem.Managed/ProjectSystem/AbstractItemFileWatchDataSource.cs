@@ -23,20 +23,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _projectSubscriptionService = projectSubscriptionService;
         }
 
-        public abstract string ItemSchemaName
-        {
-            get;
-        }
+        public abstract string ItemSchemaName { get; }
 
-        public abstract string FullPathProperty
-        {
-            get;
-        }
+        public abstract string FullPathProperty { get; }
 
-        public abstract FileWatchChangeKinds FileWatchChangeKinds
-        {
-            get;
-        }
+        public abstract FileWatchChangeKinds FileWatchChangeKinds { get; }
 
         protected override UnconfiguredProject ContainingProject
         {

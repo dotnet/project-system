@@ -19,17 +19,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         ///     Gets the restore information produced in this input. Can be <see langword="null"/> if
         ///     the project has no active configurations.
         /// </summary>
-        public ProjectRestoreInfo? RestoreInfo
-        {
-            get;
-        }
+        public ProjectRestoreInfo? RestoreInfo { get; }
 
         /// <summary>
         ///     Gets the <see cref="PackageRestoreConfiguredInput"/> instances that contributed to <see cref="RestoreInfo"/>.
         /// </summary>
-        public IReadOnlyCollection<PackageRestoreConfiguredInput> ConfiguredInputs
-        {
-            get;
-        }
+        public IReadOnlyCollection<PackageRestoreConfiguredInput> ConfiguredInputs { get; }
     }
 }

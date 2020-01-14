@@ -18,10 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <value>
         ///     <see langword="true"/> if the current project supports the Project Designer; otherwise, <see langword="false"/>.
         /// </value>
-        bool SupportsProjectDesigner
-        {
-            get;
-        }
+        bool SupportsProjectDesigner { get; }
 
         /// <summary>
         ///     Shows the current project's Project Designer window.

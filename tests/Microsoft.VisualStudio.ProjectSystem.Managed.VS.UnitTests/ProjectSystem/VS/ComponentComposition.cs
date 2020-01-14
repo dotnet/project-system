@@ -55,30 +55,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             InterfaceNames = CollectInterfaceNames(ContractAssemblies);
         }
 
-        public ComposableCatalog Catalog
-        {
-            get;
-        }
+        public ComposableCatalog Catalog { get; }
 
-        public CompositionConfiguration Configuration
-        {
-            get;
-        }
+        public CompositionConfiguration Configuration { get; }
 
-        public IDictionary<string, ContractMetadata> Contracts
-        {
-            get;
-        }
+        public IDictionary<string, ContractMetadata> Contracts { get; }
 
-        public IDictionary<string, ISet<Type>> ContractsRequiringAppliesTo
-        {
-            get;
-        }
+        public IDictionary<string, ISet<Type>> ContractsRequiringAppliesTo { get; }
 
-        public ISet<string> InterfaceNames
-        {
-            get;
-        }
+        public ISet<string> InterfaceNames { get; }
 
         public ComposedPart? FindComposedPart(Type type)
         {

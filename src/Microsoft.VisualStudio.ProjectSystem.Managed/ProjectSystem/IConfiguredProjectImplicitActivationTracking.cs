@@ -19,10 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <exception cref="ObjectDisposedException">
         ///     The <see cref="IConfiguredProjectImplicitActivationTracking"/> has been disposed of.
         /// </exception>
-        bool IsImplicitlyActive
-        {
-            get;
-        }
+        bool IsImplicitlyActive { get; }
 
         /// <summary>
         ///     Gets a task that is completed when current <see cref="ConfiguredProject"/> becomes 
@@ -35,9 +32,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     The returned <see cref="Task"/> is canceled when the <see cref="ConfiguredProject"/> 
         ///     is unloaded.
         /// </remarks>
-        Task ImplicitlyActive
-        {
-            get;
-        }
+        Task ImplicitlyActive { get; }
     }
 }

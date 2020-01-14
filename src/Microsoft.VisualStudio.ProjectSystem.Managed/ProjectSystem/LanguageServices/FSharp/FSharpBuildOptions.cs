@@ -17,9 +17,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.FSharp
             CompileOptions = compileOptions;
         }
 
-        public ImmutableArray<string> CompileOptions
-        {
-            get;
-        }
+        public ImmutableArray<string> CompileOptions { get; }
     }
 }

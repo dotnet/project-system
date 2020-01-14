@@ -11,11 +11,7 @@ namespace Microsoft.VisualStudio
         /// <summary>
         ///     Gets the Visual Studio hive to run tests under.
         /// </summary>
-        public static string? VisualStudioHive
-        {
-            get;
-            private set;
-        }
+        public static string? VisualStudioHive { get; private set; }
 
         public static void OnAssemblyInitialize(TestContext context)
         {

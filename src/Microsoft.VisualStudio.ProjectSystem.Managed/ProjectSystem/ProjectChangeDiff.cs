@@ -21,25 +21,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
             RenamedItems = renamedItems ?? ImmutableStringDictionary<string>.EmptyOrdinal;
         }
 
-        public IImmutableSet<string> AddedItems
-        {
-            get;
-        }
+        public IImmutableSet<string> AddedItems { get; }
 
-        public IImmutableSet<string> RemovedItems
-        {
-            get;
-        }
+        public IImmutableSet<string> RemovedItems { get; }
 
-        public IImmutableSet<string> ChangedItems
-        {
-            get;
-        }
+        public IImmutableSet<string> ChangedItems { get; }
 
-        public IImmutableDictionary<string, string> RenamedItems
-        {
-            get;
-        }
+        public IImmutableDictionary<string, string> RenamedItems { get; }
 
         public IImmutableSet<string> ChangedProperties
         {

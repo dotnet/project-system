@@ -12,9 +12,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             ErrorId = errorId;
         }
 
-        public ProjectTreeFormatError ErrorId
-        {
-            get;
-        }
+        public ProjectTreeFormatError ErrorId { get; }
     }
 }

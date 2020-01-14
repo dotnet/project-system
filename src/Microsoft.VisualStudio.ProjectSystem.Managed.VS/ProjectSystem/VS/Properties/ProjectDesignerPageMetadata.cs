@@ -24,19 +24,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         public string? Name => null;
 #pragma warning restore CS8613 // Nullability of reference types in return type doesn't match implicitly implemented member.
 
-        public bool HasConfigurationCondition
-        {
-            get;
-        }
+        public bool HasConfigurationCondition { get; }
 
-        public Guid PageGuid
-        {
-            get;
-        }
+        public Guid PageGuid { get; }
 
-        public int PageOrder
-        {
-            get;
-        }
+        public int PageOrder { get; }
     }
 }
