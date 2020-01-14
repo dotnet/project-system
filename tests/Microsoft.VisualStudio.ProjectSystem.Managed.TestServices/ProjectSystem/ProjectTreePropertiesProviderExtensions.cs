@@ -106,10 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 }
             }
 
-            public IImmutableDictionary<string, string>? ProjectTreeSettings
-            {
-                get;
-            }
+            public IImmutableDictionary<string, string>? ProjectTreeSettings { get; }
 
             public bool IsFolder => _tree.Flags.Contains(ProjectTreeFlags.Common.Folder);
 

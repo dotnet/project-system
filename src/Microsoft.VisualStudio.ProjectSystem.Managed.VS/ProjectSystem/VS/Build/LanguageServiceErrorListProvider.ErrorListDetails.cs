@@ -12,23 +12,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         /// </summary>
         internal struct ErrorListDetails
         {
-            public string Message
-            {
-                get;
-                set;
-            }
+            public string Message { get; set; }
 
-            public string ProjectFile
-            {
-                get;
-                set;
-            }
+            public string ProjectFile { get; set; }
 
-            public string File
-            {
-                get;
-                set;
-            }
+            public string File { get; set; }
 
             public string GetFileFullPath(string? projectFile)
             {
@@ -46,18 +34,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 return string.Empty;
             }
 
-            public int LineNumber
-            {
-                get;
-                set;
-            }
+            public int LineNumber { get; set; }
 
 
-            public int EndLineNumber
-            {
-                get;
-                set;
-            }
+            public int EndLineNumber { get; set; }
 
             /// <summary>
             /// Gets the line number that should be reported to the VS error list.
@@ -87,17 +67,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 }
             }
 
-            public int ColumnNumber
-            {
-                get;
-                set;
-            }
+            public int ColumnNumber { get; set; }
 
-            public int EndColumnNumber
-            {
-                get;
-                set;
-            }
+            public int EndColumnNumber { get; set; }
 
             /// <summary>
             /// Gets the column number that should be reported to the VS error list.
@@ -119,17 +91,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 get { return (EndColumnNumber > ColumnNumber && EndColumnNumber > 0) ? EndColumnNumber - 1 : ColumnNumberForErrorList; }
             }
 
-            public string Code
-            {
-                get;
-                set;
-            }
+            public string Code { get; set; }
 
-            public VSTASKPRIORITY Priority
-            {
-                get;
-                set;
-            }
+            public VSTASKPRIORITY Priority { get; set; }
 
             /// <summary>
             /// Makes the specified path absolute if possible, otherwise return an empty string.

@@ -13,33 +13,21 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <summary>
         ///     Gets the service that provides file and folder operations that operate on the physical <see cref="IProjectTree"/>.
         /// </summary>
-        IPhysicalProjectTreeStorage TreeStorage
-        {
-            get;
-        }
+        IPhysicalProjectTreeStorage TreeStorage { get; }
 
         /// <summary>
         ///     Gets the most recently published tree, or <see langword="null"/> if it has not yet be published.
         /// </summary>
-        IProjectTree? CurrentTree
-        {
-            get;
-        }
+        IProjectTree? CurrentTree { get; }
 
         /// <summary>
         ///     Gets the service that manages the tree in Solution Explorer.
         /// </summary>
-        IProjectTreeService TreeService
-        {
-            get;
-        }
+        IProjectTreeService TreeService { get; }
 
         /// <summary>
         ///     Gets the project tree provider that creates the Solution Explorer tree.
         /// </summary>
-        IProjectTreeProvider TreeProvider
-        {
-            get;
-        }
+        IProjectTreeProvider TreeProvider { get; }
     }
 }

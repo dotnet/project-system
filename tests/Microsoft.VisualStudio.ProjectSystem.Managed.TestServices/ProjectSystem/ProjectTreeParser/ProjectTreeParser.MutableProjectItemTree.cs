@@ -14,10 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 Item = new MutableProjectPropertiesContext();
             }
 
-            public MutableProjectPropertiesContext Item
-            {
-                get;
-            }
+            public MutableProjectPropertiesContext Item { get; }
 
             public bool IsLinked => throw new NotImplementedException();
 

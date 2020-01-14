@@ -6,11 +6,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
 {
     internal class VsStartupProjectsListService : IVsStartupProjectsListService
     {
-        public Guid? ProjectGuid
-        {
-            get;
-            private set;
-        }
+        public Guid? ProjectGuid { get; private set; }
 
         public void AddProject(ref Guid guidProject)
         {

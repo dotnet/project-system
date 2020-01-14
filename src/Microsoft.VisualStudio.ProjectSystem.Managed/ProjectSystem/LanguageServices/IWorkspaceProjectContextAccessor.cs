@@ -12,18 +12,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// <summary>
         ///     Gets an identifier that uniquely identifies the <see cref="IWorkspaceProjectContext"/> across a solution.
         /// </summary>
-        string ContextId
-        {
-            get;
-        }
+        string ContextId { get; }
 
         /// <summary>
         ///     Gets the <see cref="IWorkspaceProjectContext"/> that provides access to the language service.
         /// </summary>
-        IWorkspaceProjectContext Context
-        {
-            get;
-        }
+        IWorkspaceProjectContext Context { get; }
 
         /// <summary>
         ///     Gets an object that represents a host-specific error reporter.
@@ -31,9 +25,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// <remarks>
         ///     Within a Visual Studio host, this is typically an object implementing IVsLanguageServiceBuildErrorReporter2.
         /// </remarks>
-        object HostSpecificErrorReporter
-        {
-            get;
-        }
+        object HostSpecificErrorReporter { get; }
     }
 }

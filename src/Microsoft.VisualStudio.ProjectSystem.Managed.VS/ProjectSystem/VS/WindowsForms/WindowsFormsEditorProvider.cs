@@ -42,10 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
         }
 
         [ImportMany]
-        public OrderPrecedenceImportCollection<IProjectSpecificEditorProvider, INamedExportMetadataView> ProjectSpecificEditorProviders
-        {
-            get;
-        }
+        public OrderPrecedenceImportCollection<IProjectSpecificEditorProvider, INamedExportMetadataView> ProjectSpecificEditorProviders { get; }
 
         public async Task<IProjectSpecificEditorInfo?> GetSpecificEditorAsync(string documentMoniker)
         {

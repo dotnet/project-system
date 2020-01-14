@@ -18,10 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <value>
         ///     <see langword="true"/> if the project output pane is enabled; otherwise, <see langword="false"/>.
         /// </value>
-        bool IsProjectOutputPaneEnabled
-        {
-            get;
-        }
+        bool IsProjectOutputPaneEnabled { get; }
 
         /// <summary>
         ///     Gets a value indicating if the project fast up to date check is enabled.

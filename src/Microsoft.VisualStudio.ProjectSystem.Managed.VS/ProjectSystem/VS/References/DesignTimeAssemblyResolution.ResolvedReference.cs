@@ -16,15 +16,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
                 Version = version;
             }
 
-            public string ResolvedPath
-            {
-                get;
-            }
+            public string ResolvedPath { get; }
 
-            public Version? Version
-            {
-                get;
-            }
+            public Version? Version { get; }
         }
     }
 }

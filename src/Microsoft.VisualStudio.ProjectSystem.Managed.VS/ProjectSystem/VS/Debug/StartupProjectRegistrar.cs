@@ -99,10 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             }
 
             [ImportMany]
-            public OrderPrecedenceImportCollection<IDebugLaunchProvider> Debuggers
-            {
-                get;
-            }
+            public OrderPrecedenceImportCollection<IDebugLaunchProvider> Debuggers { get; }
 
             public async Task<bool> IsDebuggableAsync()
             {

@@ -24,14 +24,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Input
             CommandIds = commandIds;
         }
 
-        public long[] CommandIds
-        {
-            get;
-        }
+        public long[] CommandIds { get; }
 
-        public Guid Group
-        {
-            get;
-        }
+        public Guid Group { get; }
     }
 }

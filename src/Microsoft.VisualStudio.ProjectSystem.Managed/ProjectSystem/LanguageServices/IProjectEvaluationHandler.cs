@@ -15,10 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// <summary>
         ///     Gets the project evaluation rule that the <see cref="IProjectEvaluationHandler"/> handles.
         /// </summary>
-        string ProjectEvaluationRule
-        {
-            get;
-        }
+        string ProjectEvaluationRule { get; }
 
         /// <summary>
         ///     Handles the specified set of changes to the project evaluation rule, and applies them
