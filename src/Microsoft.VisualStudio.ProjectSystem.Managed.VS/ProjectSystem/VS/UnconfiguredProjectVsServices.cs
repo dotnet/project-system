@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>
     ///     Provides an implementation of <see cref="IUnconfiguredProjectVsServices"/> that delegates onto 
-    ///     it's <see cref="IUnconfiguredProjectServices.HostObject"/> and underlying <see cref="IUnconfiguredProjectCommonServices"/>.
+    ///     its <see cref="IUnconfiguredProjectServices.HostObject"/> and underlying <see cref="IUnconfiguredProjectCommonServices"/>.
     /// </summary>
     [Export(typeof(IUnconfiguredProjectVsServices))]
     internal class UnconfiguredProjectVsServices : IUnconfiguredProjectVsServices
