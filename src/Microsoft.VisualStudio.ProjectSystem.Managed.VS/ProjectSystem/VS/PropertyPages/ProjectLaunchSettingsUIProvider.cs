@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.ProjectSystem.Debug;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
     /// <summary>
-    /// Implementation of ILaunchSettingsUIProvider for the Executable launch type.
+    /// Implementation of ILaunchSettingsUIProvider for the Project launch type.
     /// </summary>
     [Export(typeof(ILaunchSettingsUIProvider))]
     [AppliesTo(ProjectCapability.LaunchProfiles)]
