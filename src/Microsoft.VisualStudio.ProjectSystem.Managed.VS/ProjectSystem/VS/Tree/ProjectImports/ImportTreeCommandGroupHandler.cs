@@ -85,6 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.ProjectImports
                 IVsExternalFilesManager? externalFilesManager = _externalFilesManager.Value;
                 Assumes.Present(externalFilesManager);
 
+                Assumes.NotNull(_configuredProject.UnconfiguredProject.Services.HostObject);
                 var hierarchy = (IVsUIHierarchy)_configuredProject.UnconfiguredProject.Services.HostObject;
                 var rdt = new RunningDocumentTable(_serviceProvider);
 

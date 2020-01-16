@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>
     ///     Provides an implementation of <see cref="IUnconfiguredProjectVsServices"/> that delegates onto 
-    ///     it's <see cref="IUnconfiguredProjectServices.HostObject"/> and underlying <see cref="IUnconfiguredProjectCommonServices"/>.
+    ///     its <see cref="IUnconfiguredProjectServices.HostObject"/> and underlying <see cref="IUnconfiguredProjectCommonServices"/>.
     /// </summary>
     [Export(typeof(IUnconfiguredProjectVsServices))]
     internal class UnconfiguredProjectVsServices : IUnconfiguredProjectVsServices
@@ -25,12 +25,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public IVsHierarchy VsHierarchy
         {
-            get { return (IVsHierarchy)_commonServices.Project.Services.HostObject; }
+            get
+            {
+                Assumes.NotNull(_commonServices.Project.Services.HostObject);
+                return (IVsHierarchy)_commonServices.Project.Services.HostObject;
+            }
         }
 
         public IVsProject4 VsProject
         {
-            get { return (IVsProject4)_commonServices.Project.Services.HostObject; }
+            get
+            {
+                Assumes.NotNull(_commonServices.Project.Services.HostObject);
+                return (IVsProject4)_commonServices.Project.Services.HostObject;
+            }
         }
 
         public IProjectThreadingService ThreadingService

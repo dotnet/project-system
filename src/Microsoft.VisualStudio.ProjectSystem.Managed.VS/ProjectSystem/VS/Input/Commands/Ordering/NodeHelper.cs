@@ -52,6 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// </summary>
         private static void UseWindow(ConfiguredProject configuredProject, IServiceProvider serviceProvider, Action<IVsUIHierarchy, IVsUIHierarchyWindow?> callback)
         {
+            Assumes.NotNull(configuredProject.UnconfiguredProject.Services.HostObject);
             var hierarchy = (IVsUIHierarchy)configuredProject.UnconfiguredProject.Services.HostObject;
             callback(hierarchy, GetUIHierarchyWindow(serviceProvider, VSConstants.StandardToolWindows.SolutionExplorer));
         }

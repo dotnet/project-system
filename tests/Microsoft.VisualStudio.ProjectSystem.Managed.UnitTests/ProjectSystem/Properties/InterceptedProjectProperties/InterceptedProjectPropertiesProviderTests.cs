@@ -114,7 +114,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             var provider = IProjectPropertiesProviderFactory.Create();
 
             var interceptedProvider = new ProjectFileInterceptedViaSnapshotProjectPropertiesProvider(provider, delegateInstanceProvider, unconfiguredProject, new[] { mockPropertyProvider });
-            var properties = interceptedProvider.GetCommonProperties(projectInstance: null);
+            var properties = interceptedProvider.GetCommonProperties(projectInstance: null!);
 
             // Verify interception for GetEvaluatedPropertyValueAsync.
             string? propertyValue = await properties.GetEvaluatedPropertyValueAsync(MockPropertyName);

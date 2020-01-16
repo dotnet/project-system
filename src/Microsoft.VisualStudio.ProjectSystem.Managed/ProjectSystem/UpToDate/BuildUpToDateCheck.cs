@@ -105,6 +105,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
+            Assumes.Present(_configuredProject.Services.ProjectSubscription);
+
             _link = ProjectDataSources.SyncLinkTo(
                 _configuredProject.Services.ProjectSubscription.JointRuleSource.SourceBlock.SyncLinkOptions(DataflowOption.WithRuleNames(ProjectPropertiesSchemas)),
                 _configuredProject.Services.ProjectSubscription.SourceItemsRuleSource.SourceBlock.SyncLinkOptions(),

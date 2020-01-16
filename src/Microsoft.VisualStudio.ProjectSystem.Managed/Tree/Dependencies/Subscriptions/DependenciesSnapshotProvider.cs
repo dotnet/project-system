@@ -429,6 +429,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             {
                 foreach (ConfiguredProject configuredProject in newProjectContext.InnerConfiguredProjects)
                 {
+                    Assumes.Present(configuredProject.Services.ProjectSubscription);
+
                     SubscribeToConfiguredProjectEvaluation(
                         configuredProject.Services.ProjectSubscription,
                         OnConfiguredProjectEvaluatedAsync);

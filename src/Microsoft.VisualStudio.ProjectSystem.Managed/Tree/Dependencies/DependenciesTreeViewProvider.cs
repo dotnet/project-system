@@ -473,11 +473,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             //      we avoid creating backing fields for them to keep the size of
             //      this class down. They can be changed as needed in future.
 
-            public string? ItemName => null;
+            public string ItemName => string.Empty;
 
             public string? ItemType => null;
 
-            public IImmutableDictionary<string, string>? Metadata => null;
+            public IImmutableDictionary<string, string> Metadata => ImmutableDictionary<string, string>.Empty;
 
             public ProjectTreeFlags ParentNodeFlags { get; set; }
 
@@ -487,7 +487,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             public bool IsNonFileSystemProjectItem => true;
 
-            public IImmutableDictionary<string, string>? ProjectTreeSettings => null;
+            public IImmutableDictionary<string, string> ProjectTreeSettings => ImmutableDictionary<string, string>.Empty;
         }
     }
 }
