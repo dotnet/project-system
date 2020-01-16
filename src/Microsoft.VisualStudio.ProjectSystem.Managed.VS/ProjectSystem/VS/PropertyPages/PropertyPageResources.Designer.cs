@@ -430,7 +430,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Use remote m_achine.
+        ///   Looks up a localized string similar to Use remote m_achine:.
         /// </summary>
         public static string RemoteDebug {
             get {

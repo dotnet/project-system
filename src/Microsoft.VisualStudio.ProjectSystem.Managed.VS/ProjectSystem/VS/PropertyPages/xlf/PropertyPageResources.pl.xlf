@@ -93,8 +93,8 @@
         <note />
       </trans-unit>
       <trans-unit id="RemoteDebug">
-        <source>Use remote m_achine</source>
-        <target state="new">Use remote m_achine</target>
+        <source>Use remote m_achine:</source>
+        <target state="new">Use remote m_achine:</target>
         <note />
       </trans-unit>
       <trans-unit id="RemoteDebugMachineWatermark">
