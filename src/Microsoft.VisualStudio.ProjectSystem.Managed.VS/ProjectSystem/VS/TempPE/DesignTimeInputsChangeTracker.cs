@@ -76,6 +76,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             _broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<DesignTimeInputsDelta>>(nameFormat: nameof(DesignTimeInputsChangeTracker) + "Broadcast {1}");
             _publicBlock = AllowSourceBlockCompletion ? _broadcastBlock : _broadcastBlock.SafePublicize();
 
+            Assumes.Present(_project.Services.ProjectAsynchronousTasks);
+
             IDisposable projectLink = ProjectDataSources.SyncLinkTo(
                    _inputsDataSource.SourceBlock.SyncLinkOptions(
                        linkOptions: DataflowOption.PropagateCompletion),

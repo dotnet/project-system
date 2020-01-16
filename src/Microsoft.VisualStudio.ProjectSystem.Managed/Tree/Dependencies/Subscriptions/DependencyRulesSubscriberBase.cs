@@ -44,6 +44,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             foreach (ConfiguredProject configuredProject in projectContext.InnerConfiguredProjects)
             {
+                Assumes.Present(configuredProject.Services.ProjectSubscription);
+
                 SubscribeToConfiguredProject(configuredProject, configuredProject.Services.ProjectSubscription);
             }
         }

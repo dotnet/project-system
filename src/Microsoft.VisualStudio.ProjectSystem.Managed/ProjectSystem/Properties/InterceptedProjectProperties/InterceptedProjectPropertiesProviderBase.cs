@@ -4,8 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     /// <summary>
@@ -27,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             _interceptingValueProviders = interceptingValueProviders.ToImmutableArray();
         }
 
-        public override IProjectProperties GetProperties(string file, string itemType, string item)
+        public override IProjectProperties GetProperties(string file, string? itemType, string? item)
         {
             IProjectProperties defaultProperties = base.GetProperties(file, itemType, item);
             return InterceptProperties(defaultProperties);

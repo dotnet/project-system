@@ -189,6 +189,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
                             _ = SubmitTreeUpdateAsync(
                                 (currentTree, configuredProjectExports, token) =>
                                 {
+                                    Assumes.NotNull(currentTree);
+
                                     IProjectTree updatedTree = SyncNode(
                                         imports: e.Value.Item1.Value,
                                         tree: (IProjectTree2)currentTree.Value.Tree);
@@ -293,6 +295,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
                         _ = SubmitTreeUpdateAsync(
                             (currentTree, configuredProjectExports, token) =>
                             {
+                                Assumes.NotNull(currentTree);
+
                                 IProjectTree tree = currentTree.Value.Tree;
 
                                 // Set invisible

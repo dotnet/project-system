@@ -44,6 +44,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 return HResult.Unexpected;
             }
 
+            Assumes.Present(_configuredProject.Value.Services.ProjectPropertiesProvider);
+
             pbstrBuildMacroValue = null;
             ProjectSystem.Properties.IProjectProperties commonProperties = _configuredProject.Value.Services.ProjectPropertiesProvider.GetCommonProperties();
             pbstrBuildMacroValue = _threadingService?.ExecuteSynchronously(() => commonProperties.GetEvaluatedPropertyValueAsync(bstrBuildMacroName));

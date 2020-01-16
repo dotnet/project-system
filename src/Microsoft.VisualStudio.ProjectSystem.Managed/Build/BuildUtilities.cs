@@ -177,7 +177,7 @@ namespace Microsoft.VisualStudio.Build
         /// If the property is not present it will be added. This means that the evaluated property
         /// value came from one of the project imports.
         /// </remarks>
-        public static void RenamePropertyValue(ProjectRootElement project, string evaluatedPropertyValue, string propertyName, string oldValue, string newValue, char delimiter = ';')
+        public static void RenamePropertyValue(ProjectRootElement project, string evaluatedPropertyValue, string propertyName, string? oldValue, string newValue, char delimiter = ';')
         {
             Requires.NotNull(project, nameof(project));
             Requires.NotNull(evaluatedPropertyValue, nameof(evaluatedPropertyValue));

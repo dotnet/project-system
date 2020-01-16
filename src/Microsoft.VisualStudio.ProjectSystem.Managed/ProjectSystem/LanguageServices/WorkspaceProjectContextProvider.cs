@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             if (data.IsInvalid())
                 return null;
 
-            object hostObject = _project.Services.HostObject;
+            object? hostObject = _project.Services.HostObject;
 
             IWorkspaceProjectContext? context = await CreateProjectContextHandlingFaultAsync(data, hostObject);
             if (context == null)
@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             }
         }
 
-        private async Task<IWorkspaceProjectContext?> CreateProjectContextHandlingFaultAsync(ProjectContextInitData data, object hostObject)
+        private async Task<IWorkspaceProjectContext?> CreateProjectContextHandlingFaultAsync(ProjectContextInitData data, object? hostObject)
         {
             // TODO: https://github.com/dotnet/project-system/issues/353.
             await _threadingService.SwitchToUIThread();
@@ -109,7 +109,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         protected virtual async Task<IProjectRuleSnapshot> GetLatestSnapshotAsync(ConfiguredProject project)
         {
-            IProjectSubscriptionService service = project.Services.ProjectSubscription;
+            IProjectSubscriptionService? service = project.Services.ProjectSubscription;
+            Assumes.Present(service);
 
             IImmutableDictionary<string, IProjectRuleSnapshot> update = await service.ProjectRuleSource.GetLatestVersionAsync(project, new string[] { ConfigurationGeneral.SchemaName });
 

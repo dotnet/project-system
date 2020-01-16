@@ -25,12 +25,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public IVsHierarchy VsHierarchy
         {
-            get { return (IVsHierarchy)_commonServices.Project.Services.HostObject; }
+            get
+            {
+                Assumes.NotNull(_commonServices.Project.Services.HostObject);
+                return (IVsHierarchy)_commonServices.Project.Services.HostObject;
+            }
         }
 
         public IVsProject4 VsProject
         {
-            get { return (IVsProject4)_commonServices.Project.Services.HostObject; }
+            get
+            {
+                Assumes.NotNull(_commonServices.Project.Services.HostObject);
+                return (IVsProject4)_commonServices.Project.Services.HostObject;
+            }
         }
 
         public IProjectThreadingService ThreadingService

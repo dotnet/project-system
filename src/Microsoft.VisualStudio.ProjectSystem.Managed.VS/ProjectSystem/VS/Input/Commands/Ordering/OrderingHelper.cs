@@ -247,7 +247,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
                     // Technically it is possible to have more than one of the same item names.
                     // We only want to add one of them.
                     // Sanity check
-                    if (tree2.Item.ItemName != null && hashSet.Add(tree2.Item.ItemName))
+                    if (tree2.Item?.ItemName != null && hashSet.Add(tree2.Item.ItemName))
                     {
                         includes.Add(tree2.DisplayOrder, tree2.Item.ItemName);
                     }
