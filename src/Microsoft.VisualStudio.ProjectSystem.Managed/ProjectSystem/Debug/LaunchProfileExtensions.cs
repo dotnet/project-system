@@ -7,14 +7,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public const string NativeDebuggingProperty = "nativeDebugging";
         public const string SqlDebuggingProperty = "sqlDebugging";
 
-        /// <summary>
-        /// Return a mutable instance
-        /// </summary>
-        public static IWritableLaunchProfile ToWritableLaunchProfile(this ILaunchProfile curProfile)
-        {
-            return new WritableLaunchProfile(curProfile);
-        }
-
         public static bool IsInMemoryObject(this object persistObject)
         {
             return persistObject is IPersistOption profile2 && profile2.DoNotPersist;
