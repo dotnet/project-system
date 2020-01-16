@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     /// <summary>
     /// Represents one launch profile read from the launchSettings file.
     /// </summary>
-    internal class WritableLaunchProfile : IWritableLaunchProfile, IWritableLaunchProfile2, IWritablePersistOption
+    internal class WritableLaunchProfile : IWritableLaunchProfile, IWritablePersistOption
     {
         public WritableLaunchProfile()
         {
@@ -38,12 +38,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             {
                 OtherSettings = new Dictionary<string, object>(profile.OtherSettings, StringComparers.LaunchProfileProperties);
             }
-
-            if (profile is ILaunchProfile2 profile2)
-            {
-                RemoteDebugEnabled = profile2.RemoteDebugEnabled;
-                RemoteDebugMachine = profile2.RemoteDebugMachine;
-            }
         }
 
         public string Name { get; set; }
@@ -58,11 +52,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public Dictionary<string, string> EnvironmentVariables { get; } = new Dictionary<string, string>(StringComparer.Ordinal);
 
         public Dictionary<string, object> OtherSettings { get; } = new Dictionary<string, object>(StringComparers.LaunchProfileProperties);
-
-#nullable enable
-        public bool RemoteDebugEnabled { get; set; }
-        public string? RemoteDebugMachine { get; set; }
-#nullable restore
 
         /// <summary>
         /// Converts back to the immutable form
@@ -96,25 +85,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             {
                 return false;
             }
-
-            var profile2_1 = debugProfile1 as IWritableLaunchProfile2;
-            var profile2_2 = debugProfile2 as IWritableLaunchProfile2;
-
-            if ((profile2_1 == null) != (profile2_2 == null))
-            {
-                return false;
-            }
-
-            if (profile2_1 != null && profile2_2 != null)
-            {
-                if (profile2_1.RemoteDebugEnabled != profile2_2.RemoteDebugEnabled ||
-                    !string.Equals(profile2_1.RemoteDebugMachine, profile2_2.RemoteDebugMachine, StringComparisons.LaunchProfileProperties)
-                )
-                {
-                    return false;
-                }
-            }
-
 
             // Compare in-memory states
             return debugProfile1.IsInMemoryObject() == debugProfile2.IsInMemoryObject();

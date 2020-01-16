@@ -241,20 +241,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         public bool RemoteDebugEnabled
         {
-            get
-            {
-                if (SelectedDebugProfile is IWritableLaunchProfile2 profile2)
-                {
-                    return profile2.RemoteDebugEnabled;
-                }
-
-                return false;
-            }
+            get { return GetOtherProperty(LaunchProfileExtensions.RemoteDebugEnabledProperty, defaultValue: false); }
             set
             {
-                if (SelectedDebugProfile is IWritableLaunchProfile2 profile2 && profile2.RemoteDebugEnabled != value)
+                if (TrySetOtherProperty(LaunchProfileExtensions.RemoteDebugEnabledProperty, value, defaultValue: false))
                 {
-                    profile2.RemoteDebugEnabled = value;
                     OnPropertyChanged(nameof(RemoteDebugEnabled));
                     OnErrorsChanged(nameof(RemoteDebugMachine)); // this property effects another's validation
                 }
@@ -263,20 +254,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         public string RemoteDebugMachine
         {
-            get
-            {
-                if (SelectedDebugProfile is IWritableLaunchProfile2 profile2)
-                {
-                    return profile2.RemoteDebugMachine ?? "";
-                }
-                
-                return "";
-            }
+            get { return GetOtherProperty(LaunchProfileExtensions.RemoteDebugMachineProperty, ""); }
             set
             {
-                if (SelectedDebugProfile is IWritableLaunchProfile2 profile2 && profile2.RemoteDebugMachine != value)
+                if (TrySetOtherProperty(LaunchProfileExtensions.RemoteDebugMachineProperty, value, defaultValue: null))
                 {
-                    profile2.RemoteDebugMachine = value;
                     OnPropertyChanged(nameof(RemoteDebugMachine));
                     OnErrorsChanged(nameof(RemoteDebugMachine));
                 }
@@ -306,31 +288,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         public bool NativeCodeDebugging
         {
-            get
-            {
-                if (!IsProfileSelected)
-                {
-                    return false;
-                }
-
-                if (SelectedDebugProfile.OtherSettings.TryGetValue("nativeDebugging", out object value))
-                {
-                    return (bool)value;
-                }
-
-                return false;
-            }
+            get { return GetOtherProperty(LaunchProfileExtensions.NativeDebuggingProperty, false); }
             set
             {
-                //Unlike other properties that have default values, nativeDebugging may not be set yet. Because false is the default behavior adding it has no effect
-                if (!SelectedDebugProfile.OtherSettings.TryGetValue("nativeDebugging", out object previousValue))
+                if (TrySetOtherProperty(LaunchProfileExtensions.NativeDebuggingProperty, value, defaultValue: false))
                 {
-                    previousValue = false;
-                }
-
-                if ((bool)previousValue != value)
-                {
-                    SelectedDebugProfile.OtherSettings["nativeDebugging"] = value;
                     OnPropertyChanged(nameof(NativeCodeDebugging));
                 }
             }
@@ -338,34 +300,46 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         public bool SqlDebugging
         {
-            get
-            {
-                if (!IsProfileSelected)
-                {
-                    return false;
-                }
-
-                if (SelectedDebugProfile.OtherSettings.TryGetValue("sqlDebugging", out object value))
-                {
-                    return (bool)value;
-                }
-
-                return false;
-            }
+            get { return GetOtherProperty(LaunchProfileExtensions.SqlDebuggingProperty, false); }
             set
             {
-                //Unlike other properties that have default values, sqlDebugging may not be set yet. Because false is the default behavior adding it has no effect
-                if (!SelectedDebugProfile.OtherSettings.TryGetValue("sqlDebugging", out object previousValue))
+                if (TrySetOtherProperty(LaunchProfileExtensions.SqlDebuggingProperty, value, defaultValue: false))
                 {
-                    previousValue = false;
-                }
-
-                if ((bool)previousValue != value)
-                {
-                    SelectedDebugProfile.OtherSettings["sqlDebugging"] = value;
                     OnPropertyChanged(nameof(SqlDebugging));
                 }
             }
+        }
+
+        private T GetOtherProperty<T>(string propertyName, T defaultValue)
+        {
+            if (!IsProfileSelected)
+            {
+                return defaultValue;
+            }
+
+            if (SelectedDebugProfile.OtherSettings.TryGetValue(propertyName, out object value) &&
+                value is T b)
+            {
+                return b;
+            }
+
+            return defaultValue;
+        }
+
+        private bool TrySetOtherProperty<T>(string propertyName, T value, T defaultValue)
+        {
+            if (!SelectedDebugProfile.OtherSettings.TryGetValue(propertyName, out object current))
+            {
+                current = defaultValue;
+            }
+
+            if (!(current is T currentTyped) || !Equals(currentTyped, value))
+            {
+                SelectedDebugProfile.OtherSettings[propertyName] = value;
+                return true;
+            }
+
+            return false;
         }
 
         public bool SupportNativeDebugging       => ActiveProviderSupportsProperty(UIProfilePropertyName.NativeDebugging);

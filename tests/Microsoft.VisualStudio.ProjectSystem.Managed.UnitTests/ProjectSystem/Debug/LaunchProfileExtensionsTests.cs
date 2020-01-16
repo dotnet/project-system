@@ -62,5 +62,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             Assert.Equal(expected, data.IsSqlDebuggingEnabled());
         }
+
+        [Theory]
+        [InlineData(false, false)]
+        [InlineData(true, true)]
+        [InlineData(null, false)]
+        public void IsRemoteDebugEnabled_ILaunchProfile(bool? value, bool expected)
+        {
+            var data = new LaunchProfile
+            {
+                OtherSettings = value == null ? null : ImmutableStringDictionary<object>.EmptyOrdinal.Add(LaunchProfileExtensions.RemoteDebugEnabledProperty, value.Value)
+            };
+
+            Assert.Equal(expected, data.IsRemoteDebugEnabled());
+        }
+
+        [Theory]
+        [InlineData("host", "host")]
+        [InlineData("", "")]
+        [InlineData(null, null)]
+        public void RemoteDebugMachine_ILaunchProfile(string? value, string? expected)
+        {
+            var data = new LaunchProfile
+            {
+                OtherSettings = value == null ? null : ImmutableStringDictionary<object>.EmptyOrdinal.Add(LaunchProfileExtensions.RemoteDebugMachineProperty, value)
+            };
+
+            Assert.Equal(expected, data.RemoteDebugMachine());
+        }
     }
 }
