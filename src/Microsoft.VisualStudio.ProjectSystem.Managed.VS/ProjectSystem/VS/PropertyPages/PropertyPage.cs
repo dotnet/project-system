@@ -53,8 +53,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
+#pragma warning disable CA1822 // Can be made static
         [Obsolete("This property is not used by the project system.")]
-        public List<IVsBrowseObjectContext>? ContextObjects { get; private set; }
+        public List<IVsBrowseObjectContext>? ContextObjects => null;
+#pragma warning restore CA1822
 
         /// <summary>
         /// IPropertyPage
