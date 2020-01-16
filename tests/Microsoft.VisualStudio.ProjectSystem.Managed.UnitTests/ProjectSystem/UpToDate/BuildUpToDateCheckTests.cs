@@ -109,7 +109,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private void BroadcastChange(
             Dictionary<string, IProjectRuleSnapshotModel>? projectSnapshot = null,
             Dictionary<string, IProjectRuleSnapshotModel>? sourceSnapshot = null,
-            bool disableFastUpToDateCheck = false)
+            bool disableFastUpToDateCheck = false,
+            string outDir = _outputPath)
         {
             projectSnapshot ??= new Dictionary<string, IProjectRuleSnapshotModel>();
 
@@ -122,6 +123,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         .Add("MSBuildProjectDirectory", _msBuildProjectDirectory)
                         .Add("MSBuildAllProjects", _msBuildAllProjects)
                         .Add("OutputPath", _outputPath)
+                        .Add("OutDir", outDir)
                         .Add("DisableFastUpToDateCheck", disableFastUpToDateCheck.ToString())
                 };
             }
@@ -877,6 +879,45 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     "Source is newer than build output destination, not up to date."
                 },
                 "CopyOutput");
+        }
+
+        [Fact]
+        public async Task IsUpToDateAsync_False_CopyToOutDirSourceIsNewerThanDestination()
+        {
+            const string outDirSnapshot = "newOutDir";
+
+            var sourceSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                [Content.SchemaName] = ItemWithMetadata("Item1", "CopyToOutputDirectory", "PreserveNewest")
+            };
+
+            await _buildUpToDateCheck.LoadAsync();
+
+            BroadcastChange(outDir: outDirSnapshot, sourceSnapshot: sourceSnapshot);
+
+            var destinationOutDir = @"NewProjectDirectory\newOutDir\Item1";
+            var sourcePath = @"C:\Dev\Solution\Project\Item1";
+
+            var itemChangeTime = DateTime.UtcNow.AddMinutes(-4);
+            var lastCheckTime = DateTime.UtcNow.AddMinutes(-3);
+            var destinationTime = DateTime.UtcNow.AddMinutes(-2);
+            var sourceTime = DateTime.UtcNow.AddMinutes(-1);
+
+            _fileSystem.AddFile(destinationOutDir, destinationTime);
+            _fileSystem.AddFile(sourcePath, sourceTime);
+            _buildUpToDateCheck.TestAccess.SetLastCheckedAtUtc(lastCheckTime);
+            _buildUpToDateCheck.TestAccess.SetLastItemsChangedAtUtc(itemChangeTime);
+
+            await AssertNotUpToDateAsync(
+                new[]
+                {
+                    "No build outputs defined.",
+                    $"Checking PreserveNewest file '{sourcePath}':",
+                    $"    Source {sourceTime.ToLocalTime()}: '{sourcePath}'.",
+                    $"    Destination {destinationTime.ToLocalTime()}: '{destinationOutDir}'.",
+                    "PreserveNewest source is newer than destination, not up to date."
+                },
+                "CopyToOutputDirectory");
         }
 
         [Fact]

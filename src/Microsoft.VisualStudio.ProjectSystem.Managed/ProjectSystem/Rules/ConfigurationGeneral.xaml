@@ -124,11 +124,11 @@
   <StringProperty Name="OutputName"
                   DisplayName="Output Name" />
 
+  <StringProperty Name="OutDir"
+                  Visible="False" />
+
   <StringProperty Name="OutputPath"
                   DisplayName="Output Path" />
-
-  <StringProperty Name="OutDir"
-                  DisplayName="Output Directory" />
 
   <EnumProperty Name="OutputType"
                 DisplayName="Output Type" >
