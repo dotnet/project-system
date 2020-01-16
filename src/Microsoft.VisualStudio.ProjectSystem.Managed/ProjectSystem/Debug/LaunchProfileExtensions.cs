@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// <summary>
         /// Returns true if nativeDebugging property is set to true
         /// </summary>
-        public static bool NativeDebuggingIsEnabled(this ILaunchProfile profile)
+        public static bool IsNativeDebuggingEnabled(this ILaunchProfile profile)
         {
             if (profile.OtherSettings != null
                 && profile.OtherSettings.TryGetValue(NativeDebuggingProperty, out object nativeDebugging)
@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// <summary>
         /// Returns true if sqlDebugging property is set to true
         /// </summary>
-        public static bool SqlDebuggingIsEnabled(this ILaunchProfile profile)
+        public static bool IsSqlDebuggingEnabled(this ILaunchProfile profile)
         {
             if (profile.OtherSettings != null
                 && profile.OtherSettings.TryGetValue(SqlDebuggingProperty, out object sqlDebugging)
@@ -41,6 +41,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             return false;
         }
-
     }
 }

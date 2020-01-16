@@ -320,12 +320,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             settings.LaunchOperation = DebugLaunchOperation.CreateProcess;
             settings.LaunchDebugEngineGuid = await GetDebuggingEngineAsync(configuredProject);
 
-            if (resolvedProfile.NativeDebuggingIsEnabled())
+            if (resolvedProfile.IsNativeDebuggingEnabled())
             {
                 settings.AdditionalDebugEngines.Add(DebuggerEngines.NativeOnlyEngine);
             }
 
-            if (resolvedProfile.SqlDebuggingIsEnabled())
+            if (resolvedProfile.IsSqlDebuggingEnabled())
             {
                 settings.AdditionalDebugEngines.Add(DebuggerEngines.SqlEngine);
             }
