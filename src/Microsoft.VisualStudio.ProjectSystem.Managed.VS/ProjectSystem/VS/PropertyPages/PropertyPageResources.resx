@@ -252,4 +252,19 @@
   <data name="chkSqlCodeDebuggingText" xml:space="preserve">
     <value>Enable SQL Server debugging</value>
   </data>
+  <data name="chkRemoteDebugEnabledHelpText" xml:space="preserve">
+    <value>Enable remote debugging</value>
+  </data>
+  <data name="RemoteDebug" xml:space="preserve">
+    <value>Use remote m_achine:</value>
+  </data>
+  <data name="RemoteDebugMachineWatermark" xml:space="preserve">
+    <value>Remote machine host name</value>
+  </data>
+  <data name="RemoteHostNameRequired" xml:space="preserve">
+    <value>You must specify a remote machine's host name.</value>
+  </data>
+  <data name="InvalidHostName" xml:space="preserve">
+    <value>The host name is invalid.</value>
+  </data>
 </root>

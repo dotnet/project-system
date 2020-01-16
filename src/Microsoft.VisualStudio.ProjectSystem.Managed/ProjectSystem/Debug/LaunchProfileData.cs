@@ -189,7 +189,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         public static LaunchProfileData FromILaunchProfile(ILaunchProfile profile)
         {
-            return new LaunchProfileData()
+            var profileData = new LaunchProfileData
             {
                 Name = profile.Name,
                 ExecutablePath = profile.ExecutablePath,
@@ -202,6 +202,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 OtherSettings = profile.OtherSettings,
                 InMemoryProfile = profile.IsInMemoryObject()
             };
+
+            return profileData;
         }
     }
 }

@@ -6,14 +6,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     {
         public const string NativeDebuggingProperty = "nativeDebugging";
         public const string SqlDebuggingProperty = "sqlDebugging";
-
-        /// <summary>
-        /// Return a mutable instance
-        /// </summary>
-        public static IWritableLaunchProfile ToWritableLaunchProfile(this ILaunchProfile curProfile)
-        {
-            return new WritableLaunchProfile(curProfile);
-        }
+        public const string RemoteDebugEnabledProperty = "remoteDebugEnabled";
+        public const string RemoteDebugMachineProperty = "remoteDebugMachine";
 
         public static bool IsInMemoryObject(this object persistObject)
         {
@@ -23,11 +17,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// <summary>
         /// Returns true if nativeDebugging property is set to true
         /// </summary>
-        public static bool NativeDebuggingIsEnabled(this ILaunchProfile profile)
+        public static bool IsNativeDebuggingEnabled(this ILaunchProfile profile)
         {
             if (profile.OtherSettings != null
-                && profile.OtherSettings.TryGetValue(NativeDebuggingProperty, out object nativeDebugging)
-                && nativeDebugging is bool b)
+                && profile.OtherSettings.TryGetValue(NativeDebuggingProperty, out object value)
+                && value is bool b)
             {
                 return b;
             }
@@ -38,11 +32,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// <summary>
         /// Returns true if sqlDebugging property is set to true
         /// </summary>
-        public static bool SqlDebuggingIsEnabled(this ILaunchProfile profile)
+        public static bool IsSqlDebuggingEnabled(this ILaunchProfile profile)
         {
             if (profile.OtherSettings != null
-                && profile.OtherSettings.TryGetValue(SqlDebuggingProperty, out object sqlDebugging)
-                && sqlDebugging is bool b)
+                && profile.OtherSettings.TryGetValue(SqlDebuggingProperty, out object value)
+                && value is bool b)
             {
                 return b;
             }
@@ -50,5 +44,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             return false;
         }
 
+        public static bool IsRemoteDebugEnabled(this ILaunchProfile profile)
+        {
+            if (profile.OtherSettings != null
+                && profile.OtherSettings.TryGetValue(RemoteDebugEnabledProperty, out object value)
+                && value is bool b)
+            {
+                return b;
+            }
+
+            return false;
+        }
+
+        public static string? RemoteDebugMachine(this ILaunchProfile profile)
+        {
+            if (profile.OtherSettings != null
+                && profile.OtherSettings.TryGetValue(RemoteDebugMachineProperty, out object value)
+                && value is string s)
+            {
+                return s;
+            }
+
+            return null;
+        }
     }
 }
