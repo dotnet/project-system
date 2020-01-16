@@ -110,12 +110,4 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
         }
     }
-
-    internal static class LaunchSettingsExtension
-    {
-        public static IWritableLaunchSettings ToWritableLaunchSettings(this ILaunchSettings curSettings)
-        {
-            return new WritableLaunchSettings(curSettings);
-        }
-    }
 }

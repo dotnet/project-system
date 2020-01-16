@@ -782,7 +782,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             await ProjectThreadingService.SwitchToUIThread();
 
-            IWritableLaunchSettings newSettings = profiles.ToWritableLaunchSettings();
+            IWritableLaunchSettings newSettings = new WritableLaunchSettings(profiles);
 
             // Since this get's reentered if the user saves or the user switches active profiles.
             if (CurrentLaunchSettings != null && !CurrentLaunchSettings.SettingsDiffer(newSettings))
