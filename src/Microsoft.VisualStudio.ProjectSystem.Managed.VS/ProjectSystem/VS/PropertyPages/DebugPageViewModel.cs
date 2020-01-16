@@ -1063,9 +1063,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 }
             }
 
-            if (propertyName == nameof(RemoteDebugMachine) && RemoteDebugEnabled && string.IsNullOrWhiteSpace(RemoteDebugMachine))
+            if (propertyName == nameof(RemoteDebugMachine) && RemoteDebugEnabled)
             {
-                yield return PropertyPageResources.RemoteHostNameRequired;
+                if (string.IsNullOrWhiteSpace(RemoteDebugMachine))
+                {
+                    yield return PropertyPageResources.RemoteHostNameRequired;
+                }
+                else if (Uri.CheckHostName(RemoteDebugMachine) == UriHostNameType.Unknown)
+                {
+                    yield return PropertyPageResources.InvalidHostName;
+                }
             }
         }
 
@@ -1076,7 +1083,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             get
             {
-                bool hasRemoteDebugMachineError = RemoteDebugEnabled && string.IsNullOrWhiteSpace(RemoteDebugMachine);
+                bool hasRemoteDebugMachineError = RemoteDebugEnabled && Uri.CheckHostName(RemoteDebugMachine) == UriHostNameType.Unknown;
 
                 return hasRemoteDebugMachineError ||
                     ActiveProvider?.CustomUI?.DataContext is INotifyDataErrorInfo notifyDataError && notifyDataError.HasErrors;

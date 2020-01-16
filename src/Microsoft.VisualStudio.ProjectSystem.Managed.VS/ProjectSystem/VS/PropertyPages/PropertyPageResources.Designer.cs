@@ -259,6 +259,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The host name is invalid..
+        /// </summary>
+        public static string InvalidHostName {
+            get {
+                return ResourceManager.GetString("InvalidHostName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Launch:.
         /// </summary>
         public static string Launch {
@@ -439,7 +448,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Remote machine hostname.
+        ///   Looks up a localized string similar to Remote machine host name.
         /// </summary>
         public static string RemoteDebugMachineWatermark {
             get {
@@ -448,7 +457,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You must specify a remote machine&apos;s hostname..
+        ///   Looks up a localized string similar to You must specify a remote machine&apos;s host name..
         /// </summary>
         public static string RemoteHostNameRequired {
             get {

@@ -42,6 +42,11 @@
         <target state="translated">Pfad der zu startenden ausführbaren Datei</target>
         <note />
       </trans-unit>
+      <trans-unit id="InvalidHostName">
+        <source>The host name is invalid.</source>
+        <target state="new">The host name is invalid.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="LaunchUrlWatermark">
         <source>Absolute or relative URL</source>
         <target state="translated">Absolute oder relative URL</target>
@@ -98,13 +103,13 @@
         <note />
       </trans-unit>
       <trans-unit id="RemoteDebugMachineWatermark">
-        <source>Remote machine hostname</source>
-        <target state="new">Remote machine hostname</target>
+        <source>Remote machine host name</source>
+        <target state="new">Remote machine host name</target>
         <note />
       </trans-unit>
       <trans-unit id="RemoteHostNameRequired">
-        <source>You must specify a remote machine's hostname.</source>
-        <target state="new">You must specify a remote machine's hostname.</target>
+        <source>You must specify a remote machine's host name.</source>
+        <target state="new">You must specify a remote machine's host name.</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueCannotBeEmpty">
