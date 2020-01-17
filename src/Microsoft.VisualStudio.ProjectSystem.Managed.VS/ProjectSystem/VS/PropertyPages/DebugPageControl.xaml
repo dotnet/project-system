@@ -223,7 +223,8 @@
                 Text="{Binding Path=CommandLineArguments, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 IsEnabled="{Binding Path=IsProfileSelected, Mode=OneWay}"
                 Visibility="{Binding Path=SupportsArguments, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
-                AutomationProperties.Name="{x:Static Member=local:PropertyPageResources.ApplicationArguments}"/>
+                AutomationProperties.Name="{x:Static Member=local:PropertyPageResources.ApplicationArguments}"
+                AutomationProperties.HelpText="{x:Static Member=local:PropertyPageResources.ApplicationArgumentsWatermark}"/>
             
             <!-- Working directory -->
             <Label 
@@ -247,7 +248,8 @@
                 IsEnabled="{Binding Path=IsProfileSelected, Mode=OneWay}"
                 Visibility="{Binding Path=SupportsWorkingDirectory, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
                 MinWidth="200"
-                AutomationProperties.Name="{x:Static Member=local:PropertyPageResources.WorkingDirectory}"/>
+                AutomationProperties.Name="{x:Static Member=local:PropertyPageResources.WorkingDirectory}"
+                AutomationProperties.HelpText="{x:Static Member=local:PropertyPageResources.WorkingDirectoryWatermark}"/>
             <Button
                 Grid.Row="4"
                 Grid.Column="2"
