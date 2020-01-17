@@ -24,6 +24,7 @@ Namespace Microsoft.VisualStudio.Editors
     '*   from here for the moment.
     '*
     '* In the future, we should consider moving to a RegPkg.exe model
+#Disable Warning BC40000 ' Type or member is obsolete
     <Guid(VBPackage.PackageGuid),
     ProvideOptionPage(GetType(GeneralOptionPage),
                      "Projects",
@@ -40,9 +41,29 @@ Namespace Microsoft.VisualStudio.Editors
     ProvideService(GetType(VBAttributeEditor.Interop.IVbPermissionSetService), ServiceName:="Vb Permission Set Service"),
     ProvideService(GetType(XmlIntellisense.IXmlIntellisenseService), ServiceName:="Vb Xml Intellisense Service"),
     ProvideService(GetType(AddImports.IVBAddImportsDialogService), ServiceName:="Add Imports Dialog Service"),
+    ProvideObject(GetType(PropertyPages.WPFApplicationWithMyPropPageComClass)),
+    ProvideObject(GetType(PropertyPages.ReferencePathsPropPageComClass)),
+    ProvideObject(GetType(SettingsGlobalObjects.SettingsGlobalObjectProvider)),
+    ProvideObject(GetType(PropertyPages.ApplicationPropPageComClass)),
+    ProvideObject(GetType(PropertyPages.BuildEventsPropPageComClass)),
+    ProvideObject(GetType(MyApplication.MyApplicationManager)), ' this is the one that is obsolete
+    ProvideObject(GetType(SettingsDesigner.SettingsSingleFileGenerator)),
+    ProvideObject(GetType(PropertyPages.ServicesPropPageComClass)),
+    ProvideObject(GetType(MyApplication.MyApplicationCodeGenerator)),
+    ProvideObject(GetType(PropertyPages.ReferencePropPageComClass)),
+    ProvideObject(GetType(PropertyPages.PackagePropPageComClass)),
+    ProvideObject(GetType(PropertyPages.CSharpApplicationPropPageComClass)),
+    ProvideObject(GetType(PropertyPages.DebugPropPageComClass)),
+    ProvideObject(GetType(PropertyPages.ApplicationWithMyPropPageComClass)),
+    ProvideObject(GetType(SettingsDesigner.PublicSettingsSingleFileGenerator)),
+    ProvideObject(GetType(PropertyPages.BuildPropPageComClass)),
+    ProvideObject(GetType(PropertyPages.CompilePropPageComClass)),
+    ProvideObject(GetType(PropertyPages.MyExtensibilityPropPageComClass)),
+    ProvideObject(GetType(PropertyPages.CodeAnalysisPropPageComClass)),
     CLSCompliant(False)
     >
     Friend Class VBPackage
+#Enable Warning BC40000 ' Type or member is obsolete
         Inherits Shell.Package
         Implements IVBPackage
 
