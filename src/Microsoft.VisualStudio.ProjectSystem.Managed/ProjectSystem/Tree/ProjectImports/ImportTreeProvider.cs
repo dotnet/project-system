@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
             IActiveConfiguredProjectSubscriptionService projectSubscriptionService,
             IUnconfiguredProjectTasksService unconfiguredProjectTasksService,
             UnconfiguredProject unconfiguredProject)
-            : base(threadingService, unconfiguredProject)
+            : base(threadingService, unconfiguredProject, useDisplayOrdering: true)
         {
             _projectSubscriptionService = projectSubscriptionService;
             _unconfiguredProjectTasksService = unconfiguredProjectTasksService;
@@ -222,10 +222,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
                                     }
                                 }
 
-                                var observedCaptions = new HashSet<string>(
-                                    tree.Children.Select(node => node.Caption),
-                                    StringComparer.OrdinalIgnoreCase);
-
                                 for (int displayOrder = 0; displayOrder < imports.Count; displayOrder++)
                                 {
                                     IProjectImportSnapshot import = imports[displayOrder];
@@ -236,11 +232,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
                                         ProjectTreeFlags flags = isImplicit ? s_projectImportImplicitFlags : s_projectImportFlags;
                                         ProjectImageMoniker icon = isImplicit ? s_nodeImplicitIcon : s_nodeIcon;
                                         string caption = Path.GetFileName(import.ProjectPath);
-
-                                        // Skip nodes with duplicate captions
-                                        // TODO remove this once we enable DisplayOrder for the subtree, as that supports duplicate captions
-                                        if (!observedCaptions.Add(caption))
-                                            continue;
 
                                         IProjectTree2 newChild = NewTree(
                                             caption,
