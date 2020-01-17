@@ -24,14 +24,22 @@ Namespace Microsoft.VisualStudio.Editors
     '*   from here for the moment.
     '*
     '* In the future, we should consider moving to a RegPkg.exe model
-    <Guid("67909B06-91E9-4F3E-AB50-495046BE9A9A"),
+    <Guid(VBPackage.PackageGuid),
     ProvideOptionPage(GetType(GeneralOptionPage),
-                     "Projects and Solutions",
-                     "SDK-Style Projects",
+                     "Projects",
+                     "NETCore",
                      0,                     ' categoryResourceID: Not used, we don't own parent category
-                     0,                     ' pageNameResourceID: Not used, set in Microsoft.VisualStudio.Editors.pkgdef, 
+                     1500,                     ' pageNameResourceID: Not used, set in Microsoft.VisualStudio.Editors.pkgdef, 
                      True,                  ' supportsAutomation
+                     1600,                  ' keywordListResourceId
                      IsServerAware:=True),  ' Configured to work in cloud environment scenarios. Note we're hand-authoring the MS.VS.Editors.pkgdef file, so it is also set there.
+    ProvideMenuResource("Menus.ctmenu", 30),
+    ProvideService(GetType(ResourceEditor.ResourceEditorRefactorNotify), ServiceName:="ResX RefactorNotify Service"),
+    ProvideService(GetType(VBRefChangedSvc.Interop.IVbReferenceChangedService), ServiceName:="VB Project Reference Changed Service"),
+    ProvideService(GetType(Interop.IVsBuildEventCommandLineDialogService), ServiceName:="Vb Build Event Command Line Dialog Service"),
+    ProvideService(GetType(VBAttributeEditor.Interop.IVbPermissionSetService), ServiceName:="Vb Permission Set Service"),
+    ProvideService(GetType(XmlIntellisense.IXmlIntellisenseService), ServiceName:="Vb Xml Intellisense Service"),
+    ProvideService(GetType(AddImports.IVBAddImportsDialogService), ServiceName:="Add Imports Dialog Service"),
     CLSCompliant(False)
     >
     Friend Class VBPackage
@@ -47,6 +55,7 @@ Namespace Microsoft.VisualStudio.Editors
         Private _addImportsDialogService As AddImports.AddImportsDialogService
 
         Private Const ProjectDesignerSUOKey As String = "ProjectDesigner"
+        Public Const PackageGuid As String = "67909B06-91E9-4F3E-AB50-495046BE9A9A"
 
         ' Map between unique project GUID and the last viewed tab in the project designer...
         Private _lastViewedProjectDesignerTab As Dictionary(Of Guid, Byte)
