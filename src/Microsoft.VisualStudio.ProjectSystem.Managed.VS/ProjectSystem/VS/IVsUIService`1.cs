@@ -24,9 +24,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         ///     The service <see cref="object"/> associated with <typeparamref name="T"/>;
         ///     otherwise, <see langword="null"/> if it is not present.
         /// </value>
-        T? Value
-        {
-            get;
-        }
+        T? Value { get; }
     }
 }

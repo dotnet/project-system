@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             public ProjectTreeCustomizablePropertyContextAndValues(IProjectTree tree, IImmutableDictionary<string, string>? projectTreeSettings)
             {
                 _tree = tree;
-                ProjectTreeSettings = projectTreeSettings;
+                ProjectTreeSettings = projectTreeSettings ?? ImmutableDictionary<string, string>.Empty;
             }
 
             public IProjectTree Tree
@@ -106,10 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 }
             }
 
-            public IImmutableDictionary<string, string>? ProjectTreeSettings
-            {
-                get;
-            }
+            public IImmutableDictionary<string, string> ProjectTreeSettings { get; }
 
             public bool IsFolder => _tree.Flags.Contains(ProjectTreeFlags.Common.Folder);
 

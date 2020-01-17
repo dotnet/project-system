@@ -9,6 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public const string LaunchUrl = "LaunchUrl";
         public const string EnvironmentVariables = "EnvironmentVariables";
         public const string WorkingDirectory = "WorkingDirectory";
+        public const string RemoteDebug = "RemoteDebug";
         public const string NativeDebugging = "NativeDebugging";
         public const string SqlDebugging = "SQLDebugging";
     }

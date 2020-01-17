@@ -86,6 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     else
                     {
                         // Check if the current project context is up-to-date for the current active and known project configurations.
+                        Assumes.Present(_commonServices.Project.Services.ProjectConfigurationsService);
                         ProjectConfiguration activeProjectConfiguration = _commonServices.ActiveConfiguredProject.ProjectConfiguration;
                         IImmutableSet<ProjectConfiguration> knownProjectConfigurations = await _commonServices.Project.Services.ProjectConfigurationsService.GetKnownProjectConfigurationsAsync();
                         if (knownProjectConfigurations.All(c => c.IsCrossTargeting()) &&

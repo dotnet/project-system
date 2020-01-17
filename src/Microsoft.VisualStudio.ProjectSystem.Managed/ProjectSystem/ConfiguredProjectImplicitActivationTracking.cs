@@ -37,10 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         [ImportMany]
-        public OrderPrecedenceImportCollection<IImplicitlyActiveService> ImplicitlyActiveServices
-        {
-            get;
-        }
+        public OrderPrecedenceImportCollection<IImplicitlyActiveService> ImplicitlyActiveServices { get; }
 
         [ConfiguredProjectAutoLoad]
         [AppliesTo(ProjectCapability.DotNet)]

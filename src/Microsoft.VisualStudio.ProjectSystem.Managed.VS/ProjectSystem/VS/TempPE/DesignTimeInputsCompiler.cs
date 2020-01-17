@@ -84,6 +84,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             // add all of the changes to our queue
             _queue.Update(delta.ChangedInputs, delta.Inputs, delta.SharedInputs, delta.TempPEOutputPath);
 
+            Assumes.Present(_project.Services.ProjectAsynchronousTasks);
+
             // Create a cancellation source so we can cancel the compilation if another message comes through
             _compilationCancellationSource = CancellationTokenSource.CreateLinkedTokenSource(_project.Services.ProjectAsynchronousTasks.UnloadCancellationToken);
 

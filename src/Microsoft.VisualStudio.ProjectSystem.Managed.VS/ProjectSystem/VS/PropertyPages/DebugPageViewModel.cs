@@ -82,7 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         /// <summary>
         /// This is here so that we can clear the in-memory status of the active profile if it has been edited. This is
-        /// so that the profile, and hence the users customizations, will be saved to disk
+        /// so that the profile, and hence the user's customizations, will be saved to disk
         /// </summary>
         private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -143,6 +143,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                         OnPropertyChanged(nameof(SupportsExecutable));
                         OnPropertyChanged(nameof(SupportsArguments));
                         OnPropertyChanged(nameof(SupportsWorkingDirectory));
+                        OnPropertyChanged(nameof(SupportsRemoteDebug));
                         OnPropertyChanged(nameof(SupportsLaunchUrl));
                         OnPropertyChanged(nameof(SupportsEnvironmentVariables));
                         OnPropertyChanged(nameof(SupportNativeDebugging));
@@ -238,6 +239,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
+        public bool RemoteDebugEnabled
+        {
+            get { return GetOtherProperty(LaunchProfileExtensions.RemoteDebugEnabledProperty, defaultValue: false); }
+            set
+            {
+                if (TrySetOtherProperty(LaunchProfileExtensions.RemoteDebugEnabledProperty, value, defaultValue: false))
+                {
+                    OnPropertyChanged(nameof(RemoteDebugEnabled));
+                    OnErrorsChanged(nameof(RemoteDebugMachine)); // this property effects another's validation
+                }
+            }
+        }
+
+        public string RemoteDebugMachine
+        {
+            get { return GetOtherProperty(LaunchProfileExtensions.RemoteDebugMachineProperty, ""); }
+            set
+            {
+                if (TrySetOtherProperty(LaunchProfileExtensions.RemoteDebugMachineProperty, value, defaultValue: null))
+                {
+                    OnPropertyChanged(nameof(RemoteDebugMachine));
+                    OnErrorsChanged(nameof(RemoteDebugMachine));
+                }
+            }
+        }
+
         public bool HasLaunchOption
         {
             get
@@ -261,31 +288,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         public bool NativeCodeDebugging
         {
-            get
-            {
-                if (!IsProfileSelected)
-                {
-                    return false;
-                }
-
-                if (SelectedDebugProfile.OtherSettings.TryGetValue("nativeDebugging", out object value))
-                {
-                    return (bool)value;
-                }
-
-                return false;
-            }
+            get { return GetOtherProperty(LaunchProfileExtensions.NativeDebuggingProperty, false); }
             set
             {
-                //Unlike other properties that have default values, nativeDebugging may not be set yet. Because false is the default behavior adding it has no effect
-                if (!SelectedDebugProfile.OtherSettings.TryGetValue("nativeDebugging", out object previousValue))
+                if (TrySetOtherProperty(LaunchProfileExtensions.NativeDebuggingProperty, value, defaultValue: false))
                 {
-                    previousValue = false;
-                }
-
-                if ((bool)previousValue != value)
-                {
-                    SelectedDebugProfile.OtherSettings["nativeDebugging"] = value;
                     OnPropertyChanged(nameof(NativeCodeDebugging));
                 }
             }
@@ -293,34 +300,46 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         public bool SqlDebugging
         {
-            get
-            {
-                if (!IsProfileSelected)
-                {
-                    return false;
-                }
-
-                if (SelectedDebugProfile.OtherSettings.TryGetValue("sqlDebugging", out object value))
-                {
-                    return (bool)value;
-                }
-
-                return false;
-            }
+            get { return GetOtherProperty(LaunchProfileExtensions.SqlDebuggingProperty, false); }
             set
             {
-                //Unlike other properties that have default values, sqlDebugging may not be set yet. Because false is the default behavior adding it has no effect
-                if (!SelectedDebugProfile.OtherSettings.TryGetValue("sqlDebugging", out object previousValue))
+                if (TrySetOtherProperty(LaunchProfileExtensions.SqlDebuggingProperty, value, defaultValue: false))
                 {
-                    previousValue = false;
-                }
-
-                if ((bool)previousValue != value)
-                {
-                    SelectedDebugProfile.OtherSettings["sqlDebugging"] = value;
                     OnPropertyChanged(nameof(SqlDebugging));
                 }
             }
+        }
+
+        private T GetOtherProperty<T>(string propertyName, T defaultValue)
+        {
+            if (!IsProfileSelected)
+            {
+                return defaultValue;
+            }
+
+            if (SelectedDebugProfile.OtherSettings.TryGetValue(propertyName, out object value) &&
+                value is T b)
+            {
+                return b;
+            }
+
+            return defaultValue;
+        }
+
+        private bool TrySetOtherProperty<T>(string propertyName, T value, T defaultValue)
+        {
+            if (!SelectedDebugProfile.OtherSettings.TryGetValue(propertyName, out object current))
+            {
+                current = defaultValue;
+            }
+
+            if (!(current is T currentTyped) || !Equals(currentTyped, value))
+            {
+                SelectedDebugProfile.OtherSettings[propertyName] = value;
+                return true;
+            }
+
+            return false;
         }
 
         public bool SupportNativeDebugging       => ActiveProviderSupportsProperty(UIProfilePropertyName.NativeDebugging);
@@ -328,6 +347,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         public bool SupportsExecutable           => ActiveProviderSupportsProperty(UIProfilePropertyName.Executable);
         public bool SupportsArguments            => ActiveProviderSupportsProperty(UIProfilePropertyName.Arguments);
         public bool SupportsWorkingDirectory     => ActiveProviderSupportsProperty(UIProfilePropertyName.WorkingDirectory);
+        public bool SupportsRemoteDebug          => ActiveProviderSupportsProperty(UIProfilePropertyName.RemoteDebug);
         public bool SupportsLaunchUrl            => ActiveProviderSupportsProperty(UIProfilePropertyName.LaunchUrl);
         public bool SupportsEnvironmentVariables => ActiveProviderSupportsProperty(UIProfilePropertyName.EnvironmentVariables);
 
@@ -382,7 +402,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 OnPropertyChanged(ref _removeEnvironmentVariablesRow, value, suppressInvalidation: true);
             }
         }
-
 
         public int EnvironmentVariablesRowSelectedIndex
         {
@@ -547,17 +566,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             get
             {
                 return LazyInitializer.EnsureInitialized(ref _newProfileCommand, () =>
-                 new DelegateCommand(state =>
-                 {
-                     var dialog = new GetProfileNameDialog(Project.Services.ExportProvider.GetExportedValue<SVsServiceProvider>(),
-                                                            ProjectThreadingService,
-                                                            GetNewProfileName(),
-                                                            IsNewProfileNameValid);
-                     if (dialog.ShowModal() == true)
-                     {
-                         CreateProfile(dialog.ProfileName, ProfileCommandNames.Executable);
-                     }
-                 }));
+                    new DelegateCommand(state =>
+                    {
+                        var dialog = new GetProfileNameDialog(Project.Services.ExportProvider.GetExportedValue<SVsServiceProvider>(),
+                                                               ProjectThreadingService,
+                                                               GetNewProfileName(),
+                                                               IsNewProfileNameValid);
+                        if (dialog.ShowModal() == true)
+                        {
+                            CreateProfile(dialog.ProfileName, ProfileCommandNames.Executable);
+                        }
+                    }));
             }
         }
 
@@ -669,6 +688,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 OnPropertyChanged(nameof(NativeCodeDebugging));
                 OnPropertyChanged(nameof(SqlDebugging));
                 OnPropertyChanged(nameof(WorkingDirectory));
+                OnPropertyChanged(nameof(RemoteDebugEnabled));
+                OnPropertyChanged(nameof(RemoteDebugMachine));
 
                 UpdateLaunchTypes();
 
@@ -1023,13 +1044,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         private void OnCustomUIErrorsChanged(object sender, DataErrorsChangedEventArgs e)
         {
             ErrorsChanged?.Invoke(this, e);
+            OnPropertyChanged(nameof(DoesNotHaveErrors));
+        }
 
+        private void OnErrorsChanged(string propertyName)
+        {
+            ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
             OnPropertyChanged(nameof(DoesNotHaveErrors));
         }
 
         public IEnumerable GetErrors(string propertyName)
         {
-            return null;
+            if (ActiveProvider?.CustomUI?.DataContext is INotifyDataErrorInfo notifyDataError)
+            {
+                foreach (object error in notifyDataError.GetErrors(propertyName))
+                {
+                    yield return error;
+                }
+            }
+
+            if (propertyName == nameof(RemoteDebugMachine) && RemoteDebugEnabled)
+            {
+                if (string.IsNullOrWhiteSpace(RemoteDebugMachine))
+                {
+                    yield return PropertyPageResources.RemoteHostNameRequired;
+                }
+                else if (Uri.CheckHostName(RemoteDebugMachine) == UriHostNameType.Unknown)
+                {
+                    yield return PropertyPageResources.InvalidHostName;
+                }
+            }
         }
 
         /// <summary>
@@ -1039,7 +1083,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             get
             {
-                return ActiveProvider?.CustomUI?.DataContext is INotifyDataErrorInfo notifyDataError && notifyDataError.HasErrors;
+                bool hasRemoteDebugMachineError = RemoteDebugEnabled && Uri.CheckHostName(RemoteDebugMachine) == UriHostNameType.Unknown;
+
+                return hasRemoteDebugMachineError ||
+                    ActiveProvider?.CustomUI?.DataContext is INotifyDataErrorInfo notifyDataError && notifyDataError.HasErrors;
             }
         }
 

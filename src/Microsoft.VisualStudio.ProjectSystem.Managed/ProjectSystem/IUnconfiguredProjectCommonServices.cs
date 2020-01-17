@@ -13,41 +13,26 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <summary>
         ///     Gets the <see cref="IProjectThreadingService"/> for the current <see cref="UnconfiguredProject"/>.
         /// </summary>
-        IProjectThreadingService ThreadingService
-        {
-            get;
-        }
+        IProjectThreadingService ThreadingService { get; }
 
         /// <summary>
         ///     Gets the current <see cref="UnconfiguredProject"/>.
         /// </summary>
-        UnconfiguredProject Project
-        {
-            get;
-        }
+        UnconfiguredProject Project { get; }
 
         /// <summary>
         ///     Gets the current active <see cref="ConfiguredProject"/>.
         /// </summary>
-        ConfiguredProject ActiveConfiguredProject
-        {
-            get;
-        }
+        ConfiguredProject ActiveConfiguredProject { get; }
 
         /// <summary>
         ///     Gets the <see cref="ProjectProperties"/> of the currently active configured project.
         /// </summary>
-        ProjectProperties ActiveConfiguredProjectProperties
-        {
-            get;
-        }
+        ProjectProperties ActiveConfiguredProjectProperties { get; }
 
         /// <summary>
         ///     Gets the <see cref="IProjectAccessor"/> which provides access to MSBuild evaluation and construction models for a project.
         /// </summary>
-        IProjectAccessor ProjectAccessor
-        {
-            get;
-        }
+        IProjectAccessor ProjectAccessor { get; }
     }
 }

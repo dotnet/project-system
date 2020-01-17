@@ -39,17 +39,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             public class MultiLifetimeInstance : IMultiLifetimeInstance
             {
-                public bool IsInitialized
-                {
-                    get;
-                    private set;
-                }
+                public bool IsInitialized { get; private set; }
 
-                public bool IsDisposed
-                {
-                    get;
-                    private set;
-                }
+                public bool IsDisposed { get; private set; }
 
                 public Task InitializeAsync()
                 {

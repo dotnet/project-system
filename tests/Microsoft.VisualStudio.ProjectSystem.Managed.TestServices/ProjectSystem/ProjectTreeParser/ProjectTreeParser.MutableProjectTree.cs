@@ -20,78 +20,40 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 BrowseObjectProperties = new SubTypeRule(this);
             }
 
-            public Collection<MutableProjectTree> Children
-            {
-                get;
-            }
+            public Collection<MutableProjectTree> Children { get; }
 
-            public string Caption
-            {
-                get;
-                set;
-            }
+            public string Caption { get; set; }
 
-            public ProjectTreeFlags Flags
-            {
-                get;
-                set;
-            }
+            public ProjectTreeFlags Flags { get; set; }
 
-            public string? SubType
-            {
-                get;
-                set;
-            }
+            public string? SubType { get; set; }
 
             public bool IsFolder
             {
                 get { return Flags.Contains(ProjectTreeFlags.Common.Folder); }
             }
 
-            public string? FilePath
-            {
-                get;
-                set;
-            }
+            public string? FilePath { get; set; }
 
-            public bool Visible
-            {
-                get;
-                set;
-            }
+            public bool Visible { get; set; }
 
-            public MutableProjectTree? Parent
-            {
-                get;
-                set;
-            }
+            public MutableProjectTree? Parent { get; set; }
 
             IProjectTree? IProjectTree.Parent
             {
                 get { return Parent; }
             }
 
-            public IRule BrowseObjectProperties
-            {
-                get;
-            }
+            public IRule BrowseObjectProperties { get; }
 
             IReadOnlyList<IProjectTree> IProjectTree.Children
             {
                 get { return Children; }
             }
 
-            public ProjectImageMoniker? Icon
-            {
-                get;
-                set;
-            }
+            public ProjectImageMoniker? Icon { get; set; }
 
-            public ProjectImageMoniker? ExpandedIcon
-            {
-                get;
-                set;
-            }
+            public ProjectImageMoniker? ExpandedIcon { get; set; }
 
             IntPtr IProjectTree.Identity
             {
@@ -133,11 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 }
             }
 
-            public int DisplayOrder
-            {
-                get;
-                set;
-            }
+            public int DisplayOrder { get; set; }
 
             IProjectItemTree IProjectTree.Add(IProjectItemTree subtree)
             {

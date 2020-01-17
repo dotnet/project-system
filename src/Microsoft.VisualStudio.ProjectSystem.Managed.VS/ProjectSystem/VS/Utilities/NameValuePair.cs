@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
                 string? error = null;
                 HasValidationError = false;
 
-                if (propertyName.Equals("Name", StringComparisons.UIPropertyNames))
+                if (propertyName.Equals(nameof(Name), StringComparisons.UIPropertyNames))
                 {
                     if (IsNamePropertyEmpty())
                     {
@@ -83,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
                         HasValidationError = IsValuePropertyEmpty();
                     }
                 }
-                else if (propertyName.Equals("Value", StringComparisons.UIPropertyNames))
+                else if (propertyName.Equals(nameof(Value), StringComparisons.UIPropertyNames))
                 {
                     if (string.IsNullOrWhiteSpace(Value))
                     {

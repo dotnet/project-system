@@ -58,10 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     The order in the returned <see cref="IReadOnlyList{T}"/> matches the declared ordered within
         ///     the project file.
         /// </remarks>
-        public IReadOnlyList<T> Objects
-        {
-            get;
-        }
+        public IReadOnlyList<T> Objects { get; }
 
         /// <summary>
         ///     Gets the names of the configuration dimensions that participated in the calculation of the active configured objects.
@@ -70,9 +67,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     An <see cref="IImmutableSet{T}"/> containing the names of the configuration dimensions that participated in the
         ///     calculation of the active configured objects, or empty if no dimensions participated in the calculation.
         /// </value>
-        public IImmutableSet<string> DimensionNames
-        {
-            get;
-        }
+        public IImmutableSet<string> DimensionNames { get; }
     }
 }

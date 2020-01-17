@@ -14,17 +14,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// <summary>
         ///     Gets <see cref="IVsHierarchy"/> provided by the <see cref="UnconfiguredProject"/>.
         /// </summary>
-        IVsHierarchy VsHierarchy
-        {
-            get;
-        }
+        IVsHierarchy VsHierarchy { get; }
 
         /// <summary>
         ///     Gets <see cref="IVsProject4"/> provided by the <see cref="UnconfiguredProject"/>.
         /// </summary>
-        IVsProject4 VsProject
-        {
-            get;
-        }
+        IVsProject4 VsProject { get; }
     }
 }

@@ -107,7 +107,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <param name="deleteOriginal"><c>true</c> for a move operation; <c>false</c> for a copy operation.</param>
         /// <returns><c>true</c> if such a move/copy operation would be allowable; <c>false</c> otherwise.</returns>
         public override bool CanCopy(IImmutableSet<IProjectTree> nodes,
-                                     IProjectTree receiver,
+                                     IProjectTree? receiver,
                                      bool deleteOriginal = false)
         {
             return false;
@@ -194,6 +194,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             // Get the list of normal reference Item Nodes (this excludes any shared import nodes).
             IEnumerable<IProjectTree> referenceItemNodes = nodes.Except(sharedImportNodes);
+
+            Assumes.NotNull(ActiveConfiguredProject);
 
             await _projectAccessor.OpenProjectForWriteAsync(ActiveConfiguredProject, project =>
             {
@@ -431,10 +433,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             return;
 
             async Task<TreeUpdateResult> UpdateTreeAsync(
-                IProjectVersionedValue<IProjectTreeSnapshot> treeSnapshot,
-                ConfiguredProjectExports configuredProjectExports,
+                IProjectVersionedValue<IProjectTreeSnapshot>? treeSnapshot,
+                ConfiguredProjectExports? configuredProjectExports,
                 CancellationToken cancellationToken)
             {
+                Assumes.NotNull(treeSnapshot); // we specify the initial tree so it will not be null here
+
                 IProjectTree dependenciesNode = treeSnapshot.Value.Tree;
 
                 if (!cancellationToken.IsCancellationRequested)
@@ -567,13 +571,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                 if (_namedCatalogs == null)
                 {
+                    Assumes.NotNull(ActiveConfiguredProject);
+                    Assumes.Present(ActiveConfiguredProject.Services.PropertyPagesCatalog);
+
                     // Note: it is unlikely that we end up here, however for cases when node providers
                     // getting their node data not from Design time build events, we might have OnDependenciesChanged
                     // event coming before initial design time build event updates NamedCatalogs in this class.
                     // Thus, just in case, explicitly request it here (GetCatalogsAsync will acquire a project read lock)
-                    _namedCatalogs = await ActiveConfiguredProject.Services
-                        .PropertyPagesCatalog
-                        .GetCatalogsAsync();
+                    _namedCatalogs = await ActiveConfiguredProject.Services.PropertyPagesCatalog.GetCatalogsAsync();
                 }
 
                 return _namedCatalogs;
@@ -581,6 +586,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             ConfiguredProjectExports GetConfiguredProjectExports()
             {
+                Assumes.NotNull(ActiveConfiguredProject);
+
                 ConfiguredProject project = dependency.TargetFramework.Equals(TargetFramework.Any)
                     ? ActiveConfiguredProject
                     : _dependenciesSnapshotProvider.GetConfiguredProject(dependency.TargetFramework) ?? ActiveConfiguredProject;
@@ -615,14 +622,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             public static readonly ProjectTreeCustomizablePropertyContext Instance = new ProjectTreeCustomizablePropertyContext();
 
-            public string? ItemName => null;
+            public string ItemName => string.Empty;
             public string? ItemType => null;
-            public IImmutableDictionary<string, string>? Metadata => null;
+            public IImmutableDictionary<string, string> Metadata => ImmutableDictionary<string, string>.Empty;
             public ProjectTreeFlags ParentNodeFlags => ProjectTreeFlags.Empty;
             public bool ExistsOnDisk => false;
             public bool IsFolder => false;
             public bool IsNonFileSystemProjectItem => true;
-            public IImmutableDictionary<string, string>? ProjectTreeSettings => null;
+            public IImmutableDictionary<string, string> ProjectTreeSettings => ImmutableDictionary<string, string>.Empty;
         }
     }
 }

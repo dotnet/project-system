@@ -112,17 +112,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
                 IsEnabled = true;
             }
 
-            public bool IsEnabled
-            {
-                get;
-                set;
-            }
+            public bool IsEnabled { get; set; }
 
-            public string? Text
-            {
-                get;
-                set;
-            }
+            public string? Text { get; set; }
 
             public void WriteLine(in StringFormat format)
             {

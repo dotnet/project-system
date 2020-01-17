@@ -12,24 +12,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.OperationProgress
             DisplayMessage = displayMessage;
         }
 
-        public ConfiguredProject ConfiguredProject
-        {
-            get;
-        }
+        public ConfiguredProject ConfiguredProject { get; }
 
-        public string OperationProgressStageId
-        {
-            get;
-        }
+        public string OperationProgressStageId { get; }
 
-        public string Name
-        {
-            get;
-        }
+        public string Name { get; }
 
-        public string DisplayMessage
-        {
-            get;
-        }
+        public string DisplayMessage { get; }
     }
 }

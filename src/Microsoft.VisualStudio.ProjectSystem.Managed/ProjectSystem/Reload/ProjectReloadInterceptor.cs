@@ -22,10 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         [ImportMany]
-        public OrderPrecedenceImportCollection<IProjectConfigurationDimensionsProvider> DimensionProviders
-        {
-            get;
-        }
+        public OrderPrecedenceImportCollection<IProjectConfigurationDimensionsProvider> DimensionProviders { get; }
 
         public ProjectReloadResult InterceptProjectReload(ImmutableArray<ProjectPropertyElement> oldProperties, ImmutableArray<ProjectPropertyElement> newProperties)
         {

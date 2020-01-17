@@ -39,6 +39,7 @@ Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSu
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSubTreeProvider.DependenciesChanged -> System.EventHandler<Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependenciesChangedEventArgs>
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSubTreeProvider.ProviderType.get -> string
 const Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName.NativeDebugging = "NativeDebugging" -> string
+const Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName.RemoteDebug = "RemoteDebug" -> string
 const Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName.SqlDebugging = "SQLDebugging" -> string
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ApplicationPrivate.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ApplicationWarning.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker

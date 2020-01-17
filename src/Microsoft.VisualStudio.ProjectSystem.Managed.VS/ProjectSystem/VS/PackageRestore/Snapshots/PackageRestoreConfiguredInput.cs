@@ -16,17 +16,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         /// <summary>
         ///     Gets the configuration of the <see cref="ConfiguredProject"/> this input was produced from.
         /// </summary>
-        public ProjectConfiguration ProjectConfiguration
-        {
-            get;
-        }
+        public ProjectConfiguration ProjectConfiguration { get; }
 
         /// <summary>
         ///     Gets the restore information produced in this input.
         /// </summary>
-        public ProjectRestoreInfo RestoreInfo
-        {
-            get;
-        }
+        public ProjectRestoreInfo RestoreInfo { get; }
     }
 }

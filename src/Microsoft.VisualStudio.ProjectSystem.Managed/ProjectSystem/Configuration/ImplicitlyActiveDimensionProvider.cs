@@ -27,10 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         }
 
         [ImportMany]
-        internal OrderPrecedenceImportCollection<IProjectConfigurationDimensionsProvider, IConfigurationDimensionDescriptionMetadataView> DimensionProviders
-        {
-            get;
-        }
+        internal OrderPrecedenceImportCollection<IProjectConfigurationDimensionsProvider, IConfigurationDimensionDescriptionMetadataView> DimensionProviders { get; }
 
         public IEnumerable<string> GetImplicitlyActiveDimensions(IEnumerable<string> dimensionNames)
         {

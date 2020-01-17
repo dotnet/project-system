@@ -45,7 +45,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             IsDirty = false;
             ViewModel = viewModel;
             ViewModel.PropertyChanged += ViewModel_PropertyChanged;
-            ViewModel.ParentControl = this;
             _ignoreEvents = false;
         }
 
@@ -59,7 +58,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
             // Let the view model know we are done.
             ViewModel.ViewModelDetached();
-            ViewModel.ParentControl = null;
             ViewModel = null;
             _ignoreEvents = false;
         }

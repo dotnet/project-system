@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         string WorkingDirectory { get; }
         bool LaunchBrowser { get; }
         string LaunchUrl { get; }
-        ImmutableDictionary<string, string> EnvironmentVariables { get; }
-        ImmutableDictionary<string, object> OtherSettings { get; }
+        ImmutableDictionary<string, string> EnvironmentVariables { get; } // TODO-NULLABLE in some contexts this is null
+        ImmutableDictionary<string, object> OtherSettings { get; }        // TODO-NULLABLE in some contexts this is null
     }
 }

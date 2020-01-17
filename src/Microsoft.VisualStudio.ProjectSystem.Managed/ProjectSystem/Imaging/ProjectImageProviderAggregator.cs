@@ -22,10 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
         }
 
         [ImportMany]
-        public OrderPrecedenceImportCollection<IProjectImageProvider> ImageProviders
-        {
-            get;
-        }
+        public OrderPrecedenceImportCollection<IProjectImageProvider> ImageProviders { get; }
 
         public ProjectImageMoniker? GetProjectImage(string key)
         {

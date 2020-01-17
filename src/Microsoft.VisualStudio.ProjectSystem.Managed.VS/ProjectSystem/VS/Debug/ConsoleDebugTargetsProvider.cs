@@ -320,12 +320,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             settings.LaunchOperation = DebugLaunchOperation.CreateProcess;
             settings.LaunchDebugEngineGuid = await GetDebuggingEngineAsync(configuredProject);
 
-            if (resolvedProfile.NativeDebuggingIsEnabled())
+            if (resolvedProfile.IsNativeDebuggingEnabled())
             {
                 settings.AdditionalDebugEngines.Add(DebuggerEngines.NativeOnlyEngine);
             }
 
-            if (resolvedProfile.SqlDebuggingIsEnabled())
+            if (resolvedProfile.IsSqlDebuggingEnabled())
             {
                 settings.AdditionalDebugEngines.Add(DebuggerEngines.SqlEngine);
             }
@@ -352,6 +352,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             settings.Arguments = finalArguments;
             settings.CurrentDirectory = workingDir;
             settings.Project = _unconfiguredProjectVsServices.VsHierarchy;
+
+            if (resolvedProfile.IsRemoteDebugEnabled())
+            {
+                settings.RemoteMachine = resolvedProfile.RemoteDebugMachine();
+            }
 
             return settings;
         }
