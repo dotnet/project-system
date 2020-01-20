@@ -5,6 +5,7 @@ Imports System.Runtime.InteropServices
 
 Imports Microsoft.VisualStudio.Editors.OptionPages
 Imports Microsoft.VisualStudio.Shell
+Imports Microsoft.VisualStudio.Shell.Design
 Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.VisualStudio.XmlEditor
 
@@ -75,6 +76,7 @@ Namespace Microsoft.VisualStudio.Editors
     ProvideKeyBindingTable(Constants.MenuConstants.GUID_SETTINGSDESIGNER_CommandUIString, 1200, AllowNavKeyBinding:=False),
     ProvideKeyBindingTable(Constants.MenuConstants.GUID_RESXEditorCommandUIString, 1100, AllowNavKeyBinding:=False),
     ProvideRefactorNotify(GetType(ResourceEditor.ResourceEditorRefactorNotify), ".resx", "E24C65DC-7377-472b-9ABA-BC803B73C61A"),
+    ProvideGlobalObjectProvider(GetType(SettingsGlobalObjects.SettingsGlobalObjectProvider)),
     CLSCompliant(False)
     >
     Friend Class VBPackage
