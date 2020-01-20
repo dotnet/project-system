@@ -183,18 +183,15 @@
 
 [$RootKey$\Generators\{164B10B9-B200-11D0-8C61-00A0C91E29D5}\MyApplicationCodeGenerator]
 "CLSID"="{4D35B437-4197-4241-8D24-8AC3AB6F0E0C}"
-"GeneratesDesignTimeSource"=dword:00000000
 @="Generator for MyApplication class"
 
 [$RootKey$\Generators\{164B10B9-B200-11D0-8C61-00A0C91E29D5}\PublicSettingsSingleFileGenerator]
 "CLSID"="{940f36b5-a42e-435e-8ef4-20b9d4801d22}"
-"GeneratesDesignTimeSource"=dword:00000000
 "GeneratesSharedDesignTimeSource"=dword:00000001
 @="Generator for strongly typed settings class (public class)"
 
 [$RootKey$\Generators\{164B10B9-B200-11D0-8C61-00A0C91E29D5}\SettingsSingleFileGenerator]
 "CLSID"="{3B4C204A-88A2-3AF8-BCFD-CFCB16399541}"
-"GeneratesDesignTimeSource"=dword:00000000
 "GeneratesSharedDesignTimeSource"=dword:00000001
 @="Generator for strongly typed settings class"
 
@@ -202,13 +199,11 @@
 
 [$RootKey$\Generators\{FAE04EC1-301F-11D3-BF4B-00C04F79EFBC}\PublicSettingsSingleFileGenerator]
 "CLSID"="{940f36b5-a42e-435e-8ef4-20b9d4801d22}"
-"GeneratesDesignTimeSource"=dword:00000000
 "GeneratesSharedDesignTimeSource"=dword:00000001
 @="Generator for strongly typed settings class (public class)"
 
 [$RootKey$\Generators\{FAE04EC1-301F-11D3-BF4B-00C04F79EFBC}\SettingsSingleFileGenerator]
 "CLSID"="{3B4C204A-88A2-3AF8-BCFD-CFCB16399541}"
-"GeneratesDesignTimeSource"=dword:00000000
 "GeneratesSharedDesignTimeSource"=dword:00000001
 @="Generator for strongly typed settings class"
 
