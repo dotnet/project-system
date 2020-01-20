@@ -99,12 +99,6 @@
 "ThreadingModel"="Both"
 @="Microsoft.VisualStudio.Editors.SettingsDesigner.PublicSettingsSingleFileGenerator"
 
-[$RootKey$\CLSID\{9AF66DCA-14CC-42C1-A52D-F403A4A43076}]
-"Assembly"="Microsoft.VisualStudio.Editors,version=15.0.0.0,publicKeyToken=b03f5f7f11d50a3a,culture=neutral"
-"Class"="Microsoft.VisualStudio.Editors.PropertyPages.VersionPropPageComClass"
-"InprocServer32"="$System$\mscoree.dll"
-"ThreadingModel"="Both"
-
 [$RootKey$\CLSID\{A54AD834-9219-4aa6-B589-607AF21C3E26}]
 "Assembly"="Microsoft.VisualStudio.Editors,version=15.0.0.0,publicKeyToken=b03f5f7f11d50a3a,culture=neutral"
 "Class"="Microsoft.VisualStudio.Editors.PropertyPages.BuildPropPageComClass"
@@ -248,10 +242,6 @@
 
 [$RootKey$\Services\{0407F754-C199-403e-B89B-1D8E1FF3DC79}]
 "Name"="ResX RefactorNotify Service"
-@="{67909B06-91E9-4F3E-AB50-495046BE9A9A}"
-
-[$RootKey$\Services\{5D51EB70-C6BA-484b-B4E0-729B7734843C}]
-"Name"="Vb Attribute Editing Service"
 @="{67909B06-91E9-4F3E-AB50-495046BE9A9A}"
 
 [$RootKey$\Services\{71CC3B66-3E89-45eb-BDDA-D6A5599F4C20}]
