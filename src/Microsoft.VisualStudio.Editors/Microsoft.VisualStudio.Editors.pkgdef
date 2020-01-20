@@ -198,14 +198,6 @@
 "GeneratesSharedDesignTimeSource"=dword:00000001
 @="Generator for strongly typed settings class"
 
-[$RootKey$\Generators\{E6FDF8B0-F3D1-11D4-8576-0002A516ECE8}]
-
-[$RootKey$\Generators\{E6FDF8B0-F3D1-11D4-8576-0002A516ECE8}\SettingsSingleFileGenerator]
-"CLSID"="{3B4C204A-88A2-3AF8-BCFD-CFCB16399541}"
-"GeneratesDesignTimeSource"=dword:00000000
-"GeneratesSharedDesignTimeSource"=dword:00000001
-@="Generator for strongly typed settings class"
-
 [$RootKey$\Generators\{FAE04EC1-301F-11D3-BF4B-00C04F79EFBC}]
 
 [$RootKey$\Generators\{FAE04EC1-301F-11D3-BF4B-00C04F79EFBC}\PublicSettingsSingleFileGenerator]
