@@ -67,6 +67,11 @@ Namespace Microsoft.VisualStudio.Editors
     ProvideEditorFactory(GetType(ResourceEditor.ResourceEditorFactory), 1100, True, TrustLevel:=__VSEDITORTRUSTLEVEL.ETL_AlwaysTrusted, CommonPhysicalViewAttributes:=3),
     ProvideEditorExtension(GetType(ResourceEditor.ResourceEditorFactory), ".resw", 48),
     ProvideEditorExtension(GetType(ResourceEditor.ResourceEditorFactory), ".resx", 48),
+    CodeGeneratorRegistration(GetType(MyApplication.MyApplicationCodeGenerator), "Generator for MyApplication class", VBPackage.LegacyVBPackageGuid, GeneratesDesignTimeSource:=True),
+    CodeGeneratorRegistration(GetType(SettingsDesigner.PublicSettingsSingleFileGenerator), "Generator for strongly typed settings class (public class)", VBPackage.LegacyVBPackageGuid, GeneratesSharedDesignTimeSource:=True),
+    CodeGeneratorRegistration(GetType(SettingsDesigner.SettingsSingleFileGenerator), "Generator for strongly typed settings class", VBPackage.LegacyVBPackageGuid, GeneratesSharedDesignTimeSource:=True),
+    CodeGeneratorRegistration(GetType(SettingsDesigner.PublicSettingsSingleFileGenerator), "Generator for strongly typed settings class (public class)", VBPackage.LegacyCSharpPackageGuid, GeneratesSharedDesignTimeSource:=True),
+    CodeGeneratorRegistration(GetType(SettingsDesigner.SettingsSingleFileGenerator), "Generator for strongly typed settings class", VBPackage.LegacyCSharpPackageGuid, GeneratesSharedDesignTimeSource:=True),
     CLSCompliant(False)
     >
     Friend Class VBPackage
@@ -84,6 +89,8 @@ Namespace Microsoft.VisualStudio.Editors
 
         Private Const ProjectDesignerSUOKey As String = "ProjectDesigner"
         Public Const PackageGuid As String = "67909B06-91E9-4F3E-AB50-495046BE9A9A"
+        Public Const LegacyVBPackageGuid As String = "{164B10B9-B200-11D0-8C61-00A0C91E29D5}"
+        Public Const LegacyCSharpPackageGuid As String = "{FAE04EC1-301F-11d3-BF4B-00C04F79EFBC}"
 
         ' Map between unique project GUID and the last viewed tab in the project designer...
         Private _lastViewedProjectDesignerTab As Dictionary(Of Guid, Byte)
