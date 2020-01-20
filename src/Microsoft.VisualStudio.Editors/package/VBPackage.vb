@@ -72,6 +72,8 @@ Namespace Microsoft.VisualStudio.Editors
     CodeGeneratorRegistration(GetType(SettingsDesigner.SettingsSingleFileGenerator), "Generator for strongly typed settings class", VBPackage.LegacyVBPackageGuid, GeneratesSharedDesignTimeSource:=True),
     CodeGeneratorRegistration(GetType(SettingsDesigner.PublicSettingsSingleFileGenerator), "Generator for strongly typed settings class (public class)", VBPackage.LegacyCSharpPackageGuid, GeneratesSharedDesignTimeSource:=True),
     CodeGeneratorRegistration(GetType(SettingsDesigner.SettingsSingleFileGenerator), "Generator for strongly typed settings class", VBPackage.LegacyCSharpPackageGuid, GeneratesSharedDesignTimeSource:=True),
+    ProvideKeyBindingTable(Constants.MenuConstants.GUID_SETTINGSDESIGNER_CommandUIString, 1200, AllowNavKeyBinding:=False),
+    ProvideKeyBindingTable(Constants.MenuConstants.GUID_RESXEditorCommandUIString, 1100, AllowNavKeyBinding:=False),
     CLSCompliant(False)
     >
     Friend Class VBPackage

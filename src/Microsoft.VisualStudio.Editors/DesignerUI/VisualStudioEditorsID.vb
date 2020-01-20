@@ -130,6 +130,7 @@ Namespace Microsoft.VisualStudio.Editors
             'The Command GUID for the resource editor.  It is required for us to correctly hook up key bindings,
             '  and must be returned from the editor factory.
             Public Shared ReadOnly GUID_RESXEditorCommandUI As New Guid("fea4dcc9-3645-44cd-92e7-84b55a16465c")
+            Public Const GUID_RESXEditorCommandUIString As String = "fea4dcc9-3645-44cd-92e7-84b55a16465c"
 
             Public Shared ReadOnly GUID_RESX_MenuGroup As New Guid("54869924-25F5-4878-A9C9-1C7198D99A8A")
             Public Shared ReadOnly GUID_SETTINGSDESIGNER_MenuGroup As New Guid("42b7a61f-81fd-4283-9678-6c448a827e56")
@@ -137,6 +138,7 @@ Namespace Microsoft.VisualStudio.Editors
             'The Command GUID for the settings designer.  It is required for us to correctly hook up key bindings,
             '  and must be returned from the editor factory.
             Public Shared ReadOnly GUID_SETTINGSDESIGNER_CommandUI As New Guid("515231ad-c9dc-4aa3-808f-e1b65e72081c")
+            Public Const GUID_SETTINGSDESIGNER_CommandUIString As String = "515231ad-c9dc-4aa3-808f-e1b65e72081c"
 
 
             Private Shared ReadOnly s_GUID_MS_VS_Editors_CommandId As New Guid("E4B9BB05-1963-4774-8CFC-518359E3FCE3")
