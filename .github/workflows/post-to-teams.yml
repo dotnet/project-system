@@ -19,9 +19,9 @@ jobs:
           # Incoming webhook URI to Microsoft Teams
           webhook_uri: https://outlook.office.com/webhook/4ba7372f-2799-4677-89f0-7a1aaea3706c@72f988bf-86f1-41af-91ab-2d7cd011db47/IncomingWebhook/574a9caf099746e480b30f29d5dfadc2/9dbc0cfc-eab3-42c9-838a-4879bef6875e
           # Message title
-          title: "PR opened: ${{ github.event.pull_request.title }}"
+          title: "PR [#${{ github.event.number}}](${{ github.event.pull_request.html_url }}) - ${{ github.event.pull_request.title }}"
           # Message summary
-          summary: "You can view the PR here: ${{ github.event.pull_request.html_url }}"
+          text: "Created by ${{ github.event.pull_request.user.login }}. You can view the PR here: ${{ github.event.pull_request.html_url }}"
           # Message text
           #text: # optional, default is 
           # Message theme color
