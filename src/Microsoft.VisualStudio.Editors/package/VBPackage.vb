@@ -61,6 +61,8 @@ Namespace Microsoft.VisualStudio.Editors
     ProvideObject(GetType(PropertyPages.MyExtensibilityPropPageComClass)),
     ProvideObject(GetType(PropertyPages.CodeAnalysisPropPageComClass)),
     ProvideEditorFactory(GetType(ApplicationDesigner.ApplicationDesignerEditorFactory), 1300, True, TrustLevel:=__VSEDITORTRUSTLEVEL.ETL_AlwaysTrusted),
+    ProvideEditorFactory(GetType(SettingsDesigner.SettingsDesignerEditorFactory), 1200, True, TrustLevel:=__VSEDITORTRUSTLEVEL.ETL_AlwaysTrusted, CommonPhysicalViewAttributes:=3),
+    ProvideEditorExtension(GetType(SettingsDesigner.SettingsDesignerEditorFactory), ".settings", 30),
     CLSCompliant(False)
     >
     Friend Class VBPackage

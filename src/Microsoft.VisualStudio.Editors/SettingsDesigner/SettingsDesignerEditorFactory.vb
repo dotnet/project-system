@@ -1,7 +1,7 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.Runtime.InteropServices
-
+Imports Microsoft.VisualStudio.Shell
 Imports LOGVIEWID = Microsoft.VisualStudio.Editors.Interop.LOGVIEWID
 Imports NativeMethods = Microsoft.VisualStudio.Editors.Interop.NativeMethods
 
@@ -11,7 +11,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
     ''' <summary>
     ''' The editor factory for the settings designer
     ''' </summary>
-    <Guid(SettingsDesignerEditorFactory.EditorGuidString)>
+    <Guid(SettingsDesignerEditorFactory.EditorGuidString),
+    ProvideView(LogicalView.Designer, "Design")>
     Friend NotInheritable Class SettingsDesignerEditorFactory
         Inherits DesignerFramework.BaseEditorFactory
 
