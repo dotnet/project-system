@@ -20,7 +20,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
     '   shell.
     '**************************************************************************
     <CLSCompliant(False),
-    Guid("04b8ab82-a572-4fef-95ce-5222444b6b64")>
+    Guid("04b8ab82-a572-4fef-95ce-5222444b6b64"),
+    ProvideView(LogicalView.Designer, "Design")>
     Public NotInheritable Class ApplicationDesignerEditorFactory
         Implements IVsEditorFactory
 

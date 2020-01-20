@@ -60,6 +60,7 @@ Namespace Microsoft.VisualStudio.Editors
     ProvideObject(GetType(PropertyPages.CompilePropPageComClass)),
     ProvideObject(GetType(PropertyPages.MyExtensibilityPropPageComClass)),
     ProvideObject(GetType(PropertyPages.CodeAnalysisPropPageComClass)),
+    ProvideEditorFactory(GetType(ApplicationDesigner.ApplicationDesignerEditorFactory), 1300, True, TrustLevel:=__VSEDITORTRUSTLEVEL.ETL_AlwaysTrusted),
     CLSCompliant(False)
     >
     Friend Class VBPackage
