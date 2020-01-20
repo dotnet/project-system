@@ -1970,6 +1970,18 @@ Do you want to update the value in the .settings file?</value>
   <data name="PPG_AdvancedBuildSettings_DebugInfo_Portable" xml:space="preserve">
     <value>Portable</value>
   </data>
+  <data name="PPG_BuildSettings_Nullable_Disable" xml:space="preserve">
+    <value>Disable</value>
+  </data>
+  <data name="PPG_BuildSettings_Nullable_Enable" xml:space="preserve">
+    <value>Enable</value>
+  </data>
+  <data name="PPG_BuildSettings_Nullable_Warnings" xml:space="preserve">
+    <value>Warnings</value>
+  </data>
+  <data name="PPG_BuildSettings_Nullable_Annotations" xml:space="preserve">
+    <value>Annotations</value>
+  </data>
   <data name="BlockedResx" xml:space="preserve">
     <value>Unable to load '{0}' because it is not trusted.</value>
     <comment>{0} is resx file name that is blocked</comment>
