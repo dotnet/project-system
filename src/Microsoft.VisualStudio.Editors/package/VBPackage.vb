@@ -63,6 +63,7 @@ Namespace Microsoft.VisualStudio.Editors
     ProvideEditorFactory(GetType(ApplicationDesigner.ApplicationDesignerEditorFactory), 1300, True, TrustLevel:=__VSEDITORTRUSTLEVEL.ETL_AlwaysTrusted),
     ProvideEditorFactory(GetType(SettingsDesigner.SettingsDesignerEditorFactory), 1200, True, TrustLevel:=__VSEDITORTRUSTLEVEL.ETL_AlwaysTrusted, CommonPhysicalViewAttributes:=3),
     ProvideEditorExtension(GetType(SettingsDesigner.SettingsDesignerEditorFactory), ".settings", 30),
+    ProvideEditorFactory(GetType(PropPageDesigner.PropPageDesignerEditorFactory), 1400, True, TrustLevel:=__VSEDITORTRUSTLEVEL.ETL_AlwaysTrusted),
     CLSCompliant(False)
     >
     Friend Class VBPackage
