@@ -153,7 +153,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 }
                 else
                 {
-                    return _telemetryService!.HashValue(_project.FullPath!);
+                    return _telemetryService!.HashValue(_project.FullPath);
                 }
             }
         }
