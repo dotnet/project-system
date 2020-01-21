@@ -87,7 +87,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         VsProjPropId80.VBPROJPROPID_GenerateSerializationAssemblies, "GenerateSerializationAssemblies", cboSGenOption, New Control() {lblSGenOption}),
                      New PropertyControlData(VsProjPropId110.VBPROJPROPID_Prefer32Bit, "Prefer32Bit", chkPrefer32Bit, AddressOf Prefer32BitSet, AddressOf Prefer32BitGet),
                      New PropertyControlData(1, "Nullable", cboNullable, AddressOf NullableSet, AddressOf NullableGet, ControlDataFlags.None, New Control() {lblNullable}),
-                     New PropertyControlData(CSharpProjPropId.CSPROJPROPID_LanguageVersion, "LanguageVersion", Nothing, ControlDataFlags.None)
+                     New PropertyControlData(CSharpProjPropId.CSPROJPROPID_LanguageVersion, "LanguageVersion", Nothing, AddressOf LanguageVersionSet, Nothing, ControlDataFlags.None, Nothing)
                      }
                 End If
                 Return m_ControlData
@@ -221,6 +221,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             EnableControl(lblNullable, supportNullable)
             EnableControl(cboNullable, supportNullable)
         End Sub
+
+        Private Function LanguageVersionSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
+            If Not m_fInsideInit AndAlso Not InsideInternalUpdate Then
+                ' Changes to the LanguageVersion may affect whether nullable is enabled
+                RefreshVisibleStatusForNullable()
+            End If
+
+            Return True
+        End Function
 
         Private Function ShouldEnableRegisterForCOM() As Boolean
 
