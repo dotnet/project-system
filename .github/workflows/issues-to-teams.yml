@@ -19,8 +19,8 @@ jobs:
           # Incoming webhook URI to Microsoft Teams
           webhook_uri: https://outlook.office.com/webhook/4ba7372f-2799-4677-89f0-7a1aaea3706c@72f988bf-86f1-41af-91ab-2d7cd011db47/IncomingWebhook/574a9caf099746e480b30f29d5dfadc2/9dbc0cfc-eab3-42c9-838a-4879bef6875e
           # Message title
-          title: "Issue #${{ github.event.number}} - ${{ github.event.issue.title }}"
+          title: "Issue #${{ github.event.issue.number}} - ${{ github.event.issue.title }}"
           # Message summary
-          summary: "Issue #${{ github.event.number}} created by ${{ github.event.issue.user.login }}, ${{ github.event.issue.title }}"
+          summary: "Issue #${{ github.event.issue.number}} created by ${{ github.event.issue.user.login }}, ${{ github.event.issue.title }}"
           # JSON array for message sections
           sections: "[ { \"activityTitle\": \"${{ github.event.issue.user.login }}\", \"activityImage\": \"${{ github.event.issue.user.avatar_url }}\", \"text\": \"${{ github.event.issue.body }}\", \"facts\": [ { \"name\": \"View in GitHub:\", \"value\": \"[${{ github.event.issue.html_url }}](${{ github.event.issue.html_url }})\" } ] } ]" 
