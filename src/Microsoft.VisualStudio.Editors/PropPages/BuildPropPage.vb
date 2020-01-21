@@ -218,10 +218,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim version As Decimal
             Dim supportNullable = String.IsNullOrEmpty(value) OrElse (Decimal.TryParse(value, version) AndAlso version >= 8D)
 
-            If Not supportNullable Then
-                lblNullable.Visible = False
-                cboNullable.Visible = False
-            End If
+            EnableControl(lblNullable, supportNullable)
+            EnableControl(cboNullable, supportNullable)
         End Sub
 
         Private Function ShouldEnableRegisterForCOM() As Boolean
