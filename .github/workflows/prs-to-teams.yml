@@ -1,4 +1,4 @@
-name: CI
+name: Post PRs to Teams
 
 on: 
   pull_request:
@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
 # github.event is one of these: https://developer.github.com/v3/activity/events/types/#pullrequestevent
-# allowed values on github.event.pull_request come from here: https://developer.github.com/v3/pulls/
+# allowed values on github.event.pull_request come from here: https://developer.github.com/v3/pulls/#response
 
     steps:
       - name: Microsoft Teams (Generic)
