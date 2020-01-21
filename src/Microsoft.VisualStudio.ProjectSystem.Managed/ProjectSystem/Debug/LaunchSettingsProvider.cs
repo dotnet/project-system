@@ -98,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public ITaskDelayScheduler FileChangeScheduler { get; protected set; }
 
         // Tracks when we last read or wrote to the file. Prevents picking up needless changes
-        protected DateTime LastSettingsFileSyncTime { get; set; }
+        protected DateTime LastSettingsFileSyncTimeUtc { get; set; }
 
         protected const int WaitForFirstSnapshotDelayMillis = 5000;
 
@@ -354,7 +354,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             string fileName = await GetLaunchSettingsFilePathAsync();
 
-            return !_fileSystem.FileExists(fileName) || _fileSystem.LastFileWriteTime(fileName) != LastSettingsFileSyncTime;
+            return !_fileSystem.FileExists(fileName) || _fileSystem.LastFileWriteTimeUtc(fileName) != LastSettingsFileSyncTimeUtc;
         }
 
         /// <summary>
@@ -453,7 +453,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
 
             // Remember the time we are sync'd to
-            LastSettingsFileSyncTime = _fileSystem.LastFileWriteTime(fileName);
+            LastSettingsFileSyncTimeUtc = _fileSystem.LastFileWriteTimeUtc(fileName);
             return launchSettingsData;
         }
 
@@ -508,7 +508,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 _fileSystem.WriteAllText(fileName, jsonString);
 
                 // Update the last write time
-                LastSettingsFileSyncTime = _fileSystem.LastFileWriteTime(fileName);
+                LastSettingsFileSyncTimeUtc = _fileSystem.LastFileWriteTimeUtc(fileName);
             }
             finally
             {
@@ -593,7 +593,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
                 // Only do something if the file is truly different than what we synced. Here, we want to
                 // throttle.
-                if (!_fileSystem.FileExists(fileName) || _fileSystem.LastFileWriteTime(fileName) != LastSettingsFileSyncTime)
+                if (!_fileSystem.FileExists(fileName) || _fileSystem.LastFileWriteTimeUtc(fileName) != LastSettingsFileSyncTimeUtc)
                 {
                     return FileChangeScheduler.ScheduleAsyncTask(token =>
                     {

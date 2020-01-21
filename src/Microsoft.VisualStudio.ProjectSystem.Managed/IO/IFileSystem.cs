@@ -24,7 +24,6 @@ namespace Microsoft.VisualStudio.IO
         void WriteAllText(string path, string content);
         void WriteAllText(string path, string content, Encoding encoding);
         void WriteAllBytes(string path, byte[] bytes);
-        DateTime LastFileWriteTime(string path);
         DateTime LastFileWriteTimeUtc(string path);
         long FileLength(string filename);
 
