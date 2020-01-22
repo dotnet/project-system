@@ -73,31 +73,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 if (e.Value.RestoreInfo is null)
                     return;
 
+                bool succeeded = false;
                 try
                 {
-                    await RestoreAsync(e.Value.RestoreInfo);
+                    succeeded = await RestoreAsync(e.Value.RestoreInfo);
                 }
                 finally
                 {
-                    OnRestoreCompleted(e);
+                    OnRestoreCompleted(e, succeeded);
                 }
             }
 
-            private void OnRestoreCompleted(IProjectVersionedValue<PackageRestoreUnconfiguredInput> e)
+            private void OnRestoreCompleted(IProjectVersionedValue<PackageRestoreUnconfiguredInput> e, bool succeeded)
             {
-                _broadcastBlock.Post(e.Derive(input => CreateRestoreData(input.RestoreInfo!)));
+                _broadcastBlock.Post(e.Derive(input => CreateRestoreData(input.RestoreInfo!, succeeded)));
             }
 
-            private async Task RestoreAsync(ProjectRestoreInfo restoreInfo)
+            private async Task<bool> RestoreAsync(ProjectRestoreInfo restoreInfo)
             {
                 // Restore service always does work regardless of whether the value we pass them to actually
                 // contains changes, only nominate if there are any.
                 if (RestoreComparer.RestoreInfos.Equals(_latestValue, restoreInfo))
-                    return;
+                    return true;
 
                 _latestValue = restoreInfo;
 
-                JoinableTask joinableTask = JoinableFactory.RunAsync(() =>
+                JoinableTask<bool> joinableTask = JoinableFactory.RunAsync(() =>
                 {
                     return NominateForRestoreAsync(restoreInfo, _projectAsynchronousTasksService.UnloadCancellationToken);
                 });
@@ -107,16 +108,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                                                                    registerFaultHandler: true);
 
                 // Prevent overlap until Restore completes
-                await joinableTask;
+                return await joinableTask;
             }
 
-            private async Task NominateForRestoreAsync(ProjectRestoreInfo restoreInfo, CancellationToken cancellationToken)
+            private async Task<bool> NominateForRestoreAsync(ProjectRestoreInfo restoreInfo, CancellationToken cancellationToken)
             {
                 RestoreLogger.BeginNominateRestore(_logger, _project.FullPath, restoreInfo);
 
                 try
                 {
-                    await _solutionRestoreService.NominateProjectAsync(_project.FullPath, restoreInfo, cancellationToken);
+                    return await _solutionRestoreService.NominateProjectAsync(_project.FullPath, restoreInfo, cancellationToken);
                 }
                 finally
                 {
@@ -126,7 +127,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 }
             }
 
-            private RestoreData CreateRestoreData(ProjectRestoreInfo restoreInfo)
+            private RestoreData CreateRestoreData(ProjectRestoreInfo restoreInfo, bool succeeded)
             {
                 // Restore service gives us a guarantee that the assets file
                 // will contain *at least* the changes that we pushed to it.
@@ -136,7 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
                 return new RestoreData(
                     restoreInfo.ProjectAssetsFilePath,
-                    GetLastWriteTimeUtc(restoreInfo.ProjectAssetsFilePath));
+                    GetLastWriteTimeUtc(restoreInfo.ProjectAssetsFilePath), succeeded: succeeded);
             }
 
             private DateTime GetLastWriteTimeUtc(string path)
