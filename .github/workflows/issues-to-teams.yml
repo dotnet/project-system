@@ -23,4 +23,4 @@ jobs:
           # Message summary
           summary: "Issue #${{ github.event.issue.number}} created by ${{ github.event.issue.user.login }}, ${{ github.event.issue.title }}"
           # JSON array for message sections
-          sections: "[ { \"activityTitle\": \"${{ github.event.issue.user.login }}\", \"activityImage\": \"${{ github.event.issue.user.avatar_url }}\", \"text\": \"${{ github.event.issue.body }}\", \"facts\": [ { \"name\": \"View in GitHub:\", \"value\": \"[${{ github.event.issue.html_url }}](${{ github.event.issue.html_url }})\" } ] } ]" 
+          sections: "[ { \"activityTitle\": \"${{ github.event.issue.user.login }}\", \"activityImage\": \"${{ github.event.issue.user.avatar_url }}\", \"text\": \"${{ toJson(github.event.issue.body) }}\", \"facts\": [ { \"name\": \"Labels:\", \"value\": \"${{ join(github.event.issue.labels.*.name)) }}\" }, { \"name\": \"Milestones:\", \"value\": \"${{ join(github.event.issue.milestone.*.title)) }}\" }, { \"name\": \"View in GitHub:\", \"value\": \"[${{ github.event.issue.html_url }}](${{ github.event.issue.html_url }})\" } ] } ]" 
