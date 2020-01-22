@@ -67,10 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         [ImportMany]
-        public OrderPrecedenceImportCollection<IActiveConfiguredProjectsDimensionProvider> DimensionProviders
-        {
-            get;
-        }
+        public OrderPrecedenceImportCollection<IActiveConfiguredProjectsDimensionProvider> DimensionProviders { get; }
 
         public async Task<ImmutableDictionary<string, ConfiguredProject>?> GetActiveConfiguredProjectsMapAsync()
         {

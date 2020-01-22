@@ -132,14 +132,15 @@
   <StringProperty Name="NoWarn"
                   Visible="False" />
 
-  <BoolProperty Name="NullableReferenceTypes"
-                Visible="False">
-    <BoolProperty.DataSource>
+  <StringProperty Name="Nullable"
+                  Visible="False">
+    <StringProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
+                  PersistedName="Nullable"
                   Persistence="ProjectFile"
                   SourceOfDefaultValue="AfterContext" />
-    </BoolProperty.DataSource>
-  </BoolProperty>
+    </StringProperty.DataSource>
+  </StringProperty>
 
   <BoolProperty Name="Optimize"
                 Visible="False" />

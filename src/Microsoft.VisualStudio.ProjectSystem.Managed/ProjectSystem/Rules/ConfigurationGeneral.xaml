@@ -124,6 +124,9 @@
   <StringProperty Name="OutputName"
                   DisplayName="Output Name" />
 
+  <StringProperty Name="OutDir"
+                  Visible="False" />
+
   <StringProperty Name="OutputPath"
                   DisplayName="Output Path" />
 

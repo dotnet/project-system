@@ -70,8 +70,8 @@
     <PackageReference Update="Microsoft.VisualStudio.Shell.Interop.15.7.DesignTime"                   Version="15.7.1" />
     <PackageReference Update="Microsoft.VisualStudio.Shell.Interop.15.8.DesignTime"                   Version="15.8.1" />
     <PackageReference Update="Microsoft.VisualStudio.TemplateWizardInterface"                         Version="8.0.0-alpha" />
-    <PackageReference Update="Microsoft.VisualStudio.Threading"                                       Version="16.3.52" />
-    <PackageReference Update="Microsoft.VisualStudio.Threading.Analyzers"                             Version="16.3.52" />
+    <PackageReference Update="Microsoft.VisualStudio.Threading"                                       Version="16.5.124-alpha" />
+    <PackageReference Update="Microsoft.VisualStudio.Threading.Analyzers"                             Version="16.5.124-alpha" />
     <PackageReference Update="Microsoft.VisualStudio.Utilities"                                       Version="16.4.29318.188-pre" />
     <PackageReference Update="Microsoft.VisualStudio.Validation"                                      Version="15.5.31" />
     <PackageReference Update="Microsoft.VisualStudio.VSHelp"                                          Version="16.0.28321-alpha" />
@@ -120,8 +120,8 @@
     <PackageReference Update="Microsoft.Test.Apex.VisualStudio"                                       Version="16.3.29003.189" />
 
     <!-- CPS -->
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK"                               Version="16.4.28-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers"                         Version="16.4.28-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK"                               Version="16.5.493-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers"                         Version="16.5.493-pre" />
 
     <!-- Roslyn -->
     <PackageReference Update="Microsoft.VisualStudio.LanguageServices"                                Version="3.2.0-beta4-19359-03" />
@@ -143,10 +143,10 @@
     <PackageReference Update="NuGet.VisualStudio"                                                     Version="5.1.0-rtm.5921" />
 
     <!-- MSBuild -->
-    <PackageReference Update="Microsoft.Build"                                                        Version="16.1.76"/>
-    <PackageReference Update="Microsoft.Build.Utilities.Core"                                         Version="16.1.76"/>
-    <PackageReference Update="Microsoft.Build.Engine"                                                 Version="16.1.76"/>
-    <PackageReference Update="Microsoft.Build.Tasks.Core"                                             Version="16.1.76"/>
+    <PackageReference Update="Microsoft.Build"                                                        Version="16.4.0"/>
+    <PackageReference Update="Microsoft.Build.Utilities.Core"                                         Version="16.4.0"/>
+    <PackageReference Update="Microsoft.Build.Engine"                                                 Version="16.4.0"/>
+    <PackageReference Update="Microsoft.Build.Tasks.Core"                                             Version="16.4.0"/>
 
     <!-- Libraries -->
     <PackageReference Update="Newtonsoft.Json"                                                        Version="12.0.2"/>

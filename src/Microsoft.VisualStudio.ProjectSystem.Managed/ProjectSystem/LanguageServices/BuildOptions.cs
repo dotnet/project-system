@@ -21,30 +21,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             AnalyzerConfigFiles = analyzerConfigFiles;
         }
 
-        public ImmutableArray<CommandLineSourceFile> SourceFiles
-        {
-            get;
-        }
+        public ImmutableArray<CommandLineSourceFile> SourceFiles { get; }
 
-        public ImmutableArray<CommandLineSourceFile> AdditionalFiles
-        {
-            get;
-        }
+        public ImmutableArray<CommandLineSourceFile> AdditionalFiles { get; }
 
-        public ImmutableArray<CommandLineReference> MetadataReferences
-        {
-            get;
-        }
+        public ImmutableArray<CommandLineReference> MetadataReferences { get; }
 
-        public ImmutableArray<CommandLineAnalyzerReference> AnalyzerReferences
-        {
-            get;
-        }
+        public ImmutableArray<CommandLineAnalyzerReference> AnalyzerReferences { get; }
 
-        public ImmutableArray<string> AnalyzerConfigFiles
-        {
-            get;
-        }
+        public ImmutableArray<string> AnalyzerConfigFiles { get; }
 
         public static BuildOptions FromCommandLineArguments(CommandLineArguments commandLineArguments)
         {

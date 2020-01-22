@@ -14,9 +14,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// <summary>
         ///     Gets the name of the dimension that should participate in calculating the active project configurations.
         /// </summary>
-        string DimensionName
-        {
-            get;
-        }
+        string DimensionName { get; }
     }
 }

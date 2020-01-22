@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="OptionExplicitLabel.Text">
         <source>Option e&amp;xplicit:</source>
-        <target state="translated">Option explicit(&amp;X):</target>
+        <target state="translated">显式编译选项(&amp;X):</target>
         <note />
       </trans-unit>
       <trans-unit id="DisableAllWarningsCheckBox.Text">
@@ -44,17 +44,17 @@
       </trans-unit>
       <trans-unit id="OptionStrictLabel.Text">
         <source>Option &amp;strict:</source>
-        <target state="translated">Option strict(&amp;S):</target>
+        <target state="translated">严格编译选项(&amp;S):</target>
         <note />
       </trans-unit>
       <trans-unit id="OptionCompareLabel.Text">
         <source>Option c&amp;ompare:</source>
-        <target state="translated">Option compare(&amp;O):</target>
+        <target state="translated">比较编译选项(&amp;O):</target>
         <note />
       </trans-unit>
       <trans-unit id="OptionInferLabel.Text">
         <source>Option in&amp;fer:</source>
-        <target state="translated">Option infer(&amp;F):</target>
+        <target state="translated">推断编译选项(&amp;F):</target>
         <note />
       </trans-unit>
       <trans-unit id="WarningsConfigurationsGridViewLabel.Text">

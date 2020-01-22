@@ -31,7 +31,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Friend WithEvents TargetFrameworkLabel As System.Windows.Forms.Label
         Friend WithEvents AutoGenerateBindingRedirects As System.Windows.Forms.CheckBox
         Friend WithEvents overarchingLayoutPanel As System.Windows.Forms.TableLayoutPanel
-        Friend WithEvents ManifestExplanationLabel As System.Windows.Forms.TextBox
+        Friend WithEvents ManifestExplanationLabel As System.Windows.Forms.Label
         Friend WithEvents iconTableLayoutPanel As System.Windows.Forms.TableLayoutPanel
 
         <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
@@ -53,7 +53,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.iconTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
             Me.ResourcesLabel = New System.Windows.Forms.Label()
             Me.IconRadioButton = New System.Windows.Forms.RadioButton()
-            Me.ManifestExplanationLabel = New System.Windows.Forms.TextBox()
+            Me.ManifestExplanationLabel = New System.Windows.Forms.Label()
             Me.ApplicationIconLabel = New System.Windows.Forms.Label()
             Me.ApplicationIcon = New System.Windows.Forms.ComboBox()
             Me.AppIconBrowse = New System.Windows.Forms.Button()
@@ -195,7 +195,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.ManifestExplanationLabel.BorderStyle = System.Windows.Forms.BorderStyle.None
             resources.ApplyResources(Me.ManifestExplanationLabel, "ManifestExplanationLabel")
             Me.ManifestExplanationLabel.Name = "ManifestExplanationLabel"
-            Me.ManifestExplanationLabel.ReadOnly = True
             '
             'ApplicationIconLabel
             '

@@ -646,7 +646,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 o.Capabilities == capabilitiesScope);
             var environment = IEnvironmentHelperFactory.ImplementGetEnvironmentVariable(_Path);
 
-            return CreateInstance(configuredProject : configuredProject, fileSystem: _mockFS, properties: projectProperties, environment: environment, debugger : debugger);
+            return CreateInstance(configuredProject: configuredProject, fileSystem: _mockFS, properties: projectProperties, environment: environment, debugger: debugger);
         }
 
         private static ConsoleDebugTargetsProvider CreateInstance(

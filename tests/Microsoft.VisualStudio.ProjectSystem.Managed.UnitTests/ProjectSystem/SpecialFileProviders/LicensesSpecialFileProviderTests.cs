@@ -4,7 +4,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
     public class LicensesSpecialFileProviderTests : AbstractFindByNameUnderAppDesignerSpecialFileProviderTestBase
     {
-        public LicensesSpecialFileProviderTests() 
+        public LicensesSpecialFileProviderTests()
             : base("licenses.licx")
         {
         }

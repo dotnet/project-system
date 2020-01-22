@@ -14,10 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 Item = new MutableProjectPropertiesContext();
             }
 
-            public MutableProjectPropertiesContext Item
-            {
-                get;
-            }
+            public MutableProjectPropertiesContext Item { get; }
 
             public bool IsLinked => throw new NotImplementedException();
 
@@ -28,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 throw new NotImplementedException();
             }
 
-            public IProjectItemTree SetBrowseObjectProperties(IRule browseObjectProperties)
+            public IProjectItemTree SetBrowseObjectProperties(IRule? browseObjectProperties)
             {
                 throw new NotImplementedException();
             }
@@ -78,12 +75,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 get { return Item; }
             }
 
-            IProjectItemTree2 IProjectItemTree2.SetProperties(string caption, string filePath, IRule browseObjectProperties, ProjectImageMoniker icon, ProjectImageMoniker expandedIcon, bool? visible, ProjectTreeFlags? flags, IProjectPropertiesContext context, IPropertySheet propertySheet, bool? isLinked, bool resetFilePath, bool resetBrowseObjectProperties, bool resetIcon, bool resetExpandedIcon, int? displayOrder)
+            IProjectItemTree2 IProjectItemTree2.SetProperties(string? caption, string? filePath, IRule? browseObjectProperties, ProjectImageMoniker? icon, ProjectImageMoniker? expandedIcon, bool? visible, ProjectTreeFlags? flags, IProjectPropertiesContext? context, IPropertySheet? propertySheet, bool? isLinked, bool resetFilePath, bool resetBrowseObjectProperties, bool resetIcon, bool resetExpandedIcon, int? displayOrder)
             {
                 throw new NotImplementedException();
             }
 
-            IProjectItemTree IProjectItemTree.SetProperties(string caption, string filePath, IRule browseObjectProperties, ProjectImageMoniker icon, ProjectImageMoniker expandedIcon, bool? visible, ProjectTreeFlags? flags, IProjectPropertiesContext context, IPropertySheet propertySheet, bool? isLinked, bool resetFilePath, bool resetBrowseObjectProperties, bool resetIcon, bool resetExpandedIcon)
+            IProjectItemTree IProjectItemTree.SetProperties(string? caption, string? filePath, IRule? browseObjectProperties, ProjectImageMoniker? icon, ProjectImageMoniker? expandedIcon, bool? visible, ProjectTreeFlags? flags, IProjectPropertiesContext? context, IPropertySheet? propertySheet, bool? isLinked, bool resetFilePath, bool resetBrowseObjectProperties, bool resetIcon, bool resetExpandedIcon)
             {
                 throw new NotImplementedException();
             }

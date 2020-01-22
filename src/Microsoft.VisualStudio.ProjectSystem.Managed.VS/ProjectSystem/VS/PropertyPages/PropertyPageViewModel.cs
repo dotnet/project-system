@@ -11,7 +11,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public UnconfiguredProject? Project { get; set; }
-        public PropertyPageControl? ParentControl { get; set; }
 
         /// <summary>
         /// Since calls to ignore events can be nested, a downstream call could change the outer 
@@ -19,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// PushIgnoreEvents\PopIgnoreEvents  are used instead to control the count.
         /// </summary>
         private int _ignoreEventsNestingCount = 0;
-        
+
         public bool IgnoreEvents => _ignoreEventsNestingCount > 0;
 
         public void PushIgnoreEvents()
@@ -35,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
-        public abstract Task Initialize();
+        public abstract Task InitializeAsync();
 
         public abstract Task<int> Save();
 
@@ -48,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            
+
             if (suppressInvalidation)
             {
                 PopIgnoreEvents();
@@ -70,23 +69,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         protected virtual bool OnPropertyChanged<T>(ref T propertyRef, T value, [CallerMemberName] string? propertyName = null)
         {
             return OnPropertyChanged(ref propertyRef, value, suppressInvalidation: false, propertyName: propertyName);
-        }
-
-        protected void SetBooleanProperty(ref bool property, string value, bool defaultValue, bool invert = false)
-        {
-            if (!string.IsNullOrEmpty(value))
-            {
-                property = bool.Parse(value);
-
-                if (invert)
-                {
-                    property = !property;
-                }
-            }
-            else
-            {
-                property = defaultValue;
-            }
         }
 
         /// <summary>

@@ -22,26 +22,17 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <summary>
         ///     Gets the image key that represents the image that will be applied to the special folder.
         /// </summary>
-        public abstract string FolderImageKey
-        {
-            get;
-        }
+        public abstract string FolderImageKey { get; }
 
         /// <summary>
         ///     Gets the default flags that will be applied to the special folder.
         /// </summary>
-        public abstract ProjectTreeFlags FolderFlags
-        {
-            get;
-        }
+        public abstract ProjectTreeFlags FolderFlags { get; }
 
         /// <summary>
         ///     Gets a value indicating whether the special folder is supported in this project.
         /// </summary>
-        public abstract bool IsSupported
-        {
-            get;
-        }
+        public abstract bool IsSupported { get; }
 
         public void CalculatePropertyValues(IProjectTreeCustomizablePropertyContext propertyContext, IProjectTreeCustomizablePropertyValues propertyValues)
         {

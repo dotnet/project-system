@@ -105,11 +105,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
+            Assumes.Present(_configuredProject.Services.ProjectSubscription);
+
             _link = ProjectDataSources.SyncLinkTo(
                 _configuredProject.Services.ProjectSubscription.JointRuleSource.SourceBlock.SyncLinkOptions(DataflowOption.WithRuleNames(ProjectPropertiesSchemas)),
                 _configuredProject.Services.ProjectSubscription.SourceItemsRuleSource.SourceBlock.SyncLinkOptions(),
                 _projectItemSchemaService.SourceBlock.SyncLinkOptions(),
-                target: DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectItemSchema>>>(OnChanged),
+                target: DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<ValueTuple<IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectItemSchema>>>(OnChanged),
                 linkOptions: DataflowOption.PropagateCompletion);
 
             return Task.CompletedTask;
@@ -122,7 +124,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return Task.CompletedTask;
         }
 
-        internal void OnChanged(IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectItemSchema>> e)
+        internal void OnChanged(IProjectVersionedValue<ValueTuple<IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectItemSchema>> e)
         {
             lock (_stateLock)
             {
@@ -183,7 +185,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             foreach (string setName in state.SetNames)
             {
                 log.Verbose("Comparing timestamps of inputs and outputs in set '{0}':", setName);
-        
+
                 if (!CheckInputsAndOutputs(CollectSetInputs(setName), CollectSetOutputs(setName), timestampCache, setName))
                 {
                     return false;

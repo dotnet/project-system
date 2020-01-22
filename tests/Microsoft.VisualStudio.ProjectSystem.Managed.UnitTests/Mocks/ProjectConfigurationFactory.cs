@@ -98,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 Name = name;
             }
 
-            public bool Equals(ProjectConfiguration other)
+            public bool Equals(ProjectConfiguration? other)
             {
                 throw new NotImplementedException();
             }

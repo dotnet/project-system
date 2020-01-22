@@ -4,8 +4,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders.VisualBasic
 {
     public class VisualBasicAppXamlSpecialFileProviderTests : AbstractAppXamlSpecialFileProviderTestBase
     {
-        public VisualBasicAppXamlSpecialFileProviderTests() 
-            :  base("Application.xaml")
+        public VisualBasicAppXamlSpecialFileProviderTests()
+            : base("Application.xaml")
         {
         }
 

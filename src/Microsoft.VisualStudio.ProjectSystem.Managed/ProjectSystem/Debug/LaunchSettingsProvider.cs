@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     [AppliesTo(ProjectCapability.LaunchProfiles)]
     internal class LaunchSettingsProvider : OnceInitializedOnceDisposed, ILaunchSettingsProvider2
     {
-        public const string LaunchSettingsFilename = @"launchSettings.json";
+        public const string LaunchSettingsFilename = "launchSettings.json";
         public const string ProfilesSectionName = "profiles";
 
         // Command that means run this project
@@ -98,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public ITaskDelayScheduler FileChangeScheduler { get; protected set; }
 
         // Tracks when we last read or wrote to the file. Prevents picking up needless changes
-        protected DateTime LastSettingsFileSyncTime { get; set; }
+        protected DateTime LastSettingsFileSyncTimeUtc { get; set; }
 
         protected const int WaitForFirstSnapshotDelayMillis = 5000;
 
@@ -172,8 +172,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 // The use of AsyncLazy with dataflow can allow state stored in the execution context to leak through. The downstream affect is
                 // calls to say, get properties, may fail. To avoid this, we capture the execution context here, and it will be reapplied when
                 // we get new subscription data from the dataflow.
-                ITargetBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCapabilitiesSnapshot>>> projectChangesBlock = DataflowBlockSlim.CreateActionBlock(
-                            DataflowUtilities.CaptureAndApplyExecutionContext<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCapabilitiesSnapshot>>>(ProjectRuleBlock_ChangedAsync));
+                ITargetBlock<IProjectVersionedValue<ValueTuple<IProjectSubscriptionUpdate, IProjectCapabilitiesSnapshot>>> projectChangesBlock = DataflowBlockSlim.CreateActionBlock(
+                            DataflowUtilities.CaptureAndApplyExecutionContext<IProjectVersionedValue<ValueTuple<IProjectSubscriptionUpdate, IProjectCapabilitiesSnapshot>>>(ProjectRuleBlock_ChangedAsync));
                 StandardRuleDataflowLinkOptions evaluationLinkOptions = DataflowOption.WithRuleNames(ProjectDebugger.SchemaName);
 
                 _projectRuleSubscriptionLink = ProjectDataSources.SyncLinkTo(
@@ -191,7 +191,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// Handles changes to the ProjectDebugger properties. Gets the active profile and generates a launch settings update if it
         /// has changed. The first evaluation generally kicks off the first snapshot
         /// </summary>
-        protected async Task ProjectRuleBlock_ChangedAsync(IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCapabilitiesSnapshot>> projectSnapshot)
+        protected async Task ProjectRuleBlock_ChangedAsync(IProjectVersionedValue<ValueTuple<IProjectSubscriptionUpdate, IProjectCapabilitiesSnapshot>> projectSnapshot)
         {
             if (projectSnapshot.Value.Item1.CurrentState.TryGetValue(ProjectDebugger.SchemaName, out IProjectRuleSnapshot ruleSnapshot))
             {
@@ -354,7 +354,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             string fileName = await GetLaunchSettingsFilePathAsync();
 
-            return !_fileSystem.FileExists(fileName) || _fileSystem.LastFileWriteTime(fileName) != LastSettingsFileSyncTime;
+            return !_fileSystem.FileExists(fileName) || _fileSystem.LastFileWriteTimeUtc(fileName) != LastSettingsFileSyncTimeUtc;
         }
 
         /// <summary>
@@ -453,7 +453,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
 
             // Remember the time we are sync'd to
-            LastSettingsFileSyncTime = _fileSystem.LastFileWriteTime(fileName);
+            LastSettingsFileSyncTimeUtc = _fileSystem.LastFileWriteTimeUtc(fileName);
             return launchSettingsData;
         }
 
@@ -508,7 +508,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 _fileSystem.WriteAllText(fileName, jsonString);
 
                 // Update the last write time
-                LastSettingsFileSyncTime = _fileSystem.LastFileWriteTime(fileName);
+                LastSettingsFileSyncTimeUtc = _fileSystem.LastFileWriteTimeUtc(fileName);
             }
             finally
             {
@@ -593,7 +593,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
                 // Only do something if the file is truly different than what we synced. Here, we want to
                 // throttle.
-                if (!_fileSystem.FileExists(fileName) || _fileSystem.LastFileWriteTime(fileName) != LastSettingsFileSyncTime)
+                if (!_fileSystem.FileExists(fileName) || _fileSystem.LastFileWriteTimeUtc(fileName) != LastSettingsFileSyncTimeUtc)
                 {
                     return FileChangeScheduler.ScheduleAsyncTask(token =>
                     {

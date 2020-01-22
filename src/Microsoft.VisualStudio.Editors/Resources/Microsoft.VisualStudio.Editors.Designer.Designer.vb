@@ -993,6 +993,42 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Annotations.
+        '''</summary>
+        Friend Shared ReadOnly Property PPG_BuildSettings_Nullable_Annotations() As String
+            Get
+                Return ResourceManager.GetString("PPG_BuildSettings_Nullable_Annotations", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Disable.
+        '''</summary>
+        Friend Shared ReadOnly Property PPG_BuildSettings_Nullable_Disable() As String
+            Get
+                Return ResourceManager.GetString("PPG_BuildSettings_Nullable_Disable", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Enable.
+        '''</summary>
+        Friend Shared ReadOnly Property PPG_BuildSettings_Nullable_Enable() As String
+            Get
+                Return ResourceManager.GetString("PPG_BuildSettings_Nullable_Enable", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Warnings.
+        '''</summary>
+        Friend Shared ReadOnly Property PPG_BuildSettings_Nullable_Warnings() As String
+            Get
+                Return ResourceManager.GetString("PPG_BuildSettings_Nullable_Warnings", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Build.
         '''</summary>
         Friend Shared ReadOnly Property PPG_BuildTitle() As String
@@ -2835,7 +2871,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PropPage_ImportedNamespacesTitle", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to &quot;Invalid characters in file path.&quot;.
         '''</summary>
@@ -2844,7 +2880,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PropPage_InvalidCharactersInFilePath", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to The URL is invalid. Please enter a valid URL like &quot;http://www.microsoft.com/&quot;.
         '''</summary>

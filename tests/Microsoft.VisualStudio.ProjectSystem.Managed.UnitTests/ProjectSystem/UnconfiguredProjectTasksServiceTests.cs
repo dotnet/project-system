@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var result = service.PrioritizedProjectLoadedInHost;
 
             service.OnProjectLoadedInHost();
-            
+
             Assert.False(result.IsCompleted);
         }
 
@@ -126,7 +126,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private static UnconfiguredProjectTasksService CreateInstance(IProjectAsynchronousTasksService? tasksService = null, ILoadedInHostListener? loadedInHostListener = null)
         {
             tasksService ??= IProjectAsynchronousTasksServiceFactory.Create();
-            loadedInHostListener  ??= ILoadedInHostListenerFactory.Create();
+            loadedInHostListener ??= ILoadedInHostListenerFactory.Create();
 
             return new UnconfiguredProjectTasksService(tasksService, IProjectThreadingServiceFactory.Create(), loadedInHostListener);
         }

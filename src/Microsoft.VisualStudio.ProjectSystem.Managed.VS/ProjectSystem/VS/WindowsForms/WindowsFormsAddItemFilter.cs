@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
     [AppliesTo(ProjectCapability.DotNet)]
     internal class WindowsFormsAddItemFilter : IVsFilterAddProjectItemDlg, IDisposable
     {
-        private  UnconfiguredProject? _project;
+        private UnconfiguredProject? _project;
 
         [ImportingConstructor]
         public WindowsFormsAddItemFilter(UnconfiguredProject project)

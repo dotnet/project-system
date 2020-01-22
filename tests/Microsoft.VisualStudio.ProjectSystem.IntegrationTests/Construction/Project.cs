@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     /// <summary>
     /// Defines a <c>.csproj</c> file to be created when using <see cref="ProjectLayoutTestBase"/>.
     /// </summary>
-    public sealed class Project : IEnumerable   
+    public sealed class Project : IEnumerable
     {
         private static readonly Guid s_sdkProjectTypeGuid = Guid.Parse("9A19103F-16F7-4668-BE54-9A1E7A4F7556");
 

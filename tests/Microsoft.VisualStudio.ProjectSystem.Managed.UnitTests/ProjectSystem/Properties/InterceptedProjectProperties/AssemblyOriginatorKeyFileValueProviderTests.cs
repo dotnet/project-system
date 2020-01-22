@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
             var instanceProvider = IProjectInstancePropertiesProviderFactory.ImplementsGetCommonProperties(instanceProperties);
 
             // Verify get key file value without intercepted provider.
-            var properties = instanceProvider.GetCommonProperties(null);
+            var properties = instanceProvider.GetCommonProperties(null!);
             var propertyValue = await properties.GetEvaluatedPropertyValueAsync(AssemblyOriginatorKeyFilePropertyName);
             Assert.Equal(keyFileFullPath, propertyValue);
 
@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
             var propertyNames = await properties.GetPropertyNamesAsync();
             Assert.Single(propertyNames);
             Assert.Equal(AssemblyOriginatorKeyFilePropertyName, propertyNames.First());
-            properties = interceptedProvider.GetCommonProperties(null);
+            properties = interceptedProvider.GetCommonProperties(null!);
             string newKeyFileName = "KeyFile2.snk";
             string newKeyFileFullPath = $@"{projectFolder}\{newKeyFileName}";
             await properties.SetPropertyValueAsync(AssemblyOriginatorKeyFilePropertyName, newKeyFileFullPath);

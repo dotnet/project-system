@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [Theory]
         [ClassData(typeof(ComposedPartTestData))]
         public void ImportsMustFilterBasedOnCapabilities(Type type)
-        {   
+        {
             // Imports should respect/filter the capabilities of the exports they receive
 
             var part = ComponentComposition.Instance.FindComposedPart(type);
@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [Theory]
         [ClassData(typeof(ComposablePartDefinitionTestData))]
         public void ExportsFromSamePartMustApplyToSameCapabilities(Type type)
-        {   
+        {
             // Exports coming from a single part must apply to the same capabilities
 
             var definition = ComponentComposition.Instance.FindComposablePartDefinition(type);
@@ -109,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             };
 
             var definition = ComponentComposition.Instance.FindComposablePartDefinition(type);
-            
+
             Assert.NotNull(definition);
 
             // BUG: https://github.com/dotnet/project-system/issues/5519
@@ -119,8 +119,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             foreach (KeyValuePair<MemberRef, ExportDefinition> exportDefinitionPair in definition!.ExportDefinitions)
             {
                 ExportDefinition export = exportDefinitionPair.Value;
-                if (contractsWithFixedCapabilities.Contains(export.ContractName) && 
-                    export.Metadata.TryGetValue(nameof(AppliesToAttribute.AppliesTo), out object metadata) && 
+                if (contractsWithFixedCapabilities.Contains(export.ContractName) &&
+                    export.Metadata.TryGetValue(nameof(AppliesToAttribute.AppliesTo), out object metadata) &&
                     metadata is string appliesTo)
                 {
                     IEnumerable<string> capabilities = GetRawCapabilities(appliesTo);
@@ -157,7 +157,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [Theory]
         [ClassData(typeof(ComposablePartDefinitionTestData))]
         public void ExportsMustBeMarkedWithApplyToIfRequired(Type type)
-        {   
+        {
             // If a contract requires AppliesTo to be specified, then an export must specify it
 
             var definition = ComponentComposition.Instance.FindComposablePartDefinition(type);
@@ -201,7 +201,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [Theory]
         [ClassData(typeof(ComposablePartDefinitionTestData))]
         public void ImportsMustRespectContractImportCardinality(Type type)
-        {   
+        {
             // Imports must respect import cardinality specified via [ProjectSystemContract]
 
             var contracts = ComponentComposition.Instance.Contracts;
@@ -225,7 +225,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [Theory]
         [ClassData(typeof(ComposablePartDefinitionTestData))]
         public void ImportsMustMatchExportScope(Type type)
-        {   
+        {
             // Imports cannot import something from a child scope, if the part comes from parent scope
 
             var definition = ComponentComposition.Instance.FindComposablePartDefinition(type);
@@ -260,7 +260,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [Theory]
         [ClassData(typeof(ComposablePartDefinitionTestData))]
         public void ImportsMustImportContractsMarkedWithProjectSystemContract(Type type)
-        {  
+        {
             // Imports must import interfaces that are marked with [ProjectSystemContract]
 
             var definition = ComponentComposition.Instance.FindComposablePartDefinition(type);
@@ -280,7 +280,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [Theory]
         [ClassData(typeof(ComposablePartDefinitionTestData))]
         public void ExportsMustExportContractsMarkedWithProjectSystemContract(Type type)
-        {   
+        {
             // Exports must export interfaces that are marked with [ProjectSystemContract]
 
             var definition = ComponentComposition.Instance.FindComposablePartDefinition(type);

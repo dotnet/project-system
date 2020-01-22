@@ -221,11 +221,6 @@ namespace Microsoft.VisualStudio.IO
             }
         }
 
-        public DateTime LastFileWriteTime(string path)
-        {
-            return Files[path].LastWriteTimeUtc.ToLocalTime();
-        }
-
         public DateTime LastFileWriteTimeUtc(string path)
         {
             return Files[path].LastWriteTimeUtc;

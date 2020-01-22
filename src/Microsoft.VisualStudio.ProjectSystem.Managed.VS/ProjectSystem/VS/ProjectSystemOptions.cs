@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             ISettingsManager? settingsManager = _settingsManager.Value;
             Assumes.Present(settingsManager);
-            
+
             return settingsManager.GetValueOrDefault(name, defaultValue);
         }
 

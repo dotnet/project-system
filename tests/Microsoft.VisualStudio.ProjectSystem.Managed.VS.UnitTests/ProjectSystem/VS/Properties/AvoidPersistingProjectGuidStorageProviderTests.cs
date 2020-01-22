@@ -286,7 +286,7 @@ $@"
      </PropertyGroup>
  </Project>"
 )]
-[InlineData(
+        [InlineData(
 @"
 <Project>
     <PropertyGroup>

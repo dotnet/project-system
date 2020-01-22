@@ -66,9 +66,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             public ImmutableArray<string> SetNames { get; }
 
             public ImmutableDictionary<string, ImmutableHashSet<string>> UpToDateCheckInputItemsBySetName { get; }
-            
+
             public ImmutableDictionary<string, ImmutableHashSet<string>> UpToDateCheckOutputItemsBySetName { get; }
-            
+
             public ImmutableDictionary<string, ImmutableHashSet<string>> UpToDateCheckBuiltItemsBySetName { get; }
 
             /// <summary>
@@ -169,7 +169,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 string? msBuildProjectFullPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectFullPathProperty, MSBuildProjectFullPath);
                 string? msBuildProjectDirectory = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectDirectoryProperty, MSBuildProjectDirectory);
-                string? outputRelativeOrFullPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutputPathProperty, OutputRelativeOrFullPath);
+                string? msBuildProjectOutputPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutputPathProperty, OutputRelativeOrFullPath);
+                string? outputRelativeOrFullPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutDirProperty, msBuildProjectOutputPath);
                 string msBuildAllProjects = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildAllProjectsProperty, "");
 
                 // The first item in this semicolon-separated list of project files will always be the one

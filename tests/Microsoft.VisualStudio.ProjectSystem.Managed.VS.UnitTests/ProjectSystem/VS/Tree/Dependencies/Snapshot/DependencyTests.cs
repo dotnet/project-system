@@ -52,8 +52,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         {
             var mockModel = new TestDependencyModel
             {
-                ProviderType =  "xxx",
-                Id =  "mymodel"
+                ProviderType = "xxx",
+                Id = "mymodel"
             };
 
             var dependency = new Dependency(mockModel, new TargetFramework("tfm1"), @"C:\Foo\Project.csproj");
@@ -94,8 +94,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 ExpandedIcon = KnownMonikers.PathIcon,
                 UnresolvedIcon = KnownMonikers.PathListBox,
                 UnresolvedExpandedIcon = KnownMonikers.PathListBoxItem,
-                Properties = new Dictionary<string, string> {{"prop1", "val1"}}.ToImmutableDictionary(),
-                DependencyIDs = new[] {"otherid"}.ToImmutableArray()
+                Properties = new Dictionary<string, string> { { "prop1", "val1" } }.ToImmutableDictionary(),
+                DependencyIDs = new[] { "otherid" }.ToImmutableArray()
             };
 
             var targetFramework = new TargetFramework("Tfm1");
@@ -198,7 +198,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public void Dependency_DependencyIDsProperty()
         {
             var dependencyModel1 = new TestDependencyModel
-            { 
+            {
                 ProviderType = "providerType",
                 Id = "someId1",
                 DependencyIDs = new[] { "someId2", "someId_other" }.ToImmutableArray()
@@ -247,7 +247,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             var dependencyModel = new TestableDependencyModel(
                     projectPath,
-                    "ItemSpec", 
+                    "ItemSpec",
                     iconSet: new DependencyIconSet(KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference));
 
             var dependency = new Dependency(dependencyModel, new TargetFramework("tfm2"), projectPath);
@@ -306,11 +306,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var type = "providerType";
             var modelId = "modelId";
 
-            Assert.Throws<ArgumentNullException>(() => Dependency.GetID(null!, type,  modelId));
-            Assert.Throws<ArgumentNullException>(() => Dependency.GetID(tfm,   null!, modelId));
-            Assert.Throws<ArgumentNullException>(() => Dependency.GetID(tfm,   type,  null!));
+            Assert.Throws<ArgumentNullException>(() => Dependency.GetID(null!, type, modelId));
+            Assert.Throws<ArgumentNullException>(() => Dependency.GetID(tfm, null!, modelId));
+            Assert.Throws<ArgumentNullException>(() => Dependency.GetID(tfm, type, null!));
 
-            Assert.Throws<ArgumentException>(() => Dependency.GetID(tfm, "",   modelId));
+            Assert.Throws<ArgumentException>(() => Dependency.GetID(tfm, "", modelId));
             Assert.Throws<ArgumentException>(() => Dependency.GetID(tfm, type, ""));
         }
 

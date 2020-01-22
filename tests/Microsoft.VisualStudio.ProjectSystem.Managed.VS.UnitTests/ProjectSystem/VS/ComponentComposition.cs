@@ -55,30 +55,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             InterfaceNames = CollectInterfaceNames(ContractAssemblies);
         }
 
-        public ComposableCatalog Catalog
-        {
-            get;
-        }
+        public ComposableCatalog Catalog { get; }
 
-        public CompositionConfiguration Configuration
-        {
-            get;
-        }
+        public CompositionConfiguration Configuration { get; }
 
-        public IDictionary<string, ContractMetadata> Contracts
-        {
-            get;
-        }
+        public IDictionary<string, ContractMetadata> Contracts { get; }
 
-        public IDictionary<string, ISet<Type>> ContractsRequiringAppliesTo
-        {
-            get;
-        }
+        public IDictionary<string, ISet<Type>> ContractsRequiringAppliesTo { get; }
 
-        public ISet<string> InterfaceNames
-        {
-            get;
-        }
+        public ISet<string> InterfaceNames { get; }
 
         public ComposedPart? FindComposedPart(Type type)
         {
@@ -200,7 +185,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                                                     .ToArray();
 
                 if (exceptions.Length == 0)
-                    return ex.Types.Where(t => t != null).ToArray();
+                    return ex.Types.WhereNotNull().ToArray();
 
                 string message = ex.ToString();
 

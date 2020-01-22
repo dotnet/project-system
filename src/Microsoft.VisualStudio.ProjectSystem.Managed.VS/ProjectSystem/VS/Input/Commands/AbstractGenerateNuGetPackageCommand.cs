@@ -89,6 +89,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                 // Build manager APIs require UI thread access.
                 await _threadingService.SwitchToUIThread();
 
+                Assumes.NotNull(Project.Services.HostObject);
+
                 // Save documents before build.
                 var projectVsHierarchy = (IVsHierarchy)Project.Services.HostObject;
                 ErrorHandler.ThrowOnFailure(_buildManager!.SaveDocumentsBeforeBuild(projectVsHierarchy, (uint)VSConstants.VSITEMID.Root, 0 /*docCookie*/));

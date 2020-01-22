@@ -51,6 +51,16 @@ namespace Microsoft.VisualStudio
             return default!;
         }
 
+        [Pure]
+        public static IEnumerable<T> WhereNotNull<T>(this IEnumerable<T?> source) where T : class
+        {
+            foreach (T? item in source)
+            {
+                if (item != null)
+                    yield return item;
+            }
+        }
+
         /// <summary>
         ///     Returns distinct elements from a sequence by using a specified key selector and <see cref="IEqualityComparer{T}"/> to compare values.
         /// </summary>

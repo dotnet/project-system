@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
     [Export(typeof(IProjectChangeHintReceiver))]
     [Export(typeof(OrderAddItemHintReceiver))]
     [ProjectChangeHintKind(ProjectChangeFileSystemEntityHint.AddedFileAsString)]
-    [AppliesTo(ProjectCapability.SortByDisplayOrder)]
+    [AppliesTo(ProjectCapability.SortByDisplayOrder + " & " + ProjectCapability.EditableDisplayOrder)]
     internal class OrderAddItemHintReceiver : IProjectChangeHintReceiver
     {
         private readonly IProjectAccessor _accessor;
@@ -32,6 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             if (CanMove() && !_previousIncludes.IsEmpty && hints.TryGetValue(ProjectChangeFileSystemEntityHint.AddedFile, out IImmutableSet<IProjectChangeHint> addedFileHints))
             {
                 IProjectChangeHint hint = addedFileHints.First();
+                Assumes.Present(hint.UnconfiguredProject.Services.ActiveConfiguredProjectProvider);
                 ConfiguredProject? configuredProject = hint.UnconfiguredProject.Services.ActiveConfiguredProjectProvider.ActiveConfiguredProject;
                 Assumes.NotNull(configuredProject);
                 await OrderingHelper.Move(configuredProject, _accessor, _previousIncludes, _target!, _action);
@@ -48,6 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             // However we check to see if we captured the previous includes for sanity to ensure it only gets set once.
             if (CanMove() && _previousIncludes.IsEmpty)
             {
+                Assumes.Present(hint.UnconfiguredProject.Services.ActiveConfiguredProjectProvider);
                 ConfiguredProject? configuredProject = hint.UnconfiguredProject.Services.ActiveConfiguredProjectProvider.ActiveConfiguredProject;
                 Assumes.NotNull(configuredProject);
                 _previousIncludes = await OrderingHelper.GetAllEvaluatedIncludes(configuredProject, _accessor);

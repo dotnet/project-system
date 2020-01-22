@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             var project = IVsProject_Factory.ImplementIsDocumentInProject(found: true, itemid: 1);
             var properties = ProjectPropertiesFactory.Create(ConfigurationGeneral.SchemaName, ConfigurationGeneral.LanguageServiceIdProperty, LanguageServiceId);
             var containedLanguageFactory = IVsContainedLanguageFactoryFactory.Create();
-            
+
             var factory = CreateInstance(project, containedLanguageFactory: containedLanguageFactory, hierarchy: hierarchy, properties: properties);
 
             var result = factory.GetContainedLanguageFactoryForFile("FilePath", out var hierarchyResult, out var itemIdResult, out var containedLanguageFactoryResult);

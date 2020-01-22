@@ -185,7 +185,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             ISettingsManager? settings = await _settingsManagerService.GetValueAsync();
             Assumes.Present(settings);
-            
+
             return settings.GetValueOrDefault<bool>(UsePreviewSdkSettingKey);
         }
 
@@ -332,8 +332,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             if (project.Capabilities.AppliesTo($"{ProjectCapability.DotNet} & {ProjectCapability.PackageReferences}"))
             {
+                Assumes.Present(project.Services.ActiveConfiguredProjectProvider);
                 ConfiguredProject? activeConfiguredProject = project.Services.ActiveConfiguredProjectProvider.ActiveConfiguredProject;
                 Assumes.NotNull(activeConfiguredProject);
+                Assumes.Present(activeConfiguredProject.Services.ProjectPropertiesProvider);
                 IProjectProperties properties = activeConfiguredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
                 string tfm = await properties.GetEvaluatedPropertyValueAsync("TargetFrameworkMoniker");
                 if (!string.IsNullOrEmpty(tfm))
@@ -346,6 +348,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     else if (fw.Identifier.Equals(".NETFramework", StringComparisons.FrameworkIdentifiers))
                     {
                         // The interesting case here is Asp.Net Core on full framework
+                        Assumes.Present(activeConfiguredProject.Services.PackageReferences);
                         IImmutableSet<IUnresolvedPackageReference> pkgReferences = await activeConfiguredProject.Services.PackageReferences.GetUnresolvedReferencesAsync();
 
                         // Look through the package references

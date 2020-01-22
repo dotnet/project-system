@@ -14,9 +14,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         /// <summary>
         ///     Gets the block that broadcasts current restore data.
         /// </summary>
-        IReceivableSourceBlock<IProjectVersionedValue<RestoreData>> RestoreData
-        {
-            get;
-        }
+        IReceivableSourceBlock<IProjectVersionedValue<RestoreData>> RestoreData { get; }
     }
 }

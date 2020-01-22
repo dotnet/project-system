@@ -21,10 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 get { return Files.Keys; }
             }
 
-            public Dictionary<string, IImmutableDictionary<string, string>> Files
-            {
-                get;
-            }
+            public Dictionary<string, IImmutableDictionary<string, string>> Files { get; }
 
             protected override void AddToContext(string fullPath, IImmutableDictionary<string, string> metadata, bool isActiveContext, IProjectLogger logger)
             {

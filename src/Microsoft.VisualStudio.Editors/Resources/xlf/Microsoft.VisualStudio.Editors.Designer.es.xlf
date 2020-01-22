@@ -7,6 +7,26 @@
         <target state="translated">Todos los archivos</target>
         <note />
       </trans-unit>
+      <trans-unit id="PPG_BuildSettings_Nullable_Annotations">
+        <source>Annotations</source>
+        <target state="new">Annotations</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PPG_BuildSettings_Nullable_Disable">
+        <source>Disable</source>
+        <target state="new">Disable</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PPG_BuildSettings_Nullable_Enable">
+        <source>Enable</source>
+        <target state="new">Enable</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PPG_BuildSettings_Nullable_Warnings">
+        <source>Warnings</source>
+        <target state="new">Warnings</target>
+        <note />
+      </trans-unit>
       <trans-unit id="PPG_PropertyPageControlName">
         <source>Property Page</source>
         <target state="translated">Página de propiedades</target>

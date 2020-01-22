@@ -21,10 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     NOTE: This token is cancelled before <see cref="LoadedProjectAsync"/> actions 
         ///     have been completed, so callers can bail early if needed.
         /// </remarks>
-        CancellationToken UnloadCancellationToken
-        {
-            get;
-        }
+        CancellationToken UnloadCancellationToken { get; }
 
         /// <summary>
         ///     Gets a task that completes when the host recognizes that the project is loaded, 
@@ -38,10 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <exception cref="OperationCanceledException">
         ///     Thrown if the project was unloaded.
         /// </exception>
-        Task ProjectLoadedInHost
-        {
-            get;
-        }
+        Task ProjectLoadedInHost { get; }
 
         /// <summary>
         ///     Gets a task that completes when the host recognizes that the project is loaded,
@@ -54,10 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <exception cref="OperationCanceledException">
         ///     Thrown if the project was unloaded.
         /// </exception>
-        Task PrioritizedProjectLoadedInHost
-        {
-            get;
-        }
+        Task PrioritizedProjectLoadedInHost { get; }
 
         /// <summary>
         ///     Provides protection for an operation that the project will not close before the completion of some task.

@@ -142,6 +142,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enable remote debugging.
+        /// </summary>
+        public static string chkRemoteDebugEnabledHelpText {
+            get {
+                return ResourceManager.GetString("chkRemoteDebugEnabledHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enable SQL Server debugging.
         /// </summary>
         public static string chkSqlCodeDebuggingText {
@@ -149,7 +158,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
                 return ResourceManager.GetString("chkSqlCodeDebuggingText", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Debug.
         /// </summary>
@@ -246,6 +255,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         public static string ExecutablePathWatermark {
             get {
                 return ResourceManager.GetString("ExecutablePathWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The host name is invalid..
+        /// </summary>
+        public static string InvalidHostName {
+            get {
+                return ResourceManager.GetString("InvalidHostName", resourceCulture);
             }
         }
         
@@ -417,6 +435,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         public static string ProfileNameRequired {
             get {
                 return ResourceManager.GetString("ProfileNameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use remote m_achine:.
+        /// </summary>
+        public static string RemoteDebug {
+            get {
+                return ResourceManager.GetString("RemoteDebug", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remote machine host name.
+        /// </summary>
+        public static string RemoteDebugMachineWatermark {
+            get {
+                return ResourceManager.GetString("RemoteDebugMachineWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You must specify a remote machine&apos;s host name..
+        /// </summary>
+        public static string RemoteHostNameRequired {
+            get {
+                return ResourceManager.GetString("RemoteHostNameRequired", resourceCulture);
             }
         }
         

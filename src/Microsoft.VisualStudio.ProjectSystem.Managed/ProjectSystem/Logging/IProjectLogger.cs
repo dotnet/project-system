@@ -18,10 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
         ///     <see langword="true"/> if the <see cref="IProjectLogger"/> is 
         ///     enabled and logging to the log; otherwise, <see langword="false"/>.
         /// </value>
-        bool IsEnabled
-        {
-            get;
-        }
+        bool IsEnabled { get; }
 
         /// <summary>
         ///     If <see cref="IsEnabled"/> is <see langword="true"/>, writes

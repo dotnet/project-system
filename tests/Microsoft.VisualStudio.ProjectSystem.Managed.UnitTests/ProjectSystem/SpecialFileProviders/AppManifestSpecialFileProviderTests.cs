@@ -4,7 +4,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
     public class AppManifestSpecialFileProviderTests : AbstractFindByNameUnderAppDesignerSpecialFileProviderTestBase
     {
-        public AppManifestSpecialFileProviderTests() 
+        public AppManifestSpecialFileProviderTests()
             : base("app.manifest")
         {
         }
@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 
         private ProjectProperties CreateProperties(string appManifestPropertyValue)
         {
-            return ProjectPropertiesFactory.Create(UnconfiguredProjectFactory.Create(), 
+            return ProjectPropertiesFactory.Create(UnconfiguredProjectFactory.Create(),
                 new PropertyPageData(
                     ConfigurationGeneralBrowseObject.SchemaName,
                     ConfigurationGeneralBrowseObject.ApplicationManifestProperty,

@@ -46,6 +46,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         {
             await InitializeAsync();
 
+            Assumes.NotNull(AppliedValue);
+
             DesignTimeInputsDelta value = AppliedValue.Value;
 
             return value.Inputs.Select(_project.MakeRelative).ToArray();
@@ -60,6 +62,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             {
                 await InitializeAsync();
             }
+
+            Assumes.NotNull(AppliedValue);
 
             DesignTimeInputsDelta value = AppliedValue.Value;
 
@@ -119,7 +123,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         /// Preprocess gets called as each data flow block updates and its job is to take the input from those blocks and do whatever work needed
         /// so that ApplyAsync has all of the info it needs to do its job.
         /// </summary>
-        protected override Task<IProjectVersionedValue<DesignTimeInputsDelta>> PreprocessAsync(IProjectVersionedValue<DesignTimeInputsDelta> input, IProjectVersionedValue<DesignTimeInputsDelta> previousOutput)
+        protected override Task<IProjectVersionedValue<DesignTimeInputsDelta>> PreprocessAsync(IProjectVersionedValue<DesignTimeInputsDelta> input, IProjectVersionedValue<DesignTimeInputsDelta>? previousOutput)
         {
             // As it happens the DesignTimeInputsDelta contains all of the state we need
             return Task.FromResult(input);

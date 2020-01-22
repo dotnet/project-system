@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             var restoreConfiguredInputSource = new UnwrapCollectionChainedProjectValueDataSource<IReadOnlyCollection<ConfiguredProject>, PackageRestoreConfiguredInput>(
                 _project.Services,
                 projects => projects.Select(project => project.Services.ExportProvider.GetExportedValueOrDefault<IPackageRestoreConfiguredInputDataSource>())
-                                    .Where(dataSource => dataSource != null)    // Filter out those without PackageReference
+                                    .WhereNotNull() // Filter out those without PackageReference
                                     .Select(DropConfiguredProjectVersions),
                 includeSourceVersions: true);
 

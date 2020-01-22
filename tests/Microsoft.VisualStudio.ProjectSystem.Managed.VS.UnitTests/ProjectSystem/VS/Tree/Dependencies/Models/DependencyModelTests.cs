@@ -16,11 +16,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             public override DependencyIconSet IconSet => new DependencyIconSet(Icon, ExpandedIcon, UnresolvedIcon, UnresolvedExpandedIcon);
 
             public TestableDependencyModel(
-                string path, 
-                string originalItemSpec, 
-                ProjectTreeFlags flags, 
-                bool resolved, 
-                bool isImplicit, 
+                string path,
+                string originalItemSpec,
+                ProjectTreeFlags flags,
+                bool resolved,
+                bool isImplicit,
                 IImmutableDictionary<string, string>? properties)
                 : base(path, originalItemSpec, flags, resolved, isImplicit, properties)
             {

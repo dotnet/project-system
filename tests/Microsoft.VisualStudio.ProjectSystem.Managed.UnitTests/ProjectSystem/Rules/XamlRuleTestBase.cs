@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
         protected static XElement LoadXamlRule(string filePath, out XmlNamespaceManager namespaceManager)
         {
-            var settings = new XmlReaderSettings {XmlResolver = null};
+            var settings = new XmlReaderSettings { XmlResolver = null };
             using var fileStream = File.OpenRead(filePath);
             using var reader = XmlReader.Create(fileStream, settings);
             var root = XDocument.Load(reader).Root;

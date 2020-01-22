@@ -36,9 +36,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
         /// </summary>
         private static string GetDisplayPath(UnconfiguredProject project, ProjectItemIdentity item)
         {
-            string linkPath = item.LinkPath;
+            string? linkPath = item.LinkPath;
 
-            if (!string.IsNullOrWhiteSpace(linkPath))
+            if (!Strings.IsNullOrWhiteSpace(linkPath))
             {
                 // This is a linked file.
                 // We use the link path because that is the rendering/display path in solution explorer.

@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders.VisualBasic
         private readonly ICreateFileFromTemplateService _templateFileCreationService;
 
         [ImportingConstructor]
-        public VisualBasicAppXamlSpecialFileProvider(IPhysicalProjectTree projectTree, ICreateFileFromTemplateService templateFileCreationService)  
+        public VisualBasicAppXamlSpecialFileProvider(IPhysicalProjectTree projectTree, ICreateFileFromTemplateService templateFileCreationService)
             : base("Application.xaml", projectTree)
         {
             _templateFileCreationService = templateFileCreationService;

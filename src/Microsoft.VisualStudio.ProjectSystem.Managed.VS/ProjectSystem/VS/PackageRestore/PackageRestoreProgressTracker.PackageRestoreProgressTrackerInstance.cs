@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                     _project,
                     nameof(PackageRestoreProgressTracker));
 
-                Action<IProjectVersionedValue<Tuple<IProjectSnapshot, RestoreData>>> action = OnRestoreCompleted;
+                Action<IProjectVersionedValue<ValueTuple<IProjectSnapshot, RestoreData>>> action = OnRestoreCompleted;
 
                 _subscription = ProjectDataSources.SyncLinkTo(
                     _projectSubscriptionService.ProjectSource.SourceBlock.SyncLinkOptions(),
@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                         linkOptions: DataflowOption.PropagateCompletion);
             }
 
-            internal void OnRestoreCompleted(IProjectVersionedValue<Tuple<IProjectSnapshot, RestoreData>> value)
+            internal void OnRestoreCompleted(IProjectVersionedValue<ValueTuple<IProjectSnapshot, RestoreData>> value)
             {
                 if (IsRestoreUpToDate(value.Value.Item1, value.Value.Item2))
                 {

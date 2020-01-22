@@ -26,10 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         [ImportMany]
-        public OrderPrecedenceImportCollection<IProjectGuidService> ProjectGuidServices
-        {
-            get;
-        }
+        public OrderPrecedenceImportCollection<IProjectGuidService> ProjectGuidServices { get; }
 
         public async Task<Guid> GetProjectGuidAsync()
         {

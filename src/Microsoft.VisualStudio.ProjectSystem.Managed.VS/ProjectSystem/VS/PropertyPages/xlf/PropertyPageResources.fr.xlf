@@ -42,6 +42,11 @@
         <target state="translated">Chemin de l'exécutable à lancer</target>
         <note />
       </trans-unit>
+      <trans-unit id="InvalidHostName">
+        <source>The host name is invalid.</source>
+        <target state="new">The host name is invalid.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="LaunchUrlWatermark">
         <source>Absolute or relative URL</source>
         <target state="translated">URL absolue ou relative</target>
@@ -90,6 +95,21 @@
       <trans-unit id="ProfileNameRequired">
         <source>You must specify a profile name.</source>
         <target state="translated">Vous devez spécifier un nom de profil.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RemoteDebug">
+        <source>Use remote m_achine:</source>
+        <target state="new">Use remote m_achine:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RemoteDebugMachineWatermark">
+        <source>Remote machine host name</source>
+        <target state="new">Remote machine host name</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RemoteHostNameRequired">
+        <source>You must specify a remote machine's host name.</source>
+        <target state="new">You must specify a remote machine's host name.</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueCannotBeEmpty">
@@ -220,6 +240,11 @@
       <trans-unit id="chkNativeCodeDebuggingText">
         <source>Enable native code debugging</source>
         <target state="translated">Permettre le débogage du code natif</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="chkRemoteDebugEnabledHelpText">
+        <source>Enable remote debugging</source>
+        <target state="new">Enable remote debugging</target>
         <note />
       </trans-unit>
       <trans-unit id="chkSqlCodeDebuggingText">

@@ -19,10 +19,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
         /// <exception cref="ArgumentOutOfRangeException">
         ///     <paramref name="value"/> is less than 0.
         /// </exception>
-        int IndentLevel
-        {
-            get;
-            set;
-        }
+        int IndentLevel { get; set; }
     }
 }

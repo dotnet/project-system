@@ -53,6 +53,8 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
+            
+            <!-- Launch profile -->
             <Label
                 Grid.Row="0"
                 x:Uid="profileLabel" 
@@ -119,6 +121,8 @@
                     Command="{Binding Path=DeleteProfileCommand}">
                 </Button>
             </StackPanel>
+            
+            <!-- Launch type -->
             <Label
                 x:Uid="launchLabel"
                 Grid.Row="1" 
@@ -155,6 +159,8 @@
                     </MultiBinding>
                 </ComboBox.IsEnabled>
             </ComboBox>
+            
+            <!-- Executable path -->
             <Label 
                 Grid.Row="2"
                 x:Uid="executableLabel"
@@ -192,8 +198,10 @@
                 IsEnabled="{Binding Path=IsProfileSelected, Mode=OneWay}"
                 Visibility="{Binding Path=SupportsExecutable, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
                 Command="{Binding Path=BrowseExecutableCommand}"/>
+            
+            <!-- Arguments -->
             <Label 
-                Grid.Row="4"
+                Grid.Row="3"
                 x:Uid="argumentsLabel"
                 Margin="4,4,3,0"
                 Content="{x:Static Member=local:PropertyPageResources.ApplicationArguments}"
@@ -202,7 +210,7 @@
                 Visibility="{Binding Path=SupportsArguments, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
                 Target="{Binding ElementName=txtArguments}"/>
             <local:WatermarkTextBox 
-                Grid.Row="4"
+                Grid.Row="3"
                 Grid.Column="1"
                 x:Name="txtArguments"
                 Watermark="{x:Static Member=local:PropertyPageResources.ApplicationArgumentsWatermark}"
@@ -215,9 +223,12 @@
                 Text="{Binding Path=CommandLineArguments, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 IsEnabled="{Binding Path=IsProfileSelected, Mode=OneWay}"
                 Visibility="{Binding Path=SupportsArguments, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
-                AutomationProperties.Name="{x:Static Member=local:PropertyPageResources.ApplicationArguments}"/>
+                AutomationProperties.Name="{x:Static Member=local:PropertyPageResources.ApplicationArguments}"
+                AutomationProperties.HelpText="{x:Static Member=local:PropertyPageResources.ApplicationArgumentsWatermark}"/>
+            
+            <!-- Working directory -->
             <Label 
-                Grid.Row="5"
+                Grid.Row="4"
                 x:Uid="workingDirectoryLabel"
                 Margin="4,4,3,5"
                 Content="{x:Static Member=local:PropertyPageResources.WorkingDirectory}"
@@ -225,7 +236,7 @@
                 Visibility="{Binding Path=SupportsWorkingDirectory, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
                 Target="{Binding ElementName=txtWorkingDirectory}"/>
             <local:WatermarkTextBox  
-                Grid.Row="5"
+                Grid.Row="4"
                 Grid.Column="1"
                 x:Name="txtWorkingDirectory" 
                 Watermark="{x:Static Member=local:PropertyPageResources.WorkingDirectoryWatermark}"
@@ -237,9 +248,10 @@
                 IsEnabled="{Binding Path=IsProfileSelected, Mode=OneWay}"
                 Visibility="{Binding Path=SupportsWorkingDirectory, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
                 MinWidth="200"
-                AutomationProperties.Name="{x:Static Member=local:PropertyPageResources.WorkingDirectory}"/>
+                AutomationProperties.Name="{x:Static Member=local:PropertyPageResources.WorkingDirectory}"
+                AutomationProperties.HelpText="{x:Static Member=local:PropertyPageResources.WorkingDirectoryWatermark}"/>
             <Button
-                Grid.Row="5"
+                Grid.Row="4"
                 Grid.Column="2"
                 x:Uid="btnWorkingDirectory"
                 x:Name="btnWorkingDirectory"
@@ -253,8 +265,10 @@
                 IsEnabled="{Binding Path=IsProfileSelected, Mode=OneWay}"
                 Visibility="{Binding Path=SupportsWorkingDirectory, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
                 Command="{Binding Path=BrowseDirectoryCommand}"/>
+
+            <!-- Launch URL -->
             <CheckBox 
-                Grid.Row="6"
+                Grid.Row="5"
                 Grid.Column="0"
                 x:Uid="chkLaunchBrowser"
                 x:Name="chkLaunchBrowser"
@@ -267,7 +281,7 @@
                 AutomationProperties.HelpText="{x:Static Member=local:PropertyPageResources.chkLaunchBrowserHelpText}"
                 Content="{x:Static Member=local:PropertyPageResources.LaunchURL}"/>
             <local:WatermarkTextBox 
-                Grid.Row="6"
+                Grid.Row="5"
                 Grid.Column="1"
                 x:Name="txtLaunchPage"
                 Watermark="{x:Static Member=local:PropertyPageResources.LaunchUrlWatermark}"
@@ -286,6 +300,43 @@
                     </MultiBinding>
                 </local:WatermarkTextBox.IsEnabled>
             </local:WatermarkTextBox>
+
+            <!-- Remote debugging -->
+            <CheckBox
+                Grid.Row="6"
+                Grid.Column="0"
+                x:Uid="chkRemoteDebugEnabled"
+                x:Name="chkRemoteDebugEnabled"
+                IsChecked="{Binding RemoteDebugEnabled, Mode=TwoWay}"
+                Margin="9,7,3,7"
+                VerticalAlignment="Center"
+                IsEnabled="{Binding Path=IsProfileSelected, Mode=OneWay}"
+                Visibility="{Binding Path=SupportsRemoteDebug, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
+                VerticalContentAlignment="Center"
+                AutomationProperties.HelpText="{x:Static Member=local:PropertyPageResources.chkRemoteDebugEnabledHelpText}"
+                Content="{x:Static Member=local:PropertyPageResources.RemoteDebug}"/>
+            <local:WatermarkTextBox
+                Grid.Row="6"
+                Grid.Column="1"
+                x:Name="txtRemoteDebugMachine"
+                Watermark="{x:Static Member=local:PropertyPageResources.RemoteDebugMachineWatermark}"
+                Margin="5,5,2,4"
+                VerticalAlignment="Center"
+                VerticalContentAlignment="Center"
+                Text="{Binding Path=RemoteDebugMachine, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Visibility="{Binding Path=SupportsRemoteDebug, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
+                MinWidth="200"
+                MinHeight="23"
+                AutomationProperties.Name="{x:Static Member=local:PropertyPageResources.RemoteDebugMachineWatermark}">
+                <local:WatermarkTextBox.IsEnabled>
+                    <MultiBinding Converter="{StaticResource MultiValueBoolToBoolAnd}">
+                        <Binding Path="RemoteDebugEnabled" Mode="OneWay"/>
+                        <Binding Path="IsProfileSelected" Mode="OneWay"/>
+                    </MultiBinding>
+                </local:WatermarkTextBox.IsEnabled>
+            </local:WatermarkTextBox>
+
+            <!-- Environment variables -->
             <Label 
                 Grid.Row="7"
                 x:Uid="envVarsLabel"
@@ -407,6 +458,8 @@
                     </Button.IsEnabled>
                 </Button>
             </StackPanel>
+
+            <!-- Native code debugging -->
             <CheckBox 
                 Grid.Row="8"
                 Grid.Column="0"
@@ -419,6 +472,8 @@
                 IsEnabled="{Binding Path=IsProfileSelected, Mode=OneWay}"
                 VerticalContentAlignment="Center"
                 Content="{x:Static Member=local:PropertyPageResources.chkNativeCodeDebuggingText}"/>
+            
+            <!-- SQL debugging -->
             <CheckBox
                 Grid.Row="9"
                 Grid.Column="0"
@@ -431,6 +486,7 @@
                 IsEnabled="{Binding Path=IsProfileSelected, Mode=OneWay}"
                 VerticalContentAlignment="Center"
                 Content="{x:Static Member=local:PropertyPageResources.chkSqlCodeDebuggingText}"/>
+            
             <!-- Where the custom control is placed for the active provider -->
             <ContentPresenter Grid.Row="10" Grid.Column="0"  Grid.ColumnSpan="3" Content="{Binding ActiveProviderUserControl, Mode=OneWay}" />
         </Grid>

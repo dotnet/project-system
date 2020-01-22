@@ -21,25 +21,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         ///     Gets the last write time of the assets file at the end of the last restore
         ///     or <see cref="DateTime.MinValue"/> if the file did not exist.
         /// </summary>
-        public DateTime ProjectAssetsLastWriteTimeUtc
-        {
-            get;
-        }
+        public DateTime ProjectAssetsLastWriteTimeUtc { get; }
 
         /// <summary>
         ///     Gets the file path of the assets file.
         /// </summary>
-        public string ProjectAssetsFilePath
-        {
-            get;
-        }
+        public string ProjectAssetsFilePath { get; }
 
         /// <summary>
         ///     Gets an indication if the restore was successful.
         /// </summary>
-        public bool Succeeded
-        {
-            get;
-        }
+        public bool Succeeded { get; }
     }
 }

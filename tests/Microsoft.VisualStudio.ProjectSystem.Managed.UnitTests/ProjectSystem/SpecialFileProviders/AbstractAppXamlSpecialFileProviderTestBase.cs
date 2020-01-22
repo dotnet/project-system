@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
     public abstract class AbstractAppXamlSpecialFileProviderTestBase : AbstractFindByNameSpecialFileProviderTestBase
     {
-        protected AbstractAppXamlSpecialFileProviderTestBase(string fileName) 
+        protected AbstractAppXamlSpecialFileProviderTestBase(string fileName)
             : base(fileName)
         {
         }

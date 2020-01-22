@@ -7,6 +7,11 @@
         <target state="translated">S&amp;ymboly podmíněné kompilace:</target>
         <note />
       </trans-unit>
+      <trans-unit id="lblNullable.Text">
+        <source>Nulla&amp;ble:</source>
+        <target state="new">Nulla&amp;ble:</target>
+        <note />
+      </trans-unit>
       <trans-unit id="outputLabel.Text">
         <source>Output</source>
         <target state="translated">Výstup</target>

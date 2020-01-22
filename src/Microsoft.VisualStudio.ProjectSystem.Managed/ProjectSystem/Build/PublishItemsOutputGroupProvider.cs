@@ -24,11 +24,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
         private readonly ConfiguredProject _configuredProject;
 
         [ImportingConstructor]
-        internal PublishItemsOutputGroupProvider(IProjectAccessor projectAccessor, ConfiguredProject configuredProject)
+        internal PublishItemsOutputGroupProvider(IProjectAccessor projectAccessor, ConfiguredProject configuredProject, IProjectThreadingService projectThreadingService)
         {
             _projectAccessor = projectAccessor;
             _configuredProject = configuredProject;
-            _outputGroups = new AsyncLazy<IImmutableSet<IOutputGroup>>(GetOutputGroupMetadataAsync);
+            _outputGroups = new AsyncLazy<IImmutableSet<IOutputGroup>>(GetOutputGroupMetadataAsync, projectThreadingService.JoinableTaskFactory);
         }
 
         public Task<IImmutableSet<IOutputGroup>> OutputGroups

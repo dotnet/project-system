@@ -99,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             if (visibility)
             {
-                WriteVisibility(tree);                
+                WriteVisibility(tree);
             }
 
             if (flags)
@@ -140,7 +140,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             if (tree is IProjectItemTree item)
             {
                 _builder.Append(", ItemType: ");
-                _builder.Append(item.Item.ItemType);
+                _builder.Append(item.Item?.ItemType);
 
                 if (TagElements)
                 {

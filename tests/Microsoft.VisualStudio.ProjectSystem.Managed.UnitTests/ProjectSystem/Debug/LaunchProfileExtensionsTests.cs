@@ -36,18 +36,59 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         [Theory]
-        [InlineData(false)]
-        [InlineData(true)]
-        [InlineData(null)]
-        public void IsInMemoryProfile_NativeDebuggingIsEnabled(bool? nativeDebugging)
+        [InlineData(false, false)]
+        [InlineData(true, true)]
+        [InlineData(null, false)]
+        public void IsNativeDebuggingEnabled_ILaunchProfile(bool? value, bool expected)
         {
-            bool isUsingNativeDebugging = nativeDebugging == null ? false : nativeDebugging.Value;
-            var data = new LaunchProfile()
+            var data = new LaunchProfile
             {
-                OtherSettings = nativeDebugging == null ? null : ImmutableStringDictionary<object>.EmptyOrdinal.Add(LaunchProfileExtensions.NativeDebuggingProperty, nativeDebugging.Value)
+                OtherSettings = value == null ? null : ImmutableStringDictionary<object>.EmptyOrdinal.Add(LaunchProfileExtensions.NativeDebuggingProperty, value.Value)
             };
 
-            Assert.Equal(isUsingNativeDebugging, data.NativeDebuggingIsEnabled());
+            Assert.Equal(expected, data.IsNativeDebuggingEnabled());
+        }
+
+        [Theory]
+        [InlineData(false, false)]
+        [InlineData(true, true)]
+        [InlineData(null, false)]
+        public void IsSqlDebuggingEnabled_ILaunchProfile(bool? value, bool expected)
+        {
+            var data = new LaunchProfile
+            {
+                OtherSettings = value == null ? null : ImmutableStringDictionary<object>.EmptyOrdinal.Add(LaunchProfileExtensions.SqlDebuggingProperty, value.Value)
+            };
+
+            Assert.Equal(expected, data.IsSqlDebuggingEnabled());
+        }
+
+        [Theory]
+        [InlineData(false, false)]
+        [InlineData(true, true)]
+        [InlineData(null, false)]
+        public void IsRemoteDebugEnabled_ILaunchProfile(bool? value, bool expected)
+        {
+            var data = new LaunchProfile
+            {
+                OtherSettings = value == null ? null : ImmutableStringDictionary<object>.EmptyOrdinal.Add(LaunchProfileExtensions.RemoteDebugEnabledProperty, value.Value)
+            };
+
+            Assert.Equal(expected, data.IsRemoteDebugEnabled());
+        }
+
+        [Theory]
+        [InlineData("host", "host")]
+        [InlineData("", "")]
+        [InlineData(null, null)]
+        public void RemoteDebugMachine_ILaunchProfile(string? value, string? expected)
+        {
+            var data = new LaunchProfile
+            {
+                OtherSettings = value == null ? null : ImmutableStringDictionary<object>.EmptyOrdinal.Add(LaunchProfileExtensions.RemoteDebugMachineProperty, value)
+            };
+
+            Assert.Equal(expected, data.RemoteDebugMachine());
         }
     }
 }

@@ -19,10 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             Iid = GetIids(comTypes);
         }
 
-        public string[] Iid
-        {
-            get;
-        }
+        public string[] Iid { get; }
 
         public static bool IncludeInherited
         {

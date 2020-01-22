@@ -42,10 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
         }
 
         [ImportMany]
-        public OrderPrecedenceImportCollection<IProjectSpecificEditorProvider, INamedExportMetadataView> ProjectSpecificEditorProviders
-        {
-            get;
-        }
+        public OrderPrecedenceImportCollection<IProjectSpecificEditorProvider, INamedExportMetadataView> ProjectSpecificEditorProviders { get; }
 
         public async Task<IProjectSpecificEditorInfo?> GetSpecificEditorAsync(string documentMoniker)
         {
@@ -119,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
             if (result.TreeProvider.FindByPath(result.Tree, documentMoniker) is IProjectItemTree treeItem &&
                 treeItem.Parent != null &&
                 !treeItem.Parent.Flags.Contains(ProjectTreeFlags.SourceFile) &&
-                StringComparers.ItemTypes.Equals(treeItem.Item.ItemType, Compile.SchemaName))
+                StringComparers.ItemTypes.Equals(treeItem.Item?.ItemType, Compile.SchemaName))
             {
                 return treeItem;
             }

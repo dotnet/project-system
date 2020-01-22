@@ -567,7 +567,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
 
             var project = new Project(projectRootElement);
 
-            var elements = 
+            var elements =
                 OrderingHelper.GetItemElements(project, updatedTree.Children[2], ImmutableArray<string>.Empty)
                 .AddRange(OrderingHelper.GetItemElements(project, updatedTree.Children[3], ImmutableArray<string>.Empty));
 

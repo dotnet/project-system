@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders.CSharp
     internal class CSharpAppXamlSpecialFileProvider : AbstractAppXamlSpecialFileProvider
     {
         [ImportingConstructor]
-        public CSharpAppXamlSpecialFileProvider(IPhysicalProjectTree projectTree) 
+        public CSharpAppXamlSpecialFileProvider(IPhysicalProjectTree projectTree)
             : base("App.xaml", projectTree)
         {
         }
