@@ -94,6 +94,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.errorsAndWarningsLabel = New System.Windows.Forms.Label()
             Me.lblSGenOption = New System.Windows.Forms.Label()
             Me.cboSGenOption = New System.Windows.Forms.ComboBox()
+            Me.lblNullable = New System.Windows.Forms.Label()
+            Me.cboNullable = New System.Windows.Forms.ComboBox()
             Me.overarchingTableLayoutPanel.SuspendLayout()
             Me.outputTableLayoutPanel.SuspendLayout()
             Me.generalHeaderTableLayoutPanel.SuspendLayout()
@@ -237,36 +239,38 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'overarchingTableLayoutPanel
             '
             resources.ApplyResources(Me.overarchingTableLayoutPanel, "overarchingTableLayoutPanel")
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.outputTableLayoutPanel, 0, 15)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.outputTableLayoutPanel, 0, 16)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.generalHeaderTableLayoutPanel, 0, 0)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.treatWarningsAsErrorsTableLayoutPanel, 0, 11)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.errorsAndWarningsTableLayoutPanel, 0, 8)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.chkRegisterForCOM, 0, 18)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.chkXMLDocumentationFile, 0, 17)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.txtXMLDocumentationFile, 1, 17)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.btnOutputPathBrowse, 2, 16)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.txtOutputPath, 1, 16)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.lblOutputPath, 0, 16)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.rbWarningSpecific, 0, 14)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.txtSpecificWarnings, 1, 14)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.rbWarningAll, 0, 13)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.rbWarningNone, 0, 12)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.txtSupressWarnings, 1, 10)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.lblSupressWarnings, 0, 10)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.cboWarningLevel, 1, 9)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.lblWarningLevel, 0, 9)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.treatWarningsAsErrorsTableLayoutPanel, 0, 12)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.errorsAndWarningsTableLayoutPanel, 0, 9)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.chkRegisterForCOM, 0, 19)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.chkXMLDocumentationFile, 0, 18)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.txtXMLDocumentationFile, 1, 18)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.btnOutputPathBrowse, 2, 17)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.txtOutputPath, 1, 17)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.lblOutputPath, 0, 17)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.rbWarningSpecific, 0, 15)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.txtSpecificWarnings, 1, 15)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.rbWarningAll, 0, 14)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.rbWarningNone, 0, 13)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.txtSupressWarnings, 1, 11)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.lblSupressWarnings, 0, 11)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.cboWarningLevel, 1, 10)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.lblWarningLevel, 0, 10)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.cboPlatformTarget, 1, 4)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.chkOptimizeCode, 0, 7)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.chkAllowUnsafeCode, 0, 6)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.chkPrefer32Bit, 0, 5)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.chkOptimizeCode, 0, 8)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.chkAllowUnsafeCode, 0, 7)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.chkPrefer32Bit, 0, 6)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.chkDefineTrace, 0, 3)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.chkDefineDebug, 0, 2)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.txtConditionalCompilationSymbols, 1, 1)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.lblConditionalCompilationSymbols, 0, 1)
             Me.overarchingTableLayoutPanel.Controls.Add(Me.lblPlatformTarget, 0, 4)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.lblSGenOption, 0, 19)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.cboSGenOption, 1, 19)
-            Me.overarchingTableLayoutPanel.Controls.Add(Me.btnAdvanced, 2, 20)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.lblSGenOption, 0, 20)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.cboSGenOption, 1, 20)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.btnAdvanced, 2, 21)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.lblNullable, 0, 5)
+            Me.overarchingTableLayoutPanel.Controls.Add(Me.cboNullable, 1, 5)
             Me.overarchingTableLayoutPanel.Name = "overarchingTableLayoutPanel"
             '
             'outputTableLayoutPanel
@@ -361,6 +365,18 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.cboSGenOption.FormattingEnabled = True
             Me.cboSGenOption.Name = "cboSGenOption"
             '
+            'lblNullable
+            '
+            resources.ApplyResources(Me.lblNullable, "lblNullable")
+            Me.lblNullable.Name = "lblNullable"
+            '
+            'cboNullable
+            '
+            resources.ApplyResources(Me.cboNullable, "cboNullable")
+            Me.cboNullable.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.cboNullable.FormattingEnabled = True
+            Me.cboNullable.Name = "cboNullable"
+            '
             'BuildPropPage
             '
             resources.ApplyResources(Me, "$this")
@@ -382,6 +398,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         End Sub
 
+        Friend WithEvents lblNullable As Windows.Forms.Label
+        Friend WithEvents cboNullable As Windows.Forms.ComboBox
     End Class
 
 End Namespace

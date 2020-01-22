@@ -211,7 +211,7 @@
     <value>3, 0, 0, 0</value>
   </data>
   <data name="outputLineLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>491, 1</value>
+    <value>544, 1</value>
   </data>
   <data name="outputLineLabel.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -259,7 +259,7 @@
     <value>1</value>
   </data>
   <data name="outputTableLayoutPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 377</value>
+    <value>0, 404</value>
   </data>
   <data name="outputTableLayoutPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -268,7 +268,7 @@
     <value>1</value>
   </data>
   <data name="outputTableLayoutPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>539, 13</value>
+    <value>592, 13</value>
   </data>
   <data name="outputTableLayoutPanel.TabIndex" type="System.Int32, mscorlib">
     <value>20</value>
@@ -307,7 +307,7 @@
     <value>3, 0, 0, 0</value>
   </data>
   <data name="generalLineLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>489, 1</value>
+    <value>542, 1</value>
   </data>
   <data name="generalLineLabel.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -367,7 +367,7 @@
     <value>1</value>
   </data>
   <data name="generalHeaderTableLayoutPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>539, 13</value>
+    <value>592, 13</value>
   </data>
   <data name="generalHeaderTableLayoutPanel.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -406,7 +406,7 @@
     <value>3, 0, 0, 0</value>
   </data>
   <data name="treatWarningsAsErrorsLineLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>413, 1</value>
+    <value>466, 1</value>
   </data>
   <data name="treatWarningsAsErrorsLineLabel.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -457,7 +457,7 @@
     <value>1</value>
   </data>
   <data name="treatWarningsAsErrorsTableLayoutPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 279</value>
+    <value>0, 306</value>
   </data>
   <data name="treatWarningsAsErrorsTableLayoutPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -466,7 +466,7 @@
     <value>1</value>
   </data>
   <data name="treatWarningsAsErrorsTableLayoutPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>539, 13</value>
+    <value>592, 13</value>
   </data>
   <data name="treatWarningsAsErrorsTableLayoutPanel.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
@@ -505,7 +505,7 @@
     <value>3, 0, 0, 0</value>
   </data>
   <data name="errorsAndWarningsLineLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>433, 1</value>
+    <value>486, 1</value>
   </data>
   <data name="errorsAndWarningsLineLabel.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -556,7 +556,7 @@
     <value>1</value>
   </data>
   <data name="errorsAndWarningsTableLayoutPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 197</value>
+    <value>0, 224</value>
   </data>
   <data name="errorsAndWarningsTableLayoutPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -565,7 +565,7 @@
     <value>1</value>
   </data>
   <data name="errorsAndWarningsTableLayoutPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>539, 13</value>
+    <value>592, 13</value>
   </data>
   <data name="errorsAndWarningsTableLayoutPanel.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -592,7 +592,7 @@
     <value>True</value>
   </data>
   <data name="chkRegisterForCOM.Location" type="System.Drawing.Point, System.Drawing">
-    <value>23, 456</value>
+    <value>23, 483</value>
   </data>
   <data name="chkRegisterForCOM.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>23, 3, 3, 3</value>
@@ -625,7 +625,7 @@
     <value>True</value>
   </data>
   <data name="chkXMLDocumentationFile.Location" type="System.Drawing.Point, System.Drawing">
-    <value>23, 431</value>
+    <value>23, 458</value>
   </data>
   <data name="chkXMLDocumentationFile.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>23, 3, 3, 3</value>
@@ -651,11 +651,14 @@
   <data name="&gt;&gt;chkXMLDocumentationFile.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
+  <data name="txtXMLDocumentationFile.AccessibleName" xml:space="preserve">
+    <value>XML Document File Path</value>
+  </data>
   <data name="txtXMLDocumentationFile.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left, Right</value>
   </data>
   <data name="txtXMLDocumentationFile.Location" type="System.Drawing.Point, System.Drawing">
-    <value>184, 430</value>
+    <value>184, 457</value>
   </data>
   <data name="txtXMLDocumentationFile.Size" type="System.Drawing.Size, System.Drawing">
     <value>274, 20</value>
@@ -682,13 +685,13 @@
     <value>True</value>
   </data>
   <data name="btnOutputPathBrowse.Location" type="System.Drawing.Point, System.Drawing">
-    <value>464, 401</value>
+    <value>464, 428</value>
   </data>
   <data name="btnOutputPathBrowse.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 11, 0, 3</value>
   </data>
   <data name="btnOutputPathBrowse.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
+    <value>128, 23</value>
   </data>
   <data name="btnOutputPathBrowse.TabIndex" type="System.Int32, mscorlib">
     <value>23</value>
@@ -712,7 +715,7 @@
     <value>Left, Right</value>
   </data>
   <data name="txtOutputPath.Location" type="System.Drawing.Point, System.Drawing">
-    <value>184, 402</value>
+    <value>184, 429</value>
   </data>
   <data name="txtOutputPath.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 11, 3, 3</value>
@@ -742,7 +745,7 @@
     <value>True</value>
   </data>
   <data name="lblOutputPath.Location" type="System.Drawing.Point, System.Drawing">
-    <value>20, 406</value>
+    <value>20, 433</value>
   </data>
   <data name="lblOutputPath.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>20, 11, 3, 3</value>
@@ -775,7 +778,7 @@
     <value>True</value>
   </data>
   <data name="rbWarningSpecific.Location" type="System.Drawing.Point, System.Drawing">
-    <value>23, 349</value>
+    <value>23, 376</value>
   </data>
   <data name="rbWarningSpecific.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>23, 3, 3, 11</value>
@@ -801,11 +804,14 @@
   <data name="&gt;&gt;rbWarningSpecific.ZOrder" xml:space="preserve">
     <value>10</value>
   </data>
+  <data name="txtSpecificWarnings.AccessibleName" xml:space="preserve">
+    <value>Specific Warnings To Treat As Errors</value>
+  </data>
   <data name="txtSpecificWarnings.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left, Right</value>
   </data>
   <data name="txtSpecificWarnings.Location" type="System.Drawing.Point, System.Drawing">
-    <value>184, 351</value>
+    <value>184, 378</value>
   </data>
   <data name="txtSpecificWarnings.Size" type="System.Drawing.Size, System.Drawing">
     <value>274, 20</value>
@@ -832,7 +838,7 @@
     <value>True</value>
   </data>
   <data name="rbWarningAll.Location" type="System.Drawing.Point, System.Drawing">
-    <value>23, 326</value>
+    <value>23, 353</value>
   </data>
   <data name="rbWarningAll.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>23, 3, 3, 3</value>
@@ -865,7 +871,7 @@
     <value>True</value>
   </data>
   <data name="rbWarningNone.Location" type="System.Drawing.Point, System.Drawing">
-    <value>23, 303</value>
+    <value>23, 330</value>
   </data>
   <data name="rbWarningNone.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>23, 11, 3, 3</value>
@@ -895,7 +901,7 @@
     <value>Left, Right</value>
   </data>
   <data name="txtSupressWarnings.Location" type="System.Drawing.Point, System.Drawing">
-    <value>184, 248</value>
+    <value>184, 275</value>
   </data>
   <data name="txtSupressWarnings.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 3, 11</value>
@@ -925,7 +931,7 @@
     <value>True</value>
   </data>
   <data name="lblSupressWarnings.Location" type="System.Drawing.Point, System.Drawing">
-    <value>20, 251</value>
+    <value>20, 278</value>
   </data>
   <data name="lblSupressWarnings.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>20, 3, 3, 11</value>
@@ -970,7 +976,7 @@
     <value>4</value>
   </data>
   <data name="cboWarningLevel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>184, 221</value>
+    <value>184, 248</value>
   </data>
   <data name="cboWarningLevel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 11, 3, 3</value>
@@ -1000,7 +1006,7 @@
     <value>True</value>
   </data>
   <data name="lblWarningLevel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>20, 225</value>
+    <value>20, 252</value>
   </data>
   <data name="lblWarningLevel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>20, 11, 3, 3</value>
@@ -1057,7 +1063,7 @@
     <value>True</value>
   </data>
   <data name="chkOptimizeCode.Location" type="System.Drawing.Point, System.Drawing">
-    <value>23, 169</value>
+    <value>23, 196</value>
   </data>
   <data name="chkOptimizeCode.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>23, 3, 3, 11</value>
@@ -1090,7 +1096,7 @@
     <value>True</value>
   </data>
   <data name="chkAllowUnsafeCode.Location" type="System.Drawing.Point, System.Drawing">
-    <value>23, 146</value>
+    <value>23, 173</value>
   </data>
   <data name="chkAllowUnsafeCode.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>23, 3, 3, 3</value>
@@ -1123,7 +1129,7 @@
     <value>True</value>
   </data>
   <data name="chkPrefer32Bit.Location" type="System.Drawing.Point, System.Drawing">
-    <value>23, 123</value>
+    <value>23, 150</value>
   </data>
   <data name="chkPrefer32Bit.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>23, 3, 3, 3</value>
@@ -1222,7 +1228,7 @@
     <value>True</value>
   </data>
   <data name="lblSGenOption.Location" type="System.Drawing.Point, System.Drawing">
-    <value>20, 483</value>
+    <value>20, 510</value>
   </data>
   <data name="lblSGenOption.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>20, 3, 3, 3</value>
@@ -1252,7 +1258,7 @@
     <value>Left</value>
   </data>
   <data name="cboSGenOption.Location" type="System.Drawing.Point, System.Drawing">
-    <value>184, 479</value>
+    <value>184, 506</value>
   </data>
   <data name="cboSGenOption.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>125, 0</value>
@@ -1282,13 +1288,13 @@
     <value>True</value>
   </data>
   <data name="btnAdvanced.Location" type="System.Drawing.Point, System.Drawing">
-    <value>464, 507</value>
+    <value>464, 533</value>
   </data>
   <data name="btnAdvanced.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 0, 0</value>
   </data>
   <data name="btnAdvanced.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
+    <value>128, 17</value>
   </data>
   <data name="btnAdvanced.TabIndex" type="System.Int32, mscorlib">
     <value>29</value>
@@ -1308,6 +1314,66 @@
   <data name="&gt;&gt;btnAdvanced.ZOrder" xml:space="preserve">
     <value>29</value>
   </data>
+  <data name="lblNullable.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="lblNullable.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblNullable.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblNullable.Location" type="System.Drawing.Point, System.Drawing">
+    <value>20, 127</value>
+  </data>
+  <data name="lblNullable.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>20, 3, 3, 3</value>
+  </data>
+  <data name="lblNullable.Size" type="System.Drawing.Size, System.Drawing">
+    <value>48, 13</value>
+  </data>
+  <data name="lblNullable.TabIndex" type="System.Int32, mscorlib">
+    <value>32</value>
+  </data>
+  <data name="lblNullable.Text" xml:space="preserve">
+    <value>Nulla&amp;ble:</value>
+  </data>
+  <data name="&gt;&gt;lblNullable.Name" xml:space="preserve">
+    <value>lblNullable</value>
+  </data>
+  <data name="&gt;&gt;lblNullable.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblNullable.Parent" xml:space="preserve">
+    <value>overarchingTableLayoutPanel</value>
+  </data>
+  <data name="&gt;&gt;lblNullable.ZOrder" xml:space="preserve">
+    <value>30</value>
+  </data>
+  <data name="cboNullable.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="cboNullable.Location" type="System.Drawing.Point, System.Drawing">
+    <value>184, 123</value>
+  </data>
+  <data name="cboNullable.Size" type="System.Drawing.Size, System.Drawing">
+    <value>125, 21</value>
+  </data>
+  <data name="cboNullable.TabIndex" type="System.Int32, mscorlib">
+    <value>33</value>
+  </data>
+  <data name="&gt;&gt;cboNullable.Name" xml:space="preserve">
+    <value>cboNullable</value>
+  </data>
+  <data name="&gt;&gt;cboNullable.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cboNullable.Parent" xml:space="preserve">
+    <value>overarchingTableLayoutPanel</value>
+  </data>
+  <data name="&gt;&gt;cboNullable.ZOrder" xml:space="preserve">
+    <value>31</value>
+  </data>
   <data name="overarchingTableLayoutPanel.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
@@ -1315,10 +1381,10 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="overarchingTableLayoutPanel.RowCount" type="System.Int32, mscorlib">
-    <value>18</value>
+    <value>22</value>
   </data>
   <data name="overarchingTableLayoutPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>539, 531</value>
+    <value>592, 550</value>
   </data>
   <data name="overarchingTableLayoutPanel.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1336,7 +1402,7 @@
     <value>0</value>
   </data>
   <data name="overarchingTableLayoutPanel.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="outputTableLayoutPanel" Row="15" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="generalHeaderTableLayoutPanel" Row="0" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="treatWarningsAsErrorsTableLayoutPanel" Row="11" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="errorsAndWarningsTableLayoutPanel" Row="8" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="chkRegisterForCOM" Row="18" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="chkXMLDocumentationFile" Row="17" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="txtXMLDocumentationFile" Row="17" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="btnOutputPathBrowse" Row="16" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="txtOutputPath" Row="16" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lblOutputPath" Row="16" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="rbWarningSpecific" Row="14" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="txtSpecificWarnings" Row="14" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="rbWarningAll" Row="13" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="rbWarningNone" Row="12" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="txtSupressWarnings" Row="10" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lblSupressWarnings" Row="10" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cboWarningLevel" Row="9" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lblWarningLevel" Row="9" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cboPlatformTarget" Row="4" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="chkOptimizeCode" Row="7" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="chkAllowUnsafeCode" Row="6" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="chkPrefer32Bit" Row="5" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="chkDefineTrace" Row="3" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="chkDefineDebug" Row="2" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="txtConditionalCompilationSymbols" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lblConditionalCompilationSymbols" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="lblPlatformTarget" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="lblSGenOption" Row="19" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cboSGenOption" Row="19" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="btnAdvanced" Row="20" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100,AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,Autosize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="outputTableLayoutPanel" Row="16" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="generalHeaderTableLayoutPanel" Row="0" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="treatWarningsAsErrorsTableLayoutPanel" Row="12" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="errorsAndWarningsTableLayoutPanel" Row="9" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="chkRegisterForCOM" Row="19" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="chkXMLDocumentationFile" Row="18" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="txtXMLDocumentationFile" Row="18" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="btnOutputPathBrowse" Row="17" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="txtOutputPath" Row="17" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lblOutputPath" Row="17" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="rbWarningSpecific" Row="15" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="txtSpecificWarnings" Row="15" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="rbWarningAll" Row="14" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="rbWarningNone" Row="13" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="txtSupressWarnings" Row="11" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lblSupressWarnings" Row="11" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cboWarningLevel" Row="10" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lblWarningLevel" Row="10" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cboPlatformTarget" Row="4" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="chkOptimizeCode" Row="8" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="chkAllowUnsafeCode" Row="7" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="chkPrefer32Bit" Row="6" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="chkDefineTrace" Row="3" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="chkDefineDebug" Row="2" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="txtConditionalCompilationSymbols" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lblConditionalCompilationSymbols" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="lblPlatformTarget" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="lblSGenOption" Row="20" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cboSGenOption" Row="20" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="btnAdvanced" Row="21" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="lblNullable" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cboNullable" Row="5" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100,AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="chkDefineDebug.Location" type="System.Drawing.Point, System.Drawing">
     <value>23, 50</value>
@@ -1365,9 +1431,9 @@
   <data name="&gt;&gt;chkDefineDebug.ZOrder" xml:space="preserve">
     <value>23</value>
   </data>
-  <data name="$this.Localizable" type="System.Boolean, mscorlib">
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
-  </data>
+  </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 13</value>
   </data>
@@ -1375,18 +1441,12 @@
     <value>True</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>539, 536</value>
+    <value>592, 550</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>BuildPropPage</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase, Microsoft.VisualStudio.AppDesigner, Version=42.42.42.42, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="txtSpecificWarnings.AccessibleName" xml:space="preserve">
-    <value>Specific Warnings To Treat As Errors</value>
-  </data>
-  <data name="txtXMLDocumentationFile.AccessibleName" xml:space="preserve">
-    <value>XML Document File Path</value>
   </data>
 </root>

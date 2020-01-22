@@ -46,6 +46,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             'Opt out of page scaling since we're using AutoScaleMode
             PageRequiresScaling = False
+
+            cboNullable.Items.AddRange(New Object() {
+                New ComboItem("disable", My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_BuildSettings_Nullable_Disable),
+                New ComboItem("enable", My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_BuildSettings_Nullable_Enable),
+                New ComboItem("warnings", My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_BuildSettings_Nullable_Warnings),
+                New ComboItem("annotations", My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_BuildSettings_Nullable_Annotations)})
         End Sub
 
 
@@ -79,7 +85,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                      New PropertyControlData(VsProjPropId110.VBPROJPROPID_OutputTypeEx, "OutputTypeEx", Nothing, AddressOf OutputTypeSet, Nothing),
                      New SingleConfigPropertyControlData(SingleConfigPropertyControlData.Configs.Release,
                         VsProjPropId80.VBPROJPROPID_GenerateSerializationAssemblies, "GenerateSerializationAssemblies", cboSGenOption, New Control() {lblSGenOption}),
-                     New PropertyControlData(VsProjPropId110.VBPROJPROPID_Prefer32Bit, "Prefer32Bit", chkPrefer32Bit, AddressOf Prefer32BitSet, AddressOf Prefer32BitGet)
+                     New PropertyControlData(VsProjPropId110.VBPROJPROPID_Prefer32Bit, "Prefer32Bit", chkPrefer32Bit, AddressOf Prefer32BitSet, AddressOf Prefer32BitGet),
+                     New PropertyControlData(1, "Nullable", cboNullable, AddressOf NullableSet, AddressOf NullableGet, ControlDataFlags.None, New Control() {lblNullable}),
+                     New PropertyControlData(CSharpProjPropId.CSPROJPROPID_LanguageVersion, "LanguageVersion", Nothing, AddressOf LanguageVersionSet, Nothing, ControlDataFlags.None, Nothing)
                      }
                 End If
                 Return m_ControlData
@@ -159,12 +167,69 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             rbWarningSpecific.Enabled = rbWarningAll.Enabled
 
             RefreshEnabledStatusForPrefer32Bit(chkPrefer32Bit)
-
+            RefreshVisibleStatusForNullable()
         End Sub
 
         Private Sub AdvancedButton_Click(sender As Object, e As EventArgs) Handles btnAdvanced.Click
             ShowChildPage(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AdvancedBuildSettings_Title, GetType(AdvBuildSettingsPropPage), HelpKeywords.CSProjPropAdvancedCompile)
         End Sub
+
+        Private Function NullableSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
+            If (Not (PropertyControlData.IsSpecialValue(value))) Then
+                Dim stValue As String = CType(value, String)
+                If Not String.IsNullOrEmpty(stValue) Then
+                    SelectComboItem(cboNullable, stValue)
+                Else
+                    cboNullable.SelectedIndex = 0 ' Zero is the (disabled) entry in the list
+                End If
+                Return True
+            Else
+                cboNullable.SelectedIndex = -1 ' Indeterminate state
+            End If
+        End Function
+
+        Private Function NullableGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
+            Dim item As ComboItem = CType(CType(control, ComboBox).SelectedItem, ComboItem)
+            If item IsNot Nothing Then
+                value = item.Value
+                Return True
+            Else
+                Return False ' Indeterminate
+            End If
+        End Function
+
+        Private Shared Sub SelectComboItem(control As ComboBox, value As String)
+            For Each entry As ComboItem In control.Items
+                If entry.Value = value Then
+                    control.SelectedItem = entry
+                    Exit For
+                End If
+            Next
+        End Sub
+
+        Private Sub RefreshVisibleStatusForNullable()
+            Dim pcd = GetPropertyControlData("LanguageVersion")
+            Dim value = TryCast(pcd.GetPropertyValueNative(pcd.ExtendedPropertiesObjects), String)
+
+            ' If the project doesn't specify a LangVersion property, one is determined based upon TargetFramework.
+            ' For new target frameworks such as netcoreapp3.1 that support C# 8 and Nullable Reference Types, the
+            ' LangVersion property is not set. For target frameworks which do not support C# 8 by default (such as
+            ' net472) LangVersion is set to a string such as "7.3"
+            Dim version As Decimal
+            Dim supportNullable = String.IsNullOrEmpty(value) OrElse (Decimal.TryParse(value, version) AndAlso version >= 8D)
+
+            EnableControl(lblNullable, supportNullable)
+            EnableControl(cboNullable, supportNullable)
+        End Sub
+
+        Private Function LanguageVersionSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
+            If Not m_fInsideInit AndAlso Not InsideInternalUpdate Then
+                ' Changes to the LanguageVersion may affect whether nullable is enabled
+                RefreshVisibleStatusForNullable()
+            End If
+
+            Return True
+        End Function
 
         Private Function ShouldEnableRegisterForCOM() As Boolean
 
@@ -1052,6 +1117,45 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 #End Region
 
+        Private Class ComboItem
+
+            ''' <summary>
+            ''' Stores the property value
+            ''' </summary>
+            Private ReadOnly _value As String
+
+            ''' <summary>
+            ''' Stores the display name
+            ''' </summary>
+            Private ReadOnly _displayName As String
+
+            ''' <summary>
+            ''' Constructor that uses the provided value and display name
+            ''' </summary>
+            Friend Sub New(value As String, displayName As String)
+
+                _value = value
+                _displayName = displayName
+
+            End Sub
+
+            ''' <summary>
+            ''' Gets the value
+            ''' </summary>
+            Public ReadOnly Property Value As String
+                Get
+                    Return _value
+                End Get
+            End Property
+
+            ''' <summary>
+            ''' Use the display name for the string display
+            ''' </summary>
+            Public Overrides Function ToString() As String
+                Return _displayName
+            End Function
+
+        End Class
     End Class
 
 End Namespace

@@ -7,6 +7,11 @@
         <target state="translated">Koşullu derleme s&amp;embolleri:</target>
         <note />
       </trans-unit>
+      <trans-unit id="lblNullable.Text">
+        <source>Nulla&amp;ble:</source>
+        <target state="new">Nulla&amp;ble:</target>
+        <note />
+      </trans-unit>
       <trans-unit id="outputLabel.Text">
         <source>Output</source>
         <target state="translated">Çıkış</target>
