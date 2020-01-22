@@ -58,11 +58,6 @@ namespace Microsoft.VisualStudio.IO
             File.WriteAllBytes(path, bytes);
         }
 
-        public DateTime LastFileWriteTime(string path)
-        {
-            return File.GetLastWriteTime(path);
-        }
-
         public DateTime LastFileWriteTimeUtc(string path)
         {
             return File.GetLastWriteTimeUtc(path);

@@ -266,7 +266,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             moqFS.WriteAllText(provider.LaunchSettingsFile, JsonString1);
 
             Assert.True(await provider.SettingsFileHasChangedAsyncTest());
-            provider.LastSettingsFileSyncTimeTest = moqFS.LastFileWriteTime(provider.LaunchSettingsFile);
+            provider.LastSettingsFileSyncTimeTest = moqFS.LastFileWriteTimeUtc(provider.LaunchSettingsFile);
             Assert.False(await provider.SettingsFileHasChangedAsyncTest());
         }
 
@@ -373,7 +373,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             await provider.SaveSettingsToDiskAsyncTest(testSettings.Object);
 
             // Last Write time should be set
-            Assert.Equal(moqFS.LastFileWriteTime(provider.LaunchSettingsFile), provider.LastSettingsFileSyncTimeTest);
+            Assert.Equal(moqFS.LastFileWriteTimeUtc(provider.LaunchSettingsFile), provider.LastSettingsFileSyncTimeTest);
 
             // Check disk contents
             Assert.Equal(JsonStringWithWebSettings, moqFS.ReadAllText(provider.LaunchSettingsFile), ignoreLineEndingDifferences: true);
@@ -425,7 +425,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             // Write new file, but set the timestamp to match
             moqFS.WriteAllText(provider.LaunchSettingsFile, JsonStringWithWebSettings);
-            provider.LastSettingsFileSyncTimeTest = moqFS.LastFileWriteTime(provider.LaunchSettingsFile);
+            provider.LastSettingsFileSyncTimeTest = moqFS.LastFileWriteTimeUtc(provider.LaunchSettingsFile);
             Assert.Equal(provider.LaunchSettingsFile_ChangedTest(), Task.CompletedTask);
             AssertEx.CollectionLength(provider.CurrentSnapshot.Profiles, 4);
 
@@ -902,7 +902,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public Task SaveSettingsToDiskAsyncTest(ILaunchSettings curSettings) { return SaveSettingsToDiskAsync(curSettings); }
         public Task UpdateAndSaveSettingsInternalAsyncTest(ILaunchSettings curSettings, bool persistToDisk) { return UpdateAndSaveSettingsInternalAsync(curSettings, persistToDisk); }
 
-        public DateTime LastSettingsFileSyncTimeTest { get { return LastSettingsFileSyncTime; } set { LastSettingsFileSyncTime = value; } }
+        public DateTime LastSettingsFileSyncTimeTest { get { return LastSettingsFileSyncTimeUtc; } set { LastSettingsFileSyncTimeUtc = value; } }
         public Task UpdateProfilesAsyncTest(string? activeProfile) { return UpdateProfilesAsync(activeProfile); }
         public void SetIgnoreFileChanges(bool value) { IgnoreFileChanges = value; }
         public Task<bool> SettingsFileHasChangedAsyncTest() { return SettingsFileHasChangedAsync(); }
