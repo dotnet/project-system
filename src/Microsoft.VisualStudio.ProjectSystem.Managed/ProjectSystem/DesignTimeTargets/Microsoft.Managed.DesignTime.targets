@@ -81,6 +81,8 @@
     <ProjectCapability Include="ProjectImportsTree" />
     <ProjectCapability Include="LaunchProfiles" />
     <ProjectCapability Include="NoGeneralDependentFileIcon"/>
+    <ProjectCapability Include="PackageReferences" Condition="'$(RestoreProjectStyle)' == 'PackageReference'"/>
+    
     <!--
       List of capabilities below is adding back common capabilities defined in imported targets.
       We disabled them with the property DefineCommonCapabilities=false to get rid of default
@@ -90,7 +92,6 @@
                           AssemblyReferences;
                           COMReferences;
                           ProjectReferences;
-                          PackageReferences;
                           SharedProjectReferences;
                           WinRTReferences;
                           OutputGroups;
