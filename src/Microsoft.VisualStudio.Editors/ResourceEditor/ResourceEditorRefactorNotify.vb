@@ -6,6 +6,7 @@ Option Compare Binary
 Imports System.Runtime.InteropServices
 
 Imports Microsoft.VisualStudio.Editors.Interop
+Imports Microsoft.VisualStudio.Shell
 Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.VSDesigner.Common
 
@@ -18,7 +19,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     '''   shell.
     ''' </summary>
     <CLSCompliant(False),
-    Guid("0407F754-C199-403e-B89B-1D8E1FF3DC79")>
+    Guid("0407F754-C199-403e-B89B-1D8E1FF3DC79"),
+    ProvideService(GetType(ResourceEditorRefactorNotify), ServiceName:="ResX RefactorNotify Service"),
+    ProvideRefactorNotify(GetType(ResourceEditorRefactorNotify), ".resx", "E24C65DC-7377-472b-9ABA-BC803B73C61A")>
     Friend NotInheritable Class ResourceEditorRefactorNotify
         Implements IVsRefactorNotify
 

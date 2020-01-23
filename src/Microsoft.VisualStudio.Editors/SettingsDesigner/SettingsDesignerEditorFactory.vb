@@ -12,7 +12,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
     ''' The editor factory for the settings designer
     ''' </summary>
     <Guid(SettingsDesignerEditorFactory.EditorGuidString),
-    ProvideView(LogicalView.Designer, "Design")>
+    ProvideView(LogicalView.Designer, "Design"),
+    ProvideEditorExtension(GetType(SettingsDesignerEditorFactory), ".settings", 30)>
     Friend NotInheritable Class SettingsDesignerEditorFactory
         Inherits DesignerFramework.BaseEditorFactory
 

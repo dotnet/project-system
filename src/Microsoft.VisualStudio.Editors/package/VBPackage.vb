@@ -5,7 +5,6 @@ Imports System.Runtime.InteropServices
 
 Imports Microsoft.VisualStudio.Editors.OptionPages
 Imports Microsoft.VisualStudio.Shell
-Imports Microsoft.VisualStudio.Shell.Design
 Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.VisualStudio.XmlEditor
 
@@ -25,7 +24,6 @@ Namespace Microsoft.VisualStudio.Editors
     '*   from here for the moment.
     '*
     '* In the future, we should consider moving to a RegPkg.exe model
-#Disable Warning BC40000 ' Type or member is obsolete
     <Guid(VBPackage.PackageGuid),
     ProvideOptionPage(GetType(GeneralOptionPage),
                      "Projects",
@@ -36,51 +34,15 @@ Namespace Microsoft.VisualStudio.Editors
                      1600,                  ' keywordListResourceId
                      IsServerAware:=True),  ' Configured to work in cloud environment scenarios. Note we're hand-authoring the MS.VS.Editors.pkgdef file, so it is also set there.
     ProvideMenuResource("Menus.ctmenu", 30),
-    ProvideService(GetType(ResourceEditor.ResourceEditorRefactorNotify), ServiceName:="ResX RefactorNotify Service"),
-    ProvideService(GetType(VBRefChangedSvc.Interop.IVbReferenceChangedService), ServiceName:="VB Project Reference Changed Service"),
-    ProvideService(GetType(Interop.IVsBuildEventCommandLineDialogService), ServiceName:="Vb Build Event Command Line Dialog Service"),
-    ProvideService(GetType(VBAttributeEditor.Interop.IVbPermissionSetService), ServiceName:="Vb Permission Set Service"),
-    ProvideService(GetType(XmlIntellisense.IXmlIntellisenseService), ServiceName:="Vb Xml Intellisense Service"),
-    ProvideService(GetType(AddImports.IVBAddImportsDialogService), ServiceName:="Add Imports Dialog Service"),
-    ProvideObject(GetType(PropertyPages.WPFApplicationWithMyPropPageComClass)),
-    ProvideObject(GetType(PropertyPages.ReferencePathsPropPageComClass)),
-    ProvideObject(GetType(SettingsGlobalObjects.SettingsGlobalObjectProvider)),
-    ProvideObject(GetType(PropertyPages.ApplicationPropPageComClass)),
-    ProvideObject(GetType(PropertyPages.BuildEventsPropPageComClass)),
-    ProvideObject(GetType(MyApplication.MyApplicationManager)), ' this is the one that is obsolete
-    ProvideObject(GetType(SettingsDesigner.SettingsSingleFileGenerator)),
-    ProvideObject(GetType(PropertyPages.ServicesPropPageComClass)),
-    ProvideObject(GetType(MyApplication.MyApplicationCodeGenerator)),
-    ProvideObject(GetType(PropertyPages.ReferencePropPageComClass)),
-    ProvideObject(GetType(PropertyPages.PackagePropPageComClass)),
-    ProvideObject(GetType(PropertyPages.CSharpApplicationPropPageComClass)),
-    ProvideObject(GetType(PropertyPages.DebugPropPageComClass)),
-    ProvideObject(GetType(PropertyPages.ApplicationWithMyPropPageComClass)),
-    ProvideObject(GetType(SettingsDesigner.PublicSettingsSingleFileGenerator)),
-    ProvideObject(GetType(PropertyPages.BuildPropPageComClass)),
-    ProvideObject(GetType(PropertyPages.CompilePropPageComClass)),
-    ProvideObject(GetType(PropertyPages.MyExtensibilityPropPageComClass)),
-    ProvideObject(GetType(PropertyPages.CodeAnalysisPropPageComClass)),
     ProvideEditorFactory(GetType(ApplicationDesigner.ApplicationDesignerEditorFactory), 1300, True, TrustLevel:=__VSEDITORTRUSTLEVEL.ETL_AlwaysTrusted),
     ProvideEditorFactory(GetType(SettingsDesigner.SettingsDesignerEditorFactory), 1200, True, TrustLevel:=__VSEDITORTRUSTLEVEL.ETL_AlwaysTrusted, CommonPhysicalViewAttributes:=3),
-    ProvideEditorExtension(GetType(SettingsDesigner.SettingsDesignerEditorFactory), ".settings", 30),
     ProvideEditorFactory(GetType(PropPageDesigner.PropPageDesignerEditorFactory), 1400, True, TrustLevel:=__VSEDITORTRUSTLEVEL.ETL_AlwaysTrusted),
     ProvideEditorFactory(GetType(ResourceEditor.ResourceEditorFactory), 1100, True, TrustLevel:=__VSEDITORTRUSTLEVEL.ETL_AlwaysTrusted, CommonPhysicalViewAttributes:=3),
-    ProvideEditorExtension(GetType(ResourceEditor.ResourceEditorFactory), ".resw", 48),
-    ProvideEditorExtension(GetType(ResourceEditor.ResourceEditorFactory), ".resx", 48),
-    CodeGeneratorRegistration(GetType(MyApplication.MyApplicationCodeGenerator), "Generator for MyApplication class", VBPackage.LegacyVBPackageGuid, GeneratesDesignTimeSource:=True),
-    CodeGeneratorRegistration(GetType(SettingsDesigner.PublicSettingsSingleFileGenerator), "Generator for strongly typed settings class (public class)", VBPackage.LegacyVBPackageGuid, GeneratesSharedDesignTimeSource:=True),
-    CodeGeneratorRegistration(GetType(SettingsDesigner.SettingsSingleFileGenerator), "Generator for strongly typed settings class", VBPackage.LegacyVBPackageGuid, GeneratesSharedDesignTimeSource:=True),
-    CodeGeneratorRegistration(GetType(SettingsDesigner.PublicSettingsSingleFileGenerator), "Generator for strongly typed settings class (public class)", VBPackage.LegacyCSharpPackageGuid, GeneratesSharedDesignTimeSource:=True),
-    CodeGeneratorRegistration(GetType(SettingsDesigner.SettingsSingleFileGenerator), "Generator for strongly typed settings class", VBPackage.LegacyCSharpPackageGuid, GeneratesSharedDesignTimeSource:=True),
     ProvideKeyBindingTable(Constants.MenuConstants.GUID_SETTINGSDESIGNER_CommandUIString, 1200, AllowNavKeyBinding:=False),
     ProvideKeyBindingTable(Constants.MenuConstants.GUID_RESXEditorCommandUIString, 1100, AllowNavKeyBinding:=False),
-    ProvideRefactorNotify(GetType(ResourceEditor.ResourceEditorRefactorNotify), ".resx", "E24C65DC-7377-472b-9ABA-BC803B73C61A"),
-    ProvideGlobalObjectProvider(GetType(SettingsGlobalObjects.SettingsGlobalObjectProvider)),
     CLSCompliant(False)
     >
     Friend Class VBPackage
-#Enable Warning BC40000 ' Type or member is obsolete
         Inherits Shell.Package
         Implements IVBPackage
 
