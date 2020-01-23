@@ -29,10 +29,10 @@ Namespace Microsoft.VisualStudio.Editors
                      "Projects",
                      "NETCore",
                      0,                     ' categoryResourceID: Not used, we don't own parent category
-                     1500,                     ' pageNameResourceID: Not used, set in Microsoft.VisualStudio.Editors.pkgdef, 
+                     1500,                  ' pageNameResourceID
                      True,                  ' supportsAutomation
                      1600,                  ' keywordListResourceId
-                     IsServerAware:=True),  ' Configured to work in cloud environment scenarios. Note we're hand-authoring the MS.VS.Editors.pkgdef file, so it is also set there.
+                     IsServerAware:=True),  ' Configured to work in cloud environment scenarios
     ProvideMenuResource("Menus.ctmenu", 30),
     ProvideEditorFactory(GetType(ApplicationDesigner.ApplicationDesignerEditorFactory), 1300, True, TrustLevel:=__VSEDITORTRUSTLEVEL.ETL_AlwaysTrusted),
     ProvideEditorFactory(GetType(SettingsDesigner.SettingsDesignerEditorFactory), 1200, True, TrustLevel:=__VSEDITORTRUSTLEVEL.ETL_AlwaysTrusted, CommonPhysicalViewAttributes:=3),
