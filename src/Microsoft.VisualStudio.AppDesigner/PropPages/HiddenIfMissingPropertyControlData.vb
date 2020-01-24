@@ -9,6 +9,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             MyBase.New(id, name, formControl)
         End Sub
 
+        Public Sub New(id As Integer, name As String, formControl As Control, setter As SetDelegate, getter As GetDelegate, flags As ControlDataFlags, assocControls As Control())
+            MyBase.New(id, name, formControl, setter, getter, flags, assocControls)
+        End Sub
+
         Public Overrides Sub InitPropertyValue()
             MyBase.InitPropertyValue()
 
