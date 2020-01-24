@@ -5,6 +5,7 @@ Imports System.IO
 Imports System.Windows.Forms
 
 Imports VSLangProj80
+Imports VSLangProj165
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
@@ -100,7 +101,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     data = New PropertyControlData(VsProjPropId.VBPROJPROPID_RemoteDebugEnabled, "RemoteDebugEnabled", RemoteDebugEnabled, ControlDataFlags.PersistedInProjectUserFile)
                     datalist.Add(data)
 
-                    data = New PropertyControlData(18000, "AuthenticationMode", AuthenticationMode, ControlDataFlags.PersistedInProjectUserFile, New Control() {AuthenticationModeLabel})
+                    data = New PropertyControlData(VsProjPropId165.VBPROJPROPID_AuthenticationMode, "AuthenticationMode", AuthenticationMode, AddressOf SetAuthenticationMode, AddressOf GetAuthenticationMode, ControlDataFlags.PersistedInProjectUserFile, New Control() {AuthenticationModeLabel})
                     datalist.Add(data)
 
                     m_ControlData = datalist.ToArray()
@@ -165,6 +166,39 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return True
         End Function
 
+        Private Function SetAuthenticationMode(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
+
+            Dim mode As AuthenticationMode = VSLangProj165.AuthenticationMode.AuthenticationMode_Windows
+
+            Try
+                mode = CType(value, AuthenticationMode)
+            Catch
+            End Try
+
+            Select Case mode
+                Case VSLangProj165.AuthenticationMode.AuthenticationMode_None
+                    AuthenticationMode.SelectedItem = My.Resources.Strings.NoAuthentication
+                Case Else
+                    AuthenticationMode.SelectedItem = My.Resources.Strings.WindowsAuthentication
+            End Select
+
+            Return True
+
+        End Function
+
+        Private Function GetAuthenticationMode(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
+
+            Select Case CStr(AuthenticationMode.SelectedItem)
+                Case My.Resources.Strings.NoAuthentication
+                    value = VSLangProj165.AuthenticationMode.AuthenticationMode_None
+                Case My.Resources.Strings.WindowsAuthentication
+                    value = VSLangProj165.AuthenticationMode.AuthenticationMode_Windows
+            End Select
+
+            Return True
+
+        End Function
+
         Protected Overrides Sub EnableAllControls(enabled As Boolean)
             MyBase.EnableAllControls(enabled)
 
@@ -183,7 +217,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   selected configuration, it is called again. 
         ''' </remarks>
         Protected Overrides Sub PreInitPage()
+
             MyBase.PreInitPage()
+
+            AuthenticationMode.Items.Clear()
+            AuthenticationMode.Items.Add(My.Resources.Strings.NoAuthentication)
+            AuthenticationMode.Items.Add(My.Resources.Strings.WindowsAuthentication)
+
         End Sub
 
 

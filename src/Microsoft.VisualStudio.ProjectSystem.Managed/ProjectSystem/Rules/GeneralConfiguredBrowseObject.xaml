@@ -93,13 +93,6 @@
     <EnumValue Name="Off" />
   </EnumProperty>
 
-  <EnumProperty Name="AuthenticationMode"
-                Visible="False">
-    <EnumValue Name="Windows"
-               IsDefault="True" />
-    <EnumValue Name="None" />
-  </EnumProperty>
-
   <StringProperty Name="IntermediatePath"
                   Visible="false">
     <StringProperty.DataSource>

@@ -4,6 +4,7 @@ using System;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using VSLangProj;
 using VSLangProj110;
+using VSLangProj165;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 {
@@ -105,6 +106,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         {
             get => GetBrowseObjectValue<bool?>(browseObject => browseObject.AutoGenerateBindingRedirects).GetValueOrDefault();
             set => SetBrowseObjectValue(browseObject => browseObject.AutoGenerateBindingRedirects, value);
+        }
+
+        public AuthenticationMode AuthenticationMode
+        {
+            get => GetBrowseObjectValue<AuthenticationMode?>(browseObject => browseObject.AuthenticationMode).GetValueOrDefault();
+            set => SetBrowseObjectValue(browseObject => browseObject.AuthenticationMode, value);
         }
 
         public string __id => throw new NotImplementedException();

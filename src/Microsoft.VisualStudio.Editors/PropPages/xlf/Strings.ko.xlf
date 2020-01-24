@@ -35,6 +35,11 @@
         <target state="translated">Microsoft.CodeAnalysis.FxCopAnalyzers 버전 '{0}'을(를) 제거하지 못했습니다.</target>
         <note />
       </trans-unit>
+      <trans-unit id="NoAuthentication">
+        <source>No Authentication</source>
+        <target state="new">No Authentication</target>
+        <note />
+      </trans-unit>
       <trans-unit id="RestoringPackagesMessage">
         <source>Restoring Packages...</source>
         <target state="translated">패키지 복원 중...</target>
@@ -43,6 +48,11 @@
       <trans-unit id="NotInstalledText">
         <source>(not installed)</source>
         <target state="translated">(설치되지 않음)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WindowsAuthentication">
+        <source>Windows Authentication</source>
+        <target state="new">Windows Authentication</target>
         <note />
       </trans-unit>
     </body>

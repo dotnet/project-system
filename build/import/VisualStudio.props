@@ -26,6 +26,7 @@
     <PackageReference Include="VSLangProj100" />
     <PackageReference Include="VSLangProj110" />
     <PackageReference Include="VSLangProj158" />
+    <PackageReference Include="VSLangProj165" />
     <PackageReference Include="EnvDTE" />
     <PackageReference Include="EnvDTE80" />
     <PackageReference Include="EnvDTE90" />
