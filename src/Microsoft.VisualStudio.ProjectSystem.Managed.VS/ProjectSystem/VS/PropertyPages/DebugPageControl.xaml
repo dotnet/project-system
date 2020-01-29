@@ -182,7 +182,8 @@
                 VerticalAlignment="Center"
                 Text="{Binding Path=ExecutablePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 Visibility="{Binding Path=SupportsExecutable, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
-                AutomationProperties.Name="{x:Static Member=local:PropertyPageResources.Executable}"/>
+                AutomationProperties.Name="{x:Static Member=local:PropertyPageResources.Executable}"
+                AutomationProperties.HelpText="{x:Static Member=local:PropertyPageResources.ExecutablePathWatermark}"/>
             <Button
                 Grid.Row="2"
                 Grid.Column="2"
