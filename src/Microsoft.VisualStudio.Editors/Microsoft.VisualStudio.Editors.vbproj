@@ -7,6 +7,7 @@
     <TargetFramework>net472</TargetFramework>
     <IsVsixProject>true</IsVsixProject>
     <CreateVsixContainer>false</CreateVsixContainer>
+    <GeneratePkgDefFile>true</GeneratePkgDefFile>
     <!-- TODO: Function/Property doesn't return a value on all code paths (https://github.com/dotnet/project-system/issues/2592) -->
     <NoWarn>$(NoWarn);42353;42355;42105;NU5125</NoWarn>
 
@@ -593,9 +594,6 @@
     <None Include="Docs\ProjectDesigner Control Flow.doc" />
     <None Include="MyExtensibility\MyExtensibilityClassDiagram.cd" />
     <None Include="PropPages\AdvBuildSettingsPropPage.ComboItem.vb" />
-    <None Include="Microsoft.VisualStudio.Editors.pkgdef">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Page Include="OptionPages\GeneralOptionPageControl.xaml">
@@ -616,11 +614,4 @@
     <AdditionalFiles Include="PublicAPI.Shipped.txt" />
     <AdditionalFiles Include="PublicAPI.Unshipped.txt" />
   </ItemGroup>
-  <!-- We don't generate pkgdef, but we want it to end up in VSIX,
-       implement the right output group so that ProjectSystemSetup pulls it in -->
-  <Target Name="PkgdefProjectOutputGroup" Outputs="@(PkgdefOutputGroupOutput)">
-    <ItemGroup>
-      <PkgdefOutputGroupOutput Include="Microsoft.VisualStudio.Editors.pkgdef" />
-    </ItemGroup>
-  </Target>
 </Project>

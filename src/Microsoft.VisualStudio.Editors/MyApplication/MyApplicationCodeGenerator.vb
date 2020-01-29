@@ -22,6 +22,8 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
     ''' Generator for strongly MyApplication class
     ''' </summary>
     <Guid("4d35b437-4197-4241-8d24-8ac3ab6f0e0c")>
+    <ProvideObject(GetType(MyApplicationCodeGenerator))>
+    <CodeGeneratorRegistration(GetType(MyApplicationCodeGenerator), "Generator for MyApplication class", VBPackage.LegacyVBPackageGuid, GeneratesDesignTimeSource:=True)>
     Public NotInheritable Class MyApplicationCodeGenerator
         Implements IVsSingleFileGenerator, IObjectWithSite, System.IServiceProvider, IVsRefactorNotify
 

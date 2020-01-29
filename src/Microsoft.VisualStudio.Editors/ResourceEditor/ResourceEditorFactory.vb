@@ -19,7 +19,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     '''   shell.
     ''' </summary>
     <CLSCompliant(False),
-    Guid("ff4d6aca-9352-4a5f-821e-f4d6ebdcab11")>
+    Guid("ff4d6aca-9352-4a5f-821e-f4d6ebdcab11"),
+    Shell.ProvideView(Shell.LogicalView.Designer, "Design"),
+    Shell.ProvideEditorExtension(GetType(ResourceEditorFactory), ".resw", 48),
+    Shell.ProvideEditorExtension(GetType(ResourceEditorFactory), ".resx", 48)>
     Friend NotInheritable Class ResourceEditorFactory
         Inherits DesignerFramework.BaseEditorFactory
         Implements IVsTrackProjectDocumentsEvents2

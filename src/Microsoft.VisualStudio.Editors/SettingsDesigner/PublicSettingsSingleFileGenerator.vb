@@ -2,6 +2,7 @@
 
 Imports System.Reflection
 Imports System.Runtime.InteropServices
+Imports Microsoft.VisualStudio.Shell
 
 Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
@@ -9,6 +10,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
     ''' Generator for strongly typed settings wrapper class
     ''' </summary>
     <Guid("940f36b5-a42e-435e-8ef4-20b9d4801d22")>
+    <ProvideObject(GetType(PublicSettingsSingleFileGenerator))>
+    <CodeGeneratorRegistration(GetType(PublicSettingsSingleFileGenerator), "Generator for strongly typed settings class (public class)", VBPackage.LegacyVBPackageGuid, GeneratesSharedDesignTimeSource:=True)>
+    <CodeGeneratorRegistration(GetType(PublicSettingsSingleFileGenerator), "Generator for strongly typed settings class (public class)", VBPackage.LegacyCSharpPackageGuid, GeneratesSharedDesignTimeSource:=True)>
     Public Class PublicSettingsSingleFileGenerator
         Inherits SettingsSingleFileGeneratorBase
 

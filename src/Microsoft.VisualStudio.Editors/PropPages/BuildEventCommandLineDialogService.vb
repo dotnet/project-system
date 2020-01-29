@@ -3,6 +3,8 @@
 Option Strict On
 Option Explicit On
 
+Imports Microsoft.VisualStudio.Shell
+
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
     '--------------------------------------------------------------------------
@@ -11,6 +13,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     '   exposed via the IVsBuildEventCommandLineDialogService interface.
     '--------------------------------------------------------------------------
     <CLSCompliant(False)>
+    <ProvideService(GetType(Interop.IVsBuildEventCommandLineDialogService), ServiceName:="Vb Build Event Command Line Dialog Service")>
     Friend NotInheritable Class BuildEventCommandLineDialogService
         Implements Interop.IVsBuildEventCommandLineDialogService
 

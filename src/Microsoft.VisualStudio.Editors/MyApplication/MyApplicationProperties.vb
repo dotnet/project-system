@@ -132,6 +132,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
     ''' Our implementation of IVsMyAppManager
     ''' </summary>
     <ComVisible(True), Guid("29255174-ccb9-434d-8489-dae5b912b1d3"), CLSCompliant(False)>
+    <Shell.ProvideObject(GetType(MyApplicationManager))>
     <Obsolete("MyApplication is automatically managed by the property pages. All usage of this class can be removed.")>
     Public NotInheritable Class MyApplicationManager
         Implements IVsMyAppManager
