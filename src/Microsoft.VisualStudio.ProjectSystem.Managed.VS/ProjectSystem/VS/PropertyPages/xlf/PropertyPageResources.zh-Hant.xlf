@@ -42,6 +42,11 @@
         <target state="translated">要執行之可執行檔的路徑</target>
         <note />
       </trans-unit>
+      <trans-unit id="FindBtn">
+        <source>Find...</source>
+        <target state="new">Find...</target>
+        <note />
+      </trans-unit>
       <trans-unit id="InvalidHostName">
         <source>The host name is invalid.</source>
         <target state="translated">此主機名稱無效。</target>

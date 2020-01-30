@@ -259,6 +259,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Find....
+        /// </summary>
+        public static string FindBtn {
+            get {
+                return ResourceManager.GetString("FindBtn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The host name is invalid..
         /// </summary>
         public static string InvalidHostName {

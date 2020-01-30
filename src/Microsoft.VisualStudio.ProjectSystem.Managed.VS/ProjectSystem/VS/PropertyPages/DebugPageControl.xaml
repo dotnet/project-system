@@ -336,6 +336,27 @@
                     </MultiBinding>
                 </local:WatermarkTextBox.IsEnabled>
             </local:WatermarkTextBox>
+            <Button
+                Grid.Row="6"
+                Grid.Column="2"
+                x:Uid="btnFindRemoteMachine"
+                x:Name="btnFindRemoteMachine"
+                MinHeight="23"
+                MinWidth="80"
+                Margin="5.8,4,0,5"
+                HorizontalAlignment="Left"
+                VerticalContentAlignment="Center"
+                VerticalAlignment="Center"
+                Content="{x:Static local:PropertyPageResources.FindBtn}"
+                Visibility="{Binding Path=SupportsRemoteDebug, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
+                Command="{Binding FindRemoteMachineCommand}">
+                <Button.IsEnabled>
+                    <MultiBinding Converter="{StaticResource MultiValueBoolToBoolAnd}">
+                        <Binding Path="RemoteDebugEnabled" Mode="OneWay"/>
+                        <Binding Path="IsProfileSelected" Mode="OneWay"/>
+                    </MultiBinding>
+                </Button.IsEnabled>
+            </Button>
 
             <!-- Environment variables -->
             <Label 

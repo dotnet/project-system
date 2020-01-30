@@ -42,6 +42,11 @@
         <target state="translated">Ścieżka pliku wykonywalnego do uruchomienia</target>
         <note />
       </trans-unit>
+      <trans-unit id="FindBtn">
+        <source>Find...</source>
+        <target state="new">Find...</target>
+        <note />
+      </trans-unit>
       <trans-unit id="InvalidHostName">
         <source>The host name is invalid.</source>
         <target state="translated">Nazwa hosta jest nieprawidłowa.</target>

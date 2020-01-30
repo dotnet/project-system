@@ -42,6 +42,11 @@
         <target state="translated">실행할 실행 파일 경로</target>
         <note />
       </trans-unit>
+      <trans-unit id="FindBtn">
+        <source>Find...</source>
+        <target state="new">Find...</target>
+        <note />
+      </trans-unit>
       <trans-unit id="InvalidHostName">
         <source>The host name is invalid.</source>
         <target state="translated">호스트 이름이 잘못되었습니다.</target>

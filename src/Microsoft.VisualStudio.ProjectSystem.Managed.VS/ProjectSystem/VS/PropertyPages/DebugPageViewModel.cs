@@ -16,6 +16,7 @@ using Microsoft.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 using DialogResult = System.Windows.Forms.DialogResult;
 using Task = System.Threading.Tasks.Task;
 
@@ -45,6 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         private ICommand _browseExecutableCommand;
         private ICommand _newProfileCommand;
         private ICommand _deleteProfileCommand;
+        private ICommand _findRemoteMachineCommand;
 
         public DebugPageViewModel()
         {
@@ -531,6 +533,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                             WorkingDirectory = dialog.SelectedPath;
                         }
                     }));
+            }
+        }
+
+        public ICommand FindRemoteMachineCommand
+        {
+            get
+            {
+                return LazyInitializer.EnsureInitialized(ref _findRemoteMachineCommand, () =>
+                new DelegateCommand(state =>
+                {
+                    SVsServiceProvider serviceProvider = Project.Services.ExportProvider.GetExportedValue<SVsServiceProvider>();
+
+                    var vsService = new VsUIService<SVsDebugRemoteDiscoveryUI, IVsDebugRemoteDiscoveryUI>(serviceProvider, _projectThreadingService.JoinableTaskContext.Context);
+
+                    IVsDebugRemoteDiscoveryUI dialog = vsService.Value;
+
+                    DEBUG_REMOTE_DISCOVERY_FLAGS flags = DEBUG_REMOTE_DISCOVERY_FLAGS.DRD_SHOW_MANUAL;
+
+                    if (ErrorHandler.Succeeded(dialog.SelectRemoteInstanceViaDlg(RemoteDebugMachine, VSConstants.DebugPortSupplierGuids.NoAuth_guid, (uint)flags, out string remoteMachine, out Guid portSupplier)))
+                    {
+                        RemoteDebugMachine = remoteMachine;
+                    }
+
+                }));
             }
         }
 

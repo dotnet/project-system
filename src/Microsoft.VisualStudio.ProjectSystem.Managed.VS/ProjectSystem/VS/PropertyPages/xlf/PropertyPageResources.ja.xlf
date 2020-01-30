@@ -42,6 +42,11 @@
         <target state="translated">実行する実行可能ファイルのパス</target>
         <note />
       </trans-unit>
+      <trans-unit id="FindBtn">
+        <source>Find...</source>
+        <target state="new">Find...</target>
+        <note />
+      </trans-unit>
       <trans-unit id="InvalidHostName">
         <source>The host name is invalid.</source>
         <target state="translated">ホスト名が無効です。</target>

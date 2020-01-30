@@ -42,6 +42,11 @@
         <target state="translated">Ruta de acceso al archivo ejecutable que debe ejecutarse</target>
         <note />
       </trans-unit>
+      <trans-unit id="FindBtn">
+        <source>Find...</source>
+        <target state="new">Find...</target>
+        <note />
+      </trans-unit>
       <trans-unit id="InvalidHostName">
         <source>The host name is invalid.</source>
         <target state="translated">El nombre de host no es válido.</target>
