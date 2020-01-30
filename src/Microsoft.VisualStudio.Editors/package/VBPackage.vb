@@ -24,14 +24,22 @@ Namespace Microsoft.VisualStudio.Editors
     '*   from here for the moment.
     '*
     '* In the future, we should consider moving to a RegPkg.exe model
-    <Guid("67909B06-91E9-4F3E-AB50-495046BE9A9A"),
+    <Guid(VBPackage.PackageGuid),
     ProvideOptionPage(GetType(GeneralOptionPage),
-                     "Projects and Solutions",
-                     "SDK-Style Projects",
+                     "Projects",
+                     "NETCore",
                      0,                     ' categoryResourceID: Not used, we don't own parent category
-                     0,                     ' pageNameResourceID: Not used, set in Microsoft.VisualStudio.Editors.pkgdef, 
+                     1500,                  ' pageNameResourceID
                      True,                  ' supportsAutomation
-                     IsServerAware:=True),  ' Configured to work in cloud environment scenarios. Note we're hand-authoring the MS.VS.Editors.pkgdef file, so it is also set there.
+                     1600,                  ' keywordListResourceId
+                     IsServerAware:=True),  ' Configured to work in cloud environment scenarios
+    ProvideMenuResource("Menus.ctmenu", 30),
+    ProvideEditorFactory(GetType(ApplicationDesigner.ApplicationDesignerEditorFactory), 1300, True, TrustLevel:=__VSEDITORTRUSTLEVEL.ETL_AlwaysTrusted),
+    ProvideEditorFactory(GetType(SettingsDesigner.SettingsDesignerEditorFactory), 1200, True, TrustLevel:=__VSEDITORTRUSTLEVEL.ETL_AlwaysTrusted, CommonPhysicalViewAttributes:=3),
+    ProvideEditorFactory(GetType(PropPageDesigner.PropPageDesignerEditorFactory), 1400, True, TrustLevel:=__VSEDITORTRUSTLEVEL.ETL_AlwaysTrusted),
+    ProvideEditorFactory(GetType(ResourceEditor.ResourceEditorFactory), 1100, True, TrustLevel:=__VSEDITORTRUSTLEVEL.ETL_AlwaysTrusted, CommonPhysicalViewAttributes:=3),
+    ProvideKeyBindingTable(Constants.MenuConstants.GUID_SETTINGSDESIGNER_CommandUIString, 1200, AllowNavKeyBinding:=False),
+    ProvideKeyBindingTable(Constants.MenuConstants.GUID_RESXEditorCommandUIString, 1100, AllowNavKeyBinding:=False),
     CLSCompliant(False)
     >
     Friend Class VBPackage
@@ -47,6 +55,9 @@ Namespace Microsoft.VisualStudio.Editors
         Private _addImportsDialogService As AddImports.AddImportsDialogService
 
         Private Const ProjectDesignerSUOKey As String = "ProjectDesigner"
+        Public Const PackageGuid As String = "67909B06-91E9-4F3E-AB50-495046BE9A9A"
+        Public Const LegacyVBPackageGuid As String = "{164B10B9-B200-11D0-8C61-00A0C91E29D5}"
+        Public Const LegacyCSharpPackageGuid As String = "{FAE04EC1-301F-11d3-BF4B-00C04F79EFBC}"
 
         ' Map between unique project GUID and the last viewed tab in the project designer...
         Private _lastViewedProjectDesignerTab As Dictionary(Of Guid, Byte)

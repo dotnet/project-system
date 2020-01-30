@@ -34,6 +34,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         public override ImageMoniker ImplicitIcon => ManagedImageMonikers.CodeInformationPrivate;
 
+        protected override bool ResolvedItemRequiresEvaluatedItem => false;
+
         public override IDependencyModel CreateRootDependencyNode() => s_rootModel;
 
         protected override IDependencyModel CreateDependencyModel(

@@ -26,6 +26,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             ResolvedRuleName = resolvedRuleName;
         }
 
+        /// <summary>
+        /// Controls whether a resolved item must have a corresponding evaluated item
+        /// in order to be considered.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// For some (most) rules we require the item to be present in evaluation data
+        /// as well as design-time data to be considered resolved. In general, all items
+        /// should be provided to the tree by evaluation. However currently some rules
+        /// (Analyzers and AdditionalFiles) are only available when resolved during
+        /// design-time builds.
+        /// </para>
+        /// <para>
+        /// https://github.com/dotnet/project-system/issues/4782 tracks making these
+        /// remaining items available during evaluation.
+        /// </para>
+        /// </remarks>
+        protected virtual bool ResolvedItemRequiresEvaluatedItem => true;
+
         #region IDependenciesRuleHandler
 
         public abstract ImageMoniker ImplicitIcon { get; }
@@ -48,10 +67,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             // We only have resolved data if the update came via the JointRule data source.
             if (changesByRuleName.TryGetValue(ResolvedRuleName, out IProjectChangeDescription resolvedChanges))
             {
+                Func<string, bool>? isEvaluatedItemSpec = ResolvedItemRequiresEvaluatedItem
+                    ? evaluatedChanges.After.Items.ContainsKey
+                    : (Func<string, bool>?)null;
+
                 HandleChangesForRule(
                     resolved: true,
                     projectChange: resolvedChanges,
-                    isEvaluatedItemSpec: evaluatedChanges.After.Items.ContainsKey);
+                    isEvaluatedItemSpec);
             }
 
             return;

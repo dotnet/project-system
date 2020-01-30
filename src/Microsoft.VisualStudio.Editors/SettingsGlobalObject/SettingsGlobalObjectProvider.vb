@@ -41,6 +41,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
     ''' </summary>
     <Guid("13dc9681-b779-3d9a-9208-c346fe982b63")>
     <ComVisible(True)>
+    <Shell.ProvideObject(GetType(SettingsGlobalObjectProvider))>
+    <ProvideGlobalObjectProvider(GetType(SettingsGlobalObjectProvider))>
     Friend NotInheritable Class SettingsGlobalObjectProvider
         Inherits GlobalObjectProvider
         Implements IServiceProvider, IVsRunningDocTableEvents, IVsTrackProjectDocumentsEvents2

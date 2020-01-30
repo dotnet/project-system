@@ -3,7 +3,7 @@
 Option Strict On
 Option Explicit On
 Imports System.Runtime.InteropServices
-
+Imports Microsoft.VisualStudio.Shell
 Imports Res = My.Resources.MyExtensibilityRes
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
@@ -14,7 +14,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     ''' </summary>
     <Guid("F24459FC-E883-4A8E-9DA2-AEF684F0E1F4"),
     ComVisible(True),
-    CLSCompliant(False)>
+    CLSCompliant(False),
+    ProvideObject(GetType(MyExtensibilityPropPageComClass))>
     Public Class MyExtensibilityPropPageComClass
         Inherits VBPropPageBase
 
