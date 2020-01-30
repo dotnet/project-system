@@ -2,6 +2,9 @@
 
 namespace Microsoft.VisualStudio.Input
 {
+    /// <summary>
+    /// Specifies the IDs of commands related to managed project files.
+    /// </summary>
     internal static class ManagedProjectSystemClientProjectCommandIds
     {
         public const int EditProjectFile = 0x0100;

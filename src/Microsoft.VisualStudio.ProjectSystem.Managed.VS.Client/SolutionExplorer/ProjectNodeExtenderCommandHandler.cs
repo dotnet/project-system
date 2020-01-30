@@ -13,6 +13,10 @@ using Microsoft.VisualStudio.Workspace.VSIntegration.UI;
 
 namespace Microsoft.VisualStudio.SolutionExplorer
 {
+    /// <summary>
+    /// Extends the Solution Explorer in cloud-connected scenarios by handling commands
+    /// for nodes representing managed projects.
+    /// </summary>
     internal class ProjectNodeExtenderCommandHandler : IWorkspaceCommandHandler
     {
         private readonly JoinableTaskContext _taskContext;
@@ -24,8 +28,15 @@ namespace Microsoft.VisualStudio.SolutionExplorer
             _serviceProvider = serviceProvider;
         }
 
+        /// <summary>
+        /// The command handlers priority. If there are multiple handlers for a given node
+        /// then they are called in order of decreasing priority.
+        /// </summary>
         public int Priority => 2000;
 
+        /// <summary>
+        /// Whether or not this handler should be ignored when multiple nodes are selected.
+        /// </summary>
         public bool IgnoreOnMultiselect => true;
 
         public int Exec(List<WorkspaceVisualNodeBase> selection, Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
@@ -65,6 +76,11 @@ namespace Microsoft.VisualStudio.SolutionExplorer
 
             return handled;
         }
+
+        /// <summary>
+        /// Handles opening the file associated with the given <paramref name="node"/>.
+        /// </summary>
+        /// <param name="node"></param>
         private void OpenFile(WorkspaceVisualNodeBase node)
         {
             if (node == null

@@ -4,6 +4,9 @@ using System;
 
 namespace Microsoft.VisualStudio.Input
 {
+    /// <summary>
+    /// Specifies the command groups handled in this project.
+    /// </summary>
     internal static class CommandGroup
     {
         public const string ManagedProjectSystemClientProjectCommandSet = "{28C12D02-11CB-437D-B84D-9CEA7A5333A3}";

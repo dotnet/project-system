@@ -9,10 +9,21 @@ using Microsoft.VisualStudio.Workspace.VSIntegration.UI;
 
 namespace Microsoft.VisualStudio.SolutionExplorer
 {
+    /// <summary>
+    /// Extends the Solution Explorer in cloud-connected scenarios by adding command
+    /// handlers for nodes representing managed projects.
+    /// </summary>
     [ExportNodeExtender(CloudEnvironment.LiveShareSolutionView)]
     internal sealed class ProjectNodeExtender : INodeExtender
     {
+        /// <summary>
+        /// The shared command handler for all nodes representing managed projects.
+        /// </summary>
         private readonly IWorkspaceCommandHandler _commandHandler;
+
+        /// <summary>
+        /// Extensions for the set of supported projects.
+        /// </summary>
         private static readonly string[] s_supportedProjectExtensions = new[] { ".csproj", ".vbproj" };
 
         [ImportingConstructor]
@@ -28,6 +39,10 @@ namespace Microsoft.VisualStudio.SolutionExplorer
             return null;
         }
 
+        /// <summary>
+        /// Provides our <see cref="IWorkspaceCommandHandler"/> for nodes representing
+        /// managed projects.
+        /// </summary>
         public IWorkspaceCommandHandler? ProvideCommandHandler(WorkspaceVisualNodeBase parentNode)
         {
             if (NodeRepresentsAManagedProject(parentNode))
@@ -38,6 +53,21 @@ namespace Microsoft.VisualStudio.SolutionExplorer
             return null;
         }
 
+        /// <summary>
+        /// <para>
+        /// This is a bit of a hack. There currently isn't a good way to determine if the
+        /// <paramref name="node"/> represents a project backed by the managed project
+        /// system. In the interests of getting something working, here we check if the
+        /// Solution Explorer thinks the node is a project and then check that it has a
+        /// supported extension.
+        /// </para>
+        /// <para>
+        /// The _right_ way to do this probably involves getting the project GUID from the
+        /// node and then running that throught the Project API to determine if the project
+        /// has the appropriate capabilities. At the moment there's no good way to
+        /// achieve that first step, however.
+        /// </para>
+        /// </summary>
         private static bool NodeRepresentsAManagedProject(WorkspaceVisualNodeBase node)
         {
             return node != null
