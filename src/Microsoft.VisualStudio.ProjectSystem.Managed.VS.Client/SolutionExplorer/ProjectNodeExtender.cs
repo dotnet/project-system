@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.SolutionExplorer
             JoinableTaskContext taskContext,
             [Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider)
         {
-            _commandHandler = new ProjectNodeExtenderCommandHandler(taskContext, serviceProvider);
+            _commandHandler = new ProjectNodeCommandHandler(taskContext, serviceProvider);
         }
 
         public IChildrenSource? ProvideChildren(WorkspaceVisualNodeBase parentNode)

@@ -17,12 +17,12 @@ namespace Microsoft.VisualStudio.SolutionExplorer
     /// Extends the Solution Explorer in cloud-connected scenarios by handling commands
     /// for nodes representing managed projects.
     /// </summary>
-    internal class ProjectNodeExtenderCommandHandler : IWorkspaceCommandHandler
+    internal class ProjectNodeCommandHandler : IWorkspaceCommandHandler
     {
         private readonly JoinableTaskContext _taskContext;
         private readonly IServiceProvider _serviceProvider;
 
-        public ProjectNodeExtenderCommandHandler(JoinableTaskContext taskContext, IServiceProvider serviceProvider)
+        public ProjectNodeCommandHandler(JoinableTaskContext taskContext, IServiceProvider serviceProvider)
         {
             _taskContext = taskContext;
             _serviceProvider = serviceProvider;

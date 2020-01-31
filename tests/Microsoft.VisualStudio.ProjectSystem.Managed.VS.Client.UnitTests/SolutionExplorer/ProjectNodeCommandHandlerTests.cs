@@ -11,7 +11,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.SolutionExplorer
 {
-    public class ProjectNodeExtenderCommandHandlerTests
+    public class ProjectNodeCommandHandlerTests
     {
         [Fact]
         public void WhenCommandSetIsWrong_QueryStatusReturnsFalse()
@@ -101,14 +101,14 @@ namespace Microsoft.VisualStudio.SolutionExplorer
 #pragma warning restore VSSDK005 // Avoid instantiating JoinableTaskContext
         }
 
-        private static ProjectNodeExtenderCommandHandler CreateCommandHandler()
+        private static ProjectNodeCommandHandler CreateCommandHandler()
         {
-            return new ProjectNodeExtenderCommandHandler(
+            return new ProjectNodeCommandHandler(
                 GetJoinableTaskContext(),
                 IServiceProviderFactory.ImplementGetService(t => null));
         }
 
-        private static bool RunQueryStatus(Guid commandSet, uint commandId, ProjectNodeExtenderCommandHandler commandHandler, ref uint commandFlags)
+        private static bool RunQueryStatus(Guid commandSet, uint commandId, ProjectNodeCommandHandler commandHandler, ref uint commandFlags)
         {
             var selectedNodes = new List<WorkspaceVisualNodeBase>();
             string customTitle = string.Empty;
@@ -116,7 +116,7 @@ namespace Microsoft.VisualStudio.SolutionExplorer
             return result;
         }
 
-        private static int RunExec(Guid commandSet, uint commandId, ProjectNodeExtenderCommandHandler commandHandler)
+        private static int RunExec(Guid commandSet, uint commandId, ProjectNodeCommandHandler commandHandler)
         {
             var selectedNodes = new List<WorkspaceVisualNodeBase>();
             var result = commandHandler.Exec(selection: selectedNodes, commandSet, commandId, (uint)OLECMDEXECOPT.OLECMDEXECOPT_DODEFAULT, IntPtr.Zero, IntPtr.Zero);
