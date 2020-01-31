@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
             ProjectTreeFlags.Common.VirtualFolder |
             ProjectTreeFlags.Common.DisableAddItemFolder);
 
-        private static readonly ProjectTreeFlags s_projectImportFlags = ProjectImport | ProjectTreeFlags.FileOnDisk;
+        private static readonly ProjectTreeFlags s_projectImportFlags = ProjectImport | ProjectTreeFlags.FileOnDisk | ProjectTreeFlags.FileSystemEntity;
         private static readonly ProjectTreeFlags s_projectImportImplicitFlags = s_projectImportFlags + ProjectImportImplicit;
 
         private readonly ImplicitProjectCheck _importPathCheck = new ImplicitProjectCheck();
