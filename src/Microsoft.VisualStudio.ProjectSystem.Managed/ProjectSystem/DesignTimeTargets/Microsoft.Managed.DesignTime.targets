@@ -369,9 +369,16 @@
     </PropertyPageSchema>
   </ItemGroup>
 
-  <!-- List of external files that trigger design-time builds when they are modified -->
+  <!-- List of external files that trigger re-evaluation & design-time builds when they are modified -->
   <ItemGroup>
     <AdditionalDesignTimeBuildInput Include="$(ProjectAssetsFile)" />   <!-- NuGet assets file -->
+  </ItemGroup>
+
+  <!-- Find all potential locations of "global.json" starting from the Solution directory and walking backwards -->
+  <ItemGroup Condition="'$(UsingMicrosoftNETSdk)' == 'true' and '$(SolutionDir)' != ''">
+    <_GlobalJsonStartingDir Include="$(SolutionDir)" />
+    <_PotentialContainingGlobalJsonDir Include="@(_GlobalJsonStartingDir->GetPathsOfAllDirectoriesAbove())" />
+    <AdditionalDesignTimeBuildInput Include="@(_PotentialContainingGlobalJsonDir->Combine('global.json'))" />
   </ItemGroup>
 
   <!--
