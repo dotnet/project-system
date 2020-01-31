@@ -179,7 +179,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         public string RemoteDebugMachine { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public string NoWarn { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public bool NoStdLib { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public string DebugInfo { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public string DebugInfo
+        {
+            get
+            {
+                return _threadingService.ExecuteSynchronously(async () =>
+                {
+                    ConfiguredBrowseObject browseObjectProperties = await _projectProperties.GetConfiguredBrowseObjectPropertiesAsync();
+                    return await browseObjectProperties.DebugInfo.GetEvaluatedValueAtEndAsync();
+                });
+            }
+            set
+            {
+                _threadingService.ExecuteSynchronously(async () =>
+                {
+                    ConfiguredBrowseObject browseObjectProperties = await _projectProperties.GetConfiguredBrowseObjectPropertiesAsync();
+                    await browseObjectProperties.DebugInfo.SetValueAsync(value);
+                });
+            }
+        }
         public string TreatSpecificWarningsAsErrors { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public string CodeAnalysisLogFile { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public string CodeAnalysisRuleAssemblies { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
