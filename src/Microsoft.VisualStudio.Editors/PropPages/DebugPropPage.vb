@@ -256,6 +256,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 RemoteDebugMachine.Visible = False
             Else
                 RemoteDebugMachine.Enabled = RemoteDebugEnabled.Checked
+                AuthenticationMode.Enabled = RemoteDebugEnabled.Checked
             End If
 
             If SKUMatrix.IsHidden(VsProjPropId.VBPROJPROPID_EnableUnmanagedDebugging) Then
@@ -334,6 +335,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Sub RemoteDebugEnabled_CheckedChanged(sender As Object, e As EventArgs) Handles RemoteDebugEnabled.CheckedChanged
             RemoteDebugMachine.Enabled = RemoteDebugEnabled.Checked
+            AuthenticationMode.Enabled = RemoteDebugEnabled.Checked
 
             If Not m_fInsideInit Then
                 If RemoteDebugEnabled.Checked Then
