@@ -110,8 +110,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _link = ProjectDataSources.SyncLinkTo(
                 _configuredProject.Services.ProjectSubscription.JointRuleSource.SourceBlock.SyncLinkOptions(DataflowOption.WithRuleNames(ProjectPropertiesSchemas)),
                 _configuredProject.Services.ProjectSubscription.SourceItemsRuleSource.SourceBlock.SyncLinkOptions(),
+                _configuredProject.Services.ProjectSubscription.ProjectSource.SourceBlock.SyncLinkOptions(),
                 _projectItemSchemaService.SourceBlock.SyncLinkOptions(),
-                target: DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<ValueTuple<IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectItemSchema>>>(OnChanged),
+                target: DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<ValueTuple<IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectSnapshot, IProjectItemSchema>>>(OnChanged),
                 linkOptions: DataflowOption.PropagateCompletion);
 
             return Task.CompletedTask;
@@ -124,7 +125,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return Task.CompletedTask;
         }
 
-        internal void OnChanged(IProjectVersionedValue<ValueTuple<IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectItemSchema>> e)
+        internal void OnChanged(IProjectVersionedValue<ValueTuple<IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectSnapshot, IProjectItemSchema>> e)
         {
             lock (_stateLock)
             {
@@ -134,10 +135,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     return;
                 }
 
+                var snapshot = e.Value.Item3 as IProjectSnapshot2;
+                Assumes.NotNull(snapshot);
+
                 _state = _state.Update(
                     jointRuleUpdate: e.Value.Item1,
                     sourceItemsUpdate: e.Value.Item2,
-                    projectItemSchema: e.Value.Item3,
+                    projectSnapshot: snapshot,
+                    projectItemSchema: e.Value.Item4,
                     configuredProjectVersion: e.DataSourceVersions[ProjectDataSources.ConfiguredProjectVersion]);
             }
         }
@@ -195,7 +200,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             // Validation passed
             return true;
 
-            bool CheckInputsAndOutputs(IEnumerable<string> inputs, IEnumerable<string> outputs, in TimestampCache timestampCache, string setName)
+            bool CheckInputsAndOutputs(IEnumerable<(string Path, bool IsRequired)> inputs, IEnumerable<string> outputs, in TimestampCache timestampCache, string setName)
             {
                 // We assume there are fewer outputs than inputs, so perform a full scan of outputs to find the earliest.
                 // This increases the chance that we may return sooner in the case we are not up to date.
@@ -236,13 +241,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     return log.Fail("Outputs", "The set of project items was changed more recently ({0}) than the earliest output '{1}' ({2}), not up to date.", state.LastItemsChangedAtUtc, earliestOutputPath, earliestOutputTime);
                 }
 
-                foreach (string input in inputs)
+                foreach ((string input, bool isRequired) in inputs)
                 {
                     DateTime? inputTime = timestampCache.GetTimestampUtc(input);
 
                     if (inputTime == null)
                     {
-                        return log.Fail("Outputs", "Input '{0}' does not exist, not up to date.", input);
+                        if (isRequired)
+                        {
+                            return log.Fail("Outputs", "Input '{0}' does not exist and is required, not up to date.", input);
+                        }
+                        else
+                        {
+                            log.Verbose("Input '{0}' does not exist, but is not required.", input);
+                        }
                     }
 
                     if (inputTime > earliestOutputTime)
@@ -274,20 +286,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return true;
             }
 
-            IEnumerable<string> CollectDefaultInputs()
+            IEnumerable<(string Path, bool IsRequired)> CollectDefaultInputs()
             {
                 if (state.MSBuildProjectFullPath != null)
                 {
                     log.Verbose("Adding project file inputs:");
                     log.Verbose("    '{0}'", state.MSBuildProjectFullPath);
-                    yield return state.MSBuildProjectFullPath;
+                    yield return (Path: state.MSBuildProjectFullPath, IsRequired: true);
                 }
 
                 if (state.NewestImportInput != null)
                 {
                     log.Verbose("Adding newest import input:");
                     log.Verbose("    '{0}'", state.NewestImportInput);
-                    yield return state.NewestImportInput;
+                    yield return (Path: state.NewestImportInput, IsRequired: true);
                 }
 
                 foreach ((string itemType, ImmutableHashSet<(string path, string? link, CopyType copyType)> changes) in state.ItemsByItemType)
@@ -299,7 +311,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         foreach (string input in changes.Select(item => _configuredProject.UnconfiguredProject.MakeRooted(item.path)))
                         {
                             log.Verbose("    '{0}'", input);
-                            yield return input;
+                            yield return (Path: input, IsRequired: true);
                         }
                     }
                 }
@@ -310,7 +322,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     foreach (string input in state.ResolvedAnalyzerReferencePaths)
                     {
                         log.Verbose("    '{0}'", input);
-                        yield return input;
+                        yield return (Path: input, IsRequired: true);
                     }
                 }
 
@@ -320,7 +332,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     foreach (string input in state.ResolvedCompilationReferencePaths)
                     {
                         log.Verbose("    '{0}'", input);
-                        yield return input;
+                        yield return (Path: input, IsRequired: true);
                     }
                 }
 
@@ -330,7 +342,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     foreach (string input in upToDateCheckInputItems.Select(_configuredProject.UnconfiguredProject.MakeRooted))
                     {
                         log.Verbose("    '{0}'", input);
-                        yield return input;
+                        yield return (Path: input, IsRequired: true);
+                    }
+                }
+
+                if (state.AdditionalDependentFileTimes.Count != 0)
+                {
+                    log.Verbose("Adding " + nameof(state.AdditionalDependentFileTimes) + " inputs:");
+                    foreach ((string input, DateTime _) in state.AdditionalDependentFileTimes)
+                    {
+                        log.Verbose("    '{0}'", input);
+                        yield return (Path: input, IsRequired: false);
                     }
                 }
             }
@@ -360,7 +382,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
             }
 
-            IEnumerable<string> CollectSetInputs(string setName)
+            IEnumerable<(string Path, bool IsRequired)> CollectSetInputs(string setName)
             {
                 if (state.UpToDateCheckInputItemsBySetName.TryGetValue(setName, out ImmutableHashSet<string> upToDateCheckInputItems))
                 {
@@ -368,7 +390,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     foreach (string input in upToDateCheckInputItems.Select(_configuredProject.UnconfiguredProject.MakeRooted))
                     {
                         log.Verbose("    '{0}'", input);
-                        yield return input;
+                        yield return (input, true);
                     }
                 }
             }
