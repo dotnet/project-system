@@ -25,6 +25,16 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public abstract string FolderImageKey { get; }
 
         /// <summary>
+        ///     Gets the image key that represents the image that will be applied to the special folder when expanded.
+        /// </summary>
+        public abstract string ExpandedFolderImageKey { get; }
+
+        /// <summary>
+        ///     Gets the image key that represents the image that will be applied to the special folder when the folder is missing from disk.
+        /// </summary>
+        public abstract string MissingFolderImageKey { get; }
+
+        /// <summary>
         ///     Gets the default flags that will be applied to the special folder.
         /// </summary>
         public abstract ProjectTreeFlags FolderFlags { get; }
@@ -82,14 +92,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             propertyValues.Flags = propertyValues.Flags.Union(FolderFlags);
 
-            // Avoid overwriting icon if the image provider didn't provide one
-            ProjectImageMoniker? icon = _imageProvider.GetProjectImage(FolderImageKey);
+            bool isMissing = propertyValues.Flags.IsMissingOnDisk();
 
-            if (icon != null)
-            {
-                propertyValues.Icon = icon;
-                propertyValues.ExpandedIcon = icon;
-            }
+            ProjectImageMoniker? icon = _imageProvider.GetProjectImage(isMissing ? MissingFolderImageKey : FolderImageKey);
+            ProjectImageMoniker? expandedIcon = _imageProvider.GetProjectImage(isMissing ? MissingFolderImageKey : ExpandedFolderImageKey);
+
+            // Avoid overwriting icon if the image provider didn't provide one
+            propertyValues.Icon = icon ?? propertyValues.Icon;
+            propertyValues.ExpandedIcon = expandedIcon ?? propertyValues.ExpandedIcon;
         }
 
         private static void ApplySpecialFolderItemProperties(IProjectTreeCustomizablePropertyValues propertyValues)

@@ -46,6 +46,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree
             get { return ProjectImageKey.AppDesignerFolder; }
         }
 
+        public override string ExpandedFolderImageKey
+        {
+            get { return ProjectImageKey.ExpandedAppDesignerFolder; }
+        }
+
+        public override string MissingFolderImageKey
+        {
+            get { return ProjectImageKey.MissingAppDesignerFolder; }
+        }
+
         public ICollection<string> ProjectPropertiesRules
         {
             get { return AppDesigner.SchemaNameArray; }
