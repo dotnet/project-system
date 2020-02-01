@@ -766,7 +766,7 @@
     <value>439, 1</value>
   </data>
   <data name="EnableDebuggerLabelLine.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>18</value>
   </data>
   <data name="&gt;&gt;EnableDebuggerLabelLine.Name" xml:space="preserve">
     <value>EnableDebuggerLabelLine</value>
@@ -799,7 +799,7 @@
     <value>94, 13</value>
   </data>
   <data name="EnableDebuggerLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>17</value>
   </data>
   <data name="EnableDebuggerLabel.Text" xml:space="preserve">
     <value>Debugger engines</value>
@@ -964,7 +964,7 @@
     <value>170, 17</value>
   </data>
   <data name="EnableSQLServerDebugging.TabIndex" type="System.Int32, mscorlib">
-    <value>17</value>
+    <value>20</value>
   </data>
   <data name="EnableSQLServerDebugging.Text" xml:space="preserve">
     <value>Enable SQ&amp;L Server debugging</value>
@@ -1027,7 +1027,7 @@
     <value>171, 17</value>
   </data>
   <data name="EnableUnmanagedDebugging.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
+    <value>19</value>
   </data>
   <data name="EnableUnmanagedDebugging.Text" xml:space="preserve">
     <value>Enable na&amp;tive code debugging</value>
