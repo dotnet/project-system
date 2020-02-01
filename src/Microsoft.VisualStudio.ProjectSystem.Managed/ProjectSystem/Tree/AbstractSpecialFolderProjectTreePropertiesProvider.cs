@@ -30,11 +30,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public abstract string ExpandedFolderImageKey { get; }
 
         /// <summary>
-        ///     Gets the image key that represents the image that will be applied to the special folder when the folder is missing from disk.
-        /// </summary>
-        public abstract string MissingFolderImageKey { get; }
-
-        /// <summary>
         ///     Gets the default flags that will be applied to the special folder.
         /// </summary>
         public abstract ProjectTreeFlags FolderFlags { get; }
@@ -92,10 +87,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             propertyValues.Flags = propertyValues.Flags.Union(FolderFlags);
 
-            bool isMissing = propertyValues.Flags.IsMissingOnDisk();
-
-            ProjectImageMoniker? icon = _imageProvider.GetProjectImage(isMissing ? MissingFolderImageKey : FolderImageKey);
-            ProjectImageMoniker? expandedIcon = _imageProvider.GetProjectImage(isMissing ? MissingFolderImageKey : ExpandedFolderImageKey);
+            ProjectImageMoniker? icon = _imageProvider.GetProjectImage(FolderImageKey);
+            ProjectImageMoniker? expandedIcon = _imageProvider.GetProjectImage(ExpandedFolderImageKey);
 
             // Avoid overwriting icon if the image provider didn't provide one
             propertyValues.Icon = icon ?? propertyValues.Icon;

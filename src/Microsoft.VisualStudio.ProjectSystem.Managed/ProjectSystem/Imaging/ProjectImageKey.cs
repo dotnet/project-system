@@ -31,10 +31,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
         ///     Represents the image key for the AppDesigner folder (called "Properties" in C# and "My Project" in VB) when it is expanded.
         /// </summary>
         public const string ExpandedAppDesignerFolder = nameof(ExpandedAppDesignerFolder);
-
-        /// <summary>
-        ///     Represents the image key for the AppDesigner folder (called "Properties" in C# and "My Project" in VB) when it is missing from disk.
-        /// </summary>
-        public const string MissingAppDesignerFolder = nameof(MissingAppDesignerFolder);
     }
 }

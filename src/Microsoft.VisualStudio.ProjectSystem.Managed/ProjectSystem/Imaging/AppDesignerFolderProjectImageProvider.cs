@@ -26,9 +26,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
                 case ProjectImageKey.AppDesignerFolder:
                 case ProjectImageKey.ExpandedAppDesignerFolder:
                     return KnownMonikers.Property.ToProjectSystemType();
-
-                case ProjectImageKey.MissingAppDesignerFolder:
-                    return KnownMonikers.FolderOffline.ToProjectSystemType();
             };
 
             return null;

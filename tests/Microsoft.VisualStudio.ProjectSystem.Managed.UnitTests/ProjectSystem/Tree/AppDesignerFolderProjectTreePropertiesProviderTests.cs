@@ -361,28 +361,6 @@ Root (flags: {ProjectRoot})
         [Theory]
         [InlineData(@"
 Root (flags: {ProjectRoot})
-    Properties (flags: {Folder})
-        Folder (flags: {Folder})
-", @"
-Root (flags: {ProjectRoot})
-    Properties (flags: {Folder AppDesignerFolder BubbleUp}), Icon: {AE27A6B0-E345-4288-96DF-5EAF394EE369 1}, ExpandedIcon: {AE27A6B0-E345-4288-96DF-5EAF394EE369 1}
-        Folder (flags: {Folder})
-")]
-        public void ChangePropertyValues_TreeWithMissingAppDesignerFolder_SetsIconAndExpandedIconToMissingAppDesignerFolder(string input, string expected)
-        {
-            var designerService = IProjectDesignerServiceFactory.ImplementSupportsProjectDesigner(() => true);
-            var imageProvider = IProjectImageProviderFactory.ImplementGetProjectImage(ProjectImageKey.MissingAppDesignerFolder, new ProjectImageMoniker(new Guid("AE27A6B0-E345-4288-96DF-5EAF394EE369"), 1));
-            var propertiesProvider = CreateInstance(imageProvider, designerService);
-
-            var inputTree = ProjectTreeParser.Parse(input);
-            var expectedTree = ProjectTreeParser.Parse(expected);
-
-            Verify(propertiesProvider, expectedTree, inputTree);
-        }
-
-        [Theory]
-        [InlineData(@"
-Root (flags: {ProjectRoot})
     Properties (flags: {Folder}), Icon: {AE27A6B0-E345-4288-96DF-5EAF394EE369 1}, ExpandedIcon: {AE27A6B0-E345-4288-96DF-5EAF394EE369 2}
         Folder (flags: {Folder})
 ", @"
