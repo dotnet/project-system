@@ -165,7 +165,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                                                                    OrderBy(Function(language) language.DisplayName)
                     For Each Culture As CultureInfo In AllCultures
 
-                        ' Exclude Invariant as its the same as "None" above
+                        ' Exclude Invariant as it's the same as "None" above
                         If Culture.Name.Length <> 0 Then
                             NeutralLanguageComboBox.Items.Add(Culture.DisplayName)
                         End If
