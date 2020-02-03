@@ -390,7 +390,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     foreach (string input in upToDateCheckInputItems.Select(_configuredProject.UnconfiguredProject.MakeRooted))
                     {
                         log.Verbose("    '{0}'", input);
-                        yield return (input, true);
+                        yield return (Path: input, IsRequired: true);
                     }
                 }
             }
