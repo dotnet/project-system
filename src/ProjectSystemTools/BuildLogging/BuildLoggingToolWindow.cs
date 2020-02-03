@@ -206,6 +206,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
                     continue;
                 }
 
+                if (entry.TryGetValue(TableKeyNames.Status, out string status))
+                {
+                    // Status is defined by enum BuildStatus with members: Running, Finished or Failed
+                    filename = $"{filename}_{CapitalizeFailed(status)}";
+                }
+
                 try
                 {
                     File.Copy(logPath, Path.Combine(folderBrowser.SelectedPath, filename));
@@ -215,6 +221,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
                     var title = $"Error saving {filename}";
                     ShowExceptionMessageDialog(e, title);
                 }
+            }
+
+            return;
+
+            static string CapitalizeFailed(string status)
+            {
+                if (StringComparer.Ordinal.Equals(status, BuildStatus.Failed.ToString()))
+                {
+                    return "FAILED";
+                }
+
+                return status;
             }
         }
 
