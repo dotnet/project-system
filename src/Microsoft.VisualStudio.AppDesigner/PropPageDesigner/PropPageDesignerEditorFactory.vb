@@ -50,8 +50,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' which implements IVsEditorFactory.CreateEditorInstance
         ''' </summary>
         ''' <param name="FileName">[In] Filename being opened</param>
-        ''' <param name="Hierarchy">[In] IVsHierarchy of node being opened</param>
-        ''' <param name="ItemId">[In] ItemId for node being opened</param>
         ''' <param name="ExistingDocData">[In] Existing DocData if any</param>
         ''' <param name="DocView">Returns the IVsWindowPane object</param>
         ''' <param name="DocData">Returns DocData object</param>
@@ -59,8 +57,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="CmdUIGuid">Returns guid for CMDUI</param>
         ''' <param name="Canceled">Returns True if user canceled</param>
         Private Sub InternalCreateEditorInstance(FileName As String,
-                Hierarchy As IVsHierarchy,
-                ItemId As UInteger,
                 ExistingDocData As Object,
                 ByRef DocView As Object,
                 ByRef DocData As Object,
@@ -171,7 +167,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
             Caption = Nothing
 
-            InternalCreateEditorInstance(FileName, Hierarchy, Itemid, ExistingDocData,
+            InternalCreateEditorInstance(FileName, ExistingDocData,
                 DocView, DocData, Caption, CmdUIGuid, CanceledAsBoolean)
 
             If CanceledAsBoolean Then
