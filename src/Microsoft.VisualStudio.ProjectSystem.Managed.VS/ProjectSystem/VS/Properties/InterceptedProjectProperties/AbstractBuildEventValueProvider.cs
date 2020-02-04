@@ -30,10 +30,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
 
             if (success)
             {
-                return property!;
+                return property ?? string.Empty;
             }
 
-            return await _projectAccessor.OpenProjectXmlForReadAsync(_unconfiguredProject, projectXml => _helper.GetProperty(projectXml));
+            return await _projectAccessor.OpenProjectXmlForReadAsync(_unconfiguredProject, projectXml => _helper.GetProperty(projectXml)) ?? string.Empty;
         }
 
         public override async Task<string?> OnSetPropertyValueAsync(
