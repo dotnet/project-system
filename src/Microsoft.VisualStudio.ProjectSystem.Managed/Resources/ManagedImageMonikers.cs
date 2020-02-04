@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         internal static ImageMoniker Reference => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.Reference };
         internal static ImageMoniker ReferenceWarning => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.ReferenceWarning };
         // NOTE SharedProject is defined in both manifests
-        //      internal static ImageMoniker SharedProject    => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.SharedProject    };
+//      internal static ImageMoniker SharedProject    => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.SharedProject    };
         internal static ImageMoniker Sound => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.Sound };
         internal static ImageMoniker StatusError => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.StatusError };
         internal static ImageMoniker TextFile => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.TextFile };
