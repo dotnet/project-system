@@ -9,22 +9,22 @@
       </trans-unit>
       <trans-unit id="PPG_BuildSettings_Nullable_Annotations">
         <source>Annotations</source>
-        <target state="new">Annotations</target>
+        <target state="translated">Adnotacje</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_BuildSettings_Nullable_Disable">
         <source>Disable</source>
-        <target state="new">Disable</target>
+        <target state="translated">Wyłącz</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_BuildSettings_Nullable_Enable">
         <source>Enable</source>
-        <target state="new">Enable</target>
+        <target state="translated">Włącz</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_BuildSettings_Nullable_Warnings">
         <source>Warnings</source>
-        <target state="new">Warnings</target>
+        <target state="translated">Ostrzeżenia</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_PropertyPageControlName">
@@ -940,7 +940,7 @@ Błąd:</target>
       </trans-unit>
       <trans-unit id="PropPage_InvalidCharactersInFilePath">
         <source>"Invalid characters in file path."</source>
-        <target state="new">"Invalid characters in file path."</target>
+        <target state="translated">„Nieprawidłowe znaki w ścieżce pliku.”</target>
         <note />
       </trans-unit>
       <trans-unit id="PropPage_RemoteMachineBlankError">

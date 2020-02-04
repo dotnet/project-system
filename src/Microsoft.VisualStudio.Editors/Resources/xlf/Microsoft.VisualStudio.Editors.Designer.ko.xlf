@@ -9,22 +9,22 @@
       </trans-unit>
       <trans-unit id="PPG_BuildSettings_Nullable_Annotations">
         <source>Annotations</source>
-        <target state="new">Annotations</target>
+        <target state="translated">주석</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_BuildSettings_Nullable_Disable">
         <source>Disable</source>
-        <target state="new">Disable</target>
+        <target state="translated">사용 안 함</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_BuildSettings_Nullable_Enable">
         <source>Enable</source>
-        <target state="new">Enable</target>
+        <target state="translated">사용</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_BuildSettings_Nullable_Warnings">
         <source>Warnings</source>
-        <target state="new">Warnings</target>
+        <target state="translated">경고</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_PropertyPageControlName">
@@ -49,7 +49,7 @@
       </trans-unit>
       <trans-unit id="PPG_ApplicationTitle">
         <source>Application</source>
-        <target state="translated">응용 프로그램</target>
+        <target state="translated">애플리케이션</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_CompileTitle">
@@ -940,7 +940,7 @@ Error:</source>
       </trans-unit>
       <trans-unit id="PropPage_InvalidCharactersInFilePath">
         <source>"Invalid characters in file path."</source>
-        <target state="new">"Invalid characters in file path."</target>
+        <target state="translated">"파일 경로에 잘못된 문자가 있습니다."</target>
         <note />
       </trans-unit>
       <trans-unit id="PropPage_RemoteMachineBlankError">
@@ -1297,7 +1297,7 @@ Error:</source>
       </trans-unit>
       <trans-unit id="OptionPage_Project_IllegalDefaultProjectDirectory">
         <source>The location specified is on an invalid or read-only disk, or contains a device name reserved for the system.</source>
-        <target state="translated">지정한 위치가 잘못된 디스크 또는 읽기 전용 디스크에 있거나 시스템용으로 예약된 장치 이름을 포함하고 있습니다.</target>
+        <target state="translated">지정한 위치가 잘못된 디스크 또는 읽기 전용 디스크에 있거나 시스템용으로 예약된 디바이스 이름을 포함하고 있습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="PermissionSet_Requires">
@@ -1451,7 +1451,7 @@ Do you really want to edit this file?</source>
       </trans-unit>
       <trans-unit id="RSE_Err_CantAddFileToDeviceProject_1Arg">
         <source>The device does not support '{0}' files.</source>
-        <target state="translated">장치가 '{0}' 파일을 지원하지 않습니다.</target>
+        <target state="translated">디바이스가 '{0}' 파일을 지원하지 않습니다.</target>
         <note>{0} - the extension of the file name like 'tiff'</note>
       </trans-unit>
       <trans-unit id="RSE_Err_TypeIsNotSupported_1Arg">
@@ -2036,7 +2036,7 @@ CONSIDER: get this from CodeDom</note>
       </trans-unit>
       <trans-unit id="SD_ComboBoxItem_ApplicationScope">
         <source>Application</source>
-        <target state="translated">응용 프로그램</target>
+        <target state="translated">애플리케이션</target>
         <note />
       </trans-unit>
       <trans-unit id="SD_ComboBoxItem_WebApplicationScope">

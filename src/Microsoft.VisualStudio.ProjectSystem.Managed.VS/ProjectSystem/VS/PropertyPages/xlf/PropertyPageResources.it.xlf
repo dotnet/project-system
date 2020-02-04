@@ -44,7 +44,7 @@
       </trans-unit>
       <trans-unit id="InvalidHostName">
         <source>The host name is invalid.</source>
-        <target state="new">The host name is invalid.</target>
+        <target state="translated">Il nome host non è valido.</target>
         <note />
       </trans-unit>
       <trans-unit id="LaunchUrlWatermark">
@@ -99,17 +99,17 @@
       </trans-unit>
       <trans-unit id="RemoteDebug">
         <source>Use remote m_achine:</source>
-        <target state="new">Use remote m_achine:</target>
+        <target state="translated">Us_a computer remoto:</target>
         <note />
       </trans-unit>
       <trans-unit id="RemoteDebugMachineWatermark">
         <source>Remote machine host name</source>
-        <target state="new">Remote machine host name</target>
+        <target state="translated">Nome host del computer remoto</target>
         <note />
       </trans-unit>
       <trans-unit id="RemoteHostNameRequired">
         <source>You must specify a remote machine's host name.</source>
-        <target state="new">You must specify a remote machine's host name.</target>
+        <target state="translated">È necessario specificare il nome host di un computer remoto.</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueCannotBeEmpty">
@@ -154,7 +154,7 @@
       </trans-unit>
       <trans-unit id="Executable">
         <source>Executable:</source>
-        <target state="translated">Eseguibile:</target>
+        <target state="translated">File eseguibile:</target>
         <note />
       </trans-unit>
       <trans-unit id="Launch">
@@ -244,7 +244,7 @@
       </trans-unit>
       <trans-unit id="chkRemoteDebugEnabledHelpText">
         <source>Enable remote debugging</source>
-        <target state="new">Enable remote debugging</target>
+        <target state="translated">Abilita debug remoto</target>
         <note />
       </trans-unit>
       <trans-unit id="chkSqlCodeDebuggingText">

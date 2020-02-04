@@ -304,7 +304,7 @@
       </trans-unit>
       <trans-unit id="cmdidSETTINGSDESIGNERSynchronize|ToolTipText">
         <source>Removes the user configuration file where the application saves changes to user settings</source>
-        <target state="translated">응용 프로그램이 사용자 설정에 대한 변경 내용을 저장하는 사용자 구성 파일을 제거합니다.</target>
+        <target state="translated">애플리케이션이 사용자 설정에 대한 변경 내용을 저장하는 사용자 구성 파일을 제거합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidSETTINGSDESIGNERLoadWebSettings|ButtonText">

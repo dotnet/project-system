@@ -4,22 +4,22 @@
     <body>
       <trans-unit id="ContentType|AppInstaller|DisplayName">
         <source>App Installer file</source>
-        <target state="new">App Installer file</target>
+        <target state="translated">应用安装程序文件</target>
         <note />
       </trans-unit>
       <trans-unit id="ContentType|Config|DisplayName">
         <source>Config file</source>
-        <target state="new">Config file</target>
+        <target state="translated">配置文件</target>
         <note />
       </trans-unit>
       <trans-unit id="ContentType|Manifest|DisplayName">
         <source>Manifest file</source>
-        <target state="new">Manifest file</target>
+        <target state="translated">清单文件</target>
         <note />
       </trans-unit>
       <trans-unit id="ContentType|PackageLayout|DisplayName">
         <source>Package Layout file</source>
-        <target state="new">Package Layout file</target>
+        <target state="translated">包布局文件</target>
         <note />
       </trans-unit>
       <trans-unit id="ContentType|Text|DisplayName">
@@ -29,7 +29,7 @@
       </trans-unit>
       <trans-unit id="ContentType|WindowsResource|DisplayName">
         <source>Windows Resourcs file</source>
-        <target state="new">Windows Resourcs file</target>
+        <target state="translated">Windows 资源文件</target>
         <note />
       </trans-unit>
       <trans-unit id="ContentType|XML|DisplayName">

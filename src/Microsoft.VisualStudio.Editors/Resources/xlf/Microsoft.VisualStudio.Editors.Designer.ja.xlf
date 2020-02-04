@@ -9,22 +9,22 @@
       </trans-unit>
       <trans-unit id="PPG_BuildSettings_Nullable_Annotations">
         <source>Annotations</source>
-        <target state="new">Annotations</target>
+        <target state="translated">注釈</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_BuildSettings_Nullable_Disable">
         <source>Disable</source>
-        <target state="new">Disable</target>
+        <target state="translated">無効にする</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_BuildSettings_Nullable_Enable">
         <source>Enable</source>
-        <target state="new">Enable</target>
+        <target state="translated">有効化</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_BuildSettings_Nullable_Warnings">
         <source>Warnings</source>
-        <target state="new">Warnings</target>
+        <target state="translated">警告</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_PropertyPageControlName">
@@ -940,7 +940,7 @@ Error:</source>
       </trans-unit>
       <trans-unit id="PropPage_InvalidCharactersInFilePath">
         <source>"Invalid characters in file path."</source>
-        <target state="new">"Invalid characters in file path."</target>
+        <target state="translated">"ファイル パスに無効な文字が含まれています。"</target>
         <note />
       </trans-unit>
       <trans-unit id="PropPage_RemoteMachineBlankError">
