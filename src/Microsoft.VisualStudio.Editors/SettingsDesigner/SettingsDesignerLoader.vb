@@ -68,9 +68,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ' Add our dynamic type service...
             Dim dynamicTypeService As DynamicTypeService =
                 DirectCast(_serviceProvider.GetService(GetType(DynamicTypeService)), DynamicTypeService)
-            If dynamicTypeService IsNot Nothing Then
-                Dim typeDiscoveryService As ITypeDiscoveryService = dynamicTypeService.GetTypeDiscoveryService(VsHierarchy, ProjectItemid)
-            End If
 
             Dim cm As EnvDTE.CodeModel = Nothing
             If projectItem IsNot Nothing AndAlso projectItem.ContainingProject IsNot Nothing AndAlso projectItem.ContainingProject.CodeModel IsNot Nothing Then
