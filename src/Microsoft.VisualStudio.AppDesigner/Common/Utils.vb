@@ -229,7 +229,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 description:=exceptionEventDescription,
                 exceptionObject:=ex)
 
-            Debug.Fail(exceptionEventDescription & vbCrLf & $"Exception: {ex.ToString}")
+            Debug.Fail(exceptionEventDescription & vbCrLf & $"Exception: {ex}")
             Return True
         End Function
 
