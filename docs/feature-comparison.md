@@ -28,7 +28,7 @@ Debug settings persistence                                                  |pro
 Modify environment variables on debug                                       |          | ● 
 Launch with native debugging                                                | ●        | ●
 Launch with SQL Server debugging                                            | ●        | 16.4
-Launch with remote debugging                                                | ●        |   
+Launch with remote debugging                                                | ●        | 16.5
 Launch with Azure Snapshot Debugger                                         |          | ●
 **Publish**                                                                 |
 Publish to Azure                                                            |          | ●
