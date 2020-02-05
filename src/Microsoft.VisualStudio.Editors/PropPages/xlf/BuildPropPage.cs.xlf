@@ -9,7 +9,7 @@
       </trans-unit>
       <trans-unit id="lblNullable.Text">
         <source>Nulla&amp;ble:</source>
-        <target state="new">Nulla&amp;ble:</target>
+        <target state="translated">Může mít hodnotu &amp;null:</target>
         <note />
       </trans-unit>
       <trans-unit id="outputLabel.Text">

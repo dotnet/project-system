@@ -19,27 +19,27 @@
       </trans-unit>
       <trans-unit id="IconFileBrowseButton.AccessibleName">
         <source>Package Icon File Browse</source>
-        <target state="new">Package Icon File Browse</target>
+        <target state="translated">Vyhledat soubor ikony balíčku</target>
         <note />
       </trans-unit>
       <trans-unit id="IconFileBrowseButton.Text">
         <source>Browse...</source>
-        <target state="new">Browse...</target>
+        <target state="translated">Procházet...</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageIcon.AccessibleName">
         <source>Package Icon URL</source>
-        <target state="new">Package Icon URL</target>
+        <target state="translated">URL ikony balíčku</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageIconLabel.Text">
         <source>&amp;Icon File:</source>
-        <target state="new">&amp;Icon File:</target>
+        <target state="translated">Soubor &amp;ikony:</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageIconUrlWarning.Text">
         <source>PackageIconUrl detected but is deprecated. Use PackageIcon instead.</source>
-        <target state="new">PackageIconUrl detected but is deprecated. Use PackageIcon instead.</target>
+        <target state="translated">Zjistil se parametr PackageIconUrl, který je zastaralý. Použijte místo něj parametr PackageIcon.</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageVersionLabel.Text">

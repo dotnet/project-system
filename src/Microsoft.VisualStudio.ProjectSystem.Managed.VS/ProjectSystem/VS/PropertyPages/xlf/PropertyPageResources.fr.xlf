@@ -44,7 +44,7 @@
       </trans-unit>
       <trans-unit id="InvalidHostName">
         <source>The host name is invalid.</source>
-        <target state="new">The host name is invalid.</target>
+        <target state="translated">Le nom d'hôte n'est pas valide.</target>
         <note />
       </trans-unit>
       <trans-unit id="LaunchUrlWatermark">
@@ -99,17 +99,17 @@
       </trans-unit>
       <trans-unit id="RemoteDebug">
         <source>Use remote m_achine:</source>
-        <target state="new">Use remote m_achine:</target>
+        <target state="translated">Utiliser une m_achine distante :</target>
         <note />
       </trans-unit>
       <trans-unit id="RemoteDebugMachineWatermark">
         <source>Remote machine host name</source>
-        <target state="new">Remote machine host name</target>
+        <target state="translated">Nom d'hôte de la machine distante</target>
         <note />
       </trans-unit>
       <trans-unit id="RemoteHostNameRequired">
         <source>You must specify a remote machine's host name.</source>
-        <target state="new">You must specify a remote machine's host name.</target>
+        <target state="translated">Vous devez spécifier le nom d'hôte d'une machine distante.</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueCannotBeEmpty">
@@ -124,7 +124,7 @@
       </trans-unit>
       <trans-unit id="ErrorsMustBeCorrectedPriorToSaving">
         <source>The errors on the page must be corrected prior to saving your changes.</source>
-        <target state="translated">Les erreurs de la page doivent être corrigées avant d'enregistrer vos modifications.</target>
+        <target state="translated">Les erreurs de la page doivent être corrigées avant d’enregistrer vos modifications.</target>
         <note />
       </trans-unit>
       <trans-unit id="AddBtn">
@@ -149,12 +149,12 @@
       </trans-unit>
       <trans-unit id="EnvironmentVariables">
         <source>Environment variables:</source>
-        <target state="translated">Variables d'environnement :</target>
+        <target state="translated">Variables d’environnement :</target>
         <note />
       </trans-unit>
       <trans-unit id="Executable">
         <source>Executable:</source>
-        <target state="translated">Exécutable :</target>
+        <target state="translated">Exécutable :</target>
         <note />
       </trans-unit>
       <trans-unit id="Launch">
@@ -244,7 +244,7 @@
       </trans-unit>
       <trans-unit id="chkRemoteDebugEnabledHelpText">
         <source>Enable remote debugging</source>
-        <target state="new">Enable remote debugging</target>
+        <target state="translated">Activer le débogage à distance</target>
         <note />
       </trans-unit>
       <trans-unit id="chkSqlCodeDebuggingText">

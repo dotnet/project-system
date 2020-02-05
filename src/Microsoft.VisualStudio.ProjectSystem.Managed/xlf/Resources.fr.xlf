@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="ImportsTreeNodeName">
         <source>Imports</source>
-        <target state="new">Imports</target>
+        <target state="translated">Importations</target>
         <note />
       </trans-unit>
       <trans-unit id="NoActionProfileName">
@@ -54,12 +54,12 @@
       </trans-unit>
       <trans-unit id="OutputGroupPublishItemsDescription">
         <source>Contains all the assemblies needed when publishing a .NET Core project.</source>
-        <target state="new">Contains all the assemblies needed when publishing a .NET Core project.</target>
+        <target state="translated">Contient tous les assemblys nécessaires à la publication d'un projet .NET Core.</target>
         <note />
       </trans-unit>
       <trans-unit id="OutputGroupPublishItemsDisplayName">
         <source>Publish Items</source>
-        <target state="new">Publish Items</target>
+        <target state="translated">Éléments de publication</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectsNodeName">

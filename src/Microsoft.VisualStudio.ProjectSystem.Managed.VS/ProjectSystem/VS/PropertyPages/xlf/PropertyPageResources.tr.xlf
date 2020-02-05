@@ -44,7 +44,7 @@
       </trans-unit>
       <trans-unit id="InvalidHostName">
         <source>The host name is invalid.</source>
-        <target state="new">The host name is invalid.</target>
+        <target state="translated">Ana bilgisayar adı geçersiz.</target>
         <note />
       </trans-unit>
       <trans-unit id="LaunchUrlWatermark">
@@ -99,17 +99,17 @@
       </trans-unit>
       <trans-unit id="RemoteDebug">
         <source>Use remote m_achine:</source>
-        <target state="new">Use remote m_achine:</target>
+        <target state="translated">Uzak m_akine kullanın:</target>
         <note />
       </trans-unit>
       <trans-unit id="RemoteDebugMachineWatermark">
         <source>Remote machine host name</source>
-        <target state="new">Remote machine host name</target>
+        <target state="translated">Uzak makine konak adı</target>
         <note />
       </trans-unit>
       <trans-unit id="RemoteHostNameRequired">
         <source>You must specify a remote machine's host name.</source>
-        <target state="new">You must specify a remote machine's host name.</target>
+        <target state="translated">Uzak makinenin konak adını belirtmeniz gerekir.</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueCannotBeEmpty">
@@ -244,7 +244,7 @@
       </trans-unit>
       <trans-unit id="chkRemoteDebugEnabledHelpText">
         <source>Enable remote debugging</source>
-        <target state="new">Enable remote debugging</target>
+        <target state="translated">Uzaktan hata ayıklamayı etkinleştir</target>
         <note />
       </trans-unit>
       <trans-unit id="chkSqlCodeDebuggingText">
