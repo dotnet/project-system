@@ -72,6 +72,17 @@
     </BoolProperty.DataSource>
   </BoolProperty>
 
+  <EnumProperty Name="AuthenticationMode"
+                Visible="False">
+    <EnumValue Name="None" />
+    <EnumValue Name="Windows" IsDefault="True" />
+    <EnumProperty.DataSource>
+      <DataSource PersistedName="AuthenticationMode"
+                  Persistence="UserFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </EnumProperty.DataSource>
+  </EnumProperty>
+
   <BoolProperty Name="CanUseTargetFSharpCoreVersion"
                 Visible="False" />
 

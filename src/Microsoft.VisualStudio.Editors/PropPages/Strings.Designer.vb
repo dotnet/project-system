@@ -130,6 +130,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to No Authentication.
+        '''</summary>
+        Friend Shared ReadOnly Property NoAuthentication() As String
+            Get
+                Return ResourceManager.GetString("NoAuthentication", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to (not installed).
         '''</summary>
         Friend Shared ReadOnly Property NotInstalledText() As String
@@ -144,6 +153,15 @@ Namespace My.Resources
         Friend Shared ReadOnly Property RestoringPackagesMessage() As String
             Get
                 Return ResourceManager.GetString("RestoringPackagesMessage", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Windows Authentication.
+        '''</summary>
+        Friend Shared ReadOnly Property WindowsAuthentication() As String
+            Get
+                Return ResourceManager.GetString("WindowsAuthentication", resourceCulture)
             End Get
         End Property
     End Class

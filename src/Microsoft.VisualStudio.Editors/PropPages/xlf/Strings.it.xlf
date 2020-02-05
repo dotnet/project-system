@@ -35,6 +35,11 @@
         <target state="translated">Non è stato possibile disinstallare Microsoft.CodeAnalysis.FxCopAnalyzers versione '{0}'</target>
         <note />
       </trans-unit>
+      <trans-unit id="NoAuthentication">
+        <source>No Authentication</source>
+        <target state="new">No Authentication</target>
+        <note />
+      </trans-unit>
       <trans-unit id="RestoringPackagesMessage">
         <source>Restoring Packages...</source>
         <target state="translated">Ripristino dei pacchetti...</target>
@@ -43,6 +48,11 @@
       <trans-unit id="NotInstalledText">
         <source>(not installed)</source>
         <target state="translated">(non installato)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WindowsAuthentication">
+        <source>Windows Authentication</source>
+        <target state="new">Windows Authentication</target>
         <note />
       </trans-unit>
     </body>

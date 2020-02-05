@@ -35,6 +35,11 @@
         <target state="translated">未能卸载 Microsoft.CodeAnalysis.FxCopAnalyzers 版本“{0}”</target>
         <note />
       </trans-unit>
+      <trans-unit id="NoAuthentication">
+        <source>No Authentication</source>
+        <target state="new">No Authentication</target>
+        <note />
+      </trans-unit>
       <trans-unit id="RestoringPackagesMessage">
         <source>Restoring Packages...</source>
         <target state="translated">正在还原包...</target>
@@ -43,6 +48,11 @@
       <trans-unit id="NotInstalledText">
         <source>(not installed)</source>
         <target state="translated">(未安装)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WindowsAuthentication">
+        <source>Windows Authentication</source>
+        <target state="new">Windows Authentication</target>
         <note />
       </trans-unit>
     </body>
