@@ -661,7 +661,7 @@
     <value>6</value>
   </data>
   <data name="chkOverflow.Text" xml:space="preserve">
-    <value>Chec&amp;k for arithmetic overflow/underflow</value>
+    <value>Chec&amp;k for arithmetic overflow</value>
   </data>
   <data name="&gt;&gt;chkOverflow.Name" xml:space="preserve">
     <value>chkOverflow</value>
