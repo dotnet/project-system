@@ -91,7 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             var currentTimestamp = DateTime.Now;
 
             var restoreData = new RestoreData(projectAssetsFile, currentTimestamp);
-            var snapshot = IProjectSnapshot2Factory.CreateEmpty();
+            var snapshot = IProjectSnapshot2Factory.Create();
 
             var result = await OnRestoreCompleted(snapshot, restoreData);
 
@@ -102,7 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         public async Task OnRestoreCompleted_WhenRestoreFailed_IsUpToDate()
         {
             var restoreData = new RestoreData(string.Empty, DateTime.MinValue, succeeded: false);
-            var snapshot = IProjectSnapshot2Factory.CreateEmpty();
+            var snapshot = IProjectSnapshot2Factory.Create();
 
             var result = await OnRestoreCompleted(snapshot, restoreData);
 

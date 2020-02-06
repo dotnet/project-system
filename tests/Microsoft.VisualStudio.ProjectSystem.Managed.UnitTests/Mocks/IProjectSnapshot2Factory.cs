@@ -8,11 +8,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IProjectSnapshot2Factory
     {
-        public static IProjectSnapshot2 CreateEmpty()
+        public static IProjectSnapshot2 Create(
+            IImmutableDictionary<string, DateTime>? dependentFileTimes = null)
         {
             var mock = new Mock<IProjectSnapshot2>();
+
             mock.Setup(s => s.AdditionalDependentFileTimes)
-                .Returns(ImmutableDictionary<string, DateTime>.Empty);
+                .Returns(dependentFileTimes ?? ImmutableDictionary<string, DateTime>.Empty);
 
             return mock.Object;
         }
@@ -26,7 +28,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 .Returns(fileTimes);
 
             return mock.Object;
-
         }
     }
 }
