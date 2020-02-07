@@ -49,6 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         private ICommand _deleteProfileCommand;
         private ICommand _findRemoteMachineCommand;
         private OrderPrecedenceImportCollection<IRemoteAuthenticationProvider> _authenticationProviders;
+        private IRemoteAuthenticationProvider _unknownProvider;
 
         public DebugPageViewModel()
         {
@@ -269,16 +270,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
-        public IEnumerable<IRemoteAuthenticationProvider> RemoteAuthenticationProviders => _authenticationProviders.ExtensionValues();
+        public IEnumerable<IRemoteAuthenticationProvider> RemoteAuthenticationProviders
+        {
+            get
+            {
+                var providers = new List<IRemoteAuthenticationProvider>(_authenticationProviders.ExtensionValues());
+                if (_unknownProvider != null)
+                {
+                    providers.Add(_unknownProvider);
+                }
+                return providers;
+            }
+        }
 
         public IRemoteAuthenticationProvider RemoteAuthenticationProvider
         {
             get
             {
                 Guid portSupplier = GetOtherProperty(LaunchProfileExtensions.RemoteAuthenticationPortSupplierProperty, Guid.Empty);
-                IRemoteAuthenticationProvider provider = _authenticationProviders.FirstOrDefaultValue(p => p.PortSupplier.Equals(portSupplier));
-
-                return provider;
+                return GetProviderForPortSupplier(portSupplier);
             }
             set
             {
@@ -287,6 +297,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     OnPropertyChanged(nameof(RemoteAuthenticationProvider));
                 }
             }
+        }
+
+        private IRemoteAuthenticationProvider GetProviderForPortSupplier(Guid portSupplier)
+        {
+            IRemoteAuthenticationProvider provider = _authenticationProviders.FirstOrDefaultValue(p => p.PortSupplier.Equals(portSupplier));
+
+            // If there is a bad guid in the launch settings we don't want to clobber it by having a default selection, so create a temporary provider
+            if (provider == null)
+            {
+                provider = _unknownProvider = new UnknownRemoteAuthenticationProvider(portSupplier);
+                OnPropertyChanged(nameof(RemoteAuthenticationProviders));
+            }
+            else if (_unknownProvider != null)
+            {
+                _unknownProvider = null;
+                OnPropertyChanged(nameof(RemoteAuthenticationProviders));
+            }
+
+            return provider;
         }
 
         public bool HasAuthenticationProviders
@@ -588,10 +617,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     if (ErrorHandler.Succeeded(vsService.Value.SelectRemoteInstanceViaDlg(RemoteDebugMachine, RemoteAuthenticationProvider.PortSupplier, (uint)DEBUG_REMOTE_DISCOVERY_FLAGS.DRD_NONE, out string remoteMachine, out Guid portSupplier)))
                     {
                         RemoteDebugMachine = remoteMachine;
-                        IRemoteAuthenticationProvider provider = _authenticationProviders.FirstOrDefaultValue(p => p.PortSupplier.Equals(portSupplier));
-                        RemoteAuthenticationProvider = provider;
+                        RemoteAuthenticationProvider = GetProviderForPortSupplier(portSupplier);
                     }
-
                 }));
             }
         }
