@@ -60,11 +60,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             var jointRuleSource = new ProjectValueDataSource<IProjectSubscriptionUpdate>(projectCommonServices);
             var sourceItemsRuleSource = new ProjectValueDataSource<IProjectSubscriptionUpdate>(projectCommonServices);
             var projectSnapshotSource = new ProjectValueDataSource<IProjectSnapshot>(projectCommonServices);
-            
+            var projectCatalogSource = new ProjectValueDataSource<IProjectCatalogSnapshot>(projectCommonServices);
+
             var projectSubscriptionService = new Mock<IProjectSubscriptionService>();
             projectSubscriptionService.SetupGet(o => o.JointRuleSource).Returns(jointRuleSource);
             projectSubscriptionService.SetupGet(o => o.ProjectSource).Returns(projectSnapshotSource);
             projectSubscriptionService.SetupGet(o => o.SourceItemsRuleSource).Returns(sourceItemsRuleSource);
+            projectSubscriptionService.SetupGet(o => o.ProjectCatalogSource).Returns(projectCatalogSource);
 
             var configuredProjectServices = ConfiguredProjectServicesFactory.Create(projectSubscriptionService: projectSubscriptionService.Object);
 
@@ -145,7 +147,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     CreateUpdate(projectRuleSnapshot),
                     CreateUpdate(sourceRuleSnapshot),
                     (IProjectSnapshot)IProjectSnapshot2Factory.Create(dependentTimeFiles),
-                    IProjectItemSchemaFactory.Create(_itemTypes)),
+                    IProjectItemSchemaFactory.Create(_itemTypes),
+                    IProjectCatalogSnapshotFactory.CreateWithDefaultMapping(_itemTypes)),
                 identity: ProjectDataSources.ConfiguredProjectVersion,
                 version: _projectVersion);
 

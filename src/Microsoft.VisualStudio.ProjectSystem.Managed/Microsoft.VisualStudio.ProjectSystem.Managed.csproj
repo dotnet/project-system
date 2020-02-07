@@ -140,26 +140,6 @@
 
   <!-- Items -->
   <ItemGroup>
-    <Compile Update="ProjectSystem\Rules\Items\AdditionalFiles.cs">
-      <DependentUpon>AdditionalFiles.xaml</DependentUpon>
-    </Compile>
-    <XamlPropertyRule Include="ProjectSystem\Rules\Items\AdditionalFiles.xaml">
-      <XlfInput>false</XlfInput>
-      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
-    </XamlPropertyRule>
-    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\AdditionalFiles.BrowseObject.xaml" />
-
-    <Compile Update="ProjectSystem\Rules\Items\ApplicationDefinition.cs">
-      <DependentUpon>ApplicationDefinition.xaml</DependentUpon>
-    </Compile>
-    <XamlPropertyRule Include="ProjectSystem\Rules\Items\ApplicationDefinition.xaml">
-      <XlfInput>false</XlfInput>
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-    </XamlPropertyRule>
-    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\ApplicationDefinition.BrowseObject.xaml" />
-    
     <Compile Update="ProjectSystem\Rules\Items\Compile.cs">
       <DependentUpon>Compile.xaml</DependentUpon>
     </Compile>
@@ -217,36 +197,6 @@
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
     </XamlPropertyRule>
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\None.BrowseObject.xaml" />
-
-    <Compile Update="ProjectSystem\Rules\Items\Page.cs">
-      <DependentUpon>Page.xaml</DependentUpon>
-    </Compile>
-    <XamlPropertyRule Include="ProjectSystem\Rules\Items\Page.xaml">
-      <XlfInput>false</XlfInput>
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-    </XamlPropertyRule>
-    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\Page.BrowseObject.xaml" />
-
-    <Compile Update="ProjectSystem\Rules\Items\Resource.cs">
-      <DependentUpon>Resource.xaml</DependentUpon>
-    </Compile>
-    <XamlPropertyRule Include="ProjectSystem\Rules\Items\Resource.xaml">
-      <XlfInput>false</XlfInput>
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-    </XamlPropertyRule>
-    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\Resource.BrowseObject.xaml" />
-
-    <Compile Update="ProjectSystem\Rules\Items\XamlAppDef.cs">
-      <DependentUpon>XamlAppDef.xaml</DependentUpon>
-    </Compile>
-    <XamlPropertyRule Include="ProjectSystem\Rules\Items\XamlAppDef.xaml">
-      <XlfInput>false</XlfInput>
-      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
-    </XamlPropertyRule>
-    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\XamlAppDef.BrowseObject.xaml" />
   </ItemGroup>
 
   <!-- Others -->
