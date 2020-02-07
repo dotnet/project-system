@@ -385,10 +385,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
             else if (value is string s &&
                 TypeDescriptor.GetConverter(typeof(T)) is TypeConverter converter &&
-                converter.CanConvertFrom(typeof(string)) &&
-                converter.ConvertFromString(s) is T o)
+                converter.CanConvertFrom(typeof(string)))
             {
-                return o;
+                try
+                {
+                    if (converter.ConvertFromString(s) is T o)
+                    {
+                        return o;
+                    }
+                }
+                catch (Exception)
+                {
+                    // ignore bad data in the json file and just let them have the default value
+                }
             }
 
             return defaultValue;
