@@ -141,7 +141,7 @@ namespace Microsoft.VisualStudio.Build
             bool valueFound = false;
             foreach (string value in GetPropertyValues(evaluatedPropertyValue, delimiter))
             {
-                if (!string.Equals(value, valueToRemove, StringComparisons.PropertyValues))
+                if (!string.Equals(value, valueToRemove.Replace(" ", ""), StringComparisons.PropertyValues))
                 {
                     if (newValue.Length != 0)
                     {
