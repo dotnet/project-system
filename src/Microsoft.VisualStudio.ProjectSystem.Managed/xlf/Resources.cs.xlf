@@ -52,6 +52,11 @@
         <target state="translated">Sestavení rozhraní</target>
         <note />
       </trans-unit>
+      <trans-unit id="NoAuth">
+        <source>No Authentication</source>
+        <target state="new">No Authentication</target>
+        <note />
+      </trans-unit>
       <trans-unit id="OutputGroupPublishItemsDescription">
         <source>Contains all the assemblies needed when publishing a .NET Core project.</source>
         <target state="translated">Obsahuje všechna sestavení potřebná při publikování projektu .NET Core.</target>
@@ -89,6 +94,11 @@ If this file or folder does not appear in Solution Explorer, then it is not curr
         <target state="translated">Soubor nebo složka s názvem {0} už na tomto místě disku existuje. Zvolte prosím jiný název.
 
 Nezobrazuje-li se tento soubor nebo složka v Průzkumníkovi řešení, není momentálně součástí vašeho projektu. Jestli chcete zobrazit soubory, které na disku existují, ale nejsou součástí projektu, vyberte z nabídky Projekt příkaz Zobrazit všechny soubory.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WindowsAuth">
+        <source>Windows Authentication</source>
+        <target state="new">Windows Authentication</target>
         <note />
       </trans-unit>
     </body>

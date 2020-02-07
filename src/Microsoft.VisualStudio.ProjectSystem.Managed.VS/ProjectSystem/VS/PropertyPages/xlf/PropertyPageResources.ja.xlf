@@ -12,6 +12,11 @@
         <target state="translated">アプリケーションに渡される引数</target>
         <note />
       </trans-unit>
+      <trans-unit id="AuthenticationMode">
+        <source>Authentication mode:</source>
+        <target state="new">Authentication mode:</target>
+        <note />
+      </trans-unit>
       <trans-unit id="DebugPropertyPageTitle">
         <source>Debug</source>
         <target state="translated">デバッグ</target>

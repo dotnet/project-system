@@ -52,6 +52,11 @@
         <target state="translated">Assembly del framework</target>
         <note />
       </trans-unit>
+      <trans-unit id="NoAuth">
+        <source>No Authentication</source>
+        <target state="new">No Authentication</target>
+        <note />
+      </trans-unit>
       <trans-unit id="OutputGroupPublishItemsDescription">
         <source>Contains all the assemblies needed when publishing a .NET Core project.</source>
         <target state="translated">Contiene tutti gli assembly necessari durante la pubblicazione di un progetto .NET Core.</target>
@@ -89,6 +94,11 @@ If this file or folder does not appear in Solution Explorer, then it is not curr
         <target state="translated">In questa posizione del disco esiste già un file o una cartella con il nome '{0}'. Scegliere un altro nome.
 
 Se non è visualizzato in Esplora soluzioni, il file o la cartella non fa parte del progetto corrente. Per visualizzare i file presenti nel disco, ma non inclusi nel progetto, scegliere Mostra tutti i file nel menu Progetto.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WindowsAuth">
+        <source>Windows Authentication</source>
+        <target state="new">Windows Authentication</target>
         <note />
       </trans-unit>
     </body>

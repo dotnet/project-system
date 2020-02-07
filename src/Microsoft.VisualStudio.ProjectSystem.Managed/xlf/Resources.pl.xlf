@@ -52,6 +52,11 @@
         <target state="translated">Zestawy platformy</target>
         <note />
       </trans-unit>
+      <trans-unit id="NoAuth">
+        <source>No Authentication</source>
+        <target state="new">No Authentication</target>
+        <note />
+      </trans-unit>
       <trans-unit id="OutputGroupPublishItemsDescription">
         <source>Contains all the assemblies needed when publishing a .NET Core project.</source>
         <target state="translated">Zawiera wszystkie zestawy wymagane podczas publikowania projektu platformy .NET Core.</target>
@@ -89,6 +94,11 @@ If this file or folder does not appear in Solution Explorer, then it is not curr
         <target state="translated">Plik lub folder o nazwie „{0}” istnieje już na dysku w tej lokalizacji. Proszę wybrać inną nazwę.
 
 Jeśli ten plik lub folder nie jest wyświetlany w Eksploratorze rozwiązań, to nie jest on aktualnie częścią projektu. Aby wyświetlić pliki, które istnieją na dysku, ale nie znajdują się w projekcie, wybierz pozycję Pokaż wszystkie pliki z menu Projekt.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WindowsAuth">
+        <source>Windows Authentication</source>
+        <target state="new">Windows Authentication</target>
         <note />
       </trans-unit>
     </body>

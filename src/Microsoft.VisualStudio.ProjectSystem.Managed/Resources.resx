@@ -172,4 +172,10 @@ If this file or folder does not appear in Solution Explorer, then it is not curr
   <data name="OutputGroupPublishItemsDisplayName" xml:space="preserve">
     <value>Publish Items</value>
   </data>
+  <data name="NoAuth" xml:space="preserve">
+    <value>No Authentication</value>
+  </data>
+  <data name="WindowsAuth" xml:space="preserve">
+    <value>Windows Authentication</value>
+  </data>
 </root>

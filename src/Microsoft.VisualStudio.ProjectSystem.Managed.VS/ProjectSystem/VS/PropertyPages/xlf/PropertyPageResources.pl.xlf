@@ -12,6 +12,11 @@
         <target state="translated">Argumenty, które mają zostać przekazane do aplikacji</target>
         <note />
       </trans-unit>
+      <trans-unit id="AuthenticationMode">
+        <source>Authentication mode:</source>
+        <target state="new">Authentication mode:</target>
+        <note />
+      </trans-unit>
       <trans-unit id="DebugPropertyPageTitle">
         <source>Debug</source>
         <target state="translated">Debuguj</target>

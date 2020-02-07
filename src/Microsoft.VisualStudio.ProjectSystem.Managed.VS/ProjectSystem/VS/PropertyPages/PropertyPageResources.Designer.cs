@@ -97,6 +97,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Authentication mode:.
+        /// </summary>
+        public static string AuthenticationMode {
+            get {
+                return ResourceManager.GetString("AuthenticationMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Browse....
         /// </summary>
         public static string BrowseBtn {

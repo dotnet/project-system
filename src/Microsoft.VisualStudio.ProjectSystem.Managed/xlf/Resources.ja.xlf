@@ -52,6 +52,11 @@
         <target state="translated">フレームワーク アセンブリ</target>
         <note />
       </trans-unit>
+      <trans-unit id="NoAuth">
+        <source>No Authentication</source>
+        <target state="new">No Authentication</target>
+        <note />
+      </trans-unit>
       <trans-unit id="OutputGroupPublishItemsDescription">
         <source>Contains all the assemblies needed when publishing a .NET Core project.</source>
         <target state="translated">.NET Core プロジェクトの公開時に必要なすべてのアセンブリが含まれています。</target>
@@ -89,6 +94,11 @@ If this file or folder does not appear in Solution Explorer, then it is not curr
         <target state="translated">'{0}' という名前のファイルまたはフォルダーがこの場所のディスクに既に存在します。別の名前を選んでください。
 
 このファイルまたはフォルダーがソリューション エクスプローラーに表示されない場合は、そのファイルまたはフォルダーは現在プロジェクトの一部ではありません。ディスク上にあってプロジェクトにないファイルを表示するには、[プロジェクト] メニューの [すべてのファイルを表示] をクリックしてください。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WindowsAuth">
+        <source>Windows Authentication</source>
+        <target state="new">Windows Authentication</target>
         <note />
       </trans-unit>
     </body>

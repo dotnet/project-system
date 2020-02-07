@@ -52,6 +52,11 @@
         <target state="translated">Çerçeve Bütünleştirilmiş Kodları</target>
         <note />
       </trans-unit>
+      <trans-unit id="NoAuth">
+        <source>No Authentication</source>
+        <target state="new">No Authentication</target>
+        <note />
+      </trans-unit>
       <trans-unit id="OutputGroupPublishItemsDescription">
         <source>Contains all the assemblies needed when publishing a .NET Core project.</source>
         <target state="translated">.NET Core projesi yayımlanırken gerekli tüm derlemeleri içerir.</target>
@@ -89,6 +94,11 @@ If this file or folder does not appear in Solution Explorer, then it is not curr
         <target state="translated">'{0}' adlı dosya veya klasör bu konumdaki diskte zaten var. Lütfen başka bir ad seçin.
 
 Bu dosya veya klasör Çözüm Gezgini'nde görünmüyorsa şu anda projenizin bir parçası değildir. Diskte olan fakat projede olmayan dosyaları görüntülemek için Proje menüsünden Tüm Dosyaları Göster'i seçin.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WindowsAuth">
+        <source>Windows Authentication</source>
+        <target state="new">Windows Authentication</target>
         <note />
       </trans-unit>
     </body>

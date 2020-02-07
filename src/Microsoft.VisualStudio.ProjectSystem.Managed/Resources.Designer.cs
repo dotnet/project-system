@@ -160,6 +160,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No Authentication.
+        /// </summary>
+        internal static string NoAuth {
+            get {
+                return ResourceManager.GetString("NoAuth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contains all the assemblies needed when publishing a .NET Core project..
         /// </summary>
         internal static string OutputGroupPublishItemsDescription {
@@ -212,6 +221,15 @@ namespace Microsoft.VisualStudio {
         internal static string SpecialFileProvider_FileOrFolderAlreadyExists {
             get {
                 return ResourceManager.GetString("SpecialFileProvider_FileOrFolderAlreadyExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Windows Authentication.
+        /// </summary>
+        internal static string WindowsAuth {
+            get {
+                return ResourceManager.GetString("WindowsAuth", resourceCulture);
             }
         }
     }

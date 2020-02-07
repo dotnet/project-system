@@ -52,6 +52,11 @@
         <target state="translated">框架程序集</target>
         <note />
       </trans-unit>
+      <trans-unit id="NoAuth">
+        <source>No Authentication</source>
+        <target state="new">No Authentication</target>
+        <note />
+      </trans-unit>
       <trans-unit id="OutputGroupPublishItemsDescription">
         <source>Contains all the assemblies needed when publishing a .NET Core project.</source>
         <target state="translated">包含发布 .NET Core 项目时所需的全部程序集。</target>
@@ -89,6 +94,11 @@ If this file or folder does not appear in Solution Explorer, then it is not curr
         <target state="translated">磁盘上该位置已存在名为“{0}”的文件或文件夹。请另选一个名称。
 
 如果此文件或文件夹未在“解决方案资源管理器”中出现，那么它当前不是项目的一部分。若要查看磁盘上存在但未包含在项目中的文件，请从“项目”菜单选择“显示所有文件”。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WindowsAuth">
+        <source>Windows Authentication</source>
+        <target state="new">Windows Authentication</target>
         <note />
       </trans-unit>
     </body>

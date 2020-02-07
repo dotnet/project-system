@@ -270,4 +270,7 @@
   <data name="FindBtn" xml:space="preserve">
     <value>Find...</value>
   </data>
+  <data name="AuthenticationMode" xml:space="preserve">
+    <value>Authentication mode:</value>
+  </data>
 </root>
