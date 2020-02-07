@@ -62,8 +62,6 @@
     <PackageReference Include="Microsoft.VisualStudio.ImageCatalog" />
     <PackageReference Include="StreamJsonRpc" />
 
-    <PackageReference Include="Microsoft.ServiceHub.Framework" />
-
   </ItemGroup>
 
   <ItemGroup Condition="'$(IsUnitTestProject)' == 'true'" >
