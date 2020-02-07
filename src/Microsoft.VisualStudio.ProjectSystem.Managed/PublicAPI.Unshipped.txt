@@ -1,3 +1,6 @@
+Microsoft.VisualStudio.ProjectSystem.Debug.IRemoteAuthenticationProvider
+Microsoft.VisualStudio.ProjectSystem.Debug.IRemoteAuthenticationProvider.Name.get -> string
+Microsoft.VisualStudio.ProjectSystem.Debug.IRemoteAuthenticationProvider.PortSupplier.get -> System.Guid
 Microsoft.VisualStudio.ProjectSystem.VS.Extensibility.IProjectExportProvider
 Microsoft.VisualStudio.ProjectSystem.VS.Extensibility.IProjectExportProvider.GetExport<T>(string projectFilePath) -> T
 Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers
