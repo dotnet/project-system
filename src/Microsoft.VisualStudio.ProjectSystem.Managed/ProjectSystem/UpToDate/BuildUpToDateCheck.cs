@@ -31,20 +31,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private const string DefaultSetName = "";
         private static readonly StringComparer s_setNameComparer = StringComparers.ItemNames;
 
-        private static ImmutableHashSet<string> ReferenceSchemas => ImmutableStringHashSet.EmptyOrdinal
+        // This order is used everywhere, i.e., in the documentation.
+        // Do not change the order.
+        private static ImmutableHashSet<string> ProjectPropertiesSchemas => ImmutableStringHashSet.EmptyOrdinal
+            .Add(ConfigurationGeneral.SchemaName)
             .Add(ResolvedAnalyzerReference.SchemaName)
-            .Add(ResolvedCompilationReference.SchemaName);
-
-        private static ImmutableHashSet<string> UpToDateSchemas => ImmutableStringHashSet.EmptyOrdinal
+            .Add(ResolvedCompilationReference.SchemaName)
+            .Add(CopyToOutputDirectoryItem.SchemaName)
             .Add(CopyUpToDateMarker.SchemaName)
             .Add(UpToDateCheckInput.SchemaName)
             .Add(UpToDateCheckOutput.SchemaName)
             .Add(UpToDateCheckBuilt.SchemaName);
-
-        private static ImmutableHashSet<string> ProjectPropertiesSchemas => ImmutableStringHashSet.EmptyOrdinal
-            .Add(ConfigurationGeneral.SchemaName)
-            .Union(ReferenceSchemas)
-            .Union(UpToDateSchemas);
 
         private static ImmutableHashSet<string> NonCompilationItemTypes => ImmutableHashSet<string>.Empty
             .WithComparer(StringComparers.ItemTypes)
@@ -167,7 +164,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return log.Fail("Disabled", "The 'DisableFastUpToDateCheck' property is true, not up to date.");
             }
 
-            string copyAlwaysItemPath = state.ItemsByItemType.SelectMany(kvp => kvp.Value).FirstOrDefault(item => item.copyType == CopyType.CopyAlways).path;
+            string? copyAlwaysItemPath = state.CopyToOutputDirectoryItems.FirstOrDefault(item => item.Value.copyType == CopyType.Always).Key;
 
             if (copyAlwaysItemPath != null)
             {
@@ -305,13 +302,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     yield return (Path: state.NewestImportInput, IsRequired: true);
                 }
 
-                foreach ((string itemType, ImmutableHashSet<(string path, string? link, CopyType copyType)> changes) in state.ItemsByItemType)
+                foreach ((string itemType, ImmutableHashSet<string> changes) in state.ItemsByItemType)
                 {
                     if (!NonCompilationItemTypes.Contains(itemType))
                     {
                         log.Verbose("Adding {0} inputs:", itemType);
 
-                        foreach (string input in changes.Select(item => _configuredProject.UnconfiguredProject.MakeRooted(item.path)))
+                        foreach (string input in changes.Select(item => _configuredProject.UnconfiguredProject.MakeRooted(item)))
                         {
                             log.Verbose("    '{0}'", input);
                             yield return (Path: input, IsRequired: true);
@@ -520,47 +517,40 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return true;
         }
 
-        private bool CheckCopyToOutputDirectoryFiles(Log log, in TimestampCache timestampCache, State state)
+        private bool CheckPreserveNewestCopyToOutputDirectoryFiles(Log log, in TimestampCache timestampCache, State state)
         {
-            IEnumerable<(string path, string? link, CopyType copyType)> items = state.ItemsByItemType.SelectMany(kvp => kvp.Value).Where(item => item.copyType == CopyType.CopyIfNewer);
+            IEnumerable<KeyValuePair<string, (string targetPath, CopyType copyType)>> preserveNewestItems
+                = state.CopyToOutputDirectoryItems.Where(item => item.Value.copyType == CopyType.PreserveNewest);
 
             string outputFullPath = Path.Combine(state.MSBuildProjectDirectory, state.OutputRelativeOrFullPath);
 
-            foreach ((string path, string? link, _) in items)
+            foreach ((string sourcePath, (string targetFilename, _)) in preserveNewestItems)
             {
-                string rootedPath = _configuredProject.UnconfiguredProject.MakeRooted(path);
-                string filename = Strings.IsNullOrEmpty(link) ? rootedPath : link;
+                Assumes.True(Path.IsPathRooted(sourcePath));
 
-                if (string.IsNullOrEmpty(filename))
-                {
-                    continue;
-                }
+                log.Info("Checking PreserveNewest file '{0}':", sourcePath);
 
-                filename = _configuredProject.UnconfiguredProject.MakeRelative(filename);
-
-                log.Info("Checking PreserveNewest file '{0}':", rootedPath);
-
-                DateTime? itemTime = timestampCache.GetTimestampUtc(rootedPath);
+                DateTime? itemTime = timestampCache.GetTimestampUtc(sourcePath);
 
                 if (itemTime != null)
                 {
-                    log.Info("    Source {0}: '{1}'.", itemTime, rootedPath);
+                    log.Info("    Source {0}: '{1}'.", itemTime, sourcePath);
                 }
                 else
                 {
-                    return log.Fail("CopyToOutputDirectory", "Source '{0}' does not exist, not up to date.", rootedPath);
+                    return log.Fail("CopyToOutputDirectory", "Source '{0}' does not exist, not up to date.", sourcePath);
                 }
 
-                string destination = Path.Combine(outputFullPath, filename);
-                DateTime? destinationTime = timestampCache.GetTimestampUtc(destination);
+                string destinationPath = Path.Combine(outputFullPath, targetFilename);
+                DateTime? destinationTime = timestampCache.GetTimestampUtc(destinationPath);
 
                 if (destinationTime != null)
                 {
-                    log.Info("    Destination {0}: '{1}'.", destinationTime, destination);
+                    log.Info("    Destination {0}: '{1}'.", destinationTime, destinationPath);
                 }
                 else
                 {
-                    return log.Fail("CopyToOutputDirectory", "Destination '{0}' does not exist, not up to date.", destination);
+                    return log.Fail("CopyToOutputDirectory", "Destination '{0}' does not exist, not up to date.", destinationPath);
                 }
 
                 if (destinationTime < itemTime)
@@ -608,7 +598,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                     if (!CheckInputsAndOutputs(logger, timestampCache, state) ||
                         !CheckMarkers(logger, timestampCache, state) ||
-                        !CheckCopyToOutputDirectoryFiles(logger, timestampCache, state) ||
+                        !CheckPreserveNewestCopyToOutputDirectoryFiles(logger, timestampCache, state) ||
                         !CheckCopiedOutputFiles(logger, timestampCache, state))
                     {
                         return false;
