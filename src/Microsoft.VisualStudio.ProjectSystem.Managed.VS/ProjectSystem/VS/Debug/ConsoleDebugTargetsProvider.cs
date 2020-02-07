@@ -356,6 +356,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             if (resolvedProfile.IsRemoteDebugEnabled())
             {
                 settings.RemoteMachine = resolvedProfile.RemoteDebugMachine();
+                settings.PortSupplierGuid = resolvedProfile.RemoteAuthenticationPortSupplier();
             }
 
             return settings;

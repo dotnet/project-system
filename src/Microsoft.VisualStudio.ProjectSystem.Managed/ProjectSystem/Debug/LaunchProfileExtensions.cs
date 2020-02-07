@@ -1,5 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
+
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     internal static class LaunchProfileExtensions
@@ -8,6 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public const string SqlDebuggingProperty = "sqlDebugging";
         public const string RemoteDebugEnabledProperty = "remoteDebugEnabled";
         public const string RemoteDebugMachineProperty = "remoteDebugMachine";
+        public const string RemoteAuthenticationPortSupplierProperty = "remotePortSupplier";
 
         public static bool IsInMemoryObject(this object persistObject)
         {
@@ -66,6 +69,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
 
             return null;
+        }
+
+        public static Guid RemoteAuthenticationPortSupplier(this ILaunchProfile profile)
+        {
+            if (profile?.OtherSettings != null
+               && profile.OtherSettings.TryGetValue(RemoteAuthenticationPortSupplierProperty, out object value)
+               && value is string s
+               && Guid.TryParse(s, out Guid g))
+            {
+                return g;
+            }
+
+            return Guid.Empty;
         }
     }
 }
