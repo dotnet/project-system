@@ -12,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
@@ -47,6 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         private ICommand _newProfileCommand;
         private ICommand _deleteProfileCommand;
         private ICommand _findRemoteMachineCommand;
+        private OrderPrecedenceImportCollection<IRemoteAuthenticationProvider> _authenticationProviders;
 
         public DebugPageViewModel()
         {
@@ -267,6 +269,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
+        public IEnumerable<IRemoteAuthenticationProvider> RemoteAuthenticationProviders => _authenticationProviders.ExtensionValues();
+
+        public IRemoteAuthenticationProvider RemoteAuthenticationProvider
+        {
+            get
+            {
+                Guid portSupplier = GetOtherProperty(LaunchProfileExtensions.RemoteAuthenticationPortSupplierProperty, Guid.Empty);
+                IRemoteAuthenticationProvider provider = _authenticationProviders.FirstOrDefaultValue(p => p.PortSupplier.Equals(portSupplier));
+
+                return provider;
+            }
+            set
+            {
+                if (TrySetOtherProperty(LaunchProfileExtensions.RemoteAuthenticationPortSupplierProperty, value.PortSupplier, Guid.Empty))
+                {
+                    OnPropertyChanged(nameof(RemoteAuthenticationProvider));
+                }
+            }
+        }
+
+        public bool HasAuthenticationProviders
+        {
+            get
+            {
+                return _authenticationProviders.Count > 0;
+            }
+        }
+
         public bool HasLaunchOption
         {
             get
@@ -323,6 +353,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 value is T b)
             {
                 return b;
+            }
+            else if (value is string s &&
+                TypeDescriptor.GetConverter(typeof(T)) is TypeConverter converter &&
+                converter.CanConvertFrom(typeof(string)) &&
+                converter.ConvertFromString(s) is T o)
+            {
+                return o;
             }
 
             return defaultValue;
@@ -716,6 +753,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 OnPropertyChanged(nameof(WorkingDirectory));
                 OnPropertyChanged(nameof(RemoteDebugEnabled));
                 OnPropertyChanged(nameof(RemoteDebugMachine));
+                OnPropertyChanged(nameof(RemoteAuthenticationProvider));
 
                 UpdateLaunchTypes();
 
@@ -891,7 +929,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 ILaunchSettingsProvider profileProvider = GetDebugProfileProvider();
                 _debugProfileProviderLink = profileProvider.SourceBlock.LinkToAsyncAction(OnLaunchSettingsChanged);
 
-                // We need to get the set of UI providers, if any.
+                InitializeAuthenticationProviders();
                 InitializeUIProviders();
             }
         }
@@ -904,6 +942,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
 
             InitializeDebugTargetsCore(profiles);
+        }
+
+        private void InitializeAuthenticationProviders()
+        {
+            _authenticationProviders = new OrderPrecedenceImportCollection<IRemoteAuthenticationProvider>(projectCapabilityCheckProvider: Project);
+            IEnumerable<Lazy<IRemoteAuthenticationProvider, IOrderPrecedenceMetadataView>> providers = Project.Services.ExportProvider.GetExports<IRemoteAuthenticationProvider, IOrderPrecedenceMetadataView>();
+            foreach (Lazy<IRemoteAuthenticationProvider, IOrderPrecedenceMetadataView> provider in providers)
+            {
+                _authenticationProviders.Add(provider);
+            }
         }
 
         /// <summary>

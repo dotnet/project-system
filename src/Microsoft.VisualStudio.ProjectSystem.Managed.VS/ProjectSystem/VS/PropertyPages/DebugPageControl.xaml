@@ -358,6 +358,39 @@
                     </MultiBinding>
                 </Button.IsEnabled>
             </Button>
+            <Label
+                Grid.Row="7"
+                Content="{x:Static Member=local:PropertyPageResources.AuthenticationMode}" 
+                Margin="4,4,3,5"
+                VerticalAlignment="Center"
+                Visibility="{Binding Path=SupportsRemoteDebug, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
+            />
+            <ComboBox
+                Grid.Row="7"
+                Grid.Column="1"
+                MinWidth="200"
+                MinHeight="23"
+                Margin="5,7,2,6"
+                VerticalAlignment="Center"
+                DisplayMemberPath="Name"
+                VerticalContentAlignment="Center"
+                Visibility="{Binding Path=SupportsRemoteDebug, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
+                ItemsSource="{Binding Path=RemoteAuthenticationProviders, Mode=OneWay}"
+                SelectedValue="{Binding Path=RemoteAuthenticationProvider}"
+                AutomationProperties.Name="{x:Static Member=local:PropertyPageResources.AuthenticationMode}">
+                <ComboBox.ItemContainerStyle>
+                    <Style TargetType="ComboBoxItem">
+                        <Setter Property="AutomationProperties.Name" Value="{Binding Path=Name}"/>
+                    </Style>
+                </ComboBox.ItemContainerStyle>
+                <ComboBox.IsEnabled>
+                    <MultiBinding Converter="{StaticResource MultiValueBoolToBoolAnd}">
+                        <Binding Path="RemoteDebugEnabled" Mode="OneWay"/>
+                        <Binding Path="IsProfileSelected" Mode="OneWay"/>
+                        <Binding Path="HasAuthenticationProviders" Mode="OneWay" />
+                    </MultiBinding>
+                </ComboBox.IsEnabled>
+            </ComboBox>
 
             <!-- Environment variables -->
             <Label 
