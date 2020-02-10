@@ -65,6 +65,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
         internal async Task HandleRenameAsync(string oldFilePath, string newFilePath)
         {
+            // Do not offer to rename the file in VS Online scenarios.
+            if (Shell.KnownUIContexts.CloudEnvironmentConnectedContext.IsActive)
+            {
+                return;
+            }
+
             // Do not offer to rename types if the user changes the file extensions
             if (!oldFilePath.EndsWith(Path.GetExtension(newFilePath), StringComparisons.Paths))
             {
