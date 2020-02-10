@@ -159,6 +159,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         protected abstract void RemoveFromContext(string fullPath, IProjectLogger logger);
 
+        protected abstract void UpdateInContext(string fullPath, IImmutableDictionary<string, string> previousMetadata, IImmutableDictionary<string, string> currentMetadata, bool isActiveContext, IProjectLogger logger);
+
         protected virtual void HandleItemRename(string pathBefore, string pathAfter, IProjectLogger logger)
         {
         }
@@ -183,8 +185,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 // We Remove then Add changed items to pick up the Linked metadata
                 foreach (string includePath in difference.ChangedItems)
                 {
-                    RemoveFromContextIfPresent(includePath, logger);
-                    AddToContextIfNotPresent(includePath, currentMetadata, isActiveContext, logger);
+                    UpdateInContextIfPresent(includePath, previousMetadata, currentMetadata, isActiveContext, logger);
                 }
             }
 
@@ -224,6 +225,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 AddToContext(fullPath, itemMetadata, isActiveContext, logger);
                 bool added = _paths.Add(fullPath);
                 Assumes.True(added);
+            }
+        }
+
+        private void UpdateInContextIfPresent(string includePath, IImmutableDictionary<string, IImmutableDictionary<string, string>> previousMetadata, IImmutableDictionary<string, IImmutableDictionary<string, string>> currentMetadata, bool isActiveContext, IProjectLogger logger)
+        {
+            string fullPath = _project.MakeRooted(includePath);
+
+            if (_paths.Contains(fullPath))
+            {
+                IImmutableDictionary<string, string> previousItemMetadata = previousMetadata.GetValueOrDefault(includePath, ImmutableStringDictionary<string>.EmptyOrdinal);
+                IImmutableDictionary<string, string> currentItemMetadata = currentMetadata.GetValueOrDefault(includePath, ImmutableStringDictionary<string>.EmptyOrdinal);
+
+                UpdateInContext(fullPath, previousItemMetadata, currentItemMetadata, isActiveContext, logger);
             }
         }
 

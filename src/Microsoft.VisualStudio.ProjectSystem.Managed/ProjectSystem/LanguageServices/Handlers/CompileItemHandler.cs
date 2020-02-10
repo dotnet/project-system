@@ -88,6 +88,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Context.RemoveSourceFile(fullPath);
         }
 
+        protected override void UpdateInContext(string fullPath, IImmutableDictionary<string, string> previousMetadata, IImmutableDictionary<string, string> currentMetadata, bool isActiveContext, IProjectLogger logger)
+        {
+            logger.WriteLine("Removing and then re-adding source file '{0}' to metadata changes", fullPath);
+            RemoveFromContext(fullPath, logger);
+            AddToContext(fullPath, currentMetadata, isActiveContext, logger);
+        }
+
         protected override void HandleItemRename(string fullPathBefore, string fullPathAfter, IProjectLogger logger)
         {
             logger.WriteLine("Handling rename of source file '{0}' to {1}", fullPathBefore, fullPathAfter);
