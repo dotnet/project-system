@@ -182,7 +182,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 // that aren't traditional items, but are just command-line args we took from
                 // the compiler and converted them to look like items.
 
-                // We Remove then Add changed items to pick up the Linked metadata
                 foreach (string includePath in difference.ChangedItems)
                 {
                     UpdateInContextIfPresent(includePath, previousMetadata, currentMetadata, isActiveContext, logger);
