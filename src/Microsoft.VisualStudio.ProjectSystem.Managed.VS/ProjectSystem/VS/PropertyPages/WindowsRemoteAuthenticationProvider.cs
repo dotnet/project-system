@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
     internal class WindowsRemoteAuthenticationProvider : IRemoteAuthenticationProvider
     {
         [ImportingConstructor]
-        public WindowsRemoteAuthenticationProvider(UnconfiguredProject _) // force MEF scope
+        public WindowsRemoteAuthenticationProvider()
         {
         }
 
