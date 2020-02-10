@@ -19,6 +19,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             public string Name => $"Unknown - {_portSupplier:D}"; 
 
             public Guid PortSupplier => _portSupplier;
+
+            public uint AdditionalRemoteDiscoveryDialogFlags => 0;
         }
     }
 }

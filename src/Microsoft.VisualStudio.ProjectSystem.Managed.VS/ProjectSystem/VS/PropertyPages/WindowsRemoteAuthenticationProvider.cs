@@ -21,5 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         public string Name => Resources.WindowsAuth;
 
         public Guid PortSupplier => Guid.Empty;
+
+        public uint AdditionalRemoteDiscoveryDialogFlags => 0;
     }
 }

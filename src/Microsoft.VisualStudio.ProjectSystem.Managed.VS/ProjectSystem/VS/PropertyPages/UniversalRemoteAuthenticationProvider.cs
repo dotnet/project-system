@@ -21,5 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         public string Name => "Universal";
 
         public Guid PortSupplier => new Guid("EE56E4E8-E866-4915-A18E-1DE7114BD7BB");
+
+        public uint AdditionalRemoteDiscoveryDialogFlags => /* DEBUG_REMOTE_DISCOVERY_FLAGS2.DRD_SUPPORTS_UNIVERSAL_AUTH*/ 2;
     }
 }

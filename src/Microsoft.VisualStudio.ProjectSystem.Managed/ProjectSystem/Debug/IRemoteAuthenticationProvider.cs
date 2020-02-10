@@ -10,5 +10,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     {
         string Name { get; }
         Guid PortSupplier { get; }
+        uint AdditionalRemoteDiscoveryDialogFlags { get; }
     }
 }

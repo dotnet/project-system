@@ -1,4 +1,5 @@
 Microsoft.VisualStudio.ProjectSystem.Debug.IRemoteAuthenticationProvider
+Microsoft.VisualStudio.ProjectSystem.Debug.IRemoteAuthenticationProvider.AdditionalRemoteDiscoveryDialogFlags.get -> uint
 Microsoft.VisualStudio.ProjectSystem.Debug.IRemoteAuthenticationProvider.Name.get -> string
 Microsoft.VisualStudio.ProjectSystem.Debug.IRemoteAuthenticationProvider.PortSupplier.get -> System.Guid
 Microsoft.VisualStudio.ProjectSystem.VS.Extensibility.IProjectExportProvider

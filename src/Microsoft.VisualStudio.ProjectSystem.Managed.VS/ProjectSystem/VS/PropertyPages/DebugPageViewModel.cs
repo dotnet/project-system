@@ -623,7 +623,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     // HACK: Using VsUIService directly here avoids using a banned UI (serviceProvider.GetService) and can be replaced easily when MEF is hooked up to this page
                     var vsService = new VsUIService<SVsDebugRemoteDiscoveryUI, IVsDebugRemoteDiscoveryUI>(serviceProvider, _projectThreadingService.JoinableTaskContext.Context);
 
-                    if (ErrorHandler.Succeeded(vsService.Value.SelectRemoteInstanceViaDlg(RemoteDebugMachine, RemoteAuthenticationProvider.PortSupplier, (uint)DEBUG_REMOTE_DISCOVERY_FLAGS.DRD_NONE, out string remoteMachine, out Guid portSupplier)))
+                    uint flags = (uint)DEBUG_REMOTE_DISCOVERY_FLAGS.DRD_NONE | RemoteAuthenticationProvider.AdditionalRemoteDiscoveryDialogFlags;
+
+                    if (ErrorHandler.Succeeded(vsService.Value.SelectRemoteInstanceViaDlg(RemoteDebugMachine, RemoteAuthenticationProvider.PortSupplier, flags, out string remoteMachine, out Guid portSupplier)))
                     {
                         RemoteDebugMachine = remoteMachine;
                         RemoteAuthenticationProvider = GetProviderForPortSupplier(portSupplier);
