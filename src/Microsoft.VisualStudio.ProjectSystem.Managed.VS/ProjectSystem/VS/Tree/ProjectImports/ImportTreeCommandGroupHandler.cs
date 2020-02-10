@@ -98,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.ProjectImports
                     try
                     {
                         // Open the document.
-                        Guid logicalView = IsOpenWithCommand(commandId) ? LOGVIEWID_UserChooseView : LOGVIEWID.Code_guid;
+                        Guid logicalView = IsOpenWithCommand(commandId) ? LOGVIEWID_UserChooseView : LOGVIEWID.Primary_guid;
                         IntPtr docData = IntPtr.Zero;
 
                         ErrorHandler.ThrowOnFailure(
