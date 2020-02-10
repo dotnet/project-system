@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         {
             root.TryFindImmediateChild(_fileName, out IProjectTree? node);
 
-            return Task.FromResult<IProjectTree?>(node);
+            return Task.FromResult(node);
         }
 
         protected override Task<string?> GetDefaultFileAsync(IProjectTreeProvider provider, IProjectTree root)
