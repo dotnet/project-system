@@ -96,17 +96,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         ///     <para>
         ///         -or-
         ///     </para>
-        ///     <paramref name="metadata" /> is <see langword="null"/>.
+        ///     <paramref name="previousMetadata" /> is <see langword="null"/>.
+        ///     <para>
+        ///         -or-
+        ///     </para>
+        ///     <paramref name="currentMetadata" /> is <see langword="null"/>.
         ///     <para>
         ///         -or-
         ///     </para>
         ///     <paramref name="logger" /> is <see langword="null"/>.
         /// </exception>
-        public void ApplyProjectEvaluation(IComparable version, IProjectChangeDiff difference, IImmutableDictionary<string, IImmutableDictionary<string, string>> metadata, bool isActiveContext, IProjectLogger logger)
+        public void ApplyProjectEvaluation(IComparable version, IProjectChangeDiff difference, IImmutableDictionary<string, IImmutableDictionary<string, string>> previousMetadata, IImmutableDictionary<string, IImmutableDictionary<string, string>> currentMetadata, bool isActiveContext, IProjectLogger logger)
         {
             Requires.NotNull(version, nameof(version));
             Requires.NotNull(difference, nameof(difference));
-            Requires.NotNull(metadata, nameof(metadata));
+            Requires.NotNull(previousMetadata, nameof(previousMetadata));
+            Requires.NotNull(currentMetadata, nameof(currentMetadata));
             Requires.NotNull(logger, nameof(logger));
 
             if (!difference.AnyChanges)
@@ -116,7 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             difference = HandlerServices.NormalizeRenames(difference);
             EnqueueProjectEvaluation(version, difference);
 
-            ApplyChangesToContext(difference, metadata, renamedItems, isActiveContext, logger);
+            ApplyChangesToContext(difference, previousMetadata, currentMetadata, renamedItems, isActiveContext, logger, evaluation: true);
         }
 
         /// <summary>
@@ -147,7 +152,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             difference = HandlerServices.NormalizeRenames(difference);
             difference = ResolveProjectBuildConflicts(version, difference);
 
-            ApplyChangesToContext(difference, ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal, renamedItems, isActiveContext, logger);
+            ApplyChangesToContext(difference, ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal, ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal, renamedItems, isActiveContext, logger, evaluation: false);
         }
 
         protected abstract void AddToContext(string fullPath, IImmutableDictionary<string, string> metadata, bool isActiveContext, IProjectLogger logger);
@@ -158,7 +163,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
         }
 
-        private void ApplyChangesToContext(IProjectChangeDiff difference, IImmutableDictionary<string, IImmutableDictionary<string, string>> metadata, IImmutableDictionary<string, string> renamedItems, bool isActiveContext, IProjectLogger logger)
+        private void ApplyChangesToContext(IProjectChangeDiff difference, IImmutableDictionary<string, IImmutableDictionary<string, string>> previousMetadata, IImmutableDictionary<string, IImmutableDictionary<string, string>> currentMetadata, IImmutableDictionary<string, string> renamedItems, bool isActiveContext, IProjectLogger logger, bool evaluation)
         {
             foreach (string includePath in difference.RemovedItems)
             {
@@ -167,14 +172,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             foreach (string includePath in difference.AddedItems)
             {
-                AddToContextIfNotPresent(includePath, metadata, isActiveContext, logger);
+                AddToContextIfNotPresent(includePath, currentMetadata, isActiveContext, logger);
             }
 
-            // We Remove then Add changed items to pick up the Linked metadata
-            foreach (string includePath in difference.ChangedItems)
-            {
-                RemoveFromContextIfPresent(includePath, logger);
-                AddToContextIfNotPresent(includePath, metadata, isActiveContext, logger);
+            if (evaluation)
+            {   // No need to look at metadata for design-time builds, the items that come from
+                // that aren't traditional items, but are just command-line args we took from
+                // the compiler and converted them to look like items.
+
+                // We Remove then Add changed items to pick up the Linked metadata
+                foreach (string includePath in difference.ChangedItems)
+                {
+                    RemoveFromContextIfPresent(includePath, logger);
+                    AddToContextIfNotPresent(includePath, currentMetadata, isActiveContext, logger);
+                }
             }
 
             // Wait for all context changed to be propagated first before handling rename

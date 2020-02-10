@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             VerifyInitialized();
 
-            ApplyProjectEvaluation(version, projectChange.Difference, projectChange.After.Items, isActiveContext, logger);
+            ApplyProjectEvaluation(version, projectChange.Difference, projectChange.Before.Items, projectChange.After.Items, isActiveContext, logger);
         }
 
         public void Handle(IComparable version, BuildOptions added, BuildOptions removed, bool isActiveContext, IProjectLogger logger)
