@@ -8,6 +8,14 @@ vs.localizedResources
                        title="Microsoft VisualStudio Managed Project System Common Files"
                        description="Microsoft VisualStudio ProjectSystem for C#/VB(Managed) Projects"
 
+vs.dependencies
+  vs.dependency id=Microsoft.NetCore.Component.DevelopmentTools
+                version=[$(Version),)
+  vs.dependency id=Microsoft.VisualStudio.ProjectSystem.Full
+                version=[$(Version),)
+  vs.dependency id=Microsoft.VisualStudio.Component.Roslyn.LanguageServices
+                version=[$(Version),)
+
 folder "InstallDir:MSBuild\Microsoft\VisualStudio\Managed"
   file source="$(VisualStudioXamlRulesDir)Microsoft.CSharp.DesignTime.targets"
   file source="$(VisualStudioXamlRulesDir)Microsoft.VisualBasic.DesignTime.targets"
