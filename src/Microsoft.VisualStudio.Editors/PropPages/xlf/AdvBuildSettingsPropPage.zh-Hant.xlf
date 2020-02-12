@@ -64,7 +64,7 @@
       </trans-unit>
       <trans-unit id="chkOverflow.Text">
         <source>Chec&amp;k for arithmetic overflow</source>
-        <target state="needs-review-translation">檢查算術溢位/反向溢位(&amp;K)</target>
+        <target state="translated">查看算術溢位(&amp;K)</target>
         <note />
       </trans-unit>
       <trans-unit id="lnkLabel.Text">

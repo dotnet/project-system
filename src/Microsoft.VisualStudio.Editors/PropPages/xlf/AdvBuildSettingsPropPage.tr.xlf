@@ -64,7 +64,7 @@
       </trans-unit>
       <trans-unit id="chkOverflow.Text">
         <source>Chec&amp;k for arithmetic overflow</source>
-        <target state="needs-review-translation">&amp;Aritmetik taşma/aşağı taşmayı denetle</target>
+        <target state="translated">&amp;Aritmetik taşmayı denetle</target>
         <note />
       </trans-unit>
       <trans-unit id="lnkLabel.Text">

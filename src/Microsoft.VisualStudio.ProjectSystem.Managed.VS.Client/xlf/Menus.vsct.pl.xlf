@@ -4,17 +4,17 @@
     <body>
       <trans-unit id="cmdidEditProjectFile|ButtonText">
         <source>Edit Project File</source>
-        <target state="new">Edit Project File</target>
+        <target state="translated">Edytuj plik projektu</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidEditProjectFile|CommandName">
         <source>SolutionExplorer.Project.Edit</source>
-        <target state="new">SolutionExplorer.Project.Edit</target>
+        <target state="translated">SolutionExplorer.Project.Edit</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidEditProjectFile|LocCanonicalName">
         <source>SolutionExplorer.Project.Edit</source>
-        <target state="new">SolutionExplorer.Project.Edit</target>
+        <target state="translated">SolutionExplorer.Project.Edit</target>
         <note />
       </trans-unit>
     </body>
