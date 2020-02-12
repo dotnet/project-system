@@ -37,7 +37,7 @@
       </trans-unit>
       <trans-unit id="NoAuthentication">
         <source>No Authentication</source>
-        <target state="new">No Authentication</target>
+        <target state="translated">Aucune authentification</target>
         <note />
       </trans-unit>
       <trans-unit id="RestoringPackagesMessage">
@@ -52,7 +52,7 @@
       </trans-unit>
       <trans-unit id="WindowsAuthentication">
         <source>Windows Authentication</source>
-        <target state="new">Windows Authentication</target>
+        <target state="translated">Authentification Windows</target>
         <note />
       </trans-unit>
     </body>
