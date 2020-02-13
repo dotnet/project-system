@@ -6,11 +6,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
     internal static class IPackageRestoreServiceFactory
     {
-        public static IPackageRestoreService Create()
+        public static IPackageRestoreDataSource Create()
         {
-            var mock = new Mock<IPackageRestoreService>();
+            var mock = new Mock<IPackageRestoreDataSource>();
 
-            mock.Setup(s => s.RestoreData)
+            mock.Setup(s => s.SourceBlock)
                 .Returns(DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<RestoreData>>());
 
             return mock.Object;

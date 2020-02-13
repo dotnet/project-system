@@ -2,14 +2,15 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.ProjectSystem.OperationProgress;
+using StageId = Microsoft.VisualStudio.ProjectSystem.OperationProgress.OperationProgressStageId;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
     internal partial class PackageRestoreProgressTracker
     {
-        internal class PackageRestoreProgressTrackerInstance : OnceInitializedOnceDisposed, IMultiLifetimeInstance
+        internal class PackageRestoreProgressTrackerInstance : OnceInitializedOnceDisposedAsync, IMultiLifetimeInstance, IJoinableProjectValueDataSource, IProgressTrackerOutputDataSource
         {
             // The steps leading up to and during restore are the following:
             //
@@ -33,46 +34,59 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             // build ran with the latest assets file and we notify operation progress that we're now
             // completed with the results.
 
-            private readonly ConfiguredProject _project;
+            private readonly IProjectFaultHandlerService _projectFaultHandlerService;
             private readonly IDataProgressTrackerService _dataProgressTrackerService;
-            private readonly IPackageRestoreService _restoreService;
+            private readonly IPackageRestoreDataSource _dataSource;
             private readonly IProjectSubscriptionService _projectSubscriptionService;
 
             private IDataProgressTrackerServiceRegistration? _progressRegistration;
             private IDisposable? _subscription;
+            private IDisposable? _joinedDataSources;
 
             public PackageRestoreProgressTrackerInstance(
                 ConfiguredProject project,
+                IProjectThreadingService threadingService,
+                IProjectFaultHandlerService projectFaultHandlerService,
                 IDataProgressTrackerService dataProgressTrackerService,
-                IPackageRestoreService restoreService,
+                IPackageRestoreDataSource dataSource,
                 IProjectSubscriptionService projectSubscriptionService)
+                : base(threadingService.JoinableTaskContext)
             {
-                _project = project;
+                ConfiguredProject = project;
+                _projectFaultHandlerService = projectFaultHandlerService;
                 _dataProgressTrackerService = dataProgressTrackerService;
-                _restoreService = restoreService;
+                _dataSource = dataSource;
                 _projectSubscriptionService = projectSubscriptionService;
             }
 
+            public ConfiguredProject ConfiguredProject { get; }
+
+            public string? OperationProgressStageId => StageId.IntelliSense;
+
+            public string Name => nameof(PackageRestoreProgressTracker);
+
+            public string DisplayMessage => string.Empty;
+
             public Task InitializeAsync()
             {
-                EnsureInitialized();
-
-                return Task.CompletedTask;
+                return InitializeAsync(CancellationToken.None);
             }
 
-            protected override void Initialize()
+            protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
             {
-                _progressRegistration = _dataProgressTrackerService.RegisterForIntelliSense(
-                    _project,
-                    nameof(PackageRestoreProgressTracker));
+                _joinedDataSources = ProjectDataSources.JoinUpstreamDataSources(JoinableFactory, _projectFaultHandlerService, _projectSubscriptionService.ProjectSource, _dataSource);
+                
+                _progressRegistration = _dataProgressTrackerService.RegisterOutputDataSource(this);
 
                 Action<IProjectVersionedValue<ValueTuple<IProjectSnapshot, RestoreData>>> action = OnRestoreCompleted;
 
                 _subscription = ProjectDataSources.SyncLinkTo(
                     _projectSubscriptionService.ProjectSource.SourceBlock.SyncLinkOptions(),
-                    _restoreService.RestoreData.SyncLinkOptions(),
+                    _dataSource.SourceBlock.SyncLinkOptions(),
                         DataflowBlockSlim.CreateActionBlock(action),
                         linkOptions: DataflowOption.PropagateCompletion);
+
+                return Task.CompletedTask;
             }
 
             internal void OnRestoreCompleted(IProjectVersionedValue<ValueTuple<IProjectSnapshot, RestoreData>> value)
@@ -103,10 +117,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 return projectSnapshot2.AdditionalDependentFileTimes.GetValueOrDefault(filePath, DateTime.MaxValue);
             }
 
-            protected override void Dispose(bool disposing)
+            protected override Task DisposeCoreAsync(bool initialized)
             {
                 _subscription?.Dispose();
                 _progressRegistration?.Dispose();
+                _joinedDataSources?.Dispose();
+
+                return Task.CompletedTask;
+            }
+
+            public IDisposable? Join()
+            {
+                return JoinableCollection.Join();
             }
         }
     }

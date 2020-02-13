@@ -124,7 +124,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             return result;
         }
 
-        private async Task<PackageRestoreProgressTrackerInstance> CreateInitializedInstance(ConfiguredProject? project = null, IDataProgressTrackerService? dataProgressTrackerService = null, IPackageRestoreService? packageRestoreService = null, IProjectSubscriptionService? projectSubscriptionService = null)
+        private async Task<PackageRestoreProgressTrackerInstance> CreateInitializedInstance(ConfiguredProject? project = null, IDataProgressTrackerService? dataProgressTrackerService = null, IPackageRestoreDataSource? packageRestoreService = null, IProjectSubscriptionService? projectSubscriptionService = null)
         {
             var instance = CreateInstance(project, dataProgressTrackerService, packageRestoreService, projectSubscriptionService);
 
@@ -133,17 +133,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             return instance;
         }
 
-        private PackageRestoreProgressTrackerInstance CreateInstance(ConfiguredProject? project = null, IDataProgressTrackerService? dataProgressTrackerService = null, IPackageRestoreService? packageRestoreService = null, IProjectSubscriptionService? projectSubscriptionService = null)
+        private PackageRestoreProgressTrackerInstance CreateInstance(ConfiguredProject? project = null, IDataProgressTrackerService? dataProgressTrackerService = null, IPackageRestoreDataSource? packageRestoreDataSource = null, IProjectSubscriptionService? projectSubscriptionService = null)
         {
             project ??= ConfiguredProjectFactory.Create();
             dataProgressTrackerService ??= IDataProgressTrackerServiceFactory.Create();
-            packageRestoreService ??= IPackageRestoreServiceFactory.Create();
+            packageRestoreDataSource ??= IPackageRestoreServiceFactory.Create();
             projectSubscriptionService ??= IProjectSubscriptionServiceFactory.Create();
+
+            IProjectThreadingService threadingService = IProjectThreadingServiceFactory.Create();
+            IProjectFaultHandlerService projectFaultHandlerService = IProjectFaultHandlerServiceFactory.Create();
 
             return new PackageRestoreProgressTrackerInstance(
                 project,
+                threadingService,
+                projectFaultHandlerService,
                 dataProgressTrackerService,
-                packageRestoreService,
+                packageRestoreDataSource,
                 projectSubscriptionService);
         }
     }

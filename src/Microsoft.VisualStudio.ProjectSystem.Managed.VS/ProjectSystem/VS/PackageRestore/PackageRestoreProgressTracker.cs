@@ -12,22 +12,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
     internal partial class PackageRestoreProgressTracker : AbstractMultiLifetimeComponent<PackageRestoreProgressTracker.PackageRestoreProgressTrackerInstance>, IProjectDynamicLoadComponent
     {
         private readonly ConfiguredProject _project;
+        private readonly IProjectThreadingService _threadingService;
+        private readonly IProjectFaultHandlerService _projectFaultHandlerService;
         private readonly IDataProgressTrackerService _dataProgressTrackerService;
-        private readonly IPackageRestoreService _restoreService;
+        private readonly IPackageRestoreDataSource _dataSource;
         private readonly IProjectSubscriptionService _projectSubscriptionService;
 
         [ImportingConstructor]
         public PackageRestoreProgressTracker(
             ConfiguredProject project,
             IProjectThreadingService threadingService,
+            IProjectFaultHandlerService projectFaultHandlerService,
             IDataProgressTrackerService dataProgressTrackerService,
-            IPackageRestoreService restoreService,
+            IPackageRestoreDataSource dataSource,
             IProjectSubscriptionService projectSubscriptionService)
             : base(threadingService.JoinableTaskContext)
         {
             _project = project;
+            _threadingService = threadingService;
+            _projectFaultHandlerService = projectFaultHandlerService;
             _dataProgressTrackerService = dataProgressTrackerService;
-            _restoreService = restoreService;
+            _dataSource = dataSource;
             _projectSubscriptionService = projectSubscriptionService;
         }
 
@@ -35,8 +40,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         {
             return new PackageRestoreProgressTrackerInstance(
                 _project,
+                _threadingService,
+                _projectFaultHandlerService,
                 _dataProgressTrackerService,
-                _restoreService,
+                _dataSource,
                 _projectSubscriptionService);
         }
     }
