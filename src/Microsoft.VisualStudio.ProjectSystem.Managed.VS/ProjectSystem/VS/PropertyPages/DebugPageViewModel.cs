@@ -12,12 +12,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
+using Microsoft.VisualStudio.ProjectSystem.VS.Debug;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
 using DialogResult = System.Windows.Forms.DialogResult;
 using Task = System.Threading.Tasks.Task;
 
@@ -48,8 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         private ICommand _newProfileCommand;
         private ICommand _deleteProfileCommand;
         private ICommand _findRemoteMachineCommand;
-        private OrderPrecedenceImportCollection<IRemoteAuthenticationProvider> _authenticationProviders;
-        private IRemoteAuthenticationProvider _unknownProvider;
+        private IRemoteDebuggerAuthenticationService _remoteDebuggerAuthenticationService;
 
         public DebugPageViewModel()
         {
@@ -82,6 +80,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 }
 
                 return _projectThreadingService;
+            }
+        }
+
+        private IRemoteDebuggerAuthenticationService RemoteDebuggerAuthenticationService
+        {
+            get
+            {
+                if (_remoteDebuggerAuthenticationService == null)
+                {
+                    _remoteDebuggerAuthenticationService = Project.Services.ExportProvider.GetExportedValue<IRemoteDebuggerAuthenticationService>();
+                }
+
+                return _remoteDebuggerAuthenticationService;
             }
         }
 
@@ -270,61 +281,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
-        public IEnumerable<IRemoteAuthenticationProvider> RemoteAuthenticationProviders
-        {
-            get
-            {
-                var providers = new List<IRemoteAuthenticationProvider>(_authenticationProviders.ExtensionValues());
-                if (_unknownProvider != null)
-                {
-                    providers.Add(_unknownProvider);
-                }
-                return providers;
-            }
-        }
+        public IEnumerable<IRemoteAuthenticationProvider> RemoteAuthenticationProviders => RemoteDebuggerAuthenticationService.GetRemoteAuthenticationModes();
 
         public IRemoteAuthenticationProvider RemoteAuthenticationProvider
         {
             get
             {
-                Guid portSupplier = GetOtherProperty(LaunchProfileExtensions.RemoteAuthenticationPortSupplierProperty, Guid.Empty);
-                return GetProviderForPortSupplier(portSupplier);
+                string remoteAuthenticationMode = GetOtherProperty(LaunchProfileExtensions.RemoteAuthenticationModeProperty, "");
+                return RemoteDebuggerAuthenticationService.GetProviderForAuthenticationMode(remoteAuthenticationMode);
             }
             set
             {
-                if (TrySetOtherProperty(LaunchProfileExtensions.RemoteAuthenticationPortSupplierProperty, value.PortSupplier, Guid.Empty))
+                if (TrySetOtherProperty(LaunchProfileExtensions.RemoteAuthenticationModeProperty, value.Name, ""))
                 {
                     OnPropertyChanged(nameof(RemoteAuthenticationProvider));
                 }
             }
         }
 
-        private IRemoteAuthenticationProvider GetProviderForPortSupplier(Guid portSupplier)
-        {
-            IRemoteAuthenticationProvider provider = _authenticationProviders.FirstOrDefaultValue(p => p.PortSupplier.Equals(portSupplier));
-
-            // If there is a bad guid in the launch settings we don't want to clobber it by having a default selection, so create a temporary provider
-            if (provider == null)
-            {
-                provider = _unknownProvider = new UnknownRemoteAuthenticationProvider(portSupplier);
-                OnPropertyChanged(nameof(RemoteAuthenticationProviders));
-            }
-            else if (_unknownProvider != null)
-            {
-                _unknownProvider = null;
-                OnPropertyChanged(nameof(RemoteAuthenticationProviders));
-            }
-
-            return provider;
-        }
-
-        public bool HasAuthenticationProviders
-        {
-            get
-            {
-                return _authenticationProviders.Count > 0;
-            }
-        }
+        public bool HasAuthenticationProviders => RemoteAuthenticationProviders.Any();
 
         public bool HasLaunchOption
         {
@@ -618,17 +593,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 return LazyInitializer.EnsureInitialized(ref _findRemoteMachineCommand, () =>
                 new DelegateCommand(state =>
                 {
-                    SVsServiceProvider serviceProvider = Project.Services.ExportProvider.GetExportedValue<SVsServiceProvider>();
-
-                    // HACK: Using VsUIService directly here avoids using a banned UI (serviceProvider.GetService) and can be replaced easily when MEF is hooked up to this page
-                    var vsService = new VsUIService<SVsDebugRemoteDiscoveryUI, IVsDebugRemoteDiscoveryUI>(serviceProvider, _projectThreadingService.JoinableTaskContext.Context);
-
-                    uint flags = (uint)DEBUG_REMOTE_DISCOVERY_FLAGS.DRD_NONE | RemoteAuthenticationProvider.AdditionalRemoteDiscoveryDialogFlags;
-
-                    if (ErrorHandler.Succeeded(vsService.Value.SelectRemoteInstanceViaDlg(RemoteDebugMachine, RemoteAuthenticationProvider.PortSupplier, flags, out string remoteMachine, out Guid portSupplier)))
+                    string remoteDebugMachine = RemoteDebugMachine;
+                    IRemoteAuthenticationProvider remoteAuthenticationProvider = RemoteAuthenticationProvider;
+                    if (RemoteDebuggerAuthenticationService.ShowRemoteDiscoveryDialog(ref remoteDebugMachine, ref remoteAuthenticationProvider))
                     {
-                        RemoteDebugMachine = remoteMachine;
-                        RemoteAuthenticationProvider = GetProviderForPortSupplier(portSupplier);
+                        RemoteDebugMachine = remoteDebugMachine;
+                        RemoteAuthenticationProvider = remoteAuthenticationProvider;
                     }
                 }));
             }
@@ -966,7 +936,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 ILaunchSettingsProvider profileProvider = GetDebugProfileProvider();
                 _debugProfileProviderLink = profileProvider.SourceBlock.LinkToAsyncAction(OnLaunchSettingsChanged);
 
-                InitializeAuthenticationProviders();
                 InitializeUIProviders();
             }
         }
@@ -979,16 +948,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
 
             InitializeDebugTargetsCore(profiles);
-        }
-
-        private void InitializeAuthenticationProviders()
-        {
-            _authenticationProviders = new OrderPrecedenceImportCollection<IRemoteAuthenticationProvider>(projectCapabilityCheckProvider: Project);
-            IEnumerable<Lazy<IRemoteAuthenticationProvider, IOrderPrecedenceMetadataView>> providers = Project.Services.ExportProvider.GetExports<IRemoteAuthenticationProvider, IOrderPrecedenceMetadataView>();
-            foreach (Lazy<IRemoteAuthenticationProvider, IOrderPrecedenceMetadataView> provider in providers)
-            {
-                _authenticationProviders.Add(provider);
-            }
         }
 
         /// <summary>
