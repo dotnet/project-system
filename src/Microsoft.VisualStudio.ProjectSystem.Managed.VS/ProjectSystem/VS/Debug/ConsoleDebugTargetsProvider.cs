@@ -38,6 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private readonly ProjectProperties _properties;
         private readonly IProjectThreadingService _threadingService;
         private readonly IVsUIService<IVsDebugger10> _debugger;
+        private readonly IRemoteDebuggerAuthenticationService _remoteDebuggerAuthenticationService;
 
         [ImportingConstructor]
         public ConsoleDebugTargetsProvider(
@@ -49,7 +50,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             IActiveDebugFrameworkServices activeDebugFramework,
             ProjectProperties properties,
             IProjectThreadingService threadingService,
-            IVsUIService<SVsShellDebugger, IVsDebugger10> debugger)
+            IVsUIService<SVsShellDebugger, IVsDebugger10> debugger,
+            IRemoteDebuggerAuthenticationService remoteDebuggerAuthenticationService)
         {
             _project = project;
             _unconfiguredProjectVsServices = unconfiguredProjectVsServices;
@@ -60,6 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _properties = properties;
             _threadingService = threadingService;
             _debugger = debugger;
+            _remoteDebuggerAuthenticationService = remoteDebuggerAuthenticationService;
         }
 
         private Task<ConfiguredProject> GetConfiguredProjectForDebugAsync()
@@ -356,7 +359,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             if (resolvedProfile.IsRemoteDebugEnabled())
             {
                 settings.RemoteMachine = resolvedProfile.RemoteDebugMachine();
-                settings.PortSupplierGuid = resolvedProfile.RemoteAuthenticationPortSupplier();
+
+                IRemoteAuthenticationProvider remoteAuthenticationProvider = _remoteDebuggerAuthenticationService.GetProviderForAuthenticationMode(resolvedProfile.RemoteAuthenticationMode());
+                if (remoteAuthenticationProvider != null)
+                {
+                    settings.PortSupplierGuid = remoteAuthenticationProvider.PortSupplierGuid;
+                }
             }
 
             return settings;
