@@ -14,6 +14,16 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return Create(filePath: fullPath);
         }
 
+        public static UnconfiguredProject Create(IProjectThreadingService threadingService)
+        {
+            var unconfiguredProjectServices = UnconfiguredProjectServicesFactory.Create(threadingService);
+            var project = new Mock<UnconfiguredProject>();
+            project.Setup(u => u.Services)
+                   .Returns(unconfiguredProjectServices);
+
+            return project.Object;
+        }
+
         public static UnconfiguredProject Create(object? hostObject = null, string? filePath = null,
                                                  IProjectConfigurationsService? projectConfigurationsService = null,
                                                  ConfiguredProject? configuredProject = null, Encoding? projectEncoding = null,
