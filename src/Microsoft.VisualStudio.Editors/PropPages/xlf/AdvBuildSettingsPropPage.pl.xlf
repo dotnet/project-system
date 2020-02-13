@@ -64,7 +64,7 @@
       </trans-unit>
       <trans-unit id="chkOverflow.Text">
         <source>Chec&amp;k for arithmetic overflow</source>
-        <target state="needs-review-translation">Spr&amp;awdzaj przepełnienie/niedopełnienie dla operacji arytmetycznych</target>
+        <target state="translated">Spr&amp;awdzaj przepełnienie arytmetyczne</target>
         <note />
       </trans-unit>
       <trans-unit id="lnkLabel.Text">

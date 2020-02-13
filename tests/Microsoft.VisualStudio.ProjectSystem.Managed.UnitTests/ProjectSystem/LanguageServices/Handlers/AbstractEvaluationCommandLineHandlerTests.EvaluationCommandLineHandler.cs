@@ -32,6 +32,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             {
                 Files.Remove(fullPath);
             }
+
+            protected override void UpdateInContext(string fullPath, IImmutableDictionary<string, string> previousMetadata, IImmutableDictionary<string, string> currentMetadata, bool isActiveContext, IProjectLogger logger)
+            {
+                RemoveFromContext(fullPath, logger);
+                AddToContext(fullPath, currentMetadata, isActiveContext, logger);
+            }
         }
     }
 }

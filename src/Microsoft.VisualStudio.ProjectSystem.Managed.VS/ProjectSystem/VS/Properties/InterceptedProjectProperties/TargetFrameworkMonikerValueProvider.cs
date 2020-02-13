@@ -18,8 +18,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         private readonly ProjectProperties _properties;
         private readonly IVsFrameworkParser _frameworkParser;
 
-        private const string _targetFrameworkProperty = "TargetFramework";
-
         [ImportingConstructor]
         public TargetFrameworkMonikerValueProvider(IUnconfiguredProjectVsServices unconfiguredProjectVsServices, ProjectProperties properties, IVsFrameworkParser frameworkParser)
         {
@@ -43,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             else if (!string.IsNullOrEmpty(currentTargetFramework))
             {
                 var frameworkName = new FrameworkName(unevaluatedPropertyValue);
-                await defaultProperties.SetPropertyValueAsync(_targetFrameworkProperty, _frameworkParser.GetShortFrameworkName(frameworkName));
+                await defaultProperties.SetPropertyValueAsync(ConfigurationGeneral.TargetFrameworkProperty, _frameworkParser.GetShortFrameworkName(frameworkName));
             }
             else
             {

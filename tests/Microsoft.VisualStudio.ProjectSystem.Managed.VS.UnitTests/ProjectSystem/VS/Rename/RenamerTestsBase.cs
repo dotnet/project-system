@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 });
         }
 
-        internal async Task RenameAsync(string sourceCode, string oldFilePath, string newFilePath, IUserNotificationServices userNotificationServices, IRoslynServices roslynServices, string language)
+        internal async Task RenameAsync(string sourceCode, string oldFilePath, string newFilePath, IUserNotificationServices userNotificationServices, IRoslynServices roslynServices, IVsOnlineServices vsOnlineServices, string language)
         {
             using var ws = new AdhocWorkspace();
             ws.AddSolution(InitializeWorkspace(ProjectId.CreateNewId(), newFilePath, sourceCode, language));
@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
             var dte = IVsUIServiceFactory.Create<Shell.Interop.SDTE, EnvDTE.DTE>(null!);
 
-            var renamer = new Renamer(projectServices, unconfiguredProjectTasksService, ws, dte, environmentOptionsFactory, userNotificationServices, roslynServices, waitIndicator, refactorNotifyService);
+            var renamer = new Renamer(projectServices, unconfiguredProjectTasksService, ws, dte, environmentOptionsFactory, userNotificationServices, roslynServices, waitIndicator, refactorNotifyService, vsOnlineServices);
             await renamer.HandleRenameAsync(oldFilePath, newFilePath)
                          .TimeoutAfter(TimeSpan.FromSeconds(1));
         }

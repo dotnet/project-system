@@ -30,6 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         private readonly IRoslynServices _roslynServices;
         private readonly IWaitIndicator _waitService;
         private readonly IRefactorNotifyService _refactorNotifyService;
+        private readonly IVsOnlineServices _vsOnlineServices;
 
         [ImportingConstructor]
         internal Renamer(IUnconfiguredProjectVsServices projectVsServices,
@@ -40,7 +41,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                          IUserNotificationServices userNotificationServices,
                          IRoslynServices roslynServices,
                          IWaitIndicator waitService,
-                         IRefactorNotifyService refactorNotifyService)
+                         IRefactorNotifyService refactorNotifyService,
+                         IVsOnlineServices vsOnlineServices)
         {
             _projectVsServices = projectVsServices;
             _unconfiguredProjectTasksService = unconfiguredProjectTasksService;
@@ -51,6 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             _roslynServices = roslynServices;
             _waitService = waitService;
             _refactorNotifyService = refactorNotifyService;
+            _vsOnlineServices = vsOnlineServices;
         }
 
         public void HandleRename(string oldFilePath, string newFilePath)
@@ -65,6 +68,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
         internal async Task HandleRenameAsync(string oldFilePath, string newFilePath)
         {
+            // Do not offer to rename the file in VS Online scenarios.
+            if (_vsOnlineServices.ConnectedToVSOnline)
+            {
+                return;
+            }
+
             // Do not offer to rename types if the user changes the file extensions
             if (!oldFilePath.EndsWith(Path.GetExtension(newFilePath), StringComparisons.Paths))
             {

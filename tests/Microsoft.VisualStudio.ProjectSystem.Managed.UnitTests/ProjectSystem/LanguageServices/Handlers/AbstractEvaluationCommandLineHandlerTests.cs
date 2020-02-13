@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             
             Assert.Throws<ArgumentNullException>(() =>
             {
-                handler.ApplyProjectEvaluation(null!, difference, metadata, true, logger);
+                handler.ApplyProjectEvaluation(null!, difference, metadata, metadata, true, logger);
             });
         }
 
@@ -36,22 +36,39 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                handler.ApplyProjectEvaluation(version, null!, metadata, true, logger);
+                handler.ApplyProjectEvaluation(version, null!, metadata, metadata, true, logger);
             });
         }
 
         [Fact]
-        public void ApplyProjectEvaluation_NullAsMetadata_ThrowsArgumentNull()
+        public void ApplyProjectEvaluation_NullAsPreviousMetadata_ThrowsArgumentNull()
         {
             var handler = CreateInstance();
 
             var version = 1;
             var difference = IProjectChangeDiffFactory.Create();
+            var currentMetadata = ImmutableDictionary<string, IImmutableDictionary<string, string>>.Empty;
             var logger = IProjectLoggerFactory.Create();
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                handler.ApplyProjectEvaluation(version, difference, null!, true, logger);
+                handler.ApplyProjectEvaluation(version, difference, null!, currentMetadata, true, logger);
+            });
+        }
+
+        [Fact]
+        public void ApplyProjectEvaluation_NullAsCurrentMetadata_ThrowsArgumentNull()
+        {
+            var handler = CreateInstance();
+
+            var version = 1;
+            var difference = IProjectChangeDiffFactory.Create();
+            var previousMetadata = ImmutableDictionary<string, IImmutableDictionary<string, string>>.Empty;
+            var logger = IProjectLoggerFactory.Create();
+
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                handler.ApplyProjectEvaluation(version, difference, previousMetadata, null!, true, logger);
             });
         }
 
@@ -66,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             
             Assert.Throws<ArgumentNullException>(() =>
             {
-                handler.ApplyProjectEvaluation(version, difference, metadata, true, null!);
+                handler.ApplyProjectEvaluation(version, difference, metadata, metadata, true, null!);
             });
         }
 
@@ -445,10 +462,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         private static void ApplyProjectEvaluation(AbstractEvaluationCommandLineHandler handler, IComparable version, IProjectChangeDiff difference, IImmutableDictionary<string, IImmutableDictionary<string, string>>? metadata = null)
         {
             metadata ??= ImmutableDictionary<string, IImmutableDictionary<string, string>>.Empty;
+            var previousMetadata = ImmutableDictionary<string, IImmutableDictionary<string, string>>.Empty; 
             bool isActiveContext = true;
             var logger = IProjectLoggerFactory.Create();
 
-            handler.ApplyProjectEvaluation(version, difference, metadata, isActiveContext, logger);
+            handler.ApplyProjectEvaluation(version, difference, previousMetadata, metadata, isActiveContext, logger);
         }
 
         private static void ApplyProjectBuild(AbstractEvaluationCommandLineHandler handler, IComparable version, IProjectChangeDiff difference)
