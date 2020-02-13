@@ -13,14 +13,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
     [AppliesTo(ProjectCapabilities.AlwaysApplicable)]
     internal class WindowsRemoteAuthenticationProvider : IRemoteAuthenticationProvider
     {
+        private static readonly Guid s_localPortSupplier = new Guid("708C1ECA-FF48-11D2-904F-00C04FA302A1");
+
         [ImportingConstructor]
         public WindowsRemoteAuthenticationProvider()
         {
         }
 
-        public string Name => Resources.WindowsAuth;
+        public string DisplayName => Resources.WindowsAuth;
 
-        public Guid PortSupplier => Guid.Empty;
+        public string Name => "Windows";
+
+        public Guid PortSupplierGuid => s_localPortSupplier;
+
+        public Guid AuthModeGuid => Guid.Empty;
 
         public uint AdditionalRemoteDiscoveryDialogFlags => 0;
     }

@@ -8,8 +8,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ZeroOrMore)]
     public interface IRemoteAuthenticationProvider
     {
+        /// <summary>
+        /// Name displayed in the App Designer. Should be localized
+        /// </summary>
+        string DisplayName { get; }
+        /// <summary>
+        /// Name that is serialized to the launchSettings.json file. Shouldn't be localized
+        /// </summary>
         string Name { get; }
-        Guid PortSupplier { get; }
+        /// <summary>
+        /// Guid passed to the debugger
+        /// </summary>
+        Guid PortSupplierGuid { get; }
+        /// <summary>
+        /// Guid used for to specify and read the authentication mode for the Remote Discovery Dialog
+        /// </summary>
+        Guid AuthModeGuid { get; }
+        /// <summary>
+        /// Allows the authentication provider to influence the Remote Discovery Dialog
+        /// </summary>
         uint AdditionalRemoteDiscoveryDialogFlags { get; }
     }
 }
