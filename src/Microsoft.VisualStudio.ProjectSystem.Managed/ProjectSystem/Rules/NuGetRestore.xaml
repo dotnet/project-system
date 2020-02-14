@@ -185,4 +185,7 @@
                   ReadOnly="True"
                   Visible="False" />
 
+  <StringProperty Name="DisableCentralPackageVersions"
+                  ReadOnly="True"
+                  Visible="False" />
 </Rule>
