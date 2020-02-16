@@ -48,6 +48,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public static ImageMoniker ProjectImports => new ImageMoniker { Guid = s_manifestGuid, Id = 25 };
         public static ImageMoniker TargetFile => new ImageMoniker { Guid = s_manifestGuid, Id = 26 };
         public static ImageMoniker TargetFilePrivate => new ImageMoniker { Guid = s_manifestGuid, Id = 27 };
+        public static ImageMoniker PropertiesFolderClosed => new ImageMoniker { Guid = s_manifestGuid, Id = 28 };
+        public static ImageMoniker PropertiesFolderOpened => new ImageMoniker { Guid = s_manifestGuid, Id = 29 };
 
         // These internal fields are provided for convenience
 
@@ -75,7 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         internal static ImageMoniker Reference => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.Reference };
         internal static ImageMoniker ReferenceWarning => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.ReferenceWarning };
         // NOTE SharedProject is defined in both manifests
-        //      internal static ImageMoniker SharedProject    => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.SharedProject    };
+//      internal static ImageMoniker SharedProject    => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.SharedProject    };
         internal static ImageMoniker Sound => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.Sound };
         internal static ImageMoniker StatusError => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.StatusError };
         internal static ImageMoniker TextFile => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.TextFile };
@@ -125,6 +127,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     case 25: return nameof(ProjectImports);
                     case 26: return nameof(TargetFile);
                     case 27: return nameof(TargetFilePrivate);
+                    case 28: return nameof(PropertiesFolderClosed);
+                    case 29: return nameof(PropertiesFolderOpened);
                 }
             }
 

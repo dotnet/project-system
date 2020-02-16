@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.ComponentModel.Composition;
-using Microsoft.VisualStudio.Imaging;
+using Microsoft.VisualStudio.ProjectSystem.VS;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Imaging
 {
@@ -12,6 +12,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
     [AppliesTo(ProjectCapability.AppDesigner)]
     internal class AppDesignerFolderProjectImageProvider : IProjectImageProvider
     {
+        private static readonly ProjectImageMoniker s_iconClosed = ManagedImageMonikers.PropertiesFolderClosed.ToProjectSystemType();
+        private static readonly ProjectImageMoniker s_iconOpened = ManagedImageMonikers.PropertiesFolderOpened.ToProjectSystemType();
+
         [ImportingConstructor]
         public AppDesignerFolderProjectImageProvider()
         {
@@ -21,14 +24,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
         {
             Requires.NotNullOrEmpty(key, nameof(key));
 
-            switch (key)
+            return key switch
             {
-                case ProjectImageKey.AppDesignerFolder:
-                case ProjectImageKey.ExpandedAppDesignerFolder:
-                    return KnownMonikers.Property.ToProjectSystemType();
+                ProjectImageKey.AppDesignerFolder => s_iconClosed,
+                ProjectImageKey.ExpandedAppDesignerFolder => s_iconOpened,
+                _ => default
             };
-
-            return null;
         }
     }
 }

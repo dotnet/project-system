@@ -57,6 +57,8 @@ static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.NuGetGrey.ge
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.NuGetGreyPrivate.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.NuGetGreyWarning.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ProjectImports.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.PropertiesFolderClosed.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.PropertiesFolderOpened.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ReferenceGroup.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ReferenceGroupWarning.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ReferencePrivate.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
