@@ -7,7 +7,7 @@ using Xunit.Sdk;
 
 namespace Xunit
 {
-    public static class AssertEx
+    internal static class AssertEx
     {
         public static void CollectionLength<T>(IEnumerable<T> collection, int expectedCount)
         {
