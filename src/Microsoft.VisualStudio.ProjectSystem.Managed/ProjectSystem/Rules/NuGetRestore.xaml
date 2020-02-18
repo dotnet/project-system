@@ -21,6 +21,10 @@
                   ReadOnly="True"
                   Visible="False" />
 
+  <StringProperty Name="EnableCentralPackageVersions"
+                  ReadOnly="True"
+                  Visible="False" />
+
   <StringProperty Name="MSBuildProjectDirectory"
                   ReadOnly="True"
                   Visible="False" />
