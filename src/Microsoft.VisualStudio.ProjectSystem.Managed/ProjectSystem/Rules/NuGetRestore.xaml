@@ -188,5 +188,5 @@
   <StringProperty Name="WarningsAsErrors"
                   ReadOnly="True"
                   Visible="False" />
-                  
+
 </Rule>
