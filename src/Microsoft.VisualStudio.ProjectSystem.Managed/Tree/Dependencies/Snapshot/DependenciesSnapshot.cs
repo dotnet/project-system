@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             string projectPath,
             DependenciesSnapshot previousSnapshot,
             ITargetFramework changedTargetFramework,
-            IDependenciesChanges changes,
+            IDependenciesChanges? changes,
             IProjectCatalogSnapshot? catalogs,
             ImmutableArray<ITargetFramework> targetFrameworks,
             ITargetFramework? activeTargetFramework,
@@ -51,7 +51,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Requires.NotNullOrWhiteSpace(projectPath, nameof(projectPath));
             Requires.NotNull(previousSnapshot, nameof(previousSnapshot));
             Requires.NotNull(changedTargetFramework, nameof(changedTargetFramework));
-            Requires.NotNull(changes, nameof(changes));
             Requires.Argument(!snapshotFilters.IsDefault, nameof(snapshotFilters), "Cannot be default.");
             Requires.NotNull(subTreeProviderByProviderType, nameof(subTreeProviderByProviderType));
 

@@ -132,11 +132,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             IDependenciesChanges? changes = changesBuilder.TryBuildChanges();
 
-            if (changes != null)
-            {
-                // Notify subscribers of a change in dependency data
-                RaiseDependenciesChanged(targetFrameworkToUpdate, changes, currentAggregateContext, catalogSnapshot);
-            }
+            // Notify subscribers of a change in dependency data.
+            // NOTE even if changes is null, it's possible the catalog has changed. If we don't take the newer
+            // catalog we end up retaining a reference to an old catalog, which in turn retains an old project
+            // instance which can be very large.
+            RaiseDependenciesChanged(targetFrameworkToUpdate, changes, currentAggregateContext, catalogSnapshot);
 
             // Record all the rules that have occurred
             _treeTelemetryService.ObserveTargetFrameworkRules(targetFrameworkToUpdate, projectUpdate.ProjectChanges.Keys);

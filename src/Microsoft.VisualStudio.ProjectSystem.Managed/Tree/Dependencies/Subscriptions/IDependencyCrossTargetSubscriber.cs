@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             ImmutableArray<ITargetFramework> targetFrameworks,
             ITargetFramework activeTarget,
             ITargetFramework changedTargetFramework,
-            IDependenciesChanges changes,
+            IDependenciesChanges? changes,
             IProjectCatalogSnapshot catalogs)
         {
             Requires.Argument(!targetFrameworks.IsDefaultOrEmpty, nameof(targetFrameworks), "Must not be default or empty.");
@@ -84,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         public IProjectCatalogSnapshot Catalogs { get; }
 
-        public IDependenciesChanges Changes { get; }
+        public IDependenciesChanges? Changes { get; }
 
         public ITargetFramework ChangedTargetFramework { get; }
     }

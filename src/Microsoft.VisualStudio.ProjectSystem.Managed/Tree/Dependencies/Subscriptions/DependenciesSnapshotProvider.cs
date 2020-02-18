@@ -294,7 +294,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         private void UpdateDependenciesSnapshot(
             ITargetFramework changedTargetFramework,
-            IDependenciesChanges changes,
+            IDependenciesChanges? changes,
             IProjectCatalogSnapshot? catalogs,
             ImmutableArray<ITargetFramework> targetFrameworks,
             ITargetFramework? activeTargetFramework,
