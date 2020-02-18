@@ -7,7 +7,7 @@ using Xunit.Sdk;
 
 namespace Xunit
 {
-    public static class AssertEx
+    internal static class AssertEx
     {
         public static void CollectionLength<T>(IEnumerable<T> collection, int expectedCount)
         {
@@ -24,7 +24,7 @@ namespace Xunit
             CollectionLength(collection.Cast<object>(), expectedCount);
         }
 
-        public static void SequenceEqual<T>(IEnumerable<T> expected, IEnumerable<T> actual)
+        public static void SequenceSame<T>(IEnumerable<T> expected, IEnumerable<T> actual) where T : class
         {
             using IEnumerator<T> expectedEnumerator = expected.GetEnumerator();
             using IEnumerator<T> actualEnumerator = actual.GetEnumerator();
@@ -36,7 +36,7 @@ namespace Xunit
 
                 if (nextExpected && nextActual)
                 {
-                    Assert.Equal(expectedEnumerator.Current, actualEnumerator.Current);
+                    Assert.Same(expectedEnumerator.Current, actualEnumerator.Current);
                 }
                 else if (!nextExpected && !nextActual)
                 {

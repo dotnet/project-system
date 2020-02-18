@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public static TargetedDependenciesSnapshot FromChanges(
             string projectPath,
             TargetedDependenciesSnapshot previousSnapshot,
-            IDependenciesChanges changes,
+            IDependenciesChanges? changes,
             IProjectCatalogSnapshot? catalogs,
             ImmutableArray<IDependenciesSnapshotFilter> snapshotFilters,
             IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
@@ -37,7 +37,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         {
             Requires.NotNullOrWhiteSpace(projectPath, nameof(projectPath));
             Requires.NotNull(previousSnapshot, nameof(previousSnapshot));
-            Requires.NotNull(changes, nameof(changes));
             Requires.Argument(!snapshotFilters.IsDefault, nameof(snapshotFilters), "Cannot be default.");
             Requires.NotNull(subTreeProviderByProviderType, nameof(subTreeProviderByProviderType));
 
@@ -47,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             var worldBuilder = previousSnapshot.DependenciesWorld.ToBuilder();
 
-            if (changes.RemovedNodes.Count != 0)
+            if (changes != null && changes.RemovedNodes.Count != 0)
             {
                 var context = new RemoveDependencyContext(worldBuilder);
 
@@ -57,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 }
             }
 
-            if (changes.AddedNodes.Count != 0)
+            if (changes != null && changes.AddedNodes.Count != 0)
             {
                 var context = new AddDependencyContext(worldBuilder);
 
