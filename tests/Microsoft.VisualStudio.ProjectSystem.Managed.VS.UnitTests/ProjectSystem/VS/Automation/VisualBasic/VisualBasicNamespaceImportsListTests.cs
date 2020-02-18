@@ -95,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
 
                 list.OnNamespaceImportChanged(projectVersionedValue);
 
-                AssertEx.SequenceEqual(expected, list);
+                Assert.Equal(expected, list);
             }
 
             return;
