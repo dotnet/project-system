@@ -24,10 +24,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         }
 
         /// <summary>
-        /// For each target framework in <paramref name="changes"/>, applies the corresponding
-        /// <see cref="IDependenciesChanges"/> to <paramref name="previousSnapshot"/> in order to produce
-        /// and return an updated <see cref="DependenciesSnapshot"/> object.
-        /// If no changes are made, <paramref name="previousSnapshot"/> is returned unmodified.
+        /// Updates the <see cref="TargetedDependenciesSnapshot"/> corresponding to <paramref name="changedTargetFramework"/>,
+        /// returning either:
+        /// <list type="bullet">
+        ///   <item>An updated <see cref="DependenciesSnapshot"/> object, or</item>
+        ///   <item>the immutable <paramref name="previousSnapshot"/> if no changes were made.</item>
+        /// </list>
         /// </summary>
         /// <remarks>
         /// As part of the update, each <see cref="IDependenciesSnapshotFilter"/> in <paramref name="snapshotFilters"/>
