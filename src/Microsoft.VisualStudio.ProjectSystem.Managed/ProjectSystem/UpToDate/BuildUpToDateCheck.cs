@@ -31,8 +31,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private const string DefaultSetName = "";
         private static readonly StringComparer s_setNameComparer = StringComparers.ItemNames;
 
-        // This order is used everywhere, i.e., in the documentation.
-        // Do not change the order.
         private static ImmutableHashSet<string> ProjectPropertiesSchemas => ImmutableStringHashSet.EmptyOrdinal
             .Add(ConfigurationGeneral.SchemaName)
             .Add(ResolvedAnalyzerReference.SchemaName)
