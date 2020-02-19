@@ -11,6 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
     /// </summary>
     [Export(typeof(IRemoteAuthenticationProvider))]
     [AppliesTo("SupportUniversalAuthentication")]
+    [Order(30)]
     internal class UniversalRemoteAuthenticationProvider : IRemoteAuthenticationProvider
     {
         private static readonly Guid s_universalPortSupplier = new Guid("EE56E4E8-E866-4915-A18E-1DE7114BD7BB");

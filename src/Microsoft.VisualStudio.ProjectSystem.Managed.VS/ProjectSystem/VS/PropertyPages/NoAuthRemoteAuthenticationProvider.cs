@@ -11,6 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
     /// </summary>
     [Export(typeof(IRemoteAuthenticationProvider))]
     [AppliesTo(ProjectCapabilities.AlwaysApplicable)]
+    [Order(10)]
     internal class NoAuthRemoteAuthenticationProvider : IRemoteAuthenticationProvider
     {
         [ImportingConstructor]

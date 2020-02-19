@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             _remoteDiscoveryUIService = remoteDiscoveryUIService;
             _threadingService = threadingService;
-            AuthenticationProviders = new OrderPrecedenceImportCollection<IRemoteAuthenticationProvider>(projectCapabilityCheckProvider: unconfiguredProject);
+            AuthenticationProviders = new OrderPrecedenceImportCollection<IRemoteAuthenticationProvider>(orderingStyle: ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast, projectCapabilityCheckProvider: unconfiguredProject);
         }
 
         [ImportMany]
