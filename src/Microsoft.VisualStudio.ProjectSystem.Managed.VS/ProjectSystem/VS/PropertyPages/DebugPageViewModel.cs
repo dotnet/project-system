@@ -288,7 +288,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             get
             {
                 string remoteAuthenticationMode = GetOtherProperty(LaunchProfileExtensions.RemoteAuthenticationModeProperty, "");
-                return RemoteDebuggerAuthenticationService.GetProviderForAuthenticationMode(remoteAuthenticationMode);
+                return RemoteDebuggerAuthenticationService.FindProviderForAuthenticationMode(remoteAuthenticationMode);
             }
             set
             {

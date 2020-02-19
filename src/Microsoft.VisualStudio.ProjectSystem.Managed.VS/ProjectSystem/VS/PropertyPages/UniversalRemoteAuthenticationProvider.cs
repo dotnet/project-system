@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         public Guid PortSupplierGuid => VSConstants.DebugPortSupplierGuids.NoAuth_guid;
 
-        public Guid AuthModeGuid => s_universalPortSupplier;
+        public Guid AuthenticationModeGuid => s_universalPortSupplier;
 
         public uint AdditionalRemoteDiscoveryDialogFlags => /* DEBUG_REMOTE_DISCOVERY_FLAGS2.DRD_SUPPORTS_UNIVERSAL_AUTH */ 2;
     }

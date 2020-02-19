@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         [ImportMany]
         private OrderPrecedenceImportCollection<IRemoteAuthenticationProvider> AuthenticationProviders { get; }
 
-        public IRemoteAuthenticationProvider? GetProviderForAuthenticationMode(string? remoteAuthenticationMode) => AuthenticationProviders.FirstOrDefaultValue(p => p.Name.Equals(remoteAuthenticationMode, StringComparisons.LaunchProfileProperties));
+        public IRemoteAuthenticationProvider? FindProviderForAuthenticationMode(string? remoteAuthenticationMode) => AuthenticationProviders.FirstOrDefaultValue(p => p.Name.Equals(remoteAuthenticationMode, StringComparisons.LaunchProfileProperties));
 
         public IEnumerable<IRemoteAuthenticationProvider> GetRemoteAuthenticationModes() => AuthenticationProviders.ExtensionValues();
 
@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             _threadingService.VerifyOnUIThread();
 
-            Guid currentPortSupplier = remoteAuthenticationProvider?.AuthModeGuid ?? Guid.Empty;
+            Guid currentPortSupplier = remoteAuthenticationProvider?.AuthenticationModeGuid ?? Guid.Empty;
 
             uint extraFlags = (uint)DEBUG_REMOTE_DISCOVERY_FLAGS.DRD_NONE;
 
@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             if (ErrorHandler.Succeeded(remoteDiscoveryUIService.SelectRemoteInstanceViaDlg(remoteDebugMachine, currentPortSupplier, extraFlags, out string remoteMachine, out Guid portSupplier)))
             {
                 remoteDebugMachine = remoteMachine;
-                remoteAuthenticationProvider = AuthenticationProviders.FirstOrDefaultValue(p => p.AuthModeGuid.Equals(portSupplier));
+                remoteAuthenticationProvider = AuthenticationProviders.FirstOrDefaultValue(p => p.AuthenticationModeGuid.Equals(portSupplier));
 
                 return true;
             }

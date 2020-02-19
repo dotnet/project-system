@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     internal interface IRemoteDebuggerAuthenticationService
     {
         IEnumerable<IRemoteAuthenticationProvider> GetRemoteAuthenticationModes();
-        IRemoteAuthenticationProvider? GetProviderForAuthenticationMode(string remoteAuthenticationMode);
+        IRemoteAuthenticationProvider? FindProviderForAuthenticationMode(string remoteAuthenticationMode);
         bool ShowRemoteDiscoveryDialog(ref string remoteDebugMachine, ref IRemoteAuthenticationProvider? remoteAuthenticationProvider);
     }
 }

@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// <summary>
         /// Guid used for to specify and read the authentication mode for the Remote Discovery Dialog
         /// </summary>
-        Guid AuthModeGuid { get; }
+        Guid AuthenticationModeGuid { get; }
         /// <summary>
         /// Allows the authentication provider to influence the Remote Discovery Dialog
         /// </summary>

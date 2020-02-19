@@ -360,7 +360,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             {
                 settings.RemoteMachine = resolvedProfile.RemoteDebugMachine();
 
-                IRemoteAuthenticationProvider remoteAuthenticationProvider = _remoteDebuggerAuthenticationService.GetProviderForAuthenticationMode(resolvedProfile.RemoteAuthenticationMode());
+                IRemoteAuthenticationProvider remoteAuthenticationProvider = _remoteDebuggerAuthenticationService.FindProviderForAuthenticationMode(resolvedProfile.RemoteAuthenticationMode());
                 if (remoteAuthenticationProvider != null)
                 {
                     settings.PortSupplierGuid = remoteAuthenticationProvider.PortSupplierGuid;

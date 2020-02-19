@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public const string SqlDebuggingProperty = "sqlDebugging";
         public const string RemoteDebugEnabledProperty = "remoteDebugEnabled";
         public const string RemoteDebugMachineProperty = "remoteDebugMachine";
-        public const string RemoteAuthenticationModeProperty = "remoteAuthenticationMode";
+        public const string RemoteAuthenticationModeProperty = "authenticationMode";
 
         public static bool IsInMemoryObject(this object persistObject)
         {

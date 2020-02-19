@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         public Guid PortSupplierGuid => s_localPortSupplier;
 
-        public Guid AuthModeGuid => Guid.Empty;
+        public Guid AuthenticationModeGuid => Guid.Empty;
 
         public uint AdditionalRemoteDiscoveryDialogFlags => 0;
     }

@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         public Guid PortSupplierGuid => VSConstants.DebugPortSupplierGuids.NoAuth_guid;
 
-        public Guid AuthModeGuid => VSConstants.DebugPortSupplierGuids.NoAuth_guid;
+        public Guid AuthenticationModeGuid => VSConstants.DebugPortSupplierGuids.NoAuth_guid;
 
         public uint AdditionalRemoteDiscoveryDialogFlags => 0;
     }
