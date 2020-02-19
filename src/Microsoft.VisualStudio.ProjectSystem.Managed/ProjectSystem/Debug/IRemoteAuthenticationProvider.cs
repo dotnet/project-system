@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.Composition;
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ZeroOrMore)]
-    public interface IRemoteAuthenticationProvider
+    internal interface IRemoteAuthenticationProvider
     {
         /// <summary>
         /// Name displayed in the App Designer. Should be localized
