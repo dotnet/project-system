@@ -263,6 +263,15 @@
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
     </XamlPropertyRule>
 
+    <Compile Update="ProjectSystem\Rules\CopyToOutputDirectoryItem.cs">
+      <DependentUpon>CopyToOutputDirectoryItem.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\CopyToOutputDirectoryItem.xaml">
+      <XlfInput>false</XlfInput>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+
     <Compile Update="ProjectSystem\Rules\CopyUpToDateMarker.cs">
       <DependentUpon>CopyUpToDateMarker.xaml</DependentUpon>
     </Compile>
