@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="AuthenticationModeLabel.Text">
         <source>Authentication &amp;mode:</source>
-        <target state="new">Authentication &amp;mode:</target>
+        <target state="translated">&amp;Modo de autenticación:</target>
         <note />
       </trans-unit>
       <trans-unit id="StartActionLabel.Text">
