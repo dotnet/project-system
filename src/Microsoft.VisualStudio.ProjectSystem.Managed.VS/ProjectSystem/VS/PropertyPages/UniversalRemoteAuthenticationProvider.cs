@@ -21,9 +21,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
         }
 
-        public string DisplayName => "Universal";
+        public string DisplayName => "Universal"; // TODO: Does this need to be localized?
 
-        public string Name => "None";
+        public string Name => "Universal";
 
         public Guid PortSupplierGuid => VSConstants.DebugPortSupplierGuids.NoAuth_guid;
 
