@@ -360,10 +360,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             {
                 settings.RemoteMachine = resolvedProfile.RemoteDebugMachine();
 
-                IRemoteAuthenticationProvider remoteAuthenticationProvider = _remoteDebuggerAuthenticationService.FindProviderForAuthenticationMode(resolvedProfile.RemoteAuthenticationMode());
-                if (remoteAuthenticationProvider != null)
+                string remoteAuthenticationMode = resolvedProfile.RemoteAuthenticationMode();
+                if (!Strings.IsNullOrEmpty(remoteAuthenticationMode))
                 {
-                    settings.PortSupplierGuid = remoteAuthenticationProvider.PortSupplierGuid;
+                    IRemoteAuthenticationProvider remoteAuthenticationProvider = _remoteDebuggerAuthenticationService.FindProviderForAuthenticationMode(remoteAuthenticationMode);
+                    if (remoteAuthenticationProvider != null)
+                    {
+                        settings.PortSupplierGuid = remoteAuthenticationProvider.PortSupplierGuid;
+                    }
                 }
             }
 

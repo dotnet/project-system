@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         [ImportMany]
         private OrderPrecedenceImportCollection<IRemoteAuthenticationProvider> AuthenticationProviders { get; }
 
-        public IRemoteAuthenticationProvider? FindProviderForAuthenticationMode(string? remoteAuthenticationMode) => AuthenticationProviders.FirstOrDefaultValue(p => p.Name.Equals(remoteAuthenticationMode, StringComparisons.LaunchProfileProperties));
+        public IRemoteAuthenticationProvider? FindProviderForAuthenticationMode(string remoteAuthenticationMode) => AuthenticationProviders.FirstOrDefaultValue(p => p.Name.Equals(remoteAuthenticationMode, StringComparisons.LaunchProfileProperties));
 
         public IEnumerable<IRemoteAuthenticationProvider> GetRemoteAuthenticationModes() => AuthenticationProviders.ExtensionValues();
 
