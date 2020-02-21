@@ -25,12 +25,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public const string LaunchProfiles = nameof(LaunchProfiles);
         public const string OpenProjectFile = nameof(OpenProjectFile);
         public const string HandlesOwnReload = ProjectCapabilities.HandlesOwnReload;
-        public const string ReferenceManagerAssemblies = nameof(ReferenceManagerAssemblies);
-        public const string ReferenceManagerBrowse = nameof(ReferenceManagerBrowse);
-        public const string ReferenceManagerCOM = nameof(ReferenceManagerCOM);
-        public const string ReferenceManagerProjects = nameof(ReferenceManagerProjects);
-        public const string ReferenceManagerSharedProjects = nameof(ReferenceManagerSharedProjects);
-        public const string ReferenceManagerWinRT = nameof(ReferenceManagerWinRT);
         public const string Pack = nameof(Pack); // Keep this in sync with Microsoft.VisualStudio.Editors.ProjectCapability.Pack
         public const string PackageReferences = ProjectCapabilities.PackageReferences;
         public const string PreserveFormatting = nameof(PreserveFormatting);
