@@ -411,14 +411,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 static CopyType GetCopyType(IImmutableDictionary<string, string> itemMetadata)
                 {
-                    if (itemMetadata.TryGetValue(CopyToOutputDirectory, out string value))
+                    if (itemMetadata.TryGetValue(Compile.CopyToOutputDirectoryProperty, out string value))
                     {
-                        if (string.Equals(value, Always, StringComparisons.PropertyLiteralValues))
+                        if (string.Equals(value, Compile.CopyToOutputDirectoryValues.Always, StringComparisons.PropertyLiteralValues))
                         {
                             return CopyType.Always;
                         }
 
-                        if (string.Equals(value, PreserveNewest, StringComparisons.PropertyLiteralValues))
+                        if (string.Equals(value, Compile.CopyToOutputDirectoryValues.PreserveNewest, StringComparisons.PropertyLiteralValues))
                         {
                             return CopyType.PreserveNewest;
                         }

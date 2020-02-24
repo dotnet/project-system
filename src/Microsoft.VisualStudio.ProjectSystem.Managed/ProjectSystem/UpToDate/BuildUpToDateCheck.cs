@@ -23,11 +23,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
     [ExportMetadata("BeforeDrainCriticalTasks", true)]
     internal sealed partial class BuildUpToDateCheck : OnceInitializedOnceDisposedUnderLockAsync, IBuildUpToDateCheckProvider, IProjectDynamicLoadComponent
     {
-        private const string CopyToOutputDirectory = "CopyToOutputDirectory";
-        private const string PreserveNewest = "PreserveNewest";
-        private const string Always = "Always";
-        private const string Link = "Link";
-
         private const string DefaultSetName = "";
         private static readonly StringComparer s_setNameComparer = StringComparers.ItemNames;
 

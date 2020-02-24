@@ -135,7 +135,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.Same(targetFramework, snapshot.ActiveTargetFramework);
             Assert.NotSame(previousSnapshot.DependenciesByTargetFramework, snapshot.DependenciesByTargetFramework);
 
-            var (actualTfm, targetedSnapshot) = Assert.Single(snapshot.DependenciesByTargetFramework);
+            Assert.Single(snapshot.DependenciesByTargetFramework);
         }
 
         [Fact]

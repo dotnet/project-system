@@ -168,7 +168,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             void LogTelemetry(bool cancelled)
             {
-                compileStopWatch.Stop();
+                compileStopWatch!.Stop();
                 _telemetryService.PostProperties(TelemetryEventName.TempPEProcessQueue, new[]
                 {
                     ( TelemetryPropertyName.TempPECompileCount,        (object)compileCount),
