@@ -11,6 +11,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
     [DebuggerDisplay("Name = {Name}")]
     internal class ReferenceItem : IVsReferenceItem
     {
+        // If additional fields/properties are added to this class, please update RestoreHasher
+
         public ReferenceItem(string name, IVsReferenceProperties properties)
         {
             Requires.NotNullOrEmpty(name, nameof(name));

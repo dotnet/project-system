@@ -11,6 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
     [DebuggerDisplay("TargetFrameworkMoniker = {TargetFrameworkMoniker}")]
     internal class TargetFrameworkInfo : IVsTargetFrameworkInfo, IVsTargetFrameworkInfo2
     {
+        // If additional fields/properties are added to this class, please update RestoreHasher
         public TargetFrameworkInfo(string targetFrameworkMoniker, IVsReferenceItems frameworkReferences, IVsReferenceItems packageDownloads, IVsReferenceItems projectReferences, IVsReferenceItems packageReferences, IVsProjectProperties properties)
         {
             TargetFrameworkMoniker = targetFrameworkMoniker;

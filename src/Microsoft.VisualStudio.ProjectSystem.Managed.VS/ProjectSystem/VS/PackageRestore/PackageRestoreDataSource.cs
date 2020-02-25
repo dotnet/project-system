@@ -63,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         private readonly IVsSolutionRestoreService3 _solutionRestoreService;
         private readonly IFileSystem _fileSystem;
         private readonly IProjectLogger _logger;
-        private IVsProjectRestoreInfo2? _latestValue;
+        private byte[]? _latestHash;
         private bool _enabled;
 
         [ImportingConstructor]
@@ -115,12 +115,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
         private async Task<bool> RestoreCoreAsync(ProjectRestoreInfo restoreInfo)
         {
-            // Restore service always does work regardless of whether the value we pass them to actually
-            // contains changes, only nominate if there are any.
-            if (RestoreComparer.RestoreInfos.Equals(_latestValue, restoreInfo))
+            // Restore service always does work regardless of whether the value we pass 
+            // them to actually contains changes, only nominate if there are any.
+            byte[] hash = RestoreHasher.CalculateHash(restoreInfo);
+
+            if (_latestHash != null && Enumerable.SequenceEqual(hash, _latestHash))
                 return true;
 
-            _latestValue = restoreInfo;
+            _latestHash = hash;
 
             JoinableTask<bool> joinableTask = JoinableFactory.RunAsync(() =>
             {
