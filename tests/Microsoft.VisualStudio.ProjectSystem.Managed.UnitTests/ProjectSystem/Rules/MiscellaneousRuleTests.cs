@@ -33,26 +33,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
         [Theory]
         [MemberData(nameof(GetAllDisplayedRules))]
-        public void MarkedRulesShouldntBeLocalized(string ruleName, string fullPath)
+        public void MarkedRuleFileShouldntBeLocalized(string ruleName, string fullPath)
         {
-            // Files marked with NO_TRANSLATE do not show up in the UI, and therefore shouldn't be localized.
+            // Rule files marked with NO_TRANSLATE do not show up in the UI, and therefore shouldn't be localized.
 
             var fileIsMarked = File.ReadLines(fullPath).Any(line => line.Contains("NO_TRANSLATE"));
 
             if (!fileIsMarked)
                 return;
 
+            // Since we have determined the file is marked with NO_TRANSLATE, let's make sure we don't have unncessary localization attributes.
             XElement rule = LoadXamlRule(fullPath);
             foreach(XElement element in rule.Elements())
             {
                 var visibleAttribute = element.Attribute("Visible");
-
-                Assert.Equal("false", visibleAttribute?.Value, StringComparer.OrdinalIgnoreCase);
-
-                // Verify that rules do not have unnecessary localization attributes.
-                Assert.Null(element.Attribute("DisplayName"));
-                Assert.Null(element.Attribute("Description"));
-                Assert.Null(element.Attribute("Category"));
+                if (visibleAttribute != null)
+                {
+                    Assert.Equal("false", visibleAttribute?.Value, StringComparer.OrdinalIgnoreCase);
+                    Assert.Null(element.Attribute("DisplayName"));
+                    Assert.Null(element.Attribute("Description"));
+                    Assert.Null(element.Attribute("Category"));
+                }
             }
         }
 
