@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="Application"
+      Description="General"
+      DisplayName="Application"
+      PageTemplate="generic"
+      xmlns="http://schemas.microsoft.com/build/2009/properties">
+
+  <Rule.Categories>
+    <Category Name="General"
+              Description="General"
+              DisplayName="General" />
+    <Category Name="Resources"
+              Description="Resources"
+              DisplayName="Resources" />
+  </Rule.Categories>
+
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile"
+                SourceOfDefaultValue="AfterContext"
+                HasConfigurationCondition="False" />
+  </Rule.DataSource>
+
+  <StringProperty Name="AssemblyName"
+                  DisplayName="Assembly name"
+                  Category="General" />
+
+  <StringProperty Name="RootNamespace"
+                  DisplayName="Default namespace"
+                  Category="General" />
+
+  <DynamicEnumProperty Name="TargetFrameworkMoniker"
+                       DisplayName="Target framework"
+                       Category="General"
+                       EnumProvider="SupportedTargetFrameworksEnumProvider"
+                       MultipleValuesAllowed="False">
+    <DynamicEnumProperty.DataSource>
+      <DataSource PersistedName="TargetFrameworkMoniker"
+                  Persistence="ProjectFileWithInterception" />
+    </DynamicEnumProperty.DataSource>
+  </DynamicEnumProperty>
+
+  <EnumProperty Name="OutputType"
+                DisplayName="Output type"
+                Category="General">
+    <EnumValue Name="Library"
+               DisplayName="Class Library" />
+    <EnumValue Name="Exe"
+               DisplayName="Console Application" />
+    <EnumValue Name="WinExe"
+               DisplayName="Windows Application" />
+  </EnumProperty>
+
+  <DynamicEnumProperty Name="StartupObject"
+                       DisplayName="Startup object"
+                       Category="General"
+                       EnumProvider="StartupObjectsEnumProvider" />
+
+  <StringProperty Name="ApplicationIcon"
+                  DisplayName="Icon"
+                  Category="Resources"
+                  Subtype="file" />
+
+  <EnumProperty Name="ApplicationManifest"
+                DisplayName="Manifest"
+                Category="Resources" >
+    <EnumProperty.DataSource>
+      <DataSource HasConfigurationCondition="false"
+                  PersistedName="ApplicationManifest"
+                  Persistence="ProjectFileWithInterception" />
+    </EnumProperty.DataSource>
+    
+    <EnumValue Name="NoManifest"
+               DisplayName="Create application without a manifest" />
+    <EnumValue Name="DefaultManifest"
+               DisplayName="Embed manifest with default settings" />
+  </EnumProperty>
+
+  <StringProperty Name="Win32Resource"
+                  DisplayName="Resource file"
+                  Category="Resources"
+                  Subtype="file" />
+</Rule>
