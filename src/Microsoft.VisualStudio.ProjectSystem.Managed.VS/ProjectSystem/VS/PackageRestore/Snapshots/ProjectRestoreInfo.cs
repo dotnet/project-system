@@ -10,6 +10,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
     /// </summary>
     internal class ProjectRestoreInfo : IVsProjectRestoreInfo2
     {
+        // If additional fields/properties are added to this class, please update RestoreHasher
+
         public ProjectRestoreInfo(string msbuildProjectExtensionsPath, string projectAssetsFilePath, string originalTargetFrameworks, IVsTargetFrameworks2 targetFrameworks, IVsReferenceItems toolReferences)
         {
             MSBuildProjectExtensionsPath = msbuildProjectExtensionsPath;
@@ -20,6 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         }
 
         public string MSBuildProjectExtensionsPath { get; }
+
         public string ProjectAssetsFilePath { get; }
 
         public string OriginalTargetFrameworks { get; }

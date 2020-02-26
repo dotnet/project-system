@@ -12,6 +12,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
     /// </summary>
     internal static class RestoreBuilder
     {
+        public static readonly IVsTargetFrameworks2 EmptyTargetFrameworks = new TargetFrameworks(Enumerable.Empty<IVsTargetFrameworkInfo2>());
+        public static readonly IVsReferenceItems EmptyReferences = new ReferenceItems(Enumerable.Empty<IVsReferenceItem>());
+
         /// <summary>
         ///     Converts an immutable dictionary of rule snapshot data into an <see cref="IVsProjectRestoreInfo"/> instance.
         /// </summary>

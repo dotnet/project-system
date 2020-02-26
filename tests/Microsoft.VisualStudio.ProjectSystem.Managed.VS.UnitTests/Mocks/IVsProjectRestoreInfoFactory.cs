@@ -6,7 +6,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
     {
         public static ProjectRestoreInfo Create()
         {
-            return new ProjectRestoreInfo(string.Empty, string.Empty, string.Empty, null!, null!);
+            return new ProjectRestoreInfo(string.Empty, string.Empty, string.Empty,
+                                          RestoreBuilder.EmptyTargetFrameworks,
+                                          RestoreBuilder.EmptyReferences);
         }
     }
 }
