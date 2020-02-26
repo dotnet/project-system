@@ -31,8 +31,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             }
         }
 
-        internal void FileShouldNotContainLocAttributes(XElement rule)
+        [Theory]
+        [MemberData(nameof(GetAllDisplayedRules))]
+        public void MarkedRuleFilesShouldntBeLocalized(string ruleName, string fullPath)
         {
+            // Rule files marked with NO_TRANSLATE do not show up in the UI, and therefore shouldn't be localized.
+            var fileIsMarked = File.ReadLines(fullPath).Any(line => line.Contains("NO_TRANSLATE"));
+
+            if (!fileIsMarked)
+                return;
+
+            // Since we have determined the file is marked with NO_TRANSLATE, let's make sure we don't have unncessary localization attributes.
+            XElement rule = (LoadXamlRule(fullPath));
             foreach (XElement element in rule.Elements())
             {
                 XAttribute? visibleAttribute = element.Attribute("Visible");
@@ -48,29 +58,47 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
         [Theory]
         [MemberData(nameof(GetAllDisplayedRules))]
-        public void MarkedRuleFilesShouldntBeLocalized(string ruleName, string fullPath)
-        {
-            // Rule files marked with NO_TRANSLATE do not show up in the UI, and therefore shouldn't be localized.
-            var fileIsMarked = File.ReadLines(fullPath).Any(line => line.Contains("NO_TRANSLATE"));
-
-            if (!fileIsMarked)
-                return;
-
-            // Since we have determined the file is marked with NO_TRANSLATE, let's make sure we don't have unncessary localization attributes.
-            FileShouldNotContainLocAttributes(LoadXamlRule(fullPath));
-        }
-
-        [Theory]
-        [MemberData(nameof(GetAllDisplayedRules))]
         public void BrowseObjectsAndProjectItemsSchemasShouldBeLocalized(string ruleName, string fullPath)
         {
-            if(ruleName.Contains("ProjectItemsSchema") || (ruleName.Contains("BrowseObject") && !(ruleName.Contains("GeneralConfiguredBrowseObject")) ))
+            if(ruleName.Contains("ProjectItemsSchema") || (ruleName.Contains("BrowseObject") && !(ruleName.Contains("GeneralConfiguredBrowseObject")) && !(ruleName.Contains("None.BrowseObject")) ))
             {
                 // The file should not be marked as NO_TRANSLATE.
                 Assert.DoesNotContain(File.ReadLines(fullPath), line => line.Contains("NO_TRANSLATE"));
 
-                // The file should not have unnecessary localization attributes.
-                FileShouldNotContainLocAttributes(LoadXamlRule(fullPath));
+                // The file should have localization attributes.
+                XElement rule = LoadXamlRule(fullPath);
+
+                foreach (var property in GetProperties(rule))
+                {
+                    // Properties are visible by default
+                    string visibleValue = property.Attribute("Visible")?.Value ?? "true";
+
+                    Assert.True(bool.TryParse(visibleValue, out bool visible));
+
+                    if (!visible)
+                        continue;
+
+                    string? displayName = property.Attribute("DisplayName")?.Value;
+
+                    if (string.IsNullOrWhiteSpace(displayName))
+                    {
+                        throw new Xunit.Sdk.XunitException($"Rule {ruleName} has visible property {property.Attribute("Name")} with no DisplayName value.");
+                    }
+
+                    string? description = property.Attribute("Description")?.Value;
+
+                    if (string.IsNullOrWhiteSpace(description))
+                    {
+                        throw new Xunit.Sdk.XunitException($"Rule {ruleName} has visible property {property.Attribute("Name")} with no Description value.");
+                    }
+
+                    string? category = property.Attribute("Category")?.Value;
+
+                    if (string.IsNullOrWhiteSpace(category))
+                    {
+                        throw new Xunit.Sdk.XunitException($"Rule {ruleName} has visible property {property.Attribute("Name")} with no Category value.");
+                    }
+                }
             }
         }
 
@@ -80,6 +108,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         {
             // The "DisplayName" property is localised, while "Name" is not.
             // Visible properties without a "DisplayName" will appear in English in all locales.
+
+            // Rule files marked with NO_TRANSLATE do not show up in the UI, and therefore shouldn't be localized.
+            var fileIsMarked = File.ReadLines(fullPath).Any(line => line.Contains("NO_TRANSLATE"));
+
+            if (fileIsMarked)
+                return;
 
             XElement rule = LoadXamlRule(fullPath);
 
