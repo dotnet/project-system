@@ -52,6 +52,11 @@
         <target state="translated">架構組件</target>
         <note />
       </trans-unit>
+      <trans-unit id="NoAuth">
+        <source>No Authentication</source>
+        <target state="new">No Authentication</target>
+        <note />
+      </trans-unit>
       <trans-unit id="OutputGroupPublishItemsDescription">
         <source>Contains all the assemblies needed when publishing a .NET Core project.</source>
         <target state="translated">包含發佈 .NET Core 專案時所需的所有組件。</target>
@@ -89,6 +94,11 @@ If this file or folder does not appear in Solution Explorer, then it is not curr
         <target state="translated">磁碟這個位置已經有名稱為 '{0}' 的檔案或資料夾存在，請另選名稱。
 
 [方案總管] 如果沒有這個檔案或資料夾，表示目前不屬於專案的一部分。若要檢視磁碟中有哪些檔案不在專案中，請從 [專案] 功能表選取 [顯示所有檔案]。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WindowsAuth">
+        <source>Windows Authentication</source>
+        <target state="new">Windows Authentication</target>
         <note />
       </trans-unit>
     </body>

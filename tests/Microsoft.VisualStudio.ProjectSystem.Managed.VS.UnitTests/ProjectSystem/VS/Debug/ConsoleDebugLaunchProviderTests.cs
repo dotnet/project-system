@@ -667,7 +667,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             IUnconfiguredProjectVsServices unconfiguredProjectVsServices = IUnconfiguredProjectVsServicesFactory.Implement(() => IVsHierarchyFactory.Create());
 
-            return new ConsoleDebugTargetsProvider(unconfiguredProjectVsServices, configuredProject, tokenReplacer, fileSystem, environment, activeDebugFramework, properties, threadingService, IVsUIServiceFactory.Create<SVsShellDebugger, IVsDebugger10>(debugger));
+            IRemoteDebuggerAuthenticationService remoteDebuggerAuthenticationService = Mock.Of<IRemoteDebuggerAuthenticationService>();
+
+            return new ConsoleDebugTargetsProvider(unconfiguredProjectVsServices, configuredProject, tokenReplacer, fileSystem, environment, activeDebugFramework, properties, threadingService, IVsUIServiceFactory.Create<SVsShellDebugger, IVsDebugger10>(debugger), remoteDebuggerAuthenticationService);
         }
     }
 }
