@@ -31,29 +31,46 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             }
         }
 
+        internal void FileShouldNotContainLocAttributes(XElement rule)
+        {
+            foreach (XElement element in rule.Elements())
+            {
+                XAttribute? visibleAttribute = element.Attribute("Visible");
+
+                if (visibleAttribute != null)
+                    Assert.Equal("false", visibleAttribute?.Value, StringComparer.OrdinalIgnoreCase);
+
+                Assert.Null(element.Attribute("DisplayName"));
+                Assert.Null(element.Attribute("Description"));
+                Assert.Null(element.Attribute("Category"));
+            }
+        }
+
         [Theory]
         [MemberData(nameof(GetAllDisplayedRules))]
-        public void MarkedRuleFileShouldntBeLocalized(string ruleName, string fullPath)
+        public void MarkedRuleFilesShouldntBeLocalized(string ruleName, string fullPath)
         {
             // Rule files marked with NO_TRANSLATE do not show up in the UI, and therefore shouldn't be localized.
-
             var fileIsMarked = File.ReadLines(fullPath).Any(line => line.Contains("NO_TRANSLATE"));
 
             if (!fileIsMarked)
                 return;
 
             // Since we have determined the file is marked with NO_TRANSLATE, let's make sure we don't have unncessary localization attributes.
-            XElement rule = LoadXamlRule(fullPath);
-            foreach(XElement element in rule.Elements())
+            FileShouldNotContainLocAttributes(LoadXamlRule(fullPath));
+        }
+
+        [Theory]
+        [MemberData(nameof(GetAllDisplayedRules))]
+        public void BrowseObjectsAndProjectItemsSchemasShouldBeLocalized(string ruleName, string fullPath)
+        {
+            if(ruleName.Contains("ProjectItemsSchema") || (ruleName.Contains("BrowseObject") && !(ruleName.Contains("GeneralConfiguredBrowseObject")) ))
             {
-                var visibleAttribute = element.Attribute("Visible");
-                if (visibleAttribute != null)
-                {
-                    Assert.Equal("false", visibleAttribute?.Value, StringComparer.OrdinalIgnoreCase);
-                    Assert.Null(element.Attribute("DisplayName"));
-                    Assert.Null(element.Attribute("Description"));
-                    Assert.Null(element.Attribute("Category"));
-                }
+                // The file should not be marked as NO_TRANSLATE.
+                Assert.DoesNotContain(File.ReadLines(fullPath), line => line.Contains("NO_TRANSLATE"));
+
+                // The file should not have unnecessary localization attributes.
+                FileShouldNotContainLocAttributes(LoadXamlRule(fullPath));
             }
         }
 
