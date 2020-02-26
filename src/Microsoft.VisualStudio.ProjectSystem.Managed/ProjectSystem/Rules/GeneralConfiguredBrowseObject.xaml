@@ -2,16 +2,12 @@
 <!--Copyright, Microsoft Corporation, All rights reserved.-->
 <!--NO_TRANSLATE-->
 <Rule Name="ConfiguredBrowseObject"
-      Description="General"
-      DisplayName="General"
       OverrideMode="Replace"
       PageTemplate="generic"
       PropertyPagesHidden="true"
       xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.Categories>
-    <Category Name="General"
-              Description="General"
-              DisplayName="General" />
+    <Category Name="General" />
   </Rule.Categories>
 
   <Rule.DataSource>
@@ -77,7 +73,6 @@
                 Visible="False" />
 
   <StringProperty Name="FullPath"
-                  DisplayName="Project Folder"
                   ReadOnly="True">
     <StringProperty.DataSource>
       <DataSource PersistedName="ProjectDir"
@@ -177,10 +172,8 @@
                   Persistence="ProjectFile"
                   SourceOfDefaultValue="AfterContext" />
     </EnumProperty.DataSource>
-    <EnumValue Name="Off"
-               DisplayName="Off" />
+    <EnumValue Name="Off" />
     <EnumValue Name="On"
-               DisplayName="On"
                IsDefault="True" />
   </EnumProperty>
 

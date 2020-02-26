@@ -16,7 +16,6 @@
                 SourceType="TargetResults" />
   </Rule.DataSource>
 
-  <StringProperty Name="Version"
-                  DisplayName="Version" />
+  <StringProperty Name="Version"/>
 
 </Rule>

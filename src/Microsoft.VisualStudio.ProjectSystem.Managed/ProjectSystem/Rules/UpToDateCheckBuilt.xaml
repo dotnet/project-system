@@ -12,8 +12,7 @@
                 SourceType="TargetResults" />
   </Rule.DataSource>
 
-  <StringProperty Name="Original"
-                  DisplayName="Original" />
+  <StringProperty Name="Original" />
 
   <StringProperty Name="Set"
                   Visible="False" />

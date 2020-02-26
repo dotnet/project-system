@@ -2,15 +2,11 @@
 <!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 <!--NO_TRANSLATE-->
 <Rule Name="ConfigurationGeneral"
-      Description="General"
-      DisplayName="General"
       OverrideMode="Replace"
       PageTemplate="generic"
       xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.Categories>
-    <Category Name="General"
-              Description="General"
-              DisplayName="General" />
+    <Category Name="General" />
   </Rule.Categories>
 
   <Rule.DataSource>
@@ -25,11 +21,9 @@
   <BoolProperty Name="AlwaysUseNumericalSuffixInItemNames"
                 Visible="False" />
 
-  <StringProperty Name="ApplicationIcon"
-                  DisplayName="Application Icon" />
+  <StringProperty Name="ApplicationIcon" />
 
-  <StringProperty Name="AssemblyName"
-                  DisplayName="Assembly Name" />
+  <StringProperty Name="AssemblyName" />
 
   <StringProperty Name="AssemblyReferenceTabs"
                   Visible="false" />
@@ -47,11 +41,9 @@
   </BoolProperty>
 
   <StringListProperty Name="AvailablePlatforms"
-                      Separator=","
-                      DisplayName="Available Platforms" />
+                      Separator="," />
 
-  <StringProperty Name="BaseIntermediateOutputPath"
-                  DisplayName="Base Intermediate Output Path" />
+  <StringProperty Name="BaseIntermediateOutputPath" />
 
   <StringProperty Name="Configuration"
                   Visible="false" />
@@ -65,8 +57,7 @@
   <StringProperty Name="DefaultPlatform"
                   Visible="false" />
 
-  <BoolProperty Name="DisableFastUpToDateCheck"
-                DisplayName="Disable Fast Up To Date Check">
+  <BoolProperty Name="DisableFastUpToDateCheck">
     <BoolProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
                   PersistedName="DisableFastUpToDateCheck"
@@ -75,8 +66,7 @@
     </BoolProperty.DataSource>
   </BoolProperty>
 
-  <StringProperty Name="DocumentationFile"
-                  DisplayName="XML doc comments file" />
+  <StringProperty Name="DocumentationFile" />
 
   <StringProperty Name="IntDir"
                   Visible="false" />
@@ -108,8 +98,7 @@
                   ReadOnly="True"
                   Visible="False" />
 
-  <StringProperty Name="Name"
-                  DisplayName="Name" />
+  <StringProperty Name="Name" />
 
   <StringProperty Name="NETCoreSdkVersion"
                   ReadOnly="True"
@@ -118,31 +107,21 @@
   <StringProperty Name="OneAppCapabilities"
                   Visible="False" />
 
-  <BoolProperty Name="Optimize"
-                Description="Whether the compiler should optimize output."
-                DisplayName="Optimize" />
+  <BoolProperty Name="Optimize" />
 
-  <StringProperty Name="OutputName"
-                  DisplayName="Output Name" />
+  <StringProperty Name="OutputName" />
 
   <StringProperty Name="OutDir"
                   Visible="False" />
 
-  <StringProperty Name="OutputPath"
-                  DisplayName="Output Path" />
+  <StringProperty Name="OutputPath" />
 
-  <EnumProperty Name="OutputType"
-                DisplayName="Output Type" >
-    <EnumValue Name="Library"
-               DisplayName="Class Library" />
-    <EnumValue Name="Exe"
-               DisplayName="Console Application" />
-    <EnumValue Name="WinExe"
-               DisplayName="Windows Application" />
-    <EnumValue Name="AppContainerExe"
-               DisplayName="Windows Store app" />
-    <EnumValue Name="WinMDObj"
-               DisplayName="WinMD" />
+  <EnumProperty Name="OutputType">
+    <EnumValue Name="Library" />
+    <EnumValue Name="Exe" />
+    <EnumValue Name="WinExe" />
+    <EnumValue Name="AppContainerExe" />
+    <EnumValue Name="WinMDObj" />
     <EnumProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
                   PersistedName="OutputType"
@@ -166,8 +145,7 @@
   <StringProperty Name="ProjectUISubcaption"
                   Visible="False" />
 
-  <StringProperty Name="RootNamespace"
-                  DisplayName="Root namespace">
+  <StringProperty Name="RootNamespace">
     <StringProperty.DataSource>
       <DataSource HasConfigurationCondition="false"
                   Label="Configuration"
@@ -215,8 +193,7 @@
   <BoolProperty Name="SuppressOutOfDateMessageOnBuild"
                 Visible="false" />
 
-  <StringProperty Name="TargetFramework"
-                  DisplayName="Target Framework">
+  <StringProperty Name="TargetFramework">
     <StringProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
                   PersistedName="TargetFramework"
@@ -225,8 +202,7 @@
     </StringProperty.DataSource>
   </StringProperty>
 
-  <StringProperty Name="TargetFrameworkIdentifier"
-                  DisplayName="Target Framework Identifier">
+  <StringProperty Name="TargetFrameworkIdentifier">
     <StringProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
                   PersistedName="TargetFrameworkIdentifier"
@@ -235,8 +211,7 @@
     </StringProperty.DataSource>
   </StringProperty>
 
-  <StringProperty Name="TargetFrameworkMoniker"
-                  DisplayName="Target Framework Moniker">
+  <StringProperty Name="TargetFrameworkMoniker">
     <StringProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
                   PersistedName="TargetFrameworkMoniker"
@@ -246,7 +221,6 @@
   </StringProperty>
 
   <StringProperty Name="TargetFrameworkMonikers"
-                  DisplayName="Target Framework Monikers"
                   ReadOnly="True">
     <StringProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
@@ -256,8 +230,7 @@
     </StringProperty.DataSource>
   </StringProperty>
 
-  <StringProperty Name="TargetFrameworkProfile"
-                  DisplayName="Target Framework Profile">
+  <StringProperty Name="TargetFrameworkProfile">
     <StringProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
                   PersistedName="TargetFrameworkProfile"
@@ -266,8 +239,7 @@
     </StringProperty.DataSource>
   </StringProperty>
 
-  <StringProperty Name="TargetFrameworks"
-                  DisplayName="Target Frameworks">
+  <StringProperty Name="TargetFrameworks">
     <StringProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
                   PersistedName="TargetFrameworks"
@@ -276,8 +248,7 @@
     </StringProperty.DataSource>
   </StringProperty>
 
-  <StringProperty Name="TargetFrameworkVersion"
-                  DisplayName="Target Framework Version">
+  <StringProperty Name="TargetFrameworkVersion">
     <StringProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
                   PersistedName="TargetFrameworkVersion"
@@ -286,8 +257,7 @@
     </StringProperty.DataSource>
   </StringProperty>
 
-  <StringProperty Name="TargetPath"
-                  DisplayName="Target Path" />
+  <StringProperty Name="TargetPath" />
 
   <StringProperty Name="TargetPlatformIdentifier"
                   Visible="false" />
@@ -302,8 +272,7 @@
                 Visible="false">
     <EnumValue Name="Managed" />
     <EnumValue Name="Native" />
-    <EnumValue Name="AppHost"
-               DisplayName="Windows app" />
+    <EnumValue Name="AppHost" />
   </EnumProperty>
 
   <StringProperty Name="TemplateLanguage"

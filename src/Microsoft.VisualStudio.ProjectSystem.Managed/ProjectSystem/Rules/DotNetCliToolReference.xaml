@@ -2,8 +2,6 @@
 <!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 <!--NO_TRANSLATE-->
 <Rule Name="DotNetCliToolReference"
-      Description="Package"
-      DisplayName="Package"
       PageTemplate="generic"
       xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
@@ -14,13 +12,9 @@
   </Rule.DataSource>
 
   <StringProperty Name="Description"
-                  Description="Dependency description."
-                  DisplayName="Description"
                   ReadOnly="True" />
 
-  <StringProperty Name="ExcludeAssets"
-                  Description="Assets to exclude from this reference."
-                  DisplayName="ExcludeAssets" />
+  <StringProperty Name="ExcludeAssets"/>
 
   <StringProperty Name="FrameworkName"
                   ReadOnly="True"
@@ -30,13 +24,10 @@
                   ReadOnly="True"
                   Visible="False" />
 
-  <StringProperty Name="IncludeAssets"
-                  Description="Assets to include from this reference."
-                  DisplayName="IncludeAssets" />
+  <StringProperty Name="IncludeAssets"/>
 
   <StringProperty Name="Name"
-                  ReadOnly="True"
-                  DisplayName="Name" />
+                  ReadOnly="True" />
 
   <StringProperty Name="OriginalItemSpec"
                   ReadOnly="True"
@@ -46,9 +37,7 @@
                   ReadOnly="True"
                   Visible="False" />
 
-  <StringProperty Name="PrivateAssets"
-                  Description="Assets that are private in this reference."
-                  DisplayName="PrivateAssets" />
+  <StringProperty Name="PrivateAssets" />
 
   <StringProperty Name="RuntimeIdentifier"
                   ReadOnly="True"
@@ -62,8 +51,6 @@
                   ReadOnly="True"
                   Visible="False" />
 
-  <StringProperty Name="Version"
-                  Description="Version of dependency."
-                  DisplayName="Version" />
+  <StringProperty Name="Version" />
 
 </Rule>

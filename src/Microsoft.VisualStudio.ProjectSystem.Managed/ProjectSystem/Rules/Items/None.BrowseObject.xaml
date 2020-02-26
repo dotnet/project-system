@@ -2,16 +2,12 @@
 <!--Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.-->
 <!--NO_TRANSLATE-->
 <Rule Name="None"
-      Description="File Properties"
-      DisplayName="General"
       PageTemplate="generic"
       PropertyPagesHidden="true"
       xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.Categories>
-    <Category Name="Advanced"
-              DisplayName="Advanced" />
-    <Category Name="Misc"
-              DisplayName="Misc" />
+    <Category Name="Advanced" />
+    <Category Name="Misc" />
   </Rule.Categories>
 
   <Rule.DataSource>
@@ -22,18 +18,12 @@
   </Rule.DataSource>
 
   <DynamicEnumProperty Name="{}{ItemType}"
-                       Category="Advanced"
-                       Description="How the file relates to the build and deployment processes."
-                       DisplayName="Build Action"
                        EnumProvider="ItemTypes" />
 
   <BoolProperty Name="AutoGen"
                 Visible="false" />
 
-  <EnumProperty Name="CopyToOutputDirectory"
-                Category="Advanced"
-                Description="Specifies the source file will be copied to the output directory."
-                DisplayName="Copy to Output Directory">
+  <EnumProperty Name="CopyToOutputDirectory">
     <EnumValue Name="Never"
                DisplayName="Do not copy" />
     <EnumValue Name="Always"
@@ -53,10 +43,7 @@
     </StringProperty.DataSource>
   </StringProperty>
 
-  <StringProperty Name="CustomToolNamespace"
-                  Category="Advanced"
-                  Description="The namespace into which the output of the custom tool is placed."
-                  DisplayName="Custom Tool Namespace" />
+  <StringProperty Name="CustomToolNamespace" />
 
   <StringProperty Name="DependentUpon"
                   Visible="false" />
@@ -79,9 +66,6 @@
   </StringProperty>
 
   <StringProperty Name="FileNameAndExtension"
-                  Category="Misc"
-                  Description="Name of the file or folder."
-                  DisplayName="File Name"
                   ReadOnly="true">
     <StringProperty.DataSource>
       <DataSource ItemType="None"
@@ -92,9 +76,6 @@
   </StringProperty>
 
   <StringProperty Name="FullPath"
-                  Category="Misc"
-                  Description="Location of the file."
-                  DisplayName="Full Path"
                   ReadOnly="true">
     <StringProperty.DataSource>
       <DataSource ItemType="None"
@@ -104,10 +85,7 @@
     </StringProperty.DataSource>
   </StringProperty>
 
-  <StringProperty Name="Generator"
-                  Category="Advanced"
-                  Description="Specifies the tool that transforms a file at design time and places the output of that transformation into another file. For example, a dataset (.xsd) file comes with a default custom tool."
-                  DisplayName="Custom Tool" />
+  <StringProperty Name="Generator" />
 
   <StringProperty Name="Identity"
                   ReadOnly="true"
