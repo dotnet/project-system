@@ -330,19 +330,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             // TODO add a Content or None item as CopyAlways and verify (these are currently excluded by CollectInputs)
 
-            var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            var sourceSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
-                [CopyToOutputDirectoryItem.SchemaName] = new IProjectRuleSnapshotModel
+                [Content.SchemaName] = new IProjectRuleSnapshotModel
                 {
                     Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
                         .Add("ItemPath1", ImmutableStringDictionary<string>.EmptyOrdinal
-                            .Add("TargetPath", "fileName")
                             .Add("CopyToOutputDirectory", "Always")) // ALWAYS COPY THIS ITEM
                         .Add("ItemPath2", ImmutableStringDictionary<string>.EmptyOrdinal)
                 }
             };
 
-            await SetupAsync(projectSnapshot: projectSnapshot);
+            await SetupAsync(sourceSnapshot: sourceSnapshot);
 
             await AssertNotUpToDateAsync(
                 "Item 'C:\\Dev\\Solution\\Project\\ItemPath1' has CopyToOutputDirectory set to 'Always', not up to date.",
@@ -902,23 +901,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         public async Task IsUpToDateAsync_False_CopyToOutDirSourceIsNewerThanDestination()
         {
             const string outDirSnapshot = "newOutDir";
-            var destinationOutDir = @"NewProjectDirectory\newOutDir\Item1";
-            var sourcePath = @"C:\Dev\Solution\Project\Item1";
 
-            var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            var sourceSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
-                [CopyToOutputDirectoryItem.SchemaName] = new IProjectRuleSnapshotModel
-                {
-                    Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
-                        .Add(sourcePath, ImmutableStringDictionary<string>.EmptyOrdinal
-                            .Add("TargetPath", "Item1")
-                            .Add("CopyToOutputDirectory", "PreserveNewest"))
-                }
+                [Content.SchemaName] = ItemWithMetadata("Item1", "CopyToOutputDirectory", "PreserveNewest")
             };
 
             await _buildUpToDateCheck.LoadAsync();
 
-            BroadcastChange(outDir: outDirSnapshot, projectRuleSnapshot: projectSnapshot);
+            BroadcastChange(outDir: outDirSnapshot, sourceRuleSnapshot: sourceSnapshot);
+
+            var destinationOutDir = @"NewProjectDirectory\newOutDir\Item1";
+            var sourcePath = @"C:\Dev\Solution\Project\Item1";
 
             var itemChangeTime = DateTime.UtcNow.AddMinutes(-4);
             var lastCheckTime = DateTime.UtcNow.AddMinutes(-3);
@@ -1002,21 +996,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         [Fact]
         public async Task IsUpToDateAsync_False_CopyToOutputDirectorySourceIsNewerThanDestination()
         {
-            var destinationPath = @"NewProjectDirectory\NewOutputPath\Item1";
-            var sourcePath = @"C:\Dev\Solution\Project\Item1";
-
-            var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            var sourceSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
-                [CopyToOutputDirectoryItem.SchemaName] = new IProjectRuleSnapshotModel
-                {
-                    Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
-                        .Add(sourcePath, ImmutableStringDictionary<string>.EmptyOrdinal
-                            .Add("TargetPath", "Item1")
-                            .Add("CopyToOutputDirectory", "PreserveNewest"))
-                }
+                [Content.SchemaName] = ItemWithMetadata("Item1", "CopyToOutputDirectory", "PreserveNewest")
             };
 
-            await SetupAsync(projectSnapshot: projectSnapshot);
+            await SetupAsync(sourceSnapshot: sourceSnapshot);
+
+            var destinationPath = @"NewProjectDirectory\NewOutputPath\Item1";
+            var sourcePath = @"C:\Dev\Solution\Project\Item1";
 
             var itemChangeTime  = DateTime.UtcNow.AddMinutes(-4);
             var lastCheckTime   = DateTime.UtcNow.AddMinutes(-3);
@@ -1043,21 +1031,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         [Fact]
         public async Task IsUpToDateAsync_False_CopyToOutputDirectorySourceDoesNotExist()
         {
-            var destinationPath = @"NewProjectDirectory\NewOutputPath\Item1";
-            var sourcePath = @"C:\Dev\Solution\Project\Item1";
-
-            var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            var sourceSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
-                [CopyToOutputDirectoryItem.SchemaName] = new IProjectRuleSnapshotModel
-                {
-                    Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
-                        .Add(sourcePath, ImmutableStringDictionary<string>.EmptyOrdinal
-                            .Add("TargetPath", "Item1")
-                            .Add("CopyToOutputDirectory", "PreserveNewest"))
-                }
+                [Content.SchemaName] = ItemWithMetadata("Item1", "CopyToOutputDirectory", "PreserveNewest")
             };
 
-            await SetupAsync(projectSnapshot: projectSnapshot);
+            await SetupAsync(sourceSnapshot: sourceSnapshot);
+
+            var destinationPath = @"NewProjectDirectory\NewOutputPath\Item1";
+            var sourcePath = @"C:\Dev\Solution\Project\Item1";
 
             var itemChangeTime  = DateTime.UtcNow.AddMinutes(-4);
             var lastCheckTime   = DateTime.UtcNow.AddMinutes(-3);
@@ -1080,21 +1062,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         [Fact]
         public async Task IsUpToDateAsync_False_CopyToOutputDirectoryDestinationDoesNotExist()
         {
-            var destinationPath = @"NewProjectDirectory\NewOutputPath\Item1";
-            var sourcePath = @"C:\Dev\Solution\Project\Item1";
-
-            var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            var sourceSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
-                [CopyToOutputDirectoryItem.SchemaName] = new IProjectRuleSnapshotModel
-                {
-                    Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
-                        .Add(sourcePath, ImmutableStringDictionary<string>.EmptyOrdinal
-                            .Add("TargetPath", "Item1")
-                            .Add("CopyToOutputDirectory", "PreserveNewest"))
-                }
+                [Content.SchemaName] = ItemWithMetadata("Item1", "CopyToOutputDirectory", "PreserveNewest")
             };
 
-            await SetupAsync(projectSnapshot: projectSnapshot);
+            await SetupAsync(sourceSnapshot: sourceSnapshot);
+
+            var destinationPath = @"NewProjectDirectory\NewOutputPath\Item1";
+            var sourcePath = @"C:\Dev\Solution\Project\Item1";
+            
 
             var itemChangeTime = DateTime.UtcNow.AddMinutes(-4);
             var lastCheckTime  = DateTime.UtcNow.AddMinutes(-3);

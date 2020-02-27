@@ -196,10 +196,6 @@
       <Context>ProjectSubscriptionService</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)CopyToOutputDirectoryItem.xaml">
-      <Context>ProjectSubscriptionService</Context>
-    </PropertyPageSchema>
-
     <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)CopyUpToDateMarker.xaml">
       <Context>ProjectSubscriptionService</Context>
     </PropertyPageSchema>
