@@ -519,21 +519,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             string outputFullPath = Path.Combine(state.MSBuildProjectDirectory, state.OutputRelativeOrFullPath);
 
-            foreach ((string sourceFullPath, (string targetFilename, _)) in preserveNewestItems)
+            foreach ((string sourcePath, (string targetFilename, _)) in preserveNewestItems)
             {
-                Assumes.True(Path.IsPathRooted(sourceFullPath));
+                Assumes.True(Path.IsPathRooted(sourcePath));
 
-                log.Info("Checking PreserveNewest file '{0}':", sourceFullPath);
+                log.Info("Checking PreserveNewest file '{0}':", sourcePath);
 
-                DateTime? itemTime = timestampCache.GetTimestampUtc(sourceFullPath);
+                DateTime? itemTime = timestampCache.GetTimestampUtc(sourcePath);
 
                 if (itemTime != null)
                 {
-                    log.Info("    Source {0}: '{1}'.", itemTime, sourceFullPath);
+                    log.Info("    Source {0}: '{1}'.", itemTime, sourcePath);
                 }
                 else
                 {
-                    return log.Fail("CopyToOutputDirectory", "Source '{0}' does not exist, not up to date.", sourceFullPath);
+                    return log.Fail("CopyToOutputDirectory", "Source '{0}' does not exist, not up to date.", sourcePath);
                 }
 
                 string destinationPath = Path.Combine(outputFullPath, targetFilename);
