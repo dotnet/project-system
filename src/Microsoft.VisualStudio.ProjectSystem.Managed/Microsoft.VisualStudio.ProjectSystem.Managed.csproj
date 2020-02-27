@@ -136,6 +136,15 @@
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
+    
+    <!-- Property Pages -->
+    <Compile Update="ProjectSystem\Rules\PropertyPages\ApplicationPropertyPage.xaml.cs">
+      <DependentUpon>ApplicationPropertyPage.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\PropertyPages\ApplicationPropertyPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+    </XamlPropertyRule>
   </ItemGroup>
 
   <!-- Items -->
