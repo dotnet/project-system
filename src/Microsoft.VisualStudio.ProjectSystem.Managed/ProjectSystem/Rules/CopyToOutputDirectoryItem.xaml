@@ -14,7 +14,7 @@
   <StringProperty Name="TargetPath"
                   Visible="False" />
 
-  <EnumProperty Name="CopyToOutputDirectory"  Visible="False">
+  <EnumProperty Name="CopyToOutputDirectory">
     <EnumValue Name="Never" />
     <EnumValue Name="Always" />
     <EnumValue Name="PreserveNewest" />
