@@ -394,20 +394,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     outputRelativeOrFullPath,
                     newestImportInput,
                     lastVersionSeen: configuredProjectVersion,
-                    isDisabled: isDisabled,
-                    itemTypes: itemTypes,
-                    itemsByItemType: itemsByItemTypeBuilder.ToImmutable(),
-                    upToDateCheckInputItemsBySetName: upToDateCheckInputItems,
-                    upToDateCheckOutputItemsBySetName: upToDateCheckOutputItems,
-                    upToDateCheckBuiltItemsBySetName: upToDateCheckBuiltItems,
-                    copiedOutputFiles: copiedOutputFiles,
-                    copyToOutputDirectoryItems: copyToOutputDirectoryItems.ToImmutable(),
-                    resolvedAnalyzerReferencePaths: resolvedAnalyzerReferencePaths,
-                    resolvedCompilationReferencePaths: resolvedCompilationReferencePaths,
-                    copyReferenceInputs: copyReferenceInputs,
-                    additionalDependentFileTimes: additionalDependentFileTimes,
-                    lastItemsChangedAtUtc: lastItemsChangedAtUtc,
-                    lastCheckedAtUtc: LastCheckedAtUtc);
+                    isDisabled,
+                    itemTypes,
+                    itemsByItemTypeBuilder.ToImmutable(),
+                    upToDateCheckInputItems,
+                    upToDateCheckOutputItems,
+                    upToDateCheckBuiltItems,
+                    copiedOutputFiles,
+                    copyToOutputDirectoryItems.ToImmutable(),
+                    resolvedAnalyzerReferencePaths,
+                    resolvedCompilationReferencePaths,
+                    copyReferenceInputs,
+                    lastItemsChangedAtUtc,
+                    LastCheckedAtUtc);
 
                 static CopyType GetCopyType(IImmutableDictionary<string, string> itemMetadata)
                 {
