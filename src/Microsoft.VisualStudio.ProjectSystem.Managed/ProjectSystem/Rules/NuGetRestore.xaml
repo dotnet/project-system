@@ -21,7 +21,7 @@
                   ReadOnly="True"
                   Visible="False" />
 
-  <StringProperty Name="EnableCentralPackageVersions"
+  <StringProperty Name="ManagePackageVersionsCentrally"
                   ReadOnly="True"
                   Visible="False" />
 
