@@ -60,8 +60,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
                 return (_programFiles64 != null && importPath.StartsWith(_programFiles64, StringComparisons.Paths))
                     || importPath.StartsWith(_programFiles86, StringComparisons.Paths)
                     || importPath.StartsWith(_windows, StringComparisons.Paths)
-                    || (ProjectExtensionsPath != null && importPath.StartsWith(ProjectExtensionsPath, StringComparisons.Paths)
-                    || (_vsInstallationDirectory != null && importPath.StartsWith(_vsInstallationDirectory, StringComparisons.Paths)));
+                    || (ProjectExtensionsPath != null && importPath.StartsWith(ProjectExtensionsPath, StringComparisons.Paths))
+                    || (_vsInstallationDirectory != null && importPath.StartsWith(_vsInstallationDirectory, StringComparisons.Paths));
             }
         }
     }
