@@ -114,6 +114,10 @@
                   ReadOnly="True"
                   Visible="False" />
 
+  <StringProperty Name="NuGetPackageFolders"
+                  ReadOnly="True"
+                  Visible="False" />
+
   <StringProperty Name="OneAppCapabilities"
                   Visible="False" />
 

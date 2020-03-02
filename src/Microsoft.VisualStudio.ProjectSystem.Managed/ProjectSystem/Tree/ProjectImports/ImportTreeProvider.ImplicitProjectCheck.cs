@@ -13,6 +13,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
             private readonly string? _programFiles64;
             private readonly string? _vsInstallationDirectory;
 
+            private string[] _nuGetPackageFolders = Array.Empty<string>();
+            private string? _nuGetPackageFoldersString;
+
             /// <summary>
             /// Gets and sets the <c>MSBuildProjectExtensionsPath</c> property value for this project.
             /// Project files under this folder are considered implicit.
@@ -21,6 +24,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
             /// Example value: <c>"C:\repos\MySolution\MyProject\obj\"</c>
             /// </remarks>
             public string? ProjectExtensionsPath { get; set; }
+
+            /// <summary>
+            /// Gets and sets the paths found in the <c>NuGetPackageFolders</c> property value for this project.
+            /// Project files under any of these folders are considered implicit.
+            /// </summary>
+            /// <remarks>
+            /// Example value: <c>"C:\Users\myusername\.nuget\;D:\LocalNuGetCache\"</c>
+            /// </remarks>
+            public string NuGetPackageFolders
+            {
+                set
+                {
+                    if (!string.Equals(_nuGetPackageFoldersString, value, StringComparisons.Paths))
+                    {
+                        _nuGetPackageFoldersString = value;
+                        _nuGetPackageFolders = value.Split(';');
+                    }
+                }
+            }
 
             public ImplicitProjectCheck()
             {
@@ -60,8 +82,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
                 return (_programFiles64 != null && importPath.StartsWith(_programFiles64, StringComparisons.Paths))
                     || importPath.StartsWith(_programFiles86, StringComparisons.Paths)
                     || importPath.StartsWith(_windows, StringComparisons.Paths)
-                    || (ProjectExtensionsPath != null && importPath.StartsWith(ProjectExtensionsPath, StringComparisons.Paths)
-                    || (_vsInstallationDirectory != null && importPath.StartsWith(_vsInstallationDirectory, StringComparisons.Paths)));
+                    || (ProjectExtensionsPath != null && importPath.StartsWith(ProjectExtensionsPath, StringComparisons.Paths))
+                    || _nuGetPackageFolders.Any(nugetFolder => importPath.StartsWith(nugetFolder, StringComparisons.Paths))
+                    || (_vsInstallationDirectory != null && importPath.StartsWith(_vsInstallationDirectory, StringComparisons.Paths));
             }
         }
     }

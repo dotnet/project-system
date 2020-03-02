@@ -180,10 +180,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
 
                         void SyncTree(IProjectVersionedValue<ValueTuple<IProjectImportTreeSnapshot, IProjectSubscriptionUpdate>> e)
                         {
-                            if (e.Value.Item2.CurrentState.TryGetValue(ConfigurationGeneral.SchemaName, out IProjectRuleSnapshot snapshot) &&
-                                snapshot.Properties.TryGetValue(ConfigurationGeneral.MSBuildProjectExtensionsPathProperty, out string projectExtensionsPath))
+                            if (e.Value.Item2.CurrentState.TryGetValue(ConfigurationGeneral.SchemaName, out IProjectRuleSnapshot snapshot))
                             {
-                                _importPathCheck.ProjectExtensionsPath = projectExtensionsPath;
+                                if (snapshot.Properties.TryGetValue(ConfigurationGeneral.MSBuildProjectExtensionsPathProperty, out string projectExtensionsPath))
+                                {
+                                    _importPathCheck.ProjectExtensionsPath = projectExtensionsPath;
+                                }
+
+                                if (snapshot.Properties.TryGetValue(ConfigurationGeneral.NuGetPackageFoldersProperty, out string nuGetPackageFolders))
+                                {
+                                    _importPathCheck.NuGetPackageFolders = nuGetPackageFolders;
+                                }
                             }
 
                             _ = SubmitTreeUpdateAsync(
