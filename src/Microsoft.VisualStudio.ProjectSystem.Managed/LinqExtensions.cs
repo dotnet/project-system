@@ -85,5 +85,22 @@ namespace Microsoft.VisualStudio
                 }
             }
         }
+
+        /// <summary>
+        /// Specialisation of <see cref="System.Linq.Enumerable.Any{TSource}(IEnumerable{TSource})"/>
+        /// that avoids allocation when the sequence is statically known to be an array.
+        /// </summary>
+        public static bool Any<T>(this T[] array, Func<T, bool> predicate)
+        {
+            foreach (T item in array)
+            {
+                if (predicate(item))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }
