@@ -106,7 +106,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
                 return _orderedMap.TryGetValue(propertyContext.ItemName, out displayOrder);
             }
 
-            return propertyContext.Metadata.TryGetValue(FullPathProperty, out string fullPath) &&
+            return propertyContext.Metadata != null &&
+                propertyContext.Metadata.TryGetValue(FullPathProperty, out string fullPath) &&
                 _orderedMap.TryGetValue(fullPath, out displayOrder);
         }
 
