@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
         public const int CmdidAddComReference            = 0x201;
         public const int CmdidAddProjectReference        = 0x202;
         public const int CmdidAddSharedProjectReference  = 0x203;
-        public const int CmdidAddWinRTReference          = 0x204;
+        public const int CmdidAddSdkReference          = 0x204;
 
         private readonly UnconfiguredProject _unconfiguredProject;
         private readonly IReferencesUI _referencesUI;
@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
                 CmdidAddComReference           => _unconfiguredProject.Capabilities.AppliesTo(ProjectCapabilities.ComReferences),
                 CmdidAddProjectReference       => _unconfiguredProject.Capabilities.AppliesTo(ProjectCapabilities.ProjectReferences),
                 CmdidAddSharedProjectReference => _unconfiguredProject.Capabilities.AppliesTo(ProjectCapabilities.SharedProjectReferences),
-                CmdidAddWinRTReference         => _unconfiguredProject.Capabilities.AppliesTo(ProjectCapabilities.WinRTReferences) && _unconfiguredProject.Capabilities.AppliesTo(ProjectCapabilities.SdkReferences),
+                CmdidAddSdkReference           => _unconfiguredProject.Capabilities.AppliesTo(ProjectCapabilities.WinRTReferences) && _unconfiguredProject.Capabilities.AppliesTo(ProjectCapabilities.SdkReferences),
                 _ => false
             };
 
@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
                 CmdidAddComReference           => VSConstants.ComReferenceProvider_Guid,
                 CmdidAddProjectReference       => VSConstants.ProjectReferenceProvider_Guid,
                 CmdidAddSharedProjectReference => VSConstants.SharedProjectReferenceProvider_Guid,
-                CmdidAddWinRTReference         => VSConstants.PlatformReferenceProvider_Guid,
+                CmdidAddSdkReference           => VSConstants.PlatformReferenceProvider_Guid,
                 _ => Guid.Empty
             };
 
