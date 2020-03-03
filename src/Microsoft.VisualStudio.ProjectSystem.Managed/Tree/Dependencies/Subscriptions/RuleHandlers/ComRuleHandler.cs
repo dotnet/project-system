@@ -22,7 +22,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 icon: ManagedImageMonikers.Component,
                 expandedIcon: ManagedImageMonikers.Component,
                 unresolvedIcon: ManagedImageMonikers.ComponentWarning,
-                unresolvedExpandedIcon: ManagedImageMonikers.ComponentWarning));
+                unresolvedExpandedIcon: ManagedImageMonikers.ComponentWarning),
+            DependencyTreeFlags.ComSubTreeRootNode);
 
         public ComRuleHandler()
             : base(ComReference.SchemaName, ResolvedCOMReference.SchemaName)

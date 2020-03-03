@@ -11,11 +11,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
         public SubTreeRootDependencyModel(
             string providerType,
             string name,
-            DependencyIconSet iconSet)
+            DependencyIconSet iconSet,
+            ProjectTreeFlags flags)
             : base(
                 name,
                 originalItemSpec: name,
-                flags: DependencyTreeFlags.SubTreeRootNode,
+                flags: flags + DependencyTreeFlags.SubTreeRootNodeFlags,
                 isResolved: true,
                 isImplicit: false,
                 properties: null)

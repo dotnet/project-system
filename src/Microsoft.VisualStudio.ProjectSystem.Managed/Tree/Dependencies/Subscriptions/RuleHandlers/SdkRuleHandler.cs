@@ -23,7 +23,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 icon: ManagedImageMonikers.Sdk,
                 expandedIcon: ManagedImageMonikers.Sdk,
                 unresolvedIcon: ManagedImageMonikers.SdkWarning,
-                unresolvedExpandedIcon: ManagedImageMonikers.SdkWarning));
+                unresolvedExpandedIcon: ManagedImageMonikers.SdkWarning),
+            DependencyTreeFlags.SdkSubTreeRootNode);
 
         public SdkRuleHandler()
             : base(SdkReference.SchemaName, ResolvedSdkReference.SchemaName)

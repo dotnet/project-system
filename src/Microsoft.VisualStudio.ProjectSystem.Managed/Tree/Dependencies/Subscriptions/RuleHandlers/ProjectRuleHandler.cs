@@ -29,7 +29,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 icon: KnownMonikers.Application,
                 expandedIcon: KnownMonikers.Application,
                 unresolvedIcon: ManagedImageMonikers.ApplicationWarning,
-                unresolvedExpandedIcon: ManagedImageMonikers.ApplicationWarning));
+                unresolvedExpandedIcon: ManagedImageMonikers.ApplicationWarning),
+            DependencyTreeFlags.ProjectSubTreeRootNode);
 
         public override string ProviderType => ProviderTypeString;
 
