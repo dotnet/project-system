@@ -14,6 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
     public abstract class XamlRuleTestBase
     {
         protected const string MSBuildNamespace = "http://schemas.microsoft.com/build/2009/properties";
+        protected const string ProjectNamespace = "http://schemas.microsoft.com/developer/msbuild/2003";
 
         protected static IEnumerable<string> GetRules(string suffix, bool recursive = false)
         {
@@ -63,6 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
             namespaceManager = new XmlNamespaceManager(reader.NameTable);
             namespaceManager.AddNamespace("msb", MSBuildNamespace);
+            namespaceManager.AddNamespace("project", ProjectNamespace);
 
             return root;
         }
