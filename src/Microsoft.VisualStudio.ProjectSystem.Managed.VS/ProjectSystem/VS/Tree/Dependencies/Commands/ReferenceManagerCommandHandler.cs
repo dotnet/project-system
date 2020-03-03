@@ -27,9 +27,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
         [ImportingConstructor]
         public ReferenceManagerCommandHandler(UnconfiguredProject unconfiguredProject, IReferencesUI referencesUI)
         {
-            Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
-            Requires.NotNull(referencesUI, nameof(referencesUI));
-
             _unconfiguredProject = unconfiguredProject;
             _referencesUI = referencesUI;
         }
