@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
             _referencesUI = referencesUI;
         }
 
-        public CommandStatusResult GetCommandStatus(IImmutableSet<IProjectTree> items, long commandId, bool focused, string? commandText, CommandStatus status)
+        public CommandStatusResult GetCommandStatus(IImmutableSet<IProjectTree> items, long commandId, bool focused, string? commandText, CommandStatus progressiveStatus)
         {
             bool enable = commandId switch
             {
@@ -48,9 +48,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
 
             if (enable)
             {
-                status &= ~CommandStatus.Invisible;
-                status |= CommandStatus.Enabled | CommandStatus.Supported;
-                return new CommandStatusResult(handled: true, commandText, status);
+                progressiveStatus &= ~CommandStatus.Invisible;
+                progressiveStatus |= CommandStatus.Enabled | CommandStatus.Supported;
+                return new CommandStatusResult(handled: true, commandText, progressiveStatus);
             }
 
             return CommandStatusResult.Unhandled;

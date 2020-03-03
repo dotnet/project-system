@@ -52,12 +52,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.ProjectImports
 
         protected abstract bool IsOpenWithCommand(long commandId);
 
-        public Task<CommandStatusResult> GetCommandStatusAsync(IImmutableSet<IProjectTree> items, long commandId, bool focused, string? commandText, CommandStatus status)
+        public Task<CommandStatusResult> GetCommandStatusAsync(IImmutableSet<IProjectTree> items, long commandId, bool focused, string? commandText, CommandStatus progressiveStatus)
         {
             if (IsOpenCommand(commandId) && items.All(CanOpenFile))
             {
-                status |= CommandStatus.Enabled | CommandStatus.Supported;
-                return new CommandStatusResult(true, commandText, status).AsTask();
+                progressiveStatus |= CommandStatus.Enabled | CommandStatus.Supported;
+                return new CommandStatusResult(true, commandText, progressiveStatus).AsTask();
             }
 
             return CommandStatusResult.Unhandled.AsTask();
