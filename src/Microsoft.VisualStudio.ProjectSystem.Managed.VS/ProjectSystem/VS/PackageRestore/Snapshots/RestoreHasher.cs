@@ -21,6 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             {
                 AppendProperty(hasher, nameof(framework.TargetFrameworkMoniker), framework.TargetFrameworkMoniker);
                 AppendFrameworkProperties(hasher, framework);
+                AppendReferences(hasher, framework.ProjectReferences);
                 AppendReferences(hasher, framework.PackageReferences);
                 AppendReferences(hasher, framework.FrameworkReferences);
                 AppendReferences(hasher, framework.PackageDownloads);
