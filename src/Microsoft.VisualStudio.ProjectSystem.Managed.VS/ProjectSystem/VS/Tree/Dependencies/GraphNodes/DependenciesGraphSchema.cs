@@ -17,8 +17,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 
         private const string ResolvedPropertyId = "Dependency.Resolved";
         public static readonly GraphProperty ResolvedProperty = Schema.Properties.AddNewProperty(ResolvedPropertyId, typeof(bool));
-
-        private const string IsFrameworkAssemblyFolderPropertyId = "Dependency.IsFrameworkAssembly";
-        public static readonly GraphProperty IsFrameworkAssemblyFolderProperty = Schema.Properties.AddNewProperty(IsFrameworkAssemblyFolderPropertyId, typeof(bool));
     }
 }

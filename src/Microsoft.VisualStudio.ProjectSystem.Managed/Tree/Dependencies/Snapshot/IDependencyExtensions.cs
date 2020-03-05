@@ -62,14 +62,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         }
 
         /// <summary>
-        /// Returns true if given dependency is a nuget package.
-        /// </summary>
-        public static bool IsPackage(this IDependency self)
-        {
-            return StringComparers.DependencyProviderTypes.Equals(self.ProviderType, PackageRuleHandler.ProviderTypeString);
-        }
-
-        /// <summary>
         /// Returns true if given dependency is a project.
         /// </summary>
         public static bool IsProject(this IDependency self)
