@@ -10,11 +10,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
     {
         private readonly bool _hasUnresolvedDependency;
 
-        public TargetDependencyViewModel(TargetedDependenciesSnapshot snapshot)
+        public TargetDependencyViewModel(ITargetFramework targetFramework, bool hasReachableVisibleUnresolvedDependency)
         {
-            Caption = snapshot.TargetFramework.FriendlyName;
-            Flags = DependencyTreeFlags.DependencyTargetFrameworkGroup.Add($"$TFM:{snapshot.TargetFramework.FullName}");
-            _hasUnresolvedDependency = snapshot.HasReachableVisibleUnresolvedDependency;
+            Caption = targetFramework.FriendlyName;
+            Flags = DependencyTreeFlags.DependencyTargetFrameworkGroup.Add($"$TFM:{targetFramework.FullName}");
+            _hasUnresolvedDependency = hasReachableVisibleUnresolvedDependency;
         }
 
         public string Caption { get; }

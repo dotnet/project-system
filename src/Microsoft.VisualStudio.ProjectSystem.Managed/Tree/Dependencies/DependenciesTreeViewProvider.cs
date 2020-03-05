@@ -117,7 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     {
                         IProjectTree? node = dependenciesTree.FindChildWithCaption(targetFramework.FriendlyName);
                         bool shouldAddTargetNode = node == null;
-                        IDependencyViewModel targetViewModel = _viewModelFactory.CreateTargetViewModel(targetedSnapshot);
+                        IDependencyViewModel targetViewModel = _viewModelFactory.CreateTargetViewModel(targetedSnapshot.TargetFramework, targetedSnapshot.HasReachableVisibleUnresolvedDependency);
 
                         node = CreateOrUpdateNode(
                             node,
@@ -212,7 +212,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             bool isActiveTarget = targetedSnapshot.TargetFramework.Equals(activeTarget);
             foreach ((string providerType, List<IDependency> dependencies) in groupedByProviderType)
             {
-                IDependencyViewModel? subTreeViewModel = _viewModelFactory.CreateRootViewModel(
+                IDependencyViewModel? subTreeViewModel = _viewModelFactory.CreateGroupNodeViewModel(
                     providerType,
                     targetedSnapshot.CheckForUnresolvedDependencies(providerType));
 

@@ -15,11 +15,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             var project = UnconfiguredProjectFactory.Create();
             var targetFramework = new TargetFramework(moniker: "tFm1");
-            var targetedSnapshot = TargetedDependenciesSnapshotFactory.ImplementHasUnresolvedDependency(hasUnresolvedDependency: false, targetFramework);
 
             var factory = new DependenciesViewModelFactory(project);
 
-            var result = factory.CreateTargetViewModel(targetedSnapshot);
+            var result = factory.CreateTargetViewModel(targetFramework, hasReachableVisibleUnresolvedDependency: false);
 
             Assert.NotNull(result);
             Assert.Equal(targetFramework.FullName, result.Caption);
@@ -34,11 +33,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             var project = UnconfiguredProjectFactory.Create();
             var targetFramework = new TargetFramework(moniker: "tFm1");
-            var targetedSnapshot = TargetedDependenciesSnapshotFactory.ImplementHasUnresolvedDependency(hasUnresolvedDependency: true, targetFramework);
 
             var factory = new DependenciesViewModelFactory(project);
 
-            var result = factory.CreateTargetViewModel(targetedSnapshot);
+            var result = factory.CreateTargetViewModel(targetFramework, hasReachableVisibleUnresolvedDependency: true);
 
             Assert.NotNull(result);
             Assert.Equal(targetFramework.FullName, result.Caption);
@@ -49,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void CreateRootViewModel()
+        public void CreateGroupNodeViewModel()
         {
             var project = UnconfiguredProjectFactory.Create();
 
@@ -70,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             var factory = new TestableDependenciesViewModelFactory(project, new[] { subTreeProvider1, subTreeProvider2 });
 
-            var result = factory.CreateRootViewModel("MyProvider1", hasUnresolvedDependency: false);
+            var result = factory.CreateGroupNodeViewModel("MyProvider1", hasReachableVisibleUnresolvedDependency: false);
 
             Assert.NotNull(result);
             Assert.Equal("ZzzDependencyRoot", result!.Caption);
@@ -78,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void CreateRootViewModelReturnsNullForUnknownProviderType()
+        public void CreateGroupNodeViewModel_ReturnsNullForUnknownProviderType()
         {
             var project = UnconfiguredProjectFactory.Create();
 
@@ -86,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             var factory = new TestableDependenciesViewModelFactory(project, new[] { subTreeProvider1 });
 
-            var result = factory.CreateRootViewModel("UnknownProviderType", hasUnresolvedDependency: false);
+            var result = factory.CreateGroupNodeViewModel("UnknownProviderType", hasReachableVisibleUnresolvedDependency: false);
 
             Assert.Null(result);
         }
@@ -97,8 +95,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var project = UnconfiguredProjectFactory.Create();
             var factory = new DependenciesViewModelFactory(project);
 
-            Assert.Equal(ManagedImageMonikers.ReferenceGroup, factory.GetDependenciesRootIcon(hasUnresolvedDependencies: false));
-            Assert.Equal(ManagedImageMonikers.ReferenceGroupWarning, factory.GetDependenciesRootIcon(hasUnresolvedDependencies: true));
+            Assert.Equal(ManagedImageMonikers.ReferenceGroup, factory.GetDependenciesRootIcon(hasReachableVisibleUnresolvedDependency: false));
+            Assert.Equal(ManagedImageMonikers.ReferenceGroupWarning, factory.GetDependenciesRootIcon(hasReachableVisibleUnresolvedDependency: true));
         }
 
         private class TestableDependenciesViewModelFactory : DependenciesViewModelFactory
@@ -120,7 +118,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             public int OrderPrecedence => -500;
 
-            public bool SuppressLowerPriority { get; }
+            public bool SuppressLowerPriority => false;
         }
     }
 }
