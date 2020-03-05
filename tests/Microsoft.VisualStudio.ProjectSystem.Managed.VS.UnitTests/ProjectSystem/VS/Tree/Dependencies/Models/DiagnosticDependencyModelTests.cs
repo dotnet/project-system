@@ -14,9 +14,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
 
-            var model = new DiagnosticDependencyModel(
+            var model = new PackageDiagnosticDependencyModel(
                 "myOriginalItemSpec",
-                DiagnosticMessageSeverity.Error,
+                PackageDiagnosticMessageSeverity.Error,
                 "nu1002",
                 "myMessage",
                 isVisible: true,
@@ -40,9 +40,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(ManagedImageMonikers.ErrorSmall, model.UnresolvedIcon);
             Assert.Equal(ManagedImageMonikers.ErrorSmall, model.UnresolvedExpandedIcon);
             Assert.Equal(
-                DependencyTreeFlags.NuGetDependency +
-                DependencyTreeFlags.Diagnostic +
-                DependencyTreeFlags.ErrorDiagnostic +
+                DependencyTreeFlags.PackageDiagnostic +
+                DependencyTreeFlags.PackageErrorDiagnostic +
                 DependencyTreeFlags.GenericUnresolvedDependencyFlags,
                 model.Flags);
         }
@@ -52,9 +51,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
 
-            var model = new DiagnosticDependencyModel(
+            var model = new PackageDiagnosticDependencyModel(
                  "myOriginalItemSpec",
-                 DiagnosticMessageSeverity.Warning,
+                 PackageDiagnosticMessageSeverity.Warning,
                  "nu1002",
                  "myMessage",
                  isVisible: true,
@@ -78,9 +77,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(ManagedImageMonikers.WarningSmall, model.UnresolvedIcon);
             Assert.Equal(ManagedImageMonikers.WarningSmall, model.UnresolvedExpandedIcon);
             Assert.Equal(
-                DependencyTreeFlags.NuGetDependency +
-                DependencyTreeFlags.Diagnostic +
-                DependencyTreeFlags.WarningDiagnostic +
+                DependencyTreeFlags.PackageDiagnostic +
+                DependencyTreeFlags.PackageWarningDiagnostic +
                 DependencyTreeFlags.GenericUnresolvedDependencyFlags,
                 model.Flags);
         }

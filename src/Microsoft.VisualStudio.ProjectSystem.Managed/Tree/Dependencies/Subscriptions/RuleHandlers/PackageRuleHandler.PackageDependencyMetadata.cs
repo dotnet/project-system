@@ -163,9 +163,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                             Properties,
                             dependenciesIDs: GetDependencyItemSpecs());
                     case DependencyType.Diagnostic:
-                        return new DiagnosticDependencyModel(
+                        return new PackageDiagnosticDependencyModel(
                             OriginalItemSpec,
-                            severity: Properties.GetEnumProperty<DiagnosticMessageSeverity>(ProjectItemMetadata.Severity) ?? DiagnosticMessageSeverity.Info,
+                            severity: Properties.GetEnumProperty<PackageDiagnosticMessageSeverity>(ProjectItemMetadata.Severity) ?? PackageDiagnosticMessageSeverity.Info,
                             code: Properties.GetStringProperty(ProjectItemMetadata.DiagnosticCode) ?? string.Empty,
                             Name,
                             isVisible: true,

@@ -36,11 +36,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(KnownMonikers.SharedProject, model.ExpandedIcon);
             Assert.Equal(ManagedImageMonikers.SharedProjectWarning, model.UnresolvedIcon);
             Assert.Equal(ManagedImageMonikers.SharedProjectWarning, model.UnresolvedExpandedIcon);
-            Assert.True(model.Flags.Contains(DependencyTreeFlags.SharedProjectFlags));
+            Assert.True(model.Flags.Contains(DependencyTreeFlags.SharedProjectDependency));
             Assert.False(model.Flags.Contains(DependencyTreeFlags.SupportsRuleProperties));
             Assert.Equal(
                 DependencyTreeFlags.ProjectDependency +
-                DependencyTreeFlags.SharedProjectFlags +
+                DependencyTreeFlags.SharedProjectDependency +
                 DependencyTreeFlags.GenericResolvedDependencyFlags -
                 DependencyTreeFlags.SupportsRuleProperties,
                 model.Flags);
@@ -74,7 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(ManagedImageMonikers.SharedProjectWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
                 DependencyTreeFlags.ProjectDependency +
-                DependencyTreeFlags.SharedProjectFlags +
+                DependencyTreeFlags.SharedProjectDependency +
                 DependencyTreeFlags.GenericUnresolvedDependencyFlags -
                 DependencyTreeFlags.SupportsRuleProperties,
                 model.Flags);
@@ -108,7 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(ManagedImageMonikers.SharedProjectWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
                 DependencyTreeFlags.ProjectDependency +
-                DependencyTreeFlags.SharedProjectFlags +
+                DependencyTreeFlags.SharedProjectDependency +
                 DependencyTreeFlags.GenericResolvedDependencyFlags -
                 DependencyTreeFlags.SupportsRuleProperties -
                 DependencyTreeFlags.SupportsRemove,

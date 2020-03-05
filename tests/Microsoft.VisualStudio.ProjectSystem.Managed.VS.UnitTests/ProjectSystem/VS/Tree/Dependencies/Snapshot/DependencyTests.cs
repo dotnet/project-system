@@ -89,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Implicit = true,
                 Visible = true,
                 Priority = 3,
-                Flags = DependencyTreeFlags.DependencyFlags.Union(DependencyTreeFlags.GenericDependency),
+                Flags = DependencyTreeFlags.GenericDependency,
                 Icon = KnownMonikers.Path,
                 ExpandedIcon = KnownMonikers.PathIcon,
                 UnresolvedIcon = KnownMonikers.PathListBox,
@@ -118,8 +118,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.True(dependency.BrowseObjectProperties.ContainsKey("prop1"));
             Assert.Single(dependency.DependencyIDs);
             Assert.Equal("Tfm1\\xxx\\otherid", dependency.DependencyIDs[0]);
-            Assert.True(dependency.Flags.Contains(DependencyTreeFlags.Resolved));
-            Assert.True(dependency.Flags.Contains(DependencyTreeFlags.DependencyFlags));
+            Assert.Equal(DependencyTreeFlags.Resolved + DependencyTreeFlags.GenericDependency, dependency.Flags);
         }
 
         [Theory]
@@ -157,16 +156,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var dependencyModel = new TestDependencyModel { ProviderType = "providerType", Id = "someId" };
 
             var dependency = new Dependency(dependencyModel, new TargetFramework("tfm1"), @"C:\Foo\Project.csproj");
+            var flags = ProjectTreeFlags.Create("TestFlag");
 
             var newDependency = dependency.SetProperties(
                 caption: "newcaption",
                 resolved: true,
-                flags: DependencyTreeFlags.BaseReferenceFlags,
+                flags: flags,
                 dependencyIDs: ImmutableArray.Create("aaa"));
 
             Assert.Equal("newcaption", newDependency.Caption);
             Assert.True(newDependency.Resolved);
-            Assert.True(newDependency.Flags.Equals(DependencyTreeFlags.BaseReferenceFlags));
+            Assert.True(newDependency.Flags.Equals(flags));
             Assert.Single(newDependency.DependencyIDs);
             Assert.Equal("aaa", newDependency.DependencyIDs[0]);
         }

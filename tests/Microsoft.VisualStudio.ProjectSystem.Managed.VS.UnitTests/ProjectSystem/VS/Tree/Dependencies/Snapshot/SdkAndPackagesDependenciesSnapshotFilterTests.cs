@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Id = Dependency.GetID(targetFramework, PackageRuleHandler.ProviderTypeString, sdkName),
                 Resolved = true,
                 DependencyIDs = dependencyIDs,
-                Flags = DependencyTreeFlags.NuGetPackageDependency
+                Flags = DependencyTreeFlags.PackageDependency
             };
 
             var worldBuilder = new IDependency[] { sdkDependency, packageDependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
@@ -95,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             {
                 Id = Dependency.GetID(targetFramework, PackageRuleHandler.ProviderTypeString, sdkName),
                 Resolved = false,
-                Flags = DependencyTreeFlags.NuGetPackageDependency
+                Flags = DependencyTreeFlags.PackageDependency
             };
 
             var worldBuilder = new IDependency[] { sdkDependency, packageDependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
@@ -132,14 +132,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Id = Dependency.GetID(targetFramework, SdkRuleHandler.ProviderTypeString, packageName),
                 TopLevel = false,
                 Resolved = true,
-                Flags = DependencyTreeFlags.NuGetPackageDependency.Union(DependencyTreeFlags.Unresolved) // to see if unresolved is fixed
+                Flags = DependencyTreeFlags.PackageDependency.Union(DependencyTreeFlags.Unresolved) // to see if unresolved is fixed
             };
 
             var packageDependency = new TestDependency
             {
                 Id = "packageId",
                 Name = packageName,
-                Flags = DependencyTreeFlags.NuGetPackageDependency,
+                Flags = DependencyTreeFlags.PackageDependency,
                 TopLevel = true,
                 Resolved = true,
                 DependencyIDs = dependencyIDs
@@ -190,7 +190,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             {
                 Id = "packageId",
                 Name = packageName,
-                Flags = DependencyTreeFlags.NuGetPackageDependency,
+                Flags = DependencyTreeFlags.PackageDependency,
                 TopLevel = true,
                 Resolved = true
             };

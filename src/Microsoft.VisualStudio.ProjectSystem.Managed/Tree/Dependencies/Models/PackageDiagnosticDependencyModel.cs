@@ -5,24 +5,22 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.Ru
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
-    internal enum DiagnosticMessageSeverity
+    internal enum PackageDiagnosticMessageSeverity
     {
         Info,
         Warning,
         Error,
     }
 
-    internal class DiagnosticDependencyModel : DependencyModel
+    internal class PackageDiagnosticDependencyModel : DependencyModel
     {
         private static readonly ProjectTreeFlags s_errorFlags = new DependencyFlagCache(
-            add: DependencyTreeFlags.NuGetDependency +
-                 DependencyTreeFlags.Diagnostic +
-                 DependencyTreeFlags.ErrorDiagnostic).Get(isResolved: false, isImplicit: false);
+            add: DependencyTreeFlags.PackageDiagnostic +
+                 DependencyTreeFlags.PackageErrorDiagnostic).Get(isResolved: false, isImplicit: false);
 
         private static readonly ProjectTreeFlags s_warningFlags = new DependencyFlagCache(
-            add: DependencyTreeFlags.NuGetDependency +
-                 DependencyTreeFlags.Diagnostic +
-                 DependencyTreeFlags.WarningDiagnostic).Get(isResolved: false, isImplicit: false);
+            add: DependencyTreeFlags.PackageDiagnostic +
+                 DependencyTreeFlags.PackageWarningDiagnostic).Get(isResolved: false, isImplicit: false);
 
         private static readonly DependencyIconSet s_errorIconSet = new DependencyIconSet(
             icon: ManagedImageMonikers.ErrorSmall,
@@ -36,23 +34,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             unresolvedIcon: ManagedImageMonikers.WarningSmall,
             unresolvedExpandedIcon: ManagedImageMonikers.WarningSmall);
 
-        private readonly DiagnosticMessageSeverity _severity;
+        private readonly PackageDiagnosticMessageSeverity _severity;
 
-        public override DependencyIconSet IconSet => _severity == DiagnosticMessageSeverity.Error
+        public override DependencyIconSet IconSet => _severity == PackageDiagnosticMessageSeverity.Error
             ? s_errorIconSet
             : s_warningIconSet;
 
         public override string Name { get; }
 
-        public override int Priority => _severity == DiagnosticMessageSeverity.Error
+        public override int Priority => _severity == PackageDiagnosticMessageSeverity.Error
             ? GraphNodePriority.DiagnosticsError
             : GraphNodePriority.DiagnosticsWarning;
 
         public override string ProviderType => PackageRuleHandler.ProviderTypeString;
 
-        public DiagnosticDependencyModel(
+        public PackageDiagnosticDependencyModel(
             string originalItemSpec,
-            DiagnosticMessageSeverity severity,
+            PackageDiagnosticMessageSeverity severity,
             string code,
             string message,
             bool isVisible,
@@ -60,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             : base(
                 originalItemSpec,
                 originalItemSpec,
-                flags: severity == DiagnosticMessageSeverity.Error
+                flags: severity == PackageDiagnosticMessageSeverity.Error
                     ? s_errorFlags
                     : s_warningFlags,
                 isResolved: false,

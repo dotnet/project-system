@@ -2,13 +2,16 @@
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
-    internal class SubTreeRootDependencyModel : DependencyModel
+    /// <summary>
+    /// Represents a node that groups dependencies from a given provider.
+    /// </summary>
+    internal class DependencyGroupModel : DependencyModel
     {
         public override string ProviderType { get; }
 
         public override DependencyIconSet IconSet { get; }
 
-        public SubTreeRootDependencyModel(
+        public DependencyGroupModel(
             string providerType,
             string name,
             DependencyIconSet iconSet,
@@ -16,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             : base(
                 name,
                 originalItemSpec: name,
-                flags: flags + DependencyTreeFlags.SubTreeRootNodeFlags,
+                flags: flags + ProjectTreeFlags.VirtualFolder + DependencyTreeFlags.DependencyGroup,
                 isResolved: true,
                 isImplicit: false,
                 properties: null)

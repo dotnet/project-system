@@ -190,7 +190,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             // Get the list of shared import nodes.
             IEnumerable<IProjectTree> sharedImportNodes = nodes.Where(node =>
-                    node.Flags.Contains(DependencyTreeFlags.SharedProjectFlags));
+                    node.Flags.Contains(DependencyTreeFlags.SharedProjectDependency));
 
             // Get the list of normal reference Item Nodes (this excludes any shared import nodes).
             IEnumerable<IProjectTree> referenceItemNodes = nodes.Except(sharedImportNodes);
@@ -363,7 +363,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     Caption = Resources.DependenciesNodeName,
                     Icon = ManagedImageMonikers.ReferenceGroup.ToProjectSystemType(),
                     ExpandedIcon = ManagedImageMonikers.ReferenceGroup.ToProjectSystemType(),
-                    Flags = DependencyTreeFlags.DependenciesRootNodeFlags
+                    Flags = ProjectTreeFlags.Create(ProjectTreeFlags.Common.BubbleUp)
+                          + ProjectTreeFlags.Create(ProjectTreeFlags.Common.ReferencesFolder)
+                          + ProjectTreeFlags.Create(ProjectTreeFlags.Common.VirtualFolder)
+                          + DependencyTreeFlags.DependenciesRootNode
                 };
 
                 // Allow property providers to perform customization.

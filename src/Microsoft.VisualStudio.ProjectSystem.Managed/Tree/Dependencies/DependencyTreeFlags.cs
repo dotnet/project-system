@@ -12,38 +12,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     /// </remarks>
     public static class DependencyTreeFlags
     {
+        /// <summary>
+        /// Identifies the root "Dependencies" node of the dependencies tree. This flag should exist on only one node in a project.
+        /// </summary>
         internal static readonly ProjectTreeFlags DependenciesRootNode = ProjectTreeFlags.Create("DependenciesRootNode");
-        internal static readonly ProjectTreeFlags DependenciesGroupNode = ProjectTreeFlags.Create("DependenciesGroupNode");
-
-        internal static readonly ProjectTreeFlags DependenciesRootNodeFlags
-                = ProjectTreeFlags.Create(ProjectTreeFlags.Common.BubbleUp)
-                + ProjectTreeFlags.Create(ProjectTreeFlags.Common.ReferencesFolder)
-                + ProjectTreeFlags.Create(ProjectTreeFlags.Common.VirtualFolder)
-                + DependenciesRootNode;
-
-        /// <summary>
-        /// The set of flags common to all Reference nodes.
-        /// </summary>
-        public static readonly ProjectTreeFlags BaseReferenceFlags
-                = ProjectTreeFlags.Create(ProjectTreeFlags.Common.Reference);
-
-        /// <summary>
-        /// The set of flags to assign to unresolved Reference nodes.
-        /// </summary>
-        /// <remarks>
-        /// Contains <see cref="ProjectTreeFlags.Common.BrokenReference"/> which stops
-        /// <c>IGraphProvider</c> APIs from being called for that node.
-        /// </remarks>
-        internal static readonly ProjectTreeFlags UnresolvedReferenceFlags
-                = BaseReferenceFlags
-                + ProjectTreeFlags.Create(ProjectTreeFlags.Common.BrokenReference);
-
-        /// <summary>
-        /// The set of flags to assign to resolved Reference nodes.
-        /// </summary>
-        internal static readonly ProjectTreeFlags ResolvedReferenceFlags
-                = BaseReferenceFlags
-                + ProjectTreeFlags.Create(ProjectTreeFlags.Common.ResolvedReference);
 
         internal static readonly ProjectTreeFlags GenericDependency = ProjectTreeFlags.Create("GenericDependency");
 
@@ -60,6 +32,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </summary>
         public static readonly ProjectTreeFlags SupportsHierarchy = ProjectTreeFlags.Create("SupportsHierarchy");
 
+        /// <summary>
+        /// If a dependency is not visible and has this flag, then an empty group node may be displayed for the dependency's provider type.
+        /// </summary>
         public static readonly ProjectTreeFlags ShowEmptyProviderRootNode = ProjectTreeFlags.Create("ShowEmptyProviderRootNode");
 
         /// <summary>
@@ -69,8 +44,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </summary>
         public static readonly ProjectTreeFlags DependencyFlags
                 = ProjectTreeFlags.Create("Dependency")
-                + ProjectTreeFlags.Create(ProjectTreeFlags.Common.VirtualFolder)
-                + ProjectTreeFlags.Create(ProjectTreeFlags.Common.BubbleUp)
+                + ProjectTreeFlags.VirtualFolder
+                + ProjectTreeFlags.BubbleUp
                 + SupportsRuleProperties
                 + SupportsRemove;
 
@@ -80,53 +55,61 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public static readonly ProjectTreeFlags UnresolvedDependencyFlags = Unresolved + DependencyFlags;
         public static readonly ProjectTreeFlags ResolvedDependencyFlags = Resolved + DependencyFlags;
 
+        /// <summary>
+        /// The set of flags to assign to unresolved Reference nodes.
+        /// </summary>
+        /// <remarks>
+        /// Contains <see cref="ProjectTreeFlags.Common.BrokenReference"/> which stops
+        /// <c>IGraphProvider</c> APIs from being called for that node.
+        /// </remarks>
         internal static readonly ProjectTreeFlags GenericUnresolvedDependencyFlags
-                = UnresolvedDependencyFlags
-                + UnresolvedReferenceFlags
+                = ProjectTreeFlags.Reference
+                + ProjectTreeFlags.BrokenReference 
+                + UnresolvedDependencyFlags
                 + GenericDependency;
 
+        /// <summary>
+        /// The set of flags to assign to resolved Reference nodes.
+        /// </summary>
         internal static readonly ProjectTreeFlags GenericResolvedDependencyFlags
-                = ResolvedDependencyFlags
-                + ResolvedReferenceFlags
+                = ProjectTreeFlags.Reference
+                + ProjectTreeFlags.ResolvedReference
+                + ResolvedDependencyFlags
                 + GenericDependency;
 
-        internal static readonly ProjectTreeFlags TargetNode = ProjectTreeFlags.Create("TargetNode");
+        internal static readonly ProjectTreeFlags DependencyTargetFrameworkGroup = ProjectTreeFlags.Create("DependencyTargetFrameworkGroup");
         
-        internal static readonly ProjectTreeFlags SubTreeRootNode = ProjectTreeFlags.Create("SubTreeRootNode");
+        /// <summary>
+        /// Present on nodes that group dependencies of a given provider (e.g. "Packages", "Assemblies", ...).
+        /// </summary>
+        internal static readonly ProjectTreeFlags DependencyGroup = ProjectTreeFlags.Create("DependencyGroup");
 
-        internal static readonly ProjectTreeFlags SubTreeRootNodeFlags
-                = ProjectTreeFlags.Create(ProjectTreeFlags.Common.VirtualFolder)
-                + SubTreeRootNode;
-
-        internal static readonly ProjectTreeFlags AnalyzerSubTreeRootNode = ProjectTreeFlags.Create("AnalyzerSubTreeRootNode");
+        internal static readonly ProjectTreeFlags AnalyzerDependencyGroup = ProjectTreeFlags.Create("AnalyzerDependencyGroup");
         internal static readonly ProjectTreeFlags AnalyzerDependency = ProjectTreeFlags.Create("AnalyzerDependency");
 
-        internal static readonly ProjectTreeFlags AssemblySubTreeRootNode = ProjectTreeFlags.Create("AssemblySubTreeRootNode");
+        internal static readonly ProjectTreeFlags AssemblyDependencyGroup = ProjectTreeFlags.Create("AssemblyDependencyGroup");
         internal static readonly ProjectTreeFlags AssemblyDependency = ProjectTreeFlags.Create("AssemblyDependency");
 
-        internal static readonly ProjectTreeFlags ComSubTreeRootNode = ProjectTreeFlags.Create("ComSubTreeRootNode");
+        internal static readonly ProjectTreeFlags ComDependencyGroup = ProjectTreeFlags.Create("ComDependencyGroup");
         internal static readonly ProjectTreeFlags ComDependency = ProjectTreeFlags.Create("ComDependency");
 
-        internal static readonly ProjectTreeFlags NuGetSubTreeRootNode = ProjectTreeFlags.Create("NuGetSubTreeRootNode");
-        internal static readonly ProjectTreeFlags NuGetDependency = ProjectTreeFlags.Create("NuGetDependency");
-        internal static readonly ProjectTreeFlags NuGetPackageDependency = ProjectTreeFlags.Create("NuGetPackageDependency");
+        internal static readonly ProjectTreeFlags PackageDependencyGroup = ProjectTreeFlags.Create("PackageDependencyGroup");
+        internal static readonly ProjectTreeFlags PackageDependency = ProjectTreeFlags.Create("PackageDependency");
+        internal static readonly ProjectTreeFlags PackageUnknownDependency = ProjectTreeFlags.Create("PackageUnknownDependency");
+        internal static readonly ProjectTreeFlags PackageAssemblyDependency = ProjectTreeFlags.Create("PackageAssemblyDependency");
+        internal static readonly ProjectTreeFlags PackageAnalyzerDependency = ProjectTreeFlags.Create("PackageAnalyzerDependency");
+        internal static readonly ProjectTreeFlags PackageDiagnostic = ProjectTreeFlags.Create("PackageDiagnostic");
+        internal static readonly ProjectTreeFlags PackageErrorDiagnostic = ProjectTreeFlags.Create("PackageErrorDiagnostic");
+        internal static readonly ProjectTreeFlags PackageWarningDiagnostic = ProjectTreeFlags.Create("PackageWarningDiagnostic");
 
-        internal static readonly ProjectTreeFlags FrameworkSubTreeRootNode = ProjectTreeFlags.Create("FrameworkSubTreeRootNode");
+        internal static readonly ProjectTreeFlags FrameworkDependencyGroup = ProjectTreeFlags.Create("FrameworkDependencyGroup");
         internal static readonly ProjectTreeFlags FrameworkDependency = ProjectTreeFlags.Create("FrameworkDependency");
 
-        internal static readonly ProjectTreeFlags ProjectSubTreeRootNode = ProjectTreeFlags.Create("ProjectSubTreeRootNode");
+        internal static readonly ProjectTreeFlags ProjectDependencyGroup = ProjectTreeFlags.Create("ProjectDependencyGroup");
         internal static readonly ProjectTreeFlags ProjectDependency = ProjectTreeFlags.Create("ProjectDependency");
-        internal static readonly ProjectTreeFlags SharedProjectDependency = ProjectTreeFlags.Create("SharedProjectDependency");
+        internal static readonly ProjectTreeFlags SharedProjectDependency = ProjectTreeFlags.SharedProjectImportReference;
 
-        internal static readonly ProjectTreeFlags SharedProjectFlags
-                = SharedProjectDependency
-                + ProjectTreeFlags.Create(ProjectTreeFlags.Common.SharedProjectImportReference);
-
-        internal static readonly ProjectTreeFlags Diagnostic = ProjectTreeFlags.Create("Diagnostic");
-        internal static readonly ProjectTreeFlags ErrorDiagnostic = ProjectTreeFlags.Create("ErrorDiagnostic");
-        internal static readonly ProjectTreeFlags WarningDiagnostic = ProjectTreeFlags.Create("WarningDiagnostic");
-
-        internal static readonly ProjectTreeFlags SdkSubTreeRootNode = ProjectTreeFlags.Create("SdkSubTreeRootNode");
+        internal static readonly ProjectTreeFlags SdkDependencyGroup = ProjectTreeFlags.Create("SdkDependencyGroup");
         internal static readonly ProjectTreeFlags SdkDependency = ProjectTreeFlags.Create("SdkDependency");
     }
 }

@@ -91,7 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 new TestDependency
                 {
                     ClonePropertiesFrom = _acceptable,
-                    Flags = DependencyTreeFlags.SharedProjectFlags
+                    Flags = DependencyTreeFlags.SharedProjectDependency
                 },
                 projectItemSpecs: ImmutableHashSet<string>.Empty);
         }

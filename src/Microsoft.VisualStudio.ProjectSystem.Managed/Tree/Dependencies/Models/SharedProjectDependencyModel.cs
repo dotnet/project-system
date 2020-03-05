@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
     {
         private static readonly DependencyFlagCache s_flagCache = new DependencyFlagCache(
             add: DependencyTreeFlags.ProjectDependency +
-                 DependencyTreeFlags.SharedProjectFlags,
+                 DependencyTreeFlags.SharedProjectDependency,
             remove: DependencyTreeFlags.SupportsRuleProperties);
 
         private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(

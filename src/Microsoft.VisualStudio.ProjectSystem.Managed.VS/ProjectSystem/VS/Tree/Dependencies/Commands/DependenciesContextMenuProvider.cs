@@ -43,11 +43,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
             {
                 menuCommandId = Menus.IDM_VS_CTXT_REFERENCEROOT;
             }
-            else if (projectItem.Flags.Contains(DependencyTreeFlags.TargetNode))
+            else if (projectItem.Flags.Contains(DependencyTreeFlags.DependencyTargetFrameworkGroup))
             {
                 menuCommandId = Menus.IDM_VS_CTXT_DEPENDENCYTARGET;
             }
-            else if (projectItem.Flags.Contains(DependencyTreeFlags.AssemblySubTreeRootNode))
+            else if (projectItem.Flags.Contains(DependencyTreeFlags.AssemblyDependencyGroup))
             {
                 menuCommandId = Menus.IDM_VS_CTXT_REFERENCE_GROUP;
             }
@@ -55,15 +55,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
             {
                 menuCommandId = Menus.IDM_VS_CTXT_REFERENCE;
             }
-            else if (projectItem.Flags.Contains(DependencyTreeFlags.NuGetSubTreeRootNode))
+            else if (projectItem.Flags.Contains(DependencyTreeFlags.PackageDependencyGroup))
             {
                 menuCommandId = Menus.IDM_VS_CTXT_PACKAGEREFERENCE_GROUP;
             }
-            else if (projectItem.Flags.Contains(DependencyTreeFlags.NuGetDependency))
+            else if (projectItem.Flags.Contains(DependencyTreeFlags.PackageDependency))
             {
                 menuCommandId = Menus.IDM_VS_CTXT_PACKAGEREFERENCE;
             }
-            else if (projectItem.Flags.Contains(DependencyTreeFlags.ComSubTreeRootNode))
+            else if (projectItem.Flags.Contains(DependencyTreeFlags.ComDependencyGroup))
             {
                 menuCommandId = Menus.IDM_VS_CTXT_COMREFERENCE_GROUP;
             }
@@ -71,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
             {
                 menuCommandId = Menus.IDM_VS_CTXT_COMREFERENCE;
             }
-            else if (projectItem.Flags.Contains(DependencyTreeFlags.ProjectSubTreeRootNode))
+            else if (projectItem.Flags.Contains(DependencyTreeFlags.ProjectDependencyGroup))
             {
                 menuCommandId = Menus.IDM_VS_CTXT_PROJECTREFERENCE_GROUP;
             }
@@ -83,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
             {
                 menuCommandId = Menus.IDM_VS_CTXT_SHAREDPROJECTREFERENCE;
             }
-            else if (projectItem.Flags.Contains(DependencyTreeFlags.AnalyzerSubTreeRootNode))
+            else if (projectItem.Flags.Contains(DependencyTreeFlags.AnalyzerDependencyGroup))
             {
                 menuCommandId = Menus.IDM_VS_CTXT_ANALYZERREFERENCE_GROUP;
             }
@@ -91,7 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
             {
                 menuCommandId = Menus.IDM_VS_CTXT_ANALYZERREFERENCE;
             }
-            else if (projectItem.Flags.Contains(DependencyTreeFlags.FrameworkSubTreeRootNode))
+            else if (projectItem.Flags.Contains(DependencyTreeFlags.FrameworkDependencyGroup))
             {
                 menuCommandId = Menus.IDM_VS_CTXT_FRAMEWORKREFERENCE_GROUP;
             }
@@ -99,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
             {
                 menuCommandId = Menus.IDM_VS_CTXT_FRAMEWORKREFERENCE;
             }
-            else if (projectItem.Flags.Contains(DependencyTreeFlags.SdkSubTreeRootNode))
+            else if (projectItem.Flags.Contains(DependencyTreeFlags.SdkDependencyGroup))
             {
                 menuCommandId = Menus.IDM_VS_CTXT_SDKREFERENCE_GROUP;
             }
@@ -137,8 +137,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
                 if (!containsProhibited)
                 {
                     // TODO when CPS inserts, use ContainsAny here instead
-                    if (item.Flags.Contains(DependencyTreeFlags.SubTreeRootNode) ||
-                        item.Flags.Contains(DependencyTreeFlags.TargetNode) ||
+                    if (item.Flags.Contains(DependencyTreeFlags.DependencyGroup) ||
+                        item.Flags.Contains(DependencyTreeFlags.DependencyTargetFrameworkGroup) ||
                         item.Flags.Contains(DependencyTreeFlags.DependenciesRootNode))
                     {
                         containsProhibited = true;

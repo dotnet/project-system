@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         string ProviderType { get; }
 
         /// <summary>
-        /// Returns the root node for this provider's dependency nodes.
+        /// Returns the root (group) node for this provider's dependency nodes.
         /// </summary>
         /// <remarks>
         /// Despite the method's name, implementations may return the same instance for repeated

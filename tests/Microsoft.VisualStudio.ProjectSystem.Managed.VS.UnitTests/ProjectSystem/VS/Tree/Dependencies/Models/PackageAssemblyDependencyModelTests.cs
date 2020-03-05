@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(KnownMonikers.ReferenceWarning, model.UnresolvedExpandedIcon);
             AssertEx.CollectionLength(model.DependencyIDs, 2);
             Assert.Equal(
-                DependencyTreeFlags.NuGetDependency +
+                DependencyTreeFlags.PackageAssemblyDependency +
                 DependencyTreeFlags.GenericResolvedDependencyFlags,
                 model.Flags);
         }
@@ -79,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(KnownMonikers.ReferenceWarning, model.UnresolvedExpandedIcon);
             AssertEx.CollectionLength(model.DependencyIDs, 2);
             Assert.Equal(
-                DependencyTreeFlags.NuGetDependency +
+                DependencyTreeFlags.PackageAssemblyDependency +
                 DependencyTreeFlags.GenericUnresolvedDependencyFlags,
                 model.Flags);
         }

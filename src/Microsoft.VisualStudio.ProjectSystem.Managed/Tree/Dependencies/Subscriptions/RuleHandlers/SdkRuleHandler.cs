@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
     {
         public const string ProviderTypeString = "SdkDependency";
 
-        private static readonly SubTreeRootDependencyModel s_rootModel = new SubTreeRootDependencyModel(
+        private static readonly DependencyGroupModel s_groupModel = new DependencyGroupModel(
             ProviderTypeString,
             Resources.SdkNodeName,
             new DependencyIconSet(
@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 expandedIcon: ManagedImageMonikers.Sdk,
                 unresolvedIcon: ManagedImageMonikers.SdkWarning,
                 unresolvedExpandedIcon: ManagedImageMonikers.SdkWarning),
-            DependencyTreeFlags.SdkSubTreeRootNode);
+            DependencyTreeFlags.SdkDependencyGroup);
 
         public SdkRuleHandler()
             : base(SdkReference.SchemaName, ResolvedSdkReference.SchemaName)
@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         public override ImageMoniker ImplicitIcon => ManagedImageMonikers.SdkPrivate;
 
-        public override IDependencyModel CreateRootDependencyNode() => s_rootModel;
+        public override IDependencyModel CreateRootDependencyNode() => s_groupModel;
 
         protected override IDependencyModel CreateDependencyModel(
             string path,
