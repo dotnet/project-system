@@ -111,24 +111,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         [InlineData(AssemblyRuleHandler.ProviderTypeString,  false)]
         [InlineData(ComRuleHandler.ProviderTypeString,       false)]
         [InlineData(FrameworkRuleHandler.ProviderTypeString, false)]
-        [InlineData(PackageRuleHandler.ProviderTypeString,   true)]
-        [InlineData(ProjectRuleHandler.ProviderTypeString,   false)]
-        [InlineData(SdkRuleHandler.ProviderTypeString,       false)]
-        public void IsPackage(string providerType, bool isPackage)
-        {
-            var dependency = new TestDependency
-            {
-                ProviderType = providerType
-            };
-
-            Assert.Equal(isPackage, dependency.IsPackage());
-        }
-
-        [Theory]
-        [InlineData(AnalyzerRuleHandler.ProviderTypeString,  false)]
-        [InlineData(AssemblyRuleHandler.ProviderTypeString,  false)]
-        [InlineData(ComRuleHandler.ProviderTypeString,       false)]
-        [InlineData(FrameworkRuleHandler.ProviderTypeString, false)]
         [InlineData(PackageRuleHandler.ProviderTypeString,   false)]
         [InlineData(ProjectRuleHandler.ProviderTypeString,   true)]
         [InlineData(SdkRuleHandler.ProviderTypeString,       false)]
