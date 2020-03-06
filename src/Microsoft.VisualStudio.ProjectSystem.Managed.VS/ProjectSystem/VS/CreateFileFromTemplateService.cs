@@ -48,10 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             await _projectVsServices.ThreadingService.SwitchToUIThread();
 
-            DTE2? dte = _dte.Value;
-            Assumes.Present(dte);
-
-            string templateFilePath = ((Solution2)dte.Solution).GetProjectItemTemplate(templateFile, templateLanguage);
+            string templateFilePath = ((Solution2)_dte.Value.Solution).GetProjectItemTemplate(templateFile, templateLanguage);
 
             if (templateFilePath != null)
             {

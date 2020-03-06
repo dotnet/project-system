@@ -15,10 +15,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
     {
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly IPhysicalProjectTree _projectTree;
-        private readonly IVsUIService<IVsAddProjectItemDlg> _addProjectItemDialog;
+        private readonly IVsUIService<IVsAddProjectItemDlg?> _addProjectItemDialog;
 
         [ImportingConstructor]
-        public AddItemDialogService(IUnconfiguredProjectVsServices unconfiguredProjectVsServices, IPhysicalProjectTree projectTree, IVsUIService<SVsAddProjectItemDlg, IVsAddProjectItemDlg> addProjectItemDialog)
+        public AddItemDialogService(IUnconfiguredProjectVsServices unconfiguredProjectVsServices, IPhysicalProjectTree projectTree, IVsUIService<SVsAddProjectItemDlg, IVsAddProjectItemDlg?> addProjectItemDialog)
         {
             _projectVsServices = unconfiguredProjectVsServices;
             _projectTree = projectTree;

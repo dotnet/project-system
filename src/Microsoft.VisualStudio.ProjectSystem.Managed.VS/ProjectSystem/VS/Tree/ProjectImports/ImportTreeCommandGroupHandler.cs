@@ -76,15 +76,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.ProjectImports
 
             void OpenItems()
             {
-                IVsUIShellOpenDocument? uiShellOpenDocument = _uiShellOpenDocument.Value;
-                Assumes.Present(uiShellOpenDocument);
-
-                IOleServiceProvider? oleServiceProvider = _oleServiceProvider.Value;
-                Assumes.Present(oleServiceProvider);
-
-                IVsExternalFilesManager? externalFilesManager = _externalFilesManager.Value;
-                Assumes.Present(externalFilesManager);
-
                 Assumes.NotNull(_configuredProject.UnconfiguredProject.Services.HostObject);
                 var hierarchy = (IVsUIHierarchy)_configuredProject.UnconfiguredProject.Services.HostObject;
                 var rdt = new RunningDocumentTable(_serviceProvider);
@@ -102,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.ProjectImports
                         IntPtr docData = IntPtr.Zero;
 
                         ErrorHandler.ThrowOnFailure(
-                            uiShellOpenDocument!.OpenStandardEditor(
+                            _uiShellOpenDocument.Value.OpenStandardEditor(
                                 (uint)__VSOSEFLAGS.OSE_ChooseBestStdEditor,
                                 item.FilePath,
                                 ref logicalView,
@@ -110,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.ProjectImports
                                 hierarchy,
                                 item.GetHierarchyId(),
                                 docData,
-                                oleServiceProvider,
+                                _oleServiceProvider.Value,
                                 out windowFrame));
 
                         RunningDocumentInfo rdtInfo = rdt.GetDocumentInfo(item.FilePath);
@@ -126,7 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.ProjectImports
 
                         // Detach the document from this project.
                         // Ignore failure. It may be that we've already transferred the item to Miscellaneous Files.
-                        externalFilesManager!.TransferDocument(item.FilePath, item.FilePath, windowFrame);
+                        _externalFilesManager.Value.TransferDocument(item.FilePath, item.FilePath, windowFrame);
 
                         // Show the document window
                         if (windowFrame != null)

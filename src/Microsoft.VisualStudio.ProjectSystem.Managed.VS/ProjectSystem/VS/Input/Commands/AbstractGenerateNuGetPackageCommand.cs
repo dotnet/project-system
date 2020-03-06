@@ -70,7 +70,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             if (_buildManager == null)
             {
                 _buildManager = await _vsSolutionBuildManagerService.GetValueAsync();
-                Assumes.Present(_buildManager);
 
                 // Register for solution build events.
                 _buildManager.AdviseUpdateSolutionEvents(this, out _solutionEventsCookie);

@@ -91,8 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         {
             DesignTimeInputs designTimeInputs = input.Value;
 
-            IVsAsyncFileChangeEx? vsAsyncFileChangeEx = await _fileChangeService.GetValueAsync();
-            Assumes.Present(vsAsyncFileChangeEx);
+            IVsAsyncFileChangeEx vsAsyncFileChangeEx = await _fileChangeService.GetValueAsync();
 
             // we don't care about the difference between types of inputs, so we just construct one hashset for fast comparisons later
             var allFiles = new HashSet<string>(StringComparers.Paths);
@@ -154,8 +153,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                         // Wait for any processing to finish so we don't fight over the cookies 🍪
                         await _actionBlock.Completion;
 
-                        IVsAsyncFileChangeEx? vsAsyncFileChangeEx = await _fileChangeService.GetValueAsync();
-                        Assumes.Present(vsAsyncFileChangeEx);
+                        IVsAsyncFileChangeEx vsAsyncFileChangeEx = await _fileChangeService.GetValueAsync();
 
                         // Unsubscribe from all files
                         foreach (uint cookie in _fileWatcherCookies.Values)

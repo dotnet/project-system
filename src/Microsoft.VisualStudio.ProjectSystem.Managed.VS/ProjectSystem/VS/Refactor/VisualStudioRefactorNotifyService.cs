@@ -82,10 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
 
         private Project? TryGetProjectFromPath(string projectPath)
         {
-            DTE? dte = _dte.Value;
-            Assumes.NotNull(dte);
-
-            foreach (Project project in dte.Solution.Projects)
+            foreach (Project project in _dte.Value.Solution.Projects)
             {
                 string? fullName;
                 try
@@ -109,10 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
 
         private IVsHierarchy? TryGetIVsHierarchy(Project project)
         {
-            IVsSolution? solution = _solution.Value;
-            Assumes.Present(solution);
-
-            if (solution.GetProjectOfUniqueName(project.UniqueName, out IVsHierarchy projectHierarchy) == HResult.OK)
+            if (_solution.Value.GetProjectOfUniqueName(project.UniqueName, out IVsHierarchy projectHierarchy) == HResult.OK)
             {
                 return projectHierarchy;
             }
