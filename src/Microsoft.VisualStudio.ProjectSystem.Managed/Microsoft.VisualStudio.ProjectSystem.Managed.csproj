@@ -416,6 +416,7 @@
       <DependentUpon>VisualBasic.NamespaceImport.xaml</DependentUpon>
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\VisualBasic.NamespaceImport.xaml">
+      <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
