@@ -328,8 +328,8 @@
     </PropertyPageSchema>
 
     <!-- Tool references -->
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)DotNetCliToolReference.xaml">
-      <Context>ProjectSubscriptionService;BrowseObject</Context>
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)DotNetCliToolReference.xaml">
+      <Context>ProjectSubscriptionService</Context>
     </PropertyPageSchema>
 
     <!-- Analyzer references -->
