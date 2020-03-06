@@ -2,15 +2,72 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
+using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using Microsoft.VisualStudio.Utilities;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Rules
 {
     public sealed class MiscellaneousRuleTests : XamlRuleTestBase
     {
+        [Fact]
+        public void LocalizationCheck()
+        {
+            string designTimePath = Path.Combine(RepoUtil.FindRepoRootPath(), "src", "Microsoft.VisualStudio.ProjectSystem.Managed", "ProjectSystem", "DesignTimeTargets", "Microsoft.Managed.DesignTime.targets");
+
+            XElement? root = LoadXamlRule(designTimePath, out XmlNamespaceManager? namespaceManager);
+
+            var propertyPageSchemas = root.XPathSelectElements(@"/project:Project/project:ItemGroup/project:PropertyPageSchema", namespaceManager);
+
+            // To have a view of how things are right now, I used some lists to view how things are handled.
+            List<string> allFiles = new List<string>();
+            List<string> browseObjects = new List<string>();
+            List<string> needsToBeNeutral = new List<string>();
+            List<string> alreadyNeutral = new List<string>();
+
+            foreach (XElement element in propertyPageSchemas)
+            {
+                // Want to have more clarity on this part of the code.
+                //element.Element("Foo");
+                //string g = element.Element(XName.Get("Context", "project")).Value;
+
+                string contextValue = element.XPathSelectElement("./project:Context", namespaceManager).Value;
+                string resourceDirectory = element.Attribute("Include").Value;
+
+                Regex rx = new Regex(@"\).*\.xaml", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+                Match match = rx.Match(resourceDirectory);
+                allFiles.Add(match.Value.Substring(1));
+
+                if (contextValue.Contains("BrowseObject"))
+                {
+                    // Browse Objects are localizable, so they should not have a Resource Directory set as neutral.                    
+                    Assert.DoesNotContain("Neutral", resourceDirectory);
+                    browseObjects.Add(match.Value.Substring(1));
+                }
+                else
+                {
+                    // Context does not have Browse Object -> file should not be localizable -> the Resource Directory should be neutral.
+                    if (resourceDirectory.Contains("Neutral"))
+                    {
+                        // It is already neutral, yay!
+                        alreadyNeutral.Add(match.Value.Substring(1));
+                    }
+                    else
+                    {
+                        // It needs to be neutral...
+                        needsToBeNeutral.Add(match.Value.Substring(1));
+                    }
+                }
+            }
+
+            // Set a breakpoint and debug it to view results!
+        }
+
         [Theory]
         [MemberData(nameof(GetAllDisplayedRules))]
         public void NonVisiblePropertiesShouldntBeLocalized(string ruleName, string fullPath)
