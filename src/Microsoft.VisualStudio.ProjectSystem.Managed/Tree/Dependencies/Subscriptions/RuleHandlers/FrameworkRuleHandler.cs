@@ -22,7 +22,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 icon: ManagedImageMonikers.Framework,
                 expandedIcon: ManagedImageMonikers.Framework,
                 unresolvedIcon: ManagedImageMonikers.FrameworkWarning,
-                unresolvedExpandedIcon: ManagedImageMonikers.FrameworkWarning));
+                unresolvedExpandedIcon: ManagedImageMonikers.FrameworkWarning),
+            DependencyTreeFlags.FrameworkSubTreeRootNode);
 
         public FrameworkRuleHandler()
             : base(FrameworkReference.SchemaName, ResolvedFrameworkReference.SchemaName)

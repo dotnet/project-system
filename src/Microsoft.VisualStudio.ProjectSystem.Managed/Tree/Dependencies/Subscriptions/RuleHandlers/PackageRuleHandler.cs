@@ -23,7 +23,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 icon: ManagedImageMonikers.NuGetGrey,
                 expandedIcon: ManagedImageMonikers.NuGetGrey,
                 unresolvedIcon: ManagedImageMonikers.NuGetGreyWarning,
-                unresolvedExpandedIcon: ManagedImageMonikers.NuGetGreyWarning));
+                unresolvedExpandedIcon: ManagedImageMonikers.NuGetGreyWarning),
+            DependencyTreeFlags.NuGetSubTreeRootNode);
 
         private readonly ITargetFrameworkProvider _targetFrameworkProvider;
 

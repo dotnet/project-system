@@ -13,10 +13,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Input
     /// </summary>
     internal abstract class AbstractSingleNodeProjectCommand : AbstractProjectCommand
     {
-        protected AbstractSingleNodeProjectCommand()
-        {
-        }
-
         protected sealed override Task<CommandStatusResult> GetCommandStatusAsync(IImmutableSet<IProjectTree> nodes, bool focused, string? commandText, CommandStatus progressiveStatus)
         {
             if (nodes.Count == 1)

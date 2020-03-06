@@ -10,9 +10,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Input
 
         public static Task<CommandStatusResult> Suppressed { get; } = Task.FromResult(new CommandStatusResult(handled: true, null, CommandStatus.NotSupported | CommandStatus.Invisible));
 
-        public static Task<CommandStatusResult> Handled(string? commandText, CommandStatus status)
+        public static Task<CommandStatusResult> Handled(string? commandText, CommandStatus progressiveStatus)
         {
-            return new CommandStatusResult(true, commandText, status | CommandStatus.Supported).AsTask();
+            return new CommandStatusResult(true, commandText, progressiveStatus | CommandStatus.Supported).AsTask();
         }
     }
 }
