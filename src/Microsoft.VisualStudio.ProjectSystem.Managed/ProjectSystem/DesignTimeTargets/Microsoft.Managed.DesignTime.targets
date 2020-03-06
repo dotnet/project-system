@@ -244,7 +244,7 @@
       <Context>Project</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)SourceControl.xaml">
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)SourceControl.xaml">
       <Context>Invisible</Context>
     </PropertyPageSchema>
 
