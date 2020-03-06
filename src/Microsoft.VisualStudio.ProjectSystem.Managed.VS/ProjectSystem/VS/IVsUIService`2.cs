@@ -16,7 +16,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     [ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface IVsUIService<TService, TInterface> : IVsUIService<TInterface>
         where TService : class
-        where TInterface : class
+        where TInterface : class?
+
     {
     }
 }

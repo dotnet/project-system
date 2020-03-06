@@ -16,9 +16,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     ///     Provides an implementation of <see cref="IVsService{T}"/> that calls into Visual Studio's <see cref="IAsyncServiceProvider"/>.
     /// </summary>
     [Export(typeof(IVsService<>))]
-    internal class VsService<T> : IVsService<T> where T : class
+    internal class VsService<T> : IVsService<T>
+        where T : class?
     {
-        private readonly AsyncLazy<T?> _value;
+        private readonly AsyncLazy<T> _value;
 
         [ImportingConstructor]
         public VsService([Import(typeof(SAsyncServiceProvider))]IAsyncServiceProvider serviceProvider, JoinableTaskContext joinableTaskContext)
@@ -26,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             Requires.NotNull(serviceProvider, nameof(serviceProvider));
             Requires.NotNull(joinableTaskContext, nameof(joinableTaskContext));
 
-            _value = new AsyncLazy<T?>(async () =>
+            _value = new AsyncLazy<T>(async () =>
             {
                 // If the service request requires a package load, GetServiceAsync will 
                 // happily do that on a background thread.
@@ -36,12 +37,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 // via blocking RPC for STA objects when we cast explicitly to the type
                 await joinableTaskContext.Factory.SwitchToMainThreadAsync();
 
-                return (T?)iunknown;
+                return (T)iunknown;
 
             }, joinableTaskContext.Factory);
         }
 
-        public Task<T?> GetValueAsync(CancellationToken cancellationToken = default)
+        public Task<T> GetValueAsync(CancellationToken cancellationToken = default)
         {
             return _value.GetValueAsync(cancellationToken);
         }

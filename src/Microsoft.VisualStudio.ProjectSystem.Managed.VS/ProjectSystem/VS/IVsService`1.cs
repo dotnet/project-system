@@ -15,7 +15,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     ///     The type of the service to retrieve and return from <see cref="GetValueAsync"/>.
     /// </typeparam>
     [ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
-    internal interface IVsService<T> where T : class
+    internal interface IVsService<T> 
+        where T : class?
     {
         /// <summary>
         ///     Gets the service object associated with <typeparamref name="T"/>.
@@ -37,6 +38,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// <exception cref="OperationCanceledException">
         ///     The result is awaited and <paramref name="cancellationToken"/> is cancelled.
         /// </exception>
-        Task<T?> GetValueAsync(CancellationToken cancellationToken = default);
+        Task<T> GetValueAsync(CancellationToken cancellationToken = default);
     }
 }
