@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
+using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
@@ -18,33 +19,44 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     [AppliesTo(ProjectCapability.LaunchProfiles)]
     internal class LaunchTargetEnumProvider : IDynamicEnumValuesProvider
     {
+        private readonly JoinableTaskContext _joinableTaskContext;
+
         [ImportMany]
         public OrderPrecedenceImportCollection<ILaunchSettingsUIProvider> UIProviders { get; }
 
         [ImportingConstructor]
-        public LaunchTargetEnumProvider(UnconfiguredProject project)
+        public LaunchTargetEnumProvider(UnconfiguredProject project, JoinableTaskContext joinableTaskContext)
         {
+            _joinableTaskContext = joinableTaskContext;
             UIProviders = new OrderPrecedenceImportCollection<ILaunchSettingsUIProvider>(projectCapabilityCheckProvider: project);
         }
 
         public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair>? options)
         {
-            return Task.FromResult<IDynamicEnumValuesGenerator>(new LaunchTargetEnumValuesGenerator(UIProviders));
+            return Task.FromResult<IDynamicEnumValuesGenerator>(new LaunchTargetEnumValuesGenerator(UIProviders, _joinableTaskContext));
         }
 
         internal class LaunchTargetEnumValuesGenerator : IDynamicEnumValuesGenerator
         {
+            private readonly JoinableTaskContext _joinableTaskContext;
             private readonly OrderPrecedenceImportCollection<ILaunchSettingsUIProvider> _uiProviders;
 
-            public LaunchTargetEnumValuesGenerator(OrderPrecedenceImportCollection<ILaunchSettingsUIProvider> uIProviders)
+            public LaunchTargetEnumValuesGenerator(
+                OrderPrecedenceImportCollection<ILaunchSettingsUIProvider> uiProviders,
+                JoinableTaskContext joinableTaskContext)
             {
-                _uiProviders = uIProviders;
+                _joinableTaskContext = joinableTaskContext;
+                _uiProviders = uiProviders;
             }
 
             public bool AllowCustomValues => false;
 
-            public Task<ICollection<IEnumValue>> GetListedValuesAsync()
+            public async Task<ICollection<IEnumValue>> GetListedValuesAsync()
             {
+                // Some ILaunchSettingsUIProviders depend on being created on the UI thread, so we
+                // need to switch before we access them.
+                await _joinableTaskContext.Factory.SwitchToMainThreadAsync();
+
                 // There may be providers with duplicate command names. We'll just use the first one
                 // we come across for any given command name.
                 var enumValues = new List<PageEnumValue>();
@@ -60,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                     }
                 }
 
-                return Task.FromResult<ICollection<IEnumValue>>(enumValues.ToArray<IEnumValue>());
+                return enumValues.ToArray<IEnumValue>();
             }
 
             /// <summary>
