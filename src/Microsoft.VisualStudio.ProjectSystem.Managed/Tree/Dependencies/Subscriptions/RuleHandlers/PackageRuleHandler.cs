@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
     {
         public const string ProviderTypeString = "NuGetDependency";
 
-        private static readonly SubTreeRootDependencyModel s_rootModel = new SubTreeRootDependencyModel(
+        private static readonly DependencyGroupModel s_groupModel = new DependencyGroupModel(
             ProviderTypeString,
             Resources.PackagesNodeName,
             new DependencyIconSet(
@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 expandedIcon: ManagedImageMonikers.NuGetGrey,
                 unresolvedIcon: ManagedImageMonikers.NuGetGreyWarning,
                 unresolvedExpandedIcon: ManagedImageMonikers.NuGetGreyWarning),
-            DependencyTreeFlags.NuGetSubTreeRootNode);
+            DependencyTreeFlags.PackageDependencyGroup);
 
         private readonly ITargetFrameworkProvider _targetFrameworkProvider;
 
@@ -103,6 +103,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             }
         }
 
-        public override IDependencyModel CreateRootDependencyNode() => s_rootModel;
+        public override IDependencyModel CreateRootDependencyNode() => s_groupModel;
     }
 }

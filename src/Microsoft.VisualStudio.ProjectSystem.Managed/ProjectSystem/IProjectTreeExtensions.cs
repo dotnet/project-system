@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         /// <summary>
-        /// Finds a tree node by it's flags. If there many nodes that satisfy flags, returns first.
+        /// Finds a tree node by its flags. If there many nodes that satisfy flags, returns first.
         /// </summary>
         internal static IProjectTree? GetSubTreeNode(this IProjectTree self, ProjectTreeFlags flags)
         {

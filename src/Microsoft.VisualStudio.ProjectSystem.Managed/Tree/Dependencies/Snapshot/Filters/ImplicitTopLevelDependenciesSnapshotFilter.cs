@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                 && !dependency.Implicit                                               // explicit
                 && dependency.Resolved                                                // resolved
                 && dependency.Flags.Contains(DependencyTreeFlags.GenericDependency)   // generic dependency
-                && !dependency.Flags.Contains(DependencyTreeFlags.SharedProjectFlags) // except for shared projects
+                && !dependency.Flags.Contains(DependencyTreeFlags.SharedProjectDependency) // except for shared projects
                 && !projectItemSpecs.Contains(dependency.OriginalItemSpec)            // is not a known item spec
                 && subTreeProviderByProviderType.TryGetValue(dependency.ProviderType, out IProjectDependenciesSubTreeProvider provider)
                 && provider is IProjectDependenciesSubTreeProviderInternal internalProvider)

@@ -161,9 +161,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return null;
             }
 
-            IProjectTree? dependenciesNode = root.Flags.Contains(DependencyTreeFlags.DependenciesRootNodeFlags)
+            IProjectTree? dependenciesNode = root.Flags.Contains(DependencyTreeFlags.DependenciesRootNode)
                 ? root
-                : root.GetSubTreeNode(DependencyTreeFlags.DependenciesRootNodeFlags);
+                : root.GetSubTreeNode(DependencyTreeFlags.DependenciesRootNode);
 
             return dependenciesNode?.GetSelfAndDescendentsBreadthFirst()
                 .FirstOrDefault((node, p) => string.Equals(node.FilePath, p, StringComparisons.Paths), path);
@@ -386,7 +386,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 // For IProjectTree remove ProjectTreeFlags.Common.Reference flag, otherwise CPS would fail to
                 // map this node to graph node and GraphProvider would be never called.
                 // Only IProjectItemTree can have this flag
-                filteredFlags = filteredFlags.Except(DependencyTreeFlags.BaseReferenceFlags);
+                filteredFlags = filteredFlags.Except(ProjectTreeFlags.Reference);
 
                 return _treeServices.CreateTree(
                     caption: viewModel.Caption,

@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
     {
         public const string ProviderTypeString = "AssemblyDependency";
 
-        private static readonly SubTreeRootDependencyModel s_rootModel = new SubTreeRootDependencyModel(
+        private static readonly DependencyGroupModel s_groupModel = new DependencyGroupModel(
             ProviderTypeString,
             Resources.AssembliesNodeName,
             new DependencyIconSet(
@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 expandedIcon: KnownMonikers.Reference,
                 unresolvedIcon: KnownMonikers.ReferenceWarning,
                 unresolvedExpandedIcon: KnownMonikers.ReferenceWarning),
-            DependencyTreeFlags.AssemblySubTreeRootNode);
+            DependencyTreeFlags.AssemblyDependencyGroup);
 
         public AssemblyRuleHandler()
             : base(AssemblyReference.SchemaName, ResolvedAssemblyReference.SchemaName)
@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         public override ImageMoniker ImplicitIcon => ManagedImageMonikers.ReferencePrivate;
 
-        public override IDependencyModel CreateRootDependencyNode() => s_rootModel;
+        public override IDependencyModel CreateRootDependencyNode() => s_groupModel;
 
         protected override IDependencyModel CreateDependencyModel(
             string path,

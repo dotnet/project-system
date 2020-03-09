@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                     return;
                 }
             }
-            else if (dependency.Flags.Contains(DependencyTreeFlags.NuGetPackageDependency) && dependency.Resolved)
+            else if (dependency.Flags.Contains(DependencyTreeFlags.PackageDependency) && dependency.Resolved)
             {
                 // This is a resolved package dependency.
                 //
@@ -84,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
         {
             if (dependency.TopLevel &&
                 dependency.Resolved &&
-                dependency.Flags.Contains(DependencyTreeFlags.NuGetPackageDependency))
+                dependency.Flags.Contains(DependencyTreeFlags.PackageDependency))
             {
                 // This is a package dependency.
                 //

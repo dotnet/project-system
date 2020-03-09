@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
     {
         protected override Task<CommandStatusResult> GetCommandStatusAsync(IProjectTree node, bool focused, string? commandText, CommandStatus progressiveStatus)
         {
-            if (node.Flags.Contains(DependencyTreeFlags.NuGetPackageDependency))
+            if (node.Flags.Contains(DependencyTreeFlags.PackageDependency))
             {
                 return GetCommandStatusResult.Suppressed;
             }

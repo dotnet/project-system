@@ -17,11 +17,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 unresolvedIcon: KnownMonikers.AbsolutePosition,
                 unresolvedExpandedIcon: KnownMonikers.AbsolutePosition);
 
-            var model = new SubTreeRootDependencyModel(
+            var flag = ProjectTreeFlags.Create("Foo");
+
+            var model = new DependencyGroupModel(
                 "myProvider",
                 "myRoot",
                 iconSet,
-                ProjectTreeFlags.AlwaysCopyable);
+                flag);
 
             Assert.Equal("myProvider", model.ProviderType);
             Assert.Equal("myRoot", model.Path);
@@ -32,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(KnownMonikers.AboutBox, model.ExpandedIcon);
             Assert.Equal(KnownMonikers.AbsolutePosition, model.UnresolvedIcon);
             Assert.Equal(KnownMonikers.AbsolutePosition, model.UnresolvedExpandedIcon);
-            Assert.Equal(ProjectTreeFlags.AlwaysCopyable + DependencyTreeFlags.SubTreeRootNodeFlags, model.Flags);
+            Assert.Equal(flag + ProjectTreeFlags.VirtualFolder + DependencyTreeFlags.DependencyGroup, model.Flags);
         }
     }
 }

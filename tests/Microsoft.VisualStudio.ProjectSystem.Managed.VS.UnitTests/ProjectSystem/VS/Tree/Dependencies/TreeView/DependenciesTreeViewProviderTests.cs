@@ -606,7 +606,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.TreeView
             var dependenciesRoot = new TestProjectTree
             {
                 Caption = "MyDependencies",
-                Flags = DependencyTreeFlags.DependenciesRootNodeFlags,
+                Flags = DependencyTreeFlags.DependenciesRootNode,
                 Children =
                 {
                     new TestProjectTree
@@ -667,7 +667,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.TreeView
             var dependenciesRoot = new TestProjectTree
             {
                 Caption = "MyDependencies",
-                Flags = DependencyTreeFlags.DependenciesRootNodeFlags,
+                Flags = DependencyTreeFlags.DependenciesRootNode,
                 Children =
                 {
                     new TestProjectTree
@@ -732,7 +732,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.TreeView
                     new TestProjectTree
                     {
                         Caption = "MyDependencies",
-                        Flags = DependencyTreeFlags.DependenciesRootNodeFlags,
+                        Flags = DependencyTreeFlags.DependenciesRootNode,
                         Children =
                         {
                             new TestProjectTree

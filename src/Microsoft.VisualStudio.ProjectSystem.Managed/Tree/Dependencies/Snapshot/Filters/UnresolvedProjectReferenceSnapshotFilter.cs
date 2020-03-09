@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             if (dependency.TopLevel
                 && dependency.Resolved
                 && dependency.Flags.Contains(DependencyTreeFlags.ProjectDependency)
-                && !dependency.Flags.Contains(DependencyTreeFlags.SharedProjectFlags))
+                && !dependency.Flags.Contains(DependencyTreeFlags.SharedProjectDependency))
             {
                 TargetedDependenciesSnapshot? snapshot = _aggregateSnapshotProvider.GetSnapshot(dependency);
 

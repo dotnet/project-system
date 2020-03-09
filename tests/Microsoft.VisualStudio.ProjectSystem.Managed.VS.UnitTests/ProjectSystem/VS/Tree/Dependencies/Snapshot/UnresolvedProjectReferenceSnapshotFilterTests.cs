@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             AssertNoChange(new TestDependency
             {
                 ClonePropertiesFrom = acceptable,
-                Flags = DependencyTreeFlags.ProjectDependency.Union(DependencyTreeFlags.SharedProjectFlags)
+                Flags = DependencyTreeFlags.ProjectDependency.Union(DependencyTreeFlags.SharedProjectDependency)
             });
 
             return;
