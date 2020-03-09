@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
             {
                 menuCommandId = Menus.IDM_VS_CTXT_REFERENCEROOT;
             }
-            else if (projectItem.Flags.Contains(DependencyTreeFlags.DependencyTargetFrameworkGroup))
+            else if (projectItem.Flags.Contains(DependencyTreeFlags.DependencyConfigurationGroup))
             {
                 menuCommandId = Menus.IDM_VS_CTXT_DEPENDENCYTARGET;
             }
@@ -138,7 +138,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
                 {
                     // TODO when CPS inserts, use ContainsAny here instead
                     if (item.Flags.Contains(DependencyTreeFlags.DependencyGroup) ||
-                        item.Flags.Contains(DependencyTreeFlags.DependencyTargetFrameworkGroup) ||
+                        item.Flags.Contains(DependencyTreeFlags.DependencyConfigurationGroup) ||
                         item.Flags.Contains(DependencyTreeFlags.DependenciesRootNode))
                     {
                         containsProhibited = true;
