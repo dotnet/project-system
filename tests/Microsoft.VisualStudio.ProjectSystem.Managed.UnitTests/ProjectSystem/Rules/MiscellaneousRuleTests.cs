@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
@@ -16,20 +15,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
     public sealed class MiscellaneousRuleTests : XamlRuleTestBase
     {
         [Fact]
-        public void BrowseObjectsShouldBeLocalized()
+        public void CheckRuleFilesInDesignTimeTargets()
         {
+            // For each DesignTime.targets file, check that the rule files with BrowseObject context are localized.
+
             string managedDesignTimeTargets = Path.Combine(RepoUtil.FindRepoRootPath(), "src", "Microsoft.VisualStudio.ProjectSystem.Managed", "ProjectSystem", "DesignTimeTargets", "Microsoft.Managed.DesignTime.targets");
+            string cSharpDesignTimeTargets = Path.Combine(RepoUtil.FindRepoRootPath(), "src", "Microsoft.VisualStudio.ProjectSystem.Managed", "ProjectSystem", "DesignTimeTargets", "Microsoft.CSharp.DesignTime.targets");
+            string fSharpDesignTimeTargets = Path.Combine(RepoUtil.FindRepoRootPath(), "src", "Microsoft.VisualStudio.ProjectSystem.Managed", "ProjectSystem", "DesignTimeTargets", "Microsoft.FSharp.DesignTime.targets");
+            string visualBasicDesignTimeTargets = Path.Combine(RepoUtil.FindRepoRootPath(), "src", "Microsoft.VisualStudio.ProjectSystem.Managed", "ProjectSystem", "DesignTimeTargets", "Microsoft.VisualBasic.DesignTime.targets");
 
-            XElement? root = LoadXamlRule(managedDesignTimeTargets, out XmlNamespaceManager? namespaceManager);
+            BrowseObjectsShouldBeLocalized(managedDesignTimeTargets);
+            BrowseObjectsShouldBeLocalized(cSharpDesignTimeTargets);
+            BrowseObjectsShouldBeLocalized(fSharpDesignTimeTargets);
+            BrowseObjectsShouldBeLocalized(visualBasicDesignTimeTargets);
+        }
 
+        private void BrowseObjectsShouldBeLocalized(string designTimeTargetFile)
+        {
+            XElement? root = LoadXamlRule(designTimeTargetFile, out XmlNamespaceManager? namespaceManager);
             var propertyPageSchemas = root.XPathSelectElements(@"/project:Project/project:ItemGroup/project:PropertyPageSchema", namespaceManager);
 
             foreach (XElement element in propertyPageSchemas)
             {
-                string contextValue = element.XPathSelectElement("./project:Context", namespaceManager).Value;
+                string? contextValue = element.XPathSelectElement("./project:Context", namespaceManager)?.Value;
                 string resourceDirectory = element.Attribute("Include").Value;
 
-                if (contextValue.Contains("BrowseObject"))
+                if (contextValue?.Contains("BrowseObject") ?? false)
                 {
                     // Browse Objects are localizable, so they should not have a Resource Directory set as neutral.                    
                     Assert.DoesNotContain("Neutral", resourceDirectory);
@@ -42,7 +53,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
                         || resourceDirectory.Contains("ProjectItemsSchema"))
                         Assert.DoesNotContain("Neutral", resourceDirectory);
                     else
+                    {
+                        // These files do not show in the UI, so there is no need to be localized nor have localized attributes in their actual rule file.
                         Assert.Contains("Neutral", resourceDirectory);
+
+                    }
                 }
             }
         }
