@@ -19,9 +19,11 @@
 
     <!--This property sets the default output types supported by the project system.-->
     <SupportedOutputTypes Condition="'$(SupportedOutputTypes)' == ''">Exe;WinExe;Library</SupportedOutputTypes>
-
     <SuppressOutOfDateMessageOnBuild Condition="'$(SuppressOutOfDateMessageOnBuild)' == ''">true</SuppressOutOfDateMessageOnBuild>
-
+    
+    <!-- When using SDK-style projects, opt out of AssemblyFolderEx ("Extensions") tab under Assemblies category in Reference Manager -->
+    <AssemblyReferenceTabs Condition="'$(AssemblyReferenceTabs)' == '' And '$(UsingMicrosoftNETSdk)' == 'true'">TAB_ASSEMBLY_FRAMEWORK</AssemblyReferenceTabs>
+    
     <!-- Tells CPS which target to run for the Package solution build type -->
     <PackageAction Condition="'$(PackageAction)' == ''">Pack</PackageAction>
   </PropertyGroup>
