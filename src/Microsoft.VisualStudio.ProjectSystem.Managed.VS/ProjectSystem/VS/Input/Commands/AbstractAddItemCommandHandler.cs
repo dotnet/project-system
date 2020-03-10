@@ -52,8 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
             if (nodes.Count == 1 && _addItemDialogService.CanAddNewOrExistingItemTo(nodes.First()) && TryGetTemplateDetails(commandId, out TemplateDetails? result))
             {
-                IVsShell? vsShell = _vsShell.Value;
-                Assumes.Present(vsShell);
+                IVsShell vsShell = _vsShell.Value;
 
                 // Look up the resources from each package to get the strings to pass to the Add Item dialog.
                 // These strings must match what is used in the template exactly, including localized versions. Rather than relying on

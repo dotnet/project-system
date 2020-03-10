@@ -37,10 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             await _threadingService.SwitchToUIThread(cancellationToken);
 
-            IVsSolution? solution = _solution.Value;
-            Assumes.Present(solution);
-
-            Verify.HResult(solution.AdviseSolutionEvents(this, out _cookie));
+            Verify.HResult(_solution.Value.AdviseSolutionEvents(this, out _cookie));
         }
 
         protected override async Task DisposeCoreAsync(bool initialized)
@@ -51,10 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 {
                     await _threadingService.SwitchToUIThread();
 
-                    IVsSolution? solution = _solution.Value;
-                    Assumes.Present(solution);
-
-                    Verify.HResult(solution.UnadviseSolutionEvents(_cookie));
+                    Verify.HResult(_solution.Value.UnadviseSolutionEvents(_cookie));
 
                     _cookie = VSConstants.VSCOOKIE_NIL;
                 }

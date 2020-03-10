@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     [Export(typeof(IVsUIService<,>))]
     internal class VsUIService<TService, TInterface> : VsUIService<TInterface>, IVsUIService<TService, TInterface>
         where TService : class
-        where TInterface : class
+        where TInterface : class?
     {
         [ImportingConstructor]
         public VsUIService([Import(typeof(SVsServiceProvider))]IServiceProvider serviceProvider, JoinableTaskContext joinableTaskContext)

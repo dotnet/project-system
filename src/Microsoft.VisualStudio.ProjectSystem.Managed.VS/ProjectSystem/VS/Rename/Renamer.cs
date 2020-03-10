@@ -145,11 +145,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
                 IEnumerable<ProjectChanges> changes = renamedSolution.GetChanges(solution).GetProjectChanges();
 
-                DTE? dte = _dte.Value;
-
-                Assumes.Present(dte);
-
-                using var _ = UndoScope.Create(dte, renameOperationName);
+                using var _ = UndoScope.Create(_dte.Value, renameOperationName);
 
                 // Notify other VS features that symbol is about to be renamed
                 NotifyBeforeRename(newName, rqName, changes);

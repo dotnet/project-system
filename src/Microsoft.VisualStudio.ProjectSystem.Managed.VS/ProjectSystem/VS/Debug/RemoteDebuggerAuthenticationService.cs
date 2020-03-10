@@ -47,10 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 extraFlags |= provider.AdditionalRemoteDiscoveryDialogFlags;
             }
 
-            IVsDebugRemoteDiscoveryUI? remoteDiscoveryUIService = _remoteDiscoveryUIService.Value;
-            Assumes.Present(remoteDiscoveryUIService);
-
-            if (ErrorHandler.Succeeded(remoteDiscoveryUIService.SelectRemoteInstanceViaDlg(remoteDebugMachine, currentPortSupplier, extraFlags, out string remoteMachine, out Guid portSupplier)))
+            if (ErrorHandler.Succeeded(_remoteDiscoveryUIService.Value.SelectRemoteInstanceViaDlg(remoteDebugMachine, currentPortSupplier, extraFlags, out string remoteMachine, out Guid portSupplier)))
             {
                 remoteDebugMachine = remoteMachine;
                 remoteAuthenticationProvider = AuthenticationProviders.FirstOrDefaultValue(p => p.AuthenticationModeGuid.Equals(portSupplier));

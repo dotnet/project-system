@@ -118,7 +118,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             projectVsServices ??= IUnconfiguredProjectVsServicesFactory.Create();
             projectContextHost ??= IActiveWorkspaceProjectContextHostFactory.Create();
 
-            return new VsContainedLanguageComponentsFactory(IVsServiceFactory.Create<SAsyncServiceProvider, IOleAsyncServiceProvider>(serviceProvider),
+            return new VsContainedLanguageComponentsFactory(IVsServiceFactory.Create<SAsyncServiceProvider, IOleAsyncServiceProvider>(serviceProvider!),
                                                             projectVsServices,
                                                             projectContextHost);
         }

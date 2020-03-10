@@ -95,7 +95,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             VisualStudioVersion = await _shellUtilitiesHelper.Value.GetVSVersionAsync(_vsAppIdService);
 
             _vsSolution = await _vsSolutionService.GetValueAsync();
-            Assumes.Present(_vsSolution);
 
             Verify.HResult(_vsSolution.AdviseSolutionEvents(this, out _solutionCookie));
 
@@ -183,8 +182,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 return false;
             }
 
-            ISettingsManager? settings = await _settingsManagerService.GetValueAsync();
-            Assumes.Present(settings);
+            ISettingsManager settings = await _settingsManagerService.GetValueAsync();
 
             return settings.GetValueOrDefault<bool>(UsePreviewSdkSettingKey);
         }
@@ -271,20 +269,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 // Only want to warn once per solution
                 CompatibilityLevelWarnedForCurrentSolution = compatLevel;
 
-                IVsUIShell? uiShell = await _vsUIShellService.GetValueAsync();
-                Assumes.Present(uiShell);
-
+                IVsUIShell uiShell = await _vsUIShellService.GetValueAsync();
                 uiShell.GetAppName(out string caption);
 
                 if (compatLevel == CompatibilityLevel.Supported)
                 {
                     // Get current dontShowAgain value
-                    ISettingsManager? settingsManager = await _settingsManagerService.GetValueAsync();
-                    bool suppressPrompt = false;
-                    if (settingsManager != null)
-                    {
-                        suppressPrompt = settingsManager.GetValueOrDefault(SuppressDotNewCoreWarningKey, defaultValue: false);
-                    }
+                    ISettingsManager settingsManager = await _settingsManagerService.GetValueAsync();
+                    bool suppressPrompt = settingsManager.GetValueOrDefault(SuppressDotNewCoreWarningKey, defaultValue: false);
 
                     if (compatData.OpenSupportedPreviewMessage is null && isPreviewSDKInUse)
                     {
