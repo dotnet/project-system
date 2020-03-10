@@ -92,7 +92,6 @@
     -->
     <ProjectCapability Include="
                           AssemblyReferences;
-                          COMReferences;
                           ProjectReferences;
                           SharedProjectReferences;
                           WinRTReferences;
@@ -105,6 +104,9 @@
                           SupportAvailableItemName;
                           IntegratedConsoleDebugging;
                           PersistDesignTimeDataOutOfProject;" />
+
+    <!-- COM references are not supported in .NET Core before 3.0 -->
+    <ProjectCapability Include="COMReferences" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework' Or ('$(TargetFrameworkIdentifier)' == '.NETCoreApp' And '$(_TargetFrameworkVersionWithoutV)' >= '3.0')" />
 
     <!-- Settings page capability -->
     <ProjectCapability Include="AppSettings" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'"/>
