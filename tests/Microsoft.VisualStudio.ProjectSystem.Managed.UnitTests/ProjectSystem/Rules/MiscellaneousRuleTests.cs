@@ -57,8 +57,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
                         // These files do not show in the UI, so there is no need to be localized nor have localized attributes in their actual rule file.
                         Assert.Contains("Neutral", resourceDirectory);
 
+                        // Verify that these files don't have localized attributes.
+                        //string fullPath = "";
+                        //CheckRuleIsNotLocalized(fullPath);
                     }
                 }
+            }
+        }
+
+        private void CheckRuleIsNotLocalized(string fullPath)
+        {
+            XElement rule = LoadXamlRule(fullPath);
+            
+            foreach (XElement element in rule.Elements())
+            {
+                //Assert.True(element.Attribute("Visible")?.Value.IsNullOrEmpty());
+                Assert.Null(element.Attribute("DisplayName"));
+                Assert.Null(element.Attribute("Description"));
+                Assert.Null(element.Attribute("Category"));
             }
         }
 
