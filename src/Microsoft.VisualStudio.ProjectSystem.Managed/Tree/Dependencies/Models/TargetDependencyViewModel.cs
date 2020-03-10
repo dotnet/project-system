@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
         public TargetDependencyViewModel(ITargetFramework targetFramework, bool hasReachableVisibleUnresolvedDependency)
         {
             Caption = targetFramework.FriendlyName;
-            Flags = DependencyTreeFlags.DependencyTargetFrameworkGroup.Add($"$TFM:{targetFramework.FullName}");
+            Flags = DependencyTreeFlags.DependencyConfigurationGroup.Add($"$TFM:{targetFramework.FullName}");
             _hasUnresolvedDependency = hasReachableVisibleUnresolvedDependency;
         }
 

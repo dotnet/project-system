@@ -77,7 +77,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 + ResolvedDependencyFlags
                 + GenericDependency;
 
-        internal static readonly ProjectTreeFlags DependencyTargetFrameworkGroup = ProjectTreeFlags.Create("DependencyTargetFrameworkGroup");
+        /// <summary>
+        /// Identifies nodes used to group dependencies specific to a given implicit configuration,
+        /// which is most commonly the target framework.
+        /// </summary>
+        internal static readonly ProjectTreeFlags DependencyConfigurationGroup = ProjectTreeFlags.Create("DependencyConfigurationGroup");
         
         /// <summary>
         /// Present on nodes that group dependencies of a given provider (e.g. "Packages", "Assemblies", ...).

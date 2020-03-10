@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(targetFramework.FullName, result.Caption);
             Assert.Equal(KnownMonikers.Library, result.Icon);
             Assert.Equal(KnownMonikers.Library, result.ExpandedIcon);
-            Assert.True(result.Flags.Contains(DependencyTreeFlags.DependencyTargetFrameworkGroup));
+            Assert.True(result.Flags.Contains(DependencyTreeFlags.DependencyConfigurationGroup));
             Assert.True(result.Flags.Contains("$TFM:tFm1"));
         }
 
@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(targetFramework.FullName, result.Caption);
             Assert.Equal(ManagedImageMonikers.LibraryWarning, result.Icon);
             Assert.Equal(ManagedImageMonikers.LibraryWarning, result.ExpandedIcon);
-            Assert.True(result.Flags.Contains(DependencyTreeFlags.DependencyTargetFrameworkGroup));
+            Assert.True(result.Flags.Contains(DependencyTreeFlags.DependencyConfigurationGroup));
             Assert.True(result.Flags.Contains("$TFM:tFm1"));
         }
 
