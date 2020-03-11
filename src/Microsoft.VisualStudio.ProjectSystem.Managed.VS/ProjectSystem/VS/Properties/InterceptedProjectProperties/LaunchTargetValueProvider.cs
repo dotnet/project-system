@@ -18,12 +18,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     {
         private const string LaunchTargetPropertyName = "LaunchTarget";
 
+        private readonly UnconfiguredProject _project;
         private readonly ILaunchSettingsProvider _launchSettingsProvider;
+        private readonly IProjectThreadingService _projectThreadingService;
 
         [ImportingConstructor]
-        public LaunchTargetValueProvider(ILaunchSettingsProvider launchSettingsProvider)
+        public LaunchTargetValueProvider(UnconfiguredProject project, ILaunchSettingsProvider launchSettingsProvider, IProjectThreadingService projectThreadingService)
         {
+            _project = project;
             _launchSettingsProvider = launchSettingsProvider;
+            _projectThreadingService = projectThreadingService;
         }
 
         public override Task<string> OnGetEvaluatedPropertyValueAsync(string evaluatedPropertyValue, IProjectProperties defaultProperties)
@@ -51,23 +55,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             return launchSettings.ActiveProfile?.CommandName ?? string.Empty;
         }
 
-        public override async Task<string?> OnSetPropertyValueAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
+        public override Task<string?> OnSetPropertyValueAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
-            ILaunchSettings launchSettings = await _launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite);
-
-            var writableLaunchSettings = launchSettings.ToWritableLaunchSettings();
-            var activeProfile = writableLaunchSettings.ActiveProfile;
-            if (activeProfile != null)
+            _projectThreadingService.RunAndForget(async () =>
             {
-                activeProfile.CommandName = unevaluatedPropertyValue;
+                ILaunchSettings launchSettings = await _launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite);
 
-                await _launchSettingsProvider.UpdateAndSaveSettingsAsync(writableLaunchSettings.ToLaunchSettings());
-            }
+                var writableLaunchSettings = launchSettings.ToWritableLaunchSettings();
+                var activeProfile = writableLaunchSettings.ActiveProfile;
+                if (activeProfile != null)
+                {
+                    activeProfile.CommandName = unevaluatedPropertyValue;
+
+                    await _launchSettingsProvider.UpdateAndSaveSettingsAsync(writableLaunchSettings.ToLaunchSettings());
+                }
+            },
+            options: ForkOptions.HideLocks,
+            unconfiguredProject: _project);
 
             // We've intercepted the "set" operation and redirected it to the launch settings.
             // Return "null" to indicate that the value should _not_ be set in the project file
             // as well.
-            return null;
+            return Task.FromResult<string?>(null);
         }
     }
 }
