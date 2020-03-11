@@ -51,6 +51,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             public bool AllowCustomValues => false;
 
+            /// <remarks>
+            /// TODO: Replace dependency on <see cref="ILaunchSettingsUIProvider"/> with something else.
+            /// There are a couple of problems with using ILaunchSettingsUIProvider here. First, some
+            /// implementations of ILaunchSettingsUIProvider implicitly depend on being instantiated on the
+            /// UI thread, which forces us to explicitly switch threads.
+            /// Second, some of them have dependencies on the VS UI and, for example, try to obtain the VS
+            /// main window in the constructor. These just won't work in VS Online scenarios where there
+            /// isn't any UI on the server.
+            /// The probable solution is to create a contract _like_ ILaunchSettingsUIProvider but without
+            /// any UI responsibilities (and explicit support for being called from any thread) and use that
+            /// instead. At that point we can move this type out the VS-specific layer.
+            /// For the moment, however, we're going to work around the limitations.
+            /// </remarks>
             public async Task<ICollection<IEnumValue>> GetListedValuesAsync()
             {
                 // Some ILaunchSettingsUIProviders depend on being created on the UI thread, so we
@@ -62,13 +75,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 var enumValues = new List<PageEnumValue>();
                 foreach (Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView> provider in _uiProviders)
                 {
-                    if (enumValues.FirstOrDefault(launchType => launchType.Name.Equals(provider.Value.CommandName)) == null)
+                    try
                     {
-                        enumValues.Add(new PageEnumValue(new EnumValue
+                        if (enumValues.FirstOrDefault(launchType => launchType.Name.Equals(provider.Value.CommandName)) == null)
                         {
-                            Name = provider.Value.CommandName,
-                            DisplayName = provider.Value.FriendlyName
-                        }));
+                            enumValues.Add(new PageEnumValue(new EnumValue
+                            {
+                                Name = provider.Value.CommandName,
+                                DisplayName = provider.Value.FriendlyName
+                            }));
+                        }
+                    }
+                    catch
+                    {
+                        // Some ILaunchSettingsUIProviders try to access UI-specific data (like the main
+                        // window of the application) in their constructors. This leads to exceptions
+                        // while trying to instantiate these members in VS Online scenarios since there
+                        // isn't any UI to access. The best we can do right now is catch and ignore these
+                        // exceptions.
                     }
                 }
 
