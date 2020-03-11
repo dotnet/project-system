@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public async Task OnSetPropertyValue_SetsActiveProfile()
         {
             string activeProfileName = "Gamma";
-            var settingsProvider = ILaunchSettingsProviderFactory.Create(activeProfileName, v => activeProfileName = v);
+            var settingsProvider = ILaunchSettingsProviderFactory.Create(activeProfileName, setActiveProfileCallback: v => activeProfileName = v);
             var launchProfileProvider = new ActiveLaunchProfileValueProvider(settingsProvider);
 
             var result = await launchProfileProvider.OnSetPropertyValueAsync("Delta", Mock.Of<IProjectProperties>());
