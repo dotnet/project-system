@@ -130,6 +130,8 @@
     <PackageReference Update="Microsoft.CodeAnalysis.Analyzers"                                       Version="2.9.4" />
     <PackageReference Update="Microsoft.CodeQuality.Analyzers"                                        Version="2.9.4" />
     <PackageReference Update="Microsoft.NetFramework.Analyzers"                                       Version="2.9.4" />
+    <PackageReference Update="Microsoft.CodeAnalysis.CSharp.CodeStyle"                                Version="3.6.0-2.20157.5" />
+    <PackageReference Update="Microsoft.CodeAnalysis.VisualBasic.CodeStyle"                           Version="3.6.0-2.20157.5" />
     <PackageReference Update="Microsoft.NetCore.Analyzers"                                            Version="2.9.4" />
     <PackageReference Update="Microsoft.CodeAnalysis.BannedApiAnalyzers"                              Version="2.9.4" />
     <PackageReference Update="Microsoft.CodeAnalysis.PublicApiAnalyzers"                              Version="2.9.4" />
