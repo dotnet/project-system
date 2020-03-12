@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE file in the project root for more information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "VSTHRD004:Await SwitchToMainThreadAsync", Justification = "https://github.com/Microsoft/vs-threading/issues/377", Scope = "member", Target = "~M:Microsoft.VisualStudio.ProjectSystem.ThreadingExtensions.SwitchToUIThread(Microsoft.VisualStudio.ProjectSystem.IProjectThreadingService,System.Threading.CancellationToken)~Microsoft.VisualStudio.Threading.JoinableTaskFactory.MainThreadAwaitable")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Scope = "member", Target = "~M:Microsoft.VisualStudio.Threading.Tasks.CancellationSeries.CreateNext(System.Threading.CancellationToken)~System.Threading.CancellationToken")]
