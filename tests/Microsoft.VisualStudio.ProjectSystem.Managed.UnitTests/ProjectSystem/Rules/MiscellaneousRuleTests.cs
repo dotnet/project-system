@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
@@ -14,8 +15,54 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 {
     public sealed class MiscellaneousRuleTests : XamlRuleTestBase
     {
+        public Dictionary<string, bool> XamlRules = new Dictionary<string, bool>();
+
         [Fact]
-        public void CheckRuleFilesInDesignTimeTargets()
+        public void VerifyLocalizationInProjectFile()
+        {
+            string projectFile = Path.Combine(RepoUtil.FindRepoRootPath(), "src", "Microsoft.VisualStudio.ProjectSystem.Managed", "Microsoft.VisualStudio.ProjectSystem.Managed.csproj");
+
+            XElement? root = LoadXamlRule(projectFile);
+            var XamlPropertyRules = root.XPathSelectElements(@"/Project/ItemGroup/XamlPropertyRule");
+            Regex rx = new Regex(@"(\\)(?!.*\\)(.+\.xaml)$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+            foreach (XElement element in XamlPropertyRules)
+            {
+                string rulePath = element.Attribute("Include").Value;
+                string? xlfInput = element.XPathSelectElement("./XlfInput")?.Value;
+                
+                Match match = rx.Match(rulePath);
+                string ruleName = match.Value.Substring(1);
+
+                if (xlfInput?.Contains("false") ?? false)
+                {
+                    // The rule has its XlfInput element set to false.
+                    // Let's make sure this rule is not localized.
+                    XamlRules.Add(ruleName, false);
+                }
+                else
+                {
+                    // The rule has no XlfInput element (true by default).
+                    // Let's make sure this rule is localized.
+                    XamlRules.Add(ruleName, true);
+                }
+            }
+
+            // ProjectItemsSchemas should be localized.
+            var projectItemsSchemas = root.XPathSelectElements(@"/Project/ItemGroup/XamlPropertyProjectItemsSchema");
+
+            foreach (XElement element in projectItemsSchemas)
+            {
+                string rulePath = element.Attribute("Include").Value;
+                Match match = rx.Match(rulePath);
+                string ruleName = match.Value.Substring(1);
+
+                XamlRules.Add(ruleName, true);
+            }
+        }
+
+        [Fact]
+        public void VerifyLocalizationInDesignTimeTargets()
         {
             // For each DesignTime.targets file, check that the rule files with BrowseObject context are localized.
 
