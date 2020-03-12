@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             string activeProfileName = "Alpha";
             var settingsProvider = ILaunchSettingsProviderFactory.Create(activeProfileName);
 
-            var launchProfileProvider = new ActiveLaunchProfileValueProvider(settingsProvider);
+            var launchProfileProvider = new ActiveLaunchProfileNameValueProvider(settingsProvider);
 
             var actualValue = await launchProfileProvider.OnGetEvaluatedPropertyValueAsync(string.Empty, Mock.Of<IProjectProperties>());
 
@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         {
             string activeProfileName = "Beta";
             var settingsProvider = ILaunchSettingsProviderFactory.Create(activeProfileName);
-            var launchProfileProvider = new ActiveLaunchProfileValueProvider(settingsProvider);
+            var launchProfileProvider = new ActiveLaunchProfileNameValueProvider(settingsProvider);
 
             var actualValue = await launchProfileProvider.OnGetUnevaluatedPropertyValueAsync(string.Empty, Mock.Of<IProjectProperties>());
 
@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         {
             string activeProfileName = "Gamma";
             var settingsProvider = ILaunchSettingsProviderFactory.Create(activeProfileName, setActiveProfileCallback: v => activeProfileName = v);
-            var launchProfileProvider = new ActiveLaunchProfileValueProvider(settingsProvider);
+            var launchProfileProvider = new ActiveLaunchProfileNameValueProvider(settingsProvider);
 
             var result = await launchProfileProvider.OnSetPropertyValueAsync("Delta", Mock.Of<IProjectProperties>());
 

@@ -13,14 +13,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     /// redirects them to an <see cref="ILaunchSettingsProvider" />.
     /// </summary>
     [ExportInterceptingPropertyValueProvider(ActiveLaunchProfilePropertyName, ExportInterceptingPropertyValueProviderFile.ProjectFile)]
-    internal class ActiveLaunchProfileValueProvider : InterceptingPropertyValueProviderBase
+    internal class ActiveLaunchProfileNameValueProvider : InterceptingPropertyValueProviderBase
     {
         private const string ActiveLaunchProfilePropertyName = "ActiveLaunchProfile";
 
         private readonly ILaunchSettingsProvider _launchSettings;
 
         [ImportingConstructor]
-        public ActiveLaunchProfileValueProvider(ILaunchSettingsProvider launchSettings)
+        public ActiveLaunchProfileNameValueProvider(ILaunchSettingsProvider launchSettings)
         {
             _launchSettings = launchSettings;
         }
