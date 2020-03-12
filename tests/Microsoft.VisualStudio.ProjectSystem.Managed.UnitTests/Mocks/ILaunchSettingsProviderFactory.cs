@@ -16,9 +16,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// Creates a mock <see cref="ILaunchSettingsProvider"/> for testing purposes.
         /// </summary>
         /// <param name="activeProfileName">The name of the active profile in the new object.</param>
-        /// <param name="launchProfiles"></param>
+        /// <param name="launchProfiles">The set of launch profiles to expose through the provider.</param>
         /// <param name="setActiveProfileCallback">An optional method to call when the active profile is set.</param>
-        /// <param name="updateLaunchSettingsCallback"></param>
+        /// <param name="updateLaunchSettingsCallback">An optional method to call when the when the set of launch settings is updated</param>
         public static ILaunchSettingsProvider Create(
             string? activeProfileName = null,
             IEnumerable<ILaunchProfile>? launchProfiles = null,
