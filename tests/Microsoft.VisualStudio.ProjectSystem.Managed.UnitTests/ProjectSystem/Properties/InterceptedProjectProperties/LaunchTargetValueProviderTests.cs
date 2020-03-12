@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Moq;
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Properties.InterceptedProjectProperties
+namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     public class LaunchTargetValueProviderTests
     {
