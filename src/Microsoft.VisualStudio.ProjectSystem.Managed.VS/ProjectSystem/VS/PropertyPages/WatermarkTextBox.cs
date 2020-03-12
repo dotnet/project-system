@@ -1,5 +1,4 @@
-﻿//Ported from "vset\qtools\testmanagement\ui\controls\wpf\controls" as this follows the simplest option so far
-//Some unused properties are removed such as "Hitting Enter" support, etc.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Windows;
 using System.Windows.Controls;
