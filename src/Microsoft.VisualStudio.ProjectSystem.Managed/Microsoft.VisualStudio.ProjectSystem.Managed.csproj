@@ -254,6 +254,15 @@
       <SubType>Designer</SubType>
     </XamlPropertyRule>
 
+    <Compile Update="ProjectSystem\Rules\CollectedPackageVersion.cs">
+      <DependentUpon>CollectedPackageVersion.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\CollectedPackageVersion.xaml">
+      <XlfInput>false</XlfInput>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+
     <Compile Update="ProjectSystem\Rules\CompilerCommandLineArgs.cs">
       <DependentUpon>CompilerCommandLineArgs.xaml</DependentUpon>
     </Compile>

@@ -158,13 +158,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         }
         private IVsTargetFrameworks2 GetAllTargetFrameworks(IEnumerable<PackageRestoreConfiguredInput> updates)
         {
-            var frameworks = new List<IVsTargetFrameworkInfo2>();
+            var frameworks = new List<IVsTargetFrameworkInfo3>();
 
             foreach (PackageRestoreConfiguredInput update in updates)
             {
                 Assumes.True(update.RestoreInfo.TargetFrameworks.Count == 1);
 
-                IVsTargetFrameworkInfo2 framework = update.RestoreInfo.TargetFrameworks.Item(0);
+                var framework = (IVsTargetFrameworkInfo3)update.RestoreInfo.TargetFrameworks.Item(0);
 
                 if (ValidateTargetFramework(update.ProjectConfiguration, framework))
                 {
@@ -196,7 +196,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             return true;
         }
 
-        private bool ValidateTargetFramework(ProjectConfiguration projectConfiguration, IVsTargetFrameworkInfo2 framework)
+        private bool ValidateTargetFramework(ProjectConfiguration projectConfiguration, IVsTargetFrameworkInfo3 framework)
         {
             if (framework.TargetFrameworkMoniker.Length == 0)
             {

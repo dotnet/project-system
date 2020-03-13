@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
     /// </summary>
     internal class TargetFrameworks : ImmutablePropertyCollection<IVsTargetFrameworkInfo2>, IVsTargetFrameworks2
     {
-        public TargetFrameworks(IEnumerable<IVsTargetFrameworkInfo2> items)
+        public TargetFrameworks(IEnumerable<IVsTargetFrameworkInfo3> items)
             : base(items, item => item.TargetFrameworkMoniker)
         {
         }
