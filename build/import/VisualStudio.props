@@ -97,7 +97,9 @@
            or '%(FileName)' == 'Microsoft.VisualStudio.CommandBars'
            or '%(FileName)' == 'NuGet.SolutionRestoreManager.Interop'
            or '%(FileName)' == 'NuGet.VisualStudio'
-           or '%(FileName)' == 'VSLangProj110'">
+           or '%(FileName)' == 'VSLangProj110'
+           or '%(FileName)' == 'VSLangProj165'
+           ">
         <EmbedInteropTypes>true</EmbedInteropTypes>
       </ReferencePath>
       <ReferencePath Condition="
