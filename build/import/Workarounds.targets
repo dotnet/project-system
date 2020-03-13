@@ -1,20 +1,13 @@
 <!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project>
   
-  <!-- Both xunit.runner.console and xunit.runner.visualstudio carry the same file, 
-       remove it to avoid double-write. 
-  -->
-  <PropertyGroup>
-    <PrepareForBuildDependsOn>RemoveDuplicateXUnitAbstractions;$(PrepareForBuildDependsOn)</PrepareForBuildDependsOn>
-  </PropertyGroup>
-
-  <Target Name="RemoveDuplicateXUnitAbstractions">
-
-    <ItemGroup>
-      <None Remove="@(None)" Condition="'%(Filename)%(Extension)' == 'xunit.abstractions.dll'" />
-    </ItemGroup>
-
-  </Target>
+  <!-- WORKAROUND: Both xunit.runner.console and xunit.runner.visualstudio carry the same file and try to 
+       deploy it as CopyToOutputDirectory item. Remove them both, xunit.extensibility.core carries the 
+       version we will use.  -->
+  <ItemGroup>
+    <None Remove="$(Pkgxunit_runner_visualstudio)\**\xunit.abstractions.dll" />
+    <None Remove="$(Pkgxunit_runner_console)\**\xunit.abstractions.dll" />
+  </ItemGroup>
 
   <Target Name="EmbeddingAssemblyNameFromPackageId" AfterTargets="ResolveReferences" BeforeTargets="FindReferenceAssembliesForReferences">
     <ItemGroup>
