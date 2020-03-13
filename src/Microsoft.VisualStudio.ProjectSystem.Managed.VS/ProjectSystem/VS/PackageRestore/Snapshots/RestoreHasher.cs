@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             AppendProperty(hasher, nameof(restoreInfo.MSBuildProjectExtensionsPath),    restoreInfo.MSBuildProjectExtensionsPath);
             AppendProperty(hasher, nameof(restoreInfo.OriginalTargetFrameworks),        restoreInfo.OriginalTargetFrameworks);
 
-            foreach (IVsTargetFrameworkInfo2 framework in restoreInfo.TargetFrameworks)
+            foreach (IVsTargetFrameworkInfo3 framework in restoreInfo.TargetFrameworks)
             {
                 AppendProperty(hasher, nameof(framework.TargetFrameworkMoniker), framework.TargetFrameworkMoniker);
                 AppendFrameworkProperties(hasher, framework);
@@ -25,6 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 AppendReferences(hasher, framework.PackageReferences);
                 AppendReferences(hasher, framework.FrameworkReferences);
                 AppendReferences(hasher, framework.PackageDownloads);
+                AppendReferences(hasher, framework.CentralPackageVersions);
             }
 
             AppendReferences(hasher, restoreInfo.ToolReferences);

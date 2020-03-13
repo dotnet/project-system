@@ -24,6 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                                                                         .Add(DotNetCliToolReference.SchemaName)             // Evaluation
                                                                         .Add(CollectedFrameworkReference.SchemaName)        // Project Build
                                                                         .Add(CollectedPackageDownload.SchemaName)           // Project Build                                                                        
+                                                                        .Add(CollectedPackageVersion.SchemaName)            // Project Build
                                                                         .Add(PackageReference.SchemaName);                  // Project Build
         private readonly UnconfiguredProject _containingProject;
         private readonly IProjectSubscriptionService _projectSubscriptionService;

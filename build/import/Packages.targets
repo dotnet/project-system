@@ -139,8 +139,8 @@
     <PackageReference Update="Roslyn.Diagnostics.Analyzers"                                           Version="2.9.4" />
 
     <!-- NuGet -->
-    <PackageReference Update="NuGet.SolutionRestoreManager.Interop"                                   Version="5.1.0-rtm.5921" />
-    <PackageReference Update="NuGet.VisualStudio"                                                     Version="5.1.0-rtm.5921" />
+    <PackageReference Update="NuGet.SolutionRestoreManager.Interop"                                   Version="5.6.0-preview.2.6505" />
+    <PackageReference Update="NuGet.VisualStudio"                                                     Version="5.6.0-preview.2.6505" />
 
     <!-- MSBuild -->
     <PackageReference Update="Microsoft.Build"                                                        Version="16.4.0"/>

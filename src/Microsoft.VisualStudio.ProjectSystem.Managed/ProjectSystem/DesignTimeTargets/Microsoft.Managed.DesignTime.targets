@@ -295,6 +295,11 @@
       <Context>ProjectSubscriptionService</Context>
     </PropertyPageSchema>
     
+    <!-- Central Package Versions -->
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)CollectedPackageVersion.xaml">
+      <Context>ProjectSubscriptionService</Context>
+    </PropertyPageSchema>
+    
     <!-- Project references -->
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ProjectReference.xaml">
       <Context>Project;BrowseObject</Context>

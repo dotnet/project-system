@@ -37,6 +37,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         },
         ""CollectedPackageDownload"": {
             ""Items"" : {}
+        },
+        ""CollectedPackageVersion"": {
+            ""Items"" : {}
         }
     }
 }
@@ -241,6 +244,51 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         }
 
         [Fact]
+        public void ToProjectRestoreInfo_SetsCentralPackageVersions()
+        {
+            var update = IProjectSubscriptionUpdateFactory.FromJson(@"
+{
+    ""CurrentState"": {
+        ""CollectedPackageVersion"": {
+            ""Items"" : {
+                ""Newtonsoft.Json"" : {
+                    ""Version"" : ""1.0"",
+                },
+                ""System.IO"" : {
+                    ""Version"" : ""2.0"",
+                },
+                ""Microsoft.Extensions"" : {
+                    ""Version"" : ""3.0""
+                }
+            }
+        }
+    }
+}");
+            var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
+
+            Assert.Equal(1, result.TargetFrameworks.Count);
+
+            var versions = ((IVsTargetFrameworkInfo3)result.TargetFrameworks.Item(0)).CentralPackageVersions;
+
+            Assert.Equal(3, versions.Count);
+
+            var reference1 = versions.Item("Newtonsoft.Json");
+            Assert.Equal("Newtonsoft.Json", reference1.Name);
+
+            AssertContainsProperty("Version", "1.0", reference1.Properties);
+
+            var reference2 = versions.Item("System.IO");
+            Assert.Equal("System.IO", reference2.Name);
+
+            AssertContainsProperty("Version", "2.0", reference2.Properties);
+
+            var reference3 = versions.Item("Microsoft.Extensions");
+            Assert.Equal("Microsoft.Extensions", reference3.Name);
+
+            AssertContainsProperty("Version", "3.0", reference3.Properties);
+        }
+
+        [Fact]
         public void ToProjectRestoreInfo_SetsProjectReferences()
         {
             var update = IProjectSubscriptionUpdateFactory.FromJson(@"
@@ -382,12 +430,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             Assert.Empty(result.ToolReferences);
             Assert.Equal(1, result.TargetFrameworks.Count);
 
-            var targetFramework = result.TargetFrameworks.Item(0);
+            var targetFramework = (IVsTargetFrameworkInfo3)result.TargetFrameworks.Item(0);
 
             Assert.Empty(targetFramework.FrameworkReferences);
             Assert.Empty(targetFramework.PackageDownloads);
             Assert.Empty(targetFramework.PackageReferences);
             Assert.Empty(targetFramework.ProjectReferences);
+            Assert.Empty(targetFramework.CentralPackageVersions);
         }
     }
 }
