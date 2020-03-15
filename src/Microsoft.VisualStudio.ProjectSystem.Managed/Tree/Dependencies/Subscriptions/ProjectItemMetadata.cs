@@ -10,8 +10,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         public const string Version = "Version";
         public const string Dependencies = "Dependencies";
         public const string IsImplicitlyDefined = "IsImplicitlyDefined";
-        public const string Severity = "Severity";
-        public const string DiagnosticCode = "DiagnosticCode";
         public const string OriginalItemSpec = "OriginalItemSpec";
     }
 }
