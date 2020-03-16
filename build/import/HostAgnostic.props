@@ -23,7 +23,7 @@
     <PackageReference Include="MicroBuild.Core" ExcludeAssets="All" />
     <PackageReference Include="MicroBuild.Core.Sentinel" ExcludeAssets="All" />
     <PackageReference Include="MicroBuild.Plugins.SwixBuild" ExcludeAssets="All"/>
-    <PackageReference Include="Microsoft.Net.Compilers" />
+    <PackageReference Include="Microsoft.Net.Compilers.Toolset" />
     <PackageReference Include="XliffTasks" />
     <PackageReference Include="RoslynTools.SignTool" />
     <PackageReference Include="RoslynTools.RepoToolset" ExcludeAssets="all" />

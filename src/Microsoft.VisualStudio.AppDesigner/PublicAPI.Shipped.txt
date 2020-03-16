@@ -1,3 +1,4 @@
+#nullable enable
 Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.CLSCTX_ESERVER_HANDLER = 256 -> Integer
 Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.CLSCTX_INPROC_HANDLER = 2 -> Integer
 Const Microsoft.VisualStudio.Editors.AppDesInterop.Win32Constant.CLSCTX_INPROC_HANDLER16 = 32 -> Integer
