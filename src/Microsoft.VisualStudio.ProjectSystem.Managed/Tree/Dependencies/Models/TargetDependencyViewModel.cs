@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
                 return ImmutableInterlocked.GetOrAdd(
                     ref s_configurationFlags,
                     targetFramework.FullName,
-                    fullName => DependencyTreeFlags.DependencyConfigurationGroup.Add($"$TFM:{fullName}"));
+                    fullName => DependencyTreeFlags.TargetNode.Add($"$TFM:{fullName}"));
             }
         }
 

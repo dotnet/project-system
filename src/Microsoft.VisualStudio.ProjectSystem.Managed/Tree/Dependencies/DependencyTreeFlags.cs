@@ -81,7 +81,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// Identifies nodes used to group dependencies specific to a given implicit configuration,
         /// which is most commonly the target framework.
         /// </summary>
-        internal static readonly ProjectTreeFlags DependencyConfigurationGroup = ProjectTreeFlags.Create("DependencyConfigurationGroup");
+        /// <remarks>
+        /// <para>
+        /// Nodes with this flag must also have a flag of form <c>TFM:FOO</c> where <c>FOO</c> is
+        /// the target framework's full moniker.
+        /// </para>
+        /// <para>
+        /// This flag is used by Roslyn when attaching analyzer nodes.
+        /// </para>
+        /// </remarks>
+        internal static readonly ProjectTreeFlags TargetNode = ProjectTreeFlags.Create("TargetNode");
         
         /// <summary>
         /// Present on nodes that group dependencies of a given provider (e.g. "Packages", "Assemblies", ...).
