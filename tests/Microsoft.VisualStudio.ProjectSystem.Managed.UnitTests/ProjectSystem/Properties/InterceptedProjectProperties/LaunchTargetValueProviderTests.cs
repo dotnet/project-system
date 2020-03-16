@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     public class LaunchTargetValueProviderTests
     {
         [Fact]
-        public async Task OnGetEvaluatedPropertyValueAsync_GetsTargetFromActiveProfile()
+        public async Task LaunchTarget_OnGetEvaluatedPropertyValueAsync_GetsTargetFromActiveProfile()
         {
             string activeProfileName = "Alpha";
             string activeProfileLaunchTarget = "AlphaCommand";
@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         }
 
         [Fact]
-        public async Task OnGetUnevaluatedPropertyValueAsync_GetsTargetFromActiveProfile()
+        public async Task LaunchTarget_OnGetUnevaluatedPropertyValueAsync_GetsTargetFromActiveProfile()
         {
             string activeProfileName = "Beta";
             string activeProfileLaunchTarget = "BetaCommand";
@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         }
 
         [Fact]
-        public async Task OnSetPropertyValueAsync_SetsTargetInActiveProfile()
+        public async Task LaunchTarget_OnSetPropertyValueAsync_SetsTargetInActiveProfile()
         {
             string activeProfileName = "Gamma";
             string activeProfileLaunchTarget = "GammaCommand";

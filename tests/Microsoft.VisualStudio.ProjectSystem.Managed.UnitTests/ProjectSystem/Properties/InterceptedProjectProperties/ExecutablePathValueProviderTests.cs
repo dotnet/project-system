@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     public class ExecutablePathValueProviderTests
     {
         [Fact]
-        public async Task OnGetEvaluatedPropertyValueAsync_GetsExecutableFromActiveProfile()
+        public async Task ExecutablePath_OnGetEvaluatedPropertyValueAsync_GetsExecutableFromActiveProfile()
         {
             string activeProfileName = "Alpha";
             string activeProfileLaunchTarget = "AlphaCommand";
@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         }
 
         [Fact]
-        public async Task OnGetUnevaluatedPropertyValueAsync_GetsExecutableFromActiveProfile()
+        public async Task ExecutablePath_OnGetUnevaluatedPropertyValueAsync_GetsExecutableFromActiveProfile()
         {
             string activeProfileName = "Beta";
             string activeProfileLaunchTarget = "BetaCommand";
@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         }
 
         [Fact]
-        public async Task OnSetPropertyValueAsync_SetsTargetInActiveProfile()
+        public async Task ExecutablePath_OnSetPropertyValueAsync_SetsTargetInActiveProfile()
         {
             string activeProfileName = "Gamma";
             string activeProfileLaunchTarget = "GammaCommand";

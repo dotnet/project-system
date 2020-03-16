@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     public class ActiveLaunchProfilesValueProviderTests
     {
         [Fact]
-        public async Task OnGetEvaluatedProperty_GetsActiveProfileName()
+        public async Task ActiveLaunchProfileName_OnGetEvaluatedProperty_GetsActiveProfileName()
         {
             string activeProfileName = "Alpha";
             var settingsProvider = ILaunchSettingsProviderFactory.Create(activeProfileName);
@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         }
 
         [Fact]
-        public async Task OnGetUnevaluatedProperty_GetsActiveProfileName()
+        public async Task ActiveLaunchProfileName_OnGetUnevaluatedProperty_GetsActiveProfileName()
         {
             string activeProfileName = "Beta";
             var settingsProvider = ILaunchSettingsProviderFactory.Create(activeProfileName);
@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         }
 
         [Fact]
-        public async Task OnSetPropertyValue_SetsActiveProfile()
+        public async Task ActiveLaunchProfileName_OnSetPropertyValue_SetsActiveProfile()
         {
             string activeProfileName = "Gamma";
             var settingsProvider = ILaunchSettingsProviderFactory.Create(activeProfileName, setActiveProfileCallback: v => activeProfileName = v);
