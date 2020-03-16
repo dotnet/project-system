@@ -42,14 +42,34 @@
         <target state="new">Debug</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|CommandLineArguments|Description">
+        <source>Command line arguments to pass to the executable.</source>
+        <target state="new">Command line arguments to pass to the executable.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|CommandLineArguments|DisplayName">
+        <source>Command line arguments</source>
+        <target state="new">Command line arguments</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|ExecutablePath|Description">
-        <source>Path to the executable to run</source>
-        <target state="new">Path to the executable to run</target>
+        <source>Path to the executable to run.</source>
+        <target state="new">Path to the executable to run.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExecutablePath|DisplayName">
         <source>Executable</source>
         <target state="new">Executable</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|WorkingDirectory|Description">
+        <source>Path to the working directory where the process will be started.</source>
+        <target state="new">Path to the working directory where the process will be started.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|WorkingDirectory|DisplayName">
+        <source>Working directory</source>
+        <target state="new">Working directory</target>
         <note />
       </trans-unit>
     </body>

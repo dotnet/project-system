@@ -33,6 +33,17 @@
   <StringProperty Name="ExecutablePath"
                   DisplayName="Executable"
                   Category="CommandLine"
-                  Description="Path to the executable to run"
+                  Description="Path to the executable to run."
                   Subtype="file" />
+
+  <StringProperty Name="WorkingDirectory"
+                  DisplayName="Working directory"
+                  Category="CommandLine"
+                  Description="Path to the working directory where the process will be started."
+                  Subtype="folder" />
+
+  <StringProperty Name="CommandLineArguments"
+                  DisplayName="Command line arguments"
+                  Category="CommandLine"
+                  Description="Command line arguments to pass to the executable." />
 </Rule>
