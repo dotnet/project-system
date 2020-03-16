@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
-    public class ActiveLaunchProfilesValueProviderTests
+    public class ActiveLaunchProfileValueProvidersTests
     {
         [Fact]
         public async Task ActiveLaunchProfileName_OnGetEvaluatedProperty_GetsActiveProfileName()
