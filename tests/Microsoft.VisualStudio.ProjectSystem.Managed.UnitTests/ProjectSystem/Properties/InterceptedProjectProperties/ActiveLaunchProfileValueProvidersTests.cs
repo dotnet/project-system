@@ -84,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             string activeProfileExecutablePath = @"C:\user\bin\gamma.exe";
             var settingsProvider = SetupLaunchSettingsProvider(
                 activeProfileName: "Gamma",
-                activeProfileExecutablePath,
+                activeProfileExecutablePath: activeProfileExecutablePath,
                 updateLaunchSettingsCallback: s =>
                 {
                     activeProfileExecutablePath = s.ActiveProfile!.ExecutablePath;
@@ -103,7 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public async Task LaunchTarget_OnGetEvaluatedPropertyValueAsync_GetsTargetFromActiveProfile()
         {
             string activeProfileLaunchTarget = "AlphaCommand";
-            var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "Alpha", activeProfileLaunchTarget);
+            var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "Alpha", activeProfileLaunchTarget: activeProfileLaunchTarget);
 
             var project = UnconfiguredProjectFactory.Create();
             var threadingService = IProjectThreadingServiceFactory.Create();
@@ -118,7 +118,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public async Task LaunchTarget_OnGetUnevaluatedPropertyValueAsync_GetsTargetFromActiveProfile()
         {
             string activeProfileLaunchTarget = "BetaCommand";
-            var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "Beta", activeProfileLaunchTarget);
+            var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "Beta", activeProfileLaunchTarget: activeProfileLaunchTarget);
 
             var project = UnconfiguredProjectFactory.Create();
             var threadingService = IProjectThreadingServiceFactory.Create();
@@ -150,10 +150,62 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             Assert.Equal(expected: "NewCommand", actual: activeProfileLaunchTarget);
         }
 
+        [Fact]
+        public async Task CommandLineArguments_OnGetEvaluatedPropertyValueAsync_GetsArgumentsFromActiveProfile()
+        {
+            string activeProfileCommandLineArguments = "/bird:YES /giraffe:NO";
+            var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "ZooAnimals", activeProfileCommandLineArgs: activeProfileCommandLineArguments);
+
+            var project = UnconfiguredProjectFactory.Create();
+            var threadingService = IProjectThreadingServiceFactory.Create();
+            var commandLineArgumentsProvider = new CommandLineArgumentsValueProvider(project, settingsProvider, threadingService);
+
+            var actualValue = await commandLineArgumentsProvider.OnGetEvaluatedPropertyValueAsync(string.Empty, Mock.Of<IProjectProperties>());
+
+            Assert.Equal(expected: activeProfileCommandLineArguments, actual: actualValue);
+        }
+
+        [Fact]
+        public async Task CommandLineArguments_OnGetUnevaluatedPropertyValueAsync_GetsArgumentsFromActiveProfile()
+        {
+            string activeProfileCommandLineArguments = "/alpaca:YES /llama:NO /vicuña:NONONO";
+            var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "SortOfFarmAnimals", activeProfileCommandLineArgs: activeProfileCommandLineArguments);
+
+            var project = UnconfiguredProjectFactory.Create();
+            var threadingService = IProjectThreadingServiceFactory.Create();
+            var commandLineArgumentsProvider = new CommandLineArgumentsValueProvider(project, settingsProvider, threadingService);
+
+            var actualValue = await commandLineArgumentsProvider.OnGetUnevaluatedPropertyValueAsync(string.Empty, Mock.Of<IProjectProperties>());
+
+            Assert.Equal(expected: activeProfileCommandLineArguments, actual: actualValue);
+        }
+
+        [Fact]
+        public async Task CommandLineArguments_OnSetPropertyValueAsync_SetsArgumentsInActiveProfile()
+        {
+            string activeProfileCommandLineArgs = "/orca:YES /bluewhale:NO";
+            var settingsProvider = SetupLaunchSettingsProvider(
+                activeProfileName: "SeaMammals",
+                activeProfileCommandLineArgs: activeProfileCommandLineArgs,
+                updateLaunchSettingsCallback: s =>
+                {
+                    activeProfileCommandLineArgs = s.ActiveProfile!.CommandLineArgs;
+                });
+
+            var project = UnconfiguredProjectFactory.Create();
+            var threadingService = IProjectThreadingServiceFactory.Create();
+            var launchProfileProvider = new CommandLineArgumentsValueProvider(project, settingsProvider, threadingService);
+
+            await launchProfileProvider.OnSetPropertyValueAsync("/seaotters:YES /seals:YES", Mock.Of<IProjectProperties>());
+
+            Assert.Equal(expected: "/seaotters:YES /seals:YES", actual: activeProfileCommandLineArgs);
+        }
+
         private static ILaunchSettingsProvider SetupLaunchSettingsProvider(
-            string activeProfileName, 
-            string? activeProfileLaunchTarget = null, 
-            string? activeProfileExecutablePath = null, 
+            string activeProfileName,
+            string? activeProfileLaunchTarget = null,
+            string? activeProfileExecutablePath = null,
+            string? activeProfileCommandLineArgs = null,
             Action<string>? setActiveProfileCallback = null,
             Action<ILaunchSettings>? updateLaunchSettingsCallback = null)
         {
@@ -172,6 +224,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             if (activeProfileExecutablePath != null)
             {
                 profile.ExecutablePath = activeProfileExecutablePath;
+            }
+
+            if (activeProfileCommandLineArgs != null)
+            {
+                profile.CommandLineArgs = activeProfileCommandLineArgs;
             }
 
             var settingsProvider = ILaunchSettingsProviderFactory.Create(
