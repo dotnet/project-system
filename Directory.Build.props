@@ -105,8 +105,5 @@
     <UseCommonOutputDirectory Condition="'$(UseCommonOutputDirectory)' == ''">true</UseCommonOutputDirectory>
      
     <NoWarn>$(NoWarn);NU5125</NoWarn>
-    
-    <!-- Workaround for https://github.com/microsoft/vs-threading/issues/472 and that you cannot disable analyzers file in an .editorconfig (https://github.com/dotnet/roslyn/issues/38042) -->
-    <NoWarn>$(NoWarn);VSTHRD003</NoWarn>
   </PropertyGroup>
 </Project>
