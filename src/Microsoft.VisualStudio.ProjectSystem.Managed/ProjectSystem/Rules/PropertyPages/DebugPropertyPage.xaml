@@ -22,4 +22,8 @@
                        Category="General"
                        EnumProvider="DebugProfileProvider" />
 
+  <DynamicEnumProperty Name="LaunchTarget"
+                       DisplayName="Launch"
+                       Category="General"
+                       EnumProvider="LaunchTargetEnumProvider"/>
 </Rule>
