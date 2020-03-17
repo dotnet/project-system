@@ -194,11 +194,62 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             var project = UnconfiguredProjectFactory.Create();
             var threadingService = IProjectThreadingServiceFactory.Create();
-            var launchProfileProvider = new CommandLineArgumentsValueProvider(project, settingsProvider, threadingService);
+            var commandLineArgumentsProvider = new CommandLineArgumentsValueProvider(project, settingsProvider, threadingService);
 
-            await launchProfileProvider.OnSetPropertyValueAsync("/seaotters:YES /seals:YES", Mock.Of<IProjectProperties>());
+            await commandLineArgumentsProvider.OnSetPropertyValueAsync("/seaotters:YES /seals:YES", Mock.Of<IProjectProperties>());
 
             Assert.Equal(expected: "/seaotters:YES /seals:YES", actual: activeProfileCommandLineArgs);
+        }
+
+        [Fact]
+        public async Task WorkingDirectory_OnGetEvaluatedPropertyValueAsync_GetsDirectoryFromActiveProfile()
+        {
+            string activeProfileWorkingDirectory = @"C:\alpha\beta\gamma";
+            var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "One", activeProfileWorkingDirectory: activeProfileWorkingDirectory);
+
+            var project = UnconfiguredProjectFactory.Create();
+            var threadingService = IProjectThreadingServiceFactory.Create();
+            var workingDirectoryProvider = new WorkingDirectoryValueProvider(project, settingsProvider, threadingService);
+
+            var actualValue = await workingDirectoryProvider.OnGetEvaluatedPropertyValueAsync(string.Empty, Mock.Of<IProjectProperties>());
+
+            Assert.Equal(expected: activeProfileWorkingDirectory, actual: actualValue);
+        }
+
+        [Fact]
+        public async Task WorkingDirectory_OnGetUnevaluatedPropertyValueAsync_GetsDirectoryFromActiveProfile()
+        {
+            string activeProfileWorkingDirectory = @"C:\delta\epsilon\phi";
+            var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "Two", activeProfileWorkingDirectory: activeProfileWorkingDirectory);
+
+            var project = UnconfiguredProjectFactory.Create();
+            var threadingService = IProjectThreadingServiceFactory.Create();
+            var workingDirectoryProvider = new WorkingDirectoryValueProvider(project, settingsProvider, threadingService);
+
+            var actualValue = await workingDirectoryProvider.OnGetUnevaluatedPropertyValueAsync(string.Empty, Mock.Of<IProjectProperties>());
+
+            Assert.Equal(expected: activeProfileWorkingDirectory, actual: actualValue);
+        }
+
+        [Fact]
+        public async Task WorkingDirectory_OnSetPropertyValueAsync_SetsDirectoryInActiveProfile()
+        {
+            string activeProfileWorkingDirectory = @"C:\one\two\three";
+            var settingsProvider = SetupLaunchSettingsProvider(
+                activeProfileName: "Three",
+                activeProfileWorkingDirectory: activeProfileWorkingDirectory,
+                updateLaunchSettingsCallback: s =>
+                {
+                    activeProfileWorkingDirectory = s.ActiveProfile!.WorkingDirectory;
+                });
+
+            var project = UnconfiguredProjectFactory.Create();
+            var threadingService = IProjectThreadingServiceFactory.Create();
+            var workingDirectoryProvider = new WorkingDirectoryValueProvider(project, settingsProvider, threadingService);
+
+            await workingDirectoryProvider.OnSetPropertyValueAsync(@"C:\four\five\six", Mock.Of<IProjectProperties>());
+
+            Assert.Equal(expected: @"C:\four\five\six", actual: activeProfileWorkingDirectory);
         }
 
         private static ILaunchSettingsProvider SetupLaunchSettingsProvider(
@@ -206,6 +257,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             string? activeProfileLaunchTarget = null,
             string? activeProfileExecutablePath = null,
             string? activeProfileCommandLineArgs = null,
+            string? activeProfileWorkingDirectory = null,
             Action<string>? setActiveProfileCallback = null,
             Action<ILaunchSettings>? updateLaunchSettingsCallback = null)
         {
@@ -229,6 +281,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             if (activeProfileCommandLineArgs != null)
             {
                 profile.CommandLineArgs = activeProfileCommandLineArgs;
+            }
+
+            if (activeProfileWorkingDirectory != null)
+            {
+                profile.WorkingDirectory = activeProfileWorkingDirectory;
             }
 
             var settingsProvider = ILaunchSettingsProviderFactory.Create(
