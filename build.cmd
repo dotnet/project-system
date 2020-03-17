@@ -76,7 +76,7 @@ echo   Build options:
 echo     /[no-]diagnostic          Turns on or turns off (default) logging to a binlog
 echo     /[no-]deploy              Deploy (default) or skip deploying Visual Studio extensions
 echo     /[no-]sign                Sign (default) or skip signing build outputs
-echo     /[no-]ci                  Turns on (default) or turns off a continuous integration build
+echo     /[no-]ci                  Turns on or turns off (default) a continuous integration build
 echo     /[no-]ibc                 Turns on or turns off (default) IBC (OptProf) optimization data usage
 echo     /[no-]clearnugetcache     Clears or skips clearing (default) NuGet package cache
 echo     /rootsuffix ^<hive^>        Hive to use when deploying Visual Studio extensions (default is 'Exp')
