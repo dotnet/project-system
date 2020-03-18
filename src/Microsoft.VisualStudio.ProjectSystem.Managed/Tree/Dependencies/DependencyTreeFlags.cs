@@ -83,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </summary>
         /// <remarks>
         /// <para>
-        /// Nodes with this flag must also have a flag of form <c>TFM:FOO</c> where <c>FOO</c> is
+        /// Nodes with this flag must also have a flag of form <c>$TFM:FOO</c> where <c>FOO</c> is
         /// the target framework's full moniker.
         /// </para>
         /// <para>
