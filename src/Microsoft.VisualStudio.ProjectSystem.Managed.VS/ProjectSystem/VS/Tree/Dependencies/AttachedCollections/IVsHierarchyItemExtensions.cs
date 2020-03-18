@@ -13,6 +13,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
     internal static class IVsHierarchyItemExtensions
     {
         private static Regex? s_targetFlagsRegex;
+        private static Regex? s_packageFlagsRegex;
+
         /// <summary>
         /// Detects the configuration string associated with a given hierarchy item in the dependencies tree, if
         /// nested within a target group node. For projects that do not multi-target, this will always return <see langword="false"/>.
@@ -41,6 +43,38 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
             }
 
             configuration = null;
+            return false;
+        }
+
+        /// <summary>
+        /// Detects the package ID and version associated with a given hierarchy item in the dependencies tree, if
+        /// nested within a target group node. For projects that do not multi-target, this will always return <see langword="false"/>.
+        /// This method searches ancestors until a configuration is found, or the project root is found.
+        /// </summary>
+        /// <param name="item">The item to test for.</param>
+        /// <param name="packageId">The detected package ID, if found.</param>
+        /// <param name="packageVersion">The detected package version, if found.</param>
+        /// <returns><see langword="true"/> if package ID and version were found, otherwise <see langword="false"/>.</returns>
+        public static bool TryGetPackageDetails(
+            this IVsHierarchyItem item,
+            [NotNullWhen(returnValue: true)] out string? packageId,
+            [NotNullWhen(returnValue: true)] out string? packageVersion)
+        {
+            s_packageFlagsRegex ??= new Regex(@"^(?=.*\b" + nameof(DependencyTreeFlags.PackageDependency) + @"\b)(?=.*\$ID:(?<id>[^ ]+)\b)(?=.*\$VER:(?<version>[^ ]+)\b).*$", RegexOptions.Compiled);
+
+            if (item.TryGetFlagsString(out string? flagsString))
+            {
+                Match match = s_packageFlagsRegex.Match(flagsString);
+                if (match.Success)
+                {
+                    packageId = match.Groups["id"].Value;
+                    packageVersion = match.Groups["version"].Value;
+                    return true;
+                }
+            }
+
+            packageId = default;
+            packageVersion = default;
             return false;
         }
 
