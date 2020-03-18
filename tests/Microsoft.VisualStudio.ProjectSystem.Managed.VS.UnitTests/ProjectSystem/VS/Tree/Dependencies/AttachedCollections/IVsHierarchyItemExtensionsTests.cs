@@ -19,6 +19,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
             Assert.Equal("A B C", s);
         }
 
+        [Theory]
+        [InlineData("TargetNode $TFM:FooBar", "FooBar")]
+        [InlineData("$TFM:FooBar TargetNode", "FooBar")]
+        [InlineData("$TFM:FooBar TargetNode OTHER", "FooBar")]
+        [InlineData("OTHER $TFM:FooBar TargetNode", "FooBar")]
+        [InlineData("TargetNode", null)]
+        [InlineData("TARGETNODE $TFM:FooBar", null)]
+        [InlineData("$TFM:FooBar", null)]
+        [InlineData("TargetNode TFM:FooBar", null)]
+        [InlineData("$TFM:", null)]
+        [InlineData("", null)]
+        public void TryFindConfiguration(string flagsString, string? expectedConfiguration)
+        {
+            IVsHierarchyItem item = CreateItemWithFlags(flagsString);
+
+            var result = item.TryFindConfiguration(out string? actualConfiguration);
+
+            Assert.Equal(actualConfiguration != null, result);
+            Assert.Equal(expectedConfiguration, actualConfiguration);
+        }
+
         private static IVsHierarchyItem CreateItemWithFlags(string flagsString)
         {
             var hierarchy = IVsHierarchyFactory.Create();
@@ -30,6 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
             var hierarchyItem = new Mock<IVsHierarchyItem>(MockBehavior.Strict);
             hierarchyItem.SetupGet(i => i.HierarchyIdentity).Returns(identity.Object);
+            hierarchyItem.SetupGet<IVsHierarchyItem?>(i => i.Parent).Returns((IVsHierarchyItem?)null);
 
             return hierarchyItem.Object;
         }

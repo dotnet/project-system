@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Diagnostics.CodeAnalysis;
+using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
@@ -11,6 +12,38 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
     /// </summary>
     internal static class IVsHierarchyItemExtensions
     {
+        private static Regex? s_targetFlagsRegex;
+        /// <summary>
+        /// Detects the configuration string associated with a given hierarchy item in the dependencies tree, if
+        /// nested within a target group node. For projects that do not multi-target, this will always return <see langword="false"/>.
+        /// This method searches ancestors until a configuration is found, or the project root is found.
+        /// </summary>
+        /// <param name="item">The item to test for.</param>
+        /// <param name="configuration">The detected configuration, if found.</param>
+        /// <returns><see langword="true"/> if the configuration was found, otherwise <see langword="false"/>.</returns>
+        public static bool TryFindConfiguration(
+            this IVsHierarchyItem item,
+            [NotNullWhen(returnValue: true)] out string? configuration)
+        {
+            s_targetFlagsRegex ??= new Regex(@"^(?=.*\b" + nameof(DependencyTreeFlags.TargetNode) + @"\b)(?=.*\$TFM:(?<config>[^ ]+)\b).*$", RegexOptions.Compiled);
+
+            for (IVsHierarchyItem? parent = item; parent != null; parent = parent.Parent)
+            {
+                if (parent.TryGetFlagsString(out string? flagsString))
+                {
+                    Match match = s_targetFlagsRegex.Match(flagsString);
+                    if (match.Success)
+                    {
+                        configuration = match.Groups["config"].Value;
+                        return true;
+                    }
+                }
+            }
+
+            configuration = null;
+            return false;
+        }
+
         public static bool TryGetFlagsString(this IVsHierarchyItem item, [NotNullWhen(returnValue: true)] out string? flagsString)
         {
             IVsHierarchyItemIdentity identity = item.HierarchyIdentity;
