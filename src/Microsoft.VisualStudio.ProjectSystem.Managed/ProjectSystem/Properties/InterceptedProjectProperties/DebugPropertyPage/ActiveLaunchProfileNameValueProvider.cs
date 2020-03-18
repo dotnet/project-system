@@ -10,17 +10,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     /// <summary>
     /// Intercepts attempts to read or write the name of the active launch profile and
-    /// redirects them to an <see cref="ILaunchSettingsProvider" />.
+    /// redirects them to an <see cref="ILaunchSettingsProvider" />. Setting the name
+    /// makes the related <see cref="ILaunchProfile" /> the active one.
     /// </summary>
+    /// <remarks>
+    /// Not to be confused with <see cref="ActiveLaunchProfileValueProviderBase"/> which
+    /// reads and writes values within the active launch profile.
+    /// </remarks>
     [ExportInterceptingPropertyValueProvider(ActiveLaunchProfilePropertyName, ExportInterceptingPropertyValueProviderFile.ProjectFile)]
-    internal class ActiveLaunchProfileValueProvider : InterceptingPropertyValueProviderBase
+    internal class ActiveLaunchProfileNameValueProvider : InterceptingPropertyValueProviderBase
     {
         private const string ActiveLaunchProfilePropertyName = "ActiveLaunchProfile";
 
         private readonly ILaunchSettingsProvider _launchSettings;
 
         [ImportingConstructor]
-        public ActiveLaunchProfileValueProvider(ILaunchSettingsProvider launchSettings)
+        public ActiveLaunchProfileNameValueProvider(ILaunchSettingsProvider launchSettings)
         {
             _launchSettings = launchSettings;
         }

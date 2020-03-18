@@ -10,6 +10,9 @@
     <Category Name="General"
               Description="General"
               DisplayName="General" />
+    <Category Name="CommandLine"
+              Description="Command Line"
+              DisplayName="Command Line" />
   </Rule.Categories>
 
   <Rule.DataSource>
@@ -25,5 +28,22 @@
   <DynamicEnumProperty Name="LaunchTarget"
                        DisplayName="Launch"
                        Category="General"
-                       EnumProvider="LaunchTargetEnumProvider"/>
+                       EnumProvider="LaunchTargetEnumProvider" />
+
+  <StringProperty Name="ExecutablePath"
+                  DisplayName="Executable"
+                  Category="CommandLine"
+                  Description="Path to the executable to run."
+                  Subtype="file" />
+
+  <StringProperty Name="WorkingDirectory"
+                  DisplayName="Working directory"
+                  Category="CommandLine"
+                  Description="Path to the working directory where the process will be started."
+                  Subtype="folder" />
+
+  <StringProperty Name="CommandLineArguments"
+                  DisplayName="Command line arguments"
+                  Category="CommandLine"
+                  Description="Command line arguments to pass to the executable." />
 </Rule>
