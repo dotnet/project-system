@@ -18,8 +18,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
     [ComVisible(true)]
     internal abstract class BrowseObjectBase : ICustomTypeDescriptor
     {
+#pragma warning disable CA1822
         [Browsable(false)]
         public string ExtenderCATID => "";
+#pragma warning restore CA1822
 
         public abstract string GetComponentName();
 
