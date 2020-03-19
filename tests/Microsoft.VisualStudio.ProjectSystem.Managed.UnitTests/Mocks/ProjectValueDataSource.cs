@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             base.Initialize();
 
-            _broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<T>>(null!); // TODO-NULLABLE remove ! once CPS annotation updated
+            _broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<T>>(options: null);
         }
 
         public async Task SendAndCompleteAsync(T value, IDataflowBlock targetBlock)
