@@ -39,10 +39,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
             IProjectValueDataSource<IProjectSubscriptionUpdate> source = _projectSubscriptionService.ProjectRuleSource;
 
             // Transform the changes from evaluation -> FileWatchData
-            DisposableValue<ISourceBlock<IProjectVersionedValue<FileWatchData>>> transformBlock = source.SourceBlock
-                                                                                                        .TransformWithNoDelta(update => update.Derive(u => CreateFileWatch(u.CurrentState)),
-                                                                                                            suppressVersionOnlyUpdates: true,
-                                                                                                            ruleNames: new[] { ItemSchemaName });
+            DisposableValue<ISourceBlock<IProjectVersionedValue<FileWatchData>>> transformBlock
+                = source.SourceBlock.TransformWithNoDelta(
+                    update => update.Derive(u => CreateFileWatch(u.CurrentState)),
+                    suppressVersionOnlyUpdates: true,
+                    ruleNames: new[] { ItemSchemaName });
 
             // Set the link up so that we publish changes to target block
             transformBlock.Value.LinkTo(targetBlock, DataflowOption.PropagateCompletion);

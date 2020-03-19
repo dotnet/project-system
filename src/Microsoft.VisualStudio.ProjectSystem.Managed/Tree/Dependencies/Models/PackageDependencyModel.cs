@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             : base(
                 path,
                 originalItemSpec,
-                flags: s_flagCache.Get(isResolved, isImplicit),
+                flags: s_flagCache.Get(isResolved, isImplicit).Add($"$ID:{name}").Add($"$VER:{version}"),
                 isResolved,
                 isImplicit,
                 properties,

@@ -97,6 +97,105 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Diagnostic.
+        /// </summary>
+        internal static string DiagnosticBrowseObjectClassName {
+            get {
+                return ResourceManager.GetString("DiagnosticBrowseObjectClassName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The diagnostic&apos;s identifying code..
+        /// </summary>
+        internal static string DiagnosticCodeDescription {
+            get {
+                return ResourceManager.GetString("DiagnosticCodeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Code.
+        /// </summary>
+        internal static string DiagnosticCodeDisplayName {
+            get {
+                return ResourceManager.GetString("DiagnosticCodeDisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The diagnostic&apos;s level..
+        /// </summary>
+        internal static string DiagnosticLevelDescription {
+            get {
+                return ResourceManager.GetString("DiagnosticLevelDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Level.
+        /// </summary>
+        internal static string DiagnosticLevelDisplayName {
+            get {
+                return ResourceManager.GetString("DiagnosticLevelDisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The level this diagnostic applies to..
+        /// </summary>
+        internal static string DiagnosticLibraryDescription {
+            get {
+                return ResourceManager.GetString("DiagnosticLibraryDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Library.
+        /// </summary>
+        internal static string DiagnosticLibraryDisplayName {
+            get {
+                return ResourceManager.GetString("DiagnosticLibraryDisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The diagnostic&apos;s descriptive message..
+        /// </summary>
+        internal static string DiagnosticMessageDescription {
+            get {
+                return ResourceManager.GetString("DiagnosticMessageDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Message.
+        /// </summary>
+        internal static string DiagnosticMessageDisplayName {
+            get {
+                return ResourceManager.GetString("DiagnosticMessageDisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The diagnostic&apos;s warning level. Only applies to warnings..
+        /// </summary>
+        internal static string DiagnosticWarningLevelDescription {
+            get {
+                return ResourceManager.GetString("DiagnosticWarningLevelDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warning Level.
+        /// </summary>
+        internal static string DiagnosticWarningLevelDisplayName {
+            get {
+                return ResourceManager.GetString("DiagnosticWarningLevelDisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The project doesn&apos;t know how to run the profile {0}..
         /// </summary>
         internal static string DontKnowHowToRunProfile {

@@ -73,9 +73,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
                     DependencyType dependencyType = properties.GetEnumProperty<DependencyType>(ProjectItemMetadata.Type) ?? DependencyType.Unknown;
 
-                    if (dependencyType == DependencyType.Target)
+                    if (dependencyType == DependencyType.Target ||    // Not useful for display
+                        dependencyType == DependencyType.Diagnostic)  // Handled via attached collections from assets file
                     {
-                        // Disregard items of type 'Target' from design-time build
                         metadata = default;
                         return false;
                     }
@@ -162,14 +162,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                             IsResolved,
                             Properties,
                             dependenciesIDs: GetDependencyItemSpecs());
-                    case DependencyType.Diagnostic:
-                        return new PackageDiagnosticDependencyModel(
-                            OriginalItemSpec,
-                            severity: Properties.GetEnumProperty<PackageDiagnosticMessageSeverity>(ProjectItemMetadata.Severity) ?? PackageDiagnosticMessageSeverity.Info,
-                            code: Properties.GetStringProperty(ProjectItemMetadata.DiagnosticCode) ?? string.Empty,
-                            Name,
-                            isVisible: true,
-                            properties: Properties);
                     default:
                         return new PackageUnknownDependencyModel(
                             ItemSpec,

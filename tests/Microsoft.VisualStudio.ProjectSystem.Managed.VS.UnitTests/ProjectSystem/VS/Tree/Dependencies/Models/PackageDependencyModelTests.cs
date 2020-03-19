@@ -49,7 +49,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(
                 DependencyTreeFlags.PackageDependency +
                 DependencyTreeFlags.SupportsHierarchy +
-                DependencyTreeFlags.GenericResolvedDependencyFlags,
+                DependencyTreeFlags.GenericResolvedDependencyFlags +
+                ProjectTreeFlags.Create("$ID:myPath") +
+                ProjectTreeFlags.Create("$VER:myVersion"),
                 model.Flags);
         }
 
@@ -93,7 +95,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(
                 DependencyTreeFlags.PackageDependency +
                 DependencyTreeFlags.SupportsHierarchy +
-                DependencyTreeFlags.GenericUnresolvedDependencyFlags,
+                DependencyTreeFlags.GenericUnresolvedDependencyFlags +
+                ProjectTreeFlags.Create("$ID:myPath") +
+                ProjectTreeFlags.Create("$VER:myVersion"),
                 model.Flags);
         }
 
@@ -137,7 +141,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(
                 DependencyTreeFlags.PackageDependency +
                 DependencyTreeFlags.SupportsHierarchy +
-                DependencyTreeFlags.GenericResolvedDependencyFlags -
+                DependencyTreeFlags.GenericResolvedDependencyFlags +
+                ProjectTreeFlags.Create("$ID:myPath") +
+                ProjectTreeFlags.Create("$VER:") -
                 DependencyTreeFlags.SupportsRemove,
                 model.Flags);
         }
