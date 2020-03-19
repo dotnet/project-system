@@ -221,4 +221,37 @@ In order to debug this project, add an executable project to this solution which
   <data name="Renaming_Type_from_0_to_1" xml:space="preserve">
     <value>Renaming Type from '{0}' to '{1}'</value>
   </data>
+  <data name="DiagnosticBrowseObjectClassName" xml:space="preserve">
+    <value>Diagnostic</value>
+  </data>
+  <data name="DiagnosticMessageDisplayName" xml:space="preserve">
+    <value>Message</value>
+  </data>
+  <data name="DiagnosticMessageDescription" xml:space="preserve">
+    <value>The diagnostic's descriptive message.</value>
+  </data>
+  <data name="DiagnosticCodeDisplayName" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="DiagnosticCodeDescription" xml:space="preserve">
+    <value>The diagnostic's identifying code.</value>
+  </data>
+  <data name="DiagnosticLibraryDisplayName" xml:space="preserve">
+    <value>Library</value>
+  </data>
+  <data name="DiagnosticLibraryDescription" xml:space="preserve">
+    <value>The level this diagnostic applies to.</value>
+  </data>
+  <data name="DiagnosticLevelDisplayName" xml:space="preserve">
+    <value>Level</value>
+  </data>
+  <data name="DiagnosticLevelDescription" xml:space="preserve">
+    <value>The diagnostic's level.</value>
+  </data>
+  <data name="DiagnosticWarningLevelDisplayName" xml:space="preserve">
+    <value>Warning Level</value>
+  </data>
+  <data name="DiagnosticWarningLevelDescription" xml:space="preserve">
+    <value>The diagnostic's warning level. Only applies to warnings.</value>
+  </data>
 </root>
