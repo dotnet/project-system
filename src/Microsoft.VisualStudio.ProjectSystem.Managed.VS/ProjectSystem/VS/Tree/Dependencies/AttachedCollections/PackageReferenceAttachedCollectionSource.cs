@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         public PackageReferenceAttachedCollectionSource(
             IVsHierarchyItem hierarchyItem,
-            string? configuration,
+            string? target,
             string packageId,
             string version,
             IAssetsFileDependenciesDataSource dataSource,
@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
                 {
                     foreach (AssetsFileLogMessage log in snapshot.Logs)
                     {
-                        if (log.LibraryId == packageId && (configuration == null || log.TargetGraphs.Any(target => string.Equals(configuration, target))))
+                        if (log.LibraryId == packageId && (target == null || log.TargetGraphs.Any(t => string.Equals(target, t))))
                         {
                             items ??= new List<object>();
                             items.Add(new DiagnosticItem(log));

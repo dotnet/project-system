@@ -65,8 +65,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
                 if (dataSource != null)
                 {
-                    // Configuration will be null if project is not multi-targeting
-                    hierarchyItem.TryFindConfiguration(out string? configuration);
+                    // Target will be null if project is not multi-targeting
+                    hierarchyItem.TryFindTarget(out string? configuration);
 
                     return new PackageReferenceAttachedCollectionSource(hierarchyItem, configuration, packageId, packageVersion, dataSource, joinableTaskContext);
                 }

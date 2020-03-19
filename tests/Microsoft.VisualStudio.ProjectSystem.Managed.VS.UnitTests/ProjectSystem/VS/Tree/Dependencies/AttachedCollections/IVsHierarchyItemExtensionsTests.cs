@@ -30,11 +30,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         [InlineData("TargetNode TFM:FooBar", null)]
         [InlineData("$TFM:", null)]
         [InlineData("", null)]
-        public void TryFindConfiguration(string flagsString, string? expectedConfiguration)
+        public void TryFindTarget(string flagsString, string? expectedConfiguration)
         {
             IVsHierarchyItem item = CreateItemWithFlags(flagsString);
 
-            var result = item.TryFindConfiguration(out string? actualConfiguration);
+            var result = item.TryFindTarget(out string? actualConfiguration);
 
             Assert.Equal(actualConfiguration != null, result);
             Assert.Equal(expectedConfiguration, actualConfiguration);

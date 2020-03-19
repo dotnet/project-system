@@ -16,18 +16,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         private static Regex? s_packageFlagsRegex;
 
         /// <summary>
-        /// Detects the configuration string associated with a given hierarchy item in the dependencies tree, if
+        /// Detects the target configuration dimension associated with a given hierarchy item in the dependencies tree, if
         /// nested within a target group node. For projects that do not multi-target, this will always return <see langword="false"/>.
-        /// This method searches ancestors until a configuration is found, or the project root is found.
+        /// This method searches ancestors until a target is found, or the project root is found.
         /// </summary>
-        /// <param name="item">The item to test for.</param>
-        /// <param name="configuration">The detected configuration, if found.</param>
-        /// <returns><see langword="true"/> if the configuration was found, otherwise <see langword="false"/>.</returns>
-        public static bool TryFindConfiguration(
+        /// <param name="item">The item to test.</param>
+        /// <param name="target">The detected target, if found.</param>
+        /// <returns><see langword="true"/> if the target was found, otherwise <see langword="false"/>.</returns>
+        public static bool TryFindTarget(
             this IVsHierarchyItem item,
-            [NotNullWhen(returnValue: true)] out string? configuration)
+            [NotNullWhen(returnValue: true)] out string? target)
         {
-            s_targetFlagsRegex ??= new Regex(@"^(?=.*\b" + nameof(DependencyTreeFlags.TargetNode) + @"\b)(?=.*\$TFM:(?<config>[^ ]+)\b).*$", RegexOptions.Compiled);
+            s_targetFlagsRegex ??= new Regex(@"^(?=.*\b" + nameof(DependencyTreeFlags.TargetNode) + @"\b)(?=.*\$TFM:(?<target>[^ ]+)\b).*$", RegexOptions.Compiled);
 
             for (IVsHierarchyItem? parent = item; parent != null; parent = parent.Parent)
             {
@@ -36,22 +36,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
                     Match match = s_targetFlagsRegex.Match(flagsString);
                     if (match.Success)
                     {
-                        configuration = match.Groups["config"].Value;
+                        target = match.Groups["target"].Value;
                         return true;
                     }
                 }
             }
 
-            configuration = null;
+            target = null;
             return false;
         }
 
         /// <summary>
         /// Detects the package ID and version associated with a given hierarchy item in the dependencies tree, if
-        /// nested within a target group node. For projects that do not multi-target, this will always return <see langword="false"/>.
-        /// This method searches ancestors until a configuration is found, or the project root is found.
+        /// that node represents a package reference.
         /// </summary>
-        /// <param name="item">The item to test for.</param>
+        /// <param name="item">The item to test.</param>
         /// <param name="packageId">The detected package ID, if found.</param>
         /// <param name="packageVersion">The detected package version, if found.</param>
         /// <returns><see langword="true"/> if package ID and version were found, otherwise <see langword="false"/>.</returns>

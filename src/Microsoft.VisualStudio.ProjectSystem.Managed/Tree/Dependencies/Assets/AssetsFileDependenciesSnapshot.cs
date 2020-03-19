@@ -31,13 +31,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets
             try
             {
                 // Parse the file
-                using var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, 4096 * 10, FileOptions.SequentialScan);
+                using var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read | FileShare.Delete, 4096 * 10, FileOptions.SequentialScan);
 
                 LockFile lockFile = s_lockFileFormat.Read(fileStream, path);
 
                 return new AssetsFileDependenciesSnapshot(lockFile);
             }
-            catch (IOException)
+            catch
             {
                 return this;
             }

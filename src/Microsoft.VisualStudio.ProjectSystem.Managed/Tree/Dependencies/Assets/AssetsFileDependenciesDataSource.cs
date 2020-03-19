@@ -80,12 +80,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets
                 {
                     if (ruleSnapshot.Properties.TryGetValue(ConfigurationGeneral.ProjectAssetsFileProperty, out path))
                     {
-                        if (!string.IsNullOrEmpty(path))
+                        if (path.Length != 0)
                         {
                             if (projectSnapshot.AdditionalDependentFileTimes == null || !projectSnapshot.AdditionalDependentFileTimes.TryGetValue(path, out timestampUtc))
                             {
                                 try
                                 {
+                                    // In the usual case we won't need to read this time stamp manually as the file will be present
+                                    // in AdditionalDependentFileTimes. If however we do need to read it, we may end up reading a
+                                    // timestamp that's newer than the one evaluation would have reported.
+                                    // Note however that we can only read the current content of the file, so even if we have a
+                                    // timestamp provided, we may be reading a newer version of the file, and we may skip versions.
+                                    // Consumers of this data source need to work within those limitations.
+                                    // For the dependencies tree there is no problem.
                                     timestampUtc = File.GetLastWriteTimeUtc(path);
                                 }
                                 catch
