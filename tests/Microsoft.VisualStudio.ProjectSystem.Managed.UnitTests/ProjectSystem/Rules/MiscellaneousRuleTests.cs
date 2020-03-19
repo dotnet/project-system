@@ -10,12 +10,18 @@ using System.Xml.Linq;
 using System.Xml.XPath;
 using Microsoft.VisualStudio.Utilities;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Rules
 {
     public sealed class MiscellaneousRuleTests : XamlRuleTestBase
     {
+        private bool LocalizationIsClean = true;
         public Dictionary<string, bool> XamlRules = new Dictionary<string, bool>();
+        public Dictionary<string, bool> XamlRulesCopy;
+        private readonly ITestOutputHelper _output;
+
+        public MiscellaneousRuleTests(ITestOutputHelper output) => _output = output;
 
         [Fact]
         public void VerifyLocalizationInProjectFile()
@@ -60,34 +66,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
                 XamlRules.Add(ruleName, true);
             }
 
-            // Other xaml rules are found under another element tag.
-            var xamlPropertyRuleNoCodeBehind = root.XPathSelectElements(@"/Project/ItemGroup/XamlPropertyRuleNoCodeBehind");
+            // This copy will help when a rule is present in two different DesignTime.targets files.
+            XamlRulesCopy = new Dictionary<string, bool>(XamlRules);
 
-            foreach (XElement element in xamlPropertyRuleNoCodeBehind)
-            {
-                string rulePath = element.Attribute("Include").Value;
-                string? xlfInput = element.XPathSelectElement("./XlfInput")?.Value;
-
-                Match match = rx.Match(rulePath);
-                string ruleName = match.Value.Substring(1);
-
-                if (xlfInput?.Contains("false") ?? false)
-                {
-                    // The rule has its XlfInput element set to false.
-                    // Let's make sure this rule is not localized.
-                    XamlRules.Add(ruleName, false);
-                }
-                else
-                {
-                    // The rule has no XlfInput element (true by default).
-                    // Let's make sure this rule is localized.
-                    XamlRules.Add(ruleName, true);
-                }
-            }
+            // We can continue by looking at the DesignTime.targets files.
+            VerifyLocalizationInDesignTimeTargets();
         }
 
-        [Fact]
-        public void VerifyLocalizationInDesignTimeTargets()
+        private void VerifyLocalizationInDesignTimeTargets()
         {
             VerifyLocalizationInProjectFile();
             // For each DesignTime.targets file, check that the rule files with BrowseObject context are localized.
@@ -103,7 +89,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             BrowseObjectsShouldBeLocalized(visualBasicDesignTimeTargets);
 
             if (XamlRules.Any())
-                throw new Xunit.Sdk.XunitException($"There are more rules in the project file than in the DesignTime.targets file.");
+            {
+                _output.WriteLine($"There are more rules in the project file than in the DesignTime.targets files. Rules left: {XamlRules.Values}");
+                LocalizationIsClean = false;
+            }
+
+            Assert.True(LocalizationIsClean, "See test output for details.");
         }
 
         private void BrowseObjectsShouldBeLocalized(string designTimeTargetFile)
@@ -119,11 +110,37 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
                 Regex rx = new Regex(@"\).*\.xaml", RegexOptions.Compiled | RegexOptions.IgnoreCase);
                 Match match = rx.Match(resourceDirectory);
                 string ruleName = match.Value.Substring(1);
+                bool alreadySeen = false;
+
+                // To do: How to know the full path. Some are under Rules, Rules/Items, Rules/PropertyPages
+                //string fullPath = Path.Combine(RepoUtil.FindRepoRootPath(), "src", "Microsoft.VisualStudio.ProjectSystem.Managed", "ProjectSystem", "Rules", ruleName);
 
                 if (!XamlRules.ContainsKey(ruleName))
-                    throw new Xunit.Sdk.XunitException($"Rule {ruleName} exists in {designTimeTargetFile} file but not in the project file.");
+                {
+                    if (XamlRulesCopy.ContainsKey(ruleName))
+                    {
+                        // We've already seen this rule file before.
+                        alreadySeen = true;
+                    }
+                    else
+                    {
+                        _output.WriteLine($"Rule {ruleName} exists in {designTimeTargetFile} file but not in the project file.");
+                        LocalizationIsClean = false;
+                        continue;
+                    }
+                }
 
-                XamlRules.TryGetValue(ruleName, out bool valueInDictionary);
+                // Get boolean value from dictionary for current rule file to know if the rule should be localized.
+                bool valueInDictionary;
+
+                if (alreadySeen)
+                {
+                    XamlRulesCopy.TryGetValue(ruleName, out valueInDictionary);
+                }
+                else
+                {
+                    XamlRules.TryGetValue(ruleName, out valueInDictionary);
+                }
 
                 if ( (ruleName.Contains("PropertyPage")
                         || ruleName.Contains("ProjectDebugger")
@@ -134,37 +151,94 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
                     // Browse Objects are localizable, so they should not have a Resource Directory set as neutral.                    
                     Assert.DoesNotContain("Neutral", resourceDirectory);
 
-                    // Verify that the project file and DesignTime.targets file are coherent.
+                    // Ensure project file and DesignTime.targets file are consistent.
                     if (!valueInDictionary)
-                        throw new Xunit.Sdk.XunitException($"Rule {ruleName} is set to not be localized in the project file but set to be localized in the {designTimeTargetFile} file.");
+                    {
+                        _output.WriteLine($"Rule {ruleName} is set to not be localized in the project file but set to be localized in the {designTimeTargetFile} file.");
+                        LocalizationIsClean = false;
+                    }
+
+                    // Verify that these files have localized attributes.
+                    //VerifyRuleIsLocalized(fullPath, ruleName);
                 }
                 else
                 {
                     // These files do not show in the UI, so there is no need to be localized nor have localized attributes in their actual rule file.
                     Assert.Contains("Neutral", resourceDirectory);
 
-                    // Verify that the project file and DesignTime.targets file are coherent.
+                    // Ensure project file and DesignTime.targets file are consistent.
                     if (valueInDictionary)
                         throw new Xunit.Sdk.XunitException($"Rule {ruleName} is set to be localized in the project file but set to not be localized in the {designTimeTargetFile} file.");
 
                     // Verify that these files don't have localized attributes.
-                    //string fullPath = "";
-                    //CheckRuleIsNotLocalized(fullPath);
+                    //VerifyRuleIsNotLocalized(fullPath, ruleName);
                 }
-                XamlRules.Remove(ruleName);
+                if (!alreadySeen)
+                    XamlRules.Remove(ruleName);
             }
         }
 
-        private void CheckRuleIsNotLocalized(string fullPath)
+        private void VerifyRuleIsNotLocalized(string fullPath, string ruleName)
         {
             XElement rule = LoadXamlRule(fullPath);
 
             foreach (XElement element in rule.Elements())
             {
-                //Assert.True(element.Attribute("Visible")?.Value.IsNullOrEmpty());
-                Assert.Null(element.Attribute("DisplayName"));
-                Assert.Null(element.Attribute("Description"));
-                Assert.Null(element.Attribute("Category"));
+                if (element.Attribute("Visible")?.Value.Equals("true", StringComparison.OrdinalIgnoreCase) == true)
+                {
+                    _output.WriteLine($"{ruleName} {element} contains an attribute that is visible. Make sure visibility is set to false.");
+                    LocalizationIsClean = false;
+                }
+
+                if (element.Attribute("DisplayName") != null)
+                {
+                    _output.WriteLine($"{ruleName} {element} contains a DisplayName attribute."); 
+                    LocalizationIsClean = false;
+                }
+
+                if (element.Attribute("Description") != null)
+                {
+                    _output.WriteLine($"{ruleName} {element} contains a Description attribute."); 
+                    LocalizationIsClean = false;
+                }
+
+                if (element.Attribute("Category") != null)
+                {
+                    _output.WriteLine($"{ruleName} {element} contains a Category attribute."); 
+                    LocalizationIsClean = false;
+                }
+            }
+        }
+
+        private void VerifyRuleIsLocalized(string fullPath, string ruleName)
+        {
+            XElement rule = LoadXamlRule(fullPath);
+
+            foreach (XElement element in rule.Elements())
+            {
+                if (element.Attribute("Visible")?.Value.IsNullOrEmpty() == false)
+                {
+                    _output.WriteLine($"{ruleName} {element} is not visible.");
+                    LocalizationIsClean = false;
+                }
+
+                if (element.Attribute("DisplayName") == null)
+                {
+                    _output.WriteLine($"{ruleName} {element} does not contains a DisplayName attribute.");
+                    LocalizationIsClean = false;
+                }
+
+                if (element.Attribute("Description") == null)
+                {
+                    _output.WriteLine($"{ruleName} {element} does not contains a Description attribute.");
+                    LocalizationIsClean = false;
+                }
+
+                if (element.Attribute("Category") == null)
+                {
+                    _output.WriteLine($"{ruleName} {element} does not contains a Category attribute.");
+                    LocalizationIsClean = false;
+                }
             }
         }
 
