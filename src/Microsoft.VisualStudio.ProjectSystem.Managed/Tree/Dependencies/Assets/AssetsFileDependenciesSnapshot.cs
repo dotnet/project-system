@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
+using System.Linq;
 using NuGet.Common;
 using NuGet.ProjectModel;
 
@@ -15,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets
     {
         private static readonly LockFileFormat s_lockFileFormat = new LockFileFormat();
 
-        public static AssetsFileDependenciesSnapshot Empty { get; } = new AssetsFileDependenciesSnapshot(null);
+        public static AssetsFileDependenciesSnapshot Empty { get; } = new AssetsFileDependenciesSnapshot(null, null);
 
         /// <summary>
         /// List of diagnostic messages included in the snapshot. May be empty.
@@ -35,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets
 
                 LockFile lockFile = s_lockFileFormat.Read(fileStream, path);
 
-                return new AssetsFileDependenciesSnapshot(lockFile);
+                return new AssetsFileDependenciesSnapshot(lockFile, this);
             }
             catch
             {
@@ -43,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets
             }
         }
 
-        private AssetsFileDependenciesSnapshot(LockFile? lockFile)
+        private AssetsFileDependenciesSnapshot(LockFile? lockFile, AssetsFileDependenciesSnapshot? previous)
         {
             if (lockFile == null || lockFile.LogMessages.Count == 0)
             {
@@ -51,11 +52,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets
             }
             else
             {
+                Assumes.NotNull(previous);
+
                 ImmutableArray<AssetsFileLogMessage>.Builder builder = ImmutableArray.CreateBuilder<AssetsFileLogMessage>(lockFile.LogMessages.Count);
-                foreach (IAssetsLogMessage logMessage in lockFile.LogMessages)
+
+                for (int i = 0; i < lockFile.LogMessages.Count; i++)
                 {
-                    builder.Add(new AssetsFileLogMessage(logMessage));
+                    IAssetsLogMessage logMessage = lockFile.LogMessages[i];
+                    if (i < previous.Logs.Length && previous.Logs[i].Equals(logMessage))
+                    {
+                        // Unchanged, so use previous value
+                        builder.Add(previous.Logs[i]);
+                    }
+                    else
+                    {
+                        builder.Add(new AssetsFileLogMessage(logMessage));
+                    }
                 }
+                
                 Logs = builder.MoveToImmutable();
             }
         }
@@ -79,5 +93,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets
         public string Message { get; }
         public string LibraryId { get; }
         public IReadOnlyList<string> TargetGraphs { get; }
+
+        public bool Equals(IAssetsLogMessage other)
+        {
+            return other.Code == Code
+                && other.Level == Level
+                && other.WarningLevel == WarningLevel
+                && other.Message == Message
+                && other.LibraryId == LibraryId
+                && other.TargetGraphs.SequenceEqual(TargetGraphs);
+        }
     }
 }
