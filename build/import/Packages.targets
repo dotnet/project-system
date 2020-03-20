@@ -1,3 +1,4 @@
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project>
 
   <PropertyGroup>
@@ -28,7 +29,7 @@
     <PackageReference Update="RoslynDependencies.ProjectSystem.OptimizationData"                      Version="$(RoslynDependenciesProjectSystemOptimizationDataVersion)" />
     <PackageReference Update="Microsoft.DotNet.IBCMerge"                                              Version="[$(MicrosoftDotNetIBCMergeVersion)]" />
     <PackageReference Update="Microsoft.DiaSymReader.Pdb2Pdb"                                         Version="$(MicrosoftDiaSymReaderPdb2PdbVersion)" />
-    <PackageReference Update="Microsoft.Net.Compilers"                                                Version="3.3.0-beta3-19415-01" />
+    <PackageReference Update="Microsoft.Net.Compilers.Toolset"                                        Version="3.6.0-beta1-20111-10" />
     <PackageReference Update="OpenCover"                                                              Version="4.6.519" />
     <PackageReference Update="Codecov"                                                                Version="$(CodecovVersion)" />
     <PackageReference Update="MicroBuild.Core"                                                        Version="0.2.0" />
@@ -52,10 +53,6 @@
     <PackageReference Update="Microsoft.VisualStudio.ManagedInterfaces"                               Version="8.0.50727" />
     <PackageReference Update="Microsoft.VisualStudio.RpcContracts"                                    Version="16.5.32-alpha" />
     <PackageReference Update="Microsoft.VisualStudio.Telemetry"                                       Version="16.0.4-master" />
-    <PackageReference Update="Microsoft.VisualStudio.TextManager.Interop.9.0"                         Version="9.0.30729" />
-    <PackageReference Update="Microsoft.VisualStudio.TextManager.Interop.10.0"                        Version="10.0.30319" />
-    <PackageReference Update="Microsoft.VisualStudio.TextManager.Interop.12.0"                        Version="12.0.30110" />
-    <PackageReference Update="Microsoft.VisualStudio.TextManager.Interop.12.1.DesignTime"             Version="12.1.30328" />
     <PackageReference Update="Microsoft.VisualStudio.Settings.15.0"                                   Version="15.8.28010" />
     <PackageReference Update="Microsoft.VisualStudio.Setup.Configuration.Interop"                     Version="1.16.30" />
     <PackageReference Update="Microsoft.VisualStudio.Shell.15.0"                                      Version="16.5.29726.04" />
@@ -107,18 +104,9 @@
          version of the assembly is available. -->
     <PackageReference Update="System.Threading.Tasks.Dataflow"                                        Version="4.9.0" />
 
-    <!-- VS Editor APIs -->
-    <PackageReference Update="Microsoft.VisualStudio.CoreUtility"                                     Version="16.0.467" />
-    <PackageReference Update="Microsoft.VisualStudio.Editor"                                          Version="16.0.467" />
-    <PackageReference Update="Microsoft.VisualStudio.Text.Data"                                       Version="16.0.467" />
-    <PackageReference Update="Microsoft.VisualStudio.Text.UI"                                         Version="16.0.467" />
-    <PackageReference Update="Microsoft.VisualStudio.Text.UI.Wpf"                                     Version="16.0.467" />
-    <PackageReference Update="Microsoft.VisualStudio.Text.Logic"                                      Version="16.0.467" />
-    <PackageReference Update="Microsoft.Test.Apex.VisualStudio"                                       Version="16.3.29003.189" />
-
     <!-- CPS -->
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK"                               Version="16.5.493-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers"                         Version="16.5.493-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK"                               Version="16.6.78-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers"                         Version="16.6.78-pre" />
 
     <!-- Roslyn -->
     <PackageReference Update="Microsoft.VisualStudio.LanguageServices"                                Version="3.2.0-beta4-19359-03" />
@@ -127,17 +115,19 @@
 
     <!-- Analyzers -->
     <!-- Note: analyzers from github.com/dotnet/roslyn-analyzers are built together and share the same version -->
-    <PackageReference Update="Microsoft.CodeAnalysis.Analyzers"                                       Version="2.9.4" />
-    <PackageReference Update="Microsoft.CodeQuality.Analyzers"                                        Version="2.9.4" />
-    <PackageReference Update="Microsoft.NetFramework.Analyzers"                                       Version="2.9.4" />
-    <PackageReference Update="Microsoft.NetCore.Analyzers"                                            Version="2.9.4" />
-    <PackageReference Update="Microsoft.CodeAnalysis.BannedApiAnalyzers"                              Version="2.9.4" />
-    <PackageReference Update="Microsoft.CodeAnalysis.PublicApiAnalyzers"                              Version="2.9.4" />
-    <PackageReference Update="Roslyn.Diagnostics.Analyzers"                                           Version="2.9.4" />
+    <PackageReference Update="Microsoft.CodeAnalysis.Analyzers"                                       Version="3.0.0-beta2.20059.3+77df2220" />
+    <PackageReference Update="Microsoft.CodeQuality.Analyzers"                                        Version="3.0.0-beta2.20059.3+77df2220" />
+    <PackageReference Update="Microsoft.NetFramework.Analyzers"                                       Version="3.0.0-beta2.20059.3+77df2220" />
+    <PackageReference Update="Microsoft.CodeAnalysis.CSharp.CodeStyle"                                Version="3.6.0-2.20157.5" />
+    <PackageReference Update="Microsoft.CodeAnalysis.VisualBasic.CodeStyle"                           Version="3.6.0-2.20157.5" />
+    <PackageReference Update="Microsoft.NetCore.Analyzers"                                            Version="3.0.0-beta2.20059.3+77df2220" />
+    <PackageReference Update="Microsoft.CodeAnalysis.BannedApiAnalyzers"                              Version="3.0.0-beta2.20059.3+77df2220" />
+    <PackageReference Update="Microsoft.CodeAnalysis.PublicApiAnalyzers"                              Version="3.0.0-beta2.20059.3+77df2220" />
+    <PackageReference Update="Roslyn.Diagnostics.Analyzers"                                           Version="3.0.0-beta2.20059.3+77df2220" />
 
     <!-- NuGet -->
-    <PackageReference Update="NuGet.SolutionRestoreManager.Interop"                                   Version="5.1.0-rtm.5921" />
-    <PackageReference Update="NuGet.VisualStudio"                                                     Version="5.1.0-rtm.5921" />
+    <PackageReference Update="NuGet.SolutionRestoreManager.Interop"                                   Version="5.6.0-preview.2.6505" />
+    <PackageReference Update="NuGet.VisualStudio"                                                     Version="5.6.0-preview.2.6505" />
 
     <!-- MSBuild -->
     <PackageReference Update="Microsoft.Build"                                                        Version="16.4.0"/>
@@ -160,8 +150,8 @@
     <!-- Integration Tests -->
     <PackageReference Update="MSTest.TestFramework"                                                   Version="2.0.0-beta4" />
     <PackageReference Update="MSTest.TestAdapter"                                                     Version="2.0.0-beta4" />
+    <PackageReference Update="Microsoft.Test.Apex.VisualStudio"                                       Version="16.3.29003.189" />
     <PackageReference Update="Microsoft.TestPlatform"                                                 Version="16.2.0" />
-                                                                                                      
     <PackageReference Update="Microsoft.DotNet.Test.ProjectTemplates.1.x"                             Version="1.0.0-beta2-20170629-269" />
     <PackageReference Update="Microsoft.DotNet.Common.ProjectTemplates.1.x"                           Version="1.0.0-beta2-20170629-269" />
     

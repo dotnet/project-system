@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
 using System.Collections.Immutable;
@@ -52,8 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
             if (nodes.Count == 1 && _addItemDialogService.CanAddNewOrExistingItemTo(nodes.First()) && TryGetTemplateDetails(commandId, out TemplateDetails? result))
             {
-                IVsShell? vsShell = _vsShell.Value;
-                Assumes.Present(vsShell);
+                IVsShell vsShell = _vsShell.Value;
 
                 // Look up the resources from each package to get the strings to pass to the Add Item dialog.
                 // These strings must match what is used in the template exactly, including localized versions. Rather than relying on

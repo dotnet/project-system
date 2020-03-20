@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
 using System.Collections.Generic;
@@ -91,8 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         {
             DesignTimeInputs designTimeInputs = input.Value;
 
-            IVsAsyncFileChangeEx? vsAsyncFileChangeEx = await _fileChangeService.GetValueAsync();
-            Assumes.Present(vsAsyncFileChangeEx);
+            IVsAsyncFileChangeEx vsAsyncFileChangeEx = await _fileChangeService.GetValueAsync();
 
             // we don't care about the difference between types of inputs, so we just construct one hashset for fast comparisons later
             var allFiles = new HashSet<string>(StringComparers.Paths);
@@ -154,8 +153,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                         // Wait for any processing to finish so we don't fight over the cookies 🍪
                         await _actionBlock.Completion;
 
-                        IVsAsyncFileChangeEx? vsAsyncFileChangeEx = await _fileChangeService.GetValueAsync();
-                        Assumes.Present(vsAsyncFileChangeEx);
+                        IVsAsyncFileChangeEx vsAsyncFileChangeEx = await _fileChangeService.GetValueAsync();
 
                         // Unsubscribe from all files
                         foreach (uint cookie in _fileWatcherCookies.Values)

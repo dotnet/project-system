@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
 using System.ComponentModel.Composition;
@@ -48,10 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             await _projectVsServices.ThreadingService.SwitchToUIThread();
 
-            DTE2? dte = _dte.Value;
-            Assumes.Present(dte);
-
-            string templateFilePath = ((Solution2)dte.Solution).GetProjectItemTemplate(templateFile, templateLanguage);
+            string templateFilePath = ((Solution2)_dte.Value.Solution).GetProjectItemTemplate(templateFile, templateLanguage);
 
             if (templateFilePath != null)
             {

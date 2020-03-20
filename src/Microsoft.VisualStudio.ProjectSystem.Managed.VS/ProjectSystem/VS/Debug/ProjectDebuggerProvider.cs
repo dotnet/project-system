@@ -1,9 +1,8 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -198,8 +197,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 // The debugger needs to be called on the UI thread
                 await ThreadingService.SwitchToUIThread();
 
-                IVsDebugger4? shellDebugger = await _vsDebuggerService.GetValueAsync();
-                Assumes.Present(shellDebugger);
+                IVsDebugger4 shellDebugger = await _vsDebuggerService.GetValueAsync();
                 var launchResults = new VsDebugTargetProcessInfo[launchSettingsNative.Length];
                 shellDebugger.LaunchDebugTargets4((uint)launchSettingsNative.Length, launchSettingsNative, launchResults);
                 return launchResults;
@@ -348,16 +346,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// IDeployedProjectItemMappingProvider
         /// Implemented so that we can map URL's back to local file item paths
         /// </summary>
-        public bool TryGetProjectItemPathFromDeployedPath(string deployedPath, [NotNullWhen(true)] out string? localPath)
+        public bool TryGetProjectItemPathFromDeployedPath(string deployedPath, out string? localPath)
         {
             // Just delegate to the last provider. It needs to figure out how best to map the items
-            localPath = null;
             if (LastLaunchProvider is IDeployedProjectItemMappingProvider deployedItemMapper)
             {
                 return deployedItemMapper.TryGetProjectItemPathFromDeployedPath(deployedPath, out localPath);
             }
 
             // Return false to allow normal processing
+            localPath = null;
             return false;
         }
     }

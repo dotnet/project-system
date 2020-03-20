@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using Microsoft.VisualStudio.Text;
 using NuGet.SolutionRestoreManager;
@@ -17,13 +17,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             AppendProperty(hasher, nameof(restoreInfo.MSBuildProjectExtensionsPath),    restoreInfo.MSBuildProjectExtensionsPath);
             AppendProperty(hasher, nameof(restoreInfo.OriginalTargetFrameworks),        restoreInfo.OriginalTargetFrameworks);
 
-            foreach (IVsTargetFrameworkInfo2 framework in restoreInfo.TargetFrameworks)
+            foreach (IVsTargetFrameworkInfo3 framework in restoreInfo.TargetFrameworks)
             {
                 AppendProperty(hasher, nameof(framework.TargetFrameworkMoniker), framework.TargetFrameworkMoniker);
                 AppendFrameworkProperties(hasher, framework);
+                AppendReferences(hasher, framework.ProjectReferences);
                 AppendReferences(hasher, framework.PackageReferences);
                 AppendReferences(hasher, framework.FrameworkReferences);
                 AppendReferences(hasher, framework.PackageDownloads);
+                AppendReferences(hasher, framework.CentralPackageVersions);
             }
 
             AppendReferences(hasher, restoreInfo.ToolReferences);

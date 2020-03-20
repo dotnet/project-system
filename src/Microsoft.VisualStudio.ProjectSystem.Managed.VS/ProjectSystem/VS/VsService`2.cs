@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 #pragma warning disable RS0030 // Do not used banned APIs (wrapping IAsyncServiceProvider/SAsyncServiceProvider)
 
@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     [Export(typeof(IVsService<,>))]
     internal class VsService<TService, TInterface> : VsService<TInterface>, IVsService<TService, TInterface>
         where TService : class
-        where TInterface : class
+        where TInterface : class?
     {
         [ImportingConstructor]
         public VsService([Import(typeof(SAsyncServiceProvider))]IAsyncServiceProvider serviceProvider, JoinableTaskContext joinableTaskContext)

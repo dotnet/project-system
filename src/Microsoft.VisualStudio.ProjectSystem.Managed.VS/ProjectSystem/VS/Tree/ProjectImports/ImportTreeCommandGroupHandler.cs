@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
 using System.Collections.Generic;
@@ -52,12 +52,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.ProjectImports
 
         protected abstract bool IsOpenWithCommand(long commandId);
 
-        public Task<CommandStatusResult> GetCommandStatusAsync(IImmutableSet<IProjectTree> items, long commandId, bool focused, string? commandText, CommandStatus status)
+        public Task<CommandStatusResult> GetCommandStatusAsync(IImmutableSet<IProjectTree> items, long commandId, bool focused, string? commandText, CommandStatus progressiveStatus)
         {
             if (IsOpenCommand(commandId) && items.All(CanOpenFile))
             {
-                status |= CommandStatus.Enabled | CommandStatus.Supported;
-                return new CommandStatusResult(true, commandText, status).AsTask();
+                progressiveStatus |= CommandStatus.Enabled | CommandStatus.Supported;
+                return new CommandStatusResult(true, commandText, progressiveStatus).AsTask();
             }
 
             return CommandStatusResult.Unhandled.AsTask();
@@ -76,15 +76,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.ProjectImports
 
             void OpenItems()
             {
-                IVsUIShellOpenDocument? uiShellOpenDocument = _uiShellOpenDocument.Value;
-                Assumes.Present(uiShellOpenDocument);
-
-                IOleServiceProvider? oleServiceProvider = _oleServiceProvider.Value;
-                Assumes.Present(oleServiceProvider);
-
-                IVsExternalFilesManager? externalFilesManager = _externalFilesManager.Value;
-                Assumes.Present(externalFilesManager);
-
                 Assumes.NotNull(_configuredProject.UnconfiguredProject.Services.HostObject);
                 var hierarchy = (IVsUIHierarchy)_configuredProject.UnconfiguredProject.Services.HostObject;
                 var rdt = new RunningDocumentTable(_serviceProvider);
@@ -102,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.ProjectImports
                         IntPtr docData = IntPtr.Zero;
 
                         ErrorHandler.ThrowOnFailure(
-                            uiShellOpenDocument!.OpenStandardEditor(
+                            _uiShellOpenDocument.Value.OpenStandardEditor(
                                 (uint)__VSOSEFLAGS.OSE_ChooseBestStdEditor,
                                 item.FilePath,
                                 ref logicalView,
@@ -110,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.ProjectImports
                                 hierarchy,
                                 item.GetHierarchyId(),
                                 docData,
-                                oleServiceProvider,
+                                _oleServiceProvider.Value,
                                 out windowFrame));
 
                         RunningDocumentInfo rdtInfo = rdt.GetDocumentInfo(item.FilePath);
@@ -126,7 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.ProjectImports
 
                         // Detach the document from this project.
                         // Ignore failure. It may be that we've already transferred the item to Miscellaneous Files.
-                        externalFilesManager!.TransferDocument(item.FilePath, item.FilePath, windowFrame);
+                        _externalFilesManager.Value.TransferDocument(item.FilePath, item.FilePath, windowFrame);
 
                         // Show the document window
                         if (windowFrame != null)

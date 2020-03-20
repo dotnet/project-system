@@ -1,4 +1,4 @@
-<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project>
   <Import Project="HostAgnostic.props"/>
 
@@ -31,22 +31,10 @@
     <PackageReference Include="EnvDTE80" />
     <PackageReference Include="EnvDTE90" />
     <PackageReference Include="Microsoft.VisualStudio.ComponentModelHost" />
-    <PackageReference Include="Microsoft.VisualStudio.CoreUtility" />
-    <PackageReference Include="Microsoft.VisualStudio.Data.Core" />
-    <PackageReference Include="Microsoft.VisualStudio.Data.Services" />
-    <PackageReference Include="Microsoft.VisualStudio.DataTools.Interop" />
     <PackageReference Include="Microsoft.VisualStudio.Diagnostics.PerformanceProvider" /> <!-- Needed by Graph Provider unit tests-->
     <PackageReference Include="Microsoft.VisualStudio.Designer.Interfaces" />
     <PackageReference Include="Microsoft.VisualStudio.GraphModel" />
-    <PackageReference Include="Microsoft.VisualStudio.Editor" />
     <PackageReference Include="Microsoft.VisualStudio.ManagedInterfaces" />
-    <PackageReference Include="Microsoft.VisualStudio.Text.Data" />
-    <PackageReference Include="Microsoft.VisualStudio.Text.Logic" />
-    <PackageReference Include="Microsoft.VisualStudio.Text.UI" />
-    <PackageReference Include="Microsoft.VisualStudio.Text.UI.Wpf" />
-    <PackageReference Include="Microsoft.VisualStudio.TextManager.Interop.10.0" />
-    <PackageReference Include="Microsoft.VisualStudio.TextManager.Interop.12.0" />
-    <PackageReference Include="Microsoft.VisualStudio.TextManager.Interop.12.1.DesignTime" />
     <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" />
     <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.9.0" />
     <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.10.0" />
@@ -57,15 +45,10 @@
     <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.15.3.DesignTime"/>
     <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.15.7.DesignTime"/>
     <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.15.8.DesignTime"/>
-    <PackageReference Include="Microsoft.VisualStudio.Shell.Design" />
     <PackageReference Include="Microsoft.VisualStudio.Shell.15.0" />
     <PackageReference Include="Microsoft.VisualStudio.Shell.Framework" />
     <PackageReference Include="Microsoft.VisualStudio.Telemetry" />
     <PackageReference Include="Microsoft.VisualStudio.Utilities" />
-    <PackageReference Include="Microsoft.VisualStudio.VSHelp" />
-    <PackageReference Include="Microsoft.VisualStudio.XmlEditor" />
-    <PackageReference Include="Microsoft.VisualStudio.WCFReference.Interop" />
-    <PackageReference Include="Microsoft.VSDesigner" />
     <PackageReference Include="NuGet.SolutionRestoreManager.Interop" />
     <PackageReference Include="NuGet.VisualStudio" />
   </ItemGroup>
@@ -97,7 +80,9 @@
            or '%(FileName)' == 'Microsoft.VisualStudio.CommandBars'
            or '%(FileName)' == 'NuGet.SolutionRestoreManager.Interop'
            or '%(FileName)' == 'NuGet.VisualStudio'
-           or '%(FileName)' == 'VSLangProj110'">
+           or '%(FileName)' == 'VSLangProj110'
+           or '%(FileName)' == 'VSLangProj165'
+           ">
         <EmbedInteropTypes>true</EmbedInteropTypes>
       </ReferencePath>
       <ReferencePath Condition="

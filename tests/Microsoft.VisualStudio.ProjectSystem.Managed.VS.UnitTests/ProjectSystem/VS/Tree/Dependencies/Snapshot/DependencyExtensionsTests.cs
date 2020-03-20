@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.Imaging;
@@ -104,24 +104,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.Equal(dependencyUnresolvedChild.Priority,       viewModelUnresolvedChild.Priority);
             Assert.Equal(iconSet.UnresolvedIcon,                   viewModelUnresolvedChild.Icon);
             Assert.Equal(iconSet.UnresolvedExpandedIcon,           viewModelUnresolvedChild.ExpandedIcon);
-        }
-
-        [Theory]
-        [InlineData(AnalyzerRuleHandler.ProviderTypeString,  false)]
-        [InlineData(AssemblyRuleHandler.ProviderTypeString,  false)]
-        [InlineData(ComRuleHandler.ProviderTypeString,       false)]
-        [InlineData(FrameworkRuleHandler.ProviderTypeString, false)]
-        [InlineData(PackageRuleHandler.ProviderTypeString,   true)]
-        [InlineData(ProjectRuleHandler.ProviderTypeString,   false)]
-        [InlineData(SdkRuleHandler.ProviderTypeString,       false)]
-        public void IsPackage(string providerType, bool isPackage)
-        {
-            var dependency = new TestDependency
-            {
-                ProviderType = providerType
-            };
-
-            Assert.Equal(isPackage, dependency.IsPackage());
         }
 
         [Theory]

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
 using System.ComponentModel.Composition;
@@ -27,9 +27,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
         {
             await _threadingService.SwitchToUIThread();
 
-            IVsAppId? vsAppId = await vsAppIdService.GetValueAsync();
-
-            Assumes.Present(vsAppId);
+            IVsAppId vsAppId = await vsAppIdService.GetValueAsync();
 
             if (ErrorHandler.Succeeded(vsAppId.GetProperty((int)VSAPropID.VSAPROPID_ProductSemanticVersion, out object oVersion)) &&
                 oVersion is string semVersion)
@@ -54,9 +52,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
         {
             await _threadingService.SwitchToUIThread();
 
-            IVsShell? shell = await vsShellService.GetValueAsync();
-
-            Assumes.Present(shell);
+            IVsShell shell = await vsShellService.GetValueAsync();
 
             if (ErrorHandler.Succeeded(shell.GetProperty((int)__VSSPROPID4.VSSPROPID_LocalAppDataDir, out object value)))
             {

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.ComponentModel.Composition;
 using System.Threading;
@@ -58,20 +58,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             await _joinableTaskContext.Factory.SwitchToMainThreadAsync(cancellationToken);
 
-            ISettingsManager? settingsManager = _settingsManager.Value;
-            Assumes.Present(settingsManager);
-
-            return settingsManager.GetValueOrDefault(name, defaultValue);
+            return _settingsManager.Value.GetValueOrDefault(name, defaultValue);
         }
 
         private async Task SetSettingValueAsync(string name, object value, CancellationToken cancellationToken)
         {
             await _joinableTaskContext.Factory.SwitchToMainThreadAsync(cancellationToken);
 
-            ISettingsManager? settingsManager = _settingsManager.Value;
-            Assumes.Present(settingsManager);
-
-            await settingsManager.SetValueAsync(name, value, isMachineLocal: false);
+            await _settingsManager.Value.SetValueAsync(name, value, isMachineLocal: false);
         }
 
         private bool IsEnvironmentVariableEnabled(string variable, ref bool? result)

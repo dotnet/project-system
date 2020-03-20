@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
 using System.Collections.Generic;
@@ -158,13 +158,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         }
         private IVsTargetFrameworks2 GetAllTargetFrameworks(IEnumerable<PackageRestoreConfiguredInput> updates)
         {
-            var frameworks = new List<IVsTargetFrameworkInfo2>();
+            var frameworks = new List<IVsTargetFrameworkInfo3>();
 
             foreach (PackageRestoreConfiguredInput update in updates)
             {
                 Assumes.True(update.RestoreInfo.TargetFrameworks.Count == 1);
 
-                IVsTargetFrameworkInfo2 framework = update.RestoreInfo.TargetFrameworks.Item(0);
+                var framework = (IVsTargetFrameworkInfo3)update.RestoreInfo.TargetFrameworks.Item(0);
 
                 if (ValidateTargetFramework(update.ProjectConfiguration, framework))
                 {
@@ -196,7 +196,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             return true;
         }
 
-        private bool ValidateTargetFramework(ProjectConfiguration projectConfiguration, IVsTargetFrameworkInfo2 framework)
+        private bool ValidateTargetFramework(ProjectConfiguration projectConfiguration, IVsTargetFrameworkInfo3 framework)
         {
             if (framework.TargetFrameworkMoniker.Length == 0)
             {

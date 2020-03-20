@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.Composition;
@@ -12,7 +12,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     ///     The type of the service to retrieve and return from <see cref="Value"/>.
     /// </typeparam>
     [ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
-    internal interface IVsUIService<T> where T : class
+    internal interface IVsUIService<T> 
+        where T : class?
     {
         /// <summary>
         ///     Gets the service object associated with <typeparamref name="T"/>.
@@ -24,6 +25,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         ///     The service <see cref="object"/> associated with <typeparamref name="T"/>;
         ///     otherwise, <see langword="null"/> if it is not present.
         /// </value>
-        T? Value { get; }
+        T Value { get; }
     }
 }

@@ -1,4 +1,4 @@
-﻿// Copyright(c) Microsoft.All Rights Reserved.Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
 using System.Collections.Immutable;
@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             base.Initialize();
 
-            _broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<T>>(null!); // TODO-NULLABLE remove ! once CPS annotation updated
+            _broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<T>>(options: null);
         }
 
         public async Task SendAndCompleteAsync(T value, IDataflowBlock targetBlock)

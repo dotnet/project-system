@@ -19,9 +19,11 @@
 
     <!--This property sets the default output types supported by the project system.-->
     <SupportedOutputTypes Condition="'$(SupportedOutputTypes)' == ''">Exe;WinExe;Library</SupportedOutputTypes>
-
     <SuppressOutOfDateMessageOnBuild Condition="'$(SuppressOutOfDateMessageOnBuild)' == ''">true</SuppressOutOfDateMessageOnBuild>
-
+    
+    <!-- When using SDK-style projects, opt out of AssemblyFolderEx ("Extensions") tab under Assemblies category in Reference Manager -->
+    <AssemblyReferenceTabs Condition="'$(AssemblyReferenceTabs)' == '' And '$(UsingMicrosoftNETSdk)' == 'true'">TAB_ASSEMBLY_FRAMEWORK</AssemblyReferenceTabs>
+    
     <!-- Tells CPS which target to run for the Package solution build type -->
     <PackageAction Condition="'$(PackageAction)' == ''">Pack</PackageAction>
   </PropertyGroup>
@@ -90,7 +92,6 @@
     -->
     <ProjectCapability Include="
                           AssemblyReferences;
-                          COMReferences;
                           ProjectReferences;
                           SharedProjectReferences;
                           WinRTReferences;
@@ -103,6 +104,9 @@
                           SupportAvailableItemName;
                           IntegratedConsoleDebugging;
                           PersistDesignTimeDataOutOfProject;" />
+
+    <!-- COM references are not supported in .NET Core before 3.0 -->
+    <ProjectCapability Include="COMReferences" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework' Or ('$(TargetFrameworkIdentifier)' == '.NETCoreApp' And '$(_TargetFrameworkVersionWithoutV)' >= '3.0')" />
 
     <!-- Settings page capability -->
     <ProjectCapability Include="AppSettings" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'"/>
@@ -224,6 +228,10 @@
       <Context>Project</Context>
     </PropertyPageSchema>
 
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)DebugPropertyPage.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)GeneralBrowseObject.xaml">
       <Context>BrowseObject</Context>
     </PropertyPageSchema>
@@ -284,6 +292,11 @@
 
     <!-- Package downloads -->
     <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)CollectedPackageDownload.xaml">
+      <Context>ProjectSubscriptionService</Context>
+    </PropertyPageSchema>
+    
+    <!-- Central Package Versions -->
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)CollectedPackageVersion.xaml">
       <Context>ProjectSubscriptionService</Context>
     </PropertyPageSchema>
     
