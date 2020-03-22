@@ -170,6 +170,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return log.Fail("CopyAlwaysItemExists", "Item '{0}' has CopyToOutputDirectory set to 'Always', not up to date.", _configuredProject.UnconfiguredProject.MakeRooted(copyAlwaysItemPath));
             }
 
+
+            if (state.AdditionalDependentFilesAddedOrRemoved)
+            {
+                return log.Fail("AdditionalDependentFiles", "Some additional dependent files are added or removed, not up to date.");
+            }
             return true;
         }
 

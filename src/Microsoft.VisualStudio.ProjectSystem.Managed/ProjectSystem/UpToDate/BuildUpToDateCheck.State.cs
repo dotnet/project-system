@@ -110,6 +110,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             /// The <see cref="DateTime"/> values here do not update dynamically.
             /// </remarks>
             public IImmutableDictionary<string, DateTime> AdditionalDependentFileTimes { get; }
+            public ImmutableHashSet<string> LastAdditionalDependentFileTimes { get; set; }
+            public bool AdditionalDependentFilesAddedOrRemoved;
 
             private State()
             {
@@ -129,6 +131,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 ResolvedCompilationReferencePaths = emptyPathSet;
                 CopyReferenceInputs = emptyPathSet;
                 AdditionalDependentFileTimes = ImmutableDictionary.Create<string, DateTime>(StringComparers.Paths);
+                LastAdditionalDependentFileTimes = ImmutableHashSet.Create<string>();
+                AdditionalDependentFilesAddedOrRemoved = false;
             }
 
             private State(
@@ -149,6 +153,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 ImmutableHashSet<string> resolvedCompilationReferencePaths,
                 ImmutableHashSet<string> copyReferenceInputs,
                 IImmutableDictionary<string, DateTime> additionalDependentFileTimes,
+                ImmutableHashSet<string> lastAdditionalDependentFileTimes,
+                bool additionalDependentFilesAddedOrRemoved,
                 DateTime lastItemsChangedAtUtc,
                 DateTime lastCheckedAtUtc)
             {
@@ -171,6 +177,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 LastItemsChangedAtUtc = lastItemsChangedAtUtc;
                 LastCheckedAtUtc = lastCheckedAtUtc;
                 AdditionalDependentFileTimes = additionalDependentFileTimes;
+                LastAdditionalDependentFileTimes = lastAdditionalDependentFileTimes;
+                AdditionalDependentFilesAddedOrRemoved = additionalDependentFilesAddedOrRemoved;
 
                 var setNames = new HashSet<string>(s_setNameComparer);
                 setNames.AddRange(upToDateCheckInputItemsBySetName.Keys);
@@ -197,6 +205,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 string msBuildAllProjects = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildAllProjectsProperty, "");
 
                 IImmutableDictionary<string, DateTime> additionalDependentFileTimes = projectSnapshot.AdditionalDependentFileTimes;
+                var currentExistingAdditionalDependentFiles = additionalDependentFileTimes.Where(pair => pair.Value != DateTime.MinValue).Select(pair => pair.Key).ToImmutableHashSet();
+                AdditionalDependentFilesAddedOrRemoved = !LastAdditionalDependentFileTimes.SetEquals(currentExistingAdditionalDependentFiles);
+                LastAdditionalDependentFileTimes = AdditionalDependentFilesAddedOrRemoved ? currentExistingAdditionalDependentFiles : LastAdditionalDependentFileTimes;
 
                 // The first item in this semicolon-separated list of project files will always be the one
                 // with the newest timestamp. As we are only interested in timestamps on these files, we can
@@ -384,6 +395,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     resolvedCompilationReferencePaths: resolvedCompilationReferencePaths,
                     copyReferenceInputs: copyReferenceInputs,
                     additionalDependentFileTimes: additionalDependentFileTimes,
+                    lastAdditionalDependentFileTimes: LastAdditionalDependentFileTimes,
+                    additionalDependentFilesAddedOrRemoved : AdditionalDependentFilesAddedOrRemoved,
                     lastItemsChangedAtUtc: lastItemsChangedAtUtc, lastCheckedAtUtc: LastCheckedAtUtc);
 
                 static CopyType GetCopyType(IImmutableDictionary<string, string> itemMetadata)
@@ -464,6 +477,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     ResolvedCompilationReferencePaths,
                     CopyReferenceInputs,
                     AdditionalDependentFileTimes,
+                    LastAdditionalDependentFileTimes,
+                    additionalDependentFilesAddedOrRemoved : false,
                     LastItemsChangedAtUtc, lastCheckedAtUtc);
             }
 
@@ -490,6 +505,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     ResolvedCompilationReferencePaths,
                     CopyReferenceInputs,
                     AdditionalDependentFileTimes,
+                    LastAdditionalDependentFileTimes,
+                    AdditionalDependentFilesAddedOrRemoved,
                     lastItemsChangedAtUtc, LastCheckedAtUtc);
             }
         }
