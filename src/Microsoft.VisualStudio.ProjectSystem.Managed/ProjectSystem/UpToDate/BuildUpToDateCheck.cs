@@ -318,7 +318,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 if (state.ResolvedAnalyzerReferencePaths.Count != 0)
                 {
                     log.Verbose("Adding " + ResolvedAnalyzerReference.SchemaName + " inputs:");
-                    foreach (string input in state.ResolvedAnalyzerReferencePaths)
+                    foreach (string input in state.ResolvedAnalyzerReferencePaths.Select(_configuredProject.UnconfiguredProject.MakeRooted))
                     {
                         log.Verbose("    '{0}'", input);
                         yield return (Path: input, IsRequired: true);
