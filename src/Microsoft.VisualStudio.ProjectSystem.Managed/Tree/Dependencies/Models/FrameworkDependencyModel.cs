@@ -34,8 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
                 flags: s_flagCache.Get(isResolved, isImplicit: false),
                 isResolved,
                 isImplicit: false,
-                properties,
-                isTopLevel: true)
+                properties)
         {
         }
     }

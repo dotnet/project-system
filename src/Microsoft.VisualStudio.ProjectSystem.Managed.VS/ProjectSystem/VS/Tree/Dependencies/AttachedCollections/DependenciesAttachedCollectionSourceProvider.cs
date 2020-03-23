@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using Microsoft.Internal.VisualStudio.PlatformUI;
-using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Utilities;
 

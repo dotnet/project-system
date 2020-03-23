@@ -14,11 +14,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         private readonly bool _hasUnresolvedDependency;
 
-        public TargetDependencyViewModel(ITargetFramework targetFramework, bool hasReachableVisibleUnresolvedDependency)
+        public TargetDependencyViewModel(ITargetFramework targetFramework, bool hasVisibleUnresolvedDependency)
         {
             Caption = targetFramework.FriendlyName;
             Flags = GetCachedFlags(targetFramework);
-            _hasUnresolvedDependency = hasReachableVisibleUnresolvedDependency;
+            _hasUnresolvedDependency = hasVisibleUnresolvedDependency;
 
             static ProjectTreeFlags GetCachedFlags(ITargetFramework targetFramework)
             {

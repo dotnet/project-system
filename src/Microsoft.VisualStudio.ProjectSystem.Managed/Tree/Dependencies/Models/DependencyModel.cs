@@ -13,9 +13,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
         private enum DependencyFlags : byte
         {
             Resolved = 1 << 0,
-            TopLevel = 1 << 1,
-            Implicit = 1 << 2,
-            Visible = 1 << 3
+            Implicit = 1 << 1,
+            Visible = 1 << 2
         }
 
         protected DependencyModel(
@@ -25,7 +24,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             bool isResolved,
             bool isImplicit,
             IImmutableDictionary<string, string>? properties,
-            bool isTopLevel = true,
             bool isVisible = true)
         {
             Requires.NotNullOrEmpty(path, nameof(path));
@@ -49,8 +47,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
                 depFlags |= DependencyFlags.Visible;
             if (isImplicit)
                 depFlags |= DependencyFlags.Implicit;
-            if (isTopLevel)
-                depFlags |= DependencyFlags.TopLevel;
             _flags = depFlags;
         }
 
@@ -66,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
         public virtual string? SchemaItemType => null;
         string IDependencyModel.Version => throw new NotImplementedException();
         public bool Resolved => (_flags & DependencyFlags.Resolved) != 0;
-        public bool TopLevel => (_flags & DependencyFlags.TopLevel) != 0;
+        bool IDependencyModel.TopLevel => true;
         public bool Implicit => (_flags & DependencyFlags.Implicit) != 0;
         public bool Visible => (_flags & DependencyFlags.Visible) != 0;
         int IDependencyModel.Priority => throw new NotImplementedException();
@@ -75,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
         public ImageMoniker UnresolvedIcon => IconSet.UnresolvedIcon;
         public ImageMoniker UnresolvedExpandedIcon => IconSet.UnresolvedExpandedIcon;
         public IImmutableDictionary<string, string> Properties { get; }
-        public virtual IImmutableList<string> DependencyIDs => ImmutableList<string>.Empty;
+        IImmutableList<string> IDependencyModel.DependencyIDs => throw new NotImplementedException();
         public ProjectTreeFlags Flags { get; }
 
         public abstract DependencyIconSet IconSet { get; }

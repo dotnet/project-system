@@ -78,6 +78,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <summary>
         /// Specifies if dependency is an explicit project dependency or not
         /// </summary>
+        // TODO provide pointer to transitive dependency extensibility
+        [Obsolete("IDependencyModel may only represent a top-level dependency.")]
         bool TopLevel { get; }
 
         /// <summary>
@@ -131,6 +133,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// Each ID is of the form provided by the dependency model.
         /// For dependencies obtained via MSBuild, these will be <see cref="OriginalItemSpec"/> values.
         /// </remarks>
+        // TODO provide pointer to transitive dependency extensibility
+        [Obsolete("IDependencyModel cannot model children.")]
         IImmutableList<string> DependencyIDs { get; }
     }
 }

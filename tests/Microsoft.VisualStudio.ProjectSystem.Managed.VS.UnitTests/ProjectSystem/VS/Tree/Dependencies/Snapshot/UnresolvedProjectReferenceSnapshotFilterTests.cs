@@ -15,15 +15,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var acceptable = new TestDependency
             {
                 Id = "dependency1",
-                TopLevel = true,
                 Resolved = true,
                 Flags = DependencyTreeFlags.ProjectDependency
             };
 
             AssertNoChange(new TestDependency
             {
-                ClonePropertiesFrom = acceptable,
-                TopLevel = false
+                ClonePropertiesFrom = acceptable
             });
 
             AssertNoChange(new TestDependency
@@ -49,9 +47,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             {
                 var aggregateSnapshotProvider = IAggregateDependenciesSnapshotProviderFactory.Create();
 
-                var worldBuilder = new[] { dependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
+                var builder = new[] { dependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
 
-                var context = new AddDependencyContext(worldBuilder);
+                var context = new AddDependencyContext(builder);
 
                 var filter = new UnresolvedProjectReferenceSnapshotFilter(aggregateSnapshotProvider);
 
@@ -77,12 +75,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             var targetFramework = new TargetFramework(moniker: "tfm1");
 
-            var unresolvedChildDependency = new TestDependency
+            var unresolvedDependency = new TestDependency
             {
-                Id = "unresolvedChildDependency",
-                TopLevel = false,
+                Id = "unresolvedDependency",
                 Resolved = false,
-                Flags = DependencyTreeFlags.ProjectDependency + DependencyTreeFlags.Resolved,
+                Flags = DependencyTreeFlags.ProjectDependency + DependencyTreeFlags.Unresolved,
                 TargetFramework = targetFramework,
                 FullPath = projectPath
             };
@@ -90,22 +87,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var resolvedDependency = new TestDependency
             {
                 Id = "resolvedDependency",
-                TopLevel = true,
                 Resolved = true,
                 Flags = DependencyTreeFlags.ProjectDependency + DependencyTreeFlags.Resolved,
                 TargetFramework = targetFramework,
-                FullPath = projectPath,
-                DependencyIDs = ImmutableArray.Create(unresolvedChildDependency.Id)
+                FullPath = projectPath
             };
 
-            var targetedSnapshot = TargetedDependenciesSnapshotFactory.ImplementFromDependencies(new [] { resolvedDependency, unresolvedChildDependency });
+            var targetedSnapshot = TargetedDependenciesSnapshotFactory.ImplementFromDependencies(new [] { resolvedDependency, unresolvedDependency });
 
             var aggregateSnapshotProvider = new Mock<IAggregateDependenciesSnapshotProvider>(MockBehavior.Strict);
             aggregateSnapshotProvider.Setup(x => x.GetSnapshot(resolvedDependency)).Returns(targetedSnapshot);
 
-            var worldBuilder = ImmutableDictionary<string, IDependency>.Empty.ToBuilder();
+            var builder = ImmutableDictionary<string, IDependency>.Empty.ToBuilder();
 
-            var context = new AddDependencyContext(worldBuilder);
+            var context = new AddDependencyContext(builder);
 
             var filter = new UnresolvedProjectReferenceSnapshotFilter(aggregateSnapshotProvider.Object);
 
@@ -134,7 +129,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var dependency = new TestDependency
             {
                 Id = "dependency1",
-                TopLevel = true,
                 Resolved = true,
                 Flags = DependencyTreeFlags.ProjectDependency.Union(DependencyTreeFlags.Resolved),
                 FullPath = projectPath
@@ -143,9 +137,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var aggregateSnapshotProvider = new Mock<IAggregateDependenciesSnapshotProvider>(MockBehavior.Strict);
             aggregateSnapshotProvider.Setup(x => x.GetSnapshot(dependency)).Returns((TargetedDependenciesSnapshot?) null);
 
-            var worldBuilder = ImmutableDictionary<string, IDependency>.Empty.ToBuilder();
+            var builder = ImmutableDictionary<string, IDependency>.Empty.ToBuilder();
 
-            var context = new AddDependencyContext(worldBuilder);
+            var context = new AddDependencyContext(builder);
 
             var filter = new UnresolvedProjectReferenceSnapshotFilter(aggregateSnapshotProvider.Object);
 
@@ -176,7 +170,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var dependency = new TestDependency
             {
                 Id = "dependency1",
-                TopLevel = true,
                 Resolved = true,
                 Flags = DependencyTreeFlags.ProjectDependency.Union(DependencyTreeFlags.Resolved),
                 FullPath = projectPath,
@@ -186,9 +179,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var aggregateSnapshotProvider = new Mock<IAggregateDependenciesSnapshotProvider>(MockBehavior.Strict);
             aggregateSnapshotProvider.Setup(x => x.GetSnapshot(dependency)).Returns(targetedSnapshot);
 
-            var worldBuilder = ImmutableDictionary<string, IDependency>.Empty.ToBuilder();
+            var builder = ImmutableDictionary<string, IDependency>.Empty.ToBuilder();
 
-            var context = new AddDependencyContext(worldBuilder);
+            var context = new AddDependencyContext(builder);
 
             var filter = new UnresolvedProjectReferenceSnapshotFilter(aggregateSnapshotProvider.Object);
 

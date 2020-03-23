@@ -12,16 +12,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
     /// </summary>
     internal sealed class AddDependencyContext
     {
-        private readonly ImmutableDictionary<string, IDependency>.Builder _worldBuilder;
+        private readonly ImmutableDictionary<string, IDependency>.Builder _builder;
 
         private bool _acceptedOrRejected;
         private IDependency? _acceptedDependency;
 
         public bool Changed { get; private set; }
 
-        public AddDependencyContext(ImmutableDictionary<string, IDependency>.Builder worldBuilder)
+        public AddDependencyContext(ImmutableDictionary<string, IDependency>.Builder builder)
         {
-            _worldBuilder = worldBuilder;
+            _builder = builder;
         }
 
         public void Reset()
@@ -48,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
         /// </summary>
         public bool TryGetDependency(string dependencyId, out IDependency dependency)
         {
-            return _worldBuilder.TryGetValue(dependencyId, out dependency);
+            return _builder.TryGetValue(dependencyId, out dependency);
         }
 
         /// <summary>
@@ -60,8 +60,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
         /// </remarks>
         public void AddOrUpdate(IDependency dependency)
         {
-            _worldBuilder.Remove(dependency.Id);
-            _worldBuilder.Add(dependency.Id, dependency);
+            _builder.Remove(dependency.Id);
+            _builder.Add(dependency.Id, dependency);
             Changed = true;
         }
 
@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
         /// </summary>
         public bool Contains(string dependencyId)
         {
-            return _worldBuilder.ContainsKey(dependencyId);
+            return _builder.ContainsKey(dependencyId);
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
         /// </summary>
         public ImmutableDictionary<string, IDependency>.Enumerator GetEnumerator()
         {
-            return _worldBuilder.GetEnumerator();
+            return _builder.GetEnumerator();
         }
 
         /// <summary>

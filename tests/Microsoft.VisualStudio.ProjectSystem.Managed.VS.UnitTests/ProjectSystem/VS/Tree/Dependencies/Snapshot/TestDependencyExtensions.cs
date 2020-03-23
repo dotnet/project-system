@@ -18,12 +18,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Xunit.Assert.Equal(expected.SchemaName, actual.SchemaName);
             Xunit.Assert.Equal(expected.SchemaItemType, actual.SchemaItemType);
             Xunit.Assert.Equal(expected.Resolved, actual.Resolved);
-            Xunit.Assert.Equal(expected.TopLevel, actual.TopLevel);
             Xunit.Assert.Equal(expected.Implicit, actual.Implicit);
             Xunit.Assert.Equal(expected.Visible, actual.Visible);
             Xunit.Assert.Equal(expected.IconSet, actual.IconSet);
             Xunit.Assert.Equal(expected.BrowseObjectProperties, actual.BrowseObjectProperties);
-            Xunit.Assert.Equal(expected.DependencyIDs, actual.DependencyIDs);
             Xunit.Assert.Equal(expected.Flags, actual.Flags);
             Xunit.Assert.Equal(expected.Id, actual.Id);
             Xunit.Assert.Equal(expected.TargetFramework, actual.TargetFramework);

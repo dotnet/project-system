@@ -1,6 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Immutable;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.RuleHandlers;
 using Xunit;
@@ -18,7 +17,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 KnownMonikers.AboutBox,
                 KnownMonikers.Abbreviation);
 
-            // This is a resolved dependency
             var dependencyResolved = new TestDependency
             {
                 ProviderType = "Yyy",
@@ -28,11 +26,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 SchemaName = "MySchema",
                 SchemaItemType = "MySchemaItemType",
                 Resolved = true,
-                TopLevel = true,
                 IconSet = iconSet
             };
 
-            // This is an unresolved dependency
             var dependencyUnresolved = new TestDependency
             {
                 ProviderType = "Yyy",
@@ -42,34 +38,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 SchemaName = "MySchema",
                 SchemaItemType = "MySchemaItemType",
                 Resolved = false,
-                TopLevel = true,
                 IconSet = iconSet
             };
 
-            // This is a resolved dependency with an unresolved child dependency
-            var dependencyUnresolvedChild = new TestDependency
-            {
-                ProviderType = "Yyy",
-                Id = "tfm1\\yyy\\dependencyUnresolvedChild",
-                Name = "dependencyUnresolvedChild",
-                Caption = "DependencyUnresolvedChild",
-                SchemaName = "MySchema",
-                SchemaItemType = "MySchemaItemType",
-                Resolved = true,
-                TopLevel = true,
-                IconSet = iconSet,
-                DependencyIDs = ImmutableArray.Create(dependencyUnresolved.Id)
-            };
-
-            var snapshotResolved        = TargetedDependenciesSnapshotFactory.ImplementFromDependencies(new[] { dependencyResolved });
-            var snapshotUnresolved      = TargetedDependenciesSnapshotFactory.ImplementFromDependencies(new[] { dependencyUnresolved });
-            var snapshotUnresolvedChild = TargetedDependenciesSnapshotFactory.ImplementFromDependencies(new[] { dependencyUnresolved, dependencyUnresolvedChild });
-
-            Assert.False(snapshotResolved.ShouldAppearUnresolved(dependencyResolved));
-            Assert.True(snapshotUnresolved.ShouldAppearUnresolved(dependencyUnresolved));
-            Assert.True(snapshotUnresolvedChild.ShouldAppearUnresolved(dependencyUnresolvedChild));
-
-            var viewModelResolved = dependencyResolved.ToViewModel(snapshotResolved);
+            var viewModelResolved = dependencyResolved.ToViewModel();
 
             Assert.Equal(dependencyResolved.Caption,               viewModelResolved.Caption);
             Assert.Equal(dependencyResolved.Flags,                 viewModelResolved.Flags);
@@ -79,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.Equal(iconSet.Icon,                             viewModelResolved.Icon);
             Assert.Equal(iconSet.ExpandedIcon,                     viewModelResolved.ExpandedIcon);
 
-            var viewModelUnresolved = dependencyUnresolved.ToViewModel(snapshotResolved);
+            var viewModelUnresolved = dependencyUnresolved.ToViewModel();
 
             Assert.Equal(dependencyUnresolved.Caption,             viewModelUnresolved.Caption);
             Assert.Equal(dependencyUnresolved.Flags,               viewModelUnresolved.Flags);
@@ -88,16 +60,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.Equal(dependencyUnresolved.SchemaItemType,      viewModelUnresolved.SchemaItemType);
             Assert.Equal(iconSet.UnresolvedIcon,                   viewModelUnresolved.Icon);
             Assert.Equal(iconSet.UnresolvedExpandedIcon,           viewModelUnresolved.ExpandedIcon);
-
-            var viewModelUnresolvedChild = dependencyUnresolvedChild.ToViewModel(snapshotUnresolvedChild);
-
-            Assert.Equal(dependencyUnresolvedChild.Caption,        viewModelUnresolvedChild.Caption);
-            Assert.Equal(dependencyUnresolvedChild.Flags,          viewModelUnresolvedChild.Flags);
-            Assert.Equal(dependencyUnresolvedChild.Id,             viewModelUnresolvedChild.FilePath);
-            Assert.Equal(dependencyUnresolvedChild.SchemaName,     viewModelUnresolvedChild.SchemaName);
-            Assert.Equal(dependencyUnresolvedChild.SchemaItemType, viewModelUnresolvedChild.SchemaItemType);
-            Assert.Equal(iconSet.UnresolvedIcon,                   viewModelUnresolvedChild.Icon);
-            Assert.Equal(iconSet.UnresolvedExpandedIcon,           viewModelUnresolvedChild.ExpandedIcon);
         }
 
         [Theory]

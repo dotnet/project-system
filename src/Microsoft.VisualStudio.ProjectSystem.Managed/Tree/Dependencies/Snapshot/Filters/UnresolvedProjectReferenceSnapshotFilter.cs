@@ -31,14 +31,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             IImmutableSet<string>? projectItemSpecs,
             AddDependencyContext context)
         {
-            if (dependency.TopLevel
-                && dependency.Resolved
+            if (dependency.Resolved
                 && dependency.Flags.Contains(DependencyTreeFlags.ProjectDependency)
                 && !dependency.Flags.Contains(DependencyTreeFlags.SharedProjectDependency))
             {
                 TargetedDependenciesSnapshot? snapshot = _aggregateSnapshotProvider.GetSnapshot(dependency);
 
-                if (snapshot != null && snapshot.HasReachableVisibleUnresolvedDependency)
+                if (snapshot != null && snapshot.HasVisibleUnresolvedDependency)
                 {
                     context.Accept(dependency.ToUnresolved(ProjectReference.SchemaName));
                     return;

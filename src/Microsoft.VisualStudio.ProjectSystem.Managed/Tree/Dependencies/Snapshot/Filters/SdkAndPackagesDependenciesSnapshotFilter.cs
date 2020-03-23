@@ -28,12 +28,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             IImmutableSet<string>? projectItemSpecs,
             AddDependencyContext context)
         {
-            if (!dependency.TopLevel)
-            {
-                context.Accept(dependency);
-                return;
-            }
-
             if (dependency.Flags.Contains(DependencyTreeFlags.SdkDependency))
             {
                 // This is an SDK dependency.
@@ -47,8 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                     // Set to resolved, and copy dependencies.
 
                     context.Accept(dependency.ToResolved(
-                        schemaName: ResolvedSdkReference.SchemaName,
-                        dependencyIDs: package.DependencyIDs));
+                        schemaName: ResolvedSdkReference.SchemaName));
                     return;
                 }
             }
@@ -69,8 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                     // Set to resolved, and copy dependencies.
 
                     context.AddOrUpdate(sdk.ToResolved(
-                        schemaName: ResolvedSdkReference.SchemaName,
-                        dependencyIDs: dependency.DependencyIDs));
+                        schemaName: ResolvedSdkReference.SchemaName));
                 }
             }
 
@@ -82,8 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             IDependency dependency,
             RemoveDependencyContext context)
         {
-            if (dependency.TopLevel &&
-                dependency.Resolved &&
+            if (dependency.Resolved &&
                 dependency.Flags.Contains(DependencyTreeFlags.PackageDependency))
             {
                 // This is a package dependency.
@@ -100,8 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                     // Set to unresolved, and clear dependencies.
 
                     context.AddOrUpdate(sdk.ToUnresolved(
-                        schemaName: SdkReference.SchemaName,
-                        dependencyIDs: ImmutableArray<string>.Empty));
+                        schemaName: SdkReference.SchemaName));
                 }
             }
 

@@ -12,21 +12,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         private protected override IDependenciesSnapshotFilter CreateFilter() => new SdkAndPackagesDependenciesSnapshotFilter();
 
         [Fact]
-        public void BeforeAddOrUpdate_WhenNotTopLevelOrResolved_ShouldDoNothing()
-        {
-            VerifyUnchangedOnAdd(new TestDependency
-            {
-                Id = "dependency1",
-                TopLevel = false,
-                Flags = DependencyTreeFlags.SdkDependency
-            });
-        }
-
-        [Fact]
         public void BeforeAddOrUpdate_WhenSdk_ShouldFindMatchingPackageAndSetProperties()
         {
-            var dependencyIDs = ImmutableArray.Create("id1", "id2");
-
             var targetFramework = new TargetFramework("tfm");
 
             const string sdkName = "sdkName";
@@ -35,7 +22,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             {
                 Id = "dependency1Id",
                 Name = sdkName,
-                TopLevel = true,
                 Resolved = false,
                 Flags = DependencyTreeFlags.SdkDependency
             };
@@ -44,13 +30,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             {
                 Id = Dependency.GetID(targetFramework, PackageRuleHandler.ProviderTypeString, sdkName),
                 Resolved = true,
-                DependencyIDs = dependencyIDs,
                 Flags = DependencyTreeFlags.PackageDependency
             };
 
-            var worldBuilder = new IDependency[] { sdkDependency, packageDependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
+            var builder = new IDependency[] { sdkDependency, packageDependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
 
-            var context = new AddDependencyContext(worldBuilder);
+            var context = new AddDependencyContext(builder);
 
             var filter = new SdkAndPackagesDependenciesSnapshotFilter();
 
@@ -68,8 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.NotSame(sdkDependency, acceptedDependency);
             DependencyAssert.Equal(
                 sdkDependency.ToResolved(
-                    schemaName: ResolvedSdkReference.SchemaName,
-                    dependencyIDs: dependencyIDs), acceptedDependency!);
+                    schemaName: ResolvedSdkReference.SchemaName), acceptedDependency!);
 
             // No changes other than the filtered dependency
             Assert.False(context.Changed);
@@ -86,7 +70,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             {
                 Id = "dependency1",
                 Name = sdkName,
-                TopLevel = false,
                 Resolved = true,
                 Flags = DependencyTreeFlags.SdkDependency
             };
@@ -98,9 +81,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Flags = DependencyTreeFlags.PackageDependency
             };
 
-            var worldBuilder = new IDependency[] { sdkDependency, packageDependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
+            var builder = new IDependency[] { sdkDependency, packageDependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
 
-            var context = new AddDependencyContext(worldBuilder);
+            var context = new AddDependencyContext(builder);
 
             var filter = new SdkAndPackagesDependenciesSnapshotFilter();
 
@@ -121,8 +104,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         [Fact]
         public void BeforeAddOrUpdate_WhenPackage_ShouldFindMatchingSdkAndSetProperties()
         {
-            var dependencyIDs = ImmutableArray.Create("id1", "id2");
-
             var targetFramework = new TargetFramework("tfm");
 
             const string packageName = "packageName";
@@ -130,7 +111,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var sdkDependency = new TestDependency
             {
                 Id = Dependency.GetID(targetFramework, SdkRuleHandler.ProviderTypeString, packageName),
-                TopLevel = false,
                 Resolved = true,
                 Flags = DependencyTreeFlags.PackageDependency.Union(DependencyTreeFlags.Unresolved) // to see if unresolved is fixed
             };
@@ -140,14 +120,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Id = "packageId",
                 Name = packageName,
                 Flags = DependencyTreeFlags.PackageDependency,
-                TopLevel = true,
-                Resolved = true,
-                DependencyIDs = dependencyIDs
+                Resolved = true
             };
 
-            var worldBuilder = new IDependency[] { packageDependency, sdkDependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
+            var builder = new IDependency[] { packageDependency, sdkDependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
 
-            var context = new AddDependencyContext(worldBuilder);
+            var context = new AddDependencyContext(builder);
 
             var filter = new SdkAndPackagesDependenciesSnapshotFilter();
 
@@ -167,8 +145,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.True(context.TryGetDependency(sdkDependency.Id, out IDependency sdkDependencyAfter));
             DependencyAssert.Equal(
                 sdkDependency.ToResolved(
-                    schemaName: ResolvedSdkReference.SchemaName,
-                    dependencyIDs: dependencyIDs), sdkDependencyAfter);
+                    schemaName: ResolvedSdkReference.SchemaName), sdkDependencyAfter);
         }
 
         [Fact]
@@ -181,7 +158,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var sdkDependency = new TestDependency
             {
                 Id = Dependency.GetID(targetFramework, SdkRuleHandler.ProviderTypeString, packageName),
-                TopLevel = false,
                 Resolved = true,
                 Flags = DependencyTreeFlags.SdkDependency.Union(DependencyTreeFlags.Resolved)
             };
@@ -191,13 +167,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Id = "packageId",
                 Name = packageName,
                 Flags = DependencyTreeFlags.PackageDependency,
-                TopLevel = true,
                 Resolved = true
             };
 
-            var worldBuilder = new IDependency[] { packageDependency, sdkDependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
+            var builder = new IDependency[] { packageDependency, sdkDependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
 
-            var context = new RemoveDependencyContext(worldBuilder);
+            var context = new RemoveDependencyContext(builder);
 
             var filter = new SdkAndPackagesDependenciesSnapshotFilter();
 
@@ -212,14 +187,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             // Makes other changes too
             Assert.True(context.Changed);
 
-            Assert.True(worldBuilder.TryGetValue(packageDependency.Id, out var afterPackageDependency));
+            Assert.True(builder.TryGetValue(packageDependency.Id, out var afterPackageDependency));
             Assert.Same(packageDependency, afterPackageDependency);
 
-            Assert.True(worldBuilder.TryGetValue(sdkDependency.Id, out var afterSdkDependency));
+            Assert.True(builder.TryGetValue(sdkDependency.Id, out var afterSdkDependency));
             DependencyAssert.Equal(
                 afterSdkDependency.ToUnresolved(
-                    SdkReference.SchemaName,
-                    dependencyIDs: ImmutableArray<string>.Empty), afterSdkDependency);
+                    SdkReference.SchemaName), afterSdkDependency);
         }
     }
 }

@@ -20,18 +20,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
         [ImportMany]
         protected OrderPrecedenceImportCollection<IProjectDependenciesSubTreeProvider> SubTreeProviders { get; }
 
-        public IDependencyViewModel CreateTargetViewModel(ITargetFramework targetFramework, bool hasReachableVisibleUnresolvedDependency)
+        public IDependencyViewModel CreateTargetViewModel(ITargetFramework targetFramework, bool hasVisibleUnresolvedDependency)
         {
-            return new TargetDependencyViewModel(targetFramework, hasReachableVisibleUnresolvedDependency);
+            return new TargetDependencyViewModel(targetFramework, hasVisibleUnresolvedDependency);
         }
 
-        public IDependencyViewModel? CreateGroupNodeViewModel(string providerType, bool hasReachableVisibleUnresolvedDependency)
+        public IDependencyViewModel? CreateGroupNodeViewModel(string providerType, bool hasVisibleUnresolvedDependency)
         {
             IProjectDependenciesSubTreeProvider? provider = GetProvider();
 
             IDependencyModel? dependencyModel = provider?.CreateRootDependencyNode();
 
-            return dependencyModel?.ToViewModel(hasReachableVisibleUnresolvedDependency);
+            return dependencyModel?.ToViewModel(hasVisibleUnresolvedDependency);
 
             IProjectDependenciesSubTreeProvider? GetProvider()
             {
@@ -41,9 +41,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             }
         }
 
-        public ImageMoniker GetDependenciesRootIcon(bool hasReachableVisibleUnresolvedDependency)
+        public ImageMoniker GetDependenciesRootIcon(bool hasVisibleUnresolvedDependency)
         {
-            return hasReachableVisibleUnresolvedDependency
+            return hasVisibleUnresolvedDependency
                 ? ManagedImageMonikers.ReferenceGroupWarning
                 : ManagedImageMonikers.ReferenceGroup;
         }

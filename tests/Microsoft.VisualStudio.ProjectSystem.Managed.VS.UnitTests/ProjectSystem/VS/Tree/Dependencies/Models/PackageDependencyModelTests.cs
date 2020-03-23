@@ -13,7 +13,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public void Resolved()
         {
             var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
-            var dependencyIDs = new[] { "id1", "id2" };
 
             var model = new PackageDependencyModel(
                 path: "c:\\myPath",
@@ -23,9 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 isResolved: true,
                 isImplicit: false,
                 properties: properties,
-                isTopLevel: true,
-                isVisible: true,
-                dependenciesIDs: dependencyIDs);
+                isVisible: true);
 
             Assert.Equal(PackageRuleHandler.ProviderTypeString, model.ProviderType);
             Assert.Equal("c:\\myPath", model.Path);
@@ -35,7 +32,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal("myPath (myVersion)", model.Caption);
             Assert.Equal(ResolvedPackageReference.SchemaName, model.SchemaName);
             Assert.Equal(PackageReference.PrimaryDataSourceItemType, model.SchemaItemType);
-            Assert.True(model.TopLevel);
             Assert.True(model.Visible);
             Assert.True(model.Resolved);
             Assert.False(model.Implicit);
@@ -44,7 +40,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(ManagedImageMonikers.NuGetGrey, model.ExpandedIcon);
             Assert.Equal(ManagedImageMonikers.NuGetGreyWarning, model.UnresolvedIcon);
             Assert.Equal(ManagedImageMonikers.NuGetGreyWarning, model.UnresolvedExpandedIcon);
-            AssertEx.CollectionLength(model.DependencyIDs, 2);
             Assert.Equal(
                 DependencyTreeFlags.PackageDependency +
                 DependencyTreeFlags.SupportsHierarchy +
@@ -58,7 +53,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public void Unresolved()
         {
             var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
-            var dependencyIDs = new[] { "id1", "id2" };
 
             var model = new PackageDependencyModel(
                 path: "c:\\myPath",
@@ -68,9 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 isResolved: false,
                 isImplicit: false,
                 properties: properties,
-                isTopLevel: true,
-                isVisible: true,
-                dependenciesIDs: dependencyIDs);
+                isVisible: true);
 
             Assert.Equal(PackageRuleHandler.ProviderTypeString, model.ProviderType);
             Assert.Equal("c:\\myPath", model.Path);
@@ -80,7 +72,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal("myPath (myVersion)", model.Caption);
             Assert.Equal(PackageReference.SchemaName, model.SchemaName);
             Assert.Equal(PackageReference.PrimaryDataSourceItemType, model.SchemaItemType);
-            Assert.True(model.TopLevel);
             Assert.True(model.Visible);
             Assert.False(model.Resolved);
             Assert.False(model.Implicit);
@@ -89,7 +80,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(ManagedImageMonikers.NuGetGrey, model.ExpandedIcon);
             Assert.Equal(ManagedImageMonikers.NuGetGreyWarning, model.UnresolvedIcon);
             Assert.Equal(ManagedImageMonikers.NuGetGreyWarning, model.UnresolvedExpandedIcon);
-            AssertEx.CollectionLength(model.DependencyIDs, 2);
             Assert.Equal(
                 DependencyTreeFlags.PackageDependency +
                 DependencyTreeFlags.SupportsHierarchy +
@@ -103,7 +93,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public void Implicit()
         {
             var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
-            var dependencyIDs = new[] { "id1", "id2" };
 
             var model = new PackageDependencyModel(
                 path: "c:\\myPath",
@@ -113,9 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 isResolved: true,
                 isImplicit: true,
                 properties: properties,
-                isTopLevel: true,
-                isVisible: true,
-                dependenciesIDs: dependencyIDs);
+                isVisible: true);
 
             Assert.Equal(PackageRuleHandler.ProviderTypeString, model.ProviderType);
             Assert.Equal("c:\\myPath", model.Path);
@@ -125,7 +112,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal("myPath", model.Caption);
             Assert.Equal(ResolvedPackageReference.SchemaName, model.SchemaName);
             Assert.Equal(PackageReference.PrimaryDataSourceItemType, model.SchemaItemType);
-            Assert.True(model.TopLevel);
             Assert.True(model.Visible);
             Assert.True(model.Resolved);
             Assert.True(model.Implicit);
@@ -134,7 +120,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(ManagedImageMonikers.NuGetGreyPrivate, model.ExpandedIcon);
             Assert.Equal(ManagedImageMonikers.NuGetGreyWarning, model.UnresolvedIcon);
             Assert.Equal(ManagedImageMonikers.NuGetGreyWarning, model.UnresolvedExpandedIcon);
-            AssertEx.CollectionLength(model.DependencyIDs, 2);
             Assert.Equal(
                 DependencyTreeFlags.PackageDependency +
                 DependencyTreeFlags.SupportsHierarchy +

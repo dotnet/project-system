@@ -11,7 +11,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         [Fact]
         public void BeforeAddOrUpdate_NoDuplicate_ShouldNotUpdateCaption()
         {
-            // Both top level
             // Same provider type
             // Different captions
             //   -> No change
@@ -22,21 +21,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             {
                 Id = "dependency1",
                 Caption = "caption1",
-                ProviderType = providerType,
-                TopLevel = true
+                ProviderType = providerType
             };
 
             var otherDependency = new TestDependency
             {
                 Id = "dependency2",
                 Caption = "caption2",
-                ProviderType = providerType,
-                TopLevel = true
+                ProviderType = providerType
             };
 
-            var worldBuilder = new IDependency[] { dependency, otherDependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
+            var builder = new IDependency[] { dependency, otherDependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
 
-            var context = new AddDependencyContext(worldBuilder);
+            var context = new AddDependencyContext(builder);
 
             var filter = new DeduplicateCaptionsSnapshotFilter();
 
@@ -57,7 +54,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         [Fact]
         public void BeforeAddOrUpdate_WhenThereIsMatchingDependencies_ShouldUpdateCaptionForAll()
         {
-            // Both top level
             // Same provider type
             // Same captions
             //   -> Changes caption for both to match alias
@@ -70,8 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Id = "id1",
                 OriginalItemSpec = "originalItemSpec1",
                 ProviderType = providerType,
-                Caption = caption,
-                TopLevel = true
+                Caption = caption
             };
 
             var otherDependency = new TestDependency
@@ -82,9 +77,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 OriginalItemSpec = "originalItemSpec2"
             };
 
-            var worldBuilder = new IDependency[] { dependency, otherDependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
+            var builder = new IDependency[] { dependency, otherDependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
 
-            var context = new AddDependencyContext(worldBuilder);
+            var context = new AddDependencyContext(builder);
 
             var filter = new DeduplicateCaptionsSnapshotFilter();
 
@@ -110,7 +105,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         [Fact]
         public void BeforeAddOrUpdate_WhenThereIsMatchingDependencyWithAliasApplied_ShouldUpdateCaptionForCurrentDependency()
         {
-            // Both top level
             // Same provider type
             // Duplicate caption, though with parenthesized text after one instance
             //   -> Changes caption of non-parenthesized
@@ -123,8 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Id = "id1",
                 OriginalItemSpec = "originalItemSpec1",
                 ProviderType = providerType,
-                Caption = caption,
-                TopLevel = true
+                Caption = caption
             };
 
             var otherDependency = new TestDependency
@@ -136,9 +129,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Caption = $"{caption} (originalItemSpec2)" // caption already includes alias
             };
 
-            var worldBuilder = new IDependency[] { dependency, otherDependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
+            var builder = new IDependency[] { dependency, otherDependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
 
-            var context = new AddDependencyContext(worldBuilder);
+            var context = new AddDependencyContext(builder);
 
             var filter = new DeduplicateCaptionsSnapshotFilter();
 
@@ -164,7 +157,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         [Fact]
         public void BeforeAddOrUpdate_WhenThereIsMatchingDependency_WithSubstringCaption()
         {
-            // Both top level
             // Same provider type
             // Duplicate caption prefix
             //   -> No change
@@ -176,8 +168,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             {
                 Id = "dependency1",
                 ProviderType = providerType,
-                Caption = caption,
-                TopLevel = true
+                Caption = caption
             };
 
             var otherDependency = new TestDependency
@@ -191,9 +182,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             // TODO test a longer suffix here -- looks like the implementation might not handle it correctly
 
-            var worldBuilder = new IDependency[] { dependency, otherDependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
+            var builder = new IDependency[] { dependency, otherDependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
 
-            var context = new AddDependencyContext(worldBuilder);
+            var context = new AddDependencyContext(builder);
 
             var filter = new DeduplicateCaptionsSnapshotFilter();
 

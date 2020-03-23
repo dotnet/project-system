@@ -216,44 +216,40 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public ImmutableDictionary<ITargetFramework, TargetedDependenciesSnapshot> DependenciesByTargetFramework { get; }
 
         /// <summary>
-        /// Gets whether this snapshot contains at least one unresolved dependency which is both visible
-        /// and reachable from a visible top-level dependency, for any target framework.
+        /// Gets whether this snapshot contains at least one visible unresolved dependency, for any target framework.
         /// </summary>
-        public bool HasReachableVisibleUnresolvedDependency => DependenciesByTargetFramework.Any(x => x.Value.HasReachableVisibleUnresolvedDependency);
+        public bool HasVisibleUnresolvedDependency => DependenciesByTargetFramework.Any(x => x.Value.HasVisibleUnresolvedDependency);
 
         /// <summary>
         /// Finds dependency for given id across all target frameworks.
         /// </summary>
         /// <param name="dependencyId">Unique id for dependency to be found.</param>
-        /// <param name="topLevel">If <see langword="true"/>, search is first performed on top level
-        /// dependencies before searching all dependencies.</param>
         /// <returns>The <see cref="IDependency"/> if found, otherwise <see langword="null"/>.</returns>
-        public IDependency? FindDependency(string dependencyId, bool topLevel = false)
+        public IDependency? FindDependency(string dependencyId)
         {
             if (string.IsNullOrEmpty(dependencyId))
             {
                 return null;
             }
 
-            if (topLevel)
-            {
-                // if top level first try to find by top level id with full path,
-                // if found - return, if not - try regular Id in the DependenciesWorld
-                foreach ((ITargetFramework _, TargetedDependenciesSnapshot targetedDependencies) in DependenciesByTargetFramework)
-                {
-                    IDependency? dependency = targetedDependencies.TopLevelDependencies
-                        .FirstOrDefault((x, id) => x.TopLevelIdEquals(id), dependencyId);
+            // TODO reconcile this -- split used to change logic based on toplevel -- if we don't need the second loop, can remove TryGetValue and replace DependencyById map with Dependencies array
 
-                    if (dependency != null)
-                    {
-                        return dependency;
-                    }
+            // if top level first try to find by top level id with full path,
+            // if found - return, if not - try regular Id in the DependencyById
+            foreach ((ITargetFramework _, TargetedDependenciesSnapshot targetedDependencies) in DependenciesByTargetFramework)
+            {
+                IDependency? dependency = targetedDependencies.DependencyById
+                    .FirstOrDefault((pair, id) => pair.Value.TopLevelIdEquals(id), dependencyId).Value;
+
+                if (dependency != null)
+                {
+                    return dependency;
                 }
             }
 
             foreach ((ITargetFramework _, TargetedDependenciesSnapshot targetedDependencies) in DependenciesByTargetFramework)
             {
-                if (targetedDependencies.DependenciesWorld.TryGetValue(dependencyId, out IDependency dependency))
+                if (targetedDependencies.DependencyById.TryGetValue(dependencyId, out IDependency dependency))
                 {
                     return dependency;
                 }

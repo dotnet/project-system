@@ -96,8 +96,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         }
 
         /// <summary>
-        /// When some other project's snapshot changed we need to check if our snapshot has a top level
-        /// dependency on changed project. If it does we need to refresh those top level dependencies to 
+        /// When some other project's snapshot changed we need to check if our snapshot has a project
+        /// reference upon the changed project. If it does, we need to refresh that dependency to 
         /// reflect changes.
         /// </summary>
         /// <param name="thisProjectSnapshot"></param>
@@ -125,7 +125,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             foreach ((ITargetFramework _, TargetedDependenciesSnapshot targetedDependencies) in thisProjectSnapshot.DependenciesByTargetFramework)
             {
-                foreach (IDependency dependency in targetedDependencies.TopLevelDependencies)
+                foreach ((_, IDependency dependency) in targetedDependencies.DependencyById)
                 {
                     if (token.IsCancellationRequested)
                         return;

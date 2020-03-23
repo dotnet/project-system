@@ -28,12 +28,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 SchemaName = value.SchemaName;
                 SchemaItemType = value.SchemaItemType;
                 Resolved = value.Resolved;
-                TopLevel = value.TopLevel;
                 Implicit = value.Implicit;
                 Visible = value.Visible;
                 IconSet = value.IconSet;
                 BrowseObjectProperties = value.BrowseObjectProperties;
-                DependencyIDs = value.DependencyIDs;
                 Flags = value.Flags;
                 Id = value.Id;
                 TargetFramework = value.TargetFramework;
@@ -50,11 +48,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public string SchemaName { get; set; }
         public string SchemaItemType { get; set; }
         public bool Resolved { get; set; } = false;
-        public bool TopLevel { get; set; } = true;
         public bool Implicit { get; set; } = false;
         public bool Visible { get; set; } = true;
         public IImmutableDictionary<string, string> BrowseObjectProperties { get; set; }
-        public ImmutableArray<string> DependencyIDs { get; set; } = ImmutableArray<string>.Empty;
         public ProjectTreeFlags Flags { get; set; } = ProjectTreeFlags.Empty;
         public string Id { get; set; }
         public ITargetFramework TargetFramework { get; set; }
@@ -66,7 +62,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             bool? resolved = null,
             ProjectTreeFlags? flags = null,
             string? schemaName = null,
-            ImmutableArray<string> dependencyIDs = default,
             DependencyIconSet? iconSet = null,
             bool? isImplicit = null)
         {
@@ -80,7 +75,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Resolved = resolved ?? Resolved,
                 Flags = flags ?? Flags,
                 SchemaName = schemaName ?? SchemaName,
-                DependencyIDs = dependencyIDs.IsDefault ? DependencyIDs : dependencyIDs,
                 IconSet = iconSet ?? IconSet,
                 Implicit = isImplicit ?? Implicit
             };

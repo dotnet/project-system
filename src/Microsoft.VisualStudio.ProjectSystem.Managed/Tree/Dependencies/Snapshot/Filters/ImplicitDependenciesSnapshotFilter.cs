@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.Imaging.Interop;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters
 {
     /// <summary>
-    /// Changes explicit, resolved, top-level project dependencies to implicit if they are not present in the set of known project item specs.
+    /// Changes explicit, resolved dependencies to implicit if they are not present in the set of known project item specs.
     /// </summary>
     /// <remarks>
     /// Only applies to dependencies whose providers implement <see cref="IProjectDependenciesSubTreeProviderInternal"/>.
@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
     [Export(typeof(IDependenciesSnapshotFilter))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     [Order(Order)]
-    internal sealed class ImplicitTopLevelDependenciesSnapshotFilter : DependenciesSnapshotFilterBase
+    internal sealed class ImplicitDependenciesSnapshotFilter : DependenciesSnapshotFilterBase
     {
         public const int Order = 130;
 
@@ -28,7 +28,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             AddDependencyContext context)
         {
             if (projectItemSpecs != null                                              // must have data
-                && dependency.TopLevel                                                // top-level
                 && !dependency.Implicit                                               // explicit
                 && dependency.Resolved                                                // resolved
                 && dependency.Flags.Contains(DependencyTreeFlags.GenericDependency)   // generic dependency
