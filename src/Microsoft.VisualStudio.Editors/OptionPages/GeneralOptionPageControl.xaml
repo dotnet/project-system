@@ -21,7 +21,7 @@
                 </StackPanel>
             </GroupBox>
 
-            <GroupBox x:Uid="NestingSettingsGroupBox" Header="{x:Static r:GeneralOptionPageResources.General_NestingSettings_Title}" VerticalAlignment="Top">
+            <GroupBox x:Uid="NestingSettingsGroupBox" Header="{x:Static r:GeneralOptionPageResources.General_NestingSettings_Title}" VerticalAlignment="Top" Margin="0,8,0,0">
                 <StackPanel Orientation="Vertical">
                     <CheckBox x:Name="NestingIgnoreSolutionAndProjectProfiles" x:Uid="General_NestingIgnoreSolutionAndProjectProfiles" Content="{x:Static r:GeneralOptionPageResources.General_NestingIgnoreSolutionAndProjectProfiles}" Margin="0"
                           IsChecked="{Binding Mode=TwoWay, Path=NestingIgnoreSolutionAndProjectProfiles}"/>
