@@ -72,11 +72,6 @@
         <target state="translated">Sie benennen eine Datei um. Möchten Sie in diesem Projekt auch alle Verweise auf das Codeelement "{0}" umbenennen?</target>
         <note />
       </trans-unit>
-      <trans-unit id="GraphNodeCategoryDependency">
-        <source>Dependency</source>
-        <target state="translated">Abhängigkeit</target>
-        <note />
-      </trans-unit>
       <trans-unit id="ActiveLaunchProfileNotFound">
         <source>There aren't any active launch profiles configured for this project.</source>
         <target state="translated">Für dieses Projekt sind keine aktiven Startprofile konfiguriert.</target>

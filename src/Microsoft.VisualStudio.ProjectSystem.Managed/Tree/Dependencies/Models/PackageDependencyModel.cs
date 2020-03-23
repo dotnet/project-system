@@ -30,8 +30,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public override string Name { get; }
 
-        public override int Priority => Resolved ? GraphNodePriority.Package : GraphNodePriority.UnresolvedReference;
-
         public override string ProviderType => PackageRuleHandler.ProviderTypeString;
 
         public override string? SchemaItemType => PackageReference.PrimaryDataSourceItemType;

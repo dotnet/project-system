@@ -17,8 +17,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public override DependencyIconSet IconSet => s_iconSet;
 
-        public override int Priority => GraphNodePriority.FrameworkReference;
-
         public override string ProviderType => FrameworkRuleHandler.ProviderTypeString;
 
         public override string? SchemaItemType => FrameworkReference.PrimaryDataSourceItemType;

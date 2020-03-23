@@ -72,11 +72,6 @@
         <target state="translated">Přejmenováváte soubor. Chcete také v tomto projektu přejmenovat všechny odkazy na prvek kódu {0}?</target>
         <note />
       </trans-unit>
-      <trans-unit id="GraphNodeCategoryDependency">
-        <source>Dependency</source>
-        <target state="translated">Závislost</target>
-        <note />
-      </trans-unit>
       <trans-unit id="ActiveLaunchProfileNotFound">
         <source>There aren't any active launch profiles configured for this project.</source>
         <target state="translated">Projekt nemá nakonfigurované aktivní profily spouštění.</target>

@@ -58,10 +58,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <summary>
         /// The set of flags to assign to unresolved Reference nodes.
         /// </summary>
-        /// <remarks>
-        /// Contains <see cref="ProjectTreeFlags.Common.BrokenReference"/> which stops
-        /// <c>IGraphProvider</c> APIs from being called for that node.
-        /// </remarks>
         internal static readonly ProjectTreeFlags GenericUnresolvedDependencyFlags
                 = ProjectTreeFlags.Reference
                 + ProjectTreeFlags.BrokenReference 

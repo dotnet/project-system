@@ -123,9 +123,6 @@
   <data name="RenameSymbolPrompt" xml:space="preserve">
     <value>You are renaming a file. Would you also like to perform a rename in this project of all references to the code element '{0}'?</value>
   </data>
-  <data name="GraphNodeCategoryDependency" xml:space="preserve">
-    <value>Dependency</value>
-  </data>
   <data name="ActiveLaunchProfileNotFound" xml:space="preserve">
     <value>There aren't any active launch profiles configured for this project.</value>
   </data>

@@ -72,11 +72,6 @@
         <target state="translated">Bir dosyayı yeniden adlandırıyorsunuz. Bu dosyadaki '{0}' kod öğesine yapılan tüm başvurularda yeniden adlandırma işlemi gerçekleştirmek ister misiniz?</target>
         <note />
       </trans-unit>
-      <trans-unit id="GraphNodeCategoryDependency">
-        <source>Dependency</source>
-        <target state="translated">Bağımlılık.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="ActiveLaunchProfileNotFound">
         <source>There aren't any active launch profiles configured for this project.</source>
         <target state="translated">Bu proje için yapılandırılmış etkin bir başlatma profili yok.</target>

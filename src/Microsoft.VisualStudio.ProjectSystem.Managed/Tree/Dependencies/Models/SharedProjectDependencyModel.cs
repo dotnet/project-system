@@ -27,8 +27,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public override DependencyIconSet IconSet => Implicit ? s_implicitIconSet : s_iconSet;
 
-        public override int Priority => GraphNodePriority.Project;
-
         public override string ProviderType => ProjectRuleHandler.ProviderTypeString;
 
         public override string? SchemaItemType => ProjectReference.PrimaryDataSourceItemType;

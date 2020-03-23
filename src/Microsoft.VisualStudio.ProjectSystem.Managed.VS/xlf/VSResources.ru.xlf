@@ -72,11 +72,6 @@
         <target state="translated">Выполняется переименование файла. Требуется ли также переименовать все ссылки на элемент кода "{0}" в проекте?</target>
         <note />
       </trans-unit>
-      <trans-unit id="GraphNodeCategoryDependency">
-        <source>Dependency</source>
-        <target state="translated">Зависимость</target>
-        <note />
-      </trans-unit>
       <trans-unit id="ActiveLaunchProfileNotFound">
         <source>There aren't any active launch profiles configured for this project.</source>
         <target state="translated">Для этого проекта не настроены действующие профили запуска.</target>

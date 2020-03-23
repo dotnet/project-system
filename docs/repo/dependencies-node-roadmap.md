@@ -14,10 +14,6 @@ An `IProjectTree` is immutable. When a part of the tree needs to be updated, we 
 
 Components wishing to add items to the project tree must implement and export the `IProjectTreeProvider` interface. In practice we implement the interface by deriving from the abstract `ProjectTreeProviderBase` class provided by CPS. In general, we receive events/messages from CPS detailing changes to the project, generate an updated `IProjectTree`, and then pass it back to CPS via `ProjectTreeProviderBase.SubmitTreeUpdateAsync`.
 
-### The Graph Node Provider View of Dependencies
-
-On the Graph Node side, transitive dependencies are represented as `GraphNode` instances and are frequently associated with `IGraphContexts`. In contrast to `IProjectTree`s, graphs are not realized in their entirety "up front" nor are they immutable. Instead, a graph starts with a small set of initial nodes. As the user expands nodes or searches within the graph an `IGraphProvider` implementation is asked to mutate the graph via an `IGraphContext`. The `IGraphContext` contains the current graph, a description of the operation at hand (checking if a node has children, getting the set of children, search for nodes matching certain text, etc.) and a set of "input" nodes marking the starting point for the operation. The `IGraphProvider` then adds `GraphNodes` to the graph as appropriate.
-
 ### The Project System View of Dependencies
 
 Internally every individual dependency (both direct and transitive) is represented as an [`IDependency`][IDependency].
@@ -82,63 +78,6 @@ Once a dependency model is integrated into a dependencies snapshot as an [`IDepe
 
 This allows the ID to be unique within both the provider and the target framework.
 
-## Graph/Project System Interaction
-
-The direct dependencies of a project will often bring in a number of transitive dependencies. For example, you may have a direct dependency on a NuGet package via a `PackageReference` element in the project file. That package causes transitive dependencies on the assemblies and analyzers within it as well as other packages it depends on. A `ProjectReference` may add transitive dependencies on other projects and packages. These dependencies form a directed graph and as such we can't properly represent them via `IProjectTree`s.
-
-Also, the set of transitive dependencies may be very large, potentially much larger than the set of direct dependencies. For memory reasons we don't want to realize the full graph "up front". 
-
-At the same time the user can only interact with these items in a very limited way&mdash;there's no way for them to delete an individual assembly brought in by a NuGet package for example.
-
-These requirements lead us to represent transitive dependencies as `Microsoft.VisualStudio.GraphModel.GraphNode`s.
-
-### DependenciesGraphProvider
-
-The primary connection point between the Graph Nodes and the Project System is the [`DependenciesGraphProvider`][DependenciesGraphProvider] class, via the `IGraphProvider` interface. It is directly responsible for the following:
-
-1. Specifying which graph operations it supports, via the `GetCommands` property. The only supported standard command is `GraphCommandDefinition.Contains` which is used to find the children of a given graph node.
-2. Delegate the actual implementation of graph operations to various [`IDependenciesGraphActionHandler`][IDependenciesGraphActionHandler]s via the `BeginGetGraphData` method.
-3. Handle the low-level mechanics of adding and removing nodes from the graph via its [`IDependenciesGraphBuilder`][IDependenciesGraphBuilder] implementation.
-
-### Generating new `GraphNode`s
-
-New `GraphNode`s are added to the graph as a result of operations initiated by the user.
-
-For example, when the user expands a NuGet package node:
-
-1. The `IGraphProvider.BeginGetGraphData` implementation in [`DependenciesGraphProvider`][DependenciesGraphProvider] is called with an `IGraphContext` describing the current graph, the input node (e.g. the node for the NuGet Package) and the operation (e.g. "get the children of the input node").
-2. Each implementation of [`IDependenciesGraphActionHandler`][IDependenciesGraphActionHandler] that can handle the request is asked to do so.
-3. We retrieve the current [`DependenciesSnapshot`][DependenciesSnapshot] for the project as well as the [`IDependency`][IDependency] for the input node (via [`IAggregateDependenciesSnapshotProvider`][IAggregateDependenciesSnapshotProvider]/[`DependenciesSnapshotProvider`][DependenciesSnapshotProvider]).
-4. We find the first [`IDependenciesGraphViewProvider`][IDependenciesGraphViewProvider] that supports the given [`IDependency`][IDependency] and ask it to build up the corresponding parts of the graph.
-5. The [`IDependenciesGraphViewProvider`][IDependenciesGraphViewProvider] decides what nodes to add to the graph, and calls [`IDependenciesGraphBuilder`][IDependenciesGraphBuilder]`.AddGraphNode` (implemented by [`DependenciesGraphProvider`][DependenciesGraphProvider]) to handle the actual mechanics.
-
-### Connecting `GraphNode`s to `IProjectTree` nodes
-
-CPS and the core graph logic automatically create `GraphNode`s for `IProjectTree` nodes marked with the `ProjectTreeFlags.Common.ResolvedReference` flag. For example, we will create an `IProjectTree` for a top-level NuGet package and an associated `GraphNode` will be generated automatically. We will later see this `GraphNode` as an input node in an `IGraphContext` and create and link new `GraphNode`s for its transitive dependencies.
-
-While we don't need to create these top-level `GraphNode`s we do sometimes need to adjust their properties.
-
-### Tracking changes to the graph
-
-Changes to the dependencies may require that we update the graph nodes already produced. The [`DependenciesGraphChangeTracker`][DependenciesGraphChangeTracker] holds weak references to all the graphs that may need to be updated due to dependency changes, and subscribes to the [`IAggregateDependenciesSnapshotProvider`][IAggregateDependenciesSnapshotProvider]`.SnapshotChanged` event.
-
-Whenever this event fires we find the corresponding [`IDependency`][IDependency], find the [`IDependenciesGraphViewProvider`][IDependenciesGraphViewProvider] that supports it, and delegate to the provider's `ApplyChanges` method. This generates lists of graph nodes to add and remove based on the current graph contents and the current project snapshot contents. The [`IDependenciesGraphBuilder`][IDependenciesGraphBuilder] is then called to handle the actual additions and removals.
-
-### Identifiers
-
-Each `GraphNode` must have a unique ID of type `Microsoft.VisualStudio.GraphModel.GraphNodeId`.
-
-`GraphNodeId` is a recursive type, meaning an instance may be comprised of several partial `GraphNodeId` objects. This composition is performed by `GraphNodeId.GetNested`.
-
-As mentioned earlier, `GraphNode`s are automatically created for `IProjectTree` nodes marked with the `ProjectTreeFlags.Common.ResolvedReference` flag. These graph nodes are created with IDs comprising two sub-IDs:
-
-1. `Assembly` which identifies the project (a `Uri` of full path to the containing project file)
-2. `File` which identifies the graph node within that project (a `Uri` modelling something unique about that node)
-   - For top level dependency nodes, this is the numeric ID assigned to the node as a string prefixed with `>` (e.g. `>56`)
-   - For child nodes (created lazily when the user expands top level nodes), this is the composite [`IDependency.Id`][IDependency] discussed above (e.g. `netstandard2.0/nugetdependency/newtonsoft.json`)
-
-If a project is renamed, the `Assembly` URI of graph nodes within that project are automatically updated to reflect the new project path.
-
 ## Extensibility Model
 
 Project flavors can extend the Dependencies node with additional sub-trees. To do so:
@@ -154,13 +93,6 @@ The _Web Tools Extensions_ project is a good example of a project flavor that do
 [IDependenciesRuleHandler]:               /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/CrossTarget/IDependenciesRuleHandler.cs "IDependenciesRuleHandler.cs"
 [DependenciesProjectTreeProvider]:        /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/DependenciesProjectTreeProvider.cs "DependenciesProjectTreeProvider.cs"
 [DependenciesTreeViewProvider]:           /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/DependenciesTreeViewProvider.cs "DependenciesTreeViewProvider.cs"
-[IDependenciesGraphActionHandler]:        /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/GraphNodes/Actions/IDependenciesGraphActionHandler.cs "IDependenciesGraphActionHandler.cs"
-[TrackChangesGraphActionHandler]:         /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/GraphNodes/Actions/TrackChangesGraphActionHandler.cs "TrackChangesGraphActionHandler.cs"
-[DependenciesGraphChangeTracker]:         /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/GraphNodes/DependenciesGraphChangeTracker.cs "DependenciesGraphChangeTracker.cs"
-[DependenciesGraphProvider]:              /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/GraphNodes/DependenciesGraphProvider.cs "DependenciesGraphProvider.cs"
-[IDependenciesGraphBuilder]:              /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/GraphNodes/IDependenciesGraphBuilder.cs "IDependenciesGraphBuilder.cs"
-[IDependenciesGraphViewProvider]:         /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/GraphNodes/ViewProviders/IDependenciesGraphViewProvider.cs "IDependenciesGraphViewProvider.cs"
-[ProjectGraphViewProvider]:               /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/GraphNodes/ViewProviders/ProjectGraphViewProvider.cs "ProjectGraphViewProvider.cs"
 [IDependencyModel]:                       /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/IDependencyModel.cs "IDependencyModel.cs"
 [IDependenciesTreeViewProvider]:          /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/IDependenciesTreeViewProvider.cs "IDependenciesTreeViewProvider.cs"
 [IProjectDependenciesSubTreeProvider]:    /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/IProjectDependenciesSubTreeProvider.cs "IProjectDependenciesSubTreeProvider.cs"

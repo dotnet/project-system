@@ -72,11 +72,6 @@
         <target state="translated">Você está renomeando um arquivo. Gostaria também de realizar a renomeação neste projeto de todas as referências para o elemento de código '{0}'?</target>
         <note />
       </trans-unit>
-      <trans-unit id="GraphNodeCategoryDependency">
-        <source>Dependency</source>
-        <target state="translated">Dependência</target>
-        <note />
-      </trans-unit>
       <trans-unit id="ActiveLaunchProfileNotFound">
         <source>There aren't any active launch profiles configured for this project.</source>
         <target state="translated">Não há nenhum perfil de inicialização configurado para esse projeto.</target>

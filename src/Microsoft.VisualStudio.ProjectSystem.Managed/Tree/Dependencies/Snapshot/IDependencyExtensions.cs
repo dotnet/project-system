@@ -35,7 +35,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             public string? FilePath => _model.Id;
             public string? SchemaName => _model.SchemaName;
             public string? SchemaItemType => _model.SchemaItemType;
-            public int Priority => _model.Priority;
             public ImageMoniker Icon => _hasUnresolvedDependency ? _model.IconSet.UnresolvedIcon : _model.IconSet.Icon;
             public ImageMoniker ExpandedIcon => _hasUnresolvedDependency ? _model.IconSet.UnresolvedExpandedIcon : _model.IconSet.ExpandedIcon;
             public ProjectTreeFlags Flags => _model.Flags;

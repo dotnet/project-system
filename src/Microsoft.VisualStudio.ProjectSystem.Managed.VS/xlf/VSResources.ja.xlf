@@ -72,11 +72,6 @@
         <target state="translated">ファイルの名前を変更しようとしています。このプロジェクトのすべての参照をコード要素 '{0}' に名前を変更しますか?</target>
         <note />
       </trans-unit>
-      <trans-unit id="GraphNodeCategoryDependency">
-        <source>Dependency</source>
-        <target state="translated">依存関係</target>
-        <note />
-      </trans-unit>
       <trans-unit id="ActiveLaunchProfileNotFound">
         <source>There aren't any active launch profiles configured for this project.</source>
         <target state="translated">このプロジェクト用に構成されたアクティブな起動プロファイルはありません。</target>

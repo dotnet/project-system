@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public bool TopLevel { get; set; } = true;
         public bool Implicit { get; set; } = false;
         public bool Visible { get; set; } = true;
-        public int Priority { get; set; } = 0;
+        public int Priority => throw new NotImplementedException();
         public ImageMoniker Icon { get; set; }
         public ImageMoniker ExpandedIcon { get; set; }
         public ImageMoniker UnresolvedIcon { get; set; }
@@ -51,7 +51,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                    && TopLevel == dependency.TopLevel
                    && Implicit == dependency.Implicit
                    && Visible == dependency.Visible
-                   && Priority == dependency.Priority
                    && Equals(Icon, dependency.IconSet.Icon)
                    && Equals(ExpandedIcon, dependency.IconSet.ExpandedIcon)
                    && Equals(UnresolvedIcon, dependency.IconSet.UnresolvedIcon)

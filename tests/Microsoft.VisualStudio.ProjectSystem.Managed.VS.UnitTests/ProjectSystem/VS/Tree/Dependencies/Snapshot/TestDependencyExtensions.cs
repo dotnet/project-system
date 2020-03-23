@@ -21,7 +21,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Xunit.Assert.Equal(expected.TopLevel, actual.TopLevel);
             Xunit.Assert.Equal(expected.Implicit, actual.Implicit);
             Xunit.Assert.Equal(expected.Visible, actual.Visible);
-            Xunit.Assert.Equal(expected.Priority, actual.Priority);
             Xunit.Assert.Equal(expected.IconSet, actual.IconSet);
             Xunit.Assert.Equal(expected.BrowseObjectProperties, actual.BrowseObjectProperties);
             Xunit.Assert.Equal(expected.DependencyIDs, actual.DependencyIDs);
