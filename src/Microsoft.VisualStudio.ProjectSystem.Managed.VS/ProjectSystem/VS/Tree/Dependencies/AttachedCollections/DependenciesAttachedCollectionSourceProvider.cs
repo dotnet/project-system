@@ -1,12 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using Microsoft.Internal.VisualStudio.PlatformUI;
-using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets;
+using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections
@@ -18,15 +18,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
     [Export(typeof(IAttachedCollectionSourceProvider))]
     [Name(nameof(DependenciesAttachedCollectionSourceProvider))]
     [VisualStudio.Utilities.Order(Before = HierarchyItemsProviderNames.Contains)]
-    internal sealed class DependenciesAttachedCollectionSourceProvider : IAttachedCollectionSourceProvider
+    internal sealed partial class DependenciesAttachedCollectionSourceProvider : IAttachedCollectionSourceProvider
     {
-        private readonly HierarchyItemFlagsDetector _packageReferenceTest = new HierarchyItemFlagsDetector(DependencyTreeFlags.PackageDependency);
-        private readonly JoinableTaskContext _joinableTaskContext;
+        [ImportMany]
+        public OrderPrecedenceImportCollection<IDependenciesTreeAttachedCollectionSourceProvider> Providers { get; }
 
-        [ImportingConstructor]
-        public DependenciesAttachedCollectionSourceProvider(JoinableTaskContext joinableTaskContext)
+        public DependenciesAttachedCollectionSourceProvider()
         {
-            _joinableTaskContext = joinableTaskContext;
+            Providers = new OrderPrecedenceImportCollection<IDependenciesTreeAttachedCollectionSourceProvider>(projectCapabilityCheckProvider: (UnconfiguredProject?)null);
         }
 
         public IAttachedCollectionSource? CreateCollectionSource(object item, string relationshipName)
@@ -35,44 +34,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
             {
                 if (item is IVsHierarchyItem hierarchyItem)
                 {
-                    if (_packageReferenceTest.Matches(hierarchyItem))
+                    if (hierarchyItem.TryGetFlagsString(out string? flagsString))
                     {
-                        // This is a package reference
-                        return CreatePackageReferenceSource(hierarchyItem, _joinableTaskContext);
+                        // TODO only call providers for top-level dependencies
+                        foreach (Lazy<IDependenciesTreeAttachedCollectionSourceProvider, IOrderPrecedenceMetadataView> provider in Providers)
+                        {
+                            if (provider.Value.FlagsDetector.Matches(flagsString))
+                            {
+                                return provider.Value.TryCreateSource(hierarchyItem);
+                            }
+                        }
                     }
+                }
+                else if (item is IAttachedCollectionSource source)
+                {
+                    // Tree items which are themselves sources can be returned here
+                    return source;
                 }
             }
 
             return null;
-
-            static IAttachedCollectionSource? CreatePackageReferenceSource(IVsHierarchyItem hierarchyItem, JoinableTaskContext joinableTaskContext)
-            {
-                UnconfiguredProject? unconfiguredProject = hierarchyItem.HierarchyIdentity.Hierarchy.AsUnconfiguredProject();
-                
-                if (unconfiguredProject == null)
-                {
-                    return null;
-                }
-
-                // Determine the package's ID and version
-                if (!hierarchyItem.TryGetPackageDetails(out string? packageId, out string? packageVersion))
-                {
-                    return null;
-                }
-
-                // Find the data source
-                IAssetsFileDependenciesDataSource? dataSource = unconfiguredProject.Services.ExportProvider.GetExportedValueOrDefault<IAssetsFileDependenciesDataSource>();
-
-                if (dataSource != null)
-                {
-                    // Target will be null if project is not multi-targeting
-                    hierarchyItem.TryFindTarget(out string? configuration);
-
-                    return new PackageReferenceAttachedCollectionSource(hierarchyItem, configuration, packageId, packageVersion, dataSource, joinableTaskContext);
-                }
-
-                return null;
-            }
         }
 
         public IEnumerable<IAttachedRelationship> GetRelationships(object item) => Enumerable.Empty<IAttachedRelationship>();
