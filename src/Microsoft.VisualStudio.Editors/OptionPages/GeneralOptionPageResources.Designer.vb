@@ -126,5 +126,23 @@ Namespace My.Resources
                 Return ResourceManager.GetString("General_FastUpToDateCheck_Title", resourceCulture)
             End Get
         End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ignore solution and project settings.
+        '''</summary>
+        Public Shared ReadOnly Property General_NestingIgnoreSolutionAndProjectProfiles() As String
+            Get
+                Return ResourceManager.GetString("General_NestingIgnoreSolutionAndProjectProfiles", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to File Nesting Settings.
+        '''</summary>
+        Public Shared ReadOnly Property General_NestingSettings_Title() As String
+            Get
+                Return ResourceManager.GetString("General_NestingSettings_Title", resourceCulture)
+            End Get
+        End Property
     End Class
 End Namespace

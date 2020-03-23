@@ -10,4 +10,6 @@ Shared My.Resources.GeneralOptionPageResources.General_FastUpToDateCheck_LogLeve
 Shared My.Resources.GeneralOptionPageResources.General_FastUpToDateCheck_LogLevel_None() -> String
 Shared My.Resources.GeneralOptionPageResources.General_FastUpToDateCheck_LogLevel_Verbose() -> String
 Shared My.Resources.GeneralOptionPageResources.General_FastUpToDateCheck_Title() -> String
+Shared My.Resources.GeneralOptionPageResources.General_NestingIgnoreSolutionAndProjectProfiles() -> String
+Shared My.Resources.GeneralOptionPageResources.General_NestingSettings_Title() -> String
 Shared My.Resources.GeneralOptionPageResources.ResourceManager() -> System.Resources.ResourceManager
