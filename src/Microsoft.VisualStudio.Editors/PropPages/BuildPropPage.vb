@@ -281,7 +281,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                 If Not obj Is PropertyControlData.MissingProperty Then
                     If Not obj Is PropertyControlData.Indeterminate Then
-                        bRegisterForCOM = If(CType(obj, String) = "", False, CType(obj, Boolean))
+                        bRegisterForCOM = CType(obj, String) IsNot "" AndAlso CType(obj, Boolean)
                     End If
 
                     chkRegisterForCOM.Checked = bRegisterForCOM
