@@ -1100,10 +1100,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 [UpToDateCheckBuilt.SchemaName] = SimpleItems("Output")
             };
 
-            var itemChangeTime = DateTime.UtcNow.AddMinutes(-4);
-            var lastCheckTime = DateTime.UtcNow.AddMinutes(-3);
+            var itemChangeTime = DateTime.UtcNow.AddMinutes(-3);
             var outputTime = DateTime.UtcNow.AddMinutes(-2);
             var dependentTime = DateTime.UtcNow.AddMinutes(-1);
+            // NOTE This delay is neeed to bypass lastAdditionalDependentFileTimesChangedAtUtc
+            var lastCheckTime = DateTime.UtcNow.AddMinutes(3);
 
             var dependentPath = @"C:\Dev\Solution\Project\Dependent";
             var outputPath = @"C:\Dev\Solution\Project\Output";
@@ -1133,7 +1134,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             var itemChangeTime = DateTime.UtcNow.AddMinutes(-4);
             var dependentTime = DateTime.UtcNow.AddMinutes(-3);
             var outputTime = DateTime.UtcNow.AddMinutes(-2);
-            var lastCheckTime = DateTime.UtcNow.AddMinutes(-1);
+            var lastCheckTime = DateTime.UtcNow.AddMinutes(3);
 
             var dependentPath = @"C:\Dev\Solution\Project\Dependent";
             var outputPath = @"C:\Dev\Solution\Project\Output";
@@ -1162,7 +1163,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             var itemChangeTime = DateTime.UtcNow.AddMinutes(-4);
             var dependentTime = DateTime.UtcNow.AddMinutes(-3);
             var outputTime = DateTime.UtcNow.AddMinutes(-2);
-            var lastCheckTime = DateTime.UtcNow.AddMinutes(-1);
+            var lastCheckTime = DateTime.UtcNow.AddMinutes(3);
 
             var dependentPath = @"C:\Dev\Solution\Project\Dependent";
             var outputPath = @"C:\Dev\Solution\Project\Output";
