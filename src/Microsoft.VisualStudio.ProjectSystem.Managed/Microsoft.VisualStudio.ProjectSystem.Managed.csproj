@@ -463,9 +463,6 @@
     <None Update="ProjectSystem\Rules\AdditionalDesignTimeBuildInput.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
-    <None Update="ProjectSystem\Rules\PropertyPages\BuildPropertyPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
   </ItemGroup>
 
 </Project>
