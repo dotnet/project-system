@@ -27,20 +27,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private const string DefaultSetName = "";
         private static readonly StringComparer s_setNameComparer = StringComparers.ItemNames;
 
-        private static ImmutableHashSet<string> ReferenceSchemas => ImmutableStringHashSet.EmptyOrdinal
+        private static ImmutableHashSet<string> ProjectPropertiesSchemas => ImmutableStringHashSet.EmptyOrdinal
+            .Add(ConfigurationGeneral.SchemaName)
             .Add(ResolvedAnalyzerReference.SchemaName)
-            .Add(ResolvedCompilationReference.SchemaName);
-
-        private static ImmutableHashSet<string> UpToDateSchemas => ImmutableStringHashSet.EmptyOrdinal
+            .Add(ResolvedCompilationReference.SchemaName)
             .Add(CopyUpToDateMarker.SchemaName)
             .Add(UpToDateCheckInput.SchemaName)
             .Add(UpToDateCheckOutput.SchemaName)
             .Add(UpToDateCheckBuilt.SchemaName);
-
-        private static ImmutableHashSet<string> ProjectPropertiesSchemas => ImmutableStringHashSet.EmptyOrdinal
-            .Add(ConfigurationGeneral.SchemaName)
-            .Union(ReferenceSchemas)
-            .Union(UpToDateSchemas);
 
         private static ImmutableHashSet<string> NonCompilationItemTypes => ImmutableHashSet<string>.Empty
             .WithComparer(StringComparers.ItemTypes)
