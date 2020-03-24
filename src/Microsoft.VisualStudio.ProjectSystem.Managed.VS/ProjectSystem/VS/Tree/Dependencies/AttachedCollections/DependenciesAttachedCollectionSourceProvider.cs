@@ -45,10 +45,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
                         }
                     }
                 }
-                else if (item is IAttachedCollectionSource source)
+                else if (item is IContainsAttachedItems containsAttachedItems)
                 {
-                    // Tree items which are themselves sources can be returned here
-                    return source;
+                    // Tree items which are themselves sources are delegated to, avoiding the need for more providers
+                    return containsAttachedItems.ContainsAttachedCollectionSource;
                 }
             }
 
