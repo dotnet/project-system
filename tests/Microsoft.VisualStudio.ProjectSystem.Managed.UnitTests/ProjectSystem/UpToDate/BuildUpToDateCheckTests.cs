@@ -1093,6 +1093,72 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         }
 
         [Fact]
+        public async Task IsUpToDateAsync_False_AdditionalDependentFileTimeSourceRemoved()
+        {
+            var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                [UpToDateCheckBuilt.SchemaName] = SimpleItems("Output")
+            };
+
+            var itemChangeTime = DateTime.UtcNow.AddMinutes(-4);
+            var dependentTime = DateTime.UtcNow.AddMinutes(-3);
+            var outputTime = DateTime.UtcNow.AddMinutes(-2);
+            var lastCheckTime = DateTime.UtcNow.AddMinutes(3);
+
+            var dependentPath = @"C:\Dev\Solution\Project\Dependent";
+            var outputPath = @"C:\Dev\Solution\Project\Output";
+
+            await SetupAsync(
+                projectSnapshot: projectSnapshot,
+                dependentTimeFiles: new[] { (dependentPath, dependentTime) });
+
+            _fileSystem.AddFile(dependentPath, dependentTime);
+            _fileSystem.AddFile(outputPath, outputTime);
+            _buildUpToDateCheck.TestAccess.SetLastCheckedAtUtc(lastCheckTime);
+            _buildUpToDateCheck.TestAccess.SetLastItemsChangedAtUtc(itemChangeTime);
+
+            await AssertUpToDateAsync(
+                $"No inputs are newer than earliest output '{outputPath}' ({outputTime.ToLocalTime()}).");
+
+            // Remove dependentPath
+            await SetupAsync(projectSnapshot: projectSnapshot);
+
+            await AssertNotUpToDateAsync(
+                "Some additional dependent files are added or removed, not up to date.",
+                telemetryReason: "AdditionalDependentFiles");
+        }
+
+        [Fact]
+        public async Task IsUpToDateAsync_False_AdditionalDependentFileTimeSourceAdded()
+        {
+            var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                [UpToDateCheckBuilt.SchemaName] = SimpleItems("Output")
+            };
+
+            var itemChangeTime = DateTime.UtcNow.AddMinutes(-4);
+            var lastCheckTime = DateTime.UtcNow.AddMinutes(-3);
+            var outputTime = DateTime.UtcNow.AddMinutes(-2);
+            var dependentTime = DateTime.UtcNow.AddMinutes(-1);
+
+            var dependentPath = @"C:\Dev\Solution\Project\Dependent";
+            var outputPath = @"C:\Dev\Solution\Project\Output";
+
+            await SetupAsync(
+                projectSnapshot: projectSnapshot,
+                dependentTimeFiles: new[] { (dependentPath, dependentTime) });
+
+            _fileSystem.AddFile(dependentPath, dependentTime);
+            _fileSystem.AddFile(outputPath, outputTime);
+            _buildUpToDateCheck.TestAccess.SetLastCheckedAtUtc(lastCheckTime);
+            _buildUpToDateCheck.TestAccess.SetLastItemsChangedAtUtc(itemChangeTime);
+
+            await AssertNotUpToDateAsync(
+                "Some additional dependent files are added or removed, not up to date.",
+                telemetryReason: "AdditionalDependentFiles");
+        }
+
+        [Fact]
         public async Task IsUpToDateAsync_False_AdditionalDependentFileTimeSourceIsNewerThanOutput()
         {
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
