@@ -171,7 +171,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
 
 
-            if (state.AdditionalDependentFilesAddedOrRemoved)
+            if (state.LastAdditionalDependentFileTimesChangedAtUtc > state.LastCheckedAtUtc)
             {
                 return log.Fail("AdditionalDependentFiles", "Some additional dependent files are added or removed, not up to date.");
             }
