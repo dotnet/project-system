@@ -604,13 +604,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             var inputTime      = DateTime.UtcNow.AddMinutes(-2);
             var lastCheckTime  = DateTime.UtcNow.AddMinutes(-1);
 
-            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\BuiltOutputPath1", outputTime);
-            _fileSystem.AddFile("Analyzer1ResolvedPath", inputTime);
+            var outputItem = "C:\\Dev\\Solution\\Project\\BuiltOutputPath1";
+            var analyzerItem = "C:\\Dev\\Solution\\Project\\Analyzer1ResolvedPath";
+
+            _fileSystem.AddFile(outputItem, outputTime);
+            _fileSystem.AddFile(analyzerItem, inputTime);
             _buildUpToDateCheck.TestAccess.SetLastCheckedAtUtc(lastCheckTime);
             _buildUpToDateCheck.TestAccess.SetLastItemsChangedAtUtc(itemChangeTime);
 
             await AssertNotUpToDateAsync(
-                $"Input 'Analyzer1ResolvedPath' is newer ({inputTime.ToLocalTime()}) than earliest output 'C:\\Dev\\Solution\\Project\\BuiltOutputPath1' ({outputTime.ToLocalTime()}), not up to date.",
+                $"Input '{analyzerItem}' is newer ({inputTime.ToLocalTime()}) than earliest output '{outputItem}' ({outputTime.ToLocalTime()}), not up to date.",
                 "Outputs");
         }
 
