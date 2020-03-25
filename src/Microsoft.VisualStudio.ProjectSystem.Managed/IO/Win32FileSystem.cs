@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
 
@@ -15,6 +16,8 @@ namespace Microsoft.VisualStudio.IO
     [Export(typeof(IFileSystem))]
     internal class Win32FileSystem : IFileSystem
     {
+        private static readonly DateTime s_minFileTime = DateTime.FromFileTimeUtc(0);
+
         public Stream Create(string path)
         {
             return File.Create(path);
@@ -58,9 +61,35 @@ namespace Microsoft.VisualStudio.IO
             File.WriteAllBytes(path, bytes);
         }
 
-        public DateTime LastFileWriteTimeUtc(string path)
+        public DateTime GetLastFileWriteTimeOrMinValueUtc(string path)
         {
-            return File.GetLastWriteTimeUtc(path);
+            if (TryGetLastFileWriteTimeUtc(path, out DateTime? result))
+            {
+                return result.Value;
+            }
+
+            return DateTime.MinValue;
+        }
+
+        public bool TryGetLastFileWriteTimeUtc(string path, [NotNullWhen(true)]out DateTime? result)
+        {
+            try
+            {
+                result = File.GetLastWriteTimeUtc(path);
+                if (result != s_minFileTime)
+                {
+                    return true;
+                }
+            }
+            catch (IOException)
+            {
+            }
+            catch (UnauthorizedAccessException)
+            {
+            }
+
+            result = null;
+            return false;
         }
 
         public long FileLength(string path)

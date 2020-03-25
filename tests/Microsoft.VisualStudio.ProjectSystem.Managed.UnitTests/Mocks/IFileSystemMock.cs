@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -221,9 +222,26 @@ namespace Microsoft.VisualStudio.IO
             }
         }
 
-        public DateTime LastFileWriteTimeUtc(string path)
+        public DateTime GetLastFileWriteTimeOrMinValueUtc(string path)
         {
-            return Files[path].LastWriteTimeUtc;
+            if (TryGetLastFileWriteTimeUtc(path, out DateTime? result))
+            {
+                return result.Value;
+            }
+
+            return DateTime.MinValue;
+        }
+
+        public bool TryGetLastFileWriteTimeUtc(string path, [NotNullWhen(true)]out DateTime? result)
+        {
+            if (Files.TryGetValue(path, out FileData value))
+            {
+                result = value.LastWriteTimeUtc;
+                return true;
+            }
+
+            result = null;
+            return false;
         }
 
         public void RemoveDirectory(string directoryPath, bool recursive)
