@@ -10,12 +10,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
     /// </summary>
     /// <remarks>
     /// <para>
-    ///     This includes not just dependencies, but also subtrees (eg. "Packages")
-    ///     and graph nodes.
+    ///     This includes both top-level dependency nodes and grouping nodes
+    ///     (e.g. "Packages" or ".NET Framework 4.8"), but not transitive dependencies.
     /// </para>
     /// <para>
     ///     This interface allows representing these different types of tree items
-    ///     in a consistent manner for use with graph/tree APIs.
+    ///     in a consistent manner.
     /// </para>
     /// </remarks>
     internal interface IDependencyViewModel
@@ -24,7 +24,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
         string? FilePath { get; }
         string? SchemaName { get; }
         string? SchemaItemType { get; }
-        int Priority { get; }
         ImageMoniker Icon { get; }
         ImageMoniker ExpandedIcon { get; }
         ProjectTreeFlags Flags { get; }

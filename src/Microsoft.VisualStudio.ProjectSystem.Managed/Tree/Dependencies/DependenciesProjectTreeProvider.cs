@@ -283,7 +283,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             // - dependency sub tree nodes
             // - dependency sub tree top level nodes
             //
-            // Deeper levels will be graph nodes with additional info, not direct dependencies
+            // Deeper levels will be attached items with additional info, not direct dependencies
             // specified in the project file.
 
             return _viewProviders.FirstOrDefault()?.Value.FindByPath(root, path);
@@ -300,7 +300,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </returns>
         public override string? GetPath(IProjectTree node)
         {
-            // Needed for graph nodes search
+            // TODO this is apparently for graph nodes search -- do we still need it?
             return node.FilePath;
         }
 

@@ -35,7 +35,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.True(model.Resolved);
             Assert.False(model.Implicit);
             Assert.Equal(properties, model.Properties);
-            Assert.Equal(GraphNodePriority.UnresolvedReference, model.Priority);
             Assert.Equal(KnownMonikers.QuestionMark, model.Icon);
             Assert.Equal(KnownMonikers.QuestionMark, model.ExpandedIcon);
             Assert.Equal(KnownMonikers.QuestionMark, model.UnresolvedIcon);

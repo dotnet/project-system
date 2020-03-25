@@ -27,7 +27,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Caption = "DependencyResolved",
                 SchemaName = "MySchema",
                 SchemaItemType = "MySchemaItemType",
-                Priority = 1,
                 Resolved = true,
                 TopLevel = true,
                 IconSet = iconSet
@@ -42,7 +41,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Caption = "DependencyUnresolved",
                 SchemaName = "MySchema",
                 SchemaItemType = "MySchemaItemType",
-                Priority = 1,
                 Resolved = false,
                 TopLevel = true,
                 IconSet = iconSet
@@ -57,7 +55,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Caption = "DependencyUnresolvedChild",
                 SchemaName = "MySchema",
                 SchemaItemType = "MySchemaItemType",
-                Priority = 1,
                 Resolved = true,
                 TopLevel = true,
                 IconSet = iconSet,
@@ -79,7 +76,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.Equal(dependencyResolved.Id,                    viewModelResolved.FilePath);
             Assert.Equal(dependencyResolved.SchemaName,            viewModelResolved.SchemaName);
             Assert.Equal(dependencyResolved.SchemaItemType,        viewModelResolved.SchemaItemType);
-            Assert.Equal(dependencyResolved.Priority,              viewModelResolved.Priority);
             Assert.Equal(iconSet.Icon,                             viewModelResolved.Icon);
             Assert.Equal(iconSet.ExpandedIcon,                     viewModelResolved.ExpandedIcon);
 
@@ -90,7 +86,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.Equal(dependencyUnresolved.Id,                  viewModelUnresolved.FilePath);
             Assert.Equal(dependencyUnresolved.SchemaName,          viewModelUnresolved.SchemaName);
             Assert.Equal(dependencyUnresolved.SchemaItemType,      viewModelUnresolved.SchemaItemType);
-            Assert.Equal(dependencyUnresolved.Priority,            viewModelUnresolved.Priority);
             Assert.Equal(iconSet.UnresolvedIcon,                   viewModelUnresolved.Icon);
             Assert.Equal(iconSet.UnresolvedExpandedIcon,           viewModelUnresolved.ExpandedIcon);
 
@@ -101,7 +96,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.Equal(dependencyUnresolvedChild.Id,             viewModelUnresolvedChild.FilePath);
             Assert.Equal(dependencyUnresolvedChild.SchemaName,     viewModelUnresolvedChild.SchemaName);
             Assert.Equal(dependencyUnresolvedChild.SchemaItemType, viewModelUnresolvedChild.SchemaItemType);
-            Assert.Equal(dependencyUnresolvedChild.Priority,       viewModelUnresolvedChild.Priority);
             Assert.Equal(iconSet.UnresolvedIcon,                   viewModelUnresolvedChild.Icon);
             Assert.Equal(iconSet.UnresolvedExpandedIcon,           viewModelUnresolvedChild.ExpandedIcon);
         }

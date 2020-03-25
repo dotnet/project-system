@@ -72,11 +72,6 @@
         <target state="translated">您正在重新命名檔案。您是否也要重新命名此專案中對於程式碼項目 '{0}' 的所有參考?</target>
         <note />
       </trans-unit>
-      <trans-unit id="GraphNodeCategoryDependency">
-        <source>Dependency</source>
-        <target state="translated">相依性</target>
-        <note />
-      </trans-unit>
       <trans-unit id="ActiveLaunchProfileNotFound">
         <source>There aren't any active launch profiles configured for this project.</source>
         <target state="translated">此專案未設有任何使用中的啟動設定檔。</target>

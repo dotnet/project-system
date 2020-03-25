@@ -72,11 +72,6 @@
         <target state="translated">파일의 이름을 바꾸고 있습니다. 이 프로젝트에서 코드 포인트 '{0}'의 모든 참조 이름도 바꾸시겠습니까?</target>
         <note />
       </trans-unit>
-      <trans-unit id="GraphNodeCategoryDependency">
-        <source>Dependency</source>
-        <target state="translated">종속성</target>
-        <note />
-      </trans-unit>
       <trans-unit id="ActiveLaunchProfileNotFound">
         <source>There aren't any active launch profiles configured for this project.</source>
         <target state="translated">이 프로젝트에 대해 구성된 활성 시작 프로필이 없습니다.</target>

@@ -72,11 +72,6 @@
         <target state="translated">你正在重命名文件。是否也对此项目中对代码元素“{0}”的所有引用执行重命名操作?</target>
         <note />
       </trans-unit>
-      <trans-unit id="GraphNodeCategoryDependency">
-        <source>Dependency</source>
-        <target state="translated">依赖项</target>
-        <note />
-      </trans-unit>
       <trans-unit id="ActiveLaunchProfileNotFound">
         <source>There aren't any active launch profiles configured for this project.</source>
         <target state="translated">没有为此项目配置任何活动的启动配置文件。</target>

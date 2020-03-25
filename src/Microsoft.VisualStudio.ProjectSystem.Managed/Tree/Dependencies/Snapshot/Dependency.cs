@@ -34,7 +34,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             TopLevel = dependencyModel.TopLevel;
             Implicit = dependencyModel.Implicit;
             Visible = dependencyModel.Visible;
-            Priority = dependencyModel.Priority;
             Flags = dependencyModel.Flags;
 
             // Just in case custom providers don't do it, add corresponding flags for Resolved state.
@@ -113,7 +112,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             _schemaItemType = dependency.SchemaItemType;
             TopLevel = dependency.TopLevel;
             Visible = dependency.Visible;
-            Priority = dependency.Priority;
             BrowseObjectProperties = dependency.BrowseObjectProperties;
             Caption = caption ?? dependency.Caption; // TODO if Properties contains "Folder.IdentityProperty" should we update it? (see public ctor)
             Resolved = resolved ?? dependency.Resolved;
@@ -186,7 +184,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         public DependencyIconSet IconSet { get; }
 
-        public int Priority { get; }
         public ProjectTreeFlags Flags { get; }
 
         public IImmutableDictionary<string, string> BrowseObjectProperties { get; }

@@ -30,7 +30,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.True(model.Resolved);
             Assert.False(model.Implicit);
             Assert.Equal(properties, model.Properties);
-            Assert.Equal(GraphNodePriority.Project, model.Priority);
             Assert.Equal(ProjectReference.PrimaryDataSourceItemType, model.SchemaItemType);
             Assert.Equal(KnownMonikers.Application, model.Icon);
             Assert.Equal(KnownMonikers.Application, model.ExpandedIcon);
@@ -64,7 +63,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.False(model.Resolved);
             Assert.False(model.Implicit);
             Assert.Equal(properties, model.Properties);
-            Assert.Equal(GraphNodePriority.Project, model.Priority);
             Assert.Equal(ProjectReference.PrimaryDataSourceItemType, model.SchemaItemType);
             Assert.Equal(KnownMonikers.Application, model.Icon);
             Assert.Equal(KnownMonikers.Application, model.ExpandedIcon);
@@ -98,7 +96,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.True(model.Resolved);
             Assert.True(model.Implicit);
             Assert.Equal(properties, model.Properties);
-            Assert.Equal(GraphNodePriority.Project, model.Priority);
             Assert.Equal(ProjectReference.PrimaryDataSourceItemType, model.SchemaItemType);
             Assert.Equal(ManagedImageMonikers.ApplicationPrivate, model.Icon);
             Assert.Equal(ManagedImageMonikers.ApplicationPrivate, model.ExpandedIcon);

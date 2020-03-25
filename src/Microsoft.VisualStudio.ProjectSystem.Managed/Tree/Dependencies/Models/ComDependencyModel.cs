@@ -25,8 +25,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public override string ProviderType => ComRuleHandler.ProviderTypeString;
 
-        public override int Priority => GraphNodePriority.ComNodePriority;
-
         public override string? SchemaItemType => ComReference.PrimaryDataSourceItemType;
 
         public override string? SchemaName => Resolved ? ResolvedCOMReference.SchemaName : ComReference.SchemaName;

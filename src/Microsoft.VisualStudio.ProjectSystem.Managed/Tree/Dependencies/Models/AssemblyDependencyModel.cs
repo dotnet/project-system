@@ -28,8 +28,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public override string ProviderType => AssemblyRuleHandler.ProviderTypeString;
 
-        public override int Priority => GraphNodePriority.FrameworkAssembly;
-
         public override string? SchemaItemType => AssemblyReference.PrimaryDataSourceItemType;
 
         public override string? SchemaName => Resolved ? ResolvedAssemblyReference.SchemaName : AssemblyReference.SchemaName;

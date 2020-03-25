@@ -33,7 +33,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
         public string? FilePath => null;
         public string? SchemaName => null;
         public string? SchemaItemType => null;
-        public int Priority => GraphNodePriority.FrameworkAssembly;
         public ImageMoniker Icon => _hasUnresolvedDependency ? ManagedImageMonikers.LibraryWarning : KnownMonikers.Library;
         public ImageMoniker ExpandedIcon => _hasUnresolvedDependency ? ManagedImageMonikers.LibraryWarning : KnownMonikers.Library;
         public ProjectTreeFlags Flags { get; }

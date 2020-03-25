@@ -72,11 +72,6 @@
         <target state="translated">Zmieniasz nazwę pliku. Czy chcesz także zmienić nazwy w tym projekcie dla wszystkich odwołań do elementu kodu „{0}”?</target>
         <note />
       </trans-unit>
-      <trans-unit id="GraphNodeCategoryDependency">
-        <source>Dependency</source>
-        <target state="translated">Zależność</target>
-        <note />
-      </trans-unit>
       <trans-unit id="ActiveLaunchProfileNotFound">
         <source>There aren't any active launch profiles configured for this project.</source>
         <target state="translated">Brak skonfigurowanych aktywnych profilów uruchamiania dla tego projektu.</target>

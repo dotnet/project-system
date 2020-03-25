@@ -64,12 +64,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
         public string Path { get; }
         public virtual string? SchemaName => null;
         public virtual string? SchemaItemType => null;
-        public string Version => throw new NotImplementedException();
+        string IDependencyModel.Version => throw new NotImplementedException();
         public bool Resolved => (_flags & DependencyFlags.Resolved) != 0;
         public bool TopLevel => (_flags & DependencyFlags.TopLevel) != 0;
         public bool Implicit => (_flags & DependencyFlags.Implicit) != 0;
         public bool Visible => (_flags & DependencyFlags.Visible) != 0;
-        public virtual int Priority => 0;
+        int IDependencyModel.Priority => throw new NotImplementedException();
         public ImageMoniker Icon => IconSet.Icon;
         public ImageMoniker ExpandedIcon => IconSet.ExpandedIcon;
         public ImageMoniker UnresolvedIcon => IconSet.UnresolvedIcon;

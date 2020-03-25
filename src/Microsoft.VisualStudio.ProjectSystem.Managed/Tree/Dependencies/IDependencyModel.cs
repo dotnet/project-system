@@ -111,17 +111,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         ImageMoniker UnresolvedExpandedIcon { get; }
 
         /// <summary>
-        /// Gets a value that determines this node's order relative to its peers.
+        /// Unused.
         /// </summary>
-        /// <remarks>
-        /// <para>
-        ///     This behaviour only applies to graph nodes (i.e. children of top-level dependencies).
-        /// </para>
-        /// <para>
-        ///     The default is zero, which means ordering will be alphabetical.
-        ///     If non-zero, the node will be positioned after all nodes having lower priority.
-        /// </para>
-        /// </remarks>
+        [Obsolete("IDependencyModel is only used for top-level dependencies, and this property only existed to support transitive references.")]
         int Priority { get; }
 
         ProjectTreeFlags Flags { get; }

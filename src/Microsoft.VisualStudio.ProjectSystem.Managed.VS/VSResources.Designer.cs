@@ -241,15 +241,6 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Dependency.
-        /// </summary>
-        internal static string GraphNodeCategoryDependency {
-            get {
-                return ResourceManager.GetString("GraphNodeCategoryDependency", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to {0} - Import comes fom target file. This import cannot be removed..
         /// </summary>
         internal static string ImportsFromTargetCannotBeDeleted {

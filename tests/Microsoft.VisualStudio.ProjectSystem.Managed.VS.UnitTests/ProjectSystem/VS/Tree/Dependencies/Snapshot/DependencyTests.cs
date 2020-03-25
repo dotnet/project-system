@@ -88,7 +88,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 TopLevel = true,
                 Implicit = true,
                 Visible = true,
-                Priority = 3,
                 Flags = DependencyTreeFlags.GenericDependency,
                 Icon = KnownMonikers.Path,
                 ExpandedIcon = KnownMonikers.PathIcon,
@@ -113,7 +112,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.Equal(mockModel.TopLevel, dependency.TopLevel);
             Assert.Equal(mockModel.Implicit, dependency.Implicit);
             Assert.Equal(mockModel.Visible, dependency.Visible);
-            Assert.Equal(mockModel.Priority, dependency.Priority);
             Assert.Single(dependency.BrowseObjectProperties);
             Assert.True(dependency.BrowseObjectProperties.ContainsKey("prop1"));
             Assert.Single(dependency.DependencyIDs);

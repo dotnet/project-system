@@ -1,10 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
-using System.Linq;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
@@ -29,8 +27,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// </summary>
         /// <remarks>
         /// Modifications of this collection are locked by <see cref="_lock"/>, however we still use an immutable collection
-        /// here so that read-only calls from <see cref="GetSnapshot(string)"/>, <see cref="GetSnapshot(IDependency)"/> and
-        /// <see cref="GetSnapshots"/> don't need to take a global lock.
+        /// here so that read-only calls from <see cref="GetSnapshot(string)"/> and <see cref="GetSnapshot(IDependency)"/> and
+        /// don't need to take a global lock.
         /// </remarks>
         private ImmutableDictionary<string, DependenciesSnapshotProvider> _snapshotProviderByPath;
 
@@ -115,7 +113,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             }
         }
 
-        public DependenciesSnapshot? GetSnapshot(string projectFilePath)
+        private DependenciesSnapshot? GetSnapshot(string projectFilePath)
         {
             Requires.NotNullOrEmpty(projectFilePath, nameof(projectFilePath));
 
@@ -142,11 +140,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             }
 
             return snapshot.DependenciesByTargetFramework[targetFramework];
-        }
-
-        public IReadOnlyCollection<DependenciesSnapshot> GetSnapshots()
-        {
-            return _snapshotProviderByPath.Values.Select(provider => provider.CurrentSnapshot).ToList();
         }
     }
 }
