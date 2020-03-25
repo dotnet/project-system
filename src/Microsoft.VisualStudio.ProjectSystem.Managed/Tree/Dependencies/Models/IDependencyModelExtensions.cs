@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
                 _hasUnresolvedDependency = hasUnresolvedDependency;
             }
 
-            public IDependency? OriginalModel => null;
+            public IDependency? Dependency => null;
             public string Caption => _model.Caption;
             public string? FilePath => _model.Id;
             public string? SchemaName => _model.SchemaName;

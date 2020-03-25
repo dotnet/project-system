@@ -355,9 +355,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return UpdateTreeNode();
             }
 
-            string? filePath = viewModel.OriginalModel != null &&
-                               viewModel.OriginalModel.Resolved
-                ? viewModel.OriginalModel.GetTopLevelId()
+            string? filePath = viewModel.Dependency != null &&
+                               viewModel.Dependency.Resolved
+                ? viewModel.Dependency.GetTopLevelId()
                 : viewModel.FilePath;
 
             ProjectTreeFlags filteredFlags = FilterFlags(viewModel.Flags);

@@ -36,6 +36,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
         public ImageMoniker Icon => _hasUnresolvedDependency ? ManagedImageMonikers.LibraryWarning : KnownMonikers.Library;
         public ImageMoniker ExpandedIcon => _hasUnresolvedDependency ? ManagedImageMonikers.LibraryWarning : KnownMonikers.Library;
         public ProjectTreeFlags Flags { get; }
-        public IDependency? OriginalModel => null;
+        public IDependency? Dependency => null;
     }
 }
