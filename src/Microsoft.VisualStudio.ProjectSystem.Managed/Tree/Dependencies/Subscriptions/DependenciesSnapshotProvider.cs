@@ -28,16 +28,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
     [AppliesTo(ProjectCapability.DependenciesTree)]
     internal sealed partial class DependenciesSnapshotProvider : OnceInitializedOnceDisposedAsync
     {
-        /// <summary>
-        /// Raised when the project's full path changes (i.e. due to being renamed).
-        /// </summary>
-        public event EventHandler<ProjectRenamedEventArgs>? SnapshotRenamed;
-
-        /// <summary>
-        /// Raised when the project and its snapshot provider are unloading.
-        /// </summary>
-        public event EventHandler<SnapshotProviderUnloadingEventArgs>? SnapshotProviderUnloading;
-
         private readonly SemaphoreSlim _contextUpdateGate = new SemaphoreSlim(initialCount: 1);
         private readonly object _lock = new object();
 
@@ -48,7 +38,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         private readonly IUnconfiguredProjectCommonServices _commonServices;
         private readonly IUnconfiguredProjectTasksService _tasksService;
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
-        private readonly IAggregateDependenciesSnapshotProvider _aggregateSnapshotProvider;
 
         [ImportMany] private readonly OrderPrecedenceImportCollection<IDependencyCrossTargetSubscriber> _dependencySubscribers;
         [ImportMany] private readonly OrderPrecedenceImportCollection<IProjectDependenciesSubTreeProvider> _subTreeProviders;
@@ -80,15 +69,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             IUnconfiguredProjectTasksService tasksService,
             IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
             IActiveProjectConfigurationRefreshService activeProjectConfigurationRefreshService,
-            ITargetFrameworkProvider targetFrameworkProvider,
-            IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider)
+            ITargetFrameworkProvider targetFrameworkProvider)
             : base(commonServices.ThreadingService.JoinableTaskContext)
         {
             _commonServices = commonServices;
             _tasksService = tasksService;
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
             _targetFrameworkProvider = targetFrameworkProvider;
-            _aggregateSnapshotProvider = aggregateSnapshotProvider;
 
             _dependencySubscribers = new OrderPrecedenceImportCollection<IDependencyCrossTargetSubscriber>(
                 projectCapabilityCheckProvider: commonServices.Project);
@@ -213,12 +200,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     throw new ObjectDisposedException(nameof(DependenciesSnapshotProvider));
                 }
 
-                IDisposable unregister = _aggregateSnapshotProvider.RegisterSnapshotProvider(this);
-
-                _disposables.Add(unregister);
-
                 _commonServices.Project.ProjectUnloading += OnUnconfiguredProjectUnloadingAsync;
-                _commonServices.Project.ProjectRenamed += OnUnconfiguredProjectRenamedAsync;
 
                 foreach (Lazy<IProjectDependenciesSubTreeProvider, IOrderPrecedenceMetadataView> provider in _subTreeProviders)
                 {
@@ -230,7 +212,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         () =>
                         {
                             _commonServices.Project.ProjectUnloading -= OnUnconfiguredProjectUnloadingAsync;
-                            _commonServices.Project.ProjectRenamed -= OnUnconfiguredProjectRenamedAsync;
 
                             foreach (Lazy<IProjectDependenciesSubTreeProvider, IOrderPrecedenceMetadataView> provider in _subTreeProviders)
                             {
@@ -243,18 +224,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             Task OnUnconfiguredProjectUnloadingAsync(object? sender, EventArgs args)
             {
-                // If our project unloads, we have no more work to do. Notify listeners and clean everything up.
-
-                SnapshotProviderUnloading?.Invoke(this, new SnapshotProviderUnloadingEventArgs(this));
-
+                // If our project unloads, we have no more work to do
                 DisposeCore();
-
-                return Task.CompletedTask;
-            }
-
-            Task OnUnconfiguredProjectRenamedAsync(object? sender, ProjectRenamedEventArgs e)
-            {
-                SnapshotRenamed?.Invoke(this, e);
 
                 return Task.CompletedTask;
             }
@@ -474,20 +445,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         }
 
         public DependenciesSnapshot Snapshot { get; }
-        public CancellationToken Token { get; }
-    }
-
-    internal sealed class SnapshotProviderUnloadingEventArgs : EventArgs
-    {
-        public SnapshotProviderUnloadingEventArgs(DependenciesSnapshotProvider snapshotProvider, CancellationToken token = default)
-        {
-            Requires.NotNull(snapshotProvider, nameof(snapshotProvider));
-
-            SnapshotProvider = snapshotProvider;
-            Token = token;
-        }
-
-        public DependenciesSnapshotProvider SnapshotProvider { get; }
         public CancellationToken Token { get; }
     }
 }
