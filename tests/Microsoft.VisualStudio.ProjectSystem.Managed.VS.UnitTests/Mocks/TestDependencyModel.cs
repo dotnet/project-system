@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.VisualStudio.Imaging.Interop;
@@ -22,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public string? SchemaItemType { get; set; }
         public string Version => throw new NotImplementedException();
         public bool Resolved { get; set; } = false;
-        public bool TopLevel { get; set; } = true;
+        public bool TopLevel => true;
         public bool Implicit { get; set; } = false;
         public bool Visible { get; set; } = true;
         public int Priority => throw new NotImplementedException();
@@ -31,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public ImageMoniker UnresolvedIcon { get; set; }
         public ImageMoniker UnresolvedExpandedIcon { get; set; }
         public IImmutableDictionary<string, string> Properties { get; set; }
-        public IImmutableList<string> DependencyIDs { get; set; } = ImmutableList<string>.Empty;
+        public IImmutableList<string> DependencyIDs => throw new NotImplementedException();
         public ProjectTreeFlags Flags { get; set; } = ProjectTreeFlags.Empty;
         public string Id { get; set; }
 #pragma warning restore CS8618 // Non-nullable property is uninitialized
@@ -48,20 +47,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                    && (SchemaName == null || SchemaName == dependency.SchemaName)
                    && (SchemaItemType == null || !Flags.Contains(DependencyTreeFlags.GenericDependency) || SchemaItemType == dependency.SchemaItemType)
                    && Resolved == dependency.Resolved
-                   && TopLevel == dependency.TopLevel
                    && Implicit == dependency.Implicit
                    && Visible == dependency.Visible
                    && Equals(Icon, dependency.IconSet.Icon)
                    && Equals(ExpandedIcon, dependency.IconSet.ExpandedIcon)
                    && Equals(UnresolvedIcon, dependency.IconSet.UnresolvedIcon)
                    && Equals(UnresolvedExpandedIcon, dependency.IconSet.UnresolvedExpandedIcon)
-                   && Equals(Properties, dependency.BrowseObjectProperties)
-                   && SetEquals(DependencyIDs, dependency.DependencyIDs);
-        }
-
-        private static bool SetEquals(IImmutableList<string> a, IImmutableList<string> b)
-        {
-            return a.Count == b.Count && new HashSet<string>(a).SetEquals(b);
+                   && Equals(Properties, dependency.BrowseObjectProperties);
         }
 
         private static bool Equals(IImmutableDictionary<string, string> a, IImmutableDictionary<string, string> b)

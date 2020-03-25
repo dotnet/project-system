@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             Assert.Throws<ArgumentNullException>("projectPath",       () => new TargetedDependenciesSnapshot(null!, tfm,   null, deps));
             Assert.Throws<ArgumentNullException>("targetFramework",   () => new TargetedDependenciesSnapshot(path,  null!, null, deps));
-            Assert.Throws<ArgumentNullException>("dependenciesWorld", () => new TargetedDependenciesSnapshot(path,  tfm,   null, null!));
+            Assert.Throws<ArgumentNullException>("dependencyById",    () => new TargetedDependenciesSnapshot(path,  tfm,   null, null!));
         }
 
         [Fact]
@@ -41,11 +41,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.Same(projectPath, snapshot.ProjectPath);
             Assert.Same(targetFramework, snapshot.TargetFramework);
             Assert.Same(catalogs, snapshot.Catalogs);
-            Assert.False(snapshot.HasReachableVisibleUnresolvedDependency);
-            Assert.Empty(snapshot.TopLevelDependencies);
-            Assert.Empty(snapshot.DependenciesWorld);
+            Assert.False(snapshot.HasVisibleUnresolvedDependency);
+            Assert.Empty(snapshot.DependencyById);
             Assert.False(snapshot.CheckForUnresolvedDependencies("foo"));
-            Assert.Empty(snapshot.GetDependencyChildren(new TestDependency()));
         }
 
         [Fact]
@@ -60,11 +58,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.Same(projectPath, snapshot.ProjectPath);
             Assert.Same(targetFramework, snapshot.TargetFramework);
             Assert.Same(catalogs, snapshot.Catalogs);
-            Assert.False(snapshot.HasReachableVisibleUnresolvedDependency);
-            Assert.Empty(snapshot.TopLevelDependencies);
-            Assert.Empty(snapshot.DependenciesWorld);
+            Assert.False(snapshot.HasVisibleUnresolvedDependency);
+            Assert.Empty(snapshot.DependencyById);
             Assert.False(snapshot.CheckForUnresolvedDependencies("foo"));
-            Assert.Empty(snapshot.GetDependencyChildren(new TestDependency()));
         }
 
         [Fact]
@@ -109,11 +105,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.NotSame(previousSnapshot, snapshot);
             Assert.Same(projectPath, snapshot.ProjectPath);
             Assert.Same(updatedCatalogs, snapshot.Catalogs);
-            AssertEx.SequenceSame(previousSnapshot.TopLevelDependencies, snapshot.TopLevelDependencies);
-            Assert.Same(previousSnapshot.DependenciesWorld, snapshot.DependenciesWorld);
-            Assert.False(snapshot.HasReachableVisibleUnresolvedDependency);
-            Assert.Empty(snapshot.DependenciesWorld);
-            Assert.Empty(snapshot.TopLevelDependencies);
+            Assert.Same(previousSnapshot.DependencyById, snapshot.DependencyById);
+            Assert.False(snapshot.HasVisibleUnresolvedDependency);
+            Assert.Empty(snapshot.DependencyById);
         }
 
         [Fact]
@@ -125,14 +119,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = TargetedDependenciesSnapshot.CreateEmpty(projectPath, targetFramework, catalogs);
 
-            var resolvedTop = new TestDependencyModel
+            var resolved = new TestDependencyModel
             {
                 ProviderType = "Xxx",
                 Id = "dependency1",
                 Name = "Dependency1",
                 Caption = "Dependency1",
                 Resolved = true,
-                TopLevel = true,
                 Flags = DependencyTreeFlags.Resolved,
                 Icon = KnownMonikers.Uninstall,
                 ExpandedIcon = KnownMonikers.Uninstall
@@ -145,14 +138,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Name = "Dependency2",
                 Caption = "Dependency2",
                 Resolved = false,
-                TopLevel = false,
                 Flags = DependencyTreeFlags.Unresolved,
                 Icon = KnownMonikers.Uninstall,
                 ExpandedIcon = KnownMonikers.Uninstall
             };
 
             var changes = new DependenciesChangesBuilder();
-            changes.Added(resolvedTop);
+            changes.Added(resolved);
             changes.Added(unresolved);
 
             const string updatedProjectPath = "updatedProjectPath";
@@ -169,12 +161,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.NotSame(previousSnapshot, snapshot);
             Assert.Same(updatedProjectPath, snapshot.ProjectPath);
             Assert.Same(catalogs, snapshot.Catalogs);
-            Assert.False(snapshot.HasReachableVisibleUnresolvedDependency);
-            AssertEx.CollectionLength(snapshot.DependenciesWorld, 2);
-            AssertEx.CollectionLength(snapshot.TopLevelDependencies, 1);
-            Assert.True(resolvedTop.Matches(snapshot.TopLevelDependencies.Single(), targetFramework));
-            Assert.True(resolvedTop.Matches(snapshot.DependenciesWorld["tfm1\\Xxx\\dependency1"], targetFramework));
-            Assert.True(unresolved.Matches(snapshot.DependenciesWorld["tfm1\\Xxx\\dependency2"], targetFramework));
+            Assert.True(snapshot.HasVisibleUnresolvedDependency);
+            AssertEx.CollectionLength(snapshot.DependencyById, 2);
+            Assert.True(resolved.Matches(snapshot.DependencyById["tfm1\\Xxx\\dependency1"], targetFramework));
+            Assert.True(unresolved.Matches(snapshot.DependencyById["tfm1\\Xxx\\dependency2"], targetFramework));
         }
 
         [Fact]
@@ -184,26 +174,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             var targetFramework = new TargetFramework("tfm1");
 
-            var dependencyTop1 = new TestDependency
+            var dependency1 = new TestDependency
             {
                 ProviderType = "Xxx",
-                Id = Dependency.GetID(targetFramework, "Xxx", "topdependency1"),
-                Name = "TopDependency1",
-                Caption = "TopDependency1",
+                Id = Dependency.GetID(targetFramework, "Xxx", "dependency1"),
+                Name = "Dependency1",
+                Caption = "Dependency1",
                 SchemaItemType = "Xxx",
-                Resolved = true,
-                TopLevel = true
+                Resolved = true
             };
 
-            var dependencyChild1 = new TestDependency
+            var dependency2 = new TestDependency
             {
                 ProviderType = "Xxx",
-                Id = Dependency.GetID(targetFramework, "Xxx", "childdependency1"),
-                Name = "ChildDependency1",
-                Caption = "ChildDependency1",
+                Id = Dependency.GetID(targetFramework, "Xxx", "dependency2"),
+                Name = "Dependency1",
+                Caption = "Dependency1",
                 SchemaItemType = "Xxx",
-                Resolved = true,
-                TopLevel = false
+                Resolved = true
             };
 
             var catalogs = IProjectCatalogSnapshotFactory.Create();
@@ -211,10 +199,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 projectPath,
                 targetFramework,
                 catalogs,
-                new IDependency[] { dependencyTop1, dependencyChild1 }.ToImmutableDictionary(d => d.Id).WithComparers(StringComparer.OrdinalIgnoreCase));
+                new IDependency[] { dependency1, dependency2 }.ToImmutableDictionary(d => d.Id).WithComparers(StringComparer.OrdinalIgnoreCase));
 
             var changes = new DependenciesChangesBuilder();
-            changes.Removed(dependencyTop1.ProviderType, dependencyTop1.Id);
+            changes.Removed(dependency1.ProviderType, dependency1.Id);
 
             var snapshotFilter = new TestDependenciesSnapshotFilter();
 
@@ -237,26 +225,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = new TargetFramework("tfm1");
 
-            var dependencyTop1 = new TestDependency
+            var dependency1 = new TestDependency
             {
                 ProviderType = "Xxx",
-                Id = "tfm1\\xxx\\topdependency1",
-                Name = "TopDependency1",
-                Caption = "TopDependency1",
+                Id = "tfm1\\xxx\\dependency1",
+                Name = "Dependency1",
+                Caption = "Dependency1",
                 SchemaItemType = "Xxx",
-                Resolved = true,
-                TopLevel = true
+                Resolved = true
             };
 
-            var dependencyChild1 = new TestDependency
+            var dependency2 = new TestDependency
             {
                 ProviderType =  "Xxx",
-                Id =  "tfm1\\xxx\\childdependency1",
-                Name = "ChildDependency1",
-                Caption = "ChildDependency1",
+                Id = "tfm1\\xxx\\dependency2",
+                Name = "Dependency2",
+                Caption = "Dependency2",
                 SchemaItemType = "Xxx",
-                Resolved = true,
-                TopLevel = false
+                Resolved = true
             };
 
             var catalogs = IProjectCatalogSnapshotFactory.Create();
@@ -264,15 +250,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 projectPath,
                 targetFramework,
                 catalogs,
-                new IDependency[] { dependencyTop1, dependencyChild1 }.ToImmutableDictionary(d => d.Id).WithComparers(StringComparer.OrdinalIgnoreCase));
+                new IDependency[] { dependency1, dependency2 }.ToImmutableDictionary(d => d.Id).WithComparers(StringComparer.OrdinalIgnoreCase));
 
             var changes = new DependenciesChangesBuilder();
-            changes.Removed("Xxx", "topdependency1");
+            changes.Removed("Xxx", "dependency1");
 
-            var addedOnRemove = new TestDependency { Id = "SomethingElse", TopLevel = false };
+            var addedOnRemove = new TestDependency { Id = "SomethingElse" };
 
             var snapshotFilter = new TestDependenciesSnapshotFilter()
-                .BeforeRemoveReject(@"tfm1\xxx\topdependency1", addOrUpdate: addedOnRemove);
+                .BeforeRemoveReject(@"tfm1\xxx\dependency1", addOrUpdate: addedOnRemove);
 
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
                 projectPath,
@@ -290,9 +276,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.Same(previousSnapshot.TargetFramework, snapshot.TargetFramework);
             Assert.Same(projectPath, snapshot.ProjectPath);
             Assert.Same(catalogs, snapshot.Catalogs);
-            Assert.Single(snapshot.TopLevelDependencies);
-            AssertEx.CollectionLength(snapshot.DependenciesWorld, 3);
-            Assert.Contains(addedOnRemove, snapshot.DependenciesWorld.Values);
+            AssertEx.CollectionLength(snapshot.DependencyById, 3);
+            Assert.Contains(addedOnRemove, snapshot.DependencyById.Values);
         }
 
         [Fact]
@@ -301,26 +286,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = new TargetFramework("tfm1");
 
-            var dependencyTop1 = new TestDependency
+            var dependency1 = new TestDependency
             {
                 ProviderType = "Xxx",
-                Id = Dependency.GetID(targetFramework, "Xxx", "topdependency1"),
-                Name = "TopDependency1",
-                Caption = "TopDependency1",
+                Id = Dependency.GetID(targetFramework, "Xxx", "dependency1"),
+                Name = "Dependency1",
+                Caption = "Dependency1",
                 SchemaItemType = "Xxx",
-                Resolved = true,
-                TopLevel = true
-            };
-
-            var dependencyChild1 = new TestDependency
-            {
-                ProviderType = "Xxx",
-                Id = Dependency.GetID(targetFramework, "Xxx", "childdependency1"),
-                Name = "ChildDependency1",
-                Caption = "ChildDependency1",
-                SchemaItemType = "Xxx",
-                Resolved = true,
-                TopLevel = false
+                Resolved = true
             };
 
             var dependencyModelNew1 = new TestDependencyModel
@@ -340,7 +313,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 projectPath,
                 targetFramework,
                 catalogs,
-                new IDependency[] { dependencyTop1, dependencyChild1 }.ToImmutableDictionary(d => d.Id).WithComparers(StringComparer.OrdinalIgnoreCase));
+                new IDependency[] { dependency1 }.ToImmutableDictionary(d => d.Id).WithComparers(StringComparer.OrdinalIgnoreCase));
 
             var changes = new DependenciesChangesBuilder();
             changes.Added(dependencyModelNew1);
@@ -368,26 +341,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = new TargetFramework("tfm1");
 
-            var dependencyTop1 = new TestDependency
+            var dependency1 = new TestDependency
             {
                 ProviderType = "Xxx",
-                Id = "tfm1\\xxx\\topdependency1",
-                Name = "TopDependency1",
-                Caption = "TopDependency1",
+                Id = "tfm1\\xxx\\dependency1",
+                Name = "Dependency1",
+                Caption = "Dependency1",
                 SchemaItemType = "Xxx",
-                Resolved = true,
-                TopLevel = true
+                Resolved = true
             };
 
-            var dependencyChild1 = new TestDependency
+            var dependency2 = new TestDependency
             {
                 ProviderType = "Xxx",
-                Id = "tfm1\\xxx\\childdependency1",
-                Name = "ChildDependency1",
-                Caption = "ChildDependency1",
+                Id = "tfm1\\xxx\\dependency2",
+                Name = "Dependency2",
+                Caption = "Dependency2",
                 SchemaItemType = "Xxx",
-                Resolved = true,
-                TopLevel = false
+                Resolved = true
             };
 
             var dependencyModelNew1 = new TestDependencyModel
@@ -407,12 +378,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 projectPath,
                 targetFramework,
                 catalogs,
-                new IDependency[] { dependencyTop1, dependencyChild1 }.ToImmutableDictionary(d => d.Id).WithComparers(StringComparer.OrdinalIgnoreCase));
+                new IDependency[] { dependency1, dependency2 }.ToImmutableDictionary(d => d.Id).WithComparers(StringComparer.OrdinalIgnoreCase));
 
             var changes = new DependenciesChangesBuilder();
             changes.Added(dependencyModelNew1);
 
-            var filterAddedDependency = new TestDependency { Id = "unexpected", TopLevel = true };
+            var filterAddedDependency = new TestDependency { Id = "unexpected" };
 
             var snapshotFilter = new TestDependenciesSnapshotFilter()
                 .BeforeAddReject(@"tfm1\xxx\newdependency1", addOrUpdate: filterAddedDependency);
@@ -434,14 +405,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.Same(previousSnapshot.ProjectPath, snapshot.ProjectPath);
             Assert.Same(previousSnapshot.Catalogs, snapshot.Catalogs);
 
-            AssertEx.CollectionLength(snapshot.TopLevelDependencies, 2);
-            Assert.Contains(dependencyTop1, snapshot.TopLevelDependencies);
-            Assert.Contains(filterAddedDependency, snapshot.TopLevelDependencies);
-
-            AssertEx.CollectionLength(snapshot.DependenciesWorld, 3);
-            Assert.Contains(dependencyTop1, snapshot.DependenciesWorld.Values);
-            Assert.Contains(dependencyChild1, snapshot.DependenciesWorld.Values);
-            Assert.Contains(filterAddedDependency, snapshot.DependenciesWorld.Values);
+            AssertEx.CollectionLength(snapshot.DependencyById, 3);
+            Assert.Contains(dependency1, snapshot.DependencyById.Values);
+            Assert.Contains(dependency2, snapshot.DependencyById.Values);
+            Assert.Contains(filterAddedDependency, snapshot.DependencyById.Values);
         }
 
         [Fact]
@@ -450,26 +417,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = new TargetFramework("tfm1");
 
-            var dependencyTop1 = new TestDependency
+            var dependency1 = new TestDependency
             {
                 ProviderType = "Xxx",
-                Id = "tfm1\\xxx\\topdependency1",
-                Name = "TopDependency1",
-                Caption = "TopDependency1",
+                Id = "tfm1\\xxx\\dependency1",
+                Name = "Dependency1",
+                Caption = "Dependency1",
                 SchemaItemType = "Xxx",
-                Resolved = true,
-                TopLevel = true
+                Resolved = true
             };
 
-            var dependencyChild1 = new TestDependency
+            var dependency2 = new TestDependency
             {
                 ProviderType = "Xxx",
-                Id = "tfm1\\xxx\\childdependency1",
-                Name = "ChildDependency1",
-                Caption = "ChildDependency1",
+                Id = "tfm1\\xxx\\dependency2",
+                Name = "Dependency2",
+                Caption = "Dependency2",
                 SchemaItemType = "Xxx",
-                Resolved = true,
-                TopLevel = false
+                Resolved = true
             };
 
             var dependencyModelAdded1 = new TestDependencyModel
@@ -480,7 +445,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Caption = "AddedDependency1",
                 SchemaItemType = "Xxx",
                 Resolved = true,
-                TopLevel = false,
                 Icon = KnownMonikers.Uninstall,
                 ExpandedIcon = KnownMonikers.Uninstall
             };
@@ -493,7 +457,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Caption = "AddedDependency2",
                 SchemaItemType = "Xxx",
                 Resolved = true,
-                TopLevel = false,
                 Icon = KnownMonikers.Uninstall,
                 ExpandedIcon = KnownMonikers.Uninstall
             };
@@ -506,7 +469,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Caption = "AddedDependency3",
                 SchemaItemType = "Xxx",
                 Resolved = true,
-                TopLevel = false,
                 Icon = KnownMonikers.Uninstall,
                 ExpandedIcon = KnownMonikers.Uninstall
             };
@@ -518,8 +480,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Name = "AddedDependency2Changed",
                 Caption = "AddedDependency2Changed",
                 SchemaItemType = "Xxx",
-                Resolved = true,
-                TopLevel = true
+                Resolved = true
             };
 
             var dependencyRemoved1 = new TestDependency
@@ -529,8 +490,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Name = "RemovedDependency1",
                 Caption = "RemovedDependency1",
                 SchemaItemType = "Xxx",
-                Resolved = true,
-                TopLevel = false
+                Resolved = true
             };
 
             var dependencyInsteadRemoved1 = new TestDependency
@@ -540,20 +500,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Name = "InsteadRemovedDependency1",
                 Caption = "InsteadRemovedDependency1",
                 SchemaItemType = "Xxx",
-                Resolved = true,
-                TopLevel = false
+                Resolved = true
             };
-
-            Assert.True(dependencyTop1.TopLevel);
-            Assert.False(dependencyChild1.TopLevel);
-            Assert.False(dependencyRemoved1.TopLevel);
 
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = new TargetedDependenciesSnapshot(
                 projectPath,
                 targetFramework,
                 catalogs,
-                new IDependency[] { dependencyTop1, dependencyChild1, dependencyRemoved1 }.ToImmutableDictionary(d => d.Id).WithComparers(StringComparer.OrdinalIgnoreCase));
+                new IDependency[] { dependency1, dependency2, dependencyRemoved1 }.ToImmutableDictionary(d => d.Id).WithComparers(StringComparer.OrdinalIgnoreCase));
 
             var changes = new DependenciesChangesBuilder();
             changes.Added(dependencyModelAdded1);
@@ -583,51 +538,48 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.Same(previousSnapshot.TargetFramework, snapshot.TargetFramework);
             Assert.Same(projectPath, snapshot.ProjectPath);
             Assert.Same(catalogs, snapshot.Catalogs);
-            AssertEx.CollectionLength(snapshot.TopLevelDependencies, 2);
-            Assert.Contains(snapshot.TopLevelDependencies, x => x.Id.Equals(@"tfm1\xxx\topdependency1"));
-            Assert.Contains(snapshot.TopLevelDependencies, x => x.Id.Equals(@"tfm1\xxx\addeddependency2") && x.Caption.Equals("AddedDependency2Changed"));
-            AssertEx.CollectionLength(snapshot.DependenciesWorld, 5);
-            Assert.True(snapshot.DependenciesWorld.ContainsKey(@"tfm1\xxx\topdependency1"));
-            Assert.True(snapshot.DependenciesWorld.ContainsKey(@"tfm1\xxx\childdependency1"));
-            Assert.True(snapshot.DependenciesWorld.ContainsKey(@"tfm1\xxx\addeddependency2"));
-            Assert.True(snapshot.DependenciesWorld.ContainsKey(@"tfm1\xxx\InsteadRemoveddependency1"));
-            Assert.True(snapshot.DependenciesWorld.ContainsKey(@"tfm1\xxx\addeddependency3"));
+            AssertEx.CollectionLength(snapshot.DependencyById, 5);
+            Assert.True(snapshot.DependencyById.ContainsKey(@"tfm1\xxx\dependency1"));
+            Assert.True(snapshot.DependencyById.ContainsKey(@"tfm1\xxx\dependency2"));
+            Assert.True(snapshot.DependencyById.ContainsKey(@"tfm1\xxx\addeddependency2"));
+            Assert.True(snapshot.DependencyById.ContainsKey(@"tfm1\xxx\InsteadRemoveddependency1"));
+            Assert.True(snapshot.DependencyById.ContainsKey(@"tfm1\xxx\addeddependency3"));
         }
 
         [Fact]
-        public void FromChanges_UpdatesTopLevelDependencies()
+        public void FromChanges_UpdatesLevelDependencies()
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = new TargetFramework("tfm1");
 
-            var dependencyTopPrevious = new TestDependency
+            var dependencyPrevious = new TestDependency
             {
                 ProviderType = "Xxx",
-                Id = "tfm1\\xxx\\topdependency1",
-                Name = "TopDependency1",
-                Caption = "TopDependency1",
+                Id = "tfm1\\xxx\\dependency1",
+                Name = "Dependency1",
+                Caption = "Dependency1",
                 SchemaItemType = "Xxx",
                 Resolved = true
             };
 
-            var dependencyModelTopAdded = new TestDependencyModel
+            var dependencyModelAdded = new TestDependencyModel
             {
                 ProviderType = "Xxx",
-                Id = "topdependency1",
-                Name = "TopDependency1",
-                Caption = "TopDependency1",
+                Id = "dependency1",
+                Name = "Dependency1",
+                Caption = "Dependency1",
                 SchemaItemType = "Xxx",
                 Resolved = true,
                 Icon = KnownMonikers.Uninstall,
                 ExpandedIcon = KnownMonikers.Uninstall
             };
 
-            var dependencyTopUpdated = new TestDependency
+            var dependencyUpdated = new TestDependency
             {
                 ProviderType = "Xxx",
-                Id = "tfm1\\xxx\\topdependency1",
-                Name = "TopDependency1",
-                Caption = "TopDependency1",
+                Id = "tfm1\\xxx\\dependency1",
+                Name = "Dependency1",
+                Caption = "Dependency1",
                 SchemaItemType = "Xxx",
                 Resolved = true
             };
@@ -637,13 +589,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 projectPath,
                 targetFramework,
                 catalogs,
-                new IDependency[] { dependencyTopPrevious }.ToImmutableDictionary(d => d.Id).WithComparers(StringComparer.OrdinalIgnoreCase));
+                new IDependency[] { dependencyPrevious }.ToImmutableDictionary(d => d.Id).WithComparers(StringComparer.OrdinalIgnoreCase));
 
             var changes = new DependenciesChangesBuilder();
-            changes.Added(dependencyModelTopAdded);
+            changes.Added(dependencyModelAdded);
 
             var snapshotFilter = new TestDependenciesSnapshotFilter()
-                    .BeforeAddAccept(@"tfm1\xxx\topdependency1", dependencyTopUpdated);
+                    .BeforeAddAccept(@"tfm1\xxx\dependency1", dependencyUpdated);
 
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
                 projectPath,
@@ -657,148 +609,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.True(snapshotFilter.Completed);
 
             Assert.NotSame(previousSnapshot, snapshot);
-            Assert.Same(dependencyTopUpdated, snapshot.TopLevelDependencies.Single());
-        }
-
-        [Fact]
-        public void ShouldAppearUnresolved()
-        {
-            var unresolvedTopLevel = new TestDependency
-            {
-                ProviderType = "Yyy",
-                Id = "tfm1\\yyy\\unresolvedTopLevel",
-                Resolved = false,
-                TopLevel = true
-            };
-
-            var unresolvedReachable = new TestDependency
-            {
-                ProviderType = "Yyy",
-                Id = "tfm1\\yyy\\unresolvedReachable",
-                Resolved = false,
-                TopLevel = false
-            };
-
-            var resolvedUnreachableWithHiddenParent = new TestDependency
-            {
-                ProviderType = "Yyy",
-                Id = "tfm1\\yyy\\resolvedUnreachableWithHiddenParent",
-                Resolved = true,
-                TopLevel = false
-            };
-
-            var resolvedHiddenParent = new TestDependency
-            {
-                ProviderType = "Yyy",
-                Id = "tfm1\\yyy\\resolvedHiddenParent",
-                Resolved = true,
-                TopLevel = true,
-                Visible = false,
-                DependencyIDs = ImmutableArray.Create(resolvedUnreachableWithHiddenParent.Id)
-            };
-
-            var resolvedTopLevelWithUnresolvedChild = new TestDependency
-            {
-                ProviderType = "Yyy",
-                Id = "tfm1\\yyy\\resolvedTopLevelWithUnresolvedChild",
-                Resolved = true,
-                TopLevel = true,
-                DependencyIDs = ImmutableArray.Create(unresolvedReachable.Id)
-            };
-
-            var resolvedTopLevel = new TestDependency
-            {
-                ProviderType = "Yyy",
-                Id = "tfm1\\yyy\\resolvedTopLevel",
-                Resolved = true,
-                TopLevel = true
-            };
-            
-            var resolvedUnreachable = new TestDependency
-            {
-                ProviderType = "Yyy",
-                Id = "tfm1\\yyy\\resolvedUnreachable",
-                Resolved = true,
-                TopLevel = false
-            };
-            
-            var resolvedChildWithVisibleUnresolvedParent = new TestDependency
-            {
-                ProviderType = "Yyy",
-                Id = "tfm1\\yyy\\resolvedChildWithVisibleUnresolvedParent",
-                Resolved = true,
-                TopLevel = false
-            };
-
-            var unresolvedTopLevelWithUnresolvedChild = new TestDependency
-            {
-                ProviderType = "Yyy",
-                Id = "tfm1\\yyy\\unresolvedTopLevelWithUnresolvedChild",
-                Resolved = false,
-                TopLevel = true,
-                DependencyIDs = ImmutableArray.Create(resolvedChildWithVisibleUnresolvedParent.Id)
-            };
-
-            var snapshot = TargetedDependenciesSnapshotFactory.ImplementFromDependencies(new IDependency[]
-            {
-                unresolvedTopLevel, unresolvedReachable, resolvedUnreachableWithHiddenParent, resolvedHiddenParent,
-                resolvedTopLevelWithUnresolvedChild, resolvedTopLevel, resolvedUnreachable, resolvedChildWithVisibleUnresolvedParent,
-                unresolvedTopLevelWithUnresolvedChild
-            });
-
-            Assert.True(snapshot.ShouldAppearUnresolved(unresolvedTopLevel));
-            Assert.True(snapshot.ShouldAppearUnresolved(unresolvedReachable));
-            Assert.True(snapshot.ShouldAppearUnresolved(resolvedTopLevelWithUnresolvedChild));
-            Assert.True(snapshot.ShouldAppearUnresolved(unresolvedTopLevelWithUnresolvedChild));
-            Assert.False(snapshot.ShouldAppearUnresolved(resolvedTopLevel));
-            Assert.False(snapshot.ShouldAppearUnresolved(resolvedChildWithVisibleUnresolvedParent));
-#if DEBUG
-            // These throw in unit tests but assert elsewhere
-            Assert.ThrowsAny<Exception>(() => snapshot.ShouldAppearUnresolved(resolvedUnreachable));
-            Assert.ThrowsAny<Exception>(() => snapshot.ShouldAppearUnresolved(resolvedHiddenParent));
-            Assert.ThrowsAny<Exception>(() => snapshot.ShouldAppearUnresolved(resolvedUnreachableWithHiddenParent));
-            Assert.ThrowsAny<Exception>(() => snapshot.ShouldAppearUnresolved(new TestDependency { Id = "ID", Resolved = false }));
-            Assert.ThrowsAny<Exception>(() => snapshot.ShouldAppearUnresolved(new TestDependency { Id = "ID", Resolved = true }));
-#else
-            Assert.False(snapshot.ShouldAppearUnresolved(resolvedUnreachable));
-            Assert.False(snapshot.ShouldAppearUnresolved(resolvedHiddenParent));
-            Assert.False(snapshot.ShouldAppearUnresolved(resolvedUnreachableWithHiddenParent));
-            Assert.True(snapshot.ShouldAppearUnresolved(new TestDependency { Id = "ID", Resolved = false }));
-            Assert.False(snapshot.ShouldAppearUnresolved(new TestDependency { Id = "ID", Resolved = true }));
-#endif
-        }
-
-        /// <summary>
-        /// Added because circular dependencies can cause stack overflows
-        /// https://github.com/dotnet/project-system/issues/3374
-        /// </summary>
-        [Fact]
-        public void ShouldAppearUnresolved_CircularDependency_DoesNotRecurseInfinitely()
-        {
-            const string id1 = @"tfm1\xxx\dependency1";
-            const string id2 = @"tfm1\xxx\dependency2";
-            const string providerType = "Xxx";
-
-            var dependency1 = new TestDependency
-            {
-                Id = id1,
-                ProviderType = providerType,
-                TopLevel = true,
-                DependencyIDs = ImmutableArray.Create(id2)
-            };
-
-            var dependency2 = new TestDependency
-            {
-                Id = id2,
-                ProviderType = providerType,
-                TopLevel = true,
-                DependencyIDs = ImmutableArray.Create(id1)
-            };
-
-            var snapshot = TargetedDependenciesSnapshotFactory.ImplementFromDependencies(new IDependency[] { dependency1, dependency2 });
-
-            // verify it doesn't stack overflow
-            snapshot.ShouldAppearUnresolved(dependency1);   
+            Assert.Same(dependencyUpdated, snapshot.DependencyById.Single().Value);
         }
 
         internal sealed class TestDependenciesSnapshotFilter : IDependenciesSnapshotFilter

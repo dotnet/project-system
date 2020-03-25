@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             bool hasSingleTarget = snapshot.DependenciesByTargetFramework.Count(x => !x.Key.Equals(TargetFramework.Any)) == 1;
 
-            var currentTopLevelNodes = new HashSet<IProjectTree>();
+            var currentNodes = new HashSet<IProjectTree>();
 
             if (hasSingleTarget)
             {
@@ -73,9 +73,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return originalTree;
             }
 
-            dependenciesTree = CleanupOldNodes(dependenciesTree, currentTopLevelNodes);
+            dependenciesTree = CleanupOldNodes(dependenciesTree, currentNodes);
 
-            ProjectImageMoniker rootIcon = _viewModelFactory.GetDependenciesRootIcon(snapshot.HasReachableVisibleUnresolvedDependency).ToProjectSystemType();
+            ProjectImageMoniker rootIcon = _viewModelFactory.GetDependenciesRootIcon(snapshot.HasVisibleUnresolvedDependency).ToProjectSystemType();
 
             return dependenciesTree.SetProperties(icon: rootIcon, expandedIcon: rootIcon);
 
@@ -117,7 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     {
                         IProjectTree? node = dependenciesTree.FindChildWithCaption(targetFramework.FriendlyName);
                         bool shouldAddTargetNode = node == null;
-                        IDependencyViewModel targetViewModel = _viewModelFactory.CreateTargetViewModel(targetedSnapshot.TargetFramework, targetedSnapshot.HasReachableVisibleUnresolvedDependency);
+                        IDependencyViewModel targetViewModel = _viewModelFactory.CreateTargetViewModel(targetedSnapshot.TargetFramework, targetedSnapshot.HasVisibleUnresolvedDependency);
 
                         node = CreateOrUpdateNode(
                             node,
@@ -138,16 +138,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                         Assumes.NotNull(dependenciesTree);
 
-                        currentTopLevelNodes.Add(node);
+                        currentNodes.Add(node);
                     }
                 }
             }
 
-            IProjectTree RememberNewNodes(IProjectTree rootNode, IEnumerable<IProjectTree> currentNodes)
+            IProjectTree RememberNewNodes(IProjectTree rootNode, IEnumerable<IProjectTree> newNodes)
             {
-                if (currentNodes != null)
+                if (newNodes != null)
                 {
-                    currentTopLevelNodes.AddRange(currentNodes);
+                    currentNodes.AddRange(newNodes);
                 }
 
                 return rootNode;
@@ -181,7 +181,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             var groupedByProviderType = new Dictionary<string, List<IDependency>>(StringComparers.DependencyProviderTypes);
 
-            foreach (IDependency dependency in targetedSnapshot.TopLevelDependencies)
+            foreach ((_, IDependency dependency) in targetedSnapshot.DependencyById)
             {
                 if (!dependency.Visible)
                 {
@@ -349,7 +349,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             return CreateOrUpdateNode(
                 node,
-                dependency.ToViewModel(targetedSnapshot),
+                dependency.ToViewModel(),
                 browseObjectProperties,
                 isProjectItem,
                 additionalFlags,
@@ -370,7 +370,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
 
             string? filePath = viewModel.OriginalModel != null &&
-                               viewModel.OriginalModel.TopLevel &&
                                viewModel.OriginalModel.Resolved
                 ? viewModel.OriginalModel.GetTopLevelId()
                 : viewModel.FilePath;

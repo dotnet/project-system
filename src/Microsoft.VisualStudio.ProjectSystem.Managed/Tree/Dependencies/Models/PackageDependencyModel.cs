@@ -1,6 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.RuleHandlers;
 
@@ -24,8 +23,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             unresolvedIcon: ManagedImageMonikers.NuGetGreyWarning,
             unresolvedExpandedIcon: ManagedImageMonikers.NuGetGreyWarning);
 
-        public override IImmutableList<string> DependencyIDs { get; }
-
         public override DependencyIconSet IconSet => Implicit ? s_implicitIconSet : s_iconSet;
 
         public override string Name { get; }
@@ -43,10 +40,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             string version,
             bool isResolved,
             bool isImplicit,
-            bool isTopLevel,
             bool isVisible,
-            IImmutableDictionary<string, string> properties,
-            IEnumerable<string> dependenciesIDs)
+            IImmutableDictionary<string, string> properties)
             : base(
                 path,
                 originalItemSpec,
@@ -54,22 +49,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
                 isResolved,
                 isImplicit,
                 properties,
-                isTopLevel,
                 isVisible)
         {
             Requires.NotNullOrEmpty(name, nameof(name));
 
             Name = name;
             Caption = string.IsNullOrEmpty(version) ? name : $"{name} ({version})";
-
-            if (dependenciesIDs != null)
-            {
-                DependencyIDs = ImmutableArray.CreateRange(dependenciesIDs);
-            }
-            else
-            {
-                DependencyIDs = ImmutableList<string>.Empty;
-            }
         }
     }
 }

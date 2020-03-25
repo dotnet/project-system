@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.Same(projectPath, snapshot.ProjectPath);
             Assert.Same(targetFramework, snapshot.ActiveTargetFramework);
             Assert.Same(dependenciesByTargetFramework, snapshot.DependenciesByTargetFramework);
-            Assert.False(snapshot.HasReachableVisibleUnresolvedDependency);
+            Assert.False(snapshot.HasVisibleUnresolvedDependency);
             Assert.Null(snapshot.FindDependency("foo"));
         }
 
@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.Same(projectPath, snapshot.ProjectPath);
             Assert.Same(TargetFramework.Empty, snapshot.ActiveTargetFramework);
             Assert.Empty(snapshot.DependenciesByTargetFramework);
-            Assert.False(snapshot.HasReachableVisibleUnresolvedDependency);
+            Assert.False(snapshot.HasVisibleUnresolvedDependency);
             Assert.Null(snapshot.FindDependency("foo"));
         }
 
@@ -157,8 +157,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var model = new TestDependencyModel
             {
                 ProviderType = "Xxx",
-                Id = "dependency1",
-                TopLevel = true
+                Id = "dependency1"
             };
             targetChanges.Added(model);
 
@@ -181,10 +180,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             var (actualTfm, targetedSnapshot) = Assert.Single(snapshot.DependenciesByTargetFramework);
             Assert.Same(targetFramework, actualTfm);
-            var dependency = Assert.Single(targetedSnapshot.TopLevelDependencies);
+            var (id, dependency) = Assert.Single(targetedSnapshot.DependencyById);
+            Assert.Equal(@"tfm1\Xxx\dependency1", id);
             Assert.Equal(@"tfm1\Xxx\dependency1", dependency.Id);
             Assert.Equal("Xxx", dependency.ProviderType);
-            Assert.Same(dependency, targetedSnapshot.DependenciesWorld.Single().Value);
+            Assert.Same(dependency, targetedSnapshot.DependencyById.Single().Value);
         }
 
         [Fact]

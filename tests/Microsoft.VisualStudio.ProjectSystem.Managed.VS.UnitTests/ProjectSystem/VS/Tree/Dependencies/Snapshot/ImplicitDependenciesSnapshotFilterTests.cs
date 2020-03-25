@@ -8,33 +8,20 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
-    public sealed class ImplicitTopLevelDependenciesSnapshotFilterTests : DependenciesSnapshotFilterTestsBase
+    public sealed class ImplicitDependenciesSnapshotFilterTests : DependenciesSnapshotFilterTestsBase
     {
         private const string ProjectItemSpec = "projectItemSpec";
 
         private readonly IDependency _acceptable = new TestDependency
         {
             Id = "dependency1",
-            TopLevel = true,
             Implicit = false,
             Resolved = true,
             Flags = DependencyTreeFlags.GenericDependency,
             OriginalItemSpec = ProjectItemSpec
         };
 
-        private protected override IDependenciesSnapshotFilter CreateFilter() => new ImplicitTopLevelDependenciesSnapshotFilter();
-
-        [Fact]
-        public void BeforeAddOrUpdate_WhenNotTopLevel_ShouldDoNothing()
-        {
-            VerifyUnchangedOnAdd(
-                new TestDependency
-                {
-                    ClonePropertiesFrom = _acceptable,
-                    TopLevel = false
-                },
-                projectItemSpecs: ImmutableHashSet<string>.Empty);
-        }
+        private protected override IDependenciesSnapshotFilter CreateFilter() => new ImplicitDependenciesSnapshotFilter();
 
         [Fact]
         public void BeforeAddOrUpdate_WhenImplicitAlready_ShouldDoNothing()
@@ -115,7 +102,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             {
                 Id = "dependency1",
                 ProviderType = providerType,
-                TopLevel = true,
                 Implicit = false,
                 Resolved = true,
                 Flags = DependencyTreeFlags.GenericDependency,
@@ -123,11 +109,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 IconSet = new DependencyIconSet(KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference)
             };
 
-            var worldBuilder = new IDependency[] { dependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
+            var builder = new IDependency[] { dependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
 
-            var context = new AddDependencyContext(worldBuilder);
+            var context = new AddDependencyContext(builder);
 
-            var filter = new ImplicitTopLevelDependenciesSnapshotFilter();
+            var filter = new ImplicitDependenciesSnapshotFilter();
 
             var subTreeProvider = IProjectDependenciesSubTreeProviderFactory.ImplementInternal(
                 providerType: providerType,

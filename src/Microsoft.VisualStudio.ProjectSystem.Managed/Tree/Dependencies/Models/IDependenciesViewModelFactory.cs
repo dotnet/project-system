@@ -9,16 +9,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
         /// <summary>
         /// Returns a view model for a node that represents a target framework.
         /// </summary>
-        IDependencyViewModel CreateTargetViewModel(ITargetFramework targetFramework, bool hasReachableVisibleUnresolvedDependency);
+        IDependencyViewModel CreateTargetViewModel(ITargetFramework targetFramework, bool hasVisibleUnresolvedDependency);
 
         /// <summary>
         /// Returns a view model for a node that groups dependencies from a given provider.
         /// </summary>
-        IDependencyViewModel? CreateGroupNodeViewModel(string providerType, bool hasReachableVisibleUnresolvedDependency);
+        IDependencyViewModel? CreateGroupNodeViewModel(string providerType, bool hasVisibleUnresolvedDependency);
 
         /// <summary>
         /// Returns the icon to use for the "Dependencies" root node.
         /// </summary>
-        ImageMoniker GetDependenciesRootIcon(bool hasReachableVisibleUnresolvedDependency);
+        ImageMoniker GetDependenciesRootIcon(bool hasVisibleUnresolvedDependency);
     }
 }

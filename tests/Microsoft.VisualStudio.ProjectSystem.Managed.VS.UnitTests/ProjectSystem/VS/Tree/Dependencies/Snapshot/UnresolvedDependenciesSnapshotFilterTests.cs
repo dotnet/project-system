@@ -14,9 +14,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var unresolvedDependency = new TestDependency { Id = "dependency", Resolved = false };
             var resolvedDependency   = new TestDependency { Id = "dependency", Resolved = true  };
 
-            var worldBuilder = new IDependency[] { resolvedDependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
+            var builder = new IDependency[] { resolvedDependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
 
-            var context = new AddDependencyContext(worldBuilder);
+            var context = new AddDependencyContext(builder);
 
             var filter = new UnresolvedDependenciesSnapshotFilter();
 
@@ -39,9 +39,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         {
             var unresolvedDependency = new TestDependency { Id = "dependency", Resolved = false };
 
-            var worldBuilder = ImmutableDictionary<string, IDependency>.Empty.ToBuilder();
+            var builder = ImmutableDictionary<string, IDependency>.Empty.ToBuilder();
 
-            var context = new AddDependencyContext(worldBuilder);
+            var context = new AddDependencyContext(builder);
 
             var filter = new UnresolvedDependenciesSnapshotFilter();
 
@@ -64,9 +64,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         {
             var resolvedDependency = new TestDependency { Id = "dependency", Resolved = true };
 
-            var worldBuilder = ImmutableDictionary<string, IDependency>.Empty.ToBuilder();
+            var builder = ImmutableDictionary<string, IDependency>.Empty.ToBuilder();
 
-            var context = new AddDependencyContext(worldBuilder);
+            var context = new AddDependencyContext(builder);
 
             var filter = new UnresolvedDependenciesSnapshotFilter();
 

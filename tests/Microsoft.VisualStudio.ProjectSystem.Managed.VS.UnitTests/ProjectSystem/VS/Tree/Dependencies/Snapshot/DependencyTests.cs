@@ -68,7 +68,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             AssertEx.CollectionLength(dependency.BrowseObjectProperties, 2);
             Assert.True(dependency.BrowseObjectProperties.ContainsKey("Identity"));
             Assert.True(dependency.BrowseObjectProperties.ContainsKey("FullPath"));
-            Assert.Empty(dependency.DependencyIDs);
         }
 
         [Fact]
@@ -85,7 +84,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 SchemaName = "MySchema",
                 SchemaItemType = "MySchemaItemType",
                 Resolved = true,
-                TopLevel = true,
                 Implicit = true,
                 Visible = true,
                 Flags = DependencyTreeFlags.GenericDependency,
@@ -93,8 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 ExpandedIcon = KnownMonikers.PathIcon,
                 UnresolvedIcon = KnownMonikers.PathListBox,
                 UnresolvedExpandedIcon = KnownMonikers.PathListBoxItem,
-                Properties = new Dictionary<string, string> { { "prop1", "val1" } }.ToImmutableDictionary(),
-                DependencyIDs = new[] { "otherid" }.ToImmutableArray()
+                Properties = new Dictionary<string, string> { { "prop1", "val1" } }.ToImmutableDictionary()
             };
 
             var targetFramework = new TargetFramework("Tfm1");
@@ -109,13 +106,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.Equal(mockModel.SchemaName, dependency.SchemaName);
             Assert.Equal(mockModel.SchemaItemType, dependency.SchemaItemType);
             Assert.Equal(mockModel.Resolved, dependency.Resolved);
-            Assert.Equal(mockModel.TopLevel, dependency.TopLevel);
             Assert.Equal(mockModel.Implicit, dependency.Implicit);
             Assert.Equal(mockModel.Visible, dependency.Visible);
             Assert.Single(dependency.BrowseObjectProperties);
             Assert.True(dependency.BrowseObjectProperties.ContainsKey("prop1"));
-            Assert.Single(dependency.DependencyIDs);
-            Assert.Equal("Tfm1\\xxx\\otherid", dependency.DependencyIDs[0]);
             Assert.Equal(DependencyTreeFlags.Resolved + DependencyTreeFlags.GenericDependency, dependency.Flags);
         }
 
@@ -159,70 +153,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var newDependency = dependency.SetProperties(
                 caption: "newcaption",
                 resolved: true,
-                flags: flags,
-                dependencyIDs: ImmutableArray.Create("aaa"));
+                flags: flags);
 
             Assert.Equal("newcaption", newDependency.Caption);
             Assert.True(newDependency.Resolved);
             Assert.True(newDependency.Flags.Equals(flags));
-            Assert.Single(newDependency.DependencyIDs);
-            Assert.Equal("aaa", newDependency.DependencyIDs[0]);
-        }
-
-        [Fact]
-        public void Dependency_SetProperties_PreservesDependencyIDs()
-        {
-            var dependencyModel = new TestDependencyModel { ProviderType = "providerType", Id = "cube", DependencyIDs = ImmutableList<string>.Empty.Add("glass") };
-            var dependency = new Dependency(dependencyModel, new TargetFramework("tfm1"), @"C:\Foo\Project.csproj");
-
-            var expectedId = "tfm1\\providerType\\cube";
-            var expectedDependencyId = "tfm1\\providerType\\glass";
-
-            Assert.Equal(expectedId, dependency.Id);
-            Assert.Single(dependency.DependencyIDs);
-            Assert.Equal(expectedDependencyId, dependency.DependencyIDs[0]);
-
-            var newDependency = dependency.SetProperties(
-                caption: "newcaption");
-
-            Assert.Equal("newcaption", newDependency.Caption);
-
-            Assert.Equal(expectedId, newDependency.Id);
-            Assert.Single(newDependency.DependencyIDs);
-            Assert.Equal(expectedDependencyId, newDependency.DependencyIDs[0]);
-        }
-
-        [Fact]
-        public void Dependency_DependencyIDsProperty()
-        {
-            var dependencyModel1 = new TestDependencyModel
-            {
-                ProviderType = "providerType",
-                Id = "someId1",
-                DependencyIDs = new[] { "someId2", "someId_other" }.ToImmutableArray()
-            };
-            var dependencyModel2 = new TestDependencyModel
-            {
-                ProviderType = "providerType",
-                Id = "someId2"
-            };
-            var dependencyModel3 = new TestDependencyModel
-            {
-                ProviderType = "providerType",
-                Id = "someId_other"
-            };
-
-            var targetFramework = new TargetFramework("Tfm1");
-
-            var projectPath = "projectPath";
-
-            var dependency1 = new Dependency(dependencyModel1, targetFramework, projectPath);
-            var dependency2 = new Dependency(dependencyModel2, targetFramework, projectPath);
-            var dependency3 = new Dependency(dependencyModel3, targetFramework, projectPath);
-
-            AssertEx.CollectionLength(dependency1.DependencyIDs, 2);
-            Assert.Contains(dependency1.DependencyIDs, x => x.Equals(dependency2.Id));
-            Assert.Contains(dependency1.DependencyIDs, x => x.Equals(dependency3.Id));
         }
 
         [Fact]

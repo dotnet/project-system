@@ -104,9 +104,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         internal static readonly ProjectTreeFlags PackageDependencyGroup = ProjectTreeFlags.Create("PackageDependencyGroup");
         internal static readonly ProjectTreeFlags PackageDependency = ProjectTreeFlags.Create("PackageDependency");
-        internal static readonly ProjectTreeFlags PackageUnknownDependency = ProjectTreeFlags.Create("PackageUnknownDependency");
-        internal static readonly ProjectTreeFlags PackageAssemblyDependency = ProjectTreeFlags.Create("PackageAssemblyDependency");
-        internal static readonly ProjectTreeFlags PackageAnalyzerDependency = ProjectTreeFlags.Create("PackageAnalyzerDependency");
 
         internal static readonly ProjectTreeFlags FrameworkDependencyGroup = ProjectTreeFlags.Create("FrameworkDependencyGroup");
         internal static readonly ProjectTreeFlags FrameworkDependency = ProjectTreeFlags.Create("FrameworkDependency");

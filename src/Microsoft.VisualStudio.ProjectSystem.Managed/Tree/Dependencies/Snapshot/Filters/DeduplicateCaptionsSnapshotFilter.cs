@@ -25,20 +25,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             IImmutableSet<string>? projectItemSpecs,
             AddDependencyContext context)
         {
-            // Only apply to top-level dependencies
-            if (!dependency.TopLevel)
-            {
-                context.Accept(dependency);
-                return;
-            }
-
             IDependency? matchingDependency = null;
             bool shouldApplyAlias = false;
 
             foreach ((string _, IDependency other) in context)
             {
-                if (!other.TopLevel ||
-                    StringComparers.DependencyTreeIds.Equals(other.Id, dependency.Id) ||
+                if (StringComparers.DependencyTreeIds.Equals(other.Id, dependency.Id) ||
                     !StringComparers.DependencyProviderTypes.Equals(other.ProviderType, dependency.ProviderType))
                 {
                     continue;

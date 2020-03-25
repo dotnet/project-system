@@ -1,6 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Immutable;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.RuleHandlers;
@@ -12,11 +11,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// <summary>
         /// Returns a IDependencyViewModel for given dependency.
         /// </summary>
-        public static IDependencyViewModel ToViewModel(this IDependency dependency, TargetedDependenciesSnapshot snapshot)
+        public static IDependencyViewModel ToViewModel(this IDependency dependency)
         {
-            bool hasUnresolvedDependency = !dependency.Resolved || snapshot.ShouldAppearUnresolved(dependency);
-
-            return new DependencyViewModel(dependency, hasUnresolvedDependency: hasUnresolvedDependency);
+            return new DependencyViewModel(dependency);
         }
 
         private sealed class DependencyViewModel : IDependencyViewModel
@@ -24,10 +21,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             private readonly IDependency _model;
             private readonly bool _hasUnresolvedDependency;
 
-            public DependencyViewModel(IDependency dependency, bool hasUnresolvedDependency)
+            public DependencyViewModel(IDependency dependency)
             {
+                Requires.NotNull(dependency, nameof(dependency));
+                Requires.Argument(dependency.Visible, nameof(dependency), "Must be visible");
+
                 _model = dependency;
-                _hasUnresolvedDependency = hasUnresolvedDependency;
+                _hasUnresolvedDependency = !dependency.Resolved;
             }
 
             public IDependency? OriginalModel => _model;
@@ -80,36 +80,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         public static IDependency ToResolved(
             this IDependency dependency,
-            string? schemaName = null,
-            ImmutableArray<string> dependencyIDs = default)
+            string? schemaName = null)
         {
             return dependency.SetProperties(
                 resolved: true,
                 flags: dependency.GetResolvedFlags(),
-                schemaName: schemaName,
-                dependencyIDs: dependencyIDs);
+                schemaName: schemaName);
         }
 
         public static IDependency ToUnresolved(
             this IDependency dependency,
-            string? schemaName = null,
-            ImmutableArray<string> dependencyIDs = default)
+            string? schemaName = null)
         {
             return dependency.SetProperties(
                 resolved: false,
                 flags: dependency.GetUnresolvedFlags(),
-                schemaName: schemaName,
-                dependencyIDs: dependencyIDs);
+                schemaName: schemaName);
         }
 
-        public static ProjectTreeFlags GetResolvedFlags(this IDependency dependency)
+        private static ProjectTreeFlags GetResolvedFlags(this IDependency dependency)
         {
             return dependency.Flags
                 .Union(DependencyTreeFlags.Resolved)
                 .Except(DependencyTreeFlags.Unresolved);
         }
 
-        public static ProjectTreeFlags GetUnresolvedFlags(this IDependency dependency)
+        private static ProjectTreeFlags GetUnresolvedFlags(this IDependency dependency)
         {
             return dependency.Flags
                 .Union(DependencyTreeFlags.Unresolved)

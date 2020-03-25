@@ -31,7 +31,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             SchemaName = dependencyModel.SchemaName ?? Folder.SchemaName;
             _schemaItemType = dependencyModel.SchemaItemType ?? Folder.PrimaryDataSourceItemType;
             Resolved = dependencyModel.Resolved;
-            TopLevel = dependencyModel.TopLevel;
             Implicit = dependencyModel.Implicit;
             Visible = dependencyModel.Visible;
             Flags = dependencyModel.Flags;
@@ -70,19 +69,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 ?? ImmutableStringDictionary<string>.EmptyOrdinal
                      .Add(Folder.IdentityProperty, Caption)
                      .Add(Folder.FullPathProperty, Path);
-
-            if (dependencyModel.DependencyIDs == null || dependencyModel.DependencyIDs.Count == 0)
-            {
-                DependencyIDs = ImmutableArray<string>.Empty;
-            }
-            else
-            {
-                int count = dependencyModel.DependencyIDs.Count;
-                ImmutableArray<string>.Builder ids = ImmutableArray.CreateBuilder<string>(count);
-                for (int i = 0; i < count; i++)
-                    ids.Add(GetID(TargetFramework, ProviderType, dependencyModel.DependencyIDs[i]));
-                DependencyIDs = ids.MoveToImmutable();
-            }
         }
 
         /// <summary>
@@ -94,7 +80,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             bool? resolved,
             ProjectTreeFlags? flags,
             string? schemaName,
-            ImmutableArray<string> dependencyIDs,
             DependencyIconSet? iconSet,
             bool? isImplicit)
         {
@@ -110,19 +95,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             OriginalItemSpec = dependency.OriginalItemSpec;
             Path = dependency.Path;
             _schemaItemType = dependency.SchemaItemType;
-            TopLevel = dependency.TopLevel;
             Visible = dependency.Visible;
             BrowseObjectProperties = dependency.BrowseObjectProperties;
             Caption = caption ?? dependency.Caption; // TODO if Properties contains "Folder.IdentityProperty" should we update it? (see public ctor)
             Resolved = resolved ?? dependency.Resolved;
             Flags = flags ?? dependency.Flags;
             SchemaName = schemaName ?? dependency.SchemaName;
-            DependencyIDs = dependencyIDs.IsDefault ? dependency.DependencyIDs : dependencyIDs;
             IconSet = iconSet != null ? DependencyIconSetCache.Instance.GetOrAddIconSet(iconSet) : dependency.IconSet;
             Implicit = isImplicit ?? dependency.Implicit;
         }
 
-        #region IDependencyModel
+        #region IDependency
 
         /// <summary>
         /// Id unique for a particular provider. We append target framework and provider type to it, 
@@ -178,7 +161,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         public string Caption { get; }
         public bool Resolved { get; }
-        public bool TopLevel { get; }
         public bool Implicit { get; }
         public bool Visible { get; }
 
@@ -187,8 +169,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public ProjectTreeFlags Flags { get; }
 
         public IImmutableDictionary<string, string> BrowseObjectProperties { get; }
-
-        public ImmutableArray<string> DependencyIDs { get; }
 
         #endregion
 
@@ -199,11 +179,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             bool? resolved = null,
             ProjectTreeFlags? flags = null,
             string? schemaName = null,
-            ImmutableArray<string> dependencyIDs = default,
             DependencyIconSet? iconSet = null,
             bool? isImplicit = null)
         {
-            return new Dependency(this, caption, resolved, flags, schemaName, dependencyIDs, iconSet, isImplicit);
+            return new Dependency(this, caption, resolved, flags, schemaName, iconSet, isImplicit);
         }
 
         public override string ToString()
@@ -215,7 +194,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             sb.Append('"');
 
             if (Resolved) sb.Append(" Resolved");
-            if (TopLevel) sb.Append(" TopLevel");
             if (Implicit) sb.Append(" Implicit");
             if (Visible) sb.Append(" Visible");
 

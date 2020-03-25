@@ -12,16 +12,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
     /// </summary>
     internal sealed class RemoveDependencyContext
     {
-        private readonly ImmutableDictionary<string, IDependency>.Builder _worldBuilder;
+        private readonly ImmutableDictionary<string, IDependency>.Builder _builder;
 
         private bool? _acceptedOrRejected;
         private IDependency? _acceptedDependency;
 
         public bool Changed { get; private set; }
 
-        public RemoveDependencyContext(ImmutableDictionary<string, IDependency>.Builder worldBuilder)
+        public RemoveDependencyContext(ImmutableDictionary<string, IDependency>.Builder builder)
         {
-            _worldBuilder = worldBuilder;
+            _builder = builder;
         }
 
         public void Reset()
@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
         /// </summary>
         public bool TryGetDependency(string dependencyId, out IDependency dependency)
         {
-            return _worldBuilder.TryGetValue(dependencyId, out dependency);
+            return _builder.TryGetValue(dependencyId, out dependency);
         }
 
         /// <summary>
@@ -61,25 +61,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
         /// </remarks>
         public void AddOrUpdate(IDependency dependency)
         {
-            _worldBuilder.Remove(dependency.Id);
-            _worldBuilder.Add(dependency.Id, dependency);
+            _builder.Remove(dependency.Id);
+            _builder.Add(dependency.Id, dependency);
             Changed = true;
-        }
-
-        /// <summary>
-        /// Returns <see langword="true"/> if the project tree contains a dependency with specified <paramref name="dependencyId"/>.
-        /// </summary>
-        public bool Contains(string dependencyId)
-        {
-            return _worldBuilder.ContainsKey(dependencyId);
-        }
-
-        /// <summary>
-        /// Returns an enumerator over all dependencies in the project tree.
-        /// </summary>
-        public ImmutableDictionary<string, IDependency>.Enumerator GetEnumerator()
-        {
-            return _worldBuilder.GetEnumerator();
         }
 
         /// <summary>
