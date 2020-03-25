@@ -179,7 +179,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.TreeView
                             {
                                 Caption = "DependencyExisting",
                                 FilePath = "tfm1\\yyy\\dependencyExisting",
-                                CustomTag = "ShouldBeCleanedSinceNodeWillBeRecreated",
+                                CustomTag = "Untouched",
                                 Flags = DependencyTreeFlags.Unresolved
                             }
                         }
@@ -198,7 +198,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.TreeView
             var expectedFlatHierarchy =
 @"Caption=MyDependencies, FilePath=, IconHash=325248080, ExpandedIconHash=325248080, Rule=, IsProjectItem=False, CustomTag=
     Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
-        Caption=DependencyExisting, FilePath=tfm1\Yyy\dependencyExistingpath, IconHash=325248088, ExpandedIconHash=325248260, Rule=, IsProjectItem=True, CustomTag=";
+        Caption=DependencyExisting, FilePath=tfm1\yyy\dependencyExisting, IconHash=325248088, ExpandedIconHash=325248260, Rule=, IsProjectItem=False, CustomTag=Untouched";
             Assert.Equal(expectedFlatHierarchy, ToTestDataString((TestProjectTree)resultTree));
         }
 
@@ -240,7 +240,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.TreeView
                             {
                                 Caption = "DependencyExisting",
                                 FilePath = "tfm1\\yyy\\dependencyExisting",
-                                CustomTag = "ShouldBeCleanedSinceNodeWillBeRecreated",
+                                CustomTag = "Untouched",
                                 Flags = DependencyTreeFlags.Resolved
                             }
                         }
@@ -259,7 +259,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.TreeView
             var expectedFlatHierarchy =
 @"Caption=MyDependencies, FilePath=, IconHash=325248080, ExpandedIconHash=325248080, Rule=, IsProjectItem=False, CustomTag=
     Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
-        Caption=DependencyExisting, FilePath=tfm1\yyy\dependencyExisting, IconHash=325248665, ExpandedIconHash=325248817, Rule=, IsProjectItem=True, CustomTag=";
+        Caption=DependencyExisting, FilePath=tfm1\yyy\dependencyExisting, IconHash=325248665, ExpandedIconHash=325248817, Rule=, IsProjectItem=False, CustomTag=Untouched";
             Assert.Equal(expectedFlatHierarchy, ToTestDataString((TestProjectTree)resultTree));
         }
 
