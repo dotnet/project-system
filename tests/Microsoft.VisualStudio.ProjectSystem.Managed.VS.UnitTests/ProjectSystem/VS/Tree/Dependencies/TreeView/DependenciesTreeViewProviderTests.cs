@@ -140,7 +140,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.TreeView
         }
 
         [Fact]
-        public async Task WhenOneTargetSnapshotAndDependencySupportsHierarchyAndIsResolved_ShouldRead()
+        public async Task WhenOneTargetSnapshotAndDependencyIsResolved_ShouldRead()
         {
             var dependencyModelRootYyy = new TestDependencyModel
             {
@@ -160,7 +160,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.TreeView
                 Caption = "DependencyExisting",
                 SchemaItemType = "Yyy",
                 Resolved = true,
-                Flags = DependencyTreeFlags.SupportsHierarchy,
                 TargetFramework = _tfm1
             };
 
@@ -203,7 +202,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.TreeView
         }
 
         [Fact]
-        public async Task WhenOneTargetSnapshotAndDependencySupportsHierarchyAndIsUnresolved_ShouldRead()
+        public async Task WhenOneTargetSnapshotAndDependencyIsUnresolved_ShouldRead()
         {
             var dependencyModelRootYyy = new TestDependencyModel
             {
@@ -221,8 +220,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.TreeView
                 Name = "dependencyExisting",
                 Caption = "DependencyExisting",
                 SchemaItemType = "Yyy",
-                Resolved = false,
-                Flags = DependencyTreeFlags.SupportsHierarchy
+                Resolved = false
             };
 
             var dependenciesRoot = new TestProjectTree

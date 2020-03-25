@@ -36,7 +36,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(ManagedImageMonikers.SdkWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
                 DependencyTreeFlags.SdkDependency +
-                DependencyTreeFlags.SupportsHierarchy +
                 DependencyTreeFlags.GenericResolvedDependencyFlags,
                 model.Flags);
         }
@@ -68,7 +67,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(ManagedImageMonikers.SdkWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
                 DependencyTreeFlags.SdkDependency +
-                DependencyTreeFlags.SupportsHierarchy +
                 DependencyTreeFlags.GenericUnresolvedDependencyFlags,
                 model.Flags);
         }
@@ -100,7 +98,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(ManagedImageMonikers.SdkWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
                 DependencyTreeFlags.SdkDependency +
-                DependencyTreeFlags.SupportsHierarchy +
                 DependencyTreeFlags.GenericResolvedDependencyFlags -
                 DependencyTreeFlags.SupportsRemove,
                 model.Flags);

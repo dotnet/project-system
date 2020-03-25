@@ -28,11 +28,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         internal static readonly ProjectTreeFlags SupportsRuleProperties = ProjectTreeFlags.Create("SupportsRuleProperties");
 
         /// <summary>
-        /// This flag indicates that dependency can show a hierarchy of dependencies
-        /// </summary>
-        public static readonly ProjectTreeFlags SupportsHierarchy = ProjectTreeFlags.Create("SupportsHierarchy");
-
-        /// <summary>
         /// If a dependency is not visible and has this flag, then an empty group node may be displayed for the dependency's provider type.
         /// </summary>
         public static readonly ProjectTreeFlags ShowEmptyProviderRootNode = ProjectTreeFlags.Create("ShowEmptyProviderRootNode");
