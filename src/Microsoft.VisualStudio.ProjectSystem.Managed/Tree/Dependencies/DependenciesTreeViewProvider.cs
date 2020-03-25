@@ -275,20 +275,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 IProjectTree? dependencyNode = rootNode.FindChildWithCaption(dependency.Caption);
                 bool isNewDependencyNode = dependencyNode == null;
 
-                if (dependencyNode != null
-                    && dependency.Flags.Contains(DependencyTreeFlags.SupportsHierarchy))
-                {
-                    if ((dependency.Resolved && dependencyNode.Flags.Contains(DependencyTreeFlags.Unresolved))
-                        || (!dependency.Resolved && dependencyNode.Flags.Contains(DependencyTreeFlags.Resolved)))
-                    {
-                        // when transition from unresolved to resolved or vise versa - remove old node
-                        // and re-add new  one to allow GraphProvider to recalculate children
-                        isNewDependencyNode = true;
-                        rootNode = dependencyNode.Remove();
-                        dependencyNode = null;
-                    }
-                }
-
                 // NOTE this project system supports multiple implicit configuration dimensions (such as target framework)
                 // which is a concept not modelled by DTE/VSLangProj. In order to produce a sensible view of the project
                 // via automation, we expose only the active target framework at any given time.

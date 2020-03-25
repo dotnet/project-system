@@ -74,6 +74,5 @@ static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.WarningSmall
 static readonly Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependencyTreeFlags.DependencyFlags -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
 static readonly Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependencyTreeFlags.ResolvedDependencyFlags -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
 static readonly Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependencyTreeFlags.ShowEmptyProviderRootNode -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
-static readonly Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependencyTreeFlags.SupportsHierarchy -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
 static readonly Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependencyTreeFlags.SupportsRemove -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
 static readonly Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependencyTreeFlags.UnresolvedDependencyFlags -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
