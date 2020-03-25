@@ -164,11 +164,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return log.Fail("CopyAlwaysItemExists", "Item '{0}' has CopyToOutputDirectory set to 'Always', not up to date.", _configuredProject.UnconfiguredProject.MakeRooted(copyAlwaysItemPath));
             }
 
-
-            if (state.LastAdditionalDependentFileTimesChangedAtUtc > state.LastCheckedAtUtc)
-            {
-                return log.Fail("AdditionalDependentFiles", "Some additional dependent files are added or removed, not up to date.");
-            }
             return true;
         }
 
@@ -237,6 +232,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 if (earliestOutputTime < state.LastItemsChangedAtUtc)
                 {
                     return log.Fail("Outputs", "The set of project items was changed more recently ({0}) than the earliest output '{1}' ({2}), not up to date.", state.LastItemsChangedAtUtc, earliestOutputPath, earliestOutputTime);
+                }
+
+                if (earliestOutputTime < state.LastAdditionalDependentFileTimesChangedAtUtc)
+                {
+                    return log.Fail("Outputs", "The set of AdditionalDependentFileTimes was changed more recently ({0}) than the earliest output '{1}' ({2}), not up to date.", state.LastAdditionalDependentFileTimesChangedAtUtc, earliestOutputPath, earliestOutputTime);
                 }
 
                 foreach ((string input, bool isRequired) in inputs)
@@ -648,6 +648,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             public void SetLastItemsChangedAtUtc(DateTime lastItemsChangedAtUtc)
             {
                 _check._state = _check._state.WithLastItemsChangedAtUtc(lastItemsChangedAtUtc);
+            }
+
+            public void SetLastAdditionalDependentFileTimesChangedAtUtc(DateTime lastAdditionalDependentFileTimesChangedAtUtc)
+            {
+                _check._state = _check._state.WithLastAdditionalDependentFilesChangedAtUtc(lastAdditionalDependentFileTimesChangedAtUtc);
             }
         }
 

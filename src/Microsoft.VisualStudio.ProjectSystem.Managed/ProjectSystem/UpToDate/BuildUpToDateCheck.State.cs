@@ -110,7 +110,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             /// The <see cref="DateTime"/> values here do not update dynamically.
             /// </remarks>
             public IImmutableDictionary<string, DateTime> AdditionalDependentFileTimes { get; }
-            private ImmutableHashSet<string> LastAdditionalDependentFileTimes { get; }
             public DateTime LastAdditionalDependentFileTimesChangedAtUtc { get; }
 
             private State()
@@ -131,8 +130,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 ResolvedCompilationReferencePaths = emptyPathSet;
                 CopyReferenceInputs = emptyPathSet;
                 AdditionalDependentFileTimes = ImmutableDictionary.Create<string, DateTime>(StringComparers.Paths);
-                LastAdditionalDependentFileTimes = ImmutableHashSet.Create<string>();
-                LastAdditionalDependentFileTimesChangedAtUtc = DateTime.MinValue; ;
+                LastAdditionalDependentFileTimesChangedAtUtc = DateTime.MinValue;
             }
 
             private State(
@@ -153,7 +151,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 ImmutableHashSet<string> resolvedCompilationReferencePaths,
                 ImmutableHashSet<string> copyReferenceInputs,
                 IImmutableDictionary<string, DateTime> additionalDependentFileTimes,
-                ImmutableHashSet<string> lastAdditionalDependentFileTimes,
                 DateTime lastAdditionalDependentFileTimesChangedAtUtc,
                 DateTime lastItemsChangedAtUtc,
                 DateTime lastCheckedAtUtc)
@@ -177,7 +174,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 LastItemsChangedAtUtc = lastItemsChangedAtUtc;
                 LastCheckedAtUtc = lastCheckedAtUtc;
                 AdditionalDependentFileTimes = additionalDependentFileTimes;
-                LastAdditionalDependentFileTimes = lastAdditionalDependentFileTimes;
                 LastAdditionalDependentFileTimesChangedAtUtc = lastAdditionalDependentFileTimesChangedAtUtc;
 
                 var setNames = new HashSet<string>(s_setNameComparer);
@@ -204,10 +200,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 string? outputRelativeOrFullPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutDirProperty, msBuildProjectOutputPath);
                 string msBuildAllProjects = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildAllProjectsProperty, "");
 
+                var lastExistingAdditionalDependentFiles = AdditionalDependentFileTimes.Where(pair => pair.Value != DateTime.MinValue).Select(pair => pair.Key).ToImmutableHashSet();
                 IImmutableDictionary<string, DateTime> additionalDependentFileTimes = projectSnapshot.AdditionalDependentFileTimes;
+
                 var currentExistingAdditionalDependentFiles = additionalDependentFileTimes.Where(pair => pair.Value != DateTime.MinValue).Select(pair => pair.Key).ToImmutableHashSet();
-                bool AdditionalDependentFilesChanged = !LastAdditionalDependentFileTimes.SetEquals(currentExistingAdditionalDependentFiles);
-                var lastAdditionalDependentFileTimes = AdditionalDependentFilesChanged ? currentExistingAdditionalDependentFiles : LastAdditionalDependentFileTimes;
+                bool AdditionalDependentFilesChanged = !lastExistingAdditionalDependentFiles.SetEquals(currentExistingAdditionalDependentFiles);
                 DateTime lastAdditionalDependentFileTimesChangedAtUtc = AdditionalDependentFilesChanged ? DateTime.UtcNow : LastAdditionalDependentFileTimesChangedAtUtc;
 
                 // The first item in this semicolon-separated list of project files will always be the one
@@ -396,7 +393,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     resolvedCompilationReferencePaths: resolvedCompilationReferencePaths,
                     copyReferenceInputs: copyReferenceInputs,
                     additionalDependentFileTimes: additionalDependentFileTimes,
-                    lastAdditionalDependentFileTimes: lastAdditionalDependentFileTimes,
                     lastAdditionalDependentFileTimesChangedAtUtc: lastAdditionalDependentFileTimesChangedAtUtc,
                     lastItemsChangedAtUtc: lastItemsChangedAtUtc, lastCheckedAtUtc: LastCheckedAtUtc);
 
@@ -478,7 +474,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     ResolvedCompilationReferencePaths,
                     CopyReferenceInputs,
                     AdditionalDependentFileTimes,
-                    LastAdditionalDependentFileTimes,
                     LastAdditionalDependentFileTimesChangedAtUtc,
                     LastItemsChangedAtUtc, lastCheckedAtUtc);
             }
@@ -506,9 +501,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     ResolvedCompilationReferencePaths,
                     CopyReferenceInputs,
                     AdditionalDependentFileTimes,
-                    LastAdditionalDependentFileTimes,
                     LastAdditionalDependentFileTimesChangedAtUtc,
                     lastItemsChangedAtUtc, LastCheckedAtUtc);
+            }
+
+            /// <summary>
+            /// For unit tests only.
+            /// </summary>
+            internal State WithLastAdditionalDependentFilesChangedAtUtc(DateTime lastAdditionalDependentFileTimesChangedAtUtc)
+            {
+                return new State(
+                    MSBuildProjectFullPath,
+                    MSBuildProjectDirectory,
+                    CopyUpToDateMarkerItem,
+                    OutputRelativeOrFullPath,
+                    NewestImportInput,
+                    LastVersionSeen,
+                    IsDisabled,
+                    ItemTypes,
+                    ItemsByItemType,
+                    UpToDateCheckInputItemsBySetName,
+                    UpToDateCheckOutputItemsBySetName,
+                    UpToDateCheckBuiltItemsBySetName,
+                    CopiedOutputFiles,
+                    ResolvedAnalyzerReferencePaths,
+                    ResolvedCompilationReferencePaths,
+                    CopyReferenceInputs,
+                    AdditionalDependentFileTimes,
+                    lastAdditionalDependentFileTimesChangedAtUtc,
+                    LastItemsChangedAtUtc, LastCheckedAtUtc);
             }
         }
     }
