@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
                         
                         if (!_library.CompileTimeAssemblies.IsEmpty)
                         {
-                            builder.Add(new PackageAssemblyGroupItem(PackageAssemblyGroupType.CompileTime, _library.CompileTimeAssemblies));
+                            builder.Add(new PackageAssemblyGroupItem(PackageAssemblyGroupType.CompileTime, _library.CompileTimeAssemblies, _snapshot, _library));
                         }
 
                         _items = builder.MoveToImmutable();

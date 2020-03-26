@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Imaging.Interop;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models;
 using Microsoft.VisualStudio.Shell;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections
@@ -18,14 +19,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
     {
         private readonly PackageAssemblyGroupType _groupType;
         private readonly ImmutableArray<string> _paths;
+        private readonly AssetsFileDependenciesSnapshot _snapshot;
+        private readonly AssetsFileTargetLibrary _library;
         private IEnumerable? _items;
 
-        public PackageAssemblyGroupItem(PackageAssemblyGroupType groupType, ImmutableArray<string> paths)
+        public PackageAssemblyGroupItem(PackageAssemblyGroupType groupType, ImmutableArray<string> paths, AssetsFileDependenciesSnapshot snapshot, AssetsFileTargetLibrary library)
             : base(GetGroupLabel(groupType))
         {
+            Requires.Argument(!paths.IsEmpty, nameof(paths), "May not be empty");
+            Requires.NotNull(snapshot, nameof(snapshot));
+            Requires.NotNull(library, nameof(library));
+
             _groupType = groupType;
             _paths = paths;
-            Requires.Argument(!paths.IsEmpty, nameof(paths), "May not be empty");
+            _snapshot = snapshot;
+            _library = library;
         }
 
         private static string GetGroupLabel(PackageAssemblyGroupType groupType)
@@ -55,18 +63,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         
         public bool HasItems => true;
         
-        public IEnumerable Items => _items ??= _paths.Select(path => new PackageAssemblyItem(path)).ToList();
+        public IEnumerable Items => _items ??= _paths.Select(path => new PackageAssemblyItem(path, this)).ToList();
 
         public IAttachedCollectionSource ContainsAttachedCollectionSource => this;
 
         private sealed class PackageAssemblyItem : AttachedCollectionItemBase
         {
             private readonly string _path;
+            private readonly PackageAssemblyGroupItem _groupItem;
 
-            public PackageAssemblyItem(string path)
+            public PackageAssemblyItem(string path, PackageAssemblyGroupItem groupItem)
                 : base(Path.GetFileName(path))
             {
                 _path = path;
+                _groupItem = groupItem;
             }
 
             // All siblings are assemblies, so no prioritization needed (sort alphabetically)
@@ -92,7 +102,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
                 [BrowseObjectDisplayName(nameof(VSResources.PackageAssemblyPathDisplayName))]
                 [BrowseObjectDescription(nameof(VSResources.PackageAssemblyPathDescription))]
-                public string Path => _assembly._path;
+                public string? Path
+                {
+                    get
+                    {
+                        PackageAssemblyGroupItem groupItem = _assembly._groupItem;
+                        AssetsFileTargetLibrary library = groupItem._library;
+
+                        return groupItem._snapshot.TryResolvePackagePath(library.Name, library.Version, out string? fullPath)
+                            ? System.IO.Path.GetFullPath(System.IO.Path.Combine(fullPath, _assembly._path))
+                            : null;
+                    }
+                }
             }
         }
     }

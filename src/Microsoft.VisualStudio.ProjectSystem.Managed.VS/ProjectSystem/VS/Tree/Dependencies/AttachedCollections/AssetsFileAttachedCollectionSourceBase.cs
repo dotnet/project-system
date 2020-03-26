@@ -125,18 +125,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
             }
         }
 
-        protected static void ProcessLibraryContent(ref List<object>? items, AssetsFileTargetLibrary library)
+        protected static void ProcessLibraryContent(ref List<object>? items, AssetsFileTargetLibrary library, AssetsFileDependenciesSnapshot snapshot)
         {
             if (!library.CompileTimeAssemblies.IsEmpty)
             {
                 items ??= new List<object>();
-                items.Add(new PackageAssemblyGroupItem(PackageAssemblyGroupType.CompileTime, library.CompileTimeAssemblies));
+                items.Add(new PackageAssemblyGroupItem(PackageAssemblyGroupType.CompileTime, library.CompileTimeAssemblies, snapshot, library));
             }
 
             if (!library.FrameworkAssemblies.IsEmpty)
             {
                 items ??= new List<object>();
-                items.Add(new PackageAssemblyGroupItem(PackageAssemblyGroupType.Framework, library.FrameworkAssemblies));
+                items.Add(new PackageAssemblyGroupItem(PackageAssemblyGroupType.Framework, library.FrameworkAssemblies, snapshot, library));
             }
         }
 

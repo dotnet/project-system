@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
             if (snapshot.TryGetPackage(_packageId, _version, _target, out AssetsFileTargetLibrary? library))
             {
-                ProcessLibraryContent(ref items, library);
+                ProcessLibraryContent(ref items, library, snapshot);
             }
 
             return items;
