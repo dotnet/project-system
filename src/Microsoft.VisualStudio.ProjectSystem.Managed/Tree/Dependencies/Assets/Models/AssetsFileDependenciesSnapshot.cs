@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using NuGet.Packaging;
 using NuGet.ProjectModel;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models
@@ -24,6 +25,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models
         private static readonly LockFileFormat s_lockFileFormat = new LockFileFormat();
 
         private readonly ImmutableDictionary<string, AssetsFileTarget> _dataByTarget;
+
+        /// <summary>
+        /// The <c>packageFolders</c> array from the assets file. The first is the 'user package folder',
+        /// and any others are 'fallback package folders'.
+        /// </summary>
+        private readonly ImmutableArray<string> _packageFolders;
+
+        /// <summary>
+        /// Lazily populated instance of a NuGet type that performs package path resolution.  May be used in parallel.
+        /// </summary>
+        private FallbackPackagePathResolver? _packagePathResolver;
 
         /// <summary>
         /// Produces an updated snapshot by reading the <c>project.assets.json</c> file at <paramref name="path"/>.
@@ -55,7 +67,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models
             }
 
             Assumes.NotNull(previous);
-            
+
+            _packageFolders = lockFile.PackageFolders.Select(pf => pf.Path).ToImmutableArray();
+
             ImmutableDictionary<string, AssetsFileTarget>.Builder dataByTarget = ImmutableDictionary.CreateBuilder<string, AssetsFileTarget>(StringComparers.FrameworkIdentifiers); // TODO review comparer here -- should it be ignore case?
 
             foreach (LockFileTarget lockFileTarget in lockFile.Targets)
@@ -229,6 +243,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models
             }
 
             return true;
+        }
+
+        public bool TryResolvePackagePath(string packageId, string version, out string? fullPath)
+        {
+            Requires.NotNull(packageId, nameof(packageId));
+            Requires.NotNull(version, nameof(version));
+
+            if (_packageFolders.IsEmpty)
+            {
+                fullPath = default;
+                return false;
+            }
+
+            try
+            {
+                _packagePathResolver ??= new FallbackPackagePathResolver(_packageFolders[0], _packageFolders.Skip(1));
+
+                fullPath = _packagePathResolver.GetPackageDirectory(packageId, version);
+                return true;
+            }
+            catch
+            {
+                fullPath = default;
+                return false;
+            }
         }
     }
 }

@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         public override ImageMoniker ExpandedIconMoniker => IconMoniker;
 
-        public override object? GetBrowseObject() => new BrowseObject(_library);
+        public override object? GetBrowseObject() => new BrowseObject(_library, _snapshot);
 
         public IAttachedCollectionSource ContainsAttachedCollectionSource => this;
 
@@ -75,8 +75,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         private sealed class BrowseObject : BrowseObjectBase
         {
             private readonly AssetsFileTargetLibrary _library;
+            private readonly AssetsFileDependenciesSnapshot _snapshot;
 
-            public BrowseObject(AssetsFileTargetLibrary library) => _library = library;
+            public BrowseObject(AssetsFileTargetLibrary library, AssetsFileDependenciesSnapshot snapshot)
+            {
+                _library = library;
+                _snapshot = snapshot;
+            }
 
             public override string GetComponentName() => $"{_library.Name} ({_library.Version})";
 
@@ -89,6 +94,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
             [BrowseObjectDisplayName(nameof(VSResources.PackageReferenceVersionDisplayName))]
             [BrowseObjectDescription(nameof(VSResources.PackageReferenceVersionDescription))]
             public string Version => _library.Version;
+
+            [BrowseObjectDisplayName(nameof(VSResources.PackageReferencePathDisplayName))]
+            [BrowseObjectDescription(nameof(VSResources.PackageReferencePathDescription))]
+            public string? Path => _snapshot.TryResolvePackagePath(_library.Name, _library.Version, out string? fullPath) ? fullPath : null;
         }
     }
 }

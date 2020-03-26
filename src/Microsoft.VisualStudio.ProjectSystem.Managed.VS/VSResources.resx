@@ -233,6 +233,12 @@ In order to debug this project, add an executable project to this solution which
   <data name="PackageReferenceVersionDescription" xml:space="preserve">
     <value>The package's version.</value>
   </data>
+  <data name="PackageReferencePathDisplayName" xml:space="preserve">
+    <value>Path</value>
+  </data>
+  <data name="PackageReferencePathDescription" xml:space="preserve">
+    <value>The package's resolved full path.</value>
+  </data>
   <data name="ProjectReferenceBrowseObjectClassName" xml:space="preserve">
     <value>Project Reference</value>
   </data>

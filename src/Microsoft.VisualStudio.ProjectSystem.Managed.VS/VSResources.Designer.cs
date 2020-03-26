@@ -412,6 +412,24 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The package&apos;s resolved full path..
+        /// </summary>
+        internal static string PackageReferencePathDescription {
+            get {
+                return ResourceManager.GetString("PackageReferencePathDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Path.
+        /// </summary>
+        internal static string PackageReferencePathDisplayName {
+            get {
+                return ResourceManager.GetString("PackageReferencePathDisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The package&apos;s version..
         /// </summary>
         internal static string PackageReferenceVersionDescription {
