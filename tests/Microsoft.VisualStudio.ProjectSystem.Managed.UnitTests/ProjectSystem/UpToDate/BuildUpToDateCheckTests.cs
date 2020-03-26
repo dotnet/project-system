@@ -1100,11 +1100,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 [UpToDateCheckBuilt.SchemaName] = SimpleItems("BuiltOutputPath1")
             };
 
-            var itemChangeTime = DateTime.UtcNow.AddMinutes(-4);
-            var dependentTime = DateTime.UtcNow.AddMinutes(-4);
-            var lastCheckTime = DateTime.UtcNow.AddMinutes(-3);
-            var lastAdditionalDependentFileTimesChanged = DateTime.UtcNow.AddMinutes(-2);
-            var outputTime = DateTime.UtcNow.AddMinutes(-1);
+            var itemChangeTime = DateTime.UtcNow.AddMinutes(-6);
+            var dependentTime = DateTime.UtcNow.AddMinutes(-5);
+            var lastCheckTime = DateTime.UtcNow.AddMinutes(-4);
+            var lastAdditionalDependentFileTimesChanged = DateTime.UtcNow.AddMinutes(-3);
+            var outputTime = DateTime.UtcNow.AddMinutes(-2);
 
             var dependentPath = @"C:\Dev\Solution\Project\Dependent";
             var outputPath = @"C:\Dev\Solution\Project\BuiltOutputPath1";
@@ -1124,7 +1124,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             // Remove dependentPath
             await SetupAsync(projectSnapshot: projectSnapshot);
 
-            lastAdditionalDependentFileTimesChanged = DateTime.UtcNow.AddMinutes(0);
+            lastAdditionalDependentFileTimesChanged = DateTime.UtcNow.AddMinutes(-1);
 
             _buildUpToDateCheck.TestAccess.SetLastItemsChangedAtUtc(itemChangeTime);
             _buildUpToDateCheck.TestAccess.SetLastAdditionalDependentFileTimesChangedAtUtc(lastAdditionalDependentFileTimesChanged);
@@ -1143,11 +1143,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 [UpToDateCheckBuilt.SchemaName] = SimpleItems("BuiltOutputPath1")
             };
 
-            var itemChangeTime = DateTime.UtcNow.AddMinutes(-4);
-            var lastCheckTime = DateTime.UtcNow.AddMinutes(-3);
-            var outputTime = DateTime.UtcNow.AddMinutes(-2);
-            var dependentTime = DateTime.UtcNow.AddMinutes(-1);
-            var lastAdditionalDependentFileTimesChanged = DateTime.UtcNow.AddMinutes(0);
+            var itemChangeTime = DateTime.UtcNow.AddMinutes(-5);
+            var lastCheckTime = DateTime.UtcNow.AddMinutes(-4);
+            var outputTime = DateTime.UtcNow.AddMinutes(-3);
+            var dependentTime = DateTime.UtcNow.AddMinutes(-2);
+            var lastAdditionalDependentFileTimesChanged = DateTime.UtcNow.AddMinutes(-1);
 
             var dependentPath = @"C:\Dev\Solution\Project\Dependent";
             var outputPath = @"C:\Dev\Solution\Project\BuiltOutputPath1";
