@@ -4,13 +4,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.OperationProgress
 {
     internal class ProgressTrackerOutputDataSource : IProgressTrackerOutputDataSource
     {
-        public ProgressTrackerOutputDataSource(ConfiguredProject configuredProject, string operationProgressStageId, string name, string displayMessage)
+        public ProgressTrackerOutputDataSource(object owner, ConfiguredProject configuredProject, string operationProgressStageId, string name, string displayMessage)
         {
+            Owner = owner;
             ConfiguredProject = configuredProject;
             OperationProgressStageId = operationProgressStageId;
             Name = name;
             DisplayMessage = displayMessage;
         }
+
+        // For inspection of dumps
+        public object Owner { get; }
 
         public ConfiguredProject ConfiguredProject { get; }
 
