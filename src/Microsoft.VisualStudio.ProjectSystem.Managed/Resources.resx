@@ -172,4 +172,7 @@ If this file or folder does not appear in Solution Explorer, then it is not curr
   <data name="OutputGroupPublishItemsDisplayName" xml:space="preserve">
     <value>Publish Items</value>
   </data>
+  <data name="DataFlowFaults" xml:space="preserve">
+    <value>Project system data flow '{0}' closed because of an exception: {1}.</value>
+  </data>
 </root>
