@@ -104,6 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             /// </list>
             /// <para>
             /// We need all <em>potential</em> paths for files which may start affecting build if they were to be added.
+            /// Any files not found on disk have MinValue dates.
             /// </para>
             /// </summary>
             /// <remarks>
@@ -112,12 +113,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             public IImmutableDictionary<string, DateTime> AdditionalDependentFileTimes { get; }
 
             /// <summary>
-            /// Gets the time at which the set of items in additionalDependentFileTimes changed (files added or removed).
+            /// Gets the time at which the set of items with non-<see cref="DateTime.MinValue"/> times
+            /// in <see cref="AdditionalDependentFileTimes"/> changed (files added or removed).
             /// </summary>
-            /// <remarks>
-            /// Additional dependent files are not required for compilation, but if present they might affect the compilation
-            /// output. e.g global.json, project.assets.json.
-            /// </remarks>
             public DateTime LastAdditionalDependentFileTimesChangedAtUtc { get; }
 
             private State()
