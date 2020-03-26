@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters;
 
@@ -17,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 projectPath,
                 targetFramework,
                 catalogs,
-                ImmutableStringDictionary<IDependency>.EmptyOrdinalIgnoreCase);
+                ImmutableArray<IDependency>.Empty);
         }
 
         /// <summary>
@@ -43,11 +44,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             ITargetFramework targetFramework = previousSnapshot.TargetFramework;
 
-            var builder = previousSnapshot.DependencyById.ToBuilder();
+            var dependencyById = previousSnapshot.Dependencies.ToDictionary(d => d.Id, StringComparers.DependencyTreeIds);
 
             if (changes != null && changes.RemovedNodes.Count != 0)
             {
-                var context = new RemoveDependencyContext(builder);
+                var context = new RemoveDependencyContext(dependencyById);
 
                 foreach (IDependencyModel removed in changes.RemovedNodes)
                 {
@@ -57,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             if (changes != null && changes.AddedNodes.Count != 0)
             {
-                var context = new AddDependencyContext(builder);
+                var context = new AddDependencyContext(dependencyById);
 
                 foreach (IDependencyModel added in changes.AddedNodes)
                 {
@@ -84,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                     projectPath,
                     targetFramework,
                     catalogs,
-                    builder.ToImmutable());
+                    dependencyById.ToImmutableValueArray());
             }
 
             return previousSnapshot;
@@ -117,7 +118,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                     }
                 }
 
-                builder.Remove(dependencyId);
+                dependencyById.Remove(dependencyId);
                 anyChanges = true;
             }
 
@@ -148,8 +149,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 if (dependency != null)
                 {
                     // A dependency was accepted
-                    builder.Remove(dependency.Id);
-                    builder.Add(dependency.Id, dependency);
+                    dependencyById.Remove(dependency.Id);
+                    dependencyById.Add(dependency.Id, dependency);
                     anyChanges = true;
                 }
                 else
@@ -166,19 +167,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             string projectPath,
             ITargetFramework targetFramework,
             IProjectCatalogSnapshot? catalogs,
-            ImmutableDictionary<string, IDependency> dependencyById)
+            ImmutableArray<IDependency> dependencies)
         {
             Requires.NotNullOrEmpty(projectPath, nameof(projectPath));
             Requires.NotNull(targetFramework, nameof(targetFramework));
-            Requires.NotNull(dependencyById, nameof(dependencyById));
-            Assumes.True(Equals(dependencyById.KeyComparer, StringComparers.DependencyTreeIds), $"{nameof(dependencyById)} must have an {nameof(StringComparers.DependencyTreeIds)} key comparer.");
+            Requires.Argument(!dependencies.IsDefault, nameof(dependencies), "Cannot be default.");
 
             ProjectPath = projectPath;
             TargetFramework = targetFramework;
             Catalogs = catalogs;
-            DependencyById = dependencyById;
+            Dependencies = dependencies;
 
-            HasVisibleUnresolvedDependency = dependencyById.Any(pair => pair.Value.Visible && !pair.Value.Resolved);
+            HasVisibleUnresolvedDependency = dependencies.Any(pair => pair.Visible && !pair.Resolved);
         }
 
         #endregion
@@ -199,10 +199,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public IProjectCatalogSnapshot? Catalogs { get; }
 
         /// <summary>
-        /// Contains all unique <see cref="IDependency"/> objects in the project, from all levels.
-        /// Allows looking them up by their IDs.
+        /// Contains all <see cref="IDependency"/> objects in the project for the given target.
         /// </summary>
-        public ImmutableDictionary<string, IDependency> DependencyById { get; }
+        public ImmutableArray<IDependency> Dependencies { get; }
 
         /// <summary>
         /// Gets whether this snapshot contains at least one visible unresolved dependency.
@@ -221,7 +220,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 return false;
             }
 
-            foreach ((_, IDependency dependency) in DependencyById)
+            foreach (IDependency dependency in Dependencies)
             {
                 if (!dependency.Resolved &&
                     dependency.Visible &&
@@ -234,6 +233,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             return false;
         }
 
-        public override string ToString() => $"{TargetFramework.FriendlyName} - {DependencyById.Count} dependencies - {ProjectPath}";
+        public override string ToString() => $"{TargetFramework.FriendlyName} - {Dependencies.Length} dependencies - {ProjectPath}";
     }
 }

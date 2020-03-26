@@ -1,7 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
-using System.Collections.Immutable;
+using System.Collections.Generic;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters
 {
@@ -12,16 +12,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
     /// </summary>
     internal sealed class AddDependencyContext
     {
-        private readonly ImmutableDictionary<string, IDependency>.Builder _builder;
+        private readonly Dictionary<string, IDependency> _dependencyById;
 
         private bool _acceptedOrRejected;
         private IDependency? _acceptedDependency;
 
         public bool Changed { get; private set; }
 
-        public AddDependencyContext(ImmutableDictionary<string, IDependency>.Builder builder)
+        public AddDependencyContext(Dictionary<string, IDependency> dependencyById)
         {
-            _builder = builder;
+            _dependencyById = dependencyById;
         }
 
         public void Reset()
@@ -48,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
         /// </summary>
         public bool TryGetDependency(string dependencyId, out IDependency dependency)
         {
-            return _builder.TryGetValue(dependencyId, out dependency);
+            return _dependencyById.TryGetValue(dependencyId, out dependency);
         }
 
         /// <summary>
@@ -60,8 +60,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
         /// </remarks>
         public void AddOrUpdate(IDependency dependency)
         {
-            _builder.Remove(dependency.Id);
-            _builder.Add(dependency.Id, dependency);
+            _dependencyById.Remove(dependency.Id);
+            _dependencyById.Add(dependency.Id, dependency);
             Changed = true;
         }
 
@@ -70,15 +70,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
         /// </summary>
         public bool Contains(string dependencyId)
         {
-            return _builder.ContainsKey(dependencyId);
+            return _dependencyById.ContainsKey(dependencyId);
         }
 
         /// <summary>
         /// Returns an enumerator over all dependencies in the project tree.
         /// </summary>
-        public ImmutableDictionary<string, IDependency>.Enumerator GetEnumerator()
+        public Dictionary<string, IDependency>.Enumerator GetEnumerator()
         {
-            return _builder.GetEnumerator();
+            return _dependencyById.GetEnumerator();
         }
 
         /// <summary>

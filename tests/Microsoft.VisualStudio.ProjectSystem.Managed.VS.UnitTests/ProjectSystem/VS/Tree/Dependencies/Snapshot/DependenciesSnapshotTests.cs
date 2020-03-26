@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
@@ -180,11 +179,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             var (actualTfm, targetedSnapshot) = Assert.Single(snapshot.DependenciesByTargetFramework);
             Assert.Same(targetFramework, actualTfm);
-            var (id, dependency) = Assert.Single(targetedSnapshot.DependencyById);
-            Assert.Equal(@"tfm1\Xxx\dependency1", id);
+            var dependency = Assert.Single(targetedSnapshot.Dependencies);
             Assert.Equal(@"tfm1\Xxx\dependency1", dependency.Id);
             Assert.Equal("Xxx", dependency.ProviderType);
-            Assert.Same(dependency, targetedSnapshot.DependencyById.Single().Value);
         }
 
         [Fact]

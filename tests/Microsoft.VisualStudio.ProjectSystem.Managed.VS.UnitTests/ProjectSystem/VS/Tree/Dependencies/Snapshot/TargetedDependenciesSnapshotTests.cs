@@ -18,11 +18,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         {
             var path = "path";
             var tfm = TargetFramework.Any;
-            var deps = ImmutableDictionary<string, IDependency>.Empty;
+            var deps = ImmutableArray<IDependency>.Empty;
 
             Assert.Throws<ArgumentNullException>("projectPath",       () => new TargetedDependenciesSnapshot(null!, tfm,   null, deps));
             Assert.Throws<ArgumentNullException>("targetFramework",   () => new TargetedDependenciesSnapshot(path,  null!, null, deps));
-            Assert.Throws<ArgumentNullException>("dependencyById",    () => new TargetedDependenciesSnapshot(path,  tfm,   null, null!));
         }
 
         [Fact]
@@ -36,13 +35,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 projectPath,
                 targetFramework,
                 catalogs,
-                ImmutableStringDictionary<IDependency>.EmptyOrdinalIgnoreCase);
+                ImmutableArray<IDependency>.Empty);
 
             Assert.Same(projectPath, snapshot.ProjectPath);
             Assert.Same(targetFramework, snapshot.TargetFramework);
             Assert.Same(catalogs, snapshot.Catalogs);
             Assert.False(snapshot.HasVisibleUnresolvedDependency);
-            Assert.Empty(snapshot.DependencyById);
+            Assert.Empty(snapshot.Dependencies);
             Assert.False(snapshot.CheckForUnresolvedDependencies("foo"));
         }
 
@@ -59,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.Same(targetFramework, snapshot.TargetFramework);
             Assert.Same(catalogs, snapshot.Catalogs);
             Assert.False(snapshot.HasVisibleUnresolvedDependency);
-            Assert.Empty(snapshot.DependencyById);
+            Assert.Empty(snapshot.Dependencies);
             Assert.False(snapshot.CheckForUnresolvedDependencies("foo"));
         }
 
@@ -105,9 +104,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.NotSame(previousSnapshot, snapshot);
             Assert.Same(projectPath, snapshot.ProjectPath);
             Assert.Same(updatedCatalogs, snapshot.Catalogs);
-            Assert.Same(previousSnapshot.DependencyById, snapshot.DependencyById);
+            Assert.Equal(previousSnapshot.Dependencies.Length, snapshot.Dependencies.Length);
+            for (int i = 0; i < previousSnapshot.Dependencies.Length; i++)
+            {
+                Assert.Same(previousSnapshot.Dependencies[i], snapshot.Dependencies[i]);
+            }
             Assert.False(snapshot.HasVisibleUnresolvedDependency);
-            Assert.Empty(snapshot.DependencyById);
+            Assert.Empty(snapshot.Dependencies);
         }
 
         [Fact]
@@ -162,9 +165,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.Same(updatedProjectPath, snapshot.ProjectPath);
             Assert.Same(catalogs, snapshot.Catalogs);
             Assert.True(snapshot.HasVisibleUnresolvedDependency);
-            AssertEx.CollectionLength(snapshot.DependencyById, 2);
-            Assert.True(resolved.Matches(snapshot.DependencyById["tfm1\\Xxx\\dependency1"], targetFramework));
-            Assert.True(unresolved.Matches(snapshot.DependencyById["tfm1\\Xxx\\dependency2"], targetFramework));
+            AssertEx.CollectionLength(snapshot.Dependencies, 2);
+            Assert.Contains(snapshot.Dependencies, dep => resolved.Matches(dep, targetFramework));
+            Assert.Contains(snapshot.Dependencies, dep => unresolved.Matches(dep, targetFramework));
         }
 
         [Fact]
@@ -199,7 +202,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 projectPath,
                 targetFramework,
                 catalogs,
-                new IDependency[] { dependency1, dependency2 }.ToImmutableDictionary(d => d.Id).WithComparers(StringComparer.OrdinalIgnoreCase));
+                ImmutableArray.Create<IDependency>(dependency1, dependency2));
 
             var changes = new DependenciesChangesBuilder();
             changes.Removed(dependency1.ProviderType, dependency1.Id);
@@ -250,7 +253,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 projectPath,
                 targetFramework,
                 catalogs,
-                new IDependency[] { dependency1, dependency2 }.ToImmutableDictionary(d => d.Id).WithComparers(StringComparer.OrdinalIgnoreCase));
+                ImmutableArray.Create<IDependency>(dependency1, dependency2));
 
             var changes = new DependenciesChangesBuilder();
             changes.Removed("Xxx", "dependency1");
@@ -276,8 +279,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.Same(previousSnapshot.TargetFramework, snapshot.TargetFramework);
             Assert.Same(projectPath, snapshot.ProjectPath);
             Assert.Same(catalogs, snapshot.Catalogs);
-            AssertEx.CollectionLength(snapshot.DependencyById, 3);
-            Assert.Contains(addedOnRemove, snapshot.DependencyById.Values);
+            AssertEx.CollectionLength(snapshot.Dependencies, 3);
+            Assert.Contains(addedOnRemove, snapshot.Dependencies);
         }
 
         [Fact]
@@ -313,7 +316,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 projectPath,
                 targetFramework,
                 catalogs,
-                new IDependency[] { dependency1 }.ToImmutableDictionary(d => d.Id).WithComparers(StringComparer.OrdinalIgnoreCase));
+                ImmutableArray.Create<IDependency>(dependency1));
 
             var changes = new DependenciesChangesBuilder();
             changes.Added(dependencyModelNew1);
@@ -378,7 +381,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 projectPath,
                 targetFramework,
                 catalogs,
-                new IDependency[] { dependency1, dependency2 }.ToImmutableDictionary(d => d.Id).WithComparers(StringComparer.OrdinalIgnoreCase));
+                ImmutableArray.Create<IDependency>(dependency1, dependency2));
 
             var changes = new DependenciesChangesBuilder();
             changes.Added(dependencyModelNew1);
@@ -405,10 +408,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.Same(previousSnapshot.ProjectPath, snapshot.ProjectPath);
             Assert.Same(previousSnapshot.Catalogs, snapshot.Catalogs);
 
-            AssertEx.CollectionLength(snapshot.DependencyById, 3);
-            Assert.Contains(dependency1, snapshot.DependencyById.Values);
-            Assert.Contains(dependency2, snapshot.DependencyById.Values);
-            Assert.Contains(filterAddedDependency, snapshot.DependencyById.Values);
+            AssertEx.CollectionLength(snapshot.Dependencies, 3);
+            Assert.Contains(dependency1, snapshot.Dependencies);
+            Assert.Contains(dependency2, snapshot.Dependencies);
+            Assert.Contains(filterAddedDependency, snapshot.Dependencies);
         }
 
         [Fact]
@@ -508,7 +511,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 projectPath,
                 targetFramework,
                 catalogs,
-                new IDependency[] { dependency1, dependency2, dependencyRemoved1 }.ToImmutableDictionary(d => d.Id).WithComparers(StringComparer.OrdinalIgnoreCase));
+                ImmutableArray.Create<IDependency>(dependency1, dependency2, dependencyRemoved1));
 
             var changes = new DependenciesChangesBuilder();
             changes.Added(dependencyModelAdded1);
@@ -538,12 +541,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.Same(previousSnapshot.TargetFramework, snapshot.TargetFramework);
             Assert.Same(projectPath, snapshot.ProjectPath);
             Assert.Same(catalogs, snapshot.Catalogs);
-            AssertEx.CollectionLength(snapshot.DependencyById, 5);
-            Assert.True(snapshot.DependencyById.ContainsKey(@"tfm1\xxx\dependency1"));
-            Assert.True(snapshot.DependencyById.ContainsKey(@"tfm1\xxx\dependency2"));
-            Assert.True(snapshot.DependencyById.ContainsKey(@"tfm1\xxx\addeddependency2"));
-            Assert.True(snapshot.DependencyById.ContainsKey(@"tfm1\xxx\InsteadRemoveddependency1"));
-            Assert.True(snapshot.DependencyById.ContainsKey(@"tfm1\xxx\addeddependency3"));
+            AssertEx.CollectionLength(snapshot.Dependencies, 5);
+            Assert.Contains(snapshot.Dependencies, dep => dep.Id == @"tfm1\xxx\dependency1");
+            Assert.Contains(snapshot.Dependencies, dep => dep.Id == @"tfm1\xxx\dependency2");
+            Assert.Contains(snapshot.Dependencies, dep => dep.Id == @"tfm1\xxx\addeddependency2");
+            Assert.Contains(snapshot.Dependencies, dep => dep.Id == @"tfm1\xxx\InsteadRemoveddependency1");
+            Assert.Contains(snapshot.Dependencies, dep => dep.Id == @"tfm1\Xxx\addeddependency3");
         }
 
         [Fact]
@@ -589,7 +592,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 projectPath,
                 targetFramework,
                 catalogs,
-                new IDependency[] { dependencyPrevious }.ToImmutableDictionary(d => d.Id).WithComparers(StringComparer.OrdinalIgnoreCase));
+                ImmutableArray.Create<IDependency>(dependencyPrevious));
 
             var changes = new DependenciesChangesBuilder();
             changes.Added(dependencyModelAdded);
@@ -609,7 +612,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Assert.True(snapshotFilter.Completed);
 
             Assert.NotSame(previousSnapshot, snapshot);
-            Assert.Same(dependencyUpdated, snapshot.DependencyById.Single().Value);
+            Assert.Same(dependencyUpdated, snapshot.Dependencies.Single());
         }
 
         internal sealed class TestDependenciesSnapshotFilter : IDependenciesSnapshotFilter

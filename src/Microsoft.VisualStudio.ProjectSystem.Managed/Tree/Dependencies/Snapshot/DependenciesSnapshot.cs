@@ -232,24 +232,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 return null;
             }
 
-            // TODO reconcile this -- split used to change logic based on toplevel -- if we don't need the second loop, can remove TryGetValue and replace DependencyById map with Dependencies array
-
-            // if top level first try to find by top level id with full path,
-            // if found - return, if not - try regular Id in the DependencyById
             foreach ((ITargetFramework _, TargetedDependenciesSnapshot targetedDependencies) in DependenciesByTargetFramework)
             {
-                IDependency? dependency = targetedDependencies.DependencyById
-                    .FirstOrDefault((pair, id) => pair.Value.TopLevelIdEquals(id), dependencyId).Value;
+                IDependency? dependency = targetedDependencies.Dependencies.FirstOrDefault((dep, id) => dep.TopLevelIdEquals(id), dependencyId);
 
                 if (dependency != null)
-                {
-                    return dependency;
-                }
-            }
-
-            foreach ((ITargetFramework _, TargetedDependenciesSnapshot targetedDependencies) in DependenciesByTargetFramework)
-            {
-                if (targetedDependencies.DependencyById.TryGetValue(dependencyId, out IDependency dependency))
                 {
                     return dependency;
                 }

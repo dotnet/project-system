@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 
@@ -101,6 +102,18 @@ namespace Microsoft.VisualStudio
             }
 
             return false;
+        }
+
+        public static ImmutableArray<TValue> ToImmutableValueArray<TKey, TValue>(this Dictionary<TKey, TValue> source)
+        {
+            ImmutableArray<TValue>.Builder builder = ImmutableArray.CreateBuilder<TValue>(source.Count);
+
+            foreach ((_, TValue value) in source)
+            {
+                builder.Add(value);
+            }
+
+            return builder.MoveToImmutable();
         }
     }
 }

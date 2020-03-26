@@ -109,9 +109,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 IconSet = new DependencyIconSet(KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference)
             };
 
-            var builder = new IDependency[] { dependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
+            var dependencyById = new Dictionary<string, IDependency>
+            {
+                { dependency.Id, dependency }
+            };
 
-            var context = new AddDependencyContext(builder);
+            var context = new AddDependencyContext(dependencyById);
 
             var filter = new ImplicitDependenciesSnapshotFilter();
 

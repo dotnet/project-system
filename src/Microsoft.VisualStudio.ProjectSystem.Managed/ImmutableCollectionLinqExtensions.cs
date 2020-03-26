@@ -29,9 +29,9 @@ namespace Microsoft.VisualStudio
             return count;
         }
 
-        public static bool Any<TKey, TValue>(this ImmutableDictionary<TKey, TValue> immutableDictionary, Func<KeyValuePair<TKey, TValue>, bool> predicate)
+        public static bool Any<TKey, TValue>(this ImmutableDictionary<TKey, TValue> source, Func<KeyValuePair<TKey, TValue>, bool> predicate)
         {
-            foreach (KeyValuePair<TKey, TValue> pair in immutableDictionary)
+            foreach (KeyValuePair<TKey, TValue> pair in source)
             {
                 if (predicate(pair))
                     return true;
@@ -40,10 +40,21 @@ namespace Microsoft.VisualStudio
             return false;
         }
 
-        [return: MaybeNull]
-        public static T FirstOrDefault<T, TArg>(this ImmutableArray<T> immutableArray, Func<T, TArg, bool> predicate, TArg arg)
+        public static bool Any<T>(this ImmutableArray<T> source, Func<T, bool> predicate)
         {
-            foreach (T obj in immutableArray)
+            foreach (T obj in source)
+            {
+                if (predicate(obj))
+                    return true;
+            }
+
+            return false;
+        }
+
+        [return: MaybeNull]
+        public static T FirstOrDefault<T, TArg>(this ImmutableArray<T> source, Func<T, TArg, bool> predicate, TArg arg)
+        {
+            foreach (T obj in source)
             {
                 if (predicate(obj, arg))
                     return obj;
