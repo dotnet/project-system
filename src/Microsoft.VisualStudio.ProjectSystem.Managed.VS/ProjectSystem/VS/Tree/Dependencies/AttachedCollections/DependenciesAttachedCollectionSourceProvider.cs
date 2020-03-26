@@ -14,6 +14,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
     /// Identifies which hierarchy items in the "Dependencies" tree should have collections of child
     /// items attached, and provides source objects for those collections.
     /// </summary>
+    /// <remarks>
+    /// This provider runs before the hierarchy provider, which in turn runs before the graph provider.
+    /// </remarks>
     [Export(typeof(IAttachedCollectionSourceProvider))]
     [Name(nameof(DependenciesAttachedCollectionSourceProvider))]
     [VisualStudio.Utilities.Order(Before = HierarchyItemsProviderNames.Contains)]
@@ -45,10 +48,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
                         }
                     }
                 }
-                else if (item is IAttachedCollectionSource source)
+                else if (item is IContainsAttachedItems containsAttachedItems)
                 {
-                    // Tree items which are themselves sources can be returned here
-                    return source;
+                    // Tree items which are themselves sources are delegated to, avoiding the need for more providers
+                    return containsAttachedItems.ContainsAttachedCollectionSource;
                 }
             }
 

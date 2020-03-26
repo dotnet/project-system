@@ -6,6 +6,7 @@ using System.IO;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets
 {

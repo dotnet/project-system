@@ -27,6 +27,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
         ImageMoniker Icon { get; }
         ImageMoniker ExpandedIcon { get; }
         ProjectTreeFlags Flags { get; }
-        IDependency? OriginalModel { get; }
+        IDependency? Dependency { get; }
     }
 }

@@ -218,6 +218,36 @@ In order to debug this project, add an executable project to this solution which
   <data name="Renaming_Type_from_0_to_1" xml:space="preserve">
     <value>Renaming Type from '{0}' to '{1}'</value>
   </data>
+  <data name="PackageReferenceBrowseObjectClassName" xml:space="preserve">
+    <value>Package Reference</value>
+  </data>
+  <data name="PackageReferenceNameDisplayName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="PackageReferenceNameDescription" xml:space="preserve">
+    <value>The package's name.</value>
+  </data>
+  <data name="PackageReferenceVersionDisplayName" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="PackageReferenceVersionDescription" xml:space="preserve">
+    <value>The package's version.</value>
+  </data>
+  <data name="PackageReferencePathDisplayName" xml:space="preserve">
+    <value>Path</value>
+  </data>
+  <data name="PackageReferencePathDescription" xml:space="preserve">
+    <value>The package's resolved full path.</value>
+  </data>
+  <data name="ProjectReferenceBrowseObjectClassName" xml:space="preserve">
+    <value>Project Reference</value>
+  </data>
+  <data name="ProjectReferenceNameDisplayName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="ProjectReferenceNameDescription" xml:space="preserve">
+    <value>The project's name.</value>
+  </data>
   <data name="DiagnosticBrowseObjectClassName" xml:space="preserve">
     <value>Diagnostic</value>
   </data>
@@ -250,5 +280,26 @@ In order to debug this project, add an executable project to this solution which
   </data>
   <data name="DiagnosticWarningLevelDescription" xml:space="preserve">
     <value>The diagnostic's warning level. Only applies to warnings.</value>
+  </data>
+  <data name="PackageCompileTimeAssemblyGroupName" xml:space="preserve">
+    <value>Compile Time Assemblies</value>
+  </data>
+  <data name="PackageFrameworkAssemblyGroupName" xml:space="preserve">
+    <value>Framework Assemblies</value>
+  </data>
+  <data name="PackageAssemblyBrowseObjectClassName" xml:space="preserve">
+    <value>Assembly</value>
+  </data>
+  <data name="PackageAssemblyNameDisplayName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="PackageAssemblyNameDescription" xml:space="preserve">
+    <value>The assembly's name.</value>
+  </data>
+  <data name="PackageAssemblyPathDisplayName" xml:space="preserve">
+    <value>Path</value>
+  </data>
+  <data name="PackageAssemblyPathDescription" xml:space="preserve">
+    <value>The assembly's path.</value>
   </data>
 </root>

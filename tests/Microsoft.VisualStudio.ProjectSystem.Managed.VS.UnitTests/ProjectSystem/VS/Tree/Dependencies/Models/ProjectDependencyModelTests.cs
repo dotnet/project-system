@@ -37,7 +37,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(ManagedImageMonikers.ApplicationWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
                 DependencyTreeFlags.ProjectDependency +
-                DependencyTreeFlags.GenericResolvedDependencyFlags,
+                DependencyTreeFlags.GenericResolvedDependencyFlags +
+                ProjectTreeFlags.Create("$ID:myPath"),
                 model.Flags);
         }
 
@@ -68,7 +69,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(ManagedImageMonikers.ApplicationWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
                 DependencyTreeFlags.ProjectDependency +
-                DependencyTreeFlags.GenericUnresolvedDependencyFlags,
+                DependencyTreeFlags.GenericUnresolvedDependencyFlags +
+                ProjectTreeFlags.Create("$ID:myPath"),
                 model.Flags);
         }
 
@@ -100,7 +102,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(
                 DependencyTreeFlags.ProjectDependency +
                 DependencyTreeFlags.GenericResolvedDependencyFlags -
-                DependencyTreeFlags.SupportsRemove,
+                DependencyTreeFlags.SupportsRemove +
+                ProjectTreeFlags.Create("$ID:myPath"),
                 model.Flags);
         }
     }

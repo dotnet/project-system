@@ -322,6 +322,132 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Assembly.
+        /// </summary>
+        internal static string PackageAssemblyBrowseObjectClassName {
+            get {
+                return ResourceManager.GetString("PackageAssemblyBrowseObjectClassName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The assembly&apos;s name..
+        /// </summary>
+        internal static string PackageAssemblyNameDescription {
+            get {
+                return ResourceManager.GetString("PackageAssemblyNameDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        internal static string PackageAssemblyNameDisplayName {
+            get {
+                return ResourceManager.GetString("PackageAssemblyNameDisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The assembly&apos;s path..
+        /// </summary>
+        internal static string PackageAssemblyPathDescription {
+            get {
+                return ResourceManager.GetString("PackageAssemblyPathDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Path.
+        /// </summary>
+        internal static string PackageAssemblyPathDisplayName {
+            get {
+                return ResourceManager.GetString("PackageAssemblyPathDisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compile Time Assemblies.
+        /// </summary>
+        internal static string PackageCompileTimeAssemblyGroupName {
+            get {
+                return ResourceManager.GetString("PackageCompileTimeAssemblyGroupName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Framework Assemblies.
+        /// </summary>
+        internal static string PackageFrameworkAssemblyGroupName {
+            get {
+                return ResourceManager.GetString("PackageFrameworkAssemblyGroupName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Package Reference.
+        /// </summary>
+        internal static string PackageReferenceBrowseObjectClassName {
+            get {
+                return ResourceManager.GetString("PackageReferenceBrowseObjectClassName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The package&apos;s name..
+        /// </summary>
+        internal static string PackageReferenceNameDescription {
+            get {
+                return ResourceManager.GetString("PackageReferenceNameDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        internal static string PackageReferenceNameDisplayName {
+            get {
+                return ResourceManager.GetString("PackageReferenceNameDisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The package&apos;s resolved full path..
+        /// </summary>
+        internal static string PackageReferencePathDescription {
+            get {
+                return ResourceManager.GetString("PackageReferencePathDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Path.
+        /// </summary>
+        internal static string PackageReferencePathDisplayName {
+            get {
+                return ResourceManager.GetString("PackageReferencePathDisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The package&apos;s version..
+        /// </summary>
+        internal static string PackageReferenceVersionDescription {
+            get {
+                return ResourceManager.GetString("PackageReferenceVersionDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Version.
+        /// </summary>
+        internal static string PackageReferenceVersionDisplayName {
+            get {
+                return ResourceManager.GetString("PackageReferenceVersionDisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &amp;Pack.
         /// </summary>
         internal static string PackCommand {
@@ -356,6 +482,33 @@ namespace Microsoft.VisualStudio {
         internal static string ProjectNotRunnableDirectly {
             get {
                 return ResourceManager.GetString("ProjectNotRunnableDirectly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Project Reference.
+        /// </summary>
+        internal static string ProjectReferenceBrowseObjectClassName {
+            get {
+                return ResourceManager.GetString("ProjectReferenceBrowseObjectClassName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The project&apos;s name..
+        /// </summary>
+        internal static string ProjectReferenceNameDescription {
+            get {
+                return ResourceManager.GetString("ProjectReferenceNameDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        internal static string ProjectReferenceNameDisplayName {
+            get {
+                return ResourceManager.GetString("ProjectReferenceNameDisplayName", resourceCulture);
             }
         }
         

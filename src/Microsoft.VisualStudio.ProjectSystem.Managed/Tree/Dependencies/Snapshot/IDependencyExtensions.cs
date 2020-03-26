@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         private sealed class DependencyViewModel : IDependencyViewModel
         {
-            private readonly IDependency _model;
+            private readonly IDependency _dependency;
             private readonly bool _hasUnresolvedDependency;
 
             public DependencyViewModel(IDependency dependency)
@@ -26,18 +26,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Requires.NotNull(dependency, nameof(dependency));
                 Requires.Argument(dependency.Visible, nameof(dependency), "Must be visible");
 
-                _model = dependency;
+                _dependency = dependency;
                 _hasUnresolvedDependency = !dependency.Resolved;
             }
 
-            public IDependency? OriginalModel => _model;
-            public string Caption => _model.Caption;
-            public string? FilePath => _model.Id;
-            public string? SchemaName => _model.SchemaName;
-            public string? SchemaItemType => _model.SchemaItemType;
-            public ImageMoniker Icon => _hasUnresolvedDependency ? _model.IconSet.UnresolvedIcon : _model.IconSet.Icon;
-            public ImageMoniker ExpandedIcon => _hasUnresolvedDependency ? _model.IconSet.UnresolvedExpandedIcon : _model.IconSet.ExpandedIcon;
-            public ProjectTreeFlags Flags => _model.Flags;
+            public IDependency? Dependency => _dependency;
+            public string Caption => _dependency.Caption;
+            public string? FilePath => _dependency.Id;
+            public string? SchemaName => _dependency.SchemaName;
+            public string? SchemaItemType => _dependency.SchemaItemType;
+            public ImageMoniker Icon => _hasUnresolvedDependency ? _dependency.IconSet.UnresolvedIcon : _dependency.IconSet.Icon;
+            public ImageMoniker ExpandedIcon => _hasUnresolvedDependency ? _dependency.IconSet.UnresolvedExpandedIcon : _dependency.IconSet.ExpandedIcon;
+            public ProjectTreeFlags Flags => _dependency.Flags;
         }
 
         /// <summary>
