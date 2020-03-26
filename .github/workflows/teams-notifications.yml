@@ -13,5 +13,6 @@ jobs:
     steps:
       - name: Notify
         uses: davidwengier/PostAdaptiveCard@v1.0.0
+        if: github.repository == 'dotnet/project-system'
         with:
-          webhook-uri: ${{ secrets.TeamsWebhook }}
+          webhook-uri: https://outlook.office.com/webhook/4ba7372f-2799-4677-89f0-7a1aaea3706c@72f988bf-86f1-41af-91ab-2d7cd011db47/IncomingWebhook/9a07b7d0343f4f25b1c138f52a38a2be/9dbc0cfc-eab3-42c9-838a-4879bef6875e
