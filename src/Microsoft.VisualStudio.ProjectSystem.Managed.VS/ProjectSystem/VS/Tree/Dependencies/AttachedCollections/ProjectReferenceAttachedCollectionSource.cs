@@ -40,11 +40,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
                 ProcessLibraryReferences(ref items, snapshot, dependencies, _target);
             }
 
-            if (snapshot.TryGetProject(_projectId, _target, out AssetsFileTargetLibrary? library))
-            {
-                ProcessLibraryContent(ref items, library);
-            }
-
             return items;
         }
     }

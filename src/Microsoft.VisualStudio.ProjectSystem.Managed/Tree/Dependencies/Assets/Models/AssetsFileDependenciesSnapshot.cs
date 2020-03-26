@@ -202,24 +202,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models
             return false;
         }
 
-        public bool TryGetProject(string packageId, string? target, [NotNullWhen(returnValue: true)] out AssetsFileTargetLibrary? assetsFileLibrary)
-        {
-            if (!TryGetTarget(target, out AssetsFileTarget? targetData))
-            {
-                assetsFileLibrary = default;
-                return false;
-            }
-
-            if (targetData.LibraryByName.TryGetValue(packageId, out assetsFileLibrary) &&
-                assetsFileLibrary.Type == AssetsFileLibraryType.Project)
-            {
-                return true;
-            }
-
-            assetsFileLibrary = default;
-            return false;
-        }
-
         private bool TryGetTarget(string? target, [NotNullWhen(returnValue: true)] out AssetsFileTarget? targetData)
         {
             if (_dataByTarget.Count == 0)
