@@ -110,6 +110,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             /// The <see cref="DateTime"/> values here do not update dynamically.
             /// </remarks>
             public IImmutableDictionary<string, DateTime> AdditionalDependentFileTimes { get; }
+
+            /// <summary>
+            /// Gets the time at which the set of items in additionalDependentFileTimes changed (files added or removed).
+            /// </summary>
+            /// <remarks>
+            /// Additional dependent files are not required for compilation, but if present they might affect the compilation
+            /// output. e.g global.json, project.assets.json.
+            /// </remarks>
             public DateTime LastAdditionalDependentFileTimesChangedAtUtc { get; }
 
             private State()
@@ -200,10 +208,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 string? outputRelativeOrFullPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutDirProperty, msBuildProjectOutputPath);
                 string msBuildAllProjects = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildAllProjectsProperty, "");
 
-                var lastExistingAdditionalDependentFiles = AdditionalDependentFileTimes.Where(pair => pair.Value != DateTime.MinValue).Select(pair => pair.Key).ToImmutableHashSet();
+                var lastExistingAdditionalDependentFiles = AdditionalDependentFileTimes.Where(pair => pair.Value != default(DateTime)).Select(pair => pair.Key).ToImmutableHashSet();
                 IImmutableDictionary<string, DateTime> additionalDependentFileTimes = projectSnapshot.AdditionalDependentFileTimes;
 
-                var currentExistingAdditionalDependentFiles = additionalDependentFileTimes.Where(pair => pair.Value != DateTime.MinValue).Select(pair => pair.Key).ToImmutableHashSet();
+                var currentExistingAdditionalDependentFiles = additionalDependentFileTimes.Where(pair => pair.Value != default(DateTime)).Select(pair => pair.Key).ToImmutableHashSet();
                 bool AdditionalDependentFilesChanged = !lastExistingAdditionalDependentFiles.SetEquals(currentExistingAdditionalDependentFiles);
                 DateTime lastAdditionalDependentFileTimesChangedAtUtc = AdditionalDependentFilesChanged ? DateTime.UtcNow : LastAdditionalDependentFileTimesChangedAtUtc;
 
